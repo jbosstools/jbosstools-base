@@ -29,7 +29,9 @@ import org.osgi.framework.Bundle;
 public class PluginLoadTest extends TestCase {
 
 	private static String jbpkg = "org.jboss.ide.eclipse.";
-
+	private static String hibpkg = "org.hibernate.eclipse.";
+	private static String jbpmpkg = "org.jbpm.gd.jpdl.";
+	
 	private boolean isPluginResolved (String pluginId)
 	{
 		Bundle bundle = Platform.getBundle(pluginId);
@@ -49,12 +51,9 @@ public class PluginLoadTest extends TestCase {
 	public void testCorePluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbpkg+"core", jbpkg+"deployer.core", jbpkg+"deployer.ui",
-			jbpkg+"jdt.core", jbpkg+"jdt.j2ee.core", jbpkg+"jdt.j2ee.jsp.core",
-			jbpkg+"jdt.j2ee.jsp.ui", jbpkg+"jdt.j2ee.ui", jbpkg+"jdt.j2ee.xml.ui",
-			jbpkg+"jdt.test.core", jbpkg+"jdt.test.ui", jbpkg+"jdt.ui",
-			jbpkg+"jdt.ws.core", jbpkg+"jdt.ws.ui", jbpkg+"launcher.core",
-			jbpkg+"launcher.ui", jbpkg+"packaging.core", jbpkg+"packaging.ui",
+			jbpkg+"core", jbpkg+"jdt.core", jbpkg+"jdt.j2ee.core", jbpkg+"jdt.j2ee.jsp.core",
+			jbpkg+"jdt.j2ee.ui", jbpkg+"jdt.j2ee.xml.ui", jbpkg+"jdt.test.core", jbpkg+"jdt.test.ui", jbpkg+"jdt.ui",
+			jbpkg+"jdt.ws.core", jbpkg+"jdt.ws.ui", jbpkg+"packaging.core", jbpkg+"packaging.ui",
 			jbpkg+"ui", jbpkg+"xdoclet.assist", jbpkg+"xdoclet.core", jbpkg+"xdoclet.run",
 			jbpkg+"xdoclet.ui"
 		});
@@ -74,19 +73,33 @@ public class PluginLoadTest extends TestCase {
 		});
 	}
 	
+	public void testASPluginsResolved ()
+	{
+		assertPluginsResolved(new String[] {
+			jbpkg+"as.core", jbpkg+"as.ui"	
+		});
+	}
+	
 	public void testHibernatePluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			"org.hibernate.eclipse", "org.hibernate.eclipse.console",
-			"org.hibernate.eclipse.help", "org.hibernate.eclipse.mapper"
+			"org.hibernate.eclipse", hibpkg + "console", hibpkg + "help", hibpkg + "mapper", hibpkg + "jdt.ui", hibpkg + "jdt.apt.ui"
+			
 		});
 	}
 	
 	public void testJbpmPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			"org.jbpm.core", "org.jbpm.help",
-			"org.jbpm.db", "org.jbpm.ui"
+			jbpmpkg + "core", jbpmpkg + "db",
+			jbpmpkg + "help", jbpmpkg + "ui"
+		});
+	}
+	
+	public void testFreemarkerPluginsResolved ()
+	{
+		assertPluginsResolved(new String[] {
+			jbpkg+"freemarker"
 		});
 	}
 }
