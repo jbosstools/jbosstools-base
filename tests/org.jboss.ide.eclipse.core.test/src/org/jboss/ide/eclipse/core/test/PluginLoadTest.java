@@ -51,7 +51,7 @@ public class PluginLoadTest extends TestCase {
 	public void testCorePluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbpkg+"core", jbpkg+"jdt.core", jbpkg+"jdt.j2ee.core", jbpkg+"jdt.j2ee.jsp.core",
+			jbpkg+"core", jbpkg+"jdt.core", jbpkg+"jdt.j2ee.core",
 			jbpkg+"jdt.j2ee.ui", jbpkg+"jdt.j2ee.xml.ui", jbpkg+"jdt.test.core", jbpkg+"jdt.test.ui", jbpkg+"jdt.ui",
 			jbpkg+"jdt.ws.core", jbpkg+"jdt.ws.ui", jbpkg+"packaging.core", jbpkg+"packaging.ui",
 			jbpkg+"ui", jbpkg+"xdoclet.assist", jbpkg+"xdoclet.core", jbpkg+"xdoclet.run",
