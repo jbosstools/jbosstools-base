@@ -102,4 +102,11 @@ public class PluginLoadTest extends TestCase {
 			jbpkg+"freemarker"
 		});
 	}
+	
+	public void testCachePluginsResolved ()
+	{
+		assertPluginsResolved(new String[] {
+			jbpkg+"jbosscache"
+		});
+	}
 }
