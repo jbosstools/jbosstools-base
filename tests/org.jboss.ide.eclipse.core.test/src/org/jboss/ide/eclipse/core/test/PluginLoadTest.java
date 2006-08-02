@@ -109,4 +109,11 @@ public class PluginLoadTest extends TestCase {
 			jbpkg+"jbosscache"
 		});
 	}
+	
+	public void testDroolsPluginsResolved ()
+	{
+		assertPluginsResolved(new String[] {
+			"org.drools.ide"
+		});
+	}
 }
