@@ -31,6 +31,7 @@ public class PluginLoadTest extends TestCase {
 	private static String jbpkg = "org.jboss.ide.eclipse.";
 	private static String hibpkg = "org.hibernate.eclipse.";
 	private static String jbpmpkg = "org.jbpm.gd.jpdl.";
+	private static String jbwspkg = "com.eviware.soapui.";
 	
 	private boolean isPluginResolved (String pluginId)
 	{
@@ -114,6 +115,13 @@ public class PluginLoadTest extends TestCase {
 	{
 		assertPluginsResolved(new String[] {
 			"org.drools.ide"
+		});
+	}
+	
+	public void testJBossWSPluginsResolved ()
+	{
+		assertPluginsResolved(new String[] {
+			jbwspkg+"core", jbwspkg+"eclipse.ui", jbwspkg+"jbosside.wstools", jbwspkg+"libs"
 		});
 	}
 }
