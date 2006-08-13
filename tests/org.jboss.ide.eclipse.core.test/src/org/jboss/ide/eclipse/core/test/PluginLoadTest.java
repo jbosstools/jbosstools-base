@@ -92,7 +92,6 @@ public class PluginLoadTest extends TestCase {
 	public void testJbpmPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbpmpkg + "core", jbpmpkg + "db",
 			jbpmpkg + "help", jbpmpkg + "ui"
 		});
 	}
