@@ -120,7 +120,7 @@ public class PluginLoadTest extends TestCase {
 	public void testJBossWSPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbwspkg+"core", jbwspkg+"eclipse.ui", jbwspkg+"jbosside.wstools", jbwspkg+"libs"
+			jbwspkg+"core", jbwspkg + "eclipse.core", jbwspkg+"jbosside.wstools", jbwspkg+"libs"
 		});
 	}
 }
