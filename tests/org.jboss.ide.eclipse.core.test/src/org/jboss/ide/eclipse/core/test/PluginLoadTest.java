@@ -1,6 +1,6 @@
 /*
- * JBoss, Home of Professional Open Source
- * Copyright 2005, JBoss Inc., and individual contributors as indicated
+ * JBoss, a division of Red Hat
+ * Copyright 2006, Red Hat Middleware, LLC, and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -54,7 +54,7 @@ public class PluginLoadTest extends TestCase {
 		assertPluginsResolved(new String[] {
 			jbpkg+"core", jbpkg+"jdt.core", jbpkg+"jdt.j2ee.core",
 			jbpkg+"jdt.j2ee.ui", jbpkg+"jdt.j2ee.xml.ui", jbpkg+"jdt.test.core", jbpkg+"jdt.test.ui", jbpkg+"jdt.ui",
-			jbpkg+"jdt.ws.core", jbpkg+"jdt.ws.ui", jbpkg+"packaging.core", jbpkg+"packaging.ui",
+			jbpkg+"jdt.ws.core", jbpkg+"jdt.ws.ui", jbpkg+"packages.core", jbpkg+"packages.ui",
 			jbpkg+"ui", jbpkg+"xdoclet.assist", jbpkg+"xdoclet.core", jbpkg+"xdoclet.run",
 			jbpkg+"xdoclet.ui"
 		});
@@ -77,7 +77,7 @@ public class PluginLoadTest extends TestCase {
 	public void testASPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbpkg+"as.core", jbpkg+"as.ui"	
+			jbpkg+"as.core", jbpkg+"as.ui", jbpkg+"as.ui.mbeans"
 		});
 	}
 	
