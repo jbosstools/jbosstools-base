@@ -60,13 +60,6 @@ public class PluginLoadTest extends TestCase {
 		});
 	}
 	
-	public void testAopPluginsResolved ()
-	{
-		assertPluginsResolved(new String[] {
-			jbpkg+"jdt.aop.core", jbpkg+"jdt.aop.ui"
-		});
-	}
-	
 	public void testEjb3PluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
@@ -100,13 +93,6 @@ public class PluginLoadTest extends TestCase {
 	{
 		assertPluginsResolved(new String[] {
 			jbpkg+"freemarker"
-		});
-	}
-	
-	public void testCachePluginsResolved ()
-	{
-		assertPluginsResolved(new String[] {
-			jbpkg+"jbosscache"
 		});
 	}
 	
