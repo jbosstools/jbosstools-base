@@ -54,7 +54,7 @@ public class PluginLoadTest extends TestCase {
 		assertPluginsResolved(new String[] {
 			jbpkg+"core", jbpkg+"jdt.core", jbpkg+"jdt.j2ee.core",
 			jbpkg+"jdt.j2ee.ui", jbpkg+"jdt.j2ee.xml.ui", jbpkg+"jdt.test.core", jbpkg+"jdt.test.ui", jbpkg+"jdt.ui",
-			jbpkg+"jdt.ws.core", jbpkg+"jdt.ws.ui", jbpkg+"packages.core", jbpkg+"packages.ui",
+			jbpkg+"jdt.ws.core", jbpkg+"jdt.ws.ui", jbpkg+"archives.core", jbpkg+"archives.ui",
 			jbpkg+"ui", jbpkg+"xdoclet.assist", jbpkg+"xdoclet.core", jbpkg+"xdoclet.run",
 			jbpkg+"xdoclet.ui"
 		});
@@ -85,7 +85,7 @@ public class PluginLoadTest extends TestCase {
 	public void testJbpmPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbpmpkg + "help", jbpmpkg + "ui"
+			jbpmpkg + "core", jbpmpkg + "ui"
 		});
 	}
 	
