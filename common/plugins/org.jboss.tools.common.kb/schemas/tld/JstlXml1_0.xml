@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema
+  location=""
+  prefix="x" uri="http://java.sun.com/jstl/xml">
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="choose" startTag="required"/>
+  <ElementType bodyContent="refused" content="mixed" endTag="required"
+    name="out" startTag="required">
+    <AttributeType name="select" required="true"/>
+    <attribute type="select"/>
+    <AttributeType name="escapeXml" required="false"/>
+    <attribute type="escapeXml"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="if" startTag="required">
+    <AttributeType name="select" required="true"/>
+    <attribute type="select"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="forEach" startTag="required">
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="select" required="true"/>
+    <attribute type="select"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="otherwise" startTag="required"/>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="param" startTag="required">
+    <AttributeType name="name" required="true"/>
+    <attribute type="name"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="parse" startTag="required">
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="varDom" required="false"/>
+    <attribute type="varDom"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="scopeDom" required="false"/>
+    <attribute type="scopeDom"/>
+    <AttributeType name="xml" required="false"/>
+    <attribute type="xml"/>
+    <AttributeType name="systemId" required="false"/>
+    <attribute type="systemId"/>
+    <AttributeType name="filter" required="false"/>
+    <attribute type="filter"/>
+  </ElementType>
+  <ElementType bodyContent="refused" content="mixed" endTag="required"
+    name="set" startTag="required">
+    <AttributeType name="var" required="true"/>
+    <attribute type="var"/>
+    <AttributeType name="select" required="false"/>
+    <attribute type="select"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="transform" startTag="required">
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="result" required="false"/>
+    <attribute type="result"/>
+    <AttributeType name="xml" required="false"/>
+    <attribute type="xml"/>
+    <AttributeType name="xmlSystemId" required="false"/>
+    <attribute type="xmlSystemId"/>
+    <AttributeType name="xslt" required="false"/>
+    <attribute type="xslt"/>
+    <AttributeType name="xsltSystemId" required="false"/>
+    <attribute type="xsltSystemId"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="when" startTag="required">
+    <AttributeType name="select" required="true"/>
+    <attribute type="select"/>
+  </ElementType>
+</Schema>

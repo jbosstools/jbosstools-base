@@ -1,0 +1,1265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema location="" prefix="afh" uri="http://xmlns.oracle.com/adf/faces/html">
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="rowLayout" startTag="required">
+        <description>RowLayout components can be used on their own, or to
+          define a row of a tableLayout component.</description>
+        <AttributeType name="id" required="false">
+            <description>the identifier for the component</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="halign" required="false">
+            <description>the default horizontal alignment of cells in this row.
+              The acceptable values are "center", "left", "right", "start", and "end".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="center"/>
+                <param value="left"/>
+                <param value="right"/>
+                <param value="start"/>
+                <param value="end"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="halign"/>
+        <AttributeType name="valign" required="false">
+            <description>the default vertical alignment of cells in this row.
+              The acceptable values are "middle", "top", and "bottom".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="middle"/>
+                <param value="top"/>
+                <param value="bottom"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="valign"/>
+        <AttributeType name="width" required="false">
+            <description>the preferred total width of the layout.
+              This attribute is ignored when the row layout is inside
+              of a table layout.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+        <AttributeType name="shortDesc" required="false">
+            <description>the short description of the bean.  This text
+         is commonly used by user agents to display tooltip help text.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shortDesc"/>
+        <AttributeType name="partialTriggers" required="false">
+            <description>the IDs of the components that should trigger a partial update.
+         This component will listen on the trigger components. If one of the
+         trigger components receives an event that will cause it to update
+         in some way, this component will request to be updated too.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="partialTriggers"/>
+        <AttributeType name="onclick" required="false">
+            <description>an onclick Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <description>an ondblclick Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <description>an onmousedown Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <description>an onmouseup Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <description>an onmouseover Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <description>an onmousemove Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <description>an onmouseout Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <description>an onkeypress Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <description>an onkeydown Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <description>an onkeyup Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="styleClass" required="false">
+            <description>the CSS style class of the bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="inlineStyle" required="false">
+            <description>the inline CSS style for this element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="inlineStyle"/>
+        <AttributeType name="rendered" required="false">
+            <description>whether the bean is rendered.  When set to false,
+          no output will be delivered for this bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>a binding reference to store the component instance</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="attributeChangeListener" required="false">
+            <description>a method reference to an attribute change listener</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="attributeChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="styleSheet" startTag="required">
+        <description>The styleSheet tag generates the style
+          sheet link reference to a generated ADF Faces style sheet.
+          This is automatically included for you if you use the ADF head tag.</description>
+        <AttributeType name="id" required="false">
+            <description>the identifier for the component</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>whether the bean is rendered.  When set to false,
+          no output will be delivered for this bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>a binding reference to store the component instance</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="attributeChangeListener" required="false">
+            <description>a method reference to an attribute change listener</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="attributeChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="tableLayout" startTag="required">
+        <description>&lt;html&gt;
+          A TableLayout is a thin wrapper around the HTML &amp;lt;table&amp;gt;
+          element.  It contains a series of row layout elements.
+        &lt;/html&gt;</description>
+        <AttributeType name="id" required="false">
+            <description>the identifier for the component</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="width" required="false">
+            <description>the preferred total width of the layout.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+        <AttributeType name="halign" required="false">
+            <description>the horizontal alignment of the table.
+              The acceptable values are "center", "left", "right", "start", and "end".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="center"/>
+                <param value="left"/>
+                <param value="right"/>
+                <param value="start"/>
+                <param value="end"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="halign"/>
+        <AttributeType name="cellSpacing" required="false">
+            <description>the spacing between cells.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="cellSpacing"/>
+        <AttributeType name="cellPadding" required="false">
+            <description>the spacing within cells.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="cellPadding"/>
+        <AttributeType name="borderWidth" required="false">
+            <description>the border width around each cell.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="borderWidth"/>
+        <AttributeType name="summary" required="false">
+            <description>The summary of the table's purpose and structure
+             for user agents rendering to non-visual media. This attribute
+             must be set if this element is being used to implement a data
+             table (instead of a layout table).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="summary"/>
+        <AttributeType name="shortDesc" required="false">
+            <description>the short description of the bean.  This text
+         is commonly used by user agents to display tooltip help text.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shortDesc"/>
+        <AttributeType name="partialTriggers" required="false">
+            <description>the IDs of the components that should trigger a partial update.
+         This component will listen on the trigger components. If one of the
+         trigger components receives an event that will cause it to update
+         in some way, this component will request to be updated too.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="partialTriggers"/>
+        <AttributeType name="onclick" required="false">
+            <description>an onclick Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <description>an ondblclick Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <description>an onmousedown Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <description>an onmouseup Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <description>an onmouseover Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <description>an onmousemove Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <description>an onmouseout Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <description>an onkeypress Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <description>an onkeydown Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <description>an onkeyup Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="styleClass" required="false">
+            <description>the CSS style class of the bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="inlineStyle" required="false">
+            <description>the inline CSS style for this element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="inlineStyle"/>
+        <AttributeType name="rendered" required="false">
+            <description>whether the bean is rendered.  When set to false,
+          no output will be delivered for this bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>a binding reference to store the component instance</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="attributeChangeListener" required="false">
+            <description>a method reference to an attribute change listener</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="attributeChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="frame" startTag="required">
+        <description>The frame component is used to specify attributes needed by an
+          HTML frame.</description>
+        <AttributeType name="id" required="false">
+            <description>the identifier for the component</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="source" required="false">
+            <description>the URI for the source of this frame</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="source"/>
+        <AttributeType name="longDescURL" required="false">
+            <description>&lt;html&gt;
+             This attribute specifies a link to a long description of the
+             frame. This description should supplement the short description
+             provided using the &lt;code&gt;shortDesc&lt;/code&gt; attribute, and
+             may be particularly useful for non-visual user agents.
+            &lt;/html&gt;</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="longDescURL"/>
+        <AttributeType name="name" required="false">
+            <description>the name used to identify this frame</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="name"/>
+        <AttributeType name="width" required="false">
+            <description>the proposed width of this frame
+              This can be in pixels or percentage. This attribute is used only if this
+              frame is a left/right facet of a frameBorderLayout component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+        <AttributeType name="height" required="false">
+            <description>the proposed height of this frame.
+              This can be in pixels or percentage. This attribute is used only if this
+              frame is a top/bottom facet of a frameBorderLayout component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="height"/>
+        <AttributeType name="marginWidth" required="false">
+            <description>the width of the frame margin. The value must be greater than zero (pixels).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="marginWidth"/>
+        <AttributeType name="marginHeight" required="false">
+            <description>the width of the frame margin. The value must be greater than zero (pixels).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="marginHeight"/>
+        <AttributeType name="scrolling" required="false">
+            <description>&lt;html&gt;
+
+              whether or not scrollbars are available on this
+              frame. Valid values for this attribute are the following
+              constants:&lt;br&gt;&lt;/br&gt;
+
+              
+     "yes" specifies that scrollbars are always available. &lt;br&gt;&lt;/br&gt;
+     "no" specifies that scrollbars are never available. &lt;br&gt;&lt;/br&gt;
+     "auto" specifies that the browser determines whether to display scroll
+              bars based on the size of the frame and its content. If
+              you do not specify a value for scrolling, the default
+              value is "auto"
+
+            &lt;/html&gt;</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="yes"/>
+                <param value="no"/>
+                <param value="auto"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="scrolling"/>
+        <AttributeType name="shortDesc" required="false">
+            <description>the short description of the bean.  This text
+         is commonly used by user agents to display tooltip help text.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shortDesc"/>
+        <AttributeType name="partialTriggers" required="false">
+            <description>the IDs of the components that should trigger a partial update.
+         This component will listen on the trigger components. If one of the
+         trigger components receives an event that will cause it to update
+         in some way, this component will request to be updated too.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="partialTriggers"/>
+        <AttributeType name="styleClass" required="false">
+            <description>the CSS style class of the bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="inlineStyle" required="false">
+            <description>the inline CSS style for this element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="inlineStyle"/>
+        <AttributeType name="rendered" required="false">
+            <description>whether the bean is rendered.  When set to false,
+          no output will be delivered for this bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>a binding reference to store the component instance</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="attributeChangeListener" required="false">
+            <description>a method reference to an attribute change listener</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="attributeChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="html" startTag="required">
+        <description>&lt;html&gt;
+          The html tag generates the &amp;lt;html&amp;gt; element for an HTML page.
+        &lt;/html&gt;</description>
+        <AttributeType name="id" required="false">
+            <description>the identifier for the component</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>whether the bean is rendered.  When set to false,
+          no output will be delivered for this bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>a binding reference to store the component instance</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="attributeChangeListener" required="false">
+            <description>a method reference to an attribute change listener</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="attributeChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="body" startTag="required">
+        <description>Tag for the HTML body element.</description>
+        <AttributeType name="id" required="false">
+            <description>the identifier for the component</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="firstClickPassed" required="false">
+            <description>whether or not ADF will allow the first click to go
+             through in certain instances. When a PPR event occurs, we block
+             all subsequent user input until it completes. However, there may
+             be instances where the client wants to receive the very first
+             click. For example, if the user entered text in an inputText
+             that fires a PPR request, then the user immediately clicked
+             a submit button two events will be triggered - an onchange
+             followed by an onclick. The onchange will trigger the client
+             action which will immediately start the PPR blocking, so the
+             onclick will get consumed by the blocking code and no submit will
+             occur. Setting this value to true will allow the click to go
+             through.
+            
+    This attribute is not supported on the following agent types:
+    pda, phone, voice.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="firstClickPassed"/>
+        <AttributeType name="shortDesc" required="false">
+            <description>the short description of the bean.  This text
+         is commonly used by user agents to display tooltip help text.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shortDesc"/>
+        <AttributeType name="partialTriggers" required="false">
+            <description>the IDs of the components that should trigger a partial update.
+         This component will listen on the trigger components. If one of the
+         trigger components receives an event that will cause it to update
+         in some way, this component will request to be updated too.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="partialTriggers"/>
+        <AttributeType name="onclick" required="false">
+            <description>an onclick Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <description>an ondblclick Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <description>an onmousedown Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <description>an onmouseup Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <description>an onmouseover Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <description>an onmousemove Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <description>an onmouseout Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <description>an onkeypress Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <description>an onkeydown Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <description>an onkeyup Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="styleClass" required="false">
+            <description>the CSS style class of the bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="inlineStyle" required="false">
+            <description>the inline CSS style for this element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="inlineStyle"/>
+        <AttributeType name="onload" required="false">
+            <description>an onload Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onload"/>
+        <AttributeType name="onunload" required="false">
+            <description>an onunload Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onunload"/>
+        <AttributeType name="initialFocusId" required="false">
+            <description>the id of the component to which you want the
+        focus to be when the full page renders. The accessibility-mode
+        must be set to "inaccessible" for this feature to be on.
+        
+    This attribute is not supported on the following agent types:
+    pda, phone, voice.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="initialFocusId"/>
+        <AttributeType name="rendered" required="false">
+            <description>whether the bean is rendered.  When set to false,
+          no output will be delivered for this bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>a binding reference to store the component instance</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="attributeChangeListener" required="false">
+            <description>a method reference to an attribute change listener</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="attributeChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="script" startTag="required">
+        <description>The script component supports importing libraries, and inline scripts.</description>
+        <AttributeType name="id" required="false">
+            <description>the identifier for the component</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="text" required="false">
+            <description>the inline script</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="text"/>
+        <AttributeType name="source" required="false">
+            <description>the URI of a script library to import.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="source"/>
+        <AttributeType name="generatesContent" required="false">
+            <description>if the script generates content 
+            using document.write() or document.writeln(), set this to true.
+            It defaults to false.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="generatesContent"/>
+        <AttributeType name="partialTriggers" required="false">
+            <description>the IDs of the components that should trigger a partial update.
+         This component will listen on the trigger components. If one of the
+         trigger components receives an event that will cause it to update
+         in some way, this component will request to be updated too.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="partialTriggers"/>
+        <AttributeType name="rendered" required="false">
+            <description>whether the bean is rendered.  When set to false,
+          no output will be delivered for this bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>a binding reference to store the component instance</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="attributeChangeListener" required="false">
+            <description>a method reference to an attribute change listener</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="attributeChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="frameBorderLayout" startTag="required">
+        <description>frameBorderLayout is a layout bean which can be used to place seven
+          frames at left, right, top, bottom, innerLeft, innerRight and center
+          positions.</description>
+        <AttributeType name="id" required="false">
+            <description>the identifier for the component</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="onload" required="false">
+            <description>an onload Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onload"/>
+        <AttributeType name="onunload" required="false">
+            <description>an onunload Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onunload"/>
+        <AttributeType name="width" required="false">
+            <description>The proposed width of this frameBorderLayout.  This can be in
+           pixels or percentage. This attribute is used only if this a nested
+           frameBorderLayout in a left/right facet of a
+           frameBorderLayout.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+        <AttributeType name="height" required="false">
+            <description>The proposed height of this frameBorderLayout.  This can be in
+           pixels or percentage. This attribute is used only if this a nested
+           frameBorderLayout in a top/bottom facet of a
+           frameBorderLayout.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="height"/>
+        <AttributeType name="shortDesc" required="false">
+            <description>the short description of the bean.  This text
+         is commonly used by user agents to display tooltip help text.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shortDesc"/>
+        <AttributeType name="partialTriggers" required="false">
+            <description>the IDs of the components that should trigger a partial update.
+         This component will listen on the trigger components. If one of the
+         trigger components receives an event that will cause it to update
+         in some way, this component will request to be updated too.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="partialTriggers"/>
+        <AttributeType name="styleClass" required="false">
+            <description>the CSS style class of the bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="inlineStyle" required="false">
+            <description>the inline CSS style for this element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="inlineStyle"/>
+        <AttributeType name="rendered" required="false">
+            <description>whether the bean is rendered.  When set to false,
+          no output will be delivered for this bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>a binding reference to store the component instance</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="attributeChangeListener" required="false">
+            <description>a method reference to an attribute change listener</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="attributeChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="head" startTag="required">
+        <description>Tag for the HTML head element.</description>
+        <AttributeType name="id" required="false">
+            <description>the identifier for the component</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="title" required="false">
+            <description>The title of the document.  (This title doesn't have to match the
+            title on any contained panelPage.)</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="partialTriggers" required="false">
+            <description>the IDs of the components that should trigger a partial update.
+         This component will listen on the trigger components. If one of the
+         trigger components receives an event that will cause it to update
+         in some way, this component will request to be updated too.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="partialTriggers"/>
+        <AttributeType name="rendered" required="false">
+            <description>whether the bean is rendered.  When set to false,
+          no output will be delivered for this bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>a binding reference to store the component instance</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="attributeChangeListener" required="false">
+            <description>a method reference to an attribute change listener</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="attributeChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="cellFormat" startTag="required">
+        <description>CellFormat components are used to format cells in a
+          rowLayout component.</description>
+        <AttributeType name="id" required="false">
+            <description>the identifier for the component</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="shortText" required="false">
+            <description>This attribute should be used to provide an abbreviated form of
+             the cell's content, and may be rendered by user agents when
+             appropriate in place of the cell's content. Abbreviated names
+             should be short since user agents may render them repeatedly
+             (especially if this cell is a header cell).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shortText"/>
+        <AttributeType name="halign" required="false">
+            <description>the horizontal alignment of the grid row elements.
+              The acceptable values are "center", "left", "right", "start", and "end".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="center"/>
+                <param value="left"/>
+                <param value="right"/>
+                <param value="start"/>
+                <param value="end"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="halign"/>
+        <AttributeType name="valign" required="false">
+            <description>the vertical alignment of the grid row elements.
+              The acceptable values are "middle", "top", and "bottom".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="middle"/>
+                <param value="top"/>
+                <param value="bottom"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="valign"/>
+        <AttributeType name="width" required="false">
+            <description>the preferred width of the enclosed layout elements.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+        <AttributeType name="height" required="false">
+            <description>the preferred height of the enclosed layout elements.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="height"/>
+        <AttributeType name="columnSpan" required="false">
+            <description>the number of cells wide the child layout element will be.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="columnSpan"/>
+        <AttributeType name="rowSpan" required="false">
+            <description>the number of cells high the child layout element will be.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rowSpan"/>
+        <AttributeType name="wrappingDisabled" required="false">
+            <description>whether automatic text wrapping should be disabled for
+              this cell.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="wrappingDisabled"/>
+        <AttributeType name="headers" required="false">
+            <description>Indicates which table cells are the headers for this cell. This
+             attribute is used by screen readers to associate header
+             information with data cells. This must be set to a
+             space-separated list of IDs. Each ID must be the ID of a
+             pertinent header cell.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="headers"/>
+        <AttributeType name="header" required="false">
+            <description>Indicates whether or not this table cell is a header cell or a data cell. 
+        Setting this attribute to 'true' will mark this cell as a header cell.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="header"/>
+        <AttributeType name="shortDesc" required="false">
+            <description>the short description of the bean.  This text
+         is commonly used by user agents to display tooltip help text.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shortDesc"/>
+        <AttributeType name="partialTriggers" required="false">
+            <description>the IDs of the components that should trigger a partial update.
+         This component will listen on the trigger components. If one of the
+         trigger components receives an event that will cause it to update
+         in some way, this component will request to be updated too.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="partialTriggers"/>
+        <AttributeType name="onclick" required="false">
+            <description>an onclick Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <description>an ondblclick Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <description>an onmousedown Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <description>an onmouseup Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <description>an onmouseover Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <description>an onmousemove Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <description>an onmouseout Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <description>an onkeypress Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <description>an onkeydown Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <description>an onkeyup Javascript handler.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="styleClass" required="false">
+            <description>the CSS style class of the bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="inlineStyle" required="false">
+            <description>the inline CSS style for this element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="inlineStyle"/>
+        <AttributeType name="rendered" required="false">
+            <description>whether the bean is rendered.  When set to false,
+          no output will be delivered for this bean.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>a binding reference to store the component instance</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="attributeChangeListener" required="false">
+            <description>a method reference to an attribute change listener</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="attributeChangeListener"/>
+    </ElementType>
+</Schema>

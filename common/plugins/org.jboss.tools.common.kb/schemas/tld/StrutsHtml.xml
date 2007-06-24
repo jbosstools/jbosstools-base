@@ -1,0 +1,1356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema location="" uri="http://struts.apache.org/tags-html" prefix="html">
+  <ElementType name="base" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="target" required="false"/>
+    <attribute type="target"/>
+    <AttributeType name="server" required="false"/>
+    <attribute type="server"/>
+  </ElementType>
+  <ElementType name="button" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="cancel" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="checkbox" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="errorKey" required="false"/>
+    <attribute type="errorKey"/>
+    <AttributeType name="errorStyle" required="false"/>
+    <attribute type="errorStyle"/>
+    <AttributeType name="errorStyleClass" required="false"/>
+    <attribute type="errorStyleClass"/>
+    <AttributeType name="errorStyleId" required="false"/>
+    <attribute type="errorStyleId"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="errors" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="locale" required="false"/>
+    <attribute type="locale"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="footer" required="false"/>
+    <attribute type="footer"/>
+    <AttributeType name="header" required="false"/>
+    <attribute type="header"/>
+    <AttributeType name="prefix" required="false"/>
+    <attribute type="prefix"/>
+    <AttributeType name="suffix" required="false"/>
+    <attribute type="suffix"/>
+  </ElementType>
+  <ElementType name="file" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="accept" required="false"/>
+    <attribute type="accept"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="maxlength" required="false"/>
+    <attribute type="maxlength"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+    <AttributeType name="size" required="false"/>
+    <attribute type="size"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="errorKey" required="false"/>
+    <attribute type="errorKey"/>
+    <AttributeType name="errorStyle" required="false"/>
+    <attribute type="errorStyle"/>
+    <AttributeType name="errorStyleClass" required="false"/>
+    <attribute type="errorStyleClass"/>
+    <AttributeType name="errorStyleId" required="false"/>
+    <attribute type="errorStyleId"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="form" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="action" required="true"/>
+    <attribute type="action"/>
+    <AttributeType name="acceptCharset" required="false"/>
+    <attribute type="acceptCharset"/>
+    <AttributeType name="enctype" required="false"/>
+    <attribute type="enctype"/>
+    <AttributeType name="focus" required="false"/>
+    <attribute type="focus"/>
+    <AttributeType name="focusIndex" required="false"/>
+    <attribute type="focusIndex"/>
+    <AttributeType name="method" required="false"/>
+    <attribute type="method"/>
+    <AttributeType name="onreset" required="false"/>
+    <attribute type="onreset"/>
+    <AttributeType name="onsubmit" required="false"/>
+    <attribute type="onsubmit"/>
+    <AttributeType name="scriptLanguage" required="false"/>
+    <attribute type="scriptLanguage"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="target" required="false"/>
+    <attribute type="target"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="readonly" required="false"/>
+    <attribute type="readonly"/>
+  </ElementType>
+  <ElementType name="frame" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="action" required="false"/>
+    <attribute type="action"/>
+    <AttributeType name="module" required="false"/>
+    <attribute type="module"/>
+    <AttributeType name="anchor" required="false"/>
+    <attribute type="anchor"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="forward" required="false"/>
+    <attribute type="forward"/>
+    <AttributeType name="frameborder" required="false"/>
+    <attribute type="frameborder"/>
+    <AttributeType name="frameName" required="false"/>
+    <attribute type="frameName"/>
+    <AttributeType name="href" required="false"/>
+    <attribute type="href"/>
+    <AttributeType name="longdesc" required="false"/>
+    <attribute type="longdesc"/>
+    <AttributeType name="marginheight" required="false"/>
+    <attribute type="marginheight"/>
+    <AttributeType name="marginwidth" required="false"/>
+    <attribute type="marginwidth"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="noresize" required="false"/>
+    <attribute type="noresize"/>
+    <AttributeType name="page" required="false"/>
+    <attribute type="page"/>
+    <AttributeType name="paramId" required="false"/>
+    <attribute type="paramId"/>
+    <AttributeType name="paramName" required="false"/>
+    <attribute type="paramName"/>
+    <AttributeType name="paramProperty" required="false"/>
+    <attribute type="paramProperty"/>
+    <AttributeType name="paramScope" required="false"/>
+    <attribute type="paramScope"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="scrolling" required="false"/>
+    <attribute type="scrolling"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="transaction" required="false"/>
+    <attribute type="transaction"/>
+  </ElementType>
+  <ElementType name="hidden" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+    <AttributeType name="write" required="false"/>
+    <attribute type="write"/>
+  </ElementType>
+  <ElementType name="html" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="lang" required="false"/>
+    <attribute type="lang"/>
+    <AttributeType name="locale" required="false"/>
+    <attribute type="locale"/>
+    <AttributeType name="xhtml" required="false"/>
+    <attribute type="xhtml"/>
+  </ElementType>
+  <ElementType name="image" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="align" required="false"/>
+    <attribute type="align"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="border" required="false"/>
+    <attribute type="border"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="locale" required="false"/>
+    <attribute type="locale"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="page" required="false"/>
+    <attribute type="page"/>
+    <AttributeType name="pageKey" required="false"/>
+    <attribute type="pageKey"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="src" required="false">
+    	<proposal type="file">
+            <param name="extensions" value="%image%"/>
+        </proposal>
+	</AttributeType>
+    <attribute type="src"/>
+    <AttributeType name="srcKey" required="false"/>
+    <attribute type="srcKey"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="img" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="align" required="false"/>
+    <attribute type="align"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="border" required="false"/>
+    <attribute type="border"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="contextRelative" required="false"/>
+    <attribute type="contextRelative"/>
+    <AttributeType name="height" required="false"/>
+    <attribute type="height"/>
+    <AttributeType name="hspace" required="false"/>
+    <attribute type="hspace"/>
+    <AttributeType name="imageName" required="false"/>
+    <attribute type="imageName"/>
+    <AttributeType name="ismap" required="false"/>
+    <attribute type="ismap"/>
+    <AttributeType name="locale" required="false"/>
+    <attribute type="locale"/>
+    <AttributeType name="lowsrc" required="false"/>
+    <attribute type="lowsrc"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="paramId" required="false"/>
+    <attribute type="paramId"/>
+    <AttributeType name="page" required="false"/>
+    <attribute type="page"/>
+    <AttributeType name="pageKey" required="false"/>
+    <attribute type="pageKey"/>
+    <AttributeType name="action" required="false"/>
+    <attribute type="action"/>
+    <AttributeType name="module" required="false"/>
+    <attribute type="module"/>
+    <AttributeType name="paramName" required="false"/>
+    <attribute type="paramName"/>
+    <AttributeType name="paramProperty" required="false"/>
+    <attribute type="paramProperty"/>
+    <AttributeType name="paramScope" required="false"/>
+    <attribute type="paramScope"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="src" required="false">
+    	<proposal type="file">
+            <param name="extensions" value="%image%"/>
+        </proposal>
+	</AttributeType>
+    <attribute type="src"/>
+    <AttributeType name="srcKey" required="false"/>
+    <attribute type="srcKey"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="useLocalEncoding" required="false"/>
+    <attribute type="useLocalEncoding"/>
+    <AttributeType name="usemap" required="false"/>
+    <attribute type="usemap"/>
+    <AttributeType name="vspace" required="false"/>
+    <attribute type="vspace"/>
+    <AttributeType name="width" required="false"/>
+    <attribute type="width"/>
+  </ElementType>
+  <ElementType name="javascript" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="cdata" required="false"/>
+    <attribute type="cdata"/>
+    <AttributeType name="dynamicJavascript" required="false"/>
+    <attribute type="dynamicJavascript"/>
+    <AttributeType name="formName" required="false"/>
+    <attribute type="formName"/>
+    <AttributeType name="method" required="false"/>
+    <attribute type="method"/>
+    <AttributeType name="page" required="false"/>
+    <attribute type="page"/>
+    <AttributeType name="scriptLanguage" required="false"/>
+    <attribute type="scriptLanguage"/>
+    <AttributeType name="src" required="false"/>
+    <attribute type="src"/>
+    <AttributeType name="staticJavascript" required="false"/>
+    <attribute type="staticJavascript"/>
+    <AttributeType name="htmlComment" required="false"/>
+    <attribute type="htmlComment"/>
+  </ElementType>
+  <ElementType name="link" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="action" required="false"/>
+    <attribute type="action"/>
+    <AttributeType name="module" required="false"/>
+    <attribute type="module"/>
+    <AttributeType name="anchor" required="false"/>
+    <attribute type="anchor"/>
+    <AttributeType name="forward" required="false"/>
+    <attribute type="forward"/>
+    <AttributeType name="href" required="false"/>
+    <attribute type="href"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="indexId" required="false"/>
+    <attribute type="indexId"/>
+    <AttributeType name="linkName" required="false"/>
+    <attribute type="linkName"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="page" required="false"/>
+    <attribute type="page"/>
+    <AttributeType name="paramId" required="false"/>
+    <attribute type="paramId"/>
+    <AttributeType name="paramName" required="false"/>
+    <attribute type="paramName"/>
+    <AttributeType name="paramProperty" required="false"/>
+    <attribute type="paramProperty"/>
+    <AttributeType name="paramScope" required="false"/>
+    <attribute type="paramScope"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="target" required="false"/>
+    <attribute type="target"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="transaction" required="false"/>
+    <attribute type="transaction"/>
+    <AttributeType name="useLocalEncoding" required="false"/>
+    <attribute type="useLocalEncoding"/>
+  </ElementType>
+  <ElementType name="messages" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="id" required="true"/>
+    <attribute type="id"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="locale" required="false"/>
+    <attribute type="locale"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="header" required="false"/>
+    <attribute type="header"/>
+    <AttributeType name="footer" required="false"/>
+    <attribute type="footer"/>
+    <AttributeType name="message" required="false"/>
+    <attribute type="message"/>
+  </ElementType>
+  <ElementType name="multibox" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="errorKey" required="false"/>
+    <attribute type="errorKey"/>
+    <AttributeType name="errorStyle" required="false"/>
+    <attribute type="errorStyle"/>
+    <AttributeType name="errorStyleClass" required="false"/>
+    <attribute type="errorStyleClass"/>
+    <AttributeType name="errorStyleId" required="false"/>
+    <attribute type="errorStyleId"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="option" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="key" required="false"/>
+    <attribute type="key"/>
+    <AttributeType name="locale" required="false"/>
+    <attribute type="locale"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="value" required="true"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="options" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="collection" required="false"/>
+    <attribute type="collection"/>
+    <AttributeType name="filter" required="false"/>
+    <attribute type="filter"/>
+    <AttributeType name="labelName" required="false"/>
+    <attribute type="labelName"/>
+    <AttributeType name="labelProperty" required="false"/>
+    <attribute type="labelProperty"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+  </ElementType>
+  <ElementType name="optionsCollection" endTag="required"
+    startTag="required" content="mixed" bodyContent="refused">
+    <AttributeType name="filter" required="false"/>
+    <attribute type="filter"/>
+    <AttributeType name="label" required="false"/>
+    <attribute type="label"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="password" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="maxlength" required="false"/>
+    <attribute type="maxlength"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+    <AttributeType name="readonly" required="false"/>
+    <attribute type="readonly"/>
+    <AttributeType name="redisplay" required="false"/>
+    <attribute type="redisplay"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="errorKey" required="false"/>
+    <attribute type="errorKey"/>
+    <AttributeType name="errorStyle" required="false"/>
+    <attribute type="errorStyle"/>
+    <AttributeType name="errorStyleClass" required="false"/>
+    <attribute type="errorStyleClass"/>
+    <AttributeType name="errorStyleId" required="false"/>
+    <attribute type="errorStyleId"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="size" required="false"/>
+    <attribute type="size"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="radio" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="errorKey" required="false"/>
+    <attribute type="errorKey"/>
+    <AttributeType name="errorStyle" required="false"/>
+    <attribute type="errorStyle"/>
+    <AttributeType name="errorStyleClass" required="false"/>
+    <attribute type="errorStyleClass"/>
+    <AttributeType name="errorStyleId" required="false"/>
+    <attribute type="errorStyleId"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="true"/>
+    <attribute type="value"/>
+    <AttributeType name="idName" required="false"/>
+    <attribute type="idName"/>
+  </ElementType>
+  <ElementType name="reset" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="rewrite" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="action" required="false"/>
+    <attribute type="action"/>
+    <AttributeType name="module" required="false"/>
+    <attribute type="module"/>
+    <AttributeType name="anchor" required="false"/>
+    <attribute type="anchor"/>
+    <AttributeType name="forward" required="false"/>
+    <attribute type="forward"/>
+    <AttributeType name="href" required="false"/>
+    <attribute type="href"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="page" required="false"/>
+    <attribute type="page"/>
+    <AttributeType name="paramId" required="false"/>
+    <attribute type="paramId"/>
+    <AttributeType name="paramName" required="false"/>
+    <attribute type="paramName"/>
+    <AttributeType name="paramProperty" required="false"/>
+    <attribute type="paramProperty"/>
+    <AttributeType name="paramScope" required="false"/>
+    <attribute type="paramScope"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="transaction" required="false"/>
+    <attribute type="transaction"/>
+    <AttributeType name="useLocalEncoding" required="false"/>
+    <attribute type="useLocalEncoding"/>
+  </ElementType>
+  <ElementType name="select" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="multiple" required="false"/>
+    <attribute type="multiple"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="errorKey" required="false"/>
+    <attribute type="errorKey"/>
+    <AttributeType name="errorStyle" required="false"/>
+    <attribute type="errorStyle"/>
+    <AttributeType name="errorStyleClass" required="false"/>
+    <attribute type="errorStyleClass"/>
+    <AttributeType name="errorStyleId" required="false"/>
+    <attribute type="errorStyleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="size" required="false"/>
+    <attribute type="size"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="submit" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="text" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="maxlength" required="false"/>
+    <attribute type="maxlength"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+    <AttributeType name="readonly" required="false"/>
+    <attribute type="readonly"/>
+    <AttributeType name="size" required="false"/>
+    <attribute type="size"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="errorKey" required="false"/>
+    <attribute type="errorKey"/>
+    <AttributeType name="errorStyle" required="false"/>
+    <attribute type="errorStyle"/>
+    <AttributeType name="errorStyleClass" required="false"/>
+    <attribute type="errorStyleClass"/>
+    <AttributeType name="errorStyleId" required="false"/>
+    <attribute type="errorStyleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="textarea" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="accesskey" required="false"/>
+    <attribute type="accesskey"/>
+    <AttributeType name="alt" required="false"/>
+    <attribute type="alt"/>
+    <AttributeType name="altKey" required="false"/>
+    <attribute type="altKey"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="cols" required="false"/>
+    <attribute type="cols"/>
+    <AttributeType name="disabled" required="false"/>
+    <attribute type="disabled"/>
+    <AttributeType name="indexed" required="false"/>
+    <attribute type="indexed"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="onblur" required="false"/>
+    <attribute type="onblur"/>
+    <AttributeType name="onchange" required="false"/>
+    <attribute type="onchange"/>
+    <AttributeType name="onclick" required="false"/>
+    <attribute type="onclick"/>
+    <AttributeType name="ondblclick" required="false"/>
+    <attribute type="ondblclick"/>
+    <AttributeType name="onfocus" required="false"/>
+    <attribute type="onfocus"/>
+    <AttributeType name="onkeydown" required="false"/>
+    <attribute type="onkeydown"/>
+    <AttributeType name="onkeypress" required="false"/>
+    <attribute type="onkeypress"/>
+    <AttributeType name="onkeyup" required="false"/>
+    <attribute type="onkeyup"/>
+    <AttributeType name="onmousedown" required="false"/>
+    <attribute type="onmousedown"/>
+    <AttributeType name="onmousemove" required="false"/>
+    <attribute type="onmousemove"/>
+    <AttributeType name="onmouseout" required="false"/>
+    <attribute type="onmouseout"/>
+    <AttributeType name="onmouseover" required="false"/>
+    <attribute type="onmouseover"/>
+    <AttributeType name="onmouseup" required="false"/>
+    <attribute type="onmouseup"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+    <AttributeType name="readonly" required="false"/>
+    <attribute type="readonly"/>
+    <AttributeType name="rows" required="false"/>
+    <attribute type="rows"/>
+    <AttributeType name="style" required="false"/>
+    <attribute type="style"/>
+    <AttributeType name="styleClass" required="false"/>
+    <attribute type="styleClass"/>
+    <AttributeType name="styleId" required="false"/>
+    <attribute type="styleId"/>
+    <AttributeType name="errorKey" required="false"/>
+    <attribute type="errorKey"/>
+    <AttributeType name="errorStyle" required="false"/>
+    <attribute type="errorStyle"/>
+    <AttributeType name="errorStyleClass" required="false"/>
+    <attribute type="errorStyleClass"/>
+    <AttributeType name="errorStyleId" required="false"/>
+    <attribute type="errorStyleId"/>
+    <AttributeType name="tabindex" required="false"/>
+    <attribute type="tabindex"/>
+    <AttributeType name="title" required="false"/>
+    <attribute type="title"/>
+    <AttributeType name="titleKey" required="false"/>
+    <attribute type="titleKey"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="xhtml" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused"/>
+</Schema>

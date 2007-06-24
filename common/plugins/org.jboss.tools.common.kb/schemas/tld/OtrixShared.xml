@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema prefix="os" uri="http://www.otrix.com/faces/shared">
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="hoverStyle" startTag="required">
+        <description/>
+        <AttributeType name="backgroundColor" required="false">
+            <description>Sets the background color</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="backgroundColor"/>
+        <AttributeType name="borderColor" required="false">
+            <description>Sets the border color</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="borderColor"/>
+        <AttributeType name="borderStyle" required="false">
+            <description>Sets the border style</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="borderStyle"/>
+        <AttributeType name="borderWidth" required="false">
+            <description>Sets the border width</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="borderWidth"/>
+        <AttributeType name="color" required="false">
+            <description>Sets the color of the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="color"/>
+        <AttributeType name="fontBold" required="false">
+            <description>Sets the flag indicating whether the text is displayed in bold</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontBold"/>
+        <AttributeType name="fontItalic" required="false">
+            <description>Sets the flag indicating whether the text is displayed in italic</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontItalic"/>
+        <AttributeType name="fontName" required="false">
+            <description>Sets the name of the font</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fontName"/>
+        <AttributeType name="fontOverline" required="false">
+            <description>Sets the flag indicating whether a line is displayed above the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontOverline"/>
+        <AttributeType name="fontSize" required="false">
+            <description>Sets the size of the font</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fontSize"/>
+        <AttributeType name="fontStrikeout" required="false">
+            <description>Sets the flag indicating whether a line is displayed over the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontStrikeout"/>
+        <AttributeType name="fontUnderline" required="false">
+            <description>Sets the flag indicating whether a line is displayed under the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontUnderline"/>
+        <AttributeType name="height" required="false">
+            <description>Sets the height of the element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="height"/>
+        <AttributeType name="left" required="false">
+            <description>Sets the left property</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="left"/>
+        <AttributeType name="textWrap" required="false">
+            <description>Sets the flag indicating whether the text wraps to the next line</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="textWrap"/>
+        <AttributeType name="top" required="false">
+            <description>Sets the top property</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="top"/>
+        <AttributeType name="width" required="false">
+            <description>Sets the width of the element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="pager" startTag="required">
+        <description/>
+        <AttributeType name="binding" required="false">
+            <description>Sets the The value binding expression linking this component to a property in a backing bean </description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="displayFirstLastPage" required="false">
+            <description>Sets the a flag indicating whether the 'first page' and 'last page' links are displayed or not</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="displayFirstLastPage"/>
+        <AttributeType name="displayPageIndexes" required="false">
+            <description>Sets the a flag indicating whether page indexes are displayed or not</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="displayPageIndexes"/>
+        <AttributeType name="displayPreviousNextPage" required="false">
+            <description>Sets the a flag indicating whether the 'previous page' and next page' links are displayed or not</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="displayPreviousNextPage"/>
+        <AttributeType name="id" required="false">
+            <description>Sets the The component identifier for this component. This value must be unique within the closest parent component that is a naming container. </description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="maxPageIndexes" required="false">
+            <description>Sets the maximum number of page indexes to display</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="maxPageIndexes"/>
+        <AttributeType name="pageIndexHoverStyle" required="false">
+            <description>Sets the hover style of links</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="pageIndexHoverStyle"/>
+        <AttributeType name="pageIndexHoverStyleClass" required="false">
+            <description>Sets the name of the css class applied to a page index when the mouse cursor is over it</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="pageIndexHoverStyleClass"/>
+        <AttributeType name="pageIndexSelectedStyle" required="false">
+            <description>Sets the selected style of links</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="pageIndexSelectedStyle"/>
+        <AttributeType name="pageIndexSelectedStyleClass" required="false">
+            <description>Sets the name of the css class applied to a selected page index</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="pageIndexSelectedStyleClass"/>
+        <AttributeType name="pageIndexStyle" required="false">
+            <description>Sets the default style of links</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="pageIndexStyle"/>
+        <AttributeType name="pageIndexStyleClass" required="false">
+            <description>Sets the name of the css class applied to page indexes</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="pageIndexStyleClass"/>
+        <AttributeType name="rendered" required="false">
+            <description>Sets the Flag indicating whether or not this component should be rendered (during Render Response Phase), or processed on any subsequent form submit. </description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="style" required="false">
+            <description>Sets the default style</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Sets the name of the css class applied to the pager</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="theme" required="false">
+            <description>Sets the preset look and feel applied to the component (Google, VCR)</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="Google"/>
+                <param value="VCR"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="theme"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="selectedStyle" startTag="required">
+        <description/>
+        <AttributeType name="backgroundColor" required="false">
+            <description>Sets the background color</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="backgroundColor"/>
+        <AttributeType name="borderColor" required="false">
+            <description>Sets the border color</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="borderColor"/>
+        <AttributeType name="borderStyle" required="false">
+            <description>Sets the border style</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="borderStyle"/>
+        <AttributeType name="borderWidth" required="false">
+            <description>Sets the border width</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="borderWidth"/>
+        <AttributeType name="color" required="false">
+            <description>Sets the color of the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="color"/>
+        <AttributeType name="fontBold" required="false">
+            <description>Sets the flag indicating whether the text is displayed in bold</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontBold"/>
+        <AttributeType name="fontItalic" required="false">
+            <description>Sets the flag indicating whether the text is displayed in italic</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontItalic"/>
+        <AttributeType name="fontName" required="false">
+            <description>Sets the name of the font</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fontName"/>
+        <AttributeType name="fontOverline" required="false">
+            <description>Sets the flag indicating whether a line is displayed above the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontOverline"/>
+        <AttributeType name="fontSize" required="false">
+            <description>Sets the size of the font</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fontSize"/>
+        <AttributeType name="fontStrikeout" required="false">
+            <description>Sets the flag indicating whether a line is displayed over the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontStrikeout"/>
+        <AttributeType name="fontUnderline" required="false">
+            <description>Sets the flag indicating whether a line is displayed under the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontUnderline"/>
+        <AttributeType name="height" required="false">
+            <description>Sets the height of the element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="height"/>
+        <AttributeType name="left" required="false">
+            <description>Sets the left property</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="left"/>
+        <AttributeType name="textWrap" required="false">
+            <description>Sets the flag indicating whether the text wraps to the next line</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="textWrap"/>
+        <AttributeType name="top" required="false">
+            <description>Sets the top property</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="top"/>
+        <AttributeType name="width" required="false">
+            <description>Sets the width of the element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="style" startTag="required">
+        <description/>
+        <AttributeType name="backgroundColor" required="false">
+            <description>Sets the background color</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="backgroundColor"/>
+        <AttributeType name="borderColor" required="false">
+            <description>Sets the border color</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="borderColor"/>
+        <AttributeType name="borderStyle" required="false">
+            <description>Sets the border style</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="borderStyle"/>
+        <AttributeType name="borderWidth" required="false">
+            <description>Sets the border width</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="borderWidth"/>
+        <AttributeType name="color" required="false">
+            <description>Sets the color of the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="color"/>
+        <AttributeType name="fontBold" required="false">
+            <description>Sets the flag indicating whether the text is displayed in bold</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontBold"/>
+        <AttributeType name="fontItalic" required="false">
+            <description>Sets the flag indicating whether the text is displayed in italic</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontItalic"/>
+        <AttributeType name="fontName" required="false">
+            <description>Sets the name of the font</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fontName"/>
+        <AttributeType name="fontOverline" required="false">
+            <description>Sets the flag indicating whether a line is displayed above the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontOverline"/>
+        <AttributeType name="fontSize" required="false">
+            <description>Sets the size of the font</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fontSize"/>
+        <AttributeType name="fontStrikeout" required="false">
+            <description>Sets the flag indicating whether a line is displayed over the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontStrikeout"/>
+        <AttributeType name="fontUnderline" required="false">
+            <description>Sets the flag indicating whether a line is displayed under the text</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="fontUnderline"/>
+        <AttributeType name="height" required="false">
+            <description>Sets the height of the element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="height"/>
+        <AttributeType name="left" required="false">
+            <description>Sets the left property</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="left"/>
+        <AttributeType name="textWrap" required="false">
+            <description>Sets the flag indicating whether the text wraps to the next line</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="textWrap"/>
+        <AttributeType name="top" required="false">
+            <description>Sets the top property</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="top"/>
+        <AttributeType name="width" required="false">
+            <description>Sets the width of the element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+    </ElementType>
+</Schema>

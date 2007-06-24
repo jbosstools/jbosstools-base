@@ -1,0 +1,3263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema prefix="a4j">
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="ajaxListener" startTag="required">
+        <description>This works the same as ActionListener or ValueChangeListener, but for an AJAX container. Add the specified class
+
+			as a listener for AjaxEvent (sent in case of an AJAX request
+
+			for this container).</description>
+        <AttributeType name="type" required="true">
+            <description>Fully qualified Java class name of an AjaxListener to be created and registered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="type"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="keepAlive" startTag="required">
+        <description>This tag get bean by EL expression '#{'+name+'}' and store bean instance in component tree. After restoring view state, bean is putted to request-scope attributes with name.
+
+			Since, every view will be use own instance of bean for expressions '#{name....}'</description>
+        <AttributeType name="beanName" required="true">
+            <description>name of bean for EL-expressions.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="beanName"/>
+        <AttributeType name="ajaxOnly" required="false">
+            <description>if true, bean value restored in ajax requests only.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxOnly"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="actionparam" startTag="required">
+        <description>A combination of the functionality of two JSF tags,
+				&amp;lt;f:actionListener&amp;gt;; and &amp;lt;f:param&amp;gt;. At the
+				render phase, it's decoded by parent component
+				(&amp;lt;h:commandLink&amp;gt;; or like) as usual.
+				&amp;lt;br /&amp;gt;
+				At the process request phase, if the parent component
+				performs an action event, update the value specified in
+				the "assignTo" attribute as its value.
+				&amp;lt;br /&amp;gt;
+				If a converter attribute is specified, use it to encode
+				and decode the value to a string stored in the html
+				parameter.
+				&amp;lt;br /&amp;gt;</description>
+        <AttributeType name="assignTo" required="false">
+            <description>EL expression for updatable bean property. This property
+				will be updated if the parent command component performs
+				an actionEvent.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="assignTo"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="converter" required="false">
+            <description>ID of a converter to be used or a reference to a
+				converter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="converter"/>
+        <AttributeType name="name" required="false">
+            <description>A name of this parameter</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="name"/>
+        <AttributeType name="value" required="false">
+            <description>An initial value or a value binding</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="noEscape" required="false">
+            <description>If set to true, the value will not enclosed within
+				single quotes and there will be no escaping of
+				characters. This allows the use of the value as
+				JavaScript code for calculating value on the
+				client-side. This doesn't work with non-AJAX components.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="noEscape"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="commandButton" startTag="required">
+        <description>Renders an HTML "input" element.
+			&amp;lt;br /&amp;gt;
+			During Decoding: Obtains the Map from the
+			"requestParameterMap" property of the ExternalContext. If
+			the value in the Map for the value of the "clientId"
+			property of the component is not null, create a
+			javax.faces.event.ActionEvent around the component, and pass
+			it to the queueEvent() method of the component. If the
+			request is Ajax-performed, add its target IDs of the
+			reRender property to the rendered areas list of the nesting
+			AjaxContainer.
+			&amp;lt;br /&amp;gt;
+			During Encoding: Builds an AJAX.Submit JavaScript call for
+			the "onclick" event. Renders the clientId of the component
+			as the value of the "name" attribute. Renders the current
+			value of the component as the value of the "value"
+			attribute. If the "styleClass" attribute is specified,
+			render its value as the value of the "class" attribute.
+			Renders child components inside the HTML "input" element.</description>
+        <AttributeType name="actionListener" required="false">
+            <description>MethodBinding pointing at method accepting  an ActionEvent with return type void</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="actionListener"/>
+        <AttributeType name="reRender" required="false">
+            <description>Id['s] (in format of call  UIComopnent.findComponent()) of components, rendered in case of AjaxRequest  caused by this component. Can be single id, comma-separated list of Id's, or EL Expression  with array or Collection</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="reRender"/>
+        <AttributeType name="ajaxSingle" required="false">
+            <description>if true , submits ONLY one field/link, instead of all form controls.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxSingle"/>
+        <AttributeType name="data" required="false">
+            <description>Serialized (on default with JSON) data passed on the client by a developer on AJAX request. It's accessible via "data.foo" syntax</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="data"/>
+        <AttributeType name="eventsQueue" required="false">
+            <description>Name of requests queue to avoid send next request before complete other from same event. Can be used to reduce number of requests of frequently events (key press, mouse move etc.).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="eventsQueue"/>
+        <AttributeType name="type" required="false">
+            <description>submit|reset|image|button This attribute specifies a type of control to create. The default value for this attribute is "submit"</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <AttributeType name="lang" required="false">
+            <description>Code describing the language used in the generated markup for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="accesskey" required="false">
+            <description>This attribute assigns an access key to an element. An access key is a single character from the document character set. Note: Authors should consider the input method of the expected reader when specifying an accesskey</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accesskey"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="title" required="false">
+            <description>Advisory title information about markup elements generated for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="style" required="false">
+            <description>CSS style(s) is/are to be applied when this component is rendered</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="dir" required="false">
+            <description>Alternate textual description of the element rendered by this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="alt" required="false">
+            <description>Alternate textual description of the element rendered by this component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="alt"/>
+        <AttributeType name="onblur" required="false">
+            <description>HTML: script expression; the element lost the focus</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onblur"/>
+        <AttributeType name="onmouseup" required="false">
+            <description>HTML: script expression; a pointer button is released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="value" required="false">
+            <description>The current value for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="action" required="false">
+            <description>MethodBinding pointing at the application action to be invoked,
+            if this UIComponent is activated by the user, during the Apply
+            Request Values or Invoke Application phase of the request
+            processing lifecycle, depending on the value of the immediate
+            property</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="action"/>
+        <AttributeType name="focus" required="false">
+            <description>id of element to set focus after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="focus"/>
+        <AttributeType name="requestDelay" required="false">
+            <description>Delay (in ms.) for send ajax request on JavaScript event. In conjunction with events queue can reduce number of requests on keyboard or mouse move events.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="requestDelay"/>
+        <AttributeType name="onmousemove" required="false">
+            <description>HTML: a script expression; a pointer is moved within</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="ignoreDupResponses" required="false">
+            <description>If true, unfinished request will be aborted on new event.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ignoreDupResponses"/>
+        <AttributeType name="ondblclick" required="false">
+            <description>HTML: a script expression; a pointer button is double-clicked</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="status" required="false">
+            <description>ID (in format of call UIComopnent.findComponent()) of Request status component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="status"/>
+        <AttributeType name="onmouseout" required="false">
+            <description>HTML: a script expression; a pointer is moved away</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="oncomplete" required="false">
+            <description>JavaScript code for call after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="oncomplete"/>
+        <AttributeType name="bypassUpdates" required="false">
+            <description>If true, after process validations phase it skips updates of model beans on a force render response. It can be used for validating components input</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="bypassUpdates"/>
+        <AttributeType name="tabindex" required="false">
+            <description>This attribute specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767. User agents should ignore leading zeros</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="tabindex"/>
+        <AttributeType name="image" required="false">
+            <description>Absolute or relative URL of the image to be displayed for this button. If specified, this "input" element will be of type "image". Otherwise, it will be of the type specified by the "type" property with a label specified by the "value" property.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="image"/>
+        <AttributeType name="onkeyup" required="false">
+            <description>HTML: a script expression; a key is released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="onfocus" required="false">
+            <description>HTML: script expression; the element got the focus</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onfocus"/>
+        <AttributeType name="onkeydown" required="false">
+            <description>HTML: a script expression; a key is pressed down</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeypress" required="false">
+            <description>HTML: a script expression; a key is pressed and released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="onchange" required="false">
+            <description>HTML: script expression; the element value was changed</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onchange"/>
+        <AttributeType name="onmouseover" required="false">
+            <description>HTML: a script expression; a pointer is moved onto</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="size" required="false">
+            <description>This attribute tells the user agent the initial width of the control. The width is given in pixels except when type attribute has the value "text" or "password". In that case, its value refers to the (integer) number of characters</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="size"/>
+        <AttributeType name="immediate" required="false">
+            <description>True means, that the default ActionListener should be executed
+            immediately (i.e. during Apply Request Values phase of the
+            request processing lifecycle), rather than waiting until the
+            Invoke Application phase</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="limitToList" required="false">
+            <description>If "true", updates on client side ONLY elements from this 'reRender' property. If "false" (default) updates all rendered by ajax region components.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="limitToList"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="onclick" required="false">
+            <description>HTML: a script expression; a pointer button is clicked</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <description>HTML: script expression; a pointer button is pressed down</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="timeout" required="false">
+            <description>Timeout ( in ms ) for request.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="timeout"/>
+        <AttributeType name="disabled" required="false">
+            <description>When set for a form control, this boolean attribute disables the control for user input.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="disabled"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="commandLink" startTag="required">
+        <description>Renders an HTML "a" anchor element that acts like a form
+			submit button when clicked.
+			&amp;lt;br /&amp;gt;
+			During Decoding: Obtains the Map from the
+			"requestParameterMap" property of the ExternalContext. If
+			this Map contains non null value for the "clientId" key,
+			creates a javax.faces.event.ActionEvent around the component
+			and passes it to the queueEvent() method of the component.
+			If the request is Ajax-performed, adds its target IDs from
+			the reRender property to the rendered areas list of the
+			nesting AjaxContainer.
+			&amp;lt;br /&amp;gt;
+			element for decoding as described above with the parameters
+			of the component. (PARAM_NAME and PARAM_VALUE are the names
+			and values, respectively, of any nested UIParameter
+			children.) The name and the value must be URLEncoded. If the
+			"styleClass" attribute is specified, render its value as the
+			value of the "class" attribute. Render any non-UIParameter
+			children as normal inside of the "a" element. These will
+			appear as the link text.</description>
+        <AttributeType name="actionListener" required="false">
+            <description>MethodBinding pointing at method accepting  an ActionEvent with return type void</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="actionListener"/>
+        <AttributeType name="reRender" required="false">
+            <description>Id['s] (in format of call  UIComopnent.findComponent()) of components, rendered in case of AjaxRequest  caused by this component. Can be single id, comma-separated list of Id's, or EL Expression  with array or Collection</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="reRender"/>
+        <AttributeType name="rev" required="false">
+            <description>A reverse link from the anchor specified by this hyperlink to the current document. The value of this attribute is a space-separated list of link types</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rev"/>
+        <AttributeType name="ajaxSingle" required="false">
+            <description>if true , submits ONLY one field/link, instead of all form controls.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxSingle"/>
+        <AttributeType name="data" required="false">
+            <description>Serialized (on default with JSON) data passed on the client by a developer on AJAX request. It's accessible via "data.foo" syntax</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="data"/>
+        <AttributeType name="eventsQueue" required="false">
+            <description>Name of requests queue to avoid send next request before complete other from same event. Can be used to reduce number of requests of frequently events (key press, mouse move etc.).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="eventsQueue"/>
+        <AttributeType name="type" required="false">
+            <description>The content type of the resource designated by this hyperlink</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <AttributeType name="lang" required="false">
+            <description>Code describing the language used in the generated markup for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="accesskey" required="false">
+            <description>This attribute assigns an access key to an element. An access key is a single character from the document character set. Note: Authors should consider the input method of the expected reader when specifying an accesskey</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accesskey"/>
+        <AttributeType name="hreflang" required="false">
+            <description>Base language of a resource specified with the href attribute; hreflang may only be used with href</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="hreflang"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="title" required="false">
+            <description>Advisory title information about markup elements generated for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="style" required="false">
+            <description>CSS style(s) is/are to be applied when this component is rendered</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="dir" required="false">
+            <description>Alternate textual description of the element rendered by this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="onblur" required="false">
+            <description>JavaScript code. The onblur event occurs when an element loses focus either by the pointing device or by tabbing navigation. It may be used with the same elements as onfocus</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onblur"/>
+        <AttributeType name="onmouseup" required="false">
+            <description>HTML: script expression; a pointer button is released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="value" required="false">
+            <description>The current value for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="action" required="false">
+            <description>MethodBinding pointing at the application action to be invoked,
+            if this UIComponent is activated by the user, during the Apply
+            Request Values or Invoke Application phase of the request
+            processing lifecycle, depending on the value of the immediate
+            property</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="action"/>
+        <AttributeType name="focus" required="false">
+            <description>id of element to set focus after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="focus"/>
+        <AttributeType name="requestDelay" required="false">
+            <description>Delay (in ms.) for send ajax request on JavaScript event. In conjunction with events queue can reduce number of requests on keyboard or mouse move events.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="requestDelay"/>
+        <AttributeType name="onmousemove" required="false">
+            <description>HTML: a script expression; a pointer is moved within</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="ignoreDupResponses" required="false">
+            <description>If true, unfinished request will be aborted on new event.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ignoreDupResponses"/>
+        <AttributeType name="ondblclick" required="false">
+            <description>HTML: a script expression; a pointer button is double-clicked</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="status" required="false">
+            <description>ID (in format of call UIComopnent.findComponent()) of Request status component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="status"/>
+        <AttributeType name="onmouseout" required="false">
+            <description>HTML: a script expression; a pointer is moved away</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="oncomplete" required="false">
+            <description>JavaScript code for call after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="oncomplete"/>
+        <AttributeType name="bypassUpdates" required="false">
+            <description>If true, after process validations phase it skips updates of model beans on a force render response. It can be used for validating components input</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="bypassUpdates"/>
+        <AttributeType name="tabindex" required="false">
+            <description>This attribute specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767. User agents should ignore leading zeros</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="tabindex"/>
+        <AttributeType name="onkeyup" required="false">
+            <description>HTML: a script expression; a key is released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="charset" required="false">
+            <description>The character encoding of a resource designated by this hyperlink</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="charset"/>
+        <AttributeType name="onfocus" required="false">
+            <description>JavaScript code. The onfocus event occurs when an element gets focus.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onfocus"/>
+        <AttributeType name="onkeypress" required="false">
+            <description>HTML: a script expression; a key is pressed and released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <description>HTML: a script expression; a key is pressed down</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="shape" required="false">
+            <description>default|rect|circle|poly [CI]
+            This attribute specifies the shape of a region. Possible values:
+            
+            * default: Specifies the entire region.
+            * rect: Define a rectangular region.
+            * circle: Define a circular region.
+            * poly: Define a polygonal region.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shape"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="onmouseover" required="false">
+            <description>HTML: a script expression; a pointer is moved onto</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="immediate" required="false">
+            <description>True means, that the default ActionListener should be executed
+            immediately (i.e. during Apply Request Values phase of the
+            request processing lifecycle), rather than waiting until the
+            Invoke Application phase</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="coords" required="false">
+            <description>This attribute specifies the position and shape on the screen. The number and order of values depends on the shape being defined. Possible combinations:
+            
+            * rect: left-x, top-y, right-x, bottom-y.
+            * circle: center-x, center-y, radius. Note. When the radius value is percentage value, user agents should calculate the final radius value based on the associated object's width and height. The radius should be the smaller value of the two.
+            * poly: x1, y1, x2, y2, ..., xN, yN. The first x and y coordinate pair and the last should be the same to close the polygon. When these coordinate values are not the same, user agents should infer an additional coordinate pair to close the polygon.
+            
+            Coordinates are relative to the top, left corner of the object. All values are lengths. All values are separated by commas</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="coords"/>
+        <AttributeType name="limitToList" required="false">
+            <description>If "true", updates on client side ONLY elements from this 'reRender' property. If "false" (default) updates all rendered by ajax region components.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="limitToList"/>
+        <AttributeType name="target" required="false">
+            <description>This attribute specifies the name of a frame where a document is to be opened.
+            
+            By assigning a name to a frame via the name attribute, authors can refer to it as the "target" of links defined by other elements</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="target"/>
+        <AttributeType name="onclick" required="false">
+            <description>HTML: a script expression; a pointer button is clicked</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="onmousedown" required="false">
+            <description>HTML: script expression; a pointer button is pressed down</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="rel" required="false">
+            <description>The relationship from the current document to the anchor specified by this hyperlink. The value of this attribute is a space-separated list of link types</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rel"/>
+        <AttributeType name="timeout" required="false">
+            <description>Timeout ( in ms ) for request.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="timeout"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="form" startTag="required">
+        <description>Ajax-related version of html form. Main difference with original component - all hidden fields,
+		nessesary to command links alwais rendered, not depended of rendering links on initial page.</description>
+        <AttributeType name="ignoreDupResponses" required="false">
+            <description>If true, unfinished request will be aborted on new event.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ignoreDupResponses"/>
+        <AttributeType name="reRender" required="false">
+            <description>Id['s] (in format of call  UIComopnent.findComponent()) of components, rendered in case of AjaxRequest  caused by this component. Can be single id, comma-separated list of Id's, or EL Expression  with array or Collection</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="reRender"/>
+        <AttributeType name="status" required="false">
+            <description>ID (in format of call UIComopnent.findComponent()) of Request status component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="status"/>
+        <AttributeType name="accept" required="false">
+            <description>This attribute specifies a comma-separated list of content types that a server processing this form will handle correctly. User agents may use this information to filter out non-conforming files when prompting a user to select files to be sent to the server (cf. the INPUT element when type="file")</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accept"/>
+        <AttributeType name="ajaxSingle" required="false">
+            <description>if true , submits ONLY one field/link, instead of all form controls.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxSingle"/>
+        <AttributeType name="submitted" required="false">
+            <description>submitted</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="submitted"/>
+        <AttributeType name="data" required="false">
+            <description>Serialized (on default with JSON) data passed on the client by a developer on AJAX request. It's accessible via "data.foo" syntax</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="data"/>
+        <AttributeType name="oncomplete" required="false">
+            <description>JavaScript code for call after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="oncomplete"/>
+        <AttributeType name="bypassUpdates" required="false">
+            <description>If true, after process validations phase it skips updates of model beans on a force render response. It can be used for validating components input</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="bypassUpdates"/>
+        <AttributeType name="ajaxSubmit" required="false">
+            <description>If true, it becomes possible to set AJAX submission way for any components inside	.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxSubmit"/>
+        <AttributeType name="eventsQueue" required="false">
+            <description>Name of requests queue to avoid send next request before complete other from same event. Can be used to reduce number of requests of frequently events (key press, mouse move etc.).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="eventsQueue"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="onsubmit" required="false">
+            <description>The onsubmit event occurs when a form is submitted. It only applies to the FORM element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onsubmit"/>
+        <AttributeType name="onreset" required="false">
+            <description>The onreset event occurs when a form is reset. It only applies to the FORM element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onreset"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="acceptCharset" required="false">
+            <description>This attribute specifies the list of character encodings for input data that is accepted by the server processing this form. The value is a space- and/or comma-delimited list of charset values. The client must interpret this list as an exclusive-or list, i.e., the server is able to accept any single character encoding per entity received.
+            
+            The default value for this attribute is the reserved string "UNKNOWN". User agents may interpret this value as the character encoding that was used to transmit the document containing this FORM element</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="acceptCharset"/>
+        <AttributeType name="enctype" required="false">
+            <description>This attribute specifies the content type used to submit the form to the server (when the value of method is "post"). The default value for this attribute is "application/x-www-form-urlencoded". The value "multipart/form-data" should be used in combination with the INPUT element, type="file"</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="enctype"/>
+        <AttributeType name="limitToList" required="false">
+            <description>If "true", updates on client side ONLY elements from this 'reRender' property. If "false" (default) updates all rendered by ajax region components.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="limitToList"/>
+        <AttributeType name="target" required="false">
+            <description>This attribute specifies the name of a frame where a document is to be opened.
+            
+            By assigning a name to a frame via the name attribute, authors can refer to it as the "target" of links defined by other elements</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="target"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="focus" required="false">
+            <description>id of element to set focus after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="focus"/>
+        <AttributeType name="timeout" required="false">
+            <description>Timeout ( in ms ) for request.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="timeout"/>
+        <AttributeType name="requestDelay" required="false">
+            <description>Delay (in ms.) for send ajax request on JavaScript event. In conjunction with events queue can reduce number of requests on keyboard or mouse move events.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="requestDelay"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="htmlCommandLink" startTag="required">
+        <description>Ajax-related version of html commandLink. Single difference with original component - all hidden fields,
+		nessesary to command links alwais rendered, not depended of rendering links on initial page.</description>
+        <AttributeType name="actionListener" required="false">
+            <description>MethodBinding pointing at method accepting  an ActionEvent with return type void</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="actionListener"/>
+        <AttributeType name="rev" required="false">
+            <description>A reverse link from the anchor specified by this hyperlink to the current document. The value of this attribute is a space-separated list of link types</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rev"/>
+        <AttributeType name="type" required="false">
+            <description>The content type of the resource designated by this hyperlink</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <AttributeType name="lang" required="false">
+            <description>lang</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="accesskey" required="false">
+            <description>This attribute assigns an access key to an element. An access key is a single character from the document character set. Note: Authors should consider the input method of the expected reader when specifying an accesskey</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accesskey"/>
+        <AttributeType name="hreflang" required="false">
+            <description>Base language of a resource specified with the href attribute; hreflang may only be used with href</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="hreflang"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="title" required="false">
+            <description>title</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="style" required="false">
+            <description>style</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="dir" required="false">
+            <description>dir</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="onmouseup" required="false">
+            <description>onmouseup</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onblur" required="false">
+            <description>JavaScript code. The onblur event occurs when an element loses focus either by the pointing device or by tabbing navigation. It may be used with the same elements as onfocus</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onblur"/>
+        <AttributeType name="value" required="false">
+            <description>The current value for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="action" required="false">
+            <description>MethodBinding pointing at the application action to be invoked,
+            if this UIComponent is activated by the user, during the Apply
+            Request Values or Invoke Application phase of the request
+            processing lifecycle, depending on the value of the immediate
+            property</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="action"/>
+        <AttributeType name="onmousemove" required="false">
+            <description>onmousemove</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="ondblclick" required="false">
+            <description>ondblclick</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmouseout" required="false">
+            <description>onmouseout</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="styleClass" required="false">
+            <description>styleClass</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="tabindex" required="false">
+            <description>This attribute specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767. User agents should ignore leading zeros</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="tabindex"/>
+        <AttributeType name="onkeyup" required="false">
+            <description>onkeyup</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="charset" required="false">
+            <description>The character encoding of a resource designated by this hyperlink</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="charset"/>
+        <AttributeType name="onkeypress" required="false">
+            <description>onkeypress</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onfocus" required="false">
+            <description>JavaScript code. The onfocus event occurs when an element gets focus.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onfocus"/>
+        <AttributeType name="onkeydown" required="false">
+            <description>onkeydown</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="shape" required="false">
+            <description>default|rect|circle|poly [CI]
+            This attribute specifies the shape of a region. Possible values:
+            
+            * default: Specifies the entire region.
+            * rect: Define a rectangular region.
+            * circle: Define a circular region.
+            * poly: Define a polygonal region.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shape"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="onmouseover" required="false">
+            <description>onmouseover</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="immediate" required="false">
+            <description>True means, that the default ActionListener should be executed
+            immediately (i.e. during Apply Request Values phase of the
+            request processing lifecycle), rather than waiting until the
+            Invoke Application phase</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="coords" required="false">
+            <description>This attribute specifies the position and shape on the screen. The number and order of values depends on the shape being defined. Possible combinations:
+            
+            * rect: left-x, top-y, right-x, bottom-y.
+            * circle: center-x, center-y, radius. Note. When the radius value is percentage value, user agents should calculate the final radius value based on the associated object's width and height. The radius should be the smaller value of the two.
+            * poly: x1, y1, x2, y2, ..., xN, yN. The first x and y coordinate pair and the last should be the same to close the polygon. When these coordinate values are not the same, user agents should infer an additional coordinate pair to close the polygon.
+            
+            Coordinates are relative to the top, left corner of the object. All values are lengths. All values are separated by commas</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="coords"/>
+        <AttributeType name="target" required="false">
+            <description>This attribute specifies the name of a frame where a document is to be opened.
+            
+            By assigning a name to a frame via the name attribute, authors can refer to it as the "target" of links defined by other elements</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="target"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="onclick" required="false">
+            <description>onclick</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <description>onmousedown</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="rel" required="false">
+            <description>The relationship from the current document to the anchor specified by this hyperlink. The value of this attribute is a space-separated list of link types</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rel"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="jsFunction" startTag="required">
+        <description/>
+        <AttributeType name="actionListener" required="false">
+            <description>MethodBinding pointing at method accepting  an ActionEvent with return type void</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="actionListener"/>
+        <AttributeType name="ignoreDupResponses" required="false">
+            <description>If true, unfinished request will be aborted on new event</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ignoreDupResponses"/>
+        <AttributeType name="reRender" required="false">
+            <description>Id['s] (in format of call  UIComopnent.findComponent()) of components, rendered in case of AjaxRequest  caused by this component. Can be single id, comma-separated list of Id's, or EL Expression  with array or Collection</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="reRender"/>
+        <AttributeType name="status" required="false">
+            <description>ID (in format of call UIComopnent.findComponent()) of Request status component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="status"/>
+        <AttributeType name="ajaxSingle" required="false">
+            <description>if true , submits ONLY one field/link, instead of all form controls.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxSingle"/>
+        <AttributeType name="data" required="false">
+            <description>Serialized (on default with JSON) data passed on the client by a developer on AJAX request. It's accessible via "data.foo" syntax</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="data"/>
+        <AttributeType name="oncomplete" required="false">
+            <description>JavaScript code for call after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="oncomplete"/>
+        <AttributeType name="bypassUpdates" required="false">
+            <description>If true, after process validations phase it skips updates of model beans on a force render response. It can be used for validating components input</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="bypassUpdates"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="eventsQueue" required="false">
+            <description>Name of requests queue to avoid send next request before complete other from same event. Can be used to reduce number of requests of frequently events (key press, mouse move etc.).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="eventsQueue"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="immediate" required="false">
+            <description>True means, that the default ActionListener should be executed
+            immediately (i.e. during Apply Request Values phase of the
+            request processing lifecycle), rather than waiting until the
+            Invoke Application phase</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="name" required="false">
+            <description>Name of generated JavaScript function definition</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="name"/>
+        <AttributeType name="limitToList" required="false">
+            <description>If "true", updates on client side ONLY elements from this 'reRender' property. If "false" (default) updates all rendered by ajax region components.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="limitToList"/>
+        <AttributeType name="action" required="false">
+            <description>MethodBinding pointing at the application action to be invoked,
+            if this UIComponent is activated by the user, during the Apply
+            Request Values or Invoke Application phase of the request
+            processing lifecycle, depending on the value of the immediate
+            property</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="action"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="focus" required="false">
+            <description>id of element to set focus after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="focus"/>
+        <AttributeType name="timeout" required="false">
+            <description>response waiting time on a particular request. If a response is not received during this time, the request is aborted</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="timeout"/>
+        <AttributeType name="requestDelay" required="false">
+            <description>Delay (in ms.) for send ajax request on JavaScript event. In conjunction with events queue can reduce number of requests on keyboard or mouse move events.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="requestDelay"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="include" startTag="required">
+        <description>include content of external view. Navigation cases in included file change only viewId of included page,
+		and don't perform navigation in root view.</description>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="ajaxRendered" required="false">
+            <description>ajaxRendered</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxRendered"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="lang" required="false">
+            <description>Code describing the language used in the generated markup for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="keepTransient" required="false">
+            <description>keepTransient</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="keepTransient"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="title" required="false">
+            <description>Advisory title information about markup elements generated for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="style" required="false">
+            <description>CSS style(s) is/are to be applied when this component is rendered</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="dir" required="false">
+            <description>Alternate textual description of the element rendered by this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="layout" required="false">
+            <description>HTML layout for generated markup. Possible values: "block"
+            for generating an HTML &amp;lt;div&amp;gt; element, "inline" for
+            generating an HTML &amp;lt;span&amp;gt; element, and "none" for generating
+            no HTML element. There is a minor exception for the "none" case
+            where a child element has the property "rendered" set to "false".
+            In this case, we create an empty &amp;lt;span&amp;gt; element with same ID
+            as the child element to use as a placeholder for later
+            processing.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="layout"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="viewId" required="false">
+            <description>viewId for included page.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="viewId"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="loadBundle" startTag="required">
+        <description>Load a resource bundle localized for the Locale of the current view, and expose it (as a Map) 
+			in the request attributes of the current request.
+			 In difference of original f:loadBundle tag, stored in components tree and activate on ajax/non ajax responses</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="basename" required="false">
+            <description>Base name of the resource bundle to be loaded.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="basename"/>
+        <AttributeType name="var" required="false">
+            <description>Name of a request scope attribute under which the
+				resource bundle will be exposed as a Map.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="var"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="loadScript" startTag="required">
+        <description/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="src" required="true">
+            <description>name of JavaScript resource to load.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="src"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="loadStyle" startTag="required">
+        <description/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="src" required="true">
+            <description>name of JavaScript resource to load.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="src"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="log" startTag="required">
+        <description>Encode javaScript to open popup window with client-side Log information.</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="height" required="false">
+            <description>height of pop-up</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="height"/>
+        <AttributeType name="level" required="false">
+            <description>log level, possible values :
+				FATAL,ERROR,WARN,INFO,DEBUG,ALL.
+				Component set level 'ALL' by default.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="level"/>
+        <AttributeType name="popup" required="false">
+            <description>Render log as popup-window or as div element in page</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="popup"/>
+        <AttributeType name="width" required="false">
+            <description>width of pop-up.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+        <AttributeType name="name" required="false">
+            <description>name of pop-up window</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="name"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="hotkey" required="false">
+            <description>Keyboard key for activate ( in combination with
+				CTRL+SHIFT ) log window.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="hotkey"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="mediaOutput" startTag="required">
+        <description>Class for create any link-type elements to user-generated resources :
+		images, sounds, video, active objects, applets etc.
+		Method specified in "CreateContent" attribute will put the data from Data Bean specified
+		 in "value" attribute to the OutputStream. Important: Data Bean specified in "value" must implement Serializable.</description>
+        <AttributeType name="uriAttribute" required="false">
+            <description>Name of attribute for resource-link attribute ( 'href' for &amp;lt;a&amp;gt;, 'src' for &amp;lt;img&amp;gt; or &amp;lt;script&amp;gt;, etc</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="uriAttribute"/>
+        <AttributeType name="type" required="false">
+            <description>The content type of the resource designated by this hyperlink</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <AttributeType name="hreflang" required="false">
+            <description>Base language of a resource specified with the href attribute; hreflang may only be used with href</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="hreflang"/>
+        <AttributeType name="expires" required="false">
+            <description>expires</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="expires"/>
+        <AttributeType name="onblur" required="false">
+            <description>JavaScript code. The onblur event occurs when an element loses focus either by the pointing device or by tabbing navigation. It may be used with the same elements as onfocus</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onblur"/>
+        <AttributeType name="value" required="false">
+            <description>Data value calculated at render time and stored in  URI (also as part of cache Key ),
+                at generation time passed to send method. Can be used for update cache at change of  generating
+                conditions, and for creating  beans as "Lightweight" pattern components (request scope).
+                IMPORTANT: Since serialized data stored in URI, avoid using big objects.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="border" required="false">
+            <description>Deprecated. This attribute specifies the width of an IMG or OBJECT border, in pixels. The default value for this attribute depends on the user agent</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="border"/>
+        <AttributeType name="vspace" required="false">
+            <description>Deprecated. This attribute specifies the amount of white space to be inserted above and below an IMG, APPLET, or OBJECT. The default value is not specified, but is generally a small, non-zero length</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="vspace"/>
+        <AttributeType name="mimeType" required="false">
+            <description>Geterated content mime-type for append to response
+				header ( 'image/jpeg' etc )</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="mimeType"/>
+        <AttributeType name="element" required="false">
+            <description>Name of html element for resource link - may be &amp;lt;a&amp;gt; &amp;lt;img&amp;gt; &amp;lt;object&amp;gt; &amp;lt;applet&amp;gt; &amp;lt;script&amp;gt; or &amp;lt;link&amp;gt;</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="element"/>
+        <AttributeType name="ondblclick" required="false">
+            <description>HTML: a script expression; a pointer button is double-clicked</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmouseout" required="false">
+            <description>HTML: a script expression; a pointer is moved away</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="align" required="false">
+            <description>bottom|middle|top|left|right
+            Deprecated. This attribute specifies the position of an IMG, OBJECT, or APPLET with respect to its context.
+            
+            The following values for align concern the object's position with respect to surrounding text:
+            
+            * bottom: means that the bottom of the object should be vertically aligned with the current baseline. This is the default value.
+            * middle: means that the center of the object should be vertically aligned with the current baseline.
+            * top: means that the top of the object should be vertically aligned with the top of the current text line</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="align"/>
+        <AttributeType name="charset" required="false">
+            <description>The character encoding of a resource designated by this hyperlink</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="charset"/>
+        <AttributeType name="onkeyup" required="false">
+            <description>HTML: a script expression; a key is released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="onfocus" required="false">
+            <description>JavaScript code. The onfocus event occurs when an element gets focus.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onfocus"/>
+        <AttributeType name="shape" required="false">
+            <description>default|rect|circle|poly [CI]
+            This attribute specifies the shape of a region. Possible values:
+            
+            * default: Specifies the entire region.
+            * rect: Define a rectangular region.
+            * circle: Define a circular region.
+            * poly: Define a polygonal region.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shape"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="declare" required="false">
+            <description>declare but don't instantiate flag</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="declare"/>
+        <AttributeType name="standby" required="false">
+            <description>message to show while loading</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="standby"/>
+        <AttributeType name="session" required="false">
+            <description>session</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="session"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="onmousedown" required="false">
+            <description>HTML: script expression; a pointer button is pressed down</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="cacheable" required="false">
+            <description>cacheable</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="cacheable"/>
+        <AttributeType name="rev" required="false">
+            <description>A reverse link from the anchor specified by this hyperlink to the current document. The value of this attribute is a space-separated list of link types</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rev"/>
+        <AttributeType name="hspace" required="false">
+            <description>Deprecated. This attribute specifies the amount of white space to be inserted to the left and right of an IMG, APPLET, or OBJECT. The default value is not specified, but is generally a small, non-zero length</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="hspace"/>
+        <AttributeType name="usemap" required="false">
+            <description>use client-side image map</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="usemap"/>
+        <AttributeType name="lang" required="false">
+            <description>Code describing the language used in the generated markup for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="accesskey" required="false">
+            <description>This attribute assigns an access key to an element. An access key is a single character from the document character set. Note: Authors should consider the input method of the expected reader when specifying an accesskey</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accesskey"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="title" required="false">
+            <description>Advisory title information about markup elements generated for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="ismap" required="false">
+            <description>use server-side image map</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ismap"/>
+        <AttributeType name="style" required="false">
+            <description>CSS style(s) is/are to be applied when this component is rendered</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="dir" required="false">
+            <description>Alternate textual description of the element rendered by this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="converter" required="false">
+            <description>converter</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="converter"/>
+        <AttributeType name="onmouseup" required="false">
+            <description>HTML: script expression; a pointer button is released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="classid" required="false">
+            <description>identifies an implementation</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="classid"/>
+        <AttributeType name="codetype" required="false">
+            <description>content type for code</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="codetype"/>
+        <AttributeType name="onmousemove" required="false">
+            <description>HTML: a script expression; a pointer is moved within</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="lastModified" required="false">
+            <description>lastModified</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lastModified"/>
+        <AttributeType name="createContent" required="false">
+            <description>Method call expression to send generated resource to OutputStream. It must have two parameter with a type of java.io.OutputStream 
+        and java.lang.Object ( deserialized value of data attribute )</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="createContent"/>
+        <AttributeType name="tabindex" required="false">
+            <description>This attribute specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767. User agents should ignore leading zeros</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="tabindex"/>
+        <AttributeType name="onkeydown" required="false">
+            <description>HTML: a script expression; a key is pressed down</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeypress" required="false">
+            <description>HTML: a script expression; a key is pressed and released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onmouseover" required="false">
+            <description>HTML: a script expression; a pointer is moved onto</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="coords" required="false">
+            <description>This attribute specifies the position and shape on the screen. The number and order of values depends on the shape being defined. Possible combinations:
+            
+            * rect: left-x, top-y, right-x, bottom-y.
+            * circle: center-x, center-y, radius. Note. When the radius value is percentage value, user agents should calculate the final radius value based on the associated object's width and height. The radius should be the smaller value of the two.
+            * poly: x1, y1, x2, y2, ..., xN, yN. The first x and y coordinate pair and the last should be the same to close the polygon. When these coordinate values are not the same, user agents should infer an additional coordinate pair to close the polygon.
+            
+            Coordinates are relative to the top, left corner of the object. All values are lengths. All values are separated by commas</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="coords"/>
+        <AttributeType name="target" required="false">
+            <description>This attribute specifies the name of a frame where a document is to be opened.
+            
+            By assigning a name to a frame via the name attribute, authors can refer to it as the "target" of links defined by other elements</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="target"/>
+        <AttributeType name="onclick" required="false">
+            <description>HTML: a script expression; a pointer button is clicked</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="rel" required="false">
+            <description>The relationship from the current document to the anchor specified by this hyperlink. The value of this attribute is a space-separated list of link types</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rel"/>
+        <AttributeType name="archive" required="false">
+            <description>space-separated list of URIs</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="archive"/>
+        <AttributeType name="codebase" required="false">
+            <description>base URI for classid, data, archive</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="codebase"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="outputPanel" startTag="required">
+        <description>Creates an AJAX-enabled part of the page. For a normal request,
+    render a &amp;amp;lt;span&amp;amp;gt; or &amp;amp;lt;div&amp;amp;gt; HTML element
+    depending on the value of the "layout" attribute, "inline" or "block".
+    (The "id" attribute will be the value of the clientId property.) For an
+    AJAX request, the content of this element is included in the response if
+    the value of the property, "ajaxRendered", is set to true.</description>
+        <AttributeType name="onmousemove" required="false">
+            <description>HTML: a script expression; a pointer is moved within</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="ondblclick" required="false">
+            <description>HTML: a script expression; a pointer button is double-clicked</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmouseout" required="false">
+            <description>HTML: a script expression; a pointer is moved away</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="onkeyup" required="false">
+            <description>HTML: a script expression; a key is released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="ajaxRendered" required="false">
+            <description>Defines, whether the content of this component must be
+				(or not) included in AJAX response created by parent
+				AJAX Container, even if it is not forced by reRender
+				list of ajax action. Ignored if component marked to
+				output by Ajax action. default false</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxRendered"/>
+        <AttributeType name="onkeydown" required="false">
+            <description>HTML: a script expression; a key is pressed down</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeypress" required="false">
+            <description>HTML: a script expression; a key is pressed and released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="keepTransient" required="false">
+            <description>Flag for mark all child components to non-transient. If
+            true, all children components will be set to non-transient state
+            and keep in saved components tree. For output in self-renderer
+            region all content ( By default, all content in &amp;lt;f:verbatim&amp;gt;
+            tags and non-jsf elements in facelets, marked as transient -
+            since, self-rendered ajax regions don't plain output for ajax
+            processing ).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="keepTransient"/>
+        <AttributeType name="lang" required="false">
+            <description>Code describing the language used in the generated markup for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="onmouseover" required="false">
+            <description>HTML: a script expression; a pointer is moved onto</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="title" required="false">
+            <description>Advisory title information about markup elements generated for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="style" required="false">
+            <description>CSS style(s) is/are to be applied when this component is rendered</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="dir" required="false">
+            <description>Alternate textual description of the element rendered by this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="onmouseup" required="false">
+            <description>HTML: script expression; a pointer button is released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="layout" required="false">
+            <description>HTML layout for generated markup. Possible values: "block"
+            for generating an HTML &amp;lt;div&amp;gt; element, "inline" for
+            generating an HTML &amp;lt;span&amp;gt; element, and "none" for generating
+            no HTML element. There is a minor exception for the "none" case
+            where a child element has the property "rendered" set to "false".
+            In this case, we create an empty &amp;lt;span&amp;gt; element with same ID
+            as the child element to use as a placeholder for later
+            processing.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="layout"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="onclick" required="false">
+            <description>HTML: a script expression; a pointer button is clicked</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <description>HTML: script expression; a pointer button is pressed down</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="page" startTag="required">
+        <description>This component renders a full HTML page structure. It must
+			be the first (and only) child for the view root (JSP
+			&amp;lt;f:view&amp;gt; tag). No HTML code can be outside of this
+			component. It also has support for processing child
+			components in AJAX requests, just like &amp;lt;a4j:region&amp;gt;.
+			For a normal request, it will render the results of a
+			&amp;lt;script&amp;gt; element with a client-side library at the
+			page's &amp;lt;head&amp;gt;. If this component includes a "head"
+			facet, the facet's content will also be rendered at the
+			&amp;lt;head&amp;gt; element. For an AJAX request, only affected
+			components in the full document structure will be rendered.
+			
+			Here's an example of using it in JSP (jspx version):
+			&amp;lt;jsp:root xmlns:.... &amp;lt;f:view&amp;gt;
+			&amp;lt;a4j:page&amp;gt;&amp;lt;f:facet name="head"&amp;gt; ...
+			&amp;lt;/f:facet&amp;gt; &amp;lt;!-- page content here --&amp;gt;
+			&amp;lt;/a4j:page&amp;gt; &amp;lt;/f:view&amp;gt;&amp;lt;/jsp:root&amp;gt;</description>
+        <AttributeType name="onunload" required="false">
+            <description>JavaScript code to execute on a page unload.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onunload"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="contentType" required="false">
+            <description>Set custom mime content type to response</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="contentType"/>
+        <AttributeType name="format" required="false">
+            <description>Page layout format ( html, xhtml, html-transitional, html-3.2 ) for encoding DOCTYPE, namespace and Content-Type definitions</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="format"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="lang" required="false">
+            <description>Code describing the language used in the generated markup for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="namespace" required="false">
+            <description>Set html element default namespace</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="namespace"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="immediate" required="false">
+            <description>Flag indicating that, if this component is activated by ajaxrequest, notifications should be delivered to interested listeners and actions immediately (that is, during Apply Request Values phase) rather than waiting until Invoke Application phase.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="title" required="false">
+            <description>Advisory title information about markup elements generated for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="selfRendered" required="false">
+            <description>if 'true' , self-render subtree at InvokeApplication ( or Decode, if immediate property set to true )  phase</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="selfRendered"/>
+        <AttributeType name="style" required="false">
+            <description>CSS style(s) is/are to be applied when this component is rendered</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="onload" required="false">
+            <description>JavaScript code to execute on a page load.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onload"/>
+        <AttributeType name="dir" required="false">
+            <description>Alternate textual description of the element rendered by this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="pageTitle" required="false">
+            <description>String for output as a page title.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="pageTitle"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="ajaxListener" required="false">
+            <description>MethodBinding representing an action listener method that will be notified when this component is activated by the ajax Request and handle it. The expression must evaluate to a public method that takes an AjaxEvent parameter, with a return type of void.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="poll" startTag="required">
+        <description>Periodically perform AJAX request to server, to simulate
+			'poll' data.</description>
+        <AttributeType name="actionListener" required="false">
+            <description>MethodBinding pointing at method accepting  an ActionEvent with return type void</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="actionListener"/>
+        <AttributeType name="reRender" required="false">
+            <description>Id['s] (in format of call  UIComopnent.findComponent()) of components, rendered in case of AjaxRequest  caused by this component. Can be single id, comma-separated list of Id's, or EL Expression  with array or Collection</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="reRender"/>
+        <AttributeType name="interval" required="false">
+            <description>Interval (in ms) for call poll requests. Default value
+				1000 (1 sec)</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="interval"/>
+        <AttributeType name="ajaxSingle" required="false">
+            <description>if true , submits ONLY one field/link, instead of all form controls.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxSingle"/>
+        <AttributeType name="data" required="false">
+            <description>Serialized (on default with JSON) data passed on the client by a developer on AJAX request. It's accessible via "data.foo" syntax</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="data"/>
+        <AttributeType name="eventsQueue" required="false">
+            <description>Name of requests queue to avoid send next request before complete other from same event. Can be used to reduce number of requests of frequently events (key press, mouse move etc.).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="eventsQueue"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="action" required="false">
+            <description>MethodBinding pointing at the application action to be invoked,
+            if this UIComponent is activated by the user, during the Apply
+            Request Values or Invoke Application phase of the request
+            processing lifecycle, depending on the value of the immediate
+            property</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="action"/>
+        <AttributeType name="focus" required="false">
+            <description>id of element to set focus after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="focus"/>
+        <AttributeType name="enabled" required="false">
+            <description>Enable/disable polling</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="enabled"/>
+        <AttributeType name="ignoreDupResponses" required="false">
+            <description>If true, unfinished request will be aborted on new event.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ignoreDupResponses"/>
+        <AttributeType name="status" required="false">
+            <description>ID (in format of call UIComopnent.findComponent()) of Request status component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="status"/>
+        <AttributeType name="bypassUpdates" required="false">
+            <description>If true, after process validations phase it skips updates of model beans on a force render response. It can be used for validating components input</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="bypassUpdates"/>
+        <AttributeType name="oncomplete" required="false">
+            <description>JavaScript code for call after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="oncomplete"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="onsubmit" required="false">
+            <description>JavaScript code for call before submission of ajax
+				event</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onsubmit"/>
+        <AttributeType name="immediate" required="false">
+            <description>True means, that the default ActionListener should be executed
+            immediately (i.e. during Apply Request Values phase of the
+            request processing lifecycle), rather than waiting until the
+            Invoke Application phase</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="limitToList" required="false">
+            <description>If "true", updates on client side ONLY elements from this 'reRender' property. If "false" (default) updates all rendered by ajax region components.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="limitToList"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="timeout" required="false">
+            <description>Timeout (in ms) for request</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="timeout"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="portlet" startTag="required">
+        <description/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="region" startTag="required">
+        <description>This tag defines a part of the JSF Tree that is to be decoded on the
+    server side during AJAX request processing</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="immediate" required="false">
+            <description>Flag indicating that, if this component is activated by ajaxrequest, notifications should be delivered to interested listeners and actions immediately (that is, during Apply Request Values phase) rather than waiting until Invoke Application phase.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="renderRegionOnly" required="false">
+            <description>Flag to disable rendering in AJAX responses content
+				outside of active region. If this attribute set to
+				"true" , no one of the components outside of region will
+				be included to AJAX response. If set to "false", search
+				for components to include in response will be performed
+				on all tree. Default "true"</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="renderRegionOnly"/>
+        <AttributeType name="selfRendered" required="false">
+            <description>if 'true' , self-render subtree at InvokeApplication ( or Decode, if immediate property set to true )  phase</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="selfRendered"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="ajaxListener" required="false">
+            <description>MethodBinding representing an action listener method that will be notified when this component is activated by the ajax Request and handle it. The expression must evaluate to a public method that takes an AjaxEvent parameter, with a return type of void.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="repeat" startTag="required">
+        <description/>
+        <AttributeType name="stateVar" required="false">
+            <description>stateVar</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="stateVar"/>
+        <AttributeType name="var" required="false">
+            <description>A request-scope attribute under which the data object for the
+            current row is exposed when iterating</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="var"/>
+        <AttributeType name="rowKey" required="false">
+            <description>rowKey</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rowKey"/>
+        <AttributeType name="rendered" required="false">
+            <description>rendered</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="rows" required="false">
+            <description>A number of rows to display, or zero for all remaining
+            rows in the table</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rows"/>
+        <AttributeType name="id" required="false">
+            <description>id</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="ajaxKeys" required="false">
+            <description>ajaxKeys</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxKeys"/>
+        <AttributeType name="rowKeyVar" required="false">
+            <description>rowKeyVar</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rowKeyVar"/>
+        <AttributeType name="value" required="false">
+            <description>value</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="binding" required="false">
+            <description>binding</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="first" required="false">
+            <description>A zero-relative row number of the first row to display</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="first"/>
+        <AttributeType name="componentState" required="false">
+            <description>componentState</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="componentState"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="status" startTag="required">
+        <description>Renders area for indicating Ajax request status on the
+			client-side.
+			&amp;lt;br /&amp;gt;
+			During Encoding: Creates two "span" elements with id created
+			as clientId of this component or of target AJAX region
+			(pointed to by the "for" property) with appended
+			":status.start" and ":status:stop" strings.
+			&amp;lt;br /&amp;gt;
+			"start" span has "display:none" style (hidden). Inside this
+			span, renders the value of the startText/stopText properties
+			or, if they exist, the content of "start" and "stop" facets.
+			&amp;lt;br /&amp;gt;
+			On performing an AJAX request, the client-side script
+			changes the visibility of the "start" span and hides "stop".
+			After all requests for this indicator are completed,
+			restores "stop" and hide "start" start[style,styleClass] and
+			stop[style,styleClass] are rendered for spans as style and
+			class atributes, respectivetly.
+			&amp;lt;br /&amp;gt;
+			During Encoding: Creates two "span" or "div"(depending on
+			'layout' attribute) elements with id created as clientId of
+			this component or of target AJAX region (pointed to by the
+			"for" property) with appended ":status.start" and
+			":status:stop" strings. "start" element has "display:none"
+			style (hidden). Inside this element, renders the value of
+			the startText/stopText properties or, if they exist, the
+			content of "start" and "stop" facets. On performing an AJAX
+			request, the client-side script changes the visibility of
+			the "start" element and hides "stop". After all requests for
+			this indicator are completed, restores "stop" and hide
+			"start"
+			&amp;lt;br /&amp;gt;
+			start[style,styleClass] and stop[style,styleClass] are
+			rendered for spans as style and class atributes,
+			respectivetly.</description>
+        <AttributeType name="onstop" required="false">
+            <description>JavaScript code, called on the stop
+				of a request.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onstop"/>
+        <AttributeType name="onstart" required="false">
+            <description>JavaScript code, called on the start
+				of a request.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onstart"/>
+        <AttributeType name="startStyle" required="false">
+            <description>CSS style class for the element displayed on the start
+				of a request.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="startStyle"/>
+        <AttributeType name="for" required="false">
+            <description>ID of the AjaxContainer component whose status is
+				indicated (in the format of a
+				javax.faces.UIComopnent.findComponent() call).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="for"/>
+        <AttributeType name="lang" required="false">
+            <description>Code describing the language used in the generated markup for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="stopText" required="false">
+            <description>Text for display on request complete.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="stopText"/>
+        <AttributeType name="forceId" required="false">
+            <description>If true, render the ID of the component in HTML code
+				without JSF modifications.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceId"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="title" required="false">
+            <description>Advisory title information about markup elements generated for this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="style" required="false">
+            <description>CSS style(s) is/are to be applied when this component is rendered</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="dir" required="false">
+            <description>Alternate textual description of the element rendered by this component</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="layout" required="false">
+            <description>Define visual layout of panel, can be "block" or
+				"inline".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="layout"/>
+        <AttributeType name="onmouseup" required="false">
+            <description>HTML: script expression; a pointer button is released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmousemove" required="false">
+            <description>HTML: a script expression; a pointer is moved within</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="stopStyleClass" required="false">
+            <description>CSS style class for element displayed on request</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="stopStyleClass"/>
+        <AttributeType name="ondblclick" required="false">
+            <description>HTML: a script expression; a pointer button is double-clicked</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmouseout" required="false">
+            <description>HTML: a script expression; a pointer is moved away</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="onkeyup" required="false">
+            <description>HTML: a script expression; a key is released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="onkeypress" required="false">
+            <description>HTML: a script expression; a key is pressed and released</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <description>HTML: a script expression; a key is pressed down</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="startStyleClass" required="false">
+            <description>CSS style class for the element displayed on the start
+				of a request.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="startStyleClass"/>
+        <AttributeType name="onmouseover" required="false">
+            <description>HTML: a script expression; a pointer is moved onto</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="stopStyle" required="false">
+            <description>CSS style for element displayed on request completion.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="stopStyle"/>
+        <AttributeType name="onclick" required="false">
+            <description>HTML: a script expression; a pointer button is clicked</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="onmousedown" required="false">
+            <description>HTML: script expression; a pointer button is pressed down</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="startText" required="false">
+            <description>Text for display on starting request.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="startText"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="support" startTag="required">
+        <description>Adds the AJAX functionality for those UIComponent-based
+			componenent that have properties for JavaScript events.
+			
+			During Decoding: If a request is Ajax-performed, obtains the
+			Map from the "requestParameterMap" property of the
+			ExternalContext. If this Map contains non null value for the
+			"clientId" key, creates a javax.faces.event.ActionEvent
+			around the component, passes it to the queueEvent() method
+			of the component, and then appends it's reRender components
+			IDs to a list of rendered areas.
+			
+			During Encoding. Doesn't encode as a component. Instead, it
+			adds ValueBinding for a property of the parent component
+			with the name as a value of its "event" property. As a
+			result, when rendered, the parent component builds
+			JavaScript code for submitting an AJAX request on this
+			event.
+			
+			If the component has child UIParameter components, appends
+			it's name/value as additional request parameters.
+			
+			If a parent component is an instance of UIInput and the
+			ajaxType property is "input", submits the value of the input
+			field, also. In this case, you can submit a single input
+			field outside of UIForm.</description>
+        <AttributeType name="actionListener" required="false">
+            <description>MethodBinding pointing at method accepting  an ActionEvent with return type void</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="actionListener"/>
+        <AttributeType name="reRender" required="false">
+            <description>Id['s] (in format of call  UIComopnent.findComponent()) of components, rendered in case of AjaxRequest  caused by this component. Can be single id, comma-separated list of Id's, or EL Expression  with array or Collection</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="reRender"/>
+        <AttributeType name="ajaxSingle" required="false">
+            <description>if true , submits ONLY one field/link, instead of all form controls.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ajaxSingle"/>
+        <AttributeType name="disableDefault" required="false">
+            <description>Disable default action for target event ( append "return false;" to javascript )</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="disableDefault"/>
+        <AttributeType name="data" required="false">
+            <description>Serialized (on default with JSON) data passed on the client by a developer on AJAX request. It's accessible via "data.foo" syntax</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="data"/>
+        <AttributeType name="eventsQueue" required="false">
+            <description>Name of requests queue to avoid send next request before complete other from same event. Can be used to reduce number of requests of frequently events (key press, mouse move etc.).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="eventsQueue"/>
+        <AttributeType name="parentProperties" required="false">
+            <description>parentProperties</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="parentProperties"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have a unique id that is automatically created if
+            omitted</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="event" required="false">
+            <description>Name of JavaScript event property ( onclick, onchange,
+				etc.) of parent component, for which we will build AJAX
+				submission code</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="event"/>
+        <AttributeType name="action" required="false">
+            <description>MethodBinding pointing at the application action to be invoked,
+            if this UIComponent is activated by the user, during the Apply
+            Request Values or Invoke Application phase of the request
+            processing lifecycle, depending on the value of the immediate
+            property</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="action"/>
+        <AttributeType name="focus" required="false">
+            <description>id of element to set focus after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="focus"/>
+        <AttributeType name="requestDelay" required="false">
+            <description>Delay (in ms.) for send ajax request on JavaScript event. In conjunction with events queue can reduce number of requests on keyboard or mouse move events.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="requestDelay"/>
+        <AttributeType name="ignoreDupResponses" required="false">
+            <description>If true, unfinished request will be aborted on new event</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ignoreDupResponses"/>
+        <AttributeType name="status" required="false">
+            <description>ID (in format of call UIComopnent.findComponent()) of Request status component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="status"/>
+        <AttributeType name="bypassUpdates" required="false">
+            <description>If true, after process validations phase it skips updates of model beans on a force render response. It can be used for validating components input</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="bypassUpdates"/>
+        <AttributeType name="oncomplete" required="false">
+            <description>JavaScript code for call after request completed on client side</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="oncomplete"/>
+        <AttributeType name="rendered" required="false">
+            <description>If "false", this component is not rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="onsubmit" required="false">
+            <description>JavaScript code for call before submission of ajax
+				event</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onsubmit"/>
+        <AttributeType name="immediate" required="false">
+            <description>True means, that the default ActionListener should be executed
+            immediately (i.e. during Apply Request Values phase of the
+            request processing lifecycle), rather than waiting until the
+            Invoke Application phase</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="limitToList" required="false">
+            <description>If "true", updates on client side ONLY elements from this 'reRender' property. If "false" (default) updates all rendered by ajax region components.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="limitToList"/>
+        <AttributeType name="binding" required="false">
+            <description>The attribute takes a value-binding expression for a component property of
+a backing bean</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="timeout" required="false">
+            <description>Timeout (in ms) for request</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="timeout"/>
+    </ElementType>
+</Schema>

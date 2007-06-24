@@ -1,0 +1,96 @@
+<!--
+     <!DOCTYPE kb-schema PUBLIC
+       "-//Red Hat, Inc//DTD Knowledge Base 1.0//EN"
+       "http://www.redhat.com/dtds/kb-schema_1_0.dtd">
+-->
+
+<!ENTITY % BodyContent "(refused|allowed)">
+<!ENTITY % StartTag "(optional|required)">
+<!ENTITY % EndTag "(optional|required|refused)">
+<!ENTITY % Boolean "(true|false)">
+
+<!--
+	Schema is root element. May contain ElementType and AttributeType
+	Attributes:
+	uri - URI of TLD, DTD or other source which is described by this schema.
+	prefix - Default short name of source.
+	location - Location of source.
+-->
+<!ELEMENT Schema  (ElementType?, AttributeType?) >
+
+<!ATTLIST Schema uri CDATA #REQUIRED>
+<!ATTLIST Schema prefix CDATA #IMPLIED>
+<!ATTLIST Schema location CDATA #IMPLIED>
+
+<!--
+	ElementType describes type of element.
+	ElementType can contains elements (element) and attributes (attribute).
+	Attributes:
+	name - name of element type
+	bodyContent - "refused" - Element can't have a body.
+	              "allowed" - Element can have a body.
+	startTag - "required" - Element has to have start tag.
+	           "optional" - Start tag is optional.
+	endTag - "required" - Element has to have end tag.
+	         "optional" - End tag is optional.
+	         "refused" - Element doesn't have to have end tag.
+	content - for future using.
+-->
+<!ELEMENT ElementType (AttributeType?, attribute?, ElementType?, element?) >
+
+<!ATTLIST ElementType name CDATA #REQUIRED>
+<!ATTLIST ElementType bodyContent %BodyContent #REQUIRED>
+<!ATTLIST ElementType startTag %StartTag #REQUIRED>
+<!ATTLIST ElementType endTag %EbdTag #REQUIRED>
+<!ATTLIST ElementType content CDATA #REQUIRED>
+
+<!--
+	Describes attribute of ElementType.
+	Attributes:
+	type - Type of attribute.
+-->
+<!ELEMENT attribute >
+
+<!ATTLIST attribute type CDATA #REQUIRED>
+
+<!--
+	Describes element. 
+	Attributes:
+	type - Type of element.
+-->
+<!ELEMENT element >
+
+<!ATTLIST element type CDATA #REQUIRED>
+
+<!--
+	Describes type of attribute.
+	Attributes:
+	name - Name of attribute type.
+	required - "true" - attribute of element is required.
+	default - default value of attribute.
+-->
+<!ELEMENT AttributeType (proposal?) >
+
+<!ATTLIST AttributeType name CDATA #REQUIRED>
+<!ATTLIST AttributeType required %Boolean #REQUIRED>
+<!ATTLIST AttributeType default CDATA #IMPLIED>
+
+<!--
+	Describe content assist proposal for value of attribute.
+	Attributes:
+	type - Type of proposal.
+-->
+<!ELEMENT proposal (param?) >
+
+<!ATTLIST proposal type CDATA #REQUIRED>
+
+<!--
+	Describes parameter of proposal.
+	Attributes:
+	value - Value of param.
+	name - Name of param.
+-->
+<!ELEMENT param >
+
+<!ATTLIST param value CDATA #REQUIRED>
+<!ATTLIST param name CDATA #IMPLIED>

@@ -1,0 +1,307 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.jboss.tools.common.model.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.jboss.tools.common.model.ui" id="metaTemplates" name="Meta Templates"/>
+      </appInfo>
+      <documentation>
+         Templates are collection of information that helps users to edit xml files in Red Hat XML editor. You could use it with org.jboss.tools.common.model.ui.xmlEditor extencion point.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <documentation>
+            Extension point parameters
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="include" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="meta-templates" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  Extension point ID
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  Extension point name
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="include">
+      <annotation>
+         <documentation>
+            This element allows include meta template information from external xml file. It can contains elements described below. This elements will be processed the same way as they would be present in Plug-in descriptor.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="file" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Plugin related path to xml file with meta-templates.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="translations" type="string">
+            <annotation>
+               <documentation>
+                  Plugin related file to resource bundle
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="meta-templates">
+      <annotation>
+         <documentation>
+            A meta-templates define URI. All meta-template inside this element will used in Red Hat XML editor on Tree tab for editing.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="meta-template" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="uri" type="string" use="required">
+            <annotation>
+               <documentation>
+                  URI or Public ID
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="meta-template">
+      <annotation>
+         <documentation>
+            meta-template defines information what is used in preferences for visual presentation of meta-template and in runtime.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="super-class" minOccurs="0" maxOccurs="1"/>
+            <element ref="interface" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="axis" type="string" use="required">
+            <annotation>
+               <documentation>
+                  XPath axis what define xml element in DOM Tree, it is can be a path to node or to attribute.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="displayName" type="string" use="required">
+            <annotation>
+               <documentation>
+                  name that will be use by TreeLabelProvider for show this meta template in Table on preference page
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="xEntity" type="string" use="required">
+            <annotation>
+               <documentation>
+                  not supported
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="super-class">
+      <annotation>
+         <documentation>
+            super-class define class qualified name what will be used in New Java Class wizard as value of Baseclass field
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  qualified class name
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="interface">
+      <annotation>
+         <documentation>
+            interface defined interface what will be added to interfaces list New Java Class Wizard
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  qualified interface name
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         Extension point that contains only include elements:
+&lt;pre&gt;
+   &lt;extension point=&quot;org.jboss.tools.common.model.ui.metaTemplates&quot;&gt;
+      &lt;include file=&quot;templates/web-facesconfig_1_0.xml&quot; translations=&quot;templates/web-facesconfig_1_0.properties&quot;&gt;
+      &lt;/include&gt;         
+      &lt;include file=&quot;templates/web-facesconfig_1_1.xml&quot; translations=&quot;templates/web-facesconfig_1_1.properties&quot;&gt;
+      &lt;/include&gt;         
+      &lt;include file=&quot;templates/web-facesconfig_1_2.xml&quot; translations=&quot;templates/web-facesconfig_1_2.properties&quot;&gt;
+      &lt;/include&gt;         
+   &lt;/extension&gt;
+&lt;/pre&gt;   
+File web-facesconfig_1_1.xml define base classes and interfaces what name are defined in faces-config.xml:
+&lt;pre&gt;
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE meta-template PUBLIC &quot;-//Red Hat Inc.//DTD Meta Templates 1.0//EN&quot;
+                               &quot;http://www.redhat.com/templates/dtds/meta-template_1_0.dtd&quot;&gt;
+
+&lt;meta-templates uri=&quot;-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN&quot;&gt; 
+ 
+ &lt;!-- application --&gt;
+
+ &lt;meta-template axis=&quot;action-listener/text()[1]&quot; displayName=&quot;Action Listener&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;interface name=&quot;javax.faces.event.ActionListener&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;meta-template axis=&quot;navigation-handler/text()[1]&quot; displayName=&quot;Navigation Handler&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.application.NavigationHandler&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;meta-template axis=&quot;view-handler/text()[1]&quot; displayName=&quot;View Handler&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.application.ViewHandler&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;meta-template axis=&quot;property-resolver/text()[1]&quot; displayName=&quot;Property Resolver&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.el.PropertyResolver&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;meta-template axis=&quot;variable-resolver/text()[1]&quot; displayName=&quot;Variable Resolver&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.el.VariableResolver&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;!-- factory --&gt;
+
+ &lt;meta-template axis=&quot;application-factory/text()[1]&quot; displayName=&quot;Application Factory&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.application.ApplicationFactory&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;meta-template axis=&quot;faces-context-factory/text()[1]&quot; displayName=&quot;Faces Context Factory&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.context.FacesContextFactory&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;meta-template axis=&quot;lifecycle-factory/text()[1]&quot; displayName=&quot;Lifecycle Factory&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.lifecycle.LifecycleFactory&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;meta-template axis=&quot;render-kit-factory/text()[1]&quot; displayName=&quot;Render Kit Factory&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.render.RenderKitFactory&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;!-- lifecycle --&gt;
+
+ &lt;meta-template axis=&quot;phase-listener/text()[1]&quot; displayName=&quot;Phase Listener&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;interface name=&quot;javax.faces.event.PhaseListener&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;!-- validator --&gt;
+
+ &lt;meta-template axis=&quot;validator-class/text()[1]&quot; displayName=&quot;Validator Class&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;interface name=&quot;javax.faces.validator.Validator&quot;/&gt;
+ &lt;/meta-template&gt;
+ 
+ &lt;!-- validator/attribute/attribute-class - any java class, ex. java.lang.String --&gt;
+ &lt;!-- validator/property/property-class - any java class, ex. java.lang.String --&gt;
+
+ &lt;!-- converter --&gt;
+
+ &lt;meta-template axis=&quot;converter-class/text()[1]&quot; displayName=&quot;Converter Class&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;interface name=&quot;javax.faces.convert.Converter&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;!-- converter/attribute/attribute-class - any java class, ex. java.lang.String --&gt;
+ &lt;!-- converter/property/property-class - any java class, ex. java.lang.String --&gt;
+
+ &lt;!-- render-kit --&gt;
+
+ &lt;meta-template axis=&quot;render-kit-class/text()[1]&quot; displayName=&quot;Render Kit Class&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.render.RenderKit&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;meta-template axis=&quot;renderer-class/text()[1]&quot; displayName=&quot;Renderer Class&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.render.Renderer&quot;/&gt;
+ &lt;/meta-template&gt;
+
+ &lt;!-- component --&gt;
+
+ &lt;meta-template axis=&quot;component-class/text()[1]&quot; displayName=&quot;Component Class&quot; xEntity=&quot;NONE&quot;&gt;
+  &lt;super-class name=&quot;javax.faces.component.UIComponent&quot;/&gt;
+ &lt;/meta-template&gt;
+
+
+&lt;/meta-templates&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Red Hat, Inc
+      </documentation>
+   </annotation>
+
+</schema>

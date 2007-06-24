@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema prefix="owi" uri="http://www.otrix.com/faces/webinput">
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="dateChooser" startTag="required">
+        <description/>
+        <AttributeType name="binding" required="false">
+            <description>Sets the The value binding expression linking this component to a property in a backing bean </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="converter" required="false">
+            <description>Sets the Converter instance registered with this component. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="converter"/>
+        <AttributeType name="dayHeaderFormat" required="false">
+            <description>Sets the specify how week days are displayed (Short, Medium, Long)</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="Short"/>
+                <param value="Medium"/>
+                <param value="Long"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="dayHeaderFormat"/>
+        <AttributeType name="dayHoverStyle" required="false">
+            <description>Sets the Style applied to a date when the mouse cursor is over it</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="dayHoverStyle"/>
+        <AttributeType name="dayHoverStyleClass" required="false">
+            <description>Sets the name of the css class applied to a date when the mouse cursor is over it</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="dayHoverStyleClass"/>
+        <AttributeType name="daySelectedStyle" required="false">
+            <description>Sets the Style applied to a selected date</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="daySelectedStyle"/>
+        <AttributeType name="daySelectedStyleClass" required="false">
+            <description>Sets the name of the css class applied to a selected date</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="daySelectedStyleClass"/>
+        <AttributeType name="dayStyle" required="false">
+            <description>Sets the default Style applied to dates</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="dayStyle"/>
+        <AttributeType name="dayStyleClass" required="false">
+            <description>Sets the name of the css class applied to dates</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="dayStyleClass"/>
+        <AttributeType name="editMask" required="false">
+            <description>Sets the mask used to edit/display the current date. The syntax of the pattern is identical to the one used by the class SimpleDateFormat.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="editMask"/>
+        <AttributeType name="firstDayOfWeek" required="false">
+            <description>Sets the specify which day starts the week (1: Sunday, 2: Monday, etc)</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="1"/>
+                <param value="2"/>
+                <param value="3"/>
+                <param value="4"/>
+                <param value="5"/>
+                <param value="6"/>
+                <param value="7"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="firstDayOfWeek"/>
+        <AttributeType name="id" required="false">
+            <description>Sets the The component identifier for this component. This value must be unique within the closest parent component that is a naming container. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="immediate" required="false">
+            <description>Sets the flag indicating that, if this component is activated by the user, notifications should be delivered to interested listeners and actions immediately (that is, during Apply Request Values phase) rather than waiting until Invoke Application phase</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="popupStyle" required="false">
+            <description>Sets the default Style applied to the popup calendar</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="popupStyle"/>
+        <AttributeType name="popupStyleClass" required="false">
+            <description>Sets the name of the css class applied to the popup calendar</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="popupStyleClass"/>
+        <AttributeType name="rendered" required="false">
+            <description>Sets the Flag indicating whether or not this component should be rendered (during Render Response Phase), or processed on any subsequent form submit. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="required" required="false">
+            <description>Sets the Flag indicating that the user is required to provide a submitted value for this input component.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="required"/>
+        <AttributeType name="showDayHeader" required="false">
+            <description>Sets the flag indicating wether the day header section is displayed or not</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="showDayHeader"/>
+        <AttributeType name="showHeader" required="false">
+            <description>Sets the flag indicating wether the header section is displayed or not</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="showHeader"/>
+        <AttributeType name="style" required="false">
+            <description>Sets the default Style applied to the component</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Sets the name of the css class applied to this component</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="theme" required="false">
+            <description>Sets the preset look and feel applied to the component (Classic, Winxp)</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="Classic"/>
+                <param value="Winxp"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="theme"/>
+        <AttributeType name="validator" required="false">
+            <description>Sets the MethodBinding representing a validator method that will be called during Process Validations to perform correctness checks on the value of this component.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="validator"/>
+        <AttributeType name="value" required="false">
+            <description>Sets the The current value of this component</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="valueChangeListener" required="false">
+            <description>Sets the MethodBinding representing a value change listener method that will be notified when a new value has been set for this input component. The expression must evaluate to a public method that takes a ValueChangeEvent parameter, with a return type of void.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="valueChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="inputEmail" startTag="required">
+        <description/>
+        <AttributeType name="binding" required="false">
+            <description>Sets the The value binding expression linking this component to a property in a backing bean </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="converter" required="false">
+            <description>Sets the Converter instance registered with this component. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="converter"/>
+        <AttributeType name="id" required="false">
+            <description>Sets the The component identifier for this component. This value must be unique within the closest parent component that is a naming container. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="immediate" required="false">
+            <description>Sets the flag indicating that, if this component is activated by the user, notifications should be delivered to interested listeners and actions immediately (that is, during Apply Request Values phase) rather than waiting until Invoke Application phase</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="rendered" required="false">
+            <description>Sets the Flag indicating whether or not this component should be rendered (during Render Response Phase), or processed on any subsequent form submit. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="required" required="false">
+            <description>Sets the Flag indicating that the user is required to provide a submitted value for this input component.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="required"/>
+        <AttributeType name="style" required="false">
+            <description>Sets the default Style applied to the component</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Sets the name of the css class applied to this component</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="validator" required="false">
+            <description>Sets the MethodBinding representing a validator method that will be called during Process Validations to perform correctness checks on the value of this component.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="validator"/>
+        <AttributeType name="value" required="false">
+            <description>Sets the The current value of this component</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="valueChangeListener" required="false">
+            <description>Sets the MethodBinding representing a value change listener method that will be notified when a new value has been set for this input component. The expression must evaluate to a public method that takes a ValueChangeEvent parameter, with a return type of void.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="valueChangeListener"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="inputRegularExpression" startTag="required">
+        <description/>
+        <AttributeType name="binding" required="false">
+            <description>Sets the The value binding expression linking this component to a property in a backing bean </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="converter" required="false">
+            <description>Sets the Converter instance registered with this component. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="converter"/>
+        <AttributeType name="id" required="false">
+            <description>Sets the The component identifier for this component. This value must be unique within the closest parent component that is a naming container. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="immediate" required="false">
+            <description>Sets the flag indicating that, if this component is activated by the user, notifications should be delivered to interested listeners and actions immediately (that is, during Apply Request Values phase) rather than waiting until Invoke Application phase</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="maxLength" required="false">
+            <description>Sets the the max length that is allowed for this field</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="maxLength"/>
+        <AttributeType name="minLength" required="false">
+            <description>Sets the the min length that is allowed for this field</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="minLength"/>
+        <AttributeType name="regularExpression" required="false">
+            <description>Sets the the regular expression that the value of this component must match</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="regularExpression"/>
+        <AttributeType name="rendered" required="false">
+            <description>Sets the Flag indicating whether or not this component should be rendered (during Render Response Phase), or processed on any subsequent form submit. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="required" required="false">
+            <description>Sets the Flag indicating that the user is required to provide a submitted value for this input component.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="required"/>
+        <AttributeType name="style" required="false">
+            <description>Sets the default Style applied to the component</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Sets the name of the css class applied to this component</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="validator" required="false">
+            <description>Sets the MethodBinding representing a validator method that will be called during Process Validations to perform correctness checks on the value of this component.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="validator"/>
+        <AttributeType name="value" required="false">
+            <description>Sets the The current value of this component</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="valueChangeListener" required="false">
+            <description>Sets the MethodBinding representing a value change listener method that will be notified when a new value has been set for this input component. The expression must evaluate to a public method that takes a ValueChangeEvent parameter, with a return type of void.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="valueChangeListener"/>
+    </ElementType>
+</Schema>

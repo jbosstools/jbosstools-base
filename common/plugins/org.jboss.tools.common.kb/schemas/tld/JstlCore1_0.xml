@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema
+  location=""
+  prefix="c" uri="http://java.sun.com/jstl/core">
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="catch" startTag="required">
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="choose" startTag="required"/>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="out" startTag="required">
+    <AttributeType name="value" required="true"/>
+    <attribute type="value"/>
+    <AttributeType name="default" required="false"/>
+    <attribute type="default"/>
+    <AttributeType name="escapeXml" required="false"/>
+    <attribute type="escapeXml"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="if" startTag="required">
+    <AttributeType name="test" required="true"/>
+    <attribute type="test"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="import" startTag="required">
+    <AttributeType name="url" required="true"/>
+    <attribute type="url"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="varReader" required="false"/>
+    <attribute type="varReader"/>
+    <AttributeType name="context" required="false"/>
+    <attribute type="context"/>
+    <AttributeType name="charEncoding" required="false"/>
+    <attribute type="charEncoding"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="forEach" startTag="required">
+    <AttributeType name="items" required="false"/>
+    <attribute type="items"/>
+    <AttributeType name="begin" required="false"/>
+    <attribute type="begin"/>
+    <AttributeType name="end" required="false"/>
+    <attribute type="end"/>
+    <AttributeType name="step" required="false"/>
+    <attribute type="step"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="varStatus" required="false"/>
+    <attribute type="varStatus"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="forTokens" startTag="required">
+    <AttributeType name="items" required="true"/>
+    <attribute type="items"/>
+    <AttributeType name="delims" required="true"/>
+    <attribute type="delims"/>
+    <AttributeType name="begin" required="false"/>
+    <attribute type="begin"/>
+    <AttributeType name="end" required="false"/>
+    <attribute type="end"/>
+    <AttributeType name="step" required="false"/>
+    <attribute type="step"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="varStatus" required="false"/>
+    <attribute type="varStatus"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="otherwise" startTag="required"/>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="param" startTag="required">
+    <AttributeType name="name" required="true"/>
+    <attribute type="name"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="redirect" startTag="required">
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="url" required="true"/>
+    <attribute type="url"/>
+    <AttributeType name="context" required="false"/>
+    <attribute type="context"/>
+  </ElementType>
+  <ElementType bodyContent="refused" content="mixed" endTag="required"
+    name="remove" startTag="required">
+    <AttributeType name="var" required="true"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="set" startTag="required">
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+    <AttributeType name="target" required="false"/>
+    <attribute type="target"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="url" startTag="required">
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="value" required="true"/>
+    <attribute type="value"/>
+    <AttributeType name="context" required="false"/>
+    <attribute type="context"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="when" startTag="required">
+    <AttributeType name="test" required="true"/>
+    <attribute type="test"/>
+  </ElementType>
+</Schema>

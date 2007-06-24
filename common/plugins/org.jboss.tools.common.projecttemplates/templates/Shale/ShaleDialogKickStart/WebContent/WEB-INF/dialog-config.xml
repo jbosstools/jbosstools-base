@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dialogs PUBLIC "-//Apache Software Foundation//DTD Shale Dialog Configuration 1.0//EN"
+                         "http://struts.apache.org/dtds/shale-dialog-config_1_0.dtd">
+<dialogs>
+ <dialog name="Welcome" start="Begin">
+  <action method="#{welcome.check}" name="Begin">
+   <transition outcome="continue" target="WelcomeForm"/>
+   <transition outcome="cancel" target="Exit"/>
+  </action>
+  <view name="WelcomeForm" viewId="/dialog/Form.jsp">
+   <transition outcome="ok" target="Accept"/>
+   <transition outcome="cancel" target="Exit"/>
+  </view>
+  <action method="#{welcome.accept}" name="Accept">
+   <transition outcome="ok" target="Exit"/>
+  </action>
+  <end name="Exit" viewId="/greeting.jsp"/>
+ </dialog>
+</dialogs>

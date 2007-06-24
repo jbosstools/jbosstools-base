@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+ Copyright 2004-2005 The Apache Software Foundation.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+
+<dex>
+<states>
+	<state abbrState="AL" state="Alabama" country="United States" abbrCountry="US"/>
+	<state abbrState="AK" state="Alaska" country="United States" abbrCountry="US"/>
+	<state abbrState="AZ" state="Arizona" country="United States" abbrCountry="US"/>
+	<state abbrState="AR" state="Arkansas" country="United States" abbrCountry="US"/>
+	<state abbrState="CA" state="California" country="United States" abbrCountry="US"/>
+	<state abbrState="CO" state="Colorado" country="United States" abbrCountry="US"/>
+	<state abbrState="CT" state="Connecticut" country="United States" abbrCountry="US"/>
+	<state abbrState="DE" state="Delaware" country="United States" abbrCountry="US"/>
+	<state abbrState="FL" state="Florida" country="United States" abbrCountry="US"/>
+	<state abbrState="GA" state="Georgia" country="United States" abbrCountry="US"/>
+	<state abbrState="HI" state="Hawaii" country="United States" abbrCountry="US"/>
+	<state abbrState="ID" state="Idaho" country="United States" abbrCountry="US"/>
+	<state abbrState="IL" state="Illinois" country="United States" abbrCountry="US"/>
+	<state abbrState="IN" state="Indiana" country="United States" abbrCountry="US"/>
+	<state abbrState="IA" state="Iowa" country="United States" abbrCountry="US"/>
+	<state abbrState="KS" state="Kansas" country="United States" abbrCountry="US"/>
+	<state abbrState="KY" state="Kentucky" country="United States" abbrCountry="US"/>
+	<state abbrState="LA" state="Louisiana" country="United States" abbrCountry="US"/>
+	<state abbrState="ME" state="Maine" country="United States" abbrCountry="US"/>
+	<state abbrState="MD" state="Maryland" country="United States" abbrCountry="US"/>
+	<state abbrState="MA" state="Massachusetts" country="United States" abbrCountry="US"/>
+	<state abbrState="MI" state="Michigan" country="United States" abbrCountry="US"/>
+	<state abbrState="MN" state="Minnesota" country="United States" abbrCountry="US"/>
+	<state abbrState="MS" state="Mississippi" country="United States" abbrCountry="US"/>
+	<state abbrState="MO" state="Missouri" country="United States" abbrCountry="US"/>
+	<state abbrState="MT" state="Montana" country="United States" abbrCountry="US"/>
+	<state abbrState="NE" state="Nebraska" country="United States" abbrCountry="US"/>
+	<state abbrState="NV" state="Nevada" country="United States" abbrCountry="US"/>
+	<state abbrState="NH" state="New Hampshire" country="United States" abbrCountry="US"/>
+	<state abbrState="NJ" state="New Jersey" country="United States" abbrCountry="US"/>
+	<state abbrState="NM" state="New Mexico" country="United States" abbrCountry="US"/>
+	<state abbrState="NY" state="New York" country="United States" abbrCountry="US"/>
+	<state abbrState="NC" state="North Carolina"
+		country="United States" abbrCountry="US"/>
+	<state abbrState="ND" state="North Dakota" country="United States" abbrCountry="US"/>
+	<state abbrState="OH" state="Ohio" country="United States" abbrCountry="US"/>
+	<state abbrState="OK" state="Oklahoma" country="United States" abbrCountry="US"/>
+	<state abbrState="OR" state="Oregon" country="United States" abbrCountry="US"/>
+	<state abbrState="PA" state="Pennsylvania" country="United States" abbrCountry="US"/>
+	<state abbrState="RI" state="Rhode Island" country="United States" abbrCountry="US"/>
+	<state abbrState="SC" state="South Carolina"
+		country="United States" abbrCountry="US"/>
+	<state abbrState="SD" state="South Dakota" country="United States" abbrCountry="US"/>
+	<state abbrState="TN" state="Tennessee" country="United States" abbrCountry="US"/>
+	<state abbrState="TX" state="Texas" country="United States" abbrCountry="US"/>
+	<state abbrState="UT" state="Utah" country="United States" abbrCountry="US"/>
+	<state abbrState="VT" state="Vermont" country="United States" abbrCountry="US"/>
+	<state abbrState="VA" state="Virginia" country="United States" abbrCountry="US"/>
+	<state abbrState="WA" state="Washington" country="United States" abbrCountry="US"/>
+	<state abbrState="WV" state="West Virginia" country="United States" abbrCountry="US"/>
+	<state abbrState="WI" state="Wisconsin" country="United States" abbrCountry="US"/>
+	<state abbrState="WY" state="Wyoming" country="United States" abbrCountry="US"/>
+	<state abbrState="AB" state="Alberta" country="Canada" abbrCountry="CA"/>
+	<state abbrState="BC" state="British Columbia" country="Canada" abbrCountry="CA"/>
+	<state abbrState="MB" state="Manitoba" country="Canada" abbrCountry="CA"/>
+	<state abbrState="NB" state="New Brunswick" country="Canada" abbrCountry="CA"/>
+	<state abbrState="NT" state="Northwest Territories"
+		country="Canada" abbrCountry="CA"/>
+	<state abbrState="NS" state="Nova Scotia" country="Canada" abbrCountry="CA"/>
+	<state abbrState="NU" state="Nunavut" country="Canada" abbrCountry="CA"/>
+	<state abbrState="ON" state="Ontario" country="Canada" abbrCountry="CA"/>
+	<state abbrState="PE" state="Prince Edward Island" country="Canada" abbrCountry="CA"/>
+	<state abbrState="QC" state="Quebec" country="Canada" abbrCountry="CA"/>
+	<state abbrState="SK" state="Saskatchewan" country="Canada" abbrCountry="CA"/>
+	<state abbrState="YT" state="Yukon" country="Canada" abbrCountry="CA"/>
+</states>
+
+<contacts>
+   <contact>
+      <name>Allen, Frank</name>
+      <email>frank.allen@xys.net</email>
+      <residentialPhone>(303) 792-0774</residentialPhone>
+      <businessPhone>(303) 792-0775</businessPhone>
+      <residentialAddress>
+         <street1>1215 E Briarwood Av</street1>
+         <street2></street2>
+         <city>Englewood</city>
+         <state>CO</state>
+         <zip>80111</zip>
+      </residentialAddress>     
+      <businessAddress>
+         <street1>5664 S Delaware Dr</street1>
+         <street2></street2>
+         <city>Littleton</city>
+         <state>CO</state>
+         <zip>80212</zip>
+         <province></province>
+         <country>US</country>
+      </businessAddress>           
+   </contact>
+   
+   <contact>
+      <name>Barker, Russell R and Associates PC</name>
+      <email>russell@comcast.net</email>
+      <residentialPhone></residentialPhone>
+      <businessPhone>(303) 771-0608</businessPhone>
+      <residentialAddress>
+         <street1>9567 E Costilla Ave</street1>
+         <street2></street2>
+         <city>Greenwood Village</city>
+         <state>CO</state>
+         <zip>80131</zip>
+      </residentialAddress>     
+      <businessAddress>
+         <street1>43 Inverness Drive East</street1>
+         <street2></street2>
+         <city>Aurora</city>
+         <state>CO</state>
+         <zip>80412</zip>
+         <province></province>
+         <country>US</country>
+      </businessAddress>           
+   </contact>
+
+   <contact>
+      <name>Black Bear Construction Svc Inc</name>
+      <email>black.bear@hotmail.com</email>
+      <residentialPhone></residentialPhone>
+      <businessPhone>(303) 971-8608</businessPhone>
+      <residentialAddress>
+         <street1>345 S Platte River Dr</street1>
+         <street2>PO 899</street2>
+         <city>Denver</city>
+         <state>CO</state>
+         <zip>80161</zip>
+      </residentialAddress>     
+      <businessAddress>
+         <street1>71003 W Oxford Av Sheridan</street1>
+         <street2></street2>
+         <city>Lakewood</city>
+         <state>CO</state>
+         <zip>80512</zip>
+         <province></province>
+         <country>US</country>
+      </businessAddress>           
+   </contact>
+
+   <contact>
+      <name>Banister's Custom Wrought Iron</name>
+      <email>iron@banister.com</email>
+      <residentialPhone></residentialPhone>
+      <businessPhone>(720) 791-1977</businessPhone>
+      <residentialAddress>
+         <street1>3421 Fox</street1>
+         <street2></street2>
+         <city>Parker</city>
+         <state>CO</state>
+         <zip>80166</zip>
+      </residentialAddress>     
+      <businessAddress>
+         <street1>8977 Brandon Dr.</street1>
+         <street2></street2>
+         <city>Lakewood</city>
+         <state>CO</state>
+         <zip>80512</zip>
+         <province></province>
+         <country>US</country>
+      </businessAddress>           
+   </contact>
+
+   <contact>
+      <name>Dogwatch affordable Fence Co.</name>
+      <email>dogwatch@banister.com</email>
+      <residentialPhone></residentialPhone>
+      <businessPhone>(303) 345-3355</businessPhone>
+      <residentialAddress>
+         <street1>10032 W. Remington Ave.</street1>
+         <street2>#400</street2>
+         <city>Centennial</city>
+         <state>CO</state>
+         <zip>80134</zip>
+      </residentialAddress>     
+      <businessAddress>
+         <street1>8977 Brandon Dr.</street1>
+         <street2></street2>
+         <city>Lakewood</city>
+         <state>CO</state>
+         <zip>80512</zip>
+         <province></province>
+         <country>US</country>
+      </businessAddress>           
+   </contact>
+
+</contacts>
+</dex>

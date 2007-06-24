@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema uri="http://java.sun.com/JSP/Page" prefix="jsp" location="schemas/jsp/jspschema.xml">
+  <ElementType bodyContent="refused" endTag="required" name="forward" startTag="required">
+    <AttributeType default="" name="page" required="true"/>
+    <attribute default="" required="true" type="page"/>
+    <element type="param"/>
+  </ElementType>
+  <ElementType bodyContent="refused" endTag="required" name="getProperty" startTag="required">
+    <AttributeType default="" name="name" required="true"/>
+    <attribute default="" required="true" type="name"/>
+    <AttributeType default="" name="property" required="true"/>
+    <attribute default="" required="true" type="property"/>
+  </ElementType>
+  <ElementType bodyContent="refused" endTag="required" name="include" startTag="required">
+    <AttributeType default="" name="page" required="true"/>
+    <attribute default="" required="true" type="page"/>
+    <element type="param"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" endTag="required" name="plugin" startTag="required">
+    <AttributeType default="" name="type" required="true"
+		type="enumeration" values="bean,applet"/>
+    <attribute default="" required="true" type="type"/>
+    <AttributeType default="" name="code" required="true"/>
+    <attribute default="" required="true" type="code"/>
+    <AttributeType default="" name="codebase" required="true"/>
+    <attribute default="" required="true" type="codebase"/>
+    <AttributeType default="" name="name" required="false"/>
+    <attribute default="" required="false" type="name"/>
+    <AttributeType default="" name="archive" required="false"/>
+    <attribute default="" required="false" type="archive"/>
+    <AttributeType default="" name="align" required="false"
+		type="enumeration" values="bottom,top,middle,left,right"/>
+    <attribute default="" required="false" type="align"/>
+    <AttributeType default="" name="height" required="false"/>
+    <attribute default="" required="false" type="height"/>
+    <AttributeType default="" name="width" required="false"/>
+    <attribute default="" required="false" type="width"/>
+    <AttributeType default="" name="hspace" required="false"/>
+    <attribute default="" required="false" type="hspace"/>
+    <AttributeType default="" name="vspace" required="false"/>
+    <attribute default="" required="false" type="vspace"/>
+    <AttributeType default="1.1" name="jreversion" required="false"/>
+    <attribute default="1.1" required="false" type="jreversion"/>
+    <AttributeType default="" name="nspluginurl" required="false"/>
+    <attribute default="" required="false" type="nspluginurl"/>
+    <AttributeType default="" name="iepluginurl" required="false"/>
+    <attribute default="" required="false" type="iepluginurl"/>
+    <element type="params"/>
+    <element type="fallback"/>
+  </ElementType>
+  <ElementType bodyContent="refused" endTag="required" name="setProperty" startTag="required">
+    <AttributeType default="" name="name" required="true"/>
+    <attribute default="" required="true" type="name"/>
+    <AttributeType default="" name="property" required="true"/>
+    <attribute default="" required="true" type="property"/>
+    <AttributeType default="" name="param" required="false"/>
+    <attribute default="" required="false" type="param"/>
+    <AttributeType default="" name="value" required="false"/>
+    <attribute default="" required="false" type="value"/>
+  </ElementType>
+  <ElementType bodyContent="refused" endTag="required" name="useBean" startTag="required">
+    <AttributeType default="" name="id" required="true"/>
+    <attribute default="" required="true" type="id"/>
+    <AttributeType default="" name="scope" required="true"
+		type="enumeration" values="page,request,session,application"/>
+    <attribute default="" required="true" type="scope"/>
+    <AttributeType default="" name="class" required="false"/>
+    <attribute default="" required="false" type="class"/>
+    <AttributeType default="" name="type" required="false"/>
+    <attribute default="" required="false" type="type"/>
+    <AttributeType default="" name="beanName" required="false"/>
+    <attribute default="" required="false" type="beanName"/>
+    <element type="setProperty"/>
+    <element type="getProperty"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" endTag="required" name="params" startTag="required">
+    <element type="param"/>
+  </ElementType>
+  <ElementType bodyContent="refused" endTag="required" name="param" startTag="required">
+    <AttributeType default="" name="name" required="true"/>
+    <attribute default="" required="true" type="name"/>
+    <AttributeType default="" name="value" required="true"/>
+    <attribute default="" required="true" type="value"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" endTag="required" name="fallback" startTag="required">
+  </ElementType>
+</Schema>
+

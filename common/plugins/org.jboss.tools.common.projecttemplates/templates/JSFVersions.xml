@@ -1,0 +1,41 @@
+<versions> 
+ <version displayName="JSF 1.0 - Reference Implementation"> 
+  <lib type="core" location="../lib/jsf-1.0" /> 
+  <lib type="common" location="../lib/ApacheCommon2.3" /> 
+  <refLib type="servlet" location="../servlet" /> 
+  <projectTempl location="./jsf-1.0" /> 
+ </version> 
+ <version displayName="JSF 1.1.01 - Reference Implementation">
+  <lib type="core" location="../lib/jsf-1.1.01" />
+  <lib type="common" location="../lib/ApacheCommon2.3" />
+  <refLib type="servlet" location="../servlet" />
+  <projectTempl location="./jsf-1.1" />
+ </version>
+ <version displayName="JSF 1.2">
+  <lib type="core" location="../lib/jsf-1.2"/>
+  <lib type="common" location="../lib/ApacheCommon2.3" />
+  <refLib type="servlet" location="../servlet" />
+  <projectTempl location="./jsf-1.2" />
+ </version>
+ <version displayName="JSF 1.1.01 - RI with Facelets">
+  <lib type="core" location="../lib/jsf-1.1.01" />
+  <lib type="common" location="../lib/ApacheCommon2.3" />
+  <lib type="common" location="../lib/facelets" />
+  <refLib type="servlet" location="../servlet" />
+  <projectTempl location="./jsf-1.1-facelets" />
+ </version>
+ <version displayName="JSF 1.2 with Facelets">
+  <lib type="core" location="../lib/jsf-1.2" />
+  <lib type="common" location="../lib/facelets" />
+  <lib type="common" location="../lib/ApacheCommon2.3" />
+  <refLib type="servlet" location="../servlet" />
+  <projectTempl location="./jsf-1.2-facelets" />
+ </version>
+ <version displayName="MyFaces 1.1.4">
+  <lib type="core" location="../lib/myFaces1.1.4" />
+  <lib type="common" location="../lib/CommonMyFacesSet" />
+  <lib type="struts" location="../lib/Tiles" />
+  <refLib type="servlet" location="../servlet" />
+  <projectTempl location="./myFaces" />
+ </version>
+</versions>

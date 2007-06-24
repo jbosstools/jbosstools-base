@@ -1,0 +1,111 @@
+<!--
+ * Copyright 2004-2005 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+
+<!-- $Id: package.html,v 1.1 2005/12/23 14:25:52 glory Exp $ -->
+
+<body>
+
+<h3>Log On and Edit Profile Dialogs.</h3>
+
+<p>This package contains two dialogs (as supported by the package
+<code>org.apache.shale.dialog</code>):
+<ul>
+<li><a href="#Log On">Log On</a></li>
+<li><a href="#Edit Profile">Edit Profile</a></li>
+</ul>
+
+<a name="Log On"></a>
+<h4>Log On</h4>
+
+<p>The <em>Log On</em> dialog supports features typically required for
+application managed authentication, including the ability to ask for a
+"remember me" cookie, and to create a new profile.  Detailed functionality
+is configured by setting the following managed bean properties on a bean
+named <code>profile$logon</code>:</p>
+<ul>
+<li><code>rememberMe</code> (boolean) - Flag indicating that support for
+    "remember me" cookies is enabled.  By default, this feature is
+    disabled.</li>
+<li><code>userKey</code> (String) - Session scope attribute key under which
+    the <a href="../model/User.html">User</a> instance for the currently
+    logged on instance is stored [<code>user</code>].</li>
+</ul>
+
+<p>The following state diagram documents the flow through this dialog:</p>
+
+<p><img src="LogOn.gif" /></p>
+
+<p>The defined states have the following functionality:</p>
+<ul>
+<li><code>Check Cookie</code> (action) - If the <code>rememberMe</code> flag
+    is set, check for the existence of an appropriate "remember me" cookie
+    on the current request.  If such a cookie is found, return logical outcome
+    "authenticated"; otherwise, return logical outcome "unauthenticated".</li>
+<li><code>Logon Form</code> (view) - Display the logon form and wait for the
+    user's subsequent input.  Return the following logical outcomes based on
+    what the user actually does:
+    <ul>
+    <li><code>authenticated</code> - Username and password are successfully
+        authenticated.</li>
+    <li><code>create</code> - User selected the "Create New Profile" option.</li>
+    </ul></li>
+<li><code>Create Profile</code> (subdialog) - Use the <a href="#Edit Profile">
+    Edit Profile</a> dialog in a special mode to create a new profile (and
+    leave the user logged on).</li>
+<li><code>Exit</code> (end) - Render the application main menu.</li>
+</ul>
+
+<a name="Edit Profile"></a>
+<h4>Edit Profile</h4>
+
+<p>The <em>Edit Profile</em> dialog supports the ability to update the current
+profile (for a logged on user), or to create a new profile (if no user is
+currently logged on).  Detailed functionality is configured by setting the
+following managed bean properties on a bean named <code>profile$edit</code>:</p>
+<ul>
+<li><code>confirmation</code> (boolean) - Flag indicating that a confirmation
+    email must be sent, and the acknowledgement received, before the new profile
+    is activated.  <em>NOTE - the actual email sending and response receiving
+    functionality is not present in this application.</em></li>
+<li><code>userKey</code> (String) - Session scope attribute key under which
+    the <a href="../model/User.html">User</a> instance for the currently
+    logged on instance is stored [<code>user</code>].</li>
+</ul>
+
+<p>The following state diagram documents the flow through this dialog:</p>
+
+<p><img src="EditProfile.gif" /></p>
+
+<p>The defined states have the following functionality:</p>
+<ul>
+<li><code>Setup</code> (action) - Register an instance of our dialog state
+    bean with the dialog system, and return logical outcome <code>success</code>.</li>
+<li><code>Page 1</code> (view) - Render the first page of the profile,
+    and return a logical outcome based on which button the user pressed.</li>
+<li><code>Page 2</code> (view) - Render the second page of the profile,
+    and return a logical outcome based on which button the user pressed.</li>
+<li><code>Page 3</code> (view) - Render the third page of the profile,
+    and return a logical outcome based on which button the user pressed.</li>
+<li><code>Cancel</code> (action) - Perform any cleanup needed to respond to
+    the user cancelling this dialog, then return logical outcome
+    <code>success</code>.</li>
+<li><code>Finish</code> (action) - Check for a duplicate username, or mismatched
+    password entries, and return to the appropriate page on an error.
+    Otherwise, create or update the user profile and return logical outcome
+    <code>success</code>, leaving a new user logged on.</li>
+</ul>
+
+</body>

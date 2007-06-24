@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN" "meta.dtd">
+<XModelEntityGroup>
+ <VERSION DEPENDS="Model:1.0" MODULE="Verification Rules" VERSION="1.0"/>
+ <MAPPINGS>
+  <MAPPING name="FilteredTrees">
+   <PAIR name="VRules" value="org.jboss.tools.common.verification.vrules.model.VRulesTree"/>
+  </MAPPING>
+ </MAPPINGS>
+ <ICONS>
+  <GROUP name="action">
+   <GROUP name="new">
+    <GROUP name="vrules">
+     <ICON name="result-template" path="images/file/system_folder.gif"/>
+     <ICON name="rule" path="images/file/system_folder.gif"/>
+     <ICON name="ruleset" path="images/file/system_folder.gif"/>
+    </GROUP>
+   </GROUP>
+   <GROUP name="vrules">
+    <ICON name="verify" path="images/file/system_folder.gif"/>
+   </GROUP>
+  </GROUP>
+  <GROUP name="main">
+   <GROUP name="vrules">
+    <ICON name="manager" path="images/file/system_folder.gif"/>
+    <ICON name="result" path="images/java/attr.gif"/>
+    <ICON name="result-error" path="images/process/error.gif"/>
+    <ICON name="result-hidden" path="images/java/attr.gif"/>
+    <ICON name="result-info" path="images/java/attr.gif"/>
+    <ICON name="result-template" path="images/java/attr.gif"/>
+    <ICON name="result-warning" path="images/icons/warning.gif"/>
+    <ICON name="rule" path="images/file/system_folder.gif"/>
+    <ICON name="ruleset" path="images/file/system_folder.gif"/>
+   </GROUP>
+  </GROUP>
+ </ICONS>
+ <GlobalActions kind="list">
+  <XActionItem displayName="Verify" kind="list" name="VerifyActions">
+   <XActionItem kind="list" name="StaticActions">
+    <XActionItem HIDE="always"
+     HandlerClassName="org.jboss.tools.common.verification.vrules.handler.VerifyRulesHandler"
+     ICON="action.vrules.verify" displayName="Verify" kind="action" name="Verify"/>
+    <XActionItem BaseActionName="VerifyAll"
+     HandlerClassName="org.jboss.tools.common.verification.vrules.handler.VerifyRulesAllHandler"
+     ICON="action.vrules.verify" displayName="Verify" kind="action" name="VerifyAll"/>
+   </XActionItem>
+   <XActionItem displayName="Rule Sets" group="1" kind="list" name="DynamicActions">
+    <XActionItem displayName="[RuleSetName]" group="1" kind="list" name="[RuleSetName]">
+     <XActionItem kind="list" name="StaticActions">
+      <XActionItem HIDE="always"
+       HandlerClassName="org.jboss.tools.common.verification.vrules.handler.VerifyRuleSetHandler"
+       ICON="action.vrules.verify" displayName="Verify" kind="action" name="Verify"/>
+      <XActionItem BaseActionName="VerifyAll" HIDE="always"
+       HandlerClassName="org.jboss.tools.common.verification.vrules.handler.VerifyRuleSetAllHandler"
+       ICON="action.vrules.verify" displayName="Verify All"
+       kind="action" name="VerifyAll"/>
+     </XActionItem>
+     <XActionItem kind="list" name="DynamicActions">
+      <XActionItem HIDE="always"
+       HandlerClassName="org.jboss.tools.common.verification.vrules.handler.VerifyRuleHandler"
+       ICON="action.vrules.verify" displayName="#RuleName#"
+       kind="action" name="#RuleName#"/>
+     </XActionItem>
+    </XActionItem>
+   </XActionItem>
+  </XActionItem>
+ </GlobalActions>
+ <XModelEntity
+  ImplementationLoadingClass="org.jboss.tools.common.verification.vrules.model.VRuleSetsLoader"
+  ImplementingClass="org.jboss.tools.common.verification.vrules.model.VManagerModel"
+  XMLSUBPATH="rule-sets" name="VManager">
+  <XChildrenEntities>
+   <XChildEntity name="VRuleSet"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.vrules.manager" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="manager" loader="ElementType"
+    name="element type" visibility="false">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Verification Manager" name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="user" name="mode" xmlname="mode">
+    <Constraint loader="List">
+     <value name="developer"/>
+     <value name="user"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute name="minimum significance" xmlname="significance">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+     <value name="minimum=0"/>
+     <value name="maximum=10"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
+   <XModelAttribute default="%redhat.home%/rules" name="home"
+    visibility="false" xmlname="home">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="org.jboss.tools.common.verification.vrules.manager" name="bundle"
+    visibility="false" xmlname="bundle">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="format" name="format id" visibility="false" xmlname="format-id">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem
+    HandlerClassName="org.jboss.tools.common.verification.vrules.handler.VerifyConfigurationHandler"
+    ICON="action.empty" displayName="Edit Verification Rules..."
+    kind="action" name="Edit"/>
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HIDE="disabled" HandlerClassName="%Create%"
+     ICON="action.new.vrules.ruleset" WizardClassName="%Default%"
+     displayName="Create Rule Set..." kind="action" name="CreateRuleSet">
+     <EntityData EntityName="VRuleSet">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="description" Mandatory="no"/>
+      <AttributeData AttributeName="vendor" Mandatory="no"/>
+      <AttributeData AttributeName="version" Mandatory="no"/>
+      <AttributeData AttributeName="url" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Paste" HIDE="disabled"
+     HandlerClassName="%Paste%" ICON="action.paste" displayName="Paste"
+     kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="org.jboss.tools.common.verification.vrules.model.VResultModel"
+  XMLSUBPATH="result" name="VResult">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.vrules.result" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="result" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="message">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="significance">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="source object">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="source position">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="target object">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="target position">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list"/>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.verification.vrules.model.VResultTemplateModel"
+  XMLSUBPATH="result-template" name="VResultTemplate">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.vrules.result-template" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="result template" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="id" xmlname="id">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="description" xmlname="description">
+    <Constraint/>
+    <Editor name="Note"/>
+   </XModelAttribute>
+   <XModelAttribute default="error" name="type" xmlname="type">
+    <Constraint loader="List">
+     <value name="error"/>
+     <value name="warning"/>
+     <value name="info"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="10" name="significance" xmlname="significance">
+    <Constraint loader="Int">
+     <value name="minimum=0"/>
+     <value name="maximum=10"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
+   <XModelAttribute name="message id" xmlname="message-id">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HIDE="disabled"
+     HandlerClassName="%Copy%" ICON="action.copy" displayName="Copy"
+     kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HIDE="disabled"
+     HandlerClassName="%Cut%" ICON="action.cut" displayName="Cut"
+     kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HIDE="disabled"
+     HandlerClassName="%Delete%" ICON="action.delete"
+     displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="org.jboss.tools.common.verification.vrules.model.VRuleModel"
+  XMLSUBPATH="rule" name="VRule">
+  <XChildrenEntities>
+   <XChildEntity name="VResultTemplate"/>
+   <XChildEntity name="VResult"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.vrules.rule" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="rule" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="description" xmlname="description">
+    <Constraint/>
+    <Editor name="Note"/>
+   </XModelAttribute>
+   <XModelAttribute name="category" xmlname="category">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="action" xmlname="action">
+    <Constraint/>
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute name="entities" xmlname="entities">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="true" name="enabled" xmlname="enabled">
+    <Constraint loader="List">
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute name="properties" xmlname="properties">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem kind="list" name="CreateActions">
+    <XActionItem HIDE="disabled" HandlerClassName="%Create%"
+     ICON="action.new.vrules.result-template"
+     WizardClassName="%Default%" displayName="Create Template..."
+     kind="action" name="CreateTemplate">
+     <EntityData EntityName="VResultTemplate">
+      <AttributeData AttributeName="id"/>
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="description" Mandatory="no"/>
+      <AttributeData AttributeName="type" Mandatory="no"/>
+      <AttributeData AttributeName="significance" Mandatory="no"/>
+      <AttributeData AttributeName="message id" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HIDE="disabled"
+     HandlerClassName="%Copy%" ICON="action.copy" displayName="Copy"
+     kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HIDE="disabled"
+     HandlerClassName="%Cut%" ICON="action.cut" displayName="Cut"
+     kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HIDE="disabled"
+     HandlerClassName="%Paste%" ICON="action.paste" displayName="Paste"
+     kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HIDE="disabled"
+     HandlerClassName="%Delete%" ICON="action.delete"
+     displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="org.jboss.tools.common.verification.vrules.model.VRuleSetModel"
+  XMLSUBPATH="rule-set" name="VRuleSet">
+  <XChildrenEntities>
+   <XChildEntity name="VRuleSet"/>
+   <XChildEntity name="VRule"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.vrules.ruleset" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="rule set" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="description" xmlname="description">
+    <Constraint/>
+    <Editor name="Note"/>
+   </XModelAttribute>
+   <XModelAttribute name="vendor" xmlname="vendor">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="version" xmlname="version">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="url" xmlname="url">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="true" name="enabled" xmlname="enabled">
+    <Constraint loader="List">
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="false" name="installed" visibility="false" xmlname="installed">
+    <Constraint loader="List">
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute name="bundle" xmlname="bundle">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem kind="list" name="CreateActions">
+    <XActionItem HIDE="disabled" HandlerClassName="%Create%"
+     ICON="action.new.vrules.rule" WizardClassName="%Default%"
+     displayName="Create Rule..." kind="action" name="CreateRule">
+     <EntityData EntityName="VRule">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="description" Mandatory="no"/>
+      <AttributeData AttributeName="category" Mandatory="no"/>
+      <AttributeData AttributeName="action" Mandatory="no"/>
+      <AttributeData AttributeName="entities" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HIDE="disabled"
+     HandlerClassName="%Copy%" ICON="action.copy" displayName="Copy"
+     kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HIDE="disabled"
+     HandlerClassName="%Cut%" ICON="action.cut" displayName="Cut"
+     kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HIDE="disabled"
+     HandlerClassName="%Paste%" ICON="action.paste" displayName="Paste"
+     kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HIDE="disabled"
+     HandlerClassName="%Delete%" ICON="action.delete"
+     displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XEntityExtension name="OptionRoot">
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="VManager" required="yes"/>
+  </XChildrenEntities>
+  <XActionItem kind="list"/>
+ </XEntityExtension>
+ <XEntityExtension name="Root">
+  <XChildrenEntities/>
+  <XActionItem kind="list"/>
+ </XEntityExtension>
+</XModelEntityGroup>

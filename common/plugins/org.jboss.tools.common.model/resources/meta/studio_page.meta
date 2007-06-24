@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN" "meta.dtd">
+<XModelEntityGroup>
+ <VERSION MODULE="Model" VERSION="1.0"/>
+ <MAPPINGS/>
+ <ICONS/>
+ <GlobalActions kind="list"/>
+ <XModelEntity name="SPTNameSpaceHelper">
+  <XChildrenEntities/>
+  <XEntityRenderer/>
+  <XModelAttributes>
+   <XModelAttribute name="namespace">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list"/>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  AdoptManagerClass="org.jboss.tools.common.model.options.impl.PaletteAdopt"
+  ImplementingClass="org.jboss.tools.common.model.options.impl.SharableElementImpl" name="SharableGroup">
+  <XChildrenEntities>
+   <XChildEntity name="SharableGroup"/>
+   <XChildEntity name="SharableMacro"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.palette.group" type="imageref"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="sub-group" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Name"/>
+   </XModelAttribute>
+   <XModelAttribute name="icon" xmlname="ICON">
+    <Constraint loader="Tree">
+     <value name="IconsTree"/>
+    </Constraint>
+    <Editor name="TreeChooser"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem ICON="main.package" displayName="Class" group="1" kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.palette.group" WizardClassName="%Default%"
+     displayName="Create Group..." kind="action" name="CreateGroup">
+     <EntityData EntityName="SharableGroup">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.palette.macro" WizardClassName="%Default%"
+     displayName="Create Macro..." kind="action" name="CreateMacro">
+     <EntityData EntityName="SharableMacro">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
+     ICON="action.copy" displayName="Copy Group" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"
+     ICON="action.cut" displayName="Cut Group" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  AdoptManagerClass="org.jboss.tools.common.model.options.impl.PaletteAdopt"
+  ImplementingClass="org.jboss.tools.common.model.options.impl.SharableElementImpl" name="SharableGroupHTML">
+  <XChildrenEntities>
+   <XChildEntity name="SharableGroup"/>
+   <XChildEntity name="SharableMacro"/>
+   <XChildEntity name="SharableGroupHTML"/>
+   <XChildEntity name="SharableMacroHTML"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.palette.group" type="imageref"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="sub-group" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="required=true" name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Name"/>
+   </XModelAttribute>
+   <XModelAttribute name="icon" xmlname="ICON">
+    <Constraint loader="Tree">
+     <value name="IconsTree"/>
+    </Constraint>
+    <Editor name="TreeChooser"/>
+   </XModelAttribute>
+   <XModelAttribute name="library uri" xmlname="URI">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="library version" xmlname="library-version">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="default prefix" xmlname="PREFIX">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="true" name="add taglib" xmlname="add_taglib">
+    <Constraint loader="List">
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor viewer="CheckBox"/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="hidden" xmlname="HIDDEN">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem ICON="main.package" displayName="Class" group="1" kind="list">
+   <XActionItem kind="list" name="EditActions">
+    <XActionItem HandlerClassName="%Edit%" ICON="action.empty"
+     WizardClassName="%Default%" displayName="Edit..." kind="action" name="Edit">
+     <EntityData EntityName="SharableGroupHTML">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="icon" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.empty" displayName="Create" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.palette.macro" WizardClassName="%Default%"
+     displayName="Create Macro..." kind="action" name="CreateMacro">
+     <EntityData EntityName="SharableMacroHTML">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="icon" Mandatory="no"/>
+      <AttributeData AttributeName="start text" Mandatory="no"/>
+      <AttributeData AttributeName="end text" Mandatory="no"/>
+      <AttributeData AttributeName="automatically reformat tag body"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  AdoptManagerClass="org.jboss.tools.common.model.options.impl.PaletteAdopt"
+  ImplementingClass="org.jboss.tools.common.model.options.impl.SharableElementImpl" name="SharableMacro">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.palette.macro" type="imageref"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="macro" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Name"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+   <XModelAttribute name="icon" xmlname="ICON">
+    <Constraint loader="Tree">
+     <value name="IconsTree"/>
+    </Constraint>
+    <Editor name="TreeChooser"/>
+   </XModelAttribute>
+   <XModelAttribute name="description" xmlname="DESCRIPTION">
+    <Constraint/>
+    <Editor name="Note2"/>
+   </XModelAttribute>
+   <XModelAttribute name="start text" xmlname="STARTTEXT">
+    <Constraint/>
+    <Editor name="Note2"/>
+   </XModelAttribute>
+   <XModelAttribute name="end text" xmlname="ENDTEXT">
+    <Constraint/>
+    <Editor name="Note2"/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="automatically reformat tag body" xmlname="REFORMAT">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem ICON="main.package" displayName="Macro" group="1" kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HIDE="always"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  AdoptManagerClass="org.jboss.tools.common.model.options.impl.PaletteAdopt"
+  ImplementingClass="org.jboss.tools.common.model.options.impl.SharableElementImpl" name="SharableMacroHTML">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.palette.macro-tag" type="imageref"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="macro" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="required=true" name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Name"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+   <XModelAttribute name="icon" xmlname="ICON">
+    <Constraint loader="Tree">
+     <value name="IconsTree"/>
+    </Constraint>
+    <Editor name="TreeChooser"/>
+   </XModelAttribute>
+   <XModelAttribute name="description" xmlname="DESCRIPTION">
+    <Constraint/>
+    <Editor name="Note2"/>
+   </XModelAttribute>
+   <XModelAttribute default="HTML" name="type" visibility="false">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="start text" xmlname="STARTTEXT">
+    <Constraint/>
+    <Editor name="Note2"/>
+   </XModelAttribute>
+   <XModelAttribute name="end text" xmlname="ENDTEXT">
+    <Constraint/>
+    <Editor name="Note2"/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="automatically reformat tag body" xmlname="REFORMAT">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem ICON="main.package" displayName="Macro" group="1" kind="list">
+   <XActionItem kind="list" name="EditActions">
+    <XActionItem HandlerClassName="%Edit%" ICON="action.empty"
+     WizardClassName="%Default%" displayName="Edit..." kind="action" name="Edit">
+     <EntityData EntityName="SharableMacroHTML">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="description" Mandatory="no"/>
+      <AttributeData AttributeName="icon" Mandatory="no"/>
+      <AttributeData AttributeName="start text" Mandatory="no"/>
+      <AttributeData AttributeName="end text" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem HIDE="always" HandlerClassName="%Edit%"
+     ICON="action.empty" WizardClassName="%Default%"
+     displayName="Edit Description" kind="action" name="Edit_description">
+     <EntityData EntityName="SharableMacroHTML">
+      <AttributeData AttributeName="description" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem HIDE="always" HandlerClassName="%Edit%"
+     ICON="action.empty" WizardClassName="%Default%"
+     displayName="Edit Description" kind="action" name="Edit_start text">
+     <EntityData EntityName="SharableMacroHTML">
+      <AttributeData AttributeName="start text" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem HIDE="always" HandlerClassName="%Edit%"
+     ICON="action.empty" WizardClassName="%Default%"
+     displayName="Edit Description" kind="action" name="Edit_end text">
+     <EntityData EntityName="SharableMacroHTML">
+      <AttributeData AttributeName="end text" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HIDE="always"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  AdoptManagerClass="org.jboss.tools.common.model.options.impl.PaletteAdopt"
+  ImplementingClass="org.jboss.tools.common.model.options.impl.SharableElementImpl" name="SharablePageTab">
+  <XChildrenEntities>
+   <XChildEntity name="SharableGroup"/>
+   <XChildEntity name="SharableMacro"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.palette.tab" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="group" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Name"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+   <XModelAttribute name="description" xmlname="DESCRIPTION">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="HTML" name="type" visibility="false" xmlname="TABTYPE">
+    <Constraint loader="List">
+     <value name="HTML"/>
+     <value name="JAVA"/>
+     <value name="XSL"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="hidden" xmlname="HIDDEN">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem ICON="main.package" displayName="PageTab" group="1" kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.palette.group"
+     PROPERTIES="validator.add=true" WizardClassName="%Default%"
+     displayName="Create Group..." kind="action" name="CreateGroup">
+     <EntityData EntityName="SharableGroup">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="icon" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.palette.macro"
+     PROPERTIES="validator.add=true" WizardClassName="%Default%"
+     displayName="Create Macro..." kind="action" name="CreateMacro">
+     <EntityData EntityName="SharableMacro">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="icon" Mandatory="no"/>
+      <AttributeData AttributeName="start text" Mandatory="no"/>
+      <AttributeData AttributeName="end text" Mandatory="no"/>
+      <AttributeData AttributeName="automatically reformat tag body" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  AdoptManagerClass="org.jboss.tools.common.model.options.impl.PaletteAdopt"
+  ImplementingClass="org.jboss.tools.common.model.options.impl.SharableElementImpl" name="SharablePageTabHTML">
+  <XChildrenEntities>
+   <XChildEntity name="SharableGroup"/>
+   <XChildEntity name="SharableGroupHTML"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.palette.tab" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="group" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="required=true" name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Name"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+   <XModelAttribute name="description" xmlname="DESCRIPTION">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="HTML" name="type" visibility="false" xmlname="TABTYPE">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="hidden" xmlname="HIDDEN">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute name="nature type" visibility="false" xmlname="NATURE_TYPE">
+    <Constraint/>
+    <Editor name="PaletteNatureTypesEditor"/>
+   </XModelAttribute>
+   <XModelAttribute name="editor type" visibility="false" xmlname="EDITOR_TYPE">
+    <Constraint/>
+    <Editor name="PaletteEditorTypesEditor"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem ICON="main.package" displayName="PageTab" group="1" kind="list">
+   <XActionItem
+    HandlerClassName="org.jboss.tools.common.model.options.impl.EditHTMLTabNamespaceHandler"
+    ICON="action.empty" WizardClassName="%Default%"
+    displayName="Edit Namespace" kind="action" name="EditNamespace">
+    <EntityData EntityName="SPTNameSpaceHelper">
+     <AttributeData AttributeName="namespace" Mandatory="no"/>
+    </EntityData>
+   </XActionItem>
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.palette.group"
+     PROPERTIES="validator.add=true" WizardClassName="%Default%"
+     displayName="Create Group..." kind="action" name="CreateGroup">
+     <EntityData EntityName="SharableGroupHTML">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="icon" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem kind="list" name="EditActions">
+    <XActionItem HandlerClassName="%Edit%" ICON="action.empty"
+     WizardClassName="%Default%" displayName="Edit..." kind="action" name="Edit">
+     <EntityData EntityName="SharablePageTabHTML">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="description" Mandatory="no"/>
+      <AttributeData AttributeName="hidden" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+</XModelEntityGroup>

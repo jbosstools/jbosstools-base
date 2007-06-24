@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema
+  location=""
+  prefix="sql" uri="http://java.sun.com/jstl/sql">
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="transaction" startTag="required">
+    <AttributeType name="dataSource" required="false"/>
+    <attribute type="dataSource"/>
+    <AttributeType name="isolation" required="false"/>
+    <attribute type="isolation"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="query" startTag="required">
+    <AttributeType name="var" required="true"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="sql" required="false"/>
+    <attribute type="sql"/>
+    <AttributeType name="dataSource" required="false"/>
+    <attribute type="dataSource"/>
+    <AttributeType name="startRow" required="false"/>
+    <attribute type="startRow"/>
+    <AttributeType name="maxRows" required="false"/>
+    <attribute type="maxRows"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="update" startTag="required">
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="sql" required="false"/>
+    <attribute type="sql"/>
+    <AttributeType name="dataSource" required="false"/>
+    <attribute type="dataSource"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="param" startTag="required">
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType bodyContent="refused" content="mixed" endTag="required"
+    name="dateParam" startTag="required">
+    <AttributeType name="value" required="true"/>
+    <attribute type="value"/>
+    <AttributeType name="type" required="false"/>
+    <attribute type="type"/>
+  </ElementType>
+  <ElementType bodyContent="refused" content="mixed" endTag="required"
+    name="setDataSource" startTag="required">
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="dataSource" required="false"/>
+    <attribute type="dataSource"/>
+    <AttributeType name="driver" required="false"/>
+    <attribute type="driver"/>
+    <AttributeType name="url" required="false"/>
+    <attribute type="url"/>
+    <AttributeType name="user" required="false"/>
+    <attribute type="user"/>
+    <AttributeType name="password" required="false"/>
+    <attribute type="password"/>
+  </ElementType>
+</Schema>

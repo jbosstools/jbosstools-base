@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN"
+                                   "meta.dtd">
+<XModelEntityGroup>
+ <VERSION MODULE="Model" VERSION="1.0"/>
+ <MAPPINGS>
+  <MAPPING name="AttributeEditor">
+   <PAIR name="*" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="AccessibleJava" value="org.jboss.tools.common.model.ui.attribute.editor.JavaEclipseChoicerFieldEditor"/>
+   <PAIR name="Area" value="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor"/>
+   <PAIR name="Body" value="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor"/>
+   <PAIR name="CLASSPATH" value="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor"/>
+   <PAIR name="CheckBox" value="org.jboss.tools.common.model.ui.attribute.editor.CheckBoxEditor"/>
+   <PAIR name="Color" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="FileChooser" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="FolderChooser" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="Imports" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="ImportsSingle" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="Int" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="List" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="ListAdd" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="ListInt" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="ListRadio" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="ListString" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="ListViewer" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="Location" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="ModuleName" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="MutableList" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="Name" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="Note" value="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor"/>
+   <PAIR name="Note2" value="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor"/>
+   <PAIR name="NoteHTML" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="Parameters" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="Properties" value="org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor"/>
+   <PAIR name="RedHatFileSystem" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="RemoteParams" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="Text" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="TreeChooser" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="Type" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="URL"/>
+   <PAIR name="Uneditable" value="org.jboss.tools.common.model.ui.attribute.editor.UneditableEditor"/>
+   <PAIR name="View" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+  </MAPPING>
+  <MAPPING name="FilteredTrees">
+   <PAIR name="FileSystemResource" value="org.jboss.tools.common.model.impl.trees.FileSystemResourceTree"/>
+   <PAIR name="FileSystemResourceBundle" value="org.jboss.tools.common.model.impl.trees.FileSystemResourceBundleTree"/>
+   <PAIR name="FileSystems" value="org.jboss.tools.common.model.impl.trees.FileSystemsTree"/>
+   <PAIR name="IconsTree" value="org.jboss.tools.common.model.impl.trees.IconsTree"/>
+   <PAIR name="Implement" value="org.jboss.tools.common.model.impl.trees.ImplementFilteredTree"/>
+   <PAIR name="Navigator" value="org.jboss.tools.common.model.impl.trees.NavigationTree"/>
+   <PAIR name="OptionsTree" value="org.jboss.tools.common.model.impl.trees.OptionsTree"/>
+   <PAIR name="Override" value="org.jboss.tools.common.model.impl.trees.OverrideFilteredTree"/>
+   <PAIR name="PaletteTree" value="org.jboss.tools.common.model.impl.trees.PaletteTree"/>
+   <PAIR name="SearchTree" value="org.jboss.tools.common.model.impl.trees.SearchTree"/>
+   <PAIR name="SubTree" value="org.jboss.tools.common.model.impl.trees.DefaultSubTree"/>
+  </MAPPING>
+  <MAPPING name="Handlers">
+   <PAIR name="Copy" value="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"/>
+   <PAIR name="CopyChildren" value="org.jboss.tools.common.meta.action.impl.handlers.ChildrenCopyHandler"/>
+   <PAIR name="Create" value="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"/>
+   <PAIR name="Cut" value="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"/>
+   <PAIR name="DefaultReplaceUnique" value="org.jboss.tools.common.meta.action.impl.handlers.ReplaceWithNewHandler"/>
+   <PAIR name="Delete" value="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"/>
+   <PAIR name="DeleteChildren" value="org.jboss.tools.common.meta.action.impl.handlers.ChildrenDeleteHandler"/>
+   <PAIR name="Edit" value="org.jboss.tools.common.meta.action.impl.handlers.DefaultEditHandler"/>
+   <PAIR name="Move" value="org.jboss.tools.common.meta.action.impl.handlers.MoveHandler"/>
+   <PAIR name="Open" value="org.jboss.tools.common.model.handlers.OpenEditorHandler"/>
+   <PAIR name="OpenJavaSource" value="org.jboss.tools.common.model.java.handlers.OpenJavaSourceHandler"/>
+   <PAIR name="Paste" value="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"/>
+   <PAIR name="Properties" value="org.jboss.tools.common.meta.action.impl.handlers.PropertiesHandler"/>
+   <PAIR name="Redirect" value="org.jboss.tools.common.meta.action.impl.handlers.DefaultRedirectHandler"/>
+   <PAIR name="SaveFile" value="org.jboss.tools.common.model.filesystems.impl.SaveFileHandler"/>
+   <PAIR name="SpecialWizard" value="org.jboss.tools.common.meta.action.impl.handlers.DefaultSpecialHandler"/>
+  </MAPPING>
+  <MAPPING name="Icons">
+   <PAIR name="engine" value="org.jboss.tools.common.model.icons.impl.EngineIcon"/>
+   <PAIR name="gif" value="org.jboss.tools.common.model.icons.impl.GifIcon"/>
+   <PAIR name="image" value="org.jboss.tools.common.model.icons.impl.XStudioIcons"/>
+   <PAIR name="imageref" value="org.jboss.tools.common.model.icons.impl.ReferencedIcons"/>
+   <PAIR name="main" value="org.jboss.tools.common.model.icons.impl.MainIcon"/>
+   <PAIR name="modifiers" value="org.jboss.tools.common.model.icons.impl.ModifiersIcon"/>
+  </MAPPING>
+  <MAPPING name="Implementations">
+   <PAIR name="Custom" value="org.jboss.tools.common.model.impl.CustomizedObjectImpl"/>
+   <PAIR name="Ordered" value="org.jboss.tools.common.model.impl.OrderedObjectImpl"/>
+   <PAIR name="Regular" value="org.jboss.tools.common.model.impl.RegularObjectImpl"/>
+  </MAPPING>
+  <MAPPING name="Loaders">
+   <PAIR name="Entity" value="org.jboss.tools.common.model.loaders.impl.DefaultEntityLoader"/>
+  </MAPPING>
+  <MAPPING name="ObjectEditor">
+   <PAIR name="DEFAULT" value="DefaultEditor"/>
+   <PAIR name="Flow" value="DefaultEditor"/>
+   <PAIR name="HTML" value="org.jboss.tools.jst.jsp.jspeditor.HTMLTextEditor"/>
+   <PAIR name="JAVA" value="DefaultEditor"/>
+   <PAIR name="JSP" value="org.jboss.tools.jst.jsp.jspeditor.JSPTextEditor"/>
+   <PAIR name="PROPERTIES" value="DefaultEditor"/>
+   <PAIR name="REFERENCE" value="DefaultEditor"/>
+   <PAIR name="XML" value="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"/>
+   <PAIR name="XSL" value="org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor"/>
+  </MAPPING>
+  <MAPPING name="Recognizers">
+   <PAIR name="jsp$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
+   <PAIR name="jspf$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
+   <PAIR name="jspx$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
+  </MAPPING>
+  <MAPPING name="Roots">
+   <PAIR name="Editor" value="XStudio/Options/Editor"/>
+   <PAIR name="Icons" value="XStudio/Icons"/>
+   <PAIR name="Libraries" value="Libraries"/>
+   <PAIR name="Options" value="XStudio/Options"/>
+   <PAIR name="Palette" value="XStudio/Palette"/>
+   <PAIR name="Preferences" value="XStudio/Options/Preferences"/>
+   <PAIR name="Root" value="Root"/>
+   <PAIR name="Search" value="XStudio/Search"/>
+   <PAIR name="XStudio" value="XStudio"/>
+  </MAPPING>
+  <MAPPING name="Wizards">
+   <PAIR name="Agent" value="XXX"/>
+   <PAIR name="ClassChooser" value="XXX"/>
+   <PAIR name="CreateStateWizard" value="XXX"/>
+   <PAIR name="Default" value="XXX"/>
+   <PAIR name="OneParameter" value="XXX"/>
+  </MAPPING>
+ </MAPPINGS>
+ <ICONS>
+  <GROUP name="action">
+   <GROUP name="convert">
+    <ICON name="to_base" path="images/flow/convert_to_base.gif"/>
+    <ICON name="to_join" path="images/flow/convert_to_join.gif"/>
+    <ICON name="to_send" path="images/flow/convert_to_send.gif"/>
+    <ICON name="to_wait" path="images/flow/convert_to_wait.gif"/>
+   </GROUP>
+   <GROUP name="editing">
+    <ICON name="baseclass" path="images/flow/change_base_class.gif"/>
+   </GROUP>
+   <GROUP name="new">
+    <GROUP name="class">
+     <ICON name="active" path="images/java/active_class_new.gif"/>
+     <ICON name="interactive" path="images/java/interactive_class_new.gif"/>
+     <ICON name="jms" path="images/java/JMS_Proxy_new.gif"/>
+     <ICON name="regular" path="images/java/newclass.gif"/>
+     <ICON name="rmi" path="images/java/RMI_Proxy_new.gif"/>
+     <ICON name="soap" path="images/java/SOAP_Proxy_new.gif"/>
+    </GROUP>
+    <GROUP name="file">
+     <ICON name="ant_file" path="images/file/new_ant_file.gif"/>
+     <ICON name="folder" path="images/file/new_folder.gif"/>
+     <ICON name="html_file" path="images/file/new_html_file.gif"/>
+     <ICON name="jar_file" path="images/file/new_jar_file.gif"/>
+     <ICON name="java_file" path="images/file/new_java_file.gif"/>
+     <ICON name="jsp_file" path="images/file/new_jsp_file.gif"/>
+     <ICON name="new_property" path="images/navigationtree/new_property.gif"/>
+     <ICON name="properties" path="images/file/new_properties_file.gif"/>
+     <ICON name="unknow_file" path="images/file/new_unknow_file.gif"/>
+     <ICON name="xhtml_file" path="images/file/new_html_file.gif"/>
+     <ICON name="xml_file" path="images/file/new_xml_file.gif"/>
+     <ICON name="xsl_file" path="images/file/new_xsl_file.gif"/>
+    </GROUP>
+    <GROUP name="method">
+     <ICON name="b2b" path="images/java/B2BMap_method_new.gif"/>
+     <ICON name="flow" path="images/java/flow_method_new.gif"/>
+     <ICON name="get" path="images/java/get_method_new.gif"/>
+     <ICON name="regular" path="images/java/newmethod.gif"/>
+     <ICON name="set" path="images/java/set_method_new.gif"/>
+    </GROUP>
+    <GROUP name="state">
+     <ICON name="base" path="images/flow/create_base.gif"/>
+     <ICON name="fork" path="images/flow/create_fork.gif"/>
+     <ICON name="join" path="images/flow/create_join.gif"/>
+     <ICON name="module" path="images/flow/create_module_based.gif"/>
+     <ICON name="send" path="images/flow/create_send.gif"/>
+     <ICON name="start" path="images/flow/create_start.gif"/>
+     <ICON name="stop" path="images/flow/create_stop.gif"/>
+     <ICON name="wait" path="images/flow/create_wait.gif"/>
+    </GROUP>
+   </GROUP>
+   <GROUP name="project">
+    <ICON name="import" path="images/project/import_project.gif"/>
+    <ICON name="new" path="images/project/new_project.gif"/>
+   </GROUP>
+   <ICON name="compile" path="images/actions/compilecode.gif"/>
+   <ICON name="copy" path="command:org.eclipse.ui.edit.copy"/>
+   <ICON name="copy_old" path="images/actions/copy.gif"/>
+   <ICON name="cut" path="command:org.eclipse.ui.edit.cut"/>
+   <ICON name="cut_old" path="images/actions/cut.gif"/>
+   <ICON name="delete" path="command:org.eclipse.ui.edit.delete"/>
+   <ICON name="delete_old" path="images/actions/delete.gif"/>
+   <ICON name="edit" path="images/file/unknow_file.gif"/>
+   <ICON name="empty" path="images/actions/empty.gif"/>
+   <ICON name="find" path="images/actions/find.gif"/>
+   <ICON name="fire_changes" path="images/common/fire_changes.gif"/>
+   <ICON name="generate" path="images/actions/generatecode.gif"/>
+   <ICON name="history" path="images/actions/model_history.gif"/>
+   <ICON name="move" path="images/actions/empty.gif"/>
+   <ICON name="newapplication" path="images/navigationtree/application_new.gif"/>
+   <ICON name="newattribute" path="images/java/newattribute.gif"/>
+   <ICON name="newconstructor" path="images/java/newconstructor.gif"/>
+   <ICON name="newinterface" path="images/java/newinterface.gif"/>
+   <ICON name="newmethod" path="images/java/newmethod.gif"/>
+   <ICON name="newpackage" path="images/java/newpackages.gif"/>
+   <ICON name="newproject" path="images/navigationtree/new_project.gif"/>
+   <ICON name="paste" path="command:org.eclipse.ui.edit.paste"/>
+   <ICON name="paste_old" path="images/actions/paste.gif"/>
+   <ICON name="redo" path="images/actions/redo.gif"/>
+   <ICON name="refresh" path="images/actions/refresh.gif"/>
+   <ICON name="rename" path="images/actions/empty.gif"/>
+   <ICON name="retry" path="images/actions/retry.gif"/>
+   <ICON name="save" path="images/actions/savemodel.gif"/>
+   <ICON name="saveall" path="images/actions/saveallmodel.gif"/>
+   <ICON name="select" path="images/actions/select.gif"/>
+   <ICON name="start" path="images/actions/start.gif"/>
+   <ICON name="stop" path="images/actions/stop.gif"/>
+   <ICON name="test" path="images/actions/start.gif"/>
+   <ICON name="undo" path="images/actions/undo.gif"/>
+  </GROUP>
+  <GROUP name="default">
+   <ICON name="folder" path="images/file/closed_folder.gif"/>
+   <ICON name="unknown" path="images/common/qmark.gif"/>
+  </GROUP>
+  <GROUP name="main">
+   <GROUP name="classes">
+    <ICON name="active" path="images/java/active_class.gif"/>
+    <ICON name="interactive" path="images/java/interactive_class.gif"/>
+    <ICON name="jms" path="images/java/JMS_Proxy.gif"/>
+    <ICON name="rmi" path="images/java/RMI_Proxy.gif"/>
+    <ICON name="soap" path="images/java/SOAP_Proxy.gif"/>
+   </GROUP>
+   <GROUP name="data">
+    <GROUP name="adapters">
+     <ICON name="compound" path="images/navigationtree/adapter_compound.gif"/>
+     <ICON name="db" path="images/navigationtree/adapter_db.gif"/>
+     <ICON name="java" path="images/navigationtree/adapter_java.gif"/>
+     <ICON name="join" path="images/navigationtree/adapter_join.gif"/>
+     <ICON name="xml" path="images/navigationtree/adapter_xml.gif"/>
+    </GROUP>
+    <GROUP name="db">
+     <ICON name="field" path="images/navigationtree/db_filed.gif"/>
+     <ICON name="index" path="images/navigationtree/db_index.gif"/>
+     <ICON name="meta" path="images/navigationtree/db_meta_data.gif"/>
+     <ICON name="table" path="images/navigationtree/db_table.gif"/>
+     <ICON name="view" path="images/navigationtree/db_view.gif"/>
+    </GROUP>
+    <GROUP name="xml">
+     <ICON name="attribute" path="images/navigationtree/xml_attribute.gif"/>
+     <ICON name="element" path="images/navigationtree/xml_element.gif"/>
+    </GROUP>
+    <ICON name="root" path="images/navigationtree/adapter_folder.gif"/>
+   </GROUP>
+   <GROUP name="file">
+    <ICON name="ant_file" path="images/file/ant_file.gif"/>
+    <ICON name="closed_folder" path="images/file/closed_folder.gif"/>
+    <ICON name="folder" path="images/file/closed_folder.gif"/>
+    <ICON name="gif_file" path="images/file/gif_file.gif"/>
+    <ICON name="html_file" path="images/file/html_file.gif"/>
+    <ICON name="jar_file" path="images/file/jar_file.gif"/>
+    <ICON name="java_file" path="images/file/java_file.gif"/>
+    <ICON name="jsp" path="images/file/jsp_file.gif"/>
+    <ICON name="jsp_file" path="images/file/jsp_file.gif"/>
+    <ICON name="openned_folder" path="images/file/openned_folder.gif"/>
+    <ICON name="redhat_folder" path="images/file/redhat_folder.gif"/>
+    <ICON name="root" path="images/file/storage_folder.gif"/>
+    <ICON name="system_folder" path="images/file/system_folder.gif"/>
+    <ICON name="to_top_folder" path="images/file/to_top_folder.gif"/>
+    <ICON name="unknow_file" path="images/file/unknow_file.gif"/>
+    <ICON name="xhtml_file" path="images/file/html_file.gif"/>
+    <ICON name="xml_file" path="images/file/xml_file.gif"/>
+    <ICON name="xsl" path="images/file/xsl_file.gif"/>
+    <ICON name="xsl_file" path="images/file/xsl_file.gif"/>
+   </GROUP>
+   <GROUP name="flow">
+    <ICON name="folder" path="images/navigationtree/flow_folder.gif"/>
+    <ICON name="item" path="images/navigationtree/flow.gif"/>
+   </GROUP>
+   <GROUP name="mappings">
+    <ICON name="folder" path="images/navigationtree/map_folder.gif"/>
+    <ICON name="item" path="images/navigationtree/map.gif"/>
+   </GROUP>
+   <GROUP name="methods">
+    <ICON name="any" path="images/java/method.gif"/>
+    <ICON name="b2b" path="images/java/B2BMap_method.gif"/>
+    <ICON name="flow" path="images/java/flow_method.gif"/>
+    <ICON name="get" path="images/java/get_method.gif"/>
+    <ICON name="i" path="images/java/interface_method.gif"/>
+    <ICON name="java" path="images/java/method.gif"/>
+    <ICON name="jsp" path="images/java/method_jsp.gif"/>
+    <ICON name="old" path="images/java/method_old.gif"/>
+    <ICON name="set" path="images/java/set_method.gif"/>
+    <ICON name="xsl" path="images/java/method_xsl.gif"/>
+   </GROUP>
+   <GROUP name="packages">
+    <ICON name="common" path="images/java/usersystempackage.gif"/>
+    <ICON name="system" path="images/java/systempackage.gif"/>
+    <ICON name="user" path="images/java/package.gif"/>
+   </GROUP>
+   <GROUP name="projects">
+    <ICON name="folder" path="images/navigationtree/projects_folder.gif"/>
+    <ICON name="item" path="images/navigationtree/project.gif"/>
+    <ICON name="new" path="images/navigationtree/new_project.gif"/>
+    <ICON name="reopen" path="images/navigationtree/project_reopen.gif"/>
+   </GROUP>
+   <GROUP name="xstudio">
+    <GROUP name="icons">
+     <ICON name="group" path="images/navigationtree/icons_group16.gif"/>
+     <ICON name="root" path="images/navigationtree/icons_folder16.gif"/>
+    </GROUP>
+    <GROUP name="options">
+     <ICON name="folder" path="images/navigationtree/options_folder16.gif"/>
+     <ICON name="item" path="images/navigationtree/options_item16.gif"/>
+     <ICON name="root" path="images/navigationtree/options_tree.gif"/>
+    </GROUP>
+    <GROUP name="palette">
+     <ICON name="macros" path="images/navigationtree/macros16.gif"/>
+     <ICON name="macroses" path="images/navigationtree/macros_group.gif"/>
+     <ICON name="root" path="images/navigationtree/palette_tree.gif"/>
+     <ICON name="template" path="images/navigationtree/state_template16.gif"/>
+     <ICON name="templates" path="images/navigationtree/state_template_folder16.gif"/>
+    </GROUP>
+    <ICON name="root" path="images/file/closed_folder.gif"/>
+   </GROUP>
+   <ICON name="application" path="images/navigationtree/application.gif"/>
+   <ICON name="applications" path="images/navigationtree/applications.gif"/>
+   <ICON name="attribute" path="images/java/attr.gif"/>
+   <ICON name="auxiliary" path="images/file/redhat_file.gif"/>
+   <ICON name="class" path="images/java/class.gif"/>
+   <ICON name="closedbox" path="images/navigationtree/closed_folder.gif"/>
+   <ICON name="constructor" path="images/java/constructor.gif"/>
+   <ICON name="database" path="images/file/redhat_file.gif"/>
+   <ICON name="databases" path="images/file/redhat_file.gif"/>
+   <ICON name="datasource" path="images/navigationtree/data_source.gif"/>
+   <ICON name="db_method" path="images/file/redhat_file.gif"/>
+   <ICON name="empty" path="images/common/empty.gif"/>
+   <ICON name="interface" path="images/java/interface.gif"/>
+   <ICON name="java" path="images/navigationtree/java.gif"/>
+   <ICON name="method" path="images/java/method.gif"/>
+   <ICON name="openedbox" path="images/file/closed_folder.gif"/>
+   <ICON name="package" path="images/java/package.gif"/>
+   <ICON name="primitive" path="images/java/java_primitive.gif"/>
+   <ICON name="primitives" path="images/java/java_primitive_folder.gif"/>
+   <ICON name="properties" path="images/navigationtree/properties.gif"/>
+   <ICON name="property" path="images/navigationtree/property.gif"/>
+   <ICON name="root" path="images/file/closed_folder.gif"/>
+   <ICON name="systemclass" path="images/java/systemclass.gif"/>
+  </GROUP>
+  <GROUP name="modifiers">
+   <ICON name="abstract" path="images/Modifiers/abs_circle.gif"/>
+   <ICON name="final" path="images/Modifiers/fin_circle.gif"/>
+   <ICON name="package_local" path="images/Modifiers/plc_circle.gif"/>
+   <ICON name="package_local_static" path="images/Modifiers/plc_squere.gif"/>
+   <ICON name="private" path="images/Modifiers/prv_circle.gif"/>
+   <ICON name="private_static" path="images/Modifiers/prv_squere.gif"/>
+   <ICON name="protected" path="images/Modifiers/prt_circle.gif"/>
+   <ICON name="protected_static" path="images/Modifiers/prt_squere.gif"/>
+   <ICON name="public" path="images/Modifiers/pb_circle.gif"/>
+   <ICON name="public_static" path="images/Modifiers/pb_squere.gif"/>
+  </GROUP>
+ </ICONS>
+ <GlobalActions kind="list">
+  <XActionItem ICON="action.saveall" displayName="Save actions"
+   kind="list" name="SaveActions">
+   <XActionItem BaseActionName="File"
+    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.SaveAllHandler"
+    ICON="action.saveall" displayName="Save all" kind="action" name="SaveAll"/>
+   <XActionItem BaseActionName="File" ICON="action.saveall"
+    displayName="Save" kind="action" name="Save"/>
+  </XActionItem>
+  <XActionItem ICON="action.undo" displayName="Undo actions" kind="list" name="UndoActions">
+   <XActionItem BaseActionName="Edit"
+    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.UndoRedoHandler"
+    ICON="action.history" displayName="Undo History" kind="action" name="History"/>
+   <XActionItem ICON="action.undo" displayName="Undo" kind="action" name="Undo"/>
+   <XActionItem ICON="action.redo" displayName="Undo" kind="action" name="Redo"/>
+  </XActionItem>
+  <XActionItem ICON="action.delete" displayName="Delete actions"
+   kind="list" name="DeleteActions">
+   <XActionItem BaseActionName="Edit" ICON="action.delete"
+    displayName="Delete" kind="action" name="Delete"/>
+  </XActionItem>
+  <XActionItem ICON="action.newpackage" displayName="Create actions"
+   kind="list" name="CreateActions">
+   <XActionItem ICON="action.new" displayName="Create" kind="action" name="Create"/>
+  </XActionItem>
+  <XActionItem ICON="action.copy" displayName="Copy actions" kind="list" name="CopyActions">
+   <XActionItem BaseActionName="Edit" ICON="action.copy"
+    displayName="Copy" kind="action" name="Copy"/>
+   <XActionItem BaseActionName="Edit" ICON="action.cut"
+    displayName="Cut" kind="action" name="Cut"/>
+   <XActionItem BaseActionName="Edit" ICON="action.paste"
+    displayName="Paste" kind="action" name="Paste"/>
+  </XActionItem>
+  <XActionItem ICON="action.newpackage" displayName="Project actions"
+   kind="list" name="ProjectActions">
+   <XActionItem BaseActionName="File" ICON="action.newpackage"
+    SAVE_REQUIRED="yes" displayName="New project" kind="action" name="NewProject"/>
+   <XActionItem BaseActionName="File" ICON="action.newpackage"
+    SAVE_REQUIRED="yes" displayName="Open project" kind="action" name="OpenProject"/>
+   <XActionItem BaseActionName="File" ICON="action.newpackage"
+    SAVE_REQUIRED="yes" displayName="Reopen project" kind="action" name="ReopenProject"/>
+  </XActionItem>
+  <XActionItem ICON="action.generate" displayName="Generate" kind="list" name="GenerateActions"/>
+ </GlobalActions>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.impl.AnyElementObjectImpl"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.model.ui.forms.ModelFormLayoutData" name="AnyElement">
+  <XChildrenEntities>
+   <XChildEntity name="AnyElement"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.palette.macro-tag" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="element" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="tag" xmlname="tag">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="attributes" xmlname="attributes">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="text">
+    <Constraint/>
+    <Editor name="Note"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;generate=true" name="_id_" visibility="false">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%" ICON="action.empty"
+     PROPERTIES="entity=AnyElement" WizardClassName="%Default%"
+     displayName="Add Tag..." kind="action" name="CreateTag">
+     <EntityData EntityName="AnyElementNew">
+      <AttributeData AttributeName="tag"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem HandlerClassName="%SpecialWizard%" ICON="action.empty"
+     PROPERTIES="support=org.jboss.tools.common.meta.action.impl.handlers.AddAttributeToAnyElementSupport"
+     displayName="Add Attribute..." kind="action" name="CreateAttribute">
+     <EntityData EntityName="AnyElementNew">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="value" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions">
+    <XActionItem HIDE="always" HandlerClassName="%Move%"
+     ICON="action.move" displayName="Move" kind="action" name="Move"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.impl.AnyElementObjectImpl"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.model.ui.forms.ModelFormLayoutData" name="AnyElementNew">
+  <XChildrenEntities>
+   <XChildEntity name="AnyElement"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.palette.macro-tag" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="element" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="tag" xmlname="tag">
+    <Constraint loader="XMLName"/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="text">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="name">
+    <Constraint loader="XMLName"/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="value">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem kind="list" name="EditActions">
+    <XActionItem HandlerClassName="%SpecialWizard%" ICON="action.empty"
+     PROPERTIES="support=org.jboss.tools.common.meta.action.impl.handlers.AddAttributeToAnyElementSupport;edit=true"
+     displayName="Edit Attribute..." kind="action" name="EditAttribute">
+     <EntityData EntityName="AnyElementNew">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="value" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Regular%" name="EclipseWorkspace">
+  <XChildrenEntities/>
+  <XEntityRenderer/>
+  <XModelAttributes>
+   <XModelAttribute default="Eclipse Workspace" name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem HIDE="always" displayName="Help" kind="action" name="Help"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.RootLoaderImpl"
+  ImplementingClass="org.jboss.tools.common.model.impl.RootImpl" name="Root">
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="Workspaces" required="yes"/>
+   <XChildEntity maxCount="1" name="FileSystems" required="yes"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.root" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="root" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Root" name="name" visibility="false" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Root" name="project name" visibility="false">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem
+    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.UndoRedoHandler"
+    ICON="action.undo" displayName="Undo/Redo" kind="action" name="UndoRedo"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.RootLoaderImpl"
+  ImplementingClass="org.jboss.tools.common.model.impl.RootImpl" name="RootDummy">
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="Workspaces" required="yes"/>
+   <XChildEntity maxCount="1" name="SharableXStudio" required="yes"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.root" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="root" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Root" name="name" visibility="false" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Root" name="project name" visibility="false">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list"/>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.impl.ExtraRootImpl" name="RootExtra">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.root" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="root" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="ExtraRoot" name="name" visibility="false" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list"/>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.impl.RootImpl" name="RootNewUtil">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.root" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="util" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name">
+    <Constraint loader="FolderName"/>
+    <Editor name="Name"/>
+   </XModelAttribute>
+   <XModelAttribute name="folder" visibility="false">
+    <Constraint loader="FileFilter">
+     <value name="allFiles=false"/>
+     <value name="description=XStudio Project Folder"/>
+     <value name="extensions=pex"/>
+     <value name="mode=DIRECTORIES_ONLY"/>
+    </Constraint>
+    <Editor name="FolderChooser"/>
+   </XModelAttribute>
+   <XModelAttribute default="yes" name="allocate new folder">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list"/>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.impl.RootImpl" name="RootOpenUtil">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.root" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="util" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="redhat project" visibility="false">
+    <Constraint loader="FileFilter">
+     <value name="allFiles=false"/>
+     <value name="description=XStudio Project (*.pex)"/>
+     <value name="extensions=pex"/>
+     <value name="mode=FILES_ONLY"/>
+     <value name="bundle=open_project"/>
+     <value name="infoText=bundle"/>
+     <value name="infoIcon=bundle"/>
+    </Constraint>
+    <Editor name="FileChooser"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list"/>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Regular%" XMLSUBPATH="PROJECT" name="Workspace">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="default.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="project" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem BaseActionName="ReopenWorkspace"
+    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.ReopenProjectHandler"
+    ICON="action.newpackage" SAVE_REQUIRED="yes"
+    displayName="Reopen Workspace" kind="action" name="Reopen"/>
+   <XActionItem
+    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CloseProjectHandler"
+    ICON="action.delete" displayName="Close Project" kind="action" name="Close"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.URLRootLoader"
+  ImplementingClass="org.jboss.tools.common.model.impl.OpenedProjectsImpl"
+  XMLSUBPATH="PROJECTS" name="Workspaces">
+  <XChildrenEntities>
+   <XChildEntity name="Workspace"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="default.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="partition" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Workspaces" name="name" visibility="false" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="yes" name="open workspace" xmlname="OPEN">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem BaseActionName="NewWorkspace"
+    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.NewProjectHandler"
+    ICON="main.projects.new" SAVE_REQUIRED="yes"
+    WizardClassName="%Default%" displayName="New Workspace..."
+    kind="action" name="NewWorkspace">
+    <EntityData EntityName="RootNewUtil">
+     <AttributeData AttributeName="name"/>
+     <AttributeData AttributeName="folder"/>
+     <AttributeData AttributeName="allocate new folder"/>
+    </EntityData>
+   </XActionItem>
+   <XActionItem BaseActionName="OpenWorkspace"
+    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenProjectHandler"
+    ICON="main.projects.item" SAVE_REQUIRED="yes"
+    WizardClassName="%OneParameter%" displayName="Open Workspace..."
+    kind="action" name="OpenWorkspace">
+    <EntityData EntityName="RootOpenUtil">
+     <AttributeData AttributeName="redhat project"/>
+    </EntityData>
+   </XActionItem>
+   <XActionItem BaseActionName="ReopenWorkspace"
+    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.ReopenProjectHandler"
+    ICON="main.projects.reopen" SAVE_REQUIRED="yes"
+    displayName="Reopen Workspace..." kind="action" name="ReopenWorkspace"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+</XModelEntityGroup>

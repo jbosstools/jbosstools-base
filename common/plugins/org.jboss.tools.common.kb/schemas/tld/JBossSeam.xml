@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema prefix="s">
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="decorate" startTag="required">
+        <description/>
+        <AttributeType name="for" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="for"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="validate" startTag="required">
+        <description/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="validateAll" startTag="required">
+        <description/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="cache" startTag="required">
+        <description/>
+        <AttributeType name="key" required="true">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="key"/>
+        <AttributeType name="region" required="true">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="region"/>
+        <AttributeType name="enabled" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="enabled"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="span" startTag="required">
+        <description/>
+        <AttributeType name="style" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="styleClass" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if
+        omitted.</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="div" startTag="required">
+        <description/>
+        <AttributeType name="style" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="styleClass" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if
+        omitted.</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="link" startTag="required">
+        <description/>
+        <AttributeType name="value" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="action" required="false">
+            <description/>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="action"/>
+        <AttributeType name="view" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="view"/>
+        <AttributeType name="fragment" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fragment"/>
+        <AttributeType name="taskInstance" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="taskInstance"/>
+        <AttributeType name="disabled" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="disabled"/>
+        <AttributeType name="propagation" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="propagation"/>
+        <AttributeType name="pageflow" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="pageflow"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if
+        omitted.</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="dir" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="lang" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="style" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="title" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="onclick" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="accesskey" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accesskey"/>
+        <AttributeType name="charset" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="charset"/>
+        <AttributeType name="coords" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="coords"/>
+        <AttributeType name="hreflang" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="hreflang"/>
+        <AttributeType name="rel" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rel"/>
+        <AttributeType name="rev" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rev"/>
+        <AttributeType name="shape" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shape"/>
+        <AttributeType name="tabindex" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="tabindex"/>
+        <AttributeType name="type" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <AttributeType name="onblur" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onblur"/>
+        <AttributeType name="onfocus" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onfocus"/>
+        <AttributeType name="target" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="target"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="button" startTag="required">
+        <description/>
+        <AttributeType name="value" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="action" required="false">
+            <description/>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="action"/>
+        <AttributeType name="view" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="view"/>
+        <AttributeType name="fragment" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fragment"/>
+        <AttributeType name="taskInstance" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="taskInstance"/>
+        <AttributeType name="disabled" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="disabled"/>
+        <AttributeType name="propagation" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="propagation"/>
+        <AttributeType name="pageflow" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="pageflow"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if
+        omitted.</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="dir" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="lang" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="style" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="title" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="onclick" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="accesskey" required="false">
+            <description>HTML: Sets the access key for this element.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accesskey"/>
+        <AttributeType name="alt" required="false">
+            <description>HTML: Specifies alternative text that can be used by a browser
+        that can't show this element.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="alt"/>
+        <AttributeType name="onblur" required="false">
+            <description>HTML: Specifies a script to be invoked when the element loses
+        focus.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onblur"/>
+        <AttributeType name="onfocus" required="false">
+            <description>HTML: Specifies a script to be invoked when the element receives
+        focus.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onfocus"/>
+        <AttributeType name="onselect" required="false">
+            <description>HTML: Specifies a script to be invoked when the element is
+        selected.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onselect"/>
+        <AttributeType name="onchange" required="false">
+            <description>HTML: Specifies a script to be invoked when the element is
+        modified.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onchange"/>
+        <AttributeType name="tabindex" required="false">
+            <description>HTML: Specifies the position of this element within the tab
+        order of the document.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="tabindex"/>
+        <AttributeType name="type" required="false">
+            <description>HTML: A hint to the user agent about the content type of the
+        linked resource.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <AttributeType name="size" required="false">
+            <description>The initial width of this control.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="size"/>
+        <AttributeType name="image" required="false">
+            <description>HTML: The URL of an image that renders in place of the button.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="image"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="message" startTag="required">
+        <description/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if
+        omitted.</description>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="showSummary" required="false">
+            <description>Indicates whether the summary of the associated message(s)
+        should be displayed. Default is: true</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="showSummary"/>
+        <AttributeType name="showDetail" required="false">
+            <description>Indicates whether the detail of the associated message(s) should
+        be displayed. Default is: false</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="showDetail"/>
+        <AttributeType name="dir" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="lang" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="style" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="title" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="onclick" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="infoClass" required="false">
+            <description>CSS class to be used for messages with severity "INFO".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="infoClass"/>
+        <AttributeType name="infoStyle" required="false">
+            <description>CSS style to be used for messages with severity "INFO".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="infoStyle"/>
+        <AttributeType name="warnClass" required="false">
+            <description>CSS class to be used for messages with severity "WARN".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="warnClass"/>
+        <AttributeType name="warnStyle" required="false">
+            <description>CSS style to be used for messages with severity "WARN".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="warnStyle"/>
+        <AttributeType name="errorClass" required="false">
+            <description>CSS class to be used for messages with severity "ERROR".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="errorClass"/>
+        <AttributeType name="errorStyle" required="false">
+            <description>CSS style to be used for messages with severity "ERROR".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="errorStyle"/>
+        <AttributeType name="fatalClass" required="false">
+            <description>CSS class to be used for messages with severity "FATAL".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fatalClass"/>
+        <AttributeType name="fatalStyle" required="false">
+            <description>CSS style to be used for messages with severity "FATAL".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fatalStyle"/>
+        <AttributeType name="tooltip" required="false">
+            <description>If true, the message summary will be rendered as a tooltip (i.e.
+        HTML title attribute).</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="tooltip"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="selectDate" startTag="required">
+        <description/>
+        <AttributeType name="for" required="true">
+            <description>the field identifier of the input item to pick a date for</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="for"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="convertDateTime" startTag="required">
+        <description/>
+        <AttributeType name="dateStyle" required="false">
+            <description>default|short|medium|long|full</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dateStyle"/>
+        <AttributeType name="locale" required="false">
+            <description>locale</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="java.util.Locale"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="locale"/>
+        <AttributeType name="pattern" required="false">
+            <description>Custom formatting pattern</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="pattern"/>
+        <AttributeType name="timeStyle" required="false">
+            <description>default|short|medium|long|full</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="timeStyle"/>
+        <AttributeType name="timeZone" required="false">
+            <description>timeZone</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="java.util.TimeZone"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="timeZone"/>
+        <AttributeType name="type" required="false">
+            <description>date|time|both</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="type"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="convertEnum" startTag="required">
+        <description/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="enumItem" startTag="required">
+        <description/>
+        <AttributeType name="enumValue" required="true">
+            <description>the enum string value</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="enumValue"/>
+        <AttributeType name="label" required="false">
+            <description>the select item label</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="label"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="fileUpload" startTag="required">
+        <description/>
+        <AttributeType name="data" required="true">
+            <description>value binding for the file data</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="data"/>
+        <AttributeType name="fileName" required="false">
+            <description>value binding for the file name</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fileName"/>
+        <AttributeType name="fileSize" required="false">
+            <description>value binding for the file name</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="fileSize"/>
+        <AttributeType name="contentType" required="false">
+            <description>value binding for the file content type</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="contentType"/>
+        <AttributeType name="accept" required="false">
+            <description>acceptable content types for the file</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accept"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="selectItems" startTag="required">
+        <description/>
+        <AttributeType name="value" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="var" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="var"/>
+        <AttributeType name="label" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="label"/>
+        <AttributeType name="hideNoSelection" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="hideNoSelection"/>
+        <AttributeType name="noSelectionLabel" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="noSelectionLabel"/>
+        <AttributeType name="cache" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="cache"/>
+        <AttributeType name="cacheKey" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="cacheKey"/>
+        <AttributeType name="config" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="config"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="fragment" startTag="required">
+        <description/>
+        <AttributeType name="rendered" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+    </ElementType>
+</Schema>

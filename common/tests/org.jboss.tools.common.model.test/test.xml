@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<project name="testsuite" default="run" basedir=".">
+	<property name="eclipse-home" value="${basedir}/../.."/>
+	<property name="plugin-name" value="org.jboss.ide.model.tests"/>
+  	<property name="library-file"
+            value="${eclipse-home}/plugins/org.eclipse.test/library.xml"/>
+    <!--  -->
+    <target name="init">
+    	<tstamp/>
+    	<delete>
+      		<fileset dir="${eclipse-home}" includes="org*.xml"/>
+    	</delete>
+  	</target>
+  	<!--  -->
+  	<target name="suite">
+  		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
+  			<property name="data-dir" value="data-folder"/>
+  			<property name="plugin-name" value="org.jboss.ide.model.tests"/>
+  			<property name="classname" value="org.jboss.ide.model.tests.CommonModelAllTests"/>
+		</ant>
+  	</target>
+  	<!--  -->
+  	<target name="run" depends="init,suite">
+  		<ant target="collect" antfile="${library-file}" dir="${eclipse-home}">
+      		<property name="includes" value="org*.xml"/>
+      		<property name="output-file" value="${plugin-name}.xml"/>
+    	</ant>
+  	</target>
+</project>

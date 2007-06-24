@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema prefix="owg" uri="http://www.otrix.com/faces/webgrid">
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="column" startTag="required">
+        <description/>
+        <AttributeType name="binding" required="false">
+            <description>Sets the The value binding expression linking this component to a property in a backing bean </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="id" required="false">
+            <description>Sets the The component identifier for this component. This value must be unique within the closest parent component that is a naming container. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>Sets the Flag indicating whether or not this component should be rendered (during Render Response Phase), or processed on any subsequent form submit. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="sortBy" required="false">
+            <description>Sets the name of the field to sort on</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="sortBy"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="gridView" startTag="required">
+        <description/>
+        <AttributeType name="binding" required="false">
+            <description>Sets the The value binding expression linking this component to a property in a backing bean </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="bottomPagerEnabled" required="false">
+            <description>Sets the boolean indicating whether the bottom pager is enabled or not</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="bottomPagerEnabled"/>
+        <AttributeType name="columnFooterStyle" required="false">
+            <description>Sets the default Style applied to columns' footer</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="columnFooterStyle"/>
+        <AttributeType name="columnFooterStyleClass" required="false">
+            <description>Sets the name of the css class applied to columns' footer</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="columnFooterStyleClass"/>
+        <AttributeType name="columnHeaderStyle" required="false">
+            <description>Sets the default Style applied to columns' header</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="columnHeaderStyle"/>
+        <AttributeType name="columnHeaderStyleClass" required="false">
+            <description>Sets the name of the css class applied to columns' header</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="columnHeaderStyleClass"/>
+        <AttributeType name="columnStyle" required="false">
+            <description>Sets the default Style applied to columns</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="columnStyle"/>
+        <AttributeType name="columnStyleClass" required="false">
+            <description>Sets the name of the css class applied to columns</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="columnStyleClass"/>
+        <AttributeType name="customPagingEnabled" required="false">
+            <description>Sets the flag indicating whether custom paging is enabled or not</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="customPagingEnabled"/>
+        <AttributeType name="customSortingEnabled" required="false">
+            <description>Sets the flag indicating whether custom sorting is enabled or not</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="customSortingEnabled"/>
+        <AttributeType name="dataKeyName" required="false">
+            <description>Sets the name of the field(s) that uniquely identify each record in the data source (use semi-colons to  specify a composite primary key).</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="dataKeyName"/>
+        <AttributeType name="dataSource" required="false">
+            <description>Sets the data source this component is bound to</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="dataSource"/>
+        <AttributeType name="footerStyle" required="false">
+            <description>Sets the default Style applied to the grid footer</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="footerStyle"/>
+        <AttributeType name="footerStyleClass" required="false">
+            <description>Sets the name of the css class applied to the grid footer</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="footerStyleClass"/>
+        <AttributeType name="headerStyle" required="false">
+            <description>Sets the default Style applied to the grid header</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="headerStyle"/>
+        <AttributeType name="headerStyleClass" required="false">
+            <description>Sets the name of the css class applied to the grid header</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="headerStyleClass"/>
+        <AttributeType name="id" required="false">
+            <description>Sets the The component identifier for this component. This value must be unique within the closest parent component that is a naming container. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="itemCount" required="false">
+            <description>Sets the total number of items contained in the underlying dataModel (used when customPagingEnabled is set to true)</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="itemCount"/>
+        <AttributeType name="pageChangeListener" required="false">
+            <description>Sets the MethodBinding representing a pageChangeListener method that is notified of PageChangeEvent</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="pageChangeListener"/>
+        <AttributeType name="pageSize" required="false">
+            <description>Sets the number of items to display on each page (0 means all items).</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="pageSize"/>
+        <AttributeType name="rendered" required="false">
+            <description>Sets the Flag indicating whether or not this component should be rendered (during Render Response Phase), or processed on any subsequent form submit. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="rowAlternateStyle" required="false">
+            <description>Sets the default Style applied to alternate rows</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="rowAlternateStyle"/>
+        <AttributeType name="rowAlternateStyleClass" required="false">
+            <description>Sets the name of the css class applied to alternate rows</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="rowAlternateStyleClass"/>
+        <AttributeType name="rowStyle" required="false">
+            <description>Sets the default Style applied to rows</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="rowStyle"/>
+        <AttributeType name="rowStyleClass" required="false">
+            <description>Sets the name of the css class applied to rows</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="rowStyleClass"/>
+        <AttributeType name="style" required="false">
+            <description>Sets the default Style applied to the menu</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Sets the name of the css class applied to the menu</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="theme" required="false">
+            <description>Sets the preset look and feel applied to the component (Classic, None, OfficeXp, WinXp)</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="Classic"/>
+                <param value="None"/>
+                <param value="OfficeXp"/>
+                <param value="WinXp"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="theme"/>
+        <AttributeType name="topPagerEnabled" required="false">
+            <description>Sets the boolean indicating whether the top pager is enabled or not</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="topPagerEnabled"/>
+        <AttributeType name="viewType" required="false">
+            <description>Sets the Specify how the list of items will be displayed to the user. Valid values (Grid, Thumbnail, Card)</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="Grid"/>
+                <param value="Thumbnail"/>
+                <param value="Card"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="viewType"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="rowItem" startTag="required">
+        <description/>
+        <AttributeType name="binding" required="false">
+            <description>Sets the The value binding expression linking this component to a property in a backing bean </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="id" required="false">
+            <description>Sets the The component identifier for this component. This value must be unique within the closest parent component that is a naming container. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>Sets the Flag indicating whether or not this component should be rendered (during Render Response Phase), or processed on any subsequent form submit. </description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+    </ElementType>
+</Schema>

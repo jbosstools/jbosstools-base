@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="tldResource" name="KB TLD Resource" schema="schema/tldResource.exsd"/>
+   <extension
+         point="org.jboss.tools.common.kb.tldResource">
+      <tld
+            jsf="true"
+            name="JSF Core"
+            schemaLocation="schemas/tld/JsfCore1_2.xml"
+            uri="http://java.sun.com/jsf/core"/>
+      <tld
+            jsf="true"
+            name="JSF HTML Basic"
+            schemaLocation="schemas/tld/JsfHtmlBasic1_1.xml"
+            uri="http://java.sun.com/jsf/html"
+            version="1.0"/>
+      <tld
+            jsf="true"
+            name="JSF HTML Basic"
+            schemaLocation="schemas/tld/JsfHtmlBasic1_2.xml"
+            uri="http://java.sun.com/jsf/html"
+            version="1.2"/>
+      <tld
+            jsf="true"
+            name="JSF HTML Basic"
+            schemaLocation="schemas/tld/JsfHtmlBasic1_2.xml"
+            uri="http://java.sun.com/jsf/html"/>
+
+      <tld
+            jsf="true"
+            name="JBoss Seam"
+            schemaLocation="schemas/tld/JBossSeam.xml"
+            uri="http://jboss.com/products/seam/taglib"/>
+
+      <tld
+            jsf="true"
+            name="JBoss Rich Faces"
+            schemaLocation="schemas/tld/Vcp.xml"
+            uri="http://richfaces.ajax4jsf.org/rich"/>
+
+      <tld
+            jsf="true"
+            name="Rich Faces Ajax"
+            schemaLocation="schemas/tld/VcpAjax.xml"
+            uri="http://www.redhat.com/vcp/components/ajax"/>
+
+      <tld
+            jsf="true"
+            name="JBoss Ajax4jsf"
+            schemaLocation="schemas/tld/ajax4jsf.xml"
+            uri="https://ajax4jsf.dev.java.net/ajax"/>
+
+      <tld
+            jsf="true"
+            name="My Faces Extension"
+            schemaLocation="schemas/tld/MyFacesExt.xml"
+            uri="http://myfaces.apache.org/extensions"/>
+      <tld
+            jsf="true"
+            name="My Faces Sandbox"
+            schemaLocation="schemas/tld/MyFacesSandbox.xml"
+            uri="http://myfaces.apache.org/sandbox"/>
+      <tld
+            jsf="true"
+            name="My Faces Tomahawk"
+            schemaLocation="schemas/tld/MyFacesTomahawk.xml"
+            uri="http://myfaces.apache.org/tomahawk"/>
+
+      <tld
+            jsf="true"
+            name="Otrix Shared"
+            schemaLocation="schemas/tld/OtrixShared.xml"
+            uri="http://www.otrix.com/faces/shared"/>
+      <tld
+            jsf="true"
+            name="Otrix Web Grid"
+            schemaLocation="schemas/tld/OtrixWebGrid.xml"
+            uri="http://www.otrix.com/faces/webgrid"/>
+      <tld
+            jsf="true"
+            name="Otrix Web Input"
+            schemaLocation="schemas/tld/OtrixWebInput.xml"
+            uri="http://www.otrix.com/faces/webinput"/>
+      <tld
+            jsf="true"
+            name="Otrix Web Menu"
+            schemaLocation="schemas/tld/OtrixWebMenu.xml"
+            uri="http://www.otrix.com/faces/webmenu"/>
+      <tld
+            jsf="true"
+            name="Otrix Web Tree"
+            schemaLocation="schemas/tld/OtrixWebTree.xml"
+            uri="http://www.otrix.com/faces/webtree"/>
+
+      <tld
+            jsf="true"
+            name="Shale Core"
+            schemaLocation="schemas/tld/ShaleCore.xml"
+            uri="http://struts.apache.org/shale/core"/>
+      <tld
+            jsf="true"
+            name="Shale Clay"
+            schemaLocation="schemas/tld/ShaleClay.xml"
+            uri="http://struts.apache.org/shale/clay-plugin"/>
+
+      <tld
+            jsf="true"
+            name="Facelets"
+            schemaLocation="schemas/tld/Facelets.xml"
+            uri="http://java.sun.com/jsf/facelets"/>
+      <tld
+            jsf="true"
+            name="Facelets Html"
+            schemaLocation="schemas/tld/FaceletsHtml.xml"
+            uri="http://www.w3.org/1999/xhtml/facelets"/>
+
+      <tld
+            jsf="true"
+            name="ADF Faces Core"
+            schemaLocation="schemas/tld/ADFFacesCore.xml"
+            uri="http://xmlns.oracle.com/adf/faces"/>
+      <tld
+            jsf="true"
+            name="ADF Faces HTML"
+            schemaLocation="schemas/tld/ADFFacesHtml.xml"
+            uri="http://xmlns.oracle.com/adf/faces/html"/>
+
+      <tld
+            name="JSTL Core 1.0"
+            schemaLocation="schemas/tld/JstlCore1_0.xml"
+            uri="http://java.sun.com/jstl/core"/>
+      <tld
+            name="JSTL Format 1.0"
+            schemaLocation="schemas/tld/JstlFmt1_0.xml"
+            uri="http://java.sun.com/jstl/fmt"/>
+      <tld
+            name="JSTL SQL 1.0"
+            schemaLocation="schemas/tld/JstlSql1_0.xml"
+            uri="http://java.sun.com/jstl/sql"/>
+      <tld
+            name="JSTL XML 1.0"
+            schemaLocation="schemas/tld/JstlXml1_0.xml"
+            uri="http://java.sun.com/jstl/xml"/>
+
+      <tld
+            name="Struts HTML"
+            schemaLocation="schemas/tld/StrutsHtml.xml"
+            uri="http://struts.apache.org/tags-html"/>
+      <tld
+            name="Struts Bean"
+            schemaLocation="schemas/tld/StrutsBean.xml"
+            uri="http://struts.apache.org/tags-bean"/>
+      <tld
+            name="Struts Tiles"
+            schemaLocation="schemas/tld/StrutsTiles.xml"
+            uri="http://struts.apache.org/tags-tiles"/>
+      <tld
+            name="Struts Tiles 1.1"
+            schemaLocation="schemas/tld/StrutsTiles11.xml"
+            uri="http://jakarta.apache.org/struts/tags-tiles-1.1"/>
+
+      <tld
+            name="JSP"
+            schemaLocation="schemas/tld/Jsp.xml"
+            uri="http://java.sun.com/JSP/Page"/>
+
+   </extension>
+
+</plugin>

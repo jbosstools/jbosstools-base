@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.jboss.tools.common.ui_feature"
+      label="Common UI Feature"
+      version="2.0.0">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import feature="org.jboss.tools.common.core_feature" version="1.0.0"/>
+      <import feature="org.jboss.tools.common.text.ext_feature" version="1.0.0"/>
+   </requires>
+
+   <plugin
+         id="org.jboss.tools.common.gef"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.common.model.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>

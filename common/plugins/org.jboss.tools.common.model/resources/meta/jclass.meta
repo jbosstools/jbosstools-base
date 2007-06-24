@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN" "meta.dtd">
+<XModelEntityGroup>
+ <VERSION MODULE="Model" VERSION="1.0"/>
+ <MAPPINGS/>
+ <ICONS/>
+ <GlobalActions kind="list"/>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.filesystems.impl.FileAnyLongImpl" name="FileCLASS">
+  <XChildrenEntities>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.systemclass" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="java class" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="class" name="extension" visibility="false" xmlname="EXTENSION">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="extends" xmlname="EXTENDS">
+    <Constraint/>
+    <Editor name="Uneditable" viewer="%ListViewer%"/>
+   </XModelAttribute>
+   <XModelAttribute name="implements" xmlname="IMPLEMENTS">
+    <Constraint/>
+    <Editor name="Uneditable" viewer="%ListViewer%"/>
+   </XModelAttribute>
+   <XModelAttribute name="qualified name" visibility="false">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="_file" visibility="false">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="modifiers" xmlname="MODIFIERS">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.BodyLoader"
+  ImplementingClass="org.jboss.tools.common.core.resources.JavaFileAdaptable"
+  ObjectEditorClass="%JAVA%" name="FileJAVA">
+  <XChildrenEntities>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.file.java_file" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="java source" loader="ElementType"
+    name="element type" visibility="false">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute TRIM="no" name="body" visibility="false">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="java" name="extension" xmlname="EXTENSION">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem
+    HandlerClassName="org.jboss.tools.common.model.handlers.OpenJavaEditorHandler"
+    ICON="main.file.java_file" displayName="Open" kind="action" name="Open"/>
+   <XActionItem displayName="Open With" group="1" kind="list" name="OpenWith"/>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%DeleteFile%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="Run" kind="list" name="RunActions">
+    <XActionItem HIDE="disabled"
+     HandlerClassName="org.jboss.tools.common.java.model.handler.RunJavaHandler"
+     ICON="action.start" displayName="Run" kind="action" name="Run"/>
+    <XActionItem HIDE="disabled"
+     HandlerClassName="org.jboss.tools.common.model.engines.impl.StopProcessHandler"
+     ICON="action.stop" displayName="Stop" kind="action" name="Stop"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HIDE="always" HandlerClassName="%Properties%"
+     ICON="action.empty" displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem kind="list" name="SaveActions">
+    <XActionItem HIDE="disabled" HandlerClassName="%SaveFile%"
+     ICON="action.save" displayName="Save" kind="action" name="Save"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" displayName="Source" group="1"
+    kind="list" name="SourceActions">
+    <XActionItem ICON="action.empty" kind="list" name="ActionList1">
+     <XActionItem
+      HandlerClassName="org.jboss.tools.common.model.java.handlers.SortMembersHandler"
+      ICON="action.empty" displayName="Sort Members" kind="action" name="SortMembers"/>
+    </XActionItem>
+    <XActionItem ICON="action.empty" kind="list" name="ActionList2">
+     <XActionItem
+      HandlerClassName="org.jboss.tools.common.model.java.handlers.OrganizeImportsHandler"
+      ICON="action.empty" displayName="Organize Imports" kind="action" name="OrganizeImports"/>
+    </XActionItem>
+    <XActionItem ICON="action.empty" kind="list" name="ActionList3">
+     <XActionItem
+      HandlerClassName="org.jboss.tools.common.model.java.handlers.ExternalizeStringsHandler"
+      ICON="action.empty" displayName="Externalize Strings..."
+      kind="action" name="ExternalizeStrings"/>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.empty" displayName="Refactor" group="1"
+    kind="list" name="RefactorActions">
+    <XActionItem ICON="action.empty" kind="list" name="ActionList1">
+     <XActionItem
+      HandlerClassName="org.jboss.tools.common.model.java.handlers.RenameHandler"
+      ICON="action.empty" displayName="Rename..." kind="action" name="Rename"/>
+     <XActionItem
+      HandlerClassName="org.jboss.tools.common.model.java.handlers.MoveHandler"
+      ICON="action.empty" displayName="Move..." kind="action" name="Move"/>
+    </XActionItem>
+    <XActionItem ICON="action.empty" kind="list" name="ActionList2">
+     <XActionItem
+      HandlerClassName="org.jboss.tools.common.model.java.handlers.ExtractInterfaceHandler"
+      ICON="action.empty" displayName="Extract Interface..."
+      kind="action" name="ExtractInterface"/>
+     <XActionItem
+      HandlerClassName="org.jboss.tools.common.model.java.handlers.UseSupertypeHandler"
+      ICON="action.empty" displayName="Use Supertype Where Possible..."
+      kind="action" name="UseSupertype"/>
+    </XActionItem>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.impl.RootImpl"
+  XMLSUBPATH="MESSAGE" name="ObjectModifier">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.empty" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="test data" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME">
+    <Constraint loader="JavaName"/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="type" xmlname="TYPE">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="value" xmlname="VALUE">
+    <Constraint loader="ListString">
+     <value name="java"/>
+    </Constraint>
+    <Editor name="Body"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem ICON="main.package" displayName="Flow" group="1"
+   kind="list" name="Actions"/>
+  <XDependencies/>
+ </XModelEntity>
+ <XEntityExtension name="FileFolder">
+  <XChildrenEntities>
+   <XChildEntity name="FileJAVA"/>
+   <XChildEntity name="FileCLASS"/>
+  </XChildrenEntities>
+  <XActionItem kind="list"/>
+ </XEntityExtension>
+ <XEntityExtension name="FileSystemFolder">
+  <XChildrenEntities>
+   <XChildEntity name="FileJAVA"/>
+   <XChildEntity name="FileCLASS"/>
+  </XChildrenEntities>
+  <XActionItem kind="list"/>
+ </XEntityExtension>
+ <XEntityExtension name="JarFolder">
+  <XChildrenEntities>
+   <XChildEntity name="FileJAVA"/>
+   <XChildEntity name="FileCLASS"/>
+  </XChildrenEntities>
+  <XActionItem kind="list"/>
+ </XEntityExtension>
+</XModelEntityGroup>

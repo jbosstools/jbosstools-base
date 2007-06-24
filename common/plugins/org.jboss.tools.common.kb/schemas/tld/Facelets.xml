@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema location="" prefix="ui" uri="http://java.sun.com/jsf/facelets">
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="component" startTag="required">
+        <description>The component tag and the composition tag behave exactly the same, except the component tag will insert a new UIComponent instance into the tree as the root of all the child components/fragments it has.</description>
+        <AttributeType name="id" required="false">
+            <description>A unique id may be provided, otherwise Facelets will automatically assign one under the same logic it uses for all UIComponents.</description>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="binding" required="false">
+            <description>This binding attribute is used the same as with any other UIComponent such that it allows you to reference them as a property of a JavaBean. If that target property did not have a UIComponent instance assigned already, JavaServer Faces will lazily create an instance for you and set it on your JavaBean before continuing with building the tree.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="composition" startTag="required">
+        <description/>
+        <AttributeType name="template" required="false">
+            <description>The resolvable URI of the template to use. The content within the composition tag will be used in populating the template specified.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="file">
+                <param name="extensions" value="%page%"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="template"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="debug" startTag="required">
+        <description>The debug tag will capture the component tree and variables when it is encoded, storing the data for retrieval later. You may launch the debug window at any time from your browser by pressing 'CTRL' + 'SHIFT' + 'D' (by default). The debug tag doesn't need to be used with the facelet.DEVELOPMENT parameter. The best place to put this tag is in your site's main template where it can be enabled/disabled across your whole application. If your application uses multiple windows, you might want to assign different hot keys to each one.</description>
+        <AttributeType name="hotkey" required="false">
+            <description>The hot key to use in combination with 'CTRL' + 'SHIFT' to launch the debug window. By default, when the debug tag is used, you may launch the debug window with 'CTRL' + 'SHIFT' + 'D'. This value cannot be an EL expression.</description>
+        </AttributeType>
+        <AttributeType name="rendered" required="false">
+            <description>Creating debug output on every request adds some overhead, so you can use the UIComponent rendered property to turn debugging on or off based on some expression.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="java.lang.Boolean"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="boolean"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="hotkey"/>
+        <attribute type="rendered"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="decorate" startTag="required">
+        <description>The decorate tag acts the same as a composition tag, but it will not trim everything outside of it. This is useful in cases where you have a list of items in a document, which you would like to be decorated or framed. The sum of it all is that you can take any element in the document and decorate it with some external logic as provided by the template.</description>
+        <AttributeType name="template" required="true">
+            <description>The resolvable URI of the template to use. The content within the decorate tag will be used in populating the template specified.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="file">
+                <param name="extensions" value="%page%"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="template"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="define" startTag="required">
+        <description>The define tag can be used within tags that allow templating. This includes composition and decorate tags.</description>
+        <AttributeType name="name" required="true">
+            <description>The literal name for this definition. This name will match up with a &lt;ui:insert/&gt; tag in a target template.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+        </AttributeType>
+        <attribute type="name"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="fragment" startTag="required">
+        <description>Just like composition has decorate as a non-trimming version of the same behavior, component has fragment. This allows you to logically insert a UIComponent into the tree and possibly bind this fragment to a JavaBean property or Map for management. The fragment tag was also added to Facelets to get around some of the optimizations used in handling text within your document. If you are using components such as &lt;f:panelGrid/&gt;, which renders its children, you may want more control over the building process that Facelets does and using a fragment tag will help guarantee parent/child relationships for you.</description>
+        <AttributeType name="id" required="false">
+            <description>A unique id may be provided, otherwise Facelets will automatically assign one under the same logic it uses for all UIComponents.</description>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="binding" required="false">
+            <description>This binding attribute is used the same as with any other UIComponent such that it allows you to reference them as a property of a JavaBean. If that target property did not have a UIComponent instance assigned already, JavaServer Faces will lazily create an instance for you and set it on your JavaBean before continuing with building the tree.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="include" startTag="required">
+        <description>The include tag can point at any Facelet which might use the composition tag, component tag, or simply be straight XHTML/XML. It should be noted that the src path does allow relative path names, but they will always be resolved against the original Facelet requested. The include tag can be used in conjunction with multiple &lt;ui:param/&gt; tags to pass EL expressions/values to the target page.</description>
+        <AttributeType name="src" required="true">
+            <description>A literal or EL expression that specifies the target Facelet that you would like to include into your document.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="file">
+                <param name="extensions" value="%page%"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="src"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="insert" startTag="required">
+        <description>The insert tag is used within your templates to declare spots of replacable data.</description>
+        <AttributeType name="name" required="false">
+            <description>The optional name attribute matches the associated &lt;ui:define/&gt; tag in this template's client. If no name is specified, it's expected that the whole template client will be inserted.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="name"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="param" startTag="required">
+        <description/>
+        <AttributeType name="name" required="true">
+            <description>The name of the variable to pass to the included Facelet.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="name"/>
+        <AttributeType name="value" required="true">
+            <description>The literal or EL expression value to assign to the named variable.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+        </AttributeType>
+        <attribute type="value"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="remove" startTag="required">
+        <description>The remove tag does not have any attributes and is used to remove chunks of XML content from a Facelet at compilation time. The remove tag is often used in conjunction with the jsfc feature.</description>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="repeat" startTag="required">
+        <description/>
+        <AttributeType name="value" required="true">
+            <description>Expression for the list of items</description>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="var" required="true">
+            <description>The name of the variable to put the current item.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+        </AttributeType>
+        <attribute type="var"/>
+        <AttributeType name="offset" required="false">
+            <description>The offset index.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+        </AttributeType>
+        <attribute type="offset"/>
+        <AttributeType name="size" required="false">
+            <description>Number of items to produce.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+        </AttributeType>
+        <attribute type="size"/>
+        <AttributeType name="varStatus" required="false">
+            <description>Index object.</description>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="varStatus"/>
+    </ElementType>
+</Schema>

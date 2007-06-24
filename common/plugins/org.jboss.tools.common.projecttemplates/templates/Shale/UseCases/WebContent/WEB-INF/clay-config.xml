@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+ Copyright 2004-2005 The Apache Software Foundation.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+
+  <!DOCTYPE view PUBLIC
+      "-//Apache Software Foundation//DTD Shale Clay View Configuration 1.0//EN"
+      "http://struts.apache.org/dtds/shale-clay-config_1_0.dtd">
+
+<view>
+	
+  <component jsfid="nameColumn" extends="column" id="name">
+    <element renderId="1" jsfid="outputText" facetName="header">
+      <attributes>
+        <set name="value" value="#{messages['rolodex.contactTable.nameColumn.title']}" />
+      </attributes>
+    </element> 
+       
+    <element renderId="2" jsfid="commandLink">
+      <attributes>
+        <set name="value" value="#{e.name}" />
+        <set name="action" value="#{@managed-bean-name.selectContact}" />
+        <set name="immediate" value="true"/>
+      </attributes>
+
+      <element renderId="1" jsfid="param">
+         <attributes>
+             <set name="name" value="selectedName"/>
+             <set name="value" value="#{e.encodedName}"/>
+         </attributes>    
+      </element>
+
+    </element>      
+  </component>	
+
+  <component jsfid="contactTable" extends="dataTable" allowBody="false">
+    <attributes>
+      <set name="value" value="#{@managed-bean-name.contactsForTab}"/>
+      <set name="var"   value="e"/>
+      <set name="rows"  value="100"/> 
+      <set name="first"  value="0"/> 
+      <set name="styleClass" value="contacts"/>
+      <set name="headerClass" value="contactsHeader"/>
+      <set name="rowClasses" value="contactsRow1, contactsRow2"/>
+      
+    </attributes>
+    <element renderId="1" jsfid="nameColumn"/>
+  </component>
+
+
+	<component jsfid="baseLabel" extends="outputLabel" allowBody="false">
+	   <attributes>
+	       <set name="style" value="color:#99CC66"/>
+	   </attributes>
+	</component>
+
+	<component jsfid="baseMessage" extends="message" allowBody="false">
+	   <attributes>
+	       <set name="style" value="color:red"/>
+	   </attributes>
+	</component>
+	
+	<component jsfid="cityLabel" extends="baseLabel"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.address.city']}" />		
+			  <set name="for"   value="city" />
+		   </attributes>
+	</component>				
+	<component jsfid="city" extends="inputText" id="city"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.city}" />		
+			  <set name="size" value="20" />
+			  <set name="maxlength" value="30" />
+			  <set name="required" value="true" />
+		   </attributes>
+	</component>
+	<component jsfid="cityMessage" extends="baseMessage" > 
+		   <attributes>
+		      <set name="for" value="city" />		
+		   </attributes>
+	</component>
+
+	<!-- province label, input field and message -->	
+	<component jsfid="provinceLabel" extends="baseLabel"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.address.province']}" />
+			  <set name="for"   value="province" />
+		   </attributes>
+	</component>				
+	<component jsfid="province" extends="inputText" id="province"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.province}" />		
+			  <set name="size" value="20" />
+			  <set name="maxlength" value="30" />
+			  <set name="required" value="false" />
+		   </attributes>
+	</component>
+	<component jsfid="provinceMessage" extends="baseMessage" > 
+		   <attributes>
+		      <set name="for" value="province" />		
+		   </attributes>
+	</component>
+
+	<!-- state label, input field and message -->	
+	<component jsfid="stateLabel" extends="baseLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.address.state']}" />		
+			  <set name="for"   value="state" />
+		   </attributes>
+	</component>				
+	<component jsfid="state" extends="selectOneMenu" id="state" allowBody="false"> 
+       <attributes>
+	      <set name="value" value="#{@managed-bean-name.state}" />
+		  <set name="required" value="true" />	      
+ 	   </attributes>
+ 
+	   <element renderId="0" jsfid="selectItems"> 
+		   <attributes>
+		      <set name="value" value="#{rolodexDao.states}" />
+ 	       </attributes>
+	   </element>
+
+	</component>
+	<component jsfid="stateMessage" extends="baseMessage"> 
+		   <attributes>
+		      <set name="for" value="state" />		
+		   </attributes>
+	</component>
+
+
+	<!-- country label, input field and message -->	
+	<component jsfid="countryLabel" extends="baseLabel"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.address.country']}" />
+			  <set name="for"   value="country" />
+		   </attributes>
+	</component>				
+	<component jsfid="country" extends="selectOneMenu" id="country"> 
+       <attributes>
+	      <set name="value" value="#{@managed-bean-name.country}" />
+		  <set name="required" value="true" />	      
+ 	   </attributes>
+ 
+	   <element renderId="0" jsfid="selectItems"> 
+		   <attributes>
+		      <set name="value" value="#{rolodexDao.countries}" />
+ 	       </attributes>
+	   </element>
+	</component>
+	<component jsfid="countryMessage" extends="baseMessage"> 
+		   <attributes>
+		      <set name="for" value="country" />		
+		   </attributes>
+	</component>
+
+
+
+	<!-- zip code label, input field and message -->
+	<component jsfid="zipLabel" extends="baseLabel"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.address.zip']}" />
+			  <set name="for"   value="zip" />
+		   </attributes>
+	</component>					
+	<component jsfid="zip" id="zip" extends="inputText"> 
+       <attributes>
+	      <set name="value" value="#{@managed-bean-name.zip}" />
+		  <set name="maxlength" value="9" />
+		  <set name="size" value="5"/>
+		</attributes>	
+		<converter jsfid="integerConverter" />
+	</component> 
+	<component jsfid="zipMessage" extends="baseMessage"> 
+		   <attributes>
+		      <set name="for" value="zip" />		
+		   </attributes>
+	</component>
+
+    <!-- defines a field template type def for street address -->
+	<component jsfid="streetInput" extends="inputText">
+		<attributes>
+			<set name="size" value="35" />
+			<set name="maxlength" value="50" />
+		</attributes>
+    </component>
+
+	<!-- street 1 label, input field and message -->
+	<component jsfid="street1Label" extends="baseLabel"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.address.street1']}" />
+			  <set name="for"   value="street1" />
+		   </attributes>
+	</component>				
+	<component jsfid="street1" extends="streetInput" id="street1"> 
+        <attributes>
+		   <set name="value" value="#{@managed-bean-name.street1}" />		
+		   <set name="required" value="false"  />		
+		</attributes>
+	</component>
+	<component jsfid="street1Message" extends="baseMessage"> 
+		   <attributes>
+		      <set name="for" value="street1" />		
+		   </attributes>
+	</component>
+	
+	<!-- street 2 label, input field and message -->
+	<component jsfid="street2Label" extends="baseLabel"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.address.street2']}" />
+			  <set name="for"   value="street2" />
+		   </attributes>
+	</component>				
+	<component jsfid="street2" extends="streetInput" id="street2"> 
+        <attributes>
+		   <set name="value" value="#{@managed-bean-name.street2}" />		
+		   <set name="required" value="false"  />		
+		</attributes>
+	</component>
+	<component jsfid="street2Message" extends="baseMessage"> 
+		   <attributes>
+		      <set name="for" value="street2" />		
+		   </attributes>
+	</component>
+
+    <!-- base command button defining a common style class -->
+    <component jsfid="baseCommand" extends="commandButton">
+	   <attributes>
+	      <set name="styleClass" value="button" />		
+	   </attributes>
+    </component>
+
+    <!-- submit button to save a contact -->
+    <component jsfid="saveCommand" extends="baseCommand"> 
+	   <attributes>
+	      <set name="value" value="#{messages['rolodex.button.save']}" />		
+		  <set name="action" value="#{@managed-bean-name.saveContact}"  />	
+	   </attributes>
+    </component>
+
+    <!-- submit button to delete a contact -->
+    <component jsfid="deleteCommand" extends="baseCommand"> 
+	   <attributes>
+	      <set name="value" value="#{messages['rolodex.button.delete']}" />		
+		  <set name="action" value="#{@managed-bean-name.deleteContact}"  />	
+	   </attributes>
+    </component>
+
+
+
+    <!-- Contact Name -->
+	<component jsfid="nameLabel" extends="baseLabel"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.name']}" />		
+			  <set name="for"   value="name" />
+		   </attributes>
+	</component>				
+	<component jsfid="name" extends="inputText" id="name"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.name}" />		
+			  <set name="size" value="40" />
+			  <set name="maxlength" value="50" />
+			  <set name="required" value="true" />
+		   </attributes>
+	</component>
+	<component jsfid="nameMessage" extends="baseMessage" > 
+		   <attributes>
+		      <set name="for" value="name" />		
+		   </attributes>
+	</component>
+
+    <!-- Contact email address -->
+	<component jsfid="emailLabel" extends="baseLabel"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.email']}" />
+			  <set name="for"   value="email" />
+		   </attributes>
+	</component>				
+	<component jsfid="email" extends="inputText" id="email"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.email}" />		
+			  <set name="size" value="30" />
+			  <set name="maxlength" value="50" />
+			  <set name="required" value="false" />
+		   </attributes>
+	</component>
+	<component jsfid="emailMessage" extends="baseMessage" > 
+		   <attributes>
+		      <set name="for" value="email" />		
+		   </attributes>
+	</component>
+
+    <!-- Contact residential Phone -->
+	<component jsfid="residentialPhoneLabel" extends="baseLabel"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.address.phone']}" />
+			  <set name="for"   value="residentialPhone" />
+		   </attributes>
+	</component>				
+	<component jsfid="residentialPhone" extends="inputText" id="residentialPhone"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.residentialPhone}" />		
+			  <set name="required" value="false" />
+		   </attributes>
+	</component>
+	<component jsfid="residentialPhoneMessage" extends="baseMessage" > 
+		   <attributes>
+		      <set name="for" value="residentialPhone" />		
+		   </attributes>
+	</component>
+
+    <!-- Contact business Phone -->
+	<component jsfid="businessPhoneLabel" extends="baseLabel"> 
+		   <attributes>
+			  <set name="value" value="#{messages['rolodex.address.phone']}" />		
+			  <set name="for"   value="businessPhone" />
+		   </attributes>
+	</component>				
+	<component jsfid="businessPhone" extends="inputText" id="businessPhone"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.businessPhone}" />		
+			  <set name="required" value="false" />
+		   </attributes>
+	</component>
+	<component jsfid="businessPhoneMessage" extends="baseMessage" > 
+		   <attributes>
+		      <set name="for" value="businessPhone" />		
+		   </attributes>
+	</component>
+
+
+    <!-- address table contains 5 rows of three columns -->    
+	<component jsfid="addressPanel" extends="panelGrid">
+		<attributes>
+			<set name="columns" value="3" />
+		</attributes>
+
+		<element renderId="1" jsfid="street1Label"/>
+		<element renderId="2" jsfid="street1" />
+		<element renderId="3" jsfid="street1Message"/>
+
+		<element renderId="11" jsfid="street2Label"/>
+		<element renderId="12" jsfid="street2"/>
+		<element renderId="13" jsfid="street2Message"/>
+
+		<element renderId="21" jsfid="cityLabel"/>
+		<element renderId="22" jsfid="city"/>
+		<element renderId="23" jsfid="cityMessage"/>
+		 
+		<element renderId="31" jsfid="stateLabel"/>
+		<element renderId="32" jsfid="state"/>
+		<element renderId="33" jsfid="stateMessage"/>
+
+		<element renderId="41" jsfid="zipLabel"/>
+		<element renderId="42" jsfid="zip"/>
+		<element renderId="43" jsfid="zipMessage"/>
+		
+    </component>
+
+    <!-- foreign address panel adds province and country --> 
+	<component jsfid="foreignAddressPanel" extends="addressPanel"> 
+		<element renderId="34" jsfid="provinceLabel"/>
+		<element renderId="35" jsfid="province"/>
+		<element renderId="36" jsfid="provinceMessage"/>
+
+		<element renderId="51" jsfid="countryLabel"/>
+		<element renderId="52" jsfid="country"/>
+		<element renderId="53" jsfid="countryMessage"/>
+
+    </component>
+
+				
+
+    <!-- contact name and email panel-->    
+	<component jsfid="namePanel" extends="panelGrid">
+		<attributes>
+			<set name="columns" value="3" />
+		</attributes>
+
+		<element renderId="1" jsfid="nameLabel"/>
+		<element renderId="2" jsfid="name" />
+		<element renderId="3" jsfid="nameMessage"/>
+
+		<element renderId="4" jsfid="emailLabel"/>
+		<element renderId="5" jsfid="email" />
+		<element renderId="6" jsfid="emailMessage"/>
+
+    </component>
+
+    <!-- contact residential phone panel -->    
+	<component jsfid="residentialPhonePanel" extends="panelGrid">
+		<attributes>
+			<set name="columns" value="3" />
+		</attributes>
+
+		<element renderId="1" jsfid="residentialPhoneLabel"/>
+		<element renderId="2" jsfid="residentialPhone" />
+		<element renderId="3" jsfid="residentialPhoneMessage"/>
+
+    </component>
+
+    <!-- contact business phone panel -->    
+	<component jsfid="businessPhonePanel" extends="panelGrid">
+		<attributes>
+			<set name="columns" value="3" />
+		</attributes>
+
+		<element renderId="1" jsfid="businessPhoneLabel"/>
+		<element renderId="2" jsfid="businessPhone" />
+		<element renderId="3" jsfid="businessPhoneMessage"/>
+
+    </component>
+
+    <!-- command panel -->    
+	<component jsfid="commandPanel" extends="panelGrid">
+		<attributes>
+			<set name="columns" value="2" />
+		</attributes>
+
+		<element renderId="0" jsfid="baseCommand"> 
+	      <attributes>
+	         <set name="value" value="#{messages['rolodex.button.new']}" />		
+		     <set name="action" value="#{@managed-bean-name.newContact}"  />	
+             <set name="immediate" value="true"/>    
+	      </attributes>
+        </element>
+
+		<element renderId="1" jsfid="saveCommand">
+		   <attributes>
+              <set name="rendered" value="#{!empty @managed-bean-name.selectedContact}"/>
+		   </attributes>
+        </element>  
+
+		<element renderId="2" jsfid="deleteCommand">
+		   <attributes>
+              <set name="rendered" value="#{!empty @managed-bean-name.selectedContact}"/>
+		   </attributes>
+        </element>
+
+    </component>
+
+
+<!--  HTML hrolodex.html template -->
+	<component jsfid="residentialAddressHeader" extends="outputText" allowBody="false">
+	   <attributes>
+	      <set name="value" value="#{messages['rolodex.address.residentialAddress']}" />
+	   </attributes>
+    </component>
+
+	<component jsfid="businessAddressHeader" extends="outputText" allowBody="false">
+	   <attributes>
+	      <set name="value" value="#{messages['rolodex.address.businessAddress']}" />
+	   </attributes>
+    </component>
+
+
+    <!-- Nested Clay Component -->    
+	<component jsfid="tabs" extends="clay" id="tabs" allowBody="false">
+		<attributes>
+            <set name="jsfid" value="RUNTIME"/>
+            <set name="managedBeanName" value="rolodex$hrolodex"/>
+            <set name="shapeValidator" value="#{@managed-bean-name.createTabs}"/> 
+		</attributes>
+    </component>	
+
+    <!-- submit button to save a contact -->
+    <component jsfid="contactSaveCommand" extends="commandButton"> 
+	   <attributes>
+		  <set name="action" value="#{@managed-bean-name.saveContact}"/>	
+          <set name="rendered" value="#{!empty @managed-bean-name.selectedContact}"/>
+	      <set name="value" value="#{messages['rolodex.button.save']}" />
+	   </attributes>
+    </component>
+
+    <!-- submit button to delete a contact -->
+    <component jsfid="contactDeleteCommand" extends="commandButton"> 
+	   <attributes>
+		  <set name="action" value="#{@managed-bean-name.deleteContact}"/>
+          <set name="rendered" value="#{!empty @managed-bean-name.selectedContact}"/>	
+	      <set name="value" value="#{messages['rolodex.button.delete']}" />
+	   </attributes>
+    </component>
+
+    <!-- submit button to new a contact -->
+    <component jsfid="contactNewCommand" extends="commandButton"> 
+	   <attributes>
+		  <set name="action" value="#{@managed-bean-name.newContact}"  />	
+          <set name="immediate" value="true"/>    
+	      <set name="value" value="#{messages['rolodex.button.new']}" />
+	   </attributes>
+    </component>
+
+
+    <!-- Contact Name -->
+	<component jsfid="contactNameLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="contactName" />
+		      <set name="value" value="#{messages['rolodex.name']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="contactName" extends="inputText" id="contactName"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.selectedContact.name}" />		
+			  <set name="required" value="true" />
+		   </attributes>
+	</component>
+	<component jsfid="contactNameMessage" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="contactName" />		
+		   </attributes>
+	</component>
+
+    <!-- Contact email address -->
+	<component jsfid="contactEmailLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="contactEmail" />
+		      <set name="value" value="#{messages['rolodex.email']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="contactEmail" extends="inputText" id="contactEmail"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.selectedContact.email}" />		
+			  <set name="required" value="false" />
+		   </attributes>
+	</component>
+	<component jsfid="contactEmailMessage" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="contactEmail" />		
+		   </attributes>
+	</component>
+
+	<!-- residential city -->
+	<component jsfid="residentialCityLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="residentialCity" />
+		      <set name="value" value="#{messages['rolodex.address.city']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="residentialCity" extends="inputText" id="residentialCity"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.selectedContact.residentialAddress.city}" />		
+			  <set name="required" value="true" />
+		   </attributes>
+	</component>
+	<component jsfid="residentialCityMessage" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="residentialCity" />		
+		   </attributes>
+	</component>
+
+
+	<!-- business city -->
+	<component jsfid="businessCityLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="businessCity" />
+		      <set name="value" value="#{messages['rolodex.address.city']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="businessCity" extends="inputText" id="businessCity"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.selectedContact.businessAddress.city}" />		
+			  <set name="required" value="true" />
+		   </attributes>
+	</component>
+	<component jsfid="businessCityMessage" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="businessCity" />		
+		   </attributes>
+	</component>
+
+
+	<!-- residential street 1 label, input field and message -->
+	<component jsfid="residentialStreet1Label" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="residentialStreet1" />
+		      <set name="value" value="#{messages['rolodex.address.street1']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="residentialStreet1" extends="inputText" id="residentialStreet1"> 
+        <attributes>
+		   <set name="value" value="#{@managed-bean-name.selectedContact.residentialAddress.street1}" />		
+		   <set name="required" value="false"  />		
+		</attributes>
+	</component>
+	<component jsfid="residentialStreet1Message" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="residentialStreet1" />		
+		   </attributes>
+	</component>
+
+	<!-- business street 1 label, input field and message -->
+	<component jsfid="businessStreet1Label" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="businessStreet1" />
+		      <set name="value" value="#{messages['rolodex.address.street1']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="businessStreet1" extends="inputText" id="businessStreet1"> 
+        <attributes>
+		   <set name="value" value="#{@managed-bean-name.selectedContact.businessAddress.street1}" />		
+		   <set name="required" value="false"  />		
+		</attributes>
+	</component>
+	<component jsfid="businessStreet1Message" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="businessStreet1" />		
+		   </attributes>
+	</component>
+
+
+	<!-- residential street 2 label, input field and message -->
+	<component jsfid="residentialStreet2Label" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="residentialStreet2" />
+		      <set name="value" value="#{messages['rolodex.address.street2']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="residentialStreet2" extends="inputText" id="residentialStreet2"> 
+        <attributes>
+		   <set name="value" value="#{@managed-bean-name.selectedContact.residentialAddress.street2}" />		
+		   <set name="required" value="false"  />		
+		</attributes>
+	</component>
+	<component jsfid="residentialStreet2Message" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="residentialStreet2" />		
+		   </attributes>
+	</component>
+
+	<!-- business street 2 label, input field and message -->
+	<component jsfid="businessStreet2Label" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="businessStreet2" />
+		      <set name="value" value="#{messages['rolodex.address.street2']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="businessStreet2" extends="inputText" id="businessStreet2"> 
+        <attributes>
+		   <set name="value" value="#{@managed-bean-name.selectedContact.businessAddress.street2}" />		
+		   <set name="required" value="false"  />		
+		</attributes>
+	</component>
+	<component jsfid="businessStreet2Message" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="businessStreet2" />		
+		   </attributes>
+	</component>
+
+
+	<!-- residential state label, input field and message -->	
+	<component jsfid="residentialStateLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="residentialState" />
+		      <set name="value" value="#{messages['rolodex.address.state']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="residentialState" extends="selectOneMenu" id="residentialState" allowBody="false"> 
+       <attributes>
+	      <set name="value" value="#{@managed-bean-name.selectedContact.residentialAddress.state}" />
+		  <set name="required" value="true" />	      
+ 	   </attributes>
+ 
+	   <element renderId="0" jsfid="selectItems"> 
+		   <attributes>
+		      <set name="value" value="#{rolodexDao.states}" />
+ 	       </attributes>
+	   </element>
+	</component>
+	<component jsfid="residentialStateMessage" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="residentialState" />		
+		   </attributes>
+	</component>
+
+
+	<!-- business state label, input field and message -->	
+	<component jsfid="businessStateLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="businessState" />
+		      <set name="value" value="#{messages['rolodex.address.state']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="businessState" extends="selectOneMenu" id="businessState" allowBody="false"> 
+       <attributes>
+	      <set name="value" value="#{@managed-bean-name.selectedContact.businessAddress.state}" />
+		  <set name="required" value="true" />	      
+ 	   </attributes>
+ 
+	   <element renderId="0" jsfid="selectItems"> 
+		   <attributes>
+		      <set name="value" value="#{rolodexDao.states}" />
+ 	       </attributes>
+	   </element>
+	</component>
+	<component jsfid="businessStateMessage" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="businessState" />		
+		   </attributes>
+	</component>
+
+
+	<!-- residential zip code label, input field and message -->
+	<component jsfid="residentialZipLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="residentialZip" />
+		      <set name="value" value="#{messages['rolodex.address.zip']}" />
+		   </attributes>
+	</component>					
+	<component jsfid="residentialZip" id="residentialZip" extends="inputText"> 
+       <attributes>
+	      <set name="value" value="#{@managed-bean-name.selectedContact.residentialAddress.zip}" />
+		</attributes>	
+		<converter jsfid="integerConverter" />
+	</component> 
+	<component jsfid="residentialZipMessage" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="residentialZip" />		
+		   </attributes>
+	</component>
+
+	<!-- business zip code label, input field and message -->
+	<component jsfid="businessZipLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="businessZip" />
+		      <set name="value" value="#{messages['rolodex.address.zip']}" />
+		   </attributes>
+	</component>					
+	<component jsfid="businessZip" id="businessZip" extends="inputText"> 
+       <attributes>
+	      <set name="value" value="#{@managed-bean-name.selectedContact.businessAddress.zip}" />
+		</attributes>	
+		<converter jsfid="integerConverter" />
+	</component> 
+	<component jsfid="businessZipMessage" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="businessZip" />		
+		   </attributes>
+	</component>
+
+
+
+   <!-- Contact residential Phone -->
+	<component jsfid="contactResidentialPhoneLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="contactResidentialPhone" />
+		      <set name="value" value="#{messages['rolodex.address.phone']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="contactResidentialPhone" extends="inputText" id="contactResidentialPhone"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.selectedContact.residentialPhone}" />		
+			  <set name="required" value="false" />
+		   </attributes>
+	</component>
+	<component jsfid="contactResidentialPhoneMessage" extends="message" allowBody="false" > 
+		   <attributes>
+		      <set name="for" value="contactResidentialPhone" />		
+		   </attributes>
+	</component>
+
+   <!-- Contact business Phone -->
+	<component jsfid="contactBusinessPhoneLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="contactBusinessPhone" />
+		      <set name="value" value="#{messages['rolodex.address.phone']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="contactBusinessPhone" extends="inputText" id="contactBusinessPhone"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.selectedContact.businessPhone}" />		
+			  <set name="required" value="false" />
+		   </attributes>
+	</component>
+	<component jsfid="contactBusinessPhoneMessage" extends="message" allowBody="false" > 
+		   <attributes>
+		      <set name="for" value="contactBusinessPhone" />		
+		   </attributes>
+	</component>
+
+
+	<!-- business province label, input field and message -->	
+	<component jsfid="businessProvinceLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="businessProvince" />
+		      <set name="value" value="#{messages['rolodex.address.province']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="businessProvince" extends="inputText" id="businessProvince"> 
+		   <attributes>
+		      <set name="value" value="#{@managed-bean-name.selectedContact.businessAddress.province}" />		
+			  <set name="required" value="false" />
+		   </attributes>
+	</component>
+	<component jsfid="businessProvinceMessage" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="businessProvince" />		
+		   </attributes>
+	</component>
+
+
+	<!-- business country label, input field and message -->	
+	<component jsfid="businessCountryLabel" extends="outputLabel" allowBody="false"> 
+		   <attributes>
+			  <set name="for"   value="businessCountry" />
+		      <set name="value" value="#{messages['rolodex.address.country']}" />
+		   </attributes>
+	</component>				
+	<component jsfid="businessCountry" extends="selectOneMenu" id="businessCountry" allowBody="false"> 
+       <attributes>
+	      <set name="value" value="#{@managed-bean-name.selectedContact.businessAddress.country}" />
+		  <set name="required" value="true" />	      
+ 	   </attributes>
+ 
+	   <element renderId="0" jsfid="selectItems"> 
+		   <attributes>
+		      <set name="value" value="#{rolodexDao.countries}" />
+ 	       </attributes>
+	   </element>
+	</component>
+	<component jsfid="businessCountryMessage" extends="message" allowBody="false"> 
+		   <attributes>
+		      <set name="for" value="businessCountry" />		
+		   </attributes>
+	</component>
+
+</view>

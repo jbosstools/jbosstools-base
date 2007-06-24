@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension-point id="specialwizard" name="Special Wizards" schema="schema/specialwizard.exsd"/>
+   <extension-point id="modelObjectAdapter" name="modelObjectAdapter" schema="schema/modelObjectAdapter.exsd"/>
+   <extension-point id="meta" name="meta" schema="schema/meta.exsd"/>
+   <extension-point id="keys" name="keys" schema="schema/keys.exsd"/>
+   <extension-point id="jspAdopt" name="jspAdopt" schema="schema/jspAdopt.exsd"/>
+   <extension-point id="paletteAdopt" name="paletteAdopt" schema="schema/paletteAdopt.exsd"/>
+   <extension-point id="resourceMapping" name="resourceMapping" schema="schema/resourceMapping.exsd"/>
+   <extension-point id="classes" name="Model Classes" schema="schema/classes.exsd"/>
+
+   <extension point="org.eclipse.wst.xml.core.catalogContributions">
+        <catalogContribution id="default">
+           <public publicId="-//Red Hat, Inc.//DTD Meta 1.0//EN" uri="schema/meta.dtd">
+           </public>
+        </catalogContribution>
+   </extension>
+
+   <extension point="org.jboss.tools.common.model.meta">
+      <meta path="meta/ant.meta">
+      </meta>
+      <meta path="meta/base.meta">
+      </meta>
+      <meta path="meta/files.meta">
+      </meta>
+      <meta path="meta/filesystems.meta">
+      </meta>
+      <meta path="meta/jclass.meta">
+      </meta>
+      <meta path="meta/jclassedit.meta">
+      </meta>
+      <meta path="meta/studio.meta">
+      </meta>
+      <meta path="meta/studio_eclipse_option.meta">
+      </meta>
+      <meta path="meta/studio_option.meta">
+      </meta>
+      <meta path="meta/studio_option_engines.meta">
+      </meta>
+      <meta path="meta/studio_option_palette.meta">
+      </meta>
+      <meta path="meta/studio_page.meta">
+      </meta>
+      <meta path="meta/studio_search.meta">
+      </meta>
+   </extension>
+   <extension point="org.jboss.tools.common.model.keys">
+      <keys path="help/keys-model.properties">
+      </keys>
+   </extension>
+   <extension id="modelnature" point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="org.jboss.tools.common.model.project.ModelNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension point="org.jboss.tools.common.model.specialwizard">
+      <specialwizard class="org.jboss.tools.common.model.util.FindObjectHelper" id="org.jboss.tools.common.model.util.FindObjectHelper">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.project.ClassPathUpdateWizard" id="org.jboss.tools.common.model.project.ClassPathUpdateWizard">
+      </specialwizard>
+   </extension>
+<!--extension
+         point="org.eclipse.jdt.core.classpathVariableInitializer">
+      <classpathVariableInitializer
+            variable=" STRUTSSTUDIO_LIB_HOME"
+            class="org.jboss.tools.common.core.jdt.StrutsStudioVariableInitializer">
+      </classpathVariableInitializer>
+   </extension-->
+   <extension id="textproblemmarker" name="%textProblemName" point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent value="true">
+      </persistent>
+   </extension>
+   <extension id="modelBreakpointMarker" point="org.eclipse.core.resources.markers">
+      <attribute name="org.jboss.tools.common.model.debug.modelPath">
+      </attribute>
+      <persistent value="true">
+      </persistent>
+   </extension>
+
+	<extension point="org.jboss.tools.common.model.classes">
+		<xclass id="org.jboss.tools.common.ant.model.AntEntityRecognizer"
+			class="org.jboss.tools.common.ant.model.AntEntityRecognizer"/>
+		<xclass id="org.jboss.tools.common.ant.model.handlers.RunTargetHandler"
+			class="org.jboss.tools.common.ant.model.handlers.RunTargetHandler"/>
+		<xclass id="org.jboss.tools.common.java.jsp.model.FileJSPImpl"
+			class="org.jboss.tools.common.java.jsp.model.FileJSPImpl"/>
+		<xclass id="org.jboss.tools.common.java.model.handler.CreateJavaFileHandler"
+			class="org.jboss.tools.common.java.model.handler.CreateJavaFileHandler"/>
+		<xclass id="org.jboss.tools.common.java.model.handler.RunJavaHandler"
+			class="org.jboss.tools.common.java.model.handler.RunJavaHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.ChildrenCopyHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.ChildrenCopyHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.ChildrenDeleteHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.ChildrenDeleteHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.CloseProjectHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.CloseProjectHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.CreateIconHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.CreateIconHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.DefaultEditHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.DefaultEditHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.DefaultRedirectHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.DefaultRedirectHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.DefaultSpecialHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.DefaultSpecialHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.MoveHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.MoveHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.NewProjectHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.NewProjectHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.OpenProjectHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.OpenProjectHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.OpenWithChoiceHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.OpenWithChoiceHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.PropertiesHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.PropertiesHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.ReopenProjectHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.ReopenProjectHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.ReplaceWithNewHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.ReplaceWithNewHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.SaveAllHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.SaveAllHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.ShowMenuHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.ShowMenuHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.SortByNameHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.SortByNameHandler"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.UndoRedoHandler"
+			class="org.jboss.tools.common.meta.action.impl.handlers.UndoRedoHandler"/>
+		<xclass id="org.jboss.tools.common.meta.help.HelpHandler"
+			class="org.jboss.tools.common.meta.help.HelpHandler"/>
+		<xclass id="org.jboss.tools.common.model.engines.impl.EnginesLoader"
+			class="org.jboss.tools.common.model.engines.impl.EnginesLoader"/>
+		<xclass id="org.jboss.tools.common.model.engines.impl.StopProcessHandler"
+			class="org.jboss.tools.common.model.engines.impl.StopProcessHandler"/>
+		<xclass id="org.jboss.tools.common.model.files.handlers.JSPAdopt"
+			class="org.jboss.tools.common.model.files.handlers.JSPAdopt"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.CreateFileHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.CreateFileHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.CreateFolderHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.CreateFolderHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.DeleteFileHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.DeleteFileHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.DiscardFileHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.DiscardFileHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FileAnyAuxiliaryImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.FileAnyAuxiliaryImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FileAnyImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.FileAnyImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FileAnyLongImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.FileAnyLongImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FilePropertiesImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.FilePropertiesImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FileSystemFolderLoader"
+			class="org.jboss.tools.common.model.filesystems.impl.FileSystemFolderLoader"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FileSystemImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.FileSystemImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FileSystemsImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.FileSystemsImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FileSystemsLoader"
+			class="org.jboss.tools.common.model.filesystems.impl.FileSystemsLoader"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FileSystemsTreeConstraint"
+			class="org.jboss.tools.common.model.filesystems.impl.FileSystemsTreeConstraint"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FileXMLImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.FileXMLImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.FolderImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.FolderImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.HelpOverlappedFileSystemHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.HelpOverlappedFileSystemHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.HiddenSystemsHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.HiddenSystemsHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.JarFolderImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.JarFolderImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.JarSystemImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.JarSystemImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.MountFileSystemHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.MountFileSystemHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.MountFolderHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.MountFolderHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.MoveFileSystemHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.MoveFileSystemHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.SaveFileHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.SaveFileHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.SelectOverlappedFileSystemHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.SelectOverlappedFileSystemHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.SimpleFileImpl"
+			class="org.jboss.tools.common.model.filesystems.impl.SimpleFileImpl"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.UnmountFileSystemHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.UnmountFileSystemHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.UnmountFolderHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.UnmountFolderHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.handlers.FolderPasteHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.handlers.FolderPasteHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.handlers.RenameEclipseFileHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.handlers.RenameEclipseFileHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.handlers.RenameFileHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.handlers.RenameFileHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.handlers.RenameFileSystemHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.handlers.RenameFileSystemHandler"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.handlers.RenameFolderHandler"
+			class="org.jboss.tools.common.model.filesystems.impl.handlers.RenameFolderHandler"/>
+		<xclass id="org.jboss.tools.common.model.handlers.CloseProjectHandler"
+			class="org.jboss.tools.common.model.handlers.CloseProjectHandler"/>
+		<xclass id="org.jboss.tools.common.model.handlers.DeleteProjectHandler"
+			class="org.jboss.tools.common.model.handlers.DeleteProjectHandler"/>
+		<xclass id="org.jboss.tools.common.model.handlers.OpenEditorHandler"
+			class="org.jboss.tools.common.model.handlers.OpenEditorHandler"/>
+		<xclass id="org.jboss.tools.common.model.handlers.OpenJavaEditorHandler"
+			class="org.jboss.tools.common.model.handlers.OpenJavaEditorHandler"/>
+		<xclass id="org.jboss.tools.common.model.handlers.ProjectPropertiesHandler"
+			class="org.jboss.tools.common.model.handlers.ProjectPropertiesHandler"/>
+		<xclass id="org.jboss.tools.common.model.handlers.RefreshProjectHandler"
+			class="org.jboss.tools.common.model.handlers.RefreshProjectHandler"/>
+		<xclass id="org.jboss.tools.common.model.handlers.RemoveModelNatureHandler"
+			class="org.jboss.tools.common.model.handlers.RemoveModelNatureHandler"/>
+		<xclass id="org.jboss.tools.common.model.handlers.RunAntHandler"
+			class="org.jboss.tools.common.model.handlers.RunAntHandler"/>
+		<xclass id="org.jboss.tools.common.model.icons.impl.EngineIcon"
+			class="org.jboss.tools.common.model.icons.impl.EngineIcon"/>
+		<xclass id="org.jboss.tools.common.model.icons.impl.GifIcon"
+			class="org.jboss.tools.common.model.icons.impl.GifIcon"/>
+		<xclass id="org.jboss.tools.common.model.icons.impl.MainIcon"
+			class="org.jboss.tools.common.model.icons.impl.MainIcon"/>
+		<xclass id="org.jboss.tools.common.model.icons.impl.ModifiersIcon"
+			class="org.jboss.tools.common.model.icons.impl.ModifiersIcon"/>
+		<xclass id="org.jboss.tools.common.model.icons.impl.ReferencedIcons"
+			class="org.jboss.tools.common.model.icons.impl.ReferencedIcons"/>
+		<xclass id="org.jboss.tools.common.model.icons.impl.XStudioIcons"
+			class="org.jboss.tools.common.model.icons.impl.XStudioIcons"/>
+		<xclass id="org.jboss.tools.common.model.impl.AnyElementObjectImpl"
+			class="org.jboss.tools.common.model.impl.AnyElementObjectImpl"/>
+		<xclass id="org.jboss.tools.common.model.impl.CustomizedObjectImpl"
+			class="org.jboss.tools.common.model.impl.CustomizedObjectImpl"/>
+		<xclass id="org.jboss.tools.common.model.impl.ExtraRootImpl"
+			class="org.jboss.tools.common.model.impl.ExtraRootImpl"/>
+		<xclass id="org.jboss.tools.common.model.impl.OpenedProjectsImpl"
+			class="org.jboss.tools.common.model.impl.OpenedProjectsImpl"/>
+		<xclass id="org.jboss.tools.common.model.impl.OrderedObjectImpl"
+			class="org.jboss.tools.common.model.impl.OrderedObjectImpl"/>
+		<xclass id="org.jboss.tools.common.model.impl.PropertyObjectImpl"
+			class="org.jboss.tools.common.model.impl.PropertyObjectImpl"/>
+		<xclass id="org.jboss.tools.common.model.impl.RegularObjectImpl"
+			class="org.jboss.tools.common.model.impl.RegularObjectImpl"/>
+		<xclass id="org.jboss.tools.common.model.impl.RootImpl"
+			class="org.jboss.tools.common.model.impl.RootImpl"/>
+		<xclass id="org.jboss.tools.common.model.impl.bundle.BundleItemObjectImpl"
+			class="org.jboss.tools.common.model.impl.bundle.BundleItemObjectImpl"/>
+		<xclass id="org.jboss.tools.common.model.impl.trees.DefaultSubTree"
+			class="org.jboss.tools.common.model.impl.trees.DefaultSubTree"/>
+		<xclass id="org.jboss.tools.common.model.impl.trees.FileSystemResourceBundleTree"
+			class="org.jboss.tools.common.model.impl.trees.FileSystemResourceBundleTree"/>
+		<xclass id="org.jboss.tools.common.model.impl.trees.FileSystemResourceTree"
+			class="org.jboss.tools.common.model.impl.trees.FileSystemResourceTree"/>
+		<xclass id="org.jboss.tools.common.model.impl.trees.FileSystemsTree"
+			class="org.jboss.tools.common.model.impl.trees.FileSystemsTree"/>
+		<xclass id="org.jboss.tools.common.model.impl.trees.IconsTree"
+			class="org.jboss.tools.common.model.impl.trees.IconsTree"/>
+		<xclass id="org.jboss.tools.common.model.impl.trees.NavigationTree"
+			class="org.jboss.tools.common.model.impl.trees.NavigationTree"/>
+		<xclass id="org.jboss.tools.common.model.impl.trees.OptionsTree"
+			class="org.jboss.tools.common.model.impl.trees.OptionsTree"/>
+		<xclass id="org.jboss.tools.common.model.impl.trees.PaletteTree"
+			class="org.jboss.tools.common.model.impl.trees.PaletteTree"/>
+		<xclass id="org.jboss.tools.common.model.impl.trees.SearchTree"
+			class="org.jboss.tools.common.model.impl.trees.SearchTree"/>
+		<xclass id="org.jboss.tools.common.model.java.handlers.ExternalizeStringsHandler"
+			class="org.jboss.tools.common.model.java.handlers.ExternalizeStringsHandler"/>
+		<xclass id="org.jboss.tools.common.model.java.handlers.ExtractInterfaceHandler"
+			class="org.jboss.tools.common.model.java.handlers.ExtractInterfaceHandler"/>
+		<xclass id="org.jboss.tools.common.model.java.handlers.MoveHandler"
+			class="org.jboss.tools.common.model.java.handlers.MoveHandler"/>
+		<xclass id="org.jboss.tools.common.model.java.handlers.OpenJavaSourceHandler"
+			class="org.jboss.tools.common.model.java.handlers.OpenJavaSourceHandler"/>
+		<xclass id="org.jboss.tools.common.model.java.handlers.OrganizeImportsHandler"
+			class="org.jboss.tools.common.model.java.handlers.OrganizeImportsHandler"/>
+		<xclass id="org.jboss.tools.common.model.java.handlers.RenameHandler"
+			class="org.jboss.tools.common.model.java.handlers.RenameHandler"/>
+		<xclass id="org.jboss.tools.common.model.java.handlers.SortMembersHandler"
+			class="org.jboss.tools.common.model.java.handlers.SortMembersHandler"/>
+		<xclass id="org.jboss.tools.common.model.java.handlers.UseSupertypeHandler"
+			class="org.jboss.tools.common.model.java.handlers.UseSupertypeHandler"/>
+		<xclass id="org.jboss.tools.common.model.loaders.impl.BodyLoader"
+			class="org.jboss.tools.common.model.loaders.impl.BodyLoader"/>
+		<xclass id="org.jboss.tools.common.model.loaders.impl.DefaultEntityLoader"
+			class="org.jboss.tools.common.model.loaders.impl.DefaultEntityLoader"/>
+		<xclass id="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"
+			class="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
+		<xclass id="org.jboss.tools.common.model.loaders.impl.PropertiesLoader"
+			class="org.jboss.tools.common.model.loaders.impl.PropertiesLoader"/>
+		<xclass id="org.jboss.tools.common.model.loaders.impl.RootLoaderImpl"
+			class="org.jboss.tools.common.model.loaders.impl.RootLoaderImpl"/>
+		<xclass id="org.jboss.tools.common.model.loaders.impl.SimpleWebFileLoader"
+			class="org.jboss.tools.common.model.loaders.impl.SimpleWebFileLoader"/>
+		<xclass id="org.jboss.tools.common.model.loaders.impl.URLRootLoader"
+			class="org.jboss.tools.common.model.loaders.impl.URLRootLoader"/>
+		<xclass id="org.jboss.tools.common.model.options.impl.EditHTMLTabNamespaceHandler"
+			class="org.jboss.tools.common.model.options.impl.EditHTMLTabNamespaceHandler"/>
+		<xclass id="org.jboss.tools.common.model.options.impl.HiddenPaletteTabsHandler"
+			class="org.jboss.tools.common.model.options.impl.HiddenPaletteTabsHandler"/>
+		<xclass id="org.jboss.tools.common.model.options.impl.PaletteAdopt"
+			class="org.jboss.tools.common.model.options.impl.PaletteAdopt"/>
+		<xclass id="org.jboss.tools.common.model.options.impl.RootXStudioLoaderImpl"
+			class="org.jboss.tools.common.model.options.impl.RootXStudioLoaderImpl"/>
+		<xclass id="org.jboss.tools.common.model.options.impl.SharableElementImpl"
+			class="org.jboss.tools.common.model.options.impl.SharableElementImpl"/>
+		<xclass id="org.jboss.tools.common.model.options.impl.SharableStudioImpl"
+			class="org.jboss.tools.common.model.options.impl.SharableStudioImpl"/>
+		<xclass id="org.jboss.tools.common.model.project.ClassPathUpdateWizard"
+			class="org.jboss.tools.common.model.project.ClassPathUpdateWizard"/>
+		<xclass id="org.jboss.tools.common.model.project.WatcherLoader"
+			class="org.jboss.tools.common.model.project.WatcherLoader"/>
+		<xclass id="org.jboss.tools.common.model.search.impl.SearchCommandImpl"
+			class="org.jboss.tools.common.model.search.impl.SearchCommandImpl"/>
+		<xclass id="org.jboss.tools.common.model.search.impl.SearchConstraintANDImpl"
+			class="org.jboss.tools.common.model.search.impl.SearchConstraintANDImpl"/>
+		<xclass id="org.jboss.tools.common.model.search.impl.SearchConstraintORImpl"
+			class="org.jboss.tools.common.model.search.impl.SearchConstraintORImpl"/>
+		<xclass id="org.jboss.tools.common.model.search.impl.SearchConstraintValueImpl"
+			class="org.jboss.tools.common.model.search.impl.SearchConstraintValueImpl"/>
+		<xclass id="org.jboss.tools.common.model.search.impl.SearchDefaultHandler"
+			class="org.jboss.tools.common.model.search.impl.SearchDefaultHandler"/>
+		<xclass id="org.jboss.tools.common.model.search.impl.SearchExecuteHandler"
+			class="org.jboss.tools.common.model.search.impl.SearchExecuteHandler"/>
+
+		<xclass id="org.jboss.tools.common.meta.constraint.XAdapter"
+			class="org.jboss.tools.common.meta.constraint.XAdapter"/>
+		<xclass id="org.jboss.tools.common.meta.impl.adapters.XAdapterElementType"
+			class="org.jboss.tools.common.meta.impl.adapters.XAdapterElementType"/>
+		<xclass id="org.jboss.tools.common.meta.impl.adapters.XAdapterModelElement"
+			class="org.jboss.tools.common.meta.impl.adapters.XAdapterModelElement"/>
+		<xclass id="org.jboss.tools.common.meta.impl.adapters.XAdapterModelPath"
+			class="org.jboss.tools.common.meta.impl.adapters.XAdapterModelPath"/>
+
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintFileFilter"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintFileFilter"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintFolderName"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintFolderName"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintImpl"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintImpl"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintInt"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintInt"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintJavaName"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintJavaName"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintJavaNameOrEmpty"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintJavaNameOrEmpty"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintList"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintList"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintListAdd"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintListAdd"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintListInt"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintListInt"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintListString"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintListString"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintListTemplates"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintListTemplates"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintProperties"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintProperties"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintQClassName"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintQClassName"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintText"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintText"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintTree"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintTree"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintXMLName"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintXMLName"/>
+		<xclass id="org.jboss.tools.common.ant.model.handlers.CreateAntFileSupport"
+			class="org.jboss.tools.common.ant.model.handlers.CreateAntFileSupport"/>
+		<xclass id="org.jboss.tools.common.model.files.handlers.CreateFileSupport"
+			class="org.jboss.tools.common.model.files.handlers.CreateFileSupport"/>
+
+		<xclass id="org.jboss.tools.common.meta.action.impl.SignificanceMessageImpl"
+			class="org.jboss.tools.common.meta.action.impl.SignificanceMessageImpl"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.SignificanceMessageImpl2"
+			class="org.jboss.tools.common.meta.action.impl.SignificanceMessageImpl2"/>
+		<xclass id="org.jboss.tools.common.model.filesystems.impl.DiscardFileSignificanceMessage"
+			class="org.jboss.tools.common.model.filesystems.impl.DiscardFileSignificanceMessage"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.ReplaceSignificanceMessageImpl"
+			class="org.jboss.tools.common.meta.action.impl.handlers.ReplaceSignificanceMessageImpl"/>
+
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.AddAttributeToAnyElementSupport"
+			class="org.jboss.tools.common.meta.action.impl.handlers.AddAttributeToAnyElementSupport"/>
+		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateSupport"
+			class="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateSupport"/>
+
+	</extension>
+</plugin>

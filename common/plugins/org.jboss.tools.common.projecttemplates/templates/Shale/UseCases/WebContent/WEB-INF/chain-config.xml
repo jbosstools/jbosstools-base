@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+ Copyright 2004-2005 The Apache Software Foundation.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+
+<catalogs>
+
+  <!-- Define preprocessing command chain for Shale to execute -->
+  <catalog               name="shale">
+    <chain               name="preprocess">
+
+      <!-- Perform remote request processing for matching requests -->
+      <!-- Successful match will terminate the processing chain -->
+      <command  className="org.apache.commons.chain.generic.LookupCommand" 	 
+             catalogName="shale"
+                    name="remote"
+                optional="true"/>
+
+      <!-- This command is only needed for full clay html views with myfaces  -->
+      <command      className="org.apache.shale.clay.faces.ClayViewHandlerCommand" />
+
+
+      <!-- This filter command wakes up the watchdog monitoring the Clay configuration files for change. -->
+      <command      className="org.apache.shale.clay.config.beans.ConfigDefinitionsWatchdogFilter"
+                     includes="\S*\.faces,\S*\.html,/index\.jsp,\S*\.xml"/>
+ 
+
+      <!-- Disallow direct access to JSP and JSFP resources -->
+      <command      className="org.apache.shale.application.ContextRelativePathFilter"
+                     includes="\S*\.xml,\S*\.faces,\S*\.html,\S*\.gif,\S*\.jpg,/index\.jsp"
+                     excludes="\S*\.jsp,\S*\.jspf"/>
+    </chain>
+  </catalog>
+
+
+  <!-- ========== Remote Processing Commands =============================== -->
+
+  <catalog               name="remote">
+
+    <!-- NOTE - alternate implementations are provided to illustrate choices -->
+
+    <!-- This implementation uses the generic EvaluateExpression and
+         BasicListCompletions classes from the core library. -->
+    <chain               name="/list/stateNames.remote">
+      <command      className="org.apache.shale.remote.EvaluateExpression"
+                   expression="#{domains.stateNames}"
+                 attributeKey="strings"/>
+      <command      className="org.apache.shale.remote.BasicListCompletions"/>
+    </chain>
+
+    <!-- This implementation subclasses AbstractListCompletions and
+         implements the legal() method to return the appropriate data. -->
+    <command             name="/list/stateNames.remote"
+                    className="org.apache.shale.usecases.remote.ListStateNames"/>
+
+    <!-- This implementation uses the generic EvaluateExpression and
+         BasicSelectItems classes from the core library. -->
+    <!--
+    <chain               name="/list/supportedCategories.remote">
+      <command      className="org.apache.shale.remote.EvaluateExpression"
+                   expression="#{domains.supportedCategories}"
+                 attributeKey="selectItems"/>
+      <command      className="org.apache.shale.remote.BasicSelectItems"/>
+    </chain>
+    -->
+
+    <!-- This implementation subclasses AbstractSelectItems and
+         implements the legal() method to return the appropriate data. -->
+    <command             name="/list/supportedCategories.remote"
+                    className="org.apache.shale.usecases.remote.ListCategories"/>
+
+    <!-- This implementation uses the generic EvaluateExpression and
+         BasicSelectItems classes from the core library. -->
+    <!--
+    <chain               name="/list/supportedLocales.remote">
+      <command      className="org.apache.shale.remote.EvaluateExpression"
+                   expression="#{domains.supportedLocales}"
+                 attributeKey="selectItems"/>
+      <command      className="org.apache.shale.remote.BasicSelectItems"/>
+    </chain>
+    -->
+
+    <!-- This implementation subclasses AbstractSelectItems and
+         implements the legal() method to return the appropriate data. -->
+    <command             name="/list/supportedLocales.remote"
+                    className="org.apache.shale.usecases.remote.ListLocales"/>
+
+  </catalog>
+
+
+</catalogs>

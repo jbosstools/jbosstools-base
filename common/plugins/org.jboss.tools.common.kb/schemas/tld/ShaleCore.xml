@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema location="" prefix="s" uri="http://struts.apache.org/shale/core">
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="subview" startTag="required">
+        <description>Provide ViewController support functionality for the nested content
+      (typically a JSP dynamic include) of this component.</description>
+        <AttributeType name="binding" required="false">
+            <description>Value binding expression used to bind this component instance
+        to a backing bean property.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="id" required="true">
+            <description>Component identifier of this component.  If specified, this identifier
+        must be unique within the context of the closest parent UIComponent
+        that is a NamingContainer.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>Flag indicating whether this component should be rendered.
+        Default value is true.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rendered"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="token" startTag="required">
+        <description>Render a hidden input field whose value is the transaction token
+      for the containing form.</description>
+        <AttributeType name="binding" required="false">
+            <description>Value binding expression used to bind this component instance
+        to a backing bean property.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="id" required="false">
+            <description>Component identifier of this component.  If specified, this identifier
+        must be unique within the context of the closest parent UIComponent
+        that is a NamingContainer.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>Flag indicating whether this component should be rendered.
+        Default value is true.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rendered"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="commonsValidator" startTag="required">
+        <description>Provides access to Commons Validators.</description>
+        <AttributeType name="type" required="false">
+            <description>The type of validator associated with this tag</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <AttributeType name="min" required="false">
+            <description>The minimum valid value</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="min"/>
+        <AttributeType name="max" required="false">
+            <description>The maximum valid value</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="max"/>
+        <AttributeType name="minlength" required="false">
+            <description>The minimum valid length of the field</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="minlength"/>
+        <AttributeType name="maxlength" required="false">
+            <description>The maximum valid length of the field</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="maxlength"/>
+        <AttributeType name="mask" required="false">
+            <description>A regular expression to which the value must conform</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="mask"/>
+        <AttributeType name="datePatternStrict" required="false">
+            <description>A date pattern using syntax defined in java.text.SimpleDateFormat</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="datePatternStrict"/>
+        <AttributeType name="message" required="false">
+            <description>A message displayed when validation fails</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="message"/>
+        <AttributeType name="arg" required="false">
+            <description>A value that's plugged into the message</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="arg"/>
+        <AttributeType name="client" required="false">
+            <description>If true, validation is performed on the client</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="client"/>
+        <AttributeType name="server" required="false">
+            <description>If true, validation is performed on the server</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="server"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="validatorScript" startTag="required">
+        <description>Generates JavaScript for client-side validation</description>
+        <AttributeType name="functionName" required="true">
+            <description>The name of the function to generate.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="functionName"/>
+    </ElementType>
+</Schema>

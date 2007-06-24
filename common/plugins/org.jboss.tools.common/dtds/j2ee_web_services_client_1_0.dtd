@@ -1,0 +1,281 @@
+<!-- Last updated: 09/21/2002 14:50
+Copyright 2002 IBM Corporation
+All Web service client deployment descriptors must use the following 
+declaration:
+
+<!DOCTYPE webservicesclient PUBLIC
+	"-//IBM Corporation, Inc.//DTD J2EE Web services client 1.0//EN" 
+	"http://www.ibm.com/webservices/dtd/j2ee_web_services_client_1_0.dtd">
+-->
+
+<!--
+The webservicesclient element is the top level element for service
+references.
+-->
+<!ELEMENT webservicesclient (service-ref+|component-scoped-refs+)>
+
+<!--
+The component-name element defines a link to a component name such
+as the ejb-name in the module deployment descriptor.  It's value
+must exist in the module level deployment descriptor.
+
+Used in: component-scoped-refs
+-->
+<!ELEMENT component-name (#PCDATA)>
+
+<!--
+The component-scoped-refs element defines service references that
+are scoped to a particular component of a module.  Not all modules
+support component scoping.
+
+Used in: webservicesclient
+-->
+<!ELEMENT component-scoped-refs (component-name, service-ref+)>
+
+<!--
+The description element gives the deployer a textual description 
+of the Web service. 
+
+Used in: service-ref
+-->
+<!ELEMENT description (#PCDATA)>
+
+<!--
+The display-name element contains a short name that is intended to be
+displayed by tools. The display name need not be unique.
+
+Used in: port-component and webservices
+
+Example:
+	<display-name>Employee Self Service</display-name>
+-->
+<!ELEMENT display-name (#PCDATA)>
+
+<!--
+Declares the handler for a port-component. Handlers can access the
+init-param name/value pairs using the HandlerInfo interface. If 
+port-name is not specified, the handler is assumed to be associated
+with all ports of the service.
+
+Used in: service-ref
+-->
+<!ELEMENT handler (description?, display-name?, small-icon?, 
+	large-icon?, handler-name, handler-class, init-param*, 
+	soap-header*, soap-role*, port-name*)>
+
+<!--
+Defines a fully qualified class name for the handler implementation.
+-->
+<!ELEMENT handler-class (#PCDATA)>
+
+<!--
+Defines the name of the handler. The name must be unique within the
+module.
+-->
+<!ELEMENT handler-name (#PCDATA)>
+
+<!--
+The init-param element contains a name/value pair as an
+initialization param of the handler.
+
+Used in: handler
+-->
+<!ELEMENT init-param (param-name, param-value, 
+	description?)>
+
+<!--
+The jaxrpc-mapping-file element contains the name of a file that
+describes the JAX-RPC mapping between the Java interfaces used by
+the application and the WSDL description in the wsdl-file.  The 
+file name is a relative path within the module file.
+
+Used in: webservice-description
+-->
+<!ELEMENT jaxrpc-mapping-file (#PCDATA)>
+
+<!--
+The large-icon element contains the name of a file containing a large
+(32 x 32) icon image. The file name is relative path within the
+module file.
+
+The image must be either in the JPEG or GIF format.
+The icon can be used by tools.
+
+Example:
+	<large-icon>employee-service-icon32x32.jpg</large-icon>
+-->
+<!ELEMENT large-icon (#PCDATA)>
+
+<!--
+The localpart element indicates the local part of a QNAME.
+
+Used in: service-qname, soap-header
+-->
+<!ELEMENT localpart (#PCDATA)>
+
+<!--
+The namespaceURI element indicates a URI.
+
+Used in: service-qname, soap-header
+-->
+<!ELEMENT namespaceURI (#PCDATA)>
+
+<!--
+The param-name element contains the name of a parameter. Each
+parameter name must be unique in the web application.
+
+Used in: context-param, init-param
+-->
+<!ELEMENT param-name (#PCDATA)>
+
+<!--
+The param-value element contains the value of a parameter.
+
+Used in: context-param, init-param
+-->
+<!ELEMENT param-value (#PCDATA)>
+
+<!--
+The port-component-link element links a port-component-ref to a 
+specific port-component required to be made available by a service 
+reference.
+
+The value of a port-component-link must be the port-component-name
+of a port-component in the same module or another module in the same
+application unit. The syntax for specification follows the syntax
+defined for ejb-link in the EJB 2.0 specification.
+
+Used in: port-component-ref
+-->
+<!ELEMENT port-component-link (#PCDATA)>
+
+<!--
+The port-component-ref element declares a client dependency
+on the container for resolving a Service Endpoint Interface
+to a WSDL port. It optionally associates the Service Endpoint
+Interface with a particular port-component. This is only used
+by the container for a Service.getPort(Class) method call.
+
+Used in: service-ref
+-->
+<!ELEMENT port-component-ref (service-endpoint-interface, 
+	port-component-link?)>
+
+<!--
+The port-name element defines the WSDL port-name that a handler
+should be associated with.
+-->
+<!ELEMENT port-name (#PCDATA)>
+
+<!--
+The service-endpoint-interface element defines a fully qualified
+Java class that represents the Service Endpoint Interface of a
+WSDL port.
+
+Used in: service-ref
+-->
+<!ELEMENT service-endpoint-interface (#PCDATA)>
+
+<!--
+The service-interface element declares the fully qualified class 
+name of the JAX-RPC Service interface the client depends on. 
+In most cases the value will be javax.xml.rpc.Service.  A JAX-RPC
+generated Service Interface class may also be specified.
+
+Used in: services-ref
+-->
+<!ELEMENT service-interface (#PCDATA)>
+
+<!-- The service-qname element declares the specific WSDL service
+element that is being referred to.  It is not specified if no
+wsdl-file is declared.
+
+Used in service-ref
+-->
+<!ELEMENT service-qname (namespaceURI, localpart)>
+
+<!-- The service-ref element declares a reference to a Web
+service. It contains optional description, display name and
+icons, a declaration of the required Service interface,
+an optional WSDL document location, an optional set
+of JAX-RPC mappings, an optional QName for the service element,
+an optional set of Service Endpoint Interfaces to be resolved 
+by the container to a WSDL port, and an optional set of handlers.
+
+Used in: webservicesclient.xml 
+-->
+<!ELEMENT service-ref (description?, display-name?, small-icon?,
+	large-icon?, service-ref-name, service-interface, wsdl-file?, 
+	jaxrpc-mapping-file?, service-qname?, port-component-ref*, 
+	handler*)>
+	
+<!--
+The service-ref-name element declares logical name that the
+components in the module use to look up the Web service. It 
+is recommended that all service reference names start with 
+"service/".
+
+Used in: services-ref
+-->
+<!ELEMENT service-ref-name (#PCDATA)>
+
+<!--
+The small-icon element contains the name of a file containing a small
+(16 x 16) icon image. The file name is relative path within the
+module file.
+
+The image must be either in the JPEG or GIF format.
+The icon can be used by tools.
+
+Example:
+	<small-icon>employee-service-icon16x16.jpg</small-icon>
+-->
+<!ELEMENT small-icon (#PCDATA)>
+
+<!--
+Defines the QName of a SOAP header that will be processed by the
+handler.
+-->
+<!ELEMENT soap-header (namespaceURI, localpart)>
+
+<!--
+The soap-role element contains a SOAP actor definition that the
+Handler will play as a role.
+-->
+<!ELEMENT soap-role (#PCDATA)>
+
+<!--
+The wsdl-file element contains the URI location of a WSDL file. The
+location is relative to the root of the module.
+
+Used in: service-ref
+-->
+<!ELEMENT wsdl-file (#PCDATA)>
+
+<!ATTLIST component-name id ID #IMPLIED>
+<!ATTLIST component-scoped-refs id ID #IMPLIED>
+<!ATTLIST description id ID #IMPLIED>
+<!ATTLIST display-name id ID #IMPLIED>
+<!ATTLIST handler id ID #IMPLIED>
+<!ATTLIST handler-class id ID #IMPLIED>
+<!ATTLIST handler-name id ID #IMPLIED>
+<!ATTLIST init-param id ID #IMPLIED>
+<!ATTLIST jaxrpc-mapping-file id ID #IMPLIED>
+<!ATTLIST large-icon id ID #IMPLIED>
+<!ATTLIST localpart id ID #IMPLIED>
+<!ATTLIST namespaceURI id ID #IMPLIED>
+<!ATTLIST param-name id ID #IMPLIED>
+<!ATTLIST param-value id ID #IMPLIED>
+<!ATTLIST port-component-link id ID #IMPLIED>
+<!ATTLIST port-component-ref id ID #IMPLIED>
+<!ATTLIST port-name id ID #IMPLIED>
+<!ATTLIST service-endpoint-interface id ID #IMPLIED>
+<!ATTLIST service-interface id ID #IMPLIED>
+<!ATTLIST service-qname id ID #IMPLIED>
+<!ATTLIST service-ref id ID #IMPLIED>
+<!ATTLIST service-ref-name id ID #IMPLIED>
+<!ATTLIST small-icon id ID #IMPLIED>
+<!ATTLIST soap-header id ID #IMPLIED>
+<!ATTLIST soap-role id ID #IMPLIED>
+<!ATTLIST webservicesclient id ID #IMPLIED>
+<!ATTLIST wsdl-file id ID #IMPLIED>

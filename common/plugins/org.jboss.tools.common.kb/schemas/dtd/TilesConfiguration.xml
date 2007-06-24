@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema rootElement="component-definitions"
+  uri="-//Apache Software Foundation//DTD Tiles Configuration//EN" url="http://jakarta.apache.org/struts/dtds/tiles-config.dtd">
+  <ElementType endTag="required" name="component-definitions" startTag="required">
+    <element type="definition"/>
+  </ElementType>
+  <ElementType endTag="required" name="tiles-definitions" startTag="required">
+    <element type="definition"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" endTag="required" name="definition" startTag="required">
+    <AttributeType default="" name="controllerUrl" required="false"/>
+    <attribute default="" required="false" type="controllerUrl"/>
+    <AttributeType default="" name="name" required="true"/>
+    <attribute default="" required="true" type="name"/>
+    <AttributeType default="" name="template" required="false"/>
+    <attribute default="" required="false" type="template"/>
+    <AttributeType default="" name="extends" required="false"/>
+    <attribute default="" required="false" type="extends"/>
+    <AttributeType default="" name="page" required="false"/>
+    <attribute default="" required="false" type="page"/>
+    <AttributeType default="" name="path" required="false"/>
+    <attribute default="" required="false" type="path"/>
+    <AttributeType default="" name="controllerClass" required="false"/>
+    <attribute default="" required="false" type="controllerClass"/>
+    <AttributeType default="" name="role" required="false"/>
+    <attribute default="" required="false" type="role"/>
+    <element type="put"/>
+    <element type="putList"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" endTag="required" name="put" startTag="required">
+    <AttributeType default="" name="name" required="true"/>
+    <attribute default="" required="true" type="name"/>
+    <AttributeType default="" name="type" required="false"
+      type="enumeration" values="string,page,template,definition"/>
+    <attribute default="" required="false" type="type"/>
+    <AttributeType default="" name="content" required="false"/>
+    <attribute default="" required="false" type="content"/>
+    <AttributeType default="" name="value" required="false"/>
+    <attribute default="" required="false" type="value"/>
+    <AttributeType default="" name="direct" required="false"
+      type="enumeration" values="true,false"/>
+    <attribute default="" required="false" type="direct"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" endTag="required" name="putList" startTag="required">
+    <AttributeType default="" name="name" required="true"/>
+    <attribute default="" required="true" type="name"/>
+    <element type="add"/>
+    <element type="item"/>
+    <element type="bean"/>
+    <element type="putList"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" endTag="required"
+    name="putListElements" startTag="required">
+    <element type="add"/>
+    <element type="item"/>
+    <element type="bean"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" endTag="required" name="add" startTag="required">
+    <AttributeType default="" name="type" required="false"
+      type="enumeration" values="string,page,template,definition"/>
+    <attribute default="" required="false" type="type"/>
+    <AttributeType default="" name="content" required="false"/>
+    <attribute default="" required="false" type="content"/>
+    <AttributeType default="" name="value" required="false"/>
+    <attribute default="" required="false" type="value"/>
+    <AttributeType default="" name="direct" required="false"
+      type="enumeration" values="true,false"/>
+    <attribute default="" required="false" type="direct"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" endTag="required" name="bean" startTag="required">
+    <AttributeType default="" name="classtype" required="true"/>
+    <attribute default="" required="true" type="classtype"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" endTag="required" name="item" startTag="required">
+    <AttributeType default="" name="icon" required="false"/>
+    <attribute default="" required="false" type="icon"/>
+    <AttributeType default="" name="link" required="true"/>
+    <attribute default="" required="true" type="link"/>
+    <AttributeType default="" name="tooltip" required="false"/>
+    <attribute default="" required="false" type="tooltip"/>
+    <AttributeType default="" name="value" required="true"/>
+    <attribute default="" required="true" type="value"/>
+    <AttributeType default="" name="classtype" required="false"/>
+    <attribute default="" required="false" type="classtype"/>
+  </ElementType>
+</Schema>

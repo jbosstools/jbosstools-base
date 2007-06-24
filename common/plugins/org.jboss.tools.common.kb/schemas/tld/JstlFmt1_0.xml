@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema
+  location=""
+  prefix="fmt" uri="http://java.sun.com/jstl/fmt">
+  <ElementType bodyContent="refused" content="mixed" endTag="required"
+    name="requestEncoding" startTag="required">
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType bodyContent="refused" content="mixed" endTag="required"
+    name="setLocale" startTag="required">
+    <AttributeType name="value" required="true"/>
+    <attribute type="value"/>
+    <AttributeType name="variant" required="false"/>
+    <attribute type="variant"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="timeZone" startTag="required">
+    <AttributeType name="value" required="true"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType bodyContent="refused" content="mixed" endTag="required"
+    name="setTimeZone" startTag="required">
+    <AttributeType name="value" required="true"/>
+    <attribute type="value"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="bundle" startTag="required">
+    <AttributeType name="basename" required="true"/>
+    <attribute type="basename"/>
+    <AttributeType name="prefix" required="false"/>
+    <attribute type="prefix"/>
+  </ElementType>
+  <ElementType bodyContent="refused" content="mixed" endTag="required"
+    name="setBundle" startTag="required">
+    <AttributeType name="basename" required="true"/>
+    <attribute type="basename"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="message" startTag="required">
+    <AttributeType name="key" required="false"/>
+    <attribute type="key"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="param" startTag="required">
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="formatNumber" startTag="required">
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+    <AttributeType name="type" required="false"/>
+    <attribute type="type"/>
+    <AttributeType name="pattern" required="false"/>
+    <attribute type="pattern"/>
+    <AttributeType name="currencyCode" required="false"/>
+    <attribute type="currencyCode"/>
+    <AttributeType name="currencySymbol" required="false"/>
+    <attribute type="currencySymbol"/>
+    <AttributeType name="groupingUsed" required="false"/>
+    <attribute type="groupingUsed"/>
+    <AttributeType name="maxIntegerDigits" required="false"/>
+    <attribute type="maxIntegerDigits"/>
+    <AttributeType name="minIntegerDigits" required="false"/>
+    <attribute type="minIntegerDigits"/>
+    <AttributeType name="maxFractionDigits" required="false"/>
+    <attribute type="maxFractionDigits"/>
+    <AttributeType name="minFractionDigits" required="false"/>
+    <attribute type="minFractionDigits"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="parseNumber" startTag="required">
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+    <AttributeType name="type" required="false"/>
+    <attribute type="type"/>
+    <AttributeType name="pattern" required="false"/>
+    <attribute type="pattern"/>
+    <AttributeType name="parseLocale" required="false"/>
+    <attribute type="parseLocale"/>
+    <AttributeType name="integerOnly" required="false"/>
+    <attribute type="integerOnly"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="refused" content="mixed" endTag="required"
+    name="formatDate" startTag="required">
+    <AttributeType name="value" required="true"/>
+    <attribute type="value"/>
+    <AttributeType name="type" required="false"/>
+    <attribute type="type"/>
+    <AttributeType name="dateStyle" required="false"/>
+    <attribute type="dateStyle"/>
+    <AttributeType name="timeStyle" required="false"/>
+    <attribute type="timeStyle"/>
+    <AttributeType name="pattern" required="false"/>
+    <attribute type="pattern"/>
+    <AttributeType name="timeZone" required="false"/>
+    <attribute type="timeZone"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType bodyContent="allowed" content="mixed" endTag="required"
+    name="parseDate" startTag="required">
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+    <AttributeType name="type" required="false"/>
+    <attribute type="type"/>
+    <AttributeType name="dateStyle" required="false"/>
+    <attribute type="dateStyle"/>
+    <AttributeType name="timeStyle" required="false"/>
+    <attribute type="timeStyle"/>
+    <AttributeType name="pattern" required="false"/>
+    <attribute type="pattern"/>
+    <AttributeType name="timeZone" required="false"/>
+    <attribute type="timeZone"/>
+    <AttributeType name="parseLocale" required="false"/>
+    <attribute type="parseLocale"/>
+    <AttributeType name="var" required="false"/>
+    <attribute type="var"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+</Schema>

@@ -1,0 +1,1605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN"
+                                   "meta.dtd">
+<XModelEntityGroup>
+ <VERSION MODULE="Meta Editor" VERSION="1.0"/>
+ <MAPPINGS>
+  <MAPPING name="Implementations">
+   <PAIR name="Meta" value="org.jboss.tools.common.meta.ui.editor.MetaElementImpl"/>
+  </MAPPING>
+  <MAPPING name="Recognizers">
+   <PAIR name="els$0" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
+   <PAIR name="meta$0" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
+  </MAPPING>
+ </MAPPINGS>
+ <ICONS>
+  <GROUP name="action">
+   <GROUP name="new">
+    <GROUP name="meta">
+     <GROUP name="icons">
+      <ICON name="group" path="images/meta/new_iconsgroup.gif"/>
+      <ICON name="item" path="images/meta/new_icon.gif"/>
+      <ICON name="type" path="images/meta/new_icontype.gif"/>
+     </GROUP>
+     <ICON name="action" path="images/meta/new_action.gif"/>
+     <ICON name="actionlist" path="images/meta/new_actionlist.gif"/>
+     <ICON name="attribute" path="images/meta/new_attribute.gif"/>
+     <ICON name="attributedata" path="images/meta/new_attributedata.gif"/>
+     <ICON name="constraint" path="images/meta/new_constraintitem.gif"/>
+     <ICON name="entity" path="images/meta/new_entity.gif"/>
+     <ICON name="extension" path="images/meta/new_entity_extension.gif"/>
+     <ICON name="mappingitem" path="images/meta/new_mappingitem.gif"/>
+    </GROUP>
+   </GROUP>
+  </GROUP>
+  <GROUP name="main">
+   <GROUP name="file">
+    <ICON name="meta" path="images/meta/meta_file.gif"/>
+   </GROUP>
+   <GROUP name="meta">
+    <GROUP name="action">
+     <ICON name="global" path="images/meta/actionlist_global.gif"/>
+     <ICON name="item" path="images/meta/action.gif"/>
+     <ICON name="list" path="images/meta/actionlist.gif"/>
+    </GROUP>
+    <GROUP name="attribute">
+     <ICON name="constraint" path="images/meta/attributeconstraint.gif"/>
+     <ICON name="data" path="images/meta/attributedata.gif"/>
+     <ICON name="editor" path="images/meta/attributeeditor.gif"/>
+     <ICON name="folder" path="images/meta/attributes.gif"/>
+     <ICON name="item" path="images/meta/attribute.gif"/>
+    </GROUP>
+    <GROUP name="entity">
+     <ICON name="data" path="images/meta/entitydata.gif"/>
+     <ICON name="extension" path="images/meta/entity_extension.gif"/>
+     <ICON name="item" path="images/meta/entity.gif"/>
+    </GROUP>
+    <GROUP name="icon">
+     <ICON name="group" path="images/meta/iconsgroup.gif"/>
+     <ICON name="item" path="images/meta/icon.gif"/>
+     <ICON name="type" path="images/meta/icontype.gif"/>
+    </GROUP>
+    <GROUP name="mapping">
+     <ICON name="folder" path="images/meta/mapping.gif"/>
+     <ICON name="item" path="images/meta/mapping.gif"/>
+     <ICON name="pair" path="images/meta/mappingitem.gif"/>
+    </GROUP>
+    <ICON name="child" path="images/meta/child.gif"/>
+    <ICON name="children" path="images/meta/children.gif"/>
+    <ICON name="constraintitem" path="images/meta/constraintitem.gif"/>
+    <ICON name="dependencies" path="images/meta/dependencies.gif"/>
+    <ICON name="renderer" path="images/meta/renderer.gif"/>
+   </GROUP>
+  </GROUP>
+ </ICONS>
+ <GlobalActions kind="list"/>
+ <XModelEntity
+  ImplementationLoadingClass="org.jboss.tools.common.meta.ui.editor.FileMetaLoader"
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.FileMetaImpl"
+  ObjectEditorClass="%XML%"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="XModelEntityGroup" name="FileMETA">
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="MetaVersion" required="yes"/>
+   <XChildEntity maxCount="1" name="MetaMappings" required="yes"/>
+   <XChildEntity maxCount="1" name="MetaIcons" required="yes"/>
+   <XChildEntity maxCount="1" name="MetaActionListGlobal" required="yes"/>
+   <XChildEntity name="MetaEntity"/>
+   <XChildEntity name="MetaEntityExtension"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.file.meta" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="sublist of entities" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="sublist of entities"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="meta" name="extension" xmlname="EXTENSION">
+    <Constraint loader="List">
+     <value name="meta"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="-//Red Hat, Inc.//DTD Meta 1.0//EN"
+    name="publicId" visibility="false">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="meta.dtd" name="systemId" visibility="false">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="isIncorrect" visibility="false">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="incorrectBody" visibility="false">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
+    <Constraint/>
+    <Editor name="Note"/>
+   </XModelAttribute>
+   <XModelAttribute name="encoding">
+    <Constraint loader="ListString">
+     <value name="ISO-8859-1"/>
+     <value name="UTF-8"/>
+    </Constraint>
+    <Editor name="ListString"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem HandlerClassName="%Open%" ICON="action.edit"
+    displayName="Open" kind="action" name="Open"/>
+   <XActionItem displayName="Open With" group="1" kind="list" name="OpenWith">
+    <XActionItem HIDE="always"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler"
+     ICON="main.file.java_file" PROPERTIES="extension=struts-config"
+     displayName="Open with External Program" kind="action" name="OpenWithSelected"/>
+    <XActionItem HIDE="always"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithChoiceHandler"
+     ICON="main.file.java_file" PROPERTIES="extension=struts-config"
+     displayName="Choose Program..." kind="action" name="OpenWithChoice">
+     <EntityData EntityName="OpenWithHelper">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="default"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.entity" WizardClassName="%Default%"
+     displayName="Create Entity..." kind="action" name="CreateEntity">
+     <EntityData EntityName="MetaEntity">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.extension" WizardClassName="%Default%"
+     displayName="Create Extension..." kind="action" name="CreateEntityExtension">
+     <EntityData EntityName="MetaEntityExtension">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy entity group" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut entity group" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete entity group"
+     kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem kind="list" name="SaveActions">
+    <XActionItem HIDE="disabled" HandlerClassName="%SaveFile%"
+     ICON="action.save" displayName="Save" kind="action" name="Save"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="XActionItem" name="MetaAction">
+  <XChildrenEntities>
+   <XChildEntity name="MetaEntityData"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.action.item" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="action" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="action"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="display name" xmlname="displayName">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="action" name="kind" visibility="false" xmlname="kind">
+    <Constraint loader="List">
+     <value name="action"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="icon" xmlname="ICON">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=advanced" name="base action" xmlname="BaseActionName">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="handler" xmlname="HandlerClassName">
+    <Constraint loader="ListString"/>
+    <Editor name="MetaHandlerList"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="wizard" xmlname="WizardClassName">
+    <Constraint loader="ListString">
+     <value name="%Default%"/>
+    </Constraint>
+    <Editor name="ListString"/>
+   </XModelAttribute>
+   <XModelAttribute name="call back" xmlname="CallBackClassName">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="save to model required" xmlname="SAVE_REQUIRED">
+    <Constraint loader="List">
+     <value name="no"/>
+     <value name="yes"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=advanced" default="never"
+    name="hide" xmlname="HIDE">
+    <Constraint loader="List">
+     <value name="always"/>
+     <value name="disabled"/>
+     <value name="never"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="properties" xmlname="PROPERTIES">
+    <Constraint/>
+    <Editor name="PropertiesString"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%" ICON="action.newattribute"
+     WizardClassName="%Default%" displayName="Create an item..."
+     kind="action" name="CreateMetaEntityData">
+     <EntityData EntityName="MetaEntityData">
+      <AttributeData AttributeName="entity name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy action" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut action" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete action" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions">
+    <XActionItem HIDE="always" HandlerClassName="%Move%"
+     ICON="action.empty" displayName="Move" kind="action" name="Move"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="XActionItem" name="MetaActionList">
+  <XChildrenEntities>
+   <XChildEntity name="MetaActionList"/>
+   <XChildEntity name="MetaAction"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.action.list" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="list of actions" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="list of actions"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" default="ActionList"
+    name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="display name" xmlname="displayName">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" default="0"
+    name="group" xmlname="group">
+    <Constraint loader="List">
+     <value name="0"/>
+     <value name="1"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="list" name="kind" visibility="false" xmlname="kind">
+    <Constraint loader="List">
+     <value name="list"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="icon" xmlname="ICON">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HIDE="always"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.ShowMenuHandler"
+     PROPERTIES="actionList=CreateActions" displayName="Item..."
+     kind="action" name="AddItem"/>
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.actionlist" WizardClassName="%Default%"
+     displayName="Create an action list..." kind="action" name="CreateMetaActionList">
+     <EntityData EntityName="MetaActionList">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.action" WizardClassName="%Default%"
+     displayName="Create an action..." kind="action" name="CreateMetaAction">
+     <EntityData EntityName="MetaAction">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy action list" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut action list" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete action list" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions">
+    <XActionItem HIDE="always" HandlerClassName="%Move%"
+     ICON="action.empty" displayName="Move" kind="action" name="Move"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
+  XMLSUBPATH="GlobalActions" name="MetaActionListGlobal">
+  <XChildrenEntities>
+   <XChildEntity name="MetaActionList"/>
+   <XChildEntity name="MetaAction"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.action.global" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="list of actions" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="list of actions"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="GlobalActions" name="name" xmlname="name">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Global Actions" name="display name" xmlname="displayName">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="1" name="group" xmlname="group">
+    <Constraint loader="List">
+     <value name="1"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="list" name="kind" visibility="false" xmlname="kind">
+    <Constraint loader="List">
+     <value name="list"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute name="icon" xmlname="ICON">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.actionlist" WizardClassName="%Default%"
+     displayName="Create an action list..." kind="action" name="CreateMetaActionList">
+     <EntityData EntityName="MetaActionList">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.action" WizardClassName="%Default%"
+     displayName="Create an action..." kind="action" name="CreateMetaAction">
+     <EntityData EntityName="MetaAction">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete action list" kind="action" name="Delete"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="XModelAttribute" name="MetaAttribute">
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="MetaAttributeConstraint" required="yes"/>
+   <XChildEntity maxCount="1" name="MetaAttributeEditor" required="yes"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.attribute.item" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="attribute" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="attribute"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=advanced" name="loader" xmlname="loader">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="xml name" xmlname="xmlname">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="default value" xmlname="default">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=advanced" default="true"
+    name="visibility" xmlname="visibility">
+    <Constraint loader="List">
+     <value name="false"/>
+     <value name="true"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute name="value listeners" xmlname="VALUE_LISTENERS">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=advanced" default="yes"
+    name="trimmable" xmlname="TRIM">
+    <Constraint loader="List">
+     <value name="no"/>
+     <value name="yes"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=advanced" default="yes"
+    name="copyable" xmlname="COPYABLE">
+    <Constraint loader="List">
+     <value name="no"/>
+     <value name="yes"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="properties" xmlname="PROPERTIES">
+    <Constraint/>
+    <Editor name="PropertiesString"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy attribute" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut attribute" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions">
+    <XActionItem HIDE="always" HandlerClassName="%Move%"
+     ICON="action.empty" displayName="Move" kind="action" name="Move"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete attribute" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="Constraint" name="MetaAttributeConstraint">
+  <XChildrenEntities>
+   <XChildEntity name="MetaConstraintItem"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.attribute.constraint" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="constraint" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="constraint"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="loader" xmlname="loader">
+    <Constraint loader="ListString">
+     <value name="FileFilter"/>
+     <value name="FolderName"/>
+     <value name="Int"/>
+     <value name="JavaName"/>
+     <value name="JavaNameOrEmpty"/>
+     <value name="List"/>
+     <value name="ListInt"/>
+     <value name="ListString"/>
+     <value name="Properties"/>
+     <value name="QClassName"/>
+     <value name="Text"/>
+     <value name="Tree"/>
+     <value name="XMLName"/>
+    </Constraint>
+    <Editor name="ListString"/>
+   </XModelAttribute>
+   <XModelAttribute default="Constraint" name="name" visibility="false" xmlname="name">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.constraint" WizardClassName="%Default%"
+     displayName="Create an item..." kind="action" name="CreateConstraintItem">
+     <EntityData EntityName="MetaConstraintItem">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions">
+    <XActionItem HIDE="always" HandlerClassName="%Move%"
+     ICON="action.empty" displayName="Move" kind="action" name="Move"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaAttributeDataImpl"
+  XMLSUBPATH="AttributeData" name="MetaAttributeData">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.attribute.data" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="attribute data" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="attribute data"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="attribute name" xmlname="AttributeName">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="yes" name="mandatory" xmlname="Mandatory">
+    <Constraint loader="List">
+     <value name="no"/>
+     <value name="yes"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="advanced" xmlname="Advanced">
+    <Constraint loader="List">
+     <value name="no"/>
+     <value name="yes"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy item" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut item" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete item" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions">
+    <XActionItem HIDE="always" HandlerClassName="%Move%"
+     ICON="action.empty" displayName="Move" kind="action" name="Move"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaAttributeEditorImpl"
+  XMLSUBPATH="Editor" name="MetaAttributeEditor">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.attribute.editor" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="editor" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="editor"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" default="Text"
+    name="name" xmlname="name">
+    <Constraint loader="ListString"/>
+    <Editor name="MetaEditorList"/>
+   </XModelAttribute>
+   <XModelAttribute name="viewer" xmlname="viewer">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="XModelAttributeReference" name="MetaAttributeReference">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.attribute.item" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="attribute reference" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="attribute"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="entity" xmlname="entity">
+    <Constraint loader="ListString"/>
+    <Editor name="ListString"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="attributes" xmlname="attributes">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy attribute" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut attribute" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions">
+    <XActionItem HIDE="always" HandlerClassName="%Move%"
+     ICON="action.empty" displayName="Move" kind="action" name="Move"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete attribute" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="XModelAttributes" name="MetaAttributes">
+  <XChildrenEntities>
+   <XChildEntity name="MetaAttribute"/>
+   <XChildEntity name="MetaAttributeReference"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.attribute.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="list of attributes" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="list of attributes"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Attributes" name="name" visibility="false" xmlname="name">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.attribute" WizardClassName="%Default%"
+     displayName="Create an attribute..." kind="action" name="CreateAttribute">
+     <EntityData EntityName="MetaAttribute">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.attribute" WizardClassName="%Default%"
+     displayName="Create an attribute reference..." kind="action" name="CreateAttributeReference">
+     <EntityData EntityName="MetaAttributeReference">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity"/>
+      <AttributeData AttributeName="attributes" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%" XMLSUBPATH="XChildEntity" name="MetaChild">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.child" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="child" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="child"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="10000" name="max" xmlname="maxCount">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="required" xmlname="required">
+    <Constraint loader="List">
+     <value name="no"/>
+     <value name="yes"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy child" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut child" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete child" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions">
+    <XActionItem HIDE="always" HandlerClassName="%Move%"
+     ICON="action.empty" displayName="Move" kind="action" name="Move"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="XChildrenEntities" name="MetaChildren">
+  <XChildrenEntities>
+   <XChildEntity name="MetaChild"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.children" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="children" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="children"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Children" name="name" visibility="false" xmlname="name">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%" ICON="main.meta.children"
+     WizardClassName="%Default%" displayName="Create a child..."
+     kind="action" name="CreateChild">
+     <EntityData EntityName="MetaChild">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%" XMLSUBPATH="value" name="MetaConstraintItem">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.constraintitem" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="value" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="value"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy item" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut item" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete item" kind="action" name="Delete"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%" XMLSUBPATH="XDependencies" name="MetaDependencies">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.dependencies" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="dependencies" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="dependencies"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Dependencies" name="name"
+    visibility="false" xmlname="name">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="loader" xmlname="loader">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list"/>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="XModelEntity" name="MetaEntity">
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="MetaChildren" required="yes"/>
+   <XChildEntity maxCount="1" name="MetaRenderer" required="yes"/>
+   <XChildEntity maxCount="1" name="MetaAttributes" required="yes"/>
+   <XChildEntity maxCount="1" name="MetaActionList" required="yes"/>
+   <XChildEntity maxCount="1" name="MetaDependencies" required="yes"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.entity.item" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="entity" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="entity"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="implementation" xmlname="ImplementingClass">
+    <Constraint loader="ListString"/>
+    <Editor name="MetaImplementationList"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=advanced" name="loader" xmlname="ImplementationLoadingClass">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="generator" xmlname="ImplementationGenerator">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="editor" xmlname="ObjectEditorClass">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=advanced" name="adopt manager" xmlname="AdoptManagerClass">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="xml path" xmlname="XMLSUBPATH">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="properties" xmlname="PROPERTIES">
+    <Constraint/>
+    <Editor name="PropertiesString"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy entity" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut entity" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete entity" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaEntityDataImpl"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="EntityData" name="MetaEntityData">
+  <XChildrenEntities>
+   <XChildEntity name="MetaAttributeData"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.entity.data" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="entity data" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="entity data"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="entity name" xmlname="EntityName">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" default="yes"
+    name="mandatory" xmlname="Mandatory">
+    <Constraint loader="List">
+     <value name="no"/>
+     <value name="yes"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.attributedata" WizardClassName="%Default%"
+     displayName="Create an item..." kind="action" name="CreateMetaAttributeData">
+     <EntityData EntityName="MetaAttributeData">
+      <AttributeData AttributeName="attribute name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy item" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut item" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete item" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions">
+    <XActionItem HIDE="always" HandlerClassName="%Move%"
+     ICON="action.undo" displayName="Move" kind="action" name="Move"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="XEntityExtension" name="MetaEntityExtension">
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="MetaChildren" required="yes"/>
+   <XChildEntity maxCount="1" name="MetaActionList" required="yes"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.entity.extension" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="entity extension" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="entity extension"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy entity" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut entity" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete entity" kind="action" name="Delete"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%" XMLSUBPATH="ICON" name="MetaIcon">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.icon.item" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="icon" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="icon"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="path" xmlname="path">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy icon" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut icon" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete icon" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="GROUP" name="MetaIconGroup">
+  <XChildrenEntities>
+   <XChildEntity name="MetaIconGroup"/>
+   <XChildEntity name="MetaIcon"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.icon.group" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="group of icons" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="group of icons"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
+    <Constraint/>
+    <Editor name="Name"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.icons.group" WizardClassName="%Default%"
+     displayName="Create an icon group..." kind="action" name="CreateIconGroup">
+     <EntityData EntityName="MetaIconGroup">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.icons.item" WizardClassName="%Default%"
+     displayName="Create an icon..." kind="action" name="CreateIcon">
+     <EntityData EntityName="MetaIcon">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="path"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy icon group" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut icon group" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete icon group" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaIconTypeImpl"
+  XMLSUBPATH="ICONS.ICON" name="MetaIconType">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.icon.type" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="icon type" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="icon type"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="type" xmlname="type">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="info" xmlname="info">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy icon type" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut icon type" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete icon type" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="ICONS" name="MetaIcons">
+  <XChildrenEntities>
+   <XChildEntity name="MetaIconGroup"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.icon.group" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="icons" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="icons"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Icons" name="name" visibility="false" xmlname="name">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.icons.group" WizardClassName="%Default%"
+     displayName="Create an icon group..." kind="action" name="CreateIconGroup">
+     <EntityData EntityName="MetaIconGroup">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="MAPPING" name="MetaMapping">
+  <XChildrenEntities>
+   <XChildEntity name="MetaMappingItem"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.mapping.item" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="mapping" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="mapping"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.mappingitem" WizardClassName="%Default%"
+     displayName="Create an item..." kind="action" name="CreateItem">
+     <EntityData EntityName="MetaMappingItem">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="value"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy mapping" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut mapping" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete mapping" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%" XMLSUBPATH="PAIR" name="MetaMappingItem">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.mapping.pair" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="mapping link" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="mapping link"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="value" xmlname="value">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy mapping" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut mapping" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete mapping item"
+     kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%"
+  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="MAPPINGS" name="MetaMappings">
+  <XChildrenEntities>
+   <XChildEntity name="MetaMapping"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.mapping.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="mappings" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="mappings"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Mappings" name="name" visibility="false" xmlname="name">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.mappingitem" WizardClassName="%Default%"
+     displayName="Create a mapping..." kind="action" name="CreateMapping">
+     <EntityData EntityName="MetaMapping">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
+  XMLSUBPATH="XEntityRenderer" name="MetaRenderer">
+  <XChildrenEntities>
+   <XChildEntity name="MetaIconType"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.renderer" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="renderer" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="renderer"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Renderer" name="name" visibility="false" xmlname="name">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.icons.type" WizardClassName="%Default%"
+     displayName="Create an icon type..." kind="action" name="CreateIconType">
+     <EntityData EntityName="MetaIconType">
+      <AttributeData AttributeName="type"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Paste" HandlerClassName="%Paste%"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%" XMLSUBPATH="VERSION" name="MetaVersion">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.file.meta" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="version" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="version"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Version" name="name" visibility="false" xmlname="name">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="module" xmlname="MODULE">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="version" xmlname="VERSION">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute name="depends" xmlname="DEPENDS">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XEntityExtension name="FileFolder">
+  <XChildrenEntities>
+   <XChildEntity name="FileMETA"/>
+  </XChildrenEntities>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem ICON="action.newattribute" displayName="Meta" group="1"
+     kind="list" name="CreateMETA">
+     <XActionItem HandlerClassName="%Create%" ICON="action.empty"
+      WizardClassName="%Default%" displayName="Group..." kind="action" name="CreateMetaGroup">
+      <EntityData EntityName="FileMETA">
+       <AttributeData AttributeName="name"/>
+      </EntityData>
+     </XActionItem>
+     <XActionItem
+      HandlerClassName="org.jboss.tools.common.meta.ui.editor.GenerateHelpKeysHandler"
+      ICON="action.empty" PROPERTIES="default=/model/noHelpYet.html"
+      displayName="Generate Help Keys" kind="action" name="GenerateHelpKeys"/>
+    </XActionItem>
+   </XActionItem>
+  </XActionItem>
+ </XEntityExtension>
+ <XEntityExtension name="FileSystemFolder">
+  <XChildrenEntities>
+   <XChildEntity name="FileMETA"/>
+  </XChildrenEntities>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="New" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem ICON="action.newattribute" displayName="Meta" group="1"
+     kind="list" name="CreateMETA">
+     <XActionItem HandlerClassName="%Create%" ICON="action.empty"
+      WizardClassName="%Default%" displayName="Group..." kind="action" name="CreateMetaGroup">
+      <EntityData EntityName="FileMETA">
+       <AttributeData AttributeName="name"/>
+      </EntityData>
+     </XActionItem>
+     <XActionItem
+      HandlerClassName="org.jboss.tools.common.meta.ui.editor.GenerateHelpKeysHandler"
+      ICON="action.empty" PROPERTIES="default=/model/noHelpYet.html"
+      displayName="Generate Help Keys" kind="action" name="GenerateHelpKeys"/>
+    </XActionItem>
+   </XActionItem>
+  </XActionItem>
+ </XEntityExtension>
+ <XEntityExtension name="JarFolder">
+  <XChildrenEntities>
+   <XChildEntity name="FileMETA"/>
+  </XChildrenEntities>
+  <XActionItem kind="list"/>
+ </XEntityExtension>
+</XModelEntityGroup>

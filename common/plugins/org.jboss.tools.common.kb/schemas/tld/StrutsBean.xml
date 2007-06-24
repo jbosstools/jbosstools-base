@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema location="" uri="http://struts.apache.org/tags-bean" prefix="bean">
+  <ElementType name="cookie" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="id" required="true"/>
+    <attribute type="id"/>
+    <AttributeType name="multiple" required="false"/>
+    <attribute type="multiple"/>
+    <AttributeType name="name" required="true"/>
+    <attribute type="name"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="define" endTag="required" startTag="required"
+    content="mixed" bodyContent="allowed">
+    <AttributeType name="id" required="true"/>
+    <attribute type="id"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+    <AttributeType name="toScope" required="false"/>
+    <attribute type="toScope"/>
+    <AttributeType name="type" required="false"/>
+    <attribute type="type"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="header" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="id" required="true"/>
+    <attribute type="id"/>
+    <AttributeType name="multiple" required="false"/>
+    <attribute type="multiple"/>
+    <AttributeType name="name" required="true"/>
+    <attribute type="name"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="include" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="anchor" required="false"/>
+    <attribute type="anchor"/>
+    <AttributeType name="forward" required="false"/>
+    <attribute type="forward"/>
+    <AttributeType name="href" required="false"/>
+    <attribute type="href"/>
+    <AttributeType name="id" required="true"/>
+    <attribute type="id"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="page" required="false"/>
+    <attribute type="page"/>
+    <AttributeType name="transaction" required="false"/>
+    <attribute type="transaction"/>
+  </ElementType>
+  <ElementType name="message" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="arg0" required="false"/>
+    <attribute type="arg0"/>
+    <AttributeType name="arg1" required="false"/>
+    <attribute type="arg1"/>
+    <AttributeType name="arg2" required="false"/>
+    <attribute type="arg2"/>
+    <AttributeType name="arg3" required="false"/>
+    <attribute type="arg3"/>
+    <AttributeType name="arg4" required="false"/>
+    <attribute type="arg4"/>
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="key" required="false"/>
+    <attribute type="key"/>
+    <AttributeType name="locale" required="false"/>
+    <attribute type="locale"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType name="page" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="id" required="true"/>
+    <attribute type="id"/>
+    <AttributeType name="property" required="true"/>
+    <attribute type="property"/>
+  </ElementType>
+  <ElementType name="parameter" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="id" required="true"/>
+    <attribute type="id"/>
+    <AttributeType name="multiple" required="false"/>
+    <attribute type="multiple"/>
+    <AttributeType name="name" required="true"/>
+    <attribute type="name"/>
+    <AttributeType name="value" required="false"/>
+    <attribute type="value"/>
+  </ElementType>
+  <ElementType name="resource" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="id" required="true"/>
+    <attribute type="id"/>
+    <AttributeType name="input" required="false"/>
+    <attribute type="input"/>
+    <AttributeType name="name" required="true"/>
+    <attribute type="name"/>
+  </ElementType>
+  <ElementType name="size" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="collection" required="false"/>
+    <attribute type="collection"/>
+    <AttributeType name="id" required="true"/>
+    <attribute type="id"/>
+    <AttributeType name="name" required="false"/>
+    <attribute type="name"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+  <ElementType name="struts" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="id" required="true"/>
+    <attribute type="id"/>
+    <AttributeType name="formBean" required="false"/>
+    <attribute type="formBean"/>
+    <AttributeType name="forward" required="false"/>
+    <attribute type="forward"/>
+    <AttributeType name="mapping" required="false"/>
+    <attribute type="mapping"/>
+  </ElementType>
+  <ElementType name="write" endTag="required" startTag="required"
+    content="mixed" bodyContent="refused">
+    <AttributeType name="bundle" required="false"/>
+    <attribute type="bundle"/>
+    <AttributeType name="filter" required="false"/>
+    <attribute type="filter"/>
+    <AttributeType name="format" required="false"/>
+    <attribute type="format"/>
+    <AttributeType name="formatKey" required="false"/>
+    <attribute type="formatKey"/>
+    <AttributeType name="ignore" required="false"/>
+    <attribute type="ignore"/>
+    <AttributeType name="locale" required="false"/>
+    <attribute type="locale"/>
+    <AttributeType name="name" required="true"/>
+    <attribute type="name"/>
+    <AttributeType name="property" required="false"/>
+    <attribute type="property"/>
+    <AttributeType name="scope" required="false"/>
+    <attribute type="scope"/>
+  </ElementType>
+</Schema>

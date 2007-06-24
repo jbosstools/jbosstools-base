@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension-point id="attributeEditor" name="Attribute Editor" schema="schema/attributeEditor.exsd"/>
+   <extension-point id="attributeAdapter" name="Attribute Adapter" schema="schema/attributeAdapter.exsd"/>
+   <extension-point id="xmlEditor" name="XML Editor" schema="schema/xmlEditor.exsd"/>
+   <extension-point id="paletteConstraints" name="Palette Constraints" schema="schema/paletteConstraints.exsd"/>
+   <extension-point id="metaTemplates" name="Meta Templates" schema="schema/metaTemplates.exsd"/>
+   <extension-point id="InsertTagWizard" name="InsertTagWizard" schema="schema/InsertTagWizard.exsd"/>
+
+   <extension point="org.eclipse.ui.elementFactories">
+      <factory class="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory" id="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory">
+      </factory>
+   </extension>
+   <extension point="org.eclipse.ui.editors">
+<!--
+            launcher="org.jboss.tools.common.editor.XMLEditorLauncher"
+-->
+<!--            extensions="xml,tld"-->
+      <editor
+            class="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"
+            contributorClass="org.jboss.tools.common.editor.EditorActionBarContributorWrapper"
+            default="true"
+            extensions="xml, meta"
+            icon="images/xstudio/editors/xml.gif"
+            id="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"
+            matchingStrategy = "org.jboss.tools.common.core.resources.MatchingStrategyImpl"
+            name="%editors.xml.advanced.name">
+         <contentTypeBinding contentTypeId="org.eclipse.core.runtime.xml"/>
+         <contentTypeBinding contentTypeId="org.eclipse.wst.xml.core.xmlsource"/>
+      </editor>
+   </extension>
+   <extension point="org.jboss.tools.common.model.ui.attributeEditor">
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.StringEditor" id="Text">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.StringEditor" id="Name">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.UneditableEditor" id="Uneditable">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor" id="Note">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor" id="Note2">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="StrutsActionNameEditor">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.CheckBoxEditor" id="CheckBox">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="List">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ListSelectionEditor" id="ListSelection">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.RadioArrayEditor" id="RadioArray">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="ListString">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="ListInt">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.CheckListEditor" id="ListAdd">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="ListRadio">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.MutableComboBoxEditor" id="MutableCombo">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.JavaChoicerEditor" id="AccessibleJava">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.StringEditor" id="AccessibleJava2">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ActiveEditor" id="ContainerChooser">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.DirectoryChoicerEditor" id="FolderChooser">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.FileChoicerEditor" id="FileChooser">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.TreeSelectionEditor" id="TreeChooser">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ActiveEditor" id="ActiveTextEditor">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ActiveEditor" id="StrutsPathEditor">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="RedHatFileSystem">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.StringEditor" id="Int">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.DropDownEditor" id="ListJVM">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.DropDownEditor" id="DropDown">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ListStructuredEditor" id="MutableList">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ActiveEditor" id="EclipseClassChooser">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ActiveEditor" id="FontChooser">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ActiveEditor" id="SaveAsChooser">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.SeparatorEditor" id="Separator">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.MutableMultipleChoiceEditor" id="MutableMultipleChoice">
+      </attributeEditor>
+   </extension>
+   <extension point="org.jboss.tools.common.model.ui.attributeAdapter">
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter" id="Default">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.custom.FileSystemListAdapter" id="RedHatFileSystem">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.custom.TomcatJVMListAdapter" id="ListJVM">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.Note2Adapter" id="Note2">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultComboBoxValueAdapter" id="List">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultComboBoxValueAdapter" id="ListSelection">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultComboBoxValueAdapter" id="RadioArray">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultComboBoxValueAdapter" id="ListString">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultComboBoxValueAdapter" id="DropDown">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultComboBoxValueAdapter" id="ListInt">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultComboBoxValueAdapter" id="ListRadio">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultComboBoxValueAdapter" id="MutableCombo">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultComboBoxValueAdapter" id="MutableMultipleChoice">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.CheckListAdapter" id="ListAdd">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.ContainerChooserAdapter" id="ContainerChooser">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.FileChooserAdapter" id="FileChooser">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultTreeSelectionAdapter" id="TreeChooser">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.ActiveValueAdapter" id="ActiveTextEditor">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.StructuredListAdapter" id="MutableList">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.custom.EclipseClassChooserAdapter" id="EclipseClassChooser">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.custom.FontChooserAdapter" id="FontChooser">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.custom.SaveAsChooserAdapter" id="SaveAsChooser">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter" id="Separator">
+      </attributeAdapter>
+   </extension>
+   <extension point="org.jboss.tools.common.model.specialwizard">
+      <specialwizard class="org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard" id="org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard" id="org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.editor.DeleteFileUnderEditingSpecialWizard" id="org.jboss.tools.common.editor.DeleteFileUnderEditingSpecialWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.wizards.OneStepWizard" id="org.jboss.tools.common.model.ui.wizards.OneStepWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.editor.OpenEditorWizard" id="org.jboss.tools.common.editor.OpenEditorWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.objecteditor.SaveEditorSpecialWizard" id="org.jboss.tools.common.model.ui.objecteditor.SaveEditorSpecialWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.objecteditor.SaveEditorsSpecialWizard" id="org.jboss.tools.common.model.ui.objecteditor.SaveEditorsSpecialWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.objecteditor.SaveUnopenSpecialWizard" id="org.jboss.tools.common.model.ui.objecteditor.SaveUnopenSpecialWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.select.SelectObjectWizard" id="org.jboss.tools.common.model.ui.select.SelectObjectWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.action.XModelObjectActionInvoker" id="org.jboss.tools.common.model.ui.action.XModelObjectActionInvoker">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.wizards.query.list.HiddenFileSystemsWizard" id="org.jboss.tools.common.model.ui.wizards.query.list.HiddenFileSystemsWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.objecteditor.PropertiesWizard" id="org.jboss.tools.common.model.ui.objecteditor.PropertiesWizard">
+      </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard" id="org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard">
+      </specialwizard>
+   </extension>
+   <extension point="org.jboss.tools.common.model.modelObjectAdapter">
+      <modelObjectAdapter class="org.jboss.tools.common.model.ui.action.XModelObjectActionFilter" iclass="IActionFilter">
+      </modelObjectAdapter>
+      <modelObjectAdapter class="org.jboss.tools.common.model.ui.attribute.XModelObjectPropertySource" iclass="IPropertySource">
+      </modelObjectAdapter>
+   </extension>
+   <extension point="org.eclipse.ui.actionSets">
+      <actionSet description="%actionSets.redhatMenu.description" id="org.jboss.tools.common.model.ui.actionSet" label="%actionSets.redhatMenu.label" visible="true">
+         <menu id="org.jboss.tools.common.model.ui.redhat" label="%actionSets.redhatMenu.label">
+            <separator name="c">
+            </separator>
+            <separator name="a">
+            </separator>
+            <separator name="d">
+            </separator>
+            <separator name="b">
+            </separator>
+            <separator name="e"/>
+            <separator name="f"/>
+         </menu>
+         <action
+               label="%action.reportproblem.label"
+               tooltip="%action.reportproblem.label"
+               class="org.jboss.tools.common.model.ui.action.global.ReportProblemActionDelegate"
+               menubarPath="org.jboss.tools.common.model.ui.redhat/a"
+               id="org.jboss.tools.common.model.ui.action.global.ReportProblemActionDelegate">
+         </action>
+         <!--action class="org.jboss.tools.common.model.ui.action.global.VisitForumActionDelegate" id="org.jboss.tools.common.model.ui.action.global.VisitForumActionDelegate" label="%action.visitforum.label" menubarPath="org.jboss.tools.common.model.ui.redhat/a" tooltip="%action.visitforum.label">
+         </action-->
+         <action class="org.jboss.tools.common.model.ui.action.global.VisitCompanyActionDelegate" 
+                 id="org.jboss.tools.common.model.ui.action.global.VisitCompanyActionDelegate" label="%action.visitsite.label" menubarPath="org.jboss.tools.common.model.ui.redhat/b" tooltip="%action.visitsite.label">
+         </action>
+      </actionSet>
+   </extension>
+   <extension point="org.eclipse.ui.preferencePages">
+      <page 
+         class="org.jboss.tools.common.model.ui.preferences.CompanyPreferencesPage" 
+         id="org.jboss.tools.common.model.ui" 
+         name="Red Hat">
+      </page>
+   </extension>
+   <extension point="org.eclipse.ui.preferencePages">
+      <page 
+         category="org.jboss.tools.common.model.ui" 
+         class="org.jboss.tools.common.model.ui.templates.preferences.GlobalTemplatePreferencePage" 
+         id="org.jboss.tools.common.model.ui.templates" 
+         name="Templates">
+      </page>
+   </extension>
+
+   <extension point="org.eclipse.ui.propertyPages">
+      <page 
+          adaptable="true" 
+          class="org.jboss.tools.common.model.ui.templates.preferences.ProjectTemplatePreferencePage" 
+          id="ExadelTemplatesPropertiesPage" 
+          name="Templates" 
+          objectClass="org.eclipse.core.resources.IProject">
+      </page>
+   </extension>
+
+	<extension point="org.eclipse.ui.editors.documentProviders">
+		<provider
+			inputTypes="org.jboss.tools.common.model.ui.editor.ModelObjectLocationEditorInput"
+			class="org.eclipse.ui.editors.text.TextFileDocumentProvider"
+			id="org.jboss.tools.common.model.ui.editor.ExternalFileDocumentProvider">
+		</provider>
+	</extension>
+
+
+   <extension point="org.jboss.tools.common.model.ui.metaTemplates">
+      <include file="templates/web-facesconfig_1_0.xml" translations="templates/web-facesconfig_1_0.properties">
+      </include>         
+      <include file="templates/web-facesconfig_1_1.xml" translations="templates/web-facesconfig_1_1.properties">
+      </include>         
+      <include file="templates/web-facesconfig_1_2.xml" translations="templates/web-facesconfig_1_2.properties">
+      </include>         
+
+   </extension>
+
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            class="org.jboss.tools.common.propertieseditor.PropertiesCompoundEditor"
+            contributorClass="org.jboss.tools.common.model.ui.texteditors.MultiPageContributor"
+            default="true"
+            extensions="properties"
+            icon="images/xstudio/editors/properties.gif"
+            id="org.jboss.tools.common.propertieseditor.PropertiesCompoundEditor"
+            name="%editors.properties.name">
+      </editor>
+   </extension>
+   <extension id="e" name="XML Editors" point="org.jboss.tools.common.model.ui.xmlEditor">
+<!--          
+   class="org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor" 
+ -->
+      <xmlEditor 
+         class="org.jboss.tools.common.model.ui.texteditors.XMLTextEditorStandAlone"
+         contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor" 
+         entities="xml" 
+         icon="images/xstudio/editors/xml.gif" 
+         name="%editors.xml.name">
+      </xmlEditor>
+      <xmlEditor 
+         class="org.eclipse.ant.internal.ui.editor.AntEditor" 
+         contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor" 
+         entities="FileANT" 
+         icon="images/xstudio/editors/xml.gif" 
+         name="%editors.xml.name">
+      </xmlEditor>
+   </extension>
+   <extension point="org.eclipse.ui.preferencePages">
+      <page category="org.jboss.tools.common.model.ui" class="org.jboss.tools.common.model.ui.texteditors.preferences.EditorsPreferencesPage" id="org.jboss.tools.common.xstudio.editors" name="Editors">
+      </page>
+   </extension>
+   <extension point="org.jboss.tools.common.model.ui.paletteConstraints">
+      <editorType id="xml">
+      </editorType>
+   </extension>
+   
+   <extension point="org.jboss.tools.common.model.classes">
+		<xclass id="org.jboss.tools.common.core.resources.JavaFileAdaptable"
+			class="org.jboss.tools.common.core.resources.JavaFileAdaptable"/>
+		<xclass id="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory"
+			class="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory"/>
+		<xclass id="org.jboss.tools.common.editor.DeleteFileUnderEditingSpecialWizard"
+			class="org.jboss.tools.common.editor.DeleteFileUnderEditingSpecialWizard"/>
+		<xclass id="org.jboss.tools.common.editor.ObjectMultiPageEditorMessages"
+			class="org.jboss.tools.common.editor.ObjectMultiPageEditorMessages"/>
+		<xclass id="org.jboss.tools.common.editor.OpenEditorWizard"
+			class="org.jboss.tools.common.editor.OpenEditorWizard"/>
+
+		<xclass id="org.jboss.tools.common.model.ui.action.XMenuInvokerWizard"
+			class="org.jboss.tools.common.model.ui.action.XMenuInvokerWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.action.XModelObjectActionInvoker"
+			class="org.jboss.tools.common.model.ui.action.XModelObjectActionInvoker"/>
+		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.CheckBoxEditor"
+			class="org.jboss.tools.common.model.ui.attribute.editor.CheckBoxEditor"/>
+		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.JavaEclipseChoicerFieldEditor"
+			class="org.jboss.tools.common.model.ui.attribute.editor.JavaEclipseChoicerFieldEditor"/>
+		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor"
+			class="org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor"/>
+		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor"
+			class="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor"/>
+		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor"
+			class="org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor"/>
+		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.StringButtonFieldEditorEx"
+			class="org.jboss.tools.common.model.ui.attribute.editor.StringButtonFieldEditorEx"/>
+		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"
+			class="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.UneditableEditor"
+			class="org.jboss.tools.common.model.ui.attribute.editor.UneditableEditor"/>
+		<xclass id="org.jboss.tools.common.model.ui.dialog.SelectEclipseFileWizard"
+			class="org.jboss.tools.common.model.ui.dialog.SelectEclipseFileWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.dnd.ModelTransfer"
+			class="org.jboss.tools.common.model.ui.dnd.ModelTransfer"/>
+		<xclass id="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"
+			class="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"/>
+		<xclass id="org.jboss.tools.common.model.ui.editors.dnd.DefaultDropCommandRunner"
+			class="org.jboss.tools.common.model.ui.editors.dnd.DefaultDropCommandRunner"/>
+		<xclass id="org.jboss.tools.common.model.ui.editors.dnd.DropWizardMessages"
+			class="org.jboss.tools.common.model.ui.editors.dnd.DropWizardMessages"/>
+		<xclass id="org.jboss.tools.common.model.ui.forms.AnyElementForm"
+			class="org.jboss.tools.common.model.ui.forms.AnyElementForm"/>
+		<xclass id="org.jboss.tools.common.model.ui.objecteditor.PropertiesWizard"
+			class="org.jboss.tools.common.model.ui.objecteditor.PropertiesWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.objecteditor.SaveEditorSpecialWizard"
+			class="org.jboss.tools.common.model.ui.objecteditor.SaveEditorSpecialWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.objecteditor.SaveEditorsSpecialWizard"
+			class="org.jboss.tools.common.model.ui.objecteditor.SaveEditorsSpecialWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.objecteditor.SaveUnopenSpecialWizard"
+			class="org.jboss.tools.common.model.ui.objecteditor.SaveUnopenSpecialWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.select.SelectObjectWizard"
+			class="org.jboss.tools.common.model.ui.select.SelectObjectWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor"
+			class="org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor"/>
+		<xclass id="org.jboss.tools.common.model.ui.util.JavaUIMessages"
+			class="org.jboss.tools.common.model.ui.util.JavaUIMessages"/>
+		<xclass id="org.jboss.tools.common.model.ui.views.palette.editor.HiddenPaletteTabsWizard"
+			class="org.jboss.tools.common.model.ui.views.palette.editor.HiddenPaletteTabsWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard"
+			class="org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl"
+			class="org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl"/>
+		<xclass id="org.jboss.tools.common.model.ui.wizards.query.list.HiddenFileSystemsWizard"
+			class="org.jboss.tools.common.model.ui.wizards.query.list.HiddenFileSystemsWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard"
+			class="org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.wizards.special.SpecialWizardStep"
+			class="org.jboss.tools.common.model.ui.wizards.special.SpecialWizardStep"/>
+		<xclass id="org.jboss.tools.common.propertieseditor.PropertiesCompoundEditor"
+			class="org.jboss.tools.common.propertieseditor.PropertiesCompoundEditor"/>
+		<xclass id="org.jboss.tools.common.model.ui.texteditors.preferences.ReplaceTabsAdapter"
+			class="org.jboss.tools.common.model.ui.texteditors.preferences.ReplaceTabsAdapter"/>
+		<xclass id="org.jboss.tools.common.model.ui.texteditors.preferences.TabWidthAdapter"
+			class="org.jboss.tools.common.model.ui.texteditors.preferences.TabWidthAdapter"/>
+
+		<xclass id="org.jboss.tools.common.model.ui.forms.LayouredFormFactory"
+			class="org.jboss.tools.common.model.ui.forms.LayouredFormFactory"/>
+		<xclass id="org.jboss.tools.common.model.ui.forms.ModelFormLayoutData"
+			class="org.jboss.tools.common.model.ui.forms.ModelFormLayoutData"/>
+		<xclass id="org.jboss.tools.common.model.ui.forms.FormFactory"
+			class="org.jboss.tools.common.model.ui.forms.FormFactory"/>
+		<xclass id="org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard"
+			class="org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard"/>
+
+		<xclass id="org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard"
+			class="org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard"/>
+		<xclass id="org.jboss.tools.common.editor.DeleteFileUnderEditingSpecialWizard"
+			class="org.jboss.tools.common.editor.DeleteFileUnderEditingSpecialWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.wizards.OneStepWizard"
+			class="org.jboss.tools.common.model.ui.wizards.OneStepWizard"/>
+		<xclass id="org.jboss.tools.common.editor.OpenEditorWizard"
+			class="org.jboss.tools.common.editor.OpenEditorWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.objecteditor.SaveEditorSpecialWizard"
+			class="org.jboss.tools.common.model.ui.objecteditor.SaveEditorSpecialWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.objecteditor.SaveEditorsSpecialWizard"
+			class="org.jboss.tools.common.model.ui.objecteditor.SaveEditorsSpecialWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.objecteditor.SaveUnopenSpecialWizard"
+			class="org.jboss.tools.common.model.ui.objecteditor.SaveUnopenSpecialWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.select.SelectObjectWizard"
+			class="org.jboss.tools.common.model.ui.select.SelectObjectWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.action.XModelObjectActionInvoker"
+			class="org.jboss.tools.common.model.ui.action.XModelObjectActionInvoker"/>
+		<xclass id="org.jboss.tools.common.model.ui.wizards.query.list.HiddenFileSystemsWizard"
+			class="org.jboss.tools.common.model.ui.wizards.query.list.HiddenFileSystemsWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.objecteditor.PropertiesWizard"
+			class="org.jboss.tools.common.model.ui.objecteditor.PropertiesWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard"
+			class="org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard"/>
+		<xclass id="org.jboss.tools.common.model.ui.attribute.adapter.JavaClassNewValueProvider"
+			class="org.jboss.tools.common.model.ui.attribute.adapter.JavaClassNewValueProvider"/>
+		<xclass id="org.jboss.tools.common.model.ui.templates.preferences.AddInterfaceSupport"
+			class="org.jboss.tools.common.model.ui.templates.preferences.AddInterfaceSupport"/>
+
+   </extension>
+   <extension
+         point="org.eclipse.ui.activities">
+      <category
+            description="It allows create Custom Capabilities, Library sets and Project templates for JSF/Struts projects"
+            id="org.jboss.tools.common.model.ui.experimental"
+            name="JBoss Tools Experimental configuration"/>
+      <categoryActivityBinding
+            activityId="org.jboss.tools.common.model.ui.templates"
+            categoryId="org.jboss.tools.common.model.ui.experimental"/>
+      <activity
+            id="org.jboss.tools.common.model.ui.templates"
+            name="JSF/Struts Project Templates Development"/>
+      <activityPatternBinding
+            activityId="org.jboss.tools.common.model.ui.templates"
+            pattern="org\.jboss\.tools\.common\.model\.ui/.*templates"/>
+      <activityPatternBinding
+            activityId="org.jboss.tools.common.model.ui.templates"
+            pattern="org\.jboss\.tools\.jsf\.ui/.*jsfimplementations"/>
+      <activityPatternBinding
+            activityId="org.jboss.tools.common.model.ui.templates"
+            pattern="org\.jboss\.tools\.jsf\.ui/.*capabilities"/>
+      <activityPatternBinding
+            activityId="org.jboss.tools.common.model.ui.templates"
+            pattern="ExadelTemplatesPropertiesPage"/>
+      <activityPatternBinding
+            activityId="org.jboss.tools.common.model.ui.templates"
+            pattern="org\.jboss\.tools\.struts\.ui/.*environments"/>
+      <activityPatternBinding
+            activityId="org.jboss.tools.common.model.ui.templates"
+            pattern="org\.jboss\.tools\.jst\.web\.ui/.*libsets"/>
+      <activityPatternBinding
+            activityId="org.jboss.tools.common.model.ui.templates"
+            pattern="org\.jboss\.tools\.common\.model\.ui/ExadelTemplatesPropertiesPage"/>
+                  <activityPatternBinding
+            activityId="org.jboss.tools.common.model.ui.templates"
+            pattern="org\.jboss\.tools\.jst\.web\.ui/.*SaveProjectAsTemplateActionDelegate"/>
+   </extension>
+
+</plugin>

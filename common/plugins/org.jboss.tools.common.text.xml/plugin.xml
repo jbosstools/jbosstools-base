@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+<!--
+	<extension-point id="foldingStructureProviders" name="%foldingStructureProvidersExtensionPoint" schema="schema/foldingStructureProviders.exsd"/> 
+
+	<extension-point id="openOnPartitioner" name="Open On Partitioner"/> 
+
+	<extension point="org.eclipse.ui.editors.annotationTypes">
+		<type name="org.jboss.tools.jst.jsp.occurrences"/> 
+	</extension>
+-->
+
+  <extension-point id="occurrenceStructureProviders" 
+  		name="%occurrenceStructureProvidersExtensionPoint" 
+  		schema="schema/occurrenceStructureProviders.exsd" />
+
+   <extension
+         point="org.eclipse.wst.sse.ui.editorConfiguration">
+      <sourceViewerConfiguration
+			class="org.jboss.tools.common.text.xml.RedHatStructuredTextViewerConfigurationXML"
+            target="org.eclipse.core.runtime.xml"/>
+      <contentOutlineConfiguration
+            class="org.eclipse.wst.xml.ui.views.contentoutline.XMLContentOutlineConfiguration"
+            target="org.eclipse.core.runtime.xml"/>
+      <propertySheetConfiguration
+            class="org.eclipse.wst.xml.ui.views.properties.XMLPropertySheetConfiguration"
+            target="org.eclipse.core.runtime.xml"/>
+      <provisionalConfiguration
+      		type="sourceeditingtexttools"
+            class="org.eclipse.wst.xml.ui.internal.provisional.XMLSourceEditingTextTools"
+            target="org.eclipse.core.runtime.xml"/>
+      <provisionalConfiguration
+      		type="characterpairmatcher"
+            class="org.eclipse.wst.xml.ui.internal.text.XMLDocumentRegionEdgeMatcher"
+            target="org.eclipse.core.runtime.xml"/>
+      <provisionalConfiguration
+      		type="structuredtextfoldingprovider"
+            class="org.eclipse.wst.xml.ui.internal.projection.StructuredTextFoldingProviderXML"
+            target="org.eclipse.core.runtime.xml"/>
+      <provisionalDefinition
+      		type="preferencepages"
+            value="org.eclipse.wst.sse.ui.preferences.xml"
+            target="org.eclipse.core.runtime.xml"/>
+      <provisionalDefinition
+      		type="preferencepages"
+            value="org.eclipse.wst.sse.ui.preferences.xml.source"
+            target="org.eclipse.core.runtime.xml"/>
+      <provisionalDefinition
+      		type="preferencepages"
+            value="org.eclipse.wst.sse.ui.preferences.xml.templates"
+            target="org.eclipse.core.runtime.xml"/>
+      <provisionalDefinition
+      		type="preferencepages"
+            value="org.eclipse.wst.sse.ui.preferences.xml.colors"
+            target="org.eclipse.core.runtime.xml"/>
+      <provisionalDefinition
+      		type="preferencepages"
+            value="org.eclipse.wst.sse.ui.preferences.xml.occurrences"
+            target="org.eclipse.core.runtime.xml"/>
+   </extension>
+
+	<extension point="org.eclipse.ui.preferencePages">
+		<!-- Additional XML PREFERENCE PAGES -->
+		<page
+			name="%XML_Occurrences.name"
+			category="org.eclipse.wst.sse.ui.preferences.xml"
+			class="org.jboss.tools.jst.jsp.preferences.xpl.XMLOccurrencesPreferencePage"
+			id="org.eclipse.wst.sse.ui.preferences.xml.occurrences">
+		</page>
+	</extension>
+
+ <extension point="org.jboss.tools.common.text.xml.occurrenceStructureProviders">
+  	<provider 
+  		class="org.jboss.tools.jst.jsp.text.xpl.XMLOccurrenceProvider" 
+  		editorId="org.jboss.tools.common.text.xml" 
+  		name="%defaultOccurrenceStructureProviderName" /> 
+  </extension>
+  
+ <extension point="org.eclipse.ui.editors.annotationTypes">
+  <type markerSeverity="0" 
+  	markerType="org.eclipse.search.searchmarker" 
+  	name="org.jboss.tools.jst.jsp.occurrences" /> 
+  </extension>
+
+<extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
+  <specification annotationType="org.jboss.tools.jst.jsp.occurrences" 
+	  colorPreferenceKey="redhatTextOccurrenceIndicationColor" 
+	  colorPreferenceValue="63,175,0" 
+	  contributesToHeader="false" 
+	  highlightPreferenceKey="redhatTextOccurrenceHighlighting" 
+	  highlightPreferenceValue="true" 
+	  icon="icons/full/obj16/xpl/searchm_obj.gif" 
+	  isGoToNextNavigationTarget="false" 
+	  isGoToNextNavigationTargetKey="isRedHatTextOccurrenceGoToNextNavigationTarget" 
+	  isGoToPreviousNavigationTarget="false" 
+	  isGoToPreviousNavigationTargetKey="isRedHatTextOccurrenceGoToPreviousNavigationTarget" 
+	  label="%OccurrenceAnnotation.label" 
+	  overviewRulerPreferenceKey="redhatTextOccurrenceIndicationInOverviewRuler" 
+	  overviewRulerPreferenceValue="true" 
+	  presentationLayer="4" 
+	  showInNextPrevDropdownToolbarAction="true" 
+	  showInNextPrevDropdownToolbarActionKey="redhatTextShowOccurrenceInNextPrevDropdownToolbarAction" 
+	  textPreferenceKey="redhatTextOccurrenceIndication" 
+	  textPreferenceValue="true" 
+	  verticalRulerPreferenceKey="redhatTextOccurrenceIndicationInVerticalRuler" 
+	  verticalRulerPreferenceValue="true"/> 
+  </extension>
+
+</plugin>

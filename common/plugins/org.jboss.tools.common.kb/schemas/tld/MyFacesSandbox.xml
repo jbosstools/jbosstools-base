@@ -1,0 +1,1593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema location="" prefix="s" uri="http://myfaces.apache.org/sandbox">
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="inputSuggest" startTag="required">
+        <description>Provides an input textbox with "suggest" functionality.</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if omitted.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="value" required="false">
+            <description>Initial value to set when rendered for the first time.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="converter" required="false">
+            <description>Id of Converter to be used or reference to a Converter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="converter"/>
+        <AttributeType name="immediate" required="false">
+            <description>Flag indicating that this component's value must be converted and validated immediately (that is, during Apply Request Values phase), rather than waiting until Process Validations phase.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="required" required="false">
+            <description>If true, this component will be checked for non-empty input.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="required"/>
+        <AttributeType name="validator" required="false">
+            <description>MethodBinding pointing at a method that will be called during Process Validations phase of the request processing lifecycle, to validate the current value of this component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="validator"/>
+        <AttributeType name="valueChangeListener" required="false">
+            <description>Listener for value changes.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="valueChangeListener"/>
+        <AttributeType name="dir" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="lang" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="style" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="title" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="onclick" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="accesskey" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accesskey"/>
+        <AttributeType name="align" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="align"/>
+        <AttributeType name="alt" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="alt"/>
+        <AttributeType name="disabled" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="disabled"/>
+        <AttributeType name="maxlength" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="maxlength"/>
+        <AttributeType name="onblur" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onblur"/>
+        <AttributeType name="onchange" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onchange"/>
+        <AttributeType name="onfocus" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onfocus"/>
+        <AttributeType name="onselect" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onselect"/>
+        <AttributeType name="readonly" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="readonly"/>
+        <AttributeType name="size" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="size"/>
+        <AttributeType name="tabindex" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="tabindex"/>
+        <AttributeType name="forceId" required="false">
+            <description>If true, this component will force the use of the specified id when rendering.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceId"/>
+        <AttributeType name="forceIdIndex" required="false">
+            <description>If false, this component will not append a '[n]' suffix (where 'n' is the row index) to components 
+                that are contained within a "list."  This value will be true by default and the value will be ignored if 
+                the value of forceId is false (or not specified.)</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceIdIndex"/>
+        <AttributeType name="javascriptLocation" required="false">
+            <description>An alternate location to find javascript resources.  If no values is specified, javascript will
+                be loaded from the resources directory using AddResource and ExtensionsFilter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="javascriptLocation"/>
+        <AttributeType name="imageLocation" required="false">
+            <description>An alternate location to find image resources.  If no values is specified, images will
+                be loaded from the resources directory using AddResource and ExtensionsFilter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="imageLocation"/>
+        <AttributeType name="styleLocation" required="false">
+            <description>An alternate location to find stylesheet resources.  If no values is specified, stylesheets will
+                be loaded from the resources directory using AddResource and ExtensionsFilter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleLocation"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="planner" startTag="required">
+        <description>A meeting planner component, similar to the ones found in Outlook or Evolution.</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if omitted.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="visibleEndHour" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="visibleEndHour"/>
+        <AttributeType name="visibleStartHour" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="visibleStartHour"/>
+        <AttributeType name="workingEndHour" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="workingEndHour"/>
+        <AttributeType name="workingStartHour" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="workingStartHour"/>
+        <AttributeType name="gutterWidthInPixels" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="gutterWidthInPixels"/>
+        <AttributeType name="headerDateFormat" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="headerDateFormat"/>
+        <AttributeType name="legend" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="legend"/>
+        <AttributeType name="theme" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="theme"/>
+        <AttributeType name="tooltip" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="tooltip"/>
+        <AttributeType name="value" required="true">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="schedule" startTag="required">
+        <description>A schedule component similar to the ones found in Outlook or Evolution</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if omitted.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if omitted.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="action" required="false">
+            <description>MethodBinding pointing at the application action to be invoked, if this UIComponent is activated by the user, during the Apply Request Values or Invoke Application phase of the request processing lifecycle, depending on the value of the immediate property.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="action"/>
+        <AttributeType name="actionListener" required="false">
+            <description>MethodBinding pointing at method acception an ActionEvent with return type void.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="actionListener"/>
+        <AttributeType name="immediate" required="false">
+            <description>True means, that the default ActionListener should be executed immediately (i.e. during Apply Request Values phase of the request processing lifecycle), rather than waiting until the Invoke Application phase.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="value" required="false">
+            <description>Initial value to set when rendered for the first time.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="visibleEndHour" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="visibleEndHour"/>
+        <AttributeType name="visibleStartHour" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="visibleStartHour"/>
+        <AttributeType name="workingEndHour" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="workingEndHour"/>
+        <AttributeType name="workingStartHour" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="workingStartHour"/>
+        <AttributeType name="compactMonthRowHeight" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="compactMonthRowHeight"/>
+        <AttributeType name="compactWeekRowHeight" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="compactWeekRowHeight"/>
+        <AttributeType name="headerDateFormat" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="headerDateFormat"/>
+        <AttributeType name="readonly" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="readonly"/>
+        <AttributeType name="theme" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="default"/>
+                <param value="outlookxp"/>
+                <param value="evolution"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="theme"/>
+        <AttributeType name="tooltip" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="tooltip"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="inputSuggestAjax" startTag="required">
+        <description>Provides an input textbox with "suggest" functionality, using a remote connection to the server.
+	    The difference to inputSuggest is that a custom drop down is rendered.</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if omitted.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="value" required="false">
+            <description>Initial value to set when rendered for the first time.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="converter" required="false">
+            <description>Id of Converter to be used or reference to a Converter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="converter"/>
+        <AttributeType name="immediate" required="false">
+            <description>Flag indicating that this component's value must be converted and validated immediately (that is, during Apply Request Values phase), rather than waiting until Process Validations phase.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="immediate"/>
+        <AttributeType name="required" required="false">
+            <description>If true, this component will be checked for non-empty input.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="required"/>
+        <AttributeType name="validator" required="false">
+            <description>MethodBinding pointing at a method that will be called during Process Validations phase of the request processing lifecycle, to validate the current value of this component.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="validator"/>
+        <AttributeType name="valueChangeListener" required="false">
+            <description>Listener for value changes.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="valueChangeListener"/>
+        <AttributeType name="dir" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="lang" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="style" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="title" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="onclick" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="accesskey" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accesskey"/>
+        <AttributeType name="align" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="align"/>
+        <AttributeType name="alt" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="alt"/>
+        <AttributeType name="disabled" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="disabled"/>
+        <AttributeType name="maxlength" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="maxlength"/>
+        <AttributeType name="onblur" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onblur"/>
+        <AttributeType name="onchange" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onchange"/>
+        <AttributeType name="onfocus" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onfocus"/>
+        <AttributeType name="onselect" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onselect"/>
+        <AttributeType name="readonly" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="readonly"/>
+        <AttributeType name="size" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="size"/>
+        <AttributeType name="tabindex" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="tabindex"/>
+        <AttributeType name="forceId" required="false">
+            <description>If true, this component will force the use of the specified id when rendering.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceId"/>
+        <AttributeType name="forceIdIndex" required="false">
+            <description>If false, this component will not append a '[n]' suffix (where 'n' is the row index) to components 
+                that are contained within a "list."  This value will be true by default and the value will be ignored if 
+                the value of forceId is false (or not specified.)</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceIdIndex"/>
+        <AttributeType name="javascriptLocation" required="false">
+            <description>An alternate location to find javascript resources.  If no values is specified, javascript will
+                be loaded from the resources directory using AddResource and ExtensionsFilter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="javascriptLocation"/>
+        <AttributeType name="imageLocation" required="false">
+            <description>An alternate location to find image resources.  If no values is specified, images will
+                be loaded from the resources directory using AddResource and ExtensionsFilter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="imageLocation"/>
+        <AttributeType name="styleLocation" required="false">
+            <description>An alternate location to find stylesheet resources.  If no values is specified, stylesheets will
+                be loaded from the resources directory using AddResource and ExtensionsFilter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleLocation"/>
+        <AttributeType name="displayValueOnly" required="false">
+            <description>If true, renders only the value of the component, but no input widget.
+                Default is false.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="displayValueOnly"/>
+        <AttributeType name="displayValueOnlyStyle" required="false">
+            <description>Style used when displayValueOnly is true.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="displayValueOnlyStyle"/>
+        <AttributeType name="displayValueOnlyStyleClass" required="false">
+            <description>Style class used when displayValueOnly is true.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="displayValueOnlyStyleClass"/>
+        <AttributeType name="enabledOnUserRole" required="false">
+            <description>If user is in given role, this component will be rendered
+                normally. If not, no hyperlink is rendered but all nested
+                tags (=body) are rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="enabledOnUserRole"/>
+        <AttributeType name="visibleOnUserRole" required="false">
+            <description>If user is in given role, this component will be rendered
+                normally. If not, nothing is rendered and the body of this tag
+                will be skipped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="visibleOnUserRole"/>
+        <AttributeType name="size" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="size"/>
+        <AttributeType name="suggestedItemsMethod" required="true">
+            <description>Reference to the method which returns the suggested items</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="suggestedItemsMethod"/>
+        <AttributeType name="maxSuggestedItems" required="false">
+            <description>optional attribute to identify the max size of suggested Values</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="maxSuggestedItems"/>
+        <AttributeType name="layout" required="false">
+            <description/>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="layout"/>
+        <AttributeType name="popupStyle" required="false">
+            <description>Style for the window with a suggested list of items;pop up for each incoming Ajax response</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="popupStyle"/>
+        <AttributeType name="popupStyleClass" required="false">
+            <description>StyleClass for the window with a suggested list of items;pop up for each incoming Ajax response</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="popupStyleClass"/>
+        <AttributeType name="popupId" required="false">
+            <description>Id for the pop up window</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="popupId"/>
+        <AttributeType name="listId" required="false">
+            <description>Id for the unordered list included in the pop up window</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="listId"/>
+        <AttributeType name="listStyle" required="false">
+            <description>Style for the unordered list included in the pop up window</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="listStyle"/>
+        <AttributeType name="listStyleClass" required="false">
+            <description>StyleClass for the unordered list included in the pop up window</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="listStyleClass"/>
+        <AttributeType name="listItemStyle" required="false">
+            <description>Id for the pop up window</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="listItemStyle"/>
+        <AttributeType name="listItemStyleClass" required="false">
+            <description>Id for the pop up window</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="listItemStyleClass"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="form" startTag="required">
+        <description>Renders a HTML form element which allow defining a different scheme, servername or port for the action url 
+            to which the form is submited</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if omitted.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="dir" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="lang" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="style" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="title" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="onclick" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="accept" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="accept"/>
+        <AttributeType name="acceptCharset" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="acceptCharset"/>
+        <AttributeType name="enctype" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="enctype"/>
+        <AttributeType name="name" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="name"/>
+        <AttributeType name="onreset" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onreset"/>
+        <AttributeType name="onsubmit" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onsubmit"/>
+        <AttributeType name="target" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="target"/>
+        <AttributeType name="scheme" required="false">
+            <description>This attribute can be used to set the url scheme for the action attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="http"/>
+                <param value="https"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="scheme"/>
+        <AttributeType name="serverName" required="false">
+            <description>This attribute can be used to set the url server name or ip address for the action attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="serverName"/>
+        <AttributeType name="port" required="false">
+            <description>This attribute can be used to set the port for the action attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="port"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="validateUrl" startTag="required">
+        <description>A custom validator for url format, based upons Jakarta Commons.</description>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="autoUpdateDataTable" startTag="required">
+        <description>Extended data_table that adds some additional features to the standard
+            data_table action: see attribute descriptions for preserveDataModel,
+            sortColumn, sortAscending and preserveSort.</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if omitted.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="dir" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="lang" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="style" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="title" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="onclick" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="align" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="align"/>
+        <AttributeType name="border" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="border"/>
+        <AttributeType name="bgcolor" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="bgcolor"/>
+        <AttributeType name="cellpadding" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="cellpadding"/>
+        <AttributeType name="cellspacing" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="cellspacing"/>
+        <AttributeType name="datafld" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="datafld"/>
+        <AttributeType name="datasrc" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="datasrc"/>
+        <AttributeType name="dataformatas" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dataformatas"/>
+        <AttributeType name="frame" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="frame"/>
+        <AttributeType name="rules" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rules"/>
+        <AttributeType name="summary" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="summary"/>
+        <AttributeType name="width" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+        <AttributeType name="value" required="false">
+            <description>Supported types see JSF Spec 4.1.3</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="var" required="true">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="var"/>
+        <AttributeType name="rows" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rows"/>
+        <AttributeType name="first" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="first"/>
+        <AttributeType name="columnClasses" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="columnClasses"/>
+        <AttributeType name="footerClass" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="footerClass"/>
+        <AttributeType name="headerClass" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="headerClass"/>
+        <AttributeType name="rowClasses" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rowClasses"/>
+        <AttributeType name="forceId" required="false">
+            <description>If true, this component will force the use of the specified id when rendering.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceId"/>
+        <AttributeType name="forceIdIndex" required="false">
+            <description>If false, this component will not append a '[n]' suffix (where 'n' is the row index) to components 
+                that are contained within a "list."  This value will be true by default and the value will be ignored if 
+                the value of forceId is false (or not specified.)</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceIdIndex"/>
+        <AttributeType name="enabledOnUserRole" required="false">
+            <description>If user is in given role, this component will be rendered
+                normally. If not, no hyperlink is rendered but all nested
+                tags (=body) are rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="enabledOnUserRole"/>
+        <AttributeType name="visibleOnUserRole" required="false">
+            <description>If user is in given role, this component will be rendered
+                normally. If not, nothing is rendered and the body of this tag
+                will be skipped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="visibleOnUserRole"/>
+        <AttributeType name="preserveDataModel" required="false">
+            <description>Indicates whether the state of the whole DataModel should be saved and
+                restored.
+                Default: false</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="preserveDataModel"/>
+        <AttributeType name="sortColumn" required="false">
+            <description>Value reference to a model property that gives the current sort column name.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="sortColumn"/>
+        <AttributeType name="sortAscending" required="false">
+            <description>Value reference to a model property that gives the current sort direction.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="sortAscending"/>
+        <AttributeType name="preserveSort" required="false">
+            <description>Indicates whether the state of the sortColumn and sortAscending attribute
+                should be saved and restored and written back to the model during the
+                update model phase.
+                Default: true</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="preserveSort"/>
+        <AttributeType name="renderedIfEmpty" required="false">
+            <description>Indicates whether this table should be rendered if the underlying DataModel is
+                empty.
+                You could as well use rendered="#{not empty bean.list}", but this one causes
+                the getList method of your model bean beeing called up to five times per
+                request, which is not optimal when the list is backed by a DB table.
+                Using renderedIfEmpty="false" solves this problem, because the MyFaces
+                extended HtmlDataTable automatically caches the DataModel and calles the
+                model getter only once per request.
+                Default: true</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="renderedIfEmpty"/>
+        <AttributeType name="rowIndexVar" required="false">
+            <description>A parameter name, under which the current rowIndex is set in request scope
+                similar to the var parameter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rowIndexVar"/>
+        <AttributeType name="rowCountVar" required="false">
+            <description>A parameter name, under which the rowCount is set in request scope
+                similar to the var parameter.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rowCountVar"/>
+        <AttributeType name="previousRowDataVar" required="false">
+            <description>A parameter name, under which the previous RowData Object is set in request scope
+                similar to the rowIndexVar and rowCountVar parameters.
+                Mind that the value of this request scope attribute is null in the first row
+                or when isRowAvailable returns false for the previous row.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="previousRowDataVar"/>
+        <AttributeType name="rowOnMouseOver" required="false">
+            <description>Defines a JavaScript onmouseover event handler for each table row</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rowOnMouseOver"/>
+        <AttributeType name="rowOnMouseOut" required="false">
+            <description>Defines a JavaScript onmouseout event handler for each table row</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rowOnMouseOut"/>
+        <AttributeType name="frequency" required="false">
+            <description>Defines in seconds the interval of reloads. if no value is specified
+                2 seconds will be default.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="frequency"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="convertBoolean" startTag="required">
+        <description>Converts a boolean to custom format (yes/no), (1/0), etc.</description>
+        <AttributeType name="trueValue" required="false">
+            <description>Value representing a boolean true, e.g. TRUE, yes, 1, etc.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="trueValue"/>
+        <AttributeType name="falseValue" required="false">
+            <description>Value representing a boolean false, e.g. FALSE, no, 0, etc.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="falseValue"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="fieldset" startTag="required">
+        <description>Renders an HTML Fieldset</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if omitted.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="forceId" required="false">
+            <description>If true, this component will force the use of the specified id when rendering.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceId"/>
+        <AttributeType name="forceIdIndex" required="false">
+            <description>If false, this component will not append a '[n]' suffix (where 'n' is the row index) to components 
+                that are contained within a "list."  This value will be true by default and the value will be ignored if 
+                the value of forceId is false (or not specified.)</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceIdIndex"/>
+        <AttributeType name="enabledOnUserRole" required="false">
+            <description>If user is in given role, this component will be rendered
+                normally. If not, no hyperlink is rendered but all nested
+                tags (=body) are rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="enabledOnUserRole"/>
+        <AttributeType name="visibleOnUserRole" required="false">
+            <description>If user is in given role, this component will be rendered
+                normally. If not, nothing is rendered and the body of this tag
+                will be skipped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="visibleOnUserRole"/>
+        <AttributeType name="style" required="false">
+            <description>The style to use for this div.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="styleClass" required="false">
+            <description>The class to use for this div.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="legend" required="false">
+            <description>The fieldset's legend.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="legend"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="graphicImageAjax" startTag="required">
+        <description>Extends standard graphicImage.</description>
+        <AttributeType name="id" required="false">
+            <description>Every component may have an unique id. Automatically created if omitted.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <AttributeType name="binding" required="false">
+            <description>Component binding.</description>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="dir" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="dir"/>
+        <AttributeType name="lang" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="lang"/>
+        <AttributeType name="style" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="style"/>
+        <AttributeType name="title" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="title"/>
+        <AttributeType name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="styleClass"/>
+        <AttributeType name="onclick" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onclick"/>
+        <AttributeType name="ondblclick" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ondblclick"/>
+        <AttributeType name="onmousedown" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousedown"/>
+        <AttributeType name="onmouseup" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseup"/>
+        <AttributeType name="onmouseover" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseover"/>
+        <AttributeType name="onmousemove" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmousemove"/>
+        <AttributeType name="onmouseout" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onmouseout"/>
+        <AttributeType name="onkeypress" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeypress"/>
+        <AttributeType name="onkeydown" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeydown"/>
+        <AttributeType name="onkeyup" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="onkeyup"/>
+        <AttributeType name="align" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="align"/>
+        <AttributeType name="border" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="border"/>
+        <AttributeType name="hspace" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="hspace"/>
+        <AttributeType name="vspace" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="vspace"/>
+        <AttributeType name="alt" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="alt"/>
+        <AttributeType name="height" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="height"/>
+        <AttributeType name="ismap" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="ismap"/>
+        <AttributeType name="longdesc" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="longdesc"/>
+        <AttributeType name="usemap" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="usemap"/>
+        <AttributeType name="width" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="width"/>
+        <AttributeType name="enabledOnUserRole" required="false">
+            <description>If user is in given role, this component will be rendered
+                normally. If not, no hyperlink is rendered but all nested
+                tags (=body) are rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="enabledOnUserRole"/>
+        <AttributeType name="visibleOnUserRole" required="false">
+            <description>If user is in given role, this component will be rendered
+                normally. If not, nothing is rendered and the body of this tag
+                will be skipped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="visibleOnUserRole"/>
+        <AttributeType name="forceId" required="false">
+            <description>If true, this component will force the use of the specified id when rendering.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceId"/>
+        <AttributeType name="forceIdIndex" required="false">
+            <description>If false, this component will not append a '[n]' suffix (where 'n' is the row index) to components 
+                that are contained within a "list."  This value will be true by default and the value will be ignored if 
+                the value of forceId is false (or not specified.)</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="forceIdIndex"/>
+        <AttributeType name="getContentTypeMethod" required="true">
+            <description>Reference to the method which returns the image's content type as a String.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="getContentTypeMethod"/>
+        <AttributeType name="getBytesMethod" required="true">
+            <description>Reference to the method which returns the image's bytes as a byte[].</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="getBytesMethod"/>
+    </ElementType>
+</Schema>

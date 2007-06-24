@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema location="" prefix="f" uri="http://java.sun.com/jsf/core">
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="actionListener" startTag="required">
+        <AttributeType name="type" required="true">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <description>Register an ActionListener instance on the UIComponent associated
+      with the closest parent UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="attribute" startTag="required">
+        <AttributeType name="name" required="true">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="name"/>
+        <AttributeType name="value" required="true">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <description>Add an attribute to the UIComponent associated with the closest
+      parent UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="convertDateTime" startTag="required">
+        <AttributeType name="dateStyle" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="default"/>
+                <param value="short"/>
+                <param value="medium"/>
+                <param value="long"/>
+                <param value="full"/>
+            </proposal>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="dateStyle"/>
+        <AttributeType name="locale" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="locale"/>
+        <AttributeType name="pattern" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="pattern"/>
+        <AttributeType name="timeStyle" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="default"/>
+                <param value="short"/>
+                <param value="medium"/>
+                <param value="long"/>
+                <param value="full"/>
+            </proposal>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="timeStyle"/>
+        <AttributeType name="timeZone" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="timeZone"/>
+        <AttributeType name="type" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="date"/>
+                <param value="time"/>
+                <param value="both"/>
+            </proposal>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <description>Register a DateTimeConverter instance on the UIComponent associated
+      with the closest parent UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="convertNumber" startTag="required">
+        <AttributeType name="currencyCode" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="currencyCode"/>
+        <AttributeType name="currencySymbol" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="currencySymbol"/>
+        <AttributeType name="groupingUsed" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="java.lang.Boolean"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="boolean"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="groupingUsed"/>
+        <AttributeType name="integerOnly" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="java.lang.Boolean"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="boolean"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="integerOnly"/>
+        <AttributeType name="locale" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="locale"/>
+        <AttributeType name="maxFractionDigits" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="maxFractionDigits"/>
+        <AttributeType name="maxIntegerDigits" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="maxIntegerDigits"/>
+        <AttributeType name="minFractionDigits" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="minFractionDigits"/>
+        <AttributeType name="minIntegerDigits" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="minIntegerDigits"/>
+        <AttributeType name="pattern" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="pattern"/>
+        <AttributeType name="type" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="number"/>
+                <param value="currency"/>
+                <param value="percentage"/>
+            </proposal>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <description>Register a NumberConverter instance on the UIComponent associated
+      with the closest parent UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="converter" startTag="required">
+        <AttributeType name="converterId" required="true">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="converterId"/>
+        <description>Register a named Converter instance on the UIComponent
+      associated with the closest parent UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="facet" startTag="required">
+        <AttributeType name="name" required="true">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="name"/>
+        <description>Register a named facet on the UIComponent associated with
+      the closest parent UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="loadBundle" startTag="required">
+        <AttributeType name="basename" required="true">
+            <proposal type="jsfVariables"/>
+            <proposal type="bundleName"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="basename"/>
+        <AttributeType name="var" required="true">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="var"/>
+        <description>Load a resource bundle localized for the Locale
+      of the current view, and expose it (as a Map) in
+      the request attributes of the current request.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="param" startTag="required">
+        <AttributeType name="binding" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="id" required="false">
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="name" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="name"/>
+        <AttributeType name="value" required="true">
+            <proposal type="jsfVariables"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <description>Add a child UIParameter component to the UIComponent
+      associated with the closed parent UIComponent custom
+      action.</description>
+    </ElementType>
+
+    <!-- since JSF 1.2 -->
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="phaseListener" startTag="required">
+        <AttributeType name="binding" required="false">
+            <description>Value binding expression that evaluates to an object that implements javax.faces.event.PhaseListener.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.event.PhaseListener"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="type" required="true">
+            <description>Fully qualified Java class name of an PhaseListener to be created and registered.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <description>Fully qualified Java class name of an PhaseListener to be created and registered.</description>
+    </ElementType>
+
+    <!-- since JSF 1.2 -->
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="setPropertyActionListener" startTag="required">
+        <AttributeType name="value" required="true">
+            <description>ValueExpression to be stored as the value of the target attribute.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <AttributeType name="target" required="true">
+            <description>ValueExpression that is the destination of the value attribute.</description>
+            <proposal type="jsfVariables"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="target"/>
+        <description>Register an ActionListener instance on the UIComponent
+        associated with the closest parent UIComponent custom action.
+        This actionListener will cause the value given by the "value"
+        attribute to be set into the ValueExpression given by the "target"
+        attribute.
+        </description>
+    </ElementType>
+
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="selectItem" startTag="required">
+        <AttributeType name="binding" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="id" required="false">
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="itemDescription" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="itemDescription"/>
+        <AttributeType name="itemDisabled" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="java.lang.Boolean"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="boolean"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="itemDisabled"/>
+        <AttributeType name="itemLabel" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="itemLabel"/>
+        <AttributeType name="itemValue" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="itemValue"/>
+        <AttributeType name="value" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <description>Add a child UISelectItem component to the UIComponent
+      associated with the closed parent UIComponent custom
+      action.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="selectItems" startTag="required">
+        <AttributeType name="binding" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="id" required="false">
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="value" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="value"/>
+        <description>Add a child UISelectItems component to the UIComponent
+      associated with the closed parent UIComponent custom
+      action.</description>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="subview" startTag="required">
+        <AttributeType name="binding" required="false">
+            <proposal type="beanProperty">
+                <param name="type" value="javax.faces.component.UIComponent"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="binding"/>
+        <AttributeType name="id" required="true">
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="rendered" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty">
+                <param name="type" value="java.lang.Boolean"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="boolean"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="rendered"/>
+        <description>Container action for all JavaServer Faces core and
+      custom component actions used on a nested page via
+      "jsp:include" or any custom action that dynamically
+      includes another page from the same web application,
+      such as JSTL's "c:import".</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="validateDoubleRange" startTag="required">
+        <AttributeType name="maximum" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="maximum"/>
+        <AttributeType name="minimum" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="minimum"/>
+        <description>Register a DoubleRangeValidator instance on the
+      UIComponent associated with the closest parent
+      UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="validateLength" startTag="required">
+        <AttributeType name="maximum" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="maximum"/>
+        <AttributeType name="minimum" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="minimum"/>
+        <description>Register a LengthValidator instance on the
+      UIComponent associated with the closest parent
+      UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="validateLongRange" startTag="required">
+        <AttributeType name="maximum" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="maximum"/>
+        <AttributeType name="minimum" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="minimum"/>
+        <description>Register a LongRangeValidator instance on the
+      UIComponent associated with the closest parent
+      UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="validator" startTag="required">
+        <AttributeType name="validatorId" required="true">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="validatorId"/>
+        <description>Register a named Validator instance on the
+      UIComponent associated with the closest parent
+      UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="refused" content="mixed" endTag="required"
+        name="valueChangeListener" startTag="required">
+        <AttributeType name="type" required="true">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="type"/>
+        <description>Register an ValueChangeListener instance on the UIComponent associated
+      with the closest parent UIComponent custom action.</description>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="verbatim" startTag="required">
+        <AttributeType name="escape" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="java.lang.Boolean"/>
+            </proposal>
+            <proposal type="beanProperty">
+                <param name="type" value="boolean"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="escape"/>
+        <description>Create and register a child UIOutput component
+      associated with the closest parent UIComponent
+      custom action, which renders nested body content.</description>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="view" startTag="required">
+        <AttributeType name="locale" required="false">
+            <proposal type="jsfVariables"/>
+            <proposal type="beanProperty"/>
+        </AttributeType>
+        <attribute type="locale"/>
+        <description>Container for all JavaServer Faces core and custom
+      component actions used on a page.</description>
+    </ElementType>
+</Schema>

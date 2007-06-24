@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.jboss.tools.common.verification">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.jboss.tools.common.verification" id="rules" name="rules"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to define path to rule-set definition file that is contains rule definitions for Red Hat Verification Framework.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="rule-set" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="rule-set">
+      <complexType>
+         <attribute name="path" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         2.0.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         Extension point:
+&lt;pre&gt;
+	&lt;extension point=&quot;org.jboss.tools.common.verification.rules&quot;&gt;
+      &lt;rule-set path=&quot;meta/.rule-sets.xml&quot;/&gt;
+   	&lt;/extension&gt;
+&lt;/pre&gt;
+
+Contents of .rule-sets.xml:
+&lt;pre&gt;
+&lt;rule-sets&gt;
+ &lt;rule-set bundle=&quot;org.jboss.tools.jsf.verification.vrules.jsfrules&quot;
+  description=&quot;JSF Rules&quot; name=&quot;JSF Rules&quot;
+  url=&quot;http://www.redhat.com&quot; vendor=&quot;Red Hat Inc&quot; version=&quot;1.0&quot;&gt;
+  &lt;rule-set bundle=&quot;org.jboss.tools.jsf.verification.vrules.jsfrules&quot;
+   description=&quot;Check Navigation Rules&quot; name=&quot;Check Navigation Rules&quot;
+   url=&quot;http://www.redhat.com&quot; vendor=&quot;Red Hat Inc&quot; version=&quot;1.0&quot;&gt;
+   &lt;rule action=&quot;org.jboss.tools.jsf.verification.vrules.JSFCheckFromViewId&quot;
+    category=&quot;jsf&quot; description=&quot;Check that from-view-id starts with slash&quot;
+    entities=&quot;JSFNavigationRule&quot; name=&quot;Check from-view-id attribute&quot;&gt;
+    &lt;result-template
+     description=&quot;Check that from-view-id starts with slash&quot;
+     id=&quot;from-view-id&quot; message-id=&quot;jsf.slash&quot; name=&quot;Check from-view-id attribute&quot;/&gt;
+   &lt;/rule&gt;
+   &lt;rule action=&quot;org.jboss.tools.jsf.verification.vrules.toview.JSFCheckFromViewIdExists&quot;
+    category=&quot;jsf&quot; description=&quot;Check that from-view-id references to existent resource&quot;
+    entities=&quot;JSFNavigationRule&quot; name=&quot;Check that from-view-id references to existent resource&quot;&gt;
+    &lt;result-template
+     description=&quot;Check that from-view-id references to existent resource&quot;
+     id=&quot;from-view-id&quot; message-id=&quot;jsf.path.exists&quot; name=&quot;Check that from-view-id references to existent resource&quot;/&gt;
+   &lt;/rule&gt;
+   &lt;rule action=&quot;org.jboss.tools.jsf.verification.vrules.toview.JSFCheckToViewIdSlash&quot;
+    category=&quot;jsf&quot; description=&quot;Check that to-view-id starts with slash&quot;
+    entities=&quot;JSFNavigationCase&quot; name=&quot;Check to-view-id attribute&quot;&gt;
+    &lt;result-template
+     description=&quot;Check that to-view-id starts with slash&quot;
+     id=&quot;to-view-id&quot; message-id=&quot;jsf.slash&quot; name=&quot;Check to-view-id attribute&quot;/&gt;
+   &lt;/rule&gt;
+	   .....
+   &lt;/rule-set&gt;
+&lt;/rule-sets&gt;
+&lt;/pre&gt;
+
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         See API javadoc for plugin org.jboss.tools.common.verification.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Red Hat, Inc
+      </documentation>
+   </annotation>
+
+</schema>

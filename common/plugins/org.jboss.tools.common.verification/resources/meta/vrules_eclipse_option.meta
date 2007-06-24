@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN" "meta.dtd">
+<XModelEntityGroup>
+ <VERSION MODULE="Model" VERSION="1.0"/>
+ <MAPPINGS/>
+ <ICONS/>
+ <GlobalActions kind="list"/>
+ <XModelEntity ImplementingClass="%Options%" name="SharableVerification">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.options.root" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="options" loader="ElementType"
+    name="element type" visibility="false">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Verification" name="name"
+    visibility="false" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="unlimited"
+    name="Reported Errors Number Limit" xmlname="error_number_limit">
+    <Constraint loader="ListInt">
+     <value name="unlimited"/>
+     <value name="1"/>
+     <value name="2"/>
+     <value name="5"/>
+     <value name="10"/>
+    </Constraint>
+    <Editor name="ListInt"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list"/>
+  <XDependencies/>
+ </XModelEntity>
+ <XEntityExtension name="SharableStrutsStudio">
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="SharableVerification" required="yes"/>
+  </XChildrenEntities>
+  <XActionItem kind="list"/>
+ </XEntityExtension>
+</XModelEntityGroup>

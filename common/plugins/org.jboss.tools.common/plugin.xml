@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+ <extension point="org.eclipse.wst.xml.core.catalogContributions">
+      <catalogContribution id="default">
+         <uri 
+            name="web-jsptaglibrary_2_0.xsd" 
+            uri="schemas/web-jsptaglibrary_2_0.xsd"/>
+         <uri 
+            name="web-jsptaglibrary_2_1.xsd" 
+            uri="schemas/web-jsptaglibrary_2_1.xsd"/>
+         <uri 
+            name="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" 
+            uri="schemas/web-jsptaglibrary_2_0.xsd"/>
+         <uri 
+            name="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
+            uri="schemas/web-jsptaglibrary_2_1.xsd"/>
+         <uri 
+            name="http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd" 
+            uri="schemas/web-facesconfig_1_2.xsd"/>
+         <public 
+         	publicId="http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd" 
+         	uri="schemas/web-facesconfig_1_2.xsd"/>
+         <public 
+         	publicId="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" 
+         	uri="schemas/web-jsptaglibrary_2_0.xsd"/>
+         <public 
+         	publicId="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
+         	uri="schemas/web-jsptaglibrary_2_1.xsd"/>
+
+<!--===================================================-->
+<!-- Register known J2EE DTDs and XSDs for XML editor  -->
+<!-- DTD and XSD Contributions                         -->
+<!--===================================================-->
+         <public publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" uri="dtds/web-app_2_2.dtd">
+         </public>
+         <public publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" uri="dtds/web-app_2_3.dtd">
+         </public>
+         <public publicId="-//Sun Microsystems, Inc.//DTD J2EE Application Client 1.2//EN" uri="dtds/application-client_1_2.dtd">
+         </public>
+         <public publicId="-//Sun Microsystems, Inc.//DTD J2EE Application Client 1.3//EN" uri="dtds/application-client_1_3.dtd">
+         </public>
+         <public publicId="-//Sun Microsystems, Inc.//DTD J2EE Application 1.2//EN" uri="dtds/application_1_2.dtd">
+         </public>
+         <public publicId="-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN" uri="dtds/application_1_3.dtd">
+         </public>
+         <public publicId="-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 1.1//EN" uri="dtds/ejb-jar_1_1.dtd">
+         </public>
+         <public publicId="-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" uri="dtds/ejb-jar_2_0.dtd">
+         </public>
+         <public publicId="-//Sun Microsystems, Inc.//DTD Connector 1.0//EN" uri="dtds/connector_1_0.dtd">
+         </public>
+         <public publicId="-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" uri="dtds/web-jsptaglibrary_1_1.dtd">
+         </public>
+         <public publicId="-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" uri="dtds/web-jsptaglibrary_1_2.dtd">
+         </public>
+
+         <uri 
+            name="http://java.sun.com/xml/ns/j2ee/xml.xsd" 
+            uri="xsds/xml.xsd">
+         </uri>
+         <uri 
+            name="xml.xsd" 
+            uri="xsds/xml.xsd">
+         </uri>
+         <public publicId="xml" uri="xsds/xml.xsd">
+         </public>
+         <public publicId="xml.xsd" uri="xsds/xml.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/xml.xsd" uri="xsds/xml.xsd">
+         </public>
+
+         <public publicId="application-client_1_4.xsd" uri="xsds/application-client_1_4.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/application-client_1_4.xsd" uri="xsds/application-client_1_4.xsd">
+         </public>
+
+         <public publicId="application_1_4.xsd" uri="xsds/application_1_4.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/application_1_4.xsd" uri="xsds/application_1_4.xsd">
+         </public>
+
+         <public publicId="connector_1_5.xsd" uri="xsds/connector_1_5.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/connector_1_5.xsd" uri="xsds/connector_1_5.xsd">
+         </public>
+
+         <public publicId="ejb-jar_2_1.xsd" uri="xsds/ejb-jar_2_1.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd" uri="xsds/ejb-jar_2_1.xsd">
+         </public>
+
+         <uri 
+            name="j2ee_1_4.xsd" 
+            uri="xsds/j2ee_1_4.xsd"/>
+         <uri 
+            name="http://java.sun.com/xml/ns/j2ee/j2ee_1_4.xsd" 
+            uri="xsds/j2ee_1_4.xsd"/>
+         <public publicId="j2ee_1_4.xsd" uri="xsds/j2ee_1_4.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/j2ee_1_4.xsd" uri="xsds/j2ee_1_4.xsd">
+         </public>
+         <uri 
+            name="javaee_5.xsd" 
+            uri="xsds/javaee_5.xsd"/>
+         <uri 
+            name="http://java.sun.com/xml/ns/javaee/javaee_5.xsd" 
+            uri="xsds/javaee_5.xsd"/>
+         <public publicId="javaee_5.xsd" uri="xsds/javaee_5.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/javaee/javaee_5.xsd" uri="xsds/javaee_5.xsd">
+         </public>
+
+         <uri
+            name="http://java.sun.com/xml/ns/j2ee/jsp_2_0.xsd"
+            uri="xsds/jsp_2_0.xsd"/>
+         <public publicId="jsp_2_0.xsd" uri="xsds/jsp_2_0.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/jsp_2_0.xsd" uri="xsds/jsp_2_0.xsd">
+         </public>         
+
+         <uri
+            name="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+            uri="xsds/web-app_2_4.xsd"/>
+         <public publicId="web-app_2_4.xsd" uri="xsds/web-app_2_4.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" uri="xsds/web-app_2_4.xsd">
+         </public>
+
+         <uri
+            name="web-jsptaglibrary_2_0.xsd"
+            uri="xsds/web-jsptaglibrary_2_0.xsd"/>
+         <uri
+            name="web-jsptaglibrary_2_1.xsd"
+            uri="xsds/web-jsptaglibrary_2_1.xsd"/>
+
+         <uri
+            name="web-facesconfig_1_2.xsd"
+            uri="xsds/web-facesconfig_1_2.xsd"/>
+
+         <public 
+            publicId="web-jsptaglibrary_2_0.xsd" 
+            uri="xsds/web-jsptaglibrary_2_0.xsd">
+         </public>
+         <public 
+            publicId="web-jsptaglibrary_2_1.xsd" 
+            uri="xsds/web-jsptaglibrary_2_1.xsd">
+         </public>
+         <public 
+            publicId="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" 
+            uri="xsds/web-jsptaglibrary_2_0.xsd">
+         </public>
+         <public 
+            publicId="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
+            uri="xsds/web-jsptaglibrary_2_1.xsd">
+         </public>
+         <public
+            publicId="web-facesconfig_1_2.xsd"
+            uri="xsds/web-facesconfig_1_2.xsd"/>
+         <public
+            publicId="http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+            uri="xsds/web-facesconfig_1_2.xsd"/>
+
+         <public publicId="j2ee_web_services_1_1.xsd" uri="xsds/j2ee_web_services_1_1.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/j2ee_web_services_1_1.xsd" uri="xsds/j2ee_web_services_1_1.xsd">
+         </public>
+         <public publicId="http://www.ibm.com/webservices/xsd/j2ee_web_services_1_1.xsd" uri="xsds/j2ee_web_services_1_1.xsd">
+         </public>
+
+         <uri
+            name="http://java.sun.com/xml/ns/j2ee/j2ee_web_services_client_1_1.xsd"
+            uri="xsds/j2ee_web_services_client_1_1.xsd"/>
+         <uri
+            name="j2ee_web_services_client_1_1.xsd"
+            uri="xsds/j2ee_web_services_client_1_1.xsd"/>
+         <public publicId="j2ee_web_services_client_1_1.xsd" uri="xsds/j2ee_web_services_client_1_1.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/j2ee_web_services_client_1_1.xsd" uri="xsds/j2ee_web_services_client_1_1.xsd">         
+         </public>
+         <public publicId="http://www.ibm.com/webservices/xsd/j2ee_web_services_client_1_1.xsd" uri="xsds/j2ee_web_services_client_1_1.xsd">
+         </public>
+
+         <public publicId="http://www.ibm.com/webservices/xsd/xml.xsd" uri="xsds/xml.xsd">
+         </public>         
+
+         <uri
+            name="http://java.sun.com/xml/ns/javaee/javaee_web_services_client_1_2.xsd"
+            uri="xsds/javaee_web_services_client_1_2.xsd"/>
+         <uri
+            name="javaee_web_services_client_1_2.xsd"
+            uri="xsds/javaee_web_services_client_1_2.xsd"/>
+         <public publicId="javaee_web_services_client_1_2.xsd" uri="xsds/javaee_web_services_client_1_2.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/javaee/javaee_web_services_client_1_2.xsd" uri="xsds/javaee_web_services_client_1_2.xsd">         
+         </public>
+
+         <public publicId="j2ee_jaxrpc_mapping_1_1.xsd" uri="xsds/j2ee_jaxrpc_mapping_1_1.xsd">
+         </public>
+         <public publicId="http://java.sun.com/xml/ns/j2ee/j2ee_jaxrpc_mapping_1_1.xsd" uri="xsds/j2ee_jaxrpc_mapping_1_1.xsd">
+         </public>
+         <public publicId="http://www.ibm.com/webservices/xsd/j2ee_jaxrpc_mapping_1_1.xsd" uri="xsds/j2ee_jaxrpc_mapping_1_1.xsd">
+         </public>
+
+         <public publicId="http://schemas.xmlsoap.org/wsdl/soap12/wsdl11soap12.xsd" uri="xsds/wsdl11soap12.xsd">
+         </public>
+
+         <public publicId="-//W3C//DTD XMLSCHEMA 200102//EN" uri="dtds/XMLSchema.dtd">
+         </public>
+         <uri
+            name="http://java.sun.com/xml/ns/j2ee/datatypes.dtd"
+            uri="dtds/datatypes.dtd"/>
+         <public publicId="datatypes" uri="dtds/datatypes.dtd">
+         </public>
+         <public publicId="-//IBM Corporation, Inc.//DTD J2EE JAX-RPC mapping 1.0//EN" uri="dtds/j2ee_jaxrpc_mapping_1_0.dtd ">
+         </public> 
+         <public publicId="-//IBM Corporation, Inc.//DTD J2EE Web services 1.0//EN" uri="dtds/j2ee_web_services_1_0.dtd">
+         </public> 
+         <public publicId="-//IBM Corporation, Inc.//DTD J2EE Web services client 1.0//EN" uri="dtds/j2ee_web_services_client_1_0.dtd">
+         </public> 
+        
+      </catalogContribution>
+   </extension>
+
+</plugin>

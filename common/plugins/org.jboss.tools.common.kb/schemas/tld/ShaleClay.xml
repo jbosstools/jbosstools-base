@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema location="" prefix="clay" uri="http://struts.apache.org/shale/clay-plugin">
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="clay" startTag="required">
+        <description/>
+        <AttributeType name="id" required="true">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="id"/>
+        <AttributeType name="jsfid" required="true">
+            <proposal type="jsfID"/>
+        </AttributeType>
+        <attribute type="jsfid"/>
+        <AttributeType name="managedBeanName" required="false">
+            <proposal type="managedBeanName">
+                <param name="bean-only" value="true"/>
+            </proposal>
+        </AttributeType>
+        <attribute type="managedBeanName"/>
+        <AttributeType name="shapeValidator" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="shapeValidator"/>
+        <AttributeType name="rendered" required="false">
+            <description>If false, this component will not be rendered.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="rendered"/>
+    </ElementType>
+    <ElementType bodyContent="allowed" content="mixed" endTag="required"
+        name="symbol" startTag="required">
+        <description/>
+        <AttributeType name="name" required="true">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="name"/>
+        <AttributeType name="value" required="true">
+            <proposal type="beanProperty"/>
+            <proposal type="jsfVariables"/>
+        </AttributeType>
+        <attribute type="value"/>
+    </ElementType>
+</Schema>

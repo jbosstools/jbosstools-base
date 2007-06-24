@@ -1,0 +1,274 @@
+<html>
+<head>
+<span jsfid="loadBundle" basename="org.apache.shale.usecases.view.Bundle" var="messages"/>
+<title>#{messages['usecases.rolodex2']}</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<style type="text/css" media="screen">
+body {
+	margin : 10px;
+	font: Verdana, Helvetica, Arial;
+	padding: 0px;
+	background: #fff;
+}
+
+#menu {
+	border-bottom : 1px solid #ccc;
+	margin : 0;
+	padding-bottom : 19px;
+	padding-left : 10px;
+}
+
+#menu ul, #menu li	{
+	display : inline;
+	list-style-type : none;
+	margin : 0;
+	padding : 0;
+}
+
+	
+#menu a:link, #menu a:visited	{
+	background : #E8EBF0;
+	border : 1px solid #ccc;
+	color : #666;
+	float : left;
+	font-size : small;
+	font-weight : normal;
+	line-height : 14px;
+	margin-right : 8px;
+	padding : 2px 10px 2px 10px;
+	text-decoration : none;
+}
+
+#menu a:link.active, #menu a:visited.active	{
+	background : #fff;
+	border-bottom : 1px solid #fff;
+	color : #000;
+}
+
+#menu a:hover	{
+	color : #f00;
+}
+
+.contacts {
+   border: 1px solid #fff;
+}
+
+.contactsHeader {
+   text-align: center;
+   color: #99CC66;
+   background: #E5F2D9;   
+}
+
+.contactsRow2 {
+   text-align: left;
+   color: #99CC66;
+   background: #D9EEF2;   
+}
+
+.contactsRow1 {
+   text-align: left;
+   color: #99CC66;
+   background: #F1F7D4;   
+}
+	
+body.section-1 #menu li#nav-sel a {
+	background : #fff;
+	border-bottom : 1px solid #fff;
+	color : #000;
+}
+
+li#nav {
+	background : #red;
+	border-bottom : 1px solid #000;
+	color : #000;
+}
+
+#menu ul a:hover {
+	color : #f00 !important;
+}
+
+#contents {
+	background : #fff;
+	border : 1px solid #ccc;
+	border-top : none;
+	clear : both;
+	margin : 0px;
+	padding : 15px;
+}
+
+input.button {
+    width: 1.2in; 
+    text-align: center; 
+    color: #99CC66; 
+    font-size: 12px; 
+    font-style: normal; 
+    font-weight: bold
+}
+</style>
+</head>
+<body class="section-1">
+<form>
+<a jsfid=commandLink action=home allowBody=true immediate=true>Back</a><br><br>
+<span jsfid="tabs">
+<ul id="menu">
+   <li id="nav"><a href="#">Tab 1</a></li>
+   <li id="nav-sel"><a href="#">Tab 2</a></li>
+   <li id="nav"><a href="#">Tab 3</a></li>   
+</ul>
+</span>
+<div id="contents">
+<table border="0">
+   <tr>
+      <td rowspan="3">
+           <span jsfid="contactTable">
+              <table class="contacts">
+                  <tr class="contactsHeader">
+                     <td>
+                         Contacts
+                     </td>
+                  </tr>
+                  <tr class="contactsRow1">
+                     <td>
+                        <a href="#">ABC Company</a>
+                     </td>
+                  </tr>   
+                  <tr class="contactsRow2">
+                     <td>
+                        <a href="#">XYZ Company</a>
+                     </td>
+                  </tr>   
+              </table>
+           </span>
+      </td>
+   </tr>
+   <tr>
+     <td>  
+        <table border="0">
+          <tr>
+              <td><label style="color:#99CC66" jsfid="contactNameLabel">Name:</label></td>
+              <td><input jsfid="contactName" type=text size="40" maxlength="50"></td>
+              <td><span style="color:red" jsfid="contactNameMessage">Mock Error Name</span></td>
+          </tr>
+          <tr>
+              <td><label style="color:#99CC66" jsfid="contactEmailLabel">Email:</label></td>
+              <td><input jsfid="contactEmail" type=text size="30" maxlength="50"></td>
+              <td><span style="color:red" jsfid="contactEmailMessage">Mock Error Email</span></td>
+          </tr>
+        </table>
+     </td>
+     <td>             
+        <input class="button" type="submit" jsfid="contactSaveCommand"><br>
+        <input class="button" type="submit" jsfid="contactDeleteCommand"><br>
+        <input class="button" type="submit" jsfid="contactNewCommand"><br>     
+     </td>
+    </tr>
+    <tr>
+     <td>
+        <table border=0>
+           <tr class="contactsHeader">
+              <td colspan="3"><span jsfid="residentialAddressHeader">Residential Address:</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66"  jsfid=residentialStreet1Label>Address 1:</label></td>
+                <td><input jsfid="residentialStreet1" type=text size="35" maxlength="50"></td>
+                <td><span style="color:red" jsfid="residentialStreet1Message">Mock Error Address 1</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66"  jsfid=residentialStreet2Label>Address 2:</label></td>
+                <td><input jsfid="residentialStreet2" type=text size="35" maxlength="50"></td>
+                <td><span style="color:red" jsfid="residentialStreet2Message">Mock Error Address 2</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid="residentialCityLabel">City:</label></td>
+                <td><input jsfid="residentialCity" type=text size="20" maxlength="30"></td>
+                <td><span style="color:red" jsfid="residentialCityMessage">Mock Error City</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid="residentialStateLabel">State:</label></td>
+                <td><select jsfid="residentialState">
+                       <option>Mock State 1
+                       <option>Mock State 2
+                    </select>
+                </td>
+                <td><span style="color:red" jsfid="residentialStateMessage">Mock Error State</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid="residentialZipLabel">Zip:</label></td>
+                <td><input jsfid="residentialZip" type=text size="5" maxlength="9"/></td>
+                <td><span style="color:red" jsfid="residentialZipMessage">Mock Error Zip</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid="contactResidentialPhoneLabel">Phone:</label></td>
+                <td><input jsfid="contactResidentialPhone" type=text size="20" maxlength="50"/></td>
+                <td><span style="color:red" jsfid="contactResidentialPhoneMessage">Mock Error Phone</span></td>
+           </tr>
+           <tr>
+                <td colspan="2">&nbsp;</td>
+           </tr>                    
+           <tr>
+                <td colspan="2">&nbsp;</td>
+           </tr>                                                   
+        </table>
+     </td>
+     <td>
+        <table border=0>
+           <tr class="contactsHeader">
+              <td colspan="3"><span jsfid="businessAddressHeader">Business Address:</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid=businessStreet1Label>Address 1:</label></td>
+                <td><input jsfid="businessStreet1" type=text size="35" maxlength="50"></td>
+                <td><span style="color:red" jsfid="businessStreet1Message">Mock Error Address 1</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid=businessStreet2Label>Address 2:</label></td>
+                <td><input jsfid="businessStreet2" type=text size="35" maxlength="50"></td>
+                <td><span style="color:red" jsfid="businessStreet2Message">Mock Error Address 2</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid="businessCityLabel">City:</label></td>
+                <td><input jsfid="businessCity" type=text size="20" maxlength="30"></td>
+                <td><span style="color:red" jsfid="businessCityMessage">Mock Error City</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid="businessStateLabel">State:</label></td>
+                <td><select jsfid="businessState">
+                       <option>Mock State 1
+                       <option>Mock State 2
+                    </select>
+                </td>
+                <td><span style="color:red" jsfid="businessStateMessage">Mock Error State</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid="businessProvinceLabel">Province:</label></td>
+                <td><input jsfid="businessProvince" type=text size="20" maxlength="30"></td>
+                <td><span style="color:red" jsfid="businessProvinceMessage">Mock Error Province</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid="businessZipLabel">Zip:</label></td>
+                <td><input jsfid="businessZip" type=text size="5" maxlength="9"/></td>
+                <td><span style="color:red" jsfid="businessZipMessage">Mock Error Zip</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid="businessCountryLabel">Country:</label></td>
+                <td><select jsfid="businessCountry">
+                       <option>Mock Country 1
+                       <option>Mock Country 2
+                    </select>
+                </td>
+                <td><span jsfid="businessCountryMessage">Mock Error Country</span></td>
+           </tr>
+           <tr>
+                <td><label style="color:#99CC66" jsfid="contactBusinessPhoneLabel">Phone:</label></td>
+                <td><input jsfid="contactBusinessPhone" type="text" size="20" maxlength="50"/></td>
+                <td><span style="color:red" jsfid="contactBusinessPhoneMessage">Mock Error Phone</span></td>
+           </tr>                    
+        </table>
+     </td>
+  <tr>
+</table>
+</div>
+</form>
+</body>
+</html>
