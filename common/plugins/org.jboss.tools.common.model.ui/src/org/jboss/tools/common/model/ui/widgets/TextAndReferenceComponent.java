@@ -39,7 +39,7 @@ public class TextAndReferenceComponent extends Canvas implements PaintListener, 
 			FontData d = plain.getFontData()[0];
 			bold = new Font(null, d.getName(), d.getHeight(), d.getStyle() | SWT.BOLD);
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 
@@ -87,7 +87,7 @@ public class TextAndReferenceComponent extends Canvas implements PaintListener, 
 		try {
 			pack();
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	

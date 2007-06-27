@@ -59,7 +59,7 @@ public class FormPlace {
 		try {
 			form = (IForm)cls.newInstance();
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 			return;
 		}
 		form.setInput(selected);

@@ -42,7 +42,7 @@ public class Memento implements IMemento {
 	private Memento() {}
 	
 	public Memento(String id) {
-		ModelUIPlugin.log("new Memento("+id+")");
+		ModelUIPlugin.getPluginLog().logInfo("new Memento("+id+")");
 		this.id = id;
 	}
 

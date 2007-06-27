@@ -25,7 +25,6 @@ import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelTransferBuffer;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class ControlDragDrop {
@@ -35,7 +34,7 @@ public class ControlDragDrop {
 		try {
 			paletteAdopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.tld.model.handlers.JSPAdopt");
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	
@@ -331,7 +330,7 @@ public class ControlDragDrop {
 					}
 				} catch (ActionDeclinedException de) {
 				} catch (Exception e) {
-					exception(e);
+					ModelUIPlugin.getPluginLog().logError(e);
 				}
 			}
 		}
@@ -372,12 +371,8 @@ public class ControlDragDrop {
 					}
 			}
 		} catch (Exception ex) {
-			ModelUIPlugin.log("Error while looking for tree item at given point", ex);
+			ModelUIPlugin.getPluginLog().logError("Error while looking for tree item at given point", ex);
 		}
 		return null;
 	}
-	public void exception(Exception e) {
-		ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, e);
-	}
-	
 }

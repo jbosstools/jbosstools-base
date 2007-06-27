@@ -17,8 +17,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 
 public class PlainTextDropCommand extends DefaultDropCommand {
 
@@ -45,8 +45,7 @@ public class PlainTextDropCommand extends DefaultDropCommand {
 		try {
 			workspace.run(this,new NullProgressMonitor());
 		} catch (CoreException e) {
-//			VpePlugin.reportProblem(e);
-			ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui.views", e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 }

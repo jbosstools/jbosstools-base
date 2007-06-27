@@ -207,7 +207,7 @@ public class NoteFieldEditor extends ExtendedFieldEditor implements IFieldEditor
 					try {
 						font = new Font(null, data);
 					} catch (Exception e) {
-						ModelUIPlugin.log(e);
+						ModelUIPlugin.getPluginLog().logError(e);
 					}
 				}
 			}

@@ -43,7 +43,7 @@ public class FormFactory extends XModelObjectFormFactory {
 		try {
 			form = (IForm)formClass.newInstance();
 		} catch(Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return form;
     }

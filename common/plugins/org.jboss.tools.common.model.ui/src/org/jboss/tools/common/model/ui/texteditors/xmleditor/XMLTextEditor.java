@@ -301,7 +301,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 				FileAnyImpl f = (FileAnyImpl)getModelObject();
 				if(f != null) f.edit(getSourceViewer().getDocument().get());						
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			} finally {
 				setModified(false);
 				lock = false;
@@ -335,7 +335,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 			try {
 				object = ((IModelObjectEditorInput)input).getXModelObject();
 			} catch (Exception ex) {
-				ModelUIPlugin.log("Error while getting model object from editor input", ex);
+				ModelUIPlugin.getPluginLog().logError("Error while getting model object from editor input", ex);
 			}
 		}
 		if(getSourceViewer() != null && getSourceViewer().getDocument() != null) {

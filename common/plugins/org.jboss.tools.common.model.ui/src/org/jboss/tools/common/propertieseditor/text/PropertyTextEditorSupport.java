@@ -36,7 +36,7 @@ public class PropertyTextEditorSupport extends TextEditorSupport {
 		try {
 			loader.edit(getModelObject(), provider.getText());
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			lock--;
 			setModified (false);

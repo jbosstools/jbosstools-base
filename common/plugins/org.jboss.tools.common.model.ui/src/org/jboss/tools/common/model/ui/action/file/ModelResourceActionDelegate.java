@@ -191,7 +191,7 @@ public class ModelResourceActionDelegate implements IObjectActionDelegate, IWork
 			try {
 				if(project.hasNature(s[i])) return true;
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 		return false;

@@ -49,7 +49,7 @@ public class ModelTransfer extends ByteArrayTransfer {
 			dataOut.close();
 			super.javaToNative(out.toByteArray(), transferData);
 		} catch (IOException e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}	
 	}
 	protected Object nativeToJava(TransferData transferData) {
@@ -67,7 +67,7 @@ public class ModelTransfer extends ByteArrayTransfer {
 			String data = dataIn.readUTF();
 			return data;
 		} catch (IOException e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		//can't get here
 		return null;

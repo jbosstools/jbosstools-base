@@ -48,7 +48,6 @@ import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.IconUtil;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.DnDUtil;
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
@@ -431,7 +430,7 @@ public class PaletteAdapter implements IPaletteAdapter {
 		}
 
 		private void message(Exception e) {
-			ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, e);
+			ModelUIPlugin.getPluginLog().logError( e);
 		}
 
 	

@@ -29,7 +29,6 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.kb.AttributeDescriptor;
 import org.jboss.tools.common.kb.KbConnectorFactory;
 import org.jboss.tools.common.kb.KbConnectorType;
@@ -82,7 +81,7 @@ public class DropUtils {
 			}
 		} catch (Exception ex) {
 //			VpePlugin.reportProblem(ex);
-			ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui.views", ex);
+			ModelUIPlugin.getPluginLog().logError(ex);
 			// empty TLD content will be set
 		}
 		return tldContent;
@@ -124,7 +123,7 @@ public class DropUtils {
 			}
 		} catch (Exception ex) {
 //			VpePlugin.reportProblem(ex);
-			ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui.views", ex);
+			ModelUIPlugin.getPluginLog().logError(ex);
 			// empty array will be returned
 		}
 		if(attributes==null)return new AttributeDescriptorValue[0]; 
@@ -154,7 +153,7 @@ public class DropUtils {
 			wtpKbConnector.registerResource(new KbTldResource(uri, "", tagPrefix, version), true);							
 			tagInfo = wtpKbConnector.getTagInformation("/"+(tagPrefix==TagProposal.EMPTY_PREFIX?"":tagPrefix+":")+tagName);
 		} catch (Exception ex) {
-			ModelUIPlugin.log(ex);
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return tagInfo;
 	}
@@ -170,7 +169,7 @@ public class DropUtils {
 			newUrl = new URL(dropData.getMimeData());
 		} catch (MalformedURLException e) {
 //			VpePlugin.reportProblem(e);
-			ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui.views", e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		IFile file = EclipseResourceUtil.getFile(newUrl.getPath());
 		if(file != null && file.exists()) return file;

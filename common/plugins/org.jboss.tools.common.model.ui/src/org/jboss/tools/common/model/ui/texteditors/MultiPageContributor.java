@@ -82,7 +82,7 @@ public class MultiPageContributor extends AbstractMultiPageContributor {
 			fToggleOccurencesMarkUp.setEditor(getTextEditor(part));
 			fToggleOccurencesMarkUp.update();
 		} catch (Exception x) {
-			ModelUIPlugin.log(x);
+			ModelUIPlugin.getPluginLog().logError(x);
 		}
 
 		updateStatus();

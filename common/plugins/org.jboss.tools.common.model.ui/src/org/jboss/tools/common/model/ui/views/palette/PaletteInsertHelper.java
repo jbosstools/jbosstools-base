@@ -139,10 +139,10 @@ public class PaletteInsertHelper {
 	    			}
 	    		}
 	        } catch (Exception x) {
-				ModelUIPlugin.log("Error while inserting text into editor", x);
+	        	ModelUIPlugin.getPluginLog().logError("Error while inserting text into editor", x);
 	        }
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 
@@ -164,7 +164,7 @@ public class PaletteInsertHelper {
 		try {
 			body = length > 0 ? doc.get(offset, length): "";
 		} catch (BadLocationException e1) {
-			ModelUIPlugin.log(e1);
+			ModelUIPlugin.getPluginLog().logError(e1);
 		} 
 
 		if (startText == null) startText = "";
@@ -191,7 +191,7 @@ public class PaletteInsertHelper {
 					}					
 				}
 			} catch (BadLocationException e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 		
@@ -205,7 +205,7 @@ public class PaletteInsertHelper {
 		try {
 			doc.replace(offset, length, text);
 		} catch (BadLocationException ex) {
-			ModelUIPlugin.log(ex);
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 
 		ITextSelection sel = new TextSelection(offset + pos, 0);
@@ -339,7 +339,7 @@ public class PaletteInsertHelper {
 		try {
 			return Platform.getPreferencesService().getInt("org.eclipse.ui.editors", AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH, 4, new IScopeContext[]{new InstanceScope()}); 
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 			return 4;
 		}
 	}
@@ -475,7 +475,7 @@ public class PaletteInsertHelper {
 				IRegion region= fDocument.getLineInformation(fLineIndex++);
 				return fDocument.get(region.getOffset(), region.getLength());
 			} catch (BadLocationException e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 				throw new NoSuchElementException();
 			}
 		}
@@ -534,7 +534,7 @@ public class PaletteInsertHelper {
 				defaultPrefix = text.substring(j1 + 1, j);
 				pr = prefixes.getProperty(uri, defaultPrefix);
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 			if(pr.length() > 0) {
 				text = text.substring(0, i) + pr + ":" + text.substring(j + 1);

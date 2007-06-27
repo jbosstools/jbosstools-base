@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Control;
 import org.jboss.tools.common.meta.help.HelpUtil;
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModel;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.*;
 
 public abstract class AbstractQueryWizardView implements CommandBarListener {
@@ -107,7 +106,7 @@ public abstract class AbstractQueryWizardView implements CommandBarListener {
 			if(model != null) try {
 				HelpUtil.helpEclipse(model, helpkey);
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 	}
@@ -117,7 +116,7 @@ public abstract class AbstractQueryWizardView implements CommandBarListener {
 	}
 
 	public void exception(Exception e) {
-		ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, e);
+		ModelUIPlugin.getPluginLog().logError(e);
 	}
 
 	public void setHelpKey(String key) {

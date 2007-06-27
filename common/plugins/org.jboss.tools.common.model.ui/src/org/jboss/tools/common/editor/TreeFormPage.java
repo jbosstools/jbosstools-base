@@ -213,7 +213,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 			rightFormContainer.clear();
 		} catch (Exception e) {
 			if(ModelUIPlugin.isDebugEnabled()) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 		
@@ -241,7 +241,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 				Constructor c = cls.getConstructor(new Class[]{XModelObject.class});
 				formFactory = (XModelObjectFormFactory)c.newInstance(new Object[]{selected}); 
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 				return new FormFactory(selected);
 			}
 		} else {
@@ -448,7 +448,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 
 	public void doOperation(int operation) {
 		if (operation>actionMapping.size()) {
-			ModelUIPlugin.log(new RuntimeException("Can not find global action with index: "+operation));
+			ModelUIPlugin.getPluginLog().logError(new RuntimeException("Can not find global action with index: "+operation));
 		} else {
 			String globalAction = (String)actionMapping.get(operation);
 			this.doGlobalAction(globalAction);

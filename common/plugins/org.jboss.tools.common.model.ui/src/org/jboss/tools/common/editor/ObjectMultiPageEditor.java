@@ -268,7 +268,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			textEditor.addFocusListener(new TextFocusListener());
 			outline.addSelectionChangedListener(new OutlineSelectionListener());
 		} catch (Exception ex) {
-			ModelUIPlugin.log(ex);
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 	}
 	
@@ -365,7 +365,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			m.setAccessible(true);
 			m.invoke(textEditor, new Object[]{Boolean.TRUE, monitor});
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 
@@ -482,7 +482,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 					update0();
 				}
 			} catch (Exception t) {
-				ModelUIPlugin.log("Error in updating editor", t);
+				ModelUIPlugin.getPluginLog().logError("Error in updating editor", t);
 			}
 			lock2 = false;
 		}
@@ -845,7 +845,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		  //Activate key binding service here
 		  formPage.getEditorSite().getKeyBindingService();
 	  } catch (Exception ex) {
-			ModelUIPlugin.log(ex);
+		  ModelUIPlugin.getPluginLog().logError(ex);
 	  }
 		  //getSite().setSelectionProvider(formPage.getSelectionProvider());
   }
@@ -1060,7 +1060,7 @@ class ResourceChangeListener implements IResourceChangeListener {
 						try {
 							((AbstractTextEditor)e.textEditor).setInput(e2);
 						} catch (Exception exc) {
-							ModelUIPlugin.log(exc);
+							ModelUIPlugin.getPluginLog().logError(exc);
 						}
 						((XModelObjectEditorInput)ei).synchronize();
 						if(((XModelObjectEditorInput)ei).getXModelObject() != o) {

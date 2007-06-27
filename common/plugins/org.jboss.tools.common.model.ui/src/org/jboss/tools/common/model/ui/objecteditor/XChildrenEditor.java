@@ -273,7 +273,7 @@ public class XChildrenEditor implements CommandBarListener {
 			p.put("insertAfter", new Integer(i));
 			XActionInvoker.invoke(path, o, getTargets(), p);
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	

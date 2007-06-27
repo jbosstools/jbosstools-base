@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editors.dnd.*;
 
 public class TagProposalsComposite extends Composite {
@@ -103,7 +103,7 @@ public class TagProposalsComposite extends Composite {
 						fModel.setTagProposal(selection);					
 					} catch (Exception e) {
 //						VpePlugin.reportProblem(e);
-						ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui.views", e);
+						ModelUIPlugin.getPluginLog().logError(e);
 					}
 				}
 			}

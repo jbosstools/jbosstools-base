@@ -227,7 +227,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 				try {
 					text.setSelection(newValue.length());
 				} catch (Exception e) {
-					ModelUIPlugin.log(e);
+					ModelUIPlugin.getPluginLog().logError(e);
 				}
 			}
 			PropertyChangeEvent event = new PropertyChangeEvent(this, IPropertyEditor.VALUE, oldValue, newValue);
@@ -533,7 +533,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 			if(o != null) o.setObject(((DefaultValueAdapter)adapter).getModelObject());
 			return o;
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}		
 		return null;
 	}

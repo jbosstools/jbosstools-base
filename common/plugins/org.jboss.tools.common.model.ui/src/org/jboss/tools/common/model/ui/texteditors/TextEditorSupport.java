@@ -88,7 +88,7 @@ public class TextEditorSupport {
 			FileAnyImpl f = (FileAnyImpl)getModelObject();
 			if(f != null) f.edit(provider.getText()); 
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			lock--;
 			modified = false;

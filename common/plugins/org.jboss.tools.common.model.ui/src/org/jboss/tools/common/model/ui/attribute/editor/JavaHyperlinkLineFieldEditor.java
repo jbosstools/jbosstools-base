@@ -155,7 +155,7 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 				try {
                     JavaUI.openInEditor(javaElement);
                 } catch (Exception e) {
-                    ModelUIPlugin.log(e);
+                	ModelUIPlugin.getPluginLog().logError(e);
                 }
 			}
 			
@@ -249,7 +249,7 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 			if(o != null) o.setObject(((DefaultValueAdapter)adapter).getModelObject());
 			return o;
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}		
 		return null;
 	}

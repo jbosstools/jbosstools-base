@@ -30,7 +30,6 @@ import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesCompos
 import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
 import org.jboss.tools.common.model.ui.views.palette.PaletteInsertManager;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.jst.web.tld.IWebProject;
 import org.jboss.tools.jst.web.tld.TLDToPaletteHelper;
 import org.jboss.tools.jst.web.tld.URIConstants;
@@ -66,7 +65,7 @@ public class PaletteDropCommand extends FileDropCommand {
 			if(addTaglib == null) addTaglib = "true";
 			runningProperties.setProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB, addTaglib);
 		} catch (Exception e){
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}		
 	}
 	
@@ -104,7 +103,7 @@ public class PaletteDropCommand extends FileDropCommand {
 								document.replace(containerOffset+slashPosition, containerString.length()-slashPosition, text);
 							}
 						}catch(Exception ex){
-							ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui.views", ex);
+							ModelUIPlugin.getPluginLog().logError(ex);
 						}
 					}
 				}
@@ -174,7 +173,7 @@ public class PaletteDropCommand extends FileDropCommand {
 					}
 				}
 			} catch (Exception e) {
-				ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui.views", e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 			startText = properties.getProperty(TLDToPaletteHelper.START_TEXT);
 			endText = properties.getProperty(TLDToPaletteHelper.END_TEXT);
@@ -306,7 +305,7 @@ public class PaletteDropCommand extends FileDropCommand {
 			try {
 				wizard = (IDropWizard)PaletteInsertManager.getInstance().createWizardInstance(properties);
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 		if(wizard == null) wizard =	new DropWizard();

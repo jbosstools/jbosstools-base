@@ -67,7 +67,7 @@ public class EditorPartWrapper extends EditorPart implements IReusableEditor, IE
 			try {
 				((WorkbenchPart)editor).setInitializationData(f.getConfigurationElement(), "", null);
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 		editor.init(site, input);

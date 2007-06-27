@@ -13,7 +13,6 @@ package org.jboss.tools.common.model.ui.util;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class ExceptionHandler extends org.eclipse.jdt.internal.ui.util.ExceptionHandler {
@@ -32,9 +31,8 @@ public class ExceptionHandler extends org.eclipse.jdt.internal.ui.util.Exception
 	
 	protected void perform(CoreException e, Shell shell, String title, String message) {
 		if (e.getStatus() != null) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 			//message ignored!
-			ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, e);
 		} else {
 			super.perform(e, shell, title, message);
 		}

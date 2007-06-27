@@ -70,7 +70,7 @@ public class NewTypeWizardAdapter {
 		try {
 			this.javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
 		} catch (CoreException e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		this.project = project;
 	}
@@ -178,7 +178,7 @@ public class NewTypeWizardAdapter {
 
 			rawData = Boolean.FALSE.booleanValue();
 		} catch (JavaModelException e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 

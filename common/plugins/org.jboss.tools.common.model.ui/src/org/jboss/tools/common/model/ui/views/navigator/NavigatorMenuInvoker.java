@@ -58,7 +58,7 @@ public class NavigatorMenuInvoker extends TreeViewerMenuInvoker {
 		try {
 			return Platform.getPreferencesService().getBoolean("org.eclipse.ui.workbench", "OPEN_ON_SINGLE_CLICK", true, new IScopeContext[]{new InstanceScope()}); 
 		} catch (Exception e) {
-	    	ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 			return false;
 		}
 	}

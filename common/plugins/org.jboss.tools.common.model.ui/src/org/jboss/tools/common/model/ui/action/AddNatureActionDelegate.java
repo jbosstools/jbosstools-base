@@ -26,7 +26,6 @@ import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.actions.RefreshAction;
 
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public abstract class AddNatureActionDelegate implements IObjectActionDelegate, IWorkbenchWindowActionDelegate {
@@ -47,7 +46,7 @@ public abstract class AddNatureActionDelegate implements IObjectActionDelegate, 
 		try	{
 			doRun();
 		} catch(Exception ex) {
-			ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, ex);
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 	}
 	
@@ -83,7 +82,7 @@ public abstract class AddNatureActionDelegate implements IObjectActionDelegate, 
 							project = null;
 					} catch (Exception ex) {
 						project = null;
-						ModelUIPlugin.log(ex);
+						ModelUIPlugin.getPluginLog().logError(ex);
 					}
 			}
 		}

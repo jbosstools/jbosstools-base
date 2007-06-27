@@ -58,7 +58,7 @@ public class PropertyEditorFactory {
 			propertyEditor = (PropertyEditor)getEditorClass(attribute).newInstance();
 			propertyEditor.setSettings(settings);
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 			propertyEditor = new StringEditor(settings); 
 		}
 		String labelText = WizardKeys.getAttributeDisplayName(attribute, true);
@@ -84,7 +84,7 @@ public class PropertyEditorFactory {
 		} catch (Exception e) {
 			if(!defaultEditorIds.contains(id)) {
 				defaultEditorIds.add(id);
-				ModelUIPlugin.log("PropertyEditorFactory: Default editor used for " + id);
+				ModelUIPlugin.getPluginLog().logInfo("PropertyEditorFactory: Default editor used for " + id);
 			}
 			c = StringEditor.class;
 		}

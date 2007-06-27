@@ -258,7 +258,7 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 						doSetInput(input);
 					} 
 				} catch (CoreException x) {
-					ModelUIPlugin.log(x);
+					ModelUIPlugin.getPluginLog().logError(x);
 				}
 			}
 		}

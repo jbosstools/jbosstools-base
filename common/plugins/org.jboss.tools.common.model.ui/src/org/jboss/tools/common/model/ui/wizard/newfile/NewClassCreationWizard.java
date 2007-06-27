@@ -38,7 +38,7 @@ public class NewClassCreationWizard implements SpecialWizard {
 			WizardDialog dialog = new WizardDialog(ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
 			dialog.open();  
 		} else {
-			ModelUIPlugin.log("Unable to create wizard 'org.eclipse.jdt.ui.wizards.NewClassCreationWizard'.", new ClassNotFoundException());
+			ModelUIPlugin.getPluginLog().logError("Unable to create wizard 'org.eclipse.jdt.ui.wizards.NewClassCreationWizard'.", new ClassNotFoundException());
 		}
 		return 0;
 	}

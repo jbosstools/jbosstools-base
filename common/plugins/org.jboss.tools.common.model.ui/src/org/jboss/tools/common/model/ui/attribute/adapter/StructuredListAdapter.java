@@ -66,7 +66,7 @@ public class StructuredListAdapter extends DefaultValueAdapter
 			try {
 				newValueProvider = (INewValueProvider)ModelFeatureFactory.getInstance().createFeatureInstance(newValueClassName);
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 	}

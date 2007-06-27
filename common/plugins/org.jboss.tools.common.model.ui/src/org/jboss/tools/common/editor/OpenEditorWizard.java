@@ -51,7 +51,7 @@ public class OpenEditorWizard implements SpecialWizard {
 					try {
 						f.getParent().refreshLocal(IResource.DEPTH_INFINITE, null);
 					} catch (Exception e) {
-						ModelUIPlugin.log(e);
+						ModelUIPlugin.getPluginLog().logError(e);
 					}
 				}
 				if(!f.exists()) {

@@ -26,7 +26,6 @@ import org.jboss.tools.common.meta.action.XActionItem;
 import org.jboss.tools.common.meta.action.XRedirect;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.ActionDeclinedException;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class XModelObjectAction extends XModelObjectActionItem {
@@ -98,7 +97,7 @@ public class XModelObjectAction extends XModelObjectActionItem {
 		   }
 		} catch (ActionDeclinedException de) {
 		} catch(Exception e) {
-			ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		} 
 	}
 	

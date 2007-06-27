@@ -41,7 +41,7 @@ public class ResourceProblemManager extends ProblemManager {
 		try {
 			ms = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		for (int i = 0; i < ms.length; i++) {
 			Problem p = getProblem(ms[i]);
@@ -64,7 +64,7 @@ public class ResourceProblemManager extends ProblemManager {
 						m.setAttribute(IMarker.CHAR_START, pos_i);
 						m.setAttribute(IMarker.CHAR_END, pos_i + 1);
 					} catch (Exception e) {
-						ModelUIPlugin.log(e);
+						ModelUIPlugin.getPluginLog().logError(e);
 					}
 				}
 			} else {
@@ -76,7 +76,7 @@ public class ResourceProblemManager extends ProblemManager {
 			try {
 				ms[i].delete();
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 	}
@@ -112,7 +112,7 @@ public class ResourceProblemManager extends ProblemManager {
 		try {
 			MarkerUtilities.createMarker(resource, markerData, IMarker.PROBLEM);
 		} catch (CoreException e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 

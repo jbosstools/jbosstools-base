@@ -19,7 +19,6 @@ import org.eclipse.ui.part.*;
 import org.jboss.tools.common.core.resources.XModelObjectEditorInput;
 
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.*;
 
@@ -70,8 +69,7 @@ public class XMLEditorLauncher implements IEditorLauncher {
 						try {
 							workbenchPage.openEditor(input, id);			
 						} catch (Exception e) {
-							ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, e);
-							if(e instanceof Exception) ModelUIPlugin.log((Exception)e);
+							ModelUIPlugin.getPluginLog().logError((Exception)e);
 						}
 					}
 				}

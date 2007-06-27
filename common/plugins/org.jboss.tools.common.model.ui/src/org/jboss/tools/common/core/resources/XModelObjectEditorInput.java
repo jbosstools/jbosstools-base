@@ -150,7 +150,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 			field.setAccessible(true);
 			field.set(this, f);
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	
@@ -186,7 +186,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 				o = EclipseResourceUtil.createObjectForResource(f);
 				if(o != null && o.getFileType() != XModelObject.FILE) o = null;
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 		return (o == null) ? input : new XModelObjectEditorInput(getMainObject(o));
@@ -198,7 +198,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 			o = EclipseResourceUtil.createObjectForLocation(input.getPath(input).toString());
 			if(o != null && o.getFileType() != XModelObject.FILE) o = null;
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return (o == null) ? (IEditorInput)input : new ModelObjectLocationEditorInput(getMainObject(o), input.getPath(input));
 	}
@@ -263,7 +263,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 			field.setAccessible(true);
 			field.set(this, f);
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 

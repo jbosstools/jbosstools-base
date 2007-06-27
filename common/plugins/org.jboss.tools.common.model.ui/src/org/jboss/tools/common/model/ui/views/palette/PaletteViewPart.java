@@ -179,7 +179,7 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 		} catch (NoSuchMethodException ne) {
 			return false;
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 			return false;
 		}
 	}
@@ -216,7 +216,7 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 					editor = (ITextEditor)o;
 				}
 			} catch (Exception t) {
-				ModelUIPlugin.log("Error while getting active text editor", t);
+				ModelUIPlugin.getPluginLog().logError("Error while getting active text editor", t);
 			}
 		}
 		return editor;

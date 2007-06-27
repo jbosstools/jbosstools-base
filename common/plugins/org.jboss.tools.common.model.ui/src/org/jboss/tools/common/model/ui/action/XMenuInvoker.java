@@ -122,7 +122,7 @@ public abstract class XMenuInvoker implements MouseListener, KeyListener {
 				XActionInvoker.invoke(actionPath, object, objects, getRunningProperties());
 			}
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		
 	}

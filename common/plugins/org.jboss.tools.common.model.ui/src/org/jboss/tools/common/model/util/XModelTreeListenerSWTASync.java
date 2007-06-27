@@ -94,7 +94,7 @@ public class XModelTreeListenerSWTASync implements XModelTreeListener {
 			++count;
 			XModelTreeListener l = listener;
 			if (listener == null) {
-				ModelUIPlugin.log("ModelListener is disposed, but cannot removed from model!!!!");
+				ModelUIPlugin.getPluginLog().logInfo("ModelListener is disposed, but cannot removed from model!!!!");
 				head = null;
 				tail = null;
 				return;				

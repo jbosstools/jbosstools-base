@@ -12,7 +12,6 @@ package org.jboss.tools.common.model.ui.forms;
 
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.forms.IForm;
 
@@ -36,7 +35,7 @@ public class LayouredFormFactory extends XModelObjectFormFactory {
 		try {
 			formLayoutData = (IFormLayoutData)formLayoutDataClass.getMethod("getInstance", (Class[])null).invoke(null, (Object[])null);
 		} catch(Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 
@@ -49,7 +48,7 @@ public class LayouredFormFactory extends XModelObjectFormFactory {
 			IFormData formData = formLayoutData.getFormData(entity);
 			if(formData == null) {
 				String message = "Cannot find form for entity " + entity + ".";
-				ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui", new Exception(message));
+				ModelUIPlugin.getPluginLog().logError(new Exception(message));
 			} else if(formData.getForms() != null) {
 				form = new FormContainer(formData);
 			} else {
@@ -57,7 +56,7 @@ public class LayouredFormFactory extends XModelObjectFormFactory {
 			}
 		} catch(Exception e) {
 			String message = "Cannot build form.";
-			ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui", message, e);
+			ModelUIPlugin.getPluginLog().logError( message, e);
 		}
 
 		return form;

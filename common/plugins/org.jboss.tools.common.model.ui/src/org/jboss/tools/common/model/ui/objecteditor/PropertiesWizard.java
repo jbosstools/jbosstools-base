@@ -57,7 +57,7 @@ class PropertiesWizardView extends AbstractQueryWizardView {
 			boolean viewMode = p != null && "true".equals(p.getProperty("viewMode"));
 			objectEditor.setViewMode(viewMode);
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 

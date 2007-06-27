@@ -24,7 +24,7 @@ public class ExtensionPointUtils {
 		try	{
 			return (INewWizard)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.newWizards", wizardId);
 		} catch (Exception ex) {
-			ModelUIPlugin.log(ex);
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return null;
 	}
@@ -34,7 +34,7 @@ public class ExtensionPointUtils {
 		try	{
 			return (IImportWizard)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.importWizards", wizardId);
 		} catch (Exception ex) {
-			ModelUIPlugin.log(ex);
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return null;
 	}
@@ -45,7 +45,7 @@ public class ExtensionPointUtils {
 		try	{
 			return (IObjectActionDelegate)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.popupMenus", actionId);
 		} catch (Exception ex) {
-			ModelUIPlugin.log(ex);
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return null;
 	}

@@ -110,7 +110,7 @@ public class TextEditorDrop implements IControlDragDropProvider, IControlDropLis
 			}
 			provider.insert(p);
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	

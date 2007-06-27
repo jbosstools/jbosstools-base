@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
 import org.jboss.tools.common.meta.action.impl.WizardDataValidator;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class DefaultStandardWizard extends Wizard {
@@ -36,7 +35,7 @@ public class DefaultStandardWizard extends Wizard {
 			support.action(SpecialWizardSupport.FINISH);
 			return support.isFinished();
 		} catch (Exception e) {
-			ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return false;
 	}
@@ -71,7 +70,7 @@ public class DefaultStandardWizard extends Wizard {
 		try {
 			support.action(SpecialWizardSupport.NEXT);
 		} catch (Exception e) {
-			ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		int id = support.getStepId();
 		return steps[id];

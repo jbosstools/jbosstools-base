@@ -43,7 +43,7 @@ public class FilteredTreeContentProvider implements ITreeContentProvider {
 				result = (XFilteredTree)getClass().getClassLoader().loadClass(classname).newInstance();
 				result.setModel(model);
 			} catch(Exception ex) {
-				ModelUIPlugin.log(ex);
+				ModelUIPlugin.getPluginLog().logError(ex);
 			}
 		}		
 		return result;

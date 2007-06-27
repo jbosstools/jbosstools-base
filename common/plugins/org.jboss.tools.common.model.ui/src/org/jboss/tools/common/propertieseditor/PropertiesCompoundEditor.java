@@ -37,7 +37,7 @@ public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
 			propertiesEditor.init(getEditorSite(), getEditorInput());
 			index = addPage(propertiesEditor, getEditorInput());
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 			return;
 		}
 //		Control control = propertiesEditor.createControl(getContainer());

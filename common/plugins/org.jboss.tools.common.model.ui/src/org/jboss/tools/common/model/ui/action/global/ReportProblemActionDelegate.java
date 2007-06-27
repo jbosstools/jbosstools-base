@@ -20,7 +20,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 import org.jboss.tools.common.model.util.ClassLoaderUtil;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.reporting.ReportProblemWizard;
 
 public class ReportProblemActionDelegate implements IWorkbenchWindowActionDelegate {
@@ -40,9 +40,7 @@ public class ReportProblemActionDelegate implements IWorkbenchWindowActionDelega
 			wizard.setObject(p);
 			wizard.execute();
 		} catch (Exception t) {
-			String message = "Report Problems Wizard failed.";
-			IStatus status = new Status(IStatus.ERROR, "org.jboss.tools.common.model.ui", 0, message, t);
-			ProblemReportingHelper.reportProblem(status);
+			ModelUIPlugin.getPluginLog().logError( "Report Problems Wizard failed.", t);
 		}
 	}
 

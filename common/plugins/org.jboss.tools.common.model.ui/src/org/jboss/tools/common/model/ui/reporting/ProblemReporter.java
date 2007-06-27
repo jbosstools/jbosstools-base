@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import org.eclipse.core.runtime.IStatus;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dialog.ErrorDialog;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
@@ -29,14 +30,23 @@ public class ProblemReporter implements IProblemReporter {
 	static int REPORT_ACTION = 2;
 
 	public void reportProblem(IStatus status) {
-		R runnable = new R(status);
+		
+		//R runnable = new R(status);
+		/*
 		if(isShowProblemDialogOn() && Display.getDefault()!=null) {
 			Display.getDefault().syncExec(runnable);
-		} else {
+		}
+		else {
 			runnable.run();
+		}
+		*/
+		if(isShowProblemDialogOn() && Display.getDefault()!=null) {
+			showProblemDialog(status);
 		}
 	}
 
+	/**
+	 * 
 	class R implements Runnable {
 		IStatus status;
 		R(IStatus status) {
@@ -58,6 +68,7 @@ public class ProblemReporter implements IProblemReporter {
 			}
 		}
 	}
+	 */
 	
 	private boolean isShowProblemDialogOn() {
 		return "yes".equals(ReportPreference.SHOW_ERROR_DIALOG_OPTION.getValue());
@@ -73,7 +84,7 @@ public class ProblemReporter implements IProblemReporter {
 			shell = ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 		} catch (Exception e) {
 			//we cannot call reporting service here!
-			ModelPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return ErrorDialog.openError(shell, "Error", status.getMessage(), status.getException());
 	}

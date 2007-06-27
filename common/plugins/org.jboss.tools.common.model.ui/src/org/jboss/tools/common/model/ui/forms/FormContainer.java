@@ -12,7 +12,6 @@ package org.jboss.tools.common.model.ui.forms;
 
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.forms.DefaultFormContainer;
 import org.jboss.tools.common.model.ui.forms.IForm;
@@ -41,7 +40,7 @@ public class FormContainer  extends DefaultFormContainer {
 				try {
 					form = (IForm)ModelFeatureFactory.getInstance().createFeatureInstance(forms[i].getFormClassName());
 				} catch(Exception e) {
-					ModelUIPlugin.log(e);
+					ModelUIPlugin.getPluginLog().logError(e);
 				}
 			}
 			if(form!=null) {
@@ -68,7 +67,7 @@ public class FormContainer  extends DefaultFormContainer {
 				if(child == null) {
 					String message = "Cannot build child form '" + forms[i].getEntityName() + "' for form '" + formData.getEntityName() + "'.";
 					Exception exc = new RuntimeException(message);
-					ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui", exc);
+					ModelUIPlugin.getPluginLog().logError(exc);
 				} else {
 					this.get(i).initialize(child);
 				}

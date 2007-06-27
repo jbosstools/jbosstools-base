@@ -32,7 +32,7 @@ public class EditorsPreferencesPage extends XMOBasedPreferencesPage {
 		try {
 			initialize();
 		} catch (Exception t) {
-			ModelUIPlugin.log("Error in initializing editors preference page", t);
+			ModelUIPlugin.getPluginLog().logError("Error in initializing editors preference page", t);
 		}
 		return model;
 	}

@@ -106,7 +106,7 @@ public class DefaultButtonControl implements IButtonControl {
 						createButton(composite, buttonWrapper);
 					} else {
 						if(ModelUIPlugin.getDefault().isDebugging()) {						
-							ModelUIPlugin.log("No button for action: "+object);
+							ModelUIPlugin.getPluginLog().logInfo("No button for action: "+object);
 						} 
 					}
 				}
@@ -207,7 +207,7 @@ public class DefaultButtonControl implements IButtonControl {
 	
 	protected void doButtonPressed(Button control, String action) {
 		if(ModelUIPlugin.getDefault().isDebugging()) {						
-			ModelUIPlugin.log("Button pressed: "+action);
+			ModelUIPlugin.getPluginLog().logInfo("Button pressed: "+action);
 		}
 		firePropertyChange(new PropertyChangeEvent(control, action, null, Boolean.TRUE));
 	}

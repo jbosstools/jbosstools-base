@@ -64,7 +64,7 @@ public class AdapterFactory {
 			c = ExtensionPointUtil.findClassByElementId(ATTRIBUTE_ADAPTER_EXT_POINT, id).getClass();			
 		} catch (Exception e) {
 			if(ModelUIPlugin.getDefault().isDebugging()) {
-				ModelUIPlugin.log("Default adapter for " + id);
+				ModelUIPlugin.getPluginLog().logInfo("Default adapter for " + id);
 			}
 			c = DefaultValueAdapter.class;
 		}

@@ -60,7 +60,7 @@ class ExtendedPropertiesWizardView extends AbstractQueryWizardView {
 			String nodeName = attributes.getNodeName();
 			setTitle((nodeName != null) ? "<" + nodeName + ">" : "");
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 

@@ -36,7 +36,7 @@ public class XModelTreeListenerSWTSync implements XModelTreeListener{
 					if(listener != null) {
 						listener.nodeChanged(event);
 					} else {
-						ModelUIPlugin.log("ModelListener is disposed, but not removed from model!!!!");
+						ModelUIPlugin.getPluginLog().logInfo("ModelListener is disposed, but not removed from model!!!!");
 					}
 				}
 			}
@@ -50,7 +50,7 @@ public class XModelTreeListenerSWTSync implements XModelTreeListener{
 					if(listener != null) {
 						listener.structureChanged(event);
 					} else {
-						ModelUIPlugin.log("ModelListener is disposed, but not removed from model!!!!");
+						ModelUIPlugin.getPluginLog().logInfo("ModelListener is disposed, but not removed from model!!!!");
 					}
 				}
 			}

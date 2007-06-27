@@ -87,7 +87,7 @@ public class FilteredTreesCache {
 		try {
 			result = (XFilteredTree)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 			return null;
 		}
 		result.setModel(model);
@@ -96,7 +96,7 @@ public class FilteredTreesCache {
 			IProject p = EclipseResourceUtil.getProject(model.getRoot());
 			IModelNature nature = EclipseResourceUtil.getModelNature(p);
 			if(nature != null) {
-				ModelUIPlugin.log("Red Hat Project " + p.getName() + " is corrupted.");
+				ModelUIPlugin.getPluginLog().logInfo("Red Hat Project " + p.getName() + " is corrupted.");
 			}
 		} 
 		return result;

@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
@@ -23,16 +24,13 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.templates.TemplateContextType;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.log.IPluginLog;
+import org.jboss.tools.common.model.plugin.IModelPlugin;
+import org.jboss.tools.common.model.ui.templates.RedHatTemplateContextType;
 import org.osgi.framework.BundleContext;
 
-import org.jboss.tools.common.model.plugin.IModelPlugin;
-import org.jboss.tools.common.reporting.ProblemReporterFactory;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
-import org.jboss.tools.common.model.ui.reporting.ProblemReporter;
-import org.jboss.tools.common.model.ui.templates.RedHatTemplateContextType;
-
-public class ModelUIPlugin extends AbstractUIPlugin implements IModelPlugin {
+public class ModelUIPlugin extends BaseUIPlugin implements IModelPlugin {
 	public static final String PLUGIN_ID = "org.jboss.tools.common.model.ui"; 
 	private static ModelUIPlugin INSTANCE;
 	private ResourceBundle resourceBundle;
@@ -87,21 +85,6 @@ public class ModelUIPlugin extends AbstractUIPlugin implements IModelPlugin {
 		return INSTANCE.isDebugging();
 	}
 	
-	public static void log(String msg) {
-		if(isDebugEnabled()) INSTANCE.getLog().log(new Status(Status.INFO, PLUGIN_ID, Status.OK, msg, null));		
-	}
-	
-	public static void log(IStatus status) {
-		if(isDebugEnabled() || !status.isOK()) INSTANCE.getLog().log(status);
-	}
-	
-	public static void log(String message, Throwable exception) {
-		INSTANCE.getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.OK, message, exception));		
-	}
-	
-	public static void log(Exception ex) {
-		INSTANCE.getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.OK, "No message", ex));
-	}
 
     public static final String PROJECT_OVERRIDE = "org.jboss.tools.common.model.ui.templates.projectOverriveTemplates";
     public static final String PROJECT_CAN_OVERRIDE = "org.jboss.tools.common.model.ui.templates.projectCanOverriveTemplates";
@@ -113,16 +96,14 @@ public class ModelUIPlugin extends AbstractUIPlugin implements IModelPlugin {
         super.initializeDefaultPreferences(store);
     }
 
-	public static void log(String s, boolean isError) {
-		if (isError) {
-			log(new Status(IStatus.ERROR, getPluginId(), IJavaStatusConstants.INTERNAL_ERROR, s, null));
-		} else {
-			log(new Status(IStatus.INFO, getPluginId(), IJavaStatusConstants.INTERNAL_ERROR, s, null));
-		}
-	}
-	
 	public static String getPluginId() {
 		return ModelUIPlugin.ID_PLUGIN;
 	}
-
+	
+	/**
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog getPluginLog() {
+		return getDefault();
+	}
 }

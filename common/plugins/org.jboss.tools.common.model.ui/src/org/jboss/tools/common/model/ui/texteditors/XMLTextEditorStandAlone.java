@@ -98,7 +98,7 @@ public class XMLTextEditorStandAlone extends XMLTextEditorComponent implements X
 					update0();
 				}
 			} catch (Exception t) {
-				ModelUIPlugin.log("Error in updating editor", t);
+				ModelUIPlugin.getPluginLog().logError("Error in updating editor", t);
 			}
 			lock2 = false;
 		}

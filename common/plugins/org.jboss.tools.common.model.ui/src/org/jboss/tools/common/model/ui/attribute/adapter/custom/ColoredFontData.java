@@ -24,7 +24,7 @@ public class ColoredFontData {
 			DEFAULT.data = Display.getDefault().getSystemFont().getFontData()[0];
 			DEFAULT.color = Display.getDefault().getSystemColor(SWT.COLOR_BLACK).getRGB();
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 

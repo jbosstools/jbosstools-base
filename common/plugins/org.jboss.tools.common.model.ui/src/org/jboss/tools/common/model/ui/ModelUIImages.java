@@ -47,20 +47,20 @@ public class ModelUIImages {
 			INSTANCE = new ModelUIImages(new URL(ModelUIPlugin.getDefault().getBundle().getEntry("/"), "images/xstudio/"));
 		} catch (MalformedURLException e) {
 			// do nothing
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	
 	public static Image getImage(String key) {
 		if(ModelUIPlugin.isDebugEnabled()) {
-			ModelUIPlugin.log("Create image for key '"+key+"'.");
+			ModelUIPlugin.getPluginLog().logInfo("Create image for key '"+key+"'.");
 		}
 		return INSTANCE.createImageDescriptor(key).createImage();
 	}
 
 	public static ImageDescriptor getImageDescriptor(String key) {
 		if(ModelUIPlugin.isDebugEnabled()) {
-			ModelUIPlugin.log("Create image descriptor for key '"+key+"'.");
+			ModelUIPlugin.getPluginLog().logInfo("Create image descriptor for key '"+key+"'.");
 		}
 		return INSTANCE.createImageDescriptor(key);
 	}
@@ -80,9 +80,9 @@ public class ModelUIImages {
 	
 	protected ModelUIImages(URL registryUrl, ModelUIImages parent){
 		if(ModelUIPlugin.isDebugEnabled()) {
-			ModelUIPlugin.log("Create ModelUIImages class.");
-			ModelUIPlugin.log("RegistryUrl = " + registryUrl);
-			ModelUIPlugin.log("parent = " + (parent==null?"null":parent.getClass().getName()));
+			ModelUIPlugin.getPluginLog().logInfo("Create ModelUIImages class.");
+			ModelUIPlugin.getPluginLog().logInfo("RegistryUrl = " + registryUrl);
+			ModelUIPlugin.getPluginLog().logInfo("parent = " + (parent==null?"null":parent.getClass().getName()));
 		}
 
 		if(registryUrl == null) throw new NullPointerException("Base url for image registry cannot be null.");

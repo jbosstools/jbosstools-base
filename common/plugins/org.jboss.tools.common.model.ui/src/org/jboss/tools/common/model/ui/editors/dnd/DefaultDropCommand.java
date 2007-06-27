@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagProposalsComposite;
 
 /**
@@ -111,7 +111,7 @@ public abstract class DefaultDropCommand implements IDropCommand {
 				workspace.run(this,new NullProgressMonitor());
 			} catch (CoreException e) {
 //				VpePlugin.reportProblem(e);
-				ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui.views", e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		} else {
 			executeUnknownTag();

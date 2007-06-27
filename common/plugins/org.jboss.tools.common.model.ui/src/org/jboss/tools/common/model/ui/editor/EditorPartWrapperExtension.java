@@ -14,7 +14,7 @@ import java.util.*;
 import org.eclipse.core.runtime.*;
 import org.eclipse.ui.part.EditorActionBarContributor;
 import org.osgi.framework.Bundle;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class EditorPartWrapperExtension {
@@ -51,15 +51,14 @@ public class EditorPartWrapperExtension {
 						priority = Integer.parseInt(priorityString);
 					}					
 				} catch (Exception e) {
-					ModelUIPlugin.log("Incorrect priority value " + priorityString + ".");
+					ModelUIPlugin.getPluginLog().logError("Incorrect priority value " + priorityString + ".");
 				}
 				Class editorClass = null;
 				try {
 					editorClass = bundle.loadClass(editor);
 				} catch (Exception e) {
 					if(ModelUIPlugin.getDefault().isDebugging()) {
-						String message = "Cannot load editor class " + editor + " from " + es[i].getNamespaceIdentifier();
-						ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui", message, e);
+						ModelUIPlugin.getPluginLog().logError("Cannot load editor class " + editor + " from " + es[i].getNamespaceIdentifier(),  e);
 					}
 					continue;
 				}
@@ -70,7 +69,7 @@ public class EditorPartWrapperExtension {
 				} catch (Exception e) {
 					if(ModelUIPlugin.getDefault().isDebugging()) {
 						String message = "Cannot load contributor class " + contributor;
-						ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui", message, e);
+						ModelUIPlugin.getPluginLog().logError( message, e);
 					}
 					contributorClass = EditorActionBarContributor.class;
 					////continue;
@@ -80,11 +79,11 @@ public class EditorPartWrapperExtension {
 					f = new EditorPartFactory(cs[j], editorClass, contributorClass);
 				} catch (ClassCastException e) {
 					if(ModelUIPlugin.getDefault().isDebugging()) {
-						ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui", e);
+						ModelUIPlugin.getPluginLog().logError(e);
 					}
 					continue;
 				} catch (Exception e) {
-					ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui", e);
+					ModelUIPlugin.getPluginLog().logError(e);
 					continue;
 				}
 				StringTokenizer st = new StringTokenizer(entities, ",;");

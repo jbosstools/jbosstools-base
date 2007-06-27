@@ -44,7 +44,7 @@ public class TemplatesConfiguration extends StructuredTextViewerConfigurationXML
 					
 					c.text= buf.toString();
 				} catch (BadLocationException excp) {
-					ModelUIPlugin.log(excp);
+					ModelUIPlugin.getPluginLog().logError(excp);
 					// stop work
 				}	
 			}
@@ -58,7 +58,7 @@ public class TemplatesConfiguration extends StructuredTextViewerConfigurationXML
 						}
 					}
 				} catch (Exception x) {
-					ModelUIPlugin.log("Error in customizing document command", x);
+					ModelUIPlugin.getPluginLog().logError("Error in customizing document command", x);
 				}
 				super.customizeDocumentCommand(d, c);
 			}

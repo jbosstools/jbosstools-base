@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.List;
 
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.objecteditor.ExtendedCellEditorProvider;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.SWT;
@@ -25,7 +26,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.kb.AttributeDescriptor;
 import org.jboss.tools.common.kb.AttributeValueDescriptor;
 import org.jboss.tools.common.model.ui.editors.dnd.IDropWizardModel;
@@ -349,7 +349,7 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 			return (ExtendedCellEditorProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.jsp.outline.JSPCellEditorProviderImpl");
 		} catch (Exception e) {
 //			VpePlugin.reportProblem(e);
-			ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui.views", e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		
 		return null;

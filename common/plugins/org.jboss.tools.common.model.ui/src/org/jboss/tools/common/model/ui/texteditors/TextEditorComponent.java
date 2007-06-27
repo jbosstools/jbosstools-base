@@ -182,7 +182,7 @@ public class TextEditorComponent implements ITextListener, ITextEditorExtension 
 			FileAnyImpl f = (FileAnyImpl)getModelObject();
 			if(f != null) f.edit(getText()); 
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			lock = false;
 			modified = false;

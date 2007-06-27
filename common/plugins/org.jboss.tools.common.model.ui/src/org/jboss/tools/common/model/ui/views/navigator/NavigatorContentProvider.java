@@ -265,7 +265,7 @@ public class NavigatorContentProvider implements ITreeContentProvider, IResource
 			XFilteredTree filteredTree = getFilteredTree(nature.getModel().getRoot());
 			return (filteredTree != null) ? filteredTree.getRoot() : null;
 		} catch (Exception ex) {
-			ModelUIPlugin.log(ex);
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return null;
 	}

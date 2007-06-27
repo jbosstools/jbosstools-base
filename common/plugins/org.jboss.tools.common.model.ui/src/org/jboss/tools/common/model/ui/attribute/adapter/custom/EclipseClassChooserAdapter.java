@@ -53,7 +53,7 @@ public class EclipseClassChooserAdapter extends DefaultValueAdapter implements I
 				return type.getFullyQualifiedName();
 			}
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return null;			
 	}

@@ -308,7 +308,7 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 			changeListener = null;
 		}
 			} catch (Exception t) {
-				ModelUIPlugin.log("Error in disposing xml editor", t);
+				ModelUIPlugin.getPluginLog().logError("Error in disposing xml editor", t);
 			}
 	}
 

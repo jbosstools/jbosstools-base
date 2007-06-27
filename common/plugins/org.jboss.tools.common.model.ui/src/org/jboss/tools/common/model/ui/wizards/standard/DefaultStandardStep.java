@@ -76,7 +76,7 @@ public class DefaultStandardStep extends WizardPage implements java.beans.Proper
 				try {
 					support.action(SpecialWizardSupport.BACK);
 				} catch (Exception e) {
-					ModelUIPlugin.log(e);
+					ModelUIPlugin.getPluginLog().logError(e);
 				}
 			}
 			setTitle(support.getSubtitle());
@@ -100,7 +100,7 @@ public class DefaultStandardStep extends WizardPage implements java.beans.Proper
 			validate();
 			updateFieldEnablement();
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 

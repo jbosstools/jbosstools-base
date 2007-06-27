@@ -30,7 +30,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
         	String path = FileLocator.resolve(MetaConfigurationLoader.class.getResource("/dtds/meta-templates.dtd")).toString();
             XMLEntityResolver.registerPublicEntity("-//Red Hat Inc.//DTD Meta Templates 1.0//EN", path);
         } catch (Exception e) {
-			ModelUIPlugin.log(e);
+        	ModelUIPlugin.getPluginLog().logError(e);
         }
 	}
     
@@ -63,7 +63,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 		try {
 			XMLUtilities.serialize(element, writer);			
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		ModelUIPlugin.getDefault().getPluginPreferences().setValue(PREFERENCE_KEY, writer.toString());				
 	}
@@ -83,7 +83,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 			try {
 				XMLUtilities.serialize(element, location);
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 	}
@@ -111,7 +111,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
     private void processExtensions(MetaConfiguration c) {
     	IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT);
     	if(extensionPoint == null) {
-			ModelUIPlugin.log("Cannot find extension point \"" + EXTENSION_POINT, true);
+    		ModelUIPlugin.getPluginLog().logError("Cannot find extension point \"" + EXTENSION_POINT);
     	}
     	IConfigurationElement[] members = extensionPoint.getConfigurationElements();
     	for (int m = 0; m < members.length; m++) {
@@ -123,7 +123,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
    			} else if (META_TEMPLATE_GROUP.equals(member.getName())) {
    				doMetaTemplate(member, c);
    			} else {
-   				ModelUIPlugin.log("Error in declaring extension \"" + EXTENSION_POINT+"\" at " + name, false);
+   				ModelUIPlugin.getPluginLog().logInfo("Error in declaring extension \"" + EXTENSION_POINT+"\" at " + name);
     		}
         }
     }
@@ -140,7 +140,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 		try {
 			url = FileLocator.resolve(bundle.getEntry("/"));
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		String file = element.getAttribute(FILE);
 		String translations = element.getAttribute(TRANSLATIONS);
@@ -157,7 +157,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 				loadGroup(g, root, properties);
 			}
 		} catch (IOException e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 
@@ -170,9 +170,9 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 					InputStream is = new FileInputStream(propertiesFile);
 					properties = new PropertyResourceBundle(is);
 				} catch (FileNotFoundException e) {
-					ModelUIPlugin.log(e);
+					ModelUIPlugin.getPluginLog().logError(e);
 				} catch (IOException e) {
-					ModelUIPlugin.log(e);
+					ModelUIPlugin.getPluginLog().logError(e);
 				}
 			}
 		}

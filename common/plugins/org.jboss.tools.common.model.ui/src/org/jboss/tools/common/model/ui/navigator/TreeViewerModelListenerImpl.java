@@ -13,9 +13,9 @@ package org.jboss.tools.common.model.ui.navigator;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.jface.viewers.*;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.model.event.*;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 
 public class TreeViewerModelListenerImpl implements XModelTreeListener {
 	protected TreeViewer viewer;
@@ -77,7 +77,7 @@ public class TreeViewerModelListenerImpl implements XModelTreeListener {
 				if(reportRefreshProblemCount == 0) {
 					reportRefreshProblemCount = 1;
 					String message = "Cannot refresh tree for " + refreshObject.getPresentationString();
-					ProblemReportingHelper.reportProblem("org.jboss.tools.common.model.ui", message, e);
+					ModelUIPlugin.getPluginLog().logError( message, e);
 				}
 				return;
 			}			

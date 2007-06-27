@@ -253,7 +253,7 @@ public class TableStructuredFieldEditor extends ExtendedFieldEditor
 			try {
 				structureChanged(null);
 			} catch (Exception e ) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 			
 		}

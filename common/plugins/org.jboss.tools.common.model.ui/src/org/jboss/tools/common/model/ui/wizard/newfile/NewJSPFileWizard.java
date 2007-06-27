@@ -12,7 +12,7 @@ package org.jboss.tools.common.model.ui.wizard.newfile;
 
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
 import org.jboss.tools.common.model.files.handlers.CreateFileSupport;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class NewJSPFileWizard extends NewFileWizardEx {
@@ -27,7 +27,7 @@ public class NewJSPFileWizard extends NewFileWizardEx {
 			try {
 				support = (CreateFileSupport)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.model.handlers.CreateJSPFileSupport");
 			} catch (Exception e) {
-				ModelPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 			if(support == null) {
 				support = new CreateFileSupport();

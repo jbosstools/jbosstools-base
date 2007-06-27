@@ -18,7 +18,6 @@ import org.jboss.tools.common.meta.action.SpecialWizard;
 import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.meta.help.HelpUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControlListener {
@@ -64,7 +63,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		try {
 			support.action("STEP");
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		dialog.open();
 		
@@ -78,7 +77,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 			try {
 				HelpUtil.helpEclipse(support.getTarget().getModel(), support.getHelpKey());
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 			return;
 		}
@@ -87,12 +86,12 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 			support.action(name);
 			dialog.setMessage("");
 		} catch (Exception e) {
-			ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		try {
 			setStep();
 		} catch (Exception t) {
-			ModelUIPlugin.log("Error while executing action " + name, t);
+			ModelUIPlugin.getPluginLog().logError("Error while executing action " + name, t);
 		}
 	}
 	
@@ -123,7 +122,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		try {
 			wizardStep.validate();
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	
@@ -139,7 +138,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 			}
 			step.setSupport(support, i);
 		} catch (Exception e) {
-			ModelUIPlugin.log("Cannot load class '" + cls + "'.");
+			ModelUIPlugin.getPluginLog().logError("Cannot load class '" + cls + "'.");
 		}
 		return step;
 	}

@@ -62,7 +62,7 @@ public abstract class AbstractModelActionDelegate implements IWorkbenchWindowAct
 		try {
 			doRun();
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	

@@ -542,14 +542,14 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 			try {
 				XActionInvoker.invoke(COPY_XACTION_PATH, this.xmo, null, new Properties());
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 			XModelObject prev = list[targetIndex];
 			try {
 				XActionInvoker.invoke(MOVE_XACTION_PATH, prev, null, new Properties());
 				if(table != null && !table.isDisposed()) table.setSelection(targetIndex);
 			} catch (Exception e) {
-				ModelUIPlugin.log(e);
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 			fireStructureChange();
 		}

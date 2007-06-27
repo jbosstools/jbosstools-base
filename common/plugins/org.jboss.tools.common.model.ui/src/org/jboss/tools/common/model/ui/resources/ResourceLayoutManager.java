@@ -94,7 +94,7 @@ public class ResourceLayoutManager {
 	private Document getLayoutDocument(IResource resource) {
 		Document document = null;
 		if (resource==null) {
-			log(Status.ERROR, ModelUIMessages.getString(ERROR_RESOURCE_NULL));
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_RESOURCE_NULL));
 			return null;
 		}
 		
@@ -114,13 +114,13 @@ public class ResourceLayoutManager {
 		try {
 			document = loadDocument(resource);
 		} catch (ParserConfigurationException e) {
-			log(Status.OK, ModelUIMessages.getString(ERROR_UNKNOW_EXCEPTION), e);
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_UNKNOW_EXCEPTION), e);
 		} catch (SAXException e) {
-			log(Status.OK, ModelUIMessages.getString(ERROR_UNKNOW_EXCEPTION), e);
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_UNKNOW_EXCEPTION), e);
 		} catch (IOException e) {
-			log(Status.OK, ModelUIMessages.getString(ERROR_UNKNOW_EXCEPTION), e);
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_UNKNOW_EXCEPTION), e);
 		} catch (AnotherResourceException e) {
-			log(Status.OK, ModelUIMessages.getString(ERROR_ANOTHER_HEAD), e);
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_ANOTHER_HEAD), e);
 		}
 		if (document!=null){
 			hashMap.put(fullResourceLocation, document);
@@ -132,7 +132,7 @@ public class ResourceLayoutManager {
 			document = createNewDocument(resource);
 		} catch (ParserConfigurationException e) {
 			//log(Status.ERROR, ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {fullLayoutLocation, fullResourceLocation}));
-			log(Status.ERROR, ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {layoutLocation, fullResourceLocation}));
+			ModelUIPlugin.getPluginLog().logError( ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {layoutLocation, fullResourceLocation}));
 		}
 		if (document!=null){
 			hashMap.put(fullResourceLocation, document);
@@ -176,7 +176,7 @@ public class ResourceLayoutManager {
 			if (nodeList==null || nodeList.getLength()==0 || nodeList.item(0)==null) {
 				// warning
 				//log(ModelUIMessages.getString(WARNING_EMPTY_HEAD, new String[] {fullLayoutLocation}));
-				log(ModelUIMessages.getString(WARNING_EMPTY_HEAD, new String[] {layoutLocation}));
+				ModelUIPlugin.getPluginLog().logInfo(ModelUIMessages.getString(WARNING_EMPTY_HEAD, new String[] {layoutLocation}));
 				// create new head
 				createRoot(resource, document);
 			} /*else {
@@ -225,7 +225,7 @@ public class ResourceLayoutManager {
 			writer.close();
 		} catch (Exception e) {
 			//log(Status.ERROR, ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {fullLayoutLocation, fullResourceLocation}), e);
-			log(Status.ERROR, ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {layoutLocation, fullResourceLocation}), e);
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {layoutLocation, fullResourceLocation}), e);
 		}
 	}
 
@@ -248,18 +248,6 @@ public class ResourceLayoutManager {
 		return element;
 	}
 	
-	private void log(int status, String message, Exception e) {
-		Status s = new Status(status, ModelUIPlugin.PLUGIN_ID, Status.OK, message, e);
-		ModelUIPlugin.log(s);
-	}
-	
-	private void log(int status, String message) {
-		log(status, message, null);
-	}
-	
-	private void log(String message) {
-		log(Status.OK, message, null);
-	}
 	
 	private IPath getPluginMetadataPath() {
 		return Platform.getStateLocation(Platform.getBundle(ModelUIPlugin.PLUGIN_ID));

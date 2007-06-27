@@ -52,7 +52,7 @@ class JavaAdapter {
         try {
             javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
         } catch (CoreException e) {
-			ModelUIPlugin.log("Cannot find Java Project Nature.", new Exception());
+        	ModelUIPlugin.getPluginLog().logError("Cannot find Java Project Nature.", new Exception());
 			return null;
         }
 		IResource r = EclipseResourceUtil.getJavaSourceRoot(project);
@@ -82,7 +82,7 @@ class JavaAdapter {
         try {
             javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
         } catch (CoreException e) {
-			ModelUIPlugin.log("Cannot find Java Project Nature.", new Exception());
+        	ModelUIPlugin.getPluginLog().logError("Cannot find Java Project Nature.", new Exception());
 			return;
         }
         

@@ -56,13 +56,13 @@ public class PaletteContents {
 			if (project.exists() && project.isOpen() && project.hasNature("org.jboss.tools.struts.strutsnature")) 
 				natures.add("struts");
 		} catch (CoreException e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		try {
 			if (project.exists() && project.isOpen() && project.hasNature("org.jboss.tools.jsf.jsfnature")) 
 				natures.add("jsf");
 		} catch (CoreException e) { 
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		if (natures.size() > 0) 
 			natureTypes = natures.toArray(new String[natures.size()]); 

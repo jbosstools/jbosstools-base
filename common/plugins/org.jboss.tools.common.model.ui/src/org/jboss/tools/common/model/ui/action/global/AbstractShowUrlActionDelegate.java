@@ -21,7 +21,6 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public abstract class AbstractShowUrlActionDelegate implements IWorkbenchWindowActionDelegate {
@@ -35,7 +34,7 @@ public abstract class AbstractShowUrlActionDelegate implements IWorkbenchWindowA
 		try {
 			runURL(getUrl());
 		} catch (Exception e) {
-			ProblemReportingHelper.reportProblem(ModelUIPlugin.PLUGIN_ID, e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 
@@ -56,7 +55,7 @@ public abstract class AbstractShowUrlActionDelegate implements IWorkbenchWindowA
 			ServiceDialog d = PreferenceModelUtilities.getPreferenceModel().getService();
 			d.showDialog("Error", "Incorrect URL: " + mue.getMessage() + ".", new String[]{"OK"}, null, ServiceDialog.ERROR);
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 

@@ -216,7 +216,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 
 	public void doOperation(int operation) {
 		if (operation>actionMapping.size()) {
-			ModelUIPlugin.log(new RuntimeException("Can not find global action with index: "+operation));
+			ModelUIPlugin.getPluginLog().logError(new RuntimeException("Can not find global action with index: "+operation));
 		} else {
 			String globalAction = (String)actionMapping.get(operation);
 			doGlobalAction(globalAction);

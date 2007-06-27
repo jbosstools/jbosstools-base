@@ -10,10 +10,15 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.views.palette;
 
-import java.util.*;
-import org.eclipse.core.runtime.*;
+import java.util.HashMap;
+import java.util.Properties;
 
-import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.Platform;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.jst.web.tld.URIConstants;
 
 public class PaletteInsertManager {
@@ -41,7 +46,7 @@ public class PaletteInsertManager {
 		try {
 			return o.createExecutableExtension("class");
 		} catch(CoreException e) {
-			ModelPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 			return null;
 		}
 	}

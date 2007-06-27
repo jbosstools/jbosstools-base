@@ -128,8 +128,7 @@ public class AnyElementForm extends ExpandableForm {
 		String heading = "Attributes";
 		this.setHeadingText(heading);
 		if(!(model instanceof XModelObject)) {
-			Status s = new Status(Status.OK, ModelUIPlugin.PLUGIN_ID, Status.OK, "Error to create form " + heading + ". Model object cannot be null.", new Exception());
-			ModelUIPlugin.log(s);
+			ModelUIPlugin.getPluginLog().logInfo( "Error to create form " + heading + ". Model object cannot be null.", new Exception());
 			return;
 		}
 		this.xmo = (XModelObject)model;

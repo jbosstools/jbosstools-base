@@ -136,7 +136,7 @@ public class Form extends ExpandableForm {
 							support.registerFieldEditor(editor.getAttributeName(), (ExtendedFieldEditor)wraper);
 						}
 						catch (Exception e) {
-							ModelUIPlugin.log(e);
+							ModelUIPlugin.getPluginLog().logError(e);
 						}
 					} else {
 						ExtendedFieldEditor fieldEditor = (ExtendedFieldEditor)((IFieldEditor)editor.getFieldEditor(composite));
@@ -148,8 +148,7 @@ public class Form extends ExpandableForm {
 						support.registerFieldEditor(editor.getAttributeName(), (ExtendedFieldEditor)fieldEditor);
 					}
 				} else {
-					Status status = new Status(Status.OK, ModelUIPlugin.PLUGIN_ID, Status.OK, ModelUIMessages.getString(CANNOT_LOAD_ATTRIBUTE, new String[] {attributes[i].getName()}), new Exception(ModelUIMessages.getString(CANNOT_LOAD_ATTRIBUTE, new String[] {attributes[i].getName()})));
-					ModelUIPlugin.log(status);
+					ModelUIPlugin.getPluginLog().logInfo( ModelUIMessages.getString(CANNOT_LOAD_ATTRIBUTE, new String[] {attributes[i].getName()}), new Exception(ModelUIMessages.getString(CANNOT_LOAD_ATTRIBUTE, new String[] {attributes[i].getName()})));
 				}
             }
 		} else {
@@ -171,8 +170,7 @@ public class Form extends ExpandableForm {
 	public void initialize(Object model) {
 		this.xmo = (XModelObject)model;
 		if(xmo == null) {
-			Status s = new Status(Status.OK, ModelUIPlugin.PLUGIN_ID, Status.OK, "Error to create form "+formData.getHeader()+". Model object cannot be null.", new Exception());
-			ModelUIPlugin.log(s);
+			ModelUIPlugin.getPluginLog().logInfo( "Error to create form "+formData.getHeader()+". Model object cannot be null.", new Exception());
 			return;
 		}
 		this.model = xmo.getModel();

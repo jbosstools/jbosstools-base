@@ -110,7 +110,7 @@ public class PaletteTaglibInserter {
 					}
 				}
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			if (model != null)	model.releaseFromRead();
 		}
@@ -192,7 +192,7 @@ public class PaletteTaglibInserter {
 				selectedSource.insert(selectedSource.length()-1, attribute);
 				d.replace(so, seo-so, selectedSource.toString());
 			} catch (Exception t) {
-				ModelUIPlugin.log("", t);
+				ModelUIPlugin.getPluginLog().logError("", t);
 			}
 		}
 		return p;

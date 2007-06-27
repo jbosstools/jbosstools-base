@@ -56,7 +56,7 @@ public class XModelObjectContentOutlineProvider extends ContentOutlinePage {
 		try {
 			getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(getSelectionListener());
 		} catch (Exception e) {
-			ModelUIPlugin.log(e);
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	
