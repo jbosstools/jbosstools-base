@@ -88,7 +88,7 @@ public class KbTldConvertor implements KbSchemaConvertor {
 		InputStream is = tldResource.getInputStream();
 		if(is==null) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("    WARNING! Can't get InputSource from resource (location: " + tldResource.getTldLocation() + ").");
+				KbPlugin.getPluginLog().logWarning("    WARNING! Can't get InputSource from resource (location: " + tldResource.getTldLocation() + ").");
 			}
 			return null;
 		}
@@ -110,7 +110,7 @@ public class KbTldConvertor implements KbSchemaConvertor {
 		try {
 			return convertToSchema(new BufferedInputStream(new FileInputStream(tldFile)), new Properties(), false);
 		} catch (FileNotFoundException e) {
-			KbPlugin.log(e);
+			KbPlugin.getPluginLog().logError(e);
 			return null;
 		}
 	}
@@ -127,7 +127,7 @@ public class KbTldConvertor implements KbSchemaConvertor {
 			tldDocument = KbDocumentBuilderFactory.createDocumentBuilder(false).parse(inputStream);
 		} catch (Exception e) {
 			String message = "ERROR: Can't parse TLD file for converting to the Schema.";
-			KbPlugin.log(message, e);
+			KbPlugin.getPluginLog().logError(message, e);
 			return null;
 		}
 
@@ -370,7 +370,7 @@ public class KbTldConvertor implements KbSchemaConvertor {
 			ser.serialize(element);
 			sw.close();
 		} catch (IOException e) {
-			KbPlugin.log(e);
+			KbPlugin.getPluginLog().logError(e);
 		}	
 		return sw.toString();
 

@@ -28,7 +28,7 @@ public class EclipseJavaUtil {
 			String typeName = new String(Signature.toCharArray(f.getTypeSignature().toCharArray()));
 			return resolveType(f.getDeclaringType(), typeName);
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}
@@ -37,7 +37,7 @@ public class EclipseJavaUtil {
 		try	{
 			return resolveTypeAsString(m.getDeclaringType(), m.getReturnType());
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}
@@ -47,7 +47,7 @@ public class EclipseJavaUtil {
 			typeName = new String(Signature.toCharArray(typeName.toCharArray()));
 			return resolveType(type, typeName);
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}
@@ -62,7 +62,7 @@ public class EclipseJavaUtil {
 				typeName += (!"".equals(typeName) ? "." : "") + resolvedArray[0][i]; 
 			return typeName;
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}

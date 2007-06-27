@@ -49,7 +49,7 @@ public class KbDtdStore implements KbStore {
 
 	private KbDtdStore() {
 		if(KbPlugin.isDebugEnabled()) {		
-			KbPlugin.log("--> KbDtdStore()");
+			KbPlugin.getPluginLog().logInfo("--> KbDtdStore()");
 		}
 		schemaLocation = KbConfigurationFactory.getInstance().getDefaultConfiguration().getDtdSchemaPath();
 
@@ -59,7 +59,7 @@ public class KbDtdStore implements KbStore {
 
 		loadRegistratedResources();
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- KbDtdStore()");
+			KbPlugin.getPluginLog().logInfo("<-- KbDtdStore()");
 		}
 	}
 
@@ -98,9 +98,9 @@ public class KbDtdStore implements KbStore {
 	 */
 	public Collection<KbProposal> queryProposal(KbQuery query) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> KbDtdStore.queryProposal(KbQuery query)");
-			KbPlugin.log("    query = " + query);
-			KbPlugin.log("    registratedResources = " + registratedResources);
+			KbPlugin.getPluginLog().logInfo("--> KbDtdStore.queryProposal(KbQuery query)");
+			KbPlugin.getPluginLog().logInfo("    query = " + query);
+			KbPlugin.getPluginLog().logInfo("    registratedResources = " + registratedResources);
 		}
 
 		String strQuery = query.getQuery();
@@ -124,7 +124,7 @@ public class KbDtdStore implements KbStore {
 		Collections.sort(proposals);
 
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("proposals size = " + proposals.size());
+			KbPlugin.getPluginLog().logInfo("proposals size = " + proposals.size());
 		}
 		return proposals;
 	}
@@ -169,7 +169,7 @@ public class KbDtdStore implements KbStore {
 					elementTypes.add(rootElementType);
 				}
 				if(KbPlugin.isDebugEnabled()) {
-					KbPlugin.log("    Root Element: " + rootElementType);
+					KbPlugin.getPluginLog().logInfo("    Root Element: " + rootElementType);
 				}
 //				KbPlugin.log("RESOURCE: " + resource);
 /*
@@ -184,7 +184,7 @@ public class KbDtdStore implements KbStore {
 
 		InerDtdQuery inerDtdQuery = new InerDtdQuery(elementTypes, tagQuery);
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("    Iner DTD Query = " + inerDtdQuery);
+			KbPlugin.getPluginLog().logInfo("    Iner DTD Query = " + inerDtdQuery);
 		}
 
 		return inerDtdQuery;
@@ -200,8 +200,8 @@ public class KbDtdStore implements KbStore {
 
 		String lastTag = kbQuery.getLastTag();
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("last tag - " + lastTag);
-			KbPlugin.log("mask - " + mask);
+			KbPlugin.getPluginLog().logInfo("last tag - " + lastTag);
+			KbPlugin.getPluginLog().logInfo("mask - " + mask);
 		}
 		if((lastTag != null)&&(((mask.indexOf(KbQuery.DONT_FILTER_END_TAG_CHAR)!=-1)&&(KbQuery.DONT_FILTER_END_TAG_CHAR + lastTag).startsWith(mask))||(mask.equals("")))) {
 			KbProposal proposal = new KbProposal();
@@ -232,8 +232,8 @@ public class KbDtdStore implements KbStore {
 
 	public void registerResource(KbResource resource) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> KbDtdStore.registerResource(KbResource resource)");
-			KbPlugin.log("    resource = " + resource);
+			KbPlugin.getPluginLog().logInfo("--> KbDtdStore.registerResource(KbResource resource)");
+			KbPlugin.getPluginLog().logInfo("    resource = " + resource);
 		}
 
 		KbDtdResource dtdResource = null;
@@ -245,40 +245,40 @@ public class KbDtdStore implements KbStore {
 
 		if(checkActiveDocument(dtdResource)) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("    resource already is activated");
-				KbPlugin.log("<-- KbDtdStore.registerResource()");
+				KbPlugin.getPluginLog().logInfo("    resource already is activated");
+				KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.registerResource()");
 			}
 			return;
 		} else if(checkDownloadingResource(dtdResource)) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("    resource is downloading");
-				KbPlugin.log("<-- KbDtdStore.registerResource()");
+				KbPlugin.getPluginLog().logInfo("    resource is downloading");
+				KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.registerResource()");
 			}
 			return;
 		} else if(checkRegistratedResource(dtdResource)) {
 			activateResource(dtdResource);
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("    resource already is registred");
-				KbPlugin.log("<-- KbDtdStore.registerResource()");
+				KbPlugin.getPluginLog().logInfo("    resource already is registred");
+				KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.registerResource()");
 			}
 			return;
 		}
 
 		if((dtdResource.getDtdLocation()==null)&&(!KbConfigurationFactory.getInstance().getDefaultConfiguration().isAllowDownload())) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("    Unknown resource but is not allow download.");
-				KbPlugin.log("<-- KbDtdStore.registerResource()");
+				KbPlugin.getPluginLog().logInfo("    Unknown resource but is not allow download.");
+				KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.registerResource()");
 			}
 			return;
 		}
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("    Unknown resource. Start downloading resource...");
+			KbPlugin.getPluginLog().logInfo("    Unknown resource. Start downloading resource...");
 		}
 
 		new ResourceDownloader(dtdResource).start();
 
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- KbDtdStore.registerResource()");
+			KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.registerResource()");
 		}
 	}
 
@@ -288,19 +288,19 @@ public class KbDtdStore implements KbStore {
 	 */
 	public synchronized void reregisterModifiededResource(KbDtdResource resource) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> KbDtdStore.reregisterModifiededResource(KbDtdResource resource)");
-			KbPlugin.log("    resource = " + resource);
+			KbPlugin.getPluginLog().logInfo("--> KbDtdStore.reregisterModifiededResource(KbDtdResource resource)");
+			KbPlugin.getPluginLog().logInfo("    resource = " + resource);
 		}
 		KbDtdResource regResource = getRegistratedResource(resource);
 		if((regResource!=null)&&regResource.isModified()) {
 			unregisterResource(resource);
 			registerResource(resource);
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("    resource hase been reregistrated");
+				KbPlugin.getPluginLog().logInfo("    resource hase been reregistrated");
 			}
 		}
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- KbDtdStore.reregisterModifiededResource(KbDtdResource resource)");
+			KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.reregisterModifiededResource(KbDtdResource resource)");
 		}
 	}
 
@@ -397,7 +397,7 @@ public class KbDtdStore implements KbStore {
 				rootElementName = document.getDocumentElement().getAttribute(SchemaNodeFactory.ROOT_ELEMENT_ATTRIBUTE);
 			}
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("    Root element name: " + rootElementName);
+				KbPlugin.getPluginLog().logInfo("    Root element name: " + rootElementName);
 			}
 			return KbSchemaUtil.getElementTypeByName(document, rootElementName, false);
 		}
@@ -546,8 +546,8 @@ public class KbDtdStore implements KbStore {
 
 	private synchronized KbDtdResource getRegistratedResource(KbDtdResource dtdResource) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> KbDtdStore.getRegistratedResource(KbDtdResource dtdResource)");
-			KbPlugin.log("    dtdResource = " + dtdResource);
+			KbPlugin.getPluginLog().logInfo("--> KbDtdStore.getRegistratedResource(KbDtdResource dtdResource)");
+			KbPlugin.getPluginLog().logInfo("    dtdResource = " + dtdResource);
 		}
 
 		synchronized (registratedResources) {
@@ -555,9 +555,9 @@ public class KbDtdStore implements KbStore {
 				KbDtdResource resource = (KbDtdResource)registratedResources.get(i);
 				if(resource.equals(dtdResource)) {
 					if(KbPlugin.isDebugEnabled()) {
-						KbPlugin.log("    Found resource");
-						KbPlugin.log("<-- KbDtdStore.getRegistratedResource(KbDtdResource dtdResource)");
-						KbPlugin.log("    return resource = " + resource);
+						KbPlugin.getPluginLog().logInfo("    Found resource");
+						KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.getRegistratedResource(KbDtdResource dtdResource)");
+						KbPlugin.getPluginLog().logInfo("    return resource = " + resource);
 					}
 					return resource;
 				}
@@ -577,17 +577,17 @@ public class KbDtdStore implements KbStore {
 		}
 		// Non-registrated resource.
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("    Did not find resource");
-			KbPlugin.log("<-- KbDtdStore.getRegistratedResource(KbDtdResource dtdResource)");
-			KbPlugin.log("    return resource = null");
+			KbPlugin.getPluginLog().logInfo("    Did not find resource");
+			KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.getRegistratedResource(KbDtdResource dtdResource)");
+			KbPlugin.getPluginLog().logInfo("    return resource = null");
 		}
 		return null;
 	}
 
 	private synchronized Document getActiveDocument(KbDtdResource resource) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> KbDtdStore.getActiveDocument(KbDtdResource resource)");
-			KbPlugin.log("    resource = " + resource);
+			KbPlugin.getPluginLog().logInfo("--> KbDtdStore.getActiveDocument(KbDtdResource resource)");
+			KbPlugin.getPluginLog().logInfo("    resource = " + resource);
 		}
 
 		synchronized (activeDocuments) {
@@ -598,9 +598,9 @@ public class KbDtdStore implements KbStore {
 				if((activeDocumentsUri.equals(resource.getUri()))||(activeDocumentsUrl.equals(resource.getId()))) {
 					// Active resource.
 					if(KbPlugin.isDebugEnabled()) {
-						KbPlugin.log("    Found document");
-						KbPlugin.log("<-- KbDtdStore.getActiveDocument(KbDtdResource resource)");
-						KbPlugin.log("    return document = " + activeDocument);
+						KbPlugin.getPluginLog().logInfo("    Found document");
+						KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.getActiveDocument(KbDtdResource resource)");
+						KbPlugin.getPluginLog().logInfo("    return document = " + activeDocument);
 					}
 					return activeDocument;
 				}
@@ -608,9 +608,9 @@ public class KbDtdStore implements KbStore {
 		}
 		// Non-active resource.
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("    Did not find document");
-			KbPlugin.log("<-- KbDtdStore.getActiveDocument(KbDtdResource resource)");
-			KbPlugin.log("    return document = null");
+			KbPlugin.getPluginLog().logInfo("    Did not find document");
+			KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.getActiveDocument(KbDtdResource resource)");
+			KbPlugin.getPluginLog().logInfo("    return document = null");
 		}
 		return null;
 	}
@@ -636,7 +636,7 @@ public class KbDtdStore implements KbStore {
 			document = KbDocumentBuilderFactory.createDocumentBuilder(false).parse(schemaLocation);
 		} catch (Exception e) {
 			String message = "ERROR: Can't parse Schema (location: " + schemaLocation + ")";
-			KbPlugin.log(message, e);
+			KbPlugin.getPluginLog().logError(message, e);
 			return;
 		}
 		activeDocuments.add(document);
@@ -674,7 +674,7 @@ public class KbDtdStore implements KbStore {
 
 	private void loadRegistratedResources() {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> KbDtdStore.loadRegistratedResources()");
+			KbPlugin.getPluginLog().logInfo("--> KbDtdStore.loadRegistratedResources()");
 		}
 
 		File schemaFolder = new File(schemaLocation); 
@@ -697,7 +697,7 @@ public class KbDtdStore implements KbStore {
 			} catch (Exception e) {
 				if(KbPlugin.isDebugEnabled()) {
 					String message = "WARNING: Can't parse Schema (location: " + schemas[i] + ")";
-					KbPlugin.log(message, e);
+					KbPlugin.getPluginLog().logError(message, e);
 				}
 				continue;
 			}
@@ -709,7 +709,7 @@ public class KbDtdStore implements KbStore {
 			} catch (Exception e) {
 				if(KbPlugin.isDebugEnabled()) {
 					String message = "ERROR: can't create java.net.URL for url=\"" + url + "\" from schema (location=" + schemas[i] + ")";
-					KbPlugin.log(message);
+					KbPlugin.getPluginLog().logError(message);
 				}
 				continue;
 			}
@@ -718,7 +718,7 @@ public class KbDtdStore implements KbStore {
 		}
 
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- KbDtdStore.loadRegistratedResources()");
+			KbPlugin.getPluginLog().logInfo("<-- KbDtdStore.loadRegistratedResources()");
 		}
 	}
 
@@ -891,7 +891,7 @@ public class KbDtdStore implements KbStore {
 
 		public void run() {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("downloading resource - " + resource);
+				KbPlugin.getPluginLog().logInfo("downloading resource - " + resource);
 			}
 			downloadingResources.add(resource);
 			String uniqFileName = "schema.xml";
@@ -901,7 +901,7 @@ public class KbDtdStore implements KbStore {
 				tempFile.deleteOnExit();
 			} catch(Exception e) {
 				String message = "WARNING: Can't create temp file.";
-				KbPlugin.log(message, e);
+				KbPlugin.getPluginLog().logError(message, e);
 			}
 			File schemaFolder = new File(schemaLocation);
 
@@ -915,8 +915,8 @@ public class KbDtdStore implements KbStore {
 			Document document = KbDtdConvertor.getInstance().convertToSchema(resource);
 			if(document == null) {
 				if(KbPlugin.isDebugEnabled()) {
-					KbPlugin.log("    Can't get document from resource.");
-					KbPlugin.log("    cancel downloading.");
+					KbPlugin.getPluginLog().logInfo("    Can't get document from resource.");
+					KbPlugin.getPluginLog().logInfo("    cancel downloading.");
 				}
 				downloadingResources.remove(resource);
 				return;
@@ -938,7 +938,7 @@ public class KbDtdStore implements KbStore {
 //				TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(schemaFile));
 			} catch (Exception e) {
 				String message = "ERROR: Can't serialize DTD schema (" + schemaFile + ").";
-				KbPlugin.log(message, e);
+				KbPlugin.getPluginLog().logError(message, e);
 				schemaFile.deleteOnExit();
 				downloadingResources.remove(resource);
 				return;

@@ -30,7 +30,7 @@ public class MetaResourceLoader {
 				if(path == null) continue;
 				if(resources.containsKey(path)) {
 					if(ModelPlugin.isDebugEnabled()) {
-						ModelPlugin.log("Warning: duplicate meta resource " + path + " ignored.");
+						ModelPlugin.getPluginLog().logInfo("Warning: duplicate meta resource " + path + " ignored.");
 					}
 				}
 				try {
@@ -42,12 +42,12 @@ public class MetaResourceLoader {
 //						}
 					} else {
 						if(ModelPlugin.isDebugEnabled()) {
-							ModelPlugin.log("Warning: meta resource " + path + " not found.");
+							ModelPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found.");
 						}
 					}
 				} catch (Exception e) {
 					if(ModelPlugin.isDebugEnabled()) {
-						ModelPlugin.log("Warning: meta resource " + path + " not found.");
+						ModelPlugin.getPluginLog().logError("Warning: meta resource " + path + " not found.");
 					}
 				}
 			}

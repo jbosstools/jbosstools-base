@@ -57,7 +57,7 @@ public class JSPTaglibHyperlinkPartitioner extends JSPElementAttributeValueHyper
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error in parsing region", x);
+			ExtensionsPlugin.getPluginLog().logError("Error in parsing region", x);
 			return null;
 		} finally {
 			smw.dispose();

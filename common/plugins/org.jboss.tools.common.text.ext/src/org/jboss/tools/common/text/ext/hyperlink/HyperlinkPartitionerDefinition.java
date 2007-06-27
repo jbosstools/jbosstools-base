@@ -146,7 +146,7 @@ public class HyperlinkPartitionerDefinition {
 	 * @param e
 	 */
 	private void handleCreateExecutableException(Object[] result, Exception x) {
-		ExtensionsPlugin.log("Error in creating extension", x);
+		ExtensionsPlugin.getPluginLog().logError("Error in creating extension", x);
 		result[0] = null;
 	}
 

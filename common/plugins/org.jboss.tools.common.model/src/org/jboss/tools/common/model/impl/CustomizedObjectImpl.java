@@ -26,7 +26,7 @@ public class CustomizedObjectImpl extends RegularObjectImpl {
 				return attribute;
 			}
 		}
-		ModelPlugin.log("No id attribute set for entity " + getModelEntity().getName());
+		ModelPlugin.getPluginLog().logInfo("No id attribute set for entity " + getModelEntity().getName());
 		attribute = as[0].getName();
 		return attribute;
 	}

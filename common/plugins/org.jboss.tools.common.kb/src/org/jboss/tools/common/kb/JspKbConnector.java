@@ -45,9 +45,9 @@ public class JspKbConnector implements KbConnector {
 	 * @see org.jboss.tools.common.kb.KbConnector#queryTagInformation(org.jboss.tools.common.kb.KbQuery)
 	 */
 	public TagDescriptor getTagInformation(String query) throws KbException {
-		KbPlugin.log("Query=" + query);
+		KbPlugin.getPluginLog().logInfo("Query=" + query);
 		String lastTag = getLastCompleteTag(query);
-		KbPlugin.log("lastTag=" + lastTag);
+		KbPlugin.getPluginLog().logInfo("lastTag=" + lastTag);
 		if(lastTag==null) {
 			return null;
 		}
@@ -65,8 +65,8 @@ public class JspKbConnector implements KbConnector {
 	 **/
 	public Collection getProposals(String query) throws KbException {
 		if(KbPlugin.isDebugEnabled()) { 
-			KbPlugin.log("--> JspKbConnector.getProposals(String query)");
-			KbPlugin.log("Query=" + query);
+			KbPlugin.getPluginLog().logInfo("--> JspKbConnector.getProposals(String query)");
+			KbPlugin.getPluginLog().logInfo("Query=" + query);
 		} 
 
 		int tagSeparator = query.indexOf(KbQuery.TAG_SEPARATOR);
@@ -75,7 +75,7 @@ public class JspKbConnector implements KbConnector {
 			// Bad query
 			String errorMessage = "ERROR: Bad query: " + query + ". Query must starts with \"" + KbQuery.TAG_SEPARATOR + "\" or \"" + KbQuery.JSP_DIRECTIVE_QUERY + "\"";
 			if(KbPlugin.isDebugEnabled()) { 
-				KbPlugin.log(errorMessage);
+				KbPlugin.getPluginLog().logInfo(errorMessage);
 			}
 			throw new RuntimeException(errorMessage);
 		}
@@ -90,8 +90,8 @@ public class JspKbConnector implements KbConnector {
 			}
 
 			if(KbPlugin.isDebugEnabled()) { 
-				KbPlugin.log("<-- JspKbConnector.getProposals(String query)");
-				KbPlugin.log("    proposals size=" + jspDirectiveProposals.size());
+				KbPlugin.getPluginLog().logInfo("<-- JspKbConnector.getProposals(String query)");
+				KbPlugin.getPluginLog().logInfo("    proposals size=" + jspDirectiveProposals.size());
 			}
 
 			return jspDirectiveProposals;
@@ -105,8 +105,8 @@ public class JspKbConnector implements KbConnector {
 		String htmlQuery = jspQuery.getHtmlQuery();
 
 		if(KbPlugin.isDebugEnabled()) { 
-			KbPlugin.log("tld query - " + tldQuery);
-			KbPlugin.log("html query - " + htmlQuery);
+			KbPlugin.getPluginLog().logInfo("tld query - " + tldQuery);
+			KbPlugin.getPluginLog().logInfo("html query - " + htmlQuery);
 		}
 
 		Collection<KbProposal> tldProposals = new ArrayList<KbProposal>();
@@ -154,8 +154,8 @@ public class JspKbConnector implements KbConnector {
 		}
 
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- JspKbConnector.getProposals(String query)");
-			KbPlugin.log("    proposals size=" + proposals.size());
+			KbPlugin.getPluginLog().logInfo("<-- JspKbConnector.getProposals(String query)");
+			KbPlugin.getPluginLog().logInfo("    proposals size=" + proposals.size());
 		}
 
 		return proposals;
@@ -176,8 +176,8 @@ public class JspKbConnector implements KbConnector {
 
 	private ArrayList<KbProposal> sortProposals(Collection<KbProposal> proposals, String query) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> JspKbConnector.sortProposals(Collection proposals)");
-//			KbPlugin.log("Proposals = " + proposals);
+			KbPlugin.getPluginLog().logInfo("--> JspKbConnector.sortProposals(Collection proposals)");
+//			KbPlugin.getPluginLog().logInfo("Proposals = " + proposals);
 		}
 
 		ArrayList<KbProposal> closeTags = new ArrayList<KbProposal>();
@@ -207,8 +207,8 @@ public class JspKbConnector implements KbConnector {
 		ArrayList<KbProposal> collection = mergeCollection(closeTags, openTags);
 
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- JspKbConnector.sortProposals()");
-//			KbPlugin.log("return Collection = [" + collection +"]");
+			KbPlugin.getPluginLog().logInfo("<-- JspKbConnector.sortProposals()");
+//			KbPlugin.getPluginLog().logInfo("return Collection = [" + collection +"]");
 		}
 
 		return collection;
@@ -305,8 +305,8 @@ public class JspKbConnector implements KbConnector {
 	 */
 	public boolean registerResource(KbResource resource) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> JspKbConnector.registerResource(KbResource resource)");
-			KbPlugin.log("    resource=" + resource);
+			KbPlugin.getPluginLog().logInfo("--> JspKbConnector.registerResource(KbResource resource)");
+			KbPlugin.getPluginLog().logInfo("    resource=" + resource);
 		}
 		if(resource instanceof KbTldResource) {
 //			KbTldResource tldResource =(KbTldResource)resource;
@@ -320,8 +320,8 @@ public class JspKbConnector implements KbConnector {
 			throw new RuntimeException("JspKbConnector.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
 		}
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("    registretedResources=" + registretedResources);
-			KbPlugin.log("<-- JspKbConnector.registerResource(KbResource resource)");
+			KbPlugin.getPluginLog().logInfo("    registretedResources=" + registretedResources);
+			KbPlugin.getPluginLog().logInfo("<-- JspKbConnector.registerResource(KbResource resource)");
 		}
 		return true;
 	}
@@ -354,8 +354,8 @@ public class JspKbConnector implements KbConnector {
 	 */
 	public void unregisterResource(KbResource resource) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> JspKbConnector.unregisterResource(KbResource resource)");
-			KbPlugin.log("    resource: " + resource.toString());
+			KbPlugin.getPluginLog().logInfo("--> JspKbConnector.unregisterResource(KbResource resource)");
+			KbPlugin.getPluginLog().logInfo("    resource: " + resource.toString());
 		}
 
 		if(resource instanceof KbTldResource) {
@@ -371,7 +371,7 @@ public class JspKbConnector implements KbConnector {
 		}
 
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- JspKbConnector.unregisterResource(KbResource resource)");
+			KbPlugin.getPluginLog().logInfo("<-- JspKbConnector.unregisterResource(KbResource resource)");
 		}
 	}
 

@@ -102,7 +102,7 @@ public class JSPElementNameHyperlink extends AbstractHyperlink {
 			}
 			return tm.getTaglibObject(uri);
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error in getting file name from region", x);
+			ExtensionsPlugin.getPluginLog().logError("Error in getting file name from region", x);
 			return null;
 		} finally {
 			smw.dispose();

@@ -80,7 +80,7 @@ public class ModelEntityRecognizer implements EntityRecognizer {
 			cls_rec.put(clsname, r);
 			return r;
 		} catch (Exception e) {
-			ModelPlugin.log("ModelEntityRecognizer:Cannot load recognizer " + clsname);
+			ModelPlugin.getPluginLog().logError("ModelEntityRecognizer:Cannot load recognizer " + clsname);
 		}
 		return null;
     }

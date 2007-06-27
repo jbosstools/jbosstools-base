@@ -170,7 +170,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         String entity = p.getProperty("entity");
         XModelObject c = getModel().createModelObject(entity, p);
         if(c == null) {
-        	ModelPlugin.log("Cannot create file for entity " + entity);
+        	ModelPlugin.getPluginLog().logInfo("Cannot create file for entity " + entity);
         	return;
         }
         if(isLateloadFile2(c)) {
@@ -208,7 +208,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 			}
 			resource.refreshLocal(IResource.DEPTH_ONE, null);
 		} catch (Exception e) {
-			ModelPlugin.log("Exception caught in FolderImpl.update()");
+			ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()");
 		} finally {
 			fsi.unlockUpdate();
 		}
@@ -258,7 +258,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     	  //Most probably Eclipse is shutting down.
     	  return true;
       } catch (Exception t) {
-    	  ModelPlugin.log("Exception caught in FolderImpl.update()");
+    	  ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()");
       } finally {  
 		updateLock--;
 		unsynchronized = null;

@@ -19,7 +19,7 @@ public class VRulesConfigurationWizard extends AbstractQueryWizard {
 		try {
 			setView(new VRulesConfigurationWizardView());
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
 

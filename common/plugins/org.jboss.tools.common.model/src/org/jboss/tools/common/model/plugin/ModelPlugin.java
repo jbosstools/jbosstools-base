@@ -13,18 +13,23 @@ package org.jboss.tools.common.model.plugin;
 import java.io.File;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.*;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
+import org.eclipse.ui.IWindowListener;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.model.XModelConstants;
 import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.osgi.framework.BundleContext;
 
-public class ModelPlugin extends AbstractUIPlugin implements IModelPlugin, IWindowListener {
+public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowListener {
 	public static final String PLUGIN_ID = "org.jboss.tools.common.model"; 
 	private static ModelPlugin plugin;
 	private ResourceBundle resourceBundle;
@@ -59,32 +64,18 @@ public class ModelPlugin extends AbstractUIPlugin implements IModelPlugin, IWind
 		return resourceBundle;
 	}
 	
-	public static void log(String msg) {
-		getDefault().getLog().log(new Status(Status.INFO, PLUGIN_ID, Status.OK, msg, null));		
-	}
-	
-	public static void log(IStatus status) {
-		ModelPlugin.getDefault().getLog().log(status);
-	}
-	public static void log(String message, Throwable exception) {
-		getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, message, exception));
-	}
 	
 	public XModelSaveParticipant getSaveParticipant() {
 		return save;
 	}
-	
-	static public void log(Exception ex) {
-		getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "No message", ex));
-	}
-	
+
 	public void start(BundleContext context) throws Exception {
 		System.setProperty(XModelConstants.HOME, EclipseResourceUtil.getInstallPath(context.getBundle()));
 		super.start(context);		
 		try {
 			PlatformUI.getWorkbench().addWindowListener(this);
 		} catch (Exception e) {
-			log(e);
+			getPluginLog().logError(e);
 		}
 //		ClassLoaderUtil.init();
 		Display.getDefault().asyncExec(new Runnable() {
@@ -112,7 +103,7 @@ public class ModelPlugin extends AbstractUIPlugin implements IModelPlugin, IWind
 				if(n.startsWith("efs_")) fs[i].delete();
 			}
 		} catch (Exception e) {
-			log("ModelPlugin:cleanTempFiles:" + e.getMessage());
+			getPluginLog().logError("ModelPlugin:cleanTempFiles:" + e.getMessage());
 		}
 	}
 
@@ -122,7 +113,7 @@ public class ModelPlugin extends AbstractUIPlugin implements IModelPlugin, IWind
 		try {
 			save.saving(null);
 		} catch (Exception e) {
-			log(e);
+			getPluginLog().logError(e);
 		}
 	}
 
@@ -132,4 +123,10 @@ public class ModelPlugin extends AbstractUIPlugin implements IModelPlugin, IWind
 	public void windowOpened(IWorkbenchWindow window) {
 	}
 
+	/**
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog getPluginLog() {
+		return getDefault();
+	}
 }

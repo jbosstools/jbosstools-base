@@ -55,7 +55,7 @@ public class CountriesHelper {
             XAttributeConstraintAList acl = (XAttributeConstraintAList)entity.getAttribute(attr).getConstraint();
             acl.setValues((String[])map.keySet().toArray(new String[0]));
         } catch (Exception e) {
-        	ModelPlugin.log("CountiesHelper:loadAttribute:" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("CountiesHelper:loadAttribute:" + e.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class CountriesHelper {
                 map.put(code, name);
             }
         } catch (Exception e) {
-        	ModelPlugin.log("CountiesHelper:loadMap:" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("CountiesHelper:loadMap:" + e.getMessage());
         }
     }
 

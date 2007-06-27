@@ -137,7 +137,7 @@ public class KbJspDirectiveStore implements KbStore {
 			jspDirectiveSchema = KbDocumentBuilderFactory.createDocumentBuilder(false).parse(schemaLocation);
 		} catch (Exception e) {
 			String message = "ERROR: Can't parse JSP Directive Schema (location: " + schemaLocation + ")";
-			KbPlugin.log(message, e);
+			KbPlugin.getPluginLog().logError(message, e);
 			return false;
 		}
 		return true;

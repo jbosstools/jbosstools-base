@@ -238,7 +238,7 @@ public class XModelImpl implements XModel {
         	if(!unknownEntities.contains(entity)) {
         		unknownEntities.add(entity);
         		String message = XBundle.getInstance().getMessage("model", "UNKNOUN_ENTITY", new Object[]{entity});
-        		ModelPlugin.log(message);
+        		ModelPlugin.getPluginLog().logInfo(message);
         	}
             return null;
         }
@@ -262,7 +262,7 @@ public class XModelImpl implements XModel {
         	if(!unknownEntities.contains(entity)) {
         		unknownEntities.add(entity);
         		String message = XBundle.getInstance().getMessage("model", "CREATION_ENTITY_FAILURE", new Object[]{entity});
-        		ModelPlugin.log(message, e);
+        		ModelPlugin.getPluginLog().logError(message, e);
         	}
         }
         return null;
@@ -397,7 +397,7 @@ public class XModelImpl implements XModel {
                 XModelObject fs = getByPath("FileSystems");
                 if(l != null && fs != null) l.load(fs);
             } catch (Exception t) {
-            	ModelPlugin.log("XModelImpl:loadWatcher:" + t.getMessage());
+            	ModelPlugin.getPluginLog().logError("XModelImpl:loadWatcher:" + t.getMessage());
             }
         }
 
@@ -421,7 +421,7 @@ public class XModelImpl implements XModel {
             f = new File(d);
             f.mkdirs();
         } catch (Exception e) {
-        	ModelPlugin.log("XModelImpl:getProjectName:" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("XModelImpl:getProjectName:" + e.getMessage());
         }
         return (f == null || !f.isDirectory()) ? null : (n != null) ? n : f.getName();
     }

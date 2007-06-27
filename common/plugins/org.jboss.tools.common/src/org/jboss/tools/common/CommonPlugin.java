@@ -18,16 +18,18 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.jboss.tools.common.log.BasePlugin;
+import org.jboss.tools.common.log.IPluginLog;
 import org.osgi.framework.Bundle;
 
-public class CommonPlugin extends Plugin {
+public class CommonPlugin extends BasePlugin {
 
 	public static final String PLUGIN_ID = "org.jboss.tools.common";
 	protected static CommonPlugin instance;
 	private static String environment;
 
+	
 	public CommonPlugin() {
 		super();
 		instance = this;
@@ -83,7 +85,7 @@ public class CommonPlugin extends Plugin {
 						}
 					}
 				} catch (IOException e) {
-					CommonPlugin.log("Error in getting environment info: " + e.getMessage());
+					getPluginLog().logError("Error in getting environment info: " + e.getMessage());
 				}
 			}
 			StringBuffer result = new StringBuffer(studioName).append(" ").append(studioVersion).
@@ -95,8 +97,20 @@ public class CommonPlugin extends Plugin {
 		return environment;
 	}
 
-	public static void log(String msg) {
-		instance.getLog().log(new Status(Status.INFO, PLUGIN_ID, Status.OK, msg, null));		
-	}
 	
+	/**
+	 * Returns the shared instance
+	 *
+	 * @return the shared instance
+	 */
+	public static CommonPlugin getDefault() {
+		return instance;
+	}
+
+	/**
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog getPluginLog() {
+		return getDefault();
+	}
 }

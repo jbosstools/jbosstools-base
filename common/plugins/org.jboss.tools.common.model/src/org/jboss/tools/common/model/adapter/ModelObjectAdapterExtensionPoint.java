@@ -45,11 +45,11 @@ public class ModelObjectAdapterExtensionPoint {
 				try {
 					cls = bundle.loadClass(classname);
 				} catch (Exception e) {
-					ModelPlugin.log("Cannot load editor class " + classname + " from " + es[i].getNamespaceIdentifier());
+					ModelPlugin.getPluginLog().logError("Cannot load editor class " + classname + " from " + es[i].getNamespaceIdentifier());
 					continue;
 				}
 				if(!IModelObjectAdapter.class.isAssignableFrom(cls)) {
-					ModelPlugin.log("Class " + classname + " must implement IModelObjectAdapter");
+					ModelPlugin.getPluginLog().logInfo("Class " + classname + " must implement IModelObjectAdapter");
 				} else {
 					adapters.put(iclassname, cls);
 				}
@@ -62,7 +62,7 @@ public class ModelObjectAdapterExtensionPoint {
 		try {
 			if(cls != null) return (IModelObjectAdapter)cls.newInstance();
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}

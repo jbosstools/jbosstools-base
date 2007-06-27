@@ -29,7 +29,7 @@ public class MetaLibLoader {
             Class c = MetaLibLoader.class;
             XMLEntityResolver.registerPublicEntity(DOC_PUBLICID, FileLocator.resolve(c.getResource("/meta/meta.dtd")).toString());
         } catch (Exception e) {
-        	ModelPlugin.log(e);
+        	ModelPlugin.getPluginLog().logError(e);
         }
     }
     
@@ -53,7 +53,7 @@ public class MetaLibLoader {
 				load(path, url);
 			}
         } catch (Exception t) {
-        	ModelPlugin.log("Error in loading meta model resources", t);
+        	ModelPlugin.getPluginLog().logError("Error in loading meta model resources", t);
         }
 
         for (int i = 0; i < metarefs.size(); i++) {
@@ -80,16 +80,16 @@ public class MetaLibLoader {
 		try {
 			stream = url.openStream();
 		} catch (Exception e) {
-			ModelPlugin.log("MetaLoader: Cannot read resource " + url.toString());
+			ModelPlugin.getPluginLog().logError("MetaLoader: Cannot read resource " + url.toString());
 			return;
 		}
 		Element g = XMLUtil.getElement(stream);
 		if(g == null) {
-			ModelPlugin.log("Corrupted meta resource " + name);
+			ModelPlugin.getPluginLog().logInfo("Corrupted meta resource " + name);
 		} else try {
 			load0(g, name, url.toString());
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		
 		try {
@@ -97,13 +97,13 @@ public class MetaLibLoader {
 			InputSource is = new InputSource(stream);
 			String[] errors = XMLUtil.getXMLErrors(is, true);
 			if(errors != null && errors.length > 0) {
-				ModelPlugin.log("Errors in " + name);
+				ModelPlugin.getPluginLog().logInfo("Errors in " + name);
 				for (int i = 0; i < errors.length && i < 5; i++) {
-					ModelPlugin.log(errors[i]);
+					ModelPlugin.getPluginLog().logInfo(errors[i]);
 				}
 			}
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		
     }

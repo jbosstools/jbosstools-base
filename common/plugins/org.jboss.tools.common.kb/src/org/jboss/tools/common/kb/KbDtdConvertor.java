@@ -110,7 +110,7 @@ public class KbDtdConvertor implements KbSchemaConvertor {
 			}
 
 		} catch (IOException e) {
-			KbPlugin.log(e);
+			KbPlugin.getPluginLog().logError(e);
 		}
 
 		return document;
@@ -121,8 +121,8 @@ public class KbDtdConvertor implements KbSchemaConvertor {
 	 */
 	public Document convertToSchema(KbResource resource) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> KbDtdConvertor.convertToSchema(KbResource resource)");
-			KbPlugin.log("    resource = " + resource);
+			KbPlugin.getPluginLog().logInfo("--> KbDtdConvertor.convertToSchema(KbResource resource)");
+			KbPlugin.getPluginLog().logInfo("    resource = " + resource);
 		}
 
 		//		KbPlugin.log("convert resource - " + resource);
@@ -139,9 +139,9 @@ public class KbDtdConvertor implements KbSchemaConvertor {
 		InputStream is = dtdResource.getInputStream();
 		if(is==null) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("    Can't get Input Stream from resource.");
-				KbPlugin.log("<-- KbDtdConvertor.convertToSchema(KbResource resource)");
-				KbPlugin.log("    return = null");
+				KbPlugin.getPluginLog().logInfo("    Can't get Input Stream from resource.");
+				KbPlugin.getPluginLog().logInfo("<-- KbDtdConvertor.convertToSchema(KbResource resource)");
+				KbPlugin.getPluginLog().logInfo("    return = null");
 			}
 			return null;
 		}
@@ -155,7 +155,7 @@ public class KbDtdConvertor implements KbSchemaConvertor {
 		try {
 			return convertToSchema(new FileReader(dtdFile), new Properties());
 		} catch (FileNotFoundException e) {
-			KbPlugin.log(e);
+			KbPlugin.getPluginLog().logError(e);
 			return null;
 		}
 	}
@@ -295,7 +295,7 @@ public class KbDtdConvertor implements KbSchemaConvertor {
 			ser.serialize(element);
 			sw.close();
 		} catch (IOException e) {
-			KbPlugin.log(e);
+			KbPlugin.getPluginLog().logError(e);
 		}	
 		return sw.toString();
 

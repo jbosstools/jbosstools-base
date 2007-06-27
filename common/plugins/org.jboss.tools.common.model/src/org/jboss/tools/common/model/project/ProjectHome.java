@@ -25,7 +25,7 @@ public class ProjectHome {
 					project.getDescription().getLocation().toString());
 			return getLocation(location);
 		} catch (CoreException e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 			return "";
 		}
 	}

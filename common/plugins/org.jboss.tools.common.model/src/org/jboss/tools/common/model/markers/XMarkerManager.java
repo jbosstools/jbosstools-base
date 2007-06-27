@@ -46,7 +46,7 @@ public class XMarkerManager implements IResourceChangeListener {
 		try {
 			ms = ModelPlugin.getWorkspace().getRoot().findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		reload(ms, errorObjects, IMarker.SEVERITY_ERROR);
 		reload(ms, warningObjects, IMarker.SEVERITY_WARNING);

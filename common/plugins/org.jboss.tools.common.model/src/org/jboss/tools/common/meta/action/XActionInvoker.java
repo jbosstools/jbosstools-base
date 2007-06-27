@@ -10,29 +10,32 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action;
 
-import java.util.*;
-import org.jboss.tools.common.meta.*;
-import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+
+import org.jboss.tools.common.meta.XModelEntity;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class XActionInvoker {
     static SpecialWizard sw = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.action.XModelObjectActionInvoker");
 
     public static void invoke(String invokerEntity, String actionPath, XModelObject object, Properties runningProperties) {
     	if(object == null) {
-    		report("Cannot invoke action " + actionPath + " on null object.");
+    		ModelPlugin.getPluginLog().logError("Cannot invoke action " + actionPath + " on null object.");
     		return;
     	}
         XModelEntity entity = object.getModel().getMetaData().getEntity(invokerEntity);
         if(entity == null) {
-        	report("Entity " + invokerEntity + " is not found.");
+        	ModelPlugin.getPluginLog().logError("Entity " + invokerEntity + " is not found.");
         }
         invoke(entity, actionPath, object, runningProperties);
     }
 
     public static void invoke(String actionPath, XModelObject object, Properties runningProperties) {
     	if(object == null) {
-    		report("Cannot invoke action " + actionPath + " on null object.");
+    		ModelPlugin.getPluginLog().logError("Cannot invoke action " + actionPath + " on null object.");
     	} else {
     		invoke(object.getModelEntity(), actionPath, object, runningProperties);
     	}
@@ -40,11 +43,11 @@ public class XActionInvoker {
 
     public static void invoke(XModelEntity invoker, String actionPath, XModelObject object, Properties runningProperties) {
     	if(sw == null) {
-    		report("XActionInvoker could not be loaded");
+    		ModelPlugin.getPluginLog().logError("XActionInvoker could not be loaded");
     	} else {
     		XAction a = getAction(invoker, actionPath);
             if(a == null) {
-            	report("Cannot find action " + actionPath + " in entity " + invoker.getName());
+            	ModelPlugin.getPluginLog().logError("Cannot find action " + actionPath + " in entity " + invoker.getName());
             } else {
             	sw.setObject(new Object[]{a, object, runningProperties});
             	sw.execute();
@@ -58,11 +61,11 @@ public class XActionInvoker {
 
     public static void invoke(XModelEntity invoker, String actionPath, XModelObject object, XModelObject[] targets, Properties runningProperties) {
     	if(sw == null) {
-    		report("XActionInvoker could not be loaded");
+    		ModelPlugin.getPluginLog().logError("XActionInvoker could not be loaded");
     	} else {
     		XAction a = getAction(invoker, actionPath);
             if(a == null) {
-            	report("Cannot find action " + actionPath + " in entity " + invoker.getName());
+            	ModelPlugin.getPluginLog().logError("Cannot find action " + actionPath + " in entity " + invoker.getName());
             } else {
             	sw.setObject(new Object[]{a, object, runningProperties, targets});
             	sw.execute();
@@ -80,10 +83,6 @@ public class XActionInvoker {
     
     static Set<String> reportedMessages = new HashSet<String>();
     
-    private static void report(String message) {
-    	if(reportedMessages.contains(message)) return;
-    	reportedMessages.add(message);
-    	ProblemReportingHelper.reportProblem("org.jboss.tools.common.model", new Exception(message));
-    }
+ 
     
 }

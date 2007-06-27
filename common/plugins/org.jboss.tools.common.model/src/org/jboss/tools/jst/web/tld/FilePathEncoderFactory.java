@@ -21,7 +21,7 @@ public class FilePathEncoderFactory {
 		try {
 			jsfEncoder = (IFilePathEncoder)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jsf.model.helpers.pages.FilePathEncoder");
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
 

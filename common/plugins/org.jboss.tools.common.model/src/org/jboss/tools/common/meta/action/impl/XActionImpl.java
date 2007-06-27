@@ -109,7 +109,7 @@ public class XActionImpl extends XActionItemImpl implements XAction {
         }
         String callbackname = el.getAttribute("CallBackClassName");
         if(callbackname != null && callbackname.length() > 0) {
-        	ModelPlugin.log("Warning: callback=" + callbackname);
+        	ModelPlugin.getPluginLog().logInfo("Warning: callback=" + callbackname);
         }
     }
 

@@ -262,7 +262,7 @@ public class PropertiesLoader implements XObjectLoader {
     	try {
     		p.store(os, null);
     	} catch (Exception e) {
-    		ModelPlugin.log(e);
+    		ModelPlugin.getPluginLog().logError(e);
     	}
     	String q = os.toString();
     	int i = q.indexOf("=value");
@@ -279,7 +279,7 @@ public class PropertiesLoader implements XObjectLoader {
     	try {
     		p.store(os, null);
     	} catch (Exception e) {
-    		ModelPlugin.log(e);
+    		ModelPlugin.getPluginLog().logError(e);
     	}
     	String q = os.toString();
     	int i = q.indexOf("name=");

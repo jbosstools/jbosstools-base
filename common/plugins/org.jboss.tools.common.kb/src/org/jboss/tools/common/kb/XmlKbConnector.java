@@ -40,8 +40,8 @@ public class XmlKbConnector implements KbConnector {
 	 **/
 	public Collection getProposals(String query) throws KbException {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> XmlKbConnector.getProposals(String query)");
-			KbPlugin.log("    query = " + query);
+			KbPlugin.getPluginLog().logInfo("--> XmlKbConnector.getProposals(String query)");
+			KbPlugin.getPluginLog().logInfo("    query = " + query);
 		}
 /*
 		try {
@@ -60,8 +60,8 @@ public class XmlKbConnector implements KbConnector {
 		}
 
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- XmlKbConnector.getProposals(String query)");
-			KbPlugin.log("    proposals size=" + proposals.size());
+			KbPlugin.getPluginLog().logInfo("<-- XmlKbConnector.getProposals(String query)");
+			KbPlugin.getPluginLog().logInfo("    proposals size=" + proposals.size());
 		}
 		return proposals;
 	}
@@ -71,14 +71,14 @@ public class XmlKbConnector implements KbConnector {
 	 */
 	public boolean registerResource(KbResource resource) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> XmlKbConnector.registerResource(KbResource resource)");
-			KbPlugin.log("    resource = " + resource);
+			KbPlugin.getPluginLog().logInfo("--> XmlKbConnector.registerResource(KbResource resource)");
+			KbPlugin.getPluginLog().logInfo("    resource = " + resource);
 		}
 
 		if(!(resource instanceof KbDtdResource)) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("<-- XmlKbConnector.registerResource(KbResource resource)");
-				KbPlugin.log("    resource don't instanse of KbDtdResource.");
+				KbPlugin.getPluginLog().logInfo("<-- XmlKbConnector.registerResource(KbResource resource)");
+				KbPlugin.getPluginLog().logInfo("    resource don't instanse of KbDtdResource.");
 			}
 			return false;
 		}
@@ -87,14 +87,14 @@ public class XmlKbConnector implements KbConnector {
 		if(findEqualResource(resource)==null) {
 			registretedResources.add(resource);
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("    resource has been registered.");
+				KbPlugin.getPluginLog().logInfo("    resource has been registered.");
 			}
 			KbDtdStore.getInstance().registerResource(resource);
 		}
 
 		KbDtdStore.getInstance().reregisterModifiededResource(dtdResource);
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- XmlKbConnector.registerResource(KbResource resource)");
+			KbPlugin.getPluginLog().logInfo("<-- XmlKbConnector.registerResource(KbResource resource)");
 		}
 		return true;
 	}

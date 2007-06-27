@@ -30,7 +30,7 @@ public class KbDocumentBuilderFactory {
 		try {
 			return new DocumentBuilderCreator().createDocumentBuilder(validating);
 		} catch (Exception t) {
-			KbPlugin.log("Cannot create document builder.", t);
+			KbPlugin.getPluginLog().logError("Cannot create document builder.", t);
 			return null;
 		} 
 	}
@@ -65,7 +65,7 @@ public class KbDocumentBuilderFactory {
 					});
 				}
 			} catch (Exception t) {
-				KbPlugin.log("Document builder creation failed.", t);
+				KbPlugin.getPluginLog().logError("Document builder creation failed.", t);
 			}
 		}
 	}

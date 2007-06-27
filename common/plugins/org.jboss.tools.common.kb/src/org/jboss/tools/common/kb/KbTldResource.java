@@ -138,7 +138,7 @@ public class KbTldResource implements KbResource {
 		} catch (Exception e) {
             if(KbPlugin.isDebugEnabled()) {
                 String message = "ERROR: TLD file (" + tldLocation + ") doesn't exist!";
-    			KbPlugin.log(message, e);
+                KbPlugin.getPluginLog().logError(message, e);
             }
 		}
 		return is;

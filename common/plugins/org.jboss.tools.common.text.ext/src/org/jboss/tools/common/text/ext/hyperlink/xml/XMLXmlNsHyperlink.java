@@ -172,7 +172,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 			return page.openEditor(input, editorId, true);
 		}
 		catch (PartInitException pie) {
-			ExtensionsPlugin.log(pie);
+			ExtensionsPlugin.getPluginLog().logError(pie);
 		}
 		return null;
 	}
@@ -321,7 +321,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 			return region;
 
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error while obtaining region", x);
+			ExtensionsPlugin.getPluginLog().logError("Error while obtaining region", x);
 			return null;
 		} finally {
 			smw.dispose();

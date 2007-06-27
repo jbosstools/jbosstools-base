@@ -320,7 +320,7 @@ public class CreateFileSupport extends SpecialWizardSupport {
 			try {
 				folder.getProject().setPersistentProperty(n, path);
 			} catch (Exception e) {
-				ModelPlugin.log("CreateFileSuppport:TargetHolder:saveLastPath:" + e.getMessage());
+				ModelPlugin.getPluginLog().logError("CreateFileSuppport:TargetHolder:saveLastPath:" + e.getMessage());
 			}
 		}
 		

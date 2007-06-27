@@ -27,7 +27,7 @@ public class ModelImages {
 			instance = new ModelImages(ModelPlugin.getDefault().getBundle().getEntry("/"));
 		} catch (Exception e) {
 			// do nothing
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
 

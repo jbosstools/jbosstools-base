@@ -102,7 +102,7 @@ public class VRuleSetModel extends RegularObjectImpl implements PropertyChangeLi
         }
         bundles.put(baseName, NULL);
         if(VerificationPlugin.isDebugEnabled()) {
-			ModelPlugin.log("Resource not found: " + baseName + " by org.jboss.tools.common.verification.vrules.model.VRuleSetModel:getBundle()", new Exception(baseName));
+        	VerificationPlugin.getPluginLog().logInfo("Resource not found: " + baseName + " by org.jboss.tools.common.verification.vrules.model.VRuleSetModel:getBundle()", new Exception(baseName));
         }
         return null;
     }

@@ -133,7 +133,7 @@ public class XJob extends Job {
 					//ignore, bundle is not active
 				}
 				if(state == Bundle.ACTIVE) {
-					ModelPlugin.log(e);
+					ModelPlugin.getPluginLog().logError(e);
 				}
 			}
 			synchronized (this) {

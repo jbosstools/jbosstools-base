@@ -214,7 +214,7 @@ class AdapterHolder {
 		try {
 			doGetAdapter();
 		} catch (Exception t) {
-			ModelPlugin.log("Error while obtaining adapter", t);
+			ModelPlugin.getPluginLog().logError("Error while obtaining adapter", t);
 		}
 		if(adapter == null) adapter = new XAdapter();
 		return adapter;
@@ -234,7 +234,7 @@ class AdapterHolder {
                 	adapter = (XAdapter)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
                 }
             } catch (Exception e) {
-            	ModelPlugin.log("XAttributeImpl:loadAdapter:" + e.getMessage());
+            	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadAdapter:" + e.getMessage());
             }
         }
 		if(adapter == null) adapter = new XAdapter();
@@ -242,7 +242,7 @@ class AdapterHolder {
             try {
             	adapter.reload(element);
             } catch (Exception e) {
-            	ModelPlugin.log("XAttributeImpl:loadAdapter:" + e.getMessage());
+            	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadAdapter:" + e.getMessage());
             }
             adapter.setConstraint(attribute.getConstraint());
         }
@@ -272,7 +272,7 @@ class ConstraintHolder {
 			try {
 				doGetConstraint();
 			} catch (Exception t) {
-				ModelPlugin.log("Error while obtaining constraint", t);
+				ModelPlugin.getPluginLog().logError("Error while obtaining constraint", t);
 			}
 			if(constraint == null) constraint = new XAttributeConstraintImpl();
 		}
@@ -290,13 +290,13 @@ class ConstraintHolder {
             	constraint = (XAttributeConstraint)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
             }
         } catch (Exception e) {
-        	ModelPlugin.log("XAttributeImpl:loadConstraint:" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + e.getMessage());
         }
 		if(constraint == null) constraint = new XAttributeConstraintImpl();
 		try {
 			((XAttributeConstraintImpl)constraint).load(element);
 		} catch (Exception t) {
-			ModelPlugin.log("XAttributeImpl:loadConstraint:" + t.getMessage());
+			ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + t.getMessage());
 		}
 		loader = null;
 		element = null;

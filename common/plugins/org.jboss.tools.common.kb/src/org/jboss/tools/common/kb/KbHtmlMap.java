@@ -134,7 +134,7 @@ public class KbHtmlMap {
 //			TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(schemaFile));
 		} catch (Exception e) {
 			String message = "ERROR: Can't serialize HTML schema to file :" + schemaFile;
-			KbPlugin.log(message, e);
+			KbPlugin.getPluginLog().logError(message, e);
 			schemaFile.deleteOnExit();
 			return false;
 		}
@@ -276,7 +276,7 @@ public class KbHtmlMap {
 		} catch (Exception e) {
 			res = false;
 			String message = "ERROR: Can't serialize html map to file: " + hashMapLocation;
-			KbPlugin.log(message, e);
+			KbPlugin.getPluginLog().logError(message, e);
 		}
 
 		return res;

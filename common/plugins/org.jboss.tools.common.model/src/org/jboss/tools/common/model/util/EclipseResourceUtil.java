@@ -77,7 +77,7 @@ public class EclipseResourceUtil {
 			String s = o.getMainIconName();
 			return o.getModelEntity().getMetaModel().getIconList().getIconPath(s, "default.unknown");
 		} catch (Exception ex) {
-			ModelPlugin.log(ex);
+			ModelPlugin.getPluginLog().logError(ex);
 			return null;
 		}
 	}
@@ -91,7 +91,7 @@ public class EclipseResourceUtil {
 				imageDescriptor = ImageDescriptor.createFromURL(url);
 			}
 		} catch (Exception ex) {
-			ModelPlugin.log(ex);
+			ModelPlugin.getPluginLog().logError(ex);
 			imageDescriptor = ImageDescriptor.getMissingImageDescriptor();
 		}
 		if (imageDescriptor != null) result = imageDescriptor.createImage();		
@@ -141,7 +141,7 @@ public class EclipseResourceUtil {
 			IModelNature sp = getModelNature(p);
 			return (sp == null) ? null : sp.getModel().getByPath(path);
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 			return null;
 		}
 	}
@@ -214,7 +214,7 @@ public class EclipseResourceUtil {
 		try {
 			if(p.hasNature(nature)) return true;
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		return false;
 	}
@@ -229,7 +229,7 @@ public class EclipseResourceUtil {
 				    return n == null || n.getModel() == null ? null : n;
 				}
 			} catch (Exception e) {
-				ModelPlugin.log(e);
+				ModelPlugin.getPluginLog().logError(e);
 			}
 		}
 		return null;
@@ -240,7 +240,7 @@ public class EclipseResourceUtil {
 		try {
 			if(p.hasNature(id)) return (IModelNature)p.getNature(id);
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}
@@ -273,7 +273,7 @@ public class EclipseResourceUtil {
 				return result;
 			}
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 			return null;
 		}
 		XModel model = models.get(project);
@@ -298,7 +298,7 @@ public class EclipseResourceUtil {
 		
 		XModelObject fs = model.getByPath("FileSystems");
 		if(fs == null) {
-			ModelPlugin.log("Cannot create file systems for project " + project);
+			ModelPlugin.getPluginLog().logInfo("Cannot create file systems for project " + project);
 			return null;
 		}
 		String fsLoc = null;
@@ -324,7 +324,7 @@ public class EclipseResourceUtil {
 		try {
 			cs = project.members();
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		if(cs != null) for (int i = 0; i < cs.length; i++) {
 			if(!cs[i].isLinked()) continue;
@@ -396,7 +396,7 @@ public class EclipseResourceUtil {
 		XModel model = XModelFactory.getModel(properties);
 		XModelObject fs = model.getByPath("FileSystems");
 		if(fs == null) {
-			ModelPlugin.log("Cannot create file systems for model at " + location);
+			ModelPlugin.getPluginLog().logInfo("Cannot create file systems for model at " + location);
 			return null;
 		}
 		properties = new Properties();
@@ -422,7 +422,7 @@ public class EclipseResourceUtil {
 			}
 			return l.toArray(new String[0]);
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 			return EMPTY;
 		}
 	}
@@ -433,7 +433,7 @@ public class EclipseResourceUtil {
 			if(!project.hasNature(JavaCore.NATURE_ID)) return null;
 			return JavaCore.create(project);
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 			return null;		
 		}
 	}
@@ -447,7 +447,7 @@ public class EclipseResourceUtil {
 			IResource r = project.getWorkspace().getRoot().findMember(p);
 			return (r == null || r.getLocation() == null) ? null : r.getLocation().toString();
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 			return null;
 		}
 	}
@@ -535,7 +535,7 @@ public class EclipseResourceUtil {
 			}
 			return javaProject.findElement(path);
 		} catch (Exception ex) {
-			ModelPlugin.log(ex);
+			ModelPlugin.getPluginLog().logError(ex);
 		}
 		return null;
 	}
@@ -556,7 +556,7 @@ public class EclipseResourceUtil {
 			}
 			return t;
 		} catch (Exception t) {
-			ModelPlugin.log("Error while obtaining type " + className, t);
+			ModelPlugin.getPluginLog().logError("Error while obtaining type " + className, t);
 			return null;
 		}
 	}
@@ -594,7 +594,7 @@ public class EclipseResourceUtil {
 			String f = output + "/" + className.replace('.', '/') + ".class";
 			return new java.io.File(f).isFile();
 		} catch (Exception t) {
-			ModelPlugin.log("Error checking class " + className, t);
+			ModelPlugin.getPluginLog().logError("Error checking class " + className, t);
 			return false;
 		}		
 	}
@@ -619,7 +619,7 @@ public class EclipseResourceUtil {
 				} 
 			}
 		} catch(CoreException ce) {
-			ModelPlugin.log("Error while locating java source roots for " + project, ce);
+			ModelPlugin.getPluginLog().logError("Error while locating java source roots for " + project, ce);
 		}
 		return resources.toArray(new IResource[resources.size()]);
 	}
@@ -635,7 +635,7 @@ public class EclipseResourceUtil {
 				} 
 			}
 		} catch (Exception ex) {
-			ModelPlugin.log(ex);
+			ModelPlugin.getPluginLog().logError(ex);
 		}
 		return null;
 	}
@@ -760,7 +760,7 @@ public class EclipseResourceUtil {
 						return (relative.length() == 0) ? (IResource)c : c.getFolder(new Path(relative));
 					}
 				} catch (Exception e) {
-					ModelPlugin.log(e);
+					ModelPlugin.getPluginLog().logError(e);
 				}
 				continue;
 			}
@@ -783,7 +783,7 @@ public class EclipseResourceUtil {
 					if (absolutePath.equals(children[i].getLocation()))
 						result = children[i].getFullPath();
 			} catch (CoreException ex) {			
-				ModelPlugin.log(ex);
+				ModelPlugin.getPluginLog().logError(ex);
 			}
 		}
 		if (result == null) result = absolutePath;
@@ -828,7 +828,7 @@ public class EclipseResourceUtil {
 					}
 				}
 			} catch (Exception e) {
-				ModelPlugin.log(e);
+				ModelPlugin.getPluginLog().logError(e);
 			}
 		}
 		return l.toArray(new IResource[0]);

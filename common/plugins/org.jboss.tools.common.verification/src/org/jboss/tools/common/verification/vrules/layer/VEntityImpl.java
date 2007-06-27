@@ -7,6 +7,7 @@
 package org.jboss.tools.common.verification.vrules.layer;
 
 import org.jboss.tools.common.verification.vrules.*;
+import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
 import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
@@ -76,7 +77,7 @@ public class VEntityImpl implements VEntity {
     	if(modelEntity == null) {
     		modelEntity = meta.getEntity(entityName);
     		if(modelEntity == null) {
-    			ModelPlugin.log("VModelImpl:Cannot find entity " + entityName);
+    			VerificationPlugin.getPluginLog().logInfo("VModelImpl:Cannot find entity " + entityName);
     		}
     	}
         return modelEntity;

@@ -198,7 +198,7 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 			return searchForClassMethod(javaProject, className, methodName);
 
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error while looking for method " + methodName + " of class " + className, x);
+			ExtensionsPlugin.getPluginLog().logError("Error while looking for method " + methodName + " of class " + className, x);
 			return null;
 		}
 

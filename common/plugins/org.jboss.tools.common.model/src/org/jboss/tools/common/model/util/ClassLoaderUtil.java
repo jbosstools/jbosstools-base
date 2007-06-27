@@ -42,14 +42,14 @@ public class ClassLoaderUtil {
 			Bundle b = Platform.getBundle(activation[i][0]);
 			if(b == null) {
 				if(activation[i].length >= 2 && "required".equals(activation[i][2])) {
-					ModelPlugin.log("ClassLoaderUtil:activate: Cannot find required plugin " + activation[i][0]);
+					ModelPlugin.getPluginLog().logInfo("ClassLoaderUtil:activate: Cannot find required plugin " + activation[i][0]);
 				}
 			} else if(b.getState() != Bundle.ACTIVE) {
 				String n = activation[i][1];
 				try {
 					b.loadClass(n);
 				} catch (Exception e) {
-					ModelPlugin.log("ClassLoaderUtil:activate: Cannot find class " + n);
+					ModelPlugin.getPluginLog().logError("ClassLoaderUtil:activate: Cannot find class " + n);
 				}
 			}
 		}

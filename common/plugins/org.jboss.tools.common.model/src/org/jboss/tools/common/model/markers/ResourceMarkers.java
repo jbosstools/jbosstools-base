@@ -98,7 +98,7 @@ public class ResourceMarkers {
 			ms = dms.toArray(new IMarker[0]);
 			for (int i = 0; i < ms.length; i++) ms[i].delete(); 
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
 	
@@ -176,7 +176,7 @@ public class ResourceMarkers {
 		try {
 			ModelPlugin.getWorkspace().run(runnable, null,IWorkspace.AVOID_UPDATE, null);
 		} catch (CoreException e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
 	

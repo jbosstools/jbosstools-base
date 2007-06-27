@@ -69,7 +69,7 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
             bundle = ResourceBundle.getBundle(baseName);
         } catch (RuntimeException e) {
         	if(VerificationPlugin.isDebugEnabled()) {
-				ModelPlugin.log(e);
+        		VerificationPlugin.getPluginLog().logError(e);
         	}
         }
         Object bo = (bundle == null) ? (Object)"null" : bundle;
@@ -94,7 +94,7 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
             if (manager == null && getParent() != null) init();
         } catch (Exception e) {
 			if(VerificationPlugin.isDebugEnabled()) {
-				ModelPlugin.log(e);
+				ModelPlugin.getPluginLog().logError(e);
 			}
         }
     }

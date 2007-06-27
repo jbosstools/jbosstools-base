@@ -8,6 +8,8 @@ package org.jboss.tools.common.verification.vrules.impl;
 
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.verification.vrules.*;
+import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
+
 import java.beans.*;
 import java.util.*;
 
@@ -117,7 +119,7 @@ public class VRuleSetImpl implements VRuleSet {
         try {
             pattern = bundle.getString("message."+id);
         } catch (MissingResourceException e) {
-        	ModelPlugin.log("Cannot find message-id " + id);
+        	VerificationPlugin.getPluginLog().logError("Cannot find message-id " + id);
         	pattern = "";
         }
         if (pattern == null) return null;

@@ -93,7 +93,7 @@ public class RenameModelObjectChange extends TextFileChange {
 				objects[i].getModel().changeObjectAttribute(objects[i], attributeName, newName);
 			}
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}		
 		return null;
 	}

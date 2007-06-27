@@ -76,7 +76,7 @@ public class ModelFeatureFactory {
 		if(c == null) {
 			instanceFailures.add(id);
 			classFailures.add(id);
-			ModelPlugin.log(new Exception("Model feature " + id + " is not registered with extension point " + POINT));
+			ModelPlugin.getPluginLog().logError(new Exception("Model feature " + id + " is not registered with extension point " + POINT));
 			return null;
 		}
 		try {
@@ -84,7 +84,7 @@ public class ModelFeatureFactory {
 		} catch (CoreException e) {
 			instanceFailures.add(id);
 			if(!isActive()) return null;
-			ModelPlugin.log("Cannot create model feature instance " + id + ".", e);
+			ModelPlugin.getPluginLog().logError("Cannot create model feature instance " + id + ".", e);
 		}
 		return null;
 	}
@@ -95,7 +95,7 @@ public class ModelFeatureFactory {
 		if(c == null) {
 			classFailures.add(id);
 			instanceFailures.add(id);
-			ModelPlugin.log(new Exception("Model feature " + id + " is not registered with extension point " + POINT));
+			ModelPlugin.getPluginLog().logError(new Exception("Model feature " + id + " is not registered with extension point " + POINT));
 			return null;
 		}
 		try {
@@ -106,7 +106,7 @@ public class ModelFeatureFactory {
 		} catch (ClassNotFoundException e) {
 			classFailures.add(id);
 			if(!isActive()) return null;
-			ModelPlugin.log("Cannot create model feature class " + c.getAttribute("class") + ".", e);
+			ModelPlugin.getPluginLog().logError("Cannot create model feature class " + c.getAttribute("class") + ".", e);
 		}
 		return null;
 	}
@@ -118,7 +118,7 @@ public class ModelFeatureFactory {
 			return (XModelObject)o;
 		} catch (ClassCastException e) {
 			instanceFailures.add(id);
-			ModelPlugin.log("Model feature " + id + " is not instance of XModelObject", e);
+			ModelPlugin.getPluginLog().logError("Model feature " + id + " is not instance of XModelObject", e);
 			return null;
 		}
 	}

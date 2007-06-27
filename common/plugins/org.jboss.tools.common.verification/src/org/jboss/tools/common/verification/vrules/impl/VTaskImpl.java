@@ -111,7 +111,7 @@ public class VTaskImpl implements VTask, Runnable {
                     notifyApplied(rule, object, results);
                 } catch (Exception e) {
                 	if(VerificationPlugin.isDebugEnabled()) {
-						ModelPlugin.log("Exception in action "+action+" ignored: "+e, e);
+                		VerificationPlugin.getPluginLog().logError("Exception in action "+action+" ignored: "+e, e);
                 	}
                 }
                 checked = true;
@@ -146,7 +146,7 @@ public class VTaskImpl implements VTask, Runnable {
     
     private void logListener(VTaskListener listener, Throwable e) { 
 		if(VerificationPlugin.isDebugEnabled()) {
-			ModelPlugin.log("Exception in listener "+listener+" ignored: "+e, e);
+			VerificationPlugin.getPluginLog().logInfo("Exception in listener "+listener+" ignored: "+e, e);
 		}
     }
 

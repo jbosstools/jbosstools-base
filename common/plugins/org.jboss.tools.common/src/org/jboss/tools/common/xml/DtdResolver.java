@@ -62,7 +62,7 @@ public class DtdResolver implements EntityResolver {
 	            	return url.openStream();
 	            }
             } catch(Exception e) {
-            	CommonPlugin.log("Error in DtdResolver: " + e.getMessage());
+    			CommonPlugin.getPluginLog().logError("Error in DtdResolver: " + e.getMessage());
             }
         }
 
@@ -82,7 +82,7 @@ public class DtdResolver implements EntityResolver {
             		is = HttpUtil.getInputStreamFromUrlByGetMethod(systemId);
             	}
     		} catch (Exception e) {
-    			CommonPlugin.log(e.getMessage());
+      			CommonPlugin.getPluginLog().logError( e.getMessage());
     			// don't handle any exeptions. Bug #ESL-306
             }
 		}

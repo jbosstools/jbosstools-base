@@ -70,7 +70,7 @@ public class SharableLoaderImpl implements SharableConstants {
                 sharable.addChild(sc);
                 if(!hasName) sharable.setName(name);
             } catch (Exception e) {
-            	ModelPlugin.log("SharableLoaderImpl:loadChild:" + e.getMessage());
+            	ModelPlugin.getPluginLog().logError("SharableLoaderImpl:loadChild:" + e.getMessage());
             }
         }
         if(sc != null) {
@@ -139,7 +139,7 @@ public class SharableLoaderImpl implements SharableConstants {
             if(children[i].isRequired()) {
                 SharableElement c = (SharableElement)sharable.getModel().createModelObject(children[i].getName(), new Properties());
                 if(c == null) {
-                	ModelPlugin.log("Could not create sharable folder " + children[i].getName());
+                	ModelPlugin.getPluginLog().logInfo("Could not create sharable folder " + children[i].getName());
                 	continue;
                 }
                 c.setScope(PROJECT);

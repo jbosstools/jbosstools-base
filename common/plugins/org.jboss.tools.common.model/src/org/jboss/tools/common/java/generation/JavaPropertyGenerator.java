@@ -136,7 +136,7 @@ public class JavaPropertyGenerator {
 		try {
 			buf = cu.getBuffer();
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		if (buf == null) {
 			return System.getProperty("line.separator", "\n");

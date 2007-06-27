@@ -194,7 +194,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
             element.removeAttribute("EXTENSION");
             return serialize(element, object);
         } catch (Exception e) {
-        	ModelPlugin.log(e);
+        	ModelPlugin.getPluginLog().logError(e);
             return null;
         }
     }

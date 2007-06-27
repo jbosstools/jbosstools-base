@@ -41,7 +41,7 @@ public class StructuredSelectionHelper {
 		try {
 			setSelectionAndReveal(null, region);
 		} catch (Exception x) {
-			ModelPlugin.log("Error in setting selection to active text editor", x);
+			ExtensionsPlugin.getPluginLog().logError("Error in setting selection to active text editor", x);
 		}
 	}
 	public static StructuredTextEditor getStructuredTextEditor (IEditorPart editorPart) {
@@ -62,7 +62,7 @@ public class StructuredSelectionHelper {
 				
 			}
 		} catch (Exception x) {
-			ModelPlugin.log("Error in obtaining structured text editor", x);
+			ExtensionsPlugin.getPluginLog().logError("Error in obtaining structured text editor", x);
 		}
 		return null;
 	}
@@ -79,7 +79,7 @@ public class StructuredSelectionHelper {
 			ISelectionProvider provider = sourceEditor.getSelectionProvider();
 			provider.setSelection(new TextSelection(region.getOffset(), region.getLength()));
 		} catch (Exception x) {
-			ModelPlugin.log("Error in setting selection", x);
+			ExtensionsPlugin.getPluginLog().logError("Error in setting selection", x);
 		}
 	}
 

@@ -35,7 +35,7 @@ public class KeyLoader {
 					keys.setProperty(k, p.getProperty(k));
 				}
 			} catch (Exception e) {
-				ModelPlugin.log("KeyLoader:load" + url);
+				ModelPlugin.getPluginLog().logError("KeyLoader:load" + url);
 			}
 		}
 		return keys;
@@ -59,12 +59,12 @@ public class KeyLoader {
 						resources.add(url);
 					} else {
 						if(ModelPlugin.isDebugEnabled()) {
-							ModelPlugin.log("Warning: meta resource " + path + " not found.");
+							ModelPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found.");
 						}
 					}
 				} catch (Exception e) {
 					if(ModelPlugin.isDebugEnabled()) {
-						ModelPlugin.log("Warning: meta resource " + path + " not found.");
+						ModelPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found.");
 					}
 				}
 			}

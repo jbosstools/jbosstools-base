@@ -32,7 +32,7 @@ public class SafeDocumentBuilderFactory extends Thread {
 			if(validate) f.setValidating(validate);
 			d = f.newDocumentBuilder();				
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
 	
@@ -43,7 +43,7 @@ public class SafeDocumentBuilderFactory extends Thread {
 		try {
 			return new SafeDocumentBuilderFactory(validating).d;
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 			return null;
 		} 
 	}

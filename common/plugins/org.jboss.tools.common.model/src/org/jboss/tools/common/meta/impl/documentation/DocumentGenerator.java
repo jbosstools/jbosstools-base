@@ -39,7 +39,7 @@ public class DocumentGenerator {
             XModelObjectLoaderUtil.serialize(g, filename);
             replace();
         } catch (Exception e) {
-        	ModelPlugin.log(e);
+        	ModelPlugin.getPluginLog().logError(e);
         }
     }
 
@@ -269,7 +269,7 @@ public class DocumentGenerator {
                 sb.append(b, 0, i);
             }
         } catch (Exception e) {
-        	ModelPlugin.log(e);
+        	ModelPlugin.getPluginLog().logError(e);
         }
         int i = 0;
         while(i < sb.length()) {
@@ -282,7 +282,7 @@ public class DocumentGenerator {
             bw.flush();
             bw.close();
         } catch (Exception e) {
-        	ModelPlugin.log(e);
+        	ModelPlugin.getPluginLog().logError(e);
         }
     }
 

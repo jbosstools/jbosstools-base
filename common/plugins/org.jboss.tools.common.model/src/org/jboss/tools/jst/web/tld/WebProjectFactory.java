@@ -19,7 +19,7 @@ public class WebProjectFactory {
 		try {
 			instance = (IWebProjectFactory)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.tld.WebProjectFactoryImpl");
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
 }

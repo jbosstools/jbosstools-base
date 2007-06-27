@@ -32,7 +32,7 @@ public class EnginesLoader extends URLRootLoader {
           try {
               object.addChild(XModelObjectLoaderUtil.createValidObject(object.getModel(), cs[i].getName()));
           } catch (Exception e) {
-        	  ModelPlugin.log("EnginesLoader:load:" + e.getMessage());
+        	  ModelPlugin.getPluginLog().logError("EnginesLoader:load:" + e.getMessage());
           }
         }
         if(isFilePath(getPath(object))) {

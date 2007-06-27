@@ -105,7 +105,7 @@ public class XStudioDataLoaderImpl implements SharableConstants {
         try {
             if(!f.exists()) f.createNewFile();
         } catch (Exception e1) {
-        	ModelPlugin.log("XStudioDataLoaderImpl:save:Cannot create file:" + e1.getMessage());
+        	ModelPlugin.getPluginLog().logError("XStudioDataLoaderImpl:save:Cannot create file:" + e1.getMessage());
             return;
         }
         Element e = XMLUtil.createDocumentElement("dummyroot");
@@ -117,7 +117,7 @@ public class XStudioDataLoaderImpl implements SharableConstants {
         try {
             XModelObjectLoaderUtil.serialize(xs, f.getAbsolutePath());
         } catch (Exception e2) {
-        	ModelPlugin.log(e2);
+        	ModelPlugin.getPluginLog().logError(e2);
         }
     }
     
@@ -159,7 +159,7 @@ public class XStudioDataLoaderImpl implements SharableConstants {
             URLConnection c = u.openConnection();
             return c.getInputStream();
     	} catch (Exception e) {
-    		ModelPlugin.log(e);
+    		ModelPlugin.getPluginLog().logError(e);
     		return null;
     	}
     }

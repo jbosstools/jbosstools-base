@@ -15,6 +15,7 @@ import java.util.*;
 import org.eclipse.core.runtime.*;
 import org.osgi.framework.Bundle;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
 
 public class RuleSetResourceLoader {
 	
@@ -34,12 +35,12 @@ public class RuleSetResourceLoader {
 						resources.add(url);
 					} else {
 						if(ModelPlugin.isDebugEnabled()) {
-							ModelPlugin.log("Warning: meta resource " + path + " not found.");
+							VerificationPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found.");
 						}
 					}
 				} catch (Exception e) {
 					if(ModelPlugin.isDebugEnabled()) {
-						ModelPlugin.log("Warning: meta resource " + path + " not found.");
+						VerificationPlugin.getPluginLog().logError("Warning: meta resource " + path + " not found.");
 					}
 				}
 			}

@@ -69,7 +69,7 @@ public class VRuleSetsLoader extends EnginesLoader {
                 }
             } catch (Exception e) {
 				if(VerificationPlugin.isDebugEnabled()) {
-					ModelPlugin.log(e);
+					VerificationPlugin.getPluginLog().logError(e);
 				}
             }
         }

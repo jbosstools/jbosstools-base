@@ -33,14 +33,14 @@ public class Preference {
 		XModelObject obj = PreferenceModelUtilities.getPreferenceModel().getByPath(option);
 		if(obj == null) {
 			if(ModelPlugin.isDebugEnabled()) {
-				ModelPlugin.log(option + " does not exist");
+				ModelPlugin.getPluginLog().logInfo(option + " does not exist");
 			}
 			return "";
 		} 
 		XAttribute attribute = obj.getModelEntity().getAttribute(attributeName);
 		if(attribute == null) {
 			if(ModelPlugin.isDebugEnabled()) {
-				ModelPlugin.log(attributeName + " in " + option + " does not exist");
+				ModelPlugin.getPluginLog().logInfo(attributeName + " in " + option + " does not exist");
 			}
 			return "";
 		} 

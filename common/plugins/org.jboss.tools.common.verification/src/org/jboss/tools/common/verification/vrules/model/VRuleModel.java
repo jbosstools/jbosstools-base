@@ -104,7 +104,9 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
         try {
             return (VAction)ModelFeatureFactory.getInstance().createFeatureInstance(className);
         } catch (Exception th) {
-			if(VerificationPlugin.isDebugEnabled())ModelPlugin.log("Unable to create action \""+className+"\": " + "VRuleModel:getAction");
+			if(VerificationPlugin.isDebugEnabled()) { 
+				VerificationPlugin.getPluginLog().logError("Unable to create action \""+className+"\": " + "VRuleModel:getAction");
+			}
         }
         return null;
     }

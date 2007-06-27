@@ -69,7 +69,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 					ln1 = "" + (iln - 1);
 				}
 			} catch (Exception e) {
-				ModelPlugin.log(e);
+				ModelPlugin.getPluginLog().logError(e);
 			}
 			String ep = "ERROR: " + FindObjectHelper.makeRef(getPath() + ":" + ln1, ln + ":" + pos) + " " + er;
 			if(iln < 0) markers.lines.remove(ep);

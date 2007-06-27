@@ -26,7 +26,7 @@ public class XMetaDataLoader implements XMetaDataConstants {
         try {
             return (XMetaElementImpl)defImpl.newInstance();
         } catch (Exception e) {
-        	ModelPlugin.log("Error in getDefaultMetaElementInstance");
+        	ModelPlugin.getPluginLog().logError("Error in getDefaultMetaElementInstance");
             return null;
         }
     }
@@ -40,7 +40,7 @@ public class XMetaDataLoader implements XMetaDataConstants {
         try {
             return (XMetaElementImpl)ClassLoaderUtil.getClassLoader().loadClass(loader).newInstance();
         } catch (Exception e) {
-        	ModelPlugin.log("Error in getMetaElementInstance " + loader);
+        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader);
             return null;
         }
     }

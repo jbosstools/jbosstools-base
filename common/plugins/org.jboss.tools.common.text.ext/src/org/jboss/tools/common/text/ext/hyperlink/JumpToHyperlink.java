@@ -164,7 +164,7 @@ public class JumpToHyperlink extends AbstractHyperlink {
 			}
 			return elements;
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error in looking elements for axis " + axis, x);
+			ExtensionsPlugin.getPluginLog().logError("Error in looking elements for axis " + axis, x);
 			return null;
 		}
 	}

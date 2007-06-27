@@ -50,7 +50,7 @@ public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
             r.validateChildren();
             parents.init(this);
         } catch (Exception e) {
-        	ModelPlugin.log(e);
+        	ModelPlugin.getPluginLog().logError(e);
             throw new RuntimeException("Cannot create metamodel: " + e.getMessage());
         }
     }

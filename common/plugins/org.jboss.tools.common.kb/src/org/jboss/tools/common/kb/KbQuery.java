@@ -161,7 +161,7 @@ public class KbQuery {
 					}
 				} catch(Exception e) {
 					String message = "ERROR: can't decode string=" + s;
-					KbPlugin.log(message, e);
+					KbPlugin.getPluginLog().logError(message, e);
 				}
 			}
 		}

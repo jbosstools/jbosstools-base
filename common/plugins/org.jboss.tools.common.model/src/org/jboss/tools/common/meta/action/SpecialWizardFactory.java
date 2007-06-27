@@ -18,7 +18,7 @@ public final class SpecialWizardFactory {
         try {
             return (SpecialWizard)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
         } catch (Exception e) {
-        	ModelPlugin.log(e);
+        	ModelPlugin.getPluginLog().logError(e);
             return null;
         }
     }

@@ -74,7 +74,7 @@ public class AccessibleJava implements ISimpleTree {
             try { 
             	addJar(new JarFile(t)); 
             } catch (Exception e) {
-            	ModelPlugin.log("addJars:" + e.getClass().getName());
+            	ModelPlugin.getPluginLog().logError("addJars:" + e.getClass().getName());
             }
         }
     }
@@ -97,7 +97,7 @@ public class AccessibleJava implements ISimpleTree {
         try { 
         	jar.close(); 
         } catch (Exception exc) {
-        	ModelPlugin.log("AccessibleJava:Cannot close jar.");
+        	ModelPlugin.getPluginLog().logError("AccessibleJava:Cannot close jar.");
         }
     }
 

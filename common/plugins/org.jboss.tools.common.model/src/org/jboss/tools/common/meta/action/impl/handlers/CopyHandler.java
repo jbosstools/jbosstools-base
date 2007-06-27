@@ -28,7 +28,7 @@ public class CopyHandler extends AbstractHandler {
 		try {
 			modelTransfer = (Transfer)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.dnd.ModelTransfer");
 		} catch (Exception e) {
-			ModelPlugin.log("Model transfer class not found.");
+			ModelPlugin.getPluginLog().logError("Model transfer class not found.");
 		}
 	}
 

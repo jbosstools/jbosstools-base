@@ -98,7 +98,7 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 			if (tm == null) return null;
 			return tm.getTaglibObject(uri);
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error in obtaining file name from region", x);
+			ExtensionsPlugin.getPluginLog().logError("Error in obtaining file name from region", x);
 			return null;
 		} finally {
 			smw.dispose();
@@ -153,7 +153,7 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 			};
 			return region;
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error in obtaining region", x);
+			ExtensionsPlugin.getPluginLog().logError("Error in obtaining region", x);
 			return null;
 		} finally {
 			smw.dispose();

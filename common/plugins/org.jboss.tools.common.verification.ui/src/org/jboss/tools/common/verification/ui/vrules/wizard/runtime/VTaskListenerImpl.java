@@ -15,6 +15,7 @@ import org.jboss.tools.common.model.markers.ResourceMarkers;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.markers.ResourceProblems;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.verification.ui.XStudioVerificationPlugin;
 import org.jboss.tools.common.verification.vrules.core.resources.VerificationMarkers;
 import org.jboss.tools.common.verification.vrules.*;
 import org.jboss.tools.common.verification.vrules.layer.VObjectImpl;
@@ -41,7 +42,7 @@ public class VTaskListenerImpl implements VTaskListener {
 		if(results != null) {
 			for (int i = 0; i < results.length; i++) {
 				if(results[i] == null) {
-					ModelPlugin.log("Result in rule " + rule.getName() + " is null.");
+					XStudioVerificationPlugin.getPluginLog().logInfo("Result in rule " + rule.getName() + " is null.");
 					continue;
 				}
 				if (results[i].getSignificance() <= VHelper.getManager(/*view.model*/).getMinSignificance()) continue;

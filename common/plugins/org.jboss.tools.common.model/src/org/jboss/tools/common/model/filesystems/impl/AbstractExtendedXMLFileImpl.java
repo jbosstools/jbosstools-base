@@ -117,7 +117,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     	    		constraintChecker.check();
     	    	} catch (Exception e) {
     	    		if(ModelPlugin.isDebugEnabled()) {
-    	    			ModelPlugin.log(e);
+    	    			ModelPlugin.getPluginLog().logError(e);
     	    		}
     	    	}    	
     		}
@@ -189,7 +189,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         	try {
         		if(!isOverlapped) constraintChecker.check();
         	} catch (Exception e) {
-        		ModelPlugin.log(e);
+        		ModelPlugin.getPluginLog().logError(e);
         	}
 		} else {
 			//old edit by replace		

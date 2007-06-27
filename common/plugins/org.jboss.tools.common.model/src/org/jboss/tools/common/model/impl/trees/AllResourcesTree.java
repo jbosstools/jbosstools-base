@@ -109,7 +109,7 @@ public abstract class AllResourcesTree implements XFilteredTree {
         		if(nature != null && !ps[i].hasNature(nature)) continue;
         	} catch (Exception e) {
         		if(ModelPlugin.isDebugEnabled()){
-        			ModelPlugin.log("AllResourcesTree:" + e.getMessage());
+        			ModelPlugin.getPluginLog().logInfo("AllResourcesTree:" + e.getMessage());
         		}
         		continue;
         	}
@@ -145,7 +145,7 @@ public abstract class AllResourcesTree implements XFilteredTree {
 			r = ModelPlugin.getWorkspace().getRoot().getFolder(new Path(value));
 		} catch (Exception e) {
 			if(ModelPlugin.isDebugEnabled()){
-				ModelPlugin.log("AllResourcesTree:" + e.getMessage());
+				ModelPlugin.getPluginLog().logInfo("AllResourcesTree:" + e.getMessage());
     		}
 		}
 		if(r == null || !r.exists()) {
@@ -153,7 +153,7 @@ public abstract class AllResourcesTree implements XFilteredTree {
 				r = ModelPlugin.getWorkspace().getRoot().getFile(new Path(value));
 			} catch (Exception e) {
 				if(ModelPlugin.isDebugEnabled()){
-					ModelPlugin.log("AllResourcesTree:" + e.getMessage());
+					ModelPlugin.getPluginLog().logInfo("AllResourcesTree:" + e.getMessage());
         		}
 			}
 		}

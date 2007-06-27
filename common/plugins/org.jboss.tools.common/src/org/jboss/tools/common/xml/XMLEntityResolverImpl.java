@@ -45,7 +45,7 @@ public class XMLEntityResolverImpl implements XMLEntityResolver {
             publicId = rid.getPublicId();
         	
         	if(systemId != null && systemId.indexOf("www.ibm.com") >= 0) {
-        		CommonPlugin.log("ignore");
+        		CommonPlugin.getPluginLog().logError( "ignore");
         		return null;
         	}
         	
@@ -54,7 +54,7 @@ public class XMLEntityResolverImpl implements XMLEntityResolver {
                 result = new XMLInputSource(rid.getPublicId(), systemId, rid.getBaseSystemId(), is, null);
             }
         } catch (Exception e) {
-        	CommonPlugin.log("Exception publicId=" + publicId + " systemId=" + systemId + " exception=" + e.getClass().getName() + ":" + e.getMessage());
+        	CommonPlugin.getPluginLog().logError( "Exception publicId=" + publicId + " systemId=" + systemId + " exception=" + e.getClass().getName() + ":" + e.getMessage());
         }
 
         return result;

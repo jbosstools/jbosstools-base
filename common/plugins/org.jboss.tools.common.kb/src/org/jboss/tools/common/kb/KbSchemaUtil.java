@@ -198,9 +198,9 @@ public class KbSchemaUtil {
 					attributesD.remove(typeLow);
 					attributesI.add(typeLow);
 				} else if(attributesI.contains(typeLow)) {
-					KbPlugin.log("Warning: attribute type " + type + " is declared more than once in element " + elementName + ".");
+					KbPlugin.getPluginLog().logWarning("Warning: attribute type " + type + " is declared more than once in element " + elementName + ".");
 				} else if(!attributesI.contains(typeLow)) {
-					KbPlugin.log("Warning: attribute type " + type + " is never used by an attribute in element " + elementName + ".");
+					KbPlugin.getPluginLog().logWarning("Warning: attribute type " + type + " is never used by an attribute in element " + elementName + ".");
 				}
 			}
 		}
@@ -225,7 +225,7 @@ public class KbSchemaUtil {
 			Iterator it = attributesD.iterator();
 			while(it.hasNext()) {
 				String a = it.next().toString();
-				KbPlugin.log("Warning: attribute type is not defined for attribute " + a + " in element " + elementName + ".");
+				KbPlugin.getPluginLog().logWarning("Warning: attribute type is not defined for attribute " + a + " in element " + elementName + ".");
 			}
 		}
 

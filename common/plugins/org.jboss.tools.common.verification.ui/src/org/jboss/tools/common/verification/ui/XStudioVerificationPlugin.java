@@ -10,13 +10,34 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.verification.ui;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-
+import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.model.plugin.IModelPlugin;
 
-public class XStudioVerificationPlugin extends AbstractUIPlugin implements IModelPlugin {
+public class XStudioVerificationPlugin extends BaseUIPlugin implements IModelPlugin {
+
+	// The shared instance
+	private static XStudioVerificationPlugin plugin;
 
 	public XStudioVerificationPlugin() {
 	    super();
+	    plugin = this;
 	}
+	
+	/**
+	 * Returns the shared instance
+	 *
+	 * @return the shared instance
+	 */
+	public static XStudioVerificationPlugin getDefault() {
+		return plugin;
+	}
+	
+	/**
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog getPluginLog() {
+		return getDefault();
+	}
+
 }

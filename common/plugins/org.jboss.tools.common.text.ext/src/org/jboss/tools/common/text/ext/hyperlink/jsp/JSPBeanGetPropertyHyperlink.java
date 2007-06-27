@@ -155,7 +155,7 @@ public class JSPBeanGetPropertyHyperlink extends ClassMethodHyperlink {
 				}
 			}
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error in finding element by id " + id, x);
+			ExtensionsPlugin.getPluginLog().logError("Error in finding element by id " + id, x);
 		} finally {
 			smw.dispose();
 		}

@@ -63,12 +63,12 @@ public class OSHelper {
         p = r.exec( "/bin/env" );
       } else  {
           if(ModelPlugin.isDebugEnabled()) {
-        	  ModelPlugin.log("OS not known: " + OS);
+        	  ModelPlugin.getPluginLog().logInfo("OS not known: " + OS);
           }
       }
     } catch (java.io.IOException e) {
         if(ModelPlugin.isDebugEnabled()) {
-        	ModelPlugin.log(e);
+        	ModelPlugin.getPluginLog().logError(e);
         }
     }
     java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(p.getInputStream()));
@@ -87,7 +87,7 @@ public class OSHelper {
         envVars.setProperty( key.toUpperCase(), value );
       }
     } catch (java.io.IOException e) {
-    	ModelPlugin.log(e);
+    	ModelPlugin.getPluginLog().logError(e);
     }
     return envVars;
   }

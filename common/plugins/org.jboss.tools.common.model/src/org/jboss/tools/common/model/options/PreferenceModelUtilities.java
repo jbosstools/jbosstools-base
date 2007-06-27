@@ -32,7 +32,7 @@ public class PreferenceModelUtilities {
 					preferenceModel.setService(d);
 				}
 			} catch (Exception e) {
-				ModelPlugin.log(e);
+				ModelPlugin.getPluginLog().logError(e);
 			}
 		}
 
@@ -41,7 +41,7 @@ public class PreferenceModelUtilities {
 				return (ServiceDialog)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl");
 			} catch (Exception e) {
 				if(ModelPlugin.isDebugEnabled()) {
-					ModelPlugin.log("Cannot create service dialog.");
+					ModelPlugin.getPluginLog().logInfo("Cannot create service dialog.");
 				}
 			}
 			return null;
@@ -59,7 +59,7 @@ public class PreferenceModelUtilities {
 			p.setProperty("rootEntity", "OptionRoot");
 			return XModelFactory.getModel(p);
 		} catch (Exception t) {
-			ModelPlugin.log("Error in creating preference model", t);
+			ModelPlugin.getPluginLog().logError("Error in creating preference model", t);
 		}
 		return null;
 	}

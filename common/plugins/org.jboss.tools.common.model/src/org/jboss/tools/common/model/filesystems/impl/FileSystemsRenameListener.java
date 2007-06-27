@@ -94,7 +94,7 @@ public class FileSystemsRenameListener {
 			try {
 				folder = ModelPlugin.getWorkspace().getRoot().getFolder(path);
 			} catch (Exception e) {
-				ModelPlugin.log("FileSystemsRenameListener:getLocation: Cannot find folder " + path);
+				ModelPlugin.getPluginLog().logError("FileSystemsRenameListener:getLocation: Cannot find folder " + path);
 			}
 			return folder == null ? null : folder.getLocation();
 		} else {
@@ -102,7 +102,7 @@ public class FileSystemsRenameListener {
 			try {
 				project = ModelPlugin.getWorkspace().getRoot().getProject(path.segments()[0]);
 			} catch (Exception e) {
-				ModelPlugin.log("FileSystemsRenameListener:getLocation: Cannot find project " + path);
+				ModelPlugin.getPluginLog().logError("FileSystemsRenameListener:getLocation: Cannot find project " + path);
 			}
 			return project == null ? null : project.getLocation();
 		}

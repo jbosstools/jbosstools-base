@@ -526,7 +526,7 @@ public class KbTldStore implements KbStore {
 					resourceWithoutVersion.setVersion(null);
 					resource = (KbTldResource)registratedResources.get(resourceWithoutVersion);
 				} catch (CloneNotSupportedException e) {
-    				KbPlugin.log(e);
+					KbPlugin.getPluginLog().logError(e);
 				}
 			}
 			return resource;
@@ -558,7 +558,7 @@ public class KbTldStore implements KbStore {
 		File schemaLocation = regResource.getSchemaLocation();
 		if((schemaLocation == null)||(!schemaLocation.exists())) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("WARNING: Schema (location: " + schemaLocation + ") for resource (" + regResource +") does not exist!");
+				KbPlugin.getPluginLog().logWarning("WARNING: Schema (location: " + schemaLocation + ") for resource (" + regResource +") does not exist!");
 			}
 			return;
 		}
@@ -567,8 +567,7 @@ public class KbTldStore implements KbStore {
 		try {
 			document = KbDocumentBuilderFactory.createDocumentBuilder(false).parse(schemaLocation);
 		} catch (Exception e) {
-        	ProblemReportingHelper.reportProblem(KbPlugin.PLUGIN_ID, "ERROR: Can't parse Schema (location: " + schemaLocation + ")", e);
-			KbPlugin.log(e);
+        	KbPlugin.getPluginLog().logError(e);
 			return;
 		}
 
@@ -1077,8 +1076,7 @@ public class KbTldStore implements KbStore {
 
 //				TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(schemaFile));
 			} catch (Exception e) {
-	        	ProblemReportingHelper.reportProblem(KbPlugin.PLUGIN_ID, "ERROR: Can't serialize TLD schema (" + schemaFile + ").", e);
-				KbPlugin.log(e);
+	        	KbPlugin.getPluginLog().logError(e);
 				schemaFile.deleteOnExit();
 				loadingResources.remove(resource);
 				return;

@@ -187,7 +187,7 @@ public class XModelObjectLoaderUtil {
             		XModelObject q = o.getChildByPath(co.getPathPart());
             		if(q != null) EnginesLoader.merge(q, co, false);
             	} catch (Exception exc) {
-            		ModelPlugin.log("XModelObjectLoaderUtil:loadChildren:" + exc.getMessage());
+            		ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:loadChildren:" + exc.getMessage());
             	}
             	continue;
             } 
@@ -440,7 +440,7 @@ public class XModelObjectLoaderUtil {
             serialize(object, w);
             return w.toString();
         } catch (Exception e) {
-        	ModelPlugin.log("XModelObjectLoaderUtil:asString:" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:asString:" + e.getMessage());
             return "";
         }
     }
@@ -505,7 +505,7 @@ public class XModelObjectLoaderUtil {
             Element element = XMLUtil.getElement(f.getAbsolutePath());
             if(element != null) load(element, o);
         } catch (Exception e) {
-        	ModelPlugin.log("XModelObjectLoaderUtil:load(f,o):" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:load(f,o):" + e.getMessage());
         }
     }
 
@@ -515,7 +515,7 @@ public class XModelObjectLoaderUtil {
         try {
             if(!serialize(o, w)) return false;
         } catch (Exception e) {
-        	ModelPlugin.log("XModelObjectLoaderUtil:save(f,o):" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:save(f,o):" + e.getMessage());
             return false;
         }
         String r = w.toString();
@@ -574,7 +574,7 @@ public class XModelObjectLoaderUtil {
         try {
             return readFile(new File(expandString(filename)));
         } catch (Exception e) {
-        	ModelPlugin.log("XModelObjectLoaderUtil:readFile(" + filename + "):" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:readFile(" + filename + "):" + e.getMessage());
             return "";
         }
     }
@@ -591,7 +591,7 @@ public class XModelObjectLoaderUtil {
         try {
             return writeFile(new File(expandString(filename)), value);
         } catch (Exception e) {
-        	ModelPlugin.log("XModelObjectLoaderUtil:writeFile(" + filename + "):" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:writeFile(" + filename + "):" + e.getMessage());
             return false;
         }
     }
@@ -612,7 +612,7 @@ public class XModelObjectLoaderUtil {
             }
             return null;
         } catch (Exception e) {
-        	ModelPlugin.log("XModelObjectLoaderUtil:getObjectLoader(" + object + "):" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:getObjectLoader(" + object + "):" + e.getMessage());
             return null;
         }
     }

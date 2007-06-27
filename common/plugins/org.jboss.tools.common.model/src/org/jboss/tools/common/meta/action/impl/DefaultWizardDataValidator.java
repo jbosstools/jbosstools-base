@@ -86,7 +86,7 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 			XModelObject o = support.getTarget().getModel().createModelObject(entity, data);
 			if(o != null) message = DefaultCreateHandler.getContainsMessage(support.getTarget(), o);
 		} catch (Exception e) {
-			ModelPlugin.log("DefaultWizardDataValidator:validateAddFile:" + e.getMessage());
+			ModelPlugin.getPluginLog().logError("DefaultWizardDataValidator:validateAddFile:" + e.getMessage());
 		}
 	}
 	
@@ -112,7 +112,7 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 			if(o != null && parent == support.getTarget().getParent() && o.getPathPart().equals(support.getTarget().getPathPart())) return true;
 			if(o != null) message = DefaultCreateHandler.getContainsMessage(parent, o);
 		} catch (Exception e) {
-			ModelPlugin.log("DefaultWizardDataValidator:checkChild:" + e.getMessage());
+			ModelPlugin.getPluginLog().logError("DefaultWizardDataValidator:checkChild:" + e.getMessage());
 		}
 		return message == null;
 	}

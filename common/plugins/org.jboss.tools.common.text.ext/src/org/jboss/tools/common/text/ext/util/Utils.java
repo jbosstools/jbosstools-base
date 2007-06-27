@@ -95,7 +95,7 @@ public class Utils {
 			result = node;
 			return node;
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error while finding node for offset", x);
+			ExtensionsPlugin.getPluginLog().logError("Error while finding node for offset", x);
 			return null;
 		}
 	}

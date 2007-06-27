@@ -60,7 +60,7 @@ public class FileSystemsLoader extends URLRootLoader {
         try {
         	((FileSystemsImpl)object).updateOverlapped();
         } catch (Exception e) {
-        	ModelPlugin.log(e);
+        	ModelPlugin.getPluginLog().logError(e);
         }
         return b;
     }

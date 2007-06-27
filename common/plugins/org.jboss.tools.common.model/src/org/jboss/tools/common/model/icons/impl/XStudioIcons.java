@@ -80,7 +80,7 @@ public class XStudioIcons implements ImageComponent {
         		Image i = new Image(null, id);
         		return i;
         	} catch (Exception e) {
-        		ModelPlugin.log(e);
+        		ModelPlugin.getPluginLog().logError(e);
         	}
         }
    		return obj.getModelEntity().getMetaModel().getIconList().getImage("default.unknown");

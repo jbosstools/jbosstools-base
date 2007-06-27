@@ -77,10 +77,10 @@ public class Watcher implements XModelTreeListener {
     				list.add((IWatcherContributor)watcher);
     			else
 					if(ModelPlugin.isDebugEnabled()) {			
-						ModelPlugin.log("Class is not implemented IWatcherContributor interface!");
+						ModelPlugin.getPluginLog().logInfo("Class is not implemented IWatcherContributor interface!");
 					}
     		} catch (Exception e) {
-    			ModelPlugin.log(e);
+    			ModelPlugin.getPluginLog().logError(e);
     		}
     	}
     	contributors = list.toArray(new IWatcherContributor[0]);

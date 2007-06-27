@@ -74,8 +74,8 @@ public class KbDtdResource implements KbResource {
 	 */
 	public InputStream getInputStream() {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> KbDtdResource.getInputStream()");
-			KbPlugin.log("    this resource = " + this);
+			KbPlugin.getPluginLog().logInfo("--> KbDtdResource.getInputStream()");
+			KbPlugin.getPluginLog().logInfo("    this resource = " + this);
 		}
 
 		InputStream is = null;
@@ -84,14 +84,14 @@ public class KbDtdResource implements KbResource {
 			if(dtdLocation != null) {
 				is = new BufferedInputStream(new FileInputStream(dtdLocation));
 				if(KbPlugin.isDebugEnabled()) {
-					KbPlugin.log("    dtd location is not null and is will getting from dtd location");
+					KbPlugin.getPluginLog().logInfo("    dtd location is not null and is will getting from dtd location");
 				}
 			} else if((url != null)) {
 				if("jar".equals(url.getProtocol())) {
 					is = url.openStream();
 				} else if(KbConfigurationFactory.getInstance().getDefaultConfiguration().isAllowDownload()) {
 					if(KbPlugin.isDebugEnabled()) {
-						KbPlugin.log("    the dtd is will getting from url because url is not null and downloading from internet is alowed");
+						KbPlugin.getPluginLog().logInfo("    the dtd is will getting from url because url is not null and downloading from internet is alowed");
 					}
 					is = HttpUtil.getInputStreamFromUrlByGetMethod(url.toString());
 				}
@@ -105,9 +105,9 @@ public class KbDtdResource implements KbResource {
 					id = publicId;
 				} else {
 					if(KbPlugin.isDebugEnabled()) {
-						KbPlugin.log("    system id and public id from input sourec are null and so can't to get url from input source");
-						KbPlugin.log("<-- KbDtdResource.getInputStream()");
-						KbPlugin.log("    return is = null");
+						KbPlugin.getPluginLog().logInfo("    system id and public id from input sourec are null and so can't to get url from input source");
+						KbPlugin.getPluginLog().logInfo("<-- KbDtdResource.getInputStream()");
+						KbPlugin.getPluginLog().logInfo("    return is = null");
 					}
 					return null;
 				}
@@ -115,12 +115,12 @@ public class KbDtdResource implements KbResource {
 				is = HttpUtil.getInputStreamFromUrlByGetMethod(id);
 			}
 		} catch (Exception e) {
-			KbPlugin.log(e);
+			KbPlugin.getPluginLog().logError(e);
 		}
 
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- KbDtdResource.getInputStream()");
-			KbPlugin.log("    return is = " + is);
+			KbPlugin.getPluginLog().logInfo("<-- KbDtdResource.getInputStream()");
+			KbPlugin.getPluginLog().logInfo("    return is = " + is);
 		}
 		return is;
 	}
@@ -130,22 +130,22 @@ public class KbDtdResource implements KbResource {
 	 */
 	public boolean equals(Object ob) {
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("--> KbDtdResource.equals(Object ob)");
-			KbPlugin.log("    this = " + this);
-			KbPlugin.log("    ob = " + ob);
+			KbPlugin.getPluginLog().logInfo("--> KbDtdResource.equals(Object ob)");
+			KbPlugin.getPluginLog().logInfo("    this = " + this);
+			KbPlugin.getPluginLog().logInfo("    ob = " + ob);
 		}
 
 		if(ob == this) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("<-- KbDtdResource.equals(Object ob)");
-				KbPlugin.log("    return = true");
+				KbPlugin.getPluginLog().logInfo("<-- KbDtdResource.equals(Object ob)");
+				KbPlugin.getPluginLog().logInfo("    return = true");
 			}
 			return true;
 		}
 		if((!(ob instanceof KbDtdResource)) || (ob == null)) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.log("<-- KbDtdResource.equals(Object ob)");
-				KbPlugin.log("    return = false");
+				KbPlugin.getPluginLog().logInfo("<-- KbDtdResource.equals(Object ob)");
+				KbPlugin.getPluginLog().logInfo("    return = false");
 			}
 			return false;
 		}
@@ -184,8 +184,8 @@ public class KbDtdResource implements KbResource {
 */
 		boolean result = eqUri||eqId;
 		if(KbPlugin.isDebugEnabled()) {
-			KbPlugin.log("<-- KbDtdResource.equals(Object ob)");
-			KbPlugin.log("    return = " + result);
+			KbPlugin.getPluginLog().logInfo("<-- KbDtdResource.equals(Object ob)");
+			KbPlugin.getPluginLog().logInfo("    return = " + result);
 		}
 
 		return result;

@@ -48,7 +48,7 @@ public class DefaultEntityLoader implements XObjectLoader {
             object.setModified(true);
             return true;
         } catch (Exception exc) {
-        	ModelPlugin.log("DefaultEntityLoader:save(" + object.getPresentationString() + "):" + exc.getMessage());
+        	ModelPlugin.getPluginLog().logError("DefaultEntityLoader:save(" + object.getPresentationString() + "):" + exc.getMessage());
             return false;
         }
     }

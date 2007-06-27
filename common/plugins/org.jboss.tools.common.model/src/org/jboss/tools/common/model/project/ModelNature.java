@@ -49,8 +49,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		try {
 			createProject();
 		} catch (Exception e) {
-			ModelPlugin.log("ModelNature:createProject()");
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError("ModelNature:createProject()", e);
 		}
 	}
 	
@@ -87,7 +86,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 			String home = getWorkspaceHome();
 			String h = XModelConstants.getWorkspace(model);
 			if(home == null || !home.equals(h)) {
-				ModelPlugin.log("WARNING:" + " workspace home changed from " + h + " to " + home);
+				ModelPlugin.getPluginLog().logInfo("WARNING:" + " workspace home changed from " + h + " to " + home);
 				model.getProperties().setProperty(XModelConstants.WORKSPACE, home);
 				model.getProperties().setProperty("nature", getID());
 				model.load();				
@@ -110,7 +109,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		try {
 			updateProjectVersion();
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		updateListener();
 	}
@@ -169,7 +168,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		try {
 			return (ServiceDialog)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl");
 		} catch (Exception e) {
-			ModelPlugin.log("Cannot create service dialog.");
+			ModelPlugin.getPluginLog().logError("Cannot create service dialog.");
 		}
 		return null;
 	}

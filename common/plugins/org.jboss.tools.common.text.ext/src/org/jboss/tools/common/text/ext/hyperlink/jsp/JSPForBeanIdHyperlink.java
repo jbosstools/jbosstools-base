@@ -139,7 +139,7 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 			}
 		} catch (Exception x) {
 			Exception e = x instanceof Exception ? (Exception)x : new Exception(x);
-			ExtensionsPlugin.log(e);
+			ExtensionsPlugin.getPluginLog().logError(e);
 		} finally {
 			smw.dispose();
 		}

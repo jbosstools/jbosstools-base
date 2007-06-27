@@ -370,7 +370,7 @@ public class KbHtmlStore implements KbStore {
 		try {
 			htmlSchema = KbDocumentBuilderFactory.createDocumentBuilder(false).parse(new File(htmlSchemaLocation));
 		} catch (Exception e) {
-			KbPlugin.log(e);
+			KbPlugin.getPluginLog().logError(e);
 			return false;
 		}
 		return true;

@@ -67,7 +67,7 @@ public class ProcessOut implements Runnable {
                 }
                 writer.write(new String(b, 0, av));
             } catch (Exception e) {
-            	ModelPlugin.log(e);
+            	ModelPlugin.getPluginLog().logError(e);
             }
         }
     }

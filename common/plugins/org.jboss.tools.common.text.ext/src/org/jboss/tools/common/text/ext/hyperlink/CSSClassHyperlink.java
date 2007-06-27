@@ -253,7 +253,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 				token = scanner.nextToken();
 			}
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error while looking for style region " + styleName, x);
+			ExtensionsPlugin.getPluginLog().logError("Error while looking for style region " + styleName, x);
 		} finally {
 			try {
 				reader.close();
@@ -300,7 +300,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 				token = scanner.nextToken();
 			}
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error while looking for style region ", x);
+			ExtensionsPlugin.getPluginLog().logError("Error while looking for style region ", x);
 		} finally {
 			try {
 				stream.close();
@@ -350,7 +350,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 			}
 			return styleLinks;
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error while looking for style links", x);
+			ExtensionsPlugin.getPluginLog().logError("Error while looking for style links", x);
 			return null;
 		}
 	}

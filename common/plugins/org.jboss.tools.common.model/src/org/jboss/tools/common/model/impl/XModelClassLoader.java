@@ -62,7 +62,7 @@ public class XModelClassLoader extends URLClassLoader {
                 addURL(f.toURL());
                 tempurls.add(f.getAbsolutePath());
             } catch (Exception e) {
-                ModelPlugin.log(e);
+            	ModelPlugin.getPluginLog().logError(e);
                 tempurls.add(l);
             }
         }

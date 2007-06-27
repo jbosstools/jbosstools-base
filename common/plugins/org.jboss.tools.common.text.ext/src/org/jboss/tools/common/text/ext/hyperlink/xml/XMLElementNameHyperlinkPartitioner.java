@@ -53,7 +53,7 @@ public class XMLElementNameHyperlinkPartitioner extends AbstractHyperlinkPartiti
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
 		} catch (Exception x) {
-			ExtensionsPlugin.log("Error while parsing region", x);
+			ExtensionsPlugin.getPluginLog().logError("Error while parsing region", x);
 			return null;
 		} finally {
 			smw.dispose();

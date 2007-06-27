@@ -51,7 +51,7 @@ public class BrowserHelper {
 					  return true;
 				  }
 			  } catch (Exception e) {
-				  ModelPlugin.log("BrowserHelper:" + e.getMessage());
+				  ModelPlugin.getPluginLog().logError("BrowserHelper:" + e.getMessage());
 			  }
 			int i = d.showDialog("Run", "Enter valid path for " + o.getPresentationString(),
 								 new String[]{"OK", "Cancel"}, dt[0], ServiceDialog.QUESTION);
@@ -67,7 +67,7 @@ public class BrowserHelper {
 			for (int i = 0; i < ps.length; i++) ps[i] = st.nextToken();
 			return ps;
 		} catch (Exception t) {
-			ModelPlugin.log("BrowserHelper:" + t.getMessage());
+			ModelPlugin.getPluginLog().logError("BrowserHelper:" + t.getMessage());
 			return null;
 		}
 	}

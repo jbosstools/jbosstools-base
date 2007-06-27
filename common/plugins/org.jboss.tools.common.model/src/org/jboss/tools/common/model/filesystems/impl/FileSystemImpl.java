@@ -73,12 +73,12 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 							f.create(true, true, null);
 						}
 					} catch (Exception e) {
-						ModelPlugin.log(e);
+						ModelPlugin.getPluginLog().logError(e);
 					}
 				}
 				return resource = f;			
 			} catch (Exception e) {
-				ModelPlugin.log(e);
+				ModelPlugin.getPluginLog().logError(e);
 			}
 		}
 
@@ -88,9 +88,9 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 				f.createLink(new Path(thloc), IFolder.FORCE, null);
 				resource = f;
     		} catch (Exception e) {
-    			ModelPlugin.log("Cannot create link: " + e.getMessage());
-    			ModelPlugin.log("Project path=" + prloc);
-    			ModelPlugin.log("   Link path=" + thloc);
+    			ModelPlugin.getPluginLog().logError("Cannot create link: " + e.getMessage());
+    			ModelPlugin.getPluginLog().logError("Project path=" + prloc);
+    			ModelPlugin.getPluginLog().logError("   Link path=" + thloc);
     		}    		
     	} else resource = f;
     	return resource;

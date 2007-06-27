@@ -33,7 +33,7 @@ public class URLRootLoader extends FileRootLoader {
                 Element element = XMLUtil.getElement(getInputStream(object));
                 if(element != null) util().load(element, object);
             } catch (Exception e) {
-            	ModelPlugin.log(e);
+            	ModelPlugin.getPluginLog().logError(e);
             }
         }
     }

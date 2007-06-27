@@ -10,6 +10,7 @@ import java.util.*;
 
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.verification.vrules.model.VManagerModel;
+import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
 
 /**
  *
@@ -34,7 +35,7 @@ public class VHelper {
 		if(managerModel == null) {
 			managerModel = mgr;
 		} else if(managerModel != mgr) {
-			ModelPlugin.log("Warning: VManager already exists.");
+			VerificationPlugin.getPluginLog().logInfo("Warning: VManager already exists.");
 		}
 	}
 

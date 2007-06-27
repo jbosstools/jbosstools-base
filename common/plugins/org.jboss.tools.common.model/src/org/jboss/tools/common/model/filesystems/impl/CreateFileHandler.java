@@ -58,7 +58,7 @@ public class CreateFileHandler extends DefaultCreateHandler {
         		try {
 					XActionInvoker.invoke("Open", q, new Properties());
 				} catch (Exception e) {
-					ModelPlugin.log("CreateFileHandler:Open:" + e.getMessage());
+					ModelPlugin.getPluginLog().logError("CreateFileHandler:Open:" + e.getMessage());
 				}
         	}
         });

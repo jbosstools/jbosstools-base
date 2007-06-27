@@ -10,10 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.verification.vrules.plugin;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.model.plugin.IModelPlugin;
 
-public class VerificationPlugin extends AbstractUIPlugin implements IModelPlugin {
+public class VerificationPlugin extends BaseUIPlugin implements IModelPlugin {
 	static VerificationPlugin plugin;
 	public static final String PLUGIN_ID = "org.jboss.tools.common.verification";	
 	public VerificationPlugin() {		
@@ -23,6 +24,17 @@ public class VerificationPlugin extends AbstractUIPlugin implements IModelPlugin
 	
 	public static boolean isDebugEnabled() {
 		return plugin != null && plugin.isDebugging();
+	}
+	
+	public static VerificationPlugin getDefault() {
+		return plugin;
+	}
+	
+	/**
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog getPluginLog() {
+		return getDefault();
 	}
 
 }

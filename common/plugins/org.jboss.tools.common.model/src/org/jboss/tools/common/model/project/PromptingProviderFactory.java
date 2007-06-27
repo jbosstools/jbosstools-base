@@ -19,7 +19,7 @@ public class PromptingProviderFactory {
 		try {
 			WEB = (IPromptingProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.project.list.WebPromptingProvider");
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
 

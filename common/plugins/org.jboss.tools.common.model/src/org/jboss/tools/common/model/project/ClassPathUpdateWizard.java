@@ -35,7 +35,7 @@ public class ClassPathUpdateWizard implements SpecialWizard {
 		try {
 			u.execute();
 		} catch (Exception e) {
-			ModelPlugin.log(e);
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		return 0;
 	}

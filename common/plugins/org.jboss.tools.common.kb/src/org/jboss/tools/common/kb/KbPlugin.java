@@ -15,20 +15,22 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
-
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.kb.configuration.KbConfigurationFactory;
+import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.log.IPluginLog;
+import org.osgi.framework.BundleContext;
 
 /**
  * @author eskimo
  */
-public class KbPlugin extends AbstractUIPlugin {
+public class KbPlugin extends BaseUIPlugin {
 
 	public static final String PLUGIN_ID = "org.jboss.tools.common.kb";
 	private File location;
+	
+	// The shared instance
+	private static KbPlugin plugin;
+
 
 	protected void initializeDefaultPluginPreferences() {
 		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_USE_LOWER_CASE, true);
@@ -70,8 +72,7 @@ public class KbPlugin extends AbstractUIPlugin {
 				isLocationSet = true;
 				location = new File(FileLocator.resolve(KbPlugin.getDefault().getBundle().getEntry("/")).getPath());
 			} catch (IOException e) {
-				ProblemReportingHelper.reportProblem(KbPlugin.PLUGIN_ID, e);
-				KbPlugin.log(e);
+				getPluginLog().logError(e);
 			}
 		}
 		return location;
@@ -96,17 +97,21 @@ public class KbPlugin extends AbstractUIPlugin {
     static class KbPluginHolder {
 		static KbPlugin INSTANCE = (KbPlugin)Platform.getPlugin(PLUGIN_ID); 
 	}
+    
+	/**
+	 * Returns the shared instance
+	 *
+	 * @return the shared instance
+	 */
+	public static KbPlugin getDefaultPlugin() {
+		return plugin;
+	}
 
-	public static void log(String msg) {
-		getDefault().getLog().log(new Status(Status.INFO, PLUGIN_ID, Status.OK, msg, null));		
+	/**
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog getPluginLog() {
+		return getDefaultPlugin();
 	}
-	
-	public static void log(String message, Throwable exception) {
-		getDefault().getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.OK, message, exception));
-	}
-	
-	static public void log(Exception ex) {
-		getDefault().getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.OK, "No message", ex));
-	}
-	
+
 }

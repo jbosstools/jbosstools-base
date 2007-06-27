@@ -17,11 +17,9 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-
+import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkDetector;
 
 
@@ -31,7 +29,7 @@ import org.jboss.tools.common.text.ext.hyperlink.HyperlinkDetector;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ExtensionsPlugin extends AbstractUIPlugin implements IAdaptable {
+public class ExtensionsPlugin extends BaseUIPlugin implements IAdaptable {
 	//The shared instance.
 	private static ExtensionsPlugin plugin;
 	//Resource bundle.
@@ -56,7 +54,7 @@ public class ExtensionsPlugin extends AbstractUIPlugin implements IAdaptable {
 	 * The constructor.
 	 */
     public ExtensionsPlugin(IPluginDescriptor descriptor) {
-        super(descriptor);
+        super();
 		plugin = this;
 		try {
 			resourceBundle= ResourceBundle.getBundle("org.jboss.tools.common.text.ext.ExtensionsPlugin");
@@ -99,26 +97,20 @@ public class ExtensionsPlugin extends AbstractUIPlugin implements IAdaptable {
 		return resourceBundle;
 	}
 	
-	static public void log(String msg) {
-		ExtensionsPlugin.getDefault().getLog().log(new Status(Status.ERROR, ExtensionsPlugin.PLUGIN_ID, Status.OK, msg, null));		
-	}
-	
-	public static void log(IStatus status) {
-		ExtensionsPlugin.getDefault().getLog().log(status);
-	}
-	public static void log(String message, Exception exception) {
-		ExtensionsPlugin.getDefault().getLog().log(new Status(Status.ERROR, ExtensionsPlugin.PLUGIN_ID, Status.OK, message, exception));		
-	}
-	static public void log(Exception ex) 
-	{
-		ExtensionsPlugin.getDefault().getLog().log(new Status(Status.ERROR, ExtensionsPlugin.PLUGIN_ID, Status.OK, "No message", ex));
-	}
 
 	public Object getAdapter(Class adapter) {
 		if (adapter == IHyperlinkDetector.class) {
 			return HyperlinkDetector.getInstance();
 		}
 		return null;
+	}
+
+	
+	/**
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog getPluginLog() {
+		return getDefault();
 	}
 
 }

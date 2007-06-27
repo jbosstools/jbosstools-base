@@ -162,7 +162,7 @@ public class ClassPathUpdate {
 				new NullProgressMonitor()
 			);
 		} catch(JavaModelException ex) {
-			ModelPlugin.log(ex);
+			ModelPlugin.getPluginLog().logError(ex);
 		}
 	}
 	

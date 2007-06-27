@@ -204,11 +204,11 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
         					if(attr != null) {
         						list.add(attr.copy());
         					} else {
-        						ModelPlugin.log("Cannot find reference to attribute " + attrName + " of entity " + entityName);
+        						ModelPlugin.getPluginLog().logInfo("Cannot find reference to attribute " + attrName + " of entity " + entityName);
         					}
     					}
     				} else {
-						ModelPlugin.log("Cannot find reference to entity " + entityName);
+    					ModelPlugin.getPluginLog().logInfo("Cannot find reference to entity " + entityName);
     				}
     			}
     		}
@@ -257,7 +257,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
         		adopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance(adoptclass);
         	}
         } catch (Exception e) {
-        	ModelPlugin.log("XModelEntityImpl:setAdoptManager:" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("XModelEntityImpl:setAdoptManager:" + e.getMessage());
         }
     }
 
@@ -272,7 +272,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
         try {
             actions.merge((XActionListImpl)ext.getActionList());
         } catch (Exception e) {
-        	ModelPlugin.log("XModelEntityImpl:merge:" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("XModelEntityImpl:merge:" + e.getMessage());
         }
     }
 
@@ -314,7 +314,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
                 	if(unfoundEntities == null) unfoundEntities = new HashSet<String>();
                 	if(!unfoundEntities.contains(n)) {
                 		unfoundEntities.add(n);
-                		ModelPlugin.log("getChildByXML: cannot find child entity " + n);
+                		ModelPlugin.getPluginLog().logInfo("getChildByXML: cannot find child entity " + n);
                 	}
                 	continue;
                 }
