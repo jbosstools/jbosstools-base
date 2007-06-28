@@ -99,7 +99,7 @@ public class RedHatStructuredTextViewerConfigurationXML extends StructuredTextVi
 			m.setAccessible(true);
 			return (IContentAssistProcessor[])m.invoke(initial, new Object[]{sourceViewer, partitionType});
 		} catch (Exception e) {
-			e.printStackTrace();
+			XmlEditorPlugin.getPluginLog().logError(e);
 		}
 		
 		return null;

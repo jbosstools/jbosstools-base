@@ -16,6 +16,8 @@ import java.util.jar.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.jboss.tools.common.CommonPlugin;
+
 public final class FileUtil {
 
     public FileUtil() {}
@@ -107,7 +109,7 @@ public final class FileUtil {
             }
             is.close();
         } catch (Exception e) {
-            e.printStackTrace();
+        	CommonPlugin.getPluginLog().logError(e);
         }
         return sb.toString();
     }
@@ -169,7 +171,7 @@ public final class FileUtil {
             copyStream(is, os);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+        	CommonPlugin.getPluginLog().logError(e);
             return false;
         } finally {
             try {

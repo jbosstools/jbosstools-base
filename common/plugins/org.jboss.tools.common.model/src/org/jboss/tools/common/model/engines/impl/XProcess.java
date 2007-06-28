@@ -13,6 +13,8 @@ package org.jboss.tools.common.model.engines.impl;
 import java.io.*;
 import java.util.*;
 
+import org.jboss.tools.common.model.plugin.ModelPlugin;
+
 public abstract class XProcess {
     protected Process process = null;
     ProcessOut err = null;
@@ -41,9 +43,7 @@ public abstract class XProcess {
             err = new ProcessOut(process, true, w);
             out = new ProcessOut(process, false, w);
         } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            write(sw.toString());
+        	ModelPlugin.getPluginLog().logError(e);
         }
         new HookMonitor();
     }

@@ -67,7 +67,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 						fEditorId);
 			}
 		} catch (Exception x) {
-			XmlEditorPlugin.log(x);
+			XmlEditorPlugin.getPluginLog().logError(x);
 		}
 		update();
 	}
@@ -180,7 +180,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		try {
 			base = FileLocator.resolve(XmlEditorPlugin.getDefault().getBundle().getEntry("/"));
 		} catch (Exception e) {
-			XmlEditorPlugin.log(e);
+			XmlEditorPlugin.getPluginLog().logError(e);
 			return null;
 		}
 		StringBuffer buffer = new StringBuffer(prefix);

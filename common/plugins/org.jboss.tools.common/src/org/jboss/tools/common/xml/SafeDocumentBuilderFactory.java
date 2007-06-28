@@ -15,7 +15,7 @@ import java.io.ByteArrayInputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.eclipse.core.runtime.Platform;
+import org.jboss.tools.common.CommonPlugin;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -50,7 +50,7 @@ public class SafeDocumentBuilderFactory extends Thread {
 			}
 			d.setErrorHandler(new ErrorHandlerImpl());
 		} catch (Exception e) {
-			e.printStackTrace();
+			CommonPlugin.getPluginLog().logError(e);
 		} finally {
 			Thread.currentThread().setContextClassLoader(loader);
 		}

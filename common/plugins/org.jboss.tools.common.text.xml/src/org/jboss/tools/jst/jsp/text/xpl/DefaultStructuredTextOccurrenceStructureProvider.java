@@ -230,7 +230,7 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 				try {
 					message= document.get(position.offset, position.length);
 				} catch (BadLocationException ex) {
-					XmlEditorPlugin.log(ex);
+					XmlEditorPlugin.getPluginLog().logError(ex);
 					// Skip this match
 					continue;
 				}
@@ -833,7 +833,7 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 			}
 
 		} catch (Exception x) {
-			XmlEditorPlugin.log("", x);
+			XmlEditorPlugin.getPluginLog().logError("", x);
 		}
 	}
 

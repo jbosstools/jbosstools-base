@@ -10,19 +10,24 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.xml;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.xerces.util.XMLCatalogResolver;
-import org.apache.xerces.xni.*;
+import org.apache.xerces.xni.XMLResourceIdentifier;
+import org.apache.xerces.xni.XNIException;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
-import org.osgi.framework.Bundle;
-import org.xml.sax.*;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.util.FileUtil;
+import org.osgi.framework.Bundle;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * @author eskimo(dgolovin@exadel.com)
@@ -66,9 +71,7 @@ public class SAXValidator {
         try {
             parserInstance.setProperty(ENTITY_RESOLVER_PROPERTY_ID, new XMLEntityResolverImpl());
         } catch (Exception e1) {
-        	Status errorStatus = new Status(
-        			Status.ERROR, CommonPlugin.PLUGIN_ID, 0, e1.getMessage()+"", e1);
-        	CommonPlugin.getInstance().getLog().log(errorStatus);
+        	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1);
         }
         
         parserInstance.setContentHandler(handler);
@@ -87,10 +90,7 @@ public class SAXValidator {
             parser.setFeature(name, value);
         } catch (SAXException e) {
         	// TODO - Move to NLS bundle
-        	Status warningStatus = new Status(
-        			Status.ERROR, CommonPlugin.PLUGIN_ID, 0, 
-        			"warning: Parser does not support feature ("+name+")", e);
-        	CommonPlugin.getInstance().getLog().log(warningStatus);
+        	CommonPlugin.getPluginLog().logError("warning: Parser does not support feature ("+name+")", e);
         }
     }
 
@@ -104,10 +104,7 @@ public class SAXValidator {
         try {
             parser.setProperty(name, value);
         } catch (SAXException e) {
-        	Status warningStatus = new Status(
-        			Status.ERROR, CommonPlugin.PLUGIN_ID, 0, 
-        			"warning: Parser does not support feature ("+name+")", e);
-        	CommonPlugin.getInstance().getLog().log(warningStatus);
+        	CommonPlugin.getPluginLog().logError("warning: Parser does not support feature ("+name+")", e);
         }
     }    
     
@@ -168,7 +165,7 @@ public class SAXValidator {
         	if(!urlString.endsWith("/")) urlString += "/";
         	urlString += "schemas";
     	} catch (Exception e) {
-    		e.printStackTrace();
+    		CommonPlugin.getPluginLog().logError(e);
     	}
     	File f1 = new File(url.getFile() + "/schemas/catalog.xml");
     	File f2 = new File(location + "schemas/catalog.xml");

@@ -100,6 +100,5 @@ class RunAntProcess extends XProcess {
             js.getModel().getOut().println(n);
         }
     }
-
 }
 

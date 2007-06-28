@@ -20,16 +20,13 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
-//import org.eclipse.jdt.ui.PreferenceConstants; tau
 import org.eclipse.jdt.ui.text.JavaTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.eclipse.wst.xml.ui.internal.XMLUIPlugin;
-
-import org.jboss.tools.common.text.xml.ui.xpl.XmlPreferenceConstants;
+import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.jst.jsp.preferences.xpl.PreferenceConstants;
 import org.jboss.tools.jst.jsp.preferences.xpl.XMLOccurrencePreferenceConstants;
 import org.jboss.tools.jst.jsp.preferences.xpl.XMLOccurrencesPreferencePage;
@@ -38,7 +35,7 @@ import org.jboss.tools.jst.jsp.text.xpl.StructuredTextOccurrenceStructureProvide
 /**
  * The main plugin class to be used in the desktop.
  */
-public class XmlEditorPlugin extends AbstractUIPlugin {
+public class XmlEditorPlugin extends BaseUIPlugin {
 	//The shared instance.
 	private static XmlEditorPlugin plugin;
 	//Resource bundle.
@@ -93,38 +90,6 @@ public class XmlEditorPlugin extends AbstractUIPlugin {
 		return resourceBundle;
 	}
 	
-	static public void log(String msg) {
-		//XStudioPlugin.getDefault().getLog().log(new Status(Status.INFO, XStudioPlugin.PLUGIN_ID, Status.OK, msg, null));
-		//System.out.println(msg);
-/*		
-		ILog log = TomcatLauncherPlugin.getDefault().getLog();
-		Status status = new Status(IStatus.ERROR, TomcatLauncherPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg + "\n", null);
-		log.log(status);
-*/		
-	}
-	
-	public static void log(IStatus status) {
-		XmlEditorPlugin.getDefault().getLog().log(status);
-	}
-	public static void log(String message, Throwable exception) {
-		XmlEditorPlugin.getDefault().getLog().log(new Status(Status.ERROR, XmlEditorPlugin.PLUGIN_ID, Status.OK, message, exception));		
-	}
-	static public void log(Exception ex) 
-	{
-		XmlEditorPlugin.getDefault().getLog().log(new Status(Status.ERROR, XmlEditorPlugin.PLUGIN_ID, Status.OK, "No message", ex));
-		//ex.printStackTrace();
-/*		
-		ILog log = TomcatLauncherPlugin.getDefault().getLog();
-		StringWriter stringWriter = new StringWriter();
-		ex.printStackTrace(new PrintWriter(stringWriter));
-		String msg = stringWriter.getBuffer().toString();
-
-		Status status = new Status(IStatus.ERROR, TomcatLauncherPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg, null);
-		log.log(status);
-*/		
-	}
-	
-	               
 	protected void initializeDefaultPluginPreferences() {
 		super.initializeDefaultPluginPreferences();
 
@@ -193,5 +158,10 @@ public class XmlEditorPlugin extends AbstractUIPlugin {
 	}
 
 
-	
+	/**
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog getPluginLog() {
+		return getDefault();
+	}
 }
