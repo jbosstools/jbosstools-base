@@ -26,9 +26,14 @@ public class PlugInLoadTest extends TestCase {
 	private boolean isPluginResolved (String pluginId)
 	{
 		Bundle bundle = Platform.getBundle(pluginId);
-		
-		assertNotNull(pluginId + " failed to load.", bundle);
-		
+		assertNotNull(pluginId + " failed to load.");
+		try {
+			// In 3.3 when test case is running plug-in.getState always returns STARTING state
+			// to move plug-in in ACTIVE state even one class should be loaded from plug-in
+			bundle.loadClass("fake class");
+		} catch (Exception e) {
+			// It happen always because loaded class is not exists
+		}
 		return ((bundle.getState() & Bundle.RESOLVED) > 0) ||
 			((bundle.getState() & Bundle.ACTIVE) > 0);
 	}
@@ -36,23 +41,23 @@ public class PlugInLoadTest extends TestCase {
 	private void assertPluginsResolved (String[] pluginIds)
 	{
 		for (int i = 0; i < pluginIds.length; i++) {
-			assertTrue (isPluginResolved(pluginIds[i]));
+			assertTrue ("plugin '" + pluginIds[i] + "' is not resolved",isPluginResolved(pluginIds[i]));
 		}
 	}
 	
 	public void testCommonPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-				rhdsNS+"common",
-				rhdsNS+"common.gef",
-				rhdsNS+"common.kb",
-				rhdsNS+"common.model",
-				rhdsNS+"common.model.ui",
-				rhdsNS+"common.projecttemplates",
-				rhdsNS+"common.text.ext",
-				rhdsNS+"common.text.xml",
-				rhdsNS+"common.verification",
-				rhdsNS+"common.verification.ui",
+			rhdsNS+"common",
+			rhdsNS+"common.gef",
+			rhdsNS+"common.kb",
+			rhdsNS+"common.model",
+			rhdsNS+"common.model.ui",
+			rhdsNS+"common.projecttemplates",
+			rhdsNS+"common.text.ext",
+			rhdsNS+"common.text.xml",
+			rhdsNS+"common.verification",
+			rhdsNS+"common.verification.ui",
 		});
 	}
 	
