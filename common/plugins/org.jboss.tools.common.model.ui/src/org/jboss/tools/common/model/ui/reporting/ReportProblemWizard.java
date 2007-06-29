@@ -12,40 +12,63 @@ package org.jboss.tools.common.model.ui.reporting;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.Collator;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.jboss.tools.common.model.ui.attribute.XAttributeSupport;
-import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAdapter;
-import org.jboss.tools.common.model.ui.wizards.query.*;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.about.ISystemSummarySection;
+import org.eclipse.ui.internal.IWorkbenchConstants;
+import org.eclipse.ui.internal.WorkbenchMessages;
+import org.eclipse.ui.internal.WorkbenchPlugin;
+import org.eclipse.ui.internal.registry.IWorkbenchRegistryConstants;
+import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.meta.action.impl.XEntityDataImpl;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
-import org.jboss.tools.common.CommonPlugin;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 import org.jboss.tools.common.model.ui.ModelUIImages;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.attribute.XAttributeSupport;
+import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAdapter;
 import org.jboss.tools.common.model.ui.widgets.ReferenceListener;
 import org.jboss.tools.common.model.ui.widgets.TextAndReferenceComponent;
+import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard;
+import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView;
+import org.jboss.tools.common.reporting.ProblemReportingHelper;
+import org.jboss.tools.common.reporting.Submit;
 import org.osgi.framework.Bundle;
 
 public class ReportProblemWizard extends AbstractQueryWizard {
@@ -57,9 +80,9 @@ public class ReportProblemWizard extends AbstractQueryWizard {
 }
 
 class ReportProblemWizardView extends AbstractQueryWizardView {
-	
+
 	SimpleDateFormat dtf = new SimpleDateFormat("dd_MMM_yyyy__HH_mm_ss_SSS");
-	
+
 	int stackTracesCount;
 	Text problemDescription;
 	XAttributeSupport sendSupport;
@@ -100,64 +123,173 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	/**
 	 * 
 	 */
-	private void createStackTracesFile() {
+	private byte[] getStackTracesFile() {
+		StringBuffer sb = new StringBuffer();
 
+		try {
+			InputStreamReader in = new FileReader(Platform.getLogFileLocation()
+					.toOSString());
+
+			char[] tempBuffer = new char[512];
+			int len = 0;
+			while ((len = in.read(tempBuffer)) != -1) {
+				sb.append(tempBuffer);
+			}
+
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+		}
+
+		return sb.toString().getBytes();
 	}
 
 	/**
 	 * 
 	 */
-	private void createUsercommentFile() {
+	private byte[] getUsercommentFile() {
+		StringBuffer sb = new StringBuffer();
 
+		sb = sb.append("email : ").append(
+				ReportPreference.E_MAIL_OPTION.getValue()).append("\n");
+		sb = sb.append("description : ").append(problemDescription.getText())
+				.append("\n");
+		sb.append("other : ").append(ReportPreference.OTHER_OPTION.getValue())
+				.append("\n");
+
+		return sb.toString().getBytes();
+	}
+
+	private IConfigurationElement[] getSortedExtensions() {
+		IConfigurationElement[] configElements = Platform
+				.getExtensionRegistry().getConfigurationElementsFor(
+						PlatformUI.PLUGIN_ID,
+						IWorkbenchRegistryConstants.PL_SYSTEM_SUMMARY_SECTIONS);
+
+		Arrays.sort(configElements, new Comparator() {
+			Collator collator = Collator.getInstance(Locale.getDefault());
+
+			public int compare(Object a, Object b) {
+				IConfigurationElement element1 = (IConfigurationElement) a;
+				IConfigurationElement element2 = (IConfigurationElement) b;
+
+				String id1 = element1.getAttribute("id"); //$NON-NLS-1$
+				String id2 = element2.getAttribute("id"); //$NON-NLS-1$
+
+				if (id1 != null && id2 != null && !id1.equals(id2)) {
+					return collator.compare(id1, id2);
+				}
+
+				String title1 = element1.getAttribute("sectionTitle"); //$NON-NLS-1$ 
+				String title2 = element2.getAttribute("sectionTitle"); //$NON-NLS-1$
+
+				if (title1 == null) {
+					title1 = ""; //$NON-NLS-1$
+				}
+				if (title2 == null) {
+					title2 = ""; //$NON-NLS-1$
+				}
+
+				return collator.compare(title1, title2);
+			}
+		});
+
+		return configElements;
+	}
+
+	/*
+	 * Appends the contents of all extentions to the configurationLogSections
+	 * extension point.
+	 */
+	private void appendExtensions(PrintWriter writer) {
+		IConfigurationElement[] configElements = getSortedExtensions();
+		for (int i = 0; i < configElements.length; ++i) {
+			IConfigurationElement element = configElements[i];
+
+			Object obj = null;
+			try {
+				obj = WorkbenchPlugin.createExtension(element,
+						IWorkbenchConstants.TAG_CLASS);
+			} catch (CoreException e) {
+				WorkbenchPlugin.log(
+						"could not create class attribute for extension", //$NON-NLS-1$
+						e.getStatus());
+			}
+
+			writer.println();
+			writer.println(NLS.bind(
+					WorkbenchMessages.SystemSummary_sectionTitle, element
+							.getAttribute("sectionTitle"))); //$NON-NLS-1$
+
+			if (obj instanceof ISystemSummarySection) {
+				ISystemSummarySection logSection = (ISystemSummarySection) obj;
+				logSection.write(writer);
+			} else {
+				writer.println(WorkbenchMessages.SystemSummary_sectionError);
+			}
+		}
 	}
 
 	/**
 	 * 
 	 */
-	private void createEclipsePropertiesFile() {
+	private byte[] getEclipsePropertiesFile() {
+		StringWriter out = new StringWriter();
+		PrintWriter writer = new PrintWriter(out);
+		writer.println(NLS.bind(WorkbenchMessages.SystemSummary_timeStamp,
+				DateFormat
+						.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL)
+						.format(new Date())));
 
+		appendExtensions(writer);
+		writer.close();
+		return out.toString().getBytes();
 	}
 
 	/**
 	 * create a ZIP file containg folloving files:
 	 */
-	private void createZipFile() throws IOException {
-		byte tempBuffer[] = new byte[512];
-		String[] filesToZip = new String[] { getStackTraceFilename(),
-				getUsercommentFilename(), getEclipsePropertiesFilename() };
+	private String createZipFile() throws IOException {
+		byte tempBuffer[];
+		String[] fileNames = new String[] { "stacktrace.txt",
+				"usercomment.txt", "eclipse.properties" };
 
-		ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(
-				getStackTraceFilename()));
-		for (int i = 0; i < filesToZip.length; i++) {
-			InputStream in = new FileInputStream(filesToZip[i]);
-			ZipEntry e = new ZipEntry(filesToZip[i].replace(File.separatorChar,
+
+		ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+
+		ZipOutputStream zout = new ZipOutputStream(byteBuffer);
+		for (int i = 0; i < fileNames.length; i++) {
+
+			switch (i) {
+			case 0:
+				tempBuffer = getStackTracesFile();
+				break;
+			case 1:
+				tempBuffer = getUsercommentFile();
+				break;
+			case 2:
+				tempBuffer = getEclipsePropertiesFile();
+				break;
+			default:
+				tempBuffer = "Unknown data".getBytes();
+
+			}
+
+			ZipEntry e = new ZipEntry(fileNames[i].replace(File.separatorChar,
 					'/'));
 			zout.putNextEntry(e);
-			int len = 0;
-			while ((len = in.read(tempBuffer)) != -1) {
-				zout.write(tempBuffer, 0, len);
-			}
+			zout.write(tempBuffer, 0, tempBuffer.length);
 			zout.closeEntry();
 		}
 		zout.close();
+		
+		return byteBuffer.toString();
 	}
 
 	private String getLogFolderLocation() {
 		Bundle b = Platform.getBundle("org.jboss.tools.common");
-		String stateLocation = Platform.getStateLocation(b).toString().replace('\\', '/');
+		String stateLocation = Platform.getStateLocation(b).toString().replace(
+				'\\', '/');
 		return stateLocation;
-	}
-	
-	private String getStackTraceFilename() {
-		return getLogFolderLocation() + "/stacktrace.txt";
-	}
-
-	private String getUsercommentFilename() {
-		return getLogFolderLocation() + "/usercomment.txt";
-	}
-
-	private String getEclipsePropertiesFilename() {
-		return getLogFolderLocation() + "/eclipse.properties";
 	}
 
 	private String getZipFilename() {
@@ -166,8 +298,11 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 
 		today = new Date();
 		currentDate = dtf.format(today);
-		
-		return getLogFolderLocation() + "rhds-log-" + currentDate.toString() + ".zip";
+
+		String sss = Platform.getLogFileLocation().toOSString();
+
+		return getLogFolderLocation() + "rhds-log-" + currentDate.toString()
+				+ ".zip";
 	}
 
 	private void createStackTracesControl(Composite parent) {
@@ -306,7 +441,15 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		}
 		String email = ReportPreference.E_MAIL_OPTION.getValue();
 		String other = ReportPreference.OTHER_OPTION.getValue();
-		ProblemReportingHelper.buffer.report(text, email, other, addRedHatLog);
+
+		try {
+			String reportText = createZipFile();
+			Submit.getInstance().submit(reportText, addRedHatLog);
+//			ProblemReportingHelper.buffer.report(text, email, other, addRedHatLog);
+		} catch (IOException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
+
 		if (addRedHatLog) {
 			// clean is to be done after report,
 			// which is executed as background job.
