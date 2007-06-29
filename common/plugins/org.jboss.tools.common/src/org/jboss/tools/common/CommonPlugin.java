@@ -49,7 +49,7 @@ public class CommonPlugin extends BasePlugin {
 	}
 
 	/**
-	 * @return Studio enveroment.
+	 * @return Studio environment.
 	 */
 	public static String getEnvironment() {
 		if(environment == null) {

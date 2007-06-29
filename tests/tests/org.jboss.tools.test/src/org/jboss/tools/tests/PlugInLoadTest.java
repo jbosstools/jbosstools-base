@@ -99,41 +99,53 @@ public class PlugInLoadTest extends TestCase {
 	public void testVpePluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			rhdsNS + "vpe.mozilla",
-			rhdsNS + "vpe.ui",
-			rhdsNS + "vpe",
-			rhdsNS + "vpe.ui.palette"
+			rhdsNS+"vpe.mozilla",
+			rhdsNS+"vpe.ui",
+			rhdsNS+"vpe",
+			rhdsNS+"vpe.ui.palette"
 		});
 	}	
 	
 	public void testStrutsPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			rhdsNS + "struts",
-			rhdsNS + "struts.debug",
-			rhdsNS + "struts.text.ext",
-			rhdsNS + "struts.ui",
-			rhdsNS + "struts.validator.ui",
-			rhdsNS + "struts.verification"
+			rhdsNS+"struts",
+			rhdsNS+"struts.debug",
+			rhdsNS+"struts.text.ext",
+			rhdsNS+"struts.ui",
+			rhdsNS+"struts.validator.ui",
+			rhdsNS+"struts.verification"
 		});
 	}
 	
 	public void testShalePluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			rhdsNS + "shale.ui",
-			rhdsNS + "shale",
-			rhdsNS + "shale.text.ext"
+			rhdsNS+"shale.ui",
+			rhdsNS+"shale",
+			rhdsNS+"shale.text.ext"
 		});
 	}
 	
 	public void testCorePluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbideNS+"core", jbideNS+"jdt.core", jbideNS+"jdt.j2ee.core",
-			jbideNS+"jdt.j2ee.ui", jbideNS+"jdt.j2ee.xml.ui", jbideNS+"jdt.test.core", jbideNS+"jdt.test.ui", jbideNS+"jdt.ui",
-			jbideNS+"jdt.ws.core", jbideNS+"jdt.ws.ui", jbideNS+"archives.core", jbideNS+"archives.ui",
-			jbideNS+"ui", jbideNS+"xdoclet.assist", jbideNS+"xdoclet.core", jbideNS+"xdoclet.run",
+			jbideNS+"core", 
+			jbideNS+"jdt.core", 
+			jbideNS+"jdt.j2ee.core",
+			jbideNS+"jdt.j2ee.ui", 
+			jbideNS+"jdt.j2ee.xml.ui", 
+			jbideNS+"jdt.test.core", 
+			jbideNS+"jdt.test.ui", 
+			jbideNS+"jdt.ui",
+			jbideNS+"jdt.ws.core", 
+			jbideNS+"jdt.ws.ui", 
+			jbideNS+"archives.core", 
+			jbideNS+"archives.ui",
+			jbideNS+"ui", 
+			jbideNS+"xdoclet.assist", 
+			jbideNS+"xdoclet.core", 
+			jbideNS+"xdoclet.run",
 			jbideNS+"xdoclet.ui"
 		});
 	}
@@ -141,29 +153,37 @@ public class PlugInLoadTest extends TestCase {
 	public void testEjb3PluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbideNS+"ejb3.wizards.core", jbideNS+"ejb3.wizards.ui"
+			jbideNS+"ejb3.wizards.core", 
+			jbideNS+"ejb3.wizards.ui"
 		});
 	}
 	
 	public void testASPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbideNS+"as.core", jbideNS+"as.ui", jbideNS+"as.ui.mbeans"
+			jbideNS+"as.core", 
+			jbideNS+"as.ui", 
+			jbideNS+"as.ui.mbeans"
 		});
 	}
 	
 	public void testHibernatePluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			"org.hibernate.eclipse", hibNS + "console", hibNS + "help", hibNS + "mapper", hibNS + "jdt.ui", hibNS + "jdt.apt.ui"
-			
+			"org.hibernate.eclipse", 
+			hibNS+"console", 
+			hibNS+"help", 
+			hibNS+"mapper", 
+			hibNS+"jdt.ui", 
+			hibNS+"jdt.apt.ui"
 		});
 	}
 	
 	public void testJbpmPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbpmNS + "core", jbpmNS + "ui"
+			jbpmNS+"core", 
+			jbpmNS+"ui"
 		});
 	}
 	
@@ -176,15 +196,19 @@ public class PlugInLoadTest extends TestCase {
 	
 	public void testDroolsPluginsResolved ()
 	{
-		assertPluginsResolved(new String[] {
-			"org.drools.ide"
-		});
+		//		Skipped until drools migartion to 3.3 is finished
+		//		assertPluginsResolved(new String[] {
+		//			"org.drools.ide"
+		//		});
 	}
 	
 	public void testJBossWSPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbwsNS+"core", jbwsNS + "eclipse.core", jbwsNS+"jbosside.wstools", jbwsNS+"libs"
+			jbwsNS+"core", 
+			jbwsNS+"eclipse.core", 
+			jbwsNS+"jbosside.wstools", 
+			jbwsNS+"libs"
 		});
 	}
 }
