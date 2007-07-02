@@ -3,10 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: JSF Tests Plug-in
 Bundle-SymbolicName: org.jboss.tools.common.verification.test;singleton:=true
 Bundle-Version: 2.0.0
-Bundle-ClassPath: lib/xmlunit1.0.jar,
- common-verification-tests.jar
+Bundle-ClassPath: common-verification-tests.jar
 Bundle-Vendor: Red Hat, Inc.
-Bundle-Localization: plugin
 Export-Package: org.jboss.tools.common.verification.test
 Require-Bundle: 
  org.junit,

@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.jboss.tools.common.model.test;singleton:=true
 Bundle-Version: 2.0.0
 Bundle-ClassPath: common-model-tests.jar
 Bundle-Vendor: Red Hat, Inc.
-Bundle-Localization: plugin
 Export-Package: org.jboss.tools.common.model.test
 Require-Bundle: 
  org.junit,

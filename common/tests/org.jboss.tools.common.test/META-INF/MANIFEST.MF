@@ -4,7 +4,6 @@ Bundle-Name: Tests Plug-in
 Bundle-SymbolicName: org.jboss.tools.common.test
 Bundle-Version: 2.0.0
 Bundle-Vendor: Red Hat, Inc.
-Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -16,5 +15,4 @@ Export-Package: org.jboss.tools.common.test,
  org.jboss.tools.common.test.util,
  org.jboss.tools.common.util.test,
  org.jboss.tools.common.xml.test
-Bundle-ClassPath: common-tests.jar,
- .
+Bundle-ClassPath: common-tests.jar
