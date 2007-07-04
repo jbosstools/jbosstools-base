@@ -23,7 +23,8 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
-
+import org.jboss.tools.common.text.xml.contentassist.ContentAssistProcessorBuilder;
+import org.jboss.tools.common.text.xml.contentassist.ContentAssistProcessorDefinition;
 
 /**
  * @author Igels
@@ -41,17 +42,44 @@ public class RedHatStructuredTextViewerConfigurationXML extends StructuredTextVi
 	}
 
 	protected IContentAssistProcessor[] getContentAssistProcessors(ISourceViewer sourceViewer, String partitionType) {
-		//TODO if we have our own processors we need 
-		//     create them here and decide if we need merge 
-		//     them with initial and super processors.
+
+		// if we have our own processors we need 
+		// to define them in plugin.xml file of their
+		// plugins using extention point 
+		// "org.jboss.tools.common.text.xml.contentAssistProcessor"
+		
+		ContentAssistProcessorDefinition[] defs = ContentAssistProcessorBuilder.getInstance().getContentAssistProcessorDefinitions(partitionType);
+
+		if(defs==null) return null;
+
+		List processors = new ArrayList();
+		for(int i=0; i<defs.length; i++) {
+		    IContentAssistProcessor processor = defs[i].createContentAssistProcessor();
+		    if(!processors.contains(processor)) {
+			    processors.add(processor);			        
+		    }
+		}
+
 		IContentAssistProcessor[] in = getInitialProcessors(sourceViewer, partitionType);
 		if(in != null && in.length > 0) {
+
 			//we do not need super processors - make initial processors responcible for that 
-			return in;
+			for(int i=0; i<in.length; i++) {
+			    if(!processors.contains(in[i])) {
+				    processors.add(in[i]);			        
+			    }
+			}
+		} else {
+			IContentAssistProcessor[] ps = super.getContentAssistProcessors(sourceViewer, partitionType);
+			for(int i=0; ps != null && i<ps.length; i++) {
+			    if(!processors.contains(ps[i])) {
+				    processors.add(ps[i]);			        
+			    }
+			}
 		}
-		IContentAssistProcessor[] ps = super.getContentAssistProcessors(sourceViewer, partitionType);
-		return ps;
+		return (IContentAssistProcessor[])processors.toArray(new IContentAssistProcessor[0]);
 	}
+
 	/*
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getHyperlinkDetectors(org.eclipse.jface.text.source.ISourceViewer)
 	 * @since 3.1

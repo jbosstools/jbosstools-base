@@ -2,6 +2,8 @@
 <?eclipse version="3.0"?>
 <plugin>
 
+   <extension-point id="contentAssistProcessor" name="Content Assist Processor Extension Point Extension" schema="schema/contentAssistProcessor.exsd"/>
+
 <!--
 	<extension-point id="foldingStructureProviders" name="%foldingStructureProvidersExtensionPoint" schema="schema/foldingStructureProviders.exsd"/> 
 
