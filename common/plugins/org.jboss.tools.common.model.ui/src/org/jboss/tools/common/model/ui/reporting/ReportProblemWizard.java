@@ -12,9 +12,9 @@ package org.jboss.tools.common.model.ui.reporting;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,15 +34,26 @@ import java.util.zip.ZipOutputStream;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.DialogPage;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
@@ -68,7 +79,6 @@ import org.jboss.tools.common.model.ui.widgets.TextAndReferenceComponent;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView;
 import org.jboss.tools.common.reporting.ProblemReportingHelper;
-import org.jboss.tools.common.reporting.Submit;
 import org.osgi.framework.Bundle;
 
 public class ReportProblemWizard extends AbstractQueryWizard {
@@ -80,8 +90,48 @@ public class ReportProblemWizard extends AbstractQueryWizard {
 }
 
 class ReportProblemWizardView extends AbstractQueryWizardView {
+	
+	static final char SEPARATOR = System.getProperty ("file.separator").charAt (0);
 
-	SimpleDateFormat dtf = new SimpleDateFormat("dd_MMM_yyyy__HH_mm_ss_SSS");
+	
+	/** folder log file name */
+	private String folderLogFileName;
+	
+	/** LOG_DATE_FORMAT */
+	final static private SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat(
+			"dd_MMM_yyyy__HH_mm_ss_SSS");
+
+	/** log file name */
+	private Text logFileName;
+
+	/** Browse button */
+	private Button browseButton;
+
+	class PixelConverter {
+
+		private FontMetrics fFontMetrics;
+
+		public PixelConverter(Control control) {
+			GC gc = new GC(control);
+			gc.setFont(control.getFont());
+			fFontMetrics = gc.getFontMetrics();
+			gc.dispose();
+		}
+
+		/**
+		 * @see DialogPage#convertHorizontalDLUsToPixels
+		 */
+		public int convertHorizontalDLUsToPixels(int dlus) {
+			return Dialog.convertHorizontalDLUsToPixels(fFontMetrics, dlus);
+		}
+
+		/**
+		 * @see DialogPage#convertWidthInCharsToPixels
+		 */
+		public int convertWidthInCharsToPixels(int chars) {
+			return Dialog.convertWidthInCharsToPixels(fFontMetrics, chars);
+		}
+	}
 
 	int stackTracesCount;
 	Text problemDescription;
@@ -107,17 +157,28 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 			{ ReportPreference.ATT_OTHER, "no" } });
 
 	public ReportProblemWizardView() {
+		folderLogFileName = Platform.getLocation().toOSString() + SEPARATOR;
 	}
 
 	public Control createControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		Layout layout = new GridLayout();
 		composite.setLayout(layout);
+		createFilenameLogControl(composite);
 		createStackTracesControl(composite);
 		createProblemControl(composite);
 		createContactInfoControl(composite);
-		updateBar();
+		
+		fillData();
+		 
 		return composite;
+	}
+
+	/**
+	 * 
+	 */
+	private void fillData() {
+		logFileName.setText(getZipFilename());
 	}
 
 	/**
@@ -141,7 +202,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		}
 
 		return sb.toString().getBytes();
-	}
+	};
 
 	/**
 	 * 
@@ -246,17 +307,19 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	}
 
 	/**
-	 * create a ZIP file containg folloving files:
+	 * create a ZIP file contain following files: 
 	 */
-	private String createZipFile() throws IOException {
+	private void createZipFile() throws IOException {
 		byte tempBuffer[];
 		String[] fileNames = new String[] { "stacktrace.txt",
 				"usercomment.txt", "eclipse.properties" };
 
-
-		ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-
-		ZipOutputStream zout = new ZipOutputStream(byteBuffer);
+		//
+		// ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+		//
+		
+		String filename = folderLogFileName + logFileName.getText();
+		ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(filename));
 		for (int i = 0; i < fileNames.length; i++) {
 
 			switch (i) {
@@ -274,40 +337,32 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 
 			}
 
-			ZipEntry e = new ZipEntry(fileNames[i].replace(File.separatorChar,
-					'/'));
+			ZipEntry e = new ZipEntry(fileNames[i].replace(File.separatorChar, SEPARATOR));
 			zout.putNextEntry(e);
 			zout.write(tempBuffer, 0, tempBuffer.length);
 			zout.closeEntry();
 		}
 		zout.close();
-		
-		return byteBuffer.toString();
+		//		
+		// return byteBuffer.toString();
+		//		
 	}
 
-	private String getLogFolderLocation() {
-		Bundle b = Platform.getBundle("org.jboss.tools.common");
-		String stateLocation = Platform.getStateLocation(b).toString().replace(
-				'\\', '/');
-		return stateLocation;
-	}
 
+	/**
+	 * Get a filename for zip-file
+	 * 
+	 * @return filename for zip-file
+	 */
 	private String getZipFilename() {
-		Date today;
 		String currentDate;
+		Date today = new Date();
 
-		today = new Date();
-		currentDate = dtf.format(today);
-
-		String sss = Platform.getLogFileLocation().toOSString();
-
-		return getLogFolderLocation() + "rhds-log-" + currentDate.toString()
-				+ ".zip";
+		currentDate = LOG_DATE_FORMAT.format(today);
+		return "jbosstools-diagnostics-" + currentDate.toString() + ".zip";
 	}
 
 	private void createStackTracesControl(Composite parent) {
-		String zipFileName = getZipFilename();
-
 		stackTracesCount = ProblemReportingHelper.buffer.getSize();
 		exceptionsObject.setAttributeValue("exceptions",
 				formatContent(ProblemReportingHelper.buffer.getContent()));
@@ -337,6 +392,155 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 			Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 			separator.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
+	}
+
+	/**
+	 * Creates a new label widget
+	 * 
+	 * @param parent
+	 *            the parent composite to add this label widget to
+	 * @param text
+	 *            the text for the label
+	 * @param hspan
+	 *            the horizontal span to take up in the parent composite
+	 * @return the new label
+	 */
+	public static Label createLabel(Composite parent, String text, int hspan) {
+		Label l = new Label(parent, SWT.NONE);
+		l.setFont(parent.getFont());
+		l.setText(text);
+		GridData gd = new GridData();
+		gd.horizontalSpan = hspan;
+		l.setLayoutData(gd);
+		return l;
+	}
+
+	/**
+	 * Creates a new text widget
+	 * 
+	 * @param parent
+	 *            the parent composite to add this text widget to
+	 * @param hspan
+	 *            the horizontal span to take up on the parent composite
+	 * @return the new text widget
+	 */
+	public static Text createSingleText(Composite parent, int hspan) {
+		Text t = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		t.setFont(parent.getFont());
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = hspan;
+		t.setLayoutData(gd);
+		return t;
+	}
+
+	/**
+	 * Returns a width hint for a button control.
+	 */
+	public int getButtonWidthHint(Button button) {
+		button.setFont(JFaceResources.getDialogFont());
+		PixelConverter converter = new PixelConverter(button);
+		int widthHint = converter
+				.convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
+		return Math.max(widthHint, button.computeSize(SWT.DEFAULT, SWT.DEFAULT,
+				true).x);
+	}
+
+	/**
+	 * Sets width and height hint for the button control. <b>Note:</b> This is
+	 * a NOP if the button's layout data is not an instance of
+	 * <code>GridData</code>.
+	 * 
+	 * @param the
+	 *            button for which to set the dimension hint
+	 */
+	public void setButtonDimensionHint(Button button) {
+		Object gd = button.getLayoutData();
+		if (gd instanceof GridData) {
+			((GridData) gd).widthHint = getButtonWidthHint(button);
+			((GridData) gd).horizontalAlignment = GridData.FILL;
+		}
+	}
+
+	/**
+	 * Creates and returns a new push button with the given label and/or image.
+	 * 
+	 * @param parent
+	 *            parent control
+	 * @param label
+	 *            button label or <code>null</code>
+	 * @param image
+	 *            image or <code>null</code>
+	 * 
+	 * @return a new push button
+	 */
+	public Button createPushButton(Composite parent, String label, Image image) {
+		Button button = new Button(parent, SWT.PUSH);
+		button.setFont(parent.getFont());
+		if (image != null) {
+			button.setImage(image);
+		}
+		if (label != null) {
+			button.setText(label);
+		}
+		GridData gd = new GridData();
+		button.setLayoutData(gd);
+		setButtonDimensionHint(button);
+		return button;
+	}
+
+	/**
+	 * 
+	 * @param parent
+	 *            a parent Composite object
+	 */
+	private void createFilenameLogControl(final Composite parent) {
+		Group g = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		g.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+
+		GridLayout layout = new GridLayout(3, false);
+		g.setLayout(layout);
+
+		createLabel(g, "Log file name", 1);
+		logFileName = createSingleText(g, 1);
+		browseButton = createPushButton(g, "&Browse...", null);
+
+		browseButton.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog fileDialog = new FileDialog(parent.getShell(),
+						SWT.SAVE);
+				fileDialog.setText("Save");
+
+
+				String fileName = logFileName.getText();
+				
+				if ( folderLogFileName.length()  != 0 ) {
+					fileDialog.setFilterPath(folderLogFileName);
+				} else {
+					String strFilterPath = logFileName.getText();
+					int index = strFilterPath.lastIndexOf(SEPARATOR);
+					if (index != -1) {
+						strFilterPath = strFilterPath.substring(0, index + 1);
+					} 					
+					fileDialog.setFilterPath(strFilterPath);
+				}
+
+				fileDialog.setFileName(fileName);
+				String[] filterExt = { "*.zip" };
+				fileDialog.setFilterExtensions(filterExt);
+				String selected = fileDialog.open();
+
+				if (selected != null) {
+					System.out.println(selected);
+					logFileName.setText(selected);
+					folderLogFileName = "";
+				}
+			};
+
+		});
 	}
 
 	private void createProblemControl(Composite parent) {
@@ -407,11 +611,11 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	}
 
 	public String[] getCommands() {
-		return new String[] { "Submit", CANCEL };
+		return new String[] { "Ok", CANCEL };
 	}
 
 	public void action(String command) {
-		if (command.equals("Submit")) {
+		if (command.equals("Ok")) {
 			submitProblems();
 			super.action(OK);
 		} else {
@@ -439,13 +643,15 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 					.getEclipseLogContent();
 			text += "\n----------Eclipse Log----------\n" + eclipseLog + "\n";
 		}
+		/*
 		String email = ReportPreference.E_MAIL_OPTION.getValue();
 		String other = ReportPreference.OTHER_OPTION.getValue();
-
+		*/
 		try {
-			String reportText = createZipFile();
-			Submit.getInstance().submit(reportText, addRedHatLog);
-//			ProblemReportingHelper.buffer.report(text, email, other, addRedHatLog);
+			createZipFile();
+			// Submit.getInstance().submit(reportText, addRedHatLog);
+			// ProblemReportingHelper.buffer.report(text, email, other,
+			// addRedHatLog);
 		} catch (IOException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
@@ -482,7 +688,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	}
 
 	public void updateBar() {
-		getCommandBar().setEnabled("Submit", !isMessageEmpty());
+		getCommandBar().setEnabled("Ok", !isMessageEmpty());
 	}
 
 	boolean isMessageEmpty() {
@@ -501,4 +707,5 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 			return true;
 		return false;
 	}
+
 }
