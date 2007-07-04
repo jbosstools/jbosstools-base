@@ -428,6 +428,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		t.setFont(parent.getFont());
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan;
+		gd.widthHint = 100;
 		t.setLayoutData(gd);
 		return t;
 	}
