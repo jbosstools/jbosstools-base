@@ -98,7 +98,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	private String folderLogFileName;
 	
 	/** LOG_DATE_FORMAT */
-	final static private SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat(
+	final private SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat(
 			"dd_MMM_yyyy__HH_mm_ss_SSS");
 
 	/** log file name */
