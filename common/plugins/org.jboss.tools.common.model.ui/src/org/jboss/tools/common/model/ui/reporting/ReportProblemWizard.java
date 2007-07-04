@@ -93,10 +93,6 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	
 	static final char SEPARATOR = System.getProperty ("file.separator").charAt (0);
 
-	
-	/** folder log file name */
-	private String folderLogFileName;
-	
 	/** LOG_DATE_FORMAT */
 	final private SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat(
 			"dd_MMM_yyyy__HH_mm_ss_SSS");
@@ -157,7 +153,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 			{ ReportPreference.ATT_OTHER, "no" } });
 
 	public ReportProblemWizardView() {
-		folderLogFileName = Platform.getLocation().toOSString() + SEPARATOR;
+		//folderLogFileName = Platform.getLocation().toOSString() + SEPARATOR;
 	}
 
 	public Control createControl(Composite parent) {
@@ -169,7 +165,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		createProblemControl(composite);
 		createContactInfoControl(composite);
 		
-		fillData();
+		initializeData();
 		 
 		return composite;
 	}
@@ -177,8 +173,9 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	/**
 	 * 
 	 */
-	private void fillData() {
-		logFileName.setText(getZipFilename());
+	private void initializeData() {
+		File defaultLocation = new File(Platform.getLocation().toFile(), getDefaultZipFilename());
+		logFileName.setText(defaultLocation.toString());
 	}
 
 	/**
@@ -318,7 +315,8 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		// ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
 		//
 		
-		String filename = folderLogFileName + logFileName.getText();
+		File filename = new File(logFileName.getText());
+		
 		ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(filename));
 		for (int i = 0; i < fileNames.length; i++) {
 
@@ -343,6 +341,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 			zout.closeEntry();
 		}
 		zout.close();
+		ModelUIPlugin.getDefault().logInfo("Wrote diagnostic info to " + filename);
 		//		
 		// return byteBuffer.toString();
 		//		
@@ -354,7 +353,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	 * 
 	 * @return filename for zip-file
 	 */
-	private String getZipFilename() {
+	private String getDefaultZipFilename() {
 		String currentDate;
 		Date today = new Date();
 
@@ -515,28 +514,17 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 				fileDialog.setText("Save");
 
 
-				String fileName = logFileName.getText();
+				File fileName = new File(logFileName.getText());
 				
-				if ( folderLogFileName.length()  != 0 ) {
-					fileDialog.setFilterPath(folderLogFileName);
-				} else {
-					String strFilterPath = logFileName.getText();
-					int index = strFilterPath.lastIndexOf(SEPARATOR);
-					if (index != -1) {
-						strFilterPath = strFilterPath.substring(0, index + 1);
-					} 					
-					fileDialog.setFilterPath(strFilterPath);
-				}
-
-				fileDialog.setFileName(fileName);
+				fileDialog.setFilterPath(fileName.getParent());
+				fileDialog.setFileName(fileName.getName());
+				
 				String[] filterExt = { "*.zip" };
 				fileDialog.setFilterExtensions(filterExt);
 				String selected = fileDialog.open();
 
 				if (selected != null) {
-					System.out.println(selected);
-					logFileName.setText(selected);
-					folderLogFileName = "";
+					logFileName.setText(selected);					
 				}
 			};
 
@@ -598,7 +586,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	}
 
 	public Point getPreferredSize() {
-		return new Point(400, 500);
+		return new Point(400, 500);		
 	}
 
 	protected GridLayout getDefaultSupportLayout() {
