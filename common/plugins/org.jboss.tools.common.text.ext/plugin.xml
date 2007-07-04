@@ -4,6 +4,7 @@
 
    <extension-point id="hyperlink" name="Hyperlink Extension Point Extension" schema="schema/hyperlink.exsd"/>
    <extension-point id="hyperlinkPartitioner" name="Hyperlink Partitioner Extension Point Extension" schema="schema/hyperlinkPartitioner.exsd"/>
+   <extension-point id="contentAssistProcessor" name="Content Assist Processor Extension Point Extension" schema="schema/contentAssistProcessor.exsd"/>
 
 	<extension 
 		point="org.jboss.tools.common.text.ext.hyperlinkPartitioner"
