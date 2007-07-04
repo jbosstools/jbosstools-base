@@ -33,21 +33,14 @@ public class ReportProblemActionDelegate implements IWorkbenchWindowActionDelega
 
 	public void run(IAction action) {
 		ClassLoaderUtil.init();
-		try {
-			ReportProblemWizard wizard = new ReportProblemWizard();
-			Properties p = new Properties();
-			p.setProperty("help", "ReportProblemWizard");
-			wizard.setObject(p);
-			wizard.execute();
-		} catch (Exception t) {
-			ModelUIPlugin.getPluginLog().logError( "Report Problems Wizard failed.", t);
-		}
+		
+		ReportProblemWizard wizard = new ReportProblemWizard();
+		Properties p = new Properties();
+		p.setProperty("help", "ReportProblemWizard");		
+		wizard.setObject(p);
+		wizard.execute();		
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {}
-
-//	protected String getUrl() {
-//		return "http://www.redhat.com/strutsfeedback.htm";
-//	}
 
 }

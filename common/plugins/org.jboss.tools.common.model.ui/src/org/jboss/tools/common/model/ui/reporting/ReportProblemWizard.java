@@ -79,20 +79,18 @@ import org.jboss.tools.common.model.ui.widgets.TextAndReferenceComponent;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView;
 import org.jboss.tools.common.reporting.ProblemReportingHelper;
-import org.osgi.framework.Bundle;
 
 public class ReportProblemWizard extends AbstractQueryWizard {
 
 	public ReportProblemWizard() {
 		setView(new ReportProblemWizardView());
+		
 	}
 
 }
 
 class ReportProblemWizardView extends AbstractQueryWizardView {
 	
-	static final char SEPARATOR = System.getProperty ("file.separator").charAt (0);
-
 	/** LOG_DATE_FORMAT */
 	final private SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat(
 			"dd_MMM_yyyy__HH_mm_ss_SSS");
@@ -181,7 +179,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	/**
 	 * 
 	 */
-	private byte[] getStackTracesFile() {
+	private byte[] getEclipseLogContent() {
 		StringBuffer sb = new StringBuffer();
 
 		try {
@@ -204,7 +202,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	/**
 	 * 
 	 */
-	private byte[] getUsercommentFile() {
+	private byte[] getUserCommentContent() {
 		StringBuffer sb = new StringBuffer();
 
 		sb = sb.append("email : ").append(
@@ -255,7 +253,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	}
 
 	/*
-	 * Appends the contents of all extentions to the configurationLogSections
+	 * Appends the contents of all extensions to the configurationLogSections
 	 * extension point.
 	 */
 	private void appendExtensions(PrintWriter writer) {
@@ -290,7 +288,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	/**
 	 * 
 	 */
-	private byte[] getEclipsePropertiesFile() {
+	private byte[] getEclipsePropertiesContent() {
 		StringWriter out = new StringWriter();
 		PrintWriter writer = new PrintWriter(out);
 		writer.println(NLS.bind(WorkbenchMessages.SystemSummary_timeStamp,
@@ -307,44 +305,32 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	 * create a ZIP file contain following files: 
 	 */
 	private void createZipFile() throws IOException {
-		byte tempBuffer[];
-		String[] fileNames = new String[] { "stacktrace.txt",
-				"usercomment.txt", "eclipse.properties" };
-
-		//
-		// ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-		//
 		
-		File filename = new File(logFileName.getText());
+		File zipFilename = new File(logFileName.getText());
 		
-		ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(filename));
-		for (int i = 0; i < fileNames.length; i++) {
+		ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(zipFilename));
+		try {
+			addFileToZip(getEclipseLogContent(), "eclipse.log", zout);
+			addFileToZip(getUserCommentContent(), "usercomment.txt", zout);
+			addFileToZip(getEclipsePropertiesContent(), "eclipse.properties", zout);
 
-			switch (i) {
-			case 0:
-				tempBuffer = getStackTracesFile();
-				break;
-			case 1:
-				tempBuffer = getUsercommentFile();
-				break;
-			case 2:
-				tempBuffer = getEclipsePropertiesFile();
-				break;
-			default:
-				tempBuffer = "Unknown data".getBytes();
-
-			}
-
-			ZipEntry e = new ZipEntry(fileNames[i].replace(File.separatorChar, SEPARATOR));
-			zout.putNextEntry(e);
-			zout.write(tempBuffer, 0, tempBuffer.length);
-			zout.closeEntry();
+			ModelUIPlugin.getDefault().logInfo("Wrote diagnostic info to " + zipFilename);
+		} finally {
+			zout.close();
 		}
-		zout.close();
-		ModelUIPlugin.getDefault().logInfo("Wrote diagnostic info to " + filename);
+		
 		//		
 		// return byteBuffer.toString();
 		//		
+	}
+
+	private void addFileToZip(byte[] tempBuffer, String fileName,
+			ZipOutputStream zout) throws IOException {
+		
+		ZipEntry e = new ZipEntry(fileName);
+		zout.putNextEntry(e);
+		zout.write(tempBuffer, 0, tempBuffer.length);
+		zout.closeEntry();
 	}
 
 
