@@ -79,6 +79,7 @@ public class ResourceLayoutManager {
 	public Element getLayoutElement(IResource resource, String elementTag) {
 		Element element = null;
 		Document document = getLayoutDocument(resource);
+		if(document == null) return null;
 		NodeList nodeList = document.getElementsByTagName(elementTag);
 		if (nodeList==null || nodeList.getLength()==0 || nodeList.item(0)==null) {
 			// create new element
@@ -162,6 +163,7 @@ public class ResourceLayoutManager {
 			layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY));
 		} catch (CoreException e) {}
 		if (layoutLocation==null) layoutLocation = createNewLayoutLocation(resource);
+		if(!new File(layoutLocation).isFile()) return null;
 		//String fullLayoutLocation = getFullLocation(resource).addFileExtension(LAYOUT_EXT).toString();
 		Document document = null;
 		DocumentBuilder builder = null;
