@@ -135,14 +135,6 @@
     <ICON name="baseclass" path="images/flow/change_base_class.gif"/>
    </GROUP>
    <GROUP name="new">
-    <GROUP name="class">
-     <ICON name="active" path="images/java/active_class_new.gif"/>
-     <ICON name="interactive" path="images/java/interactive_class_new.gif"/>
-     <ICON name="jms" path="images/java/JMS_Proxy_new.gif"/>
-     <ICON name="regular" path="images/java/newclass.gif"/>
-     <ICON name="rmi" path="images/java/RMI_Proxy_new.gif"/>
-     <ICON name="soap" path="images/java/SOAP_Proxy_new.gif"/>
-    </GROUP>
     <GROUP name="file">
      <ICON name="ant_file" path="images/file/new_ant_file.gif"/>
      <ICON name="folder" path="images/file/new_folder.gif"/>
@@ -156,13 +148,6 @@
      <ICON name="xhtml_file" path="images/file/new_html_file.gif"/>
      <ICON name="xml_file" path="images/file/new_xml_file.gif"/>
      <ICON name="xsl_file" path="images/file/new_xsl_file.gif"/>
-    </GROUP>
-    <GROUP name="method">
-     <ICON name="b2b" path="images/java/B2BMap_method_new.gif"/>
-     <ICON name="flow" path="images/java/flow_method_new.gif"/>
-     <ICON name="get" path="images/java/get_method_new.gif"/>
-     <ICON name="regular" path="images/java/newmethod.gif"/>
-     <ICON name="set" path="images/java/set_method_new.gif"/>
     </GROUP>
     <GROUP name="state">
      <ICON name="base" path="images/flow/create_base.gif"/>
@@ -193,13 +178,8 @@
    <ICON name="generate" path="images/actions/generatecode.gif"/>
    <ICON name="history" path="images/actions/model_history.gif"/>
    <ICON name="move" path="images/actions/empty.gif"/>
-   <ICON name="newapplication" path="images/navigationtree/application_new.gif"/>
    <ICON name="newattribute" path="images/java/newattribute.gif"/>
-   <ICON name="newconstructor" path="images/java/newconstructor.gif"/>
-   <ICON name="newinterface" path="images/java/newinterface.gif"/>
-   <ICON name="newmethod" path="images/java/newmethod.gif"/>
    <ICON name="newpackage" path="images/java/newpackages.gif"/>
-   <ICON name="newproject" path="images/navigationtree/new_project.gif"/>
    <ICON name="paste" path="command:org.eclipse.ui.edit.paste"/>
    <ICON name="paste_old" path="images/actions/paste.gif"/>
    <ICON name="redo" path="images/actions/redo.gif"/>
@@ -219,34 +199,6 @@
    <ICON name="unknown" path="images/common/qmark.gif"/>
   </GROUP>
   <GROUP name="main">
-   <GROUP name="classes">
-    <ICON name="active" path="images/java/active_class.gif"/>
-    <ICON name="interactive" path="images/java/interactive_class.gif"/>
-    <ICON name="jms" path="images/java/JMS_Proxy.gif"/>
-    <ICON name="rmi" path="images/java/RMI_Proxy.gif"/>
-    <ICON name="soap" path="images/java/SOAP_Proxy.gif"/>
-   </GROUP>
-   <GROUP name="data">
-    <GROUP name="adapters">
-     <ICON name="compound" path="images/navigationtree/adapter_compound.gif"/>
-     <ICON name="db" path="images/navigationtree/adapter_db.gif"/>
-     <ICON name="java" path="images/navigationtree/adapter_java.gif"/>
-     <ICON name="join" path="images/navigationtree/adapter_join.gif"/>
-     <ICON name="xml" path="images/navigationtree/adapter_xml.gif"/>
-    </GROUP>
-    <GROUP name="db">
-     <ICON name="field" path="images/navigationtree/db_filed.gif"/>
-     <ICON name="index" path="images/navigationtree/db_index.gif"/>
-     <ICON name="meta" path="images/navigationtree/db_meta_data.gif"/>
-     <ICON name="table" path="images/navigationtree/db_table.gif"/>
-     <ICON name="view" path="images/navigationtree/db_view.gif"/>
-    </GROUP>
-    <GROUP name="xml">
-     <ICON name="attribute" path="images/navigationtree/xml_attribute.gif"/>
-     <ICON name="element" path="images/navigationtree/xml_element.gif"/>
-    </GROUP>
-    <ICON name="root" path="images/navigationtree/adapter_folder.gif"/>
-   </GROUP>
    <GROUP name="file">
     <ICON name="ant_file" path="images/file/ant_file.gif"/>
     <ICON name="closed_folder" path="images/file/closed_folder.gif"/>
@@ -268,36 +220,12 @@
     <ICON name="xsl" path="images/file/xsl_file.gif"/>
     <ICON name="xsl_file" path="images/file/xsl_file.gif"/>
    </GROUP>
-   <GROUP name="flow">
-    <ICON name="folder" path="images/navigationtree/flow_folder.gif"/>
-    <ICON name="item" path="images/navigationtree/flow.gif"/>
-   </GROUP>
-   <GROUP name="mappings">
-    <ICON name="folder" path="images/navigationtree/map_folder.gif"/>
-    <ICON name="item" path="images/navigationtree/map.gif"/>
-   </GROUP>
    <GROUP name="methods">
-    <ICON name="any" path="images/java/method.gif"/>
-    <ICON name="b2b" path="images/java/B2BMap_method.gif"/>
-    <ICON name="flow" path="images/java/flow_method.gif"/>
-    <ICON name="get" path="images/java/get_method.gif"/>
-    <ICON name="i" path="images/java/interface_method.gif"/>
     <ICON name="java" path="images/java/method.gif"/>
-    <ICON name="jsp" path="images/java/method_jsp.gif"/>
-    <ICON name="old" path="images/java/method_old.gif"/>
-    <ICON name="set" path="images/java/set_method.gif"/>
-    <ICON name="xsl" path="images/java/method_xsl.gif"/>
-   </GROUP>
-   <GROUP name="packages">
-    <ICON name="common" path="images/java/usersystempackage.gif"/>
-    <ICON name="system" path="images/java/systempackage.gif"/>
-    <ICON name="user" path="images/java/package.gif"/>
    </GROUP>
    <GROUP name="projects">
-    <ICON name="folder" path="images/navigationtree/projects_folder.gif"/>
     <ICON name="item" path="images/navigationtree/project.gif"/>
     <ICON name="new" path="images/navigationtree/new_project.gif"/>
-    <ICON name="reopen" path="images/navigationtree/project_reopen.gif"/>
    </GROUP>
    <GROUP name="xstudio">
     <GROUP name="icons">
@@ -318,25 +246,12 @@
     </GROUP>
     <ICON name="root" path="images/file/closed_folder.gif"/>
    </GROUP>
-   <ICON name="application" path="images/navigationtree/application.gif"/>
-   <ICON name="applications" path="images/navigationtree/applications.gif"/>
    <ICON name="attribute" path="images/java/attr.gif"/>
    <ICON name="auxiliary" path="images/file/redhat_file.gif"/>
-   <ICON name="class" path="images/java/class.gif"/>
-   <ICON name="closedbox" path="images/navigationtree/closed_folder.gif"/>
-   <ICON name="constructor" path="images/java/constructor.gif"/>
    <ICON name="database" path="images/file/redhat_file.gif"/>
-   <ICON name="databases" path="images/file/redhat_file.gif"/>
-   <ICON name="datasource" path="images/navigationtree/data_source.gif"/>
-   <ICON name="db_method" path="images/file/redhat_file.gif"/>
    <ICON name="empty" path="images/common/empty.gif"/>
-   <ICON name="interface" path="images/java/interface.gif"/>
    <ICON name="java" path="images/navigationtree/java.gif"/>
-   <ICON name="method" path="images/java/method.gif"/>
-   <ICON name="openedbox" path="images/file/closed_folder.gif"/>
    <ICON name="package" path="images/java/package.gif"/>
-   <ICON name="primitive" path="images/java/java_primitive.gif"/>
-   <ICON name="primitives" path="images/java/java_primitive_folder.gif"/>
    <ICON name="properties" path="images/navigationtree/properties.gif"/>
    <ICON name="property" path="images/navigationtree/property.gif"/>
    <ICON name="root" path="images/file/closed_folder.gif"/>
