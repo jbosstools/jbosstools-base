@@ -51,7 +51,7 @@ public class AbstractQueryWizard implements SpecialWizard {
 			if(subtitle == null) subtitle = "Subtitle is not found for key \"" + key + "\"";
 			view.setTitle(subtitle);
 			String message = p.getProperty("message");
-			if(message == null) WizardKeys.getString(key + ".Message");
+			if(message == null) message = WizardKeys.getString(key + ".Message");
 			if(message != null) view.setMessage(message);
 		}		
 	}
