@@ -206,7 +206,7 @@ public class XMLUtilities {
         return h.errors.toArray(new String[0]);        
     }
     
-    public static final void serialize(Element element, String filename) throws Exception {
+    public static final void serialize(Element element, String filename) throws IOException {
         File f = new File(filename);
         if(f.exists() && !f.canWrite()) return;
         if(!f.exists()) f.createNewFile();
@@ -233,35 +233,36 @@ public class XMLUtilities {
         return format;
     }
 
-    public static final boolean serialize(Element element, Writer w) throws Exception {
+    public static final boolean serialize(Element element, Writer w) throws IOException {
         if(element == null) return false;
         serialize(element, new XMLSerializer(w, createOutputFormat("UTF-8")));
         w.close();
         return true;
     }
 
-    public static final boolean serialize(Element element, OutputStream w) throws Exception {
+    public static final boolean serialize(Element element, OutputStream w) throws IOException {
         if(element == null) return false;
         serialize(element, new XMLSerializer(w, createOutputFormat("UTF-8")));
         w.close();
         return true;
     }
 
-    public static void serialize(Element element, XMLSerializer serial) throws Exception {
+    public static void serialize(Element element, XMLSerializer serial) throws IOException {
         serial.asDOMSerializer();
         serial.serialize(element);
     }
 
-    public static void serialize(Document document, XMLSerializer serial) throws Exception {
+    public static void serialize(Document document, XMLSerializer serial) throws IOException {
+    	if(serial == null || document == null) return;
         serial.asDOMSerializer();
         serial.serialize(document);
     }
 
-    public static final boolean serialize(Document document, Writer w) throws Exception {
+    public static final boolean serialize(Document document, Writer w) throws IOException {
     	return serialize(document, w, null);
     }
 
-	public static final boolean serialize(Document document, Writer w, String encoding) throws Exception {
+	public static final boolean serialize(Document document, Writer w, String encoding) throws IOException {
 		if(document == null) return false;
 		serialize(document, new XMLSerializer(w, createOutputFormat(encoding)));
 		w.close();
