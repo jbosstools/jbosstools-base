@@ -101,4 +101,8 @@ public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
 		}
 	}
 	
+	protected String[] getSupportedNatures() {
+		return new String[0];
+	}
+
 }
