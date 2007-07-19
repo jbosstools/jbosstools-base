@@ -169,11 +169,11 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			if (border!=null) {
 				BorderedControl borderedControl = new BorderedControl(parent, SWT.NONE, border);
 				comboField = new CCombo(borderedControl, style);
+				comboField.setBackground(bg);
 			} else {
 				comboField = new CCombo(parent, style);
 			}
 			comboField.setFont(font);
-///			comboField.setBackground(bg);
 			comboField.setForeground(fg);
 
 			String[] tags = getTags();
@@ -416,7 +416,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			Color bg;
 			if (enabled) {
 				bg = getSettings().getColor("Combo.Background");
-				if (bg==null) bg = Display.getDefault().getSystemColor(SWT.COLOR_WHITE); 
+				if (bg==null) bg = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
 			} else {
 				bg = getSettings().getColor("Combo.Background.Disabled");
 				if (bg==null) bg = Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
