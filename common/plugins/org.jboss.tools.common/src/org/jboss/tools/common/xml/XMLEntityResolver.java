@@ -5,7 +5,11 @@
 
 package org.jboss.tools.common.xml;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
+
+import org.eclipse.core.runtime.FileLocator;
 import org.xml.sax.*;
 
 /**
@@ -20,9 +24,24 @@ public class XMLEntityResolver implements EntityResolver {
 		publicEntities.setProperty(publicId, url);
     }
 
+    public static void registerPublicEntity(String publicId, Class<?> loader, String resourceName) throws IOException {
+    	URL url = resolve(loader, resourceName);
+    	if(url != null) registerPublicEntity(publicId, url.toString());
+    }
+
 	public static void registerSystemEntity(String systemId, String url) {
 		systemEntities.setProperty(systemId, url);
 	}
+
+    public static void registerSystemEntity(String systemId, Class<?> loader, String resourceName) throws IOException {
+    	URL url = resolve(loader, resourceName);
+    	if(url != null) registerSystemEntity(systemId, url.toString());
+    }
+    
+    static URL resolve(Class<?> loader, String resourceName) throws IOException {
+    	URL url = loader.getResource(resourceName);
+    	return (url == null) ? null : FileLocator.resolve(url);
+    }
 
     public static XMLEntityResolver getInstance() {
         return new XMLEntityResolver();
