@@ -28,7 +28,7 @@ public class MetaLibLoader {
     static {
         try {
             Class<?> c = MetaLibLoader.class;
-            XMLEntityResolver.registerPublicEntity(DOC_PUBLICID, FileLocator.resolve(c.getResource("/meta/meta.dtd")).toString());
+            XMLEntityResolver.registerPublicEntity(DOC_PUBLICID, c, "/meta/meta.dtd");
         } catch (Exception e) {
         	ModelPlugin.getPluginLog().logError(e);
         }
