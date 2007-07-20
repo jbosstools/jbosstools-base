@@ -62,18 +62,25 @@ public class SimpleWebFileLoader implements SerializingLoader {
         element.setAttribute("EXTENSION" + postfix, object.getAttributeValue("extension"));
 
         util.load(element, object);
+        String loadingError = util.getError();
 
         setEncoding(object, body);
 		loadPublicId(object, doc);
 
 		object.set("actualBodyTimeStamp", "" + object.getTimeStamp());
+		
+		((AbstractXMLFileImpl)object).setLoaderError(loadingError);
+		if(!((AbstractXMLFileImpl)object).isIncorrect() && loadingError != null) {
+			object.setAttributeValue("isIncorrect", "yes");
+			object.setAttributeValue("incorrectBody", body);
+			object.set("actualBodyTimeStamp", "" + object.getTimeStamp());
+		}
     }
     
     protected Document loadDocument(XModelObject object, String body) {
-        String[] errors = XMLUtil.getXMLErrors(new StringReader(body), isCheckingDTD());
-        if(isCheckingSchema()) {
-       		errors = new SAXValidator().getXMLErrors(new StringReader(body));
-        }
+        String[] errors = 
+//        	XMLUtil.getXMLErrors(new StringReader(body), isCheckingDTD(), isCheckingSchema());
+        	XMLUtil.getXMLErrors(new StringReader(body), false, false);
         if(errors != null && errors.length > 0) {
             object.setAttributeValue("isIncorrect", "yes");
             object.set("correctBody", "");

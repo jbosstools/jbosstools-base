@@ -129,7 +129,8 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         super.set(name, value);
         if("incorrectBody".equals(name) && value.length() > 0) {
             set("isIncorrect", "yes");
-            setErrors(value, hasDTD(), !hasDTD()); //schema!
+//            setErrors(value, hasDTD(), !hasDTD()); //never validate dtd
+            setErrors(value, false, false);
         }
     }
 
@@ -163,6 +164,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 		boolean errors1 = ("yes".equals(get("_hasErrors_")));
 		AbstractExtendedXMLFileImpl f = getUpdatedFile(body, true);
         if(f == null) return;
+        f.getChildren();
         
         XModelObjectImpl p = (XModelObjectImpl)getParent();
         XModelImpl m = (XModelImpl)getModel();
@@ -170,11 +172,13 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 		if(!isOverlapped)	getResourceMarkers().clear();		
 		if(f.isIncorrect()) {
 			getChildren();
+			boolean fire = this.loaderError == null && f.loaderError != null;
+			this.loaderError = f.loaderError;
 			super.set("incorrectBody", f.get("incorrectBody"));
 			super.set("isIncorrect", "yes");
 			if(f.get("errors") != null) super.set("errors", f.get("errors"));
 
-			f.getChildren();
+			if(fire) changeTimeStamp();
 			if(f.get("actualBodyTimeStamp") != null && !"-1".equals(f.get("actualBodyTimeStamp"))) {
 				mergeAll(f, update);
 			}
@@ -219,7 +223,9 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 
     private AbstractExtendedXMLFileImpl getUpdatedFile(String body, boolean fire) {
         boolean errors1 = ("yes".equals(get("_hasErrors_")));
-        setErrors(body, hasDTD(), !hasDTD()); ///schema!
+        loaderError = null;
+//      setErrors(body, hasDTD(), !hasDTD()); //never validate dtd
+        setErrors(body, false, false);
         boolean errors2 = (get("errors") != null && get("errors").length() > 0);
         if(errors1 && errors2) {
             super.set("incorrectBody".intern(), body);
@@ -245,6 +251,10 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     		super.set("incorrectBody", "");
 			super.set("isIncorrect","no");
 			super.set("errors", "");
+			loaderError = null;
+    	}
+    	if(update instanceof AbstractExtendedXMLFileImpl) {
+    		loaderError = ((AbstractExtendedXMLFileImpl)update).loaderError;
     	}
 		Map<String,XModelObject> map = getChildrenForSaveAsMap();
         Set<String> set = null;
@@ -270,7 +280,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
             }
 			map.remove(c.getPathPart()); 
 		}
-		Iterator it = map.values().iterator();
+		Iterator<XModelObject> it = map.values().iterator();
 		while(it.hasNext()) {
 			((XModelObject)it.next()).removeFromParent();
 		}

@@ -12,9 +12,11 @@ package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.File;
 import java.util.*;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.w3c.dom.*;
+import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.loaders.impl.*;
@@ -129,7 +131,7 @@ public class FileSystemsLoader extends URLRootLoader {
     	}
     	XModelObject[] js = lib.getChildren();
     	String loc = lib.getAttributeValue("location");
-		List paths = null;
+		List<String> paths = null;
 		try {
 			paths = EclipseResourceUtil.getClassPath(project);
 		} catch (Exception e) {
@@ -191,7 +193,24 @@ public class FileSystemsLoader extends URLRootLoader {
 }
 
 class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
-    public boolean saveChildren(Element element, XModelObject o) {
+
+	protected Set<String> getAllowedChildren(XModelEntity entity) {
+		Set<String> children = super.getAllowedChildren(entity);
+		if("FILESYSTEMS".equals(entity.getXMLSubPath())) {
+			children.add("WEB");
+		}
+		return children;
+	}
+
+	protected Set<String> getAllowedAttributes(XModelEntity entity) {
+		Set<String> attributes = super.getAllowedAttributes(entity);
+		if("FILESYSTEMS".equals(entity.getXMLSubPath())) {
+			attributes.add("WORKSPACE_HOME");
+		}
+		return attributes;
+	}
+
+	public boolean saveChildren(Element element, XModelObject o) {
         boolean b = super.saveChildren(element, o);
         if(b && "FILESYSTEMS".equals(element.getNodeName())) {
         	saveWorkspaceHomeAttr(element, o);

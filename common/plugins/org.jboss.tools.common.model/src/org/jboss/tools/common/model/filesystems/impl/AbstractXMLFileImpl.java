@@ -17,13 +17,14 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl;
 import org.jboss.tools.common.model.util.FindObjectHelper;
 import org.jboss.tools.common.model.util.XMLUtil;
-import org.jboss.tools.common.xml.SAXValidator;
 
 public class AbstractXMLFileImpl extends RecognizedFileImpl {
     private static final long serialVersionUID = 3794621010387468744L;
 	private RM markers = new RM();
 	protected String[] _errors = new String[0];
 	protected String[] errors = new String[0];
+	
+	protected String loaderError = null;
 	
 	/**
 	 * Licence does not allows for distributing copies of dtds.
@@ -41,11 +42,20 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 	public String[] getErrors() {
 		return _errors; 	
 	}
+	
+	public void setLoaderError(String loaderError) {
+		this.loaderError = loaderError;
+	}
+	
+	public String getLoaderError() {
+		return loaderError;
+	}
 
 	protected final void setErrors(String body, boolean checkDTD, boolean checkSchema) {
-		String[] errors = (body.length() == 0) ? null
-				: (checkSchema) ? new SAXValidator().getXMLErrors(new java.io.StringReader(body))
-				: XMLUtil.getXMLErrors(new java.io.StringReader(body), checkDTD);
+		String[] errors = (body.length() == 0) ? null : XMLUtil.getXMLErrors(new java.io.StringReader(body), checkDTD, checkSchema);
+		if(errors == null || errors.length == 0) {
+			if(loaderError != null) errors = new String[]{loaderError};
+		}
 		setErrors(body, errors);
 	}
 	
@@ -81,7 +91,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 		if(s.equals(get("errors"))) return;
 		super.set("incorrectBody", body);
 		set("errors", s);
-		setAttributeValue("isIncorrect", (errors.length == 0) ? "no" : "yes");
+		setAttributeValue("isIncorrect", (errors.length == 0 && loaderError == null) ? "no" : "yes");
 		if(!isOverlapped())	markers.update();
 		
 	}

@@ -14,6 +14,7 @@ import java.io.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
+import org.jboss.tools.common.xml.SAXValidator;
 import org.jboss.tools.common.xml.XMLEntityResolver;
 import org.jboss.tools.common.xml.XMLUtilities;
 import javax.xml.parsers.*;
@@ -102,6 +103,11 @@ public class XMLUtil {
 		
     public static String[] getXMLErrors(org.xml.sax.InputSource is, boolean checkDTD) {
         return XMLUtilities.getXMLErrors(is, checkDTD, XMLEntityResolver.getInstance());
+    }
+
+    public static String[] getXMLErrors(Reader reader, boolean checkDTD, boolean checkSchema) {
+    	return (checkSchema) ? new SAXValidator().getXMLErrors(reader)
+				: getXMLErrors(reader, checkDTD);
     }
     
 }

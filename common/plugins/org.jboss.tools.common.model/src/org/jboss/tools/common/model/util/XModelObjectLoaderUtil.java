@@ -17,9 +17,12 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.xml.serialize.OutputFormat;
@@ -49,16 +52,23 @@ import org.jboss.tools.common.xml.XMLUtilities;
 
 public class XModelObjectLoaderUtil {
 	public static String ATTR_ID_NAME = "_id_";
-    private Hashtable singular = null;
+    private Hashtable<String,String> singular = null;
     private boolean saveentity = true;
     private String namespace = null;
     private NamespaceMapping namespaceMapping = null;
+    
+    protected String error = null;
 
     public XModelObjectLoaderUtil() {}
 
-    public void setup(Hashtable singular, boolean saveentity) {
+    public void setup(Hashtable<String,String> singular, boolean saveentity) {
         this.singular = singular;
         this.saveentity = saveentity;
+        error = null;
+    }
+    
+    public String getError() {
+    	return error;
     }
     
     public void setNamespace(String namespace) {
@@ -79,7 +89,96 @@ public class XModelObjectLoaderUtil {
     	} else {
 			loadAttributes(element, o);
 			loadChildren(element, o);
+			
+			if(error == null) {
+				Set<String> allowed = getAllowedChildren(o.getModelEntity());
+				if(allowed != null && hasUnallowedChildren(element, allowed));
+			}
+			if(error == null) {
+				Set<String> allowed = getAllowedAttributes(o.getModelEntity());
+				if(allowed != null && hasUnallowedAttributes(element, allowed));
+			}
+			
     	}
+    }
+    
+    static Map<XModelEntity, Set<String>> allowedChildren = new HashMap<XModelEntity, Set<String>>();
+    
+    protected Set<String> getAllowedChildren(XModelEntity entity) {
+    	if(entity.getChild("AnyElement") != null) return null;
+    	Set<String> x = allowedChildren.get(entity);
+    	if(x != null) return x;
+    	Set<String> children = new HashSet<String>();
+    	XAttribute[] as = entity.getAttributes();
+    	for (int i = 0; i < as.length; i++) {
+    		String xml = as[i].getXMLName();
+    		if(xml == null) continue;
+    		int k = xml.indexOf('.');
+    		if(k < 0) continue;
+    		children.add(xml.substring(0, k));
+    	}
+    	XChild[] cs = entity.getChildren();
+    	for (int i = 0; i < cs.length; i++) {
+    		XModelEntity c = entity.getMetaModel().getEntity(cs[i].getName());
+    		if(c == null) continue;
+    		String xml = c.getXMLSubPath();
+    		if(xml == null || xml.length() == 0) {
+    			if(cs[i].isRequired()) {
+    				Set<String> a1 = getAllowedChildren(c);
+    				if(a1 == null) return null;
+    				children.addAll(a1);
+    			}
+    		}
+    		int k = xml.indexOf('.');
+    		if(k >= 0) xml = xml.substring(0, k);
+    		children.add(xml);
+    	}
+    	if(children != null) allowedChildren.put(entity, children);
+    	return children;
+    }
+
+    protected Set<String> getAllowedAttributes(XModelEntity entity) {
+    	if(entity.getChild("AnyElement") != null) return null;
+    	Set<String> attributes = new HashSet<String>();
+    	if(saveentity) attributes.add("ENTITY");
+    	XAttribute[] as = entity.getAttributes();
+    	for (int i = 0; i < as.length; i++) {
+    		String xml = as[i].getXMLName();
+    		if(xml == null) continue;
+    		int k = xml.indexOf('.');
+    		if(k >= 0) continue;
+    		attributes.add(xml);
+    	}
+    	return attributes;
+    }
+
+    private boolean hasUnallowedChildren(Element element, Set<String> allowed) {
+    	NodeList nl = element.getChildNodes();
+    	for (int i = 0; i < nl.getLength(); i++) {
+    		Node n = nl.item(i);
+    		if(n.getNodeType() == Node.ELEMENT_NODE) {
+    			String name = n.getNodeName();
+    			if(allowed.contains(name)) continue;
+    			error = "Unallowed child " + name + " of " + element.getNodeName() + ":0:0";
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+
+    private boolean hasUnallowedAttributes(Element element, Set<String> allowed) {
+    	NamedNodeMap nl = element.getAttributes();
+    	for (int i = 0; i < nl.getLength(); i++) {
+    		Node n = nl.item(i);
+    		if(n.getNodeType() == Node.ATTRIBUTE_NODE) {
+    			String name = n.getNodeName();
+    			if(allowed.contains(name)) continue;
+    			if(name.startsWith("xmlns")) continue;
+    			error = "Unallowed attribute " + name + " of " + element.getNodeName() + ":0:0";;
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
     public void loadAttributes(Element element, XModelObject o) {
@@ -606,7 +705,7 @@ public class XModelObjectLoaderUtil {
 
     public static XObjectLoader getObjectLoader(XModelObject object) {
         try {
-            Class c = object.getModelEntity().getLoadingClass();
+            Class<?> c = object.getModelEntity().getLoadingClass();
             if (c != null) {
                 return (XObjectLoader)c.newInstance();
             }
