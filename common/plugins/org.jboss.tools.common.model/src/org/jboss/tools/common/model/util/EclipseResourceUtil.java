@@ -480,8 +480,8 @@ public class EclipseResourceUtil {
 			IResource r = project.getWorkspace().getRoot().findMember(p);
 			String s = r.getLocation().toString();
 			l.add(new java.io.File(s).getCanonicalPath());
-		} catch (Exception e) {
-			throw new Exception("Cannot find output for project " + project);
+		} catch (JavaModelException e) {
+			throw new Exception("Cannot find output for project " + project,e);
 		}
 		IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
 		for (int i = 0; i < es.length; i++) {
