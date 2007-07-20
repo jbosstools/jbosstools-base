@@ -20,13 +20,14 @@ import org.xml.sax.InputSource;
 
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.xml.XMLEntityResolver;
 
 public class MetaLibLoader {
 	public static String DOC_PUBLICID = "-//Red Hat, Inc.//DTD Meta 1.0//EN"; 
 
     static {
         try {
-            Class c = MetaLibLoader.class;
+            Class<?> c = MetaLibLoader.class;
             XMLEntityResolver.registerPublicEntity(DOC_PUBLICID, FileLocator.resolve(c.getResource("/meta/meta.dtd")).toString());
         } catch (Exception e) {
         	ModelPlugin.getPluginLog().logError(e);
