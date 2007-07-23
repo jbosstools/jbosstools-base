@@ -50,7 +50,6 @@ import org.jboss.tools.common.model.undo.XUndoManager;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.model.util.XBundle;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
-import org.jboss.tools.common.model.util.XModelObjectUtil;
 import org.jboss.tools.common.util.FileUtil;
 
 public class XModelImpl implements XModel {
@@ -433,43 +432,6 @@ public class XModelImpl implements XModel {
         }
     }
 
-    public void loadLastProject() {
-        String workspace = properties.getProperty(XModelConstants.WORKSPACE);
-        if(workspace != null && workspace.trim().length() > 0) return;
-        load(getLastWorkspace());
-    }
-
-    private String[] getLastWorkspace() {
-        XModelObject pr = getRoot().getChildByPath("Workspaces");
-        if("no".equals(pr.getAttributeValue("open workspace"))) return null;
-        XModelObject[] os = pr.getChildren();
-        for (int i = 0; i < os.length; i++) {
-            String s = XModelObjectUtil.getExpandedValue(os[i], "name", null);
-            s = reduceURLPath(s);
-            if(s.lastIndexOf(':') >= 2 || new File(s).exists()) continue;
-            os[i].removeFromParent();
-            pr.setModified(true);
-        }
-        if(pr.isModified()) save();
-        os = pr.getChildren();
-        if(os.length == 0) return null;
-        String s = XModelObjectUtil.getExpandedValue(os[0], "name", null);
-        s = reduceURLPath(s);
-        int q = s.lastIndexOf('/');
-        String ws = s.substring(0, q);
-        String n = s.substring(q + 1);
-        q = n.lastIndexOf('-');
-        String wsn = (q < 0) ? null : n.substring(0, q);
-        return new String[]{ws, wsn};
-    }
-
-    private void load(String[] workspace) {
-        if(workspace == null || workspace[0] == null) return;
-        XModelConstants.setWorkspace(this, workspace[0]);
-        XModelConstants.setWorkspaceName(this, workspace[1]);
-        load();
-    }
-
     public void update() {
         XModelObject r = getRoot();
         XModelObjectLoaderUtil.getObjectLoader(r).update(r);
@@ -572,4 +534,3 @@ public class XModelImpl implements XModel {
 		return Collections.unmodifiableMap(managers);
 	}
 }
-
