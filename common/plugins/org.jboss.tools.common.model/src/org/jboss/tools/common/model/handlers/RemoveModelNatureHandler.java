@@ -97,7 +97,6 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		File dir = new File(workspace);
 		File[] fs = dir.listFiles();
 		if(fs != null) for (int i = 0; i < fs.length; i++) 
-			if(fs[i].isFile() && fs[i].getName().endsWith(".pex")) fs[i].delete();
 	}
 
 	public boolean getSignificantFlag(XModelObject object) {
