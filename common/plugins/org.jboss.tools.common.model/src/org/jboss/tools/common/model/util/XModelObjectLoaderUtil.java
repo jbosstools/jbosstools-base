@@ -158,6 +158,9 @@ public class XModelObjectLoaderUtil {
     		Node n = nl.item(i);
     		if(n.getNodeType() == Node.ELEMENT_NODE) {
     			String name = n.getNodeName();
+       	    	if(namespaceMapping != null) { 
+       	    		name = namespaceMapping.convertToDefault(name);
+       	    	}
     			if(allowed.contains(name)) continue;
     			error = "Unallowed child " + name + " of " + element.getNodeName() + ":0:0";
     			return true;
