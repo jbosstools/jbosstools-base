@@ -612,13 +612,6 @@
    </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list">
-   <XActionItem BaseActionName="ReopenWorkspace"
-    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.ReopenProjectHandler"
-    ICON="action.newpackage" SAVE_REQUIRED="yes"
-    displayName="Reopen Workspace" kind="action" name="Reopen"/>
-   <XActionItem
-    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CloseProjectHandler"
-    ICON="action.delete" displayName="Close Project" kind="action" name="Close"/>
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
@@ -652,30 +645,6 @@
    </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list">
-   <XActionItem BaseActionName="NewWorkspace"
-    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.NewProjectHandler"
-    ICON="main.projects.new" SAVE_REQUIRED="yes"
-    WizardClassName="%Default%" displayName="New Workspace..."
-    kind="action" name="NewWorkspace">
-    <EntityData EntityName="RootNewUtil">
-     <AttributeData AttributeName="name"/>
-     <AttributeData AttributeName="folder"/>
-     <AttributeData AttributeName="allocate new folder"/>
-    </EntityData>
-   </XActionItem>
-   <XActionItem BaseActionName="OpenWorkspace"
-    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenProjectHandler"
-    ICON="main.projects.item" SAVE_REQUIRED="yes"
-    WizardClassName="%OneParameter%" displayName="Open Workspace..."
-    kind="action" name="OpenWorkspace">
-    <EntityData EntityName="RootOpenUtil">
-     <AttributeData AttributeName="redhat project"/>
-    </EntityData>
-   </XActionItem>
-   <XActionItem BaseActionName="ReopenWorkspace"
-    HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.ReopenProjectHandler"
-    ICON="main.projects.reopen" SAVE_REQUIRED="yes"
-    displayName="Reopen Workspace..." kind="action" name="ReopenWorkspace"/>
   </XActionItem>
   <XDependencies/>
  </XModelEntity>

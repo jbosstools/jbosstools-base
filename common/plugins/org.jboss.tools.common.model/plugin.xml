@@ -99,8 +99,6 @@
 			class="org.jboss.tools.common.meta.action.impl.handlers.ChildrenCopyHandler"/>
 		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.ChildrenDeleteHandler"
 			class="org.jboss.tools.common.meta.action.impl.handlers.ChildrenDeleteHandler"/>
-		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.CloseProjectHandler"
-			class="org.jboss.tools.common.meta.action.impl.handlers.CloseProjectHandler"/>
 		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
 			class="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"/>
 		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.CreateIconHandler"
@@ -119,10 +117,6 @@
 			class="org.jboss.tools.common.meta.action.impl.handlers.DefaultSpecialHandler"/>
 		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.MoveHandler"
 			class="org.jboss.tools.common.meta.action.impl.handlers.MoveHandler"/>
-		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.NewProjectHandler"
-			class="org.jboss.tools.common.meta.action.impl.handlers.NewProjectHandler"/>
-		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.OpenProjectHandler"
-			class="org.jboss.tools.common.meta.action.impl.handlers.OpenProjectHandler"/>
 		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.OpenWithChoiceHandler"
 			class="org.jboss.tools.common.meta.action.impl.handlers.OpenWithChoiceHandler"/>
 		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler"
@@ -131,8 +125,6 @@
 			class="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"/>
 		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.PropertiesHandler"
 			class="org.jboss.tools.common.meta.action.impl.handlers.PropertiesHandler"/>
-		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.ReopenProjectHandler"
-			class="org.jboss.tools.common.meta.action.impl.handlers.ReopenProjectHandler"/>
 		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.ReplaceWithNewHandler"
 			class="org.jboss.tools.common.meta.action.impl.handlers.ReplaceWithNewHandler"/>
 		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.SaveAllHandler"

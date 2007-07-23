@@ -94,9 +94,6 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 	private void removeFiles(String location, String workspace) {
 		File f = new File(location + "/" + IModelNature.PROJECT_FILE);
 		if(f.exists()) f.delete();
-		File dir = new File(workspace);
-		File[] fs = dir.listFiles();
-		if(fs != null) for (int i = 0; i < fs.length; i++) 
 	}
 
 	public boolean getSignificantFlag(XModelObject object) {
