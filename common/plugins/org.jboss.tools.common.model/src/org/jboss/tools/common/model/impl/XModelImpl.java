@@ -243,7 +243,7 @@ public class XModelImpl implements XModel {
             return null;
         }
         try {
-            Class c = ent.getImplementingClass();
+            Class<?> c = ent.getImplementingClass();
             XModelObjectImpl me = (XModelObjectImpl)c.newInstance();
             me.setModel(this);
             me.setEntityName_0(entity);
@@ -380,11 +380,7 @@ public class XModelImpl implements XModel {
         if(classloader.isUsed()) classloader = new XModelClassLoader(this);
         classloader.validate();
         fireStructureChanged(getRoot(), 3, null);
-        if(!isDummy() && "true".equals(getProperties().getProperty("design"))) {
-            OpenedProjectsImpl p = (OpenedProjectsImpl)getRoot().getChildByPath("Workspaces");
-            p.last(XModelConstants.getWorkspace(this) + "/" + XModelConstants.getProjectPrefix(this) + "workspace.pex");
-            if(p.isModified()) save();
-        }
+
         ///Project Watcher
         if(!isDummy()) loadWatcher();
     }
@@ -568,11 +564,11 @@ public class XModelImpl implements XModel {
 		}
 	}
 	
-	public List getTreeListeners() {
+	public List<XModelTreeListener> getTreeListeners() {
 		return Collections.unmodifiableList(this.treeListeners);
 	}
 	
-	public Map getManagerMap() {
+	public Map<String,Object> getManagerMap() {
 		return Collections.unmodifiableMap(managers);
 	}
 }
