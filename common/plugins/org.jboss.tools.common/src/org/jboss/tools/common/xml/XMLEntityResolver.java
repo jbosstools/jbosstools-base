@@ -54,6 +54,21 @@ public class XMLEntityResolver implements EntityResolver {
     public void setDeactivate(boolean b) {
     	deactivate = b;
     }
+    
+    public boolean isResolved(String publicId, String systemId) {
+    	if (publicId != null) {
+			String url = publicEntities.getProperty(publicId);
+			if (url != null) {
+				return true;
+			}
+    	} else if (systemId != null) {
+			String url = systemEntities.getProperty(systemId);
+			if (url != null) {
+				return true;
+			}
+        }
+		return false;
+    }
 
     public InputSource resolveEntity(String publicId, String systemId) 
     	throws SAXException, java.io.IOException {

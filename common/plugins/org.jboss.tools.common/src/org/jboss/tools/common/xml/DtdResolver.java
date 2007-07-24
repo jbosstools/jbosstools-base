@@ -18,6 +18,8 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -25,6 +27,7 @@ import org.xml.sax.SAXException;
 
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.util.HttpUtil;
+import org.osgi.framework.Bundle;
 
 /**
  * @author igels
@@ -43,6 +46,20 @@ public class DtdResolver implements EntityResolver {
         		location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(systemId2);
         	}
         	
+        }
+        if((location == null || location.startsWith("http:")) && systemId != null) {
+        	Bundle b = Platform.getBundle("org.eclipse.jst.standard.schemas");
+        	if(b != null) {
+        		int q = systemId.lastIndexOf("/");
+        		String s = systemId.substring(q + 1);
+        		URL u = b.getEntry("/dtdsAndSchemas/" + s);
+        		try {
+        			if(u != null) u = FileLocator.resolve(u);
+        		} catch (IOException ee) {
+        			u = null;
+        		}
+        		if(u != null) location = u.toString();
+        	}
         }
         if(location == null) {
         	if(systemId != null && !unfound.contains(systemId)) {

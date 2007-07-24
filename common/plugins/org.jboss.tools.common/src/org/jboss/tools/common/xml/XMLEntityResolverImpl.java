@@ -45,8 +45,8 @@ public class XMLEntityResolverImpl implements XMLEntityResolver {
             publicId = rid.getPublicId();
         	
         	if(systemId != null && systemId.indexOf("www.ibm.com") >= 0) {
-        		CommonPlugin.getPluginLog().logError( "ignore");
-        		return null;
+//        		CommonPlugin.getPluginLog().logError( "ignore");
+//        		return null;
         	}
         	
             InputStream is = resolver.getInputStream(rid.getPublicId(), systemId);
