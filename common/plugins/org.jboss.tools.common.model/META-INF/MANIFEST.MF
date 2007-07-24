@@ -78,6 +78,7 @@ Require-Bundle: org.jboss.tools.common;visibility:=reexport,
  org.eclipse.ant.ui,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ltk.ui.refactoring,
+ org.eclipse.wst.common.uriresolver,
  org.eclipse.core.resources;visibility:=reexport,
  org.eclipse.core.runtime;visibility:=reexport
 Bundle-Version: 2.0.0
