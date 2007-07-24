@@ -154,7 +154,9 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		try {	
 			
 			// determine if action should be enabled or not
-			markOccurences = fPreferenceStore.getBoolean(fKey);
+			if(fPreferenceStore!=null) {
+				markOccurences = fPreferenceStore.getBoolean(fKey);
+			}
 			enabled = (getTextEditor() != null);
 		} catch (Exception x) {
 		}
