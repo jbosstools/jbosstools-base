@@ -487,8 +487,11 @@ public class EclipseResourceUtil {
 		for (int i = 0; i < es.length; i++) {
 			try {
 				if(es[i].getEntryKind() == IClasspathEntry.CPE_SOURCE && es[i].getOutputLocation() != null) {
-					String s = project.getWorkspace().getRoot().findMember(es[i].getOutputLocation()).getLocation().toString();
-					l.add(new java.io.File(s).getCanonicalPath());
+					IResource findMember = project.getWorkspace().getRoot().findMember(es[i].getOutputLocation());
+					if(findMember!=null) {
+						String s = findMember.getLocation().toString();
+						l.add(new java.io.File(s).getCanonicalPath());
+					}
 				}
 			} catch (Exception e) {
 				//ignore - we do not care about non-existent files here.
@@ -499,7 +502,12 @@ public class EclipseResourceUtil {
 				String s = null;
 				String path = es[i].getPath().toString();
 				if(path.startsWith("/" + project.getName() + "/")) {
-					s = project.findMember(es[i].getPath().removeFirstSegments(1)).getLocation().toString();
+					IResource findMember = project.findMember(es[i].getPath().removeFirstSegments(1));
+					if(findMember!=null) {
+						s = findMember.getLocation().toString();
+					} else {
+						s = null;
+					}
 				} else if(new java.io.File(path).isFile()) {
 					s = path;
 				}
@@ -615,7 +623,10 @@ public class EclipseResourceUtil {
 			IClasspathEntry[] es = javaProject.getRawClasspath();
 			for (int i = 0; i < es.length; i++) {
 				if(es[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-					resources.add( ModelPlugin.getWorkspace().getRoot().findMember(es[i].getPath()) );
+					IResource findMember = ModelPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
+					if(findMember!=null) {
+						resources.add( findMember );
+					}
 				} 
 			}
 		} catch(CoreException ce) {
