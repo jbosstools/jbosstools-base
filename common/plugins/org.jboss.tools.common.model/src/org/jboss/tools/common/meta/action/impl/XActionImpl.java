@@ -223,7 +223,7 @@ class ClassHolder2 {
     }
 
     public Object createInstance() {
-        if(name == null) return null;
+        if(name == null || name.trim().length() == 0) return null;
         validate();
         try {
             return ModelFeatureFactory.getInstance().createFeatureInstance(name);
