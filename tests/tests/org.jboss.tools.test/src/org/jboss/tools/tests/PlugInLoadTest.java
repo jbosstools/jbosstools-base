@@ -71,7 +71,6 @@ public class PlugInLoadTest extends TestCase {
 			rhdsNS+"jsf.verification",
 			rhdsNS+"jsf.vpe.ajax4jsf",
 			rhdsNS+"jsf.vpe.facelets",
-			rhdsNS+"jsf.vpe.otrix",
 			rhdsNS+"jsf.vpe.richfaces",			
 			rhdsNS+"jsf.vpe.seam",
 			rhdsNS+"jsf.vpe.tomahawk"

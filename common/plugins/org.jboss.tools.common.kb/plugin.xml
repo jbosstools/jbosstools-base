@@ -67,32 +67,7 @@
             schemaLocation="schemas/tld/MyFacesTomahawk.xml"
             uri="http://myfaces.apache.org/tomahawk"/>
 
-      <tld
-            jsf="true"
-            name="Otrix Shared"
-            schemaLocation="schemas/tld/OtrixShared.xml"
-            uri="http://www.otrix.com/faces/shared"/>
-      <tld
-            jsf="true"
-            name="Otrix Web Grid"
-            schemaLocation="schemas/tld/OtrixWebGrid.xml"
-            uri="http://www.otrix.com/faces/webgrid"/>
-      <tld
-            jsf="true"
-            name="Otrix Web Input"
-            schemaLocation="schemas/tld/OtrixWebInput.xml"
-            uri="http://www.otrix.com/faces/webinput"/>
-      <tld
-            jsf="true"
-            name="Otrix Web Menu"
-            schemaLocation="schemas/tld/OtrixWebMenu.xml"
-            uri="http://www.otrix.com/faces/webmenu"/>
-      <tld
-            jsf="true"
-            name="Otrix Web Tree"
-            schemaLocation="schemas/tld/OtrixWebTree.xml"
-            uri="http://www.otrix.com/faces/webtree"/>
-
+     
       <tld
             jsf="true"
             name="Shale Core"
