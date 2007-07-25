@@ -18,10 +18,11 @@ import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class ModelEntityRecognizer implements EntityRecognizer {
     private XModelMetaData meta = null;
-    private HashMap<String,Object> ext_rec = new HashMap<String,Object>();
-    private HashMap<String,EntityRecognizer> cls_rec = new HashMap<String,EntityRecognizer>();
+    private HashMap<String,EntityRecognizer[]> recognizers = new HashMap<String,EntityRecognizer[]>();
 
     public ModelEntityRecognizer() {}
+    
+    boolean loaded = false;
 
     public void setMetaData(XModelMetaData meta) {
         if(this.meta != null) return;
@@ -31,7 +32,7 @@ public class ModelEntityRecognizer implements EntityRecognizer {
 
     public String getEntityName(String ext, String body) {
     	if(ext != null) ext = ext.toLowerCase();
-        EntityRecognizer[] list = (EntityRecognizer[])ext_rec.get(ext);
+        EntityRecognizer[] list = recognizers.get(ext);
         if(list == null || list.length == 0) return "FileAny";
         for (int i = 0; i < list.length; i++) {
             String n = list[i].getEntityName(ext, body);
@@ -43,44 +44,45 @@ public class ModelEntityRecognizer implements EntityRecognizer {
     private void load() {
         XMapping m = meta.getMapping("Recognizers");
         if(m == null) return;
+        HashMap<String,RL> ext_list = new HashMap<String,RL>();
+        HashMap<String,EntityRecognizer> cls_recw = new HashMap<String,EntityRecognizer>();
         String[] keys = m.getKeys();
         for (int i = 0; i < keys.length; i++) {
             String k = keys[i];
-            EntityRecognizer r = find(m.getValue(k));
-            if(r == null) continue;
+            String clsname = m.getValue(k);
+            if(clsname == null || clsname.trim().length() == 0) continue;
+            EntityRecognizer r = cls_recw.get(clsname);
+        	if(r == null) {
+        		r = new EntityRecognizerWrapper(clsname);
+        		cls_recw.put(clsname, r);
+        	}
+            
             int d = k.indexOf('$');
             String ext = (d < 0) ? k : k.substring(0, d);
-            RL rl = findList(ext);
+            RL rl = ext_list.get(ext);
+            if(rl == null) {
+                rl = new RL();
+                ext_list.put(ext, rl);
+            }
             int p = (d < 0) ? 0 : parsePriority(k.substring(d + 1));
             rl.add(r, p);
         }
-        String[] ks = (String[])ext_rec.keySet().toArray(new String[0]);
+        String[] ks = ext_list.keySet().toArray(new String[0]);
         for (int i = 0; i < ks.length; i++) {
-            RL rl = (RL)ext_rec.get(ks[i]);
+            RL rl = ext_list.get(ks[i]);
             EntityRecognizer[] rs = rl.list();
-            if(rs.length == 0) ext_rec.remove(ks[i]);
-            else ext_rec.put(ks[i], rs);
+            ext_list.remove(ks[i]);
+            if(rs.length > 0) {
+            	recognizers.put(ks[i], rs);
+            }            
         }
     }
-
-    private RL findList(String ext) {
-        RL rl = (RL)ext_rec.get(ext);
-        if(rl == null) {
-            rl = new RL();
-            ext_rec.put(ext, rl);
-        }
-        return rl;
-    }
-
+    
     private EntityRecognizer find(String clsname) {
-        EntityRecognizer r = (EntityRecognizer)cls_rec.get(clsname);
-        if(r != null) return r;
         try {
-        	r = (EntityRecognizer)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
-			cls_rec.put(clsname, r);
-			return r;
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError("ModelEntityRecognizer:Cannot load recognizer " + clsname);
+        	return (EntityRecognizer)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
+		} catch (ClassCastException e) {
+			ModelPlugin.getPluginLog().logError("Entity recognizer " + clsname + " must be instanceof EntityRecognizer", e);
 		}
 		return null;
     }
@@ -110,7 +112,7 @@ public class ModelEntityRecognizer implements EntityRecognizer {
 
         private R resolve(EntityRecognizer r, int p) {
             for (int i = 0; i < v.size(); i++) {
-                R x = (R)v.elementAt(i);
+                R x = v.elementAt(i);
                 if(x.r != r) continue;
                 if(p < x.p) x.p = p;
                 v.removeElement(x);
@@ -137,6 +139,23 @@ public class ModelEntityRecognizer implements EntityRecognizer {
             this.r = r;
             this.p = p;
         }
+    }
+    
+    private class EntityRecognizerWrapper implements EntityRecognizer {
+    	String clsname;
+    	EntityRecognizer resolved;
+    	
+    	public EntityRecognizerWrapper(String clsname) {
+    		this.clsname = clsname;
+    	}
+
+		public String getEntityName(String ext, String body) {
+			if(resolved == null && clsname != null) {
+				resolved = find(clsname);
+				clsname = null;
+			}
+			return (resolved != null) ? resolved.getEntityName(ext, body) : null;
+		}
     }
 
 }
