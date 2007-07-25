@@ -234,7 +234,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 			}
 			resource.refreshLocal(IResource.DEPTH_ONE, null);
 		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()");
+			ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()",e);
 		} finally {
 			fsi.unlockUpdate();
 		}
