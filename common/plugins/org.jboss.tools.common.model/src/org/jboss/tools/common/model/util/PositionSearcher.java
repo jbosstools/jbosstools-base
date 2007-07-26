@@ -33,10 +33,15 @@ public class PositionSearcher {
 	String attribute;
 	int startPosition;
 	int endPosition;
+	boolean selectAttributeName = false;
 
 	public PositionSearcher() {}
 	
 	public void init(String text, XModelObject object, String attribute) {
+		if(attribute != null && attribute.startsWith("&")) {
+			selectAttributeName = true;
+			attribute = attribute.substring(1);
+		}
 		this.text = text;
 		this.object = object;
 		this.attribute = attribute;
@@ -63,6 +68,12 @@ public class PositionSearcher {
 		if(xml.indexOf(".") < 0) {
 			String s = text.substring(startPosition, endPosition);
 			int i1 = s.indexOf(xml);
+			if(selectAttributeName) {
+				if(i1 < 0) return;
+				startPosition = startPosition + i1;
+				endPosition = startPosition + xml.length();
+				return;
+			}
 			int i2 = (i1 < 0) ? -1 : s.indexOf('"', i1 + 1);
 			int i3 = (i2 < 0) ? -1 : s.indexOf('"', i2 + 1);
 			if(i3 > 0) {
