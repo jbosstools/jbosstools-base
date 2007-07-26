@@ -1,9 +1,11 @@
 package org.jboss.tools.common.model.util;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.wst.common.uriresolver.internal.ExtensibleURIResolver;
+import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.xml.XMLEntityResolver;
@@ -15,6 +17,8 @@ public class EntityXMLRegistration {
 	public static int DTD = 0;
 	public static int SCHEMA = 1;
 	public static int MISSING = 2;
+	
+	static boolean isResolvingSchema = false;
 	
 	private EntityXMLRegistration() {}
 	
@@ -33,8 +37,8 @@ public class EntityXMLRegistration {
 			return resolveDTD(entity, a);
 		}
 		a = entity.getAttribute("xsi:schemaLocation");
-		if(a != null) {
-//			return resolveSchema(entity, a);
+		if(a != null && isResolvingSchema) {
+			return resolveSchema(entity, a);
 		}
 		resolved.put(entity, new Integer(UNRESOLVED));
 		return UNRESOLVED;
@@ -64,9 +68,19 @@ public class EntityXMLRegistration {
 			resolved.put(entity, new Integer(MISSING));
 			return MISSING;
 		}
-		ExtensibleURIResolver r = new ExtensibleURIResolver();
-		String s = r.resolve(null, vs[0], vs[1]);
-		if(s != null && s.length() > 0) {
+		String location = null;
+		try {
+			location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolvePublic(vs[0], vs[1]);
+			if(location == null) location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveSystem(vs[1]);
+			if(location == null) location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(vs[1]);
+		} catch (IOException e) {
+			//ignore
+		}
+		if(location == null) {
+			ExtensibleURIResolver r = new ExtensibleURIResolver();
+			location = r.resolve(null, vs[0], vs[1]);
+		}
+		if(location != null && location.length() > 0) {
 			resolved.put(entity, new Integer(SCHEMA));
 			return SCHEMA;
 		}
