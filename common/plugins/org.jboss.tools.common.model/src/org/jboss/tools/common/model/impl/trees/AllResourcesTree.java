@@ -40,6 +40,11 @@ public abstract class AllResourcesTree implements XFilteredTree {
 	public boolean hasChildren(XModelObject object) {
 		if(object == root) return true;
 		XFilteredTree tree = getSubTree(object.getModel());
+		if(tree != null) for (int i = 0; i < roots.length; i++) {
+			if(object == roots[i]) {
+				object = tree.getRoot(); 
+			}
+		}
 		return (tree != null) && tree.hasChildren(object);
 	}
 	
