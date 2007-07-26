@@ -130,11 +130,11 @@ Provide-Package: org.jboss.tools.common,
  org.w3c.dom.ls
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.wsdl.validation,
- org.eclipse.wst.xml.core,
+ org.eclipse.wst.xml.core;visibility:=reexport,
  org.eclipse.jface,
  org.eclipse.core.resources,
  org.eclipse.ui,
- org.eclipse.wst.common.uriresolver,
+ org.eclipse.wst.common.uriresolver;visibility:=reexport,
  org.eclipse.core.net
 Bundle-Version: 2.0.0
 Eclipse-LazyStart: true
