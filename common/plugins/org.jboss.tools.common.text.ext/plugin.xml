@@ -23,6 +23,9 @@
          	<contentType id="org.eclipse.wst.xml.core.xmlsource">
          		<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
          	</contentType>
+         	<contentType id="org.eclipse.jst.j2ee.webDD">
+         		<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
+         	</contentType>
          	<contentType id="org.eclipse.core.runtime.xml">
          		<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
          	</contentType>
@@ -51,12 +54,15 @@
 			<contentType id="org.eclipse.jst.jsp.core.tldsource">
 				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
 			</contentType>
-         	<contentType id="org.eclipse.wst.xml.core.xmlsource">
+        	<contentType id="org.eclipse.wst.xml.core.xmlsource">
 				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
-         	</contentType>
-         	<contentType id="org.eclipse.core.runtime.xml">
+        	</contentType>
+        	<contentType id="org.eclipse.core.runtime.xml">
 				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
-         	</contentType>
+        	</contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
+        	</contentType>
 		</hyperlinkPartitioner>
 
 		<hyperlinkPartitioner 
@@ -68,12 +74,15 @@
 			<contentType id="org.eclipse.jst.jsp.core.tldsource">
 				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
 			</contentType>
-         	<contentType id="org.eclipse.wst.xml.core.xmlsource">
+         <contentType id="org.eclipse.wst.xml.core.xmlsource">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
-         	</contentType>
-         	<contentType id="org.eclipse.core.runtime.xml">
+         </contentType>
+         <contentType id="org.eclipse.core.runtime.xml">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
-         	</contentType>
+         </contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
+        	</contentType>
 		</hyperlinkPartitioner>
 
 		<hyperlinkPartitioner 
@@ -85,12 +94,15 @@
 			<contentType id="org.eclipse.jst.jsp.core.tldsource">
 				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
 			</contentType>
-         	<contentType id="org.eclipse.wst.xml.core.xmlsource">
+        	<contentType id="org.eclipse.wst.xml.core.xmlsource">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
-         	</contentType>
-         	<contentType id="org.eclipse.core.runtime.xml">
+        	</contentType>
+        	<contentType id="org.eclipse.core.runtime.xml">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
-         	</contentType>
+        	</contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
+        	</contentType>
 		</hyperlinkPartitioner>
 
 		<hyperlinkPartitioner 
@@ -100,14 +112,17 @@
 				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
 			</contentType>
 			<contentType id="org.eclipse.jst.jsp.core.tldsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
 			</contentType>
-         	<contentType id="org.eclipse.wst.xml.core.xmlsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
-         	</contentType>
-         	<contentType id="org.eclipse.core.runtime.xml">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
-         	</contentType>
+        	<contentType id="org.eclipse.wst.xml.core.xmlsource">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+        	</contentType>
+        	<contentType id="org.eclipse.core.runtime.xml">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+        	</contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+        	</contentType>
 		</hyperlinkPartitioner>
          
 		<hyperlinkPartitioner 
@@ -119,35 +134,42 @@
 			<contentType id="org.eclipse.jst.jsp.core.tldsource">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
 			</contentType>
-         	<contentType id="org.eclipse.wst.xml.core.xmlsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
-         	</contentType>
-         	<contentType id="org.eclipse.core.runtime.xml">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
-         	</contentType>
+        	<contentType id="org.eclipse.wst.xml.core.xmlsource">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+        	</contentType>
+        	<contentType id="org.eclipse.core.runtime.xml">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+        	</contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+        	</contentType>
 		</hyperlinkPartitioner> 
 		
 		<hyperlinkPartitioner 
 			class="org.jboss.tools.common.text.ext.hyperlink.xml.XMLXmlNsHyperlinkPartitioner" 
 			id="org.jboss.tools.common.text.ext.hyperlink.xml.XMLXmlNsHyperlinkPartitioner">
-         	<contentType id="org.eclipse.wst.xml.core.xmlsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
+        	<contentType id="org.eclipse.wst.xml.core.xmlsource">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
 <!--
          			<axis path="*/xmlns/"/>
          			<axis path="*/xmlns:*/"/>
          			<axis path="*:schemaLocation/"/>
 -->
-         		</partitionType>
-         	</contentType>
-         	<contentType id="org.eclipse.core.runtime.xml">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
+        		</partitionType>
+        	</contentType>
+        	<contentType id="org.eclipse.core.runtime.xml">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
 <!--
          			<axis path="*/xmlns/"/>
          			<axis path="*/xmlns:*/"/>
          			<axis path="*:schemaLocation/"/>
 -->
-         		</partitionType>
-         	</contentType>
+        		</partitionType>
+        	</contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
+        		</partitionType>
+        	</contentType>
 		</hyperlinkPartitioner> 
 		
 		<!-- End of Common XML hyperlink partitioners -->
@@ -382,6 +404,18 @@
          			<!-- TLD Files -->
          		</partitionType>
          	</contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
+         			<!-- Web.xml -->
+         			<axis path="/web-app/env-entry/env-entry-type/" />
+         			<axis path="/web-app/error-page/exception-type/" />
+         			<axis path="/web-app/filter/filter-class/" />
+         			<axis path="/web-app/servlet/servlet-class/" />
+         			<axis path="/web-app/listener/listener-class/" />
+         			<axis path="/web-app/resource-env-ref/resource-env-ref-type/" />
+         			<!-- Web.xml -->
+         		</partitionType>
+        	</contentType>
 		</hyperlinkPartitioner>
 		<!-- End of Web.xml and/or TLD files hyperlink partitioners -->
 
@@ -399,6 +433,11 @@
          			<axis path="/web-app/filter-mapping/filter-name/" />
          		</partitionType>
          	</contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
+         			<axis path="/web-app/filter-mapping/filter-name/" />
+         		</partitionType>
+        	</contentType>
 		</hyperlinkPartitioner>
 
 		<hyperlinkPartitioner
@@ -416,6 +455,12 @@
          			<axis path="/web-app/servlet-mapping/servlet-name/" />
          		</partitionType>
          	</contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
+         			<axis path="/web-app/filter-mapping/servlet-name/" />
+         			<axis path="/web-app/servlet-mapping/servlet-name/" />
+         		</partitionType>
+        	</contentType>
 		</hyperlinkPartitioner>
 
 		<hyperlinkPartitioner
@@ -435,6 +480,13 @@
          			<axis path="/web-app/security-constraint/auth-constraint/role-name/" />
          		</partitionType>
          	</contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
+         			<axis path="/web-app/servlet/security-role-ref/role-link/" />
+         			<axis path="/web-app/servlet/run-as/role-name/" />
+         			<axis path="/web-app/security-constraint/auth-constraint/role-name/" />
+         		</partitionType>
+        	</contentType>
 		</hyperlinkPartitioner>
 		<!-- End of Web.xml file hyperlink partitioners -->
 
@@ -481,6 +533,9 @@
 			<contenttypeidentifier id="org.eclipse.core.runtime.xml">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_DOCTYPE" />
 			</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
+				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_DOCTYPE" />
+        	</contenttypeidentifier>
 		</hyperlink>
 
 
@@ -554,6 +609,9 @@
 			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
             	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_CLASS" />
 			</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
+				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_CLASS" />
+        	</contenttypeidentifier>
 		</hyperlink>
 
 		<hyperlink 
@@ -579,6 +637,9 @@
 			<contenttypeidentifier id="org.eclipse.core.runtime.xml">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_XMLNS" />
 			</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
+				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_XMLNS" />
+        	</contenttypeidentifier>
 		</hyperlink>
 
 	<!-- Web.inf File -->
@@ -592,6 +653,9 @@
 			<contenttypeidentifier id="org.eclipse.core.runtime.xml">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME" />
 			</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
+				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME" />
+        	</contenttypeidentifier>
 		</hyperlink>
 
 		<hyperlink 
@@ -603,6 +667,9 @@
 			<contenttypeidentifier id="org.eclipse.core.runtime.xml">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME" />
 			</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
+				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME" />
+        	</contenttypeidentifier>
 		</hyperlink>
 
 		<hyperlink 
@@ -614,6 +681,9 @@
 			<contenttypeidentifier id="org.eclipse.core.runtime.xml">
             	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME" />
 			</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
+            	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME" />
+        	</contenttypeidentifier>
 		</hyperlink>
 	<!-- Web.inf File -->
 
