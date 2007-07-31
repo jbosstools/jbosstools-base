@@ -188,8 +188,12 @@ public class TableStructuredFieldEditor extends ExtendedFieldEditor
 
 				public void mouseDoubleClick(MouseEvent e) {
 					if(getActionProvider() == null) return;
-					IAction action = getActionProvider().getAction(TableStructuredEditor.DOUBLE_CLICK__ACTION);
-					if (action!=null) action.run();
+					Display.getDefault().asyncExec(new Runnable() {
+						public void run() {
+							IAction action = getActionProvider().getAction(TableStructuredEditor.DOUBLE_CLICK__ACTION);
+							if (action!=null) action.run();
+						}
+					});
 				}
 
 				public void mouseDown(MouseEvent e) {
