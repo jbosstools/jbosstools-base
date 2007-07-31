@@ -27,7 +27,7 @@ import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 public class PropertyEditorFactory {
 	public static final String ATTRIBUTE_EDITOR_EXT_POINT = "org.jboss.tools.common.model.ui.attributeEditor";
 	
-	private static Map<String,Class> classes = new HashMap<String,Class>();
+	private static Map<String,Class<?>> classes = new HashMap<String,Class<?>>();
 	private static IWidgetSettings settings = new DefaultSettings();
 
 	public PropertyEditorFactory() {}
@@ -62,7 +62,12 @@ public class PropertyEditorFactory {
 			propertyEditor = new StringEditor(settings); 
 		}
 		String labelText = WizardKeys.getAttributeDisplayName(attribute, true);
-		labelText += ":";
+		String editorName = attribute.getEditor().getName();
+		if(!"CheckBox".equals(editorName) && !"ListRadio".equals(editorName)) {
+			//Note: If later there appear more cases of editors that do not need ':' 
+			//it will be better to add a property to extension point for field editors.
+			labelText += ":";
+		}
 		if(required) labelText += "*";
 		propertyEditor.setLabelText(labelText);
 		
@@ -70,14 +75,14 @@ public class PropertyEditorFactory {
 		return propertyEditor;
 	}
 
-	private static Class getEditorClass(XAttribute attribute) {
+	private static Class<?> getEditorClass(XAttribute attribute) {
 		return getEditorClass(attribute.getEditor().getName());
 	}
 	
 	static Set<String> defaultEditorIds = new HashSet<String>();
 	
-	private static Class getEditorClass(String id) {
-		Class c = (Class)classes.get(id);
+	private static Class<?> getEditorClass(String id) {
+		Class<?> c = classes.get(id);
 		if(c != null) return c;
 		try {
 			c = ExtensionPointUtil.findClassByElementId(ATTRIBUTE_EDITOR_EXT_POINT, id).getClass();			
