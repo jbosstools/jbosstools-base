@@ -9,7 +9,6 @@ package org.jboss.tools.common.verification.vrules.handler;
 import org.jboss.tools.common.verification.vrules.*;
 import org.jboss.tools.common.verification.vrules.layer.VModelFactory;
 import org.jboss.tools.common.model.*;
-///import org.jboss.tools.common.model.impl.XModelClassLoader;
 import org.jboss.tools.common.meta.action.*;
 import java.util.*;
 
