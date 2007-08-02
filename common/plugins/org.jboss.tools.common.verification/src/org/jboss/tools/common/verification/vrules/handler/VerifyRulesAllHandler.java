@@ -64,7 +64,6 @@ public class VerifyRulesAllHandler extends VerifyHandler {
     private void executeHandlerGUI(XModelObject object, Properties p) throws Exception {
 
 		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.verification.ui.vrules.wizard.runtime2.VerifyWizard");
-///		((XModelClassLoader)object.getModel().getModelClassLoader()).invalidate();
         if(p == null) p = new Properties();
         String title = "Apply Verification Rules";
         if(!object.getModelEntity().getName().equals("FileSystems"))
