@@ -108,12 +108,6 @@
      ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
    </XActionItem>
    <XActionItem displayName="Run" kind="list" name="RunActions">
-    <XActionItem HIDE="disabled"
-     HandlerClassName="org.jboss.tools.common.java.model.handler.RunJavaHandler"
-     ICON="action.start" displayName="Run" kind="action" name="Run"/>
-    <XActionItem HIDE="disabled"
-     HandlerClassName="org.jboss.tools.common.model.engines.impl.StopProcessHandler"
-     ICON="action.stop" displayName="Stop" kind="action" name="Stop"/>
    </XActionItem>
    <XActionItem ICON="action.empty" kind="list" name="Properties">
     <XActionItem HIDE="always" HandlerClassName="%Properties%"
