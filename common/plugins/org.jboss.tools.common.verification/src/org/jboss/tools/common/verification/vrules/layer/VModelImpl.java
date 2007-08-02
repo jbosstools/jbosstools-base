@@ -165,10 +165,6 @@ public class VModelImpl implements VModel {
 //    	if(!isMain()) return;
     }
     
-    public ClassLoader getClassLoader() {
-        return model.getModelClassLoader();
-    }
-
 	public IType getValidType(String className) {
 		if(project == null) return null;
 		IType type = EclipseResourceUtil.getValidType(project, className);
