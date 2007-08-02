@@ -12,45 +12,11 @@
  </MAPPINGS>
  <ICONS/>
  <GlobalActions kind="list"/>
- <XModelEntity ImplementingClass="%Regular%" name="AntTarget">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.attribute" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="target" loader="ElementType" name="element type">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list">
-   <XActionItem displayName="Run" kind="list" name="RunActions">
-    <XActionItem
-     HandlerClassName="org.jboss.tools.common.ant.model.handlers.RunTargetHandler"
-     ICON="action.start" displayName="Run" kind="action" name="Run"/>
-    <XActionItem HIDE="disabled"
-     HandlerClassName="org.jboss.tools.common.model.engines.impl.StopProcessHandler"
-     ICON="action.stop" displayName="Stop" kind="action" name="Stop"/>
-   </XActionItem>
-   <XActionItem ICON="action.empty" kind="list" name="Properties">
-    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
-     displayName="Properties..." kind="action" name="Properties"/>
-   </XActionItem>
-  </XActionItem>
-  <XDependencies/>
- </XModelEntity>
  <XModelEntity
   ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.BodyLoader"
   ImplementingClass="org.jboss.tools.common.model.filesystems.impl.FileXMLImpl"
   ObjectEditorClass="org.eclipse.ant.ui.internal.editor.AntEditor" name="FileANT">
   <XChildrenEntities>
-   <XChildEntity name="AntTarget"/>
   </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
