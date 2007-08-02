@@ -16,7 +16,6 @@ import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.util.*;
-import org.jboss.tools.common.model.impl.XModelClassLoader;
 
 public class MountFileSystemHandler extends DefaultCreateHandler {
 
@@ -118,8 +117,6 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
 	static SpecialWizard w = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.project.ClassPathUpdateWizard");
 
     public static void updateClassPath(XModelObject fs) {
-		XModelClassLoader cl = (XModelClassLoader)fs.getModel().getModelClassLoader();
-		cl.invalidate();
 		if(fs.getModelEntity().getName().indexOf("ar") >= 0 && w != null) {
 			Properties p = new Properties();
 			p.put("model", fs.getModel());

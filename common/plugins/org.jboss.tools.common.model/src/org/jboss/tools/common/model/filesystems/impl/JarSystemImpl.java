@@ -12,7 +12,6 @@ package org.jboss.tools.common.model.filesystems.impl;
 
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.util.*;
-import org.jboss.tools.common.model.impl.*;
 
 public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.common.model.filesystems.FileSystem {
     private static final long serialVersionUID = 7958999759019059243L;
@@ -71,8 +70,6 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
             if(jar.isLoaded()) {
                 XModelObject[] cs = getChildren();
                 for (int i = 0; i < cs.length; i++) removeChild_0(cs[i]);
-                XModelClassLoader l = (XModelClassLoader)getModel().getModelClassLoader();
-                l.invalidate();
                 jar.invalidate();
             }
             loaded = false;

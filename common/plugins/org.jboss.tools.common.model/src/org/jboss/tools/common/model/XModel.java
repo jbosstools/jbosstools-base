@@ -230,14 +230,6 @@ public interface XModel {
 	 */
 	public void setOut(PrintWriter out);
 	
-	/**
-	 * Returns class loader that includes resurces loaded
-	 * by the model. 
-	 * 
-	 * @return
-	 */
-	public ClassLoader getModelClassLoader();
-	
 	/** 
 	 * Registers in model an object by unique id.
 	 * Manager is any object used to extend model 

@@ -31,7 +31,8 @@ public class GifIcon implements ImageComponent {
             String p = XModelObjectLoaderUtil.getResourcePath(obj);
             if(p == null) return null;
             p = p.substring(1);
-            java.net.URL url = obj.getModel().getModelClassLoader().getResource(p);
+            if(true) return null;
+            java.net.URL url = null; //obj.getModel().getModelClassLoader().getResource(p);
             ImageIcon icon = new ImageIcon(url);
             return (icon.getIconWidth() > 20) ? null : icon;
         } catch (Exception e) {

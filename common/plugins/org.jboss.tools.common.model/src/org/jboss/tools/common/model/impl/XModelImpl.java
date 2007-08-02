@@ -66,7 +66,6 @@ public class XModelImpl implements XModel {
     private FileSystemPeer fileregistry = new FileSystemPeer();
     private PrintWriter out = new PrintWriter(System.out, true);
     private HashMap<String,XModelObject> extraroots = new HashMap<String,XModelObject>(2);
-    private XModelClassLoader classloader = new XModelClassLoader(this);
     private String rootEntity = "Root";
 
     public XModelImpl(Properties properties, XModelMetaData metadata) {
@@ -125,14 +124,6 @@ public class XModelImpl implements XModel {
 
     public FileSystemPeer getFileRegistry() {
         return fileregistry;
-    }
-
-    public ClassLoader getModelClassLoader() {
-        if(!classloader.isValid()) {
-            classloader = new XModelClassLoader(this);
-            classloader.validate();
-        }
-        return classloader;
     }
 
     public XModelObject getRoot() {
@@ -376,8 +367,6 @@ public class XModelImpl implements XModel {
 		treeListenersArray = treeListeners.toArray(new XModelTreeListener[0]);
         undoer.setModel(this);
         undoer.reset();
-        if(classloader.isUsed()) classloader = new XModelClassLoader(this);
-        classloader.validate();
         fireStructureChanged(getRoot(), 3, null);
 
         ///Project Watcher
