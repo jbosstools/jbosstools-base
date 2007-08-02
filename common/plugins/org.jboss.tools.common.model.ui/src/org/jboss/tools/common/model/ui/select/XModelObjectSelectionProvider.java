@@ -123,10 +123,12 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 			Object object = iterator.next();
 			if (object instanceof XModelObject) {
 				XModelObject xmo = (XModelObject)object;
-				if ("FileJAVA".equals(xmo.getModelEntity().getName()))
-					adaptedObjects.add(xmo.getAdapter(ICompilationUnit.class));
-				else
+				if ("FileJAVA".equals(xmo.getModelEntity().getName())) {
+					Object adapter = xmo.getAdapter(ICompilationUnit.class);
+					if(adapter != null) adaptedObjects.add(adapter);
+				} else {
 					adaptedObjects.add(xmo);
+				}
 			} else if(object instanceof IAdaptable) {
 				adaptedObjects.add(object);			
 			}
