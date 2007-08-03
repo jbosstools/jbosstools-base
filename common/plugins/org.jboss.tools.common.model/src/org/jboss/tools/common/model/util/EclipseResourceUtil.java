@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jdt.core.*;
 import org.eclipse.jdt.ui.PreferenceConstants;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.osgi.framework.Bundle;
 
@@ -83,19 +82,7 @@ public class EclipseResourceUtil {
 	}
 
 	public static Image getImage(String path) {
-		Image result = null;		
-		ImageDescriptor imageDescriptor = null;
-		try {
-			if (path != null) {
-				URL url = EclipseResourceUtil.class.getClassLoader().getResource(path);
-				imageDescriptor = ImageDescriptor.createFromURL(url);
-			}
-		} catch (Exception ex) {
-			ModelPlugin.getPluginLog().logError(ex);
-			imageDescriptor = ImageDescriptor.getMissingImageDescriptor();
-		}
-		if (imageDescriptor != null) result = imageDescriptor.createImage();		
-		return result; 
+		return ModelImages.getImage(path); 
 	}
 	
 	public static Image getImage(XModelObject object) {
