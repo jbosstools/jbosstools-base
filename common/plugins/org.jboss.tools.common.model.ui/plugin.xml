@@ -182,8 +182,10 @@
       </modelObjectAdapter>
    </extension>
    <extension point="org.eclipse.ui.actionSets">
-      <actionSet description="%actionSets.redhatMenu.description" id="org.jboss.tools.common.model.ui.actionSet" label="%actionSets.redhatMenu.label" visible="true">
-         <menu id="org.jboss.tools.common.model.ui.redhat" label="%actionSets.redhatMenu.label">
+      <actionSet description="%actionSets.redhatMenu.description" 
+      	id="org.jboss.tools.common.model.ui.actionSet" 
+      	label="%actionSets.redhatMenu.label" visible="true">
+         <!-- menu id="org.jboss.tools.common.model.ui.redhat" label="%actionSets.redhatMenu.label">
             <separator name="c">
             </separator>
             <separator name="a">
@@ -194,19 +196,23 @@
             </separator>
             <separator name="e"/>
             <separator name="f"/>
-         </menu>
+         </menu -->
+         <action 
+         	class="org.jboss.tools.common.model.ui.action.global.VisitCompanyActionDelegate" 
+            id="org.jboss.tools.common.model.ui.action.global.VisitCompanyActionDelegate" 
+            label="%action.visitsite.label" 
+               menubarPath="help/helpStart.redhatdeveloperstudio"
+            tooltip="%action.visitsite.label">
+         </action>
          <action
                label="%action.reportproblem.label"
                tooltip="%action.reportproblem.label"
                class="org.jboss.tools.common.model.ui.action.global.ReportProblemActionDelegate"
-               menubarPath="org.jboss.tools.common.model.ui.redhat/a"
+               menubarPath="help/helpStart.redhat"
                id="org.jboss.tools.common.model.ui.action.global.ReportProblemActionDelegate">
          </action>
          <!--action class="org.jboss.tools.common.model.ui.action.global.VisitForumActionDelegate" id="org.jboss.tools.common.model.ui.action.global.VisitForumActionDelegate" label="%action.visitforum.label" menubarPath="org.jboss.tools.common.model.ui.redhat/a" tooltip="%action.visitforum.label">
          </action-->
-         <action class="org.jboss.tools.common.model.ui.action.global.VisitCompanyActionDelegate" 
-                 id="org.jboss.tools.common.model.ui.action.global.VisitCompanyActionDelegate" label="%action.visitsite.label" menubarPath="org.jboss.tools.common.model.ui.redhat/b" tooltip="%action.visitsite.label">
-         </action>
       </actionSet>
    </extension>
    <extension point="org.eclipse.ui.preferencePages">
