@@ -57,6 +57,7 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
         if(loaded || !isActive()) return;
         JarAccess jar = getJarSystem().getJarAccess();
         if(!jar.isLoaded()) return;
+        jar.lockJar();
         loaded = true;
         String path = getAbsolutePath();
         String[] cs = jar.getChildren(path);
@@ -74,6 +75,7 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
             }
         }
         fire = true;
+        jar.unlockJar();
     }
 
     private void createFileObject(JarAccess jar, String path, String name) {
