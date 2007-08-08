@@ -17,13 +17,6 @@
   <refLib type="servlet" location="../servlet" />
   <projectTempl location="./jsf-1.2" />
  </version>
- <version displayName="JSF 1.1.01 - RI with Facelets">
-  <lib type="core" location="../lib/jsf-1.1.01" />
-  <lib type="common" location="../lib/ApacheCommon2.3" />
-  <lib type="common" location="../lib/facelets" />
-  <refLib type="servlet" location="../servlet" />
-  <projectTempl location="./jsf-1.1-facelets" />
- </version>
  <version displayName="JSF 1.2 with Facelets">
   <lib type="core" location="../lib/jsf-1.2" />
   <lib type="common" location="../lib/facelets" />
