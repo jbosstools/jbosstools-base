@@ -197,6 +197,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
         try {
             util.saveAttributes(element, object);
             util.saveChildren(element, object);
+            util.saveFinalComment(element, object);
 ////        String postfix = (namespace == null) ? "" : ":" + namespace;
             element.removeAttribute("NAME");
             element.removeAttribute("EXTENSION");
