@@ -95,6 +95,8 @@ public class CheckListAdapter extends DefaultValueAdapter {
 	}
 	
 	class STCPTreeLabelProvider extends LabelProvider {
+		/**
+		 * Tree style SWT.CHECK is used instead.
 		public Image getImage(Object element) {
 			String s = getStringValue(true);
 			StringTokenizer st = new StringTokenizer(s, ";,");
@@ -103,6 +105,7 @@ public class CheckListAdapter extends DefaultValueAdapter {
 			}
 			return IMAGE_DISABLED;
 		}
+		*/
 	}
 	
 	class STCPSpecialHelperSupportHandler implements ITreeContentProvider {

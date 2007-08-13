@@ -22,9 +22,11 @@ import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
@@ -86,10 +88,11 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 	
 	private Control getListControl(Composite parent) {
 		if(viewer != null && !viewer.getControl().isDisposed()) return viewer.getControl();
-		viewer = new TreeViewer(parent);
+		viewer = new TreeViewer(parent, SWT.CHECK);
 		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(labelProvider);
 		viewer.setInput(contentProvider);
+		
 		new TreeItemSelectionManager(viewer, new Flipper());
 		return viewer.getControl();
 	}
@@ -129,6 +132,7 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 		init();
 	}
 
+	int lock = 0;
 	public void propertyChange(PropertyChangeEvent event) {
 		valueProvider.removeValueChangeListener(this);
 		if (IPropertyEditor.VALUE.equals(event.getPropertyName())) {
@@ -137,6 +141,23 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 			try {
 				if(!s.equals(stringValue)) {
 					stringValue = s;
+					if(lock == 0) {
+						lock++;
+						Tree tree = viewer.getTree();
+						TreeItem[] is = tree.getItems();
+						for (int i = 0; i < is.length; i++) {
+							Object d = is[i].getData();
+							StringTokenizer values = new StringTokenizer(stringValue, ";,");
+							while(values.hasMoreTokens()) {
+								String n = values.nextToken();
+								if(n.equals(d)) {
+									is[i].setChecked(true);
+								}
+							}
+						}
+						lock--;
+					}
+					
 					viewer.refresh();
 				}
 			} catch (Exception e) {
@@ -175,7 +196,19 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 
 	class Flipper implements TreeItemSelectionManager.Listener {
 		public void flip(TreeItem item) {
+			if(lock > 0) return;
+			lock++;
 			flip0(item);
+			lock--;
+		}
+
+		public boolean isSelected(Object data) {
+			StringTokenizer values = new StringTokenizer(valueProvider.getStringValue(true), ";,");
+			while (values.hasMoreTokens()) {
+				String n = values.nextToken();
+				if(data != null && data.equals(n)) return true;				
+			}
+			return false;
 		}		
 	}
 	

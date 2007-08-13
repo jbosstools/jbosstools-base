@@ -75,6 +75,7 @@ public class CheckTreeAdapter extends DefaultValueAdapter implements ITreeConten
 		}
 
 		public int getState(Object element) {
+			if(element == null) return 0;
 			return ((CheckItem)element).getState();
 		}
 
@@ -207,6 +208,7 @@ public class CheckTreeAdapter extends DefaultValueAdapter implements ITreeConten
 		}
 
 		public int getState(Object element) {
+			if(element == null) return state;
 			if (this.tree!=null) return tree.getState(element);
 			return ICheckable.STATE_UNCHECK;
 		}
@@ -394,6 +396,8 @@ public class CheckTreeAdapter extends DefaultValueAdapter implements ITreeConten
 	}
 	
 	protected class CheckLabelProvider extends LabelProvider {
+		/**
+		 * Tree style SWT.CHECK is used instead.
 		public Image getImage(Object element) {
 			if (((CheckItem)element).getState() == ICheckable.STATE_UNCHECK) {
 				return IMAGE_UNCHECK;
@@ -403,6 +407,7 @@ public class CheckTreeAdapter extends DefaultValueAdapter implements ITreeConten
 				return IMAGE_HALFCHECK;
 			}
 		}
+		*/
 		public String getText(Object element) {
 			return ((CheckItem)element).getName();
 		}

@@ -16,6 +16,10 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.TreeEvent;
+import org.eclipse.swt.events.TreeListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.TreeItem;
@@ -23,6 +27,7 @@ import org.eclipse.swt.widgets.TreeItem;
 public class TreeItemSelectionManager {
 	public interface Listener {
 		public void flip(TreeItem item);
+		public boolean isSelected(Object data);
 	}
 	
 	TreeViewer treeViewer = null;
@@ -31,39 +36,71 @@ public class TreeItemSelectionManager {
 	public TreeItemSelectionManager(TreeViewer treeViewer, Listener listener) {
 		this.listener = listener;	
 		this.treeViewer = treeViewer;
-		SL sl = new SL();
-		treeViewer.getTree().addMouseListener(sl);
-		treeViewer.getTree().addMouseMoveListener(sl);
+		update();
 		treeViewer.getTree().addKeyListener(new KL());
+		treeViewer.getTree().addSelectionListener(new SL());
+		treeViewer.getTree().addTreeListener(new EL());
 	}
 
-	class SL extends MouseAdapter implements MouseMoveListener {
-		TreeItem item = null;
-		boolean out = false;
-		public void mouseDown(MouseEvent e) {
-			item = getItem(e);
-			out = false;
+	int lock = 0;
+	class EL implements TreeListener {
+
+		public void treeCollapsed(TreeEvent e) {
 		}
-		public void mouseUp(MouseEvent e) {
-			if(item != null && item == getItem(e) && !out) {
-				listener.flip(item);
+
+		public void treeExpanded(TreeEvent e) {
+			if(e.item instanceof TreeItem) {
+				TreeItem item = (TreeItem)e.item;
+				TreeItem[] is = item.getItems();
+				update(is);
+			}			
+		}		
+	}
+	
+	public void update() {
+		update(treeViewer.getTree().getItems());
+	}
+	
+	void update(TreeItem[] is) {
+		lock++;
+		try {
+			for (int i = 0; i < is.length; i++) {
+				Object d = is[i].getData();
+				is[i].setChecked(listener.isSelected(is[i].getData()));
+				update(is[i].getItems());
 			}
-			item = null;
-		}
-		public void mouseMove(MouseEvent e) {
-			if(item == null) return;
-			out = (item != getItem(e));			
-		}
-		private TreeItem getItem(MouseEvent e) {
-			if(e.button != 1) return null;
-			TreeItem item = treeViewer.getTree().getItem(new Point(e.x, e.y));
-			if(item == null) return null;
-			Rectangle r = item.getBounds();
-			if(e.x < r.x - 20 || e.x > r.x) return null;
-			return item;
+		} finally {
+			lock--;
 		}
 	}
 	
+	class SL implements SelectionListener {
+
+		public void widgetDefaultSelected(SelectionEvent e) {
+			widgetSelected(e);
+		}
+
+		public void widgetSelected(SelectionEvent e) {
+			if(e.item instanceof TreeItem) {
+				if(lock > 0) return;
+				lock++;
+				try {
+					TreeItem item = (TreeItem)e.item;
+					if(listener.isSelected(item.getData()) != item.getChecked()) {
+						listener.flip(item);
+					}
+					if(listener.isSelected(item.getData()) != item.getChecked()) {
+						item.setChecked(listener.isSelected(item.getData()));
+					}
+				} finally {
+					lock--;
+				}
+			}
+			
+		}
+		
+	}
+
 	class KL extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 			boolean flip = e.keyCode == (int)' ';

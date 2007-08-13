@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TreeItem;
 
+import org.jboss.tools.common.model.ui.attribute.adapter.CheckTreeAdapter;
 import org.jboss.tools.common.model.ui.viewers.xpl.ICheckable;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
@@ -160,6 +161,13 @@ public class CheckTreeFieldEditor extends ExtendedFieldEditor implements IFieldE
 				((ICheckable)checkItem).toggle(checkItem);
 			}
 			viewer.refresh();
+		}		
+		public boolean isSelected(Object data) {
+			if(data instanceof ICheckable) {
+				ICheckable o = (ICheckable)data;
+				return o.getState(null) != 0;
+			}
+			return false;
 		}		
 	}
 	

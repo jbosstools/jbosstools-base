@@ -93,17 +93,33 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		composite.setLayoutData(gd);
 		
-		treeViewer = new TreeViewer(composite, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		treeViewer = new TreeViewer(composite, SWT.CHECK | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		treeViewer.setContentProvider(provider);
 		treeViewer.setLabelProvider(provider);
 		treeViewer.setInput(this);
+		
+		Object[] os = provider.getChildren(this);
+		
 		Control tc = treeViewer.getControl();
 		tc.setLayoutData(new GridData(GridData.FILL_BOTH));
+		initTree();
 		new TreeItemSelectionManager(treeViewer, new Flipper());
 		treeViewer.expandToLevel(expandingLevel);
 		Control bc = allBar.createControl(composite);
 		bc.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 		return composite;
+	}
+	
+	private void initTree() {
+		Tree tree = treeViewer.getTree();
+		TreeItem[] is = tree.getItems();
+		for (int i = 0; i < is.length; i++) {
+			Object d = is[i].getData();
+			if(d instanceof CheckObject) {
+				CheckObject o = (CheckObject)d;
+				is[i].setChecked(!o.isDisabled());
+			}
+		}		
 	}
 	
 	public void action(String command) {
@@ -146,6 +162,14 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 			CheckObject w = (CheckObject)item.getData();
 			w.flip();
 			treeViewer.refresh(w);
+		}
+
+		public boolean isSelected(Object data) {
+			if(data instanceof CheckObject) {
+				CheckObject o = (CheckObject)data;
+				return !o.isDisabled();
+			}
+			return false;
 		}		
 	}
 	
@@ -248,11 +272,14 @@ class CheckTreeProvider extends LabelProvider implements ITreeContentProvider, I
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
 
+	/**
+	 * Tree style SWT.CHECK is used instead.
 	public Image getImage(Object element) {
 		if(!(element instanceof CheckObject)) return null;
 		CheckObject w = (CheckObject)element;
 		return (!w.isDisabled()) ? IMAGE_ENABLED : IMAGE_DISABLED;
 	}
+	*/
 
 	public Color getForeground(Object element) {
 		if(!(element instanceof CheckObject)) return null;
