@@ -55,16 +55,17 @@ public class VRulesConfigurationWizardView extends AbstractQueryWizardView {
 		
 		Control sc = significance.createControl(composite);
 		sc.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		treeViewer = new TreeViewer(composite, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		treeViewer = new TreeViewer(composite, SWT.CHECK | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		treeViewer.setContentProvider(provider);
 		treeViewer.setLabelProvider(provider);
 		treeViewer.setInput(this);
 		Control tc = treeViewer.getControl();
 		tc.setLayoutData(new GridData(GridData.FILL_BOTH));
-		new TreeItemSelectionManager(treeViewer, new Flipper());
+		TreeItemSelectionManager m = new TreeItemSelectionManager(treeViewer, new Flipper());
 		significance.update();
 		tip.install(treeViewer.getTree());
 		treeViewer.expandToLevel(2);
+		m.update();
 		return composite;
 	}
 
@@ -134,5 +135,9 @@ public class VRulesConfigurationWizardView extends AbstractQueryWizardView {
 			w.flip();
 			treeViewer.refresh(w);
 		}		
+		public boolean isSelected(Object data) {
+			ConfigItemWrapper w = (ConfigItemWrapper)data;
+			return w.isSelected();
+		}
 	}
 }

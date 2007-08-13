@@ -49,11 +49,14 @@ public class ConfigRulesProvider extends LabelProvider implements ITreeContentPr
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
 
+	/**
+	 * Tree style SWT.CHECK is used instead.
 	public Image getImage(Object element) {
 		if(!(element instanceof ConfigItemWrapper)) return null;
 		ConfigItemWrapper w = (ConfigItemWrapper)element;
 		return (w.isSelected() && w.isEnabled()) ? IMAGE_ENABLED : IMAGE_DISABLED;
 	}
+	*/
 
 	public Color getForeground(Object element) {
 		if(!(element instanceof ConfigItemWrapper)) return null;
