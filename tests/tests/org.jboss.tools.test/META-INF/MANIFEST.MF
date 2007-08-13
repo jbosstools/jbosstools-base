@@ -10,5 +10,6 @@ Require-Bundle: org.eclipse.ui,
  org.junit
 Provide-Package: org.jboss.ide.tests.util
 Eclipse-LazyStart: true
-Export-Package: org.jboss.tools.tests
+Export-Package: org.jboss.tools.test.util,
+ org.jboss.tools.tests
 Bundle-ClassPath: tools-tests.jar
