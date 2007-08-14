@@ -26,7 +26,7 @@ public class PlugInLoadTest extends TestCase {
 	private boolean isPluginResolved (String pluginId)
 	{
 		Bundle bundle = Platform.getBundle(pluginId);
-		assertNotNull(pluginId + " failed to load.");
+		assertNotNull(pluginId + " failed to load.",bundle);
 		try {
 			// In 3.3 when test case is running plug-in.getState always returns STARTING state
 			// to move plug-in in ACTIVE state even one class should be loaded from plug-in
@@ -81,7 +81,6 @@ public class PlugInLoadTest extends TestCase {
 	{
 		assertPluginsResolved(new String[] {
 			rhdsNS+"jst.jsp", 
-			rhdsNS+"jst.server.jboss",
 			rhdsNS+"jst.server.jetty",
 			rhdsNS+"jst.server.jrun",
 			rhdsNS+"jst.server.resin",
