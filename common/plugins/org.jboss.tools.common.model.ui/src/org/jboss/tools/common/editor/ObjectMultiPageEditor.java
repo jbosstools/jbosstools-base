@@ -1148,6 +1148,9 @@ class NatureChecker {
 	}
 	
 	public void check(IEditorInput input, String[] natures, String warningKey) {
+			//Suppress check: EXIN-160
+			natures = new String[0];
+		
 		this.input = input;
 		if(input instanceof IFileEditorInput) {
 			resource = ((IFileEditorInput)input).getFile();
@@ -1159,11 +1162,12 @@ class NatureChecker {
 		this.natures = natures;
 		isAppropriateNature = isAppropriateNature(input);
 		if(!isAppropriateNature) {
-			showWarning();
-			if(this.input instanceof IFileEditorInput) {
-				resource = ((IFileEditorInput)this.input).getFile();
-			}
-			isAppropriateNature = isAppropriateNature(this.input);
+//Suppress check: EXIN-160
+//			showWarning();
+//			if(this.input instanceof IFileEditorInput) {
+//				resource = ((IFileEditorInput)this.input).getFile();
+//			}
+//			isAppropriateNature = isAppropriateNature(this.input);
 		}
 	}
 	
