@@ -254,7 +254,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     public void setAdoptManager(String adoptclass) {
         try {
         	if(adoptclass != null && adoptclass.length() > 0) {
-        		adopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance(adoptclass);
+        		adopt = new XAdoptWrapper(adoptclass, this);
         	}
         } catch (Exception e) {
         	ModelPlugin.getPluginLog().logError("XModelEntityImpl:setAdoptManager:" + e.getMessage());
@@ -428,3 +428,36 @@ class ClassHolder {
 	}
 }
 
+class XAdoptWrapper implements XAdoptManager {
+	String adoptclass;
+	XModelEntityImpl entity;
+	
+	public XAdoptWrapper(String adoptclass, XModelEntityImpl entity) {
+		this.adoptclass = adoptclass;
+		this.entity = entity;
+	}
+
+	public void adopt(XModelObject target, XModelObject object, Properties p) {
+		validate();
+		if(entity.adopt != null) {
+			entity.adopt.adopt(target, object, p);
+		}
+	}
+
+	public boolean isAdoptable(XModelObject target, XModelObject object) {
+		validate();
+		return entity.adopt != null && entity.adopt.isAdoptable(target, object);
+	}
+
+	void validate() {
+	    try {
+	    	if(adoptclass != null && adoptclass.length() > 0) {
+	    		entity.adopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance(adoptclass);
+	    	}
+	    } catch (Exception e) {
+	    	ModelPlugin.getPluginLog().logError("XModelEntityImpl:setAdoptManager:" + e.getMessage());
+	    	entity.adopt = null;
+	    }
+	}
+
+}

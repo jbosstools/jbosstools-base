@@ -18,7 +18,7 @@ import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class XModelObjectIcon {
 	private static Hashtable<String,Image> cacheEclipse = new Hashtable<String,Image>();
-    private static Hashtable<String,ImageComponent> components = null;
+    static Hashtable<String,ImageComponent> components = null;
 
     private static synchronized void load(XModelObject object) {
         if(components != null || object == null) return;
@@ -29,12 +29,7 @@ public class XModelObjectIcon {
         String[] keys = mapping.getKeys();
         for (int i = 0; i < keys.length; i++) {
             String v = mapping.getValue(keys[i]);
-            try {
-                ImageComponent c = (ImageComponent)ModelFeatureFactory.getInstance().createFeatureInstance(v);
-                components.put(keys[i], c);
-            } catch (Exception e) {
-				///XStudioPlugin.getDefault().getLog().log(new Status(Status.ERROR, XStudioPlugin.PLUGIN_ID, Status.OK, "Cannot load icon " + keys[i] + " " + v,e));
-            }
+            components.put(keys[i], new ImageComponentWrapper(keys[i], v));
         }
     }
 
@@ -104,4 +99,42 @@ public class XModelObjectIcon {
 		return ii;
 	}
 
+}
+
+class ImageComponentWrapper implements ImageComponent {
+	String key;
+	String classname;
+	ImageComponent imageComponent;
+	
+	ImageComponentWrapper(String key, String classname) {
+		this.key = key;
+		this.classname = classname;
+	}
+
+	public int getHash(XModelObject obj) {
+		validate();
+		if(imageComponent == null) return 0;
+		return imageComponent.getHash(obj);
+	}
+
+	public Image getImage(XModelObject obj) {
+		validate();
+		if(imageComponent == null) return null;
+		return imageComponent.getImage(obj);
+	}
+	
+	void validate() {
+        try {
+            ImageComponent c = (ImageComponent)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
+            if(c == null) {
+            	XModelObjectIcon.components.remove(key);
+            } else {
+            	XModelObjectIcon.components.put(key, c);
+            }
+        } catch (Exception e) {
+			///XStudioPlugin.getDefault().getLog().log(new Status(Status.ERROR, XStudioPlugin.PLUGIN_ID, Status.OK, "Cannot load icon " + keys[i] + " " + v,e));
+        	XModelObjectIcon.components.remove(key);
+        }
+	}
+	
 }

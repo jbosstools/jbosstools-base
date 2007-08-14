@@ -11,17 +11,19 @@
 package org.jboss.tools.common.model.project;
 
 import java.util.*;
+
 import org.jboss.tools.common.model.markers.ResourceMarkers;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.event.*;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class Watcher implements XModelTreeListener {
-	static String[] CONTRIBUTORS = new String[]{
-		"org.jboss.tools.struts.webprj.model.helpers.sync.SyncProjectContext",
-		"org.jboss.tools.jsf.web.JSFWatcherContributor",
+	static String[][] CONTRIBUTORS = new String[][]{
+		{"org.jboss.tools.struts.webprj.model.helpers.sync.SyncProjectContext", "org.jboss.tools.struts.strutsnature"},
+		{"org.jboss.tools.jsf.web.JSFWatcherContributor", "org.jboss.tools.jsf.jsfnature"}
 	};
 
     public static Watcher getInstance(XModel model) {
@@ -36,22 +38,9 @@ public class Watcher implements XModelTreeListener {
     }
 
     protected XModel model;
-    protected IWatcherContributor[] contributors = new IWatcherContributor[0];
+    protected Map<String,IWatcherContributor> contributors = new HashMap<String, IWatcherContributor>();
     private boolean lock = false;
-/*	
-	Job job;
-	
-	class WatcherJob extends Job {
-		public WatcherJob() {
-			super("Watcher" + XModelConstants.getWorkspace(model));
-		}
-		protected IStatus run(IProgressMonitor monitor) {
-			Watcher.this.updateAll();
-			return Status.OK_STATUS;
-		}
-		
-	};
-*/
+
 	class WatcherRunnable implements XJob.XRunnable {
 		String id = "Watcher - " + XModelConstants.getWorkspace(model);
 
@@ -64,61 +53,65 @@ public class Watcher implements XModelTreeListener {
 		}
 		
 	}
+	
     private Watcher() {
-		loadContributors();
     }
     
-    void loadContributors() {
-    	ArrayList<IWatcherContributor> list = new ArrayList<IWatcherContributor>();
+    void updateContributors() {
+    	if(model == null) return;
     	for (int i = 0; i < CONTRIBUTORS.length; i++) {
-    		try {
-    			Object watcher = ModelFeatureFactory.getInstance().createFeatureInstance(CONTRIBUTORS[i]);
-    			if(watcher instanceof IWatcherContributor)
-    				list.add((IWatcherContributor)watcher);
-    			else
-					if(ModelPlugin.isDebugEnabled()) {			
-						ModelPlugin.getPluginLog().logInfo("Class is not implemented IWatcherContributor interface!");
-					}
-    		} catch (Exception e) {
-    			ModelPlugin.getPluginLog().logError(e);
+    		String nature = CONTRIBUTORS[i][1];
+    		if(EclipseResourceUtil.hasNature(model, nature)) {
+    			if(contributors.containsKey(nature)) {
+    				continue;
+    			} else {
+    	    		try {
+    	    			Object watcher = ModelFeatureFactory.getInstance().createFeatureInstance(CONTRIBUTORS[i][0]);
+    	    			if(watcher instanceof IWatcherContributor) {
+    	    				IWatcherContributor c = (IWatcherContributor)watcher;
+    	    				c.init(model);
+    	    				contributors.put(nature, c);
+    	    			} else
+    						if(ModelPlugin.isDebugEnabled()) {			
+    							ModelPlugin.getPluginLog().logInfo("Class is not implemented IWatcherContributor interface!");
+    						}
+    	    		} catch (Exception e) {
+    	    			ModelPlugin.getPluginLog().logError(e);
+    	    		}
+    			}
+    		} else {
+    			contributors.remove(nature);
     		}
     	}
-    	contributors = list.toArray(new IWatcherContributor[0]);
     }
 
     public void setModel(XModel model) {
         this.model = model;
-        for (int i = 0; i < contributors.length; i++) {
-        	contributors[i].init(model);
-        }
-//		job = new WatcherJob();
     }
     
     public void forceUpdate() {
     	if(model.getProperties().getProperty(IModelNature.ECLIPSE_PROJECT) == null) return;
     	XJob.addRunnable(new WatcherRunnable());
-//		if(job.getState() == Job.NONE) {
-//			job.schedule(600);
-//		};
     }
 
     private void updateAll() {
         if(lock) return;
         lock();
+        updateContributors();
         try {
         	String err = null;
-        	for (int i = 0; i < contributors.length; i++) {
-        		if(!contributors[i].isActive()) continue;
-				contributors[i].update();
+        	for (IWatcherContributor c : contributors.values()) {
+        		if(!c.isActive()) continue;
+        		c.update();
 				if(err == null) {
-					err = contributors[i].getError();
+					err = c.getError();
 				}
         	}
         	setError(err);
             setCorrect(err == null);
-			for (int i = 0; i < contributors.length; i++) {
-				if(!contributors[i].isActive()) continue;
-				contributors[i].updateProject();
+        	for (IWatcherContributor c : contributors.values()) {
+        		if(!c.isActive()) continue;
+				c.updateProject();
 			}
         } finally {
             unlock();

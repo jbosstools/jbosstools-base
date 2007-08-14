@@ -137,7 +137,7 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
         SharableElementImpl s = (SharableElementImpl)children.get(name);
         if(s == null) return;
         for (int i = 0; i < LIST.length; i++) {
-            XScope sc = getXScope(LIST[i]);
+            XScope sc = s.getXScope(LIST[i]);
             if(sc.exists() &&
                !XStudioLoaderPeer.instance().isScopeEditable(LIST[i]))
               return;
