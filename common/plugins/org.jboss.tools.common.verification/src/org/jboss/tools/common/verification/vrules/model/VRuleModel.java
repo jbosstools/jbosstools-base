@@ -101,14 +101,7 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
     
     public VAction getAction(String className) {
         if (className == null || className.length() == 0) return null;
-        try {
-            return (VAction)ModelFeatureFactory.getInstance().createFeatureInstance(className);
-        } catch (Exception th) {
-			if(VerificationPlugin.isDebugEnabled()) { 
-				VerificationPlugin.getPluginLog().logError("Unable to create action \""+className+"\": " + "VRuleModel:getAction");
-			}
-        }
-        return null;
+        return new VActionWrapper(className);
     }
     
     public String setAttributeValue(String name, String value) {
@@ -208,3 +201,43 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
     }
     
 }
+
+class VActionWrapper implements VAction {
+	String classname;
+	VAction action;
+	VRule rule = null;
+	
+	VActionWrapper(String classname) {
+		this.classname = classname;
+	}
+
+	public VResult[] check(VObject object) {
+		getAction();
+		if(action != null) action.setRule(rule);
+		return action != null ? action.check(object) : null;
+	}
+
+	public VRule getRule() {
+		return rule;
+	}
+
+	public void setRule(VRule rule) {
+		this.rule = rule;
+	}
+	
+    VAction getAction() {
+    	if(action != null) return action;
+        if (classname == null || classname.length() == 0) return null;
+        try {
+            action = (VAction)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
+        } catch (Exception th) {
+			if(VerificationPlugin.isDebugEnabled()) { 
+				VerificationPlugin.getPluginLog().logError("Unable to create action \""+classname+"\": " + "VRuleModel:getAction");
+			}
+        }
+        classname = null;
+        return action;
+    }
+    
+}
+
