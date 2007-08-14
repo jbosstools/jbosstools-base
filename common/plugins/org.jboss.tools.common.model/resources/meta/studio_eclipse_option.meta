@@ -1490,6 +1490,20 @@
     </Constraint>
     <Editor name="CheckBox"/>
    </XModelAttribute>
+   <XModelAttribute default="yes" name="show selection tag bar" xmlname="show_selection_tag_bar">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
+     <XModelAttribute default="no" name="always hide selection bar without prompt" xmlname="always_hide_selection_bar_without_prompt">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
    <XModelAttribute default="Visual/Source" name="option list" xmlname="option_list">
     <Constraint loader="List">
      <value name="Visual/Source"/>
