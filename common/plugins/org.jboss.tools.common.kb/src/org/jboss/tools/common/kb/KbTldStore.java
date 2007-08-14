@@ -611,7 +611,7 @@ public class KbTldStore implements KbStore {
 				IConfigurationElement[] elements = extension.getConfigurationElements();
 				for(int j=0; j<elements.length; j++) {
 					String uri = elements[j].getAttribute("uri");
-					String location = elements[j].getAttribute("schemaLocation");
+					String location = elements[j].getAttribute("schema-location");
 					String version = elements[j].getAttribute("version");
 					String jsf = elements[j].getAttribute("jsf");
 					if(uri==null || uri.length()==0 || location==null || location.length()==0) {

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Describes list of parametrs from Schema.
+ * Describes list of parametrs from schema.
  * @author Igels
  */
 public class ParamList {
@@ -57,11 +57,11 @@ public class ParamList {
 
 	/**
 	 * Returns param values. This param is taken from knowledgebase schema. For example:
-	 *     <AttributeType ...>
+	 *     <attribute-type ...>
 	 * 		<proposal ...>
      *			<param name="returnType" value="java.lang.String"/>
      *		</proposal>
-	 *     </AttributeType>
+	 *     </attribute-type>
 	 * @param paramName
 	 * @return
 	 */

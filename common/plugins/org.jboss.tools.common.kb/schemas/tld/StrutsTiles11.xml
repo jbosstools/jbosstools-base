@@ -1,143 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Schema location="" uri="http://jakarta.apache.org/struts/tags-tiles-1.1" prefix="tiles">
-  <ElementType name="insert" endTag="required" startTag="required"
-    content="mixed" bodyContent="allowed">
-    <AttributeType name="template" required="false"/>
+<!DOCTYPE kb-schema PUBLIC "-//Red Hat, Inc//DTD Knowledge Base 1.0//EN" "http://www.redhat.com/dtds/kb-schema_1_0.dtd">
+<schema location="" uri="http://jakarta.apache.org/struts/tags-tiles-1.1" prefix="tiles">
+  <element-type name="insert" end-tag="required" start-tag="required"
+    content="mixed" body-content="allowed">
+    <attribute-type name="template" required="false"/>
     <attribute type="template"/>
-    <AttributeType name="component" required="false"/>
+    <attribute-type name="component" required="false"/>
     <attribute type="component"/>
-    <AttributeType name="page" required="false"/>
+    <attribute-type name="page" required="false"/>
     <attribute type="page"/>
-    <AttributeType name="definition" required="false"/>
+    <attribute-type name="definition" required="false"/>
     <attribute type="definition"/>
-    <AttributeType name="attribute" required="false"/>
+    <attribute-type name="attribute" required="false"/>
     <attribute type="attribute"/>
-    <AttributeType name="name" required="false"/>
+    <attribute-type name="name" required="false"/>
     <attribute type="name"/>
-    <AttributeType name="beanName" required="false"/>
+    <attribute-type name="beanName" required="false"/>
     <attribute type="beanName"/>
-    <AttributeType name="beanProperty" required="false"/>
+    <attribute-type name="beanProperty" required="false"/>
     <attribute type="beanProperty"/>
-    <AttributeType name="beanScope" required="false"/>
+    <attribute-type name="beanScope" required="false"/>
     <attribute type="beanScope"/>
-    <AttributeType name="flush" required="false"/>
+    <attribute-type name="flush" required="false"/>
     <attribute type="flush"/>
-    <AttributeType name="ignore" required="false"/>
+    <attribute-type name="ignore" required="false"/>
     <attribute type="ignore"/>
-    <AttributeType name="role" required="false"/>
+    <attribute-type name="role" required="false"/>
     <attribute type="role"/>
-    <AttributeType name="controllerUrl" required="false"/>
+    <attribute-type name="controllerUrl" required="false"/>
     <attribute type="controllerUrl"/>
-    <AttributeType name="controllerClass" required="false"/>
+    <attribute-type name="controllerClass" required="false"/>
     <attribute type="controllerClass"/>
-  </ElementType>
-  <ElementType name="definition" endTag="required" startTag="required"
-    content="mixed" bodyContent="allowed">
-    <AttributeType name="id" required="true"/>
+  </element-type>
+  <element-type name="definition" end-tag="required" start-tag="required"
+    content="mixed" body-content="allowed">
+    <attribute-type name="id" required="true"/>
     <attribute type="id"/>
-    <AttributeType name="scope" required="false"/>
+    <attribute-type name="scope" required="false"/>
     <attribute type="scope"/>
-    <AttributeType name="template" required="false"/>
+    <attribute-type name="template" required="false"/>
     <attribute type="template"/>
-    <AttributeType name="page" required="false"/>
+    <attribute-type name="page" required="false"/>
     <attribute type="page"/>
-    <AttributeType name="role" required="false"/>
+    <attribute-type name="role" required="false"/>
     <attribute type="role"/>
-    <AttributeType name="extends" required="false"/>
+    <attribute-type name="extends" required="false"/>
     <attribute type="extends"/>
-  </ElementType>
-  <ElementType name="put" endTag="required" startTag="required"
-    content="mixed" bodyContent="allowed">
-    <AttributeType name="name" required="false"/>
+  </element-type>
+  <element-type name="put" end-tag="required" start-tag="required"
+    content="mixed" body-content="allowed">
+    <attribute-type name="name" required="false"/>
     <attribute type="name"/>
-    <AttributeType name="value" required="false"/>
+    <attribute-type name="value" required="false"/>
     <attribute type="value"/>
-    <AttributeType name="content" required="false"/>
+    <attribute-type name="content" required="false"/>
     <attribute type="content"/>
-    <AttributeType name="direct" required="false"/>
+    <attribute-type name="direct" required="false"/>
     <attribute type="direct"/>
-    <AttributeType name="type" required="false"/>
+    <attribute-type name="type" required="false"/>
     <attribute type="type"/>
-    <AttributeType name="beanName" required="false"/>
+    <attribute-type name="beanName" required="false"/>
     <attribute type="beanName"/>
-    <AttributeType name="beanProperty" required="false"/>
+    <attribute-type name="beanProperty" required="false"/>
     <attribute type="beanProperty"/>
-    <AttributeType name="beanScope" required="false"/>
+    <attribute-type name="beanScope" required="false"/>
     <attribute type="beanScope"/>
-    <AttributeType name="role" required="false"/>
+    <attribute-type name="role" required="false"/>
     <attribute type="role"/>
-  </ElementType>
-  <ElementType name="putList" endTag="required" startTag="required"
-    content="mixed" bodyContent="allowed">
-    <AttributeType name="name" required="true"/>
+  </element-type>
+  <element-type name="putList" end-tag="required" start-tag="required"
+    content="mixed" body-content="allowed">
+    <attribute-type name="name" required="true"/>
     <attribute type="name"/>
-  </ElementType>
-  <ElementType name="add" endTag="required" startTag="required"
-    content="mixed" bodyContent="allowed">
-    <AttributeType name="value" required="false"/>
+  </element-type>
+  <element-type name="add" end-tag="required" start-tag="required"
+    content="mixed" body-content="allowed">
+    <attribute-type name="value" required="false"/>
     <attribute type="value"/>
-    <AttributeType name="content" required="false"/>
+    <attribute-type name="content" required="false"/>
     <attribute type="content"/>
-    <AttributeType name="direct" required="false"/>
+    <attribute-type name="direct" required="false"/>
     <attribute type="direct"/>
-    <AttributeType name="type" required="false"/>
+    <attribute-type name="type" required="false"/>
     <attribute type="type"/>
-    <AttributeType name="beanName" required="false"/>
+    <attribute-type name="beanName" required="false"/>
     <attribute type="beanName"/>
-    <AttributeType name="beanProperty" required="false"/>
+    <attribute-type name="beanProperty" required="false"/>
     <attribute type="beanProperty"/>
-    <AttributeType name="beanScope" required="false"/>
+    <attribute-type name="beanScope" required="false"/>
     <attribute type="beanScope"/>
-    <AttributeType name="role" required="false"/>
+    <attribute-type name="role" required="false"/>
     <attribute type="role"/>
-  </ElementType>
-  <ElementType name="get" endTag="required" startTag="required"
-    content="mixed" bodyContent="refused">
-    <AttributeType name="name" required="true"/>
+  </element-type>
+  <element-type name="get" end-tag="required" start-tag="required"
+    content="mixed" body-content="refused">
+    <attribute-type name="name" required="true"/>
     <attribute type="name"/>
-    <AttributeType name="ignore" required="false"/>
+    <attribute-type name="ignore" required="false"/>
     <attribute type="ignore"/>
-    <AttributeType name="flush" required="false"/>
+    <attribute-type name="flush" required="false"/>
     <attribute type="flush"/>
-    <AttributeType name="role" required="false"/>
+    <attribute-type name="role" required="false"/>
     <attribute type="role"/>
-  </ElementType>
-  <ElementType name="getAsString" endTag="required" startTag="required"
-    content="mixed" bodyContent="refused">
-    <AttributeType name="name" required="true"/>
+  </element-type>
+  <element-type name="getAsString" end-tag="required" start-tag="required"
+    content="mixed" body-content="refused">
+    <attribute-type name="name" required="true"/>
     <attribute type="name"/>
-    <AttributeType name="ignore" required="false"/>
+    <attribute-type name="ignore" required="false"/>
     <attribute type="ignore"/>
-    <AttributeType name="role" required="false"/>
+    <attribute-type name="role" required="false"/>
     <attribute type="role"/>
-  </ElementType>
-  <ElementType name="useAttribute" endTag="required" startTag="required"
-    content="mixed" bodyContent="refused">
-    <AttributeType name="id" required="false"/>
+  </element-type>
+  <element-type name="useAttribute" end-tag="required" start-tag="required"
+    content="mixed" body-content="refused">
+    <attribute-type name="id" required="false"/>
     <attribute type="id"/>
-    <AttributeType name="classname" required="false"/>
+    <attribute-type name="classname" required="false"/>
     <attribute type="classname"/>
-    <AttributeType name="scope" required="false"/>
+    <attribute-type name="scope" required="false"/>
     <attribute type="scope"/>
-    <AttributeType name="name" required="true"/>
+    <attribute-type name="name" required="true"/>
     <attribute type="name"/>
-    <AttributeType name="ignore" required="false"/>
+    <attribute-type name="ignore" required="false"/>
     <attribute type="ignore"/>
-  </ElementType>
-  <ElementType name="importAttribute" endTag="required"
-    startTag="required" content="mixed" bodyContent="refused">
-    <AttributeType name="name" required="false"/>
+  </element-type>
+  <element-type name="importAttribute" end-tag="required"
+    start-tag="required" content="mixed" body-content="refused">
+    <attribute-type name="name" required="false"/>
     <attribute type="name"/>
-    <AttributeType name="scope" required="false"/>
+    <attribute-type name="scope" required="false"/>
     <attribute type="scope"/>
-    <AttributeType name="ignore" required="false"/>
+    <attribute-type name="ignore" required="false"/>
     <attribute type="ignore"/>
-  </ElementType>
-  <ElementType name="initComponentDefinitions" endTag="required"
-    startTag="required" content="mixed" bodyContent="refused">
-    <AttributeType name="file" required="true"/>
+  </element-type>
+  <element-type name="initComponentDefinitions" end-tag="required"
+    start-tag="required" content="mixed" body-content="refused">
+    <attribute-type name="file" required="true"/>
     <attribute type="file"/>
-    <AttributeType name="classname" required="false"/>
+    <attribute-type name="classname" required="false"/>
     <attribute type="classname"/>
-  </ElementType>
-</Schema>
+  </element-type>
+</schema>

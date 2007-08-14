@@ -1,87 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Schema
+<!DOCTYPE kb-schema PUBLIC "-//Red Hat, Inc//DTD Knowledge Base 1.0//EN" "http://www.redhat.com/dtds/kb-schema_1_0.dtd">
+<schema
   location=""
   prefix="x" uri="http://java.sun.com/jstl/xml">
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="choose" startTag="required"/>
-  <ElementType bodyContent="refused" content="mixed" endTag="required"
-    name="out" startTag="required">
-    <AttributeType name="select" required="true"/>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="choose" start-tag="required"/>
+  <element-type body-content="refused" content="mixed" end-tag="required"
+    name="out" start-tag="required">
+    <attribute-type name="select" required="true"/>
     <attribute type="select"/>
-    <AttributeType name="escapeXml" required="false"/>
+    <attribute-type name="escapeXml" required="false"/>
     <attribute type="escapeXml"/>
-  </ElementType>
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="if" startTag="required">
-    <AttributeType name="select" required="true"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="if" start-tag="required">
+    <attribute-type name="select" required="true"/>
     <attribute type="select"/>
-    <AttributeType name="var" required="false"/>
+    <attribute-type name="var" required="false"/>
     <attribute type="var"/>
-    <AttributeType name="scope" required="false"/>
+    <attribute-type name="scope" required="false"/>
     <attribute type="scope"/>
-  </ElementType>
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="forEach" startTag="required">
-    <AttributeType name="var" required="false"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="forEach" start-tag="required">
+    <attribute-type name="var" required="false"/>
     <attribute type="var"/>
-    <AttributeType name="select" required="true"/>
+    <attribute-type name="select" required="true"/>
     <attribute type="select"/>
-  </ElementType>
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="otherwise" startTag="required"/>
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="param" startTag="required">
-    <AttributeType name="name" required="true"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="otherwise" start-tag="required"/>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="param" start-tag="required">
+    <attribute-type name="name" required="true"/>
     <attribute type="name"/>
-    <AttributeType name="value" required="false"/>
+    <attribute-type name="value" required="false"/>
     <attribute type="value"/>
-  </ElementType>
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="parse" startTag="required">
-    <AttributeType name="var" required="false"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="parse" start-tag="required">
+    <attribute-type name="var" required="false"/>
     <attribute type="var"/>
-    <AttributeType name="varDom" required="false"/>
+    <attribute-type name="varDom" required="false"/>
     <attribute type="varDom"/>
-    <AttributeType name="scope" required="false"/>
+    <attribute-type name="scope" required="false"/>
     <attribute type="scope"/>
-    <AttributeType name="scopeDom" required="false"/>
+    <attribute-type name="scopeDom" required="false"/>
     <attribute type="scopeDom"/>
-    <AttributeType name="xml" required="false"/>
+    <attribute-type name="xml" required="false"/>
     <attribute type="xml"/>
-    <AttributeType name="systemId" required="false"/>
+    <attribute-type name="systemId" required="false"/>
     <attribute type="systemId"/>
-    <AttributeType name="filter" required="false"/>
+    <attribute-type name="filter" required="false"/>
     <attribute type="filter"/>
-  </ElementType>
-  <ElementType bodyContent="refused" content="mixed" endTag="required"
-    name="set" startTag="required">
-    <AttributeType name="var" required="true"/>
+  </element-type>
+  <element-type body-content="refused" content="mixed" end-tag="required"
+    name="set" start-tag="required">
+    <attribute-type name="var" required="true"/>
     <attribute type="var"/>
-    <AttributeType name="select" required="false"/>
+    <attribute-type name="select" required="false"/>
     <attribute type="select"/>
-    <AttributeType name="scope" required="false"/>
+    <attribute-type name="scope" required="false"/>
     <attribute type="scope"/>
-  </ElementType>
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="transform" startTag="required">
-    <AttributeType name="var" required="false"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="transform" start-tag="required">
+    <attribute-type name="var" required="false"/>
     <attribute type="var"/>
-    <AttributeType name="scope" required="false"/>
+    <attribute-type name="scope" required="false"/>
     <attribute type="scope"/>
-    <AttributeType name="result" required="false"/>
+    <attribute-type name="result" required="false"/>
     <attribute type="result"/>
-    <AttributeType name="xml" required="false"/>
+    <attribute-type name="xml" required="false"/>
     <attribute type="xml"/>
-    <AttributeType name="xmlSystemId" required="false"/>
+    <attribute-type name="xmlSystemId" required="false"/>
     <attribute type="xmlSystemId"/>
-    <AttributeType name="xslt" required="false"/>
+    <attribute-type name="xslt" required="false"/>
     <attribute type="xslt"/>
-    <AttributeType name="xsltSystemId" required="false"/>
+    <attribute-type name="xsltSystemId" required="false"/>
     <attribute type="xsltSystemId"/>
-  </ElementType>
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="when" startTag="required">
-    <AttributeType name="select" required="true"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="when" start-tag="required">
+    <attribute-type name="select" required="true"/>
     <attribute type="select"/>
-  </ElementType>
-</Schema>
+  </element-type>
+</schema>

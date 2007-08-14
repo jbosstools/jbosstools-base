@@ -65,7 +65,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="schemaLocation" type="string" use="required">
+         <attribute name="schema-location" type="string" use="required">
             <annotation>
                <documentation>
                   

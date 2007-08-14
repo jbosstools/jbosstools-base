@@ -10,42 +10,42 @@
 <!ENTITY % Boolean "(true|false)">
 
 <!--
-	Schema is root element. May contain ElementType and AttributeType
+	schema is root element. May contain element-type and attribute-type
 	Attributes:
 	uri - URI of TLD, DTD or other source which is described by this schema.
 	prefix - Default short name of source.
 	location - Location of source.
 -->
-<!ELEMENT Schema  (ElementType?, AttributeType?) >
+<!ELEMENT shema  (element-type?, attribute-type?) >
 
-<!ATTLIST Schema uri CDATA #REQUIRED>
-<!ATTLIST Schema prefix CDATA #IMPLIED>
-<!ATTLIST Schema location CDATA #IMPLIED>
+<!ATTLIST schema uri CDATA #REQUIRED>
+<!ATTLIST schema prefix CDATA #IMPLIED>
+<!ATTLIST schema location CDATA #IMPLIED>
 
 <!--
-	ElementType describes type of element.
-	ElementType can contains elements (element) and attributes (attribute).
+	element-type describes type of element.
+	element-type can contains elements (element) and attributes (attribute).
 	Attributes:
 	name - name of element type
-	bodyContent - "refused" - Element can't have a body.
+	body-content - "refused" - Element can't have a body.
 	              "allowed" - Element can have a body.
-	startTag - "required" - Element has to have start tag.
+	start-tag - "required" - Element has to have start tag.
 	           "optional" - Start tag is optional.
-	endTag - "required" - Element has to have end tag.
+	end-tag - "required" - Element has to have end tag.
 	         "optional" - End tag is optional.
 	         "refused" - Element doesn't have to have end tag.
 	content - for future using.
 -->
-<!ELEMENT ElementType (AttributeType?, attribute?, ElementType?, element?) >
+<!ELEMENT element-type (attribute-type?, attribute?, element-type?, element?) >
 
-<!ATTLIST ElementType name CDATA #REQUIRED>
-<!ATTLIST ElementType bodyContent %BodyContent #REQUIRED>
-<!ATTLIST ElementType startTag %StartTag #REQUIRED>
-<!ATTLIST ElementType endTag %EbdTag #REQUIRED>
-<!ATTLIST ElementType content CDATA #REQUIRED>
+<!ATTLIST element-type name CDATA #REQUIRED>
+<!ATTLIST element-type body-content %BodyContent #REQUIRED>
+<!ATTLIST element-type start-tag %StartTag #REQUIRED>
+<!ATTLIST element-type end-tag %EbdTag #REQUIRED>
+<!ATTLIST element-type content CDATA #REQUIRED>
 
 <!--
-	Describes attribute of ElementType.
+	Describes attribute of element-type.
 	Attributes:
 	type - Type of attribute.
 -->
@@ -69,11 +69,11 @@
 	required - "true" - attribute of element is required.
 	default - default value of attribute.
 -->
-<!ELEMENT AttributeType (proposal?) >
+<!ELEMENT attribute-type (proposal?) >
 
-<!ATTLIST AttributeType name CDATA #REQUIRED>
-<!ATTLIST AttributeType required %Boolean #REQUIRED>
-<!ATTLIST AttributeType default CDATA #IMPLIED>
+<!ATTLIST attribute-type name CDATA #REQUIRED>
+<!ATTLIST attribute-type required %Boolean #REQUIRED>
+<!ATTLIST attribute-type default CDATA #IMPLIED>
 
 <!--
 	Describe content assist proposal for value of attribute.

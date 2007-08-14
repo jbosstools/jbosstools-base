@@ -1,47 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Schema location="" prefix="clay" uri="http://struts.apache.org/shale/clay-plugin">
-    <ElementType bodyContent="allowed" content="mixed" endTag="required"
-        name="clay" startTag="required">
+<!DOCTYPE kb-schema PUBLIC "-//Red Hat, Inc//DTD Knowledge Base 1.0//EN" "http://www.redhat.com/dtds/kb-schema_1_0.dtd">
+<schema location="" prefix="clay" uri="http://struts.apache.org/shale/clay-plugin">
+    <element-type body-content="allowed" content="mixed" end-tag="required"
+        name="clay" start-tag="required">
         <description/>
-        <AttributeType name="id" required="true">
+        <attribute-type name="id" required="true">
             <proposal type="beanProperty"/>
             <proposal type="jsfVariables"/>
-        </AttributeType>
+        </attribute-type>
         <attribute type="id"/>
-        <AttributeType name="jsfid" required="true">
+        <attribute-type name="jsfid" required="true">
             <proposal type="jsfID"/>
-        </AttributeType>
+        </attribute-type>
         <attribute type="jsfid"/>
-        <AttributeType name="managedBeanName" required="false">
+        <attribute-type name="managedBeanName" required="false">
             <proposal type="managedBeanName">
                 <param name="bean-only" value="true"/>
             </proposal>
-        </AttributeType>
+        </attribute-type>
         <attribute type="managedBeanName"/>
-        <AttributeType name="shapeValidator" required="false">
+        <attribute-type name="shapeValidator" required="false">
             <proposal type="beanProperty"/>
             <proposal type="jsfVariables"/>
-        </AttributeType>
+        </attribute-type>
         <attribute type="shapeValidator"/>
-        <AttributeType name="rendered" required="false">
+        <attribute-type name="rendered" required="false">
             <description>If false, this component will not be rendered.</description>
             <proposal type="beanProperty"/>
             <proposal type="jsfVariables"/>
-        </AttributeType>
+        </attribute-type>
         <attribute type="rendered"/>
-    </ElementType>
-    <ElementType bodyContent="allowed" content="mixed" endTag="required"
-        name="symbol" startTag="required">
+    </element-type>
+    <element-type body-content="allowed" content="mixed" end-tag="required"
+        name="symbol" start-tag="required">
         <description/>
-        <AttributeType name="name" required="true">
+        <attribute-type name="name" required="true">
             <proposal type="beanProperty"/>
             <proposal type="jsfVariables"/>
-        </AttributeType>
+        </attribute-type>
         <attribute type="name"/>
-        <AttributeType name="value" required="true">
+        <attribute-type name="value" required="true">
             <proposal type="beanProperty"/>
             <proposal type="jsfVariables"/>
-        </AttributeType>
+        </attribute-type>
         <attribute type="value"/>
-    </ElementType>
-</Schema>
+    </element-type>
+</schema>

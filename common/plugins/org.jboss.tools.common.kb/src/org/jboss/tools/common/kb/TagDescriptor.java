@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Describes tag (ElementType from Schema).
+ * Describes tag (element-type from schema).
  * @author Igels
  */
 public class TagDescriptor {

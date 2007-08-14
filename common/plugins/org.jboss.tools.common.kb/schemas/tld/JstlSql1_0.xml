@@ -1,67 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Schema
+<!DOCTYPE kb-schema PUBLIC "-//Red Hat, Inc//DTD Knowledge Base 1.0//EN" "http://www.redhat.com/dtds/kb-schema_1_0.dtd">
+<schema
   location=""
   prefix="sql" uri="http://java.sun.com/jstl/sql">
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="transaction" startTag="required">
-    <AttributeType name="dataSource" required="false"/>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="transaction" start-tag="required">
+    <attribute-type name="dataSource" required="false"/>
     <attribute type="dataSource"/>
-    <AttributeType name="isolation" required="false"/>
+    <attribute-type name="isolation" required="false"/>
     <attribute type="isolation"/>
-  </ElementType>
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="query" startTag="required">
-    <AttributeType name="var" required="true"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="query" start-tag="required">
+    <attribute-type name="var" required="true"/>
     <attribute type="var"/>
-    <AttributeType name="scope" required="false"/>
+    <attribute-type name="scope" required="false"/>
     <attribute type="scope"/>
-    <AttributeType name="sql" required="false"/>
+    <attribute-type name="sql" required="false"/>
     <attribute type="sql"/>
-    <AttributeType name="dataSource" required="false"/>
+    <attribute-type name="dataSource" required="false"/>
     <attribute type="dataSource"/>
-    <AttributeType name="startRow" required="false"/>
+    <attribute-type name="startRow" required="false"/>
     <attribute type="startRow"/>
-    <AttributeType name="maxRows" required="false"/>
+    <attribute-type name="maxRows" required="false"/>
     <attribute type="maxRows"/>
-  </ElementType>
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="update" startTag="required">
-    <AttributeType name="var" required="false"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="update" start-tag="required">
+    <attribute-type name="var" required="false"/>
     <attribute type="var"/>
-    <AttributeType name="scope" required="false"/>
+    <attribute-type name="scope" required="false"/>
     <attribute type="scope"/>
-    <AttributeType name="sql" required="false"/>
+    <attribute-type name="sql" required="false"/>
     <attribute type="sql"/>
-    <AttributeType name="dataSource" required="false"/>
+    <attribute-type name="dataSource" required="false"/>
     <attribute type="dataSource"/>
-  </ElementType>
-  <ElementType bodyContent="allowed" content="mixed" endTag="required"
-    name="param" startTag="required">
-    <AttributeType name="value" required="false"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="param" start-tag="required">
+    <attribute-type name="value" required="false"/>
     <attribute type="value"/>
-  </ElementType>
-  <ElementType bodyContent="refused" content="mixed" endTag="required"
-    name="dateParam" startTag="required">
-    <AttributeType name="value" required="true"/>
+  </element-type>
+  <element-type body-content="refused" content="mixed" end-tag="required"
+    name="dateParam" start-tag="required">
+    <attribute-type name="value" required="true"/>
     <attribute type="value"/>
-    <AttributeType name="type" required="false"/>
+    <attribute-type name="type" required="false"/>
     <attribute type="type"/>
-  </ElementType>
-  <ElementType bodyContent="refused" content="mixed" endTag="required"
-    name="setDataSource" startTag="required">
-    <AttributeType name="var" required="false"/>
+  </element-type>
+  <element-type body-content="refused" content="mixed" end-tag="required"
+    name="setDataSource" start-tag="required">
+    <attribute-type name="var" required="false"/>
     <attribute type="var"/>
-    <AttributeType name="scope" required="false"/>
+    <attribute-type name="scope" required="false"/>
     <attribute type="scope"/>
-    <AttributeType name="dataSource" required="false"/>
+    <attribute-type name="dataSource" required="false"/>
     <attribute type="dataSource"/>
-    <AttributeType name="driver" required="false"/>
+    <attribute-type name="driver" required="false"/>
     <attribute type="driver"/>
-    <AttributeType name="url" required="false"/>
+    <attribute-type name="url" required="false"/>
     <attribute type="url"/>
-    <AttributeType name="user" required="false"/>
+    <attribute-type name="user" required="false"/>
     <attribute type="user"/>
-    <AttributeType name="password" required="false"/>
+    <attribute-type name="password" required="false"/>
     <attribute type="password"/>
-  </ElementType>
-</Schema>
+  </element-type>
+</schema>
