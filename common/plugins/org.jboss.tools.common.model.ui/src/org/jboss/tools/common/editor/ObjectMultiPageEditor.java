@@ -1148,7 +1148,7 @@ class NatureChecker {
 	}
 	
 	public void check(IEditorInput input, String[] natures, String warningKey) {
-			//Suppress check: EXIN-160
+			//Suppress check: EXIN-292
 			natures = new String[0];
 		
 		this.input = input;
@@ -1162,7 +1162,7 @@ class NatureChecker {
 		this.natures = natures;
 		isAppropriateNature = isAppropriateNature(input);
 		if(!isAppropriateNature) {
-//Suppress check: EXIN-160
+//Suppress check: EXIN-292
 //			showWarning();
 //			if(this.input instanceof IFileEditorInput) {
 //				resource = ((IFileEditorInput)this.input).getFile();
