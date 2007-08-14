@@ -20,7 +20,7 @@ public class PlugInLoadTest extends TestCase {
 	public static final String rhdsNS = "org.jboss.tools.";
 	private static String jbideNS = "org.jboss.ide.eclipse.";
 	private static String hibNS = "org.hibernate.eclipse.";
-	private static String jbpmNS = "org.jbpm.gd.jpdl.";
+	private static String jbpmNS = "org.jbpm.gd.jpdl";
 	private static String jbwsNS = "com.eviware.soapui.";
 	
 	private boolean isPluginResolved (String pluginId)
@@ -148,14 +148,6 @@ public class PlugInLoadTest extends TestCase {
 		});
 	}
 	
-	public void testEjb3PluginsResolved ()
-	{
-		assertPluginsResolved(new String[] {
-			jbideNS+"ejb3.wizards.core", 
-			jbideNS+"ejb3.wizards.ui"
-		});
-	}
-	
 	public void testASPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
@@ -180,8 +172,7 @@ public class PlugInLoadTest extends TestCase {
 	public void testJbpmPluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			jbpmNS+"core", 
-			jbpmNS+"ui"
+			jbpmNS
 		});
 	}
 	
