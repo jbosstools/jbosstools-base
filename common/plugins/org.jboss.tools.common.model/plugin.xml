@@ -311,6 +311,8 @@
 			class="org.jboss.tools.common.model.options.impl.SharableElementImpl"/>
 		<xclass id="org.jboss.tools.common.model.options.impl.SharableStudioImpl"
 			class="org.jboss.tools.common.model.options.impl.SharableStudioImpl"/>
+		<xclass id="org.jboss.tools.common.model.options.impl.DeleteGroupHandler"
+			class="org.jboss.tools.common.model.options.impl.DeleteGroupHandler"/>
 		<xclass id="org.jboss.tools.common.model.project.ClassPathUpdateWizard"
 			class="org.jboss.tools.common.model.project.ClassPathUpdateWizard"/>
 		<xclass id="org.jboss.tools.common.model.project.WatcherLoader"

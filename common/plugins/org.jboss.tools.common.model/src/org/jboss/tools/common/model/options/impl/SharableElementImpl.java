@@ -134,15 +134,21 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
     }
 
     public void removeSharableChild(String name) {
+    	if(canRemoveChild(name)) {
+    		children.remove(name);
+    	}
+    }
+    
+    public boolean canRemoveChild(String name) {
         SharableElementImpl s = (SharableElementImpl)children.get(name);
-        if(s == null) return;
+        if(s == null) return false;
         for (int i = 0; i < LIST.length; i++) {
             XScope sc = s.getXScope(LIST[i]);
             if(sc.exists() &&
                !XStudioLoaderPeer.instance().isScopeEditable(LIST[i]))
-              return;
+              return false;
         }
-        children.remove(name);
+        return true;
     }
 
     public SharableElement findSharableChild(String childname) {
