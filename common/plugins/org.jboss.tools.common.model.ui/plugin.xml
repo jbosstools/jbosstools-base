@@ -22,13 +22,14 @@
             class="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"
             contributorClass="org.jboss.tools.common.editor.EditorActionBarContributorWrapper"
             default="true"
-            extensions="xml, meta"
             icon="images/xstudio/editors/xml.gif"
             id="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"
             matchingStrategy = "org.jboss.tools.common.core.resources.MatchingStrategyImpl"
             name="%editors.xml.advanced.name">
-         <contentTypeBinding contentTypeId="org.eclipse.core.runtime.xml"/>
-         <contentTypeBinding contentTypeId="org.eclipse.wst.xml.core.xmlsource"/>
+         <contentTypeBinding contentTypeId="org.eclipse.jst.j2ee.webDD"/>
+         <contentTypeBinding contentTypeId="org.jboss.tools.common.model.ui.xml"/>
+         <contentTypeBinding contentTypeId="org.eclipse.jst.jsf.facesconfig.facesConfigFile"/>
+         
       </editor>
    </extension>
    <extension point="org.jboss.tools.common.model.ui.attributeEditor">
@@ -272,6 +273,24 @@
             name="%editors.properties.name">
       </editor>
    </extension>
+   
+   <extension point="org.eclipse.core.runtime.contentTypes"> 
+      <content-type id="xml" 
+       name="Red Hat XML"
+       base-type="org.eclipse.core.runtime.xml"
+       describer="org.jboss.tools.common.model.ui.editor.XMLContentDescriber"
+       file-extensions="xml,meta"
+       priority="high"
+       />
+      <content-type id="xml2" 
+       name="A Red Hat XML 2"
+       base-type="org.eclipse.jst.j2ee.webDD"
+       describer="org.jboss.tools.common.model.ui.editor.XMLContentDescriber"
+       file-extensions="xml"
+       priority="high"
+       />
+   </extension>
+   
    <extension id="e" name="XML Editors" point="org.jboss.tools.common.model.ui.xmlEditor">
 <!--          
    class="org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor" 

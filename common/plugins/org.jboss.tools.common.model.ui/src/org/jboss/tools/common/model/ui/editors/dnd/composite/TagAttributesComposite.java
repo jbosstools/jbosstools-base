@@ -207,6 +207,18 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 		col.setText("Value");
 
 		tableViewer.setColumnProperties(new String[] {"Name","Value"});
+		tableViewer.setUseHashlookup(true);
+		tableViewer.setComparer(new IElementComparer() {
+
+			public boolean equals(Object a, Object b) {
+				return a == b;
+			}
+
+			public int hashCode(Object element) {
+				return element == null ? 0 : element.hashCode();
+			}
+			
+		});
 
 		tableViewer.setCellModifier(
 			new ICellModifier(){
