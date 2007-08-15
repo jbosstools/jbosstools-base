@@ -131,6 +131,7 @@ class ImageComponentWrapper implements ImageComponent {
             } else {
             	XModelObjectIcon.components.put(key, c);
             }
+            imageComponent = c;
         } catch (Exception e) {
 			///XStudioPlugin.getDefault().getLog().log(new Status(Status.ERROR, XStudioPlugin.PLUGIN_ID, Status.OK, "Cannot load icon " + keys[i] + " " + v,e));
         	XModelObjectIcon.components.remove(key);
