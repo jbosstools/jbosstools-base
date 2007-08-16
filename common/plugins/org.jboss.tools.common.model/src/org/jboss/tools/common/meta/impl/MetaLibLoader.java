@@ -23,7 +23,9 @@ import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.xml.XMLEntityResolver;
 
 public class MetaLibLoader {
-	public static String DOC_PUBLICID = "-//Red Hat, Inc.//DTD Meta 1.0//EN"; 
+	public static String DOC_PUBLICID = "-//Red Hat, Inc.//DTD Meta 1.0//EN";
+	
+	public static boolean validateMetaXML = false;
 
     static {
         try {
@@ -57,10 +59,13 @@ public class MetaLibLoader {
         	ModelPlugin.getPluginLog().logError("Error in loading meta model resources", t);
         }
 
+		long t = System.currentTimeMillis();
         for (int i = 0; i < metarefs.size(); i++) {
             ModuleRef r = metarefs.get(i);
             load(r.element, r.name, r.info);
         }
+		long dt = - t + (t = System.currentTimeMillis());
+//		System.out.println("Loaded from elements in " + dt + " ms");
     }
 
     void sift(Set modules) {
@@ -77,6 +82,7 @@ public class MetaLibLoader {
     }
     
     void load(String name, URL url) {
+		long t = System.currentTimeMillis();
 		InputStream stream = null;
 		try {
 			stream = url.openStream();
@@ -85,6 +91,17 @@ public class MetaLibLoader {
 			return;
 		}
 		Element g = XMLUtil.getElement(stream);
+		Serializable s = (Serializable)g;
+//		try {
+//			ByteArrayOutputStream o = new ByteArrayOutputStream();
+//			BufferedOutputStream b = new BufferedOutputStream(o);
+//			ObjectOutputStream os = new ObjectOutputStream(b);
+//			os.writeObject(s);
+//			os.close();
+//			System.out.println(o.toByteArray().length);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		if(g == null) {
 			ModelPlugin.getPluginLog().logInfo("Corrupted meta resource " + name);
 		} else try {
@@ -93,18 +110,24 @@ public class MetaLibLoader {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		
-		try {
-			stream = url.openStream();
-			InputSource is = new InputSource(stream);
-			String[] errors = XMLUtil.getXMLErrors(is, true);
-			if(errors != null && errors.length > 0) {
-				ModelPlugin.getPluginLog().logInfo("Errors in " + name);
-				for (int i = 0; i < errors.length && i < 5; i++) {
-					ModelPlugin.getPluginLog().logInfo(errors[i]);
+		long dt = - t + (t = System.currentTimeMillis());
+//		System.out.println("Loaded " + url + " in " + dt + " ms");
+		if(validateMetaXML) {
+			try {
+				stream = url.openStream();
+				InputSource is = new InputSource(stream);
+				String[] errors = XMLUtil.getXMLErrors(is, true);
+				if(errors != null && errors.length > 0) {
+					ModelPlugin.getPluginLog().logInfo("Errors in " + name);
+					for (int i = 0; i < errors.length && i < 5; i++) {
+						ModelPlugin.getPluginLog().logInfo(errors[i]);
+					}
 				}
+			} catch (Exception e) {
+				ModelPlugin.getPluginLog().logError(e);
 			}
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
+			dt = - t + (t = System.currentTimeMillis());
+//			System.out.println("Validated " + url + " in " + dt + " ms");
 		}
 		
     }
