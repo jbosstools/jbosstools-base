@@ -129,7 +129,13 @@ public class XAttributeImpl extends XMetaElementImpl implements XAttribute {
     }
 
     public void load(Element el){
-        setEditor((XAttributeEditor)XMetaDataLoader.loadMetaElement(el, EDITOR, XAttributeEditorImpl.class, false));
+    	if(XMLUtil.getUniqueChild(el, EDITOR) == null) {
+    		XAttributeEditorImpl editor = new XAttributeEditorImpl();
+    		editor.setName(null);
+    		setEditor(editor);
+    	} else {
+    		setEditor((XAttributeEditor)XMetaDataLoader.loadMetaElement(el, EDITOR, XAttributeEditorImpl.class, false));
+    	}
         Element c = XMetaDataLoader.getUniqueChild(el, CONSTRAINT);
         if (c != null) loadConstraint(c);
         setVisible(XMetaDataLoader.getBoolean(el, VISIBLE, true));
@@ -284,7 +290,7 @@ class ConstraintHolder {
 		Element element = this.element;
 		if(this.constraint != null) return;
 		XAttributeConstraint constraint = null;
-        try {
+        if(loader != null) try {
         	String clsname = loader.indexOf('.') >= 0 ? loader : XAttributeImpl.CONSTRAINT_PREFIX + loader;
             if(loader.length() > 0) {
             	constraint = (XAttributeConstraint)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
@@ -293,7 +299,7 @@ class ConstraintHolder {
         	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + e.getMessage());
         }
 		if(constraint == null) constraint = new XAttributeConstraintImpl();
-		try {
+		if(element != null) try {
 			((XAttributeConstraintImpl)constraint).load(element);
 		} catch (Exception t) {
 			ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + t.getMessage());
