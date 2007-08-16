@@ -280,14 +280,7 @@
        base-type="org.eclipse.core.runtime.xml"
        describer="org.jboss.tools.common.model.ui.editor.XMLContentDescriber"
        file-extensions="xml,meta"
-       priority="high"
-       />
-      <content-type id="xml2" 
-       name="A Red Hat XML 2"
-       base-type="org.eclipse.jst.j2ee.webDD"
-       describer="org.jboss.tools.common.model.ui.editor.XMLContentDescriber"
-       file-extensions="xml"
-       priority="high"
+       priority="high" 
        />
    </extension>
    

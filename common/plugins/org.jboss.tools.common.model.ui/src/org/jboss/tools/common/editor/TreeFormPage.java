@@ -63,6 +63,7 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.forms.DefaultFormFactory;
 import org.jboss.tools.common.model.ui.forms.FormFactory;
 import org.jboss.tools.common.model.ui.forms.IFormFactory;
+import org.jboss.tools.common.model.ui.forms.LayouredFormFactory;
 import org.jboss.tools.common.model.ui.forms.XModelObjectFormFactory;
 import org.jboss.tools.common.model.ui.forms.DefaultFormContainer;
 import org.jboss.tools.common.model.ui.forms.DefaultFormPage;
@@ -233,8 +234,12 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 	private IFormFactory getFormFactory(XModelObject selected) {
 		if(selected == null) return null;
 		XModelObjectFormFactory formFactory;
-		String formFactoryClassName = selected.getModelEntity().getProperty("formFactoryClassName");
+		String formFactoryClassName = selected.getModelEntity().getProperty("formFactory");
+		
 		if(formFactoryClassName != null) {
+			if("%Default%".equals(formFactoryClassName)) {
+				return new LayouredFormFactory(selected);
+			}
 			Class cls = ModelFeatureFactory.getInstance().getFeatureClass(formFactoryClassName);
 			if(cls == null) return new FormFactory(selected);
 			try {

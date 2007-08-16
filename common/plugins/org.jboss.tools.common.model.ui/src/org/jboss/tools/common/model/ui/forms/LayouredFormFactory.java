@@ -30,7 +30,7 @@ public class LayouredFormFactory extends XModelObjectFormFactory {
 	private void initialize() {
 //		String entityName = getXModelObject().getModelEntity().getName();
 		String formLayoutDataClassName = null;
-		formLayoutDataClassName = getXModelObject().getModelEntity().getProperty("formLayoutDataClassName");
+		formLayoutDataClassName = getXModelObject().getModelEntity().getProperty("formLayout");
 		Class formLayoutDataClass = ModelFeatureFactory.getInstance().getFeatureClass(formLayoutDataClassName);
 		try {
 			formLayoutData = (IFormLayoutData)formLayoutDataClass.getMethod("getInstance", (Class[])null).invoke(null, (Object[])null);
