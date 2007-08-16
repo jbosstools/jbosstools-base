@@ -316,7 +316,7 @@
  </GlobalActions>
  <XModelEntity
   ImplementingClass="org.jboss.tools.common.model.impl.AnyElementObjectImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.model.ui.forms.ModelFormLayoutData" name="AnyElement">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.model.ui.forms.ModelFormLayoutData" name="AnyElement">
   <XChildrenEntities>
    <XChildEntity name="AnyElement"/>
   </XChildrenEntities>
@@ -386,7 +386,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.common.model.impl.AnyElementObjectImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.model.ui.forms.ModelFormLayoutData" name="AnyElementNew">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.model.ui.forms.ModelFormLayoutData" name="AnyElementNew">
   <XChildrenEntities>
    <XChildEntity name="AnyElement"/>
   </XChildrenEntities>
