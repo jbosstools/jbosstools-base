@@ -69,7 +69,7 @@
 <!ELEMENT XEntityRenderer (ICONS?)>
 
 <!ELEMENT XModelAttributes ((XModelAttribute|XModelAttributeReference)*)>
-<!ELEMENT XModelAttribute (Constraint,Editor)>
+<!ELEMENT XModelAttribute (Constraint?,Editor?)>
 <!ATTLIST XModelAttribute name CDATA #REQUIRED>
 <!ATTLIST XModelAttribute loader CDATA #IMPLIED>
 <!ATTLIST XModelAttribute xmlname CDATA #IMPLIED>
