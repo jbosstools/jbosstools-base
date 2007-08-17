@@ -358,7 +358,7 @@ public class KbTldStore implements KbStore {
 //			return registerDinamicResource((KbDinamicResource)resource);
 			return (KbDinamicResource)resource;
 		} else {
-			throw new RuntimeException("KbTldStore.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
+			throw new IllegalArgumentException("KbTldStore.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
 		}
 	}
 
@@ -437,7 +437,7 @@ public class KbTldStore implements KbStore {
 //				TODO Stop loading and registration resource
 			}
 		} else {
-			throw new RuntimeException("KbTldStore.unregisterResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
+			throw new IllegalArgumentException("KbTldStore.unregisterResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
 		}
 	}
 

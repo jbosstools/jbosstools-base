@@ -90,7 +90,7 @@ public class KbDtdStore implements KbStore {
 
 	public AttributeDescriptor queryAttributeInformation(KbQuery query) {
 		// TODO
-		throw new RuntimeException("This method is not implemented yet.");
+		throw new IllegalStateException("This method is not implemented yet.");
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class KbDtdStore implements KbStore {
 		int firstTagSeparator = strQuery.indexOf(KbQuery.TAG_SEPARATOR);
 		if(firstTagSeparator == -1) {
 //			KbPlugin.log("ERROR: Bad query: " + strQuery + ". Query must starts with \"" + KbQuery.TAG_SEPARATOR + "\" or \"" + KbQuery.XML_DECLARATION_QUERY + "\"");
-			throw new RuntimeException("Bad query: " + strQuery + ". Query must starts with \"" + KbQuery.TAG_SEPARATOR + "\" or \"" + KbQuery.XML_DECLARATION_QUERY + "\"");
+			throw new IllegalArgumentException("Bad query: " + strQuery + ". Query must starts with \"" + KbQuery.TAG_SEPARATOR + "\" or \"" + KbQuery.XML_DECLARATION_QUERY + "\"");
 		}
 
 		ArrayList<Element> elementTypes = new ArrayList<Element>();
@@ -152,7 +152,7 @@ public class KbDtdStore implements KbStore {
 									  "       Possible query formats: \"" + KbQuery.TAG_SEPARATOR +"rootTagName" + KbQuery.TAG_SEPARATOR + "childTagName1" + KbQuery.TAG_SEPARATOR + "..." + KbQuery.TAG_SEPARATOR + "childTagNameN" + KbQuery.ATTRIBUTE_SEPARATOR + "attributeName" + KbQuery.ENUMERATION_SEPARATOR + "attributeValue\"\n" +
 									  "       or \"" + KbQuery.XML_DECLARATION_QUERY + "\"";
 //				KbPlugin.log(errorMessage);
-				throw new RuntimeException(errorMessage);
+				throw new IllegalArgumentException(errorMessage);
 			}
 			elementTypes = getChildElementTypes(needResources, tags);
 			if(lastTagSeparator + KbQuery.TAG_SEPARATOR.length() < strQuery.length()) {

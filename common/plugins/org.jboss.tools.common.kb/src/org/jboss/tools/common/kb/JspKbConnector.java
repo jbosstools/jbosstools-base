@@ -77,7 +77,7 @@ public class JspKbConnector implements KbConnector {
 			if(KbPlugin.isDebugEnabled()) { 
 				KbPlugin.getPluginLog().logInfo(errorMessage);
 			}
-			throw new RuntimeException(errorMessage);
+			throw new IllegalArgumentException(errorMessage);
 		}
 
 		boolean autocompleteRequiredAttributes = KbConfigurationFactory.getInstance().getDefaultConfiguration().isAutocompleteRequiredAttributes(); 
@@ -317,7 +317,7 @@ public class JspKbConnector implements KbConnector {
 			registretedDinamicResources.add((KbDinamicResource)resource);
 			KbTldStore.getInstance().registerResource(resource);
 		} else {
-			throw new RuntimeException("JspKbConnector.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
+			throw new IllegalArgumentException("JspKbConnector.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
 		}
 		if(KbPlugin.isDebugEnabled()) {
 			KbPlugin.getPluginLog().logInfo("    registretedResources=" + registretedResources);
@@ -367,7 +367,7 @@ public class JspKbConnector implements KbConnector {
 			KbTldStore.getInstance().unregisterResource(resource);
 			registretedDinamicResources.remove(resource);
 		} else {
-			throw new RuntimeException("JspKbConnector.unregisterResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
+			throw new IllegalArgumentException("JspKbConnector.unregisterResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
 		}
 
 		if(KbPlugin.isDebugEnabled()) {

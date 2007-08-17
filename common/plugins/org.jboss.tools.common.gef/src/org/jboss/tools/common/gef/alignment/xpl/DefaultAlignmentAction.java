@@ -56,7 +56,7 @@ private int alignment;
 public DefaultAlignmentAction(IWorkbenchPart editor, int align) {
 	super(editor);
 	alignment = align;
-	init();
+	init(); 
 }
 
 protected boolean calculateEnabled() {

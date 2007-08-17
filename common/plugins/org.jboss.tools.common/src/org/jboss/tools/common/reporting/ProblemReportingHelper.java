@@ -36,19 +36,9 @@ public class ProblemReportingHelper {
 	 * @param throwable
 	 */
 	public static void reportProblem(String plugin, String message, Throwable throwable) {
-		if(throwable == null) {
-			throwable = new NullPointerException("Parameter throwable is null.");
-			reportProblem("org.jboss.tools.common", throwable);
-		} else {		
-			if(message == null) {
-				message = throwable.getMessage();
-			}
-			if(message==null) {
-				message = "";
-			}
-			IStatus status = new Status(IStatus.ERROR, plugin, 0, message, throwable);
-			reportProblem(status);
-		}
+		if(message==null) throw new IllegalArgumentException("Message parameter cannot be null");
+		IStatus status = new Status(IStatus.ERROR, plugin, 0, message, throwable);
+		reportProblem(status);
 	}
 
 	/**
@@ -57,7 +47,8 @@ public class ProblemReportingHelper {
 	 */
 	public static void reportProblem(IStatus status) {
 		if(status == null) {
-			reportProblem("org.jboss.tools.common", new NullPointerException("Parameter status is null."));
+			reportProblem("org.jboss.tools.common", 
+					new IllegalArgumentException("Parameter 'status' cannt be null"));
 			return;
 		}
 		IProblemReporter reporter = ProblemReporterFactory.getInstance().getProblemReporter();

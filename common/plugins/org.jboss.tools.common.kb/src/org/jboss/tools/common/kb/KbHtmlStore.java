@@ -125,7 +125,7 @@ public class KbHtmlStore implements KbStore {
 		if(strQuery == null) {
 			String errorMessage = "ERROR: Bad query: \"" + query.getQuery() + "\". Query must starts with \"" + KbQuery.TAG_SEPARATOR + "\"";
 //			KbPlugin.log(errorMessage);
-			throw new RuntimeException(errorMessage);
+			throw new IllegalArgumentException(errorMessage);
 		}
 
 		int firstTagSeparator = strQuery.indexOf(KbQuery.TAG_SEPARATOR);

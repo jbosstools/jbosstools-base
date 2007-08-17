@@ -64,9 +64,9 @@ public class DtdResolver implements EntityResolver {
         if(location == null) {
         	if(systemId != null && !unfound.contains(systemId)) {
         		unfound.add(systemId);
-            	System.out.println("Cannot find locally:" );
-            	System.out.println("Public ID " + publicId);
-            	System.out.println("System ID " + systemId);
+            	CommonPlugin.getPluginLog().logError("Cannot find locally: " 
+            			+ "Public ID " + publicId
+            			+ " System ID " + systemId);
         	}
         }
         if(location!=null) {

@@ -56,7 +56,7 @@ public class KbJspDirectiveStore implements KbStore {
 
 	public AttributeDescriptor queryAttributeInformation(KbQuery query) {
 		// TODO
-		throw new RuntimeException("This method is not implemented yet.");
+		throw new IllegalStateException("This method is not implemented yet.");
 	}
 
 	public Collection<KbProposal> queryProposal(KbQuery query) {
@@ -82,7 +82,7 @@ public class KbJspDirectiveStore implements KbStore {
 			String errorMessage = "ERROR: Bad query: " + strQuery + "\n" + 
 								  "       Possible query format: \"" + KbQuery.JSP_DIRECTIVE_QUERY + "directiveName" + KbQuery.ATTRIBUTE_SEPARATOR + "attributeName" + KbQuery.ENUMERATION_SEPARATOR + "attributeValue\"";
 //			KbPlugin.log(errorMessage);
-			throw new RuntimeException(errorMessage);
+			throw new IllegalArgumentException(errorMessage);
 //			return new ArrayList();
 		} else if(strQuery.length() == KbQuery.JSP_DIRECTIVE_QUERY.length()) {
 			return getDirectives("");

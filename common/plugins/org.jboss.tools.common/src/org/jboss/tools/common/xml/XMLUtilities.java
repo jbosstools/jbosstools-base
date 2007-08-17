@@ -14,6 +14,7 @@ import java.io.*;
 import java.util.*;
 import javax.xml.parsers.DocumentBuilder;
 import org.apache.xml.serialize.*;
+import org.jboss.tools.common.CommonPlugin;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
@@ -121,26 +122,30 @@ public class XMLUtilities {
     }
 
     public static Element getElement(String filename, EntityResolver resolver) {
-        try {
             return getElement(new File(filename), resolver);
-        } catch (Exception e) {
-            return null;
-        }
     }
 
     public static Element getElement(File file, EntityResolver resolver) {
-        java.io.FileReader fr = null;
-        try {
-            fr = new java.io.FileReader(file);
-            org.xml.sax.InputSource inSource = new org.xml.sax.InputSource(fr);
-            return getElement(inSource, resolver);
-        } catch (Exception e) {
-            return null;
-        } finally {
+    	
+    	java.io.FileReader fr = null;
+    	try {
+    		fr = new java.io.FileReader(file);
+        	org.xml.sax.InputSource inSource = new org.xml.sax.InputSource(fr);
+        return getElement(inSource, resolver);
+        } catch (FileNotFoundException e) {
+        	CommonPlugin.getPluginLog().logError(e);
+		} catch (IOException e) {
+        	CommonPlugin.getPluginLog().logError(e);
+		} catch (SAXException e) {
+        	CommonPlugin.getPluginLog().logError(e);
+		} finally {
             try {
                 if (fr != null) fr.close();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            	CommonPlugin.getPluginLog().logError(e);
+            }
         }
+		return null;
     }
 
     public static Element getElement(Reader reader, EntityResolver resolver) {
@@ -166,11 +171,11 @@ public class XMLUtilities {
         }
     }
 
-    public static Element getElement(InputSource is, EntityResolver resolver) throws Exception {
+    public static Element getElement(InputSource is, EntityResolver resolver) throws SAXException, IOException  {
         return getDocument(is, resolver).getDocumentElement();
     }
     
-    public static Document getDocument(InputSource is, EntityResolver resolver) throws Exception {
+    public static Document getDocument(InputSource is, EntityResolver resolver) throws SAXException, IOException{
 		DocumentBuilder builder = createDocumentBuilder(false);
 		if(resolver != null) builder.setEntityResolver(resolver);
 		return builder.parse(is);
@@ -225,9 +230,7 @@ public class XMLUtilities {
     	 
 	}
     public static OutputFormat createOutputFormat(String encoding) {
-    	if(encoding == null || encoding.length() == 0) encoding = null; //"UTF-8";
-    	//"ISO-8859-1"
-        OutputFormat format = new OutputFormat(Method.XML, encoding, true);
+        OutputFormat format = new OutputFormat(Method.XML, encoding == null || encoding.length() == 0?null:encoding, true);
         format.setLineSeparator(System.getProperty("line.separator", LineSeparator.Web));
         format.setIndent(1);
         return format;
@@ -308,18 +311,18 @@ public class XMLUtilities {
     }
 
     public static final void setCDATA(Element element, String data) {
-        if (data == null) data = "";
-        element.appendChild(element.getOwnerDocument().createCDATASection(data));
+        element.appendChild(element.getOwnerDocument().createCDATASection(
+        												data!=null?data:""));
     }
 
     public static final void setText(Element element, String data) {
-        if (data == null) data = "";
-        element.appendChild(element.getOwnerDocument().createTextNode(data));
+        element.appendChild(element.getOwnerDocument().createTextNode(
+														data!=null?data:""));
     }
 
     public static final void setComment(Element element, String data) {
-        if (data == null) data = "";
-        Comment comm = element.getOwnerDocument().createComment(data);
+        Comment comm = element.getOwnerDocument().createComment(
+				data!=null?data:"");
         element.getParentNode().insertBefore(comm, element);
     }
 

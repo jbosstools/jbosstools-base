@@ -28,8 +28,8 @@ public class KbQuery {
 	public static final String ENUMERATION_SEPARATOR = "=";
 	public static final String DONT_FILTER_END_TAG_CHAR = "^";
 	public static final String JSP_DIRECTIVE_QUERY = "@";
-	private static final char startCodeChar = '%';
-	private static final char endCodeChar = ';';
+	private static final char START_CODE_CHAR = '%';
+	private static final char END_CODE_CHAR = ';';
 
 	private String query = "";
 	private Collection resources = new ArrayList();
@@ -117,18 +117,18 @@ public class KbQuery {
 	 * @return
 	 */
 	public static String encode(String str) {
-		if((str.indexOf('/')<0)&&(str.indexOf(startCodeChar)<0)) {
+		if((str.indexOf('/')<0)&&(str.indexOf(START_CODE_CHAR)<0)) {
 			return str;
 		}
 		char[] chars = str.toCharArray();
 		StringBuffer result = new StringBuffer(str.length());
 		for(int i = 0; i < chars.length; i++) {
-			if((chars[i]!='/')&&(chars[i]!=startCodeChar)) {
+			if((chars[i]!='/')&&(chars[i]!=START_CODE_CHAR)) {
 				result.append(chars[i]);
 			} else {
-				result.append(startCodeChar);
+				result.append(START_CODE_CHAR);
 				result.append((int)chars[i]);
-				result.append(endCodeChar);
+				result.append(END_CODE_CHAR);
 			}
 		}
 		return result.toString();
@@ -140,17 +140,17 @@ public class KbQuery {
 	 * @return
 	 */
 	public static String decode(String str) {
-		if(str.indexOf(startCodeChar)<0) {
+		if(str.indexOf(START_CODE_CHAR)<0) {
 			return str;
 		}
 		StringBuffer result = new StringBuffer(str.length());
-		StringTokenizer st = new StringTokenizer(str, "" + startCodeChar, false);
-		if((!str.startsWith("" + startCodeChar))&&(st.hasMoreElements())) {
+		StringTokenizer st = new StringTokenizer(str, "" + START_CODE_CHAR, false);
+		if((!str.startsWith("" + START_CODE_CHAR))&&(st.hasMoreElements())) {
 			result.append(st.nextElement());
 		}
 		while(st.hasMoreElements()) {
 			String s = st.nextToken();
-			int endCode = s.indexOf(endCodeChar);
+			int endCode = s.indexOf(END_CODE_CHAR);
 			if(endCode!=-1) {
 				try {
 					int intChar = Integer.parseInt(s.substring(0, endCode));

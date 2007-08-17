@@ -134,7 +134,9 @@ public final class FileUtil {
             try {
                 if(f.isFile() && !isSameFile(f)) f.delete();
                 if(!f.exists()) f.createNewFile();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            	CommonPlugin.getPluginLog().logError(e);
+            }
             PrintWriter pw = new PrintWriter(new FileWriter(f));
             pw.print(value);
             pw.flush();
@@ -157,12 +159,14 @@ public final class FileUtil {
     public static boolean copyFile(File source, File dest, boolean mkdirs, boolean overwrite) {
         if (mkdirs) dest.getParentFile().mkdirs();
         if(!source.isFile()) return false;
-        try {
-            if(dest.isFile() && !isSameFile(dest)) dest.delete();
-            if(dest.isFile() && !overwrite) return false;
-            if(!dest.exists()) dest.createNewFile();
-        } catch (Exception e) {
-        }
+        if(dest.isFile() && !isSameFile(dest)) dest.delete();
+        if(dest.isFile() && !overwrite) return false;
+        if(!dest.exists())
+			try {
+				dest.createNewFile();
+			} catch (IOException e1) {
+				CommonPlugin.getPluginLog().logError(e1);
+			}
         InputStream is = null;
         OutputStream os = null;
         try {
@@ -177,10 +181,12 @@ public final class FileUtil {
             try {
                 if (is != null) is.close();
             } catch (IOException e) {
+            	CommonPlugin.getPluginLog().logError(e);
             }
             try {
                 if (os != null) os.close();
             } catch (IOException e) {
+            	CommonPlugin.getPluginLog().logError(e);
             }
         }
     }
@@ -430,11 +436,11 @@ public final class FileUtil {
 
     public static String fileURLToFilePath(String url) {
         if(url == null) return null;
-        url = url.replace('\\', '/');
+        String resultUrl = url.replace('\\', '/');
 ///        if(!url.startsWith("file:/")) return url;
-		if(!url.startsWith("file:")) return url;
-        int iLast = url.lastIndexOf(':'), iFirst = url.indexOf(':');
-        return (iLast == iFirst) ? url.substring(5) : url.substring(iLast - 1);
+		if(!resultUrl.startsWith("file:")) return resultUrl;
+        int iLast = resultUrl.lastIndexOf(':'), iFirst = resultUrl.indexOf(':');
+        return (iLast == iFirst) ? resultUrl.substring(5) : resultUrl.substring(iLast - 1);
     }
 
     //// Relative path
@@ -451,9 +457,9 @@ public final class FileUtil {
 		return sb.toString();
 	}
 
-	private static String[] tokenizePath(String s) {
-		s = s.replace('\\', '/');
-		StringTokenizer st = new StringTokenizer(s, "/");
+	private static String[] tokenizePath(String path) {
+		String tokenizedPath = path.replace('\\', '/');
+		StringTokenizer st = new StringTokenizer(tokenizedPath, "/");
 		ArrayList l = new ArrayList();
 		while(st.hasMoreTokens()) {
 			String t = st.nextToken();
@@ -512,7 +518,9 @@ public final class FileUtil {
             try {
                 if(f.isFile() && !isSameFile(f)) f.delete();
                 if(!f.exists()) f.createNewFile();
-            } catch (Exception e) {}
+            } catch (IOException e) {
+            	CommonPlugin.getPluginLog().logError(e);
+            }
             FileOutputStream fs = new FileOutputStream(f);
             OutputStreamWriter osw = new OutputStreamWriter(fs, encoding);
             PrintWriter pw = new PrintWriter(osw);

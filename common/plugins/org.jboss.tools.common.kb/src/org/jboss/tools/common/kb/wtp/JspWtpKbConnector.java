@@ -138,6 +138,7 @@ public class JspWtpKbConnector implements WtpKbConnector {
     	if(!query.endsWith("/")) {
     		query = query + "/";
     	}
+    	// tracing would be fine here
 //    	KbPlugin.log(query);
         Object o = getProposalCache().get(query);
         if(o!=null) {
@@ -295,7 +296,7 @@ public class JspWtpKbConnector implements WtpKbConnector {
 		    registretedDinamicResources.add((KbDinamicResource)resource);
 		    KbTldStore.getInstance().registerResource(resource);
 		} else {
-		    throw new RuntimeException("JspWtpKbConnector.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
+		    throw new IllegalArgumentException("JspWtpKbConnector.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
 		}
 		if(clearCash) {
 			clearCache(modified, false);
@@ -350,7 +351,7 @@ public class JspWtpKbConnector implements WtpKbConnector {
 			KbTldStore.getInstance().unregisterResource(resource);
 			registretedDinamicResources.remove(resource);
 		} else {
-			throw new RuntimeException("JspKbConnector.unregisterResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
+			throw new IllegalArgumentException("JspKbConnector.unregisterResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
 		}
 	}
 

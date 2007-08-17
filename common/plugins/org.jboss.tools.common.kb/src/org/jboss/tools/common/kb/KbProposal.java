@@ -24,11 +24,11 @@ public class KbProposal implements Comparable, Serializable {
 		public void process(KbProposal proposal, String value, int offset);
 	}
 
-	public static int R_NONE = 0;
-	public static int R_JSP_JSF_EL_VARIABLE_ATTRIBUTE_VALUE = 650;
-	public static int R_JSP_ATTRIBUTE_VALUE = 700;
-	public static int R_XML_ATTRIBUTE_VALUE = 800;
-	public static int R_XML_ATTRIBUTE_NAME = 900;
+	public static final int R_NONE = 0;
+	public static final int R_JSP_JSF_EL_VARIABLE_ATTRIBUTE_VALUE = 650;
+	public static final int R_JSP_ATTRIBUTE_VALUE = 700;
+	public static final int R_XML_ATTRIBUTE_VALUE = 800;
+	public static final int R_XML_ATTRIBUTE_NAME = 900;
 
 	private static final long serialVersionUID = 3257007635692926512L;
 
