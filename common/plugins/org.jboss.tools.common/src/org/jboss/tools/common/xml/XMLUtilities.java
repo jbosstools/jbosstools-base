@@ -126,12 +126,12 @@ public class XMLUtilities {
     }
 
     public static Element getElement(File file, EntityResolver resolver) {
-    	
+    	if(file == null || !file.isFile()) return null;
     	java.io.FileReader fr = null;
     	try {
     		fr = new java.io.FileReader(file);
         	org.xml.sax.InputSource inSource = new org.xml.sax.InputSource(fr);
-        return getElement(inSource, resolver);
+        	return getElement(inSource, resolver);
         } catch (FileNotFoundException e) {
         	CommonPlugin.getPluginLog().logError(e);
 		} catch (IOException e) {
