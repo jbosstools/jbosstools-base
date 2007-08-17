@@ -35,6 +35,18 @@
 
       <tld
             jsf="true"
+            name="JBoss Rich Faces 3.1"
+            schema-location="schemas/tld/Richfaces3_1.xml"
+            uri="http://richfaces.org/rich"/>
+
+      <tld
+            jsf="true"
+            name="JBoss Ajax4jsf 3.1"
+            schema-location="schemas/tld/ajax4jsf.xml"
+            uri="http://richfaces.org/a4j"/>
+
+      <tld
+            jsf="true"
             name="JBoss Rich Faces"
             schema-location="schemas/tld/Vcp.xml"
             uri="http://richfaces.ajax4jsf.org/rich"/>
