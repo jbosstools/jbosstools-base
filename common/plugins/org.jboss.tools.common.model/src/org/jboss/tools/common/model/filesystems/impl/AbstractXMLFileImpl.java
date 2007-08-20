@@ -116,7 +116,12 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 		protected int getLocation(String s) {
 			Integer i = (Integer)lines.get(s);
 			return (i == null) ? -1 : i.intValue();
-		}		
+		}
+		
+		boolean enabled = false;
+		public void update() {
+			if(enabled) super.update(); 
+		}
 	}
 	
 	protected ResourceMarkers getResourceMarkers() {
