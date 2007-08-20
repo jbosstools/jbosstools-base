@@ -162,7 +162,7 @@ public class XModelObjectLoaderUtil {
        	    		name = namespaceMapping.convertToDefault(name);
        	    	}
     			if(allowed.contains(name)) continue;
-    			error = "Unallowed child " + name + " of " + element.getNodeName() + ":0:0";
+    			error = "Editor model does not support child element " + name + " of " + element.getNodeName() + ":0:0";
     			return true;
     		}
     	}
