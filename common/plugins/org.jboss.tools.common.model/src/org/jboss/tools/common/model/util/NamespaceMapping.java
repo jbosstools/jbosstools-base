@@ -44,7 +44,7 @@ public class NamespaceMapping {
 		int i = name.indexOf(':');
 		String a = name.substring(0, i);
 		String d = getDefaultNamespace(a);
-		if(a == null || a.equals(name)) {
+		if(d == null || a.equals(d)) {
 			value = name;
 		} else {
 			value = d + name.substring(i);
