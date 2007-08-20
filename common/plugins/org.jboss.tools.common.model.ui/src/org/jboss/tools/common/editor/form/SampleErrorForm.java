@@ -325,6 +325,9 @@ public class SampleErrorForm extends ExpandableForm {
 			result[ERROR_LOCATION] = "0:0";
 			result[ERROR_MESSAGE] = s;
 		}
+		if(result[ERROR_LOCATION] == null || "0:0".equals(result[ERROR_LOCATION])) {
+			result[ERROR_LOCATION] = "";
+		}
 		return result;
 	}
 	

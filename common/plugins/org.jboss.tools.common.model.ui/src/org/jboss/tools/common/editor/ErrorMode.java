@@ -181,6 +181,9 @@ class Lbl {
 			messages[1] = "0:0";
 			messages[2] = s;
 		}
+		if(messages[1] == null || "0:0".equals(messages[1])) {
+			messages[1] = "";
+		}
 	}
 	
 	public void go() {
