@@ -177,7 +177,7 @@ public class XModelObjectLoaderUtil {
     			String name = n.getNodeName();
     			if(allowed.contains(name)) continue;
     			if(name.startsWith("xmlns")) continue;
-    			error = "Unallowed attribute " + name + " of " + element.getNodeName() + ":0:0";;
+    			error = "Editor model does not support attribute " + name + " of " + element.getNodeName() + ":0:0";;
     			return true;
     		}
     	}
