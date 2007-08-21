@@ -153,6 +153,10 @@ public class ScrolledComposite extends Composite {
 			}
 			cr.x = -hs;
 		}
+		if(hBar.getThumb() >= hBar.getMaximum())
+			hBar.setVisible(false);
+		else 
+			hBar.setVisible(true);
 	}
 	private void layoutVBar(Rectangle cr, Rectangle hr) {
 		ScrollBar vBar = getVerticalBar();
@@ -167,6 +171,10 @@ public class ScrolledComposite extends Composite {
 			}
 			cr.y = -vs;
 		}
+		if(vBar.getThumb() >= vBar.getMaximum())
+			vBar.setVisible(false);
+		else 
+			vBar.setVisible(true);
 	}
 
 	public Point computeSize (int wHint, int hHint, boolean changed) {
