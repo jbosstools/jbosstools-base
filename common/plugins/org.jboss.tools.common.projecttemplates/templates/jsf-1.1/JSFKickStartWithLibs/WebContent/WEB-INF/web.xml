@@ -14,12 +14,6 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
         <param-value>server</param-value>
     </context-param>
-#if ($runtimeType == "org.jboss.ide.eclipse.as.runtime.42")
-	<context-param>
-		<param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
-		<param-value>true</param-value>
-	</context-param>
-#end 
     <listener>
         <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
     </listener>

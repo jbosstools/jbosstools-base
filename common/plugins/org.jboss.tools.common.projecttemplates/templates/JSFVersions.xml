@@ -1,6 +1,6 @@
 <versions> 
  <version displayName="JSF 1.1.02 - Reference Implementation">
-  <lib type="common" location="../lib/ApacheCommon2.3" />
+  <lib type="core" location="../lib/ApacheCommon2.3" />
   <refLib type="servlet" location="../servlet" />
   <projectTempl location="./jsf-1.1" />
  </version>
