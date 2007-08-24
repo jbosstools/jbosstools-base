@@ -61,18 +61,15 @@
 			<![CDATA[<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>]]>
 		</file-addition>
 	</capability>
-	<capability name="RichFaces - Red Hat Visual Component Platform">
-		<library name="RichFaces-RedHatVCP" />
+	<capability name="JBoss RichFaces 3.1">
+		<library name="RichFaces" />
 		<file-addition file-name="/WEB-INF/web.xml"
-			label="VCP Skin Parameter" x-path="/web-app">
+			label="Skin Parameter" x-path="/web-app">
 			<![CDATA[<context-param>
   <param-name>org.ajax4jsf.SKIN</param-name>
   <param-value>classic</param-value>
 </context-param>]]>
 		</file-addition>
-	</capability>
-	<capability name="ajax4jsf">
-		<library name="ajax4jsf" />
 		<file-addition file-name="/WEB-INF/web.xml"
 			label="Ajax4jsf Filter" x-path="/web-app">
 			<![CDATA[<filter>
