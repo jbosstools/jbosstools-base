@@ -62,13 +62,6 @@
       <specialwizard class="org.jboss.tools.common.model.project.ClassPathUpdateWizard" id="org.jboss.tools.common.model.project.ClassPathUpdateWizard">
       </specialwizard>
    </extension>
-<!--extension
-         point="org.eclipse.jdt.core.classpathVariableInitializer">
-      <classpathVariableInitializer
-            variable=" STRUTSSTUDIO_LIB_HOME"
-            class="org.jboss.tools.common.core.jdt.StrutsStudioVariableInitializer">
-      </classpathVariableInitializer>
-   </extension-->
    <extension id="textproblemmarker" name="%textProblemName" point="org.eclipse.core.resources.markers">
       <super type="org.eclipse.core.resources.problemmarker">
       </super>
