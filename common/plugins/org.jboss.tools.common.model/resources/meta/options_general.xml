@@ -4122,9 +4122,6 @@
 	<Options ENTITY="SharableOptions" NAME="Options" SCOPE="project">
 		<JSFStudio ENTITY="SharableJSFStudio" NAME="JSF Studio"
 			SCOPE="project">
-			<JSF10Libs ENTITY="SharableJSF10Libs"
-				NAME="JSF 1.0 Libraries" SCOPE="project"
-				libraries="JSFSTUDIO_LIB_HOME/jsf-1.0/commons-beanutils.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/commons-collections.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/commons-digester.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/commons-logging.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/jsf-api.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/jsf-impl.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/jstl.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/standard.jar" />
 			<JSFProject ENTITY="SharableJSFProject" NAME="Project"
 				SCOPE="project">
 				<ImportJSFProject ENTITY="SharableImportJSFProject"

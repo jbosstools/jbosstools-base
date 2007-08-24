@@ -11,7 +11,6 @@
   <XEntityRenderer/>
   <XModelAttributes>
    <XModelAttribute PROPERTIES="font=courier" name="exceptions">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -41,11 +40,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Automation" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -70,12 +67,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Code Generation" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -92,11 +87,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Action" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -113,11 +106,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Common" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -134,11 +125,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Exception" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -155,11 +144,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Forward" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -176,12 +163,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Global Exception" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -198,12 +183,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Global Forward" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -225,11 +208,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Editors" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="yes" name="useRedHatEditors" xmlname="useRedHatEditors">
@@ -267,12 +248,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Import Project" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="2.4" name="Servlet Version" xmlname="servlet_version">
@@ -304,12 +283,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Import Project" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="2.3" name="Servlet Version" xmlname="servlet_version">
@@ -341,18 +318,15 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Default Error Messages" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute
     default="errors.required={0} is required.\nerrors.minlength={0} can not be less than {1} characters.\nerrors.maxlength={0} can not be greater than {1} characters.\nerrors.invalid={0} is invalid.\n \nerrors.byte={0} must be a byte.\nerrors.short={0} must be a short.\nerrors.integer={0} must be an integer.\nerrors.long={0} must be a long.\nerrors.float={0} must be a float.\nerrors.double={0} must be a double.\n \nerrors.date={0} is not a date.\nerrors.range={0} is not in the range {1} through {2}.\nerrors.creditcard={0} is an invalid credit card number.\nerrors.email={0} is an invalid e-mail address.\n"
     name="text" xmlname="text">
-    <Constraint/>
     <Editor name="Note2"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -369,17 +343,14 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Tiles" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute
     default="&lt;plug-in className=&quot;org.apache.struts.tiles.TilesPlugin&quot;>\n  &lt;set-property property=&quot;definitions-config&quot; value=&quot;/WEB-INF/tiles-defs.xml&quot;/>\n &lt;set-property property=&quot;moduleAware&quot; value=&quot;true&quot;/>\n&lt;/plug-in>"
     name="text" xmlname="text">
-    <Constraint/>
     <Editor name="Note2"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -396,46 +367,15 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Validators" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute
     default="&lt;plug-in className=&quot;org.apache.struts.validator.ValidatorPlugIn&quot;>\n  &lt;set-property property=&quot;pathnames&quot; value=&quot;/WEB-INF/validator-rules.xml, /WEB-INF/validation.xml&quot;/>\n &lt;/plug-in>"
     name="text" xmlname="text">
-    <Constraint/>
     <Editor name="Note2"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list"/>
-  <XDependencies/>
- </XModelEntity>
- <XModelEntity ImplementingClass="%Options%" name="SharableJSF10Libs">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.xstudio.options.root" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="options" loader="ElementType"
-    name="element type" visibility="false">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute default="JSF 1.0 Libraries" name="name"
-    visibility="false" xmlname="NAME">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute
-    default="JSFSTUDIO_LIB_HOME/jsf-1.0/commons-beanutils.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/commons-collections.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/commons-digester.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/commons-logging.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/jsf-api.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/jsf-impl.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/jstl.jar;JSFSTUDIO_LIB_HOME/jsf-1.0/standard.jar"
-    name="Libraries" xmlname="libraries">
-    <Constraint/>
-    <Editor name="MutableList"/>
    </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list"/>
@@ -451,11 +391,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Add View" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="JSFBasePage" name="Page Template" xmlname="page-template">
@@ -488,12 +426,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="JSF Flow Diagram" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="yes" name="Show Grid" xmlname="show_grid">
@@ -515,12 +451,10 @@
    </XModelAttribute>
    <XModelAttribute default="default,size=8,style=1"
     name="Link Path Font" xmlname="link_path_font">
-    <Constraint/>
     <Editor name="FontChooser"/>
    </XModelAttribute>
    <XModelAttribute default="default,size=8,style=1"
     name="View Path Font" xmlname="view_path_font">
-    <Constraint/>
     <Editor name="FontChooser"/>
    </XModelAttribute>
    <XModelAttribute default="yes" name="doNotCreateEmptyRule" xmlname="doNotCreateEmptyRule">
@@ -577,11 +511,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Project" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -591,7 +523,6 @@
  <XModelEntity ImplementingClass="%Options%" name="SharableJSFStudio">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="SharableJSFProject" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableJSF10Libs" required="yes"/>
   </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
@@ -601,11 +532,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="JSF Studio" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -622,18 +551,13 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Link Recognizer" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="value" xmlname="CDATA">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="value" xmlname="CDATA"/>
   </XModelAttributes>
   <XActionItem kind="list"/>
   <XDependencies/>
@@ -648,11 +572,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="New Project" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="JSF 1.0 - Reference Implementation"
@@ -661,7 +583,6 @@
     <Editor name="DropDown"/>
    </XModelAttribute>
    <XModelAttribute default="JSFBlank" name="Project Template" xmlname="template">
-    <Constraint/>
     <Editor name="DropDown"/>
    </XModelAttribute>
    <XModelAttribute default="yes" name="Use Default Path" xmlname="use_default">
@@ -695,7 +616,6 @@
     <Editor name="CheckBox"/>
    </XModelAttribute>
    <XModelAttribute default="Blank" name="Page Template" xmlname="page_template">
-    <Constraint/>
     <Editor name="DropDown"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -712,11 +632,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="New Project" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Struts 1.1" name="Struts Version" xmlname="version">
@@ -724,7 +642,6 @@
     <Editor name="DropDown"/>
    </XModelAttribute>
    <XModelAttribute default="Blank" name="Project Template" xmlname="template">
-    <Constraint/>
     <Editor name="DropDown"/>
    </XModelAttribute>
    <XModelAttribute default="yes" name="Use Default Path" xmlname="use_default">
@@ -758,7 +675,6 @@
     <Editor name="CheckBox"/>
    </XModelAttribute>
    <XModelAttribute default="Blank" name="Page Template" xmlname="page_template">
-    <Constraint/>
     <Editor name="DropDown"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -778,12 +694,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Plug-ins Insets" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -804,11 +718,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Project" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -825,12 +737,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Report Problem" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="yes" name="showErrorDialog" xmlname="showErrorDialog">
@@ -847,14 +757,8 @@
     </Constraint>
     <Editor name="CheckBox"/>
    </XModelAttribute>
-   <XModelAttribute name="eMail" visibility="false" xmlname="eMail">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="other" visibility="false" xmlname="other">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="eMail" visibility="false" xmlname="eMail"/>
+   <XModelAttribute name="other" visibility="false" xmlname="other"/>
    <XModelAttribute default="yes" name="attachRedHatLog"
     visibility="false" xmlname="attachRedHatLog">
     <Constraint loader="List">
@@ -887,12 +791,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Resources Insets" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -909,18 +811,13 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Running" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Tomcat" name="Default Server"
-    visibility="false" xmlname="default_server">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    visibility="false" xmlname="default_server"/>
    <XModelAttribute name="Browser Path" xmlname="browser_path">
     <Constraint loader="FileFilter">
      <value name="allFiles=true"/>
@@ -929,10 +826,7 @@
     </Constraint>
     <Editor name="FileChooser"/>
    </XModelAttribute>
-   <XModelAttribute name="Default WTP Server" visibility="false" xmlname="default_wtp_server">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="Default WTP Server" visibility="false" xmlname="default_wtp_server"/>
    <XModelAttribute default="yes" name="Use Default Eclipse JVM" xmlname="jvm_default">
     <Constraint loader="List">
      <value name="yes"/>
@@ -955,116 +849,6 @@
   <XActionItem kind="list"/>
   <XDependencies/>
  </XModelEntity>
- <XModelEntity ImplementingClass="%Options%" name="SharableServlet22Libs">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.xstudio.options.root" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="options" loader="ElementType"
-    name="element type" visibility="false">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute default="Servlet 2.2 Libraries" name="name"
-    visibility="false" xmlname="NAME">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute default="REDHAT_LIB_HOME/servlet/2.2/servlet.jar"
-    name="Libraries" xmlname="libraries">
-    <Constraint/>
-    <Editor name="MutableList"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list"/>
-  <XDependencies/>
- </XModelEntity>
- <XModelEntity ImplementingClass="%Options%" name="SharableServlet23Libs">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.xstudio.options.root" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="options" loader="ElementType"
-    name="element type" visibility="false">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute default="Servlet 2.3 Libraries" name="name"
-    visibility="false" xmlname="NAME">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute default="REDHAT_LIB_HOME/servlet/2.3/servlet.jar"
-    name="Libraries" xmlname="libraries">
-    <Constraint/>
-    <Editor name="MutableList"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list"/>
-  <XDependencies/>
- </XModelEntity>
- <XModelEntity ImplementingClass="%Options%" name="SharableServlet24Libs">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.xstudio.options.root" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="options" loader="ElementType"
-    name="element type" visibility="false">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute default="Servlet 2.4 Libraries" name="name"
-    visibility="false" xmlname="NAME">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute
-    default="REDHAT_LIB_HOME/servlet/2.4/servlet-api.jar;REDHAT_LIB_HOME/servlet/2.4/jsp-api.jar"
-    name="Libraries" xmlname="libraries">
-    <Constraint/>
-    <Editor name="MutableList"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list"/>
-  <XDependencies/>
- </XModelEntity>
- <XModelEntity ImplementingClass="%Options%" name="SharableStruts10Libs">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.xstudio.options.root" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="options" loader="ElementType"
-    name="element type" visibility="false">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute default="Struts 1.0 Libraries" name="name"
-    visibility="false" xmlname="NAME">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute
-    default="STRUTSSTUDIO_LIB_HOME/struts-1.0/struts.jar"
-    name="Libraries" xmlname="libraries">
-    <Constraint/>
-    <Editor name="MutableList"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list"/>
-  <XDependencies/>
- </XModelEntity>
  <XModelEntity ImplementingClass="%Options%" name="SharableStruts10Support">
   <XChildrenEntities/>
   <XEntityRenderer>
@@ -1075,54 +859,19 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Struts Support 1.0" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="org.apache.struts.action.ActionServlet"
     name="servlet class" xmlname="servlet_class">
-    <Constraint/>
     <Editor name="EclipseClassChooser"/>
    </XModelAttribute>
-   <XModelAttribute default="*.do" name="url pattern" xmlname="url_pattern">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute default="*.do" name="url pattern" xmlname="url_pattern"/>
    <XModelAttribute name="tld files" xmlname="tld_files">
-    <Constraint/>
     <Editor name="ListAdd"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list"/>
-  <XDependencies/>
- </XModelEntity>
- <XModelEntity ImplementingClass="%Options%" name="SharableStruts11Libs">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.xstudio.options.root" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="options" loader="ElementType"
-    name="element type" visibility="false">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute default="Struts 1.1 Libraries" name="name"
-    visibility="false" xmlname="NAME">
-    <Constraint/>
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute
-    default="STRUTSSTUDIO_LIB_HOME/struts-1.1/commons-beanutils.jar;STRUTSSTUDIO_LIB_HOME/struts-1.1/commons-collections.jar;STRUTSSTUDIO_LIB_HOME/struts-1.1/commons-digester.jar;STRUTSSTUDIO_LIB_HOME/struts-1.1/commons-fileupload.jar;STRUTSSTUDIO_LIB_HOME/struts-1.1/commons-lang.jar;STRUTSSTUDIO_LIB_HOME/struts-1.1/commons-logging.jar;STRUTSSTUDIO_LIB_HOME/struts-1.1/commons-validator.jar;STRUTSSTUDIO_LIB_HOME/struts-1.1/jakarta-oro.jar;STRUTSSTUDIO_LIB_HOME/struts-1.1/struts.jar;STRUTSSTUDIO_LIB_HOME/struts-1.1/struts-legacy.jar"
-    name="Libraries" xmlname="libraries">
-    <Constraint/>
-    <Editor name="MutableList"/>
    </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list"/>
@@ -1138,25 +887,18 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Struts Support 1.1" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="org.apache.struts.action.ActionServlet"
     name="servlet class" xmlname="servlet_class">
-    <Constraint/>
     <Editor name="EclipseClassChooser"/>
    </XModelAttribute>
-   <XModelAttribute default="*.do" name="url pattern" xmlname="url_pattern">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute default="*.do" name="url pattern" xmlname="url_pattern"/>
    <XModelAttribute name="tld files" xmlname="tld_files">
-    <Constraint/>
     <Editor name="ListAdd"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1173,25 +915,18 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Struts Support 1.2" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="org.apache.struts.action.ActionServlet"
     name="servlet class" xmlname="servlet_class">
-    <Constraint/>
     <Editor name="EclipseClassChooser"/>
    </XModelAttribute>
-   <XModelAttribute default="*.do" name="url pattern" xmlname="url_pattern">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute default="*.do" name="url pattern" xmlname="url_pattern"/>
    <XModelAttribute name="tld files" xmlname="tld_files">
-    <Constraint/>
     <Editor name="ListAdd"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1208,11 +943,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Add Page" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="StrutsForm" name="Page Template" xmlname="page-template">
@@ -1243,12 +976,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Web Flow Diagram" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="no" name="doNotShowDiagram" xmlname="doNotShowDiagram">
@@ -1276,20 +1007,16 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute default="default,size=8,style=1" name="Action Font" xmlname="action_font">
-    <Constraint/>
     <Editor name="FontChooser"/>
    </XModelAttribute>
    <XModelAttribute default="default,size=7,style=1" name="Forward Font" xmlname="forward_font">
-    <Constraint/>
     <Editor name="FontChooser"/>
    </XModelAttribute>
    <XModelAttribute default="default,size=8,style=1" name="Path Font" xmlname="path_font">
-    <Constraint/>
     <Editor name="FontChooser"/>
    </XModelAttribute>
    <XModelAttribute default="default,size=10,style=0"
     name="Comment Font" xmlname="comment_font">
-    <Constraint/>
     <Editor name="FontChooser"/>
    </XModelAttribute>
    <XModelAttribute default="yes"
@@ -1333,11 +1060,6 @@
    <XChildEntity maxCount="1" name="SharableEditors" required="yes"/>
    <XChildEntity maxCount="1" name="SharableAutomation" required="yes"/>
    <XChildEntity maxCount="1" name="SharableCodeGeneration" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableStruts10Libs" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableStruts11Libs" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableServlet22Libs" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableServlet23Libs" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableServlet24Libs" required="yes"/>
    <XChildEntity maxCount="1" name="SharableLinkRecognizer" required="yes"/>
    <XChildEntity maxCount="1" name="SharableReportProblem" required="yes"/>
   </XChildrenEntities>
@@ -1349,12 +1071,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Struts Studio" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1375,12 +1095,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Struts Support" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1397,12 +1115,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Tiles Diagram" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="default(20)" name="verticalSpacing" xmlname="verticalSpacing">
@@ -1435,7 +1151,6 @@
    </XModelAttribute>
    <XModelAttribute default="default,size=7,style=1"
     name="definitionNameFont" xmlname="definitionNameFont">
-    <Constraint/>
     <Editor name="FontChooser"/>
    </XModelAttribute>
    <XModelAttribute default="yes" name="animation" xmlname="animation">
@@ -1459,12 +1174,10 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Visual Page Editor" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="yes" name="show border for unknown tags" xmlname="show_border_for_unknown_tags">
@@ -1497,7 +1210,8 @@
     </Constraint>
     <Editor name="CheckBox"/>
    </XModelAttribute>
-     <XModelAttribute default="no" name="always hide selection bar without prompt" xmlname="always_hide_selection_bar_without_prompt">
+   <XModelAttribute default="no"
+    name="always hide selection bar without prompt" xmlname="always_hide_selection_bar_without_prompt">
     <Constraint loader="List">
      <value name="yes"/>
      <value name="no"/>
@@ -1521,11 +1235,9 @@
   <XEntityRenderer/>
   <XModelAttributes>
    <XModelAttribute name="interface">
-    <Constraint/>
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
    <XModelAttribute name="class">
-    <Constraint/>
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
   </XModelAttributes>
