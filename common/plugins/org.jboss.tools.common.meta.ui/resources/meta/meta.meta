@@ -77,7 +77,7 @@
   ImplementationLoadingClass="org.jboss.tools.common.meta.ui.editor.FileMetaLoader"
   ImplementingClass="org.jboss.tools.common.meta.ui.editor.FileMetaImpl"
   ObjectEditorClass="%XML%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="XModelEntityGroup" name="FileMETA">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="MetaVersion" required="yes"/>
@@ -99,10 +99,7 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="NAME"/>
    <XModelAttribute default="meta" name="extension" xmlname="EXTENSION">
     <Constraint loader="List">
      <value name="meta"/>
@@ -110,18 +107,11 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="-//Red Hat, Inc.//DTD Meta 1.0//EN"
-    name="publicId" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute default="meta.dtd" name="systemId" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="publicId" visibility="false"/>
+   <XModelAttribute default="meta.dtd" name="systemId" visibility="false"/>
    <XModelAttribute default="no" name="isIncorrect" visibility="false">
     <Constraint loader="List">
      <value name="yes"/>
@@ -129,12 +119,8 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="incorrectBody" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="incorrectBody" visibility="false"/>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
    <XModelAttribute name="encoding">
@@ -201,7 +187,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="XActionItem" name="MetaAction">
   <XChildrenEntities>
    <XChildEntity name="MetaEntityData"/>
@@ -218,28 +204,16 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="display name" xmlname="displayName">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name"/>
+   <XModelAttribute PROPERTIES="category=general" name="display name" xmlname="displayName"/>
    <XModelAttribute default="action" name="kind" visibility="false" xmlname="kind">
     <Constraint loader="List">
      <value name="action"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="icon" xmlname="ICON">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=advanced" name="base action" xmlname="BaseActionName">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="icon" xmlname="ICON"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="base action" xmlname="BaseActionName"/>
    <XModelAttribute PROPERTIES="category=general" name="handler" xmlname="HandlerClassName">
     <Constraint loader="ListString"/>
     <Editor name="MetaHandlerList"/>
@@ -250,10 +224,7 @@
     </Constraint>
     <Editor name="ListString"/>
    </XModelAttribute>
-   <XModelAttribute name="call back" xmlname="CallBackClassName">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="call back" xmlname="CallBackClassName"/>
    <XModelAttribute default="no" name="save to model required" xmlname="SAVE_REQUIRED">
     <Constraint loader="List">
      <value name="no"/>
@@ -271,7 +242,6 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="category=general" name="properties" xmlname="PROPERTIES">
-    <Constraint/>
     <Editor name="PropertiesString"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -310,7 +280,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="XActionItem" name="MetaActionList">
   <XChildrenEntities>
    <XChildEntity name="MetaActionList"/>
@@ -329,14 +299,8 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="category=general" default="ActionList"
-    name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="display name" xmlname="displayName">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="name" xmlname="name"/>
+   <XModelAttribute PROPERTIES="category=general" name="display name" xmlname="displayName"/>
    <XModelAttribute PROPERTIES="category=general" default="0"
     name="group" xmlname="group">
     <Constraint loader="List">
@@ -351,10 +315,7 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="icon" xmlname="ICON">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="icon" xmlname="ICON"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
@@ -420,11 +381,9 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="GlobalActions" name="name" xmlname="name">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Global Actions" name="display name" xmlname="displayName">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="1" name="group" xmlname="group">
@@ -439,10 +398,7 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute name="icon" xmlname="ICON">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="icon" xmlname="ICON"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
@@ -473,7 +429,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Meta%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="XModelAttribute" name="MetaAttribute">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="MetaAttributeConstraint" required="yes"/>
@@ -491,22 +447,10 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=advanced" name="loader" xmlname="loader">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="xml name" xmlname="xmlname">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="default value" xmlname="default">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="loader" xmlname="loader"/>
+   <XModelAttribute PROPERTIES="category=general" name="xml name" xmlname="xmlname"/>
+   <XModelAttribute PROPERTIES="category=general" name="default value" xmlname="default"/>
    <XModelAttribute PROPERTIES="category=advanced" default="true"
     name="visibility" xmlname="visibility">
     <Constraint loader="List">
@@ -515,10 +459,7 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute name="value listeners" xmlname="VALUE_LISTENERS">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="value listeners" xmlname="VALUE_LISTENERS"/>
    <XModelAttribute PROPERTIES="category=advanced" default="yes"
     name="trimmable" xmlname="TRIM">
     <Constraint loader="List">
@@ -536,7 +477,6 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="category=general" name="properties" xmlname="PROPERTIES">
-    <Constraint/>
     <Editor name="PropertiesString"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -564,7 +504,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="Constraint" name="MetaAttributeConstraint">
   <XChildrenEntities>
    <XChildEntity name="MetaConstraintItem"/>
@@ -600,7 +540,6 @@
     <Editor name="ListString"/>
    </XModelAttribute>
    <XModelAttribute default="Constraint" name="name" visibility="false" xmlname="name">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -645,10 +584,7 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="attribute name" xmlname="AttributeName">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="attribute name" xmlname="AttributeName"/>
    <XModelAttribute default="yes" name="mandatory" xmlname="Mandatory">
     <Constraint loader="List">
      <value name="no"/>
@@ -707,10 +643,7 @@
     <Constraint loader="ListString"/>
     <Editor name="MetaEditorList"/>
    </XModelAttribute>
-   <XModelAttribute name="viewer" xmlname="viewer">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="viewer" xmlname="viewer"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.empty" kind="list" name="Properties">
@@ -721,7 +654,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Meta%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="XModelAttributeReference" name="MetaAttributeReference">
   <XChildrenEntities/>
   <XEntityRenderer>
@@ -736,18 +669,12 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name"/>
    <XModelAttribute PROPERTIES="category=general" name="entity" xmlname="entity">
     <Constraint loader="ListString"/>
     <Editor name="ListString"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="attributes" xmlname="attributes">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="attributes" xmlname="attributes"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
@@ -773,7 +700,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="XModelAttributes" name="MetaAttributes">
   <XChildrenEntities>
    <XChildEntity name="MetaAttribute"/>
@@ -792,7 +719,6 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Attributes" name="name" visibility="false" xmlname="name">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -836,14 +762,8 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute default="10000" name="max" xmlname="maxCount">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name"/>
+   <XModelAttribute default="10000" name="max" xmlname="maxCount"/>
    <XModelAttribute default="no" name="required" xmlname="required">
     <Constraint loader="List">
      <value name="no"/>
@@ -876,7 +796,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="XChildrenEntities" name="MetaChildren">
   <XChildrenEntities>
    <XChildEntity name="MetaChild"/>
@@ -894,7 +814,6 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Children" name="name" visibility="false" xmlname="name">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -929,10 +848,7 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
@@ -964,19 +880,15 @@
    </XModelAttribute>
    <XModelAttribute default="Dependencies" name="name"
     visibility="false" xmlname="name">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="loader" xmlname="loader">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="loader" xmlname="loader"/>
   </XModelAttributes>
   <XActionItem kind="list"/>
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Meta%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="XModelEntity" name="MetaEntity">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="MetaChildren" required="yes"/>
@@ -997,36 +909,17 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name"/>
    <XModelAttribute PROPERTIES="category=general" name="implementation" xmlname="ImplementingClass">
     <Constraint loader="ListString"/>
     <Editor name="MetaImplementationList"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=advanced" name="loader" xmlname="ImplementationLoadingClass">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="generator" xmlname="ImplementationGenerator">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="editor" xmlname="ObjectEditorClass">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=advanced" name="adopt manager" xmlname="AdoptManagerClass">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="xml path" xmlname="XMLSUBPATH">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=advanced" name="loader" xmlname="ImplementationLoadingClass"/>
+   <XModelAttribute name="generator" xmlname="ImplementationGenerator"/>
+   <XModelAttribute name="editor" xmlname="ObjectEditorClass"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="adopt manager" xmlname="AdoptManagerClass"/>
+   <XModelAttribute PROPERTIES="category=general" name="xml path" xmlname="XMLSUBPATH"/>
    <XModelAttribute PROPERTIES="category=general" name="properties" xmlname="PROPERTIES">
-    <Constraint/>
     <Editor name="PropertiesString"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1050,7 +943,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaEntityDataImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="EntityData" name="MetaEntityData">
   <XChildrenEntities>
    <XChildEntity name="MetaAttributeData"/>
@@ -1067,10 +960,7 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="entity name" xmlname="EntityName">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="entity name" xmlname="EntityName"/>
    <XModelAttribute PROPERTIES="category=general" default="yes"
     name="mandatory" xmlname="Mandatory">
     <Constraint loader="List">
@@ -1114,7 +1004,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Meta%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="XEntityExtension" name="MetaEntityExtension">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="MetaChildren" required="yes"/>
@@ -1132,10 +1022,7 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
@@ -1165,14 +1052,8 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="path" xmlname="path">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name"/>
+   <XModelAttribute name="path" xmlname="path"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
@@ -1193,7 +1074,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Meta%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="GROUP" name="MetaIconGroup">
   <XChildrenEntities>
    <XChildEntity name="MetaIconGroup"/>
@@ -1212,7 +1093,6 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
-    <Constraint/>
     <Editor name="Name"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1269,14 +1149,8 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="type" xmlname="type">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="info" xmlname="info">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="type" xmlname="type"/>
+   <XModelAttribute name="info" xmlname="info"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
@@ -1297,7 +1171,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Meta%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="ICONS" name="MetaIcons">
   <XChildrenEntities>
    <XChildEntity name="MetaIconGroup"/>
@@ -1315,7 +1189,6 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Icons" name="name" visibility="false" xmlname="name">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1337,7 +1210,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Meta%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="MAPPING" name="MetaMapping">
   <XChildrenEntities>
    <XChildEntity name="MetaMappingItem"/>
@@ -1354,10 +1227,7 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
@@ -1403,14 +1273,8 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="value" xmlname="value">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="name"/>
+   <XModelAttribute name="value" xmlname="value"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
@@ -1432,7 +1296,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Meta%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
   XMLSUBPATH="MAPPINGS" name="MetaMappings">
   <XChildrenEntities>
    <XChildEntity name="MetaMapping"/>
@@ -1450,7 +1314,6 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Mappings" name="name" visibility="false" xmlname="name">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1490,7 +1353,6 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Renderer" name="name" visibility="false" xmlname="name">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1526,21 +1388,11 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Version" name="name" visibility="false" xmlname="name">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="module" xmlname="MODULE">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="version" xmlname="VERSION">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="depends" xmlname="DEPENDS">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="module" xmlname="MODULE"/>
+   <XModelAttribute name="version" xmlname="VERSION"/>
+   <XModelAttribute name="depends" xmlname="DEPENDS"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.empty" kind="list" name="Properties">

@@ -105,4 +105,34 @@ public class MetaLoaderUtil extends XModelObjectLoaderUtil {
         return def;
     }
 
+    public boolean save(Element parent, XModelObject o) {
+    	if(!needToSave(o)) return true;
+    	return super.save(parent, o);
+    }
+    boolean needToSave(XModelObject o) {
+    	if(o == null) return false;
+    	String entity = o.getModelEntity().getName();
+    	if("MetaAttributeConstraint".equals(entity)
+    		|| "MetaAttributeEditor".equals(entity)) {
+    		return (hasSetAttributes(o) 
+    				|| o.getChildren().length > 0
+    				);
+    	}
+    	return true;
+    }
+    
+    private boolean hasSetAttributes(XModelObject o) {
+    	XAttribute[] as = o.getModelEntity().getAttributes();
+    	for (int i = 0; i < as.length; i++) {
+    		String xml = as[i].getXMLName();
+    		// it would be more safe to check isSavable
+    		if(xml == null || xml.length() == 0 || "NAME".equals(xml)) continue;
+    		String v = o.getAttributeValue(as[i].getName());
+    		if(v != null && v.length() > 0 && !v.equals(as[i].getDefaultValue())) return true;
+    	}
+    	String finalComment = o.get("#final-comment");
+    	if(finalComment != null && finalComment.length() > 0) return true;
+    	return false;
+    }
+
 }
