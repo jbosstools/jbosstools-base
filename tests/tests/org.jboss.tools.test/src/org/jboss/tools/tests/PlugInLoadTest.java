@@ -135,8 +135,6 @@ public class PlugInLoadTest extends TestCase {
 			jbideNS+"jdt.j2ee.ui", 
 			jbideNS+"jdt.j2ee.xml.ui", 
 			jbideNS+"jdt.ui",
-			jbideNS+"jdt.ws.core", 
-			jbideNS+"jdt.ws.ui", 
 			jbideNS+"archives.core", 
 			jbideNS+"archives.ui",
 			jbideNS+"ui", 
