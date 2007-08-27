@@ -10,13 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.common.test;
 
-import org.jboss.tools.common.util.test.HttpUtilTest;
-import org.jboss.tools.common.xml.test.SAXValidatorTest;
-import org.jboss.tools.common.xml.test.XMLUtilitiesTest;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.jboss.tools.common.reporting.test.ProblemReportingHelperTest;
+import org.jboss.tools.common.util.test.HttpUtilTest;
+import org.jboss.tools.common.xml.test.SAXValidatorTest;
+import org.jboss.tools.common.xml.test.XMLUtilitiesTest;
 
 public class CommonAllTests extends TestCase {
 	
@@ -27,6 +28,8 @@ public class CommonAllTests extends TestCase {
 		suite.addTestSuite(HttpUtilTest.class);
 		suite.addTestSuite(XMLUtilitiesTest.class);
 		suite.addTestSuite(SAXValidatorTest.class);
+		suite.addTestSuite(ProblemReportingHelperTest.class);
+		suite.addTestSuite(CommonPluginTest.class);
 		return suite;
 	}
 	
