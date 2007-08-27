@@ -155,7 +155,10 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
     public String get(String name) {
         if("APPLICATION_NAME".equals(name)) {
             String s = super.get(name);
-            if(s == null || s.length() == 0) s = XModelConstants.getWorkspaceName(getModel());
+            if(s == null || s.length() == 0) {
+            	s = "";
+            	// project name ?
+            }
             return (s == null) ? "" : s;
         } else {
             return super.get(name);

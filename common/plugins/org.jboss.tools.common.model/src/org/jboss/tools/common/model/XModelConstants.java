@@ -13,14 +13,15 @@ package org.jboss.tools.common.model;
 import java.util.*;
 
 public class XModelConstants {
-	public static String HOME = "redhat.home";
-    public static String WORKSPACE = "redhat.workspace";
-    public static String WORKSPACE_NAME = "redhat.workspace.name";
-    
-    public static String MODEL_VERSION = "version";
+	public static String HOME = "product.home";
 
-    private static String ECOM_HOME = "global.ECOM_HOME";
-    private static String ECOM_DATA = "global.ECOM_DATA";
+	public static String WORKSPACE = "workspace.home";
+	public static String WORKSPACE_REF = "%" + WORKSPACE + "%";
+
+	public static String WORKSPACE_OLD = "redhat.workspace";
+	public static String WORKSPACE_OLD_REF = "%" + WORKSPACE_OLD + "%";
+
+    public static String MODEL_VERSION = "version";
 
     private XModelConstants() {}
 
@@ -37,29 +38,6 @@ public class XModelConstants {
         validate(model);
     }
 
-    public static String getWorkspaceName(XModel model) {
-        return model.getProperties().getProperty(WORKSPACE_NAME);
-    }
-
-    public static void setWorkspaceName(XModel model, String name) {
-        if(name == null)
-          model.getProperties().remove(WORKSPACE_NAME);
-        else
-          model.getProperties().setProperty(WORKSPACE_NAME, name);
-    }
-
-    public static String getProjectName(XModel model) {
-        String s = getWorkspaceName(model);
-        if(s != null) return s;
-        s = getWorkspace(model);
-        return (s == null) ? null : new java.io.File(s).getName();
-    }
-
-    public static String getProjectPrefix(XModel model) {
-        String s = getWorkspaceName(model);
-        return (s == null) ? "" : s + "-";
-    }
-
     //
 
     public static void validate(XModel model) {
@@ -67,12 +45,9 @@ public class XModelConstants {
     }
 
     public static void validate(Properties p) {
-        String h1 = p.getProperty(HOME), h2 = p.getProperty(ECOM_HOME);
-        if(h1 != null) p.setProperty(ECOM_HOME, h1);
-        else if(h2 != null) p.setProperty(HOME, h2);
-        String w1 = p.getProperty(WORKSPACE), w2 = p.getProperty(ECOM_DATA);
-        if(w1 != null) p.setProperty(ECOM_DATA, w1);
-        else if(w2 != null) p.setProperty(WORKSPACE, w2);
+        String h1 = p.getProperty(HOME);
+        String w1 = p.getProperty(WORKSPACE);
+        //
     }
 
 }

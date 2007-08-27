@@ -839,7 +839,7 @@ public class EclipseResourceUtil {
 		workspace = new File(workspace).getAbsolutePath().replace('\\', '/');
 		path = path.replace('\\', '/');
 		String relative = org.jboss.tools.common.util.FileUtil.getRelativePath(workspace, path);
-		return (relative == null) ? path : "%redhat.workspace%" + relative;
+		return (relative == null) ? path : XModelConstants.WORKSPACE_REF + relative;
 	}
 
 }

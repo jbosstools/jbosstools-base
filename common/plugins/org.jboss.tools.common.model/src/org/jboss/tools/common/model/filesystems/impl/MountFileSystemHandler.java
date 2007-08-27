@@ -83,9 +83,9 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
         boolean isRelative = "true".equals(p.getProperty("set location relative to project"));
         if(!isRelative) return;
         String location = canonize(p.getProperty("location"), object.getModel());
-        String project = canonize("%redhat.workspace%", object.getModel());
+        String project = canonize(XModelConstants.WORKSPACE_REF, object.getModel());
         if(location.equals(project)) {
-            p.setProperty("location", "%redhat.workspace%");
+            p.setProperty("location", XModelConstants.WORKSPACE_REF);
             return;
         }
         boolean common = false;
@@ -105,7 +105,7 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
             common = true;
         }
         if(!common) return;
-        String s = "%redhat.workspace%";
+        String s = XModelConstants.WORKSPACE_REF;
         if(project.length() > 0) {
             int q = new StringTokenizer(project, "/").countTokens();
             for (int i = 0; i < q; i++) s += "/..";

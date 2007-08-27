@@ -395,7 +395,7 @@ public class XModelImpl implements XModel {
 
     private String getProjectName() {
         String d = properties.getProperty(XModelConstants.WORKSPACE);
-        String n = properties.getProperty(XModelConstants.WORKSPACE_NAME);
+        String n = null; //obsolete
         if(d == null) return null;
         d = reduceURLPath(d);
         if(d.lastIndexOf(':') >= 2)

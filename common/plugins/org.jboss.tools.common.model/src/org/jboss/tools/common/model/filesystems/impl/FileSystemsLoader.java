@@ -72,6 +72,16 @@ public class FileSystemsLoader extends URLRootLoader {
 		String f = getEclipseFileName(object, true);
 		if(f == null) super.load(object);
 		else util().load(new File(f), object);
+		
+		XModelObject[] os = object.getChildren();
+		for (int i = 0; i < os.length; i++) {
+			String s = os[i].getAttributeValue("location");
+			if(s == null || !s.startsWith(XModelConstants.WORKSPACE_OLD_REF)) continue;
+			s = XModelConstants.WORKSPACE_REF + s.substring(XModelConstants.WORKSPACE_OLD_REF.length());
+			os[i].setAttributeValue("location", s);
+			System.out.println("Corrected " + s);
+		}
+		
 		removeMissingJarSystems(object);
 	}
 	
@@ -92,7 +102,7 @@ public class FileSystemsLoader extends URLRootLoader {
     }
 
     protected String fileName(XModelObject object) {
-        return XModelConstants.getProjectPrefix(object.getModel()) + "workspace.pex";
+        return "workspace.pex";
     }
     
     private boolean saveEclipse(XModelObject object) {
@@ -242,7 +252,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 	private void saveWorkspaceHomeAttr(Element element, XModelObject o) {
 		Properties p = o.getModel().getProperties();
 		String project = p.getProperty(IModelNature.ECLIPSE_PROJECT);
-		String workspace = p.getProperty("redhat.workspace");
+		String workspace = p.getProperty(XModelConstants.WORKSPACE);
 		if(project == null) return;
 		String relative = workspace.startsWith(project + "/") ? 
 		    "." + workspace.substring(project.length()) : workspace;

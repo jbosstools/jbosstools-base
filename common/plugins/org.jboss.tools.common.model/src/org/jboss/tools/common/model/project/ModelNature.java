@@ -88,6 +88,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 			if(home == null || !home.equals(h)) {
 				ModelPlugin.getPluginLog().logInfo("WARNING:" + " workspace home changed from " + h + " to " + home);
 				model.getProperties().setProperty(XModelConstants.WORKSPACE, home);
+				model.getProperties().setProperty(XModelConstants.WORKSPACE_OLD, home);
 				model.getProperties().setProperty("nature", getID());
 				model.load();				
 			}
@@ -96,6 +97,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		Properties p = new Properties();
 		p.putAll(System.getProperties());
 		p.setProperty(XModelConstants.WORKSPACE, getWorkspaceHome());
+		p.setProperty(XModelConstants.WORKSPACE_OLD, getWorkspaceHome());
 		p.setProperty(ECLIPSE_PROJECT, project.getLocation().toString());
 		p.setProperty(ECLIPSE_PROJECT_OLD, project.getLocation().toString());
 		p.put("project", project);
