@@ -79,7 +79,7 @@
       </attributeEditor>
       <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ActiveEditor" id="StrutsPathEditor">
       </attributeEditor>
-      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="RedHatFileSystem">
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="CommonFileSystem">
       </attributeEditor>
       <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.StringEditor" id="Int">
       </attributeEditor>
@@ -103,7 +103,7 @@
    <extension point="org.jboss.tools.common.model.ui.attributeAdapter">
       <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter" id="Default">
       </attributeAdapter>
-      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.custom.FileSystemListAdapter" id="RedHatFileSystem">
+      <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.custom.FileSystemListAdapter" id="CommonFileSystem">
       </attributeAdapter>
       <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.custom.TomcatJVMListAdapter" id="ListJVM">
       </attributeAdapter>
