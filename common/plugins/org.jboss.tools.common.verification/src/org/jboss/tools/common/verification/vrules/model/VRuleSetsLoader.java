@@ -117,8 +117,7 @@ public class VRuleSetsLoader extends EnginesLoader {
 	}
 
     protected String fileName(XModelObject object) {
-        return XModelConstants.getProjectPrefix(object.getModel()) +
-               ".rule-sets.xml";
+        return ".rule-sets.xml";
     }
     
 }
