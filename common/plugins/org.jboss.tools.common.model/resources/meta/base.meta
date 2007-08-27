@@ -32,7 +32,7 @@
    <PAIR name="NoteHTML" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="Parameters" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="Properties" value="org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor"/>
-   <PAIR name="RedHatFileSystem" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="CommonFileSystem" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="RemoteParams" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="Text" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="TreeChooser" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
