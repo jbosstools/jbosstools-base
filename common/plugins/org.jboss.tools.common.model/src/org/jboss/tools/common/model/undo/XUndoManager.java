@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.undo;
 
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelObject;
 
 public class XUndoManager {
     private XModel model = null;
@@ -67,12 +68,17 @@ public class XUndoManager {
     private void reduce() {
         if(transaction >= 0) return;
         int capacity = 10;
-        try {
-          String c = model.getRoot("Preferences").getAttributeValue("undo capacity");
-          capacity = Integer.parseInt(c);
-        } catch (Exception e) {
-        	//ignore
-        }
+        
+          XModelObject root = model.getRoot("Preferences");
+          
+          if(root!=null) {
+        	  String c = root.getAttributeValue("undo capacity");
+        	  try {
+        		  capacity = Integer.parseInt(c);
+        	  } catch (NumberFormatException e) {
+        		  //ignore
+        	  }
+          }          
         if(capacity == 0) {
             start.setNext(null);
             current = start;
