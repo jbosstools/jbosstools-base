@@ -20,7 +20,7 @@ import org.eclipse.jface.text.IDocument;
  * @author au
  */
 
-public class RedHatTemplateContextType extends JavaContextType {
+public class ExtendedTemplateContextType extends JavaContextType {
 
 	public CompilationUnitContext createContext(IDocument document, int offset,	int length, ICompilationUnit compilationUnit) {
 		return super.createContext(document, offset, length, compilationUnit);

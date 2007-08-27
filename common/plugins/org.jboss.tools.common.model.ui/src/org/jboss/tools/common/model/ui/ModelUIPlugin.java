@@ -27,7 +27,7 @@ import org.eclipse.jface.text.templates.TemplateContextType;
 import org.jboss.tools.common.log.BaseUIPlugin;
 import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.model.plugin.IModelPlugin;
-import org.jboss.tools.common.model.ui.templates.RedHatTemplateContextType;
+import org.jboss.tools.common.model.ui.templates.ExtendedTemplateContextType;
 import org.osgi.framework.BundleContext;
 
 public class ModelUIPlugin extends BaseUIPlugin implements IModelPlugin {
@@ -68,7 +68,7 @@ public class ModelUIPlugin extends BaseUIPlugin implements IModelPlugin {
 	}
 
 	private void configureJavaPlugin() {
-		TemplateContextType contextType = new RedHatTemplateContextType();
+		TemplateContextType contextType = new ExtendedTemplateContextType();
 		JavaPlugin.getDefault().getTemplateContextRegistry().addContextType(contextType);
 	}
 	
