@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FILESYSTEMS APPLICATION_NAME="" ENTITY="FileSystems" WORKSPACE_HOME="./WebContent/WEB-INF">
- <FILESYSTEM ENTITY="FileSystemFolder" LOCATION="%redhat.workspace%" NAME="WEB-INF"/>
+ <FILESYSTEM ENTITY="FileSystemFolder" LOCATION="%workspace.home%" NAME="WEB-INF"/>
  <FILESYSTEM ENTITY="FileSystemFolder" INFO="Content-Type=Web"
-  LOCATION="%redhat.workspace%/.." NAME="WEB-ROOT"/>
+  LOCATION="%workspace.home%/.." NAME="WEB-ROOT"/>
  <FILESYSTEM ENTITY="FileSystemFolder"
-  LOCATION="%redhat.workspace%/../../JavaSource" NAME="src"/>
+  LOCATION="%workspace.home%/../../JavaSource" NAME="src"/>
  <FILESYSTEM ENTITY="FileSystemFolder"
-  LOCATION="%redhat.workspace%/classes" NAME="classes"/>
+  LOCATION="%workspace.home%/classes" NAME="classes"/>
  <FILESYSTEM ENTITY="FileSystemFolder"
-  LOCATION="%redhat.workspace%/../../ant" NAME="build"/>
+  LOCATION="%workspace.home%/../../ant" NAME="build"/>
  <WEB ENTITY="JstWeb" MODEL_PATH="/web.xml">
   <MODULE ENTITY="JstWebModule" MODEL_PATH="/struts-config.xml"
    ROOT="WEB-ROOT" SRC="src" URI="/WEB-INF/struts-config.xml"/>
