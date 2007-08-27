@@ -102,7 +102,7 @@
     </Constraint>
     <Editor name="Int"/>
    </XModelAttribute>
-   <XModelAttribute default="%redhat.home%/rules" name="home"
+   <XModelAttribute default="%product.home%/rules" name="home"
     visibility="false" xmlname="home">
     <Constraint/>
     <Editor name="Uneditable"/>
