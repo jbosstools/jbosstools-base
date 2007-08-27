@@ -37,7 +37,7 @@ import org.jboss.tools.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.jst.web.tld.URIConstants;
 
 public class PaletteViewPart extends ViewPart implements IPartListener {
-	public static final String VIEW_ID = "com.redhat.palette.swt";
+	public static final String VIEW_ID = "org.jboss.tools.common.model.ui.views.palette.PaletteView";
 	public static final String PALETTE_GEF_ID = "org.jboss.tools.vpe.ui.palette";
 
 	private IPaletteAdapter paletteAdapter = null; 
