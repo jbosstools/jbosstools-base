@@ -26,7 +26,7 @@ public class VHelper {
 	/** Returns instance of VManager
 	 */
 	public static VManager getManager() {
-		return managerModel.getManager();
+		return managerModel == null ? null : managerModel.getManager();
 	}
 
 	/** Sets instance of VManager
