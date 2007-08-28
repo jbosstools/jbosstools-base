@@ -462,14 +462,14 @@ public class EclipseResourceUtil {
 		if(!project.hasNature(JavaCore.NATURE_ID)) return null;
 		ArrayList<String> l = new ArrayList<String>();
 		IJavaProject javaProject = JavaCore.create(project);		
-		try {
-			IPath p = javaProject.getOutputLocation();
-			IResource r = project.getWorkspace().getRoot().findMember(p);
+
+		IPath p = javaProject.getOutputLocation();
+		IResource r = p == null ? null : project.getWorkspace().getRoot().findMember(p);
+		if(r != null && r.getLocation() != null && r.exists()) {
 			String s = r.getLocation().toString();
 			l.add(new java.io.File(s).getCanonicalPath());
-		} catch (JavaModelException e) {
-			throw new Exception("Cannot find output for project " + project,e);
 		}
+
 		IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
 		for (int i = 0; i < es.length; i++) {
 			try {
