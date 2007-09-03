@@ -166,7 +166,19 @@ public class PropertiesLoader implements XObjectLoader {
 				value = convertValue(value);
 			}
 			String resolved = resolveValue(value, dirtyvalue);
-			if(dirtyname != null && name.equals(dirtyname.trim())) name = dirtyname; 
+			//preserve one white space after separator
+			if(dirtyvalue != null && dirtyvalue.startsWith(" ") 
+					&& resolved != null && resolved.length() > 0 && !resolved.startsWith(" ")
+					&& !name_value_separator.endsWith(" ")) {
+				resolved = " " + resolved;
+			}
+			if(dirtyname != null && name.equals(dirtyname.trim())) name = dirtyname;
+			//preserve one white space before separator
+			if(dirtyname != null && dirtyname.endsWith(" ") 
+					&& name != null && name.length() > 0 && !name.endsWith(" ")
+					&& !name_value_separator.startsWith(" ")) {
+				name = name + " ";
+			}
 			sb.append(name);
 			if(!" ".equals(name_value_separator) || resolved.length() > 0) {
 				sb.append(name_value_separator);
@@ -293,14 +305,19 @@ public class PropertiesLoader implements XObjectLoader {
 		String tr = s.trim();
 		if(tr.length() == 0 || tr.charAt(0) == '#' || tr.charAt(0) == '!') return -1;
 		boolean n = false;
+		int firstWhiteSpace = -1;
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 			if(Character.isWhitespace(c)) {
-				if(n) return i;
+				if(n) {
+					if(firstWhiteSpace < 0) firstWhiteSpace = i;
+					//return i;
+				}
 				continue;
 			} else if(c == '=' || c == ':') {
 				return i;
 			} else {
+				if(n && firstWhiteSpace >= 0) return firstWhiteSpace;
 				n = true;
 			}
 		}
