@@ -79,7 +79,7 @@ public class FileSystemsLoader extends URLRootLoader {
 			if(s == null || !s.startsWith(XModelConstants.WORKSPACE_OLD_REF)) continue;
 			s = XModelConstants.WORKSPACE_REF + s.substring(XModelConstants.WORKSPACE_OLD_REF.length());
 			os[i].setAttributeValue("location", s);
-			System.out.println("Corrected " + s);
+//			System.out.println("Migrated " + s);
 		}
 		
 		removeMissingJarSystems(object);
