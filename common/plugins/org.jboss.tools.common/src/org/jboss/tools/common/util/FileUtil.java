@@ -393,12 +393,15 @@ public final class FileUtil {
         if(entry != null) jos.closeEntry();
     }
 
-    public static void copy(InputStream f, OutputStream t) throws Exception {
-        byte[] b = new byte[1024];
-        int q = 0;
-        while((q = f.read(b, 0, b.length)) > 0) t.write(b, 0, q);
-        f.close();    
-        t.close();
+    public static void copy(InputStream f, OutputStream t) throws IOException {
+    	try {
+    		byte[] b = new byte[1024];
+    		int q = 0;
+    		while((q = f.read(b, 0, b.length)) > 0) t.write(b, 0, q);
+    	} finally {
+    		f.close();    
+    		t.close();
+    	}
     }
 
     public static void unzip(File dest, String jar) throws Exception {
@@ -517,7 +520,10 @@ public final class FileUtil {
         try {
             try {
                 if(f.isFile() && !isSameFile(f)) f.delete();
-                if(!f.exists()) f.createNewFile();
+                if(!f.exists()) {
+                	f.getParentFile().mkdirs();
+                	f.createNewFile();
+                }
             } catch (IOException e) {
             	CommonPlugin.getPluginLog().logError(e);
             }
