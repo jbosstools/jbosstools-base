@@ -141,7 +141,7 @@ public class MetaLibLoader {
 		try {
 			p.parse(stream);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		Element g = p.documentElement;
 		g = XMLUtilities.getUniqueChild(g, "XModelEntityGroup");
@@ -222,7 +222,7 @@ class Parser implements ContentHandler {
     	try {
     		parser.parse(is);
     	} catch (Exception e) {
-    		e.printStackTrace();
+			ModelPlugin.getPluginLog().logError(e);
     	}
 	}
 	
