@@ -584,7 +584,7 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 				return findTextMatches(dom, xmlText.getData().trim());
 			}
 		} catch (Exception x) {
-//			x.printStackTrace();
+			XmlEditorPlugin.getPluginLog().logError(x);
 		}
 		return new ArrayList();
 	}

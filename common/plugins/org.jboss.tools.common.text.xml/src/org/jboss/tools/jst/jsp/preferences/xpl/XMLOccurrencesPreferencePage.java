@@ -146,7 +146,7 @@ public class XMLOccurrencesPreferencePage extends FieldEditorPreferencePage
 			sticky.offset(getFieldEditorParent(), 10); // offset 10
 			addField(sticky);
 		} catch (Exception x) {
-			x.printStackTrace();
+			XmlEditorPlugin.getPluginLog().logError(x);
 		}
 	}
 
