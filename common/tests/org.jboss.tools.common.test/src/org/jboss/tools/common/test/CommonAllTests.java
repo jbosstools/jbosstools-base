@@ -32,5 +32,4 @@ public class CommonAllTests extends TestCase {
 		suite.addTestSuite(CommonPluginTest.class);
 		return suite;
 	}
-	
 }
