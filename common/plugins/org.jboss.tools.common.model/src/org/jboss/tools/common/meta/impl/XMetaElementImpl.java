@@ -47,12 +47,9 @@ public abstract class XMetaElementImpl implements XMetaElement, XMetaDataConstan
         if(parameter == null) return null;
         if(parameter.startsWith("%")) {
             int j = parameter.length() - 1;
-            try {
-                parameter = getMetaModel().getMapping(mapping)
-                                    .getValue(parameter.substring(1, j));
-            } catch (Exception e) {
-                return null;
-            }
+            XMapping m = getMetaModel().getMapping(mapping);
+            if(m == null) return null;
+            parameter = m.getValue(parameter.substring(1, j));
         }
         return parameter;
     }

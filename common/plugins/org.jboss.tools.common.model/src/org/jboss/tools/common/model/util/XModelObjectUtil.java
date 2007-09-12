@@ -89,13 +89,6 @@ public final class XModelObjectUtil {
             s = s.substring(j + 1);
             String v = found.getProperty(q);
             if(v == null) {
-                if(v == null && context != null) {
-                    try {
-                    	v = context.lookup(q).toString();
-                    } catch (Exception e) {
-                    	//ignore
-                    }
-                }
                 v = (model == null) ? null : model.getProperties().getProperty(q);
                 if(v == null && model != null) {
                     int d = q.lastIndexOf('.');

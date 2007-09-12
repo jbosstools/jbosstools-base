@@ -509,8 +509,9 @@ public class XModelImpl implements XModel {
 			if(loaderCount <= 0) return;
 			try {
 				loaderMonitor.wait();
-			} catch (Exception e) {
+			} catch (InterruptedException e) {
 				//ignore
+				return;
 			}
 		}
 	}

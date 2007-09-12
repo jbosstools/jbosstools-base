@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.undo;
 
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class XUndoManager {
     private XModel model = null;
@@ -142,7 +143,7 @@ public class XUndoManager {
         try {
         	if(t.canUndo()) t.undo();
         } catch (Exception e) {
-        	//ignore
+        	ModelPlugin.getPluginLog().logError(e);
         }
         current = t.prev();
         current.setNext(null);

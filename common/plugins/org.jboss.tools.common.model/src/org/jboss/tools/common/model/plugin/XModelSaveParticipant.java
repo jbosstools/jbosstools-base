@@ -36,21 +36,6 @@ public class XModelSaveParticipant implements ISaveParticipant {
 		toSave.clear();
 		XModelObject[] modified = getModified();
 		if(modified.length == 0) return;
-/*
-		String mes = "Struts project ";
-		for (int i = 0; i < modified.length; i++) {
-			if(i > 0) mes += ", ";
-			mes += modified[i].getPresentationString();
-		}
-		mes += " is modified.\n Do you want to save changes?";
-		try {		  
-			MessageDialog d = new MessageDialog(null, "Save", null, mes, MessageDialog.QUESTION, new String[]{"Yes", "No"}, 0);
-			int q = d.open();
-			if(q != 0) return;
-		} catch (Exception e) {
-			XStudioPlugin.log("Warning: could not call save dialog from XStudioSaveParticipant.", e);
-		}
-*/
 		for (int i = 0; i < modified.length; i++) toSave.add(modified[i].getModel());
 	}
 

@@ -57,8 +57,8 @@ public abstract class XProcess {
 
     public final void stop() {
         if(!isRunning()) return;
-        try { process.destroy(); } catch (Exception e) {}
-        try { waitFor(); } catch (Exception e) {}
+       	process.destroy(); 
+       	waitFor();
         clear();
     }
 
@@ -86,8 +86,10 @@ public abstract class XProcess {
             exit = process.waitFor();
             if(errc != null) errc.waitFor();
             if(outc != null) outc.waitFor();
-        } catch (Exception e) {}
-        return exit;
+            return exit;
+        } catch (InterruptedException e) {
+            return exit;
+        }
     }
 
     protected void write(String s) {}
@@ -121,19 +123,19 @@ public abstract class XProcess {
 
         public HookMonitor() {
             if(!isRunning()) return;
-            try {
-                sdhook = new Thread(new SD());
-                Runtime.getRuntime().addShutdownHook(sdhook);
-                new Thread(this).start();
-            } catch (Exception t) {}
+            sdhook = new Thread(new SD());
+            Runtime.getRuntime().addShutdownHook(sdhook);
+            new Thread(this).start();
         }
 
         public void run() {
-            try { process.waitFor(); } catch (Exception e) {}
+        	try {
+        		process.waitFor();
+        	} catch (InterruptedException e) {
+        		//do nothing 
+        	}
             stop();
-            try {
-                Runtime.getRuntime().removeShutdownHook(sdhook);
-            } catch (Exception t) {}
+            Runtime.getRuntime().removeShutdownHook(sdhook);
         }
     }
 }
