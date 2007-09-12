@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.templates.configuration;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
@@ -65,7 +66,8 @@ public class MetaClassTemplateHelper {
 		QualifiedName qn = new QualifiedName(ModelUIPlugin.ID_PLUGIN, ModelUIPlugin.PROJECT_OVERRIDE); 
 		try {
 			ResourcesPlugin.getWorkspace().getRoot().setPersistentProperty(qn, "" + b);
-		} catch (Exception e) {
+		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 

@@ -329,11 +329,16 @@ public class ControlDragDrop {
 						((IControlDropListener)provider).drop(p);
 					}
 				} catch (ActionDeclinedException de) {
+					ignore();
 				} catch (Exception e) {
 					ModelUIPlugin.getPluginLog().logError(e);
 				}
 			}
 		}
+	}
+	
+	void ignore() {
+		//do nothing
 	}
 	
 	private static Vector<TreeItem> getTreeExpandedItems(Tree tree) {

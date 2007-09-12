@@ -285,7 +285,9 @@ public class AnyElementForm extends ExpandableForm {
 		p.setProperty("name", name);
 		try {
 			XActionInvoker.invoke("AnyElementNew", "EditActions.EditAttribute", xmo, p);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 	}
 	
 	void delete() {

@@ -22,7 +22,6 @@ import org.jboss.tools.common.meta.constraint.XAttributeConstraintT;
 import org.jboss.tools.common.model.XFilteredTree;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class DefaultXAttributeTreeContentProvider implements ITreeContentProvider {
@@ -105,19 +104,24 @@ public class DefaultXAttributeTreeContentProvider implements ITreeContentProvide
 	}
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		try { viewer.refresh(); } catch (Exception e) {}
+		try {
+			viewer.refresh();
+		} catch (Exception e) {
+			ignore();
+		}
+	}
+	
+	void ignore() {
+		//do nothing
 	}
 
 	protected XFilteredTree createFilteredTree(String filteredTreeName) {
 		String classname = model.getMetaData().getMapping("FilteredTrees").getValue(filteredTreeName);
-		try {
-			XFilteredTree tree = (XFilteredTree)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
-			tree.setModel(model);
-			tree.setConstraint(new Object[]{attribute, object});
-			return tree;
-		} catch(Exception exception) {
-			return null;
-		}
+		XFilteredTree tree = (XFilteredTree)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
+		if(tree == null) return null;
+		tree.setModel(model);
+		tree.setConstraint(new Object[]{attribute, object});
+		return tree;
 	}
 
 	public XFilteredTree getFilteredTree() {

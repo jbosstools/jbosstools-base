@@ -11,8 +11,10 @@
 package org.jboss.tools.common.model.ui.editors.dnd.context;
 
 import java.io.File;
+import java.net.MalformedURLException;
 
 import org.eclipse.core.resources.IFile;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
@@ -107,9 +109,12 @@ public class DropContext {
 	private String getURL(XModelObject o) {
 		if(o.getFileType() == XModelObject.FILE) {
 			IFile f = (IFile)EclipseResourceUtil.getResource(o);
+			if(f == null || !f.exists()) return null;
 			try {
 				return f.getLocation().toFile().toURL().toString();
-			} catch (Exception e) {}
+			} catch (MalformedURLException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
 		}
 		return null;
 	}

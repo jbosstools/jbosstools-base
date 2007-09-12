@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.texteditors.preferences;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
@@ -46,11 +47,19 @@ public class EditorsPreferencesPage extends XMOBasedPreferencesPage {
 			Method m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]);
 			m.setAccessible(true);
 			m.invoke(plugin, new Object[0]);
-		} catch (Exception e) {
-			//ignore
+		} catch(NoSuchMethodException e1) {
+			ignore();
+		}  catch(IllegalAccessException e2) {
+			ignore();
+		}  catch(InvocationTargetException e3) {
+			ModelUIPlugin.getPluginLog().logError(e3);
 		}
 		store = (plugin == null) ? null : plugin.getPreferenceStore();
 		store.setDefault(BasePreferenceConstants.EDITOR_REPLACE_TAB_WITH_WHITESPACE, false);
+	}
+	
+	static void ignore() {
+		//do nothing
 	}
 
 }

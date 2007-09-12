@@ -152,7 +152,9 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		if(dialog == null) return;
 		try { 
 			if(dialog.getShell() != null && !dialog.getShell().isDisposed()) dialog.close(); 
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 		dialog = null;
 	}
 	
@@ -179,20 +181,13 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		validationRunnable.setData(validator, data);
 
 		validationRunnable.safeUpdateValidationData();
-///		synchronized(validationMonitor) {
-///			try { validationMonitor.notifyAll(); } catch (Exception e) {}
-///		}
 	}	
 
 	private ValidationRunnable validationRunnable = new ValidationRunnable();
-///	Object validationMonitor = new Object();
 	
 	public void stopValidator() {
 		if(validationRunnable == null) return;
 		validationRunnable = null;
-///		synchronized(validationMonitor) {
-///			try { validationMonitor.notifyAll(); } catch (Exception e) {}
-///		}
 	}
 	
 	class ValidationRunnable implements Runnable {
@@ -207,16 +202,6 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		}
 		
 		public void run() {
-///			while(validationRunnable != null) {
-///				while(timeStamp != lastTimeStamp) {
-///					try { Thread.sleep(100); } catch (Exception e) {}
-///					lastTimeStamp = timeStamp;
-///					safeUpdateValidationData();
-///				}
-///				synchronized(validationMonitor) {
-///					try { validationMonitor.wait(); } catch (Exception e) {}
-///				}
-///			}
 		}
 		
 		void safeUpdateValidationData() {

@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.editors.dnd;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
@@ -60,8 +61,13 @@ public class DefaultDropCommandRunner implements SpecialWizard {
 			Method m = AbstractTextEditor.class.getDeclaredMethod("getSourceViewer", new Class[0]);
 			m.setAccessible(true);
 			return (ISourceViewer)m.invoke(ae, new Object[0]);
-		} catch (Exception t) {}
-		return null;
+		} catch (NoSuchMethodException e1) {
+			return null;
+		} catch (InvocationTargetException e2) {
+			return null;
+		} catch (IllegalAccessException e2) {
+			return null;
+		}
 	}
 
 	public int execute() {

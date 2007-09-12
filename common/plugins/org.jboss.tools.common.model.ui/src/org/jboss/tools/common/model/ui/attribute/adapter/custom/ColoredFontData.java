@@ -50,21 +50,21 @@ public class ColoredFontData {
 			if(q == 0) {
 				if(!"default".equals(t)) data.setName(t); 
 			} else if(t.startsWith("size=")) {
-				try { data.setHeight(Integer.parseInt(t.substring(5))); } catch (Exception e) {}
+				data.setHeight(getInt(t.substring(5), data.getHeight()));
 			} else if(t.startsWith("style=")) {
-				try { data.setStyle(Integer.parseInt(t.substring(6))); } catch (Exception e) {}
+				data.setStyle(getInt(t.substring(6), data.getStyle()));
 			} else if(t.startsWith("color=")) {
 				String sc = t.substring(6);
 				int red = color.red, green = color.green, blue = color.blue;
 				int i = sc.indexOf('-');
 				if(i < 0) continue;
-				try { red = Integer.parseInt(sc.substring(0, i)); } catch (Exception e) {}
+				red = getInt(sc.substring(0, i), red);
 				sc = sc.substring(i + 1);
 				i = sc.indexOf('-');
 				if(i < 0) continue;
-				try { green = Integer.parseInt(sc.substring(0, i)); } catch (Exception e) {}
+				green = getInt(sc.substring(0, i), green);
 				sc = sc.substring(i + 1);
-				try { blue = Integer.parseInt(sc); } catch (Exception e) {}
+				blue = getInt(sc, blue);
 				color = new RGB(red, green, blue);				
 			}
 			++q;
@@ -73,6 +73,16 @@ public class ColoredFontData {
 		d.data = data;
 		d.color = color;
 		return d;
+	}
+	
+	private static int getInt(String s, int def) {
+		if(s == null || s.length() == 0) return def;
+		try {
+			return Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+			return def;
+		}
 	}
 	
 	public static String toString(FontData data, RGB rgb) {

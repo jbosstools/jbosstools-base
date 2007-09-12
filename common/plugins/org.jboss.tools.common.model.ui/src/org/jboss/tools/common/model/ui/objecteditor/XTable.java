@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class XTable {
 	protected XTableProvider provider;
@@ -193,11 +194,17 @@ public class XTable {
 		}
 		for (int i = table.getItemCount() - 1; i >= provider.getRowCount() ; i--) {
 			item = table.getItem(i);
-			try { item.dispose(); } catch (Exception e) {}
+			try {
+				item.dispose();
+			} catch (Exception e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
 		}
 		if(r >= 0) try {
 			table.setSelection(r);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			//ignore
+		}
 		resizeLock = false;
 	}
 	

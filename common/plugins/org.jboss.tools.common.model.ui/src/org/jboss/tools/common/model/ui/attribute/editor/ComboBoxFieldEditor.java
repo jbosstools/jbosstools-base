@@ -458,7 +458,9 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			f.setAccessible(true);
 			Text text = (Text)f.get(comboField);
 			return (text != null && !text.isDisposed()) ? text : null;
-		} catch (Exception e) {
+		} catch (NoSuchFieldException e) {
+			return null;
+		} catch (IllegalAccessException e1) {
 			return null;
 		}
 	}

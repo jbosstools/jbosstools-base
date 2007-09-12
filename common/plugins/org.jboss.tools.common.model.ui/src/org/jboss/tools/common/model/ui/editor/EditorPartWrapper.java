@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.editor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.eclipse.core.resources.IMarker;
@@ -49,11 +50,20 @@ public class EditorPartWrapper extends EditorPart implements IReusableEditor, IE
 			try {
 				Class editorClass = editor.getClass();
 				Method method = editorClass.getMethod("gotoMarker",new Class[]{IMarker.class});
+				method.setAccessible(true);
 				method.invoke(editor,new Object[]{marker});
-			} catch(Exception ex) {
-				// Eat exception
-			}	 
+			} catch(NoSuchMethodException e1) {
+				ignore();
+			}  catch(IllegalAccessException e2) {
+				ignore();
+			}  catch(InvocationTargetException e3) {
+				ModelUIPlugin.getPluginLog().logError(e3);
+			}
 		}	 
+	}
+	
+	void ignore() {
+		//do nothing
 	}
 
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {

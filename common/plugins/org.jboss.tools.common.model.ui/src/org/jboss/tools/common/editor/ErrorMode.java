@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class ErrorMode {
 	private ScrolledComposite errors = null;
@@ -55,7 +56,11 @@ public class ErrorMode {
 
 	public void dispose() {
 		if(errors != null) {
-			try { errors.dispose(); } catch (Exception e) {}
+			try {
+				if(!errors.isDisposed()) errors.dispose();
+			} catch (Exception e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
 			errors = null;
 			labels.clear();
 			es = "";
@@ -173,8 +178,8 @@ class Lbl {
 			messages[2] = s.substring(k + 1);
 			int qi = q.indexOf(':');
 			if(qi > 0) {
-				try { line = Integer.parseInt(q.substring(0, qi)); } catch (Exception e) {}
-				try { position = Integer.parseInt(q.substring(qi + 1)); } catch (Exception e) {}
+				line = getInt(q.substring(0, qi), line);
+				position = getInt(q.substring(qi + 1), position);
 			}
 		} else {
 			messages[0] = "ERROR";
@@ -183,6 +188,16 @@ class Lbl {
 		}
 		if(messages[1] == null || "0:0".equals(messages[1])) {
 			messages[1] = "";
+		}
+	}
+	
+	int getInt(String s, int def) {
+		if(s == null || s.length() == 0) return def;
+		try {
+			return Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+			return def;
 		}
 	}
 	

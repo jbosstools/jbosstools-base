@@ -138,9 +138,12 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 		if (IPropertyEditor.VALUE.equals(event.getPropertyName())) {
 			Object v = event.getNewValue();
 			String s = (v == null) ? "" : v.toString();
-			try {
-				if(!s.equals(stringValue)) {
-					stringValue = s;
+			if(!s.equals(stringValue)) {
+				stringValue = s;
+				
+				if(viewer == null || viewer.getTree() == null || viewer.getTree().isDisposed()) {
+					//do nothing
+				} else {
 					if(lock == 0) {
 						lock++;
 						Tree tree = viewer.getTree();
@@ -157,11 +160,8 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 						}
 						lock--;
 					}
-					
 					viewer.refresh();
 				}
-			} catch (Exception e) {
-				//ignore
 			}
 		}
 		valueProvider.addValueChangeListener(this);

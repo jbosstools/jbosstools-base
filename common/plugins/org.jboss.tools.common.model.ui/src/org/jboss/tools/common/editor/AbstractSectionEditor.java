@@ -23,6 +23,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.PartInitException;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.DefaultEditorPart;
 
 public abstract class AbstractSectionEditor extends DefaultEditorPart {
@@ -37,7 +38,11 @@ public abstract class AbstractSectionEditor extends DefaultEditorPart {
 		errorMode = null;
 		disposeGui();
 		if(!wrapper.isDisposed()) {
-			try { wrapper.dispose(); } catch (Exception e) {}
+			try {
+				wrapper.dispose();
+			} catch (SWTException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
 		}
 		wrapper = null;
 		control = null;
@@ -56,7 +61,9 @@ public abstract class AbstractSectionEditor extends DefaultEditorPart {
 		guiControl.setLayout(l);
 		try {
 			wrapper.setWeights(new int[]{10, 30});
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 		return wrapper;	
 	}
 
@@ -73,7 +80,11 @@ public abstract class AbstractSectionEditor extends DefaultEditorPart {
 	
 	protected void disposeGui() { 
 		if(control != null) {
-			try { if(!control.isDisposed()) control.dispose(); } catch (Exception e) {}
+			try {
+				if(!control.isDisposed()) control.dispose();
+			} catch (Exception e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
 			control = null;			
 		}
 	}

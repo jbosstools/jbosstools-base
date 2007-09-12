@@ -11,6 +11,8 @@
 package org.jboss.tools.common.model.ui.wizards.query.list;
 
 import java.util.Properties;
+
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.action.CommandBar;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView;
 import org.eclipse.jface.viewers.*;
@@ -51,9 +53,12 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 		super.setObject(data);
 		Properties p = (Properties)data;
 		vs = (String[][])p.get("data");
-		try {
-			expandingLevel = Integer.parseInt(p.getProperty("expandingLevel"));
-		} catch (Exception e) {}
+		String s = p.getProperty("expandingLevel");
+		if(s != null && s.length() > 0) try {
+			expandingLevel = Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 		makeObject();
 	}
 	

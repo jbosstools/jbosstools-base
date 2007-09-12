@@ -75,7 +75,11 @@ public class FormPlace {
 		if(form != null) form.dispose();
 		form = null;
 		if(composite != null) {
-			try { composite.dispose(); } catch (Exception e) {}
+			try {
+				if(!composite.isDisposed()) composite.dispose();
+			} catch (Exception e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
 			composite = null;
 		}
 	}

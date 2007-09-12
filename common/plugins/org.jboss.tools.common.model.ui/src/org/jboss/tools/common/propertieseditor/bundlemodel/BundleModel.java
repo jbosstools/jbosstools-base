@@ -13,14 +13,17 @@ package org.jboss.tools.common.propertieseditor.bundlemodel;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class BundleModel {
 	IFile main;
@@ -122,7 +125,11 @@ public class BundleModel {
 			createPropertyModel(p[i][0], p[i][1], "");
 		}
 		IResource[] rs = new IResource[0];
-		try { rs = main.getParent().members(); } catch (Exception e) {}
+		try { 
+			rs = main.getParent().members();
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 		for (int i = 0; i < rs.length; i++) {
 			if(!(rs[i] instanceof IFile)) continue;
 			IFile f = (IFile)rs[i];
@@ -175,7 +182,11 @@ public class BundleModel {
 					values.add(p.getProperty(key));
 				}
 			}
-		} catch (Exception e) {}
+		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IOException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 		String[][] r = new String[keys.size()][2];
 		for (int i = 0; i < r.length; i++) {
 			r[i][0] = keys.get(i).toString();
@@ -212,7 +223,11 @@ public class BundleModel {
 		String[] ls = (String[])removedLocales.toArray(new String[0]);
 		for (int i = 0; i < ls.length; i++) {
 			IFile f = getFile(ls[i]);
-			if(f.exists()) try { f.delete(true, true, null); } catch (Exception e) {}
+			if(f.exists()) try {
+				f.delete(true, true, null);
+			} catch (CoreException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
 		}
 		removedLocales.clear();
 		ls = (String[])locales.toArray(new String[0]);
@@ -230,7 +245,8 @@ public class BundleModel {
 					ByteArrayOutputStream os = new ByteArrayOutputStream();
 					try {
 						p0.store(os, null); 
-					} catch (Exception e) {
+					} catch (IOException e) {
+						ModelUIPlugin.getPluginLog().logError(e);
 						continue;
 					}
 					String s = os.toString();
@@ -242,7 +258,9 @@ public class BundleModel {
 			try {
 				 if(f.exists()) f.setContents(is, true, true, null);
 				 else f.create(is, true, null);
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
 		}
 		setModified(false);
 	}
