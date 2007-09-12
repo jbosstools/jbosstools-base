@@ -15,6 +15,7 @@ import java.util.*;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.*;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.*;
@@ -113,7 +114,7 @@ public class FileSystemsLoader extends URLRootLoader {
     		if(file != null) {
     			try {
     				file.refreshLocal(0, null);
-    			} catch (Exception e) {
+    			} catch (CoreException e) {
     				// ignore
     			}
     		}
