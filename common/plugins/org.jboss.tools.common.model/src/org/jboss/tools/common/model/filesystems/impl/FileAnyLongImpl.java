@@ -14,7 +14,9 @@ import java.io.File;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.util.FileUtil;
 
 public class FileAnyLongImpl extends FileAnyImpl {
@@ -35,8 +37,8 @@ public class FileAnyLongImpl extends FileAnyImpl {
 				if(ef != null) {
 					try {
 						ef.refreshLocal(IResource.DEPTH_ZERO, null);
-					} catch (Exception e) {
-						//ignore
+					} catch (CoreException e) {
+						ModelPlugin.getPluginLog().logError(e); 
 					}
 				}
 			}
