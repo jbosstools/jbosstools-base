@@ -60,8 +60,16 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 
     class Ov implements XJob.XRunnable {
         public void run() {
-          try { Thread.sleep(200); } catch (Exception e) {}
-          try { updateOverlappedInternal(); } catch (Exception e) {}
+          try {
+        	  Thread.sleep(200);
+          } catch (InterruptedException e) {
+        	  return;
+          }
+          try {
+        	  updateOverlappedInternal();
+          } catch (Exception e) {
+        	  ModelPlugin.getPluginLog().logError(e);
+          }
           overlapper = null;
         }
 
@@ -97,7 +105,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
                 path = f.getCanonicalPath().replace('\\', '/').toLowerCase();
                 if (path.charAt(path.length()-1) != '/') path += '/';
                 paths[i] = path;
-            } catch (Exception e) {
+            } catch (IOException e) {
                 paths[i] = null;
             }
         }
@@ -259,11 +267,14 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 			if(b) {
 				XModelObjectLoaderUtil.getObjectLoader(FileSystemsImpl.this).update(FileSystemsImpl.this);
 			} 
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			ModelPlugin.getPluginLog().logError(e);
+		}
 		if(saveRequested) {
 			try {
 				XModelObjectLoaderUtil.getObjectLoader(FileSystemsImpl.this).save(FileSystemsImpl.this);
 			} catch (Exception e) {
+				ModelPlugin.getPluginLog().logError(e);
 			} finally {
 				saveRequested = false;
 			}
@@ -275,7 +286,8 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 		try {
 			IProject p = (IProject)getModel().getProperties().get("project");
 			return p != null && p.isOpen();		
-		} catch (Exception e){
+		} catch (Exception e) {
+			ModelPlugin.getPluginLog().logError(e);
 			return false;
 		}
 	}
