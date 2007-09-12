@@ -11,6 +11,7 @@
 package org.jboss.tools.jst.web.tld;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
@@ -29,8 +30,8 @@ public class FilePathEncoderFactory {
 		if(project == null || !project.isOpen()) return null;
 		try {
 			if(project.hasNature("org.jboss.tools.jsf.jsfnature")) return jsfEncoder;
-		} catch (Exception e) {
-			//ignore
+		} catch (CoreException e) {
+			//ignore - all checks are done above
 		}
 		return null;
 	}
