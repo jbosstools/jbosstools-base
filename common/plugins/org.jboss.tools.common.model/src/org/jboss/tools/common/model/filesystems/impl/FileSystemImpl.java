@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
@@ -48,7 +49,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     	String thloc = XModelObjectUtil.getExpandedValue(this, "location", null);
     	try {
     		prloc = new File(prloc).getCanonicalPath().replace('\\','/');
-    	} catch (Exception e) {
+    	} catch (IOException e) {
     		//ignore
     	}
     	try {
@@ -58,7 +59,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     		} else {
     			thloc = thloc.replace('\\', '/');
     		}
-    	} catch (Exception e) {
+    	} catch (IOException e) {
     		return null;
     	}
 		if(thloc.equalsIgnoreCase(prloc)) return resource = project; ///
