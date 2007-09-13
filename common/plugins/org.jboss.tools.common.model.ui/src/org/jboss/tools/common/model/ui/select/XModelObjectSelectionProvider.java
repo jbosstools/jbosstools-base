@@ -55,7 +55,7 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 		if(this.host == host) return;
 		if(this.host != null) {
 			try {
-				host.removeSelectionChangedListener(this);
+				this.host.removeSelectionChangedListener(this);
 			} catch (Exception e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}			
