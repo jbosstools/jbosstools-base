@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.texteditors.preferences;
 
 import org.jboss.tools.common.meta.constraint.*;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.text.xml.ui.xpl.BasePreferenceConstants;
 
 public class TabWidthAdapter extends XAdapter {
@@ -30,9 +31,13 @@ public class TabWidthAdapter extends XAdapter {
 		if(!o.isActive()) return;
 		if(EditorsPreferencesPage.store == null) return;
 		int i = 4;
-		try {
-			i = Integer.parseInt(value);
-		} catch (Exception e) {}
+		if(value != null && value.length() > 0) {
+			try {
+				i = Integer.parseInt(value);
+			} catch (NumberFormatException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
+		}
 		EditorsPreferencesPage.store.setValue(PROPERTY, i);		
 	}
 	

@@ -18,9 +18,12 @@ import org.jboss.tools.common.editor.ObjectTextEditor;
 import org.jboss.tools.common.propertieseditor.text.*;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.texteditors.propertyeditor.PropertiesTextEditorStub;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.TextEvent;
+import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -88,9 +91,13 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 	
 	public String getText() {
 		String text = null;
+		if(getSourceViewer() == null) return null;
+		if(getSourceViewer().getDocument() == null) return null;
 		try {
 			text = getSourceViewer().getDocument().get();
-		} catch (Exception ex) {}
+		} catch (Exception ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
+		}
 		return (text == null) ? "" : text;
 	}
 
@@ -136,10 +143,16 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 	}
 	
 	public void setCursor(int line, int position) {
+		ISourceViewer sv = getSourceViewer();
+		if(sv == null) return;
+		IDocument d = sv.getDocument();
+		if(d == null) return;
 		try {
-			int i = getSourceViewer().getDocument().getLineOffset(line - 1) + position -1;
-			getSourceViewer().setSelectedRange(i, 0);
-		} catch (Exception e) {}
+			int i = d.getLineOffset(line - 1) + position - 1;
+			sv.setSelectedRange(i, 0);
+		} catch (BadLocationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 	}
 
 	public void doSaveAs() {}
@@ -185,7 +198,11 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 		Display.getDefault().syncExec( 
 			new Runnable() {
 				public void run() {
-					try { Thread.sleep(200); } catch (Exception e) {}
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						//ignore
+					}
 					support.save();
 				}
 			}

@@ -145,7 +145,9 @@ public class ModelResourceActionDelegate implements IObjectActionDelegate, IWork
 			if(isSupportingImplementation(IFile.class)) {	
 				try {
 					resource = ((IClassFile)object).getCorrespondingResource();
-				} catch (Exception e) {}
+				} catch (Exception e) {
+					//ignore
+				}
 			} else if(isWindowAction && isSupportingImplementation(IJavaProject.class)) {
 				object = ((IClassFile)object).getJavaProject();
 			}

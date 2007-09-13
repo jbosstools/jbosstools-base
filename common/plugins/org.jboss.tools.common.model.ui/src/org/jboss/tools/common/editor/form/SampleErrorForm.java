@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import org.jboss.tools.common.editor.ErrorSelectionListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseAdapter;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Layout;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.forms.ExpandableForm;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
@@ -221,16 +223,22 @@ public class SampleErrorForm extends ExpandableForm {
 		public StyleRange2(int start, int length, Color fg, Color bg, String location) {
 			super(start, length, fg, bg);
 			int i = location.indexOf(":");
-			try {
-				line = Integer.parseInt(location.substring(0, i));
-			} catch (Exception e) {}
-			try {
-				position = Integer.parseInt(location.substring(i + 1));
-			} catch (Exception e) {}
+			line = getInt(location.substring(0, i), 0);
+			position = getInt(location.substring(i + 1), 0);
 		}
 		public void execute() {
 			if(listener != null) listener.errorSelected(line, position);
 		}
+	}
+	
+	int getInt(String s, int def) {
+		if(s == null || s.length() == 0) return def;
+		try {
+			return Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
+		return def;
 	}
 	
 	class ML extends MouseAdapter implements MouseMoveListener {
@@ -256,7 +264,9 @@ public class SampleErrorForm extends ExpandableForm {
 		int offset = 0;
 		try {
 			offset = styledText.getOffsetAtLocation(new Point(e.x, e.y));
-		} catch (Exception exc) {
+		} catch (SWTException exc) {
+			return null;
+		} catch (IllegalArgumentException e2) {
 			return null;
 		}
 		return getRange(offset);
@@ -315,11 +325,6 @@ public class SampleErrorForm extends ExpandableForm {
 			result[ERROR_TYPE] = s.substring(0, i);
 			result[ERROR_LOCATION] =  q;
 			result[ERROR_MESSAGE] = s.substring(k + 1);
-//			int qi = q.indexOf(':');
-//			if(qi > 0) {
-//				try { line = Integer.parseInt(q.substring(0, qi)); } catch (Exception e) {}
-//				try { position = Integer.parseInt(q.substring(qi + 1)); } catch (Exception e) {}
-//			}
 		} else {
 			result[ERROR_TYPE] = "ERROR";
 			result[ERROR_LOCATION] = "0:0";

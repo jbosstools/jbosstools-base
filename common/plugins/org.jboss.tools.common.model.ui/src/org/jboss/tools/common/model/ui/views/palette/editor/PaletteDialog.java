@@ -137,9 +137,7 @@ public class PaletteDialog extends Dialog {
 	
 	protected void buttonPressed(int buttonId) {
 		if(buttonId == IDialogConstants.HELP_ID) {
-			try {
-				HelpUtil.helpEclipse(PreferenceModelUtilities.getPreferenceModel(), "PaletteEditor");
-			} catch (Exception e) {}
+			HelpUtil.helpEclipse(PreferenceModelUtilities.getPreferenceModel(), "PaletteEditor");
 		} else {
 			super.buttonPressed(buttonId);
 		}

@@ -77,8 +77,10 @@ class PropertiesWizardView extends AbstractQueryWizardView {
 	
 	public void stopEditing() {
 		try { 
-			objectEditor.stopEditing();
-		} catch (Exception e) {}
+			if(objectEditor != null) objectEditor.stopEditing();
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 	}
 	
 	public void dispose() {

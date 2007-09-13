@@ -16,8 +16,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.model.WorkbenchContentProvider;
-import org.jboss.tools.common.model.XFilteredTreeConstraint;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.util.*;
 
 public class XModelObjectContentProvider extends WorkbenchContentProvider {
@@ -34,6 +34,7 @@ public class XModelObjectContentProvider extends WorkbenchContentProvider {
 				((TreeViewer)viewer).expandToLevel(2);
 				if(cache != null) viewer.setSelection(new StructuredSelection(cache.getObject()));
 			} catch (Exception e) {
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 	}
@@ -100,19 +101,19 @@ public class XModelObjectContentProvider extends WorkbenchContentProvider {
 	}
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		super.inputChanged(viewer, oldInput, newInput);
+		this.viewer = viewer;
+		if(viewer instanceof TreeViewer) {
+			((TreeViewer)viewer).setAutoExpandLevel(2);
+		}
+		if(viewer == null || viewer.getControl() == null || viewer.getControl().isDisposed()) return;
 		try { 
-			super.inputChanged(viewer, oldInput, newInput);
-			this.viewer = viewer;
-			if(viewer instanceof TreeViewer) {
-				((TreeViewer)viewer).setAutoExpandLevel(2);
-			}
-			if(viewer.getControl() == null || viewer.getControl().isDisposed()) return;
 			viewer.refresh();
 			if(viewer.getSelection() == null || viewer.getSelection().isEmpty()) {
 				if(cache != null) viewer.setSelection(new StructuredSelection(cache.getObject()));
 			}
 		} catch (Exception t) {
-			//ignore
+			ModelUIPlugin.getPluginLog().logError(t);
 		}
 	}
 	

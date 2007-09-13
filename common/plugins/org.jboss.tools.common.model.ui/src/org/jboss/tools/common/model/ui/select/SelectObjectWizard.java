@@ -102,7 +102,11 @@ public class SelectObjectWizard implements SpecialWizard {
 			if(getSelection(navigatorpart) == o
 					// Actually, this is next to never show WebProjectsView.
 					&& where == FindObjectHelper.IN_NAVIGATOR_ONLY) {
-				try { page.showView(views[i]); } catch (Exception e) {}
+				try {
+					page.showView(views[i]);
+				} catch (PartInitException e) {
+					//ignore
+				}
 			}
 		}
 		return of;

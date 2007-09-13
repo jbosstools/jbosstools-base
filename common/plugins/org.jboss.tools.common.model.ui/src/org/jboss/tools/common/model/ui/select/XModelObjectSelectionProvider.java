@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.viewers.*;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class XModelObjectSelectionProvider implements ISelectionProvider, ISelectionChangedListener {
 	private List<ISelectionChangedListener> listeners;
@@ -55,7 +56,9 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 		if(this.host != null) {
 			try {
 				host.removeSelectionChangedListener(this);
-			} catch (Exception e) {}			
+			} catch (Exception e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}			
 		}
 		this.host = host;
 		if(host != null)

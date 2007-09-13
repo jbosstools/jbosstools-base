@@ -94,7 +94,7 @@ public class ResourceLayoutManager {
 	
 	private Document getLayoutDocument(IResource resource) {
 		Document document = null;
-		if (resource==null) {
+		if (resource == null) {
 			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_RESOURCE_NULL));
 			return null;
 		}
@@ -102,9 +102,13 @@ public class ResourceLayoutManager {
 		String fullResourceLocation = getFullLocation(resource).toString();
 		String layoutLocation = null;
 		try {
-			layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY));
-		} catch (CoreException e) {}
-		if (layoutLocation==null) layoutLocation = createNewLayoutLocation(resource);
+			if(resource.isAccessible()) {
+				layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY));
+			}
+		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
+		if (layoutLocation == null) layoutLocation = createNewLayoutLocation(resource);
 		//String fullLayoutLocation = getFullLocation(resource).addFileExtension(LAYOUT_EXT).toString();
 		
 		// try get from hashMap
@@ -160,9 +164,13 @@ public class ResourceLayoutManager {
 			getFullLocation(resource).toString();
 		String layoutLocation = null;
 		try {
-			layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY));
-		} catch (CoreException e) {}
-		if (layoutLocation==null) layoutLocation = createNewLayoutLocation(resource);
+			if(resource != null && resource.isAccessible()) {
+				layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY));
+			}
+		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
+		if (layoutLocation == null) layoutLocation = createNewLayoutLocation(resource);
 		if(!new File(layoutLocation).isFile()) return null;
 		//String fullLayoutLocation = getFullLocation(resource).addFileExtension(LAYOUT_EXT).toString();
 		Document document = null;
@@ -204,8 +212,12 @@ public class ResourceLayoutManager {
 	public void store(IResource resource) {
 		String layoutLocation = null;
 		try {
-			layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY));
-		} catch (CoreException e) {}
+			if(resource != null && resource.isAccessible()) {
+				layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY));
+			}
+		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 		if (layoutLocation==null) {
 			layoutLocation = createNewLayoutLocation(resource);
 		}
@@ -260,8 +272,12 @@ public class ResourceLayoutManager {
 		String layoutLocation = getPluginMetadataPath().toString();
 		String result = layoutLocation+"/"+fileName+"."+LAYOUT_EXT; 
 		try {
-			resource.setPersistentProperty(new QualifiedName("", LAYOUT_PROPERTY), result);
-		} catch (CoreException e) {}
+			if(resource != null && resource.isAccessible()) {
+				resource.setPersistentProperty(new QualifiedName("", LAYOUT_PROPERTY), result);
+			}
+		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 		return result; 
 	}
 	
@@ -272,4 +288,5 @@ public class ResourceLayoutManager {
 			return INSTANCE;
 		}
 	}
+
 }

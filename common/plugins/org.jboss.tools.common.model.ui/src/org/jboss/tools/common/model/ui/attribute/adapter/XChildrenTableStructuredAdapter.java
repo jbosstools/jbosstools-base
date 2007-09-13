@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Color;
@@ -141,10 +142,8 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 				int dw = (w - cw) * getWidthHint(i) / hs;
 				try { 
 					c.setWidth(c.getWidth() + dw); 
-
-
-
-				} catch (Exception exc) {
+				} catch (SWTException exc) {
+					//ignore
 				}					
 			}
 			resizeLock = false;

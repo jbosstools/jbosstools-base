@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.List;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
@@ -178,6 +179,7 @@ class FileFilter extends ViewerFilter {
 	}
 
 	private boolean collect(IContainer container, Set<IResource> set) {
+		if(container == null || !container.isAccessible()) return false;
 		boolean added = false;
 		try {
 			IResource[] resources = container.members();
@@ -197,6 +199,7 @@ class FileFilter extends ViewerFilter {
 				}
 			}
 		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return added;
 	}

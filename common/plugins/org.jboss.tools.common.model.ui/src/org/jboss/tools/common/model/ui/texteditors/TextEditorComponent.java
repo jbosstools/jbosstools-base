@@ -167,7 +167,9 @@ public class TextEditorComponent implements ITextListener, ITextEditorExtension 
 		String text = null;
 		try {
 			if (document != null) text = document.get();
-		} catch (Exception ex) {}
+		} catch (Exception ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
+		}
 		return (text == null) ? "" : text;
 	}
 
@@ -193,7 +195,9 @@ public class TextEditorComponent implements ITextListener, ITextEditorExtension 
 		try {
 			int i = document.getLineOffset(line - 1) + position -1;
 			preview.setSelectedRange(i, 0);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			//ignore
+		}
 	}
 	
 	//AbstractTextEditor

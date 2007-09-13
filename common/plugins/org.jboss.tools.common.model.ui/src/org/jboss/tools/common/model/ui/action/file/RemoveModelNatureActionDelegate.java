@@ -12,6 +12,8 @@ package org.jboss.tools.common.model.ui.action.file;
 
 import java.util.*;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class RemoveModelNatureActionDelegate extends ProjectRootActionDelegate {
 	protected String getActionPath() {
@@ -25,10 +27,12 @@ public class RemoveModelNatureActionDelegate extends ProjectRootActionDelegate {
 	
 	protected boolean hasModelNature(IProject project) {
 		String nature = getModelNatureName();
-		if(nature == null) return super.hasModelNature(project); 
+		if(nature == null) return super.hasModelNature(project);
+		if(project == null || !project.isAccessible()) return false;
 		try {
 			if(project.hasNature(nature)) return true;
-		} catch (Exception e) {
+		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return false;
 	}

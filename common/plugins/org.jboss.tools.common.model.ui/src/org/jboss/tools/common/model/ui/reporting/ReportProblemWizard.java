@@ -13,7 +13,6 @@ package org.jboss.tools.common.model.ui.reporting;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -227,10 +226,12 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	 */
 	private byte[] getEclipseLogContent() {
 		StringBuffer sb = new StringBuffer();
+		String location = Platform.getLogFileLocation().toOSString();
+		File f = new File(location);
+		if(!f.isFile()) return sb.toString().getBytes();
 
 		try {
-			InputStreamReader in = new FileReader(Platform.getLogFileLocation()
-					.toOSString());
+			InputStreamReader in = new FileReader(location);
 
 			char[] tempBuffer = new char[512];
 			int len = 0;
@@ -238,8 +239,8 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 				sb.append(tempBuffer);
 			}
 
-		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 
 		return sb.toString().getBytes();

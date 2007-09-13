@@ -101,7 +101,11 @@ public class ResourceProblemManager extends ProblemManager {
 		int line = marker.getAttribute(IMarker.LINE_NUMBER, -1);
 		int position = marker.getAttribute(IMarker.CHAR_START, -1);
 		String type = IMarker.PROBLEM;
-		try { type = marker.getType(); } catch (Exception e) {}
+		try {
+			if(marker.exists())	type = marker.getType();
+		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 		Problem p = new Problem(message, position, line, -1);
 		p.setType(type);
 		p.setLocation(location);

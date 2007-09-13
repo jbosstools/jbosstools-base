@@ -23,8 +23,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.common.editor.ObjectTextEditor;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextEvent;
+import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.events.FocusListener;
 //import org.eclipse.swt.graphics.Point;
@@ -94,9 +96,15 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 	
 	public String getText() {
 		String text = null;
+		ISourceViewer sv = getSourceViewer();
+		if(sv == null) return "";
+		IDocument d = sv.getDocument();
+		if(d == null) return "";
 		try {
-			text = getSourceViewer().getDocument().get();
-		} catch (Exception ex) {}
+			text = d.get();
+		} catch (Exception ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
+		}
 		return (text == null) ? "" : text;
 	}
 
@@ -150,11 +158,15 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 	}
 	
 	public void setCursor(int line, int position) {
+		ISourceViewer sv = getSourceViewer();
+		if(sv == null) return;
 		try {
-			int i = getSourceViewer().getDocument().getLineOffset(line - 1) + position -1;
-			getSourceViewer().setSelectedRange(i, 0);
-			getSourceViewer().revealRange(i, 0);
-		} catch (Exception e) {}
+			int i = sv.getDocument().getLineOffset(line - 1) + position -1;
+			sv.setSelectedRange(i, 0);
+			sv.revealRange(i, 0);
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 	}
 
 	public void doSaveAs() {
@@ -179,6 +191,7 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 		if(old.isModified()) try {
 			new DiscardFileHandler().executeHandler(old, new Properties());
 		} catch (Exception e) {
+			//ignore
 //			ModelUIPlugin.log(e);
 		}
 	}
@@ -229,7 +242,11 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 		Display.getDefault().syncExec( 
 			new Runnable() {
 				public void run() {
-					try { Thread.sleep(200); } catch (Exception e) {}
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						//ignore
+					}
 					support.save(true);
 				}
 			}
@@ -265,7 +282,9 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 			try {
 				operation.run(getProgressMonitor());
 			} catch (InterruptedException x) {
+				//ignore
 			} catch (InvocationTargetException x) {
+				//ignore
 			} 
 			
 		} else {
@@ -273,6 +292,7 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 			try {
 				doSetInput(input);
 			} catch (CoreException x) {
+				//ignore
 			}
 		}
 	}
@@ -319,7 +339,11 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 		int bp = searcher.getStartPosition();
 		int ep = searcher.getEndPosition();
 		if(ep >= bp && bp >= 0) {
-			try { selectAndReveal(bp, ep - bp); } catch (Exception e) {}
+			try {
+				selectAndReveal(bp, ep - bp);
+			} catch (Exception e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
 		}
 	}
 
@@ -350,19 +374,6 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 	
 	boolean isUpdating = false;
 	private void updateAnnotationModel() {
-		/*
-		if(isUpdating) return;
-		isUpdating = true;
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				try { Thread.sleep(200); } catch (Exception e) {}
-				isUpdating = false;
-				if(getSourceViewer() == null) return;
-				getSourceViewer().getAnnotationModel().disconnect(getSourceViewer().getDocument());
-				getSourceViewer().getAnnotationModel().connect(getSourceViewer().getDocument());
-			}
-		});
-		*/
 	}
 
 	public void gotoMarker(IMarker marker) {

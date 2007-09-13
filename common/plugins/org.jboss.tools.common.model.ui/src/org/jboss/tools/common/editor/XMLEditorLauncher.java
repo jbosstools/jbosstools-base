@@ -63,7 +63,11 @@ public class XMLEditorLauncher implements IEditorLauncher {
 						int time = 100;
 						while(workbenchPage.findEditor(input) != null) {
 							if(time > 1000) return;
-							try { Thread.sleep(time); } catch (Exception e) {}
+							try {
+								Thread.sleep(time);
+							} catch (InterruptedException e) {
+								//ignore
+							}
 							time *= 2;
 						}
 						try {

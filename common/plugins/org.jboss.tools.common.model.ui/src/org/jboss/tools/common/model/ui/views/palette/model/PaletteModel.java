@@ -108,6 +108,7 @@ public class PaletteModel {
 			URL url = new URL(BASE_URL, imagePath + fileName);
 			return ImageDescriptor.createFromURL(url);
 		} catch (MalformedURLException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return ImageDescriptor.getMissingImageDescriptor();
 	}

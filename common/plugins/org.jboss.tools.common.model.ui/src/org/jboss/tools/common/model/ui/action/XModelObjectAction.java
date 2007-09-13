@@ -96,9 +96,10 @@ public class XModelObjectAction extends XModelObjectActionItem {
 				w.execute();
 		   }
 		} catch (ActionDeclinedException de) {
+			//ignore
 		} catch(Exception e) {
 			ModelUIPlugin.getPluginLog().logError(e);
-		} 
+		}
 	}
 	
 	protected Properties prepareProperties() {

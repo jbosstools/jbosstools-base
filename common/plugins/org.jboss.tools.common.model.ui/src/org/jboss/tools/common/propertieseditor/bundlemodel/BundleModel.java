@@ -174,7 +174,13 @@ public class BundleModel {
 				}
 				ByteArrayInputStream is = new ByteArrayInputStream(sb.toString().getBytes());
 				p.clear();
-				try { p.load(is); } catch (Exception e) {}				
+				try {
+					p.load(is);
+				} catch (IllegalArgumentException e1) {
+					//ignore
+				} catch (IOException e) {
+					ModelUIPlugin.getPluginLog().logError(e);					
+				}				
 				Enumeration ee = p.keys();
 				if(ee.hasMoreElements()) {
 					String key = ee.nextElement().toString();

@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -77,7 +78,9 @@ public class PaletteAdapter implements IPaletteAdapter {
 
 		try {
 			selectedTab = ModelUIPlugin.getWorkspace().getRoot().getPersistentProperty(persistentTabQualifiedName);
-		} catch (Exception e) {}
+		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 
 		pane = new ScrolledComposite(composite, SWT.V_SCROLL);
 		pane.setExpandHorizontal(true);
@@ -260,7 +263,9 @@ public class PaletteAdapter implements IPaletteAdapter {
 			if (selectedTab != null) { 
 				ModelUIPlugin.getWorkspace().getRoot().setPersistentProperty(persistentTabQualifiedName, selectedTab);
 			}
-		} catch (Exception e) {}
+		} catch (CoreException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 	}
 
 	public void setPaletteContents(PaletteContents contents) {
@@ -399,6 +404,8 @@ public class PaletteAdapter implements IPaletteAdapter {
 					DnDUtil.paste(o, new Properties());
 					model.getXModel().saveOptions();
 				} catch (ActionDeclinedException de) {
+					//ignore - this exception is thrown to inform that user 
+					//selected cancel option in dialog. 
 				} catch (Exception e) {
 					message(e);
 				}

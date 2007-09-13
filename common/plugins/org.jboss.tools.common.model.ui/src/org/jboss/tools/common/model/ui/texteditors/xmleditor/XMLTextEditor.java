@@ -286,7 +286,11 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 			Display.getDefault().syncExec( 
 				new Runnable() {
 					public void run() {
-						try { Thread.sleep(200); } catch (Exception e) {}
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e) {
+							//ignore
+						}
 						save();
 					}
 				}
@@ -617,28 +621,26 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 	}
 	
 	private int getPosition(int x, int y) {
-		try {
-			ISourceViewer v = getSourceViewer();
-			StyledText t = v.getTextWidget();
-			Point pp = t.toControl(x, y);
-			x = pp.x;
-			y = pp.y;		
-			int lineIndex = (t.getTopPixel() + y) / t.getLineHeight();
-			if (lineIndex >= t.getLineCount()) {
-				return t.getCharCount();
-			} else {
-				int c = 0;
-				try {
-					c = t.getOffsetAtLocation(new Point(x, y));
-					if(c < 0) c = 0;
-				} catch (Exception ex) {
-                    c = t.getOffsetAtLine(lineIndex + 1) - 
-                    (t.getLineDelimiter() == null ? 0 : t.getLineDelimiter().length());					
-				}
-				return c;
+		ISourceViewer v = getSourceViewer();
+		if(v == null) return 0;
+		StyledText t = v.getTextWidget();
+		if(t == null || t.isDisposed()) return 0;
+		Point pp = t.toControl(x, y);
+		x = pp.x;
+		y = pp.y;		
+		int lineIndex = (t.getTopPixel() + y) / t.getLineHeight();
+		if (lineIndex >= t.getLineCount()) {
+			return t.getCharCount();
+		} else {
+			int c = 0;
+			try {
+				c = t.getOffsetAtLocation(new Point(x, y));
+				if(c < 0) c = 0;
+			} catch (Exception ex) {
+                c = t.getOffsetAtLine(lineIndex + 1) - 
+                (t.getLineDelimiter() == null ? 0 : t.getLineDelimiter().length());					
 			}
-		} catch (Exception e) {
-			return 0;
+			return c;
 		}
 	}
 	

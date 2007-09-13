@@ -76,7 +76,7 @@ public class PaletteInsertHelper {
    			p.put(PROPOPERTY_SELECTION_PROVIDER, selProvider);
    			insertIntoEditorInternal(doc, p);
         } catch (Exception x) {
-        	//ignore
+        	ModelUIPlugin.getPluginLog().logError(x);
         }
 	}
 	
@@ -240,10 +240,11 @@ public class PaletteInsertHelper {
 
 		boolean appendFirstDelimiter = true;
 		try {
-			if (d.getLineOffset(d.getLineOfOffset(offset)) == offset) 
+			if (d != null && d.getLength() > offset && offset >= 0 
+				&& d.getLineOffset(d.getLineOfOffset(offset)) == offset) 
 				appendFirstDelimiter = false; // At start of a line
-		} catch (Exception ex) {
-			//ignore
+		} catch (BadLocationException ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 
         if (body == null || body.length() == 0) appendFirstDelimiter = false;
@@ -259,7 +260,7 @@ public class PaletteInsertHelper {
 			if (lineOffset + lineLength - offset - length == 0) 
 				appendLastDelimiter = false;
 		} catch (Exception ex) {
-			
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 
 		final StringBuffer buffer= new StringBuffer();
@@ -404,6 +405,7 @@ public class PaletteInsertHelper {
 			if (document.getNumberOfLines() > 1)
 				return document.getLineDelimiter(0);
 		} catch (BadLocationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 
 		return System.getProperty("line.separator"); //$NON-NLS-1$
@@ -411,6 +413,7 @@ public class PaletteInsertHelper {
 	
 	private static String getIndentOfFirstLine(IDocument d, int offset) {
 		String indent = "";
+		if(d == null) return indent;
 		try {
 			int line = d.getLineOfOffset(offset);
 			while (line >= 0) {
@@ -420,18 +423,21 @@ public class PaletteInsertHelper {
 				}
 				line--; 
 			}
-		} catch (Exception ex) {
+		} catch (BadLocationException ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return indent;
 	}
 
     private static String getIndentOfLineOfOffset(IDocument d, int offset) {
         String indent = "";
+        if(d == null) return indent;
         try {
             int line = d.getLineOfOffset(offset);
             String lineText = d.get(d.getLineOffset(line), d.getLineLength(line));
             return getIndentOfLine(lineText, getLineDelimiter(d));
         } catch (Exception ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
         }
         return indent;
     }
@@ -496,9 +502,11 @@ public class PaletteInsertHelper {
 		if(defaultPrefix == null || defaultPrefix.length() == 0) return;
 		IDocument doc = null;
         try {
-   			doc = editor.getDocumentProvider().getDocument(editor.getEditorInput());
+        	if(editor != null && editor.getDocumentProvider() != null) {
+        		doc = editor.getDocumentProvider().getDocument(editor.getEditorInput());
+        	}
         } catch (Exception x) {
-        	//ignore
+			ModelUIPlugin.getPluginLog().logError(x);
         }
         applyPrefix(text, doc, tagname, uri, defaultPrefix);
 	}

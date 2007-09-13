@@ -37,21 +37,6 @@ public class OutlineContentProvider extends XModelObjectContentProvider {
 		return es2;		
 	}
 
-/*
-	private void createFilteredTree()	{
-		XModel model = cache.getObject().getModel();
-		if(EclipseResourceUtil.isProjectFragment(model)) return;
-		String classname = model.getMetaData().getMapping("FilteredTrees").getValue("FileSystems");
-		try {
-			tree = (XFilteredTree)getClass().getClassLoader().loadClass(classname).newInstance();
-			tree.setModel(model);
-			if(tree.getRoot() == null) tree = null;
-			isProjectEnabled = (tree != null); 
-		} catch(Exception ex) {
-		}
-	}
-*/
-
 	public Object[] getChildren(Object parentElement) {
 		Object result[] = null;
 		if(cache.getObject() == parentElement || tree == null)

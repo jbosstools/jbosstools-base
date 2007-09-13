@@ -17,6 +17,7 @@ import org.eclipse.ui.*;
 import org.jboss.tools.common.meta.action.impl.handlers.SaveAllHandler;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.impl.RootImpl;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class SaveModelActionDelegate extends AbstractModelActionDelegate {
 	ModifyUpdate update = null;
@@ -36,7 +37,11 @@ public class SaveModelActionDelegate extends AbstractModelActionDelegate {
 		XModel model = (object != null) ? object.getModel() : null;
 		update.setData(action, model);
 		synchronized (monitor) {
-			try { monitor.notifyAll(); } catch (Exception e) {}
+			try {
+				monitor.notifyAll();
+			} catch (IllegalMonitorStateException e) {
+				//ignore
+			}
 		}
 	}
 	
@@ -48,7 +53,11 @@ public class SaveModelActionDelegate extends AbstractModelActionDelegate {
 		if(update != null) {
 			update.stopped = true;
 			synchronized (monitor) {
-				try { monitor.notifyAll(); } catch (Exception e) {}
+				try {
+					monitor.notifyAll();
+				} catch (IllegalMonitorStateException e) {
+					//ignore
+				}
 			}
 			update = null;
 		}
@@ -92,12 +101,18 @@ public class SaveModelActionDelegate extends AbstractModelActionDelegate {
 		public void run() {
 			while(!stopped) {
 				synchronized (monitor) {
-					try { monitor.wait(); } catch (Exception e) {}
+					try {
+						monitor.wait();
+					} catch (InterruptedException e) {
+						//ignore
+					}
 					if(stopped) return;
 					if(action != null) try {
 						boolean enabled = model != null && model.getRoot().isModified();
 						if(action.isEnabled() != enabled) action.setEnabled(enabled);
-					} catch (Exception e) {}
+					} catch (Exception e) {
+						ModelUIPlugin.getPluginLog().logError(e);
+					}
 				}
 			}			
 		}

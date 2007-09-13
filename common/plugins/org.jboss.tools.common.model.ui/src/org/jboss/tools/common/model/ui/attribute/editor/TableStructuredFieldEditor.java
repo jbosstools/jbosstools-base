@@ -336,17 +336,20 @@ public class TableStructuredFieldEditor extends ExtendedFieldEditor
 
 	// IStructureChangeListener
 	public void structureChanged(StructuredChangedEvent event) {
-		if (this.tableViewer!=null) {
-			try {
-				int i = tableViewer.getTable().getSelectionIndex();
-				if(i < 0) i = 0;
-				tableViewer.refresh();
-				int c = tableViewer.getTable().getItemCount();
-				while(i >= c) --i;
-				if(i >= 0) {
-					tableViewer.setSelection(new StructuredSelection(tableViewer.getTable().getItem(i).getData()));
-				}
-			} catch (Exception e) {}
+		if(tableViewer == null) return;
+		Table table = tableViewer.getTable();
+		if(table == null || table.isDisposed()) return;
+		int i = table.getSelectionIndex();
+		if(i < 0) i = 0;
+		try {
+			tableViewer.refresh();
+			int c = tableViewer.getTable().getItemCount();
+			while(i >= c) --i;
+			if(i >= 0) {
+				tableViewer.setSelection(new StructuredSelection(tableViewer.getTable().getItem(i).getData()));
+			}
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	

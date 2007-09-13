@@ -133,7 +133,11 @@ public class ControlDragDrop {
 		
 		public void run() {
 			while(status == 1) {
-				try { Thread.sleep(200); } catch (Exception e) {}
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					ignore();
+				}
 				long t = System.currentTimeMillis();
 				if(item != null && t > item_time) {
 					expandPending = true;

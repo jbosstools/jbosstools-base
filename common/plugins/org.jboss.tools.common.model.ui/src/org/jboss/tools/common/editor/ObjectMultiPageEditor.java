@@ -129,7 +129,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 
 	private void updateFile() {
 		IFile file = getFile();
-		if(file != null) try { file.refreshLocal(0, null); } catch (Exception e) {}
+		if(file != null) try {
+			file.refreshLocal(0, null);
+		} catch (CoreException e) {
+			//ignore
+		}
 	}
 	
 	private IFile getFile() {
@@ -161,7 +165,10 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		try {
 			String q = p.getPersistentProperty(qn);
 			selectedPageIndex = (q == null) ? 0 : Integer.parseInt(q);
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
+			//ignore
+			selectedPageIndex = 0;			
+		} catch (CoreException e) {
 			//ignore
 			selectedPageIndex = 0;			
 		}
@@ -169,13 +176,15 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	
 	private void saveSelectedTab() {
 		IFile file = getFile();
-		try {
 			if(file == null) {
 				saveSelectedTabForStorage();
 			} else {
-				file.setPersistentProperty(persistentTabQualifiedName, "" + selectedPageIndex);
+				try {
+					if(file.isAccessible()) file.setPersistentProperty(persistentTabQualifiedName, "" + selectedPageIndex);
+				} catch (CoreException e) {
+					ModelUIPlugin.getPluginLog().logError(e);
+				}		
 			}
-		} catch (Exception e) {}		
 	}
 	
 	private void saveSelectedTabForStorage() {
@@ -185,7 +194,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		if(p == null || !p.isOpen()) return;
 		try {
 			p.setPersistentProperty(qn, "" + selectedPageIndex);
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			//ignore
 		}
 	}
@@ -223,7 +232,9 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		try {
 			setActivePage(selectedPageIndex);
 			updateSelectionProvider();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 		new ResourceChangeListener(this, getContainer());
 	}
 	
@@ -236,7 +247,9 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				selectedPageIndex = i;
 				try {
 					switchToPage(i);
-				} catch (Exception e) {}
+				} catch (Exception e) {
+					ModelUIPlugin.getPluginLog().logError(e);
+				}
 			}
 		}
 		
@@ -545,7 +558,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			Display.getDefault().syncExec( 
 				new Runnable() {
 					public void run() {
-						try { Thread.sleep(200); } catch (Exception e) {}
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e) {
+							//ignore
+						}
 						textEditor.save();
 					}
 				}
@@ -886,6 +903,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			new ProgressMonitorDialog(shell).run(false, true, op);
 			success = true;			
 		} catch (InterruptedException x) {
+			//ignore
 		} catch (InvocationTargetException x) {
 			Throwable targetException= x.getTargetException();
 			String title = "Save As";
@@ -913,7 +931,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				XModelObject o = null;
 				for (int i = 0; i < 5 && o == null; i++) {
 					o = EclipseResourceUtil.getObjectByResource(file);
-					if(o == null) try { Thread.sleep(200); } catch (Exception e) {}
+					if(o == null) try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						//ignore
+					}
 				}
 				if(o == null) o = EclipseResourceUtil.createObjectForResource(file);
 				if(o != null) {

@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.texteditors.preferences;
 
 import org.jboss.tools.common.meta.constraint.*;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.text.xml.ui.xpl.BasePreferenceConstants;
 
 public class ReplaceTabsAdapter extends XAdapter {
@@ -30,7 +31,9 @@ public class ReplaceTabsAdapter extends XAdapter {
 		if(EditorsPreferencesPage.store == null) return;
 		try {
 			EditorsPreferencesPage.store.setValue(PROPERTY, "true".equals(value));		
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
 	}
 	
 }
