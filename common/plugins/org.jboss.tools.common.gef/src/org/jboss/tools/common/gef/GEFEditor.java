@@ -70,6 +70,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.gef.action.IDiagramSelectionProvider;
 import org.jboss.tools.common.gef.outline.xpl.DiagramContentOutlinePage;
 import org.jboss.tools.common.gef.xpl.GEFSplitter;
@@ -430,52 +431,64 @@ public class GEFEditor extends GraphicalEditor implements MouseListener,
 	protected int loadPaletteSize() {
 		IFile file = getFile();
 		int size = PALETTE_MIN_SIZE;
-		if (file == null)
+		if (file == null || !file.isAccessible()) {
 			return size;
+		}
 		try {
 			String s = file.getPersistentProperty(PALETTE_SIZE_KEY);
 			if (s != null) {
 				size = Integer.parseInt(s);
 			}
-		} catch (Exception e) {
+		} catch (CoreException e) {
+			CommonPlugin.getPluginLog().logError(e);
+		} catch (NumberFormatException e) {
+			CommonPlugin.getPluginLog().logError(e);
 		}
 		return size;
 	}
 
 	protected void savePaletteSize(int fixedSise) {
 		IFile file = getFile();
-		if (file == null)
+		if (file == null || !file.isAccessible()) {
 			return;
+		}
 		try {
-			String s = String.valueOf(fixedSise);
+			String s = "" + fixedSise;
 			file.setPersistentProperty(PALETTE_SIZE_KEY, s);
-		} catch (Exception e) {
+		} catch (CoreException e) {
+			CommonPlugin.getPluginLog().logError(e);
 		}
 	}
 
 	protected double loadZoomSize() {
 		IFile file = getFile();
 		double size = 1.0;
-		if (file == null)
+		if (file == null || !file.isAccessible()) {
 			return size;
+		}
 		try {
 			String s = file.getPersistentProperty(ZOOM_SIZE_KEY);
-			if (s != null) {
+			if (s != null && s.length() > 0) {
 				size = Double.parseDouble(s);
 			}
-		} catch (Exception e) {
+		} catch (CoreException e) {
+			CommonPlugin.getPluginLog().logError(e);
+		} catch (NumberFormatException e) {
+			CommonPlugin.getPluginLog().logError(e);
 		}
 		return size;
 	}
 
 	protected void saveZoomSize(double zoom) {
 		IFile file = getFile();
-		if (file == null)
+		if (file == null || !file.isAccessible()) {
 			return;
+		}
 		try {
-			String s = String.valueOf(zoom);
+			String s = "" + zoom;
 			file.setPersistentProperty(ZOOM_SIZE_KEY, s);
-		} catch (Exception e) {
+		} catch (CoreException e) {
+			CommonPlugin.getPluginLog().logError(e);
 		}
 	}
 
