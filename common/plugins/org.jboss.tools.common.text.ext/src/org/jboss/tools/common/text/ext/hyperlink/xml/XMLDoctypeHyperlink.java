@@ -10,12 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.xml;
 
+import org.eclipse.jdt.internal.core.ModelUpdater;
 import org.eclipse.jface.text.IRegion;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Node;
 
+import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
 
@@ -42,7 +44,9 @@ public class XMLDoctypeHyperlink extends XMLXmlNsHyperlink {
 			String text = "";
 			try {
 				text = getDocument().get(start, end - start); 
-			} catch (Exception x) {};
+			} catch (Exception x) {
+				ExtensionsPlugin.getPluginLog().logError(x);
+			};
 			String publicId = (node.getPublicId() == null ? "" : node.getPublicId());
 			String systemId = (node.getSystemId() == null ? "" : node.getSystemId());
 

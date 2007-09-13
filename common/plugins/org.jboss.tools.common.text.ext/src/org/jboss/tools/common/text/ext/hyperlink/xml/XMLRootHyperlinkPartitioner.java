@@ -19,6 +19,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlinkPartitioner;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkRegion;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkPartitionRecognizer;
@@ -76,6 +77,7 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 				}
 			}
 		} catch (Exception x) {
+			ExtensionsPlugin.getPluginLog().logError(x);
 		} finally {
 			smw.dispose();
 		}

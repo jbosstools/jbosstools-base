@@ -222,6 +222,7 @@ public abstract class TextScanner implements ITokenScanner {
 				count++;
 			}
 		} catch (BadLocationException ex) {
+			//ignore
 		}
 		return count;
 	}
