@@ -35,9 +35,17 @@ public class VTaskListenerImpl extends org.jboss.tools.common.verification.vrule
 		addMarkers();
 		long endTime = System.currentTimeMillis();
 		long delta = 500 + startTime - endTime;
-		if(delta > 0) try { Thread.sleep(delta); } catch (Exception e) {}
+		if(delta > 0) try { 
+			Thread.sleep(delta); 
+		} catch (InterruptedException e) {
+			//ignore
+		}
 		view.onFinish();
-		try { Thread.sleep(200); } catch (Exception e) {}
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			//ignore
+		}
 		view.action("Close");
 		task.removeTaskListener(this);
 	}

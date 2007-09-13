@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 
+import org.jboss.tools.common.verification.ui.XStudioVerificationPlugin;
 import org.jboss.tools.common.verification.ui.vrules.preferences.VerificationPreferencePage;
 import org.jboss.tools.common.verification.ui.vrules.wizard.DescriptionManager;
 import org.jboss.tools.common.meta.key.WizardKeys;
@@ -227,9 +228,11 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 		if(o == null) return -1;
 		String s = o.getAttributeValue(VerificationPreferencePage.ATTR_ERRORS_NUMBER_LIMIT);
 		int limit = -1;
-		if(!"unlimited".equals(s)) try {
+		if(!"unlimited".equals(s) && s != null && s.length() > 0) try {
 			limit = Integer.parseInt(s);
-		} catch (Exception e) {}
+		} catch (NumberFormatException e) {
+			XStudioVerificationPlugin.getPluginLog().logError(e);
+		}
 		return limit;		
 	}
 
