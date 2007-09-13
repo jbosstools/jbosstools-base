@@ -415,6 +415,7 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 					fEditorID));
 			
 		} catch (Exception x) {
+			XmlEditorPlugin.getPluginLog().logError(x);
 		}
 	}
 	
@@ -595,10 +596,12 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 		if (fMarkNodeOccurrences) {
 			NodeList children = (NodeContainer)dom.getChildNodes();
 			for (int i = 0; children != null && i < children.getLength(); i++) {
+				if(!(children.item(i) instanceof IDOMNode)) continue;
 				try {
 					IDOMNode xmlNode = (IDOMNode)children.item(i);
 					addTagOccurencies(matches, xmlNode, tagName);
 				} catch (Exception x) {
+					XmlEditorPlugin.getPluginLog().logError(x);
 				}
 			}
 		}
@@ -626,10 +629,12 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 		if (fMarkAttributeOccurrences) {
 			NodeList children = (NodeContainer)dom.getChildNodes();
 			for (int i = 0; children != null && i < children.getLength(); i++) {
+				if(!(children.item(i) instanceof IDOMNode)) continue;
 				try {
 					IDOMNode xmlNode = (IDOMNode)children.item(i);
 					addTagAttrNameOccurencies(matches, xmlNode, attrName);
 				} catch (Exception x) {
+					XmlEditorPlugin.getPluginLog().logError(x);
 				}
 			}
 		}
@@ -661,11 +666,12 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 		if (fMarkAttributeValueOccurrences) {
 			NodeList children = (NodeContainer)dom.getChildNodes();
 			for (int i = 0; children != null && i < children.getLength(); i++) {
+				if(!(children.item(i) instanceof IDOMNode)) continue;
 				try {
 					IDOMNode xmlNode = (IDOMNode)children.item(i);
 					addTagAttrValueOccurencies(matches, xmlNode, attrValue);
 				} catch (Exception x) {
-				
+					XmlEditorPlugin.getPluginLog().logError(x);
 				}
 			}
 		}
@@ -698,10 +704,12 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 		if (fMarkTextOccurrences && !isEmptyString (data)) { 
 			NodeList children = (NodeContainer)dom.getChildNodes();
 			for (int i = 0; children != null && i < children.getLength(); i++) {
+				if(!(children.item(i) instanceof IDOMNode)) continue;
 				try {
 					IDOMNode xmlNode = (IDOMNode)children.item(i);
 					addTextOccurencies(matches, xmlNode, data);
 				} catch (Exception x) {
+					XmlEditorPlugin.getPluginLog().logError(x);
 				}
 			}
 		}

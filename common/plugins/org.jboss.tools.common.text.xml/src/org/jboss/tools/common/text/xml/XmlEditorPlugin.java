@@ -99,7 +99,9 @@ public class XmlEditorPlugin extends BaseUIPlugin {
 			Method m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]);
 			m.setAccessible(true);
 			m.invoke(JavaPlugin.getDefault(), new Object[0]);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			//ignore
+		}
 
 		IPreferenceStore store = getPreferenceStore();
 		

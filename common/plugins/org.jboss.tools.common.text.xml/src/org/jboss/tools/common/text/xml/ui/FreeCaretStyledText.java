@@ -70,7 +70,7 @@ public class FreeCaretStyledText extends StyledText implements PaintListener {
     	try {
     		super.redrawRange(start, length, clearBackground);
     	} catch (Exception x) {
-    		
+    		//ignore
     	}
     }
 

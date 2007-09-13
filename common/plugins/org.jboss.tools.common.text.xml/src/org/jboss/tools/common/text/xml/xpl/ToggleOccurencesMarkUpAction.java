@@ -102,10 +102,11 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		String relPath= getString(bundle, imageKey, null);
 
 		try {
-			ImageDescriptor id= ImageDescriptor.createFromURL(makeIconFileURL("resources/icons/xpl", relPath)); //$NON-NLS-1$
+			ImageDescriptor id = ImageDescriptor.createFromURL(makeIconFileURL("resources/icons/xpl", relPath)); //$NON-NLS-1$
 			if (id != null)
 				setImageDescriptor(id);
 		} catch (MalformedURLException e) {
+			//ignore
 		}
 	
 		relPath= getString(bundle, disabledImageKey, null);
@@ -114,6 +115,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 			if (id != null)
 				setDisabledImageDescriptor(id);
 		} catch (MalformedURLException e) {
+			//ignore
 		}
 	}
 
@@ -128,6 +130,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 			markOccurences = fPreferenceStore.getBoolean(fKey);
 			fPreferenceStore.setValue(fKey, !markOccurences);
 		} catch (Exception x) {
+			//ignore
 		}
 	}
 
@@ -149,19 +152,16 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 					fPreferenceStore.addPropertyChangeListener(this);
 			}
 		} catch (Exception x) {
+			//ignore
 		}
 			
 		boolean markOccurences = false;
 		boolean enabled = false;
-		try {	
-			
-			// determine if action should be enabled or not
-			if(fPreferenceStore!=null) {
-				markOccurences = fPreferenceStore.getBoolean(fKey);
-			}
-			enabled = (getTextEditor() != null);
-		} catch (Exception x) {
+		// determine if action should be enabled or not
+		if(fPreferenceStore != null) {
+			markOccurences = fPreferenceStore.getBoolean(fKey);
 		}
+		enabled = (getTextEditor() != null);
 
 		setChecked(markOccurences);
 		setEnabled(enabled);

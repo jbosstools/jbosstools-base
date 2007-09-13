@@ -12,16 +12,19 @@
  *******************************************************************************/
 package org.jboss.tools.common.text.xml.ui.xpl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jdt.internal.core.ModelUpdater;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.common.text.xml.XmlEditorPlugin;
 
 /**
  * @author Jeremy
@@ -163,7 +166,15 @@ public class XmlPreferenceConstants extends BasePreferenceConstants {
 			Method m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]);
 			m.setAccessible(true);
 			m.invoke(plugin, new Object[0]);
-		} catch (Exception e) {}
+		} catch (NoSuchMethodException e1) {
+			//ignore
+		} catch (IllegalAccessException e2) {
+			//ignore
+		} catch (IllegalArgumentException e3) {
+			XmlEditorPlugin.getPluginLog().logError(e3);
+		} catch (InvocationTargetException e4) {
+			XmlEditorPlugin.getPluginLog().logError(e4);
+		}
 		final IPreferenceStore editorsStore = ((AbstractUIPlugin)plugin).getPreferenceStore();
 		for (int i = 0; i < BOOLEAN_PROPERTIES.length; i++) {
 			String p = BOOLEAN_PROPERTIES[i];
