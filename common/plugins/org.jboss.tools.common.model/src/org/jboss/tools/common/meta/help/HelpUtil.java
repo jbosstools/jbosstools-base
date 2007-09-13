@@ -87,7 +87,7 @@ public class HelpUtil {
         }
     }
     
-	public static void helpEclipse(XModel model, String key) throws Exception {
+	public static void helpEclipse(XModel model, String key) {
 		ServiceDialog d = model.getService();
 		if(!isHelpPluginInstalled()) {
 			d.showDialog("Help", "User Guide is not installed.", new String[]{"Close"}, null, ServiceDialog.MESSAGE);
