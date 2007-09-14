@@ -26,6 +26,7 @@ import org.jboss.tools.common.model.util.*;
 
 public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChangeListener {
     private static final long serialVersionUID = 1527918897367197051L;
+    boolean needsUpdateOverlapping = false;
     protected Set<String> overlapped = null;
     Ov overlapper = null;
     FileSystemsRenameListener fileSystemsRenameListener = new FileSystemsRenameListener(this);
@@ -57,14 +58,22 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
         super.removeChild_0(o);
         updateOverlappedLater();
     }
+    
+    private static int OV_SLEEPING = 0;
+    private static int OV_STOPPED = 1;
+    private static int OV_RUNNING = 2;
 
     class Ov implements XJob.XRunnable {
+    	int status = OV_SLEEPING;
         public void run() {
+        
           try {
         	  Thread.sleep(200);
           } catch (InterruptedException e) {
         	  return;
           }
+          if(status == OV_STOPPED) return;
+          status = OV_RUNNING;
           try {
         	  updateOverlappedInternal();
           } catch (Exception e) {
@@ -81,17 +90,27 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 	private void updateOverlappedLater() {
 		if(isActive() && overlapper == null) {
 			if(EclipseResourceUtil.isProjectFragment(getModel())) return;
+			needsUpdateOverlapping = true;
 			XJob.addRunnable(overlapper = new Ov());
 //			(overlapper = new Thread(new Ov())).start();
 		}
 	}
 	
-    public void updateOverlapped() {
-    	if(overlapper != null) return;
+    public boolean updateOverlapped() {
+    	if(overlapper != null && overlapper.status == OV_RUNNING) {
+    		return false;
+    	} else if(overlapper != null) {
+    		overlapper.status = OV_STOPPED;
+    		overlapper = null;
+    	}
 		updateOverlappedInternal();
+		return true;
     }
+
 	private //synchronized 
 		void updateOverlappedInternal() {
+		if(!needsUpdateOverlapping) return;
+		needsUpdateOverlapping = false;
 		if(EclipseResourceUtil.isProjectFragment(getModel())) return;
         if(overlapped == null) overlapped = new HashSet<String>();
         Set<String> _overlapped = new HashSet<String>();

@@ -206,6 +206,11 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         }
     }
     
+    protected void safeChangeTimeStamp() {
+    	boolean b = ("" + getTimeStamp()).equals(get("actualBodyTimeStamp"));
+    	changeTimeStamp();
+    	if(b) set("actualBodyTimeStamp", "" + getTimeStamp());
+    }
     protected void mergeAll(XModelObject f, boolean update) {
 		merge(f, !update);
     }

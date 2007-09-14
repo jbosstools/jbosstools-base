@@ -992,7 +992,9 @@ class EclipseFileBodySource implements BodySource {
 				((FolderImpl)p).getFileSystem().getPeer().register(f);
 			}
 			ef.refreshLocal(IFile.DEPTH_INFINITE, null);
-		} catch (Exception e) {}
+		} catch (Exception e) {   
+			//ignore
+		}
 		return true;
 	}
 	

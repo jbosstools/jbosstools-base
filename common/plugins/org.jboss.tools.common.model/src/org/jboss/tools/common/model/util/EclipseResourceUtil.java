@@ -103,6 +103,7 @@ public class EclipseResourceUtil {
 		if (model != null) {
 			FileSystemsImpl fso = (FileSystemsImpl)model.getByPath("FileSystems");
 			if(fso == null) return null;
+			fso.updateOverlapped();
 			XModelObject[] fs = fso.getChildren("FileSystemFolder");
 			for (int i = 0; i < fs.length; i++) {
 				FileSystemImpl s = (FileSystemImpl)fs[i];

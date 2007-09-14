@@ -193,6 +193,12 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
         ++timeStamp;
         if(parent != null) parent.changeTimeStamp();
     }
+    
+    protected void safeChangeTimeStamp() {
+    	changeTimeStamp();
+    }
+    
+    
 
     // children
 
@@ -540,7 +546,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
 	}
 
 	private void fireErrorStateChanged() {
-		changeTimeStamp();
+		safeChangeTimeStamp();
         String path = getPath();
         if(path != null) {
         	fireObjectChanged(null);
