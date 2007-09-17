@@ -10,10 +10,7 @@
   <XChildrenEntities/>
   <XEntityRenderer/>
   <XModelAttributes>
-   <XModelAttribute name="namespace">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="namespace"/>
   </XModelAttributes>
   <XActionItem kind="list"/>
   <XDependencies/>
@@ -32,11 +29,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="sub-group" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
     <Editor name="Name"/>
    </XModelAttribute>
    <XModelAttribute name="icon" xmlname="ICON">
@@ -119,11 +114,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="sub-group" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="required=true" name="name" xmlname="NAME">
-    <Constraint/>
     <Editor name="Name"/>
    </XModelAttribute>
    <XModelAttribute name="icon" xmlname="ICON">
@@ -132,18 +125,9 @@
     </Constraint>
     <Editor name="TreeChooser"/>
    </XModelAttribute>
-   <XModelAttribute name="library uri" xmlname="URI">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="library version" xmlname="library-version">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="default prefix" xmlname="PREFIX">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="library uri" xmlname="URI"/>
+   <XModelAttribute name="library version" xmlname="library-version"/>
+   <XModelAttribute name="default prefix" xmlname="PREFIX"/>
    <XModelAttribute default="true" name="add taglib" xmlname="add_taglib">
     <Constraint loader="List">
      <value name="true"/>
@@ -232,11 +216,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="macro" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
     <Editor name="Name"/>
    </XModelAttribute>
    <XModelAttribute default="project" name="scope" visibility="false">
@@ -259,16 +241,19 @@
     </Constraint>
     <Editor name="TreeChooser"/>
    </XModelAttribute>
+   <XModelAttribute name="large icon" xmlname="large-icon">
+    <Constraint loader="Tree">
+     <value name="IconsTree"/>
+    </Constraint>
+    <Editor name="TreeChooser"/>
+   </XModelAttribute>
    <XModelAttribute name="description" xmlname="DESCRIPTION">
-    <Constraint/>
     <Editor name="Note2"/>
    </XModelAttribute>
    <XModelAttribute name="start text" xmlname="STARTTEXT">
-    <Constraint/>
     <Editor name="Note2"/>
    </XModelAttribute>
    <XModelAttribute name="end text" xmlname="ENDTEXT">
-    <Constraint/>
     <Editor name="Note2"/>
    </XModelAttribute>
    <XModelAttribute default="no" name="automatically reformat tag body" xmlname="REFORMAT">
@@ -314,11 +299,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="macro" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="required=true" name="name" xmlname="NAME">
-    <Constraint/>
     <Editor name="Name"/>
    </XModelAttribute>
    <XModelAttribute default="project" name="scope" visibility="false">
@@ -341,20 +324,22 @@
     </Constraint>
     <Editor name="TreeChooser"/>
    </XModelAttribute>
+   <XModelAttribute name="large icon" xmlname="large-icon">
+    <Constraint loader="Tree">
+     <value name="IconsTree"/>
+    </Constraint>
+    <Editor name="TreeChooser"/>
+   </XModelAttribute>
    <XModelAttribute name="description" xmlname="DESCRIPTION">
-    <Constraint/>
     <Editor name="Note2"/>
    </XModelAttribute>
    <XModelAttribute default="HTML" name="type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="start text" xmlname="STARTTEXT">
-    <Constraint/>
     <Editor name="Note2"/>
    </XModelAttribute>
    <XModelAttribute name="end text" xmlname="ENDTEXT">
-    <Constraint/>
     <Editor name="Note2"/>
    </XModelAttribute>
    <XModelAttribute default="no" name="automatically reformat tag body" xmlname="REFORMAT">
@@ -436,11 +421,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="group" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
     <Editor name="Name"/>
    </XModelAttribute>
    <XModelAttribute default="project" name="scope" visibility="false">
@@ -457,10 +440,7 @@
     </Constraint>
     <Editor name="ListAdd"/>
    </XModelAttribute>
-   <XModelAttribute name="description" xmlname="DESCRIPTION">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="description" xmlname="DESCRIPTION"/>
    <XModelAttribute default="HTML" name="type" visibility="false" xmlname="TABTYPE">
     <Constraint loader="List">
      <value name="HTML"/>
@@ -540,11 +520,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="group" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="required=true" name="name" xmlname="NAME">
-    <Constraint/>
     <Editor name="Name"/>
    </XModelAttribute>
    <XModelAttribute default="project" name="scope" visibility="false">
@@ -561,12 +539,8 @@
     </Constraint>
     <Editor name="ListAdd"/>
    </XModelAttribute>
-   <XModelAttribute name="description" xmlname="DESCRIPTION">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="description" xmlname="DESCRIPTION"/>
    <XModelAttribute default="HTML" name="type" visibility="false" xmlname="TABTYPE">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="no" name="hidden" xmlname="HIDDEN">
@@ -577,11 +551,9 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute name="nature type" visibility="false" xmlname="NATURE_TYPE">
-    <Constraint/>
     <Editor name="PaletteNatureTypesEditor"/>
    </XModelAttribute>
    <XModelAttribute name="editor type" visibility="false" xmlname="EDITOR_TYPE">
-    <Constraint/>
     <Editor name="PaletteEditorTypesEditor"/>
    </XModelAttribute>
   </XModelAttributes>

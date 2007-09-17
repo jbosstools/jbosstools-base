@@ -24,6 +24,7 @@
      <ICON name="group" path="images/tabicons/group_icons.gif"/>
      <ICON name="macro" path="images/tabicons/macro_icons.gif"/>
      <ICON name="macro-tag" path="images/palette/any-tag.gif"/>
+     <ICON name="macro-tag-large" path="images/palette/any-tag-large.gif"/>
      <ICON name="tab" path="images/tabicons/tab_icons.gif"/>
     </GROUP>
     <ICON name="icon" path="images/meta/icon.gif"/>
