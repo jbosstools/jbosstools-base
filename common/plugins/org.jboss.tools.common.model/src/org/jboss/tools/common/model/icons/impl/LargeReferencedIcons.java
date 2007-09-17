@@ -18,6 +18,7 @@ import org.jboss.tools.common.model.XModelObject;
  * @author Viacheslav Kabanovich
  */
 public class LargeReferencedIcons implements ImageComponent {
+	static String DEFAULT_LARGE_ICON = "main.xstudio.palette.macro-tag-large";
 	ReferencedIcons ri = new ReferencedIcons();
 	private XStudioIcons studioicons = new XStudioIcons();
 
@@ -26,6 +27,10 @@ public class LargeReferencedIcons implements ImageComponent {
 	public int getHash(XModelObject obj) {
 		String x = obj.getAttributeValue("large icon");
 		if (x == null || x.trim().length() == 0) {
+	        x = obj.getAttributeValue("icon");
+	        if (x == null || x.trim().length() == 0) {
+	        	return DEFAULT_LARGE_ICON.hashCode();
+	        }
 			return ri.getHash(obj);
 		}
 		XModelObject r = obj.getModel().getByPath(x);
@@ -35,6 +40,10 @@ public class LargeReferencedIcons implements ImageComponent {
 	public Image getImage(XModelObject obj) {
 		String v = obj.getAttributeValue("large icon");
 		if(v == null || v.trim().length() == 0) {
+			v = obj.getAttributeValue("icon");
+			if(v == null || v.trim().length() == 0) {
+				return obj.getModelEntity().getMetaModel().getIconList().getImage(DEFAULT_LARGE_ICON);
+			}
 			return ri.getImage(obj);
 		}
 		XModelObject ic = (v == null || v.trim().length() == 0) ? null : obj.getModel().getByPath(v);
