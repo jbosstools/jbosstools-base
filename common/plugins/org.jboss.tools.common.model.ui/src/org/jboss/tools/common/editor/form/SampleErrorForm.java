@@ -223,8 +223,8 @@ public class SampleErrorForm extends ExpandableForm {
 		public StyleRange2(int start, int length, Color fg, Color bg, String location) {
 			super(start, length, fg, bg);
 			int i = location.indexOf(":");
-			line = getInt(location.substring(0, i), 0);
-			position = getInt(location.substring(i + 1), 0);
+			line = i < 0 ? 0 : getInt(location.substring(0, i), 0);
+			position = i < 0 ? 0 : getInt(location.substring(i + 1), 0);
 		}
 		public void execute() {
 			if(listener != null) listener.errorSelected(line, position);
