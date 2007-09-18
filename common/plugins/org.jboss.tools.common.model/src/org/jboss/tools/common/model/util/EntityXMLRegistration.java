@@ -87,4 +87,14 @@ public class EntityXMLRegistration {
 		return SCHEMA;
 	}
 
+    public static boolean isSystemId(String body) {
+    	if(body == null) return false;
+        int i = body.indexOf("<!DOCTYPE");
+        if(i < 0) return false;
+        int j = body.indexOf(">", i);
+        if(j < 0) return false;
+        String dt = body.substring(i, j);
+        return (dt.indexOf("SYSTEM") > 0);        
+    }
+    
 }

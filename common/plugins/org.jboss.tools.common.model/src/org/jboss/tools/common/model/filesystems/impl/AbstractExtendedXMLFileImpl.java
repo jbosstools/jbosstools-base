@@ -131,6 +131,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
             set("isIncorrect", "yes");
 //            setErrors(value, hasDTD(), !hasDTD()); //never validate dtd
             int resolution = EntityXMLRegistration.getInstance().resolve(getModelEntity());
+            if(EntityXMLRegistration.isSystemId(value)) resolution = EntityXMLRegistration.UNRESOLVED;
             setErrors(value, resolution == EntityXMLRegistration.DTD, resolution == EntityXMLRegistration.SCHEMA);
         }
     }
@@ -232,6 +233,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         loaderError = null;
 //      setErrors(body, hasDTD(), !hasDTD()); //never validate dtd
         int resolution = EntityXMLRegistration.getInstance().resolve(getModelEntity());
+        if(EntityXMLRegistration.isSystemId(body)) resolution = EntityXMLRegistration.UNRESOLVED;
         setErrors(body, resolution == EntityXMLRegistration.DTD, resolution == EntityXMLRegistration.SCHEMA);
         boolean errors2 = (get("errors") != null && get("errors").length() > 0);
         if(errors1 && errors2) {
