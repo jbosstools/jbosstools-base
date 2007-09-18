@@ -33,7 +33,7 @@ public class ClassLoaderUtil {
 		{"org.jboss.tools.jst.web.ui", "org.jboss.tools.jst.web.ui.WebUiPlugin", "required"},
 		{"org.jboss.tools.jst.web", "org.jboss.tools.jst.web.WebModelPlugin", "required"},
 		{"org.jboss.tools.jsf.ui", "org.jboss.tools.jsf.ui.JsfUiPlugin", "required"},
-		{"org.jboss.tools.struts.ui", "org.jboss.tools.struts.ui.StrutsUIPlugin", "required"},
+		{"org.jboss.tools.struts.ui", "org.jboss.tools.struts.ui.StrutsUIPlugin", "optional"},
 		{"org.jboss.tools.common.verification.ui", "org.jboss.tools.common.verification.ui.XStudioVerificationPlugin", "optional"},
 	};
 	
