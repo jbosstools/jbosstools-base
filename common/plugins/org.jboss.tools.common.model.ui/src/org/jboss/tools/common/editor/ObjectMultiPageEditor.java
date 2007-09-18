@@ -158,6 +158,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	}
 	
 	private void loadSelectedTabForStorage() {
+		if(object == null) return;
 		String path = object.getPath();
 		QualifiedName qn = new QualifiedName("", "Selected_tab_" + path);
 		IProject p = EclipseResourceUtil.getProject(object);
@@ -188,10 +189,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	}
 	
 	private void saveSelectedTabForStorage() {
-		String path = object.getPath();
-		QualifiedName qn = new QualifiedName("", "Selected_tab_" + path);
+		if(object == null) return;
 		IProject p = EclipseResourceUtil.getProject(object);
 		if(p == null || !p.isOpen()) return;
+		String path = object.getPath();
+		QualifiedName qn = new QualifiedName("", "Selected_tab_" + path);
 		try {
 			p.setPersistentProperty(qn, "" + selectedPageIndex);
 		} catch (CoreException e) {
