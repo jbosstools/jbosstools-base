@@ -10,7 +10,12 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.core.resources;
 
+import java.io.File;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -166,7 +171,26 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		if(input instanceof IModelObjectEditorInput) return input;
 		if(input instanceof ILocationProvider) return convertExternalInput((ILocationProvider)input);
 		if(input instanceof IFileEditorInput) return convertFileInput((IFileEditorInput)input);
-		if(input instanceof IStorageEditorInput) return convertStorageEditorInput((IStorageEditorInput)input); 
+		if(input instanceof IStorageEditorInput) return convertStorageEditorInput((IStorageEditorInput)input);
+		if(input instanceof IURIEditorInput) {
+			URI uri = ((IURIEditorInput)input).getURI();
+			URL url = null;
+			try {
+				url = uri.toURL();
+			} catch (MalformedURLException e) {
+				return input;
+			}
+			if(url == null) return input;
+			String f = url.getFile();
+			XModelObject o = null;
+			try {
+				o = EclipseResourceUtil.createObjectForLocation(f);
+				if(o != null && o.getFileType() != XModelObject.FILE) o = null;
+			} catch (Exception e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
+			return (o == null) ? (IEditorInput)input : new ModelObjectLocationEditorInput(getMainObject(o), new Path(f));
+		}
 		return input;
 	}
 	
