@@ -79,8 +79,8 @@ public class SimpleWebFileLoader implements SerializingLoader {
     
     protected Document loadDocument(XModelObject object, String body) {
         int resolution = EntityXMLRegistration.getInstance().resolve(object.getModelEntity());
+        if(EntityXMLRegistration.isSystemId(body)) resolution = EntityXMLRegistration.UNRESOLVED;
         String[] errors = 
-//        	XMLUtil.getXMLErrors(new StringReader(body), isCheckingDTD(), isCheckingSchema());
 			XMLUtil.getXMLErrors(new StringReader(body), resolution == EntityXMLRegistration.DTD, resolution == EntityXMLRegistration.SCHEMA);
         if(errors != null && errors.length > 0) {
             object.setAttributeValue("isIncorrect", "yes");
