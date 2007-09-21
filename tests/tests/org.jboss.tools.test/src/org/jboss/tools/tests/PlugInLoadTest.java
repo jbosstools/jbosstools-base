@@ -99,7 +99,6 @@ public class PlugInLoadTest extends TestCase {
 	{
 		assertPluginsResolved(new String[] {
 			rhdsNS+"vpe.mozilla",
-			rhdsNS+"vpe.ui",
 			rhdsNS+"vpe",
 			rhdsNS+"vpe.ui.palette"
 		});
