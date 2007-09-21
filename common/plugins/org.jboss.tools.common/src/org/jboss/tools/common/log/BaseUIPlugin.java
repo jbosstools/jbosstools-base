@@ -10,6 +10,10 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.log;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
@@ -55,5 +59,12 @@ public class BaseUIPlugin extends AbstractUIPlugin implements IPluginLog {
 
 	public void logWarning(Throwable t) {
 		LogHelper.logWarning(this, t);
+	}
+
+	public void showError(String message, Throwable t) {
+		logError(message, t);
+		Shell shell = Display.getDefault().getActiveShell();
+		IStatus s = StatusFactory.getInstance(IStatus.ERROR, this.getBundle().getSymbolicName(), message, t);
+		ErrorDialog.openError(shell, "Hibernate Console", message, s);				
 	}
 }
