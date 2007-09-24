@@ -99,19 +99,9 @@ public class KbPlugin extends BaseUIPlugin {
 	}
     
 	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static KbPlugin getDefaultPlugin() {
-		return plugin;
-	}
-
-	/**
 	 * @return IPluginLog object
 	 */
 	public static IPluginLog getPluginLog() {
-		return getDefaultPlugin();
+		return getDefault();
 	}
-
 }
