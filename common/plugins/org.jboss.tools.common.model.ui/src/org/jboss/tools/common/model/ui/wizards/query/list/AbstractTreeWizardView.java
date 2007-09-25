@@ -27,6 +27,7 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 	protected CommandBar allBar = new CommandBar();
 	protected TreeViewer treeViewer;
 	protected CheckTreeProvider provider = new CheckTreeProvider();
+	protected TreeItemSelectionManager treeSelectionManager;
 	protected String[][] vs = new String[0][];
 	CheckObject object = new CheckObject(null, new String[]{"", "yes"});
 	int expandingLevel = 2;
@@ -108,7 +109,7 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 		Control tc = treeViewer.getControl();
 		tc.setLayoutData(new GridData(GridData.FILL_BOTH));
 		initTree();
-		new TreeItemSelectionManager(treeViewer, new Flipper());
+		treeSelectionManager = new TreeItemSelectionManager(treeViewer, new Flipper());
 		treeViewer.expandToLevel(expandingLevel);
 		Control bc = allBar.createControl(composite);
 		bc.setLayoutData(new GridData(GridData.FILL_VERTICAL));
@@ -142,21 +143,10 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 	
 	protected void enableAll() {
 		enableHierarchy(object);
-		Tree tree = treeViewer.getTree();
-		enable(tree.getItems());
+		treeSelectionManager.update();
 		treeViewer.refresh();
 	}
 	
-	private void enable(TreeItem[] items) {
-		for (int i = 0; i < items.length; i++) {
-			if(!items[i].getChecked()) {
-				items[i].setChecked(true);
-				treeViewer.refresh(items[i]);
-			}
-			enable(items[i].getItems());
-		}
-	}
-
 	private void enableHierarchy(CheckObject o) {
 		CheckObject[] os = o.getChildren();
 		for (int i = 0; i < os.length; i++) {
@@ -170,12 +160,7 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 		for (int i = 0; i < os.length; i++) {
 			os[i].setEnabled(false);
 		}
-		Tree tree = treeViewer.getTree();
-		TreeItem[] items = tree.getItems();
-		for (int i = 0; i < items.length; i++) {
-			items[i].setChecked(false);
-			treeViewer.refresh(items[i]);
-		}
+		treeSelectionManager.update();
 		treeViewer.refresh();
 	}
 	
