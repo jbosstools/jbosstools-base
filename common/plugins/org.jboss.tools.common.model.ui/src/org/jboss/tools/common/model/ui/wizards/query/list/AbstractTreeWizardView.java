@@ -142,7 +142,19 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 	
 	protected void enableAll() {
 		enableHierarchy(object);
+		Tree tree = treeViewer.getTree();
+		enable(tree.getItems());
 		treeViewer.refresh();
+	}
+	
+	private void enable(TreeItem[] items) {
+		for (int i = 0; i < items.length; i++) {
+			if(!items[i].getChecked()) {
+				items[i].setChecked(true);
+				treeViewer.refresh(items[i]);
+			}
+			enable(items[i].getItems());
+		}
 	}
 
 	private void enableHierarchy(CheckObject o) {
@@ -158,9 +170,15 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 		for (int i = 0; i < os.length; i++) {
 			os[i].setEnabled(false);
 		}
+		Tree tree = treeViewer.getTree();
+		TreeItem[] items = tree.getItems();
+		for (int i = 0; i < items.length; i++) {
+			items[i].setChecked(false);
+			treeViewer.refresh(items[i]);
+		}
 		treeViewer.refresh();
 	}
-
+	
 	class Flipper implements TreeItemSelectionManager.Listener {
 		public void flip(TreeItem item) {
 			if(item == null) return;
