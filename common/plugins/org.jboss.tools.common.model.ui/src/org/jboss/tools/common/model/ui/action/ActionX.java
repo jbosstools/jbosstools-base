@@ -29,6 +29,7 @@ public class ActionX extends Action {
 	public ActionX(XModelObjectAction a) {
 		wrapper = a;
 		this.action = a.action;
+		boolean enabled = (wrapper.targets == null) ? action.isEnabled(wrapper.object) : action.isEnabled(wrapper.object, wrapper.targets);
 		String displayName = action.getDisplayName();
 
 		String baseName = action.getBaseActionName();
@@ -59,7 +60,6 @@ public class ActionX extends Action {
 			Image image = action.getMetaModel().getIconList().getImage("action.empty");
 			setImageDescriptor(new XImageDescriptor(image));
 		}
-		boolean enabled = (wrapper.targets == null) ? action.isEnabled(wrapper.object) : action.isEnabled(wrapper.object, wrapper.targets);
 		setEnabled(enabled);
 	}
 	
