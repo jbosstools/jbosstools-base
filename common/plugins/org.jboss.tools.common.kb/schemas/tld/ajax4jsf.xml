@@ -134,6 +134,9 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+            </proposal>
         </attribute-type>
         <attribute type="actionListener"/>
         <attribute-type name="reRender" required="false">
@@ -250,6 +253,7 @@ a backing bean</description>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
+            <proposal type="viewActions"/>
         </attribute-type>
         <attribute type="action"/>
         <attribute-type name="focus" required="false">
@@ -334,6 +338,11 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="file">
+                <param name="extensions" value="%image%"/>
+                <param name="pathType" value="absolute"/>
+                <param name="pathAddition" value="#{facesContext.externalContext.requestContextPath}"/>
+            </proposal>
         </attribute-type>
         <attribute type="image"/>
         <attribute-type name="onkeyup" required="false">
