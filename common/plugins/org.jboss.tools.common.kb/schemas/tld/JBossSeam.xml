@@ -146,6 +146,7 @@
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
+			<proposal type="viewActions"/>
         </attribute-type>
         <attribute type="action"/>
         <attribute-type name="view" required="false">
@@ -153,6 +154,9 @@
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="file">
+                <param name="extensions" value="%page%"/>
+            </proposal>
         </attribute-type>
         <attribute type="view"/>
         <attribute-type name="fragment" required="false">
@@ -425,6 +429,7 @@
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
+			<proposal type="viewActions"/>
         </attribute-type>
         <attribute type="action"/>
         <attribute-type name="view" required="false">
@@ -432,6 +437,9 @@
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="file">
+                <param name="extensions" value="%page%"/>
+            </proposal>
         </attribute-type>
         <attribute type="view"/>
         <attribute-type name="fragment" required="false">
