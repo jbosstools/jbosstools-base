@@ -20,9 +20,9 @@ public class KeyLoader {
 	
 	public static Properties load(String locale) {
 		Properties keys = new Properties();
-		Set set = getKeyResources(locale);
+		Set<URL> set = getKeyResources(locale);
 		
-		Iterator it = set.iterator();
+		Iterator<URL> it = set.iterator();
 		if(!it.hasNext()) return keys;
 		while(it.hasNext()) {
 			URL url = (URL)it.next();
@@ -41,7 +41,7 @@ public class KeyLoader {
 		return keys;
 	}
 
-	private static Set getKeyResources(String locale) {
+	private static Set<URL> getKeyResources(String locale) {
 		Set<URL> resources = new HashSet<URL>();
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint("org.jboss.tools.common.model.keys");
 		IExtension[] es = point.getExtensions();
