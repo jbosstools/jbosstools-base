@@ -22,6 +22,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -116,6 +117,10 @@ public class SampleErrorForm extends ExpandableForm {
 	public Control createControl(Composite parent, IWidgetSettings factory) {
 		if (control==null) {
 			control = new Composite(parent, SWT.NONE);
+			Font f = parent.getFont();
+			if(f != null) {
+				control.setFont(f);
+			}
 			
 			ErrorLayout layout = new ErrorLayout();
 			control.setLayout(layout);
@@ -126,6 +131,9 @@ public class SampleErrorForm extends ExpandableForm {
 			superControl = (Composite)super.createControl(control, factory);
 			//superControl.setLayout(getLayout());
 			superControl.setLayoutData(new GridData(GridData.FILL_BOTH));
+			if(f != null) {
+				superControl.setFont(f);
+			}
 		}
 		
 		return control;
