@@ -113,9 +113,19 @@ public class XModelObjectLoaderUtil {
     	for (int i = 0; i < as.length; i++) {
     		String xml = as[i].getXMLName();
     		if(xml == null) continue;
-    		int k = xml.indexOf('.');
-    		if(k < 0) continue;
-    		children.add(xml.substring(0, k));
+    		int s = xml.indexOf('|');
+    		if(s > 0) {
+    			StringTokenizer st = new StringTokenizer(xml, "|");
+    			while(st.hasMoreTokens()) {
+    				String dxml = st.nextToken();
+        			int k = dxml.indexOf('.');
+        			if(k >= 0) children.add(dxml.substring(0, k));
+    			}
+    		} else {    		
+    			int k = xml.indexOf('.');
+    			if(k < 0) continue;
+    			children.add(xml.substring(0, k));
+    		}
     	}
     	XChild[] cs = entity.getChildren();
     	for (int i = 0; i < cs.length; i++) {
@@ -145,9 +155,19 @@ public class XModelObjectLoaderUtil {
     	for (int i = 0; i < as.length; i++) {
     		String xml = as[i].getXMLName();
     		if(xml == null) continue;
-    		int k = xml.indexOf('.');
-    		if(k >= 0) continue;
-    		attributes.add(xml);
+    		int s = xml.indexOf('|');
+    		if(s > 0) {
+    			StringTokenizer st = new StringTokenizer(xml, "|");
+    			while(st.hasMoreTokens()) {
+    				String dxml = st.nextToken();
+        			int k = dxml.indexOf('.');
+        			if(k < 0) attributes.add(dxml);
+    			}
+    		} else {
+    			int k = xml.indexOf('.');
+    			if(k >= 0) continue;
+    			attributes.add(xml);
+    		}
     	}
     	return attributes;
     }
