@@ -3,7 +3,7 @@
 <schema prefix="s">
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="decorate" start-tag="required">
-        <description/>
+        <description>"Decorate" a JSF input field when validation fails or when required="true" is set.</description>
         <attribute-type name="for" required="false">
             <description/>
             <proposal type="beanProperty"/>
@@ -14,15 +14,15 @@
     </element-type>
     <element-type body-content="refused" content="mixed" end-tag="required"
         name="validate" start-tag="required">
-        <description/>
+        <description>A non-visual control, validates a JSF input field against the bound property using Hibernate Validator.</description>
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="validateAll" start-tag="required">
-        <description/>
+        <description>A non-visual control, validates all child JSF input fields against their bound properties using Hibernate Validator.</description>
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="cache" start-tag="required">
-        <description/>
+        <description>Cache the rendered page fragment using JBoss Cache. Note that s:cache actually uses the instance of JBoss Cache managed by the built-in pojoCache  component.</description>
         <attribute-type name="key" required="true">
             <description/>
             <proposal type="beanProperty"/>
@@ -47,7 +47,7 @@
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="span" start-tag="required">
-        <description/>
+        <description>Render a HTML span.</description>
         <attribute-type name="style" required="false">
             <description/>
             <proposal type="beanProperty"/>
@@ -89,7 +89,7 @@
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="div" start-tag="required">
-        <description/>
+        <description>Render a HTML div.</description>
         <attribute-type name="style" required="false">
             <description/>
             <proposal type="beanProperty"/>
@@ -131,7 +131,7 @@
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="link" start-tag="required">
-        <description/>
+        <description>A link that supports invocation of an action with control over conversation propagation. Does not submit the form.</description>
         <attribute-type name="value" required="false">
             <description/>
             <proposal type="beanProperty"/>
@@ -414,7 +414,7 @@
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="button" start-tag="required">
-        <description/>
+        <description>A button that supports invocation of an action with control over conversation propagation. Does not submit the form.</description>
         <attribute-type name="value" required="false">
             <description/>
             <proposal type="beanProperty"/>
@@ -690,7 +690,7 @@
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="message" start-tag="required">
-        <description/>
+        <description>"Decorate" a JSF input field with the validation error message.</description>
         <attribute-type name="id" required="false">
             <description>Every component may have an unique id. Automatically created if
         omitted.</description>
@@ -903,7 +903,7 @@
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="selectDate" start-tag="required">
-        <description/>
+        <description>Displays a dynamic date picker component that selects a date for the specified input field. The body of the selectDate element should contain HTML elements, such as text or an image, that prompt the user to click to display the date picker. The date picker must be styled using CSS. An example CSS file can be found in the Seam booking demo as date.css, or can be generated using seam-gen. The CSS styles used to control the appearance of the date picker are also described below.</description>
         <attribute-type name="for" required="true">
             <description>the field identifier of the input item to pick a date for</description>
             <proposal type="beanProperty"/>
@@ -914,7 +914,7 @@
     </element-type>
     <element-type body-content="refused" content="mixed" end-tag="required"
         name="convertDateTime" start-tag="required">
-        <description/>
+        <description>Perform date or time conversions in the Seam timezone.</description>
         <attribute-type name="dateStyle" required="false">
             <description>default|short|medium|long|full</description>
             <proposal type="beanProperty"/>
@@ -966,11 +966,11 @@
     </element-type>
     <element-type body-content="refused" content="mixed" end-tag="required"
         name="convertEnum" start-tag="required">
-        <description/>
+        <description>Assigns an enum converter to the current component. This is primarily useful for radio button and dropdown controls.</description>
     </element-type>
     <element-type body-content="refused" content="mixed" end-tag="required"
         name="enumItem" start-tag="required">
-        <description/>
+        <description>Creates a SelectItem from an enum value.</description>
         <attribute-type name="enumValue" required="true">
             <description>the enum string value</description>
             <proposal type="beanProperty"/>
@@ -988,7 +988,7 @@
     </element-type>
     <element-type body-content="refused" content="mixed" end-tag="required"
         name="fileUpload" start-tag="required">
-        <description/>
+        <description>Renders a file upload control</description>
         <attribute-type name="data" required="true">
             <description>value binding for the file data</description>
             <proposal type="beanProperty"/>
@@ -1027,7 +1027,7 @@
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="selectItems" start-tag="required">
-        <description/>
+        <description>Creates a List SelectItem from a List, Set, DataModel or Array.</description>
         <attribute-type name="value" required="false">
             <description/>
             <proposal type="beanProperty"/>
@@ -1087,7 +1087,7 @@
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="fragment" start-tag="required">
-        <description/>
+        <description>A non-rendering component useful for enabling/disabling rendering of it's children.</description>
         <attribute-type name="rendered" required="false">
             <description/>
             <proposal type="beanProperty"/>
@@ -1099,5 +1099,71 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
+    </element-type>
+    <element-type body-content="refused" content="mixed" end-tag="required"
+        name="conversationPropagation" start-tag="required">
+        <description>Customize the conversation propagation for a command link or button (or similar JSF control). Facelets only.</description>
+        <attribute-type name="type" required="true">
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="none"/>
+                <param value="begin"/>
+                <param value="end"/>
+                <param value="nested"/>
+                <param value="join"/>
+            </proposal>
+        </attribute-type>
+        <attribute type="type"/>
+        <attribute-type name="pageflow" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="pageflow"/>
+    </element-type>
+    <element-type body-content="refused" content="mixed" end-tag="required"
+        name="conversationId" start-tag="required">
+        <description>Add the conversation id to an output link (or similar JSF control). Facelets only.</description>
+    </element-type>
+    <element-type body-content="refused" content="mixed" end-tag="required"
+        name="convertEntity" start-tag="required">
+        <description>Assigns an entity converter to the current component. This is primarily useful for radio button and dropdown controls.
+The converter works with any entity which has an @Id annotation - either simple or composite. If your Managed Persistence Context isn't called entityManager, then you need to set it in components.xml. Facelets only.
+        </description>
+    </element-type>
+    <element-type body-content="refused" content="mixed" end-tag="required"
+        name="formattedText" start-tag="required">
+        <description>Outputs Seam Text, a rich text markup useful for blogs, wikis and other applications that might use rich text. See the Seam Text chapter for full usage.</description>
+        <attribute-type name="value" required="true">
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="value"/>
+    </element-type>
+    <element-type body-content="refused" content="mixed" end-tag="required"
+        name="graphicImage" start-tag="required">
+        <description>An extended h:graphicImage that allows the image to be created in a Seam Component; further transforms can be applied to the image. Facelets only.</description>
+        <attribute-type name="value" required="true">
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="file">
+                <param name="extensions" value="%image%"/>
+            </proposal>
+        </attribute-type>
+        <attribute type="value"/>
+        <attribute-type name="fileName" required="false">
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="fileName"/>
+    </element-type>
+    <element-type body-content="refused" content="mixed" end-tag="required"
+        name="taskId" start-tag="required">
+        <description>Add the task id to an output link (or similar JSF control), when the task is available via #{task}. Facelets only.</description>
     </element-type>
 </schema>
