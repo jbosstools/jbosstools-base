@@ -364,6 +364,7 @@ public class KbHtmlStore implements KbStore {
 
 		File schemaLocation = new File(htmlSchemaLocation);
 		if((schemaLocation == null)||(!schemaLocation.exists())) {
+			KbPlugin.getPluginLog().logError("Can't load HTML schema " + schemaLocation);
 			return false;
 		}
 

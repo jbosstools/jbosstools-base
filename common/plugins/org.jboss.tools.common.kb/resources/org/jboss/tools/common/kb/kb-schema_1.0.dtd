@@ -16,7 +16,7 @@
 	prefix - Default short name of source.
 	location - Location of source.
 -->
-<!ELEMENT shema  (element-type?, attribute-type?) >
+<!ELEMENT schema  (element-type?, attribute-type?) >
 
 <!ATTLIST schema uri CDATA #REQUIRED>
 <!ATTLIST schema prefix CDATA #IMPLIED>
