@@ -70,6 +70,16 @@ public class ResourcesUtils {
 		return importedPrj;
 	}
 
+	public static IProject importExistingProject(IProject project, String location, String name) throws CoreException {
+		IPath path = new Path(location).append(".project");
+		IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(path);
+		description.setName(name);
+		project.create(description, new NullProgressMonitor());
+		project.open(IResource.BACKGROUND_REFRESH, new NullProgressMonitor());
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		return project;
+	}
+
 	public static IProject createEclipseProject(String projectName,
 			IProgressMonitor monitor) throws CoreException {
 
