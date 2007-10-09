@@ -3468,7 +3468,7 @@
 			</GroupHTML>
 			<GroupHTML ENTITY="SharableGroupHTML" HIDDEN="no" ICON=""
 				NAME="Core" PREFIX="c" SCOPE="project"
-				URI="http://java.sun.com/jsp/jstl/core" add_taglib="true"
+				URI="http://java.sun.com/jstl/core" add_taglib="true"
 				library-version="">
 				<MacroHTML
 					DESCRIPTION="&lt;html>\n &lt;table width=&quot;300&quot;>\n  &lt;tr>\n   &lt;td>\n\t&lt;font color=&quot;OLIVE&quot;>&lt;b>Name:&lt;/b>&lt;/font> &lt;code>&lt;br>Otherwise&lt;/code>    &lt;br>\n    &lt;font color=&quot;OLIVE&quot;>&lt;b>Syntax:&lt;/b>&lt;/font> &lt;code>&lt;br>&amp;lt;c:otherwise&amp;gt;&lt;br>&amp;lt;/c:otherwise&amp;gt;&lt;/code>\n   &lt;br>\n   &lt;font color=&quot;OLIVE&quot;>&lt;b>Atributes:&lt;/b>&lt;/font>\n   &lt;code>&lt;br>\n    &lt;/code>\n   &lt;/td>\n  &lt;/tr>\n &lt;/table>\n&lt;/html>\n"
@@ -3532,11 +3532,11 @@
 					ICON="%Icons%/Struts HTML/link" NAME="url" REFORMAT="yes"
 					SCOPE="project" STARTTEXT="&lt;url value=&quot;|&quot;>" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/core&quot; prefix=&quot;c&quot; %&amp;gt;&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;%@ taglib uri=&quot;http://java.sun.com/jstl/core&quot; prefix=&quot;c&quot; %&amp;gt;&lt;/code>"
 					ENDTEXT="" ENTITY="SharableMacroHTML"
 					ICON="%Icons%/Struts Common/taglib" NAME="JSTL Core taglib"
 					REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/core&quot; prefix=&quot;c&quot; %>\\n|" />
+					STARTTEXT="&lt;%@ taglib uri=&quot;http://java.sun.com/jstl/core&quot; prefix=&quot;c&quot; %>\\n|" />
 				<MacroHTML
 					DESCRIPTION="&lt;html>\n &lt;table width=&quot;300&quot;>\n  &lt;tr>\n   &lt;td>\n\t&lt;font color=&quot;OLIVE&quot;>&lt;b>Name:&lt;/b>&lt;/font> &lt;code>&lt;br>Redirect&lt;/code>    &lt;br>\n    &lt;font color=&quot;OLIVE&quot;>&lt;b>Syntax:&lt;/b>&lt;/font> &lt;code>&lt;br>&amp;lt;c:redirect&amp;gt;&lt;br>&amp;lt;/c:redirect&amp;gt;&lt;/code>\n   &lt;br>\n   &lt;font color=&quot;OLIVE&quot;>&lt;b>Atributes:&lt;/b>&lt;/font>\n   &lt;code>&lt;br>\n    &lt;b>url&lt;/b>,\n    var,\n    scope,\n    context\n    &lt;/code>\n   &lt;/td>\n  &lt;/tr>\n &lt;/table>\n&lt;/html>\n"
 					ENDTEXT="&lt;/redirect>" ENTITY="SharableMacroHTML"
