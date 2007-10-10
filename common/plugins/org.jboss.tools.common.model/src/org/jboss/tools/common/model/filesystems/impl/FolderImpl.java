@@ -13,11 +13,13 @@ package org.jboss.tools.common.model.filesystems.impl;
 import java.io.File;
 import java.util.*;
 
+import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.model.markers.ResourceMarkers;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -220,19 +222,32 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         updateLock++;
         Map<String,File> mf = new HashMap<String,File>();
         linked.clear();
+        XModelObject fileSystem = getFileSystem();
+        if(fileSystem == null) return false;
+		FileSystemsImpl fsi = (FileSystemsImpl)fileSystem.getParent();
       try {  
-		FileSystemsImpl fsi = (FileSystemsImpl)getFileSystem().getParent();
         if(resource != null && resource.exists() && !resource.isSynchronized(IResource.DEPTH_ONE)) try	{
 			fsi.lockUpdate();
 			resource.refreshLocal(IResource.DEPTH_ZERO, null);
-			IResource[] rs = resource.members();
-			for (int i = 0; i < rs.length; i++) {
-				if(!rs[i].isSynchronized(IResource.DEPTH_ZERO)) {
-					if(unsynchronized == null) unsynchronized = new HashSet<String>();
-					unsynchronized.add(rs[i].getName().toLowerCase());
+			if(resource.exists()) {
+				IResource[] rs = resource.members();
+				for (int i = 0; i < rs.length; i++) {
+					if(!rs[i].isSynchronized(IResource.DEPTH_ZERO)) {
+						if(unsynchronized == null) unsynchronized = new HashSet<String>();
+						unsynchronized.add(rs[i].getName().toLowerCase());
+					}
+				}
+				if(resource.exists()) {
+					resource.refreshLocal(IResource.DEPTH_ONE, null);
 				}
 			}
-			resource.refreshLocal(IResource.DEPTH_ONE, null);
+        } catch (ResourceException re) {
+			IPath p = resource.getLocation();
+			if(p != null && p.toFile().exists()) {
+				ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()", re);
+			} else {
+				//ignore we cannot prevent this when project is removed externally
+			}        	
 		} catch (Exception e) {
 			ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()",e);
 		} finally {
