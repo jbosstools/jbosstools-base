@@ -201,6 +201,10 @@
 			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPTaglibHyperlinkPartitioner">
          	<contentType id="org.eclipse.jst.jsp.core.jspsource">
          		<partitionType id="org.jboss.tools.common.text.ext.jsp.JSP_ROOT"/>
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
+         			<axis path="*/jsp:directive.taglib/uri" />
+         			<axis path="*/jsp:directive.taglib/prefix" />
+         		</partitionType>
          	</contentType>
 		</hyperlinkPartitioner>
 
@@ -631,6 +635,9 @@
       		class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPXmlNsHyperlink" 
       		id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPXmlNsHyperlink">
 			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
+				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_XMLNS" />
+			</contenttypeidentifier>
+			<contenttypeidentifier id="org.eclipse.wst.html.core.htmlsource">
 				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_XMLNS" />
 			</contenttypeidentifier>
 		</hyperlink>
