@@ -6589,16 +6589,6 @@
             </proposal>
         </attribute-type>
         <attribute type="visibleOnUserRole"/>
-        <attribute-type name="onblur" required="false">
-            <proposal type="beanProperty"/>
-            <proposal type="jsfVariables"/>
-        </attribute-type>
-        <attribute type="onblur"/>
-        <attribute-type name="onfocus" required="false">
-            <proposal type="beanProperty"/>
-            <proposal type="jsfVariables"/>
-        </attribute-type>
-        <attribute type="onfocus"/>
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="commandNavigation2" start-tag="required">

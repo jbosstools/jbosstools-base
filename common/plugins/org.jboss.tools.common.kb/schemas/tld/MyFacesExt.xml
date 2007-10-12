@@ -3928,16 +3928,6 @@
             </proposal>
         </attribute-type>
         <attribute type="visibleOnUserRole"/>
-        <attribute-type name="onblur" required="false">
-            <proposal type="jsfVariables"/>
-            <proposal type="beanProperty"/>
-        </attribute-type>
-        <attribute type="onblur"/>
-        <attribute-type name="onfocus" required="false">
-            <proposal type="jsfVariables"/>
-            <proposal type="beanProperty"/>
-        </attribute-type>
-        <attribute type="onfocus"/>
         <description>Must be nested inside a panel_navigation action and renders a
             clickable navigation item.
             This action is derived from the standard command_link action and
