@@ -225,8 +225,13 @@ public class JspWtpKbConnector implements WtpKbConnector {
 	            return (Collection)o;
 	        }
 		}
+		
+		KbStore store = KbTldStore.getInstance();
+		if(query.startsWith(ADD_HTML_PREFIX)) {
+			query = query.substring(ADD_HTML_PREFIX.length());
+			store = KbHtmlStore.getInstance();
+		}
 
-		KbTldStore store = KbTldStore.getInstance();
 		KbQuery kbQuery = new KbQuery(query, registerResources, registretedDinamicResources);
 		Collection<KbProposal> proposals = store.queryProposal(kbQuery);
 //		Collection result = removeSameProposals(proposals);

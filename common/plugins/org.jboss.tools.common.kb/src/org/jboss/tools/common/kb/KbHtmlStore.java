@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -439,10 +440,51 @@ public class KbHtmlStore implements KbStore {
 					}
 				}
 			}
+			if(enumeration.size() == 0) {
+				enumeration = getAttributeValueProposals(attributeType, valueMask);
+			}
 		}
 
 		return enumeration;
 	}
+
+	private ArrayList<KbProposal> getAttributeValueProposals(Element attributeType, String valueMask) {
+		ArrayList<KbProposal> proposals = new ArrayList<KbProposal>();
+
+		NodeList nodeList = attributeType.getElementsByTagName(SchemaNodeFactory.PROPOSAL_NODE);
+		for(int i = 0; i < nodeList.getLength(); i++) {
+			Element proposalElement = (Element)nodeList.item(i);
+			String type = proposalElement.getAttribute(SchemaNodeFactory.TYPE_ATTRIBUTE);
+			if(type.equals(SchemaNodeFactory.ENUMERATION_TYPE)) {
+				proposals.addAll(getEnumeration(proposalElement, valueMask));
+				continue;
+			}
+		}
+
+		return proposals;
+	}
+	private ArrayList<KbProposal> getEnumeration(Element proposalElement, String valueMask) {
+		ArrayList<KbProposal> enumeration = new ArrayList<KbProposal>();
+
+		NodeList nodeList = proposalElement.getElementsByTagName(SchemaNodeFactory.PARAM_NODE);
+		for(int i=0; i<nodeList.getLength(); i++) {
+			Element paramElement = (Element)nodeList.item(i);
+			String value = paramElement.getAttribute(SchemaNodeFactory.VALUE_ATTRIBUTE);
+			if(value.startsWith(valueMask)) {
+				KbProposal proposal = new KbProposal();
+				proposal.setLabel(value);
+				proposal.setReplacementString(value);
+				proposal.setContextInfo(null);
+				proposal.setIcon(KbIcon.ENUM_ITEM);
+				proposal.setPosition(value.length());
+
+				enumeration.add(proposal);
+			}
+		}
+
+		return enumeration;
+	}
+
 
 	private ArrayList<KbProposal> getAttributeProposal(ArrayList<Element> elements) {
 		return getProposal(elements, false);
