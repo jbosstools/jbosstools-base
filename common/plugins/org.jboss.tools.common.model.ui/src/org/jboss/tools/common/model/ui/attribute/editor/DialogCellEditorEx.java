@@ -88,7 +88,7 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 			}
 		});
 		result.setText("...");
-		return result;
+		return button = result;
 	}
 	
 	protected Control createControl(Composite parent) {
