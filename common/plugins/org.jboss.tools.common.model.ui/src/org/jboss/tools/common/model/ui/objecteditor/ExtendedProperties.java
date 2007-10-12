@@ -10,11 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.objecteditor;
 
+import org.w3c.dom.Node;
+
 public interface ExtendedProperties {
 	public String[] getAttributes();
 	public String getAttributeValue(String name);
 	public void setAttributeValue(String name, String value);
 	public boolean isEditableAttribute(String name);
 	public String getNodeName();
+	public Node getNode();
 	public ExtendedCellEditorProvider createCellEditorProvider();
 }

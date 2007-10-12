@@ -43,6 +43,9 @@ public class ExtendedPropertiesEditor {
 		if(attributes != null) {
 			context.setProperty("nodeName", "" + attributes.getNodeName());
 			cellEditorProvider = attributes.createCellEditorProvider();
+			if(attributes.getNode() != null) {
+				context.put("node", attributes.getNode());
+			}
 		}
 		if(xtable.getTable() == null || xtable.getTable().isDisposed()) return; 
 		xtable.getTable().setSelection(-1);
