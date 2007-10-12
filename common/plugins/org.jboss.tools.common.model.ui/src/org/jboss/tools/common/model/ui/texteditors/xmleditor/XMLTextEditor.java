@@ -51,9 +51,11 @@ import org.eclipse.ui.editors.text.ILocationProvider;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
+import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
 import org.eclipse.wst.sse.ui.internal.StructuredTextViewer;
 import org.eclipse.wst.xml.core.internal.document.AttrImpl;
 import org.eclipse.wst.xml.core.internal.document.ElementImpl;
+import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.eclipse.wst.xml.ui.internal.XMLUIPlugin;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
@@ -96,7 +98,11 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 	}
 
 	protected void setSourceViewerConfiguration(SourceViewerConfiguration config) {
-		if(!(config instanceof RedHatStructuredTextViewerConfigurationXML)) {
+		if(!(config instanceof RedHatStructuredTextViewerConfigurationXML)
+			&& (config instanceof StructuredTextViewerConfigurationXML
+					|| !(config instanceof StructuredTextViewerConfiguration)
+				)
+			) {
 			RedHatStructuredTextViewerConfigurationXML r = new RedHatStructuredTextViewerConfigurationXML();
 			r.setInitialConfiguration(config);
 			config = r;
