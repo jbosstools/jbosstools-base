@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.ui.texteditors;
 
 import java.util.*;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.*;
@@ -217,12 +218,19 @@ public abstract class AbstractMultiPageContributor extends MultiPageEditorAction
 		ITextEditorActionConstants.UNDO,
 		ITextEditorActionConstants.REDO
 	};
+	
+	Map<IAction, ActionHandler> used = new HashMap<IAction, ActionHandler>();
 
-	public static void registerKeyBindings(IHandlerService handler, String[] actions, ITextEditor editor) {
+	public void registerKeyBindings(IHandlerService handler, String[] actions, ITextEditor editor) {
 		for (int i = 0; i < actions.length; i++) {
 			IAction action = editor.getAction(actions[i]);
 			if(action == null) continue;
-			handler.activateHandler(actions[i], new ActionHandler(action));
+			ActionHandler h = used.get(action);
+			if(h == null) {
+				h = new ActionHandler(action);
+				used.put(action, h);
+			}
+			handler.activateHandler(actions[i], h);
 		}
 	}
 
