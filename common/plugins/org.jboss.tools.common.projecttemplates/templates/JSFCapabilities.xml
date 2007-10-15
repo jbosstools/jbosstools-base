@@ -63,6 +63,7 @@
 	</capability>
 	<capability name="JBoss RichFaces 3.1">
 		<library name="RichFaces" />
+		<conflicting-library name="a4j.jar"/>
 		<file-addition file-name="/WEB-INF/web.xml"
 			label="Skin Parameter" x-path="/web-app">
 			<![CDATA[<context-param>
