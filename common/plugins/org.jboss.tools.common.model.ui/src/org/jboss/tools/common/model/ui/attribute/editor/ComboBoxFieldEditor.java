@@ -24,7 +24,6 @@ import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusAdapter;
@@ -38,6 +37,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -64,7 +64,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 	public static int UNLIMITED = -1;
 	private int textLimit = UNLIMITED;
 	private int widthInChars = UNLIMITED;
-	private CCombo comboField;
+	private Combo comboField;
 	private String[] tags = new String[0];
 //	private int style = SWT.NONE;
 	private static final int defaultStyle = SWT.BORDER;
@@ -91,11 +91,11 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 		createControl(parent);
 	}
 	
-	protected CCombo getComboField() {
+	protected Combo getComboField() {
 		return comboField;
 	}
 
-	protected CCombo getComboControl() {
+	protected Combo getComboControl() {
 		return comboField;
 	}
 
@@ -155,7 +155,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 		return 2;
 	}
 
-	protected CCombo getComboControl(Composite parent) {
+	protected Combo getComboControl(Composite parent) {
 		if (comboField == null) {
 			int style = getSettings().getStyle("Combo.Style");
 			Color bg = getSettings().getColor("Combo.Background");
@@ -168,10 +168,10 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 						
 			if (border!=null) {
 				BorderedControl borderedControl = new BorderedControl(parent, SWT.NONE, border);
-				comboField = new CCombo(borderedControl, style);
+				comboField = new Combo(borderedControl, style);
 				comboField.setBackground(bg);
 			} else {
-				comboField = new CCombo(parent, style);
+				comboField = new Combo(parent, style);
 			}
 			comboField.setFont(font);
 			comboField.setForeground(fg);

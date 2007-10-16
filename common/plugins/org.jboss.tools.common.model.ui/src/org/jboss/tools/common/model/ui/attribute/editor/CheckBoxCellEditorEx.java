@@ -11,12 +11,13 @@
 package org.jboss.tools.common.model.ui.attribute.editor;
 
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class CheckBoxCellEditorEx extends ComboBoxCellEditorEx {
 
-	protected CCombo comboBox;
+	protected Combo comboBox;
 	protected Composite parent;
 
 	protected String trueValue = "true";
@@ -27,7 +28,7 @@ public class CheckBoxCellEditorEx extends ComboBoxCellEditorEx {
 	}
 	
 	protected Control createControl(Composite parent) {
-		this.comboBox = (CCombo)super.createControl(parent);
+		this.comboBox = (Combo)super.createControl(parent);
 		return this.comboBox;
 	}
 	protected void doSetValue(Object value) {
