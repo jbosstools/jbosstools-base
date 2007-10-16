@@ -4,13 +4,13 @@
   <refLib type="servlet" location="../servlet" />
   <projectTempl location="./jsf-1.1" />
  </version>
- <version displayName="JSF 1.2">
+ <version displayName="JSF 1.2" servlet-version="2.5">
   <lib type="core" location="../lib/jsf-1.2"/>
   <lib type="common" location="../lib/ApacheCommon2.3" />
   <refLib type="servlet" location="../servlet" />
   <projectTempl location="./jsf-1.2" />
  </version>
- <version displayName="JSF 1.2 with Facelets">
+ <version displayName="JSF 1.2 with Facelets" servlet-version="2.5">
   <lib type="core" location="../lib/jsf-1.2" />
   <lib type="common" location="../lib/facelets" />
   <lib type="common" location="../lib/ApacheCommon2.3" />
