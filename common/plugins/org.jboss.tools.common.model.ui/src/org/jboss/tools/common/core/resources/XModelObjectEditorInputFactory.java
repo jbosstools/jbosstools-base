@@ -11,9 +11,11 @@
 package org.jboss.tools.common.core.resources;
 
 import java.io.File;
+
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
 import org.eclipse.ui.*;
+import org.eclipse.ui.internal.part.NullEditorInput;
 import org.eclipse.ui.part.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemImpl;
@@ -53,6 +55,7 @@ public class XModelObjectEditorInputFactory implements IElementFactory {
 	private IAdaptable createStorageElement(IMemento memento) {
 		String projectPath = memento.getString(TAG_PROJECT);
 		XModelObject object = null;
+		String missingName = "";
 		if(projectPath == null) {
 			String fileLocation = memento.getString(TAG_FILE_LOCATION);
 			if(fileLocation != null) {
@@ -60,6 +63,8 @@ public class XModelObjectEditorInputFactory implements IElementFactory {
 				if(f.isFile()) {
 					object = EclipseResourceUtil.createObjectForLocation(fileLocation);
 					return (object == null) ? null : new ModelObjectLocationEditorInput(object, new Path(f.getAbsolutePath()));
+				} else {
+					missingName = f.getName();
 				}
 			}
 		} else if(memento.getString(TAG_ENTRY) != null) {
@@ -71,12 +76,15 @@ public class XModelObjectEditorInputFactory implements IElementFactory {
 			String objectPath = memento.getString(TAG_PATH);
 			IModelNature nature = EclipseResourceUtil.getModelNature(project);
 			if(nature == null) {
+				missingName = "" + objectPath;
 			} else {
 				XModel model = nature.getModel();
 				object = model.getByPath(objectPath);
 			}
 		}
-		if(object == null) return null;
+		if(object == null) {
+			return createNullEditorInput(missingName);
+		}
 		return new ModelObjectStorageEditorInput(object);
 	}
 	
@@ -128,6 +136,21 @@ public class XModelObjectEditorInputFactory implements IElementFactory {
 			return location; 
 		}
 		return null;
+	}
+	
+	public static IEditorInput createNullEditorInput(final String entry) {
+		return new NullEditorInput() {
+			public String getName() {
+				if(entry != null) {
+					int i = entry.lastIndexOf('/');
+					if(i > 0) return entry.substring(i + 1);
+				}
+				return entry;
+			}
+			public String getToolTipText() {
+				return entry;
+			}
+		};
 	}
 
 }

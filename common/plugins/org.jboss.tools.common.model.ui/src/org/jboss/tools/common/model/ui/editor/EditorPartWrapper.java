@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.common.core.resources.XModelObjectEditorInput;
+import org.jboss.tools.common.editor.NullEditorPart;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
@@ -25,6 +26,7 @@ import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.internal.part.NullEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.WorkbenchPart;
 
@@ -68,6 +70,14 @@ public class EditorPartWrapper extends EditorPart implements IReusableEditor, IE
 
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		input = XModelObjectEditorInput.checkInput(input);
+		if(input instanceof NullEditorInput) {
+			entity = "";
+			editor = new NullEditorPart();
+			editor.init(site, input);
+			setSite(site);
+			setInput(input);
+			return;
+		}
 		entity = computeEntity(input);
 		EditorPartWrapperExtension extension = EditorPartWrapperExtension.getInstance();
 		EditorPartFactory f = extension.getFactory(entity);

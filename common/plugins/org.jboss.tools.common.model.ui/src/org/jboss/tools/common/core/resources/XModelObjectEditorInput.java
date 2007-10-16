@@ -10,7 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.core.resources;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -22,6 +21,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.*;
 import org.eclipse.ui.editors.text.ILocationProvider;
+import org.eclipse.ui.internal.part.NullEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.*;
@@ -233,7 +233,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		String jarFile = entryInfo[0];
 		String entry = entryInfo[1];
 		IEditorInput result = createJarEntryEditorInput(jarFile, entry);
-		return (result == null) ? input : result;
+		return (result == null || result instanceof NullEditorInput) ? input : result;
 	}
 
 	public static String[] parseJarEntryFileInput(IStorageEditorInput input) {
@@ -266,9 +266,10 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		return (n == null) ? null : n.getModel().getByPath("/" + entry);		
 	}
 	
-	public static IEditorInput createJarEntryEditorInput(String jarFile, String entry) {
+	public static IEditorInput createJarEntryEditorInput(String jarFile, final String entry) {
 		XModelObject o = getJarEntryObject(jarFile, entry);
-		return (o != null) ? new ModelObjectJarEntryEditorInput(o, jarFile, entry) : null;
+		if(o != null) return new ModelObjectJarEntryEditorInput(o, jarFile, entry);
+		return XModelObjectEditorInputFactory.createNullEditorInput(entry);
 	}
 	
 	public String getFactoryId() {
