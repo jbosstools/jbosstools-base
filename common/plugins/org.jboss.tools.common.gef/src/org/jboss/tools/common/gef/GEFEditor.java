@@ -272,11 +272,17 @@ public class GEFEditor extends GraphicalEditor implements MouseListener,
 
 	protected void createOutputStream(OutputStream os) throws IOException {
 	}
+	
+	protected DiagramContentOutlinePage outline;
 
 	public void dispose() {
 		getSite().getWorkbenchWindow().getPartService().removePartListener(
 				partListener);
 		partListener = null;
+		if(outline != null) {
+			outline.dispose();
+			outline = null;
+		}
 		super.dispose();
 	}
 
@@ -301,7 +307,8 @@ public class GEFEditor extends GraphicalEditor implements MouseListener,
 		if (type == CommandStackInspectorPage.class)
 			return new CommandStackInspectorPage(getCommandStack());
 		if (type == IContentOutlinePage.class) {
-			DiagramContentOutlinePage outline = new DiagramContentOutlinePage(
+			if(outline != null) return outline;
+			outline = new DiagramContentOutlinePage(
 					new TreeViewer());
 			outline.setGraphicalViewer(getGraphicalViewer());
 			outline.setSelectionSynchronizer(getSelectionSynchronizer());
