@@ -95,6 +95,14 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	/** LOG_DATE_FORMAT */
 	final private static SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat(
 			"yyyyMMddHHmmss");
+	
+	final private static SimpleDateFormat CURENT_DATE_FORMAT = new SimpleDateFormat(
+	"yyyy-MM-dd");
+	
+	final private static SimpleDateFormat SESSION_DATE_FORMAT = new SimpleDateFormat(
+	"yyyy-MM-dd HH:mm");
+	
+	final private static long TWENTY_FOUR_HOURS = 86400000;
 
 	/** log file name */
 	private Text logFileName;
@@ -243,8 +251,44 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 
-		return sb.toString().getBytes();
+		return getLogByCurentDate(sb.toString()).getBytes();
 	};
+	
+	private String getLogByCurentDate(String log){
+		String lastOldSession="";
+		boolean isAccept = false;
+		Date today = new Date();
+
+		StringBuffer sb = new StringBuffer();
+		StringTokenizer st = new StringTokenizer(log, "\n", true);
+		while (st.hasMoreTokens()) {
+			String t = st.nextToken();
+			if(t.startsWith("!SESSION")){
+				String dateString = t.substring(9, 25);
+				try{
+					Date date = SESSION_DATE_FORMAT.parse(dateString);
+					long delta = today.getTime()-date.getTime();
+					if(delta < TWENTY_FOUR_HOURS){
+						if(!isAccept) sb.append(lastOldSession+"\n");
+						sb.append(t);
+						isAccept = true;
+					}else{
+						lastOldSession = new String(t);
+						isAccept = false;
+					}
+				}catch(Exception ex){
+					//ModelUIPlugin.getPluginLog().logError(ex);
+					sb.append(t);
+					isAccept = true;
+				}
+			}else{
+				if(isAccept){
+					sb.append(t);
+				}
+			}
+		}
+		return sb.toString();
+	}
 
 	/**
 	 * @return
