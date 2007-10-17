@@ -36,10 +36,8 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 	public void dispose() {
 		setHost(null);
 		listeners.clear();
-		listeners = null;
 		hosts = new ISelectionProvider[0];
 		hostsMap.clear();
-		hostsMap = null;
 	}
 	
 	public void addHost(String name, ISelectionProvider host) {
