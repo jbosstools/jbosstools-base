@@ -220,7 +220,7 @@
       <page 
          class="org.jboss.tools.common.model.ui.preferences.CompanyPreferencesPage" 
          id="org.jboss.tools.common.model.ui" 
-         name="Red Hat">
+         name="JBoss Tools">
       </page>
    </extension>
    <extension point="org.eclipse.ui.preferencePages">
@@ -276,7 +276,7 @@
    
    <extension point="org.eclipse.core.runtime.contentTypes"> 
       <content-type id="xml" 
-       name="Red Hat XML"
+       name="JBoss Tools XML"
        base-type="org.eclipse.core.runtime.xml"
        describer="org.jboss.tools.common.model.ui.editor.XMLContentDescriber"
        file-extensions="xml,meta"
