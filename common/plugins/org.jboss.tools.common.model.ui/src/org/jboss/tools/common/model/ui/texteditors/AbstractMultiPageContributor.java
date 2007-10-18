@@ -18,6 +18,7 @@ import org.eclipse.jface.action.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.*;
+import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.ide.IDEActionFactory;
 import org.eclipse.ui.part.MultiPageEditorActionBarContributor;
@@ -220,18 +221,27 @@ public abstract class AbstractMultiPageContributor extends MultiPageEditorAction
 	};
 	
 	Map<IAction, ActionHandler> used = new HashMap<IAction, ActionHandler>();
+	Map<String, IHandlerActivation> registered = new HashMap<String, IHandlerActivation>();
 
 	public void registerKeyBindings(IHandlerService handler, String[] actions, ITextEditor editor) {
 		for (int i = 0; i < actions.length; i++) {
 			IAction action = editor.getAction(actions[i]);
-			if(action == null) continue;
-			ActionHandler h = used.get(action);
-			if(h == null) {
-				h = new ActionHandler(action);
-				used.put(action, h);
-			}
-			handler.activateHandler(actions[i], h);
+			registerKeyBinding(handler, actions[i], action);
 		}
+	}
+	
+	protected void registerKeyBinding(IHandlerService handler, String command, IAction action) {
+		if(action == null) return;
+		ActionHandler h = used.get(action);
+		if(h == null) {
+			h = new ActionHandler(action);
+			used.put(action, h);
+		}
+		String id = action.getId();
+		IHandlerActivation c = registered.get(id);
+		if(c != null) handler.deactivateHandler(c);
+		IHandlerActivation a = handler.activateHandler(command, h);
+		if(a != null) registered.put(id, a);
 	}
 
 	protected class AFakeTextEditor implements ITextEditor, ITextOperationTarget {
