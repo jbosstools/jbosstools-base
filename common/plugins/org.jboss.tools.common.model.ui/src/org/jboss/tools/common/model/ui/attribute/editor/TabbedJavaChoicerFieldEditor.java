@@ -29,6 +29,7 @@ import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements IPropertyFieldEditor {
 	
 	private static final String LAST_CHOICER = "TabbedJavaChoicerFieldEditor.LastChoicer";
+	private static final int WINDOW_HEIGHT = 400;
 	
 	protected IPropertyEditor propertyEditor;
 	protected TabFolder tabbedPane;
@@ -82,10 +83,12 @@ public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		gd = new GridData(GridData.FILL_BOTH);
+		gd.heightHint = WINDOW_HEIGHT;
 		composite.setLayoutData(gd);
 
 		tabbedPane = new TabFolder(composite, SWT.NONE);
 		gd = new GridData(GridData.FILL_BOTH);
+		gd.heightHint = WINDOW_HEIGHT;
 		tabbedPane.setLayoutData(gd);
 		// classic
 		TabItem classicChooser = new TabItem(tabbedPane, SWT.NONE);
