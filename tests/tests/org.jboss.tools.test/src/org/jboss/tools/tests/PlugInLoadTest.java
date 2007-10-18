@@ -115,16 +115,7 @@ public class PlugInLoadTest extends TestCase {
 			rhdsNS+"struts.verification"
 		});
 	}
-	
-	public void testShalePluginsResolved ()
-	{
-		assertPluginsResolved(new String[] {
-			rhdsNS+"shale.ui",
-			rhdsNS+"shale",
-			rhdsNS+"shale.text.ext"
-		});
-	}
-	
+
 	public void testCorePluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
