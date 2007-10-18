@@ -1305,62 +1305,6 @@
 					STARTTEXT="&lt;optionsCollection property=&quot;|&quot;/>" />
 			</GroupHTML>
 		</PageTabHTML>
-		<PageTabHTML DESCRIPTION="" EDITOR_TYPE=""
-			ENTITY="SharablePageTabHTML" HIDDEN="yes" NAME="Struts Shale"
-			NATURE_TYPE="" SCOPE="project" TABTYPE="HTML">
-			<GroupHTML ENTITY="SharableGroupHTML" HIDDEN="no" ICON=""
-				NAME="Core" PREFIX="s" SCOPE="project"
-				URI="http://struts.apache.org/shale/core" add_taglib="true"
-				library-version="">
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:validatorScript /&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>functionName&lt;/b>&lt;/code>"
-					ENDTEXT="" ENTITY="SharableMacroHTML" ICON=""
-					NAME="validatorScript" REFORMAT="no" SCOPE="project"
-					STARTTEXT="&lt;validatorScript functionName=&quot;|&quot;/>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:subview&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:subview&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>id&lt;/b>, binding, rendered&lt;/code>"
-					ENDTEXT="&lt;/subview>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="subview" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;subview id=&quot;|&quot;>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;%@ taglib uri=&quot;http://java.sun.com/jsf/core&quot; prefix=&quot;f&quot; %&amp;gt;&lt;/code>"
-					ENDTEXT="" ENTITY="SharableMacroHTML"
-					ICON="%Icons%/Struts Common/taglib" NAME="Struts Shale Core taglib"
-					REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;%@ taglib uri=&quot;http://struts.apache.org/shale/core&quot; prefix=&quot;s&quot; %>\\n|" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:commonsValidator /&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>type, min, max, minlength, maxlength, mask, datePatternStrict, message, arg, client, server&lt;/code>"
-					ENDTEXT="" ENTITY="SharableMacroHTML" ICON=""
-					NAME="commonsValidator" REFORMAT="no" SCOPE="project"
-					STARTTEXT="&lt;commonsValidator/>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:token /&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered&lt;/code>"
-					ENDTEXT="" ENTITY="SharableMacroHTML" ICON="" NAME="token"
-					REFORMAT="no" SCOPE="project" STARTTEXT="&lt;token/>" />
-			</GroupHTML>
-			<GroupHTML ENTITY="SharableGroupHTML" HIDDEN="yes" ICON=""
-				NAME="Clay Plugin" PREFIX="clay" SCOPE="project"
-				URI="http://struts.apache.org/shale/clay-plugin" add_taglib="true"
-				library-version="">
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;%@ taglib uri=&quot;http://java.sun.com/jsf/core&quot; prefix=&quot;f&quot; %&amp;gt;&lt;/code>"
-					ENDTEXT="" ENTITY="SharableMacroHTML"
-					ICON="%Icons%/Struts Common/taglib"
-					NAME="Struts Shale Clay Plugin taglib" REFORMAT="yes"
-					SCOPE="project"
-					STARTTEXT="&lt;%@ taglib uri=&quot;http://struts.apache.org/shale/clay-plugin&quot; prefix=&quot;clay&quot; %>\\n|" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;clay:clay&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/clay:clay&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>id&lt;/b>, &lt;b>jsfid&lt;/b>, managedBeanName, shapeValidator, rendered&lt;/code>"
-					ENDTEXT="&lt;/clay>" ENTITY="SharableMacroHTML" ICON="" NAME="clay"
-					REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;clay id=&quot;|&quot; jsfid=&quot;&quot;>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;clay:symbol&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/clay:symbol&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>name&lt;/b>, &lt;b>value&lt;/b>&lt;/code>"
-					ENDTEXT="&lt;/symbol>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="symbol" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;symbol name=&quot;|&quot; value=&quot;&quot;>" />
-			</GroupHTML>
-		</PageTabHTML>
 		<PageTabHTML DESCRIPTION="" EDITOR_TYPE="jsp;"
 			ENTITY="SharablePageTabHTML" HIDDEN="yes" NAME="HTML"
 			NATURE_TYPE="struts;" SCOPE="project" TABTYPE="HTML">
