@@ -217,10 +217,11 @@
       </actionSet>
    </extension>
    <extension point="org.eclipse.ui.preferencePages">
-      <page 
-         class="org.jboss.tools.common.model.ui.preferences.CompanyPreferencesPage" 
-         id="org.jboss.tools.common.model.ui" 
-         name="JBoss Tools">
+      <page
+            category="org.jboss.ide.eclipse.ui.MainPreferencePage"
+            class="org.jboss.tools.common.model.ui.preferences.CompanyPreferencesPage"
+            id="org.jboss.tools.common.model.ui"
+            name="Web">
       </page>
    </extension>
    <extension point="org.eclipse.ui.preferencePages">
