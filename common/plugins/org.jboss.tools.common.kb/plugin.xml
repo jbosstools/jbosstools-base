@@ -79,18 +79,6 @@
             schema-location="schemas/tld/MyFacesTomahawk.xml"
             uri="http://myfaces.apache.org/tomahawk"/>
 
-     
-      <tld
-            jsf="true"
-            name="Shale Core"
-            schema-location="schemas/tld/ShaleCore.xml"
-            uri="http://struts.apache.org/shale/core"/>
-      <tld
-            jsf="true"
-            name="Shale Clay"
-            schema-location="schemas/tld/ShaleClay.xml"
-            uri="http://struts.apache.org/shale/clay-plugin"/>
-
       <tld
             jsf="true"
             name="Facelets"
