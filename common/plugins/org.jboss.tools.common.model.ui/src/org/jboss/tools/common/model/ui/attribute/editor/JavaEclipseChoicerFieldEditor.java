@@ -21,11 +21,13 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
@@ -118,7 +120,7 @@ public class JavaEclipseChoicerFieldEditor extends ExtendedFieldEditor implement
 			filter = "java.lang.Object";
 		}
 
-		tc = new TypeSelectionComponent(parent, 0, message, false, scope, IJavaSearchConstants.CLASS + IJavaSearchConstants.INTERFACE, Signature.getSimpleName(filter), new TitleLabel(), null);
+		tc = new TypeSelectionComponent(parent, 0, message, false, scope, 0/*IJavaSearchConstants.CLASS + IJavaSearchConstants.INTERFACE*/, Signature.getSimpleName(filter), new TitleLabel(), null);
 		Composite composite = tc;
 		tc.triggerSearch();
 		
