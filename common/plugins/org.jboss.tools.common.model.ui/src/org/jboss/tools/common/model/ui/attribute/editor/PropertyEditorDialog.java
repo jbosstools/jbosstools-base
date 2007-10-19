@@ -125,14 +125,4 @@ public class PropertyEditorDialog extends Dialog {
 	    }
 		
 	}
-
-	public void create() {
-		super.create();
-		Point p = getShell().getSize();
-		if(p.y > 400) {
-			p.y = 400;
-			getShell().setSize(p);
-		}
-	}
-
 }
