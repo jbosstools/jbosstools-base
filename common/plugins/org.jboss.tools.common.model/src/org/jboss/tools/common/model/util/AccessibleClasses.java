@@ -11,6 +11,13 @@
 package org.jboss.tools.common.model.util;
 
 import java.util.*;
+
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IParent;
+import org.eclipse.jdt.core.JavaModelException;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
@@ -20,6 +27,7 @@ public class AccessibleClasses implements ISimpleTree {
     private static final int PROJECT = 2;
     private int mode = 2;
     private XModel model;
+    IJavaProject javaProject;
     private Map<String,SortedSet<String>> map = null;
     private static SortedSet<String> EMPTY = new TreeSet<String>();
     private Comparator<String> comparator = new ACComparator<String>();
@@ -34,6 +42,7 @@ public class AccessibleClasses implements ISimpleTree {
 
     public AccessibleClasses(XModel model, int mode) {
         this.model = (XModel)model;
+        javaProject = EclipseResourceUtil.getJavaProject(EclipseResourceUtil.getProject(model.getRoot()));
         this.mode = mode;
         map = ((mode & PROJECT) != 0) ? new HashMap<String,SortedSet<String>>() : null;
     }
@@ -77,27 +86,76 @@ public class AccessibleClasses implements ISimpleTree {
         boolean exists = false;
         XModelObject fs = FileSystemsHelper.getFileSystems(model);
         if(fs == null) return false;
-        XModelObject[] rs = fs.getChildren();
-        boolean r = "%root%".equals(packagename);
-        String jp = (r) ? "" : packagename;
-        if(!r) packagename = packagename.replace('.', '/');
-        for (int i = 0; i < rs.length; i++) {
-            XModelObject o = (r) ? rs[i] : rs[i].getChildByPath(packagename);
-            if(o == null) continue;
-            exists = true;
-            XModelObject[] os = o.getChildren();
-            for (int j = 0; j < os.length; j++) {
-                if("true".equals(os[j].get("overlapped"))) continue;
-                String ext = "." + os[j].getAttributeValue("extension") + ".";
-                boolean isc = (extensions().indexOf(ext) >= 0);
-                boolean isp = (os[j].getFileType() >= XFileObject.FOLDER);
-                if(!isc && !isp) continue;
-                String n = os[j].getAttributeValue("name");
-                if(isp) n += ".";
-                if(accepts(jp, n)) list.add(n);
-            }
+        try {
+        	exists = getChildren(list, packagename);
+        } catch (JavaModelException e) {
+        	e.printStackTrace();
         }
         return exists;
+    }
+    
+    private boolean getChildren(SortedSet<String> list, String packagename) throws JavaModelException {
+    	if(javaProject == null || !javaProject.exists()) return false;
+        boolean exists = false;
+        boolean r = "%root%".equals(packagename);
+        String jp = (r) ? "" : packagename;
+    	IPackageFragmentRoot[] rs = javaProject.getPackageFragmentRoots();
+    	for (int i = 0; i < rs.length; i++) {
+    		IParent pf = (r) ? rs[i] : rs[i].getPackageFragment(packagename);
+    		if(pf == null || !((IJavaElement)pf).exists()) continue;
+    		exists = true;
+    		IJavaElement[] cs = pf.getChildren();
+    		process(list, cs, jp);
+    		if(!r) process2(list, rs[i].getChildren(), jp);
+    	}
+    	return exists;
+    }
+    
+    private void process(SortedSet<String> list, IJavaElement[] cs, String jp) throws JavaModelException {
+        for (int j = 0; j < cs.length; j++) {
+            boolean isp = cs[j] instanceof IPackageFragment;
+            String n = cs[j].getElementName();
+            if(n.length() == 0 && isp) {
+            	process(list, ((IPackageFragment)cs[j]).getChildren(), jp);
+            } else {
+            	if(isp) {
+            		if(n.indexOf('.') >= 0) continue;
+            		n += ".";
+            	} else {
+            		int d = n.lastIndexOf('.');
+            		if(d >= 0) {
+            			String ext = n.substring(d + 1);
+            			n = n.substring(0, d);
+            			if(!extensions().contains("." + ext + ".")) continue;
+            		}
+            	}
+            	if(accepts(jp, n)) {
+            		list.add(n);
+            	}
+            }
+        }
+    }
+    private void process2(SortedSet<String> list, IJavaElement[] cs, String jp) throws JavaModelException {
+        for (int j = 0; j < cs.length; j++) {
+        	String n = cs[j].getElementName();
+        	if(!n.startsWith(jp + ".")) continue;
+        	n = n.substring(jp.length() + 1);
+            boolean isp = cs[j] instanceof IPackageFragment;
+        	if(isp) {
+        		if(n.indexOf('.') >= 0) continue;
+        		n += ".";
+        	} else {
+        		int d = n.lastIndexOf('.');
+        		if(d >= 0) {
+        			String ext = n.substring(d + 1);
+        			n = n.substring(0, d);
+        			if(!extensions().contains("." + ext + ".")) continue;
+        		}
+        	}
+        	if(accepts(jp, n)) {
+        		list.add(n);
+        	}
+        }
     }
 
     protected boolean accepts(String packagename, String n) {
