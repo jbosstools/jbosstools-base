@@ -1964,10 +1964,15 @@
 					NAME="dataGrid" REFORMAT="yes" SCOPE="project"
 					STARTTEXT="&lt;dataGrid>" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:treeNodes&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:treeNodes&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>active, var, rendered, nodes, binding, id&lt;/code>"
-					ENDTEXT="&lt;/treeNodes>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="treeNodes" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;treeNodes>" />
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:treeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:treeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>active, var, rendered, nodes, binding, id&lt;/code>"
+					ENDTEXT="&lt;/treeNodesAdaptor>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="treeNodesAdaptor" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;treeNodesAdaptor>" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:jQuery&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:jQuery&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>query, name, timing, id, rendered, binding, selector&lt;/code>"
+					ENDTEXT="&lt;/jQuery>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="jQuery" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;jQuery>" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:menuGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>value&lt;/b>, onclose, iconClass, rendered, showDelay, iconDisabled, id, onopen, styleClass, icon, style, onmouseover, iconFolderDisabled, converter, disabled, selectClass, selectStyle, onmouseout, direction, iconStyle, event, binding, onmousemove, iconFolder&lt;/code>"
 					ENDTEXT="&lt;/menuGroup>" ENTITY="SharableMacroHTML" ICON=""
@@ -2073,10 +2078,10 @@
 					NAME="panelMenuGroup" REFORMAT="yes" SCOPE="project"
 					STARTTEXT="&lt;panelMenuGroup>" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:recursiveTreeNodes&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:recursiveTreeNodes&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>active, var, activeRoot, rendered, nodes, id, root, binding, activeNodes&lt;/code>"
-					ENDTEXT="&lt;/recursiveTreeNodes>" ENTITY="SharableMacroHTML"
-					ICON="" NAME="recursiveTreeNodes" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;recursiveTreeNodes>" />
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:recursiveTreeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:recursiveTreeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>active, var, activeRoot, rendered, nodes, id, root, binding, activeNodes&lt;/code>"
+					ENDTEXT="&lt;/recursiveTreeNodesAdaptor>" ENTITY="SharableMacroHTML"
+					ICON="" NAME="recursiveTreeNodesAdaptor" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;recursiveTreeNodesAdaptor>" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:simpleTogglePanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:simpleTogglePanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, width, oncomplete, bodyClass, rendered, reRender, focus, id, styleClass, bypassUpdates, switchType, height, onkeypress, limitToList, ondblclick, ajaxSingle, style, onmouseover, onkeyup, action, value, timeout, actionExpression, onclick, headerClass, status, onmouseout, onkeydown, onmousedown, requestDelay, opened, eventsQueue, label, immediate, data, onmouseup, ignoreDupResponses, binding, onmousemove&lt;/code>"
 					ENDTEXT="&lt;/simpleTogglePanel>" ENTITY="SharableMacroHTML"
