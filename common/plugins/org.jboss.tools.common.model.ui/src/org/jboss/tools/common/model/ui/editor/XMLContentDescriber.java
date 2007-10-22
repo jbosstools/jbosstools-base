@@ -41,7 +41,8 @@ public class XMLContentDescriber extends org.eclipse.core.internal.content.XMLCo
 	
 	private int describe(String text, IContentDescription description) {
 		String entity = PreferenceModelUtilities.getPreferenceModel().getEntityRecognizer().getEntityName("xml", text);
-		if(entity == null || entity.length() == 0 || entity.equals("FileXML")) {
+		if(entity == null || entity.length() == 0 || entity.equals("FileXML") || 
+				entity.equals("FileHibConfig3") || entity.equals("FileHibernate3")) {
 			return INDETERMINATE;
 		}
 		return VALID;

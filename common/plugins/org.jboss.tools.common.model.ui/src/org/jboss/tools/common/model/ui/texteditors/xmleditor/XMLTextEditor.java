@@ -97,8 +97,27 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 		super.setSourceViewerConfiguration(new RedHatStructuredTextViewerConfigurationXML());
 	}
 
+	public XMLTextEditor(SourceViewerConfiguration config) {
+		super.setSourceViewerConfiguration(config);
+		XmlEditorPlugin.getDefault().initDefaultPluginPreferences();
+///		dnd.setTextEditorDropProvider(new TextEditorDropProviderImpl());
+		if (config != null) {
+			if (!(config instanceof RedHatStructuredTextViewerConfigurationXML)) {
+				rhsvcEnabled = false;
+			}
+			super.setSourceViewerConfiguration(config);
+		}
+	}
+
+	private boolean rhsvcEnabled = true;
+	
+	protected boolean isRedHatSourceViewerConfigurationEnabled() {
+		return rhsvcEnabled;
+	}
+	
 	protected void setSourceViewerConfiguration(SourceViewerConfiguration config) {
-		if(!(config instanceof RedHatStructuredTextViewerConfigurationXML)
+		if( isRedHatSourceViewerConfigurationEnabled()
+			&& !(config instanceof RedHatStructuredTextViewerConfigurationXML)
 			&& (config instanceof StructuredTextViewerConfigurationXML
 					|| !(config instanceof StructuredTextViewerConfiguration)
 				)

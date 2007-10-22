@@ -27,6 +27,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.events.FocusListener;
 //import org.eclipse.swt.graphics.Point;
@@ -45,6 +46,8 @@ import org.eclipse.ui.texteditor.ResourceAction;
 import org.eclipse.ui.texteditor.RevertToSavedAction;
 import org.eclipse.ui.texteditor.SaveAction;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
+import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
+import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.DiscardFileHandler;
@@ -64,6 +67,12 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 		support.setProvider(this);
 ///		XmlDocumentProvider p = (XmlDocumentProvider)getDocumentProvider();
 ///		p.disableElementContentChange();
+		ModelPlugin.getWorkspace().addResourceChangeListener(changeListener = new ICL());
+	}
+
+	public XMLTextEditorComponent(SourceViewerConfiguration configuration) {
+		super(configuration);
+		support.setProvider(this);
 		ModelPlugin.getWorkspace().addResourceChangeListener(changeListener = new ICL());
 	}
 
