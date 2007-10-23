@@ -92,31 +92,24 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 	XModelObject object = null;
 
 	public XMLTextEditor() {
-		XmlEditorPlugin.getDefault().initDefaultPluginPreferences();
-///		dnd.setTextEditorDropProvider(new TextEditorDropProviderImpl());
-		super.setSourceViewerConfiguration(new RedHatStructuredTextViewerConfigurationXML());
+		this (true);
 	}
 
-	public XMLTextEditor(SourceViewerConfiguration config) {
-		super.setSourceViewerConfiguration(config);
+	public XMLTextEditor(final boolean useRHDSConfig) {
+		this.useRHDSConfig = useRHDSConfig;
+		
 		XmlEditorPlugin.getDefault().initDefaultPluginPreferences();
 ///		dnd.setTextEditorDropProvider(new TextEditorDropProviderImpl());
-		if (config != null) {
-			if (!(config instanceof RedHatStructuredTextViewerConfigurationXML)) {
-				rhsvcEnabled = false;
-			}
-			super.setSourceViewerConfiguration(config);
+		
+		if (useRHDSConfig) {
+			super.setSourceViewerConfiguration(new RedHatStructuredTextViewerConfigurationXML());
 		}
 	}
 
-	private boolean rhsvcEnabled = true;
-	
-	protected boolean isRedHatSourceViewerConfigurationEnabled() {
-		return rhsvcEnabled;
-	}
+	private boolean useRHDSConfig = true;
 	
 	protected void setSourceViewerConfiguration(SourceViewerConfiguration config) {
-		if( isRedHatSourceViewerConfigurationEnabled()
+		if( useRHDSConfig
 			&& !(config instanceof RedHatStructuredTextViewerConfigurationXML)
 			&& (config instanceof StructuredTextViewerConfigurationXML
 					|| !(config instanceof StructuredTextViewerConfiguration)

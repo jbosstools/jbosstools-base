@@ -64,15 +64,14 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 	protected boolean isStandAlone = false;
 	
 	public XMLTextEditorComponent() {
-		support.setProvider(this);
-///		XmlDocumentProvider p = (XmlDocumentProvider)getDocumentProvider();
-///		p.disableElementContentChange();
-		ModelPlugin.getWorkspace().addResourceChangeListener(changeListener = new ICL());
+		this(true);
 	}
 
-	public XMLTextEditorComponent(SourceViewerConfiguration configuration) {
-		super(configuration);
+	public XMLTextEditorComponent(boolean useUseRHDSConfig) {
+		super(useUseRHDSConfig);
 		support.setProvider(this);
+		///		XmlDocumentProvider p = (XmlDocumentProvider)getDocumentProvider();
+		///		p.disableElementContentChange();
 		ModelPlugin.getWorkspace().addResourceChangeListener(changeListener = new ICL());
 	}
 
