@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.core.jdt;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jface.preference.IPersistentPreferenceStore;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
@@ -54,24 +57,32 @@ public class FavoritesClassController {
 	public static void push(String className) {
 		List<String> list = getFavoritesClassesList();
 		int index = -1;
-		for (int i=0;i<list.size();++i) {
-			if (className.equals((String)list.get(i))) {
+		for (int i = 0; i < list.size(); ++i) {
+			if (className.equals(list.get(i))) {
 				index = i;
 				break;
 			}
 		}
-		if (index>-1) {
+		if (index > -1) {
 			list.add(0, list.get(index));
-			list.remove(index+1);
+			list.remove(index + 1);
 		} else {
-			list.add(0,className);
+			list.add(0, className);
 		}
 		ArrayList<String> newList = new ArrayList<String>();
 		if (list.size() > 10) {
 			for (int i = 0; i < 10; ++i) newList.add(list.get(i));
 			list = newList;
 		}
-		ModelUIPlugin.getDefault().getPreferenceStore().setValue(FAVORITES_CLASSES_LIST, getClassesListString(list));
+		IPreferenceStore store = ModelUIPlugin.getDefault().getPreferenceStore();
+		store.setValue(FAVORITES_CLASSES_LIST, getClassesListString(list));
+		if(store instanceof IPersistentPreferenceStore) {
+			try {
+				((IPersistentPreferenceStore)store).save();
+			} catch (IOException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
+		}
 	}
 	
 	private static LabelProvider labelProvider = new FavoritesClassLabelProvider();
