@@ -90,22 +90,24 @@ public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements
 		gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = WINDOW_HEIGHT;
 		tabbedPane.setLayoutData(gd);
-		// classic
-		TabItem classicChooser = new TabItem(tabbedPane, SWT.NONE);
-		classicChooser.setControl(createClassicChooser(tabbedPane));
-		classicChooser.setText(EditorMessages.getString("TabbedJavaChoicerFieldEditor.Tab1.Label"));
 		// eclipse
 		TabItem eclipseChooser = new TabItem(tabbedPane, SWT.NONE);
 		eclipseChooser.setControl(createEclipseChooser(tabbedPane));
 		eclipseChooser.setText(EditorMessages.getString("TabbedJavaChoicerFieldEditor.Tab2.Label"));
+		// classic
+		TabItem classicChooser = new TabItem(tabbedPane, SWT.NONE);
+		classicChooser.setControl(createClassicChooser(tabbedPane));
+		classicChooser.setText(EditorMessages.getString("TabbedJavaChoicerFieldEditor.Tab1.Label"));
 		// favorites
 		TabItem favoritesChooser = new TabItem(tabbedPane, SWT.NONE);
 		favoritesChooser.setControl(createFavoritesChooser(tabbedPane));
 		favoritesChooser.setText(EditorMessages.getString("TabbedJavaChoicerFieldEditor.Tab3.Label"));
 		
 		int lastIndex = ModelUIPlugin.getDefault().getPreferenceStore().getInt(LAST_CHOICER);
-		selectedTab = lastIndex;
-		tabbedPane.setSelection(lastIndex);
+		if(lastIndex >= 0 && lastIndex < 3) {
+			selectedTab = lastIndex;
+			tabbedPane.setSelection(lastIndex);
+		}
 		
 		tabbedPane.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
