@@ -97,7 +97,7 @@ public class XJob extends Job {
 	List<XRunnable> list = new ArrayList<XRunnable>();
 
 	public XJob() {
-		super("RedHat Model Update");
+		super("JBoss Tools Model Update");
 		setSystem(true);
 	}
 
