@@ -170,7 +170,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 		label = new Label(composite, SWT.NONE);
 		label.setText(EditorMessages.getString("JavaChoicerFieldEditor.Tab1.Text.Label"));
 
-		text = new Text(composite,SWT.SINGLE | SWT.BORDER);
+		text = new Text(composite,SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		text.setLayoutData(gd);
 		text.setText(valueProvider.getStringValue(true));
