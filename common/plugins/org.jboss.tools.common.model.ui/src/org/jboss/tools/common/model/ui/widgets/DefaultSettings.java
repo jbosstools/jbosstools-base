@@ -221,7 +221,7 @@ public class DefaultSettings implements IWidgetSettings {
 		settings.put(key, object);
 	}
 	protected void put(String key, int i) {
-		settings.put(key, new Integer(i));
+		settings.put(key, Integer.valueOf(i));
 	}
 	protected void put(String key, Color color) {
 		settings.put(key, color);

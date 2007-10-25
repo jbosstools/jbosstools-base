@@ -93,7 +93,7 @@ public class EditorPartWrapperExtension {
 					int tp = (p == null) ? Integer.MAX_VALUE : p.intValue();
 					if(priority < tp) {
 						factories.put(t, f);
-						priorities.put(t, new Integer(priority));
+						priorities.put(t, Integer.valueOf(priority));
 					}
 				}
 			}

@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.util.Properties;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
+import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.core.resources.XModelObjectEditorInput;
 import org.jboss.tools.common.model.util.XModelTreeListenerSWTSync;
 import org.jboss.tools.common.model.ui.outline.XModelObjectContentOutlineProvider;
@@ -152,7 +153,9 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				String q = file.getPersistentProperty(persistentTabQualifiedName);
 				selectedPageIndex = (q == null) ? 0 : Integer.parseInt(q);
 			}
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
+			selectedPageIndex = 0;
+		} catch (CoreException e) {
 			selectedPageIndex = 0;
 		}		
 	}

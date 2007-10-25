@@ -327,8 +327,8 @@ public class ControlDragDrop {
 						DnDUtil.paste(o, p);
 					}
 					if(provider instanceof IControlDropListener) {
-						p.put("drop.x", new Integer(event.x));
-						p.put("drop.y", new Integer(event.y));
+						p.put("drop.x", Integer.valueOf(event.x));
+						p.put("drop.y", Integer.valueOf(event.y));
 						if(draggedObject != null) p.put("draggedObject", draggedObject);
 						((IControlDropListener)provider).drop(p);
 					}

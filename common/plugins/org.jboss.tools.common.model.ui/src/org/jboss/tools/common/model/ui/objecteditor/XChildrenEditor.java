@@ -270,7 +270,7 @@ public class XChildrenEditor implements CommandBarListener {
 			Properties p = new Properties();
 			p.put("shell", bar.getControl().getShell());
 			int i = xtable.getSelectionIndex();
-			p.put("insertAfter", new Integer(i));
+			p.put("insertAfter", Integer.valueOf(i));
 			XActionInvoker.invoke(path, o, getTargets(), p);
 		} catch (Exception e) {
 			ModelUIPlugin.getPluginLog().logError(e);

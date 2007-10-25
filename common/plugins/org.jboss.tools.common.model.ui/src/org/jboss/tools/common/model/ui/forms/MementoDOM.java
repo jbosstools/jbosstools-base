@@ -115,7 +115,7 @@ public class MementoDOM implements IMemento {
 	 * @see org.eclipse.ui.IMemento#getInteger(java.lang.String)
 	 */
 	public Integer getInteger(String key) {
-		return new Integer(element.getAttribute(key));
+		return Integer.valueOf(element.getAttribute(key));
 	}
 
 	/* (non-Javadoc)

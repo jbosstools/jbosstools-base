@@ -58,7 +58,7 @@ public class MessageAndCheckboxDialog extends MessageDialog {
 		String title = p.getProperty("title", "Confirmation");
 		MessageAndCheckboxDialog dialog = new MessageAndCheckboxDialog(parent, title, QUESTION, p);
 		int result = dialog.open();
-		p.put(RETURN_CODE, new Integer(result));
+		p.put(RETURN_CODE, Integer.valueOf(result));
 		return result == 0;
 	}
 	

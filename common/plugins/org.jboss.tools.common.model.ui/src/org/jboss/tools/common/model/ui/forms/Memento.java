@@ -133,7 +133,7 @@ public class Memento implements IMemento {
 	 * @see org.eclipse.ui.IMemento#putInteger(java.lang.String, int)
 	 */
 	public void putInteger(String key, int value) {
-		map.put(key, new Integer(value));
+		map.put(key, Integer.valueOf(value));
 	}
 
 	/* (non-Javadoc)

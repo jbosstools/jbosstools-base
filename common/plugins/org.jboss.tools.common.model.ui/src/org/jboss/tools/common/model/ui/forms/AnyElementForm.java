@@ -187,7 +187,7 @@ public class AnyElementForm extends ExpandableForm {
 			return attributes == null ? null : attributes[r][c];
 		}
 		public Object getDataAt(int r) {
-			return new Integer(r);
+			return Integer.valueOf(r);
 		}
 		public Color getColor(int r) {
 			return null;

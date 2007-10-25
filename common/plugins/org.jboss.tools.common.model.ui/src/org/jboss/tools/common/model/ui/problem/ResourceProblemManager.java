@@ -85,12 +85,12 @@ public class ResourceProblemManager extends ProblemManager {
 		HashMap<String,Object> markerData = new HashMap<String,Object>();
 		markerData.put(IMarker.MESSAGE, problem.getMessage());
 		markerData.put(IMarker.LOCATION, resource.getLocation().toOSString());
-		markerData.put(IMarker.LINE_NUMBER, new Integer(problem.getLine()));
-		markerData.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
+		markerData.put(IMarker.LINE_NUMBER, Integer.valueOf(problem.getLine()));
+		markerData.put(IMarker.SEVERITY, Integer.valueOf(IMarker.SEVERITY_ERROR));
 		int position = problem.getPosition();
 		if(position != Problem.NONE) {
-			markerData.put(IMarker.CHAR_START, new Integer(position));
-			markerData.put(IMarker.CHAR_END, new Integer(position + 1));
+			markerData.put(IMarker.CHAR_START, Integer.valueOf(position));
+			markerData.put(IMarker.CHAR_END, Integer.valueOf(position + 1));
 		}		
 		this.addMarker(markerData);
 	}
