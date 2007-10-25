@@ -12,12 +12,13 @@ package org.jboss.tools.common.editor;
 
 import java.util.ArrayList;
 
+import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
-public class SelectionNotifier implements ISelectionProvider, ISelectionChangedListener {
+public class SelectionNotifier implements ISelectionProvider, ISelectionChangedListener, IPostSelectionProvider {
 	private ArrayList<ISelectionChangedListener> listeners = new ArrayList<ISelectionChangedListener>(3);
 	private ArrayList<ISelectionChangedListener> fires = new ArrayList<ISelectionChangedListener>(3);
 	private SelectionChangedEvent event;
@@ -62,4 +63,14 @@ public class SelectionNotifier implements ISelectionProvider, ISelectionChangedL
 		for (int i=0;i<fires.size();++i) ((ISelectionChangedListener)fires.get(i)).selectionChanged(event);
 		fires.clear();
 	}
+
+    public void addPostSelectionChangedListener(
+            ISelectionChangedListener listener) {
+    	// do nothing - workaround for dali
+    }
+
+    public void removePostSelectionChangedListener(
+            ISelectionChangedListener listener) {
+    	// do nothing - workaround for dali
+    }
 }
