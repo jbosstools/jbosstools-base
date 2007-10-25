@@ -83,7 +83,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 			}
 			String ep = "ERROR: " + FindObjectHelper.makeRef(getPath() + ":" + ln1, ln + ":" + pos) + " " + er;
 			if(iln < 0) markers.lines.remove(ep);
-			else markers.lines.put(ep, new Integer(iln));
+			else markers.lines.put(ep, Integer.valueOf(iln));
 			sb.append(ep).append('\n');
 			this.errors[i] = ep;
 		}

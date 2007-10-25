@@ -35,7 +35,7 @@ public class FindObjectHelper implements SpecialWizard {
     public static int findModelObject(XModelObject o, int where) {
     	if(o == null) return 1;
         SpecialWizard wizard = createSelectWizard();
-        wizard.setObject(new Integer(where));
+        wizard.setObject(Integer.valueOf(where));
         wizard.setObject(o);
         return wizard.execute();
     }
@@ -43,7 +43,7 @@ public class FindObjectHelper implements SpecialWizard {
     public static int findModelObject(XModelObject o, int where, String preferredPage) {
     	if(o == null) return 1;
         SpecialWizard wizard = createSelectWizard();
-        wizard.setObject(new Integer(where));
+        wizard.setObject(Integer.valueOf(where));
         wizard.setObject(o);
         wizard.setObject(preferredPage);
         return wizard.execute();

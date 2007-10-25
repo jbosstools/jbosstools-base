@@ -287,7 +287,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
             synchronized (registered) {
             	io = registered.get(name);
             	if(io == null) {
-            		io = new Integer(registered.size());
+            		io = Integer.valueOf(registered.size());
             		registered.put(name, io);
             	}
 			}

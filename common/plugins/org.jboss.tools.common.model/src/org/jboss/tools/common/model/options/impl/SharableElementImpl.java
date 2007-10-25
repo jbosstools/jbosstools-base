@@ -382,7 +382,7 @@ class SharableComparator implements Comparator<SharableElement> {
     public SharableComparator(XChild[] c) {
         entities = new Hashtable<String,Integer>(c.length);
         for (int i = 0; i < c.length; i++) {
-            entities.put(c[i].getName(), new Integer(i * 100));
+            entities.put(c[i].getName(), Integer.valueOf(i * 100));
         }
     }
 

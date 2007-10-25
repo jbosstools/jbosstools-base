@@ -40,24 +40,24 @@ public class EntityXMLRegistration {
 		if(a != null && isResolvingSchema) {
 			return resolveSchema(entity, a);
 		}
-		resolved.put(entity, new Integer(UNRESOLVED));
+		resolved.put(entity, Integer.valueOf(UNRESOLVED));
 		return UNRESOLVED;
 	}
 	
 	private int resolveDTD(XModelEntity entity, XAttribute a) {
 		String v = a.getDefaultValue();
 		if(XMLEntityResolver.getInstance().isResolved(v, null)) {
-			resolved.put(entity, new Integer(DTD));
+			resolved.put(entity, Integer.valueOf(DTD));
 			return DTD;
 		}
 		ExtensibleURIResolver r = new ExtensibleURIResolver();
 		String s = r.resolve(null, v, null);
 		if(s != null && s.length() > 0) {
-			resolved.put(entity, new Integer(DTD));
+			resolved.put(entity, Integer.valueOf(DTD));
 			XMLEntityResolver.registerPublicEntity(v, s);
 			return DTD;
 		}
-		resolved.put(entity, new Integer(MISSING));
+		resolved.put(entity, Integer.valueOf(MISSING));
 		return MISSING;
 	}
 
@@ -65,7 +65,7 @@ public class EntityXMLRegistration {
 		String v = a.getDefaultValue();
 		String[] vs = v.split(" ");
 		if(vs == null || vs.length < 2) {
-			resolved.put(entity, new Integer(MISSING));
+			resolved.put(entity, Integer.valueOf(MISSING));
 			return MISSING;
 		}
 		String location = null;
@@ -81,7 +81,7 @@ public class EntityXMLRegistration {
 			location = r.resolve(null, vs[0], vs[1]);
 		}
 		if(location != null && location.length() > 0) {
-			resolved.put(entity, new Integer(SCHEMA));
+			resolved.put(entity, Integer.valueOf(SCHEMA));
 			return SCHEMA;
 		}
 		return SCHEMA;
