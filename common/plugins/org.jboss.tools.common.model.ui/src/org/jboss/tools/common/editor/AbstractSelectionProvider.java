@@ -15,7 +15,7 @@ import org.eclipse.jface.viewers.*;
 
 import org.jboss.tools.common.model.XModelObject;
 
-public abstract class AbstractSelectionProvider implements ISelectionProvider {
+public abstract class AbstractSelectionProvider implements ISelectionProvider, IPostSelectionProvider {
 	private ArrayList<ISelectionChangedListener> listeners = new ArrayList<ISelectionChangedListener>();
 
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
@@ -51,4 +51,14 @@ public abstract class AbstractSelectionProvider implements ISelectionProvider {
 	protected abstract XModelObject getSelectedModelObject();
 	protected abstract void setSelectedModelObject(XModelObject object);
 	
+    public void addPostSelectionChangedListener(
+            ISelectionChangedListener listener) {
+    	// do nothing - workaround for dali
+    }
+
+    public void removePostSelectionChangedListener(
+            ISelectionChangedListener listener) {
+    	// do nothing - workaround for dali
+    }
+
 }
