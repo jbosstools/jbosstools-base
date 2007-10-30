@@ -2451,7 +2451,7 @@
 					ICON="%Icons%/Struts Logic/messages" NAME="messages" REFORMAT="yes"
 					SCOPE="project" STARTTEXT="&lt;messages/>" />
 			</GroupHTML>
-			<GroupHTML ENTITY="SharableGroupHTML" HIDDEN="yes" ICON=""
+			<GroupHTML ENTITY="SharableGroupHTML" HIDDEN="no" ICON=""
 				NAME="Facelets" PREFIX="ui" SCOPE="project"
 				URI="http://java.sun.com/jsf/facelets" add_taglib="false"
 				library-version="">
