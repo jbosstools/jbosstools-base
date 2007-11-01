@@ -843,4 +843,15 @@ public class EclipseResourceUtil {
 		return (relative == null) ? path : XModelConstants.WORKSPACE_REF + relative;
 	}
 
+	public static boolean projectExistsIgnoreCase(String name) {
+		if(name == null || name.length() == 0) return false;
+		IProject[] ps = ModelPlugin.getWorkspace().getRoot().getProjects();
+		for (int i = 0; i < ps.length; i++) {
+			if(ps[i].getName().equalsIgnoreCase(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
