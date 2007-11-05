@@ -26,62 +26,58 @@ import org.eclipse.wst.xml.core.internal.document.ElementImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.jst.web.tld.TaglibData;
+import org.jboss.tools.jst.web.tld.VpeTaglibManager;
+import org.jboss.tools.jst.web.tld.VpeTaglibManagerProvider;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.jst.web.tld.TaglibData;
-import org.jboss.tools.jst.web.tld.VpeTaglibManager;
-import org.jboss.tools.jst.web.tld.VpeTaglibManagerProvider;
-
 public class PaletteTaglibInserter {
-//	private static final String JSP_SOURCE_CONTENTTYPE_ID = "org.eclipse.jst.jsp.core.jspsource";
+
 	private static final String JSP_SOURCE_ROOT_ELEMENT = "jsp:root";
 	public static final String JSP_URI = "http://java.sun.com/JSP/Page";
-//	private static final String HTML_SOURCE_CONTENTTYPE_ID = "org.eclipse.wst.html.core.htmlsource";
-//	private static final String HTML_SOURCE_ROOT_ELEMENT = "html";
 	public static final String faceletUri = "http://java.sun.com/jsf/facelets";
-	
+
 	private static final String TAGLIB_START = "<%@ taglib"; 
 
 	public Properties inserTaglib(ISourceViewer v, Properties p) {
+		if(!inserTaglibInXml(v, p)) {
+			inserTaglibInOldJsp(v, p);
+		}
+		return p;
+	}
+
+	private boolean checkProperties(Properties p) {
+		return "true".equalsIgnoreCase(p.getProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB)) &&
+				p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI) != null &&
+				p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI).length() > 0 &&
+				!p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI).equals(JSP_URI) &&
+				p.getProperty(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX) != null &&
+				p.getProperty(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX).length() > 0 &&
+				p.getProperty(PaletteInsertHelper.PROPOPERTY_START_TEXT) != null;
+	}
+
+	public boolean inserTaglibInOldJsp(ISourceViewer v, Properties p) {
+		if(!checkProperties(p)) {
+			return false;
+		}
+
 		IDocument d = v.getDocument();
 		IStructuredModel model = null;
-
-		if(!"true".equalsIgnoreCase(p.getProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB)) ||
-				p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI) == null ||
-				p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI).length() == 0 ||
-				p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI).equals(JSP_URI) ||
-				p.getProperty(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX) == null ||
-				p.getProperty(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX).length() == 0 ||
-				p.getProperty(PaletteInsertHelper.PROPOPERTY_START_TEXT) == null ||
-				p.getProperty(PaletteInsertHelper.PROPOPERTY_START_TEXT).startsWith(TAGLIB_START)) {
-			return p;
-		}
 
 		try {
 			model = StructuredModelManager.getModelManager().getExistingModelForRead(d);
 			IDOMDocument xmlDocument = (model instanceof IDOMModel) ? ((IDOMModel) model).getDocument() : null;
 			if (xmlDocument == null) {
-				return p;
+				return false;
 			}
 			Properties tl = getPrefixes(v);
 			if(tl == null) tl = PaletteInsertHelper.getPrefixes(d.get());
 			Element root = xmlDocument.getDocumentElement();
-			// for xhtml facelets
-			if (root != null && xmlDocument.getDoctype() != null /* && tagLibListConainsFacelet(tl)*/ ) {
-				String publicId = xmlDocument.getDoctype().getPublicId();
-				if (publicId!=null && publicId.toUpperCase().startsWith("-//W3C//DTD XHTML")) { // && root.getNodeName().equalsIgnoreCase(HTML_SOURCE_ROOT_ELEMENT)) {
-					return checkTL(root, p, d);
-				}
-			// for jsp:root
-			} else if (root != null && root.getNodeName().equals(JSP_SOURCE_ROOT_ELEMENT)) {
-				return checkTL(root, p, d);
-			}
 
-			//for others
 			String uri_p = p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI);
 			String defaultPrefix_p = p.getProperty(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX);
 			String lineDelimiter = PaletteInsertHelper.getLineDelimiter(d);
@@ -97,24 +93,63 @@ public class PaletteTaglibInserter {
 					if (checkplace(xmlDocument, d, "jsp:directive.taglib", tg, p, v) == false) {
 						d.replace(0, 0, tg.toString());
 						mouveFocusOnPage(p,v, tg.toString().length(), 0);
+						return true;
 					}
 				}
 			} else if(xmlDocument instanceof DocumentImpl) {
-					DocumentImpl docImpl = (DocumentImpl)xmlDocument;
-					// Only for JSP
-					if(docImpl.isJSPType()) {
-						if (checkplace(xmlDocument, d, "jsp:directive.page", tg, p, v) == false) {
-							d.replace(0, 0, tg.toString());
-							mouveFocusOnPage(p,v, tg.toString().length(), 0);
-						}
+				DocumentImpl docImpl = (DocumentImpl)xmlDocument;
+				// Only for JSP
+				if(docImpl.isJSPType()) {
+					if (checkplace(xmlDocument, d, "jsp:directive.page", tg, p, v) == false) {
+						d.replace(0, 0, tg.toString());
+						mouveFocusOnPage(p,v, tg.toString().length(), 0);
+						return true;
 					}
 				}
+			}
 		} catch (Exception e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			if (model != null)	model.releaseFromRead();
 		}
-		return p;
+		return false;
+	}
+
+	public boolean inserTaglibInXml(ISourceViewer v, Properties p) {
+		if(!checkProperties(p)) {
+			return false;
+		}
+
+		IDocument d = v.getDocument();
+		IStructuredModel model = null;
+
+		try {
+			model = StructuredModelManager.getModelManager().getExistingModelForRead(d);
+			IDOMDocument xmlDocument = (model instanceof IDOMModel) ? ((IDOMModel) model).getDocument() : null;
+			if (xmlDocument == null) {
+				return false;
+			}
+			Properties tl = getPrefixes(v);
+			if(tl == null) tl = PaletteInsertHelper.getPrefixes(d.get());
+			Element root = xmlDocument.getDocumentElement();
+			// for xhtml facelets
+			if (root != null && xmlDocument.getDoctype() != null /* && tagLibListConainsFacelet(tl)*/ ) {
+				String publicId = xmlDocument.getDoctype().getPublicId();
+				if (publicId!=null && publicId.toUpperCase().startsWith("-//W3C//DTD XHTML")) { // && root.getNodeName().equalsIgnoreCase(HTML_SOURCE_ROOT_ELEMENT)) {
+					checkTL(root, p, d);
+					return true;
+				}
+			// for jsp:root
+			} else if (root != null && root.getNodeName().equals(JSP_SOURCE_ROOT_ELEMENT)) {
+				checkTL(root, p, d);
+				return true;
+			}
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} finally {
+			if (model != null)	model.releaseFromRead();
+		}
+		return false;
 	}
 
 //	private static boolean tagLibListConainsFacelet(List tagLibList) {
@@ -148,7 +183,7 @@ public class PaletteTaglibInserter {
 		}
 		return null;
 	}
-	
+
 	/*
 	 * for jsp:root and html check the taglib if exist check the prefix else add the taglib
 	 * with text formatting
@@ -209,12 +244,11 @@ public class PaletteTaglibInserter {
 	}
 
 	private static void mouveFocusOnPage(Properties p, ISourceViewer v, int length, int pos){
-		
 		ISelectionProvider selProvider = (ISelectionProvider)p.get(PaletteInsertHelper.PROPOPERTY_SELECTION_PROVIDER);
 		IDocument doc = v.getDocument();
 
 		if (doc== null || selProvider == null) return;
-		
+
 		ITextSelection selection = (ITextSelection)selProvider.getSelection();
 		if (selection.getOffset() == 0) {			
 			 v.setSelectedRange(length,0);
@@ -309,5 +343,5 @@ public class PaletteTaglibInserter {
 			}
 		}
 		return false;
-	}	
+	}
 }

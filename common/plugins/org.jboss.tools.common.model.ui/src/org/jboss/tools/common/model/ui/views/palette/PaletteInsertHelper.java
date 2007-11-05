@@ -32,7 +32,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.ITextEditor;
-
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
@@ -45,7 +44,7 @@ import org.jboss.tools.jst.web.tld.URIConstants;
  * @author Jeremy
  */
 public class PaletteInsertHelper {
-	
+
 	public static final String PROPOPERTY_TAG_NAME   = "tag name";
 	public static final String PROPOPERTY_START_TEXT = TLDToPaletteHelper.START_TEXT;
 	public static final String PROPOPERTY_END_TEXT   = TLDToPaletteHelper.END_TEXT;
@@ -79,12 +78,12 @@ public class PaletteInsertHelper {
         	ModelUIPlugin.getPluginLog().logError(x);
         }
 	}
-	
-	
+
 	static boolean isEditable(ITextEditor editor) {
 		if(editor == null) return false;
 		return editor.isEditable();
 	}
+
 	static boolean isEditable(IEditorInput input) {
 		if(input instanceof IFileEditorInput) {
 			IFile f = ((IFileEditorInput)input).getFile();
@@ -102,19 +101,26 @@ public class PaletteInsertHelper {
 			String startText = p.getProperty(PROPOPERTY_START_TEXT);
 			String endText = p.getProperty(PROPOPERTY_END_TEXT);
 			String uri = p.getProperty(PROPOPERTY_TAGLIBRARY_URI);
-						
+
 			ISelectionProvider selProvider = (ISelectionProvider)p.get(PROPOPERTY_SELECTION_PROVIDER);
 			if(selProvider == null) p.put(PROPOPERTY_SELECTION_PROVIDER, v.getSelectionProvider());
 
-
 			IDocument d = v.getDocument();
 			String[] texts = new String[]{startText, endText};
-			p = PaletteTaglibInserter.inserTaglib(v, p);			
+
+			if(startText!=null && startText.startsWith("<%@ taglib")) {
+				if(PaletteTaglibInserter.inserTaglibInXml(v, p)) {
+					return;
+				}
+			} else {
+				p = PaletteTaglibInserter.inserTaglib(v, p);
+			}
+
 			String defaultPrefix = p.getProperty(PROPOPERTY_DEFAULT_PREFIX);
 			applyPrefix(texts, d, tagname, uri, defaultPrefix);						
 			startText = texts[0];
 			endText = texts[1];
-			
+
 			if(startText != null) p.setProperty(PROPOPERTY_START_TEXT, startText);
 			if(endText != null) p.setProperty(PROPOPERTY_END_TEXT, endText);
 
@@ -154,11 +160,11 @@ public class PaletteInsertHelper {
 		ISelectionProvider selProvider = (ISelectionProvider)p.get(PROPOPERTY_SELECTION_PROVIDER);
 
 		if (doc == null || selProvider == null) return;
-		
+
 		ITextSelection selection = (ITextSelection)selProvider.getSelection();
 		int offset = selection.getOffset();
 		int length = selection.getLength(); 
-		
+
 		//Changed due to new WTP version 1.5 R 2006.06.28 get selected text from document.
 		String body = null;
 		try {
@@ -173,7 +179,7 @@ public class PaletteInsertHelper {
 		else endText = prepare(prepare(endText, "\\n", getLineDelimiter(doc)), "\\t", "\t");
 
 		String text = reformat ? format (doc, offset, length, body, startText, endText, newline) : (startText + body + endText);
-		
+
 		//Remove empty line before startText if text starts with creating new line 
 		String lineDelimiter = getLineDelimiter(doc);
 		if(reformat && text.startsWith(lineDelimiter)) {
@@ -194,7 +200,7 @@ public class PaletteInsertHelper {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
-		
+
 		int pos = text.indexOf("|");
 		if (pos >= 0) {
 			text = text.substring(0, pos) + text.substring(pos + 1);
@@ -211,7 +217,7 @@ public class PaletteInsertHelper {
 		ITextSelection sel = new TextSelection(offset + pos, 0);
 		selProvider.setSelection(sel);
 	}
-	
+
 	private static String prepare (String text, String pattern, String replacer) {
 		String res = text;
 		int index;
@@ -220,7 +226,7 @@ public class PaletteInsertHelper {
 		}
 		return res;
 	}
-    
+
     private static String format(IDocument d, int offset, int length, String body, String startText, String endText, String newline) {
 
     	String lineDelimiter = getLineDelimiter(d);
@@ -248,7 +254,7 @@ public class PaletteInsertHelper {
 		}
 
         if (body == null || body.length() == 0) appendFirstDelimiter = false;
-        
+
 		boolean appendLastDelimiter = true;
 		try {
 			int line = d.getLineOfOffset(offset + length);
@@ -256,7 +262,7 @@ public class PaletteInsertHelper {
 			int lineLength = d.getLineInformation(line).getLength();
 
 			lastLineIndent = getIndentOfLine(d.get(offset + length, lineOffset + lineLength - offset - length), lineDelimiter);
-			
+
 			if (lineOffset + lineLength - offset - length == 0) 
 				appendLastDelimiter = false;
 		} catch (Exception ex) {
@@ -281,7 +287,7 @@ public class PaletteInsertHelper {
             }
             if (!"false".equals(newline))
             	buffer.append(lineDelimiter);            
-            
+
 			body = (body == null || body.length() == 0) ? "" : firstLineIndent + body.substring(getIndentOfLine(body, lineDelimiter).length());
 		}
 		int deltaSize = indentBody ? getTabWidth() : 0;
@@ -290,7 +296,7 @@ public class PaletteInsertHelper {
     		for (final Iterator iterator= new LineIterator(body); iterator.hasNext();) {
     			Object o = iterator.next();
     			String line= (o == null) ? null : o.toString();
-    			
+
     			String lineIndent = getIndentOfLine(line, getLineDelimiter(d));
     			String lineContent= line.substring(lineIndent.length());
     			appendPreEndLineDelimiter = true;
@@ -313,7 +319,7 @@ public class PaletteInsertHelper {
                     calculateDisplayedWidth(firstLineIndent, getTabWidth()) + deltaSize, 
                     useSpaces(), getTabWidth());
                 buffer.append(lineIndent);  
-                
+
                 if ((startText.indexOf('|') == -1)&&  
                 	(endText.indexOf('|') == -1))
                 		buffer.append('|');
@@ -335,7 +341,7 @@ public class PaletteInsertHelper {
 
 		return buffer.toString();
 	}
-	
+
     private static int getTabWidth() {
 		try {
 			return Platform.getPreferencesService().getInt("org.eclipse.ui.editors", AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH, 4, new IScopeContext[]{new InstanceScope()}); 
@@ -377,15 +383,13 @@ public class PaletteInsertHelper {
 
 		if (column > displayedWidth)
 			return string;
-		
+
 		if (useSpaces) {
 			while (column != displayedWidth) {
 				buffer.append(' ');
 				++column;
 			}
-			
 		} else {
-			
 			while (column != displayedWidth) {
 				if (column + tabWidth - (column % tabWidth) <= displayedWidth) {
 					buffer.append('\t');
@@ -399,7 +403,7 @@ public class PaletteInsertHelper {
 
 		return buffer.toString();
 	}
-	
+
 	public static String getLineDelimiter(IDocument document) {
 		try {
 			if (document.getNumberOfLines() > 1)
@@ -410,7 +414,7 @@ public class PaletteInsertHelper {
 
 		return System.getProperty("line.separator"); //$NON-NLS-1$
 	}
-	
+
 	private static String getIndentOfFirstLine(IDocument d, int offset) {
 		String indent = "";
 		if(d == null) return indent;
@@ -492,7 +496,6 @@ public class PaletteInsertHelper {
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
-
 	}
 
 	/**
@@ -516,7 +519,7 @@ public class PaletteInsertHelper {
         String body = doc.get();
         applyPrefix(text, body, tagname, uri, defaultPrefix);
 	}
-	
+
 	public static void applyPrefix(String[] text, String body, String tagname, String uri, String defaultPrefix) {
 		if(uri == null || uri.length() == 0) return;
 		Properties p = getPrefixes(body);
@@ -587,7 +590,7 @@ public class PaletteInsertHelper {
 		}
 		return p;
 	}
-	
+
 	static void getPrefix(Properties p, String taglib) {
 		int i = taglib.indexOf("uri=\"");
 		if(i < 0) return;
@@ -601,5 +604,4 @@ public class PaletteInsertHelper {
 		String prefix = taglib.substring(i + 8, j);
 		p.setProperty(uri, prefix);
 	}
-
 }
