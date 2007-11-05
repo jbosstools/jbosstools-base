@@ -278,7 +278,7 @@
    </XActionItem>
    <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
     <XActionItem BaseActionName="Delete"
-     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     HandlerClassName="org.jboss.tools.common.model.options.impl.DeleteGroupHandler"
      ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
    </XActionItem>
    <XActionItem ICON="action.empty" kind="list" name="Properties">
@@ -397,7 +397,7 @@
    </XActionItem>
    <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
     <XActionItem BaseActionName="Delete"
-     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     HandlerClassName="org.jboss.tools.common.model.options.impl.DeleteGroupHandler"
      ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
    </XActionItem>
    <XActionItem ICON="action.empty" kind="list" name="Properties">
@@ -496,7 +496,7 @@
    </XActionItem>
    <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
     <XActionItem BaseActionName="Delete"
-     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     HandlerClassName="org.jboss.tools.common.model.options.impl.DeleteGroupHandler"
      ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
    </XActionItem>
    <XActionItem ICON="action.empty" kind="list" name="Properties">
@@ -601,7 +601,7 @@
    </XActionItem>
    <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
     <XActionItem BaseActionName="Delete"
-     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     HandlerClassName="org.jboss.tools.common.model.options.impl.DeleteGroupHandler"
      ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
    </XActionItem>
    <XActionItem ICON="action.empty" kind="list" name="Properties">
