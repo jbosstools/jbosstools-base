@@ -243,6 +243,9 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 					TableItem item = (TableItem)element;
 					AttributeDescriptorValue attrDescr = (AttributeDescriptorValue)item.getData();
 					fWizardModel.setAttributeValue(attrDescr,value);
+					if(tableViewer != null) {
+						tableViewer.refresh();
+					}
 				}
 			}
 		);
