@@ -844,14 +844,18 @@ public class EclipseResourceUtil {
 	}
 
 	public static boolean projectExistsIgnoreCase(String name) {
-		if(name == null || name.length() == 0) return false;
+		return findProjectIgnoreCase(name) != null;
+	}
+	
+	public static IProject findProjectIgnoreCase(String name) {
+		if(name == null || name.length() == 0) return null;
 		IProject[] ps = ModelPlugin.getWorkspace().getRoot().getProjects();
 		for (int i = 0; i < ps.length; i++) {
 			if(ps[i].getName().equalsIgnoreCase(name)) {
-				return true;
+				return ps[i];
 			}
 		}
-		return false;
+		return null;
 	}
 	
 }
