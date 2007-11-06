@@ -18,6 +18,7 @@ public class FileSystemResourceBundleTree extends FileSystemResourceTree {
 	public void setConstraint(Object object) {
 		extensions = new HashSet<String>();
 		extensions.add("properties");
+		javaRootsOnly = true;
 	}
 
 	public String getValue(XModelObject object) {

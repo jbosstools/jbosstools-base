@@ -22,6 +22,7 @@ public class FileSystemResourceTree implements XFilteredTree {
     protected XModel model = null;
     protected Set<String> extensions = null;
     protected Set<String> entities = null;
+    protected boolean javaRootsOnly = false;
 
     public FileSystemResourceTree() {}
     
@@ -58,6 +59,10 @@ public class FileSystemResourceTree implements XFilteredTree {
             entities = new HashSet<String>();
             StringTokenizer st = new StringTokenizer(ent, ",");
             while(st.hasMoreTokens()) entities.add(st.nextToken());
+        }
+        String jro = tc.getProperties().getProperty("java_roots_only");
+        if("true".equals(jro)) {
+        	javaRootsOnly = true;
         }
     }
 
@@ -122,6 +127,12 @@ public class FileSystemResourceTree implements XFilteredTree {
         XModelObject[] fs = getRoot().getChildren();
         SortedMap<String,XModelObject> t = new TreeMap<String,XModelObject>();
         for (int i = 0; i < fs.length; i++) {
+        	if(javaRootsOnly) {
+        		if("FileSystemFolder".equals(fs[i].getModelEntity().getName()) 
+        			&& !fs[i].getAttributeValue("name").startsWith("src")) {
+        			continue;
+        		}
+        	}
             XModelObject[] cs = fs[i].getChildren();
             for (int j = 0; j < cs.length; j++) {
                 String p = cs[j].getPathPart();
