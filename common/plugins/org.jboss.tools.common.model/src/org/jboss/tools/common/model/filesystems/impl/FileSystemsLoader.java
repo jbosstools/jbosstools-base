@@ -60,6 +60,7 @@ public class FileSystemsLoader extends URLRootLoader {
         }
 		updateLibs(object);
 		removeMissingJarSystems(object);
+		updateSrcs(object);
         try {
         	((FileSystemsImpl)object).updateOverlapped();
         } catch (Exception e) {
@@ -201,6 +202,52 @@ public class FileSystemsLoader extends URLRootLoader {
     	}
     	return lib;
     }
+    
+    public void updateSrcs(XModelObject object) {
+    	if(WatcherLoader.isLocked(object.getModel())) {
+    		return;
+    	}
+    	IProject p = EclipseResourceUtil.getProject(object);
+    	if(p == null || !p.isAccessible()) return;
+		String[] srcs = EclipseResourceUtil.getJavaProjectSrcLocations(p);
+		Set<String> paths = new HashSet<String>();
+		for (int i = 0; i < srcs.length; i++) {
+			String path = EclipseResourceUtil.getRelativeLocation(object.getModel(), srcs[i]);
+			if(path == null) continue;
+			paths.add(path);
+		}
+    	XModelObject[] cs = object.getChildren("FileSystemFolder");
+    	for (int i = 0; i < cs.length; i++) {
+    		if(cs[i].getAttributeValue("name").startsWith("src")) {
+    			String loc = cs[i].getAttributeValue("location");
+    			if(!paths.contains(loc)) {
+    				object.removeChild(cs[i]);
+    			} else {
+    				paths.remove(loc);
+    			}
+    		}
+    	}
+		for (String path : paths) {
+			String n = getNextSrcName(object);
+			Properties properties = new Properties();
+			properties.setProperty("location", path);
+			properties.setProperty("name", n);
+			FileSystemImpl s = (FileSystemImpl)object.getModel().createModelObject("FileSystemFolder", properties);
+			object.addChild(s);
+		}
+    }
+
+    private String getNextSrcName(XModelObject object) {
+    	if(object.getChildByPath("src") == null) return "src";
+    	int i = 1;
+    	while(true) {
+    		String s = "src-" + i;
+    		if(object.getChildByPath(s) == null) return s;
+    		i++;
+    		return s;
+    	}
+    }
+
 }
 
 class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
