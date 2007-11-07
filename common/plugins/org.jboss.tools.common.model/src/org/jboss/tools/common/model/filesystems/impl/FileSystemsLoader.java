@@ -244,7 +244,6 @@ public class FileSystemsLoader extends URLRootLoader {
     		String s = "src-" + i;
     		if(object.getChildByPath(s) == null) return s;
     		i++;
-    		return s;
     	}
     }
 
