@@ -98,9 +98,9 @@ public class PlugInLoadTest extends TestCase {
 	public void testVpePluginsResolved ()
 	{
 		assertPluginsResolved(new String[] {
-			rhdsNS+"vpe.mozilla",
 			rhdsNS+"vpe",
-			rhdsNS+"vpe.ui.palette"
+			rhdsNS+"vpe.ui.palette",
+			rhdsNS+"vpe.xulrunner"
 		});
 	}	
 	
