@@ -406,7 +406,10 @@ public class EclipseResourceUtil {
 			ArrayList<String> l = new ArrayList<String>();
 			for (int i = 0; i < es.length; i++) {
 				if(es[i].getEntryKind() != IClasspathEntry.CPE_SOURCE) continue;
-				l.add(project.findMember(es[i].getPath().removeFirstSegments(1)).getLocation().toString());
+				IResource member = project.findMember(es[i].getPath().removeFirstSegments(1);
+				if(member.exists()) { // The member might not exist!
+					l.add(member.getLocation().toString());
+				}
 			}
 			return l.toArray(new String[0]);
 		} catch (Exception e) {
