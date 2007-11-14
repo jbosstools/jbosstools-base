@@ -52,7 +52,7 @@ public class LayouredFormFactory extends XModelObjectFormFactory {
 			} else if(formData.getForms() != null) {
 				form = new FormContainer(formData);
 			} else {
-				form = new Form(formData);
+				form = new DefaultFormContainer(new Form(formData));
 			}
 		} catch(Exception e) {
 			String message = "Cannot build form.";
