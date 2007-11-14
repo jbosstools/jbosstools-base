@@ -75,7 +75,7 @@ public class ResourcesUtils {
 		IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(path);
 		description.setName(name);
 		project.create(description, new NullProgressMonitor());
-		project.open(IResource.BACKGROUND_REFRESH, new NullProgressMonitor());
+		project.open(IResource.NONE, new NullProgressMonitor());
 		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		return project;
 	}
