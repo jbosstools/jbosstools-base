@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.tools.common.model.XFilteredTree;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
@@ -207,6 +208,7 @@ public class NavigatorContentProvider implements ITreeContentProvider, IResource
 	XFilteredTree getFilteredTree(Object object) {
 		if (object instanceof XModelObject)	{
 			XModel model = ((XModelObject)object).getModel();
+			if(FileSystemsHelper.getFileSystems(model) == null) return null;
 			String name = getFilteredTreeName(model);
 			return filteredTrees.getFilteredTree(name, model);
 		}				
