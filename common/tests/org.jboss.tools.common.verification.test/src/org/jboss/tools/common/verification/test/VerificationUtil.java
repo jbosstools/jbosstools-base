@@ -30,6 +30,7 @@ public class VerificationUtil {
 		XModel model = o.getModel();
 		String entity = o.getModelEntity().getName();
 		VManager m = VHelper.getManager();
+		Assert.assertTrue("Verification Manager is not found", m != null);
 		VModel vmodel = VModelFactory.getModel(model);
 		Assert.assertTrue("Cannot obtain VModel " + entity, vmodel != null);
 		
