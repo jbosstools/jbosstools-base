@@ -8,7 +8,6 @@ package org.jboss.tools.common.verification.vrules.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.verification.vrules.*;
 import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
 
@@ -45,7 +44,11 @@ public class VTaskImpl implements VTask, Runnable {
             if(sleeping) {
                 synchronized(this) {
                     sleeping = false;
-                    try { notifyAll(); } catch (Exception e) {}
+                    try {
+                    	notifyAll();
+                    } catch (IllegalMonitorStateException e) {
+                    	//ignore
+                    }
                 }
             }
         }
@@ -70,7 +73,7 @@ public class VTaskImpl implements VTask, Runnable {
 
     public void run() {
         notifyStarted();
-        for (index = 0; index < rules.length; index++) {
+        if(rules != null) for (index = 0; index < rules.length; index++) {
             if (!running) break;
             VRule rule = rules[index];
             if (rule.isEnabled() && rule.getAction() != null
@@ -87,7 +90,11 @@ public class VTaskImpl implements VTask, Runnable {
             synchronized(this) {
                 if(sleeping) {
                     notifyPause();
-                    try { wait(); } catch (Exception e) {}
+                    try {
+                    	wait();
+                    } catch (InterruptedException e) {
+                    	//ignore
+                    }
                     if(!sleeping) notifyResume();
                 }
             }

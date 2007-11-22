@@ -43,6 +43,7 @@ public class VHelper {
 	 * to given object and its children. 
 	 */
 	public static VRule[] getRules(VManager manager, VObject object) {
+		if(manager == null || object == null) return null;
 		List<VRule> result = new ArrayList<VRule>();
 		VEntity entity = object.getEntity();
 		VRuleSet[] ruleSets = manager.getRuleSets();
