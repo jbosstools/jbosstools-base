@@ -397,25 +397,14 @@ public class EclipseResourceUtil {
 	}
 
 	public static String[] getJavaProjectSrcLocations(IProject project) {
-		String[] EMPTY = new String[0];
-		if(project == null || !project.isOpen()) return EMPTY;
-		try {
-			if(!project.hasNature(JavaCore.NATURE_ID)) return EMPTY;
-			IJavaProject javaProject = JavaCore.create(project);		
-			IClasspathEntry[] es = javaProject.getRawClasspath();
-			ArrayList<String> l = new ArrayList<String>();
-			for (int i = 0; i < es.length; i++) {
-				if(es[i].getEntryKind() != IClasspathEntry.CPE_SOURCE) continue;
-				IResource member = project.findMember(es[i].getPath().removeFirstSegments(1));
-				if(member.exists()) { // The member might not exist!
-					l.add(member.getLocation().toString());
-				}
-			}
-			return l.toArray(new String[0]);
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
-			return EMPTY;
+		IResource[] rs = getJavaSourceRoots(project);
+		if(rs == null || rs.length == 0) return new String[0];
+		List<String> result = new ArrayList<String>();
+		for (int i = 0; i < rs.length; i++) {
+			IPath p = rs[i].getLocation();
+			if(p != null) result.add(p.toString());
 		}
+		return result.toArray(new String[0]);
 	}
 	
 	public static IJavaProject getJavaProject(IProject project) {
@@ -430,10 +419,9 @@ public class EclipseResourceUtil {
 	}
 
 	public static String getJavaProjectOutputLocation(IProject project) {
-		if(project == null || !project.isOpen()) return null;
+		IJavaProject javaProject = getJavaProject(project);
+		if(javaProject == null) return null;
 		try {
-			if(!project.hasNature(JavaCore.NATURE_ID)) return null;
-			IJavaProject javaProject = JavaCore.create(project);		
 			IPath p = javaProject.getOutputLocation();
 			IResource r = project.getWorkspace().getRoot().findMember(p);
 			return (r == null || r.getLocation() == null) ? null : r.getLocation().toString();
@@ -516,11 +504,10 @@ public class EclipseResourceUtil {
 		int type = object.getFileType(); 
 		IResource resource = getResource(object);
 		if(resource == null) return null;
-		IProject project = resource.getProject();		
+		IProject project = resource.getProject();
+		IJavaProject javaProject = getJavaProject(project);
+		if(javaProject == null) return null;
 		try	{
-			if(project == null || !project.isOpen() || !project.hasNature(JavaCore.NATURE_ID)) return null;
-			IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
-			if(javaProject == null) return null;
 			if(type == XFileObject.SYSTEM) return javaProject.findPackageFragmentRoot(resource.getFullPath());
 			Path path = null;
 			if(type == XFileObject.FOLDER) {
@@ -540,9 +527,10 @@ public class EclipseResourceUtil {
 	}
 	
 	public static IType getValidType(IProject project, String className) {
+		if (className == null && className.length() == 0) return null;
+		IJavaProject javaProject = getJavaProject(project);
+		if(javaProject == null) return null;
 		try {
-			if (className == null && className.length() == 0 || !project.exists() || !project.isOpen() || !project.hasNature(JavaCore.NATURE_ID)) return null;
-			IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
 			IType t = javaProject.findType(className);
 			if(t == null || t.isBinary()) return t;
 			if(t.getParent() instanceof ICompilationUnit) {
@@ -583,9 +571,10 @@ public class EclipseResourceUtil {
 	 * Returns true only if project has no sources but output contains *.class file 
 	 */	
 	public static boolean isContainedInOutput(IProject project, String className) {
+		if (className == null && className.length() == 0) return false;
+		IJavaProject javaProject = getJavaProject(project);
+		if(javaProject == null) return false;
 		try {
-			if (className == null && className.length() == 0 || !project.exists() || !project.isOpen() || !project.hasNature(JavaCore.NATURE_ID)) return false;
-			IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
 			IPath p = javaProject.getOutputLocation();
 			IResource r = project.getWorkspace().getRoot().findMember(p);
 			if(r == null || r.getLocation() == null) return false;
@@ -599,7 +588,7 @@ public class EclipseResourceUtil {
 	}
 
 	public static boolean hasSources(IJavaProject javaProject) throws JavaModelException {
-		IClasspathEntry[] es = javaProject.getRawClasspath();
+		IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
 		for (int i = 0; i < es.length; i++) {
 			if(es[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) return true;
 		}
@@ -607,16 +596,16 @@ public class EclipseResourceUtil {
 	}
 	
 	public static IResource[] getJavaSourceRoots(IProject project) {
-		final List<IResource> resources = new ArrayList<IResource>();
+		IJavaProject javaProject = getJavaProject(project);
+		if(javaProject == null) return null;
+		List<IResource> resources = new ArrayList<IResource>();
 		try {
-			if(project == null || !project.isOpen() || !project.hasNature(JavaCore.NATURE_ID)) return null;
-			IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
-			IClasspathEntry[] es = javaProject.getRawClasspath();
+			IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
 			for (int i = 0; i < es.length; i++) {
 				if(es[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
 					IResource findMember = ModelPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
-					if(findMember!=null) {
-						resources.add( findMember );
+					if(findMember != null && findMember.exists()) {
+						resources.add(findMember);
 					}
 				} 
 			}
@@ -627,13 +616,16 @@ public class EclipseResourceUtil {
 	}
 	                        
 	public static IResource getJavaSourceRoot(IProject project) {
+		IJavaProject javaProject = getJavaProject(project);
+		if(javaProject == null) return null;
 		try	{
-			if(project == null || !project.isOpen() || !project.hasNature(JavaCore.NATURE_ID)) return null;
-			IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
-			IClasspathEntry[] es = javaProject.getRawClasspath();
+			IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
 			for (int i = 0; i < es.length; i++) {
 				if(es[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-					return ModelPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
+					IResource findMember = ModelPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
+					if(findMember != null && findMember.exists()) {
+						return findMember;
+					}
 				} 
 			}
 		} catch (Exception ex) {
@@ -797,20 +789,15 @@ public class EclipseResourceUtil {
 	}			
 	
 	public static IResource[] getClasspathResources(IProject project) {
-		if(project == null || !project.isOpen()) return new IProject[0];
-		try {
-			if(!project.hasNature(JavaCore.NATURE_ID)) return new IProject[0];
-		} catch (Exception e) {
-			//ignore - if project cannot respond, it may not have resources of interest.
-			return new IProject[0];
-		}
+		IJavaProject javaProject = getJavaProject(project);
+		if(javaProject == null) return new IProject[0];
+
 		ArrayList<IResource> l = new ArrayList<IResource>();
-		IJavaProject javaProject = JavaCore.create(project);
 		
 		IClasspathEntry[] es = null;
 		try {
 		    es = javaProject.getResolvedClasspath(true);
-		} catch (Exception e) {
+		} catch (JavaModelException e) {
 			//ignore - if project cannot respond, it may not have resources of interest.
 			return new IProject[0];
 		}
