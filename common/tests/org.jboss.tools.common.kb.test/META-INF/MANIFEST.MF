@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KB Tests Plug-in
+Bundle-SymbolicName: org.jboss.tools.common.kb.test;singleton:=true
+Bundle-Version: 2.0.0
+Bundle-ClassPath: common-kb-tests.jar
+Bundle-Vendor: Red Hat, Inc.
+Export-Package: org.jboss.tools.common.kb.test,
+ org.jboss.tools.common.kb.test.resources
+Require-Bundle: org.jboss.tools.common,
+ org.junit,
+ org.jboss.tools.common.kb,
+ org.jboss.tools.common.test,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources
+Provide-Package: org.jboss.tools.common.kb.test

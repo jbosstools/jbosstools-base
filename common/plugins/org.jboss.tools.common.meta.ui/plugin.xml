@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+
+   <extension
+         point="org.jboss.tools.common.model.meta">
+      <meta path="meta/meta.meta"/>
+   </extension>
+
+   <extension
+         id="e"
+         name="XML Editors"
+         point="org.jboss.tools.common.model.ui.xmlEditor">
+      <xmlEditor
+            name="Meta File Editor"
+            icon="images/xstudio/editors/meta_file.gif"
+            contributorClass="org.jboss.tools.common.model.ui.texteditors.MultiPageContributor"
+            class="org.jboss.tools.common.meta.ui.MetaCompoundEditor"
+            entities="FileMETA">
+      </xmlEditor>
+   </extension>
+   <extension point="org.jboss.tools.common.model.ui.attributeEditor">
+      <attributeEditor 
+         class="org.jboss.tools.common.meta.ui.attribute.editor.PropertiesStringEditor" 
+         id="PropertiesString">
+      </attributeEditor>
+   </extension>
+   <extension point="org.jboss.tools.common.model.ui.attributeAdapter">
+      <attributeAdapter 
+         class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter" 
+         id="PropertiesString">
+      </attributeAdapter>
+   </extension>
+
+   <extension point="org.eclipse.search.searchPages"> 
+      <page 
+         id="org.jboss.tools.common.meta.ui.search.MetaSearchPage" 
+         label="Meta Search" 
+         icon="images/xstudio/editors/meta_file.gif" 
+         sizeHint="250,160" 
+         tabPosition="1" 
+         extensions="*:1" 
+         showScopeSection="true"
+         class="org.jboss.tools.common.meta.ui.search.MetaSearchPage">
+      </page> 
+   </extension> 
+<extension
+ id="MetaSearchPage"
+    point="org.eclipse.search.searchResultViewPages">
+ <viewPage
+  id="org.jboss.tools.common.meta.ui.search.MetaSearchResultPage"
+  searchResultClass="org.jboss.tools.common.meta.ui.search.MetaSearchResult"
+  class="org.jboss.tools.common.meta.ui.search.MetaSearchResultPage">
+ </viewPage>
+</extension>
+
+   <extension
+         point="org.jboss.tools.common.model.resourceMapping">
+      <mapping
+          loader="org.jboss.tools.common.meta.ui"
+          priority="4"
+          kind="class"
+          paths=".meta.ui."
+      />
+   </extension>
+
+   <extension point="org.jboss.tools.common.model.ui.attributeEditor">
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="MetaEditorList">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="MetaImplementationList">
+      </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="MetaHandlerList">
+      </attributeEditor>
+   </extension>
+
+   <extension point="org.jboss.tools.common.model.ui.attributeAdapter">
+      <attributeAdapter class="org.jboss.tools.common.meta.ui.attribute.editor.EditorListAdapter" id="MetaEditorList">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.meta.ui.attribute.editor.ImplementationListAdapter" id="MetaImplementationList">
+      </attributeAdapter>
+      <attributeAdapter class="org.jboss.tools.common.meta.ui.attribute.editor.HandlerListAdapter" id="MetaHandlerList">
+      </attributeAdapter>
+   </extension>
+
+	<extension point="org.jboss.tools.common.model.classes">
+		<xclass id="org.jboss.tools.common.meta.ui.editor.FileMetaImpl"
+			class="org.jboss.tools.common.meta.ui.editor.FileMetaImpl"/>
+		<xclass id="org.jboss.tools.common.meta.ui.editor.FileMetaLoader"
+			class="org.jboss.tools.common.meta.ui.editor.FileMetaLoader"/>
+		<xclass id="org.jboss.tools.common.meta.ui.editor.GenerateHelpKeysHandler"
+			class="org.jboss.tools.common.meta.ui.editor.GenerateHelpKeysHandler"/>
+		<xclass id="org.jboss.tools.common.meta.ui.editor.MetaAttributeDataImpl"
+			class="org.jboss.tools.common.meta.ui.editor.MetaAttributeDataImpl"/>
+		<xclass id="org.jboss.tools.common.meta.ui.editor.MetaAttributeEditorImpl"
+			class="org.jboss.tools.common.meta.ui.editor.MetaAttributeEditorImpl"/>
+		<xclass id="org.jboss.tools.common.meta.ui.editor.MetaElementImpl"
+			class="org.jboss.tools.common.meta.ui.editor.MetaElementImpl"/>
+		<xclass id="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
+			class="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"/>
+		<xclass id="org.jboss.tools.common.meta.ui.editor.MetaEntityDataImpl"
+			class="org.jboss.tools.common.meta.ui.editor.MetaEntityDataImpl"/>
+		<xclass id="org.jboss.tools.common.meta.ui.editor.MetaIconTypeImpl"
+			class="org.jboss.tools.common.meta.ui.editor.MetaIconTypeImpl"/>
+
+		<xclass id="org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+			class="org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"/>
+	</extension>
+</plugin>

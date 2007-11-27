@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin name="org.jboss.tools.common.model">
+	<classes>
+		<class path="/XModelEntityGroup/MAPPINGS/MAPPING/PAIR@value" />
+	 	<class path="/XModelEntityGroup/XModelEntity@AdoptManagerClass" />  
+		<class path="/XModelEntityGroup/XModelEntity@ImplementationLoadingClass" />
+		<class path="/XModelEntityGroup/XModelEntity@ImplementingClass" />  
+	</classes>
+</plugin>
