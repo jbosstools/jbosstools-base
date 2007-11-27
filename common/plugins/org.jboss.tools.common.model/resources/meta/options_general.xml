@@ -1730,115 +1730,115 @@
 					REFORMAT="yes" SCOPE="project"
 					STARTTEXT="&lt;%@ taglib uri=&quot;http://richfaces.org/a4j&quot; prefix=&quot;a4j&quot; %>\\n|" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, action, timeout, actionExpression, oncomplete, rendered, status, reRender, focus, id, requestDelay, eventsQueue, bypassUpdates, immediate, limitToList, data, ajaxSingle, ignoreDupResponses, binding, name&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, oncomplete, rendered, reRender, focus, id, bypassUpdates, limitToList, ajaxSingle, name, action, timeout, actionExpression, status, requestDelay, eventsQueue, immediate, data, onbeforedomupdate, binding, ignoreDupResponses&lt;/code>"
 					ENDTEXT="&lt;/jsFunction>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="jsFunction" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;jsFunction>" />
+					STARTTEXT="&lt;jsFunction>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:log&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:log&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>level, width, popup, height, hotkey, rendered, binding, name, id&lt;/code>"
 					ENDTEXT="&lt;/log>" ENTITY="SharableMacroHTML" ICON="" NAME="log"
-					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;log>" />
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;log>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:form&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:form&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>oncomplete, target, rendered, reRender, focus, id, prependId, bypassUpdates, limitToList, ajaxSingle, onreset, onsubmit, accept, timeout, enctype, status, ajaxSubmit, requestDelay, eventsQueue, data, acceptCharset, onbeforedomupdate, binding, ignoreDupResponses&lt;/code>"
+					ENDTEXT="&lt;/form>" ENTITY="SharableMacroHTML" ICON="" NAME="form"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;form>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:repeat&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:repeat&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>var, value, rows, first, componentState, stateVar, rowKeyVar, rendered, id, ajaxKeys, binding&lt;/code>"
 					ENDTEXT="&lt;/repeat>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="repeat" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;repeat>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:form&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:form&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>oncomplete, target, rendered, reRender, focus, id, prependId, bypassUpdates, limitToList, ajaxSingle, onreset, onsubmit, accept, timeout, enctype, status, ajaxSubmit, requestDelay, eventsQueue, data, acceptCharset, binding, ignoreDupResponses&lt;/code>"
-					ENDTEXT="&lt;/form>" ENTITY="SharableMacroHTML" ICON="" NAME="form"
-					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;form>" />
+					STARTTEXT="&lt;repeat>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:mediaOutput&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:mediaOutput&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>declare, dir, id, rev, mimeType, style, onmouseover, onkeyup, tabindex, archive, converter, lang, createContent, onmouseout, element, rel, onmouseup, cacheable, binding, expires, onmousemove, coords, title, shape, target, session, charset, rendered, codetype, classid, styleClass, accesskey, onkeypress, ondblclick, align, vspace, lastModified, usemap, standby, border, onblur, value, hreflang, codebase, type, uriAttribute, onclick, ismap, onkeydown, onmousedown, hspace, onfocus&lt;/code>"
 					ENDTEXT="&lt;/mediaOutput>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="mediaOutput" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;mediaOutput>" />
+					STARTTEXT="&lt;mediaOutput>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:loadBundle&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:loadBundle&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>var, basename, rendered, binding, id&lt;/code>"
 					ENDTEXT="&lt;/loadBundle>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="loadBundle" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;loadBundle>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:region&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:region&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>selfRendered, renderRegionOnly, immediate, rendered, binding, ajaxListener, id&lt;/code>"
-					ENDTEXT="&lt;/region>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="region" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;region>" />
+					STARTTEXT="&lt;loadBundle>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:include&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:include&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>layout, lang, title, ajaxRendered, rendered, id, dir, styleClass, keepTransient, style, binding, viewId&lt;/code>"
 					ENDTEXT="&lt;/include>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="include" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;include>" />
+					STARTTEXT="&lt;include>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:region&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:region&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>selfRendered, renderRegionOnly, immediate, rendered, binding, ajaxListener, id&lt;/code>"
+					ENDTEXT="&lt;/region>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="region" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;region>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:outputPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:outputPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>onkeyup, layout, lang, title, ajaxRendered, onclick, rendered, onmouseout, onkeydown, onmousedown, id, dir, styleClass, keepTransient, onkeypress, ondblclick, onmouseup, style, binding, onmousemove, onmouseover&lt;/code>"
 					ENDTEXT="&lt;/outputPanel>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="outputPanel" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;outputPanel>" />
+					STARTTEXT="&lt;outputPanel>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:status&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:status&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>startStyleClass, stopStyle, stopStyleClass, layout, title, onstart, rendered, id, dir, styleClass, startStyle, onkeypress, ondblclick, style, onmouseover, for, onkeyup, lang, onclick, onmouseout, startText, onkeydown, onmousedown, forceId, stopText, onstop, onmouseup, binding, onmousemove&lt;/code>"
 					ENDTEXT="&lt;/status>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="status" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;status>" />
+					STARTTEXT="&lt;status>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:htmlCommandLink&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:htmlCommandLink&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, title, shape, target, rendered, charset, id, dir, rev, styleClass, accesskey, onkeypress, ondblclick, style, onmouseover, onblur, onkeyup, value, action, tabindex, hreflang, lang, type, actionExpression, disabled, onclick, onmouseout, onkeydown, onmousedown, rel, immediate, onfocus, onmouseup, binding, onmousemove, coords&lt;/code>"
 					ENDTEXT="&lt;/htmlCommandLink>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="htmlCommandLink" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;htmlCommandLink>" />
+					STARTTEXT="&lt;htmlCommandLink>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:commandLink&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:commandLink&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>focus, dir, id, rev, bypassUpdates, limitToList, style, onmouseover, onkeyup, tabindex, timeout, lang, actionExpression, onmouseout, rel, onmouseup, binding, onmousemove, coords, actionListener, title, shape, oncomplete, target, charset, rendered, reRender, styleClass, accesskey, onkeypress, ondblclick, ajaxSingle, onblur, action, value, hreflang, type, onclick, status, onkeydown, onmousedown, requestDelay, eventsQueue, immediate, data, onfocus, ignoreDupResponses&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:commandLink&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:commandLink&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>focus, dir, id, rev, bypassUpdates, limitToList, style, onmouseover, onkeyup, tabindex, timeout, lang, actionExpression, onmouseout, rel, onmouseup, binding, onmousemove, coords, actionListener, title, shape, oncomplete, target, charset, rendered, reRender, styleClass, accesskey, onkeypress, ondblclick, ajaxSingle, onblur, action, value, hreflang, type, onclick, status, onkeydown, onmousedown, requestDelay, eventsQueue, immediate, data, onfocus, onbeforedomupdate, ignoreDupResponses&lt;/code>"
 					ENDTEXT="&lt;/commandLink>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="commandLink" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;commandLink>" />
+					STARTTEXT="&lt;commandLink>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:push&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:push&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, oncomplete, rendered, reRender, focus, id, bypassUpdates, limitToList, ajaxSingle, eventProducer, action, timeout, actionExpression, status, interval, eventsQueue, immediate, enabled, data, binding, ignoreDupResponses&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:push&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:push&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, oncomplete, rendered, reRender, focus, id, bypassUpdates, limitToList, ajaxSingle, eventProducer, action, timeout, actionExpression, status, interval, eventsQueue, immediate, enabled, data, onbeforedomupdate, binding, ignoreDupResponses&lt;/code>"
 					ENDTEXT="&lt;/push>" ENTITY="SharableMacroHTML" ICON="" NAME="push"
-					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;push>" />
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;push>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:page&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:page&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>namespace, selfRendered, lang, title, onunload, rendered, contentType, id, dir, styleClass, immediate, onload, pageTitle, style, binding, ajaxListener, format&lt;/code>"
+					ENDTEXT="&lt;/page>" ENTITY="SharableMacroHTML" ICON="" NAME="page"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;page>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:actionparam&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:actionparam&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>noEscape, value, converter, assignTo, binding, name, id&lt;/code>"
 					ENDTEXT="&lt;/actionparam>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="actionparam" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;actionparam>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:page&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:page&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>namespace, selfRendered, lang, title, onunload, rendered, contentType, id, dir, styleClass, immediate, onload, pageTitle, style, binding, ajaxListener, format&lt;/code>"
-					ENDTEXT="&lt;/page>" ENTITY="SharableMacroHTML" ICON="" NAME="page"
-					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;page>" />
+					STARTTEXT="&lt;actionparam>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:portlet&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:portlet&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>rendered, binding, id&lt;/code>"
 					ENDTEXT="&lt;/portlet>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="portlet" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;portlet>" />
+					STARTTEXT="&lt;portlet>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:loadScript&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:loadScript&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>src&lt;/b>, rendered, binding, id&lt;/code>"
 					ENDTEXT="&lt;/loadScript>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="loadScript" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;loadScript src=&quot;|&quot;>" />
+					STARTTEXT="&lt;loadScript src=&quot;|&quot;>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:keepAlive&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:keepAlive&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>beanName&lt;/b>, ajaxOnly&lt;/code>"
 					ENDTEXT="&lt;/keepAlive>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="keepAlive" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;keepAlive beanName=&quot;|&quot;>" />
+					STARTTEXT="&lt;keepAlive beanName=&quot;|&quot;>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:loadStyle&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:loadStyle&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>src&lt;/b>, rendered, binding, id&lt;/code>"
 					ENDTEXT="&lt;/loadStyle>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="loadStyle" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;loadStyle src=&quot;|&quot;>" />
+					STARTTEXT="&lt;loadStyle src=&quot;|&quot;>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:commandButton&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:commandButton&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, title, oncomplete, rendered, reRender, focus, onchange, dir, id, bypassUpdates, styleClass, accesskey, limitToList, onkeypress, ajaxSingle, ondblclick, image, style, size, onblur, onmouseover, value, action, onkeyup, timeout, tabindex, lang, type, actionExpression, disabled, onclick, status, onmouseout, alt, onkeydown, onmousedown, requestDelay, eventsQueue, immediate, data, onfocus, onmouseup, ignoreDupResponses, binding, onmousemove&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:commandButton&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:commandButton&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>focus, id, dir, onchange, bypassUpdates, limitToList, style, size, onmouseover, onkeyup, tabindex, timeout, lang, actionExpression, disabled, alt, onmouseout, onmouseup, binding, onmousemove, actionListener, title, oncomplete, rendered, reRender, styleClass, accesskey, onkeypress, ondblclick, ajaxSingle, image, onblur, action, value, type, onclick, status, onkeydown, onmousedown, requestDelay, eventsQueue, immediate, data, onfocus, onbeforedomupdate, ignoreDupResponses&lt;/code>"
 					ENDTEXT="&lt;/commandButton>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="commandButton" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;commandButton>" />
+					STARTTEXT="&lt;commandButton>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:poll&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:poll&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, oncomplete, rendered, reRender, focus, id, bypassUpdates, limitToList, ajaxSingle, onsubmit, action, timeout, actionExpression, status, interval, eventsQueue, immediate, enabled, data, onbeforedomupdate, binding, ignoreDupResponses&lt;/code>"
+					ENDTEXT="&lt;/poll>" ENTITY="SharableMacroHTML" ICON="" NAME="poll"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;poll>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:ajaxListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:ajaxListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>type&lt;/b>&lt;/code>"
 					ENDTEXT="&lt;/ajaxListener>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="ajaxListener" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;ajaxListener type=&quot;|&quot;>" />
+					STARTTEXT="&lt;ajaxListener type=&quot;|&quot;>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:poll&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:poll&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, oncomplete, rendered, reRender, focus, id, bypassUpdates, limitToList, ajaxSingle, onsubmit, action, timeout, actionExpression, status, interval, eventsQueue, immediate, enabled, data, binding, ignoreDupResponses&lt;/code>"
-					ENDTEXT="&lt;/poll>" ENTITY="SharableMacroHTML" ICON="" NAME="poll"
-					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;poll>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:support&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:support&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, oncomplete, rendered, reRender, focus, id, disableDefault, bypassUpdates, limitToList, ajaxSingle, onsubmit, action, timeout, actionExpression, status, requestDelay, eventsQueue, immediate, data, event, binding, ignoreDupResponses&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:support&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:support&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, oncomplete, rendered, reRender, focus, id, disableDefault, bypassUpdates, limitToList, ajaxSingle, onsubmit, action, timeout, actionExpression, status, requestDelay, eventsQueue, immediate, data, event, onbeforedomupdate, binding, ignoreDupResponses&lt;/code>"
 					ENDTEXT="&lt;/support>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="support" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;support>" />
+					STARTTEXT="&lt;support>" large-icon="" />
 			</GroupHTML>
 			<GroupHTML ENTITY="SharableGroupHTML" HIDDEN="no" ICON=""
 				NAME="RichFaces" PREFIX="rich" SCOPE="project"
@@ -1851,260 +1851,284 @@
 					REFORMAT="yes" SCOPE="project"
 					STARTTEXT="&lt;%@ taglib uri=&quot;http://richfaces.org/rich&quot; prefix=&quot;rich&quot; %>\\n|" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tree&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tree&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxSubmitSelection, stateVar, rowKeyVar, id, onexpand, switchType, preserveDataInRequest, ondropend, style, oncollapse, onmouseover, var, showConnectingLines, dragListener, onkeyup, nodeSelectListener, dropListener, onmouseout, iconLeaf, ondragexit, onmouseup, ondragstart, binding, nodeFace, onmousemove, adviseNodeSelected, ondragend, ondragenter, iconExpanded, componentState, rendered, reRender, iconCollapsed, styleClass, onkeypress, selectedClass, icon, ondblclick, dragIndicator, ondrop, changeExpandListener, adviseNodeOpened, preserveModel, value, acceptedTypes, onclick, highlightedClass, dragType, toggleOnClick, onkeydown, onmousedown, onselected, immediate, ignoreDupResponses, stateAdvisor, typeMapping&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tree&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tree&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>dragValue, ajaxSubmitSelection, stateVar, rowKeyVar, focus, id, onexpand, bypassUpdates, switchType, preserveDataInRequest, ondropend, limitToList, style, oncollapse, onmouseover, var, showConnectingLines, dragListener, onkeyup, timeout, nodeSelectListener, dropValue, dropListener, onmouseout, iconLeaf, ondragexit, onmouseup, ondragstart, nodeFace, binding, onmousemove, adviseNodeSelected, ondragend, ondragenter, iconExpanded, oncomplete, componentState, rendered, reRender, iconCollapsed, styleClass, onkeypress, selectedClass, icon, ajaxSingle, ondblclick, dragIndicator, ondrop, changeExpandListener, adviseNodeOpened, preserveModel, value, acceptedTypes, onclick, highlightedClass, dragType, status, toggleOnClick, onkeydown, onmousedown, requestDelay, eventsQueue, onselected, immediate, data, onbeforedomupdate, ignoreDupResponses, stateAdvisor, typeMapping&lt;/code>"
 					ENDTEXT="&lt;/tree>" ENTITY="SharableMacroHTML" ICON="" NAME="tree"
-					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;tree>" />
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;tree>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:scrollableDataTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:scrollableDataTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>onselectionchange, footer, width, hideWhenScrolling, stateVar, rowKeyVar, focus, id, bypassUpdates, rowKey, limitToList, var, sortMode, rows, timeout, columnClasses, header, first, headerClass, binding, responseData, rowClasses, oncomplete, componentState, rendered, footerClass, reRender, activeClass, styleClass, ajaxKeys, scrollPos, sortListener, height, captionClass, ajaxSingle, selectedClass, frozenColCount, rowIndex, scriptVar, value, status, requestDelay, eventsQueue, data, ignoreDupResponses&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:scrollableDataTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:scrollableDataTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>onselectionchange, width, hideWhenScrolling, onRowClick, stateVar, rowKeyVar, onRowDblClick, focus, id, bypassUpdates, rowKey, limitToList, style, var, sortMode, rows, timeout, onRowMouseUp, columnClasses, first, selection, headerClass, binding, rowClasses, oncomplete, componentState, sortOrder, onRowMouseDown, rendered, footerClass, reRender, activeClass, styleClass, ajaxKeys, height, captionClass, selectedClass, ajaxSingle, frozenColCount, scriptVar, value, status, requestDelay, eventsQueue, data, onbeforedomupdate, ignoreDupResponses&lt;/code>"
 					ENDTEXT="&lt;/scrollableDataTable>" ENTITY="SharableMacroHTML"
 					ICON="" NAME="scrollableDataTable" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;scrollableDataTable>" />
+					STARTTEXT="&lt;scrollableDataTable>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toggleControl&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toggleControl&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, title, oncomplete, rendered, focus, dir, id, bypassUpdates, styleClass, accesskey, switchToState, limitToList, onkeypress, ajaxSingle, ondblclick, style, panelId, onblur, onmouseover, for, onkeyup, value, action, tabindex, timeout, lang, actionExpression, onclick, status, onmouseout, onkeydown, onmousedown, requestDelay, eventsQueue, immediate, data, onfocus, onmouseup, binding, ignoreDupResponses, onmousemove&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toggleControl&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toggleControl&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, title, oncomplete, rendered, focus, dir, id, bypassUpdates, styleClass, accesskey, switchToState, onkeypress, limitToList, ajaxSingle, ondblclick, style, panelId, onblur, onmouseover, for, onkeyup, value, action, tabindex, timeout, lang, actionExpression, onclick, status, onmouseout, onkeydown, onmousedown, requestDelay, eventsQueue, immediate, data, onfocus, onmouseup, onbeforedomupdate, binding, ignoreDupResponses, onmousemove&lt;/code>"
 					ENDTEXT="&lt;/toggleControl>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="toggleControl" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;toggleControl>" />
+					STARTTEXT="&lt;toggleControl>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:suggestionbox&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:suggestionbox&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>width&lt;/b>, &lt;b>height&lt;/b>, focus, id, dir, bypassUpdates, popupClass, limitToList, style, shadowOpacity, for, nothingLabel, var, summary, timeout, converter, lang, first, cellspacing, shadowDepth, fetchValue, zindex, entryClass, onselect, binding, selfRendered, cellpadding, title, rowClasses, oncomplete, rules, popupStyle, suggestionAction, rendered, reRender, styleClass, ajaxSingle, selectedClass, onsubmit, border, bgcolor, selectValueClass, value, frequency, tokens, status, requestDelay, eventsQueue, frame, immediate, data, param, minChars, ignoreDupResponses&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:suggestionbox&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:suggestionbox&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>width&lt;/b>, &lt;b>height&lt;/b>, focus, id, dir, bypassUpdates, popupClass, limitToList, style, shadowOpacity, for, nothingLabel, var, summary, timeout, converter, lang, first, cellspacing, shadowDepth, fetchValue, zindex, entryClass, onselect, binding, selfRendered, cellpadding, title, rowClasses, oncomplete, rules, popupStyle, suggestionAction, rendered, reRender, styleClass, ajaxSingle, selectedClass, onsubmit, border, bgcolor, selectValueClass, value, frequency, tokens, status, requestDelay, eventsQueue, frame, immediate, data, param, onbeforedomupdate, minChars, ignoreDupResponses&lt;/code>"
 					ENDTEXT="&lt;/suggestionbox>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="suggestionbox" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;suggestionbox width=&quot;|&quot; height=&quot;&quot;>" />
+					STARTTEXT="&lt;suggestionbox width=&quot;|&quot; height=&quot;&quot;>"
+					large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:calendar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:calendar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>jointPoint, optionalHeader, width, inputType, localValueSet, buttonLabel, monthLabelsShort, rendered, id, weekDayLabels, locale, requiredMessage, height, scrollMode, optionalFooter, datePattern, currentDate, timeZone, value, converter, toolTipMode, required, validatorMessage, disabled, valid, preloadDateRangeEnd, valueChangeListener, weekDayLabelsShort, preloadDateRangeBegin, validator, converterMessage, popup, direction, immediate, data, binding, monthLabels, boundaryDatesMode&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:calendar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:calendar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>oncurrentdateselect, width, buttonLabel, ondatemouseout, monthLabelsShort, oninputselect, ondateselect, buttonClass, focus, id, onexpand, locale, bypassUpdates, inputStyle, requiredMessage, limitToList, style, buttonIconDisabled, oncollapse, oninputfocus, datePattern, oninputkeydown, timeout, oninputkeypress, converter, toolTipMode, disabled, preloadDateRangeEnd, weekDayLabelsShort, zindex, validator, oninputclick, showInput, popup, direction, currentDateChangeListener, binding, enableManualInput, jointPoint, dataModel, oncomplete, inputClass, rendered, reRender, weekDayLabels, styleClass, height, ajaxSingle, oninputkeyup, scrollMode, oninputblur, timeZone, currentDate, value, ondatemouseover, required, validatorMessage, valueChangeListener, status, requestDelay, eventsQueue, preloadDateRangeBegin, converterMessage, immediate, buttonIcon, onbeforedomupdate, ignoreDupResponses, monthLabels, boundaryDatesMode, oninputchange&lt;/code>"
 					ENDTEXT="&lt;/calendar>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="calendar" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;calendar>" />
+					STARTTEXT="&lt;calendar>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:inputNumberSlider&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:inputNumberSlider&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>width, onchange, showToolTip, inputPosition, id, inputStyle, requiredMessage, style, onmouseover, onkeyup, tabindex, maxlength, converter, disabled, onmouseout, validator, showInput, onselect, barClass, onmouseup, binding, onmousemove, enableManualInput, onerror, handleClass, inputClass, rendered, styleClass, accesskey, onkeypress, showBoundaryValues, ondblclick, handleSelectedClass, tipClass, onblur, value, inputSize, maxValue, required, tipStyle, validatorMessage, onclick, valueChangeListener, onkeydown, onmousedown, converterMessage, minValue, immediate, onfocus, step, barStyle&lt;/code>"
 					ENDTEXT="&lt;/inputNumberSlider>" ENTITY="SharableMacroHTML"
 					ICON="" NAME="inputNumberSlider" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;inputNumberSlider>" />
+					STARTTEXT="&lt;inputNumberSlider>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dndParam&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dndParam&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>name&lt;/b>, value, type, rendered, binding, id&lt;/code>"
 					ENDTEXT="&lt;/dndParam>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="dndParam" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dndParam name=&quot;|&quot;>" />
+					STARTTEXT="&lt;dndParam name=&quot;|&quot;>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:modalPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:modalPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>top, width, localValueSet, controlsClass, moveable, rendered, onhide, id, keepVisualState, onshow, visualOptions, requiredMessage, height, showWhenRendered, left, shadowOpacity, value, converter, required, validatorMessage, valid, valueChangeListener, headerClass, shadowDepth, zindex, minWidth, validator, resizeable, converterMessage, immediate, tridentIVEngineSelectBehavior, binding, minHeight&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:modalPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:modalPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>width, top, controlsClass, moveable, onhide, rendered, id, keepVisualState, onshow, visualOptions, styleClass, requiredMessage, showWhenRendered, height, left, style, shadowOpacity, value, converter, required, validatorMessage, autosized, headerClass, valueChangeListener, shadowDepth, zindex, minWidth, validator, resizeable, converterMessage, immediate, tridentIVEngineSelectBehavior, binding, minHeight&lt;/code>"
 					ENDTEXT="&lt;/modalPanel>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="modalPanel" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;modalPanel>" />
+					STARTTEXT="&lt;modalPanel>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:menuItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, iconClass, oncomplete, target, rendered, reRender, focus, iconDisabled, id, submitMode, bypassUpdates, styleClass, limitToList, ajaxSingle, icon, style, onmouseover, value, action, timeout, actionExpression, selectClass, disabled, onclick, status, selectStyle, onmouseout, onmousedown, requestDelay, eventsQueue, immediate, data, onselect, iconStyle, onmouseup, ignoreDupResponses, binding, onmousemove&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:menuItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, iconClass, oncomplete, target, rendered, reRender, focus, iconDisabled, id, submitMode, bypassUpdates, styleClass, limitToList, ajaxSingle, icon, style, onmouseover, value, action, timeout, actionExpression, selectClass, disabled, onclick, status, selectStyle, onmouseout, onmousedown, requestDelay, eventsQueue, immediate, data, onselect, iconStyle, onmouseup, onbeforedomupdate, ignoreDupResponses, binding, onmousemove&lt;/code>"
 					ENDTEXT="&lt;/menuItem>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="menuItem" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;menuItem>" />
+					STARTTEXT="&lt;menuItem>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tabPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tabPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>width, contentStyle, title, activeTabClass, tabClass, rendered, id, dir, styleClass, switchType, height, requiredMessage, onkeypress, ondblclick, headerAlignment, style, onmouseover, value, onkeyup, disabledTabClass, converter, required, lang, validatorMessage, onclick, inactiveTabClass, valueChangeListener, headerClass, onmouseout, onkeydown, onmousedown, selectedTab, contentClass, validator, converterMessage, immediate, onmouseup, renderedValue, binding, onmousemove, headerSpacing&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:recursiveTreeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:recursiveTreeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>var, includedRoot, includedNode, roots, included, rendered, nodes, binding, id&lt;/code>"
+					ENDTEXT="&lt;/recursiveTreeNodesAdaptor>"
+					ENTITY="SharableMacroHTML" ICON="" NAME="recursiveTreeNodesAdaptor"
+					REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;recursiveTreeNodesAdaptor>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tabPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tabPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>width, contentStyle, title, activeTabClass, tabClass, rendered, id, dir, styleClass, switchType, height, requiredMessage, onkeypress, ondblclick, headerAlignment, style, onmouseover, value, onkeyup, disabledTabClass, converter, required, lang, validatorMessage, onclick, inactiveTabClass, valueChangeListener, headerClass, onmouseout, onkeydown, onmousedown, selectedTab, contentClass, validator, converterMessage, immediate, onmouseup, binding, onmousemove, headerSpacing&lt;/code>"
 					ENDTEXT="&lt;/tabPanel>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="tabPanel" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;tabPanel>" />
+					STARTTEXT="&lt;tabPanel>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dropSupport&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dropSupport&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, ondragenter, oncomplete, rendered, reRender, focus, id, disableDefault, bypassUpdates, ondropend, limitToList, ajaxSingle, onsubmit, ondrop, value, action, timeout, acceptedTypes, dropValue, dropListener, status, requestDelay, eventsQueue, ondragexit, immediate, data, ignoreDupResponses, binding, typeMapping&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dropSupport&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dropSupport&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, ondragenter, oncomplete, rendered, reRender, focus, id, disableDefault, bypassUpdates, ondropend, limitToList, ajaxSingle, onsubmit, ondrop, value, action, timeout, acceptedTypes, dropValue, dropListener, status, requestDelay, eventsQueue, ondragexit, immediate, data, onbeforedomupdate, ignoreDupResponses, binding, typeMapping&lt;/code>"
 					ENDTEXT="&lt;/dropSupport>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="dropSupport" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dropSupport>" />
+					STARTTEXT="&lt;dropSupport>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>type, binding&lt;/code>"
+					ENDTEXT="&lt;/dragListener>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="dragListener" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;dragListener>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelBar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelBar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>headerStyle, width, contentStyle, rendered, id, headerClassActive, styleClass, height, requiredMessage, style, value, converter, required, validatorMessage, onclick, valueChangeListener, headerClass, contentClass, validator, converterMessage, immediate, selectedPanel, headerStyleActive, binding&lt;/code>"
 					ENDTEXT="&lt;/panelBar>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="panelBar" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;panelBar>" />
+					STARTTEXT="&lt;panelBar>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:subTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:subTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>rowClasses, componentState, stateVar, onRowClick, rowKeyVar, onRowDblClick, rendered, onRowMouseDown, footerClass, id, ajaxKeys, rowKey, var, onRowMouseOver, value, rows, onRowMouseUp, columnClasses, first, headerClass, onRowMouseMove, onRowMouseOut, sortable, binding&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:subTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:subTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>rowClasses, componentState, stateVar, onRowClick, rowKeyVar, onRowDblClick, rendered, onRowMouseDown, footerClass, id, ajaxKeys, rowKey, onRowMouseOver, var, value, rows, onRowMouseUp, columnClasses, first, headerClass, onRowMouseMove, onRowMouseOut, sortExpression, binding&lt;/code>"
 					ENDTEXT="&lt;/subTable>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="subTable" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;subTable>" />
+					STARTTEXT="&lt;subTable>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:datascroller&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:datascroller&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>maxPages, selectedStyle, fastControls, tableStyle, focus, id, bypassUpdates, limitToList, style, onmouseover, for, onkeyup, timeout, actionExpression, onmouseout, onmouseup, pageIndexVar, binding, onmousemove, actionListener, renderIfSinglePage, oncomplete, fastStep, rendered, reRender, tableStyleClass, stepControls, styleClass, onkeypress, ajaxSingle, ondblclick, align, handleValue, selectedStyleClass, boundaryControls, value, action, pagesVar, onclick, status, onkeydown, scrollerListener, onmousedown, requestDelay, eventsQueue, immediate, data, ignoreDupResponses&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:nodeSelectListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:nodeSelectListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>type, binding&lt;/code>"
+					ENDTEXT="&lt;/nodeSelectListener>" ENTITY="SharableMacroHTML"
+					ICON="" NAME="nodeSelectListener" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;nodeSelectListener>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:datascroller&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:datascroller&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>maxPages, selectedStyle, fastControls, tableStyle, focus, id, bypassUpdates, limitToList, style, onmouseover, for, onkeyup, timeout, actionExpression, onmouseout, inactiveStyleClass, pageIndexVar, onmouseup, binding, onmousemove, actionListener, inactiveStyle, renderIfSinglePage, oncomplete, fastStep, rendered, reRender, tableStyleClass, stepControls, styleClass, onkeypress, ajaxSingle, ondblclick, align, handleValue, selectedStyleClass, boundaryControls, value, action, pagesVar, onclick, status, onkeydown, scrollerListener, onmousedown, requestDelay, eventsQueue, immediate, data, onbeforedomupdate, ignoreDupResponses&lt;/code>"
 					ENDTEXT="&lt;/datascroller>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="datascroller" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;datascroller>" />
+					STARTTEXT="&lt;datascroller>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuSeparator /&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>rendered, binding, id&lt;/code>"
 					ENDTEXT="" ENTITY="SharableMacroHTML" ICON="" NAME="menuSeparator"
-					REFORMAT="no" SCOPE="project" STARTTEXT="&lt;menuSeparator/>" />
+					REFORMAT="no" SCOPE="project" STARTTEXT="&lt;menuSeparator/>"
+					large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragSupport&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragSupport&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, dragValue, ondragend, oncomplete, rendered, reRender, focus, id, disableDefault, bypassUpdates, limitToList, ajaxSingle, onsubmit, dragIndicator, value, action, dragListener, timeout, dragType, status, requestDelay, eventsQueue, immediate, data, ondragstart, binding, ignoreDupResponses&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dropListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dropListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>type, binding&lt;/code>"
+					ENDTEXT="&lt;/dropListener>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="dropListener" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;dropListener>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragSupport&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragSupport&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, dragValue, ondragend, oncomplete, rendered, reRender, focus, id, disableDefault, bypassUpdates, limitToList, ajaxSingle, onsubmit, dragIndicator, value, action, dragListener, timeout, dragType, status, requestDelay, eventsQueue, immediate, data, onbeforedomupdate, ondragstart, binding, ignoreDupResponses&lt;/code>"
 					ENDTEXT="&lt;/dragSupport>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="dragSupport" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dragSupport>" />
+					STARTTEXT="&lt;dragSupport>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:virtualEarth&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:virtualEarth&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>lat, var, zoom, onkeyup, onclick, onLoadMap, rendered, onmouseout, onkeydown, id, onmousedown, styleClass, dashboardSize, onkeypress, ondblclick, style, onmouseup, lng, binding, onmousemove, mapStyle, onmouseover&lt;/code>"
 					ENDTEXT="&lt;/virtualEarth>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="virtualEarth" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;virtualEarth>" />
+					STARTTEXT="&lt;virtualEarth>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenuItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenuItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>hoverClass, actionListener, disabledStyle, iconClass, target, hoverStyle, rendered, iconDisabled, id, styleClass, onkeypress, icon, ondblclick, style, name, onmouseover, disabledClass, onkeyup, action, value, actionExpression, disabled, mode, onclick, onmouseout, onkeydown, onmousedown, label, immediate, iconStyle, onmouseup, binding, onmousemove&lt;/code>"
 					ENDTEXT="&lt;/panelMenuItem>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="panelMenuItem" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;panelMenuItem>" />
+					STARTTEXT="&lt;panelMenuItem>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:paint2D&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:paint2D&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>value, width, converter, lang, title, rendered, id, styleClass, height, data, align, hspace, vspace, style, bgcolor, cacheable, border, binding, paint, format&lt;/code>"
 					ENDTEXT="&lt;/paint2D>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="paint2D" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;paint2D>" />
+					STARTTEXT="&lt;paint2D>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dropDownMenu&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dropDownMenu&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>jointPoint, onitemselect, disabledItemStyle, disabledItemClass, verticalOffset, rendered, selectItemStyle, showDelay, id, onexpand, submitMode, styleClass, style, itemClass, oncollapse, onmouseover, value, horizontalOffset, ongroupactivate, onmouseout, selectItemClass, itemStyle, direction, popupWidth, event, binding, onmousemove, hideDelay&lt;/code>"
 					ENDTEXT="&lt;/dropDownMenu>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="dropDownMenu" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dropDownMenu>" />
+					STARTTEXT="&lt;dropDownMenu>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataDefinitionList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataDefinitionList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>title, rowClasses, stateVar, componentState, rowKeyVar, rendered, footerClass, dir, id, styleClass, ajaxKeys, rowKey, style, var, value, rows, lang, columnClasses, first, headerClass, binding&lt;/code>"
 					ENDTEXT="&lt;/dataDefinitionList>" ENTITY="SharableMacroHTML"
 					ICON="" NAME="dataDefinitionList" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dataDefinitionList>" />
+					STARTTEXT="&lt;dataDefinitionList>" large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:inputNumberSpinner&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:inputNumberSpinner&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>id, onchange, inputStyle, requiredMessage, style, onmouseover, onkeyup, tabindex, cycled, converter, disabled, onmouseout, validator, onselect, onmouseup, binding, onmousemove, enableManualInput, onerror, inputClass, rendered, styleClass, accesskey, onupclick, onkeypress, ondblclick, onblur, value, inputSize, maxValue, required, validatorMessage, ondownclick, onclick, valueChangeListener, onkeydown, onmousedown, converterMessage, minValue, immediate, onfocus, step&lt;/code>"
 					ENDTEXT="&lt;/inputNumberSpinner>" ENTITY="SharableMacroHTML"
 					ICON="" NAME="inputNumberSpinner" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;inputNumberSpinner>" />
+					STARTTEXT="&lt;inputNumberSpinner>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataGrid&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataGrid&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>cellpadding, width, rowClasses, title, rules, componentState, onRowClick, stateVar, onRowDblClick, rowKeyVar, onRowMouseDown, columns, rendered, footerClass, captionStyle, dir, id, ajaxKeys, styleClass, rowKey, captionClass, align, style, border, bgcolor, onRowMouseOver, var, summary, value, onRowMouseUp, lang, columnClasses, first, cellspacing, headerClass, onRowMouseMove, frame, onRowMouseOut, binding, elements&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataGrid&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataGrid&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>width, stateVar, onRowClick, rowKeyVar, onRowDblClick, columns, id, dir, rowKey, style, summary, var, onRowMouseOver, onRowMouseUp, lang, columnClasses, first, cellspacing, headerClass, onRowMouseOut, binding, cellpadding, title, rowClasses, rules, componentState, rendered, onRowMouseDown, footerClass, captionStyle, styleClass, ajaxKeys, captionClass, align, bgcolor, border, value, onRowMouseMove, frame, elements&lt;/code>"
 					ENDTEXT="&lt;/dataGrid>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="dataGrid" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dataGrid>" />
+					STARTTEXT="&lt;dataGrid>" large-icon="" />
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:treeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:treeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>active, var, rendered, nodes, binding, id&lt;/code>"
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:menuGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>value&lt;/b>, onclose, iconClass, rendered, showDelay, iconDisabled, id, onopen, styleClass, icon, style, onmouseover, iconFolderDisabled, converter, disabled, selectClass, selectStyle, onmouseout, direction, iconStyle, event, binding, onmousemove, iconFolder&lt;/code>"
+					ENDTEXT="&lt;/menuGroup>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="menuGroup" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;menuGroup value=&quot;|&quot;>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:messages&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:messages&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>markerStyle, title, layout, tooltip, rendered, warnMarkerClass, id, passedLabel, styleClass, fatalMarkerClass, keepTransient, globalOnly, style, infoMarkerClass, fatalLabelClass, fatalClass, var, infoLabelClass, ajaxRendered, markerClass, infoClass, showDetail, errorLabelClass, labelClass, errorMarkerClass, showSummary, warnLabelClass, warnClass, binding, errorClass&lt;/code>"
+					ENDTEXT="&lt;/messages>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="messages" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;messages>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataOrderedList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataOrderedList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>title, rowClasses, stateVar, componentState, rowKeyVar, rendered, footerClass, dir, id, styleClass, ajaxKeys, rowKey, style, var, value, rows, lang, type, columnClasses, first, headerClass, binding&lt;/code>"
+					ENDTEXT="&lt;/dataOrderedList>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="dataOrderedList" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;dataOrderedList>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:message&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:message&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>markerStyle, title, tooltip, rendered, warnMarkerClass, passedLabel, id, styleClass, fatalMarkerClass, keepTransient, style, infoMarkerClass, fatalLabelClass, for, fatalClass, infoLabelClass, ajaxRendered, markerClass, infoClass, showDetail, errorLabelClass, labelClass, errorMarkerClass, showSummary, warnLabelClass, warnClass, binding, errorClass&lt;/code>"
+					ENDTEXT="&lt;/message>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="message" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;message>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:column&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:column&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>width, lang, title, colspan, headerClass, rendered, footerClass, id, dir, styleClass, breakBefore, sortExpression, style, sortable, binding, rowspan&lt;/code>"
+					ENDTEXT="&lt;/column>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="column" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;column>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>title, rowClasses, stateVar, componentState, rowKeyVar, rendered, footerClass, dir, id, styleClass, ajaxKeys, rowKey, style, var, value, rows, lang, type, columnClasses, first, headerClass, binding&lt;/code>"
+					ENDTEXT="&lt;/dataList>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="dataList" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;dataList>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolBarGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolBarGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>styleClass, style, rendered, separatorClass, binding, location, id, itemSeparator&lt;/code>"
+					ENDTEXT="&lt;/toolBarGroup>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="toolBarGroup" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;toolBarGroup>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenu&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenu&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>iconGroupPosition, width, onitemhover, disabledItemStyle, iconCollapsedGroup, id, requiredMessage, iconTopDisableGroup, expandSingle, style, iconExpandedGroup, itemClass, ongroupexpand, iconItemTopPosition, disabledGroupClass, onmouseover, hoveredItemClass, onkeyup, converter, iconDisabledGroup, disabled, onmouseout, iconGroupTopPosition, validator, disabledGroupStyle, topItemStyle, onmouseup, event, expandMode, binding, onmousemove, iconDisabledItem, hoveredGroupClass, iconTopDisabledItem, ongroupcollapse, disabledItemClass, iconItemPosition, groupClass, selectedChild, rendered, iconItem, styleClass, hoveredGroupStyle, onkeypress, ondblclick, iconTopItem, value, required, validatorMessage, iconCollapsedTopGroup, mode, onclick, topGroupStyle, valueChangeListener, onkeydown, onmousedown, groupStyle, hoveredItemStyle, topItemClass, converterMessage, itemStyle, immediate, topGroupClass, iconExpandedTopGroup&lt;/code>"
+					ENDTEXT="&lt;/panelMenu>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="panelMenu" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;panelMenu>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:gmap&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:gmap&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>lat, zoom, showGLargeMapControl, gmapKey, rendered, id, showGScaleControl, styleClass, onkeypress, ondblclick, oninit, enableDoubleClickZoom, style, mapType, onmouseover, enableInfoWindow, onkeyup, enableContinuousZoom, warningMessage, onclick, gmapVar, onmouseout, onkeydown, onmousedown, enableDragging, showGMapTypeControl, onmouseup, binding, lng, onmousemove&lt;/code>"
+					ENDTEXT="&lt;/gmap>" ENTITY="SharableMacroHTML" ICON="" NAME="gmap"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;gmap>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:effect&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:effect&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>type, rendered, id, disableDefault, targetId, params, event, binding, name, for&lt;/code>"
+					ENDTEXT="&lt;/effect>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="effect" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;effect>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:separator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:separator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>onkeyup, width, title, onclick, rendered, onmouseout, onkeydown, onmousedown, id, styleClass, height, lineType, onkeypress, align, ondblclick, style, onmouseup, binding, onmousemove, onmouseover&lt;/code>"
+					ENDTEXT="&lt;/separator>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="separator" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;separator>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolBar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolBar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>contentClass, styleClass, width, height, contentStyle, style, rendered, separatorClass, binding, id, itemSeparator&lt;/code>"
+					ENDTEXT="&lt;/toolBar>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="toolBar" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;toolBar>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:insert&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:insert&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>encoding, errorContent, highlight, src, rendered, binding, id&lt;/code>"
+					ENDTEXT="&lt;/insert>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="insert" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;insert>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragIndicator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragIndicator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptClass, styleClass, rejectClass, style, rendered, binding, id&lt;/code>"
+					ENDTEXT="&lt;/dragIndicator>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="dragIndicator" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;dragIndicator>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:changeExpandListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:changeExpandListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>type, binding&lt;/code>"
+					ENDTEXT="&lt;/changeExpandListener>" ENTITY="SharableMacroHTML"
+					ICON="" NAME="changeExpandListener" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;changeExpandListener>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolTip&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolTip&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>layout, oncomplete, verticalOffset, onhide, rendered, id, onshow, followMouse, styleClass, onkeypress, ondblclick, style, delay, onmouseover, zorder, value, onkeyup, horizontalOffset, disabled, mode, onclick, onmouseout, onkeydown, onmousedown, direction, onmouseup, event, binding, onmousemove&lt;/code>"
+					ENDTEXT="&lt;/toolTip>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="toolTip" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;toolTip>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelBarItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelBarItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>headerStyle, contentStyle, rendered, headerClass, id, headerClassActive, contentClass, label, headerStyleActive, binding, name&lt;/code>"
+					ENDTEXT="&lt;/panelBarItem>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="panelBarItem" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;panelBarItem>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>width, stateVar, onRowClick, rowKeyVar, onRowDblClick, columns, id, dir, rowKey, style, summary, var, onRowMouseOver, rows, onRowMouseUp, lang, columnClasses, first, cellspacing, headerClass, onRowMouseOut, binding, cellpadding, title, rowClasses, rules, componentState, rendered, onRowMouseDown, footerClass, captionStyle, styleClass, ajaxKeys, captionClass, align, bgcolor, border, value, onRowMouseMove, frame, columnsWidth&lt;/code>"
+					ENDTEXT="&lt;/dataTable>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="dataTable" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;dataTable>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:columnGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:columnGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>lang, title, rowClasses, columnClasses, rendered, id, dir, styleClass, breakBefore, style, binding&lt;/code>"
+					ENDTEXT="&lt;/columnGroup>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="columnGroup" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;columnGroup>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:treeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:treeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>var, includedNode, rendered, nodes, binding, id&lt;/code>"
 					ENDTEXT="&lt;/treeNodesAdaptor>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="treeNodesAdaptor" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;treeNodesAdaptor>" />
+					STARTTEXT="&lt;treeNodesAdaptor>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:treeNode&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:treeNode&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>dragValue, ajaxSubmitSelection, focus, id, onexpand, bypassUpdates, ondropend, limitToList, oncollapse, onmouseover, onkeyup, dragListener, timeout, nodeSelectListener, dropValue, dropListener, onmouseout, iconLeaf, ondragexit, nodeClass, onmouseup, ondragstart, oncontextmenu, binding, onmousemove, ondragend, ondragenter, iconExpanded, oncomplete, rendered, reRender, iconCollapsed, onkeypress, selectedClass, icon, ajaxSingle, ondblclick, dragIndicator, ondrop, changeExpandListener, type, acceptedTypes, onclick, highlightedClass, dragType, status, onkeydown, onmousedown, requestDelay, eventsQueue, onselected, data, onbeforedomupdate, ignoreDupResponses, typeMapping&lt;/code>"
+					ENDTEXT="&lt;/treeNode>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="treeNode" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;treeNode>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:togglePanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:togglePanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>rendered, id, initialState, styleClass, switchType, requiredMessage, onkeypress, ondblclick, style, onmouseover, value, onkeyup, stateOrder, converter, required, validatorMessage, onclick, valueChangeListener, onmouseout, onkeydown, onmousedown, validator, converterMessage, immediate, onmouseup, binding, onmousemove&lt;/code>"
+					ENDTEXT="&lt;/togglePanel>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="togglePanel" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;togglePanel>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenuGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenuGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>hoverClass, disabledStyle, hoverStyle, onchange, id, onexpand, requiredMessage, style, size, oncollapse, onmouseover, disabledClass, onkeyup, tabindex, maxlength, converter, disabled, alt, onmouseout, validator, onselect, iconStyle, expandMode, onmouseup, binding, onmousemove, actionListener, iconClass, iconExpanded, target, rendered, iconDisabled, iconCollapsed, styleClass, accesskey, onkeypress, align, ondblclick, name, onblur, value, action, required, validatorMessage, onclick, valueChangeListener, onkeydown, onmousedown, converterMessage, label, immediate, onfocus, expanded&lt;/code>"
+					ENDTEXT="&lt;/panelMenuGroup>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="panelMenuGroup" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;panelMenuGroup>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:simpleTogglePanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:simpleTogglePanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, width, oncomplete, bodyClass, rendered, reRender, focus, id, styleClass, bypassUpdates, switchType, height, onkeypress, limitToList, ondblclick, ajaxSingle, style, onmouseover, onkeyup, action, value, timeout, actionExpression, onclick, headerClass, status, onmouseout, onkeydown, onmousedown, requestDelay, opened, eventsQueue, label, immediate, data, onmouseup, onbeforedomupdate, ignoreDupResponses, binding, onmousemove&lt;/code>"
+					ENDTEXT="&lt;/simpleTogglePanel>" ENTITY="SharableMacroHTML"
+					ICON="" NAME="simpleTogglePanel" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;simpleTogglePanel>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataFilterSlider&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataFilterSlider&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>width, filterBy, startRange, rendered, id, endRange, storeResults, styleClass, style, onSlide, handleValue, sliderListener, trackStyleClass, handleStyleClass, for, increment, rangeStyleClass, fieldStyleClass, trailer, manualInput, forValRef, onChange, trailerStyleClass, binding&lt;/code>"
+					ENDTEXT="&lt;/dataFilterSlider>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="dataFilterSlider" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;dataFilterSlider>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tab&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tab&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, title, oncomplete, rendered, reRender, focus, id, bypassUpdates, styleClass, switchType, onkeypress, limitToList, ajaxSingle, ondblclick, style, name, onmouseover, ontabenter, onkeyup, action, timeout, actionExpression, disabled, onclick, status, onmouseout, onkeydown, onmousedown, requestDelay, eventsQueue, labelWidth, label, immediate, data, onmouseup, onbeforedomupdate, binding, ignoreDupResponses, onmousemove, ontableave&lt;/code>"
+					ENDTEXT="&lt;/tab>" ENTITY="SharableMacroHTML" ICON="" NAME="tab"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;tab>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:spacer&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:spacer&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>onkeyup, width, title, onclick, rendered, onmouseout, onkeydown, id, onmousedown, styleClass, height, onkeypress, ondblclick, style, onmouseup, binding, onmousemove, onmouseover&lt;/code>"
+					ENDTEXT="&lt;/spacer>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="spacer" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;spacer>" large-icon="" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>onkeyup, header, onclick, bodyClass, headerClass, rendered, onmouseout, onkeydown, id, onmousedown, styleClass, onkeypress, ondblclick, style, onmouseup, binding, onmousemove, onmouseover&lt;/code>"
+					ENDTEXT="&lt;/panel>" ENTITY="SharableMacroHTML" ICON=""
+					NAME="panel" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panel>"
+					large-icon="" />
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:jQuery&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:jQuery&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>query, name, timing, id, rendered, binding, selector&lt;/code>"
 					ENDTEXT="&lt;/jQuery>" ENTITY="SharableMacroHTML" ICON=""
 					NAME="jQuery" REFORMAT="yes" SCOPE="project"
 					STARTTEXT="&lt;jQuery>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:menuGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>value&lt;/b>, onclose, iconClass, rendered, showDelay, iconDisabled, id, onopen, styleClass, icon, style, onmouseover, iconFolderDisabled, converter, disabled, selectClass, selectStyle, onmouseout, direction, iconStyle, event, binding, onmousemove, iconFolder&lt;/code>"
-					ENDTEXT="&lt;/menuGroup>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="menuGroup" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;menuGroup value=&quot;|&quot;>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:messages&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:messages&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>markerStyle, title, layout, tooltip, rendered, warnMarkerClass, id, passedLabel, styleClass, fatalMarkerClass, keepTransient, globalOnly, style, infoMarkerClass, headerLocation, fatalLabelClass, fatalClass, var, infoLabelClass, ajaxRendered, markerClass, infoClass, showDetail, errorLabelClass, labelClass, errorMarkerClass, showSummary, warnLabelClass, warnClass, binding, errorClass&lt;/code>"
-					ENDTEXT="&lt;/messages>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="messages" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;messages>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataOrderedList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataOrderedList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>title, rowClasses, stateVar, componentState, rowKeyVar, rendered, footerClass, dir, id, styleClass, ajaxKeys, rowKey, style, var, value, rows, lang, type, columnClasses, first, headerClass, binding&lt;/code>"
-					ENDTEXT="&lt;/dataOrderedList>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="dataOrderedList" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dataOrderedList>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:column&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:column&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>width, lang, title, colspan, headerClass, rendered, footerClass, id, dir, styleClass, breakBefore, style, sortable, binding, rowspan&lt;/code>"
-					ENDTEXT="&lt;/column>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="column" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;column>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:message&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:message&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>markerStyle, title, tooltip, rendered, warnMarkerClass, passedLabel, id, styleClass, fatalMarkerClass, keepTransient, style, infoMarkerClass, fatalLabelClass, for, fatalClass, infoLabelClass, ajaxRendered, markerClass, infoClass, showDetail, errorLabelClass, labelClass, errorMarkerClass, showSummary, warnLabelClass, warnClass, binding, errorClass&lt;/code>"
-					ENDTEXT="&lt;/message>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="message" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;message>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>title, rowClasses, stateVar, componentState, rowKeyVar, rendered, footerClass, dir, id, styleClass, ajaxKeys, rowKey, style, var, value, rows, lang, type, columnClasses, first, headerClass, binding&lt;/code>"
-					ENDTEXT="&lt;/dataList>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="dataList" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dataList>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolBarGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolBarGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>styleClass, style, rendered, separatorClass, binding, location, id, itemSeparator&lt;/code>"
-					ENDTEXT="&lt;/toolBarGroup>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="toolBarGroup" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;toolBarGroup>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenu&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenu&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>iconGroupPosition, width, onitemhover, disabledItemStyle, iconCollapsedGroup, id, requiredMessage, iconTopDisableGroup, expandSingle, style, iconExpandedGroup, itemClass, ongroupexpand, iconItemTopPosition, disabledGroupClass, onmouseover, hoveredItemClass, onkeyup, converter, iconDisabledGroup, disabled, valid, onmouseout, iconGroupTopPosition, validator, disabledGroupStyle, topItemStyle, onmouseup, event, expandMode, binding, onmousemove, iconDisabledItem, hoveredGroupClass, iconTopDisabledItem, localValueSet, ongroupcollapse, disabledItemClass, iconItemPosition, groupClass, selectedChild, rendered, iconItem, styleClass, hoveredGroupStyle, onkeypress, ondblclick, iconTopItem, value, required, validatorMessage, iconCollapsedTopGroup, mode, onclick, topGroupStyle, valueChangeListener, onkeydown, onmousedown, groupStyle, hoveredItemStyle, topItemClass, converterMessage, itemStyle, immediate, topGroupClass, iconExpandedTopGroup&lt;/code>"
-					ENDTEXT="&lt;/panelMenu>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="panelMenu" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;panelMenu>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:gmap&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:gmap&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>lat, zoom, showGLargeMapControl, gmapKey, rendered, id, showGScaleControl, styleClass, onkeypress, ondblclick, oninit, enableDoubleClickZoom, style, mapType, onmouseover, enableInfoWindow, onkeyup, enableContinuousZoom, warningMessage, onclick, gmapVar, onmouseout, onkeydown, onmousedown, enableDragging, showGMapTypeControl, onmouseup, binding, lng, onmousemove&lt;/code>"
-					ENDTEXT="&lt;/gmap>" ENTITY="SharableMacroHTML" ICON="" NAME="gmap"
-					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;gmap>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:effect&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:effect&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>parentProperties, type, rendered, id, disableDefault, targetId, params, event, binding, name, for&lt;/code>"
-					ENDTEXT="&lt;/effect>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="effect" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;effect>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:separator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:separator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>onkeyup, width, title, onclick, rendered, onmouseout, onkeydown, onmousedown, id, styleClass, height, lineType, onkeypress, align, ondblclick, style, onmouseup, binding, onmousemove, onmouseover&lt;/code>"
-					ENDTEXT="&lt;/separator>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="separator" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;separator>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolBar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolBar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>contentClass, styleClass, width, height, contentStyle, style, rendered, separatorClass, binding, id, itemSeparator&lt;/code>"
-					ENDTEXT="&lt;/toolBar>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="toolBar" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;toolBar>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:insert&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:insert&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>highlight, src, rendered, binding, id&lt;/code>"
-					ENDTEXT="&lt;/insert>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="insert" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;insert>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragIndicator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragIndicator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptClass, styleClass, rejectClass, rendered, binding, id&lt;/code>"
-					ENDTEXT="&lt;/dragIndicator>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="dragIndicator" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dragIndicator>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolTip&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolTip&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>layout, oncomplete, verticalOffset, onhide, rendered, id, onshow, followMouse, styleClass, onkeypress, ondblclick, style, delay, onmouseover, zorder, value, onkeyup, horizontalOffset, disabled, mode, onclick, onmouseout, onkeydown, onmousedown, direction, onmouseup, event, binding, onmousemove&lt;/code>"
-					ENDTEXT="&lt;/toolTip>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="toolTip" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;toolTip>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelBarItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelBarItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>headerStyle, contentStyle, rendered, headerClass, id, headerClassActive, contentClass, label, headerStyleActive, binding, name&lt;/code>"
-					ENDTEXT="&lt;/panelBarItem>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="panelBarItem" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;panelBarItem>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>cellpadding, width, rowClasses, title, rules, onRowClick, stateVar, componentState, onRowDblClick, rowKeyVar, onRowMouseDown, columns, rendered, footerClass, captionStyle, dir, id, ajaxKeys, styleClass, rowKey, captionClass, align, style, border, bgcolor, onRowMouseOver, var, summary, value, rows, onRowMouseUp, lang, columnClasses, first, cellspacing, headerClass, onRowMouseMove, frame, onRowMouseOut, columnsWidth, binding&lt;/code>"
-					ENDTEXT="&lt;/dataTable>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="dataTable" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dataTable>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:columnGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:columnGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>lang, title, rowClasses, columnClasses, rendered, id, dir, styleClass, breakBefore, style, sortable, binding&lt;/code>"
-					ENDTEXT="&lt;/columnGroup>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="columnGroup" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;columnGroup>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:treeNode&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:treeNode&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxSubmitSelection, id, onexpand, ondropend, oncollapse, onmouseover, dragListener, onkeyup, nodeSelectListener, dropListener, onmouseout, iconLeaf, ondragexit, nodeClass, onmouseup, ondragstart, oncontextmenu, binding, onmousemove, ondragend, ondragenter, iconExpanded, rendered, reRender, iconCollapsed, onkeypress, selectedClass, icon, ondblclick, dragIndicator, ondrop, changeExpandListener, type, acceptedTypes, onclick, highlightedClass, dragType, onkeydown, onmousedown, onselected, ignoreDupResponses, typeMapping&lt;/code>"
-					ENDTEXT="&lt;/treeNode>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="treeNode" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;treeNode>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:togglePanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:togglePanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>rendered, id, initialState, styleClass, switchType, requiredMessage, onkeypress, ondblclick, style, onmouseover, value, onkeyup, stateOrder, converter, required, validatorMessage, valid, onclick, valueChangeListener, onmouseout, onkeydown, onmousedown, validator, converterMessage, immediate, onmouseup, binding, onmousemove&lt;/code>"
-					ENDTEXT="&lt;/togglePanel>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="togglePanel" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;togglePanel>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenuGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenuGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>hoverClass, disabledStyle, hoverStyle, onchange, id, onexpand, requiredMessage, style, size, oncollapse, onmouseover, disabledClass, onkeyup, tabindex, converter, maxlength, disabled, valid, alt, onmouseout, validator, onselect, iconStyle, expandMode, onmouseup, binding, onmousemove, actionListener, iconClass, localValueSet, iconExpanded, target, rendered, iconDisabled, iconCollapsed, styleClass, accesskey, onkeypress, align, ondblclick, name, onblur, value, action, required, validatorMessage, onclick, valueChangeListener, onkeydown, onmousedown, converterMessage, immediate, label, onfocus, expanded&lt;/code>"
-					ENDTEXT="&lt;/panelMenuGroup>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="panelMenuGroup" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;panelMenuGroup>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:recursiveTreeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:recursiveTreeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>active, var, activeRoot, rendered, nodes, id, root, binding, activeNodes&lt;/code>"
-					ENDTEXT="&lt;/recursiveTreeNodesAdaptor>" ENTITY="SharableMacroHTML"
-					ICON="" NAME="recursiveTreeNodesAdaptor" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;recursiveTreeNodesAdaptor>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:simpleTogglePanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:simpleTogglePanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, width, oncomplete, bodyClass, rendered, reRender, focus, id, styleClass, bypassUpdates, switchType, height, onkeypress, limitToList, ondblclick, ajaxSingle, style, onmouseover, onkeyup, action, value, timeout, actionExpression, onclick, headerClass, status, onmouseout, onkeydown, onmousedown, requestDelay, opened, eventsQueue, label, immediate, data, onmouseup, ignoreDupResponses, binding, onmousemove&lt;/code>"
-					ENDTEXT="&lt;/simpleTogglePanel>" ENTITY="SharableMacroHTML"
-					ICON="" NAME="simpleTogglePanel" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;simpleTogglePanel>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataFilterSlider&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataFilterSlider&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>width, filterBy, startRange, rendered, id, endRange, storeResults, styleClass, style, onSlide, handleValue, sliderListener, trackStyleClass, handleStyleClass, for, increment, rangeStyleClass, fieldStyleClass, trailer, manualInput, forValRef, onChange, trailerStyleClass, binding&lt;/code>"
-					ENDTEXT="&lt;/dataFilterSlider>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="dataFilterSlider" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;dataFilterSlider>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tab&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tab&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, title, oncomplete, rendered, reRender, focus, id, bypassUpdates, styleClass, switchType, limitToList, onkeypress, ajaxSingle, ondblclick, style, name, onmouseover, ontabenter, onkeyup, action, timeout, actionExpression, disabled, onclick, status, onmouseout, onkeydown, onmousedown, requestDelay, eventsQueue, labelWidth, label, immediate, data, onmouseup, binding, ignoreDupResponses, onmousemove, ontableave&lt;/code>"
-					ENDTEXT="&lt;/tab>" ENTITY="SharableMacroHTML" ICON="" NAME="tab"
-					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;tab>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:spacer&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:spacer&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>onkeyup, width, title, onclick, rendered, onmouseout, onkeydown, id, onmousedown, styleClass, height, onkeypress, ondblclick, style, onmouseup, binding, onmousemove, onmouseover&lt;/code>"
-					ENDTEXT="&lt;/spacer>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="spacer" REFORMAT="yes" SCOPE="project"
-					STARTTEXT="&lt;spacer>" />
-				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>onkeyup, header, onclick, bodyClass, headerClass, rendered, onmouseout, onkeydown, id, onmousedown, styleClass, onkeypress, ondblclick, style, onmouseup, binding, onmousemove, onmouseover&lt;/code>"
-					ENDTEXT="&lt;/panel>" ENTITY="SharableMacroHTML" ICON=""
-					NAME="panel" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panel>" />
 			</GroupHTML>
 			<GroupHTML ENTITY="SharableGroupHTML" HIDDEN="no" ICON=""
 				NAME="Seam" PREFIX="s" SCOPE="project"
