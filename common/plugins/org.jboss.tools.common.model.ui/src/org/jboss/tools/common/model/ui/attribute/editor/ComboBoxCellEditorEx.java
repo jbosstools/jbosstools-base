@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
@@ -25,7 +26,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Control;
  */
 public class ComboBoxCellEditorEx extends CellEditor {
 	
-	private Combo combo;
+	private CCombo combo;
 	private String[] items = new String[0];
 	private Object value = null;
 	private int selection;
@@ -75,7 +75,7 @@ public class ComboBoxCellEditorEx extends CellEditor {
 	}
 
 	protected Control createControl(Composite parent) {
-		combo = new Combo(parent, getStyle());
+		combo = new CCombo(parent, getStyle());
 		combo.setItems(items);
 		combo.setFont(parent.getFont());
 
