@@ -615,7 +615,8 @@
     </Constraint>
     <Editor name="CheckBox"/>
    </XModelAttribute>
-   <XModelAttribute default="Blank" name="Page Template" xmlname="page_template">
+   <XModelAttribute default="Blank" name="Page Template"
+    visibility="false" xmlname="page_template">
     <Editor name="DropDown"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -674,7 +675,8 @@
     </Constraint>
     <Editor name="CheckBox"/>
    </XModelAttribute>
-   <XModelAttribute default="Blank" name="Page Template" xmlname="page_template">
+   <XModelAttribute default="Blank" name="Page Template"
+    visibility="false" xmlname="page_template">
     <Editor name="DropDown"/>
    </XModelAttribute>
   </XModelAttributes>
