@@ -42,6 +42,10 @@ public class PasteEnterNewNameSupport extends SpecialWizardSupport {
 			   + getCapitalizedName(getTarget());
 	}
 	
+    public String getSubtitle() {
+    	return "" + getCapitalizedName(copy);
+    }
+
 	static String getCapitalizedName(XModelObject o) {
 		String n = o.getAttributeValue("element type");
 		if(n == null || n.length() == 0) n = o.getModelEntity().getXMLSubPath();
