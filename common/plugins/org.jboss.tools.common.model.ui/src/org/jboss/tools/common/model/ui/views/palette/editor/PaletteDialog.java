@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.views.palette.editor;
 
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.XModelTreeListenerSWTSync;
 import org.jboss.tools.common.model.ui.navigator.*;
 import org.jboss.tools.common.model.ui.objecteditor.XModelObjectEditor;
@@ -24,6 +25,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.jboss.tools.common.meta.action.XActionItem;
+import org.jboss.tools.common.meta.action.XActionList;
+import org.jboss.tools.common.meta.action.XActionItem.Acceptor;
 import org.jboss.tools.common.meta.help.HelpUtil;
 import org.jboss.tools.common.model.event.*;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
@@ -36,7 +40,25 @@ public class PaletteDialog extends Dialog {
 	protected XModelTreeListenerSWTSync syncListener = new XModelTreeListenerSWTSync(listener);
 	protected XModelTreeListener listener2 = new ObjectListener();
 	protected XModelTreeListenerSWTSync syncListener2 = new XModelTreeListenerSWTSync(listener2);
-	TreeViewerMenuInvoker menu = new TreeViewerMenuInvoker();
+
+	TreeViewerMenuInvoker menu = new TreeViewerMenuInvoker() {
+		protected XActionList getActionList(XModelObject o) {
+			XActionList l = super.getActionList(o);
+			if(l != null) {
+				// Filter out 'Properties' item which is redundant in this editor.
+				l = (XActionList)l.copy(new Acceptor() {
+			        public boolean accepts(XActionItem item) {
+			        	if(item.getName().startsWith("Propert")) {
+			        		return false;
+			        	}
+			        	return true;
+			        }				
+				});
+			}
+			return l;
+		}		
+	};
+
 	PaletteDialogState state = new PaletteDialogState(this);
 	SL sl = new SL();
 	SashForm sash;
@@ -153,4 +175,5 @@ public class PaletteDialog extends Dialog {
 
 		public void structureChanged(XModelTreeEvent event) {}		
 	}
+	
 }
