@@ -292,8 +292,6 @@
 			class="org.jboss.tools.common.model.loaders.impl.SimpleWebFileLoader"/>
 		<xclass id="org.jboss.tools.common.model.loaders.impl.URLRootLoader"
 			class="org.jboss.tools.common.model.loaders.impl.URLRootLoader"/>
-		<xclass id="org.jboss.tools.common.model.options.impl.EditHTMLTabNamespaceHandler"
-			class="org.jboss.tools.common.model.options.impl.EditHTMLTabNamespaceHandler"/>
 		<xclass id="org.jboss.tools.common.model.options.impl.HiddenPaletteTabsHandler"
 			class="org.jboss.tools.common.model.options.impl.HiddenPaletteTabsHandler"/>
 		<xclass id="org.jboss.tools.common.model.options.impl.PaletteAdopt"

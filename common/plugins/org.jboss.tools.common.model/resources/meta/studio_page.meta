@@ -558,14 +558,6 @@
    </XModelAttribute>
   </XModelAttributes>
   <XActionItem ICON="main.package" displayName="PageTab" group="1" kind="list">
-   <XActionItem
-    HandlerClassName="org.jboss.tools.common.model.options.impl.EditHTMLTabNamespaceHandler"
-    ICON="action.empty" WizardClassName="%Default%"
-    displayName="Edit Namespace" kind="action" name="EditNamespace">
-    <EntityData EntityName="SPTNameSpaceHelper">
-     <AttributeData AttributeName="namespace" Mandatory="no"/>
-    </EntityData>
-   </XActionItem>
    <XActionItem ICON="action.empty" displayName="Create" kind="list" name="CreateActions">
     <XActionItem
      HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
