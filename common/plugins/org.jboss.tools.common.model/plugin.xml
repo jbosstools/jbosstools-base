@@ -132,6 +132,8 @@
 			class="org.jboss.tools.common.model.engines.impl.StopProcessHandler"/>
 		<xclass id="org.jboss.tools.common.model.files.handlers.JSPAdopt"
 			class="org.jboss.tools.common.model.files.handlers.JSPAdopt"/>
+		<xclass id="org.jboss.tools.common.model.files.handlers.InvokingWizardHandler"
+			class="org.jboss.tools.common.model.files.handlers.InvokingWizardHandler"/>
 		<xclass id="org.jboss.tools.common.model.filesystems.impl.CreateFileHandler"
 			class="org.jboss.tools.common.model.filesystems.impl.CreateFileHandler"/>
 		<xclass id="org.jboss.tools.common.model.filesystems.impl.CreateFolderHandler"

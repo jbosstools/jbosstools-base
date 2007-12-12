@@ -9,6 +9,7 @@
    <PAIR name="CreateFolder" value="org.jboss.tools.common.model.filesystems.impl.CreateFolderHandler"/>
    <PAIR name="DeleteFile" value="org.jboss.tools.common.model.filesystems.impl.DeleteFileHandler"/>
    <PAIR name="RenameFile" value="org.jboss.tools.common.model.filesystems.impl.handlers.RenameFileHandler"/>
+   <PAIR name="WizardInvoker" value="org.jboss.tools.common.model.files.handlers.InvokingWizardHandler"/>
   </MAPPING>
  </MAPPINGS>
  <ICONS/>
@@ -24,23 +25,16 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="gif file" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="id=true" name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true" name="name" xmlname="NAME"/>
    <XModelAttribute TRIM="no" name="body" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="extension" xmlname="EXTENSION">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="_file" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -109,17 +103,10 @@
   <XModelAttributes>
    <XModelAttribute default="html" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute TRIM="no" name="body" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
+   <XModelAttribute TRIM="no" name="body" visibility="false"/>
    <XModelAttribute default="html" name="extension" xmlname="EXTENSION">
     <Constraint loader="List">
      <value name="html"/>
@@ -128,7 +115,6 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -208,27 +194,17 @@
   <XModelAttributes>
    <XModelAttribute default="jsp file" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute COPYABLE="no" loader="ModelPath" name="model path" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable" viewer="%View%"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute TRIM="no" name="body" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
+   <XModelAttribute TRIM="no" name="body" visibility="false"/>
    <XModelAttribute default="jsp" name="extension" xmlname="EXTENSION">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -308,16 +284,11 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="properties file" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
    <XModelAttribute default="properties" name="extension"
     visibility="false" xmlname="EXTENSION">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -405,23 +376,12 @@
   <XModelAttributes>
    <XModelAttribute default="file" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute TRIM="no" name="body" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute TRIM="no" name="extension" xmlname="EXTENSION">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
+   <XModelAttribute TRIM="no" name="body" visibility="false"/>
+   <XModelAttribute TRIM="no" name="extension" xmlname="EXTENSION"/>
    <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -498,17 +458,10 @@
   <XModelAttributes>
    <XModelAttribute default="html" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute TRIM="no" name="body" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
+   <XModelAttribute TRIM="no" name="body" visibility="false"/>
    <XModelAttribute default="xhtml" name="extension" xmlname="EXTENSION">
     <Constraint loader="List">
      <value name="html"/>
@@ -517,7 +470,6 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -596,23 +548,14 @@
   <XModelAttributes>
    <XModelAttribute default="folder" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute TRIM="no" name="body" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
+   <XModelAttribute TRIM="no" name="body" visibility="false"/>
    <XModelAttribute default="xsl" name="extension" xmlname="EXTENSION">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -669,13 +612,9 @@
     <Editor name="ContainerChooser"/>
    </XModelAttribute>
    <XModelAttribute name="separator">
-    <Constraint/>
     <Editor name="Separator"/>
    </XModelAttribute>
-   <XModelAttribute name="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name"/>
    <XModelAttribute name="template">
     <Constraint loader="ListString"/>
     <Editor name="ListString"/>
@@ -710,32 +649,17 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="property" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="dirtyname" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute TRIM="no" name="value" xmlname="VALUE">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="dirtyvalue" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
+   <XModelAttribute name="dirtyname" visibility="false"/>
+   <XModelAttribute TRIM="no" name="value" xmlname="VALUE"/>
+   <XModelAttribute name="dirtyvalue" visibility="false"/>
    <XModelAttribute TRIM="no" default="#" name="separator"
     visibility="false" xmlname="SEPARATOR">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute TRIM="no" name="comments" visibility="false" xmlname="COMMENTS">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
    <XModelAttribute default="yes" name="enabled" visibility="false" xmlname="ENABLED">
@@ -745,14 +669,8 @@
     </Constraint>
     <Editor name="CheckBox"/>
    </XModelAttribute>
-   <XModelAttribute default="=" name="name-value-separator" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute default="\r\n" name="line-end" visibility="false" xmlname="line-end">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute default="=" name="name-value-separator" visibility="false"/>
+   <XModelAttribute default="\r\n" name="line-end" visibility="false" xmlname="line-end"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
