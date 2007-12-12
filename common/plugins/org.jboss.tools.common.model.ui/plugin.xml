@@ -177,6 +177,8 @@
       </specialwizard>
       <specialwizard class="org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard" id="org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard">
       </specialwizard>
+      <specialwizard class="org.jboss.tools.common.model.ui.wizard.newfile.WizardInvoker" id="org.jboss.tools.common.model.ui.wizard.newfile.WizardInvoker">
+      </specialwizard>
    </extension>
    <extension point="org.jboss.tools.common.model.modelObjectAdapter">
       <modelObjectAdapter class="org.jboss.tools.common.model.ui.action.XModelObjectActionFilter" iclass="IActionFilter">
@@ -417,6 +419,8 @@
 			class="org.jboss.tools.common.model.ui.attribute.adapter.JavaClassNewValueProvider"/>
 		<xclass id="org.jboss.tools.common.model.ui.templates.preferences.AddInterfaceSupport"
 			class="org.jboss.tools.common.model.ui.templates.preferences.AddInterfaceSupport"/>
+		<xclass id="org.jboss.tools.common.model.ui.wizard.newfile.WizardInvoker"
+			class="org.jboss.tools.common.model.ui.wizard.newfile.WizardInvoker"/>
 
    </extension>
    <extension
