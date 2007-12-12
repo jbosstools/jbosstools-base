@@ -36,23 +36,12 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="file" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute TRIM="no" name="body" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute TRIM="no" name="extension" xmlname="EXTENSION">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
+   <XModelAttribute TRIM="no" name="body" visibility="false"/>
+   <XModelAttribute TRIM="no" name="extension" xmlname="EXTENSION"/>
    <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -139,19 +128,15 @@
   <XModelAttributes>
    <XModelAttribute default="auxiliary file" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="extension" xmlname="EXTENSION">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -169,23 +154,14 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="file" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="id=true" name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true" name="name" xmlname="NAME"/>
    <XModelAttribute TRIM="no" name="body" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute TRIM="no" name="extension" xmlname="EXTENSION">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute TRIM="no" name="extension" xmlname="EXTENSION"/>
    <XModelAttribute name="_file" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -278,12 +254,10 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="folder" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="name" xmlname="NAME">
     <Constraint loader="FolderName"/>
-    <Editor/>
    </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list">
@@ -319,7 +293,7 @@
         <AttributeData AttributeName="name"/>
        </EntityData>
       </XActionItem>
-      <XActionItem HandlerClassName="%SpecialWizard%"
+      <XActionItem HIDE="always" HandlerClassName="%SpecialWizard%"
        ICON="action.new.file.unknow_file"
        PROPERTIES="support=org.jboss.tools.common.model.files.handlers.CreateFileSupport;entity=FilePROPERTIES;extension=properties;validator.addfile=true"
        displayName="Properties..." kind="action" name="CreateFileProperties">
@@ -329,6 +303,10 @@
         <AttributeData AttributeName="name"/>
        </EntityData>
       </XActionItem>
+      <XActionItem HandlerClassName="%WizardInvoker%"
+       ICON="action.new.file.unknow_file"
+       PROPERTIES="plugin=org.jboss.tools.jst.web.ui;wizard=org.jboss.tools.common.model.ui.wizard.newfile.NewPropertiesFileWizard"
+       displayName="Properties..." kind="action" name="CreateFilePropertiesV"/>
      </XActionItem>
      <XActionItem displayName="Web" kind="list" name="Web"/>
      <XActionItem kind="list" name="JSF"/>
@@ -393,13 +371,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="file system" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
    <XModelAttribute name="location" xmlname="LOCATION">
     <Constraint loader="FileFilter">
      <value name="allFiles=false"/>
@@ -408,14 +382,8 @@
     </Constraint>
     <Editor name="FolderChooser"/>
    </XModelAttribute>
-   <XModelAttribute name="owner" visibility="false" xmlname="OWNER">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="info" visibility="false" xmlname="INFO">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="owner" visibility="false" xmlname="OWNER"/>
+   <XModelAttribute name="info" visibility="false" xmlname="INFO"/>
    <XModelAttribute default="false"
     name="set location relative to project" visibility="false">
     <Constraint loader="ListString">
@@ -458,7 +426,7 @@
         <AttributeData AttributeName="name"/>
        </EntityData>
       </XActionItem>
-      <XActionItem HandlerClassName="%SpecialWizard%"
+      <XActionItem HIDE="always" HandlerClassName="%SpecialWizard%"
        ICON="action.new.file.unknow_file"
        PROPERTIES="support=org.jboss.tools.common.model.files.handlers.CreateFileSupport;entity=FilePROPERTIES;extension=properties;validator.addfile=true"
        displayName="Properties..." kind="action" name="CreateFileProperties">
@@ -468,6 +436,10 @@
         <AttributeData AttributeName="name"/>
        </EntityData>
       </XActionItem>
+      <XActionItem HandlerClassName="%WizardInvoker%"
+       ICON="action.new.file.unknow_file"
+       PROPERTIES="plugin=org.jboss.tools.jst.web.ui;wizard=org.jboss.tools.common.model.ui.wizard.newfile.NewPropertiesFileWizard"
+       displayName="Properties..." kind="action" name="CreateFilePropertiesV"/>
      </XActionItem>
      <XActionItem displayName="Web" kind="list" name="Web"/>
      <XActionItem kind="list" name="JSF"/>
@@ -527,13 +499,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="file system" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
    <XModelAttribute name="location" xmlname="LOCATION">
     <Constraint loader="FileFilter">
      <value name="allFiles=false"/>
@@ -543,14 +511,8 @@
     </Constraint>
     <Editor name="FileChooser"/>
    </XModelAttribute>
-   <XModelAttribute name="owner" visibility="false" xmlname="OWNER">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="info" visibility="false" xmlname="INFO">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="owner" visibility="false" xmlname="OWNER"/>
+   <XModelAttribute name="info" visibility="false" xmlname="INFO"/>
    <XModelAttribute default="false"
     name="set location relative to project" visibility="false">
     <Constraint loader="ListString">
@@ -597,23 +559,14 @@
   <XModelAttributes>
    <XModelAttribute default="partition" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="FileSystems" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="application name" xmlname="APPLICATION_NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="quick start class" visibility="false" xmlname="QUICK_START_CLASS">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="application name" xmlname="APPLICATION_NAME"/>
+   <XModelAttribute name="quick start class" visibility="false" xmlname="QUICK_START_CLASS"/>
    <XModelAttribute name="version" visibility="false" xmlname="VERSION">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -685,13 +638,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="folder" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" visibility="false" xmlname="NAME"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.empty" kind="list" name="Properties">
