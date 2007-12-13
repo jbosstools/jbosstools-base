@@ -28,10 +28,15 @@
             name="%editors.xml.advanced.name">
          <contentTypeBinding contentTypeId="org.eclipse.jst.j2ee.webDD"/>
          <contentTypeBinding contentTypeId="org.eclipse.jst.jee.ee5webDD"/>
-         
+
          <contentTypeBinding contentTypeId="org.jboss.tools.common.model.ui.xml"/>
          <contentTypeBinding contentTypeId="org.eclipse.jst.jsf.facesconfig.facesConfigFile"/>
-         
+
+         <contentTypeBinding contentTypeId="org.jboss.tools.seam.xml.ui.pages12xmlsource"/>
+         <contentTypeBinding contentTypeId="org.jboss.tools.seam.xml.ui.page12xmlsource"/>
+
+         <contentTypeBinding contentTypeId="org.jboss.tools.seam.xml.ui.pages20xmlsource"/>
+         <contentTypeBinding contentTypeId="org.jboss.tools.seam.xml.ui.page20xmlsource"/>
       </editor>
    </extension>
    <extension point="org.jboss.tools.common.model.ui.attributeEditor">
