@@ -186,7 +186,7 @@ public class JavaBeanGenerator {
 	}
 
 	public static IPackageFragmentRoot getJavaProjectSrcRoot(IJavaProject javaProject) throws Exception {
-		IClasspathEntry[] es = javaProject.getRawClasspath();
+		IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
 		for (int i = 0; i < es.length; i++) {
 			if(es[i].getEntryKind() != IClasspathEntry.CPE_SOURCE) continue;
 			return javaProject.getPackageFragmentRoot(ModelPlugin.getWorkspace().getRoot().getFolder(es[i].getPath()));
