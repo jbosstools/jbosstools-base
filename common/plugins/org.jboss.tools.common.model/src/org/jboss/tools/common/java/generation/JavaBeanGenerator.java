@@ -90,7 +90,7 @@ public class JavaBeanGenerator {
 	}
 	
 	private String getSrcLocation(IJavaProject javaproject) throws Exception {
-		IClasspathEntry[] entries = javaproject.getRawClasspath();
+		IClasspathEntry[] entries = javaproject.getResolvedClasspath(true);
 		for (int i = 0; i < entries.length; i++) {
 			if(entries[i].getEntryKind() != IClasspathEntry.CPE_SOURCE) continue;
 			IResource resource = null;
