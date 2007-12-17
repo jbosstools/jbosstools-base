@@ -174,14 +174,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		if(input instanceof IStorageEditorInput) return convertStorageEditorInput((IStorageEditorInput)input);
 		if(input instanceof IURIEditorInput) {
 			URI uri = ((IURIEditorInput)input).getURI();
-			URL url = null;
-			try {
-				url = uri.toURL();
-			} catch (MalformedURLException e) {
-				return input;
-			}
-			if(url == null) return input;
-			String f = url.getFile();
+			String f = uri.getPath();
 			XModelObject o = null;
 			try {
 				o = EclipseResourceUtil.createObjectForLocation(f);
