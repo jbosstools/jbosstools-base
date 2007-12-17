@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FILESYSTEMS APPLICATION_NAME="Facelets KickStart" model-entity="FileSystems"
+<file-systems application-name="Facelets KickStart" model-entity="FileSystems"
  VERSION="7.0.3" WORKSPACE_HOME="./WebContent/WEB-INF">
- <FILESYSTEM model-entity="FileSystemFolder" LOCATION="%workspace.home%" NAME="WEB-INF"/>
- <FILESYSTEM model-entity="FileSystemFolder" INFO="Content-Type=Web"
-  LOCATION="%workspace.home%/.." NAME="WEB-ROOT"/>
- <FILESYSTEM model-entity="FileSystemFolder"
-  LOCATION="%workspace.home%/../../JavaSource" NAME="src"/>
- <FILESYSTEM model-entity="FileSystemFolder" LOCATION="%workspace.home%/lib" NAME="lib"/>
- <FILESYSTEM model-entity="FileSystemFolder"
-  LOCATION="%workspace.home%/classes" NAME="classes"/>
- <FILESYSTEM model-entity="FileSystemJar" INFO="hidden=yes"
-  LOCATION="%workspace.home%/lib/commons-beanutils.jar" NAME="lib-commons-beanutils.jar"/>
- <FILESYSTEM model-entity="FileSystemJar" INFO="hidden=yes"
-  LOCATION="%workspace.home%/lib/commons-collections.jar" NAME="lib-commons-collections.jar"/>
- <FILESYSTEM model-entity="FileSystemJar" INFO="hidden=yes"
-  LOCATION="%workspace.home%/lib/commons-digester.jar" NAME="lib-commons-digester.jar"/>
- <FILESYSTEM model-entity="FileSystemJar" INFO="hidden=yes"
-  LOCATION="%workspace.home%/lib/commons-logging.jar" NAME="lib-commons-logging.jar"/>
- <FILESYSTEM model-entity="FileSystemJar" INFO="hidden=yes"
-  LOCATION="%workspace.home%/lib/jsf-api.jar" NAME="lib-jsf-api.jar"/>
- <FILESYSTEM model-entity="FileSystemJar" INFO="hidden=yes"
-  LOCATION="%workspace.home%/lib/jsf-impl.jar" NAME="lib-jsf-impl.jar"/>
- <FILESYSTEM model-entity="FileSystemJar" INFO="hidden=yes"
-  LOCATION="%workspace.home%/lib/jstl.jar" NAME="lib-jstl.jar"/>
- <FILESYSTEM model-entity="FileSystemJar" INFO="hidden=yes"
-  LOCATION="%workspace.home%/lib/standard.jar" NAME="lib-standard.jar"/>
- <FILESYSTEM model-entity="FileSystemJar"
-  LOCATION="%workspace.home%/lib/jsf-facelets.jar" NAME="lib-jsf-facelets.jar"/>
- <FILESYSTEM model-entity="FileSystemJar"
-  LOCATION="%workspace.home%/lib/el-api.jar" NAME="lib-el-api.jar"/>
- <FILESYSTEM model-entity="FileSystemJar"
-  LOCATION="%workspace.home%/lib/el-ri.jar" NAME="lib-el-ri.jar"/>
- <FILESYSTEM model-entity="FileSystemFolder"
-  LOCATION="%eclipse.project%" NAME="flet001"/>
+ <file-system model-entity="FileSystemFolder" location="%workspace.home%" NAME="WEB-INF"/>
+ <file-system model-entity="FileSystemFolder" INFO="Content-Type=Web"
+  location="%workspace.home%/.." NAME="WEB-ROOT"/>
+ <file-system model-entity="FileSystemFolder"
+  location="%workspace.home%/../../JavaSource" NAME="src"/>
+ <file-system model-entity="FileSystemFolder" location="%workspace.home%/lib" NAME="lib"/>
+ <file-system model-entity="FileSystemFolder"
+  location="%workspace.home%/classes" NAME="classes"/>
+ <file-system model-entity="FileSystemJar" INFO="hidden=yes"
+  location="%workspace.home%/lib/commons-beanutils.jar" NAME="lib-commons-beanutils.jar"/>
+ <file-system model-entity="FileSystemJar" INFO="hidden=yes"
+  location="%workspace.home%/lib/commons-collections.jar" NAME="lib-commons-collections.jar"/>
+ <file-system model-entity="FileSystemJar" INFO="hidden=yes"
+  location="%workspace.home%/lib/commons-digester.jar" NAME="lib-commons-digester.jar"/>
+ <file-system model-entity="FileSystemJar" INFO="hidden=yes"
+  location="%workspace.home%/lib/commons-logging.jar" NAME="lib-commons-logging.jar"/>
+ <file-system model-entity="FileSystemJar" INFO="hidden=yes"
+  location="%workspace.home%/lib/jsf-api.jar" NAME="lib-jsf-api.jar"/>
+ <file-system model-entity="FileSystemJar" INFO="hidden=yes"
+  location="%workspace.home%/lib/jsf-impl.jar" NAME="lib-jsf-impl.jar"/>
+ <file-system model-entity="FileSystemJar" INFO="hidden=yes"
+  location="%workspace.home%/lib/jstl.jar" NAME="lib-jstl.jar"/>
+ <file-system model-entity="FileSystemJar" INFO="hidden=yes"
+  location="%workspace.home%/lib/standard.jar" NAME="lib-standard.jar"/>
+ <file-system model-entity="FileSystemJar"
+  location="%workspace.home%/lib/jsf-facelets.jar" NAME="lib-jsf-facelets.jar"/>
+ <file-system model-entity="FileSystemJar"
+  location="%workspace.home%/lib/el-api.jar" NAME="lib-el-api.jar"/>
+ <file-system model-entity="FileSystemJar"
+  location="%workspace.home%/lib/el-ri.jar" NAME="lib-el-ri.jar"/>
+ <file-system model-entity="FileSystemFolder"
+  location="%eclipse.project%" NAME="flet001"/>
  <WEB model-entity="JstWeb" MODEL_PATH="/web.xml" SERVLET_VERSION="2.4">
   <MODULE model-entity="WebJSFModule" MODEL_PATH="/faces-config.xml"
    ROOT="WEB-ROOT" SRC="src" URI="/WEB-INF/faces-config.xml"/>
  </WEB>
-</FILESYSTEMS>
+</file-systems>
