@@ -39,6 +39,7 @@ import org.jboss.tools.common.meta.XChild;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.engines.impl.EnginesLoader;
 import org.jboss.tools.common.model.filesystems.XFileObject;
@@ -150,7 +151,10 @@ public class XModelObjectLoaderUtil {
     protected Set<String> getAllowedAttributes(XModelEntity entity) {
     	if(entity.getChild("AnyElement") != null) return null;
     	Set<String> attributes = new HashSet<String>();
-    	if(saveentity) attributes.add("ENTITY");
+    	if(saveentity) {
+    		attributes.add(XModelConstants.XMODEL_ENTITY_ATTR);
+    		attributes.add(XModelConstants.XMODEL_ENTITY_ATTR_OLD);
+    	}
     	XAttribute[] as = entity.getAttributes();
     	for (int i = 0; i < as.length; i++) {
     		String xml = as[i].getXMLName();
@@ -322,9 +326,19 @@ public class XModelObjectLoaderUtil {
         }
     }
     
+    public static String getModelEntityAttribute(Element element) {
+        if(XMLUtil.hasAttribute(element, XModelConstants.XMODEL_ENTITY_ATTR)) {
+        	return element.getAttribute(XModelConstants.XMODEL_ENTITY_ATTR);
+        }
+        if(XMLUtil.hasAttribute(element, XModelConstants.XMODEL_ENTITY_ATTR_OLD)) {
+        	return element.getAttribute(XModelConstants.XMODEL_ENTITY_ATTR_OLD);
+        }
+        return null;
+    }
+
     protected String getChildEntity(XModelEntity entity, Element e) {
-		String en = e.getAttribute("ENTITY");
-		if(en.length() == 0) {
+		String en = getModelEntityAttribute(e);
+		if(en == null || en.length() == 0) {
 			String n = e.getNodeName();
    	    	if(namespaceMapping != null) { 
    	    		n = namespaceMapping.convertToDefault(n);
@@ -338,7 +352,9 @@ public class XModelObjectLoaderUtil {
     }
 
     protected boolean acceptElement(Element e, String entity) {
-        return !saveentity || entity.equals(e.getAttribute("ENTITY"));
+        return !saveentity || 
+        	(entity.equals(e.getAttribute(XModelConstants.XMODEL_ENTITY_ATTR)) 
+        	|| entity.equals(e.getAttribute(XModelConstants.XMODEL_ENTITY_ATTR_OLD)));
     }
 
     public static XModelObject createValidObject(XModel model, String entityname) {
@@ -404,8 +420,9 @@ public class XModelObjectLoaderUtil {
     public void saveAttributes(Element element, XModelObject o) {
         XModelEntity entity = o.getModelEntity();
         XAttribute[] as = entity.getAttributes();
-        if (saveentity)
-            element.setAttribute("ENTITY", entity.getName());
+        if (saveentity) {
+            element.setAttribute(XModelConstants.XMODEL_ENTITY_ATTR, entity.getName());
+        }
         for (int i = 0; i < as.length; i++) {
             if (as[i].isFake()) continue;
             String xmlname = as[i].getXMLName();
@@ -479,7 +496,7 @@ public class XModelObjectLoaderUtil {
     public XModelObject parse(XModel model, Reader reader) {
         Element element = XMLUtil.getElement(reader);
         if(element == null) return null;
-        String entity = element.getAttribute("ENTITY");
+        String entity = getModelEntityAttribute(element);
         XModelObject o = model.createModelObject(entity, null);
         load(element, o);
         return o;

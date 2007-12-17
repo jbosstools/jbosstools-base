@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.options.impl;
 
 import org.w3c.dom.*;
 import org.jboss.tools.common.model.options.*;
+import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 //import com.elt.model.viewedit.impl.flow.*;
 import org.jboss.tools.common.model.*;
 
@@ -22,7 +23,7 @@ public class SharableContainerLoader extends SharableLoaderImpl {
     public void loadChild(Element element, SharableElement sharable, String scopename) {
         SharableContainerImpl container = (SharableContainerImpl)sharable;
         XModelObject o = container.getChildForScope(scopename);
-        String en = element.getAttribute("ENTITY");
+        String en = XModelObjectLoaderUtil.getModelEntityAttribute(element);
         if(!o.getModelEntity().getName().equals(en)) return;
 ////        if(o instanceof FlowClassTemplateImpl) {
 ////            new ClassLoader_Impl().loadClass(element, (Class_)o);

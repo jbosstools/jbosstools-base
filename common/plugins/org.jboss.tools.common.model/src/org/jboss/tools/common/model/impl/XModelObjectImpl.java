@@ -27,7 +27,7 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     private static final long serialVersionUID = 3860648580262144825L;
-    protected static final String ENTITY = "ENTITY";
+//    protected static final String ENTITY = XModelConstants.XMODEL_ENTITY_ATTR;
     private XModel model = null;
     private XModelEntity entity = null;
     private XModelObjectImpl parent = null;

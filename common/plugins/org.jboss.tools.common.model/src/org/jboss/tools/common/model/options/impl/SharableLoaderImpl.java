@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.options.impl;
 import java.util.*;
 import org.w3c.dom.*;
 import org.jboss.tools.common.meta.*;
+import org.jboss.tools.common.model.XModelConstants;
 import org.jboss.tools.common.model.options.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
@@ -54,7 +55,8 @@ public class SharableLoaderImpl implements SharableConstants {
     }
 
     public void loadChild(Element element, SharableElement sharable, String scopename) {
-        String en = element.getAttribute("ENTITY");
+        String en = XModelObjectLoaderUtil.getModelEntityAttribute(element);
+        if(en == null) return;
         XModelEntity ent = sharable.getModel().getMetaData().getEntity(en);
         if(ent == null) return;
         boolean hasName = (ent.getAttribute("name") != null);
@@ -96,7 +98,7 @@ public class SharableLoaderImpl implements SharableConstants {
 
     public void saveAttributes(Element element, SharableElement sharable, String scopename) {
         XModelEntity entity = sharable.getModelEntity();
-        element.setAttribute("ENTITY", entity.getName());
+        element.setAttribute(XModelConstants.XMODEL_ENTITY_ATTR, entity.getName());
         XAttribute[] as = sharable.getModelEntity().getAttributes();
         element.setAttribute(SCOPE, reduceScopeName(scopename, sharable.getScope()));
         for (int i = 0; i < as.length; i++) {

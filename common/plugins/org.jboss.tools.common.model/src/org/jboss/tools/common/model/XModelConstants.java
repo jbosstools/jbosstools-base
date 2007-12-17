@@ -22,6 +22,9 @@ public class XModelConstants {
 	public static String WORKSPACE_OLD_REF = "%" + WORKSPACE_OLD + "%";
 
     public static String MODEL_VERSION = "version";
+    
+    public static String XMODEL_ENTITY_ATTR = "model-entity";
+    public static String XMODEL_ENTITY_ATTR_OLD = "ENTITY";
 
     private XModelConstants() {}
 
