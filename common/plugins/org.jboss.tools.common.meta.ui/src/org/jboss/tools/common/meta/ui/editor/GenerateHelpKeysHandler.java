@@ -59,7 +59,9 @@ public class GenerateHelpKeysHandler extends AbstractHandler {
 
     private void processEntity(XModelObject e, XModelObject q) {
         boolean impl = (e.getAttributeValue("implementation").length() > 0);
-        if(impl) validateProperty(q, e.getAttributeValue("name"), defpath);
+        if(impl) {
+//        	validateProperty(q, e.getAttributeValue("name"), defpath);
+        }
         processActions(e, q, impl);
     }
 
@@ -71,7 +73,9 @@ public class GenerateHelpKeysHandler extends AbstractHandler {
         XModelObject[] as = collectActions(e);
         String pref = e.getAttributeValue("name") + "_";
         for (int i = 0; i < as.length; i++) processAction(pref, as[i], q);
-        if(impl) validateProperty(q, pref + "Properties", defpath);
+        if(impl) {
+//        	validateProperty(q, pref + "Properties", defpath);
+        }
     }
 
     private XModelObject[] collectActions(XModelObject e) {
@@ -91,9 +95,29 @@ public class GenerateHelpKeysHandler extends AbstractHandler {
         String n = a.getAttributeValue("name");
         String dn = a.getAttributeValue("display name");
         if(dn.endsWith("...")) dn = dn.substring(0, dn.length() - 3);
-        if(a.getAttributeValue("wizard").length() > 0) {
+        if(n.startsWith("Add")) {
         	String key = pref + n;
-            validateProperty(q, key, defpath);
+        	String wt = dn;
+        	if(!wt.startsWith("Add") && !wt.startsWith("New")) {
+        		wt = "Add " + wt;
+        	}
+			validateProperty(q, key + ".WindowTitle", wt);
+			String on = getObjectName(a);
+			if(on == null) on = dn;
+			validateProperty(q, key + ".Title", on);
+        } else if(n.equals("Properties")) {
+        	String key = pref + n;
+			validateProperty(q, key + ".WindowTitle", "Properties");
+			XModelObject b = a;
+			while(b != null && b.getModelEntity().getName().toLowerCase().indexOf("entity") < 0) {
+				b = b.getParent();
+			}
+			String on = (b == null) ? dn : getObjectName2(b);
+			if(on == null) on = dn;
+			validateProperty(q, key + ".Title", on);
+        } else if(a.getAttributeValue("wizard").length() > 0) {
+        	String key = pref + n;
+//            validateProperty(q, key, defpath);
 			validateProperty(q, key + ".WindowTitle", dn);
 			validateProperty(q, key + ".Title", "");
 			validateProperty(q, key + ".Message", "");
@@ -101,14 +125,14 @@ public class GenerateHelpKeysHandler extends AbstractHandler {
             int m = a.getChildren().length;
             for (int i = 0; i < m; i++) {
 				String key = pref + n + "_" + i;
-				validateProperty(q, key, defpath);
+//				validateProperty(q, key, defpath);
 				validateProperty(q, key + ".WindowTitle", dn);
 				validateProperty(q, key + ".Title", "");
 				validateProperty(q, key + ".Message", "");
             } 
         } else if(n.indexOf("Edit") >= 0) {
 			String key = pref + n;
-			validateProperty(q, key, defpath);
+//			validateProperty(q, key, defpath);
 			validateProperty(q, key + ".WindowTitle", dn);
 			validateProperty(q, key + ".Title", "");
 			validateProperty(q, key + ".Message", "");
@@ -118,6 +142,31 @@ public class GenerateHelpKeysHandler extends AbstractHandler {
     private boolean isSpecialWizard(String s) {
         return s.equals("org.jboss.tools.common.meta.action.impl.handlers.DefaultSpecialHandler")
                || s.equals("%SpecialWizard%");
+    }
+    
+    private String getObjectName(XModelObject a) {
+    	XModelObject[] cs = a.getChildren();
+    	if(cs == null || cs.length == 0) return null;
+    	String n = cs[0].getAttributeValue("entity name");
+    	return getObjectName(n);
+    }
+
+    private String getObjectName2(XModelObject a) {
+    	return getObjectName(a.getAttributeValue("name"));
+    }
+
+    private String getObjectName(String n) {
+    	StringBuffer result = new StringBuffer();
+    	for (int i = 0; i < n.length(); i++) {
+    		char ch = n.charAt(i);
+    		if(i > 0 && Character.isUpperCase(ch) && !Character.isUpperCase(n.charAt(i - 1))) {
+    			result.append(' ');
+    		}
+    		if(!Character.isDigit(ch) && ch != '.') {
+    			result.append(ch);
+    		}
+    	}
+    	return result.toString();
     }
 
 }

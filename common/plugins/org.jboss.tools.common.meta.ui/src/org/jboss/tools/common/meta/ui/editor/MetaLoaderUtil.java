@@ -85,9 +85,10 @@ public class MetaLoaderUtil extends XModelObjectLoaderUtil {
             o.addChild(c);
         }
     }
-
+    
     private static String calculateEntity(Element element, XModelEntity[] es) {
-        if(XMLUtil.hasAttribute(element, "ENTITY")) return element.getAttribute("ENTITY");
+    	String entity = getModelEntityAttribute(element);
+    	if(entity != null) return entity;
         String xml = element.getNodeName();
         for (int i = 0; i < es.length; i++) {
             if(xml.equals(es[i].getXMLSubPath()))
@@ -97,7 +98,8 @@ public class MetaLoaderUtil extends XModelObjectLoaderUtil {
     }
 
     private static String calculateEntity(Element element, String def) {
-        if(XMLUtil.hasAttribute(element, "ENTITY")) return element.getAttribute("ENTITY");
+    	String entity = getModelEntityAttribute(element);
+    	if(entity != null) return entity;
         if(def.equals("MetaActionList")) {
             String k = element.getAttribute("kind");
             if("action".equals(k)) return "MetaAction";
