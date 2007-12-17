@@ -50,7 +50,7 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
         location += "/";
         XModelObject[] cs = object.getChildren(entity);
         for (int i = 0; i < cs.length; i++) {
-            String loc = canonize(cs[i].get("LOCATION"), cs[i].getModel()) + "/";
+            String loc = canonize(cs[i].get("location"), cs[i].getModel()) + "/";
             if(!loc.startsWith(location) && !location.startsWith(loc)) continue;
             String mes = "File system " + p.get("name") + " will share files with file system " + cs[i].getAttributeValue("name");
             ServiceDialog d = object.getModel().getService();

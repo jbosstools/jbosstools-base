@@ -116,7 +116,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     }
 
     protected String getAbsolutePath() {
-        return "" + get("LOCATION");
+        return "" + get("location");
     }
 
     public FileSystemPeer getPeer() {

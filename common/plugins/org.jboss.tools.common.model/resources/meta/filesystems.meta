@@ -357,7 +357,7 @@
  <XModelEntity
   ImplementationLoadingClass="org.jboss.tools.common.model.filesystems.impl.FileSystemFolderLoader"
   ImplementingClass="org.jboss.tools.common.model.filesystems.impl.FileSystemImpl"
-  XMLSUBPATH="FILESYSTEM" name="FileSystemFolder">
+  XMLSUBPATH="file-system" name="FileSystemFolder">
   <XChildrenEntities>
    <XChildEntity name="FileFolder"/>
    <XChildEntity name="FileAny"/>
@@ -374,7 +374,7 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="name" xmlname="NAME"/>
-   <XModelAttribute name="location" xmlname="LOCATION">
+   <XModelAttribute name="location" xmlname="location">
     <Constraint loader="FileFilter">
      <value name="allFiles=false"/>
      <value name="description=Folder"/>
@@ -485,7 +485,7 @@
  <XModelEntity
   ImplementationLoadingClass="org.jboss.tools.common.model.filesystems.impl.FileSystemFolderLoader"
   ImplementingClass="org.jboss.tools.common.model.filesystems.impl.JarSystemImpl"
-  XMLSUBPATH="FILESYSTEM" name="FileSystemJar">
+  XMLSUBPATH="file-system" name="FileSystemJar">
   <XChildrenEntities>
    <XChildEntity name="JarFolder"/>
    <XChildEntity name="FileAny"/>
@@ -502,7 +502,7 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="name" xmlname="NAME"/>
-   <XModelAttribute name="location" xmlname="LOCATION">
+   <XModelAttribute name="location" xmlname="location">
     <Constraint loader="FileFilter">
      <value name="allFiles=false"/>
      <value name="description=Files jar,ear,war,rar,zip"/>
@@ -546,7 +546,7 @@
  <XModelEntity
   ImplementationLoadingClass="org.jboss.tools.common.model.filesystems.impl.FileSystemsLoader"
   ImplementingClass="org.jboss.tools.common.model.filesystems.impl.FileSystemsImpl"
-  XMLSUBPATH="FILESYSTEMS" name="FileSystems">
+  XMLSUBPATH="file-systems" name="FileSystems">
   <XChildrenEntities>
    <XChildEntity name="FileSystemFolder"/>
    <XChildEntity name="FileSystemJar"/>
@@ -564,7 +564,7 @@
    <XModelAttribute default="FileSystems" name="name" visibility="false" xmlname="NAME">
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="application name" xmlname="APPLICATION_NAME"/>
+   <XModelAttribute name="application name" xmlname="application-name"/>
    <XModelAttribute name="quick start class" visibility="false" xmlname="QUICK_START_CLASS"/>
    <XModelAttribute name="version" visibility="false" xmlname="VERSION">
     <Editor name="Uneditable"/>

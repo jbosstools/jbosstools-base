@@ -30,7 +30,7 @@ public class OpenWithHelper {
             if(i == XFileObject.FILE) l.add(FileAnyImpl.toFileName(o));
             else if(i == XFileObject.FOLDER) l.add(o.get("NAME"));
             else {
-                l.add(XModelObjectUtil.expand((String)o.get("LOCATION"), o.getModel(), null));
+                l.add(XModelObjectUtil.expand((String)o.get("location"), o.getModel(), null));
                 break;
             }
             o = o.getParent();

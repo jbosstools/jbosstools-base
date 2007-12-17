@@ -250,10 +250,14 @@ public class FileSystemsLoader extends URLRootLoader {
 }
 
 class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
+	
+	boolean isFileSystems(String nodeName) {
+		return "FILESYSTEMS".equals(nodeName) || "file-systems".equals(nodeName);
+	}
 
 	protected Set<String> getAllowedChildren(XModelEntity entity) {
 		Set<String> children = super.getAllowedChildren(entity);
-		if("FILESYSTEMS".equals(entity.getXMLSubPath())) {
+		if(isFileSystems(entity.getXMLSubPath())) {
 			children.add("WEB");
 		}
 		return children;
@@ -261,7 +265,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 
 	protected Set<String> getAllowedAttributes(XModelEntity entity) {
 		Set<String> attributes = super.getAllowedAttributes(entity);
-		if("FILESYSTEMS".equals(entity.getXMLSubPath())) {
+		if(isFileSystems(entity.getXMLSubPath())) {
 			attributes.add("WORKSPACE_HOME");
 		}
 		return attributes;
@@ -269,7 +273,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 
 	public boolean saveChildren(Element element, XModelObject o) {
         boolean b = super.saveChildren(element, o);
-        if(b && "FILESYSTEMS".equals(element.getNodeName())) {
+        if(b && isFileSystems(element.getNodeName())) {
         	saveWorkspaceHomeAttr(element, o);
             XModelObject w = getWeb(o);
             if(w != null) save(element, w);
@@ -279,7 +283,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 
     public void loadChildren(Element element, XModelObject o) {
         super.loadChildren(element, o);
-        if("FILESYSTEMS".equals(element.getNodeName())) {
+        if(isFileSystems(element.getNodeName())) {
             Element e = XMLUtil.getUniqueChild(element, "WEB");
             XModelObject w = getWeb(o);
             if(w != null && e != null) load(e, w);
@@ -305,6 +309,26 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 		    "." + workspace.substring(project.length()) : workspace;
 		element.setAttribute("WORKSPACE_HOME", relative);
 	}
+	
+	static Map<String,String> oldAttributes = new HashMap<String, String>();
+	
+	static {
+		oldAttributes.put("application-name", "APPLICATION_NAME");
+		oldAttributes.put("workspace-home", "WORKSPACE_HOME");
+		oldAttributes.put("info", "INFO");
+		oldAttributes.put("location", "LOCATION");
+	}
+
+    public String getAttribute(Element element, String xmlname) {
+    	if(element == null || xmlname == null) return null;
+    	if(!element.hasAttribute(xmlname)) {
+    		String oldAttribute = oldAttributes.get(xmlname);
+    		if(oldAttribute != null && element.hasAttribute(oldAttribute)) {
+    			xmlname = oldAttribute;
+    		}
+    	}
+    	return super.getAttribute(element, xmlname);
+    }
 
 }
 

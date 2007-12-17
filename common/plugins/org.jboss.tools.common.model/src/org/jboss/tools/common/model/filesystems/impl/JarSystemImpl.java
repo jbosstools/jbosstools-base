@@ -52,13 +52,13 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
     }
     
     public String getLocation() {
-		return Paths.expand(get("LOCATION"), getModel().getProperties());
+		return Paths.expand(get("location"), getModel().getProperties());
     }
 
     public String getTempLocation() {
 		if(!jar.isLoaded()) loadChildren();
         String s = jar.getTempLocation();
-        return (s == null) ? get("LOCATION") : s;
+        return (s == null) ? get("location") : s;
     }
 
     public LFileObject getFileObject(String relpath) {

@@ -180,7 +180,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
     }
 
     public String get(String name) {
-        if("APPLICATION_NAME".equals(name)) {
+        if("APPLICATION_NAME".equals(name) || "application-name".equals(name)) {
             String s = super.get(name);
             if(s == null || s.length() == 0) {
             	s = "";
