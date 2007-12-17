@@ -44,7 +44,7 @@ public class NavigatorStatusLineProvider {
 		IResource resource = EclipseResourceUtil.getResource(object);
 		String msg = (resource == null) ? "" : resource.getFullPath().makeRelative().toString();
 		if(msg.length() == 0 && object.getFileType() == XModelObject.SYSTEM) {
-			msg = XModelObjectUtil.expand("" + object.get("LOCATION"), object.getModel(), null);
+			msg = XModelObjectUtil.expand("" + object.get("location"), object.getModel(), null);
 		}
 		return (msg.length() == 0) ? object.getPathPart() : msg;
 	}
