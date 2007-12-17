@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FILESYSTEMS APPLICATION_NAME="" ENTITY="FileSystems" WORKSPACE_HOME="./WebContent/WEB-INF">
- <FILESYSTEM ENTITY="FileSystemFolder" LOCATION="%workspace.home%" NAME="WEB-INF"/>
- <FILESYSTEM ENTITY="FileSystemFolder" INFO="Content-Type=Web"
+<FILESYSTEMS APPLICATION_NAME="" model-entity="FileSystems" WORKSPACE_HOME="./WebContent/WEB-INF">
+ <FILESYSTEM model-entity="FileSystemFolder" LOCATION="%workspace.home%" NAME="WEB-INF"/>
+ <FILESYSTEM model-entity="FileSystemFolder" INFO="Content-Type=Web"
   LOCATION="%workspace.home%/.." NAME="WEB-ROOT"/>
- <FILESYSTEM ENTITY="FileSystemFolder"
+ <FILESYSTEM model-entity="FileSystemFolder"
   LOCATION="%workspace.home%/../../JavaSource" NAME="src"/>
- <FILESYSTEM ENTITY="FileSystemFolder"
+ <FILESYSTEM model-entity="FileSystemFolder"
   LOCATION="%workspace.home%/lib" NAME="lib"/>
- <FILESYSTEM ENTITY="FileSystemFolder"
+ <FILESYSTEM model-entity="FileSystemFolder"
   LOCATION="%workspace.home%/classes" NAME="classes"/>
- <FILESYSTEM ENTITY="FileSystemFolder"
+ <FILESYSTEM model-entity="FileSystemFolder"
   LOCATION="%workspace.home%/../../ant" NAME="build"/>
- <WEB ENTITY="JstWeb" MODEL_PATH="/web.xml">
-  <MODULE ENTITY="WebJSFModule" MODEL_PATH="/faces-config.xml"
+ <WEB model-entity="JstWeb" MODEL_PATH="/web.xml">
+  <MODULE model-entity="WebJSFModule" MODEL_PATH="/faces-config.xml"
    ROOT="WEB-ROOT" SRC="src" URI="/WEB-INF/faces-config.xml"/>
  </WEB>
 </FILESYSTEMS>
