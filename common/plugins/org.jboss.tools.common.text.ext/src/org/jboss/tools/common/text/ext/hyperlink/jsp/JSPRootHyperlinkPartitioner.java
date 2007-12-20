@@ -154,33 +154,27 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 		}
 	}
 
-	private static final String JSP_SOURCE_CONTENTTYPE_ID = "org.eclipse.jst.jsp.core.jspsource";
-	private static final String JSP_SOURCE_ROOT_ELEMENT = "jsp:root";
-	private static final String HTML_SOURCE_CONTENTTYPE_ID = "org.eclipse.wst.html.core.htmlsource";
-	private static final String HTML_SOURCE_ROOT_ELEMENT = "html";
-	
-	// @TODO: alternative trackers map (for use along with xhtml documents)
+	// DONE: alternative trackers map (for use along with xhtml documents)
 	public static Map<String,String> addAlternativeTrackersMap(Map<String,String> map, IDocument document, int offset) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
 			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
-
-			String cti = smw.getContentTypeIdentifier();
-			NodeList roots = null;
-			if (JSP_SOURCE_CONTENTTYPE_ID.equalsIgnoreCase(cti)) 
-				roots = xmlDocument.getElementsByTagName(JSP_SOURCE_ROOT_ELEMENT);
-			else if (HTML_SOURCE_CONTENTTYPE_ID.equalsIgnoreCase(cti)) 
-				roots = xmlDocument.getElementsByTagName(HTML_SOURCE_ROOT_ELEMENT);
-			
-			if (roots == null)
-					return map;
 			
 			if (map == null) map = new HashMap<String,String>();
-			
-			for (int i = 0; roots != null && i < roots.getLength(); i++) {
-				Node n = roots.item(i);
+
+			Node n = Utils.findNodeForOffset(xmlDocument, offset);
+			while (n != null) {
+				if (!(n instanceof Element)) {
+					if (n instanceof Attr) {
+						n = ((Attr)n).getOwnerElement();
+					} else {
+						n = n.getParentNode();
+					}
+					continue;
+				}
+				
 				NamedNodeMap attrs = n.getAttributes();
 				for (int j = 0; attrs != null && j < attrs.getLength(); j++) {
 					Attr a = (Attr)attrs.item(j);
@@ -191,8 +185,10 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 						map.put(prefix.trim(), uri.trim());
 					}
 				}
+				
+				n = n.getParentNode();
 			}
-			
+
 			return map;
 		} catch (Exception x) {
 			//ignore
