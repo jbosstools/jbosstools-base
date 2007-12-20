@@ -26,6 +26,9 @@
          	<contentType id="org.eclipse.jst.j2ee.webDD">
          		<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
          	</contentType>
+         	<contentType id="org.eclipse.jst.jee.ee5webDD">
+         		<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
+         	</contentType>
          	<contentType id="org.eclipse.core.runtime.xml">
          		<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
          	</contentType>
@@ -66,6 +69,9 @@
         	<contentType id="org.eclipse.jst.j2ee.webDD">
 				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
         	</contentType>
+      	<contentType id="org.eclipse.jst.jee.ee5webDD">
+      		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT"/>
+      	</contentType>
         	<contentType id="org.jboss.tools.common.model.ui.xml">
 				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
         	</contentType>
@@ -89,6 +95,9 @@
         	<contentType id="org.eclipse.jst.j2ee.webDD">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
         	</contentType>
+        	<contentType id="org.eclipse.jst.jee.ee5webDD">
+      		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT"/>
+      	</contentType>
          <contentType id="org.jboss.tools.common.model.ui.xml">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
          </contentType>
@@ -112,9 +121,12 @@
         	<contentType id="org.eclipse.jst.j2ee.webDD">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
         	</contentType>
-            <contentType id="org.jboss.tools.common.model.ui.xml">
+        	<contentType id="org.eclipse.jst.jee.ee5webDD">
+      		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT"/>
+      	</contentType>
+         <contentType id="org.jboss.tools.common.model.ui.xml">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
-            </contentType>
+         </contentType>
 		</hyperlinkPartitioner>
 
 		<hyperlinkPartitioner 
@@ -135,9 +147,12 @@
         	<contentType id="org.eclipse.jst.j2ee.webDD">
         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
         	</contentType>
-            <contentType id="org.jboss.tools.common.model.ui.xml">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
-            </contentType>
+        	<contentType id="org.eclipse.jst.jee.ee5webDD">
+      		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT"/>
+      	</contentType>
+         <contentType id="org.jboss.tools.common.model.ui.xml">
+       		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+         </contentType>
 		</hyperlinkPartitioner>
          
 		<hyperlinkPartitioner 
@@ -158,9 +173,12 @@
         	<contentType id="org.eclipse.jst.j2ee.webDD">
         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
         	</contentType>
-            <contentType id="org.jboss.tools.common.model.ui.xml">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
-            </contentType>
+        	<contentType id="org.eclipse.jst.jee.ee5webDD">
+      		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT"/>
+      	</contentType>
+         <contentType id="org.jboss.tools.common.model.ui.xml">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+         </contentType>
 		</hyperlinkPartitioner> 
 		
 		<hyperlinkPartitioner 
@@ -188,6 +206,10 @@
         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
         		</partitionType>
         	</contentType>
+        	<contentType id="org.eclipse.jst.jee.ee5webDD">
+      		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE"/>
+      	</contentType>
+        	
             <contentType id="org.jboss.tools.common.model.ui.xml">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE" />
             </contentType>
@@ -441,6 +463,18 @@
          			<!-- Web.xml -->
          		</partitionType>
         	</contentType>
+        	<contentType id="org.eclipse.jst.jee.ee5webDD">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
+         			<!-- Web.xml -->
+         			<axis path="/web-app/env-entry/env-entry-type/" />
+         			<axis path="/web-app/error-page/exception-type/" />
+         			<axis path="/web-app/filter/filter-class/" />
+         			<axis path="/web-app/servlet/servlet-class/" />
+         			<axis path="/web-app/listener/listener-class/" />
+         			<axis path="/web-app/resource-env-ref/resource-env-ref-type/" />
+         			<!-- Web.xml -->
+         		</partitionType>
+      	</contentType>
          	<contentType id="org.jboss.tools.common.model.ui.xml">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
          			<!-- Web.xml -->
@@ -486,6 +520,11 @@
          			<axis path="/web-app/filter-mapping/filter-name/" />
          		</partitionType>
         	</contentType>
+        	<contentType id="org.eclipse.jst.jee.ee5webDD">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
+         			<axis path="/web-app/filter-mapping/filter-name/" />
+         		</partitionType>
+      	</contentType>
          	<contentType id="org.jboss.tools.common.model.ui.xml">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
          			<axis path="/web-app/filter-mapping/filter-name/" />
@@ -514,6 +553,13 @@
          			<axis path="/web-app/servlet-mapping/servlet-name/" />
          		</partitionType>
         	</contentType>
+        	<contentType id="org.eclipse.jst.jee.ee5webDD">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
+         			<axis path="/web-app/filter-mapping/servlet-name/" />
+         			<axis path="/web-app/servlet-mapping/servlet-name/" />
+         		</partitionType>
+      	</contentType>
+        	
          	<contentType id="org.jboss.tools.common.model.ui.xml">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
          			<axis path="/web-app/filter-mapping/servlet-name/" />
@@ -546,6 +592,14 @@
          			<axis path="/web-app/security-constraint/auth-constraint/role-name/" />
          		</partitionType>
         	</contentType>
+        	<contentType id="org.eclipse.jst.jee.ee5webDD">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
+         			<axis path="/web-app/servlet/security-role-ref/role-link/" />
+         			<axis path="/web-app/servlet/run-as/role-name/" />
+         			<axis path="/web-app/security-constraint/auth-constraint/role-name/" />
+         		</partitionType>
+      	</contentType>
+        	
          	<contentType id="org.jboss.tools.common.model.ui.xml">
          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
          			<axis path="/web-app/servlet/security-role-ref/role-link/" />
@@ -607,6 +661,10 @@
         	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_DOCTYPE" />
         	</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.jee.ee5webDD">
+				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_DOCTYPE" />
+      	</contenttypeidentifier>
+        	
 			<contenttypeidentifier id="org.jboss.tools.common.model.ui.xml">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_DOCTYPE" />
 			</contenttypeidentifier>
@@ -689,6 +747,9 @@
         	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_CLASS" />
         	</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.jee.ee5webDD">
+				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_CLASS" />
+      	</contenttypeidentifier>
 			<contenttypeidentifier id="org.jboss.tools.common.model.ui.xml">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_CLASS" />
 			</contenttypeidentifier>
@@ -720,6 +781,9 @@
         	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_XMLNS" />
         	</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.jee.ee5webDD">
+				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_XMLNS" />
+      	</contenttypeidentifier>
 			<contenttypeidentifier id="org.jboss.tools.common.model.ui.xml">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_XMLNS" />
 			</contenttypeidentifier>
@@ -739,6 +803,9 @@
         	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME" />
         	</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.jee.ee5webDD">
+				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME" />
+      	</contenttypeidentifier>
 			<contenttypeidentifier id="org.jboss.tools.common.model.ui.xml">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME" />
 			</contenttypeidentifier>
@@ -756,6 +823,9 @@
         	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME" />
         	</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.jee.ee5webDD">
+				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME" />
+      	</contenttypeidentifier>
 			<contenttypeidentifier id="org.jboss.tools.common.model.ui.xml">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME" />
 			</contenttypeidentifier>
@@ -773,6 +843,9 @@
         	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
             	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME" />
         	</contenttypeidentifier>
+        	<contenttypeidentifier id="org.eclipse.jst.jee.ee5webDD">
+            	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME" />
+      	</contenttypeidentifier>
 			<contenttypeidentifier id="org.jboss.tools.common.model.ui.xml">
             	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME" />
 			</contenttypeidentifier>
