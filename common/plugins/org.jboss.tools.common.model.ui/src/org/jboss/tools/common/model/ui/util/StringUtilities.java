@@ -50,7 +50,7 @@ public class StringUtilities {
 				str = tmp;
 			}
 		} else {
-			str = new String(source);
+			str = source;
 		}
 		gc.dispose();
 		return str;

@@ -85,7 +85,7 @@ public class ModelUIImages {
 			ModelUIPlugin.getPluginLog().logInfo("parent = " + (parent==null?"null":parent.getClass().getName()));
 		}
 
-		if(registryUrl == null) throw new NullPointerException("Base url for image registry cannot be null.");
+		if(registryUrl == null) throw new IllegalArgumentException("Base url for image registry cannot be null.");
 		baseUrl = registryUrl;
 		parentRegistry = parent;
 	}

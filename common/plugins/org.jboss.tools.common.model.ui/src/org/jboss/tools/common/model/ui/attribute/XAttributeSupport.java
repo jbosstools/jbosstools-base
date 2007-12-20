@@ -76,7 +76,7 @@ public class XAttributeSupport {
 	}
 
 	public XAttributeSupport(XModelObject xmo) {
-		if(xmo==null) throw new NullPointerException("XModelObject cannot be null.");
+		if(xmo==null) throw new IllegalArgumentException("XModelObject cannot be null.");
 		init(xmo);
 	}
 
@@ -85,7 +85,7 @@ public class XAttributeSupport {
 	}
 	
 	public XAttributeSupport(XModelObject xmo, XEntityData data, boolean useObject) {
-		if(data==null) throw new NullPointerException("XEntityData cannot be null.");
+		if(data==null) throw new IllegalArgumentException("XEntityData cannot be null.");
 		init(xmo, data, useObject);
 	}
 	
@@ -375,15 +375,15 @@ public class XAttributeSupport {
 	}
 
 	public void load() {
-		if(xmo == null) throw new NullPointerException("" +
+		if(xmo == null) throw new IllegalArgumentException("" +
 			"Init support with XModelObject before saving");		
 		for (int i = 0; i < editors.size(); i++)
 		((IModelPropertyEditorAdapter)adapters.get(i)).load();
 	}	
 	
 	public void save() {
-		if(xmo == null) throw new NullPointerException("" +			"Init support with XModelObject before saving");
-		if(xmo.getModel()==null) throw new NullPointerException("Cannot store deleted or removed XModel object");
+		if(xmo == null) throw new IllegalArgumentException("" +			"Init support with XModelObject before saving");
+		if(xmo.getModel()==null) throw new IllegalArgumentException("Cannot store deleted or removed XModel object");
 		xmo.getModel().saveOptions();	
 	}
 	
