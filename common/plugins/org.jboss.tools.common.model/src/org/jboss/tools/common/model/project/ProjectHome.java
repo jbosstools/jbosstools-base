@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
+import org.w3c.dom.Element;
 
 public class ProjectHome {
 
@@ -44,7 +45,13 @@ public class ProjectHome {
 	}
 	
 	private String getLocationFrom_strutsstudio_File(String location, File ss) {
-		String path = XMLUtil.getElement(ss).getAttribute("WORKSPACE_HOME");
+		Element element = XMLUtil.getElement(ss);
+		String path = "";
+		if(element.hasAttribute("workspace-home")) {
+			path = element.getAttribute("workspace-home");
+		} else if(element.hasAttribute("WORKSPACE_HOME")) {
+			path = element.getAttribute("WORKSPACE_HOME");
+		}
 		String q = (path.equals(".")) ? location : (path.startsWith("./")) ? location + path.substring(1) : path;
 		return q;
 	}

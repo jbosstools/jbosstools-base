@@ -259,6 +259,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 		Set<String> children = super.getAllowedChildren(entity);
 		if(isFileSystems(entity.getXMLSubPath())) {
 			children.add("WEB");
+			children.add("web");
 		}
 		return children;
 	}
@@ -267,6 +268,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 		Set<String> attributes = super.getAllowedAttributes(entity);
 		if(isFileSystems(entity.getXMLSubPath())) {
 			attributes.add("WORKSPACE_HOME");
+			attributes.add("workspace-home");
 		}
 		return attributes;
 	}
@@ -284,7 +286,8 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
     public void loadChildren(Element element, XModelObject o) {
         super.loadChildren(element, o);
         if(isFileSystems(element.getNodeName())) {
-            Element e = XMLUtil.getUniqueChild(element, "WEB");
+            Element e = XMLUtil.getUniqueChild(element, "web");
+            if(e == null) e = XMLUtil.getUniqueChild(element, "WEB");
             XModelObject w = getWeb(o);
             if(w != null && e != null) load(e, w);
         }
@@ -307,7 +310,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 		if(project == null) return;
 		String relative = workspace.startsWith(project + "/") ? 
 		    "." + workspace.substring(project.length()) : workspace;
-		element.setAttribute("WORKSPACE_HOME", relative);
+		element.setAttribute("workspace-home", relative);
 	}
 	
 	static Map<String,String> oldAttributes = new HashMap<String, String>();
@@ -317,6 +320,9 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 		oldAttributes.put("workspace-home", "WORKSPACE_HOME");
 		oldAttributes.put("info", "INFO");
 		oldAttributes.put("location", "LOCATION");
+		oldAttributes.put("model-path", "MODEL_PATH");
+		oldAttributes.put("root", "ROOT");
+		oldAttributes.put("src", "SRC");
 	}
 
     public String getAttribute(Element element, String xmlname) {

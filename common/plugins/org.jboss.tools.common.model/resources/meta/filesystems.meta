@@ -383,7 +383,7 @@
     <Editor name="FolderChooser"/>
    </XModelAttribute>
    <XModelAttribute name="owner" visibility="false" xmlname="OWNER"/>
-   <XModelAttribute name="info" visibility="false" xmlname="INFO"/>
+   <XModelAttribute name="info" visibility="false" xmlname="info"/>
    <XModelAttribute default="false"
     name="set location relative to project" visibility="false">
     <Constraint loader="ListString">
@@ -512,7 +512,7 @@
     <Editor name="FileChooser"/>
    </XModelAttribute>
    <XModelAttribute name="owner" visibility="false" xmlname="OWNER"/>
-   <XModelAttribute name="info" visibility="false" xmlname="INFO"/>
+   <XModelAttribute name="info" visibility="false" xmlname="info"/>
    <XModelAttribute default="false"
     name="set location relative to project" visibility="false">
     <Constraint loader="ListString">
