@@ -11,7 +11,6 @@
 package org.jboss.tools.jst.web.tld;
 
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -36,18 +35,4 @@ public interface VpeTaglibManager {
 	 * @return
 	 */
 	public List<TaglibData> getTagLibs();
-
-	/**
-	 * Return template taglib prefix using prefix as a key.
-	 * @return
-	 */
-	public String getTemplateTaglibPrefix(String sourceTaglibPrefix);
-
-	/**
-	 * This is a way to use templateTaglibs from
-	 * org.jboss.tools.vpe.editor.template.VpeTemplateManager;
-	 * this is just reference to VpeTemplateManager.templateTaglibs
-	 * getter is prohibited here 
-	 **/
-	public void setTemplateTaglibs(Map<String,String> templateTaglibs);
 }
