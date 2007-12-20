@@ -72,13 +72,8 @@ public class EclipseResourceUtil {
 	}
 	
 	public static String getIconPath(XModelObject o) {
-		try {
-			String s = o.getMainIconName();
-			return o.getModelEntity().getMetaModel().getIconList().getIconPath(s, "default.unknown");
-		} catch (Exception ex) {
-			ModelPlugin.getPluginLog().logError(ex);
-			return null;
-		}
+		String s = o.getMainIconName();
+		return o.getModelEntity().getMetaModel().getIconList().getIconPath(s, "default.unknown");
 	}
 
 	public static Image getImage(String path) {
@@ -125,13 +120,8 @@ public class EclipseResourceUtil {
 
 	public static XModelObject getObjectByPath(IProject p, String path) {
 		if(p == null) return null;
-		try {
-			IModelNature sp = getModelNature(p);
-			return (sp == null) ? null : sp.getModel().getByPath(path);
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
-			return null;
-		}
+		IModelNature sp = getModelNature(p);
+		return (sp == null) ? null : sp.getModel().getByPath(path);
 	}
 	
 	public static XModelObject findFileSystem(IResource resource, XModel model) {
@@ -201,7 +191,7 @@ public class EclipseResourceUtil {
 		if(p == null || !p.isOpen()) return false;
 		try {
 			if(p.hasNature(nature)) return true;
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		return false;
@@ -216,7 +206,7 @@ public class EclipseResourceUtil {
 					IModelNature n = (IModelNature)p.getNature(natures[i]);
 				    return n == null || n.getModel() == null ? null : n;
 				}
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				ModelPlugin.getPluginLog().logError(e);
 			}
 		}
@@ -227,7 +217,7 @@ public class EclipseResourceUtil {
 		if(p == null || !p.isOpen()) return null;
 		try {
 			if(p.hasNature(id)) return (IModelNature)p.getNature(id);
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;
@@ -247,23 +237,20 @@ public class EclipseResourceUtil {
 		if(resource == null || !resource.exists()) return null;
 		IProject project = resource.getProject();
 		if(project == null || !project.isOpen()) return null;
-		try {
-			IModelNature sp = getModelNature(project);
-			if(sp != null) {
-				XModelObject result = getObjectByResource(resource);
-				if(result == null) {
-					XModelObject fs = findFileSystem(resource.getProject(), sp.getModel());
-					if(fs == null) {
-						fs = addFileSystem(resource.getProject(), sp.getModel());
-						if(fs != null) result = getObjectByResource(resource);
-					}
+
+		IModelNature sp = getModelNature(project);
+		if(sp != null) {
+			XModelObject result = getObjectByResource(resource);
+			if(result == null) {
+				XModelObject fs = findFileSystem(resource.getProject(), sp.getModel());
+				if(fs == null) {
+					fs = addFileSystem(resource.getProject(), sp.getModel());
+					if(fs != null) result = getObjectByResource(resource);
 				}
-				return result;
 			}
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
-			return null;
+			return result;
 		}
+
 		XModel model = models.get(project);
 		if(model != null) {
 			validateJarSystem(model.getByPath("FileSystems"), resource);
@@ -311,7 +298,7 @@ public class EclipseResourceUtil {
 		IResource[] cs = null;
 		try {
 			cs = project.members();
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		if(cs != null) for (int i = 0; i < cs.length; i++) {
@@ -412,7 +399,7 @@ public class EclipseResourceUtil {
 			if(project == null || !project.isOpen()) return null;
 			if(!project.hasNature(JavaCore.NATURE_ID)) return null;
 			return JavaCore.create(project);
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 			return null;		
 		}
@@ -425,32 +412,17 @@ public class EclipseResourceUtil {
 			IPath p = javaProject.getOutputLocation();
 			IResource r = project.getWorkspace().getRoot().findMember(p);
 			return (r == null || r.getLocation() == null) ? null : r.getLocation().toString();
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 			return null;
 		}
 	}
 	
-	
-	public static URLClassLoader getClassLoader(IProject project, ClassLoader parent) throws Exception {
-		if(!project.hasNature(JavaCore.NATURE_ID)) return null;
-		List paths = getClassPath(project);
-		ArrayList<URL> l = new ArrayList<URL>();
-		for (int i = 0; i < paths.size(); i++) {
-			try {
-				l.add(new File(paths.get(i).toString()).toURL());
-			} catch (Exception e) {
-				//ignore - we do not care about malformed URLs in classpath here.
-			}
-		}
-		URL[] urls = l.toArray(new URL[0]);
-		return new URLClassLoader(urls, parent);
-	}
-	
 	/**
 	 * Returns list of canonical paths to resources included in class path.
+	 * @throws IOException 
 	 */	
-	public static List<String> getClassPath(IProject project) throws Exception {
+	public static List<String> getClassPath(IProject project) throws CoreException, IOException {
 		if(!project.hasNature(JavaCore.NATURE_ID)) return null;
 		ArrayList<String> l = new ArrayList<String>();
 		IJavaProject javaProject = JavaCore.create(project);		
@@ -472,7 +444,7 @@ public class EclipseResourceUtil {
 						l.add(new java.io.File(s).getCanonicalPath());
 					}
 				}
-			} catch (Exception e) {
+			} catch (IOException e) {
 				//ignore - we do not care about non-existent files here.
 			}
 		}
@@ -520,7 +492,7 @@ public class EclipseResourceUtil {
 				path = new Path(p.replace('.', '/') + ".java");
 			}
 			return javaProject.findElement(path);
-		} catch (Exception ex) {
+		} catch (CoreException ex) {
 			ModelPlugin.getPluginLog().logError(ex);
 		}
 		return null;
@@ -530,22 +502,25 @@ public class EclipseResourceUtil {
 		if (className == null && className.length() == 0) return null;
 		IJavaProject javaProject = getJavaProject(project);
 		if(javaProject == null) return null;
+		IFile f = null;
 		try {
 			IType t = javaProject.findType(className);
 			if(t == null || t.isBinary()) return t;
 			if(t.getParent() instanceof ICompilationUnit) {
 				ICompilationUnit u = (ICompilationUnit)t.getParent();
-				IFile f = (IFile)u.getCorrespondingResource();
+				f = (IFile)u.getCorrespondingResource();
 				IMarker[] ms = f.findMarkers(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_ZERO);
 				for (int i = 0; i < ms.length; i++) {
 					if(ms[i].getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO) == IMarker.SEVERITY_ERROR) return null;
 				}
 			}
 			return t;
-		} catch (Exception t) {
+		} catch (JavaModelException t) {
 			ModelPlugin.getPluginLog().logError("Error while obtaining type " + className, t);
-			return null;
+		} catch (CoreException t) {
+			ModelPlugin.getPluginLog().logError("Error occured while obtaining Java Problem markers  for " + f.getLocation() , t);
 		}
+		return null;
 	}
 
 	/**
@@ -581,7 +556,7 @@ public class EclipseResourceUtil {
 			String output = r.getLocation().toString();
 			String f = output + "/" + className.replace('.', '/') + ".class";
 			return new java.io.File(f).isFile();
-		} catch (Exception t) {
+		} catch (JavaModelException t) {
 			ModelPlugin.getPluginLog().logError("Error checking class " + className, t);
 			return false;
 		}		
@@ -628,7 +603,7 @@ public class EclipseResourceUtil {
 					}
 				} 
 			}
-		} catch (Exception ex) {
+		} catch (JavaModelException ex) {
 			ModelPlugin.getPluginLog().logError(ex);
 		}
 		return null;
@@ -671,7 +646,7 @@ public class EclipseResourceUtil {
 		proj.setDescription(description, null);
 	}
 	
-	public static void openResource(IResource resource) throws Exception {
+	public static void openResource(IResource resource) {
 		XModelObject o = getObjectByResource(resource);
 		if(o == null) o = createObjectForResource(resource);
 		if(o != null) XActionInvoker.invoke("Open", o, null);
@@ -694,7 +669,7 @@ public class EclipseResourceUtil {
 	public static URL getInstallURL(Bundle bundle) {
 		try {
 			return bundle == null ? null : FileLocator.resolve(bundle.getEntry("/"));
-		} catch (Exception e) {
+		} catch (IOException e) {
 			//ignore and try to execute it in the other way
 			return bundle.getEntry("/");
 		}
@@ -719,7 +694,7 @@ public class EclipseResourceUtil {
 			IResource[] ms = null;
 			try {
 				ms = projects[i].members(true);
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				//ignore - we do not care if project can give its members here.
 			}
 			if(ms != null) for (int j = 0; j < ms.length; j++) {
@@ -753,7 +728,7 @@ public class EclipseResourceUtil {
 						String relative = location.substring(l.length()).replace('\\', '/');
 						return (relative.length() == 0) ? (IResource)c : c.getFolder(new Path(relative));
 					}
-				} catch (Exception e) {
+				} catch (CoreException e) {
 					ModelPlugin.getPluginLog().logError(e);
 				}
 				continue;
@@ -795,31 +770,30 @@ public class EclipseResourceUtil {
 		ArrayList<IResource> l = new ArrayList<IResource>();
 		
 		IClasspathEntry[] es = null;
+		
 		try {
 		    es = javaProject.getResolvedClasspath(true);
 		} catch (JavaModelException e) {
 			//ignore - if project cannot respond, it may not have resources of interest.
 			return new IProject[0];
 		}
+
 		if(es != null) for (int i = 0; i < es.length; i++) {
-			try {
-				if(es[i].getEntryKind() == IClasspathEntry.CPE_PROJECT) {
-					IPath path = es[i].getPath();
-					IProject p = (IProject)project.getWorkspace().getRoot().findMember(path);
-					l.add(p);
-				} else if(es[i].getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
-					IPath path = es[i].getPath();
-					IResource r = project.getWorkspace().getRoot().findMember(path);
-					if(r != null && (r instanceof IContainer)) {
-						l.add(r);
-					} else if(r != null && !project.getFullPath().isPrefixOf(r.getFullPath())) {
-						l.add(r); //probably it is jar 
-					}
+			if(es[i].getEntryKind() == IClasspathEntry.CPE_PROJECT) {
+				IPath path = es[i].getPath();
+				IProject p = (IProject)project.getWorkspace().getRoot().findMember(path);
+				l.add(p);
+			} else if(es[i].getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
+				IPath path = es[i].getPath();
+				IResource r = project.getWorkspace().getRoot().findMember(path);
+				if(r != null && (r instanceof IContainer)) {
+					l.add(r);
+				} else if(r != null && !project.getFullPath().isPrefixOf(r.getFullPath())) {
+					l.add(r); //probably it is jar 
 				}
-			} catch (Exception e) {
-				ModelPlugin.getPluginLog().logError(e);
 			}
 		}
+		
 		return l.toArray(new IResource[0]);
 	}
 

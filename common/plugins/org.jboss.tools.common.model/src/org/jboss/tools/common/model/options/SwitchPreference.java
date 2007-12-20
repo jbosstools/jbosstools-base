@@ -38,7 +38,7 @@ public class SwitchPreference extends Preference {
 	}
 
 	public String getValue() {
-		if(switchPreference==null) throw new NullPointerException("switchPreference cannot be null, call setSwitchPreferenceFirst.");
+		if(switchPreference==null) throw new IllegalStateException("switchPreference cannot be null, call setSwitchPreferenceFirst.");
 		Preference preference = (Preference)preferencesMap.get(switchPreference.getValue());
 		if(preference==null) throw new IllegalStateException("Preference in't added for switch value '" + switchPreference.getValue() + "'"); 
 		return preference.getValue();

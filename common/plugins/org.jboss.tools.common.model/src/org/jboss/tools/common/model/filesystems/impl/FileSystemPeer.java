@@ -58,7 +58,7 @@ public class FileSystemPeer {
     }
 
     private Long toLastModified(File f) {
-        return !f.exists() ? new Long(0) : new Long(f.lastModified());
+        return !f.exists() ? Long.valueOf(0) : Long.valueOf(f.lastModified());
     }
 
 }

@@ -64,7 +64,7 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		pd.setProperty(ServiceDialog.DIALOG_MESSAGE, message);
 		String checkBoxMessage = "Remove Dynamic Web Project Capabilities";
 		pd.setProperty(ServiceDialog.CHECKBOX_MESSAGE, checkBoxMessage);
-		pd.put(ServiceDialog.CHECKED, new Boolean(false));
+		pd.put(ServiceDialog.CHECKED, Boolean.FALSE);
 		if(!dialog.openConfirm(pd)) return;
 		Boolean b = (Boolean)pd.get(ServiceDialog.CHECKED);
 		unregisterWTP = b.booleanValue();

@@ -22,10 +22,10 @@ public class ExtensionPointUtil {
 	public static Object findClassByElementId(IExtensionPoint point, String id) throws Exception {
 		IConfigurationElement element = getElementById(point, id);
 		if(element == null)
-		  throw new NullPointerException("Configuration element with id=" + id + " is not found");
+		  throw new IllegalArgumentException("Configuration element with id=" + id + " is not found");
 		String className = element.getAttribute("class");
 		if(className == null || className.length() == 0)
-		  throw new NullPointerException("Configuration element with id=" + id + " does not define 'class' attribute");
+		  throw new IllegalArgumentException("Configuration element with id=" + id + " does not define 'class' attribute");
 		return element.createExecutableExtension("class");
 	}
 	

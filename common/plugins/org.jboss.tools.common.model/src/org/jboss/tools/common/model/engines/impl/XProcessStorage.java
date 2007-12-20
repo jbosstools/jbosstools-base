@@ -25,7 +25,7 @@ public class XProcessStorage {
 
     public void addInstance(String path, XProcess p) {
         if(p == null || !p.isRunning()) return;
-        getInstances(path).put(new Long(System.currentTimeMillis()), p);
+        getInstances(path).put(Long.valueOf(System.currentTimeMillis()), p);
     }
 
     private HashMap<Long,XProcess> getInstances(String path) {
@@ -56,7 +56,7 @@ public class XProcessStorage {
     public void stopInstance(String path, long time) {
         HashMap<Long,XProcess> is = getRunningInstances(path);
         if(is == null) return;
-        Long l = new Long(time);
+        Long l = Long.valueOf(time);
         XProcess p = is.get(l);
         if(p == null) return;
         p.stop();

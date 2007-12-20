@@ -107,7 +107,7 @@ public class JarAccess {
 					ZipEntry entry = (ZipEntry)en.nextElement();
 					String name = entry.getName();
 					if(name != null && !name.endsWith("/") && entry.getSize() > 0) {
-						fileEntries.put(name, new Long(entry.getSize()));
+						fileEntries.put(name, Long.valueOf(entry.getSize()));
 					}
 					register(name);
 				} catch (Exception e) {

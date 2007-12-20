@@ -76,7 +76,6 @@ public class XJob extends Job {
 					continue;
 				}
 				//TODO keep watching 
-				System.out.println(js[i].getName());
 				return js[i];
 			}
 		}
