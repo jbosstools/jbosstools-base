@@ -157,7 +157,7 @@ public class VResultTemplate {
             VMessageFormat parent = format.getParent();
             if (parent != null) {
                 Object[] params2 = new Object[] {sourceObject, sourcePosition,
-                    targetObject, targetPosition, message, type, new Integer(significance)};
+                    targetObject, targetPosition, message, type,Integer.valueOf(significance)};
                 message = parent.format(params2);
             }
             result.setMessage(message);
