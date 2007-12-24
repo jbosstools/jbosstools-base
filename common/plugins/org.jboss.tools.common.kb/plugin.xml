@@ -30,7 +30,28 @@
       <tld
             jsf="true"
             name="JBoss Seam"
-            schema-location="schemas/tld/JBossSeam.xml"
+            schema-location="schemas/tld/JBossSeam1_2.xml"
+            uri="http://jboss.com/products/seam/taglib"
+            version="1.2"/>
+
+      <tld
+            jsf="true"
+            name="JBoss Seam"
+            schema-location="schemas/tld/JBossSeam1_2.xml"
+            uri="http://jboss.com/products/seam/taglib"
+            version="1.1"/>
+
+      <tld
+            jsf="true"
+            name="JBoss Seam"
+            schema-location="schemas/tld/JBossSeam2_0.xml"
+            uri="http://jboss.com/products/seam/taglib"
+            version="2.0"/>
+
+      <tld
+            jsf="true"
+            name="JBoss Seam"
+            schema-location="schemas/tld/JBossSeam2_0.xml"
             uri="http://jboss.com/products/seam/taglib"/>
 
       <tld

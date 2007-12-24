@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE kb-schema PUBLIC "-//Red Hat, Inc//DTD Knowledge Base 1.0//EN" "http://www.redhat.com/dtds/kb-schema_1_0.dtd">
-<schema prefix="s">
+<schema prefix="s" version="1.2">
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="decorate" start-tag="required">
         <description>"Decorate" a JSF input field when validation fails or when required="true" is set.</description>
@@ -42,6 +42,10 @@
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="enabled"/>
     </element-type>
@@ -189,6 +193,13 @@
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="begin"/>
+                <param value="join"/>
+                <param value="nest"/>
+                <param value="none"/>
+                <param value="end"/>
+            </proposal>
         </attribute-type>
         <attribute type="propagation"/>
         <attribute-type name="pageflow" required="false">
@@ -472,6 +483,13 @@
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="begin"/>
+                <param value="join"/>
+                <param value="nest"/>
+                <param value="none"/>
+                <param value="end"/>
+            </proposal>
         </attribute-type>
         <attribute type="propagation"/>
         <attribute-type name="pageflow" required="false">
@@ -1015,6 +1033,208 @@
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="text/html"/>
+                <param value="text/plain"/>
+                <param value="text/richtext"/>
+                <param value="text/x-setext"/>
+                <param value="text/enriched"/>
+                <param value="text/tab-separated-values"/>
+                <param value="text/sgml"/>
+                <param value="text/x-speech"/>
+                <param value="text/css"/>
+                <param value="application/dsssl"/>
+                <param value="image/gif"/>
+                <param value="image/x-xbitmap"/>
+                <param value="image/x-xpixmap"/>
+                <param value="image/x-png"/>
+                <param value="image/ief"/>
+                <param value="image/jpeg"/>
+                <param value="image/tiff"/>
+                <param value="image/rgb"/>
+                <param value="image/x-rgb"/>
+                <param value="image/g3fax"/>
+                <param value="image/x-xwindowdump"/>
+                <param value="image/x-pict"/>
+                <param value="image/x-portable-pixmap"/>
+                <param value="image/x-portable-graymap"/>
+                <param value="image/x-portable-bitmap"/>
+                <param value="image/x-portable-anymap"/>
+                <param value="image/x-ms-bmp"/>
+                <param value="image/x-cmu-raster"/>
+                <param value="image/x-photo-cd"/>
+                <param value="image/cgm"/>
+                <param value="image/naplps"/>
+                <param value="image/x-cals"/>
+                <param value="image/fif"/>
+                <param value="image/x-mgx-dsf"/>
+                <param value="image/x-cmx"/>
+                <param value="image/wavelet"/>
+                <param value="image/vnd.dwg"/>
+                <param value="image/x-dwg"/>
+                <param value="image/vnd.dxf"/>
+                <param value="image/x-dxf"/>
+                <param value="image/vnd.svf"/>
+                <param value="vector/x-svf"/>
+                <param value="audio/basic"/>
+                <param value="audio/x-aiff"/>
+                <param value="audio/x-wav"/>
+                <param value="audio/x-mpeg"/>
+                <param value="audio/x-mpeg-2"/>
+                <param value="audio/echospeech"/>
+                <param value="audio/voxware"/>
+                <param value="application/fastman"/>
+                <param value="application/x-pn-realaudio"/>
+                <param value="application/vnd.music-niff"/>
+                <param value="x-music/x-midi"/>
+                <param value="application/vnd.koan"/>
+                <param value="application/x-koan"/>
+                <param value="text/x-speech"/>
+                <param value="video/mpeg"/>
+                <param value="video/mpeg-2"/>
+                <param value="video/quicktime"/>
+                <param value="video/x-msvideo"/>
+                <param value="video/x-sgi-movie"/>
+                <param value="video/vdo"/>
+                <param value="video/vnd.vivo"/>
+                <param value="video/vivo"/>
+                <param value="application/x-ns-proxy-autoconfig"/>
+                <param value="application/x-www-form-urlencoded"/>
+                <param value="application/x-www-local-exec"/>
+                <param value="x-conference/x-cooltalk"/>
+                <param value="application/x-chat"/>
+                <param value="application/postscript"/>
+                <param value="application/rtf"/>
+                <param value="application/pdf"/>
+                <param value="application/x-pdf"/>
+                <param value="application/vnd.mif"/>
+                <param value="application/x-mif"/>
+                <param value="application/x-troff"/>
+                <param value="application/x-troff-man"/>
+                <param value="application/x-troff-me"/>
+                <param value="application/x-troff-ms"/>
+                <param value="application/x-latex"/>
+                <param value="application/x-tex"/>
+                <param value="application/x-texinfo"/>
+                <param value="application/x-dvi"/>
+                <param value="application/macwriteii"/>
+                <param value="application/msword"/>
+                <param value="application/wordperfect5.1"/>
+                <param value="application/sgml"/>
+                <param value="application/oda"/>
+                <param value="application/envoy"/>
+                <param value="application/wita"/>
+                <param value="application/dec-dx"/>
+                <param value="application/dca-rft"/>
+                <param value="application/commonground"/>
+                <param value="application/vnd.framemaker"/>
+                <param value="application/x-framemaker"/>
+                <param value="application/remote-printing"/>
+                <param value="application/x-gtar"/>
+                <param value="application/x-tar"/>
+                <param value="application/x-ustar"/>
+                <param value="application/x-bcpio"/>
+                <param value="application/x-cpio"/>
+                <param value="application/x-shar"/>
+                <param value="application/zip"/>
+                <param value="application/mac-binhex40"/>
+                <param value="application/x-stuffit"/>
+                <param value="application/fractals"/>
+                <param value="application/octet-stream"/>
+                <param value="application/octet-stream"/>
+                <param value="application/x-wais-source"/>
+                <param value="application/hdf"/>
+                <param value="text/javascript"/>
+                <param value="application/x-javascript"/>
+                <param value="text/vbscript"/>
+                <param value="application/x-sh"/>
+                <param value="application/x-csh"/>
+                <param value="application/x-perl"/>
+                <param value="application/x-tcl"/>
+                <param value="application/atomicmail"/>
+                <param value="application/slate"/>
+                <param value="application/octet-stream"/>
+                <param value="application/riscos"/>
+                <param value="application/andrew-inset"/>
+                <param value="application/futuresplash"/>
+                <param value="application/mbedlet"/>
+                <param value="application/x-director"/>
+                <param value="application/x-sprite"/>
+                <param value="application/x-rad-powermedia"/>
+                <param value="application/mspowerpoint"/>
+                <param value="application/x-pointplus"/>
+                <param value="application/x-asap"/>
+                <param value="application/astound"/>
+                <param value="application/x-olescript"/>
+                <param value="application/x-oleobject"/>
+                <param value="x-form/x-openscape"/>
+                <param value="application/x-webbasic"/>
+                <param value="application/x-alpha-form"/>
+                <param value="x-script/x-wfxclient"/>
+                <param value="application/octet-stream"/>
+                <param value="application/cals-1840"/>
+                <param value="application/x-pcn"/>
+                <param value="application/vnd.ms-excel"/>
+                <param value="application/x-msexcel"/>
+                <param value="application/ms-excel"/>
+                <param value="application/vnd.ms-powerpoint"/>
+                <param value="application/ms-powerpoint"/>
+                <param value="application/vnd.ms-project"/>
+                <param value="application/vnd.ms-works"/>
+                <param value="application/vnd.ms-tnef"/>
+                <param value="application/vnd.artgalry"/>
+                <param value="application/vnd.svd"/>
+                <param value="application/vnd.truedoc"/>
+                <param value="application/x-net-install"/>
+                <param value="application/ccv"/>
+                <param value="application/cybercash"/>
+                <param value="application/applefile"/>
+                <param value="application/activemessage"/>
+                <param value="application/x400-bp"/>
+                <param value="application/news-message-id"/>
+                <param value="application/news-transmission"/>
+                <param value="multipart/mixed"/>
+                <param value="multipart/alternative"/>
+                <param value="multipart/related"/>
+                <param value="multipart/digest"/>
+                <param value="multipart/report"/>
+                <param value="multipart/parallel"/>
+                <param value="multipart/appledouble"/>
+                <param value="multipart/header-set"/>
+                <param value="multipart/voice-message"/>
+                <param value="multipart/form-data"/>
+                <param value="multipart/x-mixed-replace"/>
+                <param value="x-world/x-vrml"/>
+                <param value="x-world/x-vream"/>
+                <param value="application/x-p3d"/>
+                <param value="x-world/x-svr"/>
+                <param value="x-world/x-wvr"/>
+                <param value="x-world/x-3dmf"/>
+                <param value="Scientific/Math/CAD"/>
+                <param value="chemical/*"/>
+                <param value="application/mathematica"/>
+                <param value="x-model/x-mesh"/>
+                <param value="application/vis5d"/>
+                <param value="application/iges"/>
+                <param value="drawing/x-dwf"/>
+                <param value="application/x-showcase"/>
+                <param value="application/x-insight"/>
+                <param value="application/x-annotator"/>
+                <param value="application/x-dirview"/>
+                <param value="application/x-enterlicense"/>
+                <param value="application/x-fax-manager"/>
+                <param value="application/x-fax-manager-job"/>
+                <param value="application/x-iconbook"/>
+                <param value="application/x-inpview"/>
+                <param value="application/x-install"/>
+                <param value="application/x-mailfolder"/>
+                <param value="application/x-ppages"/>
+                <param value="application/x-sgi-lpr"/>
+                <param value="application/x-tardist"/>
+                <param value="application/x-ztardist"/>
+                <param value="application/x-wingz"/>
+                <param value="graphics/x-inventor"/>
+            </proposal>
         </attribute-type>
         <attribute type="contentType"/>
         <attribute-type name="accept" required="false">
@@ -1054,6 +1274,10 @@
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="hideNoSelection"/>
         <attribute-type name="noSelectionLabel" required="false">
@@ -1084,6 +1308,17 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="config"/>
+        <attribute-type name="disabled" required="false">
+            <description>if true the SelectItem will be rendered disabled. Can reference the var variable</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
+        </attribute-type>
+        <attribute type="disabled"/>
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="fragment" start-tag="required">
