@@ -7,42 +7,44 @@
  *
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
+ ******************************************************************************/
 
 package org.jboss.tools.test.util;
 
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.wizard.IWizard;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.wizards.IWizardDescriptor;
 
 /**
  * @author eskimo
- *
+ * 
  */
 public class WorkbenchUtils {
-	
+
 	static public IWizard findWizardByDefId(String definitionId) {
-		 IWizardDescriptor aWizardDescr = 
-			 getWorkbench().getNewWizardRegistry()
-					.findWizard(definitionId);
-			 TestCase.assertNotNull("Cannot find wizard " 
-					 + definitionId
-					 + " definition in wizard registry", aWizardDescr);
-			IWorkbenchWizard aWizard=null;
-			try {
-				aWizard = aWizardDescr.createWizard();
-			} catch (CoreException e) {
-				 JUnitUtils.fail("Cannot create IWorkbenchWizard instance",e);
-			}
-			return aWizard;
+		IWizardDescriptor aWizardDescr = getWorkbench().getNewWizardRegistry()
+				.findWizard(definitionId);
+		TestCase.assertNotNull("Cannot find wizard " + definitionId
+				+ " definition in wizard registry", aWizardDescr);
+		IWorkbenchWizard aWizard = null;
+		try {
+			aWizard = aWizardDescr.createWizard();
+		} catch (CoreException e) {
+			JUnitUtils.fail("Cannot create IWorkbenchWizard instance", e);
+		}
+		return aWizard;
 	}
-	
+
 	public static IWorkbench getWorkbench() {
 		return PlatformUI.getWorkbench();
 	}
@@ -54,4 +56,25 @@ public class WorkbenchUtils {
 		// TODO Auto-generated method stub
 		return getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	}
+
+	/**
+	 * To show modal dialog parent shell is required, this method can be used to
+	 * obtain active workbench window shell
+	 * 
+	 * @return active workbench window shell
+	 */
+	public static Shell getActiveShell() {
+		return getWorkbench().getActiveWorkbenchWindow().getShell();
+	}
+
+	public static PreferenceManager getPreferenceManager() {
+		return getWorkbench().getPreferenceManager();
+	}
+
+	public static PreferenceDialog createPreferenceDialog(String pageId) {
+
+		return PreferencesUtil.createPreferenceDialogOn(WorkbenchUtils
+				.getActiveShell(), pageId, new String[] {pageId}, null);
+	}
+
 }
