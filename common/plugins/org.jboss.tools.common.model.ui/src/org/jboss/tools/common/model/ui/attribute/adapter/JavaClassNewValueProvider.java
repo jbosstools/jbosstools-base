@@ -18,7 +18,7 @@ public class JavaClassNewValueProvider implements StructuredListAdapter.INewValu
 	XModel model;
 	
 	public JavaClassNewValueProvider() {
-		setModel(PreferenceModelUtilities.getPreferenceModel());
+		model = PreferenceModelUtilities.getPreferenceModel();
 	}
 	
 	public void setModel(XModel model) {

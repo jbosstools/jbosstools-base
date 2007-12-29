@@ -47,7 +47,7 @@ public class SampleTreeForm extends ExpandableForm implements ISelectionChangedL
 
 	public SampleTreeForm() {
 		tree = new XModelObjectTreeViewComponent();
-		setHeadingText("Tree Form");
+		headingText = "Tree Form";
 		setCollapsable(Boolean.FALSE.booleanValue());
 		createActionMapping();
 	}

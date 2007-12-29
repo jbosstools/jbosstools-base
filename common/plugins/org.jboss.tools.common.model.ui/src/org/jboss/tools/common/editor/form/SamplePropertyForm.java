@@ -41,7 +41,7 @@ public class SamplePropertyForm extends ExpandableForm implements PropertyChange
 	
 	public SamplePropertyForm() {
 		settings = new WhiteSettings();
-		support = new SampleXAttributeSupport(getSettings());
+		support = new SampleXAttributeSupport(settings);
 		support.addPropertyChangeListener(this);
 	}
 	

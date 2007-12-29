@@ -34,20 +34,16 @@ public class MutableMultipleChoiceFieldEditor extends MultipleChoiceFieldEditor 
 	private SpecialWizard change;
 	
 	public MutableMultipleChoiceFieldEditor() {
-		initBar();
+		this(null);
 	}
 	
 	public MutableMultipleChoiceFieldEditor(IWidgetSettings settings) {
 		super(settings);
-		initBar();
-		bar.setWidgetSettings(settings);
-	}
-	
-	void initBar() {
 		bar.setCommands(commands);
 		bar.getLayout().direction = SWT.VERTICAL;
 		bar.getLayout().setMargins(0, 0, 0, 0);
 		bar.addCommandBarListener(this);
+		bar.setWidgetSettings(settings);
 	}
 
 	public void setChange(SpecialWizard change) {
