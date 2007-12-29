@@ -114,7 +114,7 @@ public class JspWtpKbConnector implements WtpKbConnector {
 	/**
 	 * Register JSP resource (<jsp:include...>, etc.)
 	 */
-	public void registerJspResource() {
+	private void registerJspResource() {
 		if(!registerResources.contains(jspResource)) {
 			registerResources.add(jspResource);
 		}
