@@ -499,7 +499,7 @@ public class EclipseResourceUtil {
 	}
 	
 	public static IType getValidType(IProject project, String className) {
-		if (className == null && className.length() == 0) return null;
+		if (className == null || className.length() == 0) return null;
 		IJavaProject javaProject = getJavaProject(project);
 		if(javaProject == null) return null;
 		IFile f = null;
@@ -546,7 +546,7 @@ public class EclipseResourceUtil {
 	 * Returns true only if project has no sources but output contains *.class file 
 	 */	
 	public static boolean isContainedInOutput(IProject project, String className) {
-		if (className == null && className.length() == 0) return false;
+		if (className == null || className.length() == 0) return false;
 		IJavaProject javaProject = getJavaProject(project);
 		if(javaProject == null) return false;
 		try {
