@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.xml.serialize.OutputFormat;
@@ -39,13 +41,13 @@ import org.jboss.tools.common.kb.configuration.KbConfigurationFactory;
 public class KbHtmlMap {
 	private final static String ROOT_ELEMENT_ATTRIBUTE_VALUE = "HTML";
 
-	private HashMap htmlMap;
+	private Map htmlMap;
 	private static File hashMapLocation = new File(KbConfigurationFactory.getInstance().getDefaultConfiguration().getHtmlMapFilePath());
 
 	/**
 	 * 
 	 */
-	private KbHtmlMap(HashMap proposals) {
+	private KbHtmlMap(Map proposals) {
 		htmlMap = proposals;
 	}
 
@@ -56,7 +58,7 @@ public class KbHtmlMap {
 			HashMap<String,Element> children = new HashMap<String,Element>();
 			Element elementType = (Element)nodeList.item(i);
 			String tagName = elementType.getAttribute(SchemaNodeFactory.NAME_ATTRIBUTE);
-			ArrayList childrenElementTypes = getChildElementTypes(schema, tagName);
+			List childrenElementTypes = getChildElementTypes(schema, tagName);
 			addOptionalTags(children, elementType);
 			for(int j=0; j<childrenElementTypes.size(); j++) {
 				Element childrenElementType = (Element)childrenElementTypes.get(j);
@@ -80,7 +82,7 @@ public class KbHtmlMap {
 			HashMap<String,Element> children = new HashMap<String,Element>();
 			Element elementType = (Element)nodeList.item(i);
 			String tagName = elementType.getAttribute(SchemaNodeFactory.NAME_ATTRIBUTE);
-			ArrayList childrenElementTypes = getChildElementTypes(schema, tagName);
+			List childrenElementTypes = getChildElementTypes(schema, tagName);
 			addOptionalTags(children, elementType);
 			for(int j=0; j<childrenElementTypes.size(); j++) {
 				Element childrenElementType = (Element)childrenElementTypes.get(j);
@@ -158,7 +160,7 @@ public class KbHtmlMap {
 			String startTagType = elementType.getAttribute(SchemaNodeFactory.START_TAG_ATTRIBUTE);
 			if(SchemaNodeFactory.OPTIONAL_TAG_TYPE.equals(startTagType)) {
 //				KbPlugin.log("    Tag have optional start tag");
-				ArrayList childElementTypes = getChildElementTypes(elementType.getOwnerDocument(), elementType.getAttribute(SchemaNodeFactory.NAME_ATTRIBUTE));
+				List childElementTypes = getChildElementTypes(elementType.getOwnerDocument(), elementType.getAttribute(SchemaNodeFactory.NAME_ATTRIBUTE));
 				for(Iterator iter = childElementTypes.iterator(); iter.hasNext();) {
 					Element childElementType = (Element)iter.next();
 					addOptionalTags(map, childElementType);
@@ -169,10 +171,10 @@ public class KbHtmlMap {
 //		KbPlugin.log("    map size=" + map.size());
 	}
 
-	private static ArrayList<Element> getChildElementTypes(Document schema, String tagName) {
-		ArrayList<Element> childElementTypes = new ArrayList<Element>();
+	private static List<Element> getChildElementTypes(Document schema, String tagName) {
+		List<Element> childElementTypes = new ArrayList<Element>();
 
-		ArrayList childElements = getChildElements(schema, tagName);
+		List childElements = getChildElements(schema, tagName);
 
 		for(Iterator iter = childElements.iterator(); iter.hasNext();) {
 			Element element = (Element)iter.next();

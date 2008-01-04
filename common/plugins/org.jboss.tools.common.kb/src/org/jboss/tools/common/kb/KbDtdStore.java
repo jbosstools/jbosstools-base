@@ -21,17 +21,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
+import org.jboss.tools.common.kb.configuration.KbConfigurationFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import org.jboss.tools.common.kb.configuration.KbConfigurationFactory;
 
 /**
  * @author eskimo
@@ -41,9 +41,9 @@ public class KbDtdStore implements KbStore {
 	public static final String XML_DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
 	private String schemaLocation;	
-	private Vector<Document> activeDocuments;
-	private Vector<KbDtdResource> registratedResources;
-	private Vector<KbDtdResource> downloadingResources;
+	private List<Document> activeDocuments;
+	private List<KbDtdResource> registratedResources;
+	private List<KbDtdResource> downloadingResources;
 
 	private static final KbDtdStore INSTANCE = new KbDtdStore();
 
@@ -83,7 +83,7 @@ public class KbDtdStore implements KbStore {
 		}
 
 		InerDtdQuery inerDtdQuery = getInerDtdQery(new KbQuery(queryForLastTag, query.getResources()));
-		ArrayList elementTypes = inerDtdQuery.getElementTypes();
+		List elementTypes = inerDtdQuery.getElementTypes();
 
 		return KbSchemaUtil.getTagInformationFromElementTypes(elementTypes, lastTag, new HashSet());
 	}
@@ -115,7 +115,7 @@ public class KbDtdStore implements KbStore {
 			return proposals;
 		}
 
-		ArrayList<KbProposal> proposals = queryTagProposal(getInerDtdQery(query));
+		List<KbProposal> proposals = queryTagProposal(getInerDtdQery(query));
 		KbProposal endTag = getEndTagProposal(query);
 		if(endTag != null) {
 			proposals.add(endTag);
@@ -141,7 +141,7 @@ public class KbDtdStore implements KbStore {
 			throw new IllegalArgumentException("Bad query: " + strQuery + ". Query must starts with \"" + KbQuery.TAG_SEPARATOR + "\" or \"" + KbQuery.XML_DECLARATION_QUERY + "\"");
 		}
 
-		ArrayList<Element> elementTypes = new ArrayList<Element>();
+		List<Element> elementTypes = new ArrayList<Element>();
 		String tagQuery = null;
 		int lastTagSeparator = strQuery.lastIndexOf(KbQuery.TAG_SEPARATOR);
 		if(lastTagSeparator > firstTagSeparator) {
@@ -325,7 +325,7 @@ public class KbDtdStore implements KbStore {
 		}
 	}
 
-	private ArrayList<Element> getChildElementTypes(Collection resources, StringTokenizer tagNames) {
+	private List<Element> getChildElementTypes(Collection resources, StringTokenizer tagNames) {
 //		KbPlugin.log("--> getChildElementTypes(Collection resources, StringTokenizer tagNames)");
 //		KbPlugin.log("    resources size = " + resources.size());
 //		KbPlugin.log("    tagNames  = " + tagNames);
@@ -333,7 +333,7 @@ public class KbDtdStore implements KbStore {
 		String tagName = tagNames.nextToken();
 //		KbPlugin.log("    tagName  = " + tagName);
 
-		ArrayList<Element> childElements = getChildElements(resources, tagName, true);
+		List<Element> childElements = getChildElements(resources, tagName, true);
 
 //		KbPlugin.log("    childElements size = " +  childElements.size());
 
@@ -405,7 +405,7 @@ public class KbDtdStore implements KbStore {
 		return null;
     }
 
-	private ArrayList<Element> addCollection(Collection<Element> col1, Collection<Element> col2) {
+	private List<Element> addCollection(Collection<Element> col1, Collection<Element> col2) {
 		ArrayList<Element> arrayList = new ArrayList<Element>();
 		Iterator<Element> iterator = col1.iterator();
 		while(iterator.hasNext()) {
@@ -418,7 +418,7 @@ public class KbDtdStore implements KbStore {
 		return arrayList;
 	}
 
-	private ArrayList<Element> getChildElements(Collection resources, String elementTypeName, boolean rootTag) {
+	private List<Element> getChildElements(Collection resources, String elementTypeName, boolean rootTag) {
 //		KbPlugin.log("--> getChildElements(Collection resources, String elementTypeName, boolean rootTag)");
 //		KbPlugin.log("    resources size = " + resources.size());
 //		KbPlugin.log("    elementTypeName  = " + elementTypeName);
@@ -473,11 +473,11 @@ public class KbDtdStore implements KbStore {
 		return elements;
 	}
 
-	private ArrayList<KbProposal> queryTagProposal(InerDtdQuery query) {
+	private List<KbProposal> queryTagProposal(InerDtdQuery query) {
 		return queryTagProposal(query.getElementTypes(), query.getTagQuery());
 	}
 
-	private ArrayList<KbProposal> queryTagProposal(ArrayList elementTypes, String query) {
+	private List<KbProposal> queryTagProposal(List elementTypes, String query) {
 //		KbPlugin.log("-->  queryTagProposal(ArrayList elementTypes, String query)");
 //		KbPlugin.log("     Query = " + query);
 //		KbPlugin.log("     elementTypes size = " + elementTypes.size());
@@ -722,7 +722,7 @@ public class KbDtdStore implements KbStore {
 		}
 	}
 
-	private ArrayList<KbProposal> getTags(Collection elementTypes, String tagMask) {
+	private List<KbProposal> getTags(Collection elementTypes, String tagMask) {
 //		KbPlugin.log("--> getTags(Collection elementTypes, String tagMask)");
 //		KbPlugin.log("    elementTypes size = " + elementTypes.size());
 //		KbPlugin.log("    tagMask = " + tagMask);
@@ -730,7 +730,7 @@ public class KbDtdStore implements KbStore {
 		return getTagProposal(getElementTypesByName(elementTypes, tagMask, true));
 	}
 
-	private ArrayList<Element> getElementTypesByName(Collection elementTypes, String name, boolean mask) {
+	private List<Element> getElementTypesByName(Collection elementTypes, String name, boolean mask) {
 //		KbPlugin.log("--> getElementTypesByName(Collection elementTypes, String name, boolean mask)");
 //		KbPlugin.log("    elementTypes size = " + elementTypes.size());
 //		KbPlugin.log("    name = " + name);
@@ -755,7 +755,7 @@ public class KbDtdStore implements KbStore {
 		return elements;
 	}
 
-	private ArrayList<KbProposal> getAttributes(Collection elementTypes, String tagName, String attributeMask) {
+	private List<KbProposal> getAttributes(Collection elementTypes, String tagName, String attributeMask) {
 //		KbPlugin.log("--> getAttributes(String prefix, String tagName, String attributeMask)");
 //		KbPlugin.log("    prefix = " + prefix);
 //		KbPlugin.log("    tagName = " + tagName);
@@ -764,10 +764,10 @@ public class KbDtdStore implements KbStore {
 		return getAttributeProposal(getAttributeTypesByName(elementTypes, tagName, attributeMask, true));
 	}
 
-	private ArrayList<Element> getAttributeTypesByName(Collection elementTypes, String tagName, String attributeName, boolean mask) {
-		ArrayList<Element> attributes = new ArrayList<Element>();
+	private List<Element> getAttributeTypesByName(Collection elementTypes, String tagName, String attributeName, boolean mask) {
+		List<Element> attributes = new ArrayList<Element>();
 
-		ArrayList elements = getElementTypesByName(elementTypes, tagName, false);
+		List elements = getElementTypesByName(elementTypes, tagName, false);
 		if(!elements.isEmpty()) {
 			Element element = (Element)elements.get(0);
 
@@ -785,10 +785,10 @@ public class KbDtdStore implements KbStore {
 		return attributes;
 	}
 
-	private ArrayList<KbProposal> getEnumeration(Collection elementTypes, String tagName, String attributeName, String valueMask) {
-		ArrayList<KbProposal> enumeration = new ArrayList<KbProposal>();
+	private List<KbProposal> getEnumeration(Collection elementTypes, String tagName, String attributeName, String valueMask) {
+		List<KbProposal> enumeration = new ArrayList<KbProposal>();
 
-		ArrayList attributeTypes = new ArrayList();
+		List attributeTypes = new ArrayList();
 		attributeTypes = getAttributeTypesByName(elementTypes, tagName, attributeName, false);
 		if(!attributeTypes.isEmpty()) {
 			Element attributeType = (Element)attributeTypes.get(0);
@@ -814,15 +814,15 @@ public class KbDtdStore implements KbStore {
 		return enumeration;
 	}
 
-	private ArrayList<KbProposal> getTagProposal(ArrayList<Element> elements) {
+	private List<KbProposal> getTagProposal(List<Element> elements) {
 		return getProposal(elements, true);
 	}
 
-	private ArrayList<KbProposal> getAttributeProposal(ArrayList elements) {
+	private List<KbProposal> getAttributeProposal(List elements) {
 		return getProposal(elements, false);
 	}
 
-	private ArrayList<KbProposal> getProposal(ArrayList elements, boolean tag) {
+	private List<KbProposal> getProposal(List elements, boolean tag) {
 //		KbPlugin.log("--> getProposal(ArrayList elements, boolean tag)");
 //		KbPlugin.log("    elemnets size = " + elements.size());
 //		KbPlugin.log("    tag = " + tag);
@@ -959,10 +959,10 @@ public class KbDtdStore implements KbStore {
 
 	private class InerDtdQuery {
 
-		private ArrayList elementTypes;
+		private List elementTypes;
 		private String tagQuery;
 
-		public InerDtdQuery(ArrayList elementTypes, String tagQuery) {
+		public InerDtdQuery(List elementTypes, String tagQuery) {
 			this.elementTypes = elementTypes;
 			this.tagQuery = tagQuery;
 		}
@@ -970,7 +970,7 @@ public class KbDtdStore implements KbStore {
         /**
          * @return
          */
-        public ArrayList getElementTypes() {
+        public List getElementTypes() {
             return elementTypes;
         }
 
