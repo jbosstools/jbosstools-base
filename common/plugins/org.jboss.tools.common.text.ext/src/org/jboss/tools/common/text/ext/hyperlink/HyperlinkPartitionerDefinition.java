@@ -234,7 +234,7 @@ public class HyperlinkPartitionerDefinition {
 	    }
 
         public boolean equals(Object obj) {
-            if(obj == null && !(obj instanceof ContentType)) {
+            if(obj == null || !(obj instanceof ContentType)) {
                 return false;
             }
             ContentType type = (ContentType)obj;
@@ -285,7 +285,7 @@ public class HyperlinkPartitionerDefinition {
 	    }
 
         public boolean equals(Object obj) {
-            if(obj == null && !(obj instanceof PartitionType)) {
+            if(obj == null || !(obj instanceof PartitionType)) {
                 return false;
             }
             PartitionType type = (PartitionType)obj;
@@ -392,7 +392,7 @@ public class HyperlinkPartitionerDefinition {
 	    }
 
 	    public boolean equals(Object obj) {
-            if(obj == null && !(obj instanceof Axis)) {
+            if(obj == null || !(obj instanceof Axis)) {
                 return false;
             }
             Axis axis = (Axis)obj;
