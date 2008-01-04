@@ -12,9 +12,13 @@ package org.jboss.tools.test.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -107,5 +111,19 @@ public class ResourcesUtils {
 		project.open(IResource.BACKGROUND_REFRESH, monitor);
 
 		return project;
+	}
+	
+	public static boolean findLineInFile(IFile file, String pattern) throws CoreException, IOException {
+		InputStream content = file.getContents(true);
+		LineNumberReader contentReader = new LineNumberReader(new InputStreamReader(content));
+		String line;
+		boolean patternIsFound = false;
+		do {
+			line = contentReader.readLine();
+			if(line!=null && !patternIsFound) {
+				patternIsFound = line.matches(pattern);
+			}
+		} while (line != null && !patternIsFound);
+		return patternIsFound;
 	}
 }
