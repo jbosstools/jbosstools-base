@@ -88,11 +88,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		} catch (Exception e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
-		try {
-			setStep();
-		} catch (Exception t) {
-			ModelUIPlugin.getPluginLog().logError("Error while executing action " + name, t);
-		}
+		setStep();
 	}
 	
 	private void setStep() {
