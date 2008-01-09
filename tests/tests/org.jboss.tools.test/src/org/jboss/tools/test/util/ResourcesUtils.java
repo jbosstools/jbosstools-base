@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
@@ -113,6 +114,13 @@ public class ResourcesUtils {
 		return project;
 	}
 	
+	public static IProject createEclipseProject(String bundle,
+			String templateLocation, IProgressMonitor monitor)
+			throws CoreException, IOException {
+		return createEclipseProject(
+				Platform.getBundle(bundle), templateLocation, monitor);
+	}
+	
 	public static boolean findLineInFile(IFile file, String pattern) throws CoreException, IOException {
 		InputStream content = file.getContents(true);
 		LineNumberReader contentReader = new LineNumberReader(new InputStreamReader(content));
@@ -125,5 +133,21 @@ public class ResourcesUtils {
 			}
 		} while (line != null && !patternIsFound);
 		return patternIsFound;
+	}
+
+	/**
+	 * @param string
+	 * @param string2
+	 * @param nullProgressMonitor
+	 * @return
+	 * @throws InterruptedException 
+	 * @throws InvocationTargetException 
+	 * @throws CoreException 
+	 * @throws IOException 
+	 */
+	public static IProject importProject(String bundleName, String templatePath,
+			NullProgressMonitor monitor) throws IOException, CoreException, InvocationTargetException, InterruptedException {
+		// TODO Auto-generated method stub
+		return importProject(Platform.getBundle(bundleName), templatePath, monitor);
 	}
 }
