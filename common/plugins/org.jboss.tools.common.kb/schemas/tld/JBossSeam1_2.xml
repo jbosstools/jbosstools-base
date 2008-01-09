@@ -703,6 +703,9 @@
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="file">
+            	<param name="extensions" value="%image%"/>
+             </proposal>
         </attribute-type>
         <attribute type="image"/>
     </element-type>
