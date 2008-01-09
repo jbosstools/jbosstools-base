@@ -69,7 +69,6 @@ public class TestProjectProvider {
 	}
 	
 	private void init(String bundleName, String projectPath, String name) throws Exception {
-		System.out.println("init");
 		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 		if(p.exists()) {
 			project = p;
@@ -79,7 +78,6 @@ public class TestProjectProvider {
 			}
 			return;
 		}
-		System.out.println("create");
 		
 		Bundle bundle = Platform.getBundle(bundleName);
 		URL url = null;
