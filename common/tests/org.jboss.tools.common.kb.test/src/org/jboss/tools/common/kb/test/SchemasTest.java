@@ -16,10 +16,6 @@ import junit.framework.TestSuite;
 
 public class SchemasTest extends TestCase {
 
-	public static Test suite() {
-		return new TestSuite(SchemasTest.class);
-	}
-
 	public void testSchemas() {
 		/* TODO change KbTldStore and uncomment following code
 		String errorMessage = null;

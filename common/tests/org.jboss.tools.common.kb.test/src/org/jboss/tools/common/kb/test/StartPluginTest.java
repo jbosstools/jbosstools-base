@@ -10,19 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.kb.test;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.kb.KbPlugin;
 import org.osgi.framework.Bundle;
 
 public class StartPluginTest extends TestCase {
-
-	public static Test suite() {
-		return new TestSuite(StartPluginTest.class);
-	}
 
 	public void testLoadingPlugin() {
 		Bundle bundle = Platform.getBundle(KbPlugin.PLUGIN_ID);

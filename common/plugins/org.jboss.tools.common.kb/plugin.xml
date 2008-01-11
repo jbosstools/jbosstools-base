@@ -63,7 +63,7 @@
       <tld
             jsf="true"
             name="JBoss Ajax4jsf 3.1"
-            schema-location="schemas/tld/ajax4jsf.xml"
+            schema-location="schemas/tld/Ajax4jsf3_1.xml"
             uri="http://richfaces.org/a4j"/>
 
       <tld

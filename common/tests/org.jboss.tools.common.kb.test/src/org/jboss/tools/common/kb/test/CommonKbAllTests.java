@@ -17,9 +17,10 @@ public class CommonKbAllTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(CommonKbAllTests.class.getName());
-		suite.addTest(StartPluginTest.suite());
-		suite.addTest(SchemasTest.suite());
-		suite.addTest(KbQueriesTest.suite());
+		suite.addTestSuite(StartPluginTest.class);
+		suite.addTestSuite(SchemasTest.class);
+		suite.addTestSuite(KbQueriesTest.class);
+		suite.addTestSuite(TldTest.class);
 		return suite;
 	}
 }

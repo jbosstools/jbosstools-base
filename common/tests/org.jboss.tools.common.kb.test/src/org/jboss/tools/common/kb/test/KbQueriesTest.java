@@ -13,9 +13,7 @@ package org.jboss.tools.common.kb.test;
 import java.util.Collection;
 import java.util.Iterator;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import org.jboss.tools.common.kb.KbDinamicResource;
 import org.jboss.tools.common.kb.KbException;
@@ -37,10 +35,6 @@ import org.jboss.tools.common.kb.wtp.JspWtpKbConnector;
 public class KbQueriesTest extends TestCase {
 
 	private JspWtpKbConnector connector = new JspWtpKbConnector();
-
-	public static Test suite() {
-		return new TestSuite(KbQueriesTest.class);
-	}
 
 	public void testQueries() {
 		KbResource jsfHtmlTld = new KbTldResource("http://java.sun.com/jsf/html", null, "h", "1.2");
