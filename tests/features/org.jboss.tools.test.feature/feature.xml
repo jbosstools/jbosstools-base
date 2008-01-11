@@ -332,4 +332,16 @@ litigation.
          install-size="0"
          version="0.0.0"/>
 
+   <plugin
+         id="org.jboss.tools.jsf.vpe.html.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.struts.vpe.struts.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
