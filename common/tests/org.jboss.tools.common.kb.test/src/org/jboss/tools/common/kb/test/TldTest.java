@@ -110,9 +110,6 @@ public class TldTest extends TestCase {
 		NodeList nl = parentElement.getElementsByTagName(elementName);
 		Node node = nl.item(0);
 		String value = node.getTextContent();
-		if(value==null) {
-			System.out.println("!");
-		}
 		return value.trim();
 	}
 
