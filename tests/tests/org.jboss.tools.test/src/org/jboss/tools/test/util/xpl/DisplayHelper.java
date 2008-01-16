@@ -188,10 +188,14 @@ public abstract class DisplayHelper {
 		
 		if (timeout < 0)
 			return false;
+
+		// repeatedly sleep until condition becomes true or timeout elapses
+		DisplayWaiter waiter= new DisplayWaiter(display, true);
+		long finalTimeout = calculateFinalTimeout(timeout);
 		
 		// if driving the event loop once makes the condition hold, succeed
 		// without spawning a thread.
-		driveEventQueue(display);
+		driveEventQueue(display,finalTimeout);
 		if (condition())
 			return true;
 		
@@ -199,24 +203,43 @@ public abstract class DisplayHelper {
 		if (timeout == 0)
 			return false;
 	
-		// repeatedly sleep until condition becomes true or timeout elapses
-		DisplayWaiter waiter= new DisplayWaiter(display, true);
-		long currentTimeMillis= System.currentTimeMillis();
-		long finalTimeout= timeout + currentTimeMillis;
-		if (finalTimeout < currentTimeMillis)
-			finalTimeout= Long.MAX_VALUE;
+		finalTimeout = calculateFinalTimeout(timeout);
 		boolean condition;
 		try {
 			do {
 				waiter.restart(interval);
 				if (display.sleep())
-					driveEventQueue(display);
+					driveEventQueue(display,finalTimeout);
 				condition= condition();
 			} while (!condition && finalTimeout > System.currentTimeMillis());
 		} finally {
 			waiter.stop();
 		}
 		return condition;
+	}
+
+	/**
+	 * @param display
+	 * @param finalTimeout
+	 */
+	private boolean driveEventQueue(Display display, long finalTimeout) {
+		boolean events= false;
+		while (display.readAndDispatch() && finalTimeout > System.currentTimeMillis()) {
+			events= true;
+		}
+		return events;
+	}
+
+	/**
+	 * @param timeout
+	 * @return
+	 */
+	private long calculateFinalTimeout(long timeout) {
+		long currentTimeMillis= System.currentTimeMillis();
+		long finalTimeout= timeout + currentTimeMillis;
+		if (finalTimeout < currentTimeMillis)
+			finalTimeout= Long.MAX_VALUE;
+		return finalTimeout;
 	}
 
 }
