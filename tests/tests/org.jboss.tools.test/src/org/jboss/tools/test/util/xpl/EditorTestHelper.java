@@ -172,7 +172,7 @@ public class EditorTestHelper {
 			}
 		} 
 		// Join jobs
-		joinJobs(1000, 10000, 500);
+		joinJobs(0, 10000, 500);
 		Logger.global.exiting("EditorTestHelper", "joinBackgroundActivities"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
