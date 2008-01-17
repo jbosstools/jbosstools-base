@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JBoss Tools Test Product
+Bundle-SymbolicName: org.jboss.tools.test.product;singleton:=true
+Bundle-Version: 2.0.0
+Bundle-Vendor: JBoss, a division of Red Hat
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.ide.application,
+ org.eclipse.ui.intro,
+ org.eclipse.ui.intro.universal,
+ org.eclipse.help,
+ org.eclipse.ui.cheatsheets
+Eclipse-LazyStart: true

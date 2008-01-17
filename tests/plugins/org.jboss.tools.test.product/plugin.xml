@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.jboss.tools.test.product.application"
+            name="JBoss Tools Tests">
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini"/>
+         
+            
+         	
+      </product>
+   </extension>
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run class="org.eclipse.ui.internal.ide.application.IDEApplication"/>
+      </application>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.intro">
+      <!-- intro
+            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            id="com.jboss.jbds.product.intro">
+      </intro -->
+            <intro
+            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            contentDetector="org.eclipse.ui.internal.intro.universal.contentdetect.ContentDetector"
+            id="org.jboss.tools.test.product.intro"/>
+      
+      <introProductBinding
+            introId="org.jboss.tools.test.product.intro"
+            productId="org.jboss.tools.test.product.product">
+      </introProductBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro.config">
+      <!--config
+            content="./intro/introContent.xml"
+            id="com.jboss.jbds.product.introConfigId"
+            introId="com.jboss.jbds.product.intro">
+         <presentation
+               home-page-id="root">
+            <implementation
+                  kind="swt"
+                  os="win32,macosx"
+                  style="content/shared.css">
+            </implementation>
+            <implementation
+                  kind="swt"
+                  os="linux">
+            </implementation>
+         </presentation>
+      </config-->
+      <config
+            content="$nl$/intro/introContent.xml"
+            id="org.jboss.tools.test.product.introConfigId"
+            introId="org.jboss.tools.test.product.intro">
+         <presentation
+               home-page-id="root" standby-page-id="standby">
+            <implementation
+                  kind="swt">
+            </implementation>
+         </presentation>
+      </config>
+      
+   </extension>
+   
+   
+</plugin>
