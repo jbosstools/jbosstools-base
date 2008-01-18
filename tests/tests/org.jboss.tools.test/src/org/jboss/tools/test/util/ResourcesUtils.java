@@ -69,17 +69,6 @@ public class ResourcesUtils {
 		op.setCreateContainerStructure(false);
 		op.setContext(Display.getCurrent().getActiveShell());
 		op.run(monitor);
-		Job j = new Job("+++++++++++test"){/* (non-Javadoc)
-		 * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
-		 */
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			System.out.println("++++++++++Running a decorator.job");
-			return Status.OK_STATUS;
-		}};
-		j.setUser(true);
-		j.setPriority(Job.DECORATE);
-		j.schedule();
 		return importedPrj;
 	}
 
