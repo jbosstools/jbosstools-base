@@ -12,12 +12,16 @@ package org.jboss.tools.common.model.ui.wizards.special;
 
 import java.util.Properties;
 import org.jboss.tools.common.model.ui.action.CommandBar;
+import org.jboss.tools.common.model.ui.wizards.standard.DefaultStandardWizard;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.*;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.meta.action.SpecialWizard;
 import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.meta.help.HelpUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
+import org.jboss.tools.common.model.ui.ModelUIImages;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControlListener {
@@ -36,6 +40,19 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 	public int execute() {
 		Shell shell = (Shell)support.getProperties().get("shell");
 		if(shell == null) shell = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
+
+		if(support.canBeProcessedByStandardWizard()) {
+			DefaultStandardWizard dsw = new DefaultStandardWizard();
+			dsw.setWindowTitle(support.getTitle());
+			dsw.setSupport(support);
+			dsw.setDefaultPageImageDescriptor(ModelUIImages.getImageDescriptor(ModelUIImages.WIZARD_DEFAULT));
+			WizardDialog wd = new WizardDialog(shell, dsw);
+			wd.create();
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(wd.getShell(), "org.eclipse.ui.new_wizard_shortcut_context");
+			int ii = wd.open();
+			return ii;
+		}		
+		
 		dialog = new DefaultSpecialWizardDialog(shell);
 		dialog.setWizard(this);
 		dialog.create();
