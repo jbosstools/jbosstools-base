@@ -11,6 +11,7 @@
 package org.jboss.tools.common.meta.action.impl;
 
 import java.util.*;
+
 import org.jboss.tools.common.model.*;
 import org.eclipse.swt.widgets.Display;
 import org.jboss.tools.common.meta.action.*;
@@ -26,6 +27,18 @@ public abstract class SpecialWizardSupport {
     public static final String FINISH = "Finish";
 	public static final String HELP = "Help";
 	public static final String CLOSE = "Close";
+	
+	static final Set<String> standardButtons = new HashSet<String>();
+	
+	static {
+		standardButtons.add(OK);
+		standardButtons.add(CANCEL);
+		standardButtons.add(BACK);
+		standardButtons.add(NEXT);
+		standardButtons.add(FINISH);
+		standardButtons.add(HELP);
+		standardButtons.add(CLOSE);
+	}
 
     private int stepId = 0;
     private boolean finished = false;
@@ -147,6 +160,19 @@ public abstract class SpecialWizardSupport {
     public String[] getActionNames(int stepId) {
         return new String[]{OK, CANCEL, HELP};
     }
+    
+    public boolean canBeProcessedByStandardWizard() {
+    	// By default only one-step wizards are accepted;
+    	if(data == null || data.length > 1) return false;
+    	if(!DEFAULT_IMLEMENTING_CLASS.equals(getStepImplementingClass(0))) {
+    		return false;
+    	}
+    	String[] buttons = getActionNames(0);
+    	for (int i = 0; i < buttons.length; i++) {
+    		if(!standardButtons.contains(buttons[i])) return false;
+    	}
+    	return true;
+    }
 
     public String getDefaultActionName(int stepId) {
         String[] actions = getActionNames(stepId);
@@ -207,9 +233,11 @@ public abstract class SpecialWizardSupport {
 		defaultValidator.setSupport(this, step);
 		return defaultValidator;    	
     }
+    
+    static String DEFAULT_IMLEMENTING_CLASS = "org.jboss.tools.common.model.ui.wizards.special.SpecialWizardStep";
 
     public String getStepImplementingClass(int stepId) {
-        return "org.jboss.tools.common.model.ui.wizards.special.SpecialWizardStep";
+        return DEFAULT_IMLEMENTING_CLASS;
     }
 
     // helpers
