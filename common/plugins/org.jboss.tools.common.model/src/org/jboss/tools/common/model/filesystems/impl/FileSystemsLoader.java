@@ -322,15 +322,19 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 		oldAttributes.put("location", "LOCATION");
 		oldAttributes.put("model-path", "MODEL_PATH");
 		oldAttributes.put("root", "ROOT");
+		oldAttributes.put("web-root", "root");
 		oldAttributes.put("src", "SRC");
 	}
 
     public String getAttribute(Element element, String xmlname) {
     	if(element == null || xmlname == null) return null;
     	if(!element.hasAttribute(xmlname)) {
-    		String oldAttribute = oldAttributes.get(xmlname);
-    		if(oldAttribute != null && element.hasAttribute(oldAttribute)) {
-    			xmlname = oldAttribute;
+    		String oldAttribute = xmlname;
+    		while(oldAttribute != null) {
+        		oldAttribute = oldAttributes.get(oldAttribute);
+        		if(oldAttribute != null && element.hasAttribute(oldAttribute)) {
+        			xmlname = oldAttribute;
+        		}
     		}
     	}
     	return super.getAttribute(element, xmlname);
