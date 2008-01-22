@@ -263,10 +263,13 @@
   <XActionItem kind="list">
    <XActionItem ICON="action.empty" displayName="New" group="1"
     kind="list" name="CreateActions">
-    <XActionItem HandlerClassName="%CreateFolder%"
-     ICON="action.new.file.folder" PROPERTIES="validator.add=true"
-     WizardClassName="%Default%" displayName="Folder..." kind="action" name="CreateFolder">
-     <EntityData EntityName="FileFolder">
+    <XActionItem HandlerClassName="%SpecialWizard%"
+     ICON="action.new.file.folder"
+     PROPERTIES="validator.add=true;support=org.jboss.tools.common.model.files.handlers.CreateFolderSupport"
+     displayName="Folder..." kind="action" name="CreateFolder">
+     <EntityData EntityName="NewFileWizard">
+      <AttributeData AttributeName="folder"/>
+      <AttributeData AttributeName="separator" Mandatory="no"/>
       <AttributeData AttributeName="name"/>
      </EntityData>
     </XActionItem>
@@ -396,10 +399,13 @@
   <XActionItem kind="list">
    <XActionItem ICON="action.empty" displayName="New" group="1"
     kind="list" name="CreateActions">
-    <XActionItem HandlerClassName="%CreateFolder%"
-     ICON="action.new.file.folder" PROPERTIES="validator.add=true"
-     WizardClassName="%Default%" displayName="Folder..." kind="action" name="CreateFolder">
-     <EntityData EntityName="FileFolder">
+    <XActionItem HandlerClassName="%SpecialWizard%"
+     ICON="action.new.file.folder"
+     PROPERTIES="validator.add=true;support=org.jboss.tools.common.model.files.handlers.CreateFolderSupport"
+     displayName="Folder..." kind="action" name="CreateFolder">
+     <EntityData EntityName="NewFileWizard">
+      <AttributeData AttributeName="folder"/>
+      <AttributeData AttributeName="separator" Mandatory="no"/>
       <AttributeData AttributeName="name"/>
      </EntityData>
     </XActionItem>
