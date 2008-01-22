@@ -368,6 +368,8 @@
 			class="org.jboss.tools.common.ant.model.handlers.CreateAntFileSupport"/>
 		<xclass id="org.jboss.tools.common.model.files.handlers.CreateFileSupport"
 			class="org.jboss.tools.common.model.files.handlers.CreateFileSupport"/>
+		<xclass id="org.jboss.tools.common.model.files.handlers.CreateFolderSupport"
+			class="org.jboss.tools.common.model.files.handlers.CreateFolderSupport"/>
 
 		<xclass id="org.jboss.tools.common.meta.action.impl.SignificanceMessageImpl"
 			class="org.jboss.tools.common.meta.action.impl.SignificanceMessageImpl"/>
