@@ -334,6 +334,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
         		oldAttribute = oldAttributes.get(oldAttribute);
         		if(oldAttribute != null && element.hasAttribute(oldAttribute)) {
         			xmlname = oldAttribute;
+        			break;
         		}
     		}
     	}
