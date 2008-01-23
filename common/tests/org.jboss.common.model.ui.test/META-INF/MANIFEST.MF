@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Model UI Test Plug-in
+Bundle-SymbolicName: org.jboss.common.model.ui.test
+Bundle-Version: 1.0.0
+Require-Bundle: org.junit;visibility:=reexport,
+ org.eclipse.jface,
+ org.jboss.tools.tests,
+ org.eclipse.ui,
+ org.jboss.tools.common,
+ org.jboss.tools.common.model.ui
+Export-Package: org.jboss.common.model.ui.test
