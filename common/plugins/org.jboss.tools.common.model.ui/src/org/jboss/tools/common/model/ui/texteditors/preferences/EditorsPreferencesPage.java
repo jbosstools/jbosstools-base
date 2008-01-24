@@ -22,6 +22,9 @@ import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.text.xml.ui.xpl.BasePreferenceConstants;
 
 public class EditorsPreferencesPage extends XMOBasedPreferencesPage {
+	
+	public static final String EDITOR_PREFERENCES_ID = "org.jboss.tools.common.xstudio.editors";
+	
 	static String PATH = "%Options%/Struts Studio/Editors";
 
 	public EditorsPreferencesPage() {

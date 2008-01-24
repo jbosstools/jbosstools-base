@@ -135,8 +135,20 @@ public class ResourcesUtils {
 	 * @throws IOException 
 	 */
 	public static IProject importProject(String bundleName, String templatePath,
-			NullProgressMonitor monitor) throws IOException, CoreException, InvocationTargetException, InterruptedException {
+			IProgressMonitor monitor) throws IOException, CoreException, InvocationTargetException, InterruptedException {
 		// TODO Auto-generated method stub
-		return importProject(Platform.getBundle(bundleName), templatePath, monitor);
+		return importProject(Platform.getBundle(bundleName), templatePath, monitor==null?new NullProgressMonitor():monitor);
+	}
+	
+	public static IProject importProject(String bundleName, String templatePath) throws IOException, CoreException, InvocationTargetException, InterruptedException {
+		// TODO Auto-generated method stub
+		return importProject(Platform.getBundle(bundleName), templatePath, null);
+	}
+	
+	public static void deleteProject(String projectName) throws CoreException {
+		IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
+		if (member != null) {
+			member.getProject().delete(true, true, null);
+		}
 	}
 }

@@ -22,6 +22,9 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.*;
 
 public class CompanyPreferencesPage extends PreferencePage implements IWorkbenchPreferencePage {
+
+	public static final String WEB_PREFERENCES_ID = "org.jboss.tools.common.model.ui";
+	
 	protected Control contents;
 
 	public void createControl(final Composite parent) {
