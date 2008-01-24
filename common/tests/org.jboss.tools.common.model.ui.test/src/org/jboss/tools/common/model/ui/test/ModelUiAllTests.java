@@ -17,7 +17,7 @@ import junit.framework.TestSuite;
  *
  */
 public class ModelUiAllTests {
-	public TestSuite suite() {
+	public static TestSuite suite() {
 		TestSuite suite = new TestSuite();
 		suite.addTestSuite(ModelUiPreferencesPageTest.class);
 		return suite;
