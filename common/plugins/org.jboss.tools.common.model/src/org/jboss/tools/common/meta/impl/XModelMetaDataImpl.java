@@ -22,6 +22,8 @@ import org.jboss.tools.common.model.icons.impl.*;
 
 public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
     private static XModelMetaDataImpl instance = null;
+    private static boolean loaded = false;
+	boolean reportLoadingTime = false;
 
     private HashMap<String,XModelEntity> entities = new HashMap<String,XModelEntity>(50);
     private XIconListImpl icons = new XIconListImpl();
@@ -33,22 +35,35 @@ public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
     static Object lock = new Object();
 
     public static XModelMetaData getInstance() {
-    	if(instance == null) {
-    		synchronized (lock) {
-    			if(instance != null) return instance;
-    			instance = new XModelMetaDataImpl();
-    		}
+    	if(loaded) return instance;
+		synchronized (lock) {
+   			if(instance != null) return instance;
+   			instance = new XModelMetaDataImpl();
+   			loaded = true;
     	}
         return instance;
     }
 
     private XModelMetaDataImpl() {
         try {
+    		long t = System.currentTimeMillis();
             XMetaDataLoader.loadMetaModel(this);
             instance = this;
+
+            //uses cached elements
+            parents.init(this);
+            
             XModelEntityImpl r = (XModelEntityImpl)getEntity("Root");
             r.validateChildren();
-            parents.init(this);
+
+            //Resolve XML now, or late resolving may not be thread safe. 
+            XModelEntity[] es = this.entities.values().toArray(new XModelEntity[0]);
+            for (int i = 0; i < es.length; i++) ((XModelEntityImpl)es[i]).validate();
+
+    		if(reportLoadingTime) {
+        		long dt = - t + (t = System.currentTimeMillis());
+    			ModelPlugin.getPluginLog().logInfo("Meta model loaded in " + dt + " ms");
+    		}
         } catch (Exception e) {
         	ModelPlugin.getPluginLog().logError(e);
             throw new RuntimeException("Cannot create metamodel: " + e.getMessage());
