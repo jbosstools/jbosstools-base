@@ -13,7 +13,6 @@ package org.jboss.tools.common.model.util;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.*;
 
 import org.eclipse.core.resources.*;
@@ -204,7 +203,13 @@ public class EclipseResourceUtil {
 			try {
 				if(p.hasNature(natures[i])) {
 					IModelNature n = (IModelNature)p.getNature(natures[i]);
-				    return n == null || n.getModel() == null ? null : n;
+					if(n == null) return null;
+					n = testNature(n);
+					if(n == null) {
+						ModelPlugin.getPluginLog().logWarning("Project " + p + " has corrupted nuture: " + natures[i]);
+						removeNatureFromProject(p, natures[i]);
+					}
+				    return n;
 				}
 			} catch (CoreException e) {
 				ModelPlugin.getPluginLog().logError(e);
@@ -212,11 +217,29 @@ public class EclipseResourceUtil {
 		}
 		return null;
 	}
+	
+	private static IModelNature testNature(IModelNature n) {
+		if(n == null || n.getModel() == null) return null;
+		XModel model = n.getModel();
+		XModelObject object = model.getRoot();
+		if(object == null) return null;
+		if(!"Root".equals(object.getModelEntity().getName())) return null;
+		return n;
+	}
 
 	public static IModelNature getModelNature(IProject p, String id) {
 		if(p == null || !p.isOpen()) return null;
 		try {
-			if(p.hasNature(id)) return (IModelNature)p.getNature(id);
+			if(p.hasNature(id)) {
+				IModelNature n = (IModelNature)p.getNature(id);
+				if(n == null) return null;
+				n = testNature(n);
+				if(n == null) {
+					ModelPlugin.getPluginLog().logWarning("Project " + p + " has corrupted nuture: " + id);
+					removeNatureFromProject(p, id);
+				}
+			    return n;
+			}
 		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
