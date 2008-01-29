@@ -206,7 +206,7 @@ public class EclipseResourceUtil {
 					if(n == null) return null;
 					n = testNature(n);
 					if(n == null) {
-						ModelPlugin.getPluginLog().logWarning("Project " + p + " has corrupted nuture: " + natures[i]);
+						ModelPlugin.getPluginLog().logWarning("Project " + p + " has corrupted nature: " + natures[i]);
 						removeNatureFromProject(p, natures[i]);
 					}
 				    return n;
@@ -235,7 +235,7 @@ public class EclipseResourceUtil {
 				if(n == null) return null;
 				n = testNature(n);
 				if(n == null) {
-					ModelPlugin.getPluginLog().logWarning("Project " + p + " has corrupted nuture: " + id);
+					ModelPlugin.getPluginLog().logWarning("Project " + p + " has corrupted nature: " + id);
 					removeNatureFromProject(p, id);
 				}
 			    return n;

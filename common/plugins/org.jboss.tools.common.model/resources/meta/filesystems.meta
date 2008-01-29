@@ -265,7 +265,7 @@
     kind="list" name="CreateActions">
     <XActionItem HandlerClassName="%SpecialWizard%"
      ICON="action.new.file.folder"
-     PROPERTIES="validator.add=true;support=org.jboss.tools.common.model.files.handlers.CreateFolderSupport"
+     PROPERTIES="validator.add=true;support=org.jboss.tools.common.model.files.handlers.CreateFolderSupport;entity=FileFolder"
      displayName="Folder..." kind="action" name="CreateFolder">
      <EntityData EntityName="NewFileWizard">
       <AttributeData AttributeName="folder"/>
@@ -401,7 +401,7 @@
     kind="list" name="CreateActions">
     <XActionItem HandlerClassName="%SpecialWizard%"
      ICON="action.new.file.folder"
-     PROPERTIES="validator.add=true;support=org.jboss.tools.common.model.files.handlers.CreateFolderSupport"
+     PROPERTIES="validator.add=true;support=org.jboss.tools.common.model.files.handlers.CreateFolderSupport;entity=FileFolder"
      displayName="Folder..." kind="action" name="CreateFolder">
      <EntityData EntityName="NewFileWizard">
       <AttributeData AttributeName="folder"/>

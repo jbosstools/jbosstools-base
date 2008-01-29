@@ -135,6 +135,10 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 			String folder = data.getProperty("folder");
 			targetHolder.revalidate(folder);
 			message = null;
+			if(targetHolder.target == null) {
+				message = "Cannot create folder in specified folder.";
+				return;
+			}
 			validateFolderName();
 			if(message != null) return;
 			validateChildName(data);
