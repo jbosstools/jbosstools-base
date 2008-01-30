@@ -119,18 +119,27 @@ public class RulesConfigurationPage extends PreferencePage implements IPreferenc
 		}
 	}
 	
-	
+	private void setChecked(TreeItem item){
+		item.setChecked(true);
+		for(int i=0;i<item.getItemCount();i++){
+			TreeItem child = item.getItem(i);
+			setChecked(child);
+		}
+	}
 
 	public void performDefaults() {
 		RuleSetWrapper[] ruleSets = provider.getRuleSets();
 		for (int i = 0; i <	ruleSets.length; i++) {
 				ruleSets[i].setDefaults();
 		}
-
+		
 		if (treeViewer != null) {
-//        	treeViewer.refresh(ruleSets[i], true);
-        	treeViewer.refresh();
-//        	ruleSets[i].getParent();
+			Tree tree = treeViewer.getTree();
+			
+			for(int i=0;i<tree.getItemCount();i++){
+				setChecked(tree.getItem(i));
+			}
+			treeViewer.refresh();
         }
 
 		significance.loadDefaults();
