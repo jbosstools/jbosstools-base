@@ -186,6 +186,7 @@ public class EditorTestHelper {
 			}
 		};
 		boolean quiet= helper.waitForCondition(getActiveDisplay(), maxTime > 0 ? maxTime : Long.MAX_VALUE, intervalTime);
+		runEventQueue(minTime);
 		Logger.global.exiting("EditorTestHelper", "joinJobs", new Boolean(quiet)); //$NON-NLS-1$ //$NON-NLS-2$
 		return quiet;
 	}
