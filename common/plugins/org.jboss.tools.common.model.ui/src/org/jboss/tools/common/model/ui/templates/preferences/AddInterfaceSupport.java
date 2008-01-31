@@ -54,7 +54,7 @@ public class AddInterfaceSupport extends SpecialWizardSupport {
 	}
 
 	public void action(String name) throws Exception {
-		if(OK.equals(name)) {
+		if(OK.equals(name) || FINISH.equals(name)) {
 			getProperties().setProperty(property, getAttributeValue(0, property));
 			setFinished(true);
 		} else if(CANCEL.equals(name)) {
