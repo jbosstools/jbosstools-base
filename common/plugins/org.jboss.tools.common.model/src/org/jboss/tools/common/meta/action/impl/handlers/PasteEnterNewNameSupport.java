@@ -63,7 +63,7 @@ public class PasteEnterNewNameSupport extends SpecialWizardSupport {
 	}
 
 	public void action(String name) throws Exception {
-		if(name.equals(OK)) {
+		if(OK.equals(name) || FINISH.equals(name)) {
 			returnCode = 0;
 			setFinished(true);
 		} else if(name.equals(CANCEL)) {
