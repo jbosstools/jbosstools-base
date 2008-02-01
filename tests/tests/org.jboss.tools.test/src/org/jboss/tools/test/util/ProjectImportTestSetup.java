@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.test.util;
 
+import org.eclipse.core.resources.IProject;
+import org.jboss.tools.test.util.xpl.EditorTestHelper;
+
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 
@@ -34,14 +37,23 @@ public class ProjectImportTestSetup extends TestSetup {
 		this.projectName = projectName;
 	}
 
+	public IProject importProject() throws Exception {
+		IProject importedPrj = null;
+		EditorTestHelper.joinBackgroundActivities();
+		importedPrj = (IProject)ResourcesUtils.importProject(bundleName, projectPath);
+		EditorTestHelper.joinBackgroundActivities();
+		return importedPrj;
+	}	
+
 	@Override
 	protected void setUp() throws Exception {
-		ResourcesUtils.importProject(bundleName, projectPath);
+		importProject();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		ResourcesUtils.deleteProject(projectName);
+		EditorTestHelper.joinBackgroundActivities();
 	}
 	
 	

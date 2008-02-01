@@ -54,10 +54,10 @@ public abstract class DisplayHelper {
 		
 		if (timeout < 0)
 			return false;
-		
+		long finalTimeout = calculateFinalTimeout(timeout);
 		// if driving the event loop once makes the condition hold, succeed
 		// without spawning a thread.
-		driveEventQueue(display);
+		driveEventQueue(display,finalTimeout);
 		if (condition())
 			return true;
 		
@@ -68,11 +68,12 @@ public abstract class DisplayHelper {
 		// repeatedly sleep until condition becomes true or timeout elapses
 		DisplayWaiter waiter= new DisplayWaiter(display);
 		DisplayWaiter.Timeout timeoutState= waiter.start(timeout);
+		finalTimeout = calculateFinalTimeout(timeout);
 		boolean condition;
 		try {
 			do {
 				if (display.sleep())
-					driveEventQueue(display);
+					driveEventQueue(display,finalTimeout);
 				condition= condition();
 			} while (!condition && !timeoutState.hasTimedOut());
 		} finally {
