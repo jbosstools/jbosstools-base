@@ -98,6 +98,10 @@ public abstract class XMLLinkHyperlinkPartitioner extends AbstractHyperlinkParti
 			final int propStart = bStart + start;
 			final int propLength = bEnd - bStart;
 			
+			// JBIDE-1736: do not detect XMLLink region for the offset that is more than 
+			// closing quote position of an attribute value. 
+			if (start + bEnd <= offset) return null;
+						
 			if (propStart > offset || propStart + propLength < offset) return null;
 			
 			IRegion region = new IRegion () {
