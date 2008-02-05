@@ -54,6 +54,14 @@ public class DefaultRenameSupport extends SpecialWizardSupport {
 		return "Rename " + PasteEnterNewNameSupport.getCapitalizedName(getTarget());
 	}
 
+    public String getSubtitle() {
+    	XModelObject o = getTarget();
+    	if(o == null) return "";
+    	String element = o.getAttributeValue("element type");
+    	if(element == null) return "";
+    	return WizardKeys.toDisplayName(element);
+    }
+
 	public String getMessage(int stepId) {
 		String displayName = WizardKeys.getAttributeDisplayName(getEntityData()[0].getAttributeData()[0].getAttribute(), true);
 		return "Please enter new " + displayName + ".";
