@@ -142,7 +142,7 @@ public class DefaultCreateHandler extends AbstractHandler {
     public static String getContainsMessage(XModelObject parent, XModelObject child) {
 		String pathpart = child.getPathPart();
 		XModelObject e = parent.getChildByPath(pathpart);
-		if(e != null) {
+		if(e != null && e != parent) {
 			if(child.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) return null;
 			String tp = title(parent, true), tc = title(child, false), te = title(e, false);
 			String mes = (tc.equals(te))
@@ -218,8 +218,12 @@ public class DefaultCreateHandler extends AbstractHandler {
     }
 
     public static String title(XModelObject o, boolean capitalize) {
-        String s = o.getAttributeValue("element type") + " " +
-                   o.getModelEntity().getRenderer().getTitle(o);
+    	String elementType = o.getAttributeValue("element type");
+    	String objectTitle = o.getModelEntity().getRenderer().getTitle(o);
+        String s = elementType + " " + objectTitle;
+    	if(objectTitle != null && objectTitle.equalsIgnoreCase(elementType)) {
+    		s = objectTitle;
+    	}
         return (!capitalize || s.length() < 0 || Character.isUpperCase(s.charAt(0)))
                ? s : s.substring(0, 1).toUpperCase() + s.substring(1);
     }
