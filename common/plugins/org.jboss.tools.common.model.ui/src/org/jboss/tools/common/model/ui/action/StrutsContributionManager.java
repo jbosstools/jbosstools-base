@@ -23,7 +23,7 @@ public class StrutsContributionManager extends MenuManager {
 	Shell shell;
 	
 	public StrutsContributionManager(Shell shell) {
-		super("Red Hat Developer Studio");
+		super("JBoss Tools Struts");
 		this.shell = shell;
 	}
 	
