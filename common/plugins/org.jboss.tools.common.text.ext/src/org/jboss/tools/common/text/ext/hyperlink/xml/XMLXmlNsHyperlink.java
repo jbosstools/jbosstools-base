@@ -12,18 +12,20 @@ package org.jboss.tools.common.text.ext.hyperlink.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.zip.ZipFile;
 
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.PlatformObject;
-import org.eclipse.jdt.internal.core.JarEntryFile;
-import org.eclipse.jdt.internal.ui.javaeditor.JarEntryEditorInput;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.pde.internal.ui.editor.JarEntryEditorInput;
+import org.eclipse.pde.internal.ui.editor.JarEntryFile;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPersistableElement;
@@ -137,14 +139,18 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 		try {
 //			IFile f = getFileFromCatalog(getURI(region));
 //			IFile f = getFileFromCatalog(getPublicId(region), getSystemId(region));
-			
-			String filename = getFilenameFromCatalog(getPublicId(region), getSystemId(region));
+
+			String mappedSystemId = getMappedSystemIdFromCatalog(getPublicId(region), getSystemId(region));
+			String filename = getFilenameFromMappedSystemId(mappedSystemId);
 			IEditorPart part = null;
 			if (filename != null) {
 //				openFileInEditor(filename);
 				part = openExternalFile(filename);
-			}  
-			if (part == null)
+				if (part == null)
+					openFileFailed();
+			} else if (mappedSystemId != null) {
+				openFileInEditor(mappedSystemId);
+			} else 
 				openFileFailed();
 
 		} catch (Exception x) {
@@ -178,6 +184,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 	}
 
 	protected final String JAR_FILE_PROTOCOL = "jar:file:/";//$NON-NLS-1$
+	protected final String JAR_FILE = "jar:file:";//$NON-NLS-1$
 	
     /* (non-Javadoc)
      * @see com.ibm.sse.editor.hyperlink.AbstractHyperlink#openFileInEditor(java.lang.String)
@@ -189,6 +196,11 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 				IEditorInput jarEditorInput = createEditorInput(fileString);
 		        IEditorPart part = openFileInEditor(jarEditorInput,  fileString);
 		        if (part == null) openFileFailed();
+	        } else if (fileString.startsWith(JAR_FILE)) {
+					fileString = fileString.substring(JAR_FILE.length());
+					IEditorInput jarEditorInput = createEditorInputAlternate(fileString);
+			        IEditorPart part = openFileInEditor(jarEditorInput,  fileString);
+			        if (part == null) openFileFailed();
 			} else {
 				super.openFileInEditor(fileString);    
 			}
@@ -196,7 +208,28 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
         	openFileFailed();
         }
     }
-    
+
+	protected IEditorInput createEditorInputAlternate(String fileString) {
+		String jarName = fileString.substring(0,fileString.indexOf("!"));
+		String entryName = fileString.substring(fileString.indexOf("!")+2,fileString.length());
+
+		ZipFile jarFile = null;
+		try {
+			jarFile = new ZipFile(jarName);
+		} catch (IOException e) {
+			return null;
+		}
+		JarEntryFile jarEntryFile = new JarEntryFile(jarFile, entryName); 
+
+		JarEntryEditorInput jarEditorInput = new JarEntryEditorInput(jarEntryFile) {
+        	public boolean equals(Object arg) {
+        		try {return this.toString().equals(arg.toString());}
+        		catch (Exception x) {return false;}
+        	}
+        };
+        return jarEditorInput;
+	}
+
 	String getURI(IRegion region) {
 		try {
 			return Utils.trimQuotes(getDocument().get(region.getOffset(), region.getLength()));
@@ -234,39 +267,35 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 		}
 	}
 
-	private String getFilenameFromCatalog(String publicId, String systemId) {
-//		IStructuredModel model = null;
-		
+	private String getMappedSystemIdFromCatalog(String publicId, String systemId) {
+		String mappedSystemId = null;
 		try {
-			String mappedSystemId = null;
-
 			if (publicId != null)
 	        	mappedSystemId = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolvePublic(publicId, systemId);
 			if (mappedSystemId == null)
 				mappedSystemId = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveSystem(systemId);
-			if(mappedSystemId == null) return null;
-	        
-			String fileName = null;
-	        
+			if (systemId != null)
+	        	mappedSystemId = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(systemId);
+		} catch (Exception e) {
+			// Ignore, just return null as result
+		}
+		return mappedSystemId;
+	}
+	
+	private String getFilenameFromMappedSystemId(String mappedSystemId) {
+		String fileName = null;
+		try {
 	        if(mappedSystemId!=null) {
-	            try {
-		            File file = new File(new URL(mappedSystemId).getFile());
-		            if(file.isFile()) {
-		                fileName = file.getAbsolutePath();
-		            }
-	            } catch(Exception e) {
-//	        		ExtensionsPlugin.log(e);
+	            File file = new File(new URL(mappedSystemId).getFile());
+	            if(file.isFile()) {
+	                fileName = file.getAbsolutePath();
 	            }
 	        }
-	        
-			return fileName;
 		} catch (Exception x) {
 			//ignore
-			return null;
-		} finally {
 		}
+		return fileName;
 	}
-
 
 	/** 
 	 * @seecom.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
@@ -328,5 +357,4 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 		}
 
 	}
-
 }

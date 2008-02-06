@@ -38,5 +38,6 @@ Require-Bundle: org.jboss.tools.common,
  org.eclipse.jst.jsp.core;visibility:=reexport,
  org.eclipse.jst.j2ee.web;visibility:=reexport,
  org.eclipse.wst.common.modulecore;visibility:=reexport,
- org.eclipse.emf.ecore
+ org.eclipse.emf.ecore,
+ org.eclipse.pde.ui
 
