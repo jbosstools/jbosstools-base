@@ -11,6 +11,7 @@
 package org.jboss.tools.jst.web.tld;
 
 import java.util.List;
+import org.w3c.dom.Node;
 
 
 /**
@@ -35,4 +36,10 @@ public interface VpeTaglibManager {
 	 * @return
 	 */
 	public List<TaglibData> getTagLibs();
+	
+	/**
+	 * Sets node in scope of which we should show content assistent
+	 * @param node
+	 */
+	public void setReferenceNode(Node node);
 }
