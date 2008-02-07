@@ -214,7 +214,7 @@ public class JspWtpKbConnector implements WtpKbConnector {
 	 * @throws KbException
 	 * @see org.jboss.tools.common.kb.KbConnector#getProposals()
 	 */
-	public Collection getProposals(String query) throws KbException {
+	public Collection<KbProposal> getProposals(String query) throws KbException {
 		boolean emptyQuery = false;
 		if(query.equals("/")) {
 			emptyQuery = true;

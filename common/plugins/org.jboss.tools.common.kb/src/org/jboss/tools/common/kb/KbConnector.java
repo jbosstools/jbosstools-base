@@ -23,7 +23,7 @@ public interface KbConnector {
 	 * @return
 	 * @throws KbException
 	 */
-	public Collection getProposals(String query) throws KbException;
+	public Collection<?> getProposals(String query) throws KbException;
 
 	/**
 	 * 
