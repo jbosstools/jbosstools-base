@@ -31,7 +31,6 @@ public class DropData {
 	private IDropCommand fDropCommand = null;
 	private Node container = null;
 	private String attributeName = null;
-	VpeTaglibManager pageContext = null;
 	
 	/**
 	 * 
@@ -45,13 +44,12 @@ public class DropData {
 	public DropData(
 			String mimeType,
 			String data,
-			VpeTaglibManager pageContext, 
 			IEditorInput input, 
 			ISourceViewer viewer, 
 			ISelectionProvider provider,
 			Node container
 		) {
-		this(mimeType, data, pageContext, input, viewer, provider);
+		this(mimeType, data, input, viewer, provider);
 		this.container = container;
 	}
 
@@ -67,7 +65,6 @@ public class DropData {
 	public DropData(
 		String mimeType,
 		String data,
-		VpeTaglibManager pageContext, 
 		IEditorInput input, 
 		ISourceViewer viewer, 
 		ISelectionProvider provider
@@ -77,7 +74,7 @@ public class DropData {
 		fInput = input;
 		fViewer = viewer;
 		fProvider = provider;
-		this.pageContext = pageContext;
+//		this.pageContext = pageContext;
 	}
 	
 	public void setAttributeName(String n) {
@@ -174,9 +171,5 @@ public class DropData {
 
 	public Node getContainer() {
 		return container;
-	}
-	
-	public VpeTaglibManager getPageContext() {
-		return pageContext;
 	}
 }

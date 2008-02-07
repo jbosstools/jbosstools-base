@@ -133,9 +133,10 @@ public class PaletteDropCommand extends FileDropCommand {
 			properties.setProperty("isDrop", "true");
 			properties.setProperty("actionSourceGUIComponentID", "editor");
 			properties.setProperty("accepsAsString", "true");
-			if(getDefaultModel().getDropData().getPageContext() != null) {
-				properties.put("taglibs", getDefaultModel().getDropData().getPageContext());
-			}				
+			//TODO Max Areshkau JBIDE-788
+//			if(getDefaultModel().getDropData().getPageContext() != null) {
+//				properties.put("taglibs", getDefaultModel().getDropData().getPageContext());
+//			}				
 			if(f != null) {
 				properties.put("file", f);
 			}

@@ -41,8 +41,6 @@ public class DefaultDropCommandRunner implements SpecialWizard {
 						new DropData(
 							flavor,
 							data,
-///							parentEditor.getVisualEditor().getController().getPageContext(), ///getPageContext(),
-							null,
 							ei,
 							sv,
 							sp

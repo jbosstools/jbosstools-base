@@ -628,7 +628,6 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 					new DropData(
 						flavor,
 						data,
-						null, ///getPageContext(),
 						getEditorInput(),
 						getSourceViewer(),
 						getSelectionProvider()
