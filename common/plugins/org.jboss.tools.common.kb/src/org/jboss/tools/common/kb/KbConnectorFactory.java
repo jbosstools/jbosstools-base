@@ -11,13 +11,14 @@
 package org.jboss.tools.common.kb;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author eskimo
  */
 public class KbConnectorFactory {
 
-    private HashMap<Object,Object> connectorInstances;
+    private Map<Object,Object> connectorInstances;
 
     private KbConnectorFactory() {
         connectorInstances = new HashMap<Object,Object>();
@@ -94,6 +95,11 @@ public class KbConnectorFactory {
 		return (KbConnector) newInstance; 
 	}
 
+	public void removeConnector(KbConnectorType type, Object key) {
+        Object o = connectorInstances.get(key);
+        if (o != null)
+        	connectorInstances.remove(key);
+	}
 	/**
 	 * 
 	 * @return
