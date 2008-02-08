@@ -43,7 +43,21 @@ public class KbQueriesTest extends TestCase {
 	public void testJBIDE1765() {
 		KbResource jsfHtmlTld = new KbTldResource("http://java.sun.com/jsf/html", null, "h", "1.2");
 		connector.registerResource(jsfHtmlTld, true);
-		String query = KbQuery.TAG_SEPARATOR + "h" + KbQuery.PREFIX_SEPARATOR + "outputText";
+		String queryPrefix = KbQuery.TAG_SEPARATOR + "h" + KbQuery.PREFIX_SEPARATOR; 
+		checkBodyOfTag(queryPrefix + "outputText");
+		checkBodyOfTag(queryPrefix + "commandButton");
+		checkBodyOfTag(queryPrefix + "graphicImage");
+		checkBodyOfTag(queryPrefix + "inputHidden");
+		checkBodyOfTag(queryPrefix + "inputSecret");
+		checkBodyOfTag(queryPrefix + "inputText");
+		checkBodyOfTag(queryPrefix + "message");
+		checkBodyOfTag(queryPrefix + "messages");
+		checkBodyOfTag(queryPrefix + "outputFormat");
+		checkBodyOfTag(queryPrefix + "outputText");
+		checkBodyOfTag(queryPrefix + "selectBooleanCheckbox");
+	}
+
+	private void checkBodyOfTag(String query) {
 		try {
 			TagDescriptor tag = connector.getTagInformation(query);
 			assertNotNull("Can't get tag descriptor for " + query, tag);
