@@ -278,6 +278,51 @@
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
+ <XModelEntity ImplementingClass="%Meta%"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
+  XMLSUBPATH="XActionItemReference" name="MetaActionItemReference">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.meta.action.list" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="action item reference" loader="ElementType" name="element type">
+    <Constraint loader="List">
+     <value name="attribute"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name"/>
+   <XModelAttribute PROPERTIES="category=general" name="entity" xmlname="entity">
+    <Constraint loader="ListString"/>
+    <Editor name="ListString"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="path" xmlname="path"/>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy attribute" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut attribute" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions">
+    <XActionItem HIDE="always" HandlerClassName="%Move%"
+     ICON="action.empty" displayName="Move" kind="action" name="Move"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete action item" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.common.meta.ui.editor.MetaElementOrderedImpl"
   PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.common.meta.ui.form.MetaFormLayoutData"
@@ -285,6 +330,7 @@
   <XChildrenEntities>
    <XChildEntity name="MetaActionList"/>
    <XChildEntity name="MetaAction"/>
+   <XChildEntity name="MetaActionItemReference"/>
   </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
@@ -335,6 +381,15 @@
      displayName="Create an action..." kind="action" name="CreateMetaAction">
      <EntityData EntityName="MetaAction">
       <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem HandlerClassName="%Create%"
+     ICON="action.new.meta.action" WizardClassName="%Default%"
+     displayName="Create an item reference..." kind="action" name="CreateMetaActionItemRef">
+     <EntityData EntityName="MetaActionItemReference">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity"/>
+      <AttributeData AttributeName="path"/>
      </EntityData>
     </XActionItem>
    </XActionItem>

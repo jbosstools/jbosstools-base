@@ -52,7 +52,11 @@ public class MetaFormLayoutData implements IFormLayoutData {
 	public MetaFormLayoutData() {}
 
 	public IFormData getFormData(String entityName) {
-		return (IFormData)FORM_LAYOUT_DEFINITION_MAP.get(entityName);
+		IFormData data = (IFormData)FORM_LAYOUT_DEFINITION_MAP.get(entityName);
+		if(data == null) {
+			data = ModelFormLayoutData.getInstance().getFormData(entityName);
+		}
+		return data;
 	}
 
 }
