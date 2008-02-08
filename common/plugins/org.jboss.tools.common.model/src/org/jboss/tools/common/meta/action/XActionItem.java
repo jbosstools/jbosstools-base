@@ -21,6 +21,11 @@ public interface XActionItem extends XMetaElement {
     public String getProperty(String name);
 
     public interface Acceptor {
+    	public static Acceptor DEFAULT = new Acceptor() {
+    		public boolean accepts(XActionItem item) {
+    			return true;
+    		}
+    	};
         public boolean accepts(XActionItem item);
     }
     public XActionItem copy(Acceptor acceptor);

@@ -20,6 +20,8 @@ public interface XMetaDataConstants {
     String XMODEL_ATTRIBUTE_REF = "XModelAttributeReference";
     String XMODEL_ACTIONS = "XModelActions";
     String XMODEL_ACTION  = "XModelAction";
+    String XMODEL_ACTION_ITEM  = "XActionItem";
+    String XMODEL_ACTION_ITEM_REF  = "XActionItemReference";
     String XMODEL_CHILDREN = "XChildrenEntities";
     String XMODEL_CHILD  = "XChildEntity";
     String NAME = "name";

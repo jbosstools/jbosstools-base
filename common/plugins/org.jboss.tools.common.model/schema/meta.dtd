@@ -30,7 +30,7 @@
 
 <!ELEMENT GlobalActions (XActionItem*)>
 <!ATTLIST GlobalActions kind (list) #REQUIRED>
-<!ELEMENT XActionItem (XActionItem*|EntityData*)>
+<!ELEMENT XActionItem ((XActionItem|XActionItemReference)*|EntityData*)>
 <!ATTLIST XActionItem kind (list|action) #REQUIRED>
 <!ATTLIST XActionItem name CDATA #IMPLIED>
 <!ATTLIST XActionItem group (0|1)  #IMPLIED>
@@ -42,6 +42,11 @@
 <!ATTLIST XActionItem SAVE_REQUIRED (yes|no) "no">
 <!ATTLIST XActionItem HIDE (never|disabled|always) "never">
 <!ATTLIST XActionItem PROPERTIES CDATA #IMPLIED>
+
+<!ELEMENT XActionItemReference EMPTY>
+<!ATTLIST XActionItemReference name CDATA #REQUIRED>
+<!ATTLIST XActionItemReference entity CDATA #REQUIRED>
+<!ATTLIST XActionItemReference path CDATA #IMPLIED>
 
 <!ELEMENT EntityData (AttributeData*)>
 <!ATTLIST EntityData EntityName CDATA #REQUIRED>

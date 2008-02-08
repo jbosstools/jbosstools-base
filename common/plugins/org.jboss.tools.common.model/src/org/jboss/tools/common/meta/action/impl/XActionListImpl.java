@@ -12,6 +12,7 @@ package org.jboss.tools.common.meta.action.impl;
 
 import java.util.*;
 import org.w3c.dom.*;
+import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.impl.*;
 
@@ -28,11 +29,8 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
     }
 
     public XActionItem getByPath(String path) {
-        int i = (path == null) ? -1 : path.indexOf("/");
-        if(i < 0) return getItem(path);
-        XActionItem ci = getItem(path.substring(0, i));
-        return (!(ci instanceof XActionListImpl)) ? null :
-               ((XActionListImpl)ci).getByPath(path.substring(i + 1));
+    	if(path == null) return getItem(path); // why?
+    	return findItem(path);
     }
 
     public boolean isLoaded() {
@@ -65,40 +63,66 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
     }
 
     public XActionItem getItem(String name) {
+    	if(name == null) {
+    		System.out.println("XActionListImpl.getItem: name=null");
+    	}
         for (int i = 0; i < items.length; i++) {
             if(items[i].getName().equals(name)) return items[i];
         }
         return null;
     }
 
+    public XActionItem findItem(String path) {
+    	if(path == null || path.length() == 0) return null;
+    	StringTokenizer st = new StringTokenizer(path, "./");
+    	XActionItem item = this;
+    	while(st.hasMoreTokens() && item != null) {
+    		String part = st.nextToken();
+    		item = item.getItem(part);
+    	}
+        return item;
+    }
+
     public XAction getAction(String path) {
-        if(path == null) return null;
-        int d = path.indexOf('.');
-        if(d < 0) {
-            XActionItem i = getItem(path);
-            return (i instanceof XAction) ? (XAction)i : null;
-        }
-        String name = path.substring(0, d);
-        path = path.substring(d + 1);
-        XActionItem i = getItem(name);
-        return (i instanceof XActionList) ? ((XActionList)i).getAction(path) : null;
+    	XActionItem item = findItem(path);
+        return (item instanceof XAction) ? (XAction)item : null;
     }
 
     public void load(Element el) {
         super.load(el);
         groupfactor = (short)XMetaDataLoader.getInt(el, "group", 0);
-        Element[] cs = XMetaDataLoader.getChildrenElements(el, "XActionItem");
-        items = new XActionItem[cs.length];
-        for (int i = 0; i < items.length; i++) {
-            Element ei = cs[i];
-            String kind = ei.getAttribute("kind");
-            XActionItemImpl item = (kind.equals("list"))
+        NodeList ns = el.getChildNodes();
+        List<XActionItem> list = new ArrayList<XActionItem>();
+        for (int i = 0; i < ns.getLength(); i++) {
+        	Node n = ns.item(i);
+        	if(n.getNodeType() != Node.ELEMENT_NODE) continue;
+            Element ei = (Element)n;
+            String tag = ei.getNodeName();
+            if(XMODEL_ACTION_ITEM.equals(tag)) {
+            	String kind = ei.getAttribute("kind");
+            	XActionItemImpl item = (kind.equals("list"))
                  ? (XActionItemImpl) new XActionListImpl()
                  : (XActionItemImpl) new XActionImpl();
-            item.setParent(this);
-            items[i] = item;
-            item.load(ei);
+                 item.setParent(this);
+                 item.load(ei);
+                 list.add(item);
+            } else if(XMODEL_ACTION_ITEM_REF.equals(tag)) {
+				String entityName = ei.getAttribute("entity");
+				String attrName = ei.getAttribute(NAME);
+				String path = ei.hasAttribute("path") 
+					? ei.getAttribute("path") 
+					: attrName;
+				
+				XModelEntity entity = getMetaModel().getEntity(entityName);
+				if(entity != null) {
+					XActionItem item = ((XActionListImpl)entity.getActionList()).findItem(path);
+					if(item != null) {
+						list.add(item.copy(Acceptor.DEFAULT));
+					}
+				}
+            }
         }
+        items = list.toArray(new XActionItem[list.size()]);
     }
 
     public void merge(XActionListImpl ext) {
