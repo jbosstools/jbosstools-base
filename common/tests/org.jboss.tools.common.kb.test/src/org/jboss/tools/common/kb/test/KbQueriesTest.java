@@ -21,6 +21,7 @@ import org.jboss.tools.common.kb.KbProposal;
 import org.jboss.tools.common.kb.KbQuery;
 import org.jboss.tools.common.kb.KbResource;
 import org.jboss.tools.common.kb.KbTldResource;
+import org.jboss.tools.common.kb.TagDescriptor;
 import org.jboss.tools.common.kb.test.resources.TestBeanPropertyResource;
 import org.jboss.tools.common.kb.test.resources.TestBundleNameResource;
 import org.jboss.tools.common.kb.test.resources.TestBundlePropertyResource;
@@ -35,6 +36,22 @@ import org.jboss.tools.common.kb.wtp.JspWtpKbConnector;
 public class KbQueriesTest extends TestCase {
 
 	private JspWtpKbConnector connector = new JspWtpKbConnector();
+
+	/**
+	 * Test for http://jira.jboss.com/jira/browse/JBIDE-1765
+	 */
+	public void testJBIDE1765() {
+		KbResource jsfHtmlTld = new KbTldResource("http://java.sun.com/jsf/html", null, "h", "1.2");
+		connector.registerResource(jsfHtmlTld, true);
+		String query = KbQuery.TAG_SEPARATOR + "h" + KbQuery.PREFIX_SEPARATOR + "outputText";
+		try {
+			TagDescriptor tag = connector.getTagInformation(query);
+			assertNotNull("Can't get tag descriptor for " + query, tag);
+			assertFalse(query + " has tag body.", tag.hasBody());
+		} catch (KbException e) {
+			fail("Can't get tag descriptor for " + query + ": " + e.getMessage());
+		}
+	}
 
 	public void testQueries() {
 		KbResource jsfHtmlTld = new KbTldResource("http://java.sun.com/jsf/html", null, "h", "1.2");

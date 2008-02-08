@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE kb-schema PUBLIC "-//Red Hat, Inc//DTD Knowledge Base 1.0//EN" "http://www.redhat.com/dtds/kb-schema_1_0.dtd">
 <schema location="" prefix="h" uri="http://java.sun.com/jsf/html" version="1.2">
-    <element-type body-content="allowed" content="mixed" end-tag="required"
+    <element-type body-content="refused" content="mixed" end-tag="required"
         name="commandButton" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "input" element.&lt;/p&gt;
             
@@ -1485,7 +1485,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
+    <element-type body-content="refused" content="mixed" end-tag="required"
         name="graphicImage" start-tag="required">
         <description>Renders an HTML "img" element.  Render
             the clientId as the value of the "id" attribute.  Render the
@@ -1725,7 +1725,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
+    <element-type body-content="refused" content="mixed" end-tag="required"
         name="inputHidden" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "input" element of type
             "hidden".&lt;/p&gt;
@@ -1869,7 +1869,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
+    <element-type body-content="refused" content="mixed" end-tag="required"
         name="inputSecret" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "input" element of "type" "password".&lt;/p&gt;
             
@@ -2274,7 +2274,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
+    <element-type body-content="refused" content="mixed" end-tag="required"
         name="inputText" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "input"
             element of "type" "text".&lt;/p&gt;
@@ -3029,7 +3029,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
+    <element-type body-content="refused" content="mixed" end-tag="required"
         name="message" start-tag="required">
         <description>&lt;p&gt;Render a single message for a specific component.&lt;/p&gt;
             
@@ -3265,7 +3265,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
+    <element-type body-content="refused" content="mixed" end-tag="required"
         name="messages" start-tag="required">
         <description>&lt;p&gt;The same as for the Message renderer, but output all the
             messages.  If the value of the "layout" attribute is "table",
@@ -3481,7 +3481,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
+    <element-type body-content="refused" content="mixed" end-tag="required"
         name="outputFormat" start-tag="required">
         <description>&lt;p&gt;Render parameterized text.  Obtain the
             &lt;code&gt;style&lt;/code&gt;, &lt;code&gt;styleClass&lt;/code&gt;, &lt;code&gt;dir&lt;/code&gt;, and
@@ -4130,7 +4130,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
+    <element-type body-content="refused" content="mixed" end-tag="required"
         name="outputText" start-tag="required">
         <description>If the "styleClass", "style", "dir" or "lang"
             attributes are present, render a "span" element.  If the
@@ -4649,7 +4649,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
+    <element-type body-content="refused" content="mixed" end-tag="required"
         name="selectBooleanCheckbox" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "input" element of type "checkbox".&lt;/p&gt;
             
