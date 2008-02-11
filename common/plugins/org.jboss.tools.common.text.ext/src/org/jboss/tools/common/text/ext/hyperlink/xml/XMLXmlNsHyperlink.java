@@ -274,7 +274,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 	        	mappedSystemId = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolvePublic(publicId, systemId);
 			if (mappedSystemId == null)
 				mappedSystemId = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveSystem(systemId);
-			if (systemId != null)
+			if (mappedSystemId == null && systemId != null)
 	        	mappedSystemId = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(systemId);
 		} catch (Exception e) {
 			// Ignore, just return null as result
