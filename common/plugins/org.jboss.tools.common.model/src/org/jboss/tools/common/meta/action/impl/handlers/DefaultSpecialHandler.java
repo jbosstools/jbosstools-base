@@ -40,7 +40,7 @@ public class DefaultSpecialHandler extends AbstractHandler {
         validated = true;
         wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard");
         support = createSpecialWizardSupport(action.getProperty("support"));
-        support.setAction(action);
+        if(support != null) support.setAction(action);
     }
 
     public boolean isEnabled(XModelObject object) {
