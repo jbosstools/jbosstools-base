@@ -13,11 +13,13 @@ package org.jboss.tools.common.model.util;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.internal.commands.ICommandImageService;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.osgi.framework.Bundle;
 
 public class ModelImages {
 	private static ModelImages instance;
@@ -51,16 +53,27 @@ public class ModelImages {
 			ICommandImageService s = (ICommandImageService)w.getService(ICommandImageService.class);
 			return s.getImageDescriptor(key);
 		}
+		URL url = baseUrl;
+		if(key.startsWith("plugin:")) {
+			key = key.substring("plugin:".length());
+			int i = key.indexOf(":");
+			String plugin = key.substring(0, i);
+			key = key.substring(i + 1);
+			Bundle bundle = Platform.getBundle(plugin);
+			if(bundle != null) {
+				url = bundle.getEntry("/");
+			}
+		}
 		try {
-			return ImageDescriptor.createFromURL(makeIconFileURL(key));
+			return ImageDescriptor.createFromURL(makeIconFileURL(url, key));
 		} catch (MalformedURLException e) {
 			return ImageDescriptor.getMissingImageDescriptor();
 		}		
 	}
 
-	private URL makeIconFileURL(String name) throws MalformedURLException {
+	private URL makeIconFileURL(URL url, String name) throws MalformedURLException {
 		if (name == null) throw new MalformedURLException("Image name cannot be null.");
-		return new URL(baseUrl, name);
+		return new URL(url, name);
 	}	
 
 }
