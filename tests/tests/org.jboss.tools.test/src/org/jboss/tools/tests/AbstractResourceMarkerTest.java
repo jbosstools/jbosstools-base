@@ -27,9 +27,8 @@ public class AbstractResourceMarkerTest extends TestCase {
 	 * 
 	 */
 	public AbstractResourceMarkerTest() {
-		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -53,11 +52,11 @@ public class AbstractResourceMarkerTest extends TestCase {
 
 		return number;
 	}
-	
+
 	protected void assertMarkerIsCreated(IFile file, MarkerData markerData) throws CoreException {
 		assertMarkerIsCreated(file, markerData.type, markerData.pattern, markerData.line);
 	}
-	
+
 	protected void assertMarkerIsCreated(IFile file, String type, String pattern, int expectedLine) 
 		throws CoreException {
 		
@@ -70,20 +69,20 @@ public class AbstractResourceMarkerTest extends TestCase {
 		assertEquals("Marker matches the '" + pattern + "' pattern was found at wrong line",
 				expectedLine,line);
 	}
-	
+
 	protected void assertMarkersIsCreated(IFile file, MarkerData[] markersData) throws CoreException {
 		for (MarkerData markerData : markersData) {
 			assertMarkerIsCreated(file, markerData);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @author eskimo
 	 *
 	 */
 	public static class MarkerData {
-		
+
 		private String type;
 		private String pattern;
 		private int line = -1;
@@ -93,7 +92,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 			this.pattern = pattern;
 			this.line = line;
 		}
-		
+
 		public int getLine() {
 			return line;
 		}
@@ -117,7 +116,5 @@ public class AbstractResourceMarkerTest extends TestCase {
 		public void setPattern(String pattern) {
 			this.pattern = pattern;
 		}
-		
 	}
-
 }

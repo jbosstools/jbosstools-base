@@ -29,11 +29,11 @@ import org.jboss.tools.common.text.xml.contentassist.ContentAssistProcessorDefin
 /**
  * @author Igels
  */
-public class RedHatStructuredTextViewerConfigurationXML extends StructuredTextViewerConfigurationXML {
+public class XMLTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 	
 	SourceViewerConfiguration initial = null;
 
-	public RedHatStructuredTextViewerConfigurationXML() {
+	public XMLTextViewerConfiguration() {
 		super();
 	}
 	

@@ -77,7 +77,7 @@ import org.jboss.tools.common.model.ui.editors.dnd.context.IDNDTextEditor;
 import org.jboss.tools.common.model.ui.editors.dnd.context.InnerDragBuffer;
 import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
 import org.jboss.tools.common.text.xml.IOccurrencePreferenceProvider;
-import org.jboss.tools.common.text.xml.RedHatStructuredTextViewerConfigurationXML;
+import org.jboss.tools.common.text.xml.XMLTextViewerConfiguration;
 import org.jboss.tools.common.text.xml.XmlEditorPlugin;
 import org.jboss.tools.jst.jsp.text.xpl.IStructuredTextOccurrenceStructureProvider;
 
@@ -102,7 +102,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 ///		dnd.setTextEditorDropProvider(new TextEditorDropProviderImpl());
 		
 		if (useRHDSConfig) {
-			super.setSourceViewerConfiguration(new RedHatStructuredTextViewerConfigurationXML());
+			super.setSourceViewerConfiguration(new XMLTextViewerConfiguration());
 		}
 	}
 
@@ -110,12 +110,12 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 	
 	protected void setSourceViewerConfiguration(SourceViewerConfiguration config) {
 		if( useRHDSConfig
-			&& !(config instanceof RedHatStructuredTextViewerConfigurationXML)
+			&& !(config instanceof XMLTextViewerConfiguration)
 			&& (config instanceof StructuredTextViewerConfigurationXML
 					|| !(config instanceof StructuredTextViewerConfiguration)
 				)
 			) {
-			RedHatStructuredTextViewerConfigurationXML r = new RedHatStructuredTextViewerConfigurationXML();
+			XMLTextViewerConfiguration r = new XMLTextViewerConfiguration();
 			r.setInitialConfiguration(config);
 			config = r;
 		}

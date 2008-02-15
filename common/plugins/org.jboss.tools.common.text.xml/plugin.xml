@@ -21,7 +21,7 @@
    <extension
          point="org.eclipse.wst.sse.ui.editorConfiguration">
       <sourceViewerConfiguration
-			class="org.jboss.tools.common.text.xml.RedHatStructuredTextViewerConfigurationXML"
+			class="org.jboss.tools.common.text.xml.XMLTextViewerConfiguration"
             target="org.eclipse.core.runtime.xml"/>
       <contentOutlineConfiguration
             class="org.eclipse.wst.xml.ui.views.contentoutline.XMLContentOutlineConfiguration"
@@ -66,7 +66,7 @@
    <extension
          point="org.eclipse.wst.sse.ui.editorConfiguration">
       <sourceViewerConfiguration
-			class="org.jboss.tools.common.text.xml.RedHatStructuredTextViewerConfigurationXML"
+			class="org.jboss.tools.common.text.xml.XMLTextViewerConfiguration"
             target="org.jboss.tools.common.model.ui.xml"/>
       <contentOutlineConfiguration
             class="org.eclipse.wst.xml.ui.views.contentoutline.XMLContentOutlineConfiguration"
