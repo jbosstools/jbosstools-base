@@ -357,7 +357,7 @@ litigation.
          version="0.0.0"/>
 
    <plugin
-         id="org.jboss.tools.jsf.vpe.ui.test"
+         id="org.jboss.tools.vpe.ui.test"
          download-size="0"
          install-size="0"
          version="0.0.0"
