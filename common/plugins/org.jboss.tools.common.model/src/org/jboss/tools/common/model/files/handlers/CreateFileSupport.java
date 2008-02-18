@@ -14,7 +14,6 @@ import java.io.*;
 import java.util.*;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.*;
 import org.eclipse.swt.widgets.Display;
 
 import org.jboss.tools.common.meta.XMapping;
@@ -24,7 +23,6 @@ import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.impl.*;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.util.FileUtil;
 
@@ -184,17 +182,17 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		return createFile(targetHolder.target, path, body, extractStepData(0));
 	}
 	
-	protected String getTemplateBody() throws Exception {
+	protected String getTemplateBody() throws IOException {
 		File templateFile = null;
 		String template = getAttributeValue(0, "template");
 		if(template != null && template.trim().length() > 0) {
 			templateFile = findTemplate(template.trim());
-			if(templateFile == null || !templateFile.isFile()) throw new Exception("Template " + template + " is not found.");
+			if(templateFile == null || !templateFile.isFile()) throw new IOException("Template " + template + " is not found.");
 		}		
 		return (templateFile == null) ? "" : FileUtil.readFile(templateFile);
 	}
 	
-	protected String modifyBody(String body) {
+	protected String modifyBody(String body) throws IOException {
 		return body;
 	}
 	
