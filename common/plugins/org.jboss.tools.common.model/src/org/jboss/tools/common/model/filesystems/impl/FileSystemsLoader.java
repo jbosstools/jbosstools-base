@@ -131,6 +131,15 @@ public class FileSystemsLoader extends URLRootLoader {
 		return null;
     }
     
+    List<String> paths = null;
+    
+	static String[] SYSTEM_JARS = {"rt.jar", "jsse.jar", "jce.jar", "charsets.jar"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	static Set<String> SYSTEM_JAR_SET = new HashSet<String>();
+	
+	static {
+		for (int i = 0; i < SYSTEM_JARS.length; i++) SYSTEM_JAR_SET.add(SYSTEM_JARS[i]);
+	}
+	
     private void updateLibs(XModelObject object) {
     	if(WatcherLoader.isLocked(object.getModel())) {
     		return;
@@ -141,50 +150,58 @@ public class FileSystemsLoader extends URLRootLoader {
     	if(lib == null) {
     		return;
     	}
-    	XModelObject[] js = lib.getChildren();
-    	String loc = lib.getAttributeValue("location");
-		List<String> paths = null;
+		List<String> newPaths = null;
 		try {
-			paths = EclipseResourceUtil.getClassPath(project);
+			newPaths = EclipseResourceUtil.getClassPath(project.getProject());
+			List<String> jre = EclipseResourceUtil.getJREClassPath(project.getProject());
+			if(jre != null) newPaths.removeAll(jre);
 		} catch (Exception e) {
-			//ignore
+			//TODO
+			ModelPlugin.getDefault().logError(e);
 		}
-		if(paths == null) return;
-    	for (int i = 0; i < js.length; i++) {
-    		if(js[i].getFileType() != XModelObject.FILE) continue;
-    		String nm = js[i].getPathPart();
-    		String jsname = "lib-" + nm;
-			String location = loc + "/" + nm;
-			String path = XModelObjectUtil.expand(location, object.getModel(), null);
-			try {
-				path = new File(path).getCanonicalPath();
-			} catch (Exception e) {
-				//ignore
+		if(paths == null && newPaths == null) return;
+		if((newPaths == null || paths == null) || (paths.size() != newPaths.size())) {
+			paths = newPaths;
+		} else { 
+			boolean b = false;
+			for (int i = 0; i < paths.size() && !b; i++) {
+				if(!paths.get(i).equals(newPaths.get(i))) b = true;
 			}
-    		XModelObject s = object.getChildByPath(jsname);
-    		if(s != null) {
-				if(!paths.contains(path)) {
-					if("true".equals(s.get(IS_ADDED_TO_CLASSPATH))) {
-						s.removeFromParent(); 
-						object.setModified(true);
-					} else if(!new File(path).exists()) {
-						s.removeFromParent();
-						object.setModified(true);
-					}
-				} else {
-					s.set(IS_ADDED_TO_CLASSPATH, "true");
-				} 
-    		} else {
-				if(paths.contains(path)) {
-					s = object.getModel().createModelObject("FileSystemJar", null);
-					s.setAttributeValue("name", jsname);
-					s.setAttributeValue("location", location);
-					s.set(IS_ADDED_TO_CLASSPATH, "true");
-					object.addChild(s);
-					object.setModified(true);
-				}
-    		}
-    	}
+			if(!b) return;
+			paths = newPaths;
+		}
+		XModelObject[] fs = object.getChildren("FileSystemJar"); //$NON-NLS-1$
+		Set<XModelObject> fss = new HashSet<XModelObject>();
+		for (int i = 0; i < fs.length; i++) fss.add(fs[i]);
+		
+		for (int i = 0; i < paths.size(); i++) {
+			String path = paths.get(i);
+			if(!path.endsWith(".jar")) continue; //$NON-NLS-1$
+			String fileName = new File(path).getName();
+			if(SYSTEM_JAR_SET.contains(fileName)) continue;
+			String jsname = "lib-" + fileName; //$NON-NLS-1$
+			XModelObject o = object.getChildByPath(jsname); //$NON-NLS-1$
+			if(o != null) {
+				fss.remove(o);
+			} else {
+				o = object.getModel().createModelObject("FileSystemJar", null); //$NON-NLS-1$
+				o.setAttributeValue("name", jsname); //$NON-NLS-1$
+				o.setAttributeValue("location", path); //$NON-NLS-1$
+				o.set(IS_ADDED_TO_CLASSPATH, "true"); //$NON-NLS-1$
+				object.addChild(o);
+//				object.setModified(true);
+			}			
+		}
+		
+		for (XModelObject o: fss) {
+			String path = XModelObjectUtil.expand(o.getAttributeValue("location"), o.getModel(), null); //$NON-NLS-1$
+			if("true".equals(o.get(FileSystemsLoader.IS_ADDED_TO_CLASSPATH))) { //$NON-NLS-1$
+				o.removeFromParent(); 
+			} else if(!new File(path).exists()) {
+				o.removeFromParent();
+			}			
+		}
+		
     }
     
     private XModelObject validateLib(XModelObject object) {
@@ -342,4 +359,3 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
     }
 
 }
-
