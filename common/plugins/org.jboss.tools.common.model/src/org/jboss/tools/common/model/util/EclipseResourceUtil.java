@@ -475,9 +475,16 @@ public class EclipseResourceUtil {
 			try {
 				String s = null;
 				String path = es[i].getPath().toString();
-				if(path.startsWith("/" + project.getName() + "/")) {
+				if(path.startsWith("/") && path.indexOf("/", 1) > 1) {
+					IResource findMember = ResourcesPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
+					if(findMember != null) {
+						s = findMember.getLocation().toString();
+					} else {
+						s = null;
+					}
+				} else if(path.startsWith("/" + project.getName() + "/")) {
 					IResource findMember = project.findMember(es[i].getPath().removeFirstSegments(1));
-					if(findMember!=null) {
+					if(findMember != null) {
 						s = findMember.getLocation().toString();
 					} else {
 						s = null;
@@ -490,6 +497,40 @@ public class EclipseResourceUtil {
 				}
 			} catch (IOException e) {
 				//ignore - we do not care about malformed URLs in classpath here.
+			}
+		}
+		return l;
+	}
+	
+	public static List<String> getJREClassPath(IProject project) throws CoreException {
+		if(!project.hasNature(JavaCore.NATURE_ID)) return null;
+		ArrayList<String> l = new ArrayList<String>();
+		IJavaProject javaProject = JavaCore.create(project);
+		IClasspathEntry[] es0 = javaProject.getRawClasspath();
+		IClasspathEntry[] es = null;
+		for (int i = 0; i < es0.length && es == null; i++) {
+			if(es0[i].getEntryKind() == IClasspathEntry.CPE_CONTAINER && 
+					es0[i].getPath().toString().equals("org.eclipse.jdt.launching.JRE_CONTAINER")) { //$NON-NLS-1$
+				IClasspathContainer container = JavaCore.getClasspathContainer(es0[i].getPath(), javaProject);
+				if(container == null) continue;
+				es = container.getClasspathEntries();
+			}
+		}
+		if(es == null) return l;
+		for (int i = 0; i < es.length; i++) {
+			try {
+				String s = null;
+				String path = es[i].getPath().toString();
+				if(path.startsWith("/" + project.getName() + "/")) { //$NON-NLS-1$ //$NON-NLS-2$
+					s = project.findMember(es[i].getPath().removeFirstSegments(1)).getLocation().toString();
+				} else if(new java.io.File(path).isFile()) {
+					s = path;
+				}
+				if(s != null) {
+					l.add(new java.io.File(s).getCanonicalPath());
+				}
+			} catch (IOException e) {
+				//ignore - we do not care about malformed URLs in class path here.
 			}
 		}
 		return l;
