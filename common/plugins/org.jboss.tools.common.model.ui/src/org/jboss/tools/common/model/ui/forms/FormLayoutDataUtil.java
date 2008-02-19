@@ -47,7 +47,7 @@ public class FormLayoutDataUtil {
 	public static IFormAttributeData[] createFormAttributeData(String entityName, String categoryName) {
 		XModelEntity entity = PreferenceModelUtilities.getPreferenceModel().getMetaData().getEntity(entityName);
 		if(entity == null) return new IFormAttributeData[0];
-		List list = new ArrayList();
+		List<IFormAttributeData> list = new ArrayList<IFormAttributeData>();
 		XAttribute[] as = entity.getAttributes();
 		for (int i = 0; i < as.length; i++) {
 			if(!as[i].isVisible()) continue;
@@ -65,19 +65,19 @@ public class FormLayoutDataUtil {
 				}
 			}
 		}		
-		return (IFormAttributeData[])list.toArray(new IFormAttributeData[0]);
+		return list.toArray(new IFormAttributeData[0]);
 	}
 	
 	public static String[] getChildEntitiesWithAttribute(String entityName, String attributeName) {
 		XModelEntity entity = PreferenceModelUtilities.getPreferenceModel().getMetaData().getEntity(entityName);
 		if(entity == null) return new String[0];
-		List list = new ArrayList();
+		List<String> list = new ArrayList<String>();
 		XChild[] cs = entity.getChildren();
 		for (int i = 0; i < cs.length; i++) {
 			XModelEntity c = entity.getMetaModel().getEntity(cs[i].getName());
 			if(c != null && c.getAttribute(attributeName) != null) list.add(c.getName());
 		}		
-		return (String[])list.toArray(new String[0]);
+		return list.toArray(new String[0]);
 	}
 
 	public static FormData createAllChildrenFormData(String name, String entityName, String childName, String attributeName, String createAction) {
