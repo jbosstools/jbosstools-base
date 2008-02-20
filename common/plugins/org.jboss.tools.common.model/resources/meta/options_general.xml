@@ -2519,7 +2519,7 @@
 			</GroupHTML>
 			<GroupHTML model-entity="SharableGroupHTML" HIDDEN="no"
 				ICON="" NAME="Facelets" PREFIX="ui" SCOPE="project"
-				URI="http://java.sun.com/jsf/facelets" add_taglib="false"
+				URI="http://java.sun.com/jsf/facelets" add_taglib="true"
 				library-version="">
 				<MacroHTML
 					DESCRIPTION="The debug tag will capture the component tree and variables when it is encoded, storing the data for retrieval later. You may launch the debug window at any time from your browser by pressing 'CTRL' + 'SHIFT' + 'D' (by default). The debug tag doesn't need to be used with the facelet.DEVELOPMENT parameter. The best place to put this tag is in your site's main template where it can be enabled/disabled across your whole application. If your application uses multiple windows, you might want to assign different hot keys to each one.&lt;br>&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;ui:debug&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/ui:debug&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>hotkey, rendered&lt;/code>"
