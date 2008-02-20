@@ -213,7 +213,7 @@ public class CreateFileSupport extends SpecialWizardSupport {
 			if(o == null) {
 				o = fs.getModel().createModelObject("FileFolder", null);
 				o.setAttributeValue("name", s);
-				DefaultCreateHandler.addCreatedObject(fs, o, getProperties());
+				DefaultCreateHandler.addCreatedObject(fs, o, FindObjectHelper.IN_NAVIGATOR_ONLY);
 				((FolderImpl)o).save();
 			}
 			fs = o;
@@ -231,7 +231,7 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		f = modifyCreatedObject(f);
 		XModelObject fq = fs.getChildByPath(f.getPathPart());
 		if(fq != null) return fq;
-		DefaultCreateHandler.addCreatedObject(fs, f, getProperties());
+		DefaultCreateHandler.addCreatedObject(fs, f, FindObjectHelper.IN_NAVIGATOR_ONLY);
 		if(f instanceof FileAnyImpl && f.getModelEntity().getAttribute(XModelObjectConstants.ATTR_NAME_ENCODING) != null) {
 			String txt = ((FileAnyImpl)f).getAsText();
 			String enc = XModelObjectLoaderUtil.getEncoding(txt);
