@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE kb-schema PUBLIC "-//Red Hat, Inc//DTD Knowledge Base 1.0//EN" "http://www.redhat.com/dtds/kb-schema_1_0.dtd">
 <schema location="" prefix="h" uri="http://java.sun.com/jsf/html" version="1.2">
-    <element-type body-content="refused" content="mixed" end-tag="required"
-        name="commandButton" start-tag="required">
+    <element-type body-content="refused" content="mixed"
+        end-tag="required" name="commandButton" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "input" element.&lt;/p&gt;
             
             &lt;p&gt;Decode Behavior&lt;/p&gt;
@@ -52,12 +52,13 @@
             rendering.&lt;/p&gt;
             
             &lt;/ul&gt;</description>
-        <attribute-type name="action" required="true">
-            <description>MethodBinding representing the application action to invoke when
-                this component is activated by the user.  The expression must
-                evaluate to a public method that takes no parameters, and returns
-                a String (the logical outcome) which is passed to the
-                NavigationHandler for this application.</description>
+        <attribute-type name="action" required="false">
+            <description>MethodExpression representing the application action to invoke
+                when this component is activated by the user.  The expression
+                must evaluate to a public method that takes no parameters, and
+                returns an Object (the toString() of which is called to derive
+                the logical outcome) which is passed to the NavigationHandler
+                for this application.</description>
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
@@ -67,12 +68,13 @@
         </attribute-type>
         <attribute type="action"/>
         <attribute-type name="actionListener" required="false">
-            <description>MethodBinding representing an action listener method that will be
+            <description>MethodExpression representing an action listener method that will be
                 notified when this component is activated by the user.  The
                 expression must evaluate to a public method that takes an
                 ActionEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -111,7 +113,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -373,8 +375,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="commandLink" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="commandLink" start-tag="required">
         <description>&lt;p&gt;Render an HTML "a" anchor element that acts like a
             form submit button when clicked.&lt;/p&gt;
             
@@ -492,11 +494,12 @@
             
             &lt;/ul&gt;</description>
         <attribute-type name="action" required="false">
-            <description>MethodBinding representing the application action to invoke when
-                this component is activated by the user.  The expression must
-                evaluate to a public method that takes no parameters, and returns
-                a String (the logical outcome) which is passed to the
-                NavigationHandler for this application.</description>
+            <description>MethodExpression representing the application action to invoke
+                when this component is activated by the user.  The expression
+                must evaluate to a public method that takes no parameters, and
+                returns an Object (the toString() of which is called to derive
+                the logical outcome) which is passed to the NavigationHandler
+                for this application.</description>
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
@@ -506,12 +509,13 @@
         </attribute-type>
         <attribute type="action"/>
         <attribute-type name="actionListener" required="false">
-            <description>MethodBinding representing an action listener method that will be
+            <description>MethodExpression representing an action listener method that will be
                 notified when this component is activated by the user.  The
                 expression must evaluate to a public method that takes an
                 ActionEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -550,7 +554,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -812,8 +816,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="dataTable" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="dataTable" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "table" element compliant with the HTML 401
             specification.  Render the "caption" facet, if present, inside a "caption"
             element immediately below the "table" element.  If the "captionClass"
@@ -934,17 +938,19 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="rows"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="value"/>
-        <attribute-type name="var" required="true">
+        <attribute-type name="var" required="false">
             <description>Name of a request-scope attribute under which the model data for the
                 row selected by the current value of the "rowIndex" property (i.e.
                 also the current value of the "rowData" property) will be exposed.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="var"/>
@@ -1236,8 +1242,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="form" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="form" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "form" element.&lt;/p&gt;
             
             &lt;p&gt;Decode Behavior&lt;/p&gt;
@@ -1263,9 +1269,10 @@
             identifier of the current view to the &lt;code&gt;getActionURL()&lt;/code&gt;
             method of the &lt;code&gt;ViewHandler&lt;/code&gt; for this application, then
             passing that String to the &lt;code&gt;encodeActionURL()&lt;/code&gt; method
-            on the &lt;code&gt;ExternalContext&lt;/code&gt;.  If the "styleClass"
-            attribute is specified, render its value as the value of the
-            "class" attribute.  Call &lt;code&gt;ViewHandler.writeState()&lt;/code&gt;
+            on the &lt;code&gt;ExternalContext&lt;/code&gt;.  The value of the acceptcharset
+            attribute must be rendered as the value of "accept-charset".
+            If the "styleClass" attribute is specified, render its value as the
+            value of the "class" attribute.  Call &lt;code&gt;ViewHandler.writeState()&lt;/code&gt;
             before the the close of the "form" element.  Render all the
             necessary hidden fields for all commandLink instances in the page
             just before the close of the "form" element.  Render a "name"
@@ -1485,8 +1492,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="refused" content="mixed" end-tag="required"
-        name="graphicImage" start-tag="required">
+    <element-type body-content="refused" content="mixed"
+        end-tag="required" name="graphicImage" start-tag="required">
         <description>Renders an HTML "img" element.  Render
             the clientId as the value of the "id" attribute.  Render the
             value of the component as the value of the "src" attribute,
@@ -1502,7 +1509,8 @@
             attribute.</description>
         <attribute-type name="id" required="false">
             <description>The component identifier for this component.  This value must be
-                unique within the closest parent component that is a naming     container.</description>
+                unique within the closest parent component that is a naming
+                container.</description>
         </attribute-type>
         <attribute type="id"/>
         <attribute-type name="rendered" required="false">
@@ -1529,7 +1537,7 @@
             </proposal>
         </attribute-type>
         <attribute type="url"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -1725,8 +1733,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="refused" content="mixed" end-tag="required"
-        name="inputHidden" start-tag="required">
+    <element-type body-content="refused" content="mixed"
+        end-tag="required" name="inputHidden" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "input" element of type
             "hidden".&lt;/p&gt;
             
@@ -1820,7 +1828,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -1841,7 +1849,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -1849,12 +1857,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -1869,8 +1878,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="refused" content="mixed" end-tag="required"
-        name="inputSecret" start-tag="required">
+    <element-type body-content="refused" content="mixed"
+        end-tag="required" name="inputSecret" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "input" element of "type" "password".&lt;/p&gt;
             
             &lt;p&gt;Decode Behavior&lt;/p&gt;
@@ -1967,7 +1976,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -1988,7 +1997,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -1996,12 +2005,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -2274,8 +2284,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="refused" content="mixed" end-tag="required"
-        name="inputText" start-tag="required">
+    <element-type body-content="refused" content="mixed"
+        end-tag="required" name="inputText" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "input"
             element of "type" "text".&lt;/p&gt;
             
@@ -2375,7 +2385,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -2396,7 +2406,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -2404,12 +2414,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -2432,7 +2443,8 @@
         </attribute-type>
         <attribute type="alt"/>
         <attribute-type name="autocomplete" required="false">
-            <description>If the value of this attribute is "off", render "off" as the value   of the attribute. This indicates that the  browser should
+            <description>If the value of this attribute is "off", render "off" as the value
+                of the attribute. This indicates that the  browser should
                 disable its autocomplete feature for this component.  This is
                 useful for components that perform autocompletion and do not
                 want the browser interfering.  If this attribute is not set or the value
@@ -2666,8 +2678,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="inputTextarea" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="inputTextarea" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "textarea" element.&lt;/p&gt;
             
             &lt;p&gt;Decode Behavior&lt;/p&gt;
@@ -2759,7 +2771,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -2780,7 +2792,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -2788,12 +2800,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -3029,8 +3042,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="refused" content="mixed" end-tag="required"
-        name="message" start-tag="required">
+    <element-type body-content="refused" content="mixed"
+        end-tag="required" name="message" start-tag="required">
         <description>&lt;p&gt;Render a single message for a specific component.&lt;/p&gt;
             
             &lt;p&gt;Set-up for Rendering&lt;/p&gt;
@@ -3056,7 +3069,8 @@
             "styleClass" and "layout" attributes from the
             &lt;code&gt;UIMessage&lt;/code&gt; component.  If we have a "style"
             attribute and a severity style attribute, use the severity style
-            attribute as the value of the "style" attribute.  If we have no  "style" attribute, but do have a severity style, use the
+            attribute as the value of the "style" attribute.  If we have no
+            "style" attribute, but do have a severity style, use the
             severity style as the value of the "style" attribute.  The same
             precedence rules apply for the style class.  Obtain the value of
             the &lt;code&gt;dir&lt;/code&gt; and &lt;code&gt;lang&lt;/code&gt; attributes.&lt;/p&gt;
@@ -3265,8 +3279,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="refused" content="mixed" end-tag="required"
-        name="messages" start-tag="required">
+    <element-type body-content="refused" content="mixed"
+        end-tag="required" name="messages" start-tag="required">
         <description>&lt;p&gt;The same as for the Message renderer, but output all the
             messages.  If the value of the "layout" attribute is "table",
             render nested "table", "tr", and "td" elements, in that order.
@@ -3481,8 +3495,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="refused" content="mixed" end-tag="required"
-        name="outputFormat" start-tag="required">
+    <element-type body-content="refused" content="mixed"
+        end-tag="required" name="outputFormat" start-tag="required">
         <description>&lt;p&gt;Render parameterized text.  Obtain the
             &lt;code&gt;style&lt;/code&gt;, &lt;code&gt;styleClass&lt;/code&gt;, &lt;code&gt;dir&lt;/code&gt;, and
             &lt;code&gt;lang&lt;/code&gt; attributees from this component.  If any are
@@ -3526,7 +3540,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -3599,8 +3613,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="outputLabel" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="outputLabel" start-tag="required">
         <description>Renders an HTML "label" element.  Render the current value
             of the component as label text if it is specified. If a "for" attribute is
             specified, find the component specified by the value of the "for"
@@ -3633,7 +3647,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -3669,7 +3683,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="escape"/>
-        <attribute-type name="for" required="true">
+        <attribute-type name="for" required="false">
             <description>Client identifier of the component for which this element
                 is a label.</description>
             <proposal type="beanProperty"/>
@@ -3821,8 +3835,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="outputLink" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="outputLink" start-tag="required">
         <description>Render an HTML "a" anchor element.  The value of the
             component is rendered as the value of the "href" attribute.  Any
             child UIParameter components are appended to the String to be
@@ -3869,7 +3883,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -4130,8 +4144,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="refused" content="mixed" end-tag="required"
-        name="outputText" start-tag="required">
+    <element-type body-content="refused" content="mixed"
+        end-tag="required" name="outputText" start-tag="required">
         <description>If the "styleClass", "style", "dir" or "lang"
             attributes are present, render a "span" element.  If the
             "styleClass" attribute is present, render its value as the value
@@ -4168,7 +4182,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -4241,13 +4255,17 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="panelGrid" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="panelGrid" start-tag="required">
         <description>Renders an HTML "table" element, conforming to the
-            rules in the HTML 401 specification.  If the "styleClass"
-            attribute is specified, render its value as the value of the
-            "class" attribute.  Render the pass-through attributes in the
-            table below.  Render the "header" facet, if present, inside of
+            rules in the HTML 401 specification.  Render the "caption" facet,
+            if present, inside a "caption" element immediately below the "table" element.
+            If the "captionClass" attribute is specified, render its value as the value
+            of the "class" attribute on the "caption" element.  If the "captionStyle" attribute
+            is specified, render its value as the value of the "style" attribute
+            on the "caption" element.  If the "styleClass" attribute is specified, render
+            its value as the value of the "class" attribute.  Render the pass-through
+            attributes in the table below.  Render the "header" facet, if present, inside of
             "thead", "tr", and "th" elements, nested in that order.  If the
             "headerClass" attribute is specifed, render its value as the value
             of the "class" attribute on the "th" element.  Render "colgroup"
@@ -4259,9 +4277,14 @@
             Render the children of the &lt;code&gt;UIPanel&lt;/code&gt; component inside
             of a "tbody" element.  Render the children based on the value of
             the "columns" attribute, creating a new row each time a "columns"
-            worth of children have been rendered.  Each child is rendered
-            inside of a "td" element.  If a child has "rendered==false" it is
-            not rendered, and the column counter must not be incremented.</description>
+            worth of children have been rendered.  For the start of each row,
+            render a "tr" element.  Output the value of the "rowClasses" per
+            the attribute description below.  For each child, output a "td"
+            element, attaching the value of the "columnClasses" attribute per
+            the attribute description below.  Recursively encode each child.
+            Close out the "td" element.  When done with the row, close out the
+            "tr" element.  If a child has "rendered==false" it is not rendered,
+            and the column counter must not be incremented.</description>
         <attribute-type name="id" required="false">
             <description>The component identifier for this component.  This value must be
                 unique within the closest parent component that is a naming
@@ -4347,7 +4370,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="columnClasses"/>
-        <attribute-type name="columns" required="true">
+        <attribute-type name="columns" required="false">
             <description>The number of columns to render before
                 starting a new row.</description>
             <proposal type="beanProperty"/>
@@ -4577,8 +4600,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="panelGroup" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="panelGroup" start-tag="required">
         <description>Intended for use in situations when only one
             UIComponent child can be nested, such as in the case of facets.
             If the "style" or "styleClass" attributes are present, and the "layout"
@@ -4649,8 +4672,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="refused" content="mixed" end-tag="required"
-        name="selectBooleanCheckbox" start-tag="required">
+    <element-type body-content="refused" content="mixed"
+        end-tag="required" name="selectBooleanCheckbox" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "input" element of type "checkbox".&lt;/p&gt;
             
             &lt;p&gt;Decode Behavior&lt;/p&gt;
@@ -4750,7 +4773,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -4771,7 +4794,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -4779,12 +4802,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -4950,7 +4974,8 @@
         </attribute-type>
         <attribute type="onselect"/>
         <attribute-type name="readonly" required="false">
-            <description>Flag indicating that this component will prohibit changes by     the user.  The element may receive focus unless it has also
+            <description>Flag indicating that this component will prohibit changes by
+                the user.  The element may receive focus unless it has also
                 been disabled.  A value of false causes
                 no attribute to be rendered, while a value of true causes the
                 attribute to be rendered as readonly="readonly".</description>
@@ -5005,8 +5030,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="selectManyCheckbox" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="selectManyCheckbox" start-tag="required">
         <description>&lt;p&gt;Render an HTML checkbox list.&lt;/p&gt;
             
             &lt;p&gt;&lt;a name="decode"&gt;Decode Behavior&lt;/a&gt;&lt;/p&gt;
@@ -5045,8 +5070,10 @@
             render it as an attribute on the outer "table" element, the value of which
             is the &lt;code&gt;clientId&lt;/code&gt; of the component per the rules at the beginning
             of this specification.  The value of the current SelectItem is rendered as
-            the value of the "value" attribute.  If the value of the enclosing UISelectMany
-            matches the current value, render "checked" as the value of the
+            the value of the "value" attribute.  Coerce the value of the currently rendered
+            child to the type of the parent UISelectMany value following the Expression Language
+            coercion rules, before comparing the values.  If the value of the enclosing
+            UISelectMany matches the current value, render "checked" as the value of the
             "checked" attribute.  See the
             &lt;a href="javax.faces.SelectManyjavax.faces.Listbox.html#options"&gt;"Rendering
             the option elements" &lt;/a&gt; specification for
@@ -5125,7 +5152,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -5146,7 +5173,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -5154,12 +5181,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -5420,8 +5448,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="selectManyListbox" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="selectManyListbox" start-tag="required">
         <description>&lt;p&gt;Render an HTML option list.&lt;/p&gt;
             
             &lt;p&gt;Decode Behavior&lt;/p&gt;
@@ -5514,7 +5542,10 @@
             &lt;code&gt;Object []&lt;/code&gt;, otherwise the component must be a
             &lt;code&gt;UISelectOne&lt;/code&gt; instance, call its
             &lt;code&gt;getSubmittedValue()&lt;/code&gt; method and create an &lt;code&gt;Object
-            []&lt;/code&gt; around the result.  If the resultant array is non-null,
+            []&lt;/code&gt; around the result.  Determine the type of the resultant array
+            if the resultant array is non-null, otherwise the type is &lt;code&gt;String&lt;/code&gt;.
+            Coerce the current item value to this type following the Expression
+            Language coercion rules.  If the resultant array is non-null,
             we look in the array for a value that, when we pass the renderable
             value to its &lt;code&gt;equals()&lt;/code&gt; method, it returns
             &lt;code&gt;true&lt;/code&gt;, meaning the current element is selected.  If
@@ -5608,7 +5639,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -5629,7 +5660,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -5637,12 +5668,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -5888,8 +5920,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="selectManyMenu" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="selectManyMenu" start-tag="required">
         <description>&lt;p&gt;Render an HTML option list.&lt;/p&gt;
             
             &lt;p&gt;&lt;a name="decode"&gt;Decode Behavior&lt;/a&gt;&lt;/p&gt;
@@ -5990,7 +6022,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -6011,7 +6043,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -6019,12 +6051,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -6065,7 +6098,8 @@
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="disabledClass" required="false">
-            <description>CSS style class to apply to the rendered label      on disabled options.</description>
+            <description>CSS style class to apply to the rendered label
+                on disabled options.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
@@ -6261,8 +6295,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="selectOneListbox" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="selectOneListbox" start-tag="required">
         <description>&lt;p&gt;Render an HTML option list.&lt;/p&gt;
             
             &lt;p&gt;&lt;a name="decode"&gt;Decode Behavior&lt;/a&gt;&lt;/p&gt;
@@ -6363,7 +6397,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -6384,7 +6418,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -6392,12 +6426,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -6643,8 +6678,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="selectOneMenu" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="selectOneMenu" start-tag="required">
         <description>&lt;p&gt;Render an HTML option list.&lt;/p&gt;
             
             &lt;p&gt;&lt;a name="decode"&gt;Decode Behavior&lt;/a&gt;&lt;/p&gt;
@@ -6745,7 +6780,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -6766,7 +6801,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -6774,12 +6809,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -7017,8 +7053,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="selectOneRadio" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="selectOneRadio" start-tag="required">
         <description>&lt;p&gt;Render a set of html "input" elements of type
             "radio".&lt;/p&gt;
             
@@ -7059,7 +7095,9 @@
             render it as an attribute on the outer "table" element, the value of which
             is the &lt;code&gt;clientId&lt;/code&gt; of the component per the rules at the
             beginning  of this specification.
-            If the value of the currently rendered child is equal to
+            Coerce the value of the currently rendered child to the type of the parent
+            UISelectOne value using the Expression Language coercion rules before comparing
+            the values.  If the value of the currently rendered child is equal to
             the value of the parent UISelectOne, render an appropriate HTML
             boolean value indicating "checked" for the enclosing "input".
             See the
@@ -7140,7 +7178,7 @@
         </attribute-type>
         <attribute type="requiredMessage"/>
         <attribute-type name="validator" required="false">
-            <description>MethodBinding representing a validator method that will be called
+            <description>MethodExpression representing a validator method that will be called
                 during Process Validations to perform correctness checks on the
                 value of this component.  The expression must evaluate to a public
                 method that takes FacesContext, UIComponent, and Object parameters,
@@ -7161,7 +7199,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="true">
+        <attribute-type name="value" required="false">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -7169,12 +7207,13 @@
         </attribute-type>
         <attribute type="value"/>
         <attribute-type name="valueChangeListener" required="false">
-            <description>MethodBinding representing a value change listener method that will be
+            <description>MethodExpression representing a value change listener method that will be
                 notified when a new value has been set for this input component.  The
                 expression must evaluate to a public method that takes a
                 ValueChangeEvent parameter, with a return type of void.</description>
-            <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
                 <param name="returnType" value="javax.faces.el.MethodBinding"/>
             </proposal>
@@ -7284,8 +7323,7 @@
         </attribute-type>
         <attribute type="onchange"/>
         <attribute-type name="onclick" required="false">
-            <description>Javascript code executed when a pointer button is
-                clicked over this element.</description>
+            <description>Javascript code executed when a pointer button is          clicked over this element.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
@@ -7435,8 +7473,8 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed" end-tag="required"
-        name="column" start-tag="required">
+    <element-type body-content="allowed" content="mixed"
+        end-tag="required" name="column" start-tag="required">
         <description>&lt;p&gt;Renders a UIComponent that represents a single column of data within a parent &lt;code&gt;UIData&lt;/code&gt; component.&lt;/p&gt;</description>
         <attribute-type name="rendered" required="false">
             <description>Flag indicating whether or not this component should be rendered
@@ -7464,14 +7502,16 @@
         </attribute-type>
         <attribute type="id"/>
         <attribute-type name="footerClass" required="false">
-            <description>Space-separated list of CSS style class(es) that will be applied to any column footer generated for this table.</description>
+            <description>Space-separated list of CSS style class(es) that will be
+                applied to any column footer generated for this table.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="footerClass"/>
         <attribute-type name="headerClass" required="false">
-            <description>Space-separated list of CSS style class(es) that will be applied to any column header generated for this table.</description>
+            <description>Space-separated list of CSS style class(es) that will be
+                applied to any column header generated for this table.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>

@@ -15,6 +15,7 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.jboss.tools.common.kb.AttributeDescriptor;
 import org.jboss.tools.common.kb.KbDinamicResource;
 import org.jboss.tools.common.kb.KbException;
 import org.jboss.tools.common.kb.KbProposal;
@@ -36,6 +37,16 @@ import org.jboss.tools.common.kb.wtp.JspWtpKbConnector;
 public class KbQueriesTest extends TestCase {
 
 	private JspWtpKbConnector connector = new JspWtpKbConnector();
+
+	/**
+	 * Test for http://jira.jboss.com/jira/browse/JBIDE-1804
+	 */
+	public void testJBIDE1804() {
+		KbResource jsfHtmlTld = new KbTldResource("http://java.sun.com/jsf/core", null, "f", "1.2");
+		connector.registerResource(jsfHtmlTld, true);
+		String query = KbQuery.TAG_SEPARATOR + "f" + KbQuery.PREFIX_SEPARATOR + "selectItem" + KbQuery.ATTRIBUTE_SEPARATOR + "escape";
+		checkAttribute(query);
+	}
 
 	/**
 	 * Test for http://jira.jboss.com/jira/browse/JBIDE-1765
@@ -124,6 +135,17 @@ public class KbQueriesTest extends TestCase {
 
 	private void checkQuery(String query, KbDinamicResource resource, String rightProposalLabel, String errorMessagePostfix) {
 		checkQuery(query, resource, new String[]{rightProposalLabel}, errorMessagePostfix);
+	}
+
+	private void checkAttribute(String query) {
+		AttributeDescriptor info = null;
+		String errorMessage = "Error getting attribute descriptor for " + query + ". ";
+		try {
+			info = connector.getAttributeInformation(query);
+		} catch (KbException e) {
+			fail(errorMessage + e.getMessage());
+		}
+		assertNotNull(errorMessage, info);
 	}
 
 	private void checkQuery(String query, KbDinamicResource resource, String[] rightProposalLabels, String errorMessagePostfix) {
