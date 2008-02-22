@@ -23,6 +23,17 @@ import org.osgi.framework.Bundle;
 
 import junit.framework.TestCase;
 
+/**
+ * Automatic test for JBIDE-1811.
+ * Checks that EclipseResourceUtil.getClassPath(IProject) 
+ * returns list which includes paths for Eclipse class path entries:
+ * 1. jars from the same project;
+ * 2. jars from another project in Eclipse work space;
+ * 3. external jars.
+ *   
+ * @author V.Kabanovich
+ *
+ */
 public class ClassPathTest extends TestCase {
 	static String BUNDLE_NAME = "org.jboss.tools.common.model.test";
 	TestProjectProvider provider1 = null;
@@ -66,9 +77,9 @@ public class ClassPathTest extends TestCase {
 		List<String> list = EclipseResourceUtil.getClassPath(project2);
 		
 		String[] testNames = {
-			"/Test2/lib/b.jar",	
-			"/Test1/lib/a.jar",
-			"projects/c.jar"
+			"/Test2/lib/b.jar",	//1. jar from this project
+			"/Test1/lib/a.jar", //2. jar from another project
+			"/projects/c.jar"   //3. external jar
 		};
 		for (int i = 0; i < testNames.length; i++) {
 			assertTrue("Cannot find classpath entry " + testNames[i], contains(list, testNames[i]));
