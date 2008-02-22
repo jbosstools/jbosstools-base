@@ -271,6 +271,10 @@ public class KbTldStore implements KbStore {
 			return getTags(needResources, prefixName, tagName, tagMask);
 		}
 
+		if(startAttributeName<startTagName) {
+			return new ArrayList<KbProposal>();
+		}
+
 		String tagName = strQuery.substring(startTagName, startAttributeName);
 		startAttributeName+=KbQuery.ATTRIBUTE_SEPARATOR.length();
 		if(startAttributeName == strQuery.length()) {

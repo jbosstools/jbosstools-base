@@ -39,6 +39,18 @@ public class KbQueriesTest extends TestCase {
 	private JspWtpKbConnector connector = new JspWtpKbConnector();
 
 	/**
+	 * Test for http://jira.jboss.com/jira/browse/JBIDE-1810
+	 */
+	public void testJBIDE1810() {
+		String query = KbQuery.TAG_SEPARATOR + "html@xmlns:";
+		try {
+			connector.getProposals(query);
+		} catch (KbException e) {
+			fail("Fails during parsing query for \"xmlns\" attribute: " + e.getMessage());
+		}
+	}
+
+	/**
 	 * Test for http://jira.jboss.com/jira/browse/JBIDE-1804
 	 */
 	public void testJBIDE1804() {
