@@ -9158,6 +9158,9 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute-type default="" name="src" required="false">
+            <proposal type="file">
+                <param name="extensions" value="%image%"/>
+            </proposal>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
