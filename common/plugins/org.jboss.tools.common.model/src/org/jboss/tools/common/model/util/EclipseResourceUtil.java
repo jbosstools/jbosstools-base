@@ -475,6 +475,8 @@ public class EclipseResourceUtil {
 			try {
 				String s = null;
 				String path = es[i].getPath().toString();
+
+				//First let's check if path is defined within Eclipse work space.
 				if(path.startsWith("/") && path.indexOf("/", 1) > 1) {
 					IResource findMember = ResourcesPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
 					if(findMember != null) {
@@ -482,14 +484,22 @@ public class EclipseResourceUtil {
 					} else {
 						s = null;
 					}
-				} else if(path.startsWith("/" + project.getName() + "/")) {
+				}
+				
+				//If search in Eclipse work space has failed, this is a useless attempt, but
+				//let keep it just in case (this is good old code that worked for a long while).
+				if(s == null && path.startsWith("/" + project.getName() + "/")) {
 					IResource findMember = project.findMember(es[i].getPath().removeFirstSegments(1));
 					if(findMember != null) {
 						s = findMember.getLocation().toString();
 					} else {
 						s = null;
 					}
-				} else if(new java.io.File(path).isFile()) {
+				}
+				
+				//If we failed to find resource in Eclipse work space, 
+				//lets try the path as absolute on disk
+				if(s == null && new java.io.File(path).isFile()) {
 					s = path;
 				}
 				if(s != null) {
