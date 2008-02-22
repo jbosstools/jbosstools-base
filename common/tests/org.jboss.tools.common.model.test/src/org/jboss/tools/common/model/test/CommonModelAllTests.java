@@ -23,6 +23,7 @@ public class CommonModelAllTests {
 		TestSuite suite = new TestSuite();
 		suite.setName("All tests for " + PLUGIN_ID);
 		suite.addTestSuite(MetaModelTest.class);
+		suite.addTestSuite(ClassPathTest.class);
 		return suite;
 	}
 }
