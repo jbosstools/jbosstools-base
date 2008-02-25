@@ -352,13 +352,6 @@ litigation.
          unpack="false"/>
 
    <plugin
-         id="org.jboss.tools.struts.vpe.struts"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.jboss.tools.vpe.html.test"
          download-size="0"
          install-size="0"
@@ -366,6 +359,12 @@ litigation.
 
    <plugin
          id="org.jboss.tools.vpe.jsp.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.jsf.vpe.myfaces.test"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
