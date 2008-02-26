@@ -258,6 +258,7 @@
     <Constraint loader="List">
      <value name="2.3"/>
      <value name="2.4"/>
+     <value name="2.5"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
@@ -293,6 +294,7 @@
     <Constraint loader="List">
      <value name="2.3"/>
      <value name="2.4"/>
+     <value name="2.5"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
@@ -604,6 +606,7 @@
     <Constraint loader="List">
      <value name="2.3"/>
      <value name="2.4"/>
+     <value name="2.5"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
@@ -664,6 +667,7 @@
     <Constraint loader="List">
      <value name="2.3"/>
      <value name="2.4"/>
+     <value name="2.5"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
