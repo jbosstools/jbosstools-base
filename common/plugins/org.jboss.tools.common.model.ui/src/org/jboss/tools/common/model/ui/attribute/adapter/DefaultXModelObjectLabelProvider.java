@@ -15,6 +15,8 @@ import org.eclipse.swt.graphics.Image;
 
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.XFileObject;
+import org.jboss.tools.common.model.ui.navigator.decorator.DecoratorManager;
+import org.jboss.tools.common.model.ui.navigator.decorator.XModelObjectDecorator;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class DefaultXModelObjectLabelProvider extends LabelProvider {
@@ -28,7 +30,12 @@ public class DefaultXModelObjectLabelProvider extends LabelProvider {
 		if (element != null) {
 			if (element instanceof XModelObject) {
 				XModelObject modelObject = (XModelObject)element; 
-				result = modelObject.getPresentationString();
+				XModelObjectDecorator d = DecoratorManager.getInstance().getDecoratorByEntity(modelObject.getModelEntity().getName());
+				if(d != null) {
+					result = d.getLabel(modelObject);
+				} else {
+					result = modelObject.getPresentationString();
+				}
 				if(modelObject.getFileType() == XFileObject.FILE && modelObject.isModified()) result += "*";
 			} else {
 				result = element.toString();
