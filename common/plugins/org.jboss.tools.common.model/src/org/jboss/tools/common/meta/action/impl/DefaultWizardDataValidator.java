@@ -39,7 +39,7 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 		XEntityData[] ds = support.getEntityData();
 		if(ds.length <= step) return; 
 		if(support.action != null) {
-			if("true".equals(support.action.getProperty("validator.add"))) {
+			if("true".equals(support.action.getProperty("validator.add")) && step == 0) {
 				String entity = support.action.getProperty("entity");
 				if(entity == null) entity = ds[step].getModelEntity().getName();
 				if(!checkChild(support.getTarget(), entity, data)) return;
