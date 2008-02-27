@@ -11,8 +11,18 @@
 package org.jboss.tools.common.model.project;
 
 import java.io.File;
+import java.util.Properties;
+
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
+import org.jboss.tools.common.model.XModelConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
 import org.w3c.dom.Element;
@@ -61,6 +71,33 @@ public class ProjectHome {
 		String q = (path.equals(".")) ? location : (path.startsWith("./")) ? location + path.substring(1) : path;
 		s.delete();
 		return q;
+	}
+
+	////
+	
+	public static boolean getLocation(IProject project, Properties p) {
+		IPath webInfPath = null;
+		
+		if(ComponentCore.createComponent(project)!=null) {
+			webInfPath = getWebInfPath(project);
+		}		
+		
+		if(webInfPath == null) return false;
+		
+		IFolder webInfFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(webInfPath);
+		
+		p.setProperty(XModelConstants.WORKSPACE, webInfFolder.getLocation().toString());
+		p.setProperty(XModelConstants.WORKSPACE_OLD, webInfFolder.getLocation().toString());
+
+		return true;
+	}
+
+	//Taken from J2EEUtils and modified
+	public static IPath getWebInfPath(IProject project) {		
+		IVirtualComponent component = ComponentCore.createComponent(project);		
+		IVirtualFolder webInfDir = component.getRootFolder().getFolder(new Path("/WEB-INF"));
+		IPath modulePath = webInfDir.getWorkspaceRelativePath();
+		return (!webInfDir.exists()) ? null : modulePath;
 	}
 
 }

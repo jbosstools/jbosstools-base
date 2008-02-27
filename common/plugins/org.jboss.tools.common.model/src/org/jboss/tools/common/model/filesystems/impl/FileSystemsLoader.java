@@ -22,6 +22,7 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.loaders.impl.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.project.IAutoLoad;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.model.project.WatcherLoader;
@@ -39,6 +40,11 @@ public class FileSystemsLoader extends URLRootLoader {
 
     public boolean save(XModelObject object) {
         if(!fsutil.isModified(object)) return true;
+
+        if(object.getModel().getProperties().get(XModelConstants.AUTOLOAD) != null) {
+        	return true;
+        }
+
         String s = getEclipseFileName(object, false);
         boolean b = (s == null) ? super.save(object.copy(1)) :
            saveEclipse(object.copy(1));
@@ -71,6 +77,20 @@ public class FileSystemsLoader extends URLRootLoader {
 
 	public void load(XModelObject object) {
 		if(EclipseResourceUtil.isProjectFragment(object.getModel())) return;
+
+		IAutoLoad auto = (IAutoLoad)object.getModel().getProperties().get(XModelConstants.AUTOLOAD);
+        if(auto != null) {
+        	auto.load(object.getModel());
+       		updateLibs(object);
+    		_updateSrcs(object);
+            try {
+            	((FileSystemsImpl)object).updateOverlapped();
+            } catch (Exception e) {
+            	ModelPlugin.getPluginLog().logError(e);
+            }
+        	return;
+        }
+		
 		String f = getEclipseFileName(object, true);
 		if(f == null) super.load(object);
 		else util().load(new File(f), object);
@@ -219,11 +239,16 @@ public class FileSystemsLoader extends URLRootLoader {
     	}
     	return lib;
     }
-    
+
     public void updateSrcs(XModelObject object) {
-    	if(WatcherLoader.isLocked(object.getModel())) {
+		IAutoLoad auto = (IAutoLoad)object.getModel().getProperties().get(XModelConstants.AUTOLOAD);
+    	if(auto == null && WatcherLoader.isLocked(object.getModel())) {
     		return;
     	}
+    	_updateSrcs(object);
+    }
+
+    private void _updateSrcs(XModelObject object) {
     	IProject p = EclipseResourceUtil.getProject(object);
     	if(p == null || !p.isAccessible()) return;
 		String[] srcs = EclipseResourceUtil.getJavaProjectSrcLocations(p);

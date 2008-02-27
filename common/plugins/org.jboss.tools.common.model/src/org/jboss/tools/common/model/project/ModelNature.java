@@ -96,8 +96,21 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
         } 
 		Properties p = new Properties();
 		p.putAll(System.getProperties());
-		p.setProperty(XModelConstants.WORKSPACE, getWorkspaceHome());
-		p.setProperty(XModelConstants.WORKSPACE_OLD, getWorkspaceHome());
+		
+		String home = getWorkspaceHome();
+		if(home != null && home.length() > 0) {
+			p.setProperty(XModelConstants.WORKSPACE, home);
+			p.setProperty(XModelConstants.WORKSPACE_OLD, home);
+		} else {
+			IAutoLoad auto = createAutoLoad();
+			boolean result = auto != null && ProjectHome.getLocation(project, p);
+			if(result) {
+				p.put(XModelConstants.AUTOLOAD, auto);
+			} else {
+				p.setProperty(XModelConstants.WORKSPACE, "");
+				p.setProperty(XModelConstants.WORKSPACE_OLD, "");
+			}
+		}
 		p.setProperty(ECLIPSE_PROJECT, project.getLocation().toString());
 		p.setProperty(ECLIPSE_PROJECT_OLD, project.getLocation().toString());
 		p.put("project", project);
@@ -114,6 +127,10 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		updateListener();
+	}
+	
+	protected IAutoLoad createAutoLoad() {
+		return null;
 	}
 	
 	protected void addToBuildSpec(String builderID) throws CoreException {

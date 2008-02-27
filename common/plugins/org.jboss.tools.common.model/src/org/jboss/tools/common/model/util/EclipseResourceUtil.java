@@ -28,6 +28,7 @@ import org.osgi.framework.Bundle;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.filesystems.impl.*;
 import org.jboss.tools.common.model.icons.impl.*;
@@ -95,7 +96,7 @@ public class EclipseResourceUtil {
 		if(resource == null) return null;
 		IPath path = resource.getLocation();
 		if (model != null) {
-			FileSystemsImpl fso = (FileSystemsImpl)model.getByPath("FileSystems");
+			FileSystemsImpl fso = (FileSystemsImpl)FileSystemsHelper.getFileSystems(model);
 			if(fso == null) return null;
 			fso.updateOverlapped();
 			XModelObject[] fs = fso.getChildren("FileSystemFolder");
@@ -124,7 +125,7 @@ public class EclipseResourceUtil {
 	}
 	
 	public static XModelObject findFileSystem(IResource resource, XModel model) {
-		XModelObject fss = model.getByPath("FileSystems");
+		XModelObject fss = FileSystemsHelper.getFileSystems(model);
 		if(fss == null) return null;
 		XModelObject[] fs = fss.getChildren();
 		XModelObject result = null;
@@ -146,7 +147,7 @@ public class EclipseResourceUtil {
 	}
 
 	public static XModelObject addFileSystem(IResource resource, XModel model) {
-		XModelObject fss = model.getByPath("FileSystems");
+		XModelObject fss = FileSystemsHelper.getFileSystems(model);
 		if(fss == null) return null;
 		while(resource != null && resource != resource.getProject() && resource.getParent() != null && resource.getParent() != resource.getProject()) {
 			resource = resource.getParent();
@@ -276,7 +277,7 @@ public class EclipseResourceUtil {
 
 		XModel model = models.get(project);
 		if(model != null) {
-			validateJarSystem(model.getByPath("FileSystems"), resource);
+			validateJarSystem(FileSystemsHelper.getFileSystems(model), resource);
 			return getObjectByResource(model, resource);
 		}
 		
@@ -294,7 +295,7 @@ public class EclipseResourceUtil {
 		model = XModelFactory.getModel(properties);
 		models.put(project, model);
 		
-		XModelObject fs = model.getByPath("FileSystems");
+		XModelObject fs = FileSystemsHelper.getFileSystems(model);
 		if(fs == null) {
 			ModelPlugin.getPluginLog().logInfo("Cannot create file systems for project " + project);
 			return null;
@@ -392,7 +393,7 @@ public class EclipseResourceUtil {
 		properties.setProperty(XModelConstants.WORKSPACE, f.getParent());
 		properties.put("isProjectFragment", "true");
 		XModel model = XModelFactory.getModel(properties);
-		XModelObject fs = model.getByPath("FileSystems");
+		XModelObject fs = FileSystemsHelper.getFileSystems(model);
 		if(fs == null) {
 			ModelPlugin.getPluginLog().logInfo("Cannot create file systems for model at " + location);
 			return null;

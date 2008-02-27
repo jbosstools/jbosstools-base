@@ -25,6 +25,8 @@ public class XModelConstants {
     
     public static String XMODEL_ENTITY_ATTR = "model-entity";
     public static String XMODEL_ENTITY_ATTR_OLD = "ENTITY";
+    
+    public static String AUTOLOAD = "autoload";
 
     private XModelConstants() {}
 
