@@ -10,21 +10,33 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.navigator.decorator;
 
-import org.jboss.tools.common.model.XModelObject;
-
 /**
  * @author Viacheslav Kabanovich
  */
-public class AttributeDecoratorPart implements IDecoratorPart {
-	Variable variable;
-	
-	public AttributeDecoratorPart(Variable variable) {
-		this.variable = variable;
-	}
+public interface DecoratorConstants {
 
-	public String getLabelPart(XModelObject object) {
-		String v = object.getAttributeValue(variable.getName());
-		return v == null ? "{" + variable.getName() + "}" : v; 
-	}
+	public String ATTR_NAME = "name";
+
+	public String ATTR_PARTITION = "partition";
+
+	public String ATTR_ENTITIES = "entities";
+
+	public String ATTR_ENTITY = "entity";
+
+	public String ATTR_DEFAULT = "defaultValue";
+
+	public String ATTR_DESCRIPTION = "description";
+	
+	public String ATTR_VALUE = "value";
+	
+	public String NODE_VARIABLE = "variable";
+	
+	public String NODE_EXAMPLE = "example";
+	
+	public String NODE_PUT = "put";
+	
+	public String RULE_OPENING = "{";
+	
+	public String RULE_CLOSING = "}";
 
 }

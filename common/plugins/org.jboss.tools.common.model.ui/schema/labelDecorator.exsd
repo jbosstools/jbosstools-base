@@ -44,6 +44,10 @@
 
    <element name="labelDecorator">
       <complexType>
+         <sequence>
+            <element ref="variable" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="example" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
          <attribute name="partition" type="string" use="required">
             <annotation>
                <documentation>
@@ -65,14 +69,60 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="variables" type="string">
+         <attribute name="defaultValue" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="defaultValue" type="string">
+      </complexType>
+   </element>
+
+   <element name="variable">
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="example">
+      <complexType>
+         <sequence>
+            <element ref="put" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="entity" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="put">
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string">
             <annotation>
                <documentation>
                   

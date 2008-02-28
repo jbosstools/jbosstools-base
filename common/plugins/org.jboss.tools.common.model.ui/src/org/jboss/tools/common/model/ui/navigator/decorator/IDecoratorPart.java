@@ -15,16 +15,6 @@ import org.jboss.tools.common.model.XModelObject;
 /**
  * @author Viacheslav Kabanovich
  */
-public class AttributeDecoratorPart implements IDecoratorPart {
-	Variable variable;
-	
-	public AttributeDecoratorPart(Variable variable) {
-		this.variable = variable;
-	}
-
-	public String getLabelPart(XModelObject object) {
-		String v = object.getAttributeValue(variable.getName());
-		return v == null ? "{" + variable.getName() + "}" : v; 
-	}
-
+public interface IDecoratorPart {
+	public String getLabelPart(XModelObject object);
 }

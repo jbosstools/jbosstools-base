@@ -1,30 +1,41 @@
+/******************************************************************************* 
+ * Copyright (c) 2007 Red Hat, Inc. 
+ * Distributed under license by Red Hat, Inc. All rights reserved. 
+ * This program is made available under the terms of the 
+ * Eclipse Public License v1.0 which accompanies this distribution, 
+ * and is available at http://www.eclipse.org/legal/epl-v10.html 
+ * 
+ * Contributors: 
+ * Red Hat, Inc. - initial API and implementation 
+ ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.navigator.decorator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.jboss.tools.common.model.XModelObject;
 
-public class XModelObjectDecorator {
-	static String ATTR_NAME = "name";
-	static String ATTR_PARTITION= "partition";
-	static String ATTR_ENTITIES = "entities";
-	static String ATTR_VARIABLES = "variables";
-	static String ATTR_DEFAULT = "defaultValue";
-	
-	
+/**
+ * @author Viacheslav Kabanovich
+ */
+public class XModelObjectDecorator implements DecoratorConstants {
 	String name;
 	String partition;
 	Set<String> entities = new HashSet<String>();
-	String[] variables = new String[0];
+	Variable[] variables = new Variable[0];
+	Map<String, Variable> variableByName = new HashMap<String, Variable>();
 	String defaultValue;
 	String value;
 	
-	List<DecoratorPart> parts = null;
+	List<IDecoratorPart> parts = null;
+	
+	XModelObject[] examples = new XModelObject[0];
 	
 	public XModelObjectDecorator() {}
 	
@@ -40,8 +51,16 @@ public class XModelObjectDecorator {
 		return entities;
 	}
 	
-	public String[] getVariables() {
+	public Variable[] getVariables() {
 		return variables;
+	}
+	
+	public Variable getVariableByName(String name) {
+		return variableByName.get(name);
+	}
+	
+	public XModelObject[] getExamples() {
+		return examples;
 	}
 	
 	public String getDefaultValue() {
@@ -58,7 +77,7 @@ public class XModelObjectDecorator {
 		}
 		this.value = value;
 		if(value == null || value.length() == 0) {
-			value = "{name}";
+			value = Variable.NAME.getRuleText();
 		}
 		parts = null;
 	}
@@ -74,39 +93,53 @@ public class XModelObjectDecorator {
 			String[] es = s.split(",");
 			for (int i = 0; i < es.length; i++) entities.add(es[i]);
 		}
-		s = element.getAttribute(ATTR_VARIABLES);
-		List<String> vs = new ArrayList<String>();
-		vs.add("name");
-		if(s != null) {
-			String[] es = s.split(",");
-			for (int i = 0; i < es.length; i++) vs.add(es[i]);
+		IConfigurationElement[] cs = element.getChildren(NODE_VARIABLE);
+		List<Variable> vs = new ArrayList<Variable>();
+		vs.add(Variable.NAME);
+		variableByName.put(Variable.NAME.getName(), Variable.NAME);
+		for (int i = 0; i < cs.length; i++) {
+			Variable v = new Variable();
+			v.load(cs[i]);
+			vs.add(v);
+			variableByName.put(v.getName(), v);
 		}
-		variables = vs.toArray(new String[0]);
+		variables = vs.toArray(new Variable[0]);
+		
+		List<XModelObject> es = new ArrayList<XModelObject>();
+		cs = element.getChildren(NODE_EXAMPLE);
+		for (int i = 0; i < cs.length; i++) {
+			XModelObject o = Example.load(cs[i]);
+			if(o != null) es.add(o);
+		}
+		examples = es.toArray(new XModelObject[0]);
 	}
 	
-	List<DecoratorPart> compile() {
+	List<IDecoratorPart> compile() {
 		if(this.parts != null) return this.parts;
-		List<DecoratorPart> parts = new ArrayList<DecoratorPart>();
+		List<IDecoratorPart> parts = new ArrayList<IDecoratorPart>();
 		String v = value;
 		if(value == null || value.length() == 0) v = defaultValue;
 		if(v == null) v = "";
-		if(v.indexOf("{name}") < 0) {
+		if(v.indexOf(Variable.NAME.getRuleText()) < 0) {
 			if(v.length() > 0) v += " ";
-			v += "{name}";
+			v += Variable.NAME.getRuleText();
 		}
-		StringTokenizer s = new StringTokenizer(v, "{}", true);
+		StringTokenizer s = new StringTokenizer(v, RULE_OPENING + RULE_CLOSING, true);
 		boolean inVariable = false;
 		while(s.hasMoreTokens()) {
 			String t = s.nextToken();
-			if(t.equals("{")) {
+			if(t.equals(RULE_OPENING)) {
 				inVariable = true;
-			} else if(t.equals("}")) {
+			} else if(t.equals(RULE_CLOSING)) {
 				inVariable = false;				
 			} else if(inVariable) {
-				if(t.equals("name")) {
+				Variable variable = getVariableByName(t);
+				if(variable == Variable.NAME) {
 					parts.add(new NameDecoratorPart());
+				} else if(variable != null){
+					parts.add(new AttributeDecoratorPart(variable));
 				} else {
-					parts.add(new AttributeDecoratorPart(t));
+					parts.add(new DecoratorPart(RULE_OPENING + t + RULE_CLOSING));
 				}
 			} else {
 				parts.add(new DecoratorPart(t));
@@ -116,12 +149,29 @@ public class XModelObjectDecorator {
 	}
 	
 	public String getLabel(XModelObject object) {
-		List<DecoratorPart> parts = compile();
+		List<IDecoratorPart> parts = compile();
 		StringBuffer sb = new StringBuffer();
-		for (DecoratorPart d: parts) {
+		for (IDecoratorPart d: parts) {
 			sb.append(d.getLabelPart(object));
 		}
 		return sb.toString();
+	}
+	
+	/**
+	 * Needed only to work with value
+	 * @return
+	 */
+	public XModelObjectDecorator getWorkingCopy() {
+		XModelObjectDecorator copy = new XModelObjectDecorator();
+		copy.name = name;
+		copy.partition = partition;
+		copy.defaultValue = defaultValue;
+		copy.value = value;
+		copy.entities = entities;
+		copy.variables = variables;
+		copy.variableByName = variableByName;
+		
+		return copy;
 	}
 
 }

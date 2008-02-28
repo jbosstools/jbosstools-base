@@ -221,6 +221,12 @@
             id="org.jboss.tools.common.model.ui"
             name="Web">
       </page>
+      <page
+            category="org.jboss.tools.common.model.ui"
+            class="org.jboss.tools.common.model.ui.preferences.DecoratorPreferencesPage"
+            id="org.jboss.tools.common.model.ui.decorator"
+            name="Label Decorations">
+      </page>
    </extension>
    <extension point="org.eclipse.ui.preferencePages">
       <page 

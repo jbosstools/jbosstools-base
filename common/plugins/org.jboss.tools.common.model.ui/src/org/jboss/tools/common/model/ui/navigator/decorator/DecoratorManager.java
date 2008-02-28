@@ -1,3 +1,13 @@
+/******************************************************************************* 
+ * Copyright (c) 2007 Red Hat, Inc. 
+ * Distributed under license by Red Hat, Inc. All rights reserved. 
+ * This program is made available under the terms of the 
+ * Eclipse Public License v1.0 which accompanies this distribution, 
+ * and is available at http://www.eclipse.org/legal/epl-v10.html 
+ * 
+ * Contributors: 
+ * Red Hat, Inc. - initial API and implementation 
+ ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.navigator.decorator;
 
 import java.io.IOException;
@@ -5,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -14,8 +25,11 @@ import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
+/**
+ * @author Viacheslav Kabanovich
+ */
 public class DecoratorManager {
-	private static String EXTENSION_POINT_ID = ModelUIPlugin.PLUGIN_ID + ".labelDecorator";
+	public static final String EXTENSION_POINT_ID = ModelUIPlugin.PLUGIN_ID + ".labelDecorator";
 	
 	private static Object LOCK = new Object();
 	private static DecoratorManager INSTANCE;
@@ -23,6 +37,7 @@ public class DecoratorManager {
 	private Map<String, XModelObjectDecorator> mapByName = new HashMap<String, XModelObjectDecorator>();
 	private Map<String, XModelObjectDecorator> mapByEntity = new HashMap<String, XModelObjectDecorator>();
 	private Map<String, Set<XModelObjectDecorator>> mapByPartition = new HashMap<String, Set<XModelObjectDecorator>>();
+	private Map<String, String> entityByPartition = new HashMap<String, String>();
 	
 	private DecoratorManager() {
 		load();
@@ -48,6 +63,16 @@ public class DecoratorManager {
 		return mapByPartition.get(partition);
 	}
 	
+	public String getBaseEntityForPartition(String partition) {
+		return entityByPartition.get(partition);
+	}
+
+	public String[] getPartitions() {
+		Set<String> set = new TreeSet<String>();
+		set.addAll(mapByPartition.keySet());
+		return set.toArray(new String[0]);
+	}
+	
 	private void load() {
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
 		if(point == null) return;
@@ -69,6 +94,9 @@ public class DecoratorManager {
 				set.add(d);
 				for (String entity: entities) {
 					mapByEntity.put(entity, d);
+					if(entity.startsWith("File") && entityByPartition.get(partition) == null) {
+						entityByPartition.put(partition, entity);
+					}
 				}
 			}
 		}
@@ -114,7 +142,7 @@ public class DecoratorManager {
 			d.setValue(d.getDefaultValue());
 		}
 	}
-
+	
 	public static IPreferenceStore getPreferences() {
 		return ModelUIPlugin.getDefault().getPreferenceStore();
 	}
