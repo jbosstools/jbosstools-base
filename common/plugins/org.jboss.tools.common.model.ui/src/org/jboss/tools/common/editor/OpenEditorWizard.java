@@ -56,7 +56,8 @@ public class OpenEditorWizard implements SpecialWizard {
 				}
 				if(f == null || !f.exists()) {
 					ServiceDialog d = object.getModel().getService();
-					String message = "The file " + f.getFullPath() + " was removed externally.";
+					Object pathData = f == null ? object.getPath() : f.getFullPath();
+					String message = "The file " + pathData + " was removed externally.";
 					d.showDialog("Warning", message, new String[]{"Close"}, null, ServiceDialog.WARNING);
 					object.getModel().update();
 					return 1;

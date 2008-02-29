@@ -120,9 +120,9 @@ public class XModelObjectDecorator implements DecoratorConstants {
 		String v = value;
 		if(value == null || value.length() == 0) v = defaultValue;
 		if(v == null) v = "";
-		if(v.indexOf(Variable.NAME.getRuleText()) < 0) {
-			if(v.length() > 0) v += " ";
-			v += Variable.NAME.getRuleText();
+		if(v.indexOf(RULE_OPENING) < 0) {
+			if(v.length() > 0) v = " " + v;
+			v = Variable.NAME.getRuleText() + v;
 		}
 		StringTokenizer s = new StringTokenizer(v, RULE_OPENING + RULE_CLOSING, true);
 		boolean inVariable = false;
