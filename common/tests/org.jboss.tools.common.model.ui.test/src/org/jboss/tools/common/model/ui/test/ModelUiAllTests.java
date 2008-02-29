@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.test;
 
+import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
@@ -17,9 +18,14 @@ import junit.framework.TestSuite;
  *
  */
 public class ModelUiAllTests {
-	public static TestSuite suite() {
+	public static final String PLUGIN_ID = "org.jboss.tools.common.model.ui";
+
+	public static Test suite() {
 		TestSuite suite = new TestSuite();
+		suite.setName("All tests for " + PLUGIN_ID);
 		suite.addTestSuite(ModelUiPreferencesPageTest.class);
+		suite.addTestSuite(ObjectDecoratorTest.class);
 		return suite;
 	}
+
 }
