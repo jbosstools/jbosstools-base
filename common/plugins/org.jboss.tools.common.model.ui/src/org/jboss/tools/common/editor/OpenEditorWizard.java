@@ -47,16 +47,16 @@ public class OpenEditorWizard implements SpecialWizard {
 			if(input instanceof IFileEditorInput) {
 				IFileEditorInput fei = (IFileEditorInput)input;
 				IFile f = fei.getFile();
-				if(!f.isSynchronized(IResource.DEPTH_INFINITE)) {
+				if(f != null && !f.isSynchronized(IResource.DEPTH_INFINITE)) {
 					try {
 						f.getParent().refreshLocal(IResource.DEPTH_INFINITE, null);
 					} catch (Exception e) {
 						ModelUIPlugin.getPluginLog().logError(e);
 					}
 				}
-				if(!f.exists()) {
+				if(f == null || !f.exists()) {
 					ServiceDialog d = object.getModel().getService();
-					String message = "The file " + f.getLocation().toString() + " was removed externally.";
+					String message = "The file " + f.getFullPath() + " was removed externally.";
 					d.showDialog("Warning", message, new String[]{"Close"}, null, ServiceDialog.WARNING);
 					object.getModel().update();
 					return 1;
