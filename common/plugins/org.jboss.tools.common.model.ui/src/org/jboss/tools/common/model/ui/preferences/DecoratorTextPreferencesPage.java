@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.preferences;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -109,7 +111,12 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 			public Object[] getChildren(Object parentElement) {
 				if(parentElement instanceof String) {
 					Set<XModelObjectDecorator> set = DecoratorManager.getInstance().getDecoratorsByPartition(parentElement.toString());
-					return set != null ? set.toArray(new XModelObjectDecorator[0]) : new Object[0];
+					if(set != null) {
+						XModelObjectDecorator[] ds = set.toArray(new XModelObjectDecorator[0]);
+						Arrays.sort(ds, comparator);
+						return ds;
+					}
+					return new Object[0];
 				}
 				return new Object[0];
 			}
@@ -384,6 +391,15 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 		setText(text);
 		formatField.setSelection(cn);
 		examples.refresh(true);
+	}
+	
+	static DComparator comparator = new DComparator();
+	static class DComparator implements Comparator<XModelObjectDecorator> {
+
+		public int compare(XModelObjectDecorator o1, XModelObjectDecorator o2) {
+			return o1.getName().compareTo(o2.getName());
+		}
+
 	}
 
 }
