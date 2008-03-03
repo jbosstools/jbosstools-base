@@ -29,6 +29,8 @@ public interface DecoratorConstants {
 	
 	public String ATTR_VALUE = "value";
 	
+	public String ATTR_CLASS = "class";
+
 	public String NODE_VARIABLE = "variable";
 	
 	public String NODE_EXAMPLE = "example";

@@ -33,11 +33,14 @@ public class DecoratorPreferencesPage extends PreferencePage implements IWorkben
 		this.noDefaultAndApplyButton();
 		TabFolder tabbedComposite = new TabFolder(parent,SWT.NULL);
 		tabbedComposite.setBackground(parent.getBackground());
-		TabItem newTab = new TabItem(tabbedComposite,SWT.NULL);
+		
+		TabItem newTab = null;
 
-		general.createControl(tabbedComposite);
-		newTab.setControl(general.getControl());
-		newTab.setText(general.getTitle());
+//TODO  remove comments when we find some preferences to put here
+//		newTab = new TabItem(tabbedComposite,SWT.NULL);
+//		general.createControl(tabbedComposite);
+//		newTab.setControl(general.getControl());
+//		newTab.setText(general.getTitle());
 
 		newTab = new TabItem(tabbedComposite,SWT.NULL);
 

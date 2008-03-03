@@ -14,6 +14,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
 import org.eclipse.swt.dnd.DropTargetEvent;
@@ -73,6 +75,7 @@ public class DropContext {
 	}
 	
 	TransferHolder[] TRANSFERS = {
+		new TransferHolder(LocalSelectionTransfer.getTransfer(), new LocalTransferProcessor()),
 		new TransferHolder(ModelTransfer.getInstance(), new ModelTransferProcessor()),
 		new TransferHolder(HTMLTransfer.getInstance(), new HTMLTransferProcessor()),
 		new TransferHolder(FileTransfer.getInstance(), new FileTransferProcessor()),
@@ -136,6 +139,7 @@ public class DropContext {
 	}
 	
 	private boolean dropAsFileObject(XModelObject o) {
+		if(o == null) return false;
 		if(o.getFileType() != XModelObject.FILE || isOverAttributeValue) return false;
     	if(TLDUtil.isTaglib(o)) return false;
     	String extension = o.getAttributeValue("extension");
@@ -182,6 +186,18 @@ public class DropContext {
 		public void process(TransferData data) {
 			flavor = "text/html";
 			Object ooo = HTMLTransfer.getInstance().nativeToJava(event.currentDataType);
+			mimeData = ooo == null ? null : ooo.toString();
+		}
+	}
+
+	class LocalTransferProcessor extends TransferProcessor {
+		public void process(TransferData data) {
+			flavor = "application/x-moz-file";
+			Object ooo = LocalSelectionTransfer.getTransfer().getSelection();
+			if(ooo instanceof StructuredSelection) {
+				ooo = ((StructuredSelection)ooo).getFirstElement();
+				InnerDragBuffer.object = ooo;
+			}
 			mimeData = ooo == null ? null : ooo.toString();
 		}
 	}

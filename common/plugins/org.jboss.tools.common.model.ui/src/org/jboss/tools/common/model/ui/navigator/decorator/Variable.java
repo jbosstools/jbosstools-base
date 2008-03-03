@@ -10,7 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.navigator.decorator;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 /**
  * @author Viacheslav Kabanovich
@@ -19,7 +21,9 @@ public class Variable implements DecoratorConstants {
 	public static Variable NAME = new Variable("name", "default label");
 
 	String name;
+	String parameters = "";
 	String description;
+	ICustomVariable custom;
 	
 	public Variable() {}
 	
@@ -37,19 +41,34 @@ public class Variable implements DecoratorConstants {
 	}
 	
 	public String getRuleText() {
-		return RULE_OPENING + name + RULE_CLOSING;
+		return RULE_OPENING + name + parameters + RULE_CLOSING;
 	}
 	
 	public String toString() {
 		if(description == null || description.length() == 0) {
 			return name;
 		}
-		return name + " - " + description;
+		return name + parameters + " - " + description;
 	}
 	
 	public void load(IConfigurationElement element) {
 		name = element.getAttribute(ATTR_NAME);
+		int i = name.indexOf('(');
+		if(i >= 0) {
+			parameters = name.substring(i);
+			name = name.substring(0, i);
+		}
 		description = element.getAttribute(ATTR_DESCRIPTION);
+		String cls = element.getAttribute(ATTR_CLASS);
+		if(cls != null && cls.length() > 0) {
+			try {
+				custom = (ICustomVariable)element.createExecutableExtension(ATTR_CLASS);
+			} catch (CoreException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			} catch (ClassCastException e1) {
+				ModelUIPlugin.getPluginLog().logError("Attribute " + ATTR_CLASS + " must be instanceof ICustomVariable", e1);
+			}
+		}
 	}
 
 }

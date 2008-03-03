@@ -133,17 +133,36 @@ public class XModelObjectDecorator implements DecoratorConstants {
 			} else if(t.equals(RULE_CLOSING)) {
 				inVariable = false;				
 			} else if(inVariable) {
-				Variable variable = getVariableByName(t);
+				String n = t;
+				String p = "";
+				int i = t.indexOf('(');
+				int j = t.indexOf(')');
+				if(i >= 0 && j > i) {
+					n = t.substring(0, i);
+					p = t.substring(i + 1, j);
+				}
+				Variable variable = getVariableByName(n);
 				if(variable == Variable.NAME) {
-					parts.add(new NameDecoratorPart());
+					parts.add(NameDecoratorPart.INSTANCE);
 				} else if(variable != null){
-					parts.add(new AttributeDecoratorPart(variable));
+					AttributeDecoratorPart part = new AttributeDecoratorPart(variable);
+					part.setParameters(p);
+					parts.add(part);
 				} else {
 					parts.add(new DecoratorPart(RULE_OPENING + t + RULE_CLOSING));
 				}
 			} else {
 				parts.add(new DecoratorPart(t));
 			}
+		}
+		boolean hasSignificantPart = false;
+		for (IDecoratorPart p: parts) {
+			if(p != NameDecoratorPart.INSTANCE && !(p instanceof AttributeDecoratorPart)) continue;
+			hasSignificantPart = true;
+			break;
+		}
+		if(!hasSignificantPart) {
+			parts.add(NameDecoratorPart.INSTANCE);
 		}
 		return this.parts = parts;
 	}
@@ -154,7 +173,9 @@ public class XModelObjectDecorator implements DecoratorConstants {
 		for (IDecoratorPart d: parts) {
 			sb.append(d.getLabelPart(object));
 		}
-		return sb.toString();
+		String s = sb.toString().trim();
+		if(s.length() == 0) s = object.getPresentationString();
+		return s;
 	}
 	
 	/**

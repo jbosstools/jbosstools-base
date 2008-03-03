@@ -15,14 +15,8 @@ import org.jboss.tools.common.model.XModelObject;
 /**
  * @author Viacheslav Kabanovich
  */
-public class NameDecoratorPart implements IDecoratorPart {
-	static NameDecoratorPart INSTANCE = new NameDecoratorPart();
-	
-	public NameDecoratorPart() {
-	}
+public interface ICustomVariable {
 
-	public String getLabelPart(XModelObject object) {
-		return "" + object.getPresentationString(); 
-	}
+	public String getLabelPart(XModelObject object, String parameters);
 
 }

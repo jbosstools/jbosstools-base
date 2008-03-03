@@ -17,12 +17,20 @@ import org.jboss.tools.common.model.XModelObject;
  */
 public class AttributeDecoratorPart implements IDecoratorPart {
 	Variable variable;
+	String parameters = "";
 	
 	public AttributeDecoratorPart(Variable variable) {
 		this.variable = variable;
 	}
+	
+	public void setParameters(String params) {
+		parameters = params;
+	}
 
 	public String getLabelPart(XModelObject object) {
+		if(variable.custom != null) {
+			return variable.custom.getLabelPart(object, parameters);
+		}
 		String v = object.getAttributeValue(variable.getName());
 		return v == null ? "{" + variable.getName() + "}" : v; 
 	}

@@ -383,6 +383,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 		currentValues.put(selection, text);
 		setText(text);
 		formatField.setSelection(cn);
+		examples.refresh(true);
 	}
 
 }
