@@ -180,39 +180,6 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
                             return null;
                         }
 
-                        private int getPosition(StyledText t, int x, int y) {
-                            try {
-                                Point pp = t.toControl(x, y);
-                                x = pp.x;
-                                y = pp.y;
-                                int lineIndex =
-                                    (t.getTopPixel() + y) / t.getLineHeight();
-                                if (lineIndex >= t.getLineCount()) {
-                                    return t.getCharCount();
-                                } else {
-                                    int c = 0;
-                                    try {
-                                        c =
-                                            t.getOffsetAtLocation(
-                                                new Point(x, y));
-                                        if (c < 0)
-                                            c = 0;
-                                    } catch (Exception ex) {
-                                        c =
-                                            t.getOffsetAtLine(lineIndex + 1)
-                                                - (t.getLineDelimiter() == null
-                                                    ? 0
-                                                    : t
-                                                        .getLineDelimiter()
-                                                        .length());
-                                    }
-                                    return c;
-                                }
-                            } catch (Exception e) {
-                                return 0;
-                            }
-                        }
-
                         public void dragEnter(DropTargetEvent event) {
                             try {
                                 getFreeCaretControl(
@@ -652,30 +619,34 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 	private int getPosition(int x, int y) {
 		ISourceViewer v = getSourceViewer();
 		if(v == null) return 0;
-		StyledText t = v.getTextWidget();
-		if(t == null || t.isDisposed()) return 0;
-		Point pp = t.toControl(x, y);
-		x = pp.x;
-		y = pp.y;		
-		int lineIndex = (t.getTopPixel() + y) / t.getLineHeight();
-		if (lineIndex >= t.getLineCount()) {
-			return t.getCharCount();
-		} else {
-			int c = 0;
-			try {
-				c = t.getOffsetAtLocation(new Point(x, y));
-				if(c < 0) c = 0;
-			} catch (IllegalArgumentException ex) {
-				if(lineIndex + 1 >= t.getLineCount()) {
-					return t.getCharCount();
-				}
-                c = t.getOffsetAtLine(lineIndex + 1) - 
-                (t.getLineDelimiter() == null ? 0 : t.getLineDelimiter().length());					
-			}
-			return c;
-		}
+		return getPosition(v.getTextWidget(), x, y);
 	}
 	
+    private int getPosition(StyledText t, int x, int y) {
+		if(t == null || t.isDisposed()) return 0;
+        Point pp = t.toControl(x, y);
+        x = pp.x;
+        y = pp.y;
+        int lineIndex = (t.getTopPixel() + y) / t.getLineHeight();
+        if (lineIndex >= t.getLineCount()) {
+            return t.getCharCount();
+        } else {
+            int c = 0;
+            try {
+                c = t.getOffsetAtLocation(new Point(x, y));
+                if (c < 0) c = 0;
+            } catch (IllegalArgumentException ex) {
+            	if (lineIndex + 1 >= t.getLineCount()) {
+                    return t.getCharCount();
+                }
+                c = t.getOffsetAtLine(lineIndex + 1)
+                        - (t.getLineDelimiter() == null
+                            ? 0 : t.getLineDelimiter().length());
+            }
+            return c;
+        }
+    }
+
 	private DocumentListenerRegistry documentListenerRegistry;
 	
 	protected DocumentListenerRegistry getDocumentListenerRegister() {
