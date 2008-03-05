@@ -63,7 +63,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
+import org.jboss.tools.common.model.XModelBuffer;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelTransferBuffer;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 import org.jboss.tools.common.text.xml.ui.FreeCaretStyledText;
@@ -620,8 +622,15 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 		
 	}
 	public void runDropCommand(final String flavor, final String data) {
+		XModelBuffer b = XModelTransferBuffer.getInstance().getBuffer();
+		final XModelObject o = b == null ? null : b.source();
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
+				if(o != null && !XModelTransferBuffer.getInstance().isEnabled()) {
+					XModelTransferBuffer.getInstance().enable();
+					XModelTransferBuffer.getInstance().getBuffer().addSource(o);
+				}
+				try {
 				DropCommandFactory.getInstance()
 				.getDropCommand(flavor, EmptyTagProposalFactory.getInstance())
 				.execute(
@@ -632,7 +641,10 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 						getSourceViewer(),
 						getSelectionProvider()
 					)
-				);		
+				);
+				} finally {
+					XModelTransferBuffer.getInstance().disable();
+				}
 			}
 		});
 	}
@@ -653,7 +665,10 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 			try {
 				c = t.getOffsetAtLocation(new Point(x, y));
 				if(c < 0) c = 0;
-			} catch (Exception ex) {
+			} catch (IllegalArgumentException ex) {
+				if(lineIndex + 1 >= t.getLineCount()) {
+					return t.getCharCount();
+				}
                 c = t.getOffsetAtLine(lineIndex + 1) - 
                 (t.getLineDelimiter() == null ? 0 : t.getLineDelimiter().length());					
 			}
