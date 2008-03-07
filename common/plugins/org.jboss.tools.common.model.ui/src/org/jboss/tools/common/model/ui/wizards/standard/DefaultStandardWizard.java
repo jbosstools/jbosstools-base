@@ -14,6 +14,7 @@ import java.util.*;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 
 import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
@@ -54,6 +55,11 @@ public class DefaultStandardWizard extends Wizard {
 	}
 	
 	public void createPageControls(Composite pageContainer) {
+		String helpContextId = (support == null) ? null : support.getHelpContextId();		
+		if(helpContextId != null) {
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(pageContainer, helpContextId);
+		}
+
 		this.pageContainer = pageContainer;
 		for (int i = 0; i < steps.length; i++){
 			IWizardPage page = steps[i];
