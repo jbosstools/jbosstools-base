@@ -14,6 +14,7 @@ import java.util.*;
 
 import org.jboss.tools.common.model.*;
 import org.eclipse.swt.widgets.Display;
+import org.jboss.tools.common.meta.XMapping;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.handlers.*;
 import org.jboss.tools.common.meta.help.HelpUtil;
@@ -331,6 +332,23 @@ public abstract class SpecialWizardSupport {
 			}
 		}
 		return best == null ? null : best.getAttribute().getName();
+	}
+	
+	public String getHelpContextId() {
+		if(action == null) return null;
+		String s = action.getProperty("helpId");
+		if(s != null && s.length() == 0) return null;
+		int i = s.indexOf('%');
+		if(i < 0) return s;
+		int j = s.indexOf('%', i + 1);
+		if(j < 0) return s;
+		String vr = s.substring(i + 1, j);
+		String tail = s.substring(j + 1);
+		XMapping map = action.getMetaModel().getMapping("HelpPlugins");
+		if(map == null) return s;
+		String varValue = map.getValue(vr);
+		if(varValue == null) return s;
+		return varValue + tail;
 	}
 
 }
