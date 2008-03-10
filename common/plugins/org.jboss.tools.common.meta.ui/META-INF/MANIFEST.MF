@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Name: Meta Model
 Bundle-SymbolicName: org.jboss.tools.common.meta.ui; singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 Bundle-ClassPath: meta-model.jar
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

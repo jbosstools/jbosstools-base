@@ -28,5 +28,5 @@ Require-Bundle: org.jboss.tools.common,
  org.eclipse.gef,
  org.eclipse.core.runtime,
  org.eclipse.core.resources
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 

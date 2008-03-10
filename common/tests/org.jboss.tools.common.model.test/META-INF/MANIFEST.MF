@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JSF Tests Plug-in
 Bundle-SymbolicName: org.jboss.tools.common.model.test;singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 Bundle-ClassPath: common-model-tests.jar
 Bundle-Vendor: Red Hat, Inc.
 Export-Package: org.jboss.tools.common.model.test

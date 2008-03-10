@@ -38,5 +38,5 @@ Require-Bundle: org.jboss.tools.common,
  org.eclipse.wst.xml.core,
  org.eclipse.wst.sse.core,
  org.eclipse.core.resources
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 

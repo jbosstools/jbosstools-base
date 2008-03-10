@@ -8,7 +8,7 @@ Export-Package: org.jboss.tools.common.text.ext,
  org.jboss.tools.common.text.ext.hyperlink.xpl,
  org.jboss.tools.common.text.ext.util,
  org.jboss.tools.common.text.ext.util.xpl
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 Bundle-Name: Text Editors Extensions
 Bundle-ClassPath: texteditorextensions.jar
 Bundle-ManifestVersion: 2

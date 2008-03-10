@@ -22,6 +22,6 @@ Require-Bundle: org.jboss.tools.common,
  org.eclipse.wst.xml.core,
  org.eclipse.jst.jsp.core,
  org.eclipse.jface.text
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 Bundle-ManifestVersion: 2
 
