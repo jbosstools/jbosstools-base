@@ -21,6 +21,7 @@ import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.attribute.IListContentProvider;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
@@ -244,6 +245,13 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 	}
 
 	protected void valueChanged() {
+		//added by Max Areshkau
+		//hack which was applied for fix JBIDE-1694
+		if(comboField!=null&&Platform.OS_LINUX.equals(Platform.getOS())) {
+			
+			comboField.forceFocus();
+		}
+		comboField.forceFocus();
 		setPresentsDefaultValue(false);
 		boolean oldState = isValid;
 		refreshValidState();
