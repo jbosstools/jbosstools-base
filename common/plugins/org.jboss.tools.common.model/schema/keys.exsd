@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.jboss.tools.common.model">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.jboss.tools.common.model" id="keys" name="keys"/>
+      </appInfo>
+      <documentation>
+         Registers property files with keys used by Red Hat wizards and form editors.
+         Keys used by standard wizard registered in action must have names
+         %entity name%_%action name%.WindowTitle
+         %entity name%_%action name%.Title
+         Keys used by standard multi-page wizard registered in action must have names
+         %entity name%_%action name%_%page index%.WindowTitle
+         %entity name%_%action name%_%page index%.Title
+         Keys used by standard form must have names
+         %entity_name%.%attribute name%
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="keys" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="keys">
+      <complexType>
+         <attribute name="path" type="string">
+            <annotation>
+               <documentation>
+                  Path to properties file relative to a folder added to the project classpath.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         2.0.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Red Hat, Inc
+      </documentation>
+   </annotation>
+
+</schema>

@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.jboss.tools.common.model">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.jboss.tools.common.model" id="meta" name="meta"/>
+      </appInfo>
+      <documentation>
+         This extension point defines path to Red Hat Model Meta Information, that usually resides in files with &apos;meta&apos; extension.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="meta" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="meta">
+      <annotation>
+         <documentation>
+            meta defines a list of paths to Red Hat Model Metainformation.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="path" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Plugin related path to metainformation
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         2.0.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;pre&gt;
+&lt;extension point=&quot;org.jboss.tools.common.model.meta&quot;&gt;
+      &lt;meta path=&quot;meta/ant.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/base.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/files.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/filesystems.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/jclass.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/jclassedit.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/studio.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/studio_eclipse_option.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/studio_option.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/studio_option_engines.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/studio_option_palette.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/studio_page.meta&quot;&gt;
+      &lt;/meta&gt;
+      &lt;meta path=&quot;meta/studio_search.meta&quot;&gt;
+      &lt;/meta&gt;
+   &lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         See org.jboss.tools.common.model.meta and org.jboss.tools.common.model packages in org.jboss.tools.common.model plugin.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         See org.jboss.tools.common.model.impl and org.jboss.tools.common.model.meta.impl in org.jboss.tools.common.model plugin.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Red Hat, Inc
+      </documentation>
+   </annotation>
+
+</schema>
