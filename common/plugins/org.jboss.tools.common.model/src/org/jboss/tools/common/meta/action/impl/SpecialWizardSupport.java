@@ -337,7 +337,7 @@ public abstract class SpecialWizardSupport {
 	public String getHelpContextId() {
 		if(action == null) return null;
 		String s = action.getProperty("helpId");
-		if(s != null && s.length() == 0) return null;
+		if(s != null || s.length() == 0) return null;
 		int i = s.indexOf('%');
 		if(i < 0) return s;
 		int j = s.indexOf('%', i + 1);
