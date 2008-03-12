@@ -10,10 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.views.palette.editor;
 
-import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.util.XModelTreeListenerSWTSync;
-import org.jboss.tools.common.model.ui.navigator.*;
-import org.jboss.tools.common.model.ui.objecteditor.XModelObjectEditor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -25,12 +21,22 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.meta.action.XActionItem;
 import org.jboss.tools.common.meta.action.XActionList;
 import org.jboss.tools.common.meta.action.XActionItem.Acceptor;
 import org.jboss.tools.common.meta.help.HelpUtil;
-import org.jboss.tools.common.model.event.*;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.event.XModelTreeEvent;
+import org.jboss.tools.common.model.event.XModelTreeListener;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.navigator.FilteredTreeContentProvider;
+import org.jboss.tools.common.model.ui.navigator.NavigatorLabelProvider;
+import org.jboss.tools.common.model.ui.navigator.TreeViewerMenuInvoker;
+import org.jboss.tools.common.model.ui.navigator.TreeViewerModelListenerImpl;
+import org.jboss.tools.common.model.ui.objecteditor.XModelObjectEditor;
+import org.jboss.tools.common.model.util.XModelTreeListenerSWTSync;
 
 public class PaletteDialog extends Dialog {
 	protected TreeViewer treeViewer = null;
@@ -95,6 +101,7 @@ public class PaletteDialog extends Dialog {
 		Control c = super.createContents(parent);
 		createEditorComponents((Composite)getDialogArea());
 		control = (Composite)c;
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, ModelUIPlugin.ID_PLUGIN + ".palette_editor");
 		return c;
 	}
 		
