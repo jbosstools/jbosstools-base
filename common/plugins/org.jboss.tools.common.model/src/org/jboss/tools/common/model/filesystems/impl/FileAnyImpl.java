@@ -249,6 +249,8 @@ public class FileAnyImpl extends RegularObjectImpl {
 
 	private void saveUnopen0() {
 		if(!isActive()) return;
+		//Be careful! 
+		if(!isModified()) return;
 		SpecialWizard w = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.objecteditor.SaveUnopenSpecialWizard");
 		if(w == null) return;
 		w.setObject(this);
