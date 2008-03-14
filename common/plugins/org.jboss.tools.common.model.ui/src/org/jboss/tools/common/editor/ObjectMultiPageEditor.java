@@ -392,7 +392,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	}
 
 	public void gotoMarker(IMarker marker) {
-		if(getModelObject() == null) return;
+		if(marker == null || getModelObject() == null) return;
 		String path = marker.getAttribute("path", null);
 		if(path != null) {
 			XModelObject o = getModelObject().getModel().getByPath(path);
