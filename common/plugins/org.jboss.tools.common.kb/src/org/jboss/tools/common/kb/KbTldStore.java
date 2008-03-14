@@ -14,6 +14,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +27,7 @@ import java.util.Set;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -33,14 +35,13 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.jboss.tools.common.kb.configuration.KbConfigurationFactory;
+import org.osgi.framework.Bundle;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
-import org.jboss.tools.common.kb.configuration.KbConfigurationFactory;
 
 /**
  * Describes store whish contains all TLD schemas.
@@ -605,36 +606,40 @@ public class KbTldStore implements KbStore {
 
 	private void loadRegistratedResources() {
 		// Get the schemas from extention point.
-		File kbPluginLocation = KbPlugin.getDefault().getLocation();
-		if(kbPluginLocation!=null) {
-	        IExtensionRegistry registry = Platform.getExtensionRegistry();
-			IExtensionPoint extensionPoint = registry.getExtensionPoint("org.jboss.tools.common.kb.tldResource");
-			IExtension[] extensions = extensionPoint.getExtensions();
-			for (int i=0; i<extensions.length; i++) {
-				IExtension extension = extensions[i];
-				IConfigurationElement[] elements = extension.getConfigurationElements();
-				for(int j=0; j<elements.length; j++) {
-					String uri = elements[j].getAttribute("uri");
-					String location = elements[j].getAttribute("schema-location");
-					String version = elements[j].getAttribute("version");
-					String jsf = elements[j].getAttribute("jsf");
-					if(uri==null || uri.length()==0 || location==null || location.length()==0) {
-						continue;
+        IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = registry.getExtensionPoint("org.jboss.tools.common.kb.tldResource");
+		IExtension[] extensions = extensionPoint.getExtensions();
+		for (int i=0; i<extensions.length; i++) {
+			IExtension extension = extensions[i];
+			IConfigurationElement[] elements = extension.getConfigurationElements();
+			for(int j=0; j<elements.length; j++) {
+				String uri = elements[j].getAttribute("uri");
+				String location = elements[j].getAttribute("schema-location");
+				String version = elements[j].getAttribute("version");
+				String jsf = elements[j].getAttribute("jsf");
+				if(uri==null || uri.length()==0 || location==null || location.length()==0) {
+					continue;
+				}
+				Bundle sourcePlugin = Platform.getBundle(elements[j].getNamespaceIdentifier());
+				File shemaLocation = null;
+				try {
+					shemaLocation = new File(FileLocator.resolve(sourcePlugin.getEntry("/")).getPath(), location);
+				} catch (IOException e) {
+					KbPlugin.getPluginLog().logError(e);
+					continue;
+				}
+				if(shemaLocation.isFile()) {
+					KbTldResource resource = new KbTldResource(uri, null, null, null);
+					resource.setSchemaLocation(shemaLocation);
+					if(version!=null && version.length()>0) {
+						resource.setVersion(version);
 					}
-					File shemaLocation = new File(kbPluginLocation, location);
-					if(shemaLocation.isFile()) {
-						KbTldResource resource = new KbTldResource(uri, null, null, null);
-						resource.setSchemaLocation(shemaLocation);
-						if(version!=null && version.length()>0) {
-							resource.setVersion(version);
-						}
-						resource.setCustomTld(false);
-						resource.setJsfResource("true".equals(jsf));
-						registratedResources.put(resource, resource);
-					} else {
-						String message = "Can't load KB schema: " + shemaLocation;
-						KbPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, KbPlugin.PLUGIN_ID, IStatus.WARNING, message, null));
-					}
+					resource.setCustomTld(false);
+					resource.setJsfResource("true".equals(jsf));
+					registratedResources.put(resource, resource);
+				} else {
+					String message = "Can't load KB schema: " + shemaLocation;
+					KbPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, KbPlugin.PLUGIN_ID, IStatus.WARNING, message, null));
 				}
 			}
 		}
