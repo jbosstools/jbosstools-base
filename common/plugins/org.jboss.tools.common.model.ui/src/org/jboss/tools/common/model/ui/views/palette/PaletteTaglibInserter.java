@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
+import org.eclipse.wst.sse.ui.internal.contentassist.ContentAssistUtils;
 import org.eclipse.wst.xml.core.internal.document.DocumentImpl;
 import org.eclipse.wst.xml.core.internal.document.ElementImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
@@ -114,21 +115,76 @@ public class PaletteTaglibInserter {
 		}
 		return false;
 	}
+	
+	private static Node getSelectedNode(ISourceViewer v, Properties p){
+		ISelectionProvider selProvider = (ISelectionProvider)p.get(PaletteInsertHelper.PROPOPERTY_SELECTION_PROVIDER);
+		if(selProvider == null) return null;
+		
+		ITextSelection selection = null;
+		
+		if(selProvider.getSelection() instanceof ITextSelection)
+			selection = (ITextSelection)selProvider.getSelection();
+		else return null;
+		
+		IndexedRegion region = ContentAssistUtils.getNodeAt(v, selection.getOffset());
+		if(region == null) return null;
+		
+		if(!(region instanceof Node)) return null;
+		
+		Node text = (Node)region;
+		
+		
+		if("#text".equals(text.getNodeName()))
+			return text.getParentNode();
+		else
+			return text;
+	}
+	
+	private static boolean checkSelectedElement(HashMap<String,String> map, ISourceViewer v, Properties p){
+		String taglibUri = p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI);
+		if(taglibUri == null) return false;
+		
+		Node selectedNode = getSelectedNode(v, p);
+		if(selectedNode == null) return false;
+		
+		return checkElement(map, selectedNode, taglibUri);
+	}
+	
+	private static boolean checkElement(HashMap<String,String> map, Node node, String taglibUri){
+		
+		NamedNodeMap attrs = node.getAttributes();
+		for (int j = 0; attrs != null && j < attrs.getLength(); j++) {
+			Node a = attrs.item(j);
+			String name = a.getNodeName();
+
+			if (name.startsWith("xmlns:")) {
+				map.put(a.getNodeValue(), name.substring("xmlns:".length()));
+			}
+		}
+
+		if (map.containsKey(taglibUri)) return true;
+		else{
+			if(node.getParentNode() == null) return false;
+			else return checkElement(map, node.getParentNode(), taglibUri);
+		}
+	}
 
 	public boolean inserTaglibInXml(ISourceViewer v, Properties p) {
 		if(!checkProperties(p)) {
 			return false;
 		}
-
+		
 		IDocument d = v.getDocument();
 		IStructuredModel model = null;
-
+		
 		try {
 			model = StructuredModelManager.getModelManager().getExistingModelForRead(d);
 			IDOMDocument xmlDocument = (model instanceof IDOMModel) ? ((IDOMModel) model).getDocument() : null;
+			
 			if (xmlDocument == null) {
 				return false;
 			}
+			
 			Properties tl = getPrefixes(v);
 			if(tl == null) tl = PaletteInsertHelper.getPrefixes(d.get());
 			Element root = xmlDocument.getDocumentElement();
@@ -136,12 +192,12 @@ public class PaletteTaglibInserter {
 			if (root != null && xmlDocument.getDoctype() != null /* && tagLibListConainsFacelet(tl)*/ ) {
 				String publicId = xmlDocument.getDoctype().getPublicId();
 				if (publicId!=null && publicId.toUpperCase().startsWith("-//W3C//DTD XHTML")) { // && root.getNodeName().equalsIgnoreCase(HTML_SOURCE_ROOT_ELEMENT)) {
-					checkTL(root, p, d);
+					checkTL(root, v, p, d);
 					return true;
 				}
 			// for jsp:root
 			} else if (root != null && root.getNodeName().equals(JSP_SOURCE_ROOT_ELEMENT)) {
-				checkTL(root, p, d);
+				checkTL(root, v, p, d);
 				return true;
 			}
 		} catch (Exception e) {
@@ -188,7 +244,7 @@ public class PaletteTaglibInserter {
 	 * for jsp:root and html check the taglib if exist check the prefix else add the taglib
 	 * with text formatting
 	 */
-	private static Properties checkTL(Element root, Properties p, IDocument d) {
+	private static Properties checkTL(Element root, ISourceViewer v, Properties p, IDocument d) {
 		String uri_p = p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI);
 		String defaultPrefix_p = p.getProperty(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX);
 
@@ -202,8 +258,8 @@ public class PaletteTaglibInserter {
 				map.put(a.getNodeValue(), name.substring("xmlns:".length()));
 			}
 		}
-
-		if (map.containsKey(uri_p)) {
+		
+		if (map.containsKey(uri_p) || checkSelectedElement(map, v, p)) {
 			if (!map.get(uri_p).equals(defaultPrefix_p)) {
 				p.setProperty(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX, (String) map.get(uri_p));
 			}
