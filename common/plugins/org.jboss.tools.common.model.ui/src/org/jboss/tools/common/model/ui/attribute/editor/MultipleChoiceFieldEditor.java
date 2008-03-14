@@ -257,7 +257,7 @@ public class MultipleChoiceFieldEditor extends ExtendedFieldEditor
 		}
 	}
 	
-	protected void resetChoices() {
+	public void resetChoices() {
 		updateChoices();
 		buttonsParent.pack();
 		buttonsParent.layout();

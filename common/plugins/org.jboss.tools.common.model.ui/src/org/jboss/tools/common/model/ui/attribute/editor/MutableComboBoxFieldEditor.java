@@ -130,10 +130,7 @@ public class MutableComboBoxFieldEditor extends ComboBoxFieldEditor implements I
 			changeButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
 					String newValue = changePressed();
-					if (newValue != null) {
-						getComboField().setItems(getTags());
-						setStringValue(newValue);
-					}
+					setNewValue(newValue);
 				}
 			});
 			changeButton.addDisposeListener(new DisposeListener() {
@@ -145,6 +142,13 @@ public class MutableComboBoxFieldEditor extends ComboBoxFieldEditor implements I
 			checkParent(changeButton, parent);
 		}
 		return changeButton;
+	}
+	
+	public void setNewValue(String newValue) {
+		if (newValue != null) {
+			getComboField().setItems(getTags());
+			setStringValue(newValue);
+		}
 	}
 
 	public int getNumberOfControls() {
