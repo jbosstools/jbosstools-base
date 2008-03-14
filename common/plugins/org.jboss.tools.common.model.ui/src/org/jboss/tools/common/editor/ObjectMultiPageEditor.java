@@ -411,6 +411,20 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 					postponedTextSelection.select(o, attr);
 				}
 			}
+		} else {
+			try {
+				if ("org.eclipse.search.searchmarker".equals(marker.getType())) {
+					int offset = marker.getAttribute(IMarker.CHAR_START, -1);
+					int length = marker.getAttribute(IMarker.CHAR_END, -1);	
+					if (offset > -1 && length > -1) {
+						postponedTextSelection.clean();
+						textEditor.gotoMarker(marker);
+					}
+				}
+			} catch (CoreException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
+
 		}
 	}
 	
