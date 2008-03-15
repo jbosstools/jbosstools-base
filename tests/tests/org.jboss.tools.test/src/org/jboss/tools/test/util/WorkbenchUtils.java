@@ -13,6 +13,7 @@ package org.jboss.tools.test.util;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -75,6 +76,13 @@ public class WorkbenchUtils {
 
 		return PreferencesUtil.createPreferenceDialogOn(WorkbenchUtils
 				.getActiveShell(), pageId, new String[] {pageId}, null);
+	}
+
+	public static PreferenceDialog createPropertyDialog(String pageId,
+			IProject project) {
+		
+		return PreferencesUtil.createPreferenceDialogOn(WorkbenchUtils
+				.getActiveShell(), pageId, new String[] {pageId}, project);
 	}
 
 }
