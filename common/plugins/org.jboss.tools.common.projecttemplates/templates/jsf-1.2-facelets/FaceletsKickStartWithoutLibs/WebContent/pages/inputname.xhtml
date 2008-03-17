@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core">
 
    		<f:loadBundle basename="resources" var="msg" />
 
@@ -10,16 +11,17 @@
 						
 			<ui:define name="pageTitle">Input User Name</ui:define>
   
-			<ui:define name="pageHeader">Facelets Hello Application</ui:define>
+			<ui:define name="pageHeader"Facelets Hello Application</ui:define>
 
 			<ui:define name="body">
 				<h:message showSummary="true" showDetail="false" style="color: red; font-weight: bold;" for="name" />
 				<form jsfc="h:form" id="helloForm">
-					#{msg.prompt}
-					<input jsfc="h:inputText" required="true" id="name" value="#{person.name}" />
-					<input type="submit" jsfc="h:commandButton" id="submit"
+					${msg.prompt}
+					<input label="Name" jsfc="h:inputText" required="true" id="name" value="#{person.name}" />
+					<input  type="submit" jsfc="h:commandButton" id="submit"
 						action="greeting" value="Say Hello" />
 				</form>
+				
 			</ui:define>
 		</ui:composition>
 </html>

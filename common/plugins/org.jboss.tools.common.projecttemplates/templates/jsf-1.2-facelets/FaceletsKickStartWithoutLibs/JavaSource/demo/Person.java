@@ -11,8 +11,7 @@
 package demo;
 
 /**
- * Created by JBoss Developer Studio
-*
+ * Created by JBoss Tools
  */
 public class Person {
 	private String name;

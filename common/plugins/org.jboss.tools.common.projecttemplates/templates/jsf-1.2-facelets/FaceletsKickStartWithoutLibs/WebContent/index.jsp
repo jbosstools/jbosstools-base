@@ -2,6 +2,6 @@
 <html>
 <head></head>
 	<body>
-		<jsp:forward page="/pages/inputname.jsf" />
+		<jsp:forward page="pages/inputname.jsf" />
 	</body>
 </html>

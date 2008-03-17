@@ -11,8 +11,7 @@
 package demo;
 
 /**
- * @author sim
- *
+ * Created by JBoss Tools
  */
 public class Person {
 	private String name;
@@ -20,11 +19,11 @@ public class Person {
 	public Person() {
 	}
 
-		public String getName() {
+	public String getName() {
 		return name;
 	}
 
-			public void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 }
