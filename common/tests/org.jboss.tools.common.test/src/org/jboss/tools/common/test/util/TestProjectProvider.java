@@ -11,6 +11,7 @@
 package org.jboss.tools.common.test.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
@@ -25,9 +26,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.jboss.tools.common.test.CommonAllTests;
 import org.jboss.tools.common.util.FileUtil;
 import org.osgi.framework.Bundle;
 
@@ -54,7 +58,7 @@ public class TestProjectProvider {
 	 * to the test workspace; on test completing, the copy is destroyed.
 	 * @throws Exception
 	 */
-	public TestProjectProvider(String bundleName, String projectPath, String name, boolean makeCopy) throws Exception {
+	public TestProjectProvider(String bundleName, String projectPath, String name, boolean makeCopy) throws CoreException {
 		if(projectPath == null) {
 			projectPath = "/projects/" + name;
 		} else if(name == null) {
@@ -68,7 +72,7 @@ public class TestProjectProvider {
 		return project;
 	}
 	
-	private void init(String bundleName, String projectPath, String name) throws Exception {
+	private void init(String bundleName, String projectPath, String name) throws CoreException {
 		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 		if(p.exists()) {
 			project = p;
@@ -83,8 +87,10 @@ public class TestProjectProvider {
 		URL url = null;
 		try {
 			url = FileLocator.resolve(bundle.getEntry(projectPath));
-		} catch (Exception e) {
-			throw new Exception("Cannot find project " + name + " in " + bundleName); 
+		} catch (IOException e) {
+			String msg = "Cannot find project " + name + " in " + bundleName;
+			IStatus status = new Status(IStatus.ERROR, CommonAllTests.PLUGIN_ID, msg, e);
+			throw new CoreException(status);
 		}
 		String location = url.getFile();
 		if(makeCopy) {
@@ -101,7 +107,7 @@ public class TestProjectProvider {
 		}
 	}
 
-	static void importExistingProject(IProject project, String location, String name) throws Exception {
+	static void importExistingProject(IProject project, String location, String name) throws CoreException {
 		IPath path = new Path(location).append(".project");
 		IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(path);
 		description.setName(name);
@@ -114,7 +120,7 @@ public class TestProjectProvider {
 		}
 	}
 	
-	public void dispose() throws Exception {
+	public void dispose() throws CoreException {
 		if(project == null || !project.exists()) return;
 		ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {

@@ -20,7 +20,7 @@ import org.jboss.tools.common.xml.test.SAXValidatorTest;
 import org.jboss.tools.common.xml.test.XMLUtilitiesTest;
 
 public class CommonAllTests extends TestCase {
-	
+	public static final String PLUGIN_ID = "org.jboss.tools.common.test";
 	public static Test suite ()
 	{
 		TestSuite suite = new TestSuite(CommonAllTests.class.getName());
