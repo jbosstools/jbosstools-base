@@ -10,52 +10,63 @@
  ******************************************************************************/ 
 package org.jboss.tools.test.util;
 
-import org.eclipse.core.resources.IProject;
-import org.jboss.tools.test.util.xpl.EditorTestHelper;
-
 import junit.extensions.TestSetup;
 import junit.framework.Test;
+
+import org.eclipse.core.resources.IProject;
+import org.jboss.tools.test.util.xpl.EditorTestHelper;
 
 /**
  * @author eskimo
  *
  */
 public class ProjectImportTestSetup extends TestSetup {
-	
-	private String bundleName = "";
-	private String projectPath = "";
-	private String projectName = "";
-	
+
+	private String bundleName;
+	private String[] projectPaths;
+	private String[] projectNames;
+
 	/**
 	 * @param test
 	 */
-	public ProjectImportTestSetup(Test test,
-			String bundleName, String projectPath, String projectName) {
+	public ProjectImportTestSetup(Test test, String bundleName, String projectPath, String projectName) {
 		super(test);
 		this.bundleName = bundleName;
-		this.projectPath = projectPath;
-		this.projectName = projectName;
+		this.projectPaths = new String[]{projectPath};
+		this.projectNames = new String[]{projectName};
+	}
+
+	public ProjectImportTestSetup(Test test, String bundleName, String[] projectPaths, String[] projectNames) {
+		super(test);
+		this.bundleName = bundleName;
+		this.projectPaths = projectPaths;
+		this.projectNames = projectNames;
 	}
 
 	public IProject importProject() throws Exception {
-		IProject importedPrj = null;
-		EditorTestHelper.joinBackgroundActivities();
-		importedPrj = (IProject)ResourcesUtils.importProject(bundleName, projectPath);
-		EditorTestHelper.joinBackgroundActivities();
-		return importedPrj;
+		return importProjects()[0];
+	}
+
+	public IProject[] importProjects() throws Exception {
+		IProject[] projects = new IProject[projectPaths.length]; 
+		for (int i = 0; i < projectPaths.length; i++) {
+			EditorTestHelper.joinBackgroundActivities();
+			projects[i] = (IProject)ResourcesUtils.importProject(bundleName, projectPaths[i]);
+			EditorTestHelper.joinBackgroundActivities();
+		}
+		return projects;
 	}	
 
 	@Override
 	protected void setUp() throws Exception {
-		importProject();
+		importProjects();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		ResourcesUtils.deleteProject(projectName);
-		EditorTestHelper.joinBackgroundActivities();
+		for (int i = 0; i < projectNames.length; i++) {
+			ResourcesUtils.deleteProject(projectNames[i]);
+			EditorTestHelper.joinBackgroundActivities();
+		}
 	}
-	
-	
-
 }
