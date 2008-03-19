@@ -22,7 +22,6 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
-import org.jboss.tools.common.xml.XMLUtilities;
 
 public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
 	public static boolean hideHelp = true;
@@ -56,7 +55,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
             load(element);
             element = null;
             XModelMetaDataImpl meta = (XModelMetaDataImpl)getMetaModel();
-            ArrayList es = meta.getExtensions().getExtensions(getName());
+            ArrayList<XModelEntityExtensionImpl> es = meta.getExtensions().getExtensions(getName());
             if(es != null) {
                 for (int i = 0; i < es.size(); i++)
                   merge((XModelEntityExtensionImpl)es.get(i));
@@ -95,6 +94,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     }
 
     public void setImplementingClassName(String className){
+       if(className != null && className.length() == 0) className = null;
        implementation = new ClassHolder(className, this, "Implementations");
        implementationClassName = className;
     }
