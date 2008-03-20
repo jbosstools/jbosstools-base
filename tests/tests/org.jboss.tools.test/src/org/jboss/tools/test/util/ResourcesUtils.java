@@ -28,13 +28,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
@@ -67,7 +65,10 @@ public class ResourcesUtils {
 					Arrays.asList(new File(tplPrjLcStr).listFiles()));
 
 		op.setCreateContainerStructure(false);
-		op.setContext(Display.getCurrent().getActiveShell());
+		if( Display.getCurrent() == null || Display.getCurrent().getActiveShell() == null )
+			op.setContext(new Shell());
+		else
+			op.setContext(Display.getCurrent().getActiveShell());
 		op.run(monitor);
 		return importedPrj;
 	}
