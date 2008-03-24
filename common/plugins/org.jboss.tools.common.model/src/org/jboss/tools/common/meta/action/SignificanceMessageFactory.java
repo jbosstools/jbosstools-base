@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.action;
 import java.util.Hashtable;
 
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.meta.action.impl.handlers.ReplaceSignificanceMessageImpl;
@@ -49,8 +50,8 @@ public class SignificanceMessageFactory {
   private SignificanceMessage getImplInstance(String clsname) {
       try {
           return (SignificanceMessage)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
-      } catch (Exception t) {
-    	  //ignore
+      } catch (ClassCastException t) {
+    	  ModelPlugin.getPluginLog().logError(t);
           return defaultFactory;
       }
   }

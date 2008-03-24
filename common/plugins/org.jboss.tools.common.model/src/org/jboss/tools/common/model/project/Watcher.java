@@ -65,19 +65,14 @@ public class Watcher implements XModelTreeListener {
     			if(contributors.containsKey(nature)) {
     				continue;
     			} else {
-    	    		try {
-    	    			Object watcher = ModelFeatureFactory.getInstance().createFeatureInstance(CONTRIBUTORS[i][0]);
-    	    			if(watcher instanceof IWatcherContributor) {
-    	    				IWatcherContributor c = (IWatcherContributor)watcher;
-    	    				c.init(model);
-    	    				contributors.put(nature, c);
-    	    			} else
-    						if(ModelPlugin.isDebugEnabled()) {			
-    							ModelPlugin.getPluginLog().logInfo("Class is not implemented IWatcherContributor interface!");
-    						}
-    	    		} catch (Exception e) {
-    	    			ModelPlugin.getPluginLog().logError(e);
-    	    		}
+   	    			Object watcher = ModelFeatureFactory.getInstance().createFeatureInstance(CONTRIBUTORS[i][0]);
+   	    			if(watcher instanceof IWatcherContributor) {
+   	    				IWatcherContributor c = (IWatcherContributor)watcher;
+   	    				c.init(model);
+   	    				contributors.put(nature, c);
+   	    			} else if(ModelPlugin.isDebugEnabled()) {			
+   						ModelPlugin.getPluginLog().logInfo("Class is not implemented IWatcherContributor interface!");
+  					}
     			}
     		} else {
     			contributors.remove(nature);

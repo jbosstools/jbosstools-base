@@ -29,7 +29,7 @@ public class ProcessOut implements Runnable {
     private boolean isAlive() {
         try {
             if(is != null && is.available() > 0) return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             return fireDead();
         }
         return p != null || fireDead();
@@ -39,7 +39,7 @@ public class ProcessOut implements Runnable {
         synchronized(waitMonitor) {
             try {
             	waitMonitor.notifyAll();
-            } catch (Exception e) {
+            } catch (IllegalMonitorStateException e) {
             	//ignore
             }
             is = null;
@@ -57,7 +57,7 @@ public class ProcessOut implements Runnable {
                     if((av = is.available()) < 1) {
                         try {
                         	Thread.sleep(200);
-                        } catch (Exception e) {
+                        } catch (InterruptedException e) {
                         	//ignore
                         }
                         continue;
@@ -66,7 +66,7 @@ public class ProcessOut implements Runnable {
                     av = is.read(b, 0, av);
                 }
                 writer.write(new String(b, 0, av));
-            } catch (Exception e) {
+            } catch (IOException e) {
             	ModelPlugin.getPluginLog().logError(e);
             }
         }
@@ -80,7 +80,7 @@ public class ProcessOut implements Runnable {
             if(!isAlive()) return;
             try {
             	wait();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
             	//ignore
             }
         }
@@ -90,10 +90,10 @@ public class ProcessOut implements Runnable {
         public void run() {
             try {
                 p.waitFor();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 try {
                     p.exitValue();
-                } catch (Exception e2) {
+                } catch (IllegalThreadStateException e2) {
                     run();
                 }
             }

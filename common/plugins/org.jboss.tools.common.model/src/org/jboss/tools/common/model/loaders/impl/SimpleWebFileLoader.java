@@ -201,10 +201,12 @@ public class SimpleWebFileLoader implements SerializingLoader {
             element.removeAttribute("NAME");
             element.removeAttribute("EXTENSION");
             return serialize(element, object);
-        } catch (Exception e) {
+        } catch (IOException e) {
         	ModelPlugin.getPluginLog().logError(e);
-            return null;
+        } catch (XModelException e) {
+        	ModelPlugin.getPluginLog().logError(e);
         }
+        return null;
     }
     
     protected String getDocName() {

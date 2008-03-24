@@ -14,6 +14,7 @@ import java.util.*;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.meta.XMapping;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class XModelObjectIcon {
@@ -132,8 +133,8 @@ class ImageComponentWrapper implements ImageComponent {
             	XModelObjectIcon.components.put(key, c);
             }
             imageComponent = c;
-        } catch (Exception e) {
-			///XStudioPlugin.getDefault().getLog().log(new Status(Status.ERROR, XStudioPlugin.PLUGIN_ID, Status.OK, "Cannot load icon " + keys[i] + " " + v,e));
+        } catch (ClassCastException e) {
+        	ModelPlugin.getPluginLog().logError(e);
         	XModelObjectIcon.components.remove(key);
         }
 	}

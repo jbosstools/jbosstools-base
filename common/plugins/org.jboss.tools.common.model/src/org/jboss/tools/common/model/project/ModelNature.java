@@ -186,7 +186,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 	private ServiceDialog createServiceDialog() {
 		try {
 			return (ServiceDialog)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl");
-		} catch (Exception e) {
+		} catch (ClassCastException e) {
 			ModelPlugin.getPluginLog().logError("Cannot create service dialog.");
 		}
 		return null;

@@ -54,7 +54,7 @@ public class FileSystemsTree extends DefaultSiftedTree {
             XFilteredTreeConstraint c = null;
             try {
                 c = (XFilteredTreeConstraint)ModelFeatureFactory.getInstance().createFeatureInstance(v);
-            } catch (Exception e) {
+            } catch (ClassCastException e) {
             	ModelPlugin.getPluginLog().logError(e);
             }
             if(c == null) continue;

@@ -454,7 +454,7 @@ class XAdoptWrapper implements XAdoptManager {
 	    	if(adoptclass != null && adoptclass.length() > 0) {
 	    		entity.adopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance(adoptclass);
 	    	}
-	    } catch (Exception e) {
+	    } catch (ClassCastException e) {
 	    	ModelPlugin.getPluginLog().logError("XModelEntityImpl:setAdoptManager:" + e.getMessage());
 	    	entity.adopt = null;
 	    }

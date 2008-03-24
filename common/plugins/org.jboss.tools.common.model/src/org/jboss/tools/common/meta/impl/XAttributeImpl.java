@@ -234,12 +234,12 @@ class AdapterHolder {
         if(loader == null || loader.length() == 0) {
             adapter = new XAdapter();
         } else {
+        	String clsname = loader.indexOf('.') >= 0 ? loader : XAttributeImpl.ATTRIBUTE_PREFIX + loader;
             try {
-            	String clsname = loader.indexOf('.') >= 0 ? loader : XAttributeImpl.ATTRIBUTE_PREFIX + loader;
                 if(loader.length() > 0) {
                 	adapter = (XAdapter)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
                 }
-            } catch (Exception e) {
+            } catch (ClassCastException e) {
             	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadAdapter:" + e.getMessage());
             }
         }
@@ -295,14 +295,14 @@ class ConstraintHolder {
             if(loader.length() > 0) {
             	constraint = (XAttributeConstraint)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
             }
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + e.getMessage());
+        } catch (ClassCastException e) {
+        	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + e.getMessage(), e);
         }
 		if(constraint == null) constraint = new XAttributeConstraintImpl();
 		if(element != null) try {
 			((XAttributeConstraintImpl)constraint).load(element);
 		} catch (Exception t) {
-			ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + t.getMessage());
+			ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + t.getMessage(), t);
 		}
 		loader = null;
 		element = null;

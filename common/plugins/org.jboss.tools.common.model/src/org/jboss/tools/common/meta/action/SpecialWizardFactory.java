@@ -17,7 +17,7 @@ public final class SpecialWizardFactory {
     public static SpecialWizard createSpecialWizard(String classname) {
         try {
             return (SpecialWizard)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
-        } catch (Exception e) {
+        } catch (ClassCastException e) {
         	ModelPlugin.getPluginLog().logError(e);
             return null;
         }
