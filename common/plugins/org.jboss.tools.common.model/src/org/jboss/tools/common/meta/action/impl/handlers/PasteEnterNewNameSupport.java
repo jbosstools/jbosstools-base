@@ -62,7 +62,7 @@ public class PasteEnterNewNameSupport extends SpecialWizardSupport {
 		return new String[]{OK, CANCEL/*, HELP*/};
 	}
 
-	public void action(String name) throws Exception {
+	public void action(String name) throws XModelException {
 		if(OK.equals(name) || FINISH.equals(name)) {
 			returnCode = 0;
 			setFinished(true);

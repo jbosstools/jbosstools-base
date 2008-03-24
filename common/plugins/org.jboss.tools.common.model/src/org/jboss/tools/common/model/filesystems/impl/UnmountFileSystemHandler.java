@@ -19,7 +19,7 @@ public class UnmountFileSystemHandler extends DefaultRemoveHandler {
 
     public UnmountFileSystemHandler() {}
 
-    public void executeHandler(XModelObject object, java.util.Properties p) throws Exception {
+    public void executeHandler(XModelObject object, java.util.Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         if(!handleModified(object)) return;
         XModelObject parent = object.getParent();

@@ -26,9 +26,9 @@ public class BrowserHelper {
 
     public BrowserHelper() {}
 
-	public static void startExplorer(XModel model, String url) throws Exception {
+	public static void startExplorer(XModel model, String url) throws XModelException {
 		XModelObject editor = PreferenceModelUtilities.getPreferenceModel().getByPath("%Options%/Struts Studio/Running");
-		if(editor == null) throw new Exception("External Program 'Internet Browser' is not set in Options.");
+		if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
 		if(validatePath(PreferenceModelUtilities.getPreferenceModel().getService(), editor)) new OWEProcess(editor, url).start();
 	}
 	

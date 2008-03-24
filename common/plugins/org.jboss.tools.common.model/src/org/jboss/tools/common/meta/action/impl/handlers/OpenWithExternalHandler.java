@@ -32,7 +32,7 @@ public class OpenWithExternalHandler extends AbstractHandler {
         return b;
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         if(!checkSave(action.getDisplayName(), object)) return;
         String f = getFileName(object);
@@ -69,16 +69,16 @@ public class OpenWithExternalHandler extends AbstractHandler {
         return null;
     }
 
-    public static void start(String actionname, String filename, XModelObject editor) throws Exception {
+    public static void start(String actionname, String filename, XModelObject editor) throws XModelException {
         int i = filename.indexOf('#');
         String fn = (i < 0) ? filename : filename.substring(0, i);
         if(!new File(fn).isFile()) throw new RuntimeException("Cannot find file " + fn + ".");
         if(OpenWithHelper.validatePath(actionname, editor)) new OWEProcess(editor, filename).start();
     }
 
-    public static void startExplorer(XModel model, String url) throws Exception {
+    public static void startExplorer(XModel model, String url) throws XModelException {
         XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser");
-        if(editor == null) throw new Exception("External Program 'Internet Browser' is not set in Options.");
+        if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
         if(OpenWithHelper.validatePath("Open", editor)) new OWEProcess(editor, url, true).start();
     }
 

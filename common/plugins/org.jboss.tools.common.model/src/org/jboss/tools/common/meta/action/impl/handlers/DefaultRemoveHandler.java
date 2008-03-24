@@ -19,7 +19,7 @@ public class DefaultRemoveHandler extends AbstractHandler {
 
     public DefaultRemoveHandler() {}
 
-    public void executeHandler(XModelObject object, java.util.Properties p) throws Exception {
+    public void executeHandler(XModelObject object, java.util.Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         if(!isUniqueRequiredChild(object)) {
         	removeFromParent(object);
@@ -79,7 +79,7 @@ public class DefaultRemoveHandler extends AbstractHandler {
     	return false;
     }
     
-    private void cleanUniqueRequiredChild(XModelObject object) throws Exception {
+    private void cleanUniqueRequiredChild(XModelObject object) throws XModelException {
     	XAttribute[] as = object.getModelEntity().getAttributes();
     	for (int i = 0; i < as.length; i++) {
     		String xml = as[i].getXMLName();

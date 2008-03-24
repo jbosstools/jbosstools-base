@@ -73,7 +73,7 @@ public abstract class SpecialWizardSupport {
         reset();
     }
     
-    public void help() throws Exception {
+    public void help() throws XModelException {
     	HelpUtil.helpEclipse(getTarget().getModel(), getHelpKey());
     }
 
@@ -156,7 +156,7 @@ public abstract class SpecialWizardSupport {
         finished = b;
     }
 
-    public abstract void action(String name) throws Exception;
+    public abstract void action(String name) throws XModelException;
 
     public String[] getActionNames(int stepId) {
         return new String[]{OK, CANCEL, HELP};

@@ -25,7 +25,7 @@ public class PropertiesHandler extends AbstractHandler {
         return (object != null);
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         String viewMode = action.getProperty("viewMode");
         p = HelpUtil.createKey(object, action, p);

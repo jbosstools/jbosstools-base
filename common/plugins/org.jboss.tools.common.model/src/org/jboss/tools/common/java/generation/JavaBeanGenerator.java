@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -65,7 +66,7 @@ public class JavaBeanGenerator {
 		return EclipseResourceUtil.getJavaProject(project);		
 	}
 	
-	public void generate() throws Exception {
+	public void generate() throws CoreException {
 		IJavaProject javaproject = getJavaProject();
 		if(javaproject == null) return;
 		String srcpath = getSrcLocation(javaproject);
@@ -89,7 +90,7 @@ public class JavaBeanGenerator {
 		doGenerateJava(javaproject, filepath, p);
 	}
 	
-	private String getSrcLocation(IJavaProject javaproject) throws Exception {
+	private String getSrcLocation(IJavaProject javaproject) throws CoreException {
 		IClasspathEntry[] entries = javaproject.getResolvedClasspath(true);
 		for (int i = 0; i < entries.length; i++) {
 			if(entries[i].getEntryKind() != IClasspathEntry.CPE_SOURCE) continue;
@@ -105,7 +106,7 @@ public class JavaBeanGenerator {
 		return null;		
 	}	
 	
-	private void doGenerateJava(IJavaProject javaproject, String filepath, Properties p) throws Exception {
+	private void doGenerateJava(IJavaProject javaproject, String filepath, Properties p) throws CoreException {
 		IPackageFragmentRoot root = getJavaProjectSrcRoot(javaproject);
 		String pkgname = p.getProperty(PARAM_PACKAGENAME);
 		IPackageFragment pack = root.getPackageFragment(pkgname);
@@ -145,7 +146,7 @@ public class JavaBeanGenerator {
 		cu.commitWorkingCopy(false, null);
 	}
 
-	private String buildClassContent(ICompilationUnit cls, String shortname, String typeContent, String lineDelimiter) throws Exception {
+	private String buildClassContent(ICompilationUnit cls, String shortname, String typeContent, String lineDelimiter) throws CoreException {
 		StringBuffer qName = new StringBuffer();
 		qName.append(shortname);
 		String comments = CodeGeneration.getTypeComment(cls, qName.toString(), lineDelimiter);
@@ -185,7 +186,7 @@ public class JavaBeanGenerator {
 		}
 	}
 
-	public static IPackageFragmentRoot getJavaProjectSrcRoot(IJavaProject javaProject) throws Exception {
+	public static IPackageFragmentRoot getJavaProjectSrcRoot(IJavaProject javaProject) throws CoreException {
 		IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
 		for (int i = 0; i < es.length; i++) {
 			if(es[i].getEntryKind() != IClasspathEntry.CPE_SOURCE) continue;

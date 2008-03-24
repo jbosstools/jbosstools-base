@@ -22,7 +22,7 @@ public class FireChangesHandler extends AbstractHandler {
         return object.getModel().getChangeManager().canFire();
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         object.getModel().getChangeManager().fire();
     }
 

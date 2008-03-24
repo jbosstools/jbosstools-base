@@ -16,12 +16,12 @@ import org.jboss.tools.common.model.impl.XModelImpl;
 
 public class XProtectedTransaction {
     public interface Executor {
-        public void execute() throws Exception;
+        public void execute() throws XModelException;
     }
 
     public XProtectedTransaction() {}
 
-    public void execute(XTransactionUndo u, Executor exec, XModelObject listener) throws Exception {
+    public void execute(XTransactionUndo u, Executor exec, XModelObject listener) throws XModelException {
         XUndoManager undo = listener.getModel().getUndoManager();
         undo.addUndoable(u);
         try {
@@ -34,7 +34,7 @@ public class XProtectedTransaction {
             undo.addUndoable(ue);
         } catch (Exception e) {
             undo.rollbackTransactionInProgress();
-            throw e;
+            throw new XModelException(e);
         } finally {
             u.commit();
         }

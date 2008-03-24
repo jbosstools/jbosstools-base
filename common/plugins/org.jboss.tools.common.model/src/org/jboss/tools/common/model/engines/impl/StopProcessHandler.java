@@ -24,7 +24,7 @@ public class StopProcessHandler extends AbstractHandler {
         return (object != null && XProcessStorage.getDefaultStorage().getRunningInstances(object.getPath()) != null);
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         String path = object.getPath();
         XProcessStorage s = XProcessStorage.getDefaultStorage();

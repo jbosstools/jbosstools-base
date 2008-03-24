@@ -18,6 +18,7 @@ import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.extension.ExtensionPointUtil;
 
@@ -29,7 +30,7 @@ public class RunAntHandler extends AbstractHandler {
 		return (object != null && object.isActive());
 	}
 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		ILaunchShortcut sc = findLaunchShortcut("org.eclipse.ant.ui.antShortcutWithDialog");
 		IFile file = (IFile)object.getAdapter(IFile.class);
 		sc.launch(new StructuredSelection(file), ILaunchManager.RUN_MODE);
@@ -45,15 +46,19 @@ public class RunAntHandler extends AbstractHandler {
 		return null;
 	}
 	
-	static ILaunchShortcut findLaunchShortcut(String shortcutId) throws Exception {
+	static ILaunchShortcut findLaunchShortcut(String shortcutId) throws XModelException {
 		String pointId = "org.eclipse.debug.ui.launchShortcuts";
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(pointId);
-		if(point == null) throw new Exception("Cannot find extension point " + pointId);
+		if(point == null) throw new XModelException("Cannot find extension point " + pointId);
 		IConfigurationElement[] es = point.getConfigurationElements();
 		for (int i = 0; i < es.length; i++) {
 			if(!shortcutId.equals(es[i].getAttribute("id"))) continue;
-			return (ILaunchShortcut)es[i].createExecutableExtension("class");
+			try {
+				return (ILaunchShortcut)es[i].createExecutableExtension("class");
+			} catch (CoreException e) {
+				throw new XModelException(e);
+			}
 		}
-		throw new Exception("Cannot find launch shortcut " + shortcutId);
+		throw new XModelException("Cannot find launch shortcut " + shortcutId);
 	}
 }

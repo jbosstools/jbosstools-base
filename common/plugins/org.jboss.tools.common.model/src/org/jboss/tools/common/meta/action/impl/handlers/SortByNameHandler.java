@@ -21,7 +21,7 @@ public class SortByNameHandler extends AbstractHandler {
         return object != null && object.isObjectEditable() && object instanceof OrderedObjectImpl;
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
     	if(!isEnabled(object)) return;
     	OrderedObjectImpl ordered = (OrderedObjectImpl)object;
     	NameComparator c = new NameComparator();

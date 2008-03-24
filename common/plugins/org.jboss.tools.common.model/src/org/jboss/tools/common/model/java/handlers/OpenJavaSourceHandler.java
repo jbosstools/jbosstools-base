@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.java.handlers;
 
 import java.util.*;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.*;
 import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
@@ -41,14 +42,18 @@ public class OpenJavaSourceHandler extends AbstractHandler {
         return action.getProperty("attribute");
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         String type = getType(object);
 		type = type.replace('.', '/') + ".java";
-		open(object.getModel(), type, p);
+		try {
+			open(object.getModel(), type, p);
+		} catch (CoreException e) {
+			throw new XModelException(e);
+		}
     }
     
-    public static void open(XModel model, String type, Properties p) throws Exception {
+    public static void open(XModel model, String type, Properties p) throws XModelException, CoreException {
 		IProject project = (IProject)model.getProperties().get("project");
 		IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
 		IJavaElement javaElement = javaProject.findElement(new Path(type));

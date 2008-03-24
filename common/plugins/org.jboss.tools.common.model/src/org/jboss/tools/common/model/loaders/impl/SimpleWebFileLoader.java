@@ -21,7 +21,6 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.impl.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
-import org.jboss.tools.common.xml.SAXValidator;
 
 public class SimpleWebFileLoader implements SerializingLoader {
     protected XModelObjectLoaderUtil util = createUtil();
@@ -219,7 +218,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
      * @return
      */
     
-    public static String serialize(Element element, XModelObject object) throws Exception {
+    public static String serialize(Element element, XModelObject object) throws XModelException, IOException {
     	String encoding = object.getAttributeValue(XModelObjectConstants.ATTR_NAME_ENCODING);
 		StringWriter sw = new StringWriter();
 		try {

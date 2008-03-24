@@ -31,11 +31,11 @@ public class SearchDefaultHandler extends AbstractHandler {
         return (wizard() != null && object != null || object.getPath() != null);
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         executeHandler(object, new XModelObject[]{object}, p);
     }
 
-    public void executeHandler(XModelObject object, XModelObject[] objects, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, XModelObject[] objects, Properties p) throws XModelException {
         if(!isEnabled(object) || objects == null || objects.length == 0) return;
         XModelObject sc = getModifiedSearch(object, objects);
         if(sc == null) return;
@@ -43,7 +43,7 @@ public class SearchDefaultHandler extends AbstractHandler {
         wizard.execute();
     }
 
-    private XModelObject getModifiedSearch(XModelObject object, XModelObject[] objects) throws Exception {
+    private XModelObject getModifiedSearch(XModelObject object, XModelObject[] objects) throws XModelException {
         XModel model = object.getModel();
         XModelObject sc = findOrCreateDefaultSearch(object, objects);
         ServiceDialog d = model.getService();

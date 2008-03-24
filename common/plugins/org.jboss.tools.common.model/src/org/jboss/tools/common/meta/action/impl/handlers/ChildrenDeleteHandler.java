@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.action.impl.handlers;
 import java.util.*;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class ChildrenDeleteHandler extends AbstractHandler {
@@ -21,7 +22,7 @@ public class ChildrenDeleteHandler extends AbstractHandler {
 		return (object != null && object.isObjectEditable() && object.getChildren().length > 0);
 	}
 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		if(!isEnabled(object)) return;
 		XModelObject[] cs = object.getChildren();
 		XActionInvoker.invoke("DeleteActions.Delete", cs[0], cs, p);

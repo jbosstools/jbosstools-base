@@ -11,6 +11,7 @@
 package org.jboss.tools.common.meta.action.impl.handlers;
 
 import java.util.*;
+
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
@@ -73,7 +74,7 @@ public class DefaultRedirectHandler extends AbstractHandler implements XRedirect
         return (a == null) ? null : a.getEntityData(getTrueSource(object));
     }
 
-    public void executeHandler(XModelObject object, java.util.Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         XAction a = getTrueAction(object);
         a.executeHandler(getTrueSource(object), p);

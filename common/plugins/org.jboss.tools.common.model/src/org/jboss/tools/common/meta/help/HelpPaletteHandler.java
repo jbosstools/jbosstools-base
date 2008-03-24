@@ -17,7 +17,7 @@ public class HelpPaletteHandler extends HelpHandler {
 
     public HelpPaletteHandler() {}
 
-    public void executeHandler(XModelObject object, Properties prop) throws Exception {
+    public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object)) return;
         XModelObject tab = getTabObject(object);
         String key = (tab == null) ? null : tab.getModelEntity().getName() + "_" + tab.getPathPart().replace(' ', '_');

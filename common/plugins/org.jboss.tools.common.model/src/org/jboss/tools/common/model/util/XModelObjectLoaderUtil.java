@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.util;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -40,6 +41,7 @@ import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelConstants;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.engines.impl.EnginesLoader;
 import org.jboss.tools.common.model.filesystems.XFileObject;
@@ -510,7 +512,7 @@ public class XModelObjectLoaderUtil {
         return (b) ? root : null;
     }
 
-    public static final void serialize(Element element, String filename) throws Exception {
+    public static final void serialize(Element element, String filename) throws IOException {
         File f = new File(filename);
         if(f.exists() && !f.canWrite()) return;
         if(!f.exists()) f.createNewFile();
@@ -530,43 +532,43 @@ public class XModelObjectLoaderUtil {
     	return XMLUtilities.createOutputFormat(encoding);
     }
 
-    public static final boolean serialize(Element element, Writer w) throws Exception {
+    public static final boolean serialize(Element element, Writer w) throws IOException {
         if(element == null) return false;
         serialize(element, new XMLSerializer(w, createOutputFormat("UTF-8")));
         w.close();
         return true;
     }
 
-    public boolean serialize(XModelObject object, Writer w) throws Exception {
+    public boolean serialize(XModelObject object, Writer w) throws XModelException, IOException {
         return serialize(asElement(object), w);
     }
 
-    public static final boolean serialize(Element element, OutputStream w) throws Exception {
+    public static final boolean serialize(Element element, OutputStream w) throws IOException {
         if(element == null) return false;
         serialize(element, new XMLSerializer(w, createOutputFormat("UTF-8")));
         w.close();
         return true;
     }
 
-    public boolean serialize(XModelObject object, OutputStream w) throws Exception {
+    public boolean serialize(XModelObject object, OutputStream w) throws XModelException, IOException {
         return serialize(asElement(object), w);
     }
 
-    public static void serialize(Element element, XMLSerializer serial) throws Exception {
+    public static void serialize(Element element, XMLSerializer serial) throws IOException {
         serial.asDOMSerializer();
         serial.serialize(element);
     }
 
-    public static void serialize(Document document, XMLSerializer serial) throws Exception {
+    public static void serialize(Document document, XMLSerializer serial) throws IOException {
         serial.asDOMSerializer();
         serial.serialize(document);
     }
 
-    public static final boolean serialize(Document document, Writer w) throws Exception {
+    public static final boolean serialize(Document document, Writer w) throws IOException {
     	return serialize(document, w, null);
     }
 
-	public static final boolean serialize(Document document, Writer w, String encoding) throws Exception {
+	public static final boolean serialize(Document document, Writer w, String encoding) throws IOException, IOException {
 		if(document == null) return false;
 		serialize(document, new XMLSerializer(w, createOutputFormat(encoding)));
 		w.close();

@@ -27,7 +27,7 @@ public class HiddenPaletteTabsHandler extends AbstractHandler {
         return (wizard != null && object != null && object.isObjectEditable());
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.views.palette.editor.HiddenPaletteTabsWizard");
         Map<String,XModelObject> objects = new HashMap<String,XModelObject>();

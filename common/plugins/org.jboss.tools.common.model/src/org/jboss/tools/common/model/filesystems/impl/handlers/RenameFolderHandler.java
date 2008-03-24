@@ -12,14 +12,16 @@ package org.jboss.tools.common.model.filesystems.impl.handlers;
 
 import java.util.Properties;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultEditHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
 
 public class RenameFolderHandler extends DefaultEditHandler {
 
-	public void executeHandler(XModelObject object, Properties prop) throws Exception {
+	public void executeHandler(XModelObject object, Properties prop) throws XModelException {
 		FolderImpl f = (FolderImpl)object;
 		f.save();
         Properties p = extractProperties(data[0]);
@@ -28,7 +30,7 @@ public class RenameFolderHandler extends DefaultEditHandler {
         f.save();
 	}
 	
-	void rename0(FolderImpl f, String name) throws Exception {
+	void rename0(FolderImpl f, String name) throws XModelException {
 		IFolder folder =  (IFolder)f.getResource();
 		String n1 = f.get("NAME");
 		f.set("NAME", name);
@@ -37,9 +39,9 @@ public class RenameFolderHandler extends DefaultEditHandler {
 			try {
 				folder.move(new Path(folder.getParent().getFullPath() + "/" + name), true, null);
 				f.setModified(true);
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				f.set("NAME", n1);
-				throw e;
+				throw new XModelException(e);
 			}
 		}			
 	}

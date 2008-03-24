@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.handlers;
 import java.io.*;
 import java.util.*;
 import org.eclipse.core.resources.*;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.tools.common.model.markers.ResourceMarkers;
 import org.eclipse.jdt.core.*;
@@ -50,7 +51,7 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		return n == null ? null : n.getID();		
 	}
 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		IProject project = getProject(object);
 		String nature = (p == null) ? null : p.getProperty("nature"); 
 		if(nature == null) nature = getNature(object);
@@ -69,26 +70,30 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		Boolean b = (Boolean)pd.get(ServiceDialog.CHECKED);
 		unregisterWTP = b.booleanValue();
 		
-		IProjectDescription d = project.getDescription();
-		String[] ns = d.getNatureIds();
-		String[] ns2 = removeNature(ns, nature);
-		if(unregisterWTP) ns2 = new String[]{JavaCore.NATURE_ID};
-		if(ns.length == ns2.length) return;
-		if(unregisterWTP) {
-			unregisterFromServer(object);
-			clearClassPath(project);
+		try {
+			IProjectDescription d = project.getDescription();
+			String[] ns = d.getNatureIds();
+			String[] ns2 = removeNature(ns, nature);
+			if(unregisterWTP) ns2 = new String[]{JavaCore.NATURE_ID};
+			if(ns.length == ns2.length) return;
+			if(unregisterWTP) {
+				unregisterFromServer(object);
+				clearClassPath(project);
+			}
+			d.setNatureIds(ns2);
+			project.setDescription(d, IResource.FORCE, null);
+			if(EclipseResourceUtil.getModelNature(project) != null) return;
+			String projectLocation = project.getLocation().toString();
+			removeFiles(projectLocation, XModelConstants.getWorkspace(object.getModel()));
+			if(unregisterWTP) {
+				File f = new File(projectLocation + "/.settings");
+				if(f.isDirectory()) FileUtil.remove(f);
+			}
+			clear(object.getModel().getByPath("FileSystems/WEB-INF"));
+			project.refreshLocal(IResource.DEPTH_INFINITE, null);
+		} catch (CoreException e) {
+			throw new XModelException(e);
 		}
-		d.setNatureIds(ns2);
-		project.setDescription(d, IResource.FORCE, null);
-		if(EclipseResourceUtil.getModelNature(project) != null) return;
-		String projectLocation = project.getLocation().toString();
-		removeFiles(projectLocation, XModelConstants.getWorkspace(object.getModel()));
-		if(unregisterWTP) {
-			File f = new File(projectLocation + "/.settings");
-			if(f.isDirectory()) FileUtil.remove(f);
-		}
-		clear(object.getModel().getByPath("FileSystems/WEB-INF"));
-		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 	
 	private void removeFiles(String location, String workspace) {
@@ -122,9 +127,9 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 	
 // Remove Dynamic Web Project Capabilities
 	
-	void clearClassPath(IProject project) throws Exception {
+	void clearClassPath(IProject project) throws XModelException {
 		IJavaProject javaProject = JavaCore.create(project);
-		ArrayList<IClasspathEntry> newClassPath = new ArrayList<IClasspathEntry>(Arrays.asList(javaProject.getRawClasspath()));
+		ArrayList<IClasspathEntry> newClassPath = new ArrayList<IClasspathEntry>(getRawClassPath(javaProject));
 		Iterator<IClasspathEntry> iterator = newClassPath.iterator();
 		while (iterator.hasNext()) {
 			IClasspathEntry entry = iterator.next();
@@ -138,7 +143,19 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		}
 		IClasspathEntry[] entries = newClassPath.toArray(new IClasspathEntry[newClassPath.size()]);
 		if(entries.length != 0) {
-			javaProject.setRawClasspath(entries, new NullProgressMonitor());
+			try {
+				javaProject.setRawClasspath(entries, new NullProgressMonitor());
+			} catch (JavaModelException e) {
+				throw new XModelException(e);
+			}
+		}
+	}
+	
+	private List<IClasspathEntry> getRawClassPath(IJavaProject javaProject) throws XModelException {
+		try {
+			return Arrays.asList(javaProject.getRawClasspath());
+		} catch (JavaModelException e) {
+			throw new XModelException(e);
 		}
 	}
 	

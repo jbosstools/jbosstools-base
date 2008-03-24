@@ -29,7 +29,7 @@ public class MoveHandler extends AbstractHandler {
                p.isObjectEditable() && (p instanceof XOrderedObject) && ((XOrderedObject)p).areChildrenOrdered());
     }
 
-    public void executeHandler(XModelObject object, Properties prop) throws Exception {
+    public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object)) return;
         XModelObject o = object.getModel().getModelBuffer().source();
         XModelObject p = object.getParent();

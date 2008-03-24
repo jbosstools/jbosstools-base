@@ -12,6 +12,7 @@ package org.jboss.tools.common.meta.action.impl.handlers;
 
 import java.util.*;
 import org.jboss.tools.common.meta.action.impl.*;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.AnyElementObjectImpl;
 
@@ -43,7 +44,7 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
 		}
 	}
 
-	public void action(String name) throws Exception {
+	public void action(String name) throws XModelException {
 		if(OK.equals(name) || FINISH.equals(name)) {
 			finish();
 			setFinished(true);
@@ -54,7 +55,7 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
 		}
 	}
 	
-	protected void finish() throws Exception {
+	protected void finish() throws XModelException {
 		Properties p = extractStepData(0);
 		String name = p.getProperty("name");
 		String value = p.getProperty("value");

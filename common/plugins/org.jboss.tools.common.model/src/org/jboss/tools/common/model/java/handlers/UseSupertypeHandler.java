@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import org.eclipse.jdt.ui.actions.UseSupertypeAction;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
@@ -23,7 +24,7 @@ public class UseSupertypeHandler extends AbstractHandler {
 		return object != null;
 	}
 	 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		UseSupertypeAction action = new UseSupertypeAction(ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart().getSite());
 		action.run();
 	}

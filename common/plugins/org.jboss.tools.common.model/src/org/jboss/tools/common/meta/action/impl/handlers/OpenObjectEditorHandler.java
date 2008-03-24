@@ -31,7 +31,7 @@ public class OpenObjectEditorHandler extends AbstractHandler {
         return (object != null && wizard != null);
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         wizard.setObject(object);
         wizard.execute();

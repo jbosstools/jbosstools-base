@@ -22,12 +22,12 @@ public class HelpHandler extends AbstractHandler {
         return (object != null);
     }
 
-    public void executeHandler(XModelObject object, Properties prop) throws Exception {
+    public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object)) return;
         help(object.getModel(), object.getModelEntity().getName());
     }
 
-    protected void help(XModel model, String key) throws Exception {
+    protected void help(XModel model, String key) throws XModelException {
 		HelpUtil.helpEclipse(model, key);
     }
     

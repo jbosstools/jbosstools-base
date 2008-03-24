@@ -22,7 +22,7 @@ public class SearchExecuteHandler extends AbstractHandler {
         return (SearchDefaultHandler.wizard() != null && object instanceof SearchCommand);
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         SearchCommand command = (SearchCommand)object;
         command.validate();
         SearchDefaultHandler.wizard().setObject(new Object[]{command});

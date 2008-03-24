@@ -18,7 +18,7 @@ import org.jboss.tools.common.meta.action.impl.handlers.*;
 
 public class RenameFileHandler extends DefaultEditHandler {
 
-	public void executeHandler(XModelObject object, Properties prop) throws Exception {
+	public void executeHandler(XModelObject object, Properties prop) throws XModelException {
 		// prompt file object to build body if it has not been done yet.
 		((FileAnyImpl)object).getAsText();
 		super.executeHandler(object, prop);

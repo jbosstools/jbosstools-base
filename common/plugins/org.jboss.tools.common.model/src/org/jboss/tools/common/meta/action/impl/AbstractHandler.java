@@ -31,7 +31,7 @@ public class AbstractHandler implements XActionHandler {
         return data;
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {}
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {}
 
     public boolean getSignificantFlag(XModelObject object) {
         return false;
@@ -91,7 +91,7 @@ public class AbstractHandler implements XActionHandler {
         return entity1.equals(entity2);
     }
 
-    public void executeHandler(XModelObject object, XModelObject[] objects, java.util.Properties p) throws Exception {
+    public void executeHandler(XModelObject object, XModelObject[] objects, java.util.Properties p) throws XModelException {
         if(!isEnabled(object, objects)) return;
         if(object == null || objects == null || objects.length < 2) {
             executeHandler(object, p);
@@ -141,14 +141,14 @@ public class AbstractHandler implements XActionHandler {
         ((XActionImpl)action).setWizardClassName(wizard);
     }
     
-	public final void executeInTransaction(XModelObject object, Properties p, String transactionName, int transactionKind) throws Exception {
+	public final void executeInTransaction(XModelObject object, Properties p, String transactionName, int transactionKind) throws XModelException {
 		if(!isEnabled(object)) return;
 		XUndoManager undo = object.getModel().getUndoManager();
 		XTransactionUndo u = new XTransactionUndo(transactionName, transactionKind);
 		undo.addUndoable(u);
 		try {
 			transaction(object, p);
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			undo.rollbackTransactionInProgress();
 			throw e;
 		} finally {
@@ -156,7 +156,7 @@ public class AbstractHandler implements XActionHandler {
 		}
 	}
 	
-	protected void transaction(XModelObject object, Properties p) throws Exception {
+	protected void transaction(XModelObject object, Properties p) throws XModelException {
 	}
 
 }

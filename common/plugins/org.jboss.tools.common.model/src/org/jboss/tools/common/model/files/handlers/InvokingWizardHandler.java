@@ -6,6 +6,7 @@ import org.jboss.tools.common.meta.action.SpecialWizard;
 import org.jboss.tools.common.meta.action.SpecialWizardFactory;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class InvokingWizardHandler extends AbstractHandler {
@@ -17,7 +18,7 @@ public class InvokingWizardHandler extends AbstractHandler {
         return sw != null && object != null;
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
     	if(sw == null || object == null) return;
     	if(p == null) p = new Properties();
 		String pluginId = action.getProperty("plugin");

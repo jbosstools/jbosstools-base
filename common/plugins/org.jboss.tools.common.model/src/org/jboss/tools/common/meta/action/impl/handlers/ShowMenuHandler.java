@@ -14,6 +14,7 @@ import java.util.Properties;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 import org.jboss.tools.common.meta.action.impl.XActionListImpl;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class ShowMenuHandler extends AbstractHandler {
@@ -23,7 +24,7 @@ public class ShowMenuHandler extends AbstractHandler {
 		return wizard != null;
 	}
 	
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
     	XActionList list = getActionList(object);
     	if(list == null) return;
     	p.put("object", object);

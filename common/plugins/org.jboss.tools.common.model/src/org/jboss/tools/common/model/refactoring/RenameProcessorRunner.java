@@ -10,23 +10,29 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.refactoring;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.internal.corext.refactoring.tagging.*;
 import org.eclipse.jdt.internal.ui.refactoring.RefactoringSaveHelper;
 import org.eclipse.jdt.internal.ui.refactoring.reorg.*;
 import org.eclipse.ltk.core.refactoring.participants.*;
 import org.eclipse.swt.widgets.Shell;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class RenameProcessorRunner {
 	
-	public static void run(RenameProcessor processor, String name) throws Exception {
+	public static void run(RenameProcessor processor, String name) throws XModelException {
 		RenameRefactoring refactoring = new RenameRefactoring(processor);
 		initialize(refactoring, name, 0);
 		Shell shell = ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 		RenameUserInterfaceStarter starter = new RenameUserInterfaceStarter();
 		RenameRefactoringWizard wizard = new RenameRefactoringWizard(refactoring, "Rename", "", null, "");
 		starter.initialize(wizard);
-		starter.activate(refactoring, shell, RefactoringSaveHelper.SAVE_ALL);
+		try {
+			starter.activate(refactoring, shell, RefactoringSaveHelper.SAVE_ALL);
+		} catch (CoreException e) {
+			throw new XModelException(e);
+		}
 	}
 
 	private static void initialize(RenameRefactoring refactoring, String newName, int flags) {

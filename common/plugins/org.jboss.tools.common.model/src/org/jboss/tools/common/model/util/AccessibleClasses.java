@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class AccessibleClasses implements ISimpleTree {
     private static final int JAVA = 1;
@@ -89,7 +90,7 @@ public class AccessibleClasses implements ISimpleTree {
         try {
         	exists = getChildren(list, packagename);
         } catch (JavaModelException e) {
-        	e.printStackTrace();
+        	ModelPlugin.getPluginLog().logError(e);
         }
         return exists;
     }

@@ -10,18 +10,19 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action;
 
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public interface XActionHandler {
     public XEntityData[] getEntityData(XModelObject object);
     public void setDefaultData(XModelObject object);
-    public void executeHandler(XModelObject object, java.util.Properties p) throws Exception;
+    public void executeHandler(XModelObject object, java.util.Properties p) throws XModelException;
     public boolean getSignificantFlag(XModelObject object);
     public boolean isEnabled(XModelObject object);
     public boolean hide(boolean enabled);
 
     public boolean isEnabled(XModelObject object, XModelObject[] objects);
-    public void executeHandler(XModelObject object, XModelObject[] objects, java.util.Properties p) throws Exception;
+    public void executeHandler(XModelObject object, XModelObject[] objects, java.util.Properties p) throws XModelException;
 
 }
  

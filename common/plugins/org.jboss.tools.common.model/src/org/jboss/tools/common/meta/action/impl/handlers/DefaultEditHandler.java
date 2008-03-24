@@ -20,7 +20,7 @@ public class DefaultEditHandler extends DefaultCreateHandler {
 
     public DefaultEditHandler() {}
 
-    public void executeHandler(XModelObject object, Properties prop) throws Exception {
+    public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object) || data == null) return;
         Properties p = extractProperties(data[0]);
         setOtherProperties(object, p);
@@ -42,7 +42,7 @@ public class DefaultEditHandler extends DefaultCreateHandler {
         return data;
     }
 
-    public static void edit(XModelObject object, Properties p, boolean openTransaction) throws Exception {
+    public static void edit(XModelObject object, Properties p, boolean openTransaction) throws XModelException {
         if(!openTransaction) {
             edit(object, p);
             return;
@@ -56,7 +56,7 @@ public class DefaultEditHandler extends DefaultCreateHandler {
             if(stamp == object.getTimeStamp()) undo.rollbackTransactionInProgress();
         } catch (Exception e) {
             undo.rollbackTransactionInProgress();
-            throw e;
+            throw new XModelException(e);
         } finally {
             u.commit();
         }

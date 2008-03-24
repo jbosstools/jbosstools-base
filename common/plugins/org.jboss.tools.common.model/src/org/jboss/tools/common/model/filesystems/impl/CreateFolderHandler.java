@@ -17,7 +17,7 @@ import org.jboss.tools.common.model.util.*;
 
 public class CreateFolderHandler extends DefaultCreateHandler {
 
-	public void executeHandler(XModelObject object, Properties prop) throws Exception {
+	public void executeHandler(XModelObject object, Properties prop) throws XModelException {
 		if(!isEnabled(object)) return;
 		String entity = data[0].getModelEntity().getName();
 		Properties p = extractProperties(data[0]);

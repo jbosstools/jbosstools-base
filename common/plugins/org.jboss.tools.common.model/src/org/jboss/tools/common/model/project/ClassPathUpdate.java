@@ -87,7 +87,7 @@ public class ClassPathUpdate {
 		}
 	}
 	
-	public void revalidateLibs(XModel model) throws Exception {
+	public void revalidateLibs(XModel model) throws XModelException, CoreException {
 		setProject(EclipseResourceUtil.getProject(model.getRoot()));
 		setModel(model);
 		javaProject = JavaCore.create(project);

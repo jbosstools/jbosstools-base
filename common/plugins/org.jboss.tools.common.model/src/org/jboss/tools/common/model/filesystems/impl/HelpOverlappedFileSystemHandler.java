@@ -16,7 +16,7 @@ import org.jboss.tools.common.meta.help.*;
 
 public class HelpOverlappedFileSystemHandler extends HelpHandler {
 
-    public void executeHandler(XModelObject object, Properties prop) throws Exception {
+    public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(object != null) help(object.getModel(), "OverlappedFileSystem");
     }
 

@@ -59,7 +59,7 @@ public class PasteHandler extends AbstractHandler {
         if(hasAttribute(o.getModel(), attr, bi)) list.add(new String[]{attr, mandatory});
     }
 
-    public void executeHandler(XModelObject object, Properties prop) throws Exception {
+    public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object)) return;
         boolean isDrop = (prop != null) && "true".equals(prop.getProperty("isDrop"));
         int bs = object.getModel().getModelBuffer().getSize();
@@ -69,7 +69,7 @@ public class PasteHandler extends AbstractHandler {
         } 
     }
 
-    protected void execute(XModelObject parent, int sourceIndex, boolean isDrop, Properties p) throws Exception {
+    protected void execute(XModelObject parent, int sourceIndex, boolean isDrop, Properties p) throws XModelException {
         XModelBuffer buffer = getBuffer(parent);
         boolean isParent = isParent(parent, buffer.copy(sourceIndex));
         if(isParent) {
@@ -144,11 +144,11 @@ public class PasteHandler extends AbstractHandler {
 
 	protected void onChildPasted(XModelObject child) {}
 
-    protected void pasteOnDrop(XModelObject parent, int sourceIndex, Properties p) throws Exception {
+    protected void pasteOnDrop(XModelObject parent, int sourceIndex, Properties p) throws XModelException {
         paste(parent, sourceIndex, p);
     }
 
-    protected final void drop(XModelObject parent, XModelObject source, Properties p) throws Exception {
+    protected final void drop(XModelObject parent, XModelObject source, Properties p) throws XModelException {
         XAdoptManager am = parent.getModelEntity().getAdoptManager();
         if(am != null) am.adopt(parent, source, p);
     }

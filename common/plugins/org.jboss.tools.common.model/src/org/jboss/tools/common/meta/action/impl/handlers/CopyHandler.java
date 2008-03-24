@@ -34,7 +34,7 @@ public class CopyHandler extends AbstractHandler {
 
     public CopyHandler() {}
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         object.getModel().getModelBuffer().clear();
         object.getModel().getModelBuffer().addSource(object);
         if(p == null || !"true".equals(p.getProperty("isDrag"))) {
@@ -50,7 +50,7 @@ public class CopyHandler extends AbstractHandler {
         return (object != null);
     }
 
-    public void executeHandler(XModelObject object, XModelObject[] objects, java.util.Properties p) throws Exception {
+    public void executeHandler(XModelObject object, XModelObject[] objects, java.util.Properties p) throws XModelException {
         if(!isEnabled(object, objects)) return;
         XModelBuffer buffer = object.getModel().getModelBuffer();
         buffer.clear();

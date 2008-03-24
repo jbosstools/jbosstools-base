@@ -26,7 +26,7 @@ public class OpenWithChoiceHandler extends AbstractHandler {
         return check(object);
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         if(!OpenWithExternalHandler.checkSave(action.getDisplayName(), object)) return;
         ServiceDialog d = object.getModel().getService();

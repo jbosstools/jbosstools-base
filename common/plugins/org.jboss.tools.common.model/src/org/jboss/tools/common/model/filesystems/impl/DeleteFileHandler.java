@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.filesystems.impl;
 import java.util.Properties;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 
@@ -24,7 +25,7 @@ public class DeleteFileHandler extends AbstractHandler {
 		       && (object.getParent() instanceof FolderImpl);
 	}
 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		if(!isEnabled(object)) return;
 		object.setModified(false);
 		if(closeEditor != null) {

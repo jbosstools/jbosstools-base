@@ -23,7 +23,7 @@ import org.jboss.tools.common.model.util.*;
 
 public class CreateFileHandler extends DefaultCreateHandler {
 
-    public void executeHandler(XModelObject object, Properties prop) throws Exception {
+    public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object) || data == null || data.length == 0) return;
         Properties p = extractProperties(data[0]);
         String defaultExtention = getDefaultExtension(prop);
@@ -93,7 +93,7 @@ public class CreateFileHandler extends DefaultCreateHandler {
         if(path != null) p.setProperty("path", path);
     }
 
-    private XModelObject getParentFolder(XModelObject object, Properties p) throws Exception {
+    private XModelObject getParentFolder(XModelObject object, Properties p) throws XModelException {
         String path = p.getProperty("path");
         if(path == null || path.length() == 0) return object;
         StringTokenizer st = new StringTokenizer(path, "/");
@@ -107,7 +107,7 @@ public class CreateFileHandler extends DefaultCreateHandler {
                 p.put("childObject", c);
                 return createFolder(c, st);
             } else if(!"FileFolder".equals(c.getModelEntity().getName())) {
-                throw new Exception("Cannot create folder " + pp + " in " + object.getPathPart());
+                throw new XModelException("Cannot create folder " + pp + " in " + object.getPathPart());
             } else {
                 object = c;
             }
@@ -115,7 +115,7 @@ public class CreateFileHandler extends DefaultCreateHandler {
         return object;
     }
 
-    private XModelObject createFolder(XModelObject object, StringTokenizer path) throws Exception {
+    private XModelObject createFolder(XModelObject object, StringTokenizer path) throws XModelException {
         while(path.hasMoreTokens()) {
             String pp = path.nextToken();
             XModelObject c = object.getModel().createModelObject("FileFolder", null);

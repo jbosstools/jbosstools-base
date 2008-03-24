@@ -18,7 +18,7 @@ public class GenerateDocumentationHandler extends AbstractHandler {
 
     public GenerateDocumentationHandler() {}
 
-    public void executeHandler(XModelObject object, java.util.Properties p) throws Exception {
+    public void executeHandler(XModelObject object, java.util.Properties p) throws XModelException {
         DocumentGenerator g = new DocumentGenerator();
         g.setModel(object.getModel());
 ////        String filename = MetaRootLoader.storage(object).getRootFolder() + "meta.html";

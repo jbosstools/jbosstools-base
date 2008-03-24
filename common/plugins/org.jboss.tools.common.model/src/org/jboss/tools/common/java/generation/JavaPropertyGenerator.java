@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.java.generation;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.*;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
 import org.eclipse.jdt.ui.*;
@@ -23,7 +24,7 @@ public class JavaPropertyGenerator {
 		this.owner = owner;
 	}
 	
-	public void generate(String name, String javatype, String access, boolean field, boolean getter, boolean setter) throws Exception {
+	public void generate(String name, String javatype, String access, boolean field, boolean getter, boolean setter) throws CoreException {
 		if("default".equals(access)) access = ""; else access += " ";
 		String fa = (getter && setter) ? "private " : access;
 		ICompilationUnit parentCU = owner.getCompilationUnit();
@@ -54,7 +55,7 @@ public class JavaPropertyGenerator {
 		cu.commitWorkingCopy(true, null);
 	}
 	
-	public static void createGetter(ICompilationUnit cu, IType type, String access, String javatype, String name, String lineDelimiter) throws Exception {
+	public static void createGetter(ICompilationUnit cu, IType type, String access, String javatype, String name, String lineDelimiter) throws CoreException {
 		String methodName = getAccessorName("get", name);
 		if(findGetter(type, methodName) != null) return;
 		String methodHeader = access + javatype + " " + methodName + "()";
@@ -85,7 +86,7 @@ public class JavaPropertyGenerator {
 		return null;
 	}
 
-	public static void createSetter(ICompilationUnit cu, IType type, String access, String javatype, String name, String lineDelimiter) throws Exception {
+	public static void createSetter(ICompilationUnit cu, IType type, String access, String javatype, String name, String lineDelimiter) throws CoreException {
 		String methodName = getAccessorName("set", name);
 		String methodHeader = access + "void " + methodName + "(" + javatype + " " + name + ")";
 		String stub = null;
@@ -102,7 +103,7 @@ public class JavaPropertyGenerator {
 		editMethod(cu, m, methodHeader, methodComment, methodContent, lineDelimiter);
 	}
 	
-	static void editMethod(ICompilationUnit cu, IMethod m, String methodHeader, String methodComment, String methodContent, String lineDelimiter) throws Exception {
+	static void editMethod(ICompilationUnit cu, IMethod m, String methodHeader, String methodComment, String methodContent, String lineDelimiter) throws CoreException {
 		synchronized(cu) {
 			cu.reconcile(ICompilationUnit.NO_AST, true, null, null);
 		}

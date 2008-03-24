@@ -39,7 +39,7 @@ public class DefaultCreateSupport extends SpecialWizardSupport {
 		}		
 	}
 
-	public void action(String name) throws Exception {
+	public void action(String name) throws XModelException {
 		if(OK.equals(name) || FINISH.equals(name)) {
 			finish();
 			setFinished(true);
@@ -50,7 +50,7 @@ public class DefaultCreateSupport extends SpecialWizardSupport {
 		}
 	}
 	
-	protected void finish() throws Exception {
+	protected void finish() throws XModelException {
 		String entity = getEntityName();
 		Properties p = extractStepData(0);
 		XModelObject c = XModelObjectLoaderUtil.createValidObject(getTarget().getModel(), entity, p);

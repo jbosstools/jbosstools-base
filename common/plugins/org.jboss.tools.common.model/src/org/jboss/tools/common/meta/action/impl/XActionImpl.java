@@ -61,7 +61,7 @@ public class XActionImpl extends XActionItemImpl implements XAction {
         if(hasHandler()) handler.setDefaultData(object);
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(hasHandler()) handler.executeHandler(object, p);
     }
 
@@ -77,7 +77,7 @@ public class XActionImpl extends XActionItemImpl implements XAction {
         return hasHandler() && handler.isEnabled(object, objects);
     }
 
-    public void executeHandler(XModelObject object, XModelObject[] objects, java.util.Properties p) throws Exception {
+    public void executeHandler(XModelObject object, XModelObject[] objects, java.util.Properties p) throws XModelException {
         if(hasHandler()) handler.executeHandler(object, objects, p);
     }
 

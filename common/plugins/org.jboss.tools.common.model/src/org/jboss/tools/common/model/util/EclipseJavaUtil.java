@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.util;
 
 import java.util.*;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -51,8 +52,68 @@ public class EclipseJavaUtil {
 		}
 		return null;
 	}
+
+	static String NULL = ";;;";
+
+	static class Resolved {
+		IType type;
+		Map<String, String> types = new HashMap<String, String>();
+		Resolved(IType type) {
+			this.type = type;
+		}
+		
+		void setType(IType type) {
+			this.type = type;
+			types.clear();
+		}
+	}
 	
+	static Map<String,Resolved> resolved = new HashMap<String, Resolved>();
+	
+	static String getKey(IType type) {
+		String n = type.getFullyQualifiedName();
+		IJavaProject jp = type.getJavaProject();
+		if(jp == null) return n;
+		IProject p = jp.getProject();
+		if(p == null || !p.isAccessible()) return n;
+		return p.getName() + ":" + n;
+	}
 	public static String resolveType(IType type, String typeName) {
+		if(type == null) return null;
+		if(type.isBinary() || typeName == null) return typeName;
+		
+		String n = getKey(type);
+		Resolved r = resolved.get(n);
+		if(r == null) {
+			r = new Resolved(type);
+			resolved.put(n, r);
+			if(resolved.size() % 100 == 0) {
+				System.out.println("-->" + resolved.size() + " " + n);
+			}
+		}
+		if(r.type != type) {
+			r.setType(type);
+		}
+		
+		String result = r.types.get(typeName);
+		
+		if(result != null) {
+			return (result == NULL) ? null : result;
+		}
+		
+		result = __resolveType(type, typeName);
+		
+		String nresult = result == null ? NULL : result;
+		
+		r.types.put(typeName, nresult);
+		
+//		System.out.println(n + " " + typeName);
+		
+		return result;
+
+	}
+	
+	private static String __resolveType(IType type, String typeName) {
 		try	{
 			String resolvedArray[][] = type.resolveType(typeName);
 //			resolvedArray == null for primitive types

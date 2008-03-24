@@ -18,7 +18,7 @@ public class UpdateHandler extends AbstractHandler {
 
     public UpdateHandler() {}
 
-    public void executeHandler(XModelObject object, Properties prop) throws Exception {
+    public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         object.getModel().update();
     }
 

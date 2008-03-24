@@ -12,6 +12,7 @@ package org.jboss.tools.common.meta.action.impl;
 
 import java.util.Properties;
 import org.jboss.tools.common.meta.action.impl.handlers.PasteHandler;
+import org.jboss.tools.common.model.XModelException;
 
 public class MultistepWizardSupport extends SpecialWizardSupport {
 	protected MultistepWizardStep[] steps = createSteps();
@@ -28,7 +29,7 @@ public class MultistepWizardSupport extends SpecialWizardSupport {
 
 	protected int[] previousSteps = new int[10];
 
-	public void action(String name) throws Exception {
+	public void action(String name) throws XModelException {
 		if(FINISH.equals(name)) {
 			execute();
 			setFinished(true);
@@ -78,20 +79,20 @@ public class MultistepWizardSupport extends SpecialWizardSupport {
 	
 	//override
 	
-	private int next() throws Exception {
+	private int next() throws XModelException {
 		int step = getStepId() + 1;
 		while(!isRequired(step)) ++step;
 		prepareStep(step);
 		return step;
 	}
 	
-	protected void prepareStep(int nextStep) throws Exception {		
+	protected void prepareStep(int nextStep) throws XModelException {		
 	}
 
 	protected boolean isRequired(int nextStep) {
 		return true;
 	}
 
-	protected void execute() throws Exception {}
+	protected void execute() throws XModelException {}
 
 }

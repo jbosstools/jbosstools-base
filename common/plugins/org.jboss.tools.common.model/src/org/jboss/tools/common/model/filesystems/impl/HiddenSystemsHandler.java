@@ -26,7 +26,7 @@ public class HiddenSystemsHandler extends AbstractHandler {
         return (/*wizard != null &&*/ object != null && object.isObjectEditable());
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
 		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizards.query.list.HiddenFileSystemsWizard");
         XModelObject[] fs = object.getChildren();

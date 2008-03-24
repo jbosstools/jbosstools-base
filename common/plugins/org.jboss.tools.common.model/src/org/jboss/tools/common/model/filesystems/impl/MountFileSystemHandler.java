@@ -21,7 +21,7 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
 
     public MountFileSystemHandler() {}
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object) || data == null || data.length == 0) return;
         String entity = data[0].getModelEntity().getName();
         p = extractProperties(data[0]);

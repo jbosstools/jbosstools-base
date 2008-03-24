@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.actions.CloseResourceAction;
 
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class CloseProjectHandler extends AbstractHandler
@@ -27,7 +28,7 @@ public class CloseProjectHandler extends AbstractHandler
 		return object != null;
 	}
 	 
-	public void executeHandler(XModelObject object, Properties p) throws Exception 
+	public void executeHandler(XModelObject object, Properties p) throws XModelException 
 	{
 		IProject project = (IProject)object.getModel().getProperties().get("project");
 		if (project != null)

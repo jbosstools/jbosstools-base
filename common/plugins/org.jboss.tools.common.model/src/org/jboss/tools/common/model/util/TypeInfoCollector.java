@@ -20,9 +20,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
@@ -40,6 +42,51 @@ public class TypeInfoCollector {
 	MemberInfo fMember;
 	List<MethodInfo> fMethods;
 	List<FieldInfo> fFields;
+	
+	private static class ProjectCache {
+		Map<IMember, MemberInfo> memberInfoCacheFalse = new HashMap<IMember, MemberInfo>();
+		Map<IMember, MemberInfo> memberInfoCacheTrue = new HashMap<IMember, MemberInfo>();
+		Map<IType, SuperTypeInfo> superTypesCache = new HashMap<IType, SuperTypeInfo>();
+	}
+	
+	private static Caches caches = new Caches();
+
+	private static class Caches {
+		ProjectCache common = new ProjectCache();
+//		Map<IProject, ProjectCache> cache = new HashMap<IProject, ProjectCache>();
+		
+		public boolean contains(IProject p) {
+//			return p != null && cache.containsKey(p);
+			return true;
+		}
+		
+		public void clean(IProject p) {
+//			if(contains(p)) {
+//				cache.remove(p);
+//			}
+			common = new ProjectCache();
+		}
+		
+		public ProjectCache get(IProject p) {
+			if(p == null || !p.isAccessible()) return null;
+			return common;
+//			ProjectCache c = cache.get(p);
+//			if(c == null) {
+//				c = new ProjectCache();
+//				cache.put(p, c);
+//			}
+//			return c;
+		}
+		
+		public ProjectCache get(IJavaElement element) {
+			if(element == null) {
+				return null;
+			}
+			IJavaProject jp = element.getJavaProject();
+			IProject p = jp == null ? null : jp.getProject();
+			return get(p);			
+		}
+	}
 
 	public static class Type {
 		private String fName;
@@ -585,7 +632,10 @@ public class TypeInfoCollector {
 		
 		SuperTypeInfo(IType type) throws JavaModelException {
 			this.type = type;
-			superTypesCache.put(type, this);
+			ProjectCache cache = caches.get(type);
+			if(cache != null) {
+				cache.superTypesCache.put(type, this);
+			}
 			ITypeHierarchy typeHierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
 			superTypes = typeHierarchy == null ? null : typeHierarchy.getAllSupertypes(type);
 			if(superTypes != null) for (int i = 0; i < superTypes.length; i++) {
@@ -603,11 +653,10 @@ public class TypeInfoCollector {
 		}
 	}
 	
-	static Map<IType, SuperTypeInfo> superTypesCache = new HashMap<IType, SuperTypeInfo>();
-	
 	public static SuperTypeInfo getSuperTypes(IType type) throws JavaModelException {
 		if(type == null) return null;
-		SuperTypeInfo ts = superTypesCache.get(type);
+		ProjectCache cache = caches.get(type);
+		SuperTypeInfo ts = (cache != null) ? cache.superTypesCache.get(type) : null;
 		if(ts == null) {
 			ts = new SuperTypeInfo(type);
 		}
@@ -867,18 +916,18 @@ public class TypeInfoCollector {
 		return properties;
 	}
 	
-	static Map<IMember, MemberInfo> memberInfoCacheFalse = new HashMap<IMember, MemberInfo>();
-	static Map<IMember, MemberInfo> memberInfoCacheTrue = new HashMap<IMember, MemberInfo>();
-	
 	public static void cleanCache() {
-		memberInfoCacheFalse.clear();
-		memberInfoCacheTrue.clear();
-		superTypesCache.clear();
+		caches = new Caches();
 	}
 
 	public static MemberInfo createMemberInfo(IMember member, boolean dataModel) {
-		Map<IMember, MemberInfo> cache = dataModel ? memberInfoCacheTrue : memberInfoCacheFalse;
-		MemberInfo result = cache.get(member);
+		ProjectCache pcache = caches.get(member);
+
+		Map<IMember, MemberInfo> cache = null;
+		if(pcache != null) {
+			cache = dataModel ? pcache.memberInfoCacheTrue : pcache.memberInfoCacheFalse;
+		}
+		MemberInfo result = cache == null ? null : cache.get(member);
 		if(result != null) return result;
 		try {
 			if (member instanceof IType)
@@ -938,4 +987,5 @@ public class TypeInfoCollector {
 		}
 		return Signature.getTypeVariable(typeSignatures);
 	}
+	
 }

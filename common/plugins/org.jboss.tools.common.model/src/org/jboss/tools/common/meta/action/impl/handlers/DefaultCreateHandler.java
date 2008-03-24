@@ -31,7 +31,7 @@ public class DefaultCreateHandler extends AbstractHandler {
 
     public DefaultCreateHandler() {}
 
-    public void executeHandler(XModelObject object, Properties prop) throws Exception {
+    public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object) || data == null || data.length == 0) return;
         String entity = getEntityName();
         Properties p = extractProperties(data[0]);

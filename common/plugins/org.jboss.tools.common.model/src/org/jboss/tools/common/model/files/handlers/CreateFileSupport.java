@@ -98,7 +98,7 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		return findAttribute(0, "template") != null; 
 	}
 
-	public void action(String name) throws Exception {
+	public void action(String name) throws XModelException {
 		if(FINISH.equals(name)) {
 			if(!checkResource()) return;
 			execute();
@@ -114,7 +114,7 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		return new String[]{FINISH, CANCEL, HELP};
 	}
 
-	protected void execute() throws Exception {
+	protected void execute() throws XModelException {
 		Properties p = extractStepData(0);
 		String path = p.getProperty("name");
 		path = revalidatePath(path);
@@ -175,11 +175,15 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		return path;
 	}
 
-	protected XModelObject createFile(String path) throws Exception {
+	protected XModelObject createFile(String path) throws XModelException {
 		if(!canCreateFile(path)) return null;
-		String body = getTemplateBody();
-		body = modifyBody(body);
-		return createFile(targetHolder.target, path, body, extractStepData(0));
+		try {
+			String body = getTemplateBody();
+			body = modifyBody(body);
+			return createFile(targetHolder.target, path, body, extractStepData(0));
+		} catch (IOException e) {
+			throw new XModelException(e);
+		}
 	}
 	
 	protected String getTemplateBody() throws IOException {

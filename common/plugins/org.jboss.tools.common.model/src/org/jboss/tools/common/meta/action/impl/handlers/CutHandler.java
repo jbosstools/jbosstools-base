@@ -31,7 +31,7 @@ public class CutHandler extends AbstractHandler {
         if(delete == null) delete = new DefaultRemoveHandler();
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         load(object);
         copy.executeHandler(object, p);
         delete.executeHandler(object, p);
@@ -48,7 +48,7 @@ public class CutHandler extends AbstractHandler {
 
     public void setDefaultData(XModelObject object) {}
 
-    public void executeHandler(XModelObject object, XModelObject[] objects, java.util.Properties p) throws Exception {
+    public void executeHandler(XModelObject object, XModelObject[] objects, java.util.Properties p) throws XModelException {
         load(object);
         if(isDefault) return;
         copy.executeHandler(object, objects, p);

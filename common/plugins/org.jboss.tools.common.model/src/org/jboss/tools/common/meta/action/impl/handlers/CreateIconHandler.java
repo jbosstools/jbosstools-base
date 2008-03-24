@@ -19,7 +19,7 @@ public class CreateIconHandler extends DefaultCreateHandler {
 
     public CreateIconHandler() {}
 
-    public void executeHandler(XModelObject object, Properties prop) throws Exception {
+    public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object) || data == null) return;
         XEntityData[] es = (XEntityData[])data;
         String entity = es[0].getModelEntity().getName();

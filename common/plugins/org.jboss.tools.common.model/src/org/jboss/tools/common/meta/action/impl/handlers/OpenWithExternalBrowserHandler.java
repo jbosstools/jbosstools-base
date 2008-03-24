@@ -26,7 +26,7 @@ public class OpenWithExternalBrowserHandler extends OpenWithExternalHandler {
         return b;
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         String f = getFileName(object);
         String ext = OpenWithHelper.getExtension(f);
@@ -50,7 +50,7 @@ public class OpenWithExternalBrowserHandler extends OpenWithExternalHandler {
 //        return null;
 //    }
 
-    public static void start(String actionname, String url, XModelObject editor) throws Exception {
+    public static void start(String actionname, String url, XModelObject editor) throws XModelException {
         if(OpenWithHelper.validatePath(actionname, editor)) new OWEProcess(editor, url).start();
     }
 }

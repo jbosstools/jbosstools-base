@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.handlers;
 import java.util.Properties;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class OpenEditorHandler extends AbstractHandler {
@@ -22,13 +23,17 @@ public class OpenEditorHandler extends AbstractHandler {
 		return (object != null && object.isActive());
 	}
 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		if(wizard == null) return;
 		if(p == null) p = new Properties();
 		p.put("object", object);
 		wizard.setObject(p);
 		int i = wizard.execute();
-		if(i != 0 && p.get("exception") != null) throw (Exception)p.get("exception"); 
+		if(i != 0 && p.get("exception") != null) {
+			Exception e = (Exception)p.get("exception");
+			if(e instanceof XModelException) throw (XModelException)e;
+			throw new XModelException(e); 
+		}
 	}
 	
 }

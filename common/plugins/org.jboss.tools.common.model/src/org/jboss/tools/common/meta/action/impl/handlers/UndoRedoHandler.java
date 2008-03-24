@@ -31,7 +31,7 @@ public class UndoRedoHandler extends AbstractHandler {
         return new XEntityData[0];
     }
 
-    public void executeHandler(XModelObject object, java.util.Properties p) throws Exception {
+    public void executeHandler(XModelObject object, java.util.Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         call(object.getModel());
     }

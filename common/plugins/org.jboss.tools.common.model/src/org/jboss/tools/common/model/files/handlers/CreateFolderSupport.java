@@ -10,6 +10,7 @@ import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
 import org.jboss.tools.common.meta.action.impl.WizardDataValidator;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.model.ServiceDialog;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.CreateFileHandler;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
@@ -33,7 +34,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 	}
 
 	@Override
-	public void action(String name) throws Exception {
+	public void action(String name) throws XModelException {
 		if(FINISH.equals(name)) {
 			if(!checkResource()) return;
 			execute();
@@ -85,7 +86,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 		return path;
 	}
 
-	protected void execute() throws Exception {
+	protected void execute() throws XModelException {
 		Properties p = extractStepData(0);
 		String path = p.getProperty("name");
 		path = revalidatePath(path);
@@ -93,7 +94,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 		if(f != null) targetHolder.saveLastPath();
 	}
 	
-	protected XModelObject createFolder(String path) throws Exception {
+	protected XModelObject createFolder(String path) throws XModelException {
 		if(!canCreateResource(path)) return null;
 		XModelObject fs = targetHolder.target;
 

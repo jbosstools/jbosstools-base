@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchSite;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -28,7 +29,7 @@ public class RenameEclipseFileHandler extends AbstractHandler {
         return object != null && object.isObjectEditable();
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
     	final IResource file = EclipseResourceUtil.getResource(object);
     	if(file == null) {
     		XActionInvoker.invoke("EditActions.Rename", object, p);

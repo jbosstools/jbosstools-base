@@ -12,13 +12,14 @@ package org.jboss.tools.common.meta.action.impl.handlers;
 
 import java.util.*;
 import org.jboss.tools.common.meta.action.XAction;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.engines.impl.EnginesLoader;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class ReplaceWithNewHandler extends DefaultCreateHandler {
 
-	public void executeHandler(XModelObject object, Properties prop) throws Exception {
+	public void executeHandler(XModelObject object, Properties prop) throws XModelException {
 		if(!isEnabled(object) || data == null || data.length == 0) return;
 		String entity = getEntityName();
 		Properties p = extractProperties(data[0]);

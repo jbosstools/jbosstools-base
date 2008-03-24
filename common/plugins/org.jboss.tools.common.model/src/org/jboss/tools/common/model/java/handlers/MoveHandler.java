@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.*;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -26,7 +27,7 @@ public class MoveHandler extends AbstractHandler {
 		return object != null;
 	}
 	 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		SiteWrapper site = new SiteWrapper(ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart().getSite());
 		SelectionDispatchAction action = createAction(site);
 		run(site, action, object);

@@ -19,7 +19,7 @@ public class SaveAllHandler extends AbstractHandler {
 	SpecialWizard saveEditors = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.objecteditor.SaveEditorsSpecialWizard");
     public SaveAllHandler() {}
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(object == null) return;
         if(saveEditors != null) saveEditors.execute();
         object.getModel().save();

@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.handlers;
 import java.util.Properties;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -23,6 +24,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.ide.IDE;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -32,8 +34,9 @@ public class OpenJavaEditorHandler extends AbstractHandler {
 		return true;
 	}
 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		IProject project = (IProject)object.getModel().getProperties().get("project");
+		try {
 		IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
 	
 		String className = 
@@ -46,6 +49,9 @@ public class OpenJavaEditorHandler extends AbstractHandler {
 		} else {
 			IFile f = (IFile)EclipseResourceUtil.getResource(object);
 			if(f != null) IDE.openEditor(getWorkbenchPage(), f);
+		}
+		} catch (CoreException e) {
+			throw new XModelException(e);
 		}
 	}
 	private IWorkbenchPage getWorkbenchPage() {

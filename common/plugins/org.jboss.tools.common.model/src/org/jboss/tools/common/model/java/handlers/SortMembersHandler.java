@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.java.handlers;
 import java.util.Properties;
 import org.eclipse.jdt.ui.actions.SortMembersAction;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
@@ -24,7 +25,7 @@ public class SortMembersHandler extends AbstractHandler
 		return object != null;
 	}
 	 
-	public void executeHandler(XModelObject object, Properties p) throws Exception 
+	public void executeHandler(XModelObject object, Properties p) throws XModelException 
 	{
 		SortMembersAction action = new SortMembersAction(ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart().getSite());
 		action.run();

@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.*;
 import org.jboss.tools.common.meta.action.SpecialWizard;
 import org.jboss.tools.common.meta.action.SpecialWizardFactory;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class CreateJavaFileHandler extends AbstractHandler {
@@ -25,7 +26,7 @@ public class CreateJavaFileHandler extends AbstractHandler {
 		return (object.getAdapter(IJavaElement.class) != null);
 	}
 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard");
 		wizard.setObject(object);
 		wizard.execute();

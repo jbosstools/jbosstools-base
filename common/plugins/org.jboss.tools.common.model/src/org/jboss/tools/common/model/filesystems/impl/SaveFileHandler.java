@@ -24,7 +24,7 @@ public class SaveFileHandler extends AbstractHandler {
                 (object.getParent() instanceof FolderImpl));
     }
 
-    public void executeHandler(XModelObject object, java.util.Properties p) throws Exception {
+    public void executeHandler(XModelObject object, java.util.Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         int q = -1;
         if(wizard != null) {

@@ -31,7 +31,7 @@ public class MountFolderHandler extends AbstractHandler {
         return false;
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         String entity = data[0].getModelEntity().getName();
         p = new Properties();

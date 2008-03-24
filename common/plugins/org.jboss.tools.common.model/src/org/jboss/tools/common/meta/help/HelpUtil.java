@@ -37,12 +37,12 @@ public class HelpUtil {
         return path != null && path.length() > 0;
     }
 
-    public static void callHelp(XModel model, String key) throws Exception {
+    public static void callHelp(XModel model, String key) throws XModelException {
         String u = (key == null) ? null : keys.getProperty(key);
         if(u == null) return;
         //if(u.endsWith("noHelpYet.html")) ModelPlugin.log("Help for key " + key + " is not available.");
         XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser");
-        if(editor == null) throw new Exception("External Program 'Internet Browser' is not set in Options.");
+        if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
         String f = "" + model.getProperties().getProperty(XModelConstants.HOME) + "/doc/help" + u;
         OpenWithExternalHandler.start("Help", f, editor);
     }
@@ -58,9 +58,9 @@ public class HelpUtil {
 		return path != null && path.length() > 0;
 	}
 
-    public static void callExternalBrowser(XModel model, String url) throws Exception {
+    public static void callExternalBrowser(XModel model, String url) throws XModelException {
         XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser");
-        if(editor == null) throw new Exception("External Program 'Internet Browser' is not set in Options.");
+        if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
         OpenWithExternalBrowserHandler.start("Help", url, editor);
     }
 

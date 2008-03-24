@@ -17,6 +17,7 @@ import org.eclipse.jface.window.*;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
@@ -30,7 +31,7 @@ public class ProjectPropertiesHandler extends AbstractHandler {
         return false;
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		IMenuManager m = findWorkbenchMenuManager(IWorkbenchActionConstants.M_PROJECT);
 		final IAction action = findAction(m, "org.eclipse.ui.project.properties");
 		if(action == null) return;

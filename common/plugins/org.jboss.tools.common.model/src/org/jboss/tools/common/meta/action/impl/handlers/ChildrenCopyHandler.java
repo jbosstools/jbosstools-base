@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.action.impl.handlers;
 import java.util.*;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class ChildrenCopyHandler extends AbstractHandler {
@@ -21,7 +22,7 @@ public class ChildrenCopyHandler extends AbstractHandler {
 		return (object != null && object.getChildren().length > 0);
 	}
 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		if(!isEnabled(object)) return;
 		XModelObject[] cs = object.getChildren();
 		XActionInvoker.invoke("CopyActions.Copy", cs[0], cs, p);

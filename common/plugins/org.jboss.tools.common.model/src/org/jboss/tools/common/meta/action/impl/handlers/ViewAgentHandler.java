@@ -33,7 +33,7 @@ public abstract class ViewAgentHandler extends AbstractHandler {
         return (wizard() != null && object != null);
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         AppendTextEvent ev = createTextEvent(object);
         wizard.setObject(new Object[]{object, ev});

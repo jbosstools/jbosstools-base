@@ -23,7 +23,7 @@ public class RenameFileSystemHandler extends DefaultEditHandler {
 		String nm = object.getAttributeValue("name");
 		return !"WEB-INF".equals(nm);	
 	}
-	public void executeHandler(XModelObject object, Properties prop) throws Exception {
+	public void executeHandler(XModelObject object, Properties prop) throws XModelException {
 		if(!isEnabled(object) || data == null) return;
 		Properties p = extractProperties(data[0]);
 		setOtherProperties(object, p);
