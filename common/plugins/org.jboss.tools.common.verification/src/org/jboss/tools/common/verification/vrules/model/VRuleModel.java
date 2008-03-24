@@ -11,7 +11,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.RegularObjectImpl;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.verification.vrules.*;
 import org.jboss.tools.common.verification.vrules.impl.VResultFactoryImpl;
@@ -232,7 +231,7 @@ class VActionWrapper implements VAction {
         if (classname == null || classname.length() == 0) return null;
         try {
             action = (VAction)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
-        } catch (Exception th) {
+        } catch (ClassCastException th) {
 			if(VerificationPlugin.isDebugEnabled()) { 
 				VerificationPlugin.getPluginLog().logError("Unable to create action \""+classname+"\": " + "VRuleModel:getAction");
 			}
