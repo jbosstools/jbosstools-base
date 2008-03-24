@@ -43,7 +43,9 @@ public class VRuleSetsLoader extends EnginesLoader {
 			try { 
 				if(url != null) url = FileLocator.resolve(url);
 				if(url != null) l.add(url);
-			} catch (Exception e) {}
+			} catch (IOException e) {
+				ModelPlugin.getPluginLog().logError(e);
+			}
 		}
 		it = l.iterator();
         while(it.hasNext()) {

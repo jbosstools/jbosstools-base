@@ -17,6 +17,7 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.markers.ResourceProblems;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.PositionHolder;
 import org.jboss.tools.common.verification.vrules.*;
 import org.jboss.tools.common.verification.vrules.layer.VObjectImpl;
@@ -120,9 +121,11 @@ public class VTaskListenerImpl implements VTaskListener {
 		if(o == null) return limit = -1;
 		String s = o.getAttributeValue(attr);
 		limit = -1;
-		if(!"unlimited".equals(s)) try {
+		if(!"unlimited".equals(s) && s != null && s.length() > 0) try {
 			limit = Integer.parseInt(s);
-		} catch (Exception e) {}
+		} catch (NumberFormatException e) {
+			ModelPlugin.getPluginLog().logError(e);
+		}
 		return limit;		
 	}	
 	

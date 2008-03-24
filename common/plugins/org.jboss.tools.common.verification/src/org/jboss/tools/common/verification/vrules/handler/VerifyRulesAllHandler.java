@@ -23,7 +23,7 @@ public class VerifyRulesAllHandler extends VerifyHandler {
     public VerifyRulesAllHandler() {
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!gui) executeHandlerDefault(object, p);
         else executeHandlerGUI(object, p);
     }
@@ -32,7 +32,7 @@ public class VerifyRulesAllHandler extends VerifyHandler {
         return VHelper.getManager() != null;
     }
 
-    private void executeHandlerDefault(XModelObject object, Properties p) throws Exception {
+    private void executeHandlerDefault(XModelObject object, Properties p) throws XModelException {
         if (!isEnabled(object)) return;
 		VModel vmodel = VModelFactory.getModel(object.getModel());
         Map<String,List<VRule>> entities = new HashMap<String,List<VRule>>();
@@ -60,7 +60,7 @@ public class VerifyRulesAllHandler extends VerifyHandler {
     }
 
 
-    private void executeHandlerGUI(XModelObject object, Properties p) throws Exception {
+    private void executeHandlerGUI(XModelObject object, Properties p) throws XModelException {
 
 		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.verification.ui.vrules.wizard.runtime2.VerifyWizard");
         if(p == null) p = new Properties();

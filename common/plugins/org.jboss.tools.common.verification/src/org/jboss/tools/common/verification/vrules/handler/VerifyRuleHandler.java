@@ -23,7 +23,7 @@ public class VerifyRuleHandler extends VerifyHandler {
     public VerifyRuleHandler() {
     }
     
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if (!isEnabled(object)) return;
 		VModel vmodel = VModelFactory.getModel(object.getModel());
         Map<String,List<VRule>> entities = new HashMap<String,List<VRule>>();

@@ -31,9 +31,12 @@ public class VResultTemplateModel extends RegularObjectImpl implements PropertyC
             template.setName(getAttributeValue("name"));
             template.setDescription(getAttributeValue("description"));
             template.setType(getAttributeValue("type"));
+            String s = getAttributeValue("significance");
             try {
-                template.setSignificance(Integer.parseInt(getAttributeValue("significance")));
-            } catch (NumberFormatException e) {}
+                template.setSignificance(Integer.parseInt(s));
+            } catch (NumberFormatException e) {
+            	//ignore
+            }
             template.setFormat(getFormat(getAttributeValue("message id"), rule));
             template.addPropertyChangeListener(this);
         }
@@ -58,7 +61,9 @@ public class VResultTemplateModel extends RegularObjectImpl implements PropertyC
             } else if ("significance".equals(name)) {
                 try {
                     template.setSignificance(Integer.parseInt(result));
-                } catch (NumberFormatException e) {}
+                } catch (NumberFormatException e) {
+                	//ignore
+                }
             } else if ("message id".equals(name)) {
                 template.setFormat(getFormat(result, ((VRuleModel)getParent()).getRule(null)));
             }

@@ -21,7 +21,7 @@ public class VerifyRulesHandler extends VerifyHandler {
     public VerifyRulesHandler() {
     }
     
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if (!isEnabled(object)) return;
 		VModel vmodel = VModelFactory.getModel(object.getModel());
         VObject vobject = vmodel.getObjectByPath(object.getPath());

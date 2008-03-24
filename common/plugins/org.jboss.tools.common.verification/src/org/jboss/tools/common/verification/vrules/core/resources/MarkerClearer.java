@@ -40,7 +40,9 @@ public class MarkerClearer {
 			try {
 				XModelObject o = FileSystemsHelper.getWebInf(n.getModel());
 				clear(o);				
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				ModelPlugin.getPluginLog().logError(e);
+			}
 		}
 	}
 	

@@ -119,7 +119,9 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
             } else if ("significance".equals(name)) {
                 try {
                     rule.setSignificance(Integer.parseInt(result));
-                } catch (NumberFormatException e) {}
+                } catch (NumberFormatException e) {
+                	//ignore
+                }
             } else if ("entities".equals(name)) {
                 VEntity[] oldEntities = rule.getEntities();
                 VEntity[] newEntities = getEntities(result);

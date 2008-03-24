@@ -49,9 +49,14 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
         VHelper.setManager(this);
         manager.setMessageFormat(new VMessageFormat(getBundle(getAttributeValue("bundle")).getString(getAttributeValue("format id"))));
         manager.setRuleSets(getRuleSets());
+    	String s = getAttributeValue("minimum significance");
         try {
-            manager.setMinSignificance(Integer.parseInt(getAttributeValue("minimum significance")));
-        } catch (NumberFormatException e) {}
+        	if(s != null && s.length() > 0) {
+        		manager.setMinSignificance(Integer.parseInt(s));
+        	}
+        } catch (NumberFormatException e) {
+        	ModelPlugin.getPluginLog().logError(e);
+        }
         developer = "developer".equals(getAttributeValue("mode"));
         manager.addPropertyChangeListener(this);
     }
@@ -125,8 +130,12 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
                 developer = "developer".equals(getAttributeValue("mode"));
             } else if ("minimum significance".equals(name)) {
                 try {
-                    manager.setMinSignificance(Integer.parseInt(result));
-                } catch (NumberFormatException e) {}
+                	if(result != null && result.length() > 0) {
+                		manager.setMinSignificance(Integer.parseInt(result));
+                	}
+                } catch (NumberFormatException e) {
+                	ModelPlugin.getPluginLog().logError(e);
+                }
             }
         }
         return result;

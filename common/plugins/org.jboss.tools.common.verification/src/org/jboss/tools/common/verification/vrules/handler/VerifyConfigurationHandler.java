@@ -28,7 +28,7 @@ public class VerifyConfigurationHandler extends AbstractHandler {
         return object != null && wizard != null;
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
     	if(p == null) p = new Properties();
         wizard.setObject(new Object[]{object, p});
         wizard.execute();
