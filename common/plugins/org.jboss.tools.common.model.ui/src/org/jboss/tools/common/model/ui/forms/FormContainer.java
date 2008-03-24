@@ -39,7 +39,7 @@ public class FormContainer  extends DefaultFormContainer {
 			} else {
 				try {
 					form = (IForm)ModelFeatureFactory.getInstance().createFeatureInstance(forms[i].getFormClassName());
-				} catch(Exception e) {
+				} catch(ClassCastException e) {
 					ModelUIPlugin.getPluginLog().logError(e);
 				}
 			}

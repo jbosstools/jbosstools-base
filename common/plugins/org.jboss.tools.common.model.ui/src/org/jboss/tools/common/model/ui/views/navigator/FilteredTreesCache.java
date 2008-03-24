@@ -86,7 +86,7 @@ public class FilteredTreesCache {
 		XFilteredTree result = null;
 		try {
 			result = (XFilteredTree)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
-		} catch (Exception e) {
+		} catch (ClassCastException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 			return null;
 		}

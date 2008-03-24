@@ -15,13 +15,10 @@ import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.ui.dnd.IDragAndDropService;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.ui.navigator.TreeViewerDragDropProvider;
 
 import org.jboss.tools.common.meta.XAdoptManager;
 import org.jboss.tools.common.model.event.*;
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelTransferBuffer;
@@ -33,7 +30,7 @@ public class ControlDragDrop {
 	static {
 		try {
 			paletteAdopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.tld.model.handlers.JSPAdopt");
-		} catch (Exception e) {
+		} catch (ClassCastException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
@@ -239,7 +236,7 @@ public class ControlDragDrop {
 
 		private TreeItem getPrevTreeItem (Tree tree, TreeItem item) {
 			TreeItem result = null;
-			Vector rows = getTreeExpandedItems(tree);
+			Vector<TreeItem> rows = getTreeExpandedItems(tree);
 			int index = rows.indexOf(item);			
 			if (index > 0) {
 				result = (TreeItem)rows.get(index - 1);
@@ -368,9 +365,9 @@ public class ControlDragDrop {
 	public Widget findTreeItem (int x, int y) {
 		try {
 			Tree tree = (provider.getControl() instanceof Tree) ? (Tree)provider.getControl() : null;
-			Vector items = getTreeExpandedItems(tree);
+			Vector<TreeItem> items = getTreeExpandedItems(tree);
 			for (int i = 0; i < items.size(); i++) {
-				TreeItem item = (TreeItem)items.get(i);
+				TreeItem item = items.get(i);
 				Rectangle bounds = item.getBounds();
 				Point p = tree.toDisplay(bounds.x, bounds.y);
 				

@@ -26,7 +26,7 @@ public class NewJSPFileWizard extends NewFileWizardEx {
 			CreateFileSupport support = null;
 			try {
 				support = (CreateFileSupport)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.model.handlers.CreateJSPFileSupport");
-			} catch (Exception e) {
+			} catch (ClassCastException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
 			if(support == null) {

@@ -409,7 +409,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 			return getChildCount() == 0;
 		}
 
-		public Iterator children() {
+		public Iterator<JavaElement> children() {
 			return children.iterator();
 		}
 
@@ -532,7 +532,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 			AccessibleJava.IContextPackageProvider o = (AccessibleJava.IContextPackageProvider)ModelFeatureFactory.getInstance().createFeatureInstance(cls);
 			if(o != null) o.setObject(((DefaultValueAdapter)adapter).getModelObject());
 			return o;
-		} catch (Exception e) {
+		} catch (ClassCastException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}		
 		return null;

@@ -145,12 +145,11 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		ISpecialWizardStep step = null;
 		try {
 			step = (ISpecialWizardStep)ModelFeatureFactory.getInstance().createFeatureInstance(cls);
-			//Class.forName(cls, true, getClass().getClassLoader()).newInstance();
 			if(step instanceof AbstractSpecialWizardStep) {
 				((AbstractSpecialWizardStep)step).setWizard(this);
 			}
 			step.setSupport(support, i);
-		} catch (Exception e) {
+		} catch (ClassCastException e) {
 			ModelUIPlugin.getPluginLog().logError("Cannot load class '" + cls + "'.");
 		}
 		return step;
