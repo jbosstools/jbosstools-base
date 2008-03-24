@@ -23,7 +23,7 @@ public class GenerateHelpKeysHandler extends AbstractHandler {
         return object != null;
     }
 
-    public void executeHandler(XModelObject object, Properties p) throws Exception {
+    public void executeHandler(XModelObject object, Properties p) throws XModelException {
         defpath = action.getProperty("default");
         XModelObject q = findOrCreateProperties(object);
         XModelObject[] fs = object.getChildren("FileMETA");
