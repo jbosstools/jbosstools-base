@@ -58,7 +58,7 @@ public class XMLContentDescriber extends org.eclipse.core.internal.content.XMLCo
                 sb.append(new String(b, 0, l));
             }
             is.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
         	CommonPlugin.getPluginLog().logError(e);
         }
         return sb.toString();

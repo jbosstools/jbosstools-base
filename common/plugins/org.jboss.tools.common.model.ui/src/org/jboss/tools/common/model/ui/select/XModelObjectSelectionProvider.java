@@ -52,11 +52,7 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 	public void setHost(ISelectionProvider host) {
 		if(this.host == host) return;
 		if(this.host != null) {
-			try {
-				this.host.removeSelectionChangedListener(this);
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}			
+			this.host.removeSelectionChangedListener(this);
 		}
 		this.host = host;
 		if(host != null)
@@ -71,6 +67,8 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 		try {
 			return (host == null) ? null : convertSelectionToAdapter(host.getSelection());
 		} catch (Exception e) {
+			//TODO study possible problems and narrow caught exceptions.
+			ModelUIPlugin.getPluginLog().logError(e);
 			return null;
 		}
 	}
@@ -92,9 +90,9 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 		try {
 			if (!listeners.isEmpty()) {
 				SelectionChangedEvent newEvent = new SelectionChangedEvent(this, convertSelectionToAdapter(event.getSelection()));
-				Iterator iterator = listeners.iterator();
+				Iterator<ISelectionChangedListener> iterator = listeners.iterator();
 				while (iterator.hasNext())
-					((ISelectionChangedListener)iterator.next()).selectionChanged(newEvent);
+					iterator.next().selectionChanged(newEvent);
 			}
 		} finally {
 			isFiringSelection = false;
@@ -106,9 +104,9 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 		isFiringSelection = true;
 		try {
 			if (!listeners.isEmpty()) {
-				Iterator iterator = listeners.iterator();
+				Iterator<ISelectionChangedListener> iterator = listeners.iterator();
 				while (iterator.hasNext())
-					((ISelectionChangedListener)iterator.next()).selectionChanged(event);
+					iterator.next().selectionChanged(event);
 			}
 		} finally {
 			isFiringSelection = false;
@@ -116,10 +114,13 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 	}
 		
 	private ISelection convertSelectionToAdapter(ISelection selection) {
+		if(!(selection instanceof IStructuredSelection) || selection.isEmpty()) {
+			return selection;
+		}
 		IStructuredSelection structuredSelection = (IStructuredSelection)selection;			
-		List objects = structuredSelection.toList();
+		List<?> objects = structuredSelection.toList();
 		List<Object> adaptedObjects = new ArrayList<Object>();
-		Iterator iterator = objects.iterator();
+		Iterator<?> iterator = objects.iterator();
 		while (iterator.hasNext()) {
 			Object object = iterator.next();
 			if (object instanceof XModelObject) {
@@ -138,10 +139,13 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 	}
 		
 	private ISelection convertSelectionFromAdapter(ISelection selection) {
+		if(!(selection instanceof IStructuredSelection) || selection.isEmpty()) {
+			return selection;
+		}
 		IStructuredSelection structuredSelection = (IStructuredSelection)selection;			
-		List objects = structuredSelection.toList();
+		List<?> objects = structuredSelection.toList();
 		List<XModelObject> modelObjects = new ArrayList<XModelObject>();
-		Iterator iterator = objects.iterator();
+		Iterator<?> iterator = objects.iterator();
 		while (iterator.hasNext()) {
 			Object object = iterator.next();
 			if (object instanceof XModelObject) {

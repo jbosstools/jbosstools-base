@@ -42,6 +42,7 @@ public class TreeSelectionFieldEditor extends ExtendedFieldEditor implements IFi
 	
 	public TreeSelectionFieldEditor(IWidgetSettings settings) {
 		super(settings);
+		
 	}
 
 	///public TreeSelectionFieldEditor(String name, String labelText,	Composite parent, IWidgetSettings settings) {

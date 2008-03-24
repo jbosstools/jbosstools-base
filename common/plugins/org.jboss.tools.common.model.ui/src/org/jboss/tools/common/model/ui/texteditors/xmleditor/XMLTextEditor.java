@@ -636,6 +636,8 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
                 c = t.getOffsetAtLocation(new Point(x, y));
                 if (c < 0) c = 0;
             } catch (IllegalArgumentException ex) {
+				//do not log, catching that exception is 
+				//the way to know that we are out of line. 
             	if (lineIndex + 1 >= t.getLineCount()) {
                     return t.getCharCount();
                 }

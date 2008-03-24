@@ -57,7 +57,7 @@ class JavaAdapter {
         }
 		IResource r = EclipseResourceUtil.getJavaSourceRoot(project);
 		if(r == null || !r.exists()) r = project;
-		return packageFragmentRoot = javaProject.getPackageFragmentRoot(r);
+		return packageFragmentRoot = javaProject == null ? null : javaProject.getPackageFragmentRoot(r);
     }
     
     public void init(IProject project, String publicId, String xPath, String name) {
@@ -86,10 +86,10 @@ class JavaAdapter {
 			return;
         }
         
-		packageFragmentRoot = javaProject.getPackageFragmentRoot(javaProject.getResource());
+		packageFragmentRoot = javaProject == null ? null : javaProject.getPackageFragmentRoot(javaProject.getResource());
 		
 		try {
-            javaElement = javaProject.findElement(new Path(fullClassName));
+            javaElement = javaProject == null ? null : javaProject.findElement(new Path(fullClassName));
         } catch (JavaModelException e) {
         	javaElement = null;
 //        	no validation here

@@ -13,13 +13,13 @@ package org.jboss.tools.common.model.ui.attribute;
 import java.util.*;
 
 import org.jboss.tools.common.model.util.XModelTreeListenerSWTASync;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.*;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.adapter.IModelObjectAdapter;
 import org.jboss.tools.common.model.event.*;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class XModelObjectPropertySource implements IPropertySource, IXModelSupport, IModelObjectAdapter, IPropertySource2 {
 	protected ArrayList<IPropertyDescriptor> propertyDescriptors;
@@ -114,17 +114,14 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 			if(modelObject == null || modelObject != event.getModelObject()) return;
 			PropertySheet sh = null;
 			try { 
-				sh = (PropertySheet)ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.ui.views.PropertySheet");
-			} catch (Exception exc) {
+				sh = (PropertySheet)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.ui.views.PropertySheet");
+			} catch (NullPointerException exc) {
 				//ignore
 			}
 			if(sh == null) return;
-			try {
-				PropertySheetPage p = (PropertySheetPage)sh.getCurrentPage();
-				if(p != null) p.refresh();
-			} catch (Exception e) {
-				//ignore
-			}
+			PropertySheetPage p = (PropertySheetPage)sh.getCurrentPage();
+			if(p == null || p.getControl() == null || p.getControl().isDisposed()) return;
+			p.refresh();
 		}
 		public void structureChanged(XModelTreeEvent event) {}
 	}

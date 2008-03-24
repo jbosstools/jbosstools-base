@@ -53,7 +53,7 @@ public class AddInterfaceSupport extends SpecialWizardSupport {
 		if(current != null) setAttributeValue(0, property, current);		
 	}
 
-	public void action(String name) throws Exception {
+	public void action(String name) throws XModelException {
 		if(OK.equals(name) || FINISH.equals(name)) {
 			getProperties().setProperty(property, getAttributeValue(0, property));
 			setFinished(true);

@@ -12,6 +12,7 @@ package org.jboss.tools.common.editor;
 
 import java.util.StringTokenizer;
 import org.eclipse.core.resources.*;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.*;
@@ -72,7 +73,7 @@ public class XMLEditorLauncher implements IEditorLauncher {
 						}
 						try {
 							workbenchPage.openEditor(input, id);			
-						} catch (Exception e) {
+						} catch (PartInitException e) {
 							ModelUIPlugin.getPluginLog().logError((Exception)e);
 						}
 					}
@@ -91,7 +92,7 @@ public class XMLEditorLauncher implements IEditorLauncher {
 			IResource[] rs = null;
 			try {
 				rs = projects[i].members(true);
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				//ignore
 			}
 			if(rs != null) for (int j = 0; j < rs.length; j++) {

@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.ui.texteditors;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 import java.util.ResourceBundle;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -23,14 +24,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.common.editor.ObjectTextEditor;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.FocusListener;
-//import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -46,9 +47,6 @@ import org.eclipse.ui.texteditor.ResourceAction;
 import org.eclipse.ui.texteditor.RevertToSavedAction;
 import org.eclipse.ui.texteditor.SaveAction;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
-import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
-import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
-
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.DiscardFileHandler;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
@@ -108,11 +106,7 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 		if(sv == null) return "";
 		IDocument d = sv.getDocument();
 		if(d == null) return "";
-		try {
-			text = d.get();
-		} catch (Exception ex) {
-			ModelUIPlugin.getPluginLog().logError(ex);
-		}
+		text = d.get();
 		return (text == null) ? "" : text;
 	}
 
@@ -167,14 +161,19 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 	
 	public void setCursor(int line, int position) {
 		ISourceViewer sv = getSourceViewer();
-		if(sv == null) return;
+		if(sv == null || sv.getDocument() == null) return;
 		try {
 			int i = sv.getDocument().getLineOffset(line - 1) + position -1;
 			sv.setSelectedRange(i, 0);
 			sv.revealRange(i, 0);
-		} catch (Exception e) {
+		} catch (BadLocationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (SWTException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalArgumentException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
+		
 	}
 
 	public void doSaveAs() {
@@ -329,15 +328,11 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 	}
 	
 	public void dispose() {
-			try {
 		super.dispose();
 		if(changeListener != null) {
 			ModelPlugin.getWorkspace().removeResourceChangeListener(changeListener);
 			changeListener = null;
 		}
-			} catch (Exception t) {
-				ModelUIPlugin.getPluginLog().logError("Error in disposing xml editor", t);
-			}
 	}
 
 	public void selectModelObject(XModelObject object, String attribute) {
@@ -347,11 +342,7 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 		int bp = searcher.getStartPosition();
 		int ep = searcher.getEndPosition();
 		if(ep >= bp && bp >= 0) {
-			try {
-				selectAndReveal(bp, ep - bp);
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			selectAndReveal(bp, ep - bp);
 		}
 	}
 

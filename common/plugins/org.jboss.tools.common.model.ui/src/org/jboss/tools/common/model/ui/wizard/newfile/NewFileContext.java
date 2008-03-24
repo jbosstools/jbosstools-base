@@ -93,7 +93,7 @@ public class NewFileContext {
 	
 	class SWS extends SpecialWizardSupport {
 		public SWS() {}
-		public void action(String name) throws Exception {}
+		public void action(String name) throws XModelException {}
 	}
 	
 	public String validate(Properties data) {

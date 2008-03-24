@@ -38,9 +38,9 @@ public class ResourceProblemManager extends ProblemManager {
 	public void cache() {
 		problemsCache = new HashMap<Problem,IMarker>();
 		IMarker[] ms = new IMarker[0];
-		try {
+		if(resource != null) try {
 			ms = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		for (int i = 0; i < ms.length; i++) {
@@ -63,7 +63,7 @@ public class ResourceProblemManager extends ProblemManager {
 					try {
 						m.setAttribute(IMarker.CHAR_START, pos_i);
 						m.setAttribute(IMarker.CHAR_END, pos_i + 1);
-					} catch (Exception e) {
+					} catch (CoreException e) {
 						ModelUIPlugin.getPluginLog().logError(e);
 					}
 				}
@@ -75,7 +75,7 @@ public class ResourceProblemManager extends ProblemManager {
 		for (int i = 0; i < ms.length; i++) {
 			try {
 				ms[i].delete();
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}

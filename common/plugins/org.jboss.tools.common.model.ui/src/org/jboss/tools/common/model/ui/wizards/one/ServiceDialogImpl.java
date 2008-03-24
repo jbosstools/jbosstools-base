@@ -15,13 +15,14 @@ import org.jboss.tools.common.model.ui.dialog.MessageAndCheckboxDialog;
 import org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
 import org.jboss.tools.common.meta.action.impl.XEntityDataImpl;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class ServiceDialogImpl implements ServiceDialog {
 	protected String title;
@@ -45,11 +46,10 @@ public class ServiceDialogImpl implements ServiceDialog {
 	
 	public static Shell getShell() {
 		try {
-			return ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
-		} catch (Exception t) {
+			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		} catch (NullPointerException t) {
 			return null;
-		}
-		
+		}		
 	}
 	
 	public int showDialog(String title, String message,
@@ -86,7 +86,7 @@ public class ServiceDialogImpl implements ServiceDialog {
 			return options;
 		}
 		
-		public void action(String name) throws Exception {
+		public void action(String name) throws XModelException {
 			for(int i = 0; i < options.length; i++) {
 				if(name.equals(options[i])) {
 					returnCode = i;

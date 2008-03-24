@@ -20,6 +20,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.meta.action.SignificanceMessageFactory;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionItem;
@@ -45,8 +46,8 @@ public class XModelObjectAction extends XModelObjectActionItem {
 	public Shell getShell() {
 		if(shell != null) return shell;
 		try {
-			return ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
-		} catch (Exception t) {
+			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		} catch (NullPointerException t) {
 			return null;
 		}
 		

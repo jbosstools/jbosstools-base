@@ -14,6 +14,7 @@ import java.util.Properties;
 import org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class OneStepWizard implements SpecialWizard {
@@ -46,7 +47,7 @@ class SpecialWizardSupportOneImpl extends SpecialWizardSupport {
 		return new String[]{FINISH, CANCEL, HELP};
 	}
 		
-	public void action(String name) throws Exception {
+	public void action(String name) throws XModelException {
 		if(CANCEL.equals(name)) {
 			setFinished(true);
 		} else if(FINISH.equals(name)) {

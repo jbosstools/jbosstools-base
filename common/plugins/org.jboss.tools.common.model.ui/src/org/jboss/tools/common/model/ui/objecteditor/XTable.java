@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Color;
@@ -196,13 +197,13 @@ public class XTable {
 			item = table.getItem(i);
 			try {
 				item.dispose();
-			} catch (Exception e) {
+			} catch (SWTException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
 		if(r >= 0) try {
 			table.setSelection(r);
-		} catch (Exception e) {
+		} catch (SWTException e) {
 			//ignore
 		}
 		resizeLock = false;

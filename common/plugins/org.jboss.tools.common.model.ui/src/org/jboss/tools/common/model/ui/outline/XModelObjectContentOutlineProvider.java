@@ -19,7 +19,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.contentoutline.*;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.ControlDragDrop;
 import org.jboss.tools.common.model.ui.navigator.*;
 import org.jboss.tools.common.model.ui.select.XModelObjectSelectionProvider;
@@ -53,11 +52,7 @@ public class XModelObjectContentOutlineProvider extends ContentOutlinePage {
 		if (selectionProvider!=null) selectionProvider.dispose();
 		selectionProvider = null;
 		if(getSite() == null) return;
-		try {
-			getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(getSelectionListener());
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(getSelectionListener());
 	}
 	
 	public void setCache(XModelObjectCache cache) {
