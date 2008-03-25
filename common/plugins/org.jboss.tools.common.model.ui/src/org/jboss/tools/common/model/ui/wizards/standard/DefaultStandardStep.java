@@ -158,4 +158,12 @@ public class DefaultStandardStep extends WizardPage implements java.beans.Proper
 		return false;
 	}
 
+	public void save() {
+		if(attributes != null) attributes.store();
+	}
+
+	public void load() {
+		if(attributes != null) attributes.load();
+	}
+
 }

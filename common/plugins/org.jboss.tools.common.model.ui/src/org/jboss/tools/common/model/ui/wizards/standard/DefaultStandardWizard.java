@@ -17,11 +17,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
 import org.jboss.tools.common.meta.action.XEntityData;
+import org.jboss.tools.common.meta.action.impl.SpecialWizardControlListener;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
 import org.jboss.tools.common.meta.action.impl.WizardDataValidator;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
-public class DefaultStandardWizard extends Wizard {
+public class DefaultStandardWizard extends Wizard implements SpecialWizardControlListener {
 	protected SpecialWizardSupport support = null;
 	protected DefaultStandardStep[] steps = new DefaultStandardStep[0];
 	Composite pageContainer;
@@ -29,6 +30,7 @@ public class DefaultStandardWizard extends Wizard {
 	
 	public void setSupport(SpecialWizardSupport support) {
 		this.support = support;
+		support.setControlListener(this);
 	}
 
 	public boolean performFinish() {
@@ -122,6 +124,18 @@ public class DefaultStandardWizard extends Wizard {
 		boolean isNextEnabled = validator.isCommandEnabled(SpecialWizardSupport.NEXT);
 		wizardStep.isNextEnabled = isNextEnabled;
 		getContainer().updateButtons();
+	}
+
+	public void action(String name) {
+		try {
+			DefaultStandardStep step = steps[support.getStepId()];
+			step.save();
+			support.action(name);
+
+		} catch (Exception e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
+		
 	}
 	
 }
