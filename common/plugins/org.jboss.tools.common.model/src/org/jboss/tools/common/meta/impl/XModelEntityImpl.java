@@ -252,13 +252,9 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     }
     
     public void setAdoptManager(String adoptclass) {
-        try {
-        	if(adoptclass != null && adoptclass.length() > 0) {
-        		adopt = new XAdoptWrapper(adoptclass, this);
-        	}
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("XModelEntityImpl:setAdoptManager:" + e.getMessage());
-        }
+       	if(adoptclass != null && adoptclass.length() > 0) {
+       		adopt = new XAdoptWrapper(adoptclass, this);
+       	}
     }
 
     void validateChildren() {

@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.options.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -104,7 +105,7 @@ public class XStudioDataLoaderImpl implements SharableConstants {
         if(f.exists() && (!f.isFile() || !f.canWrite())) return;
         try {
             if(!f.exists()) f.createNewFile();
-        } catch (Exception e1) {
+        } catch (IOException e1) {
         	ModelPlugin.getPluginLog().logError("XStudioDataLoaderImpl:save:Cannot create file:" + e1.getMessage());
             return;
         }
@@ -116,7 +117,7 @@ public class XStudioDataLoaderImpl implements SharableConstants {
 		check(xs.getChildNodes(), names);
         try {
             XModelObjectLoaderUtil.serialize(xs, f.getAbsolutePath());
-        } catch (Exception e2) {
+        } catch (IOException e2) {
         	ModelPlugin.getPluginLog().logError(e2);
         }
     }

@@ -37,22 +37,14 @@ public class XAttributeEditorImpl extends XMetaElementImpl implements XAttribute
     }
 
     private void findViewerName() {
-        try {
-            viewer = viewer.substring(1, viewer.length() - 1);
-            viewer = getMetaModel().getMapping("AttributeEditor").getValue(viewer);
-        } catch (Exception e) {
-        	//ignore
-            viewer = null;
-        }
+    	if(viewer == null || viewer.length() < 2) return;
+        viewer = viewer.substring(1, viewer.length() - 1);
+        viewer = getMetaModel().getMapping("AttributeEditor").getValue(viewer);
     }
 
 
     protected void setDefaultClassName() {
-        try {
-            editor = getMetaModel().getMapping("AttributeEditor").getValue(getName());
-        } catch (Exception e) {
-        	//ignore
-        }
+        editor = getMetaModel().getMapping("AttributeEditor").getValue(getName());
     }
 
     public void load(Element element) {

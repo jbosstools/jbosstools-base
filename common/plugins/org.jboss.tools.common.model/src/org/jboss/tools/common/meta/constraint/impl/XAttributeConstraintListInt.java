@@ -18,7 +18,7 @@ public class XAttributeConstraintListInt extends XAttributeConstraintAList {
         if(values.contains(value)) return true;
         try {
             return (Integer.parseInt(value) >= 0);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         	//ignore
             return false;
         }

@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.markers;
 
 import java.util.*;
 import org.eclipse.core.resources.*;
+import org.eclipse.core.runtime.CoreException;
 
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
@@ -45,7 +46,7 @@ public class XMarkerManager implements IResourceChangeListener {
 		IMarker[] ms = new IMarker[0];
 		try {
 			ms = ModelPlugin.getWorkspace().getRoot().findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		reload(ms, errorObjects, IMarker.SEVERITY_ERROR);
@@ -68,9 +69,9 @@ public class XMarkerManager implements IResourceChangeListener {
 			if(attr != null && attr.length() > 0) ((XModelObjectImpl)o).addErrorAttributeDirty(attr);
 		}
 		synchronized(objects) {
-			Iterator it = objects.iterator();
+			Iterator<XModelObject> it = objects.iterator();
 			while(it.hasNext()) {
-				XModelObject o = (XModelObject)it.next();
+				XModelObject o = it.next();
 				if(!es.contains(o)) {
 					if(o.getErrorState() == severity) {
 						o.setErrorState(0);
@@ -124,7 +125,7 @@ public class XMarkerManager implements IResourceChangeListener {
 		IMarker[] ms = null;
 		try {
 			ms = file.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			//ignore no markers - no problem			
 			return null;
 		}

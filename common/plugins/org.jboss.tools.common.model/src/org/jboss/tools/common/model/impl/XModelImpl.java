@@ -374,16 +374,12 @@ public class XModelImpl implements XModel {
     }
 
         ////ProjectWatcher
-        private void loadWatcher() {
-            try {
-            	if(getProperties().get("project") == null) return;
-                XObjectLoader l = (XObjectLoader)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.project.WatcherLoader");
-                XModelObject fs = getByPath("FileSystems");
-                if(l != null && fs != null) l.load(fs);
-            } catch (Exception t) {
-            	ModelPlugin.getPluginLog().logError("XModelImpl:loadWatcher:" + t.getMessage());
-            }
-        }
+    private void loadWatcher() {
+    	if(getProperties().get("project") == null) return;
+        XObjectLoader l = (XObjectLoader)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.project.WatcherLoader");
+        XModelObject fs = getByPath("FileSystems");
+        if(l != null && fs != null) l.load(fs);
+    }
 
     public boolean isDummy() {
         return "RootDummy".equals(getRoot().getModelEntity().getName());

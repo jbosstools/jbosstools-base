@@ -40,7 +40,7 @@ public class XAttributeConstraintProperties extends XAttributeConstraintImpl {
         if(v == null || v.length() == 0) return def;
         try {
             return Integer.parseInt(v);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         	//ignore
             return def;
         }

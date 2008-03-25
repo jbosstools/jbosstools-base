@@ -20,6 +20,7 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.extension.ExtensionPointUtil;
 
 /**
@@ -40,8 +41,12 @@ public class RunAntHandler extends AbstractHandler {
 		Platform.getBundle(pluginId);
 		try	{
 			return (IObjectActionDelegate)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.popupMenus", actionId);
-		} catch (Exception ex) {
-			///XStudioPlugin.log(ex);
+		} catch (IllegalArgumentException ex) {
+			//ignore
+		} catch (CoreException ex) {
+			//ignore
+		} catch (ClassCastException ex) {
+			ModelPlugin.getPluginLog().logError(ex);
 		}
 		return null;
 	}

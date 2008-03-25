@@ -225,12 +225,7 @@ class ClassHolder2 {
     public Object createInstance() {
         if(name == null || name.trim().length() == 0) return null;
         validate();
-        try {
-            return ModelFeatureFactory.getInstance().createFeatureInstance(name);
-        } catch (Exception e) {
-        	name = null;
-            return null;
-        }
+        return ModelFeatureFactory.getInstance().createFeatureInstance(name);
     }
 
     private void validate() {

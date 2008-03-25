@@ -32,7 +32,7 @@ public class XAttributeConstraintInt extends XAttributeConstraintProperties {
         try {
             int i = Integer.parseInt(value);
             return (i >= min && i <= max);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         	//ignore
             return false;
         }

@@ -385,7 +385,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     public String getMainIconName() {
         try {
             return getModelEntity().getRenderer().getIconInfo("main");
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             return "main.closedbox";
         }
     }

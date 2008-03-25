@@ -76,7 +76,7 @@ public class XModelObjectIcon {
 	private int getIconHash(String[] types) {
 		int res = 0;
 		for (int i = 0; i < types.length; i++) {
-			ImageComponent component = (ImageComponent)components.get(types[i]);
+			ImageComponent component = components.get(types[i]);
 			if(component != null) res += component.getHash(object);
 		}
 		return res;

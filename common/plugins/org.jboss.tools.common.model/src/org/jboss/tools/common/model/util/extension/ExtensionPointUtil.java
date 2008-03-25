@@ -14,12 +14,12 @@ import org.eclipse.core.runtime.*;
 
 public class ExtensionPointUtil {
 
-	public static Object findClassByElementId(String pointId, String id) throws Exception {
+	public static Object findClassByElementId(String pointId, String id) throws CoreException, IllegalArgumentException {
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(pointId);
 		return findClassByElementId(point, id);
 	}
 
-	public static Object findClassByElementId(IExtensionPoint point, String id) throws Exception {
+	public static Object findClassByElementId(IExtensionPoint point, String id) throws CoreException, IllegalArgumentException {
 		IConfigurationElement element = getElementById(point, id);
 		if(element == null)
 		  throw new IllegalArgumentException("Configuration element with id=" + id + " is not found");

@@ -1,6 +1,7 @@
 package org.jboss.tools.common.model.files.handlers;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.model.XModelObject;
@@ -53,7 +54,7 @@ public class TargetHolder {
 		QualifiedName n = new QualifiedName("", action.getName() + "_lastPath");
 		try {
 			folder.getProject().setPersistentProperty(n, path);
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError("CreateFileSuppport:TargetHolder:saveLastPath:" + e.getMessage());
 		}
 	}
