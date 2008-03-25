@@ -57,6 +57,12 @@ public class Preference {
 	
 	public void setValue(String value) {
 		XModelObject obj = PreferenceModelUtilities.getPreferenceModel().getByPath(option);
+		if(obj == null) {
+			if(ModelPlugin.isDebugEnabled()) {
+				ModelPlugin.getPluginLog().logInfo(option + " does not exist");
+			}
+			return;
+		} 
 		obj.getModel().changeObjectAttribute(obj, attributeName, value);
 		obj.getModel().saveOptions();
 	}
