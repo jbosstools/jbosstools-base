@@ -16,11 +16,6 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
-import org.jboss.tools.common.model.ui.IValueChangeListener;
-import org.jboss.tools.common.model.ui.IValueProvider;
-import org.jboss.tools.common.model.ui.attribute.IListContentProvider;
-import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -43,7 +38,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
-
+import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
+import org.jboss.tools.common.model.ui.IValueChangeListener;
+import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.attribute.IListContentProvider;
+import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.jboss.tools.common.model.ui.widgets.BorderedControl;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.widgets.border.Border;
@@ -60,7 +59,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 	IListContentProvider listContentProvider;
 	private boolean dropDown = false;
 
-	private String stringValue = "";
+	private String stringValue = ""; //$NON-NLS-1$
 	private boolean isValid;
 	public static int UNLIMITED = -1;
 	private int textLimit = UNLIMITED;
@@ -158,12 +157,12 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 
 	protected Combo getComboControl(Composite parent) {
 		if (comboField == null) {
-			int style = getSettings().getStyle("Combo.Style");
-			Color bg = getSettings().getColor("Combo.Background");
+			int style = getSettings().getStyle("Combo.Style"); //$NON-NLS-1$
+			Color bg = getSettings().getColor("Combo.Background"); //$NON-NLS-1$
 			if (bg==null) bg = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);// bug with gray bg
-			Color fg = getSettings().getColor("Combo.Foreground");
-			Font font = getSettings().getFont("Combo.Font");
-			Border border = getSettings().getBorder("Combo.Border");
+			Color fg = getSettings().getColor("Combo.Foreground"); //$NON-NLS-1$
+			Font font = getSettings().getFont("Combo.Font"); //$NON-NLS-1$
+			Border border = getSettings().getBorder("Combo.Border"); //$NON-NLS-1$
 			if (style == SWT.DEFAULT) style = defaultStyle;
 			if (isDropDown()) style = style | SWT.READ_ONLY;
 						
@@ -245,13 +244,17 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 	}
 
 	protected void valueChanged() {
-		//added by Max Areshkau
-		//hack which was applied for fix JBIDE-1694
+		/*added by Max Areshkau
+		 *hack which was applied for fix JBIDE-1694
+		 */
 		if(comboField!=null&&Platform.OS_LINUX.equals(Platform.getOS())) {
-			
-			comboField.forceFocus();
+			/*
+			*	Fix for JBIDE-1948
+			*/
+			Point point = comboField.getSelection();
+			comboField.setFocus();			
+			comboField.setSelection(point);
 		}
-		comboField.forceFocus();
 		setPresentsDefaultValue(false);
 		boolean oldState = isValid;
 		refreshValidState();
@@ -303,14 +306,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 		}
 		return tags;
 	}
-/*
-	public int getStyle() {
-		return style;
-	}
-	public void setStyle(int i) {
-		style = i;
-	}
-*/	
+	
 	protected void setStringValue(String newValue) {
 		if(modifyLock) return;
 		String oldValue = this.stringValue;
@@ -398,7 +394,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			Object v = evt.getNewValue();
 			valueProvider.removeValueChangeListener(this);
-			this.setStringValue((v == null) ? "" : v.toString());
+			this.setStringValue((v == null) ? "" : v.toString()); //$NON-NLS-1$
 			valueProvider.addValueChangeListener(this);
 		}
 		if (IPropertyEditor.LIST_CONTENT.equals(evt.getPropertyName())) {
@@ -412,7 +408,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			if(i < 0 && tags != null && tags.length > 0) {
 				comboField.setText(tags[0]);
 			} else if(i < 0) {
-				comboField.setText("");
+				comboField.setText(""); //$NON-NLS-1$
 			}
 		}
 	}
@@ -423,10 +419,10 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			this.getComboControl().setEnabled(enabled);
 			Color bg;
 			if (enabled) {
-				bg = getSettings().getColor("Combo.Background");
+				bg = getSettings().getColor("Combo.Background"); //$NON-NLS-1$
 				if (bg==null) bg = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
 			} else {
-				bg = getSettings().getColor("Combo.Background.Disabled");
+				bg = getSettings().getColor("Combo.Background.Disabled"); //$NON-NLS-1$
 				if (bg==null) bg = Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 			} 
 ///			this.getComboControl().setBackground(bg);
@@ -462,7 +458,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 	
 	private Text getInnerText() {
 		try {
-			Field f = comboField.getClass().getDeclaredField("text");
+			Field f = comboField.getClass().getDeclaredField("text"); //$NON-NLS-1$
 			f.setAccessible(true);
 			Text text = (Text)f.get(comboField);
 			return (text != null && !text.isDisposed()) ? text : null;
