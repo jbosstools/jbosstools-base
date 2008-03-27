@@ -31,24 +31,6 @@ public class KbPlugin extends BaseUIPlugin {
 	// The shared instance
 	private static KbPlugin plugin;
 
-
-	protected void initializeDefaultPluginPreferences() {
-		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_USE_LOWER_CASE, true);
-		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_USE_AUTOCOMPLETE_FOR_MANDATORY, true);
-		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_UTILIZE_COMMENTS, false);		
-		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_USE_AUTOCOMPLETE_FOR_TAGS, true);
-		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_ALLOW_DOWNLOAD, true);
-		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_USE_PROXY, false);
-		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_HOST, "");
-		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_PORT, "");
-		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_USER, "");
-		getPreferenceStore().setDefault(KbPreferencesConstants.PROMPTING_PASSWORD, "");
-	}
-
-	/**
-	 * 
-	 *
-	 */
 	public KbPlugin() {
 	}
 

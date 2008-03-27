@@ -12,8 +12,6 @@ package org.jboss.tools.common.kb;
 
 import java.io.Serializable;
 
-import org.eclipse.swt.graphics.Image;
-
 /**
  * Describes a proposal for content assistants
  * @author igels
@@ -36,7 +34,6 @@ public class KbProposal implements Comparable, Serializable {
 	private String contextInfo;
 	private String replacementString;
 	private boolean emptyContextInfo = true;
-	private KbIcon icon;
 	private int relevance = R_NONE;
 	private int position = -1;
 	private boolean autoActivationContentAssistantAfterApplication = false;
@@ -112,20 +109,6 @@ public class KbProposal implements Comparable, Serializable {
 	 */
 	public boolean hasContextInfo() {
 		return !emptyContextInfo;
-	}
-
-	/**
-	 * @return
-	 */
-	public Image getIcon() {
-		return icon.getImage();
-	}
-
-	/**
-	 * @param image
-	 */
-	public void setIcon(KbIcon icon) {
-		this.icon = icon;
 	}
 
 	/**

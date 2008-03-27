@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jboss.tools.common.kb.KbDinamicResource;
-import org.jboss.tools.common.kb.KbIcon;
 import org.jboss.tools.common.kb.KbProposal;
 
 abstract public class TestDynamicResource implements KbDinamicResource {
@@ -34,7 +33,6 @@ abstract public class TestDynamicResource implements KbDinamicResource {
 				KbProposal proposal = new KbProposal();
 				proposal.setLabel(bundle);
 				proposal.setReplacementString(bundle);
-				proposal.setIcon(KbIcon.ENUM_ITEM);
 				proposal.setPosition(bundle.length());
 
 				proposals.add(proposal);

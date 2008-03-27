@@ -185,7 +185,6 @@ public class TagDescriptor {
 			position = proposal.getReplacementString().length();
 		}
 		proposal.setPosition(position);
-		proposal.setIcon(KbIcon.TLD_TAG);
 
 		return proposal;
 	}

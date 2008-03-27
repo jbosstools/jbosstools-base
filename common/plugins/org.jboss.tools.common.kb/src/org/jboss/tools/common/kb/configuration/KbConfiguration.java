@@ -60,28 +60,4 @@ public interface KbConfiguration {
 	 * @return
 	 */
 	public String getHtmlMapFilePath();
-
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isAllowDownload();
-
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isLowerCase();
-
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isAutocompleteRequiredAttributes();	
-
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isUtilizeComments();
 }

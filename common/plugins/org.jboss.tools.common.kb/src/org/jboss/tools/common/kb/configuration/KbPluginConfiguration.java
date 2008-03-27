@@ -14,10 +14,7 @@ import java.io.File;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.preference.IPreferenceStore;
-
 import org.jboss.tools.common.kb.KbPlugin;
-import org.jboss.tools.common.kb.KbPreferencesConstants;
 
 /**
  * @author igels
@@ -89,42 +86,10 @@ public class KbPluginConfiguration implements KbConfiguration {
 	}
 
 	/**
-	 * @see org.jboss.tools.common.kb.configuration.KbConfiguration#isAllowDownload()
-	 */
-	public boolean isAllowDownload() {
-		IPreferenceStore store = KbPlugin.getDefault().getPreferenceStore();
-		return store.getBoolean(KbPreferencesConstants.PROMPTING_ALLOW_DOWNLOAD);
-	}
-
-	/**
-	 * @see org.jboss.tools.common.kb.configuration.KbConfiguration#isLowerCase()
-	 */
-	public boolean isLowerCase() {
-		IPreferenceStore store = KbPlugin.getDefault().getPreferenceStore();
-		return store.getBoolean(KbPreferencesConstants.PROMPTING_USE_LOWER_CASE);
-	}
-
-	/**
-	 * @see org.jboss.tools.common.kb.configuration.KbConfiguration#isAutocompleteRequiredAttributes()
-	 */
-	public boolean isAutocompleteRequiredAttributes() {
-		IPreferenceStore store = KbPlugin.getDefault().getPreferenceStore();
-		return store.getBoolean(KbPreferencesConstants.PROMPTING_USE_AUTOCOMPLETE_FOR_MANDATORY);
-	}
-
-	/**
 	 * 
 	 * @return
 	 */
 	public static KbPluginConfiguration getInstance() {
 		return INSTANCE;
-	}
-
-	/**
-	 * @see org.jboss.tools.common.kb.configuration.KbConfiguration#isUtilizeComments()
-	 */
-	public boolean isUtilizeComments() {
-		IPreferenceStore store = KbPlugin.getDefault().getPreferenceStore();
-		return store.getBoolean(KbPreferencesConstants.PROMPTING_UTILIZE_COMMENTS);
 	}
 }

@@ -30,8 +30,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import org.jboss.tools.common.kb.configuration.KbConfigurationFactory;
-
 /**
  * Class helps to convert TLD to Schema
  * @author igels
@@ -170,8 +168,7 @@ public class KbTldConvertor implements KbSchemaConvertor {
 
 		Element elementType = SchemaNodeFactory.getInstance().createElementType(schemaElement, attributes);
 		String description = getDescription(tldTag);
-		if( KbConfigurationFactory.getInstance().getDefaultConfiguration().isUtilizeComments())
-			SchemaNodeFactory.getInstance().createDescription(elementType, description);
+		SchemaNodeFactory.getInstance().createDescription(elementType, description);
 		addAttributes(tldTag, elementType, jsfTld);
 	}
 
@@ -206,9 +203,7 @@ public class KbTldConvertor implements KbSchemaConvertor {
 		attributes.put(SchemaNodeFactory.NAME_ATTRIBUTE, name);
 		attributes.put(SchemaNodeFactory.REQUIRED_ATTRIBUTE, required);
 		Element attributeType = SchemaNodeFactory.getInstance().createAttributeType(schemaElement, attributes);
-		if(description != null &&  KbConfigurationFactory.getInstance().getDefaultConfiguration().isUtilizeComments()) {
-			SchemaNodeFactory.getInstance().createDescription(attributeType, description);
-		}
+		SchemaNodeFactory.getInstance().createDescription(attributeType, description);
 
 		if(jsfTld || tldAttribute.getElementsByTagName("deferred-value").getLength()>0) {
 			// Add default proposals

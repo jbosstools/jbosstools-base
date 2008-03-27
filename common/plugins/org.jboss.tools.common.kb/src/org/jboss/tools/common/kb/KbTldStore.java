@@ -778,7 +778,6 @@ public class KbTldStore implements KbStore {
 				proposal.setLabel(value);
 				proposal.setReplacementString(value);
 				proposal.setContextInfo(null);
-				proposal.setIcon(KbIcon.ENUM_ITEM);
 				proposal.setPosition(value.length());
 
 				enumeration.add(proposal);
@@ -847,7 +846,6 @@ public class KbTldStore implements KbStore {
 
 				proposal.setLabel(lb);
 				proposal.setReplacementString(lb);
-				proposal.setIcon(KbIcon.TLD_TAG);
 			} else if(tldElement.isTag()) {
 				String prefix = tldElement.getPrefix();
 				String label = element.getAttribute(SchemaNodeFactory.NAME_ATTRIBUTE);
@@ -873,17 +871,11 @@ public class KbTldStore implements KbStore {
 					position = proposal.getReplacementString().length();
 				}
 				proposal.setPosition(position);
-				proposal.setIcon(KbIcon.TLD_TAG);
 			} else {
 				String label = element.getAttribute(SchemaNodeFactory.NAME_ATTRIBUTE);
 
 				proposal.setReplacementString(label);
 				proposal.setLabel(label);
-				if(KbSchemaUtil.checkRequaredAttribute(element)) {
-					proposal.setIcon(KbIcon.TLD_ATTRIBUTE);
-				} else {
-					proposal.setIcon(KbIcon.TLD_ATTRIBUTE_OPTIONAL);
-				}
 			}
 			proposal.setContextInfo(KbSchemaUtil.getDescription(element));
 

@@ -15,16 +15,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.jboss.tools.common.kb.configuration.KbConfigurationFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import org.jboss.tools.common.kb.configuration.KbConfigurationFactory;
 
 /**
  * @author eskimo
@@ -246,7 +244,6 @@ public class KbHtmlStore implements KbStore {
 				KbProposal proposal = new KbProposal();
 				proposal.setLabel("/" + lastTag);
 				proposal.setReplacementString("/" + lastTag);
-				proposal.setIcon(KbIcon.HTML_TAG);
 				return proposal;
 			} 
 		}
@@ -323,7 +320,6 @@ public class KbHtmlStore implements KbStore {
 				position = proposal.getReplacementString().length();
 			}
 			proposal.setPosition(position);
-			proposal.setIcon(KbIcon.HTML_TAG);
 
 			kbProposals.add(proposal);
 		}
@@ -381,16 +377,7 @@ public class KbHtmlStore implements KbStore {
 	private synchronized boolean htmlSchemaIsActivating() {
 		return activatingHtmlSchema;
 	}
-/*
-	private synchronized void enableHtmlSchemaActivating(boolean status) {
-		activatingHtmlSchema = status;
-	}
 
-	private synchronized void deactivateHtmlSchema() {
-		htmlSchema = null;
-//		htmlMap = null;
-	}
-*/
 	private ArrayList<KbProposal> getAttributes(String tagName, String attributeMask) {
 		return getAttributeProposal(getAttributeTypesByName(tagName, attributeMask, true));
 	}
@@ -433,7 +420,6 @@ public class KbHtmlStore implements KbStore {
 						proposal.setLabel(value);
 						proposal.setReplacementString(value);
 						proposal.setContextInfo(null);
-						proposal.setIcon(KbIcon.ENUM_ITEM);
 						proposal.setPosition(value.length());
 
 						enumeration.add(proposal);
@@ -475,7 +461,6 @@ public class KbHtmlStore implements KbStore {
 				proposal.setLabel(value);
 				proposal.setReplacementString(value);
 				proposal.setContextInfo(null);
-				proposal.setIcon(KbIcon.ENUM_ITEM);
 				proposal.setPosition(value.length());
 
 				enumeration.add(proposal);
@@ -510,14 +495,8 @@ public class KbHtmlStore implements KbStore {
 					position = proposal.getReplacementString().length();
 				}
 				proposal.setPosition(position);
-				proposal.setIcon(KbIcon.HTML_TAG);
 			} else {
 				proposal.setReplacementString(label);
-				if(KbSchemaUtil.checkRequaredAttribute(element)) {
-					proposal.setIcon(KbIcon.HTML_ATTRIBUTE);
-				} else {
-					proposal.setIcon(KbIcon.HTML_ATTRIBUTE_OPTIONAL);
-				}
 			}
 
 			kbProposals.add(proposal);

@@ -41,26 +41,6 @@ public abstract class KbConnectorType {
         return getConnectorClass().getName();
     }
 
-    /**
-     * 
-     */
-    public static KbConnectorType XML_KB_CONNECTOR = 
-		new KbConnectorType() {
-			public Class getConnectorClass() {
-				return XmlKbConnector.class;			 	
-			}
-		};
-
-	/**
-	 * 
-	 */
-	public static KbConnectorType JSP_KB_CONNECTOR = 
-		new KbConnectorType() {
-			public Class getConnectorClass() {
-				return JspKbConnector.class;			 	
-			}
-		};
-
 	/**
 	 * 
 	 */
