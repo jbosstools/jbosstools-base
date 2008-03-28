@@ -447,7 +447,7 @@ public class EclipseResourceUtil {
 	 * @throws IOException 
 	 */	
 	public static List<String> getClassPath(IProject project) throws CoreException, IOException {
-		if(!project.hasNature(JavaCore.NATURE_ID)) return null;
+		if(project == null || !project.isAccessible() || !project.hasNature(JavaCore.NATURE_ID)) return null;
 		ArrayList<String> l = new ArrayList<String>();
 		IJavaProject javaProject = JavaCore.create(project);		
 
