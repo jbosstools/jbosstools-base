@@ -149,6 +149,12 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
         }
         return b;
     }
+    
+    //TODO implement registering/unregistering error children 
+    public void replaceChildren(XModelObject[] objects) {
+    	children.replaceChildren(objects);
+    	changeTimeStamp();
+    }
 
 }
 

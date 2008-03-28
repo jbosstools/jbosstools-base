@@ -17,7 +17,6 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
-import org.jboss.tools.common.model.engines.impl.EnginesLoader;
 import org.jboss.tools.common.model.impl.*;
 import org.jboss.tools.common.meta.XAttribute;
 
@@ -43,9 +42,10 @@ public class PropertiesLoader implements XObjectLoader {
         } catch (Exception e) {
         	//ignore
         }
+
         StringTokenizer st = new StringTokenizer(body, "\n\r", true);
-        StringBuffer sb = new StringBuffer();
-        StringBuffer lineEnd = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
+        StringBuilder lineEnd = new StringBuilder();
         int state = 0;
         XModelObject c = null;
         while(st.hasMoreTokens()) {
@@ -103,8 +103,10 @@ public class PropertiesLoader implements XObjectLoader {
             p.setProperty("comments", comments);
             p.setProperty("separator", "#"); //obsolete
             p.setProperty("line-end", "");
+
             c = object.getModel().createModelObject("Property", p);
             object.addChild(c);
+
             String dirtyvalue = (i < s.length()) ? s.substring(i + 1) : "";
             if(s.endsWith("\\")) {
             	state = 3;
@@ -123,7 +125,8 @@ public class PropertiesLoader implements XObjectLoader {
         XModelObject c = object.copy(0);
 		XModelObjectLoaderUtil.setTempBody(c, XModelObjectLoaderUtil.getTempBody(object));
         load(c);
-        EnginesLoader.merge(object, c, false);
+        ////EnginesLoader.merge(object, c, false);
+        merge(object, c);
         object.setModified(false);
         return true;
     }
@@ -231,14 +234,15 @@ public class PropertiesLoader implements XObjectLoader {
     	for (int i = 0; i < c1.length; i++) m1.put(c1[i].getPathPart(), c1[i]);
 		XModelObject[] c2 = o2.getChildren();
 		RegularObjectImpl impl1 = (RegularObjectImpl)o1;
-		boolean ch = false;
+		boolean ch = c2.length != c1.length;
+		boolean mod = false;
 		for (int i = 0; i < c2.length; i++) {
 			XModelObject c = (XModelObject)m1.remove(c2[i].getPathPart());
 			if(c == null) {
-				o1.addChild(c = c2[i].copy());
-				ch = true;				
+				c = c2[i].copy();
+				((XModelObjectImpl)c).setParent_0(impl1);
 			} else if(!c.isEqual(c2[i])) { 
-				ch = true;
+				mod = true;
 				XAttribute[] as = c.getModelEntity().getAttributes();
 				for (int j = 0; j < as.length; j++) {
 					if(!as[j].isCopyable()) continue;				
@@ -249,22 +253,28 @@ public class PropertiesLoader implements XObjectLoader {
 					  c.setAttributeValue(n, v2);				
 				}
 			}
-			int ic = impl1.getIndexOfChild(c);
-			if(ic != i) {
-				impl1.move(ic, i, true);				
-			}			
+			if(!ch && c1[i] != c) {
+				ch = true;
+			}
+			c2[i] = c;
 		}
 		c1 = (XModelObject[])m1.values().toArray(new XModelObject[0]);
-		for (int i = 0; i < c1.length; i++) c1[i].removeFromParent();
+//		for (int i = 0; i < c1.length; i++) c1[i].removeFromParent();
+		
+		if(ch || c1.length > 0) {
+			impl1.replaceChildren(c2);
+			((XModelImpl)o1.getModel()).fireStructureChanged(o1);
+		}
+
 		String conclusion1 = o1.get("conclusion");
 		if(conclusion1 == null) conclusion1 = "";
 		String conclusion2 = o2.get("conclusion");
 		if(conclusion2 == null) conclusion2 = "";
 		if(!conclusion1.equals(conclusion2)) {
 			o1.set("conclusion", conclusion2);
-			ch = true;
+			mod = true;
 		}
-		if(ch) o1.setModified(true);
+		if(ch || mod) o1.setModified(true);
     }
     
     private String convertName(String n) {

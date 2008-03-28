@@ -15,6 +15,7 @@ import org.jboss.tools.common.model.*;
 
 public class OrderedChildren extends RegularChildren {
     protected XModelObject[] list = EMPTY;
+    protected List<XModelObject> alist = new ArrayList<XModelObject>();
 
     public OrderedChildren() {}
 
@@ -24,22 +25,24 @@ public class OrderedChildren extends RegularChildren {
 
     public void clear() {
         super.clear();
-        if(list != EMPTY) synchronized (this) {
+        if(size() > 0) synchronized (this) {
+        	alist.clear();
         	list = EMPTY;
         }
     }
     
     public XModelObject[] getObjects() {
+    	if(list == null) synchronized (this) {
+    		list = alist.toArray(new XModelObject[0]);
+    	}
         return list;
     }
 
     public boolean addObject(XModelObject o) {
         if(!super.addObject(o)) return false;
         synchronized (this) {
-        	XModelObject[] ls = new XModelObject[list.length + 1];
-        	System.arraycopy(list, 0, ls, 0, list.length);
-        	ls[list.length] = o;
-        	list = ls;
+        	alist.add(o);
+        	list = null;
         }
         return true;
     }
@@ -50,39 +53,49 @@ public class OrderedChildren extends RegularChildren {
         if(i >= 0) synchronized (this) {
         	if(list.length == 1) {
         		list = EMPTY;
+        		alist.clear();
         	} else {
-        		XModelObject[] ls = new XModelObject[list.length - 1];
-        		if(i > 0) System.arraycopy(list, 0, ls, 0, i);
-        		System.arraycopy(list, i + 1, ls, i, list.length - i - 1);
-        		list = ls;
+        		alist.remove(i);
+            	list = null;
         	}
         }
         return true;
     }
 
     public synchronized int getIndex(XModelObject o) {
-        for (int i = 0; i < list.length; i++) if(o == list[i]) return i;
-        return -1;
+    	return alist.indexOf(o);
     }
 
     public synchronized boolean move(int from, int to) {
-        if(list.length == 0) throw new IndexOutOfBoundsException();
-        int size = list.length;
+        int size = size();
+        if(size == 0) throw new IndexOutOfBoundsException();
         if(to >= size) to = size - 1;
         if(from < 0 || from >= size || from == to) return false;
-        XModelObject o = list[from];
+        XModelObject o = alist.get(from);
         int delta = to > from ? 1 : -1;
         for (int k = from; k != to; k += delta) {
-        	list[k] = list[k + delta];        	
+        	alist.set(k, alist.get(k + delta));
+        	if(list != null) list[k] = list[k + delta];
         }
-        list[to] = o;
+        alist.set(to, o);
+    	if(list != null) list[to] = o;
         return true;
     }
 
     public void sort(Comparator<XModelObject> c) {
         if(c == null) c = comparator;
         if(c == null) return;
+        getObjects();
         Arrays.sort(list, c);
+        alist = Arrays.asList(list);
     }
+
+	public void replaceChildren(XModelObject[] objects) {
+		super.replaceChildren(objects);
+		synchronized (this) {
+			alist = Arrays.asList(objects);
+			list = null;
+		}
+	}
 
 }

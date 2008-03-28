@@ -213,6 +213,18 @@ public class RegularChildren {
 		return false;
 	}
 
+	public void replaceChildren(XModelObject[] objects) {
+		if(objects.length == 0) {
+			if(this.objects != null) this.objects = null;
+		} else {
+			SMap m = new SMap();
+			for (int i = 0; i < objects.length; i++) {
+				m.put(objects[i].getPathPart(), objects[i]);
+			}
+			this.objects = m;
+		}
+	}
+	
 }
 
 /**
