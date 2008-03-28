@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN" "meta.dtd">
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN"
+                                   "meta.dtd">
 <XModelEntityGroup>
  <VERSION MODULE="Model" VERSION="1.0"/>
  <MAPPINGS/>
@@ -7,8 +8,7 @@
  <GlobalActions kind="list"/>
  <XModelEntity
   ImplementingClass="org.jboss.tools.common.model.filesystems.impl.FileAnyLongImpl" name="FileCLASS">
-  <XChildrenEntities>
-  </XChildrenEntities>
+  <XChildrenEntities/>
   <XEntityRenderer>
    <ICONS>
     <ICON info="main.systemclass" type="main"/>
@@ -16,35 +16,23 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="java class" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
    <XModelAttribute default="class" name="extension" visibility="false" xmlname="EXTENSION">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="extends" xmlname="EXTENDS">
-    <Constraint/>
     <Editor name="Uneditable" viewer="%ListViewer%"/>
    </XModelAttribute>
    <XModelAttribute name="implements" xmlname="IMPLEMENTS">
-    <Constraint/>
     <Editor name="Uneditable" viewer="%ListViewer%"/>
    </XModelAttribute>
-   <XModelAttribute name="qualified name" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="qualified name" visibility="false"/>
    <XModelAttribute name="_file" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="modifiers" xmlname="MODIFIERS">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -59,11 +47,11 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity
+  AdoptManagerClass="org.jboss.tools.jst.web.tld.model.handlers.JSPAdopt"
   ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.BodyLoader"
   ImplementingClass="org.jboss.tools.common.core.resources.JavaFileAdaptable"
   ObjectEditorClass="%JAVA%" name="FileJAVA">
-  <XChildrenEntities>
-  </XChildrenEntities>
+  <XChildrenEntities/>
   <XEntityRenderer>
    <ICONS>
     <ICON info="main.file.java_file" type="main"/>
@@ -72,23 +60,14 @@
   <XModelAttributes>
    <XModelAttribute default="java source" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute TRIM="no" name="body" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
+   <XModelAttribute TRIM="no" name="body" visibility="false"/>
    <XModelAttribute default="java" name="extension" xmlname="EXTENSION">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -102,13 +81,15 @@
      ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
     <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
      ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste" HIDE="always"
+     HandlerClassName="%Paste%" ICON="action.paste" displayName="Paste"
+     kind="action" name="Paste"/>
    </XActionItem>
    <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
     <XActionItem BaseActionName="Delete" HandlerClassName="%DeleteFile%"
      ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
    </XActionItem>
-   <XActionItem displayName="Run" kind="list" name="RunActions">
-   </XActionItem>
+   <XActionItem displayName="Run" kind="list" name="RunActions"/>
    <XActionItem ICON="action.empty" kind="list" name="Properties">
     <XActionItem HIDE="always" HandlerClassName="%Properties%"
      ICON="action.empty" displayName="Properties..." kind="action" name="Properties"/>
@@ -171,7 +152,6 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="test data" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="name" xmlname="NAME">
@@ -179,7 +159,6 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="type" xmlname="TYPE">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="value" xmlname="VALUE">
