@@ -183,6 +183,11 @@ public class PaletteDropCommand extends FileDropCommand {
 			
 			callPaletteWizard = PaletteInsertManager.getInstance().getWizardName(properties) != null;
 			
+			boolean isWizardEnabled = (!"FileJAVA".equals(target.getModelEntity().getName()));
+			if(getDefaultModel() instanceof PaletteDropWizardModel) {
+				((PaletteDropWizardModel)getDefaultModel()).setWizardEnabled(isWizardEnabled);
+			}
+			
 			if(uri == null || tagname == null) {
 				getDefaultModel().setTagProposal(IDropWizardModel.UNDEFINED_TAG_PROPOSAL);
 			} else {

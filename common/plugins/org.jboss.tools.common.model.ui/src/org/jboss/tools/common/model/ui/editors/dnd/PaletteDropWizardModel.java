@@ -11,8 +11,18 @@
 package org.jboss.tools.common.model.ui.editors.dnd;
 
 public class PaletteDropWizardModel extends ExternalDropWizardModel implements IDropWizardModel {
+	boolean isWizardEnabled = true;
+	
 	public PaletteDropWizardModel(ITagProposalFactory tagProposalFactory) {
 		super(tagProposalFactory);
 	}
 	
+	public void setWizardEnabled(boolean b) {
+		isWizardEnabled = b;
+	}
+	
+	public boolean isWizardRequired() {
+		return isWizardEnabled && super.isWizardRequired();
+	}
+
 }
