@@ -304,7 +304,7 @@ public class TypeInfoCollector {
 			return fParentMember;
 		}
 
-		void setParentMember(MemberInfo parentMember) {
+		protected void setParentMember(MemberInfo parentMember) {
 			fParentMember = parentMember;
 		}
 
@@ -337,7 +337,7 @@ public class TypeInfoCollector {
 			return isDataModel;
 		}
 
-		void setDataModel(boolean isDataModel) {
+		protected void setDataModel(boolean isDataModel) {
 			this.isDataModel = isDataModel;
 		}
 		
