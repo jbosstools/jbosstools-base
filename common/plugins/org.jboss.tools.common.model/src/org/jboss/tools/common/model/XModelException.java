@@ -10,24 +10,43 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
+
 /**
  * @author Viacheslav Kabanovich
  */
-public class XModelException extends Exception {
+public class XModelException extends CoreException {
 	private static final long serialVersionUID = 1L;
 	
-	public XModelException() {}
+	public XModelException() {
+		super(createStatus(null, null));
+	}
 	
 	public XModelException(String message) {
-		super(message);
+		super(createStatus(message, null));
 	}
 
 	public XModelException(String message, Throwable cause) {
-		super(message, cause);
+		super(createStatus(message, cause));
 	}
 
 	public XModelException(Throwable cause) {
-		super(cause);
+		super(createStatus(null, cause));
+	}
+	
+	static IStatus createStatus(String message, Throwable cause) {
+		return new Status(IStatus.ERROR, ModelPlugin.PLUGIN_ID, message, cause);
+		
+	}
+	
+	public static void rethrow(Throwable cause) throws CoreException {
+		if(cause instanceof XModelException) {
+			throw (XModelException)cause;
+		}
+		throw new XModelException(cause);
 	}
 
 }
