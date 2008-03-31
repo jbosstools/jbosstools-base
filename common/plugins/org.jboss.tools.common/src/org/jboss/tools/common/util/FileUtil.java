@@ -135,7 +135,7 @@ public final class FileUtil {
                 if(f.isFile() && !isSameFile(f)) f.delete();
                 if(!f.exists()) f.createNewFile();
             } catch (Exception e) {
-            	CommonPlugin.getPluginLog().logError(e);
+            	CommonPlugin.getPluginLog().logError("Problem writing to file " + f, e);
             }
             PrintWriter pw = new PrintWriter(new FileWriter(f));
             pw.print(value);
@@ -404,7 +404,7 @@ public final class FileUtil {
     	}
     }
 
-    public static void unzip(File dest, String jar) throws Exception {
+    public static void unzip(File dest, String jar) throws IOException {
         dest.mkdirs();
         ZipFile zf = new ZipFile(jar);
         try {
