@@ -59,7 +59,7 @@ public class DnDUtil {
 		return (action != null) ? action : getEnabledAction(object, null, "MoveActions.Move");		
 	}
 	
-	public static void paste(XModelObject object, Properties properties) throws Exception {
+	public static void paste(XModelObject object, Properties properties) throws XModelException {
 		XAction paste = getEnabledPasteAction(object);
 		if(paste != null) paste.executeHandler(object, properties);
 	}
