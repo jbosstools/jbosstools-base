@@ -109,18 +109,23 @@ public class TypeInfoCollector {
 		}
 
 		public Type(String signature, IType source) {
-			String erasureSignature = Signature.getTypeErasure(signature);
-			String typeOfArraySiganture = Signature.getElementType(erasureSignature);
-			fName = String.valueOf(Signature.toString(erasureSignature));
-			if(!erasureSignature.equals(typeOfArraySiganture)) {
-				// this is an array
-				fIsArray = true;
-				fTypeOfArrayElement = new Type(typeOfArraySiganture, source);
-			}
-			String[] signaturesOfParametersOfType = Signature.getTypeArguments(signature);
-			fParameters = new Type[signaturesOfParametersOfType.length];
-			for (int i = 0; i < signaturesOfParametersOfType.length; i++) {
-				fParameters[i] = new Type(signaturesOfParametersOfType[i], source);
+			if(signature!=null) {
+				String erasureSignature = Signature.getTypeErasure(signature);
+				String typeOfArraySiganture = Signature.getElementType(erasureSignature);
+				fName = String.valueOf(Signature.toString(erasureSignature));
+				if(!erasureSignature.equals(typeOfArraySiganture)) {
+					// this is an array
+					fIsArray = true;
+					fTypeOfArrayElement = new Type(typeOfArraySiganture, source);
+				}
+				String[] signaturesOfParametersOfType = Signature.getTypeArguments(signature);
+				fParameters = new Type[signaturesOfParametersOfType.length];
+				for (int i = 0; i < signaturesOfParametersOfType.length; i++) {
+					fParameters[i] = new Type(signaturesOfParametersOfType[i], source);
+				}
+			} else {
+				fName = source.getFullyQualifiedName();
+				setParameters(new Type[0]);
 			}
 			fSource = source;
 		}
