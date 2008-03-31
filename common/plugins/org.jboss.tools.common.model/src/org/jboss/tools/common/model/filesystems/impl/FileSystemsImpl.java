@@ -20,6 +20,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.filesystems.FilePathHelper;
 import org.jboss.tools.common.model.impl.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
@@ -121,7 +122,8 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
             String path = XModelObjectUtil.getExpandedValue(cs[i], "location", null);
             try {
                 File f = new File(path);
-                path = f.getCanonicalPath().replace('\\', '/').toLowerCase();
+                path = f.getCanonicalPath().replace('\\', '/');
+                path = FilePathHelper.toPathPath(path);
                 if (path.charAt(path.length()-1) != '/') path += '/';
                 paths[i] = path;
             } catch (IOException e) {

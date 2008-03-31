@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.impl;
 import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
+import org.jboss.tools.common.model.filesystems.FilePathHelper;
 import org.jboss.tools.common.model.util.XModelObjectUtil;
 
 public class OpenedProjectsImpl extends OrderedObjectImpl {
@@ -47,10 +48,13 @@ public class OpenedProjectsImpl extends OrderedObjectImpl {
 
     public XModelObject getChildByFile(String name) {
         if(name == null) return null;
-        name = name.toLowerCase().replace('\\', '/');
+        name = FilePathHelper.toPathPath(name);
+        name = name.replace('\\', '/');
         XModelObject[] os = children.getObjects();
         for (int i = 0; i < os.length; i++) {
-            if(name.equals(XModelObjectUtil.getExpandedValue(os[i], "name", null).toLowerCase().replace('\\', '/'))) return os[i];
+        	String p = XModelObjectUtil.getExpandedValue(os[i], "name", null);
+            p = FilePathHelper.toPathPath(p);
+            if(name.equals(p.replace('\\', '/'))) return os[i];
         }
         return null;
     }

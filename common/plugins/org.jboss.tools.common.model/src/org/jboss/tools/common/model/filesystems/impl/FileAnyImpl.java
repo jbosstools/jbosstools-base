@@ -117,7 +117,8 @@ public class FileAnyImpl extends RegularObjectImpl {
 
     public String getPathPart() {
         String n = name();
-        return (n == null) ? null : n.toLowerCase();
+		String pp = FilePathHelper.toPathPath(n);
+        return (n == null) ? null : pp;
     }
 
     public static String toFileName(XProperty p) {

@@ -28,6 +28,7 @@ import org.osgi.framework.Bundle;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.filesystems.FilePathHelper;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.filesystems.impl.*;
@@ -404,7 +405,8 @@ public class EclipseResourceUtil {
 		properties.setProperty("name", f.getParentFile().getName());
 		FileSystemImpl s = (FileSystemImpl)model.createModelObject("FileSystemFolder", properties);
 		fs.addChild(s);
-		return model.getByPath("/" + f.getName().toLowerCase());
+		String pp = FilePathHelper.toPathPath(f.getName());
+		return model.getByPath("/" + pp);
 	}
 
 	public static String[] getJavaProjectSrcLocations(IProject project) {

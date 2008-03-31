@@ -30,12 +30,12 @@ import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.BodySource;
 import org.jboss.tools.common.model.filesystems.FileAuxiliary;
+import org.jboss.tools.common.model.filesystems.FilePathHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.impl.RegularObjectImpl;
 import org.jboss.tools.common.model.impl.XModelImpl;
 import org.jboss.tools.common.model.loaders.Reloadable;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.Paths;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 import org.jboss.tools.common.util.FileUtil;
@@ -141,8 +141,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         	if(!rs[i].isAccessible()) continue;
         	if(!rs[i].isLinked()) continue;
         	File f = rs[i].getLocation().toFile();
-        	linked.put(f.getName().toLowerCase(), f);
-        	linkedResources.put(f.getName().toLowerCase(), rs[i]);
+            String pp = FilePathHelper.toPathPath(f.getName());
+        	linked.put(pp, f);
+        	linkedResources.put(pp, rs[i]);
         	_loadChild(peer, f);
         }
         fire = true;
@@ -153,8 +154,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             Properties p = new Properties();
             p.setProperty("name", f.getName());
             XModelObject c = getModel().createModelObject("FileFolder", p);
-            if(linked.containsKey(f.getName().toLowerCase())) {
-            	c.setObject("file", linked.get(f.getName().toLowerCase()));
+            String pp = FilePathHelper.toPathPath(f.getName());
+            if(linked.containsKey(pp)) {
+            	c.setObject("file", linked.get(pp));
             }
             addChild(c);
         } else {
@@ -234,7 +236,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 				for (int i = 0; i < rs.length; i++) {
 					if(!rs[i].isSynchronized(IResource.DEPTH_ZERO)) {
 						if(unsynchronized == null) unsynchronized = new HashSet<String>();
-						unsynchronized.add(rs[i].getName().toLowerCase());
+						String pp = FilePathHelper.toPathPath(rs[i].getName());
+						unsynchronized.add(pp);
 					}
 				}
 				if(resource.exists()) {
@@ -258,7 +261,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 			for (int i = 0; i < rs.length; i++) {
 				if(rs[i].isLinked()) {
 					File f = rs[i].getLocation().toFile();
-					String p = f.getName().toLowerCase();
+					String p = FilePathHelper.toPathPath(f.getName());
 					mf.put(p, f);
 					linked.put(p, f);
 					linkedResources.put(p, rs[i]);
@@ -269,16 +272,19 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 		}
 		
         File[] fs = getFiles();
-        for (int i = 0; i < fs.length; i++) mf.put(fs[i].getName().toLowerCase(), fs[i]);
+        for (int i = 0; i < fs.length; i++) {
+			String p = FilePathHelper.toPathPath(fs[i].getName());
+        	mf.put(p, fs[i]);
+        }
 
         Map<String,XModelObject> mc = children.getObjectsMap();
 
         updateAuxiliary(mc, mf);
 
         Map<String,XModelObject> toRemove = new HashMap<String,XModelObject>();
-        Iterator io = mc.keySet().iterator();
+        Iterator<String> io = mc.keySet().iterator();
         while(io.hasNext()) {
-            String nm = (String)io.next();
+            String nm = io.next();
             if(mf.containsKey(nm)) continue;
             XModelObject o = (XModelObject)mc.get(nm);
             File of = getChildIOFile(o);
@@ -291,9 +297,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             io.remove();
         }
         
-        Iterator it = mf.keySet().iterator();
+        Iterator<String> it = mf.keySet().iterator();
         while(it.hasNext()) {
-            String nm = (String)it.next();
+            String nm = it.next();
             File f = (File)mf.get(nm);
             XModelObject o = (XModelObject)mc.get(nm);
             if(o != null) {
@@ -334,8 +340,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     protected File getChildIOFile(String filename) {
         File f = null;
-        if(linked.containsKey(filename.toLowerCase())) {
-        	f = linked.get(filename.toLowerCase());
+		String p = FilePathHelper.toPathPath(filename);
+        if(linked.containsKey(p)) {
+        	f = linked.get(p);
         }
         if(f == null) {
         	f = new File(getFile(), filename);
@@ -343,12 +350,12 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         return f;
     }
 
-    private void updateAuxiliary(Map mc, Map mf) {
-        Iterator it = mf.keySet().iterator();
+    private void updateAuxiliary(Map<String,XModelObject> mc, Map<String,File> mf) {
+        Iterator<String> it = mf.keySet().iterator();
         while(it.hasNext()) {
             String nm = (String)it.next();
-            File f = (File)mf.get(nm);
-            XModelObject o = (XModelObject)mc.get(nm);
+            File f = mf.get(nm);
+            XModelObject o = mc.get(nm);
             if(o == null || !o.getModelEntity().getName().equals(FileAuxiliary.AUX_FILE_ENTITY)) continue;
             it.remove();
             FileAnyAuxiliaryImpl aux = (FileAnyAuxiliaryImpl)o;
@@ -457,7 +464,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             	}
             	return;            
             }
-            int i = (!o.isModified() || unsynchronized == null || !unsynchronized.contains(f.getName().toLowerCase())) ? 0 : question(f);
+			String p = FilePathHelper.toPathPath(f.getName());
+            int i = (!o.isModified() || unsynchronized == null || !unsynchronized.contains(p)) ? 0 : question(f);
             if(i == 0) {
                 reload(o, f);
             } else if(i == -100) {
@@ -530,7 +538,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         }
     }
 
-    protected boolean updateNew(String pathpart, File f, Map toRemove) {
+    protected boolean updateNew(String pathpart, File f, Map<String,XModelObject> toRemove) {
         FileSystemPeer peer = getFileSystem().getPeer();
         if(peer.contains(f) && !peer.isUpdated(f)) return false;
         XModelObject c = null;
@@ -538,8 +546,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             Properties p = new Properties();
             p.setProperty("name", f.getName());
             c = getModel().createModelObject("FileFolder", p);
-            if(linked.containsKey(f.getName().toLowerCase())) {
-            	c.setObject("file", linked.get(f.getName().toLowerCase()));
+			String pp = FilePathHelper.toPathPath(f.getName());
+            if(linked.containsKey(pp)) {
+            	c.setObject("file", linked.get(pp));
             }
         } else {
         	Properties ep = getEntityProperties(f);
@@ -562,9 +571,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         return (c != null && addChild(c));
     }
     
-    private XModelObject findOldObject(String entity, Map toRemove) {
+    private XModelObject findOldObject(String entity, Map<String,XModelObject> toRemove) {
     	if(entity == null || toRemove.size() == 0) return null;
-    	Iterator it = toRemove.keySet().iterator();
+    	Iterator<String> it = toRemove.keySet().iterator();
     	while(it.hasNext()) {
     		String nm = it.next().toString();
     		XModelObject o = (XModelObject)toRemove.get(nm);
@@ -678,7 +687,10 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         }
         File[] fs = getFiles();
         Map<String,File> t = new HashMap<String,File>();
-        for (int i = 0; i < fs.length; i++) t.put(fs[i].getName().toLowerCase(), fs[i]);
+        for (int i = 0; i < fs.length; i++) {
+			String p = FilePathHelper.toPathPath(fs[i].getName());
+        	t.put(p, fs[i]);
+        }
         FileSystemPeer peer = getFileSystem().getPeer();
         peer.register(f);
         XModelObject[] cs = getChildren();
@@ -706,9 +718,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             t.remove(cs[i].getPathPart());
         }
 
-        Iterator it = t.values().iterator();
+        Iterator<File> it = t.values().iterator();
         while(it.hasNext()) {
-            File df = (File)it.next();
+            File df = it.next();
             boolean d = df.isDirectory();
             boolean r = (d && peer.containsDir(df)) || ((!d) && peer.contains(df));
             if(!r) continue;
@@ -837,11 +849,12 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     public String getPathPart() {
         String s = get("NAME");
-        return (s == null) ? null : s.toLowerCase();
+        return FilePathHelper.toPathPath(s);
     }
 
     public XModelObject getChildByPathPart(String pathpart) {
-        return super.getChildByPathPart(pathpart.toLowerCase());
+    	pathpart = FilePathHelper.toPathPath(pathpart);
+        return super.getChildByPathPart(pathpart);
     }
 
     static boolean isLateloadFile(XModelObject o) {

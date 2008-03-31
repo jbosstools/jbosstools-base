@@ -16,9 +16,9 @@ import java.util.*;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.filesystems.FilePathHelper;
 import org.jboss.tools.common.model.impl.*;
 import org.jboss.tools.common.model.util.*;
-import org.jboss.tools.common.model.util.FindObjectHelper;
 
 public class SelectOverlappedFileSystemHandler extends AbstractHandler {
 
@@ -62,7 +62,8 @@ public class SelectOverlappedFileSystemHandler extends AbstractHandler {
     private static String getAbsoluteFileSystemPath(XModelObject fso) {
         String path = XModelObjectUtil.getExpandedValue(fso, "location", null);
         try {
-            return new File(path).getCanonicalPath().replace('\\', '/').toLowerCase();
+        	path = new File(path).getCanonicalPath().replace('\\', '/');
+            return FilePathHelper.toPathPath(path);
         } catch (Exception e) {
         	//ignore
             return null;
@@ -74,7 +75,8 @@ public class SelectOverlappedFileSystemHandler extends AbstractHandler {
         String rpath = XModelObjectLoaderUtil.getResourcePath(f);
 		if(path == null || rpath == null) return null;
         XModelObject fso = f.getModel().getByPath(path.substring(0, path.length() - rpath.length()));
-        return (getAbsoluteFileSystemPath(fso) + rpath).toLowerCase();
+        String pp = getAbsoluteFileSystemPath(fso) + rpath;
+        return FilePathHelper.toPathPath(pp);
     }
 
 }

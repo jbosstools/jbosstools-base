@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.filesystems.impl;
 
 import java.util.*;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.filesystems.FilePathHelper;
 
 public class FileObjectComparator implements Comparator<XModelObject> {
 
@@ -21,7 +22,9 @@ public class FileObjectComparator implements Comparator<XModelObject> {
         int i1 = o1.getFileType();
         int i2 = o2.getFileType();
         if(i1 != i2) return (i2 - i1);
-        return o1.getPathPart().toLowerCase().compareTo(o2.getPathPart().toLowerCase());
+        String p1 = FilePathHelper.toPathPath(o1.getPathPart());
+        String p2 = FilePathHelper.toPathPath(o2.getPathPart());
+        return p1.compareTo(p2);
     }
 
     public boolean equals(Object obj) {

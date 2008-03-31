@@ -13,6 +13,8 @@ package org.jboss.tools.common.model.filesystems.impl;
 import java.io.*;
 import java.util.*;
 
+import org.jboss.tools.common.model.filesystems.FilePathHelper;
+
 public class FileSystemPeer {
     private Hashtable<String,Long> p = new Hashtable<String,Long>();
 
@@ -53,7 +55,8 @@ public class FileSystemPeer {
     }
 
     private String toKey(File f, boolean asDir) {
-        String s = f.getAbsolutePath().replace('\\', '/').toLowerCase();
+        String s = f.getAbsolutePath().replace('\\', '/');
+        s = FilePathHelper.toPathPath(s);
         return (asDir) ? s + "/" : s;
     }
 

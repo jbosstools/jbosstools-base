@@ -123,11 +123,12 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
 
     public String getPathPart() {
         String s = super.getPathPart();
-        return (s == null) ? null : s.toLowerCase();
+        return FilePathHelper.toPathPath(s);
     }
 
     public XModelObject getChildByPathPart(String pathpart) {
-        return super.getChildByPathPart(pathpart.toLowerCase());
+    	pathpart = FilePathHelper.toPathPath(pathpart);
+        return super.getChildByPathPart(pathpart);
     }
 
     public boolean update() {
