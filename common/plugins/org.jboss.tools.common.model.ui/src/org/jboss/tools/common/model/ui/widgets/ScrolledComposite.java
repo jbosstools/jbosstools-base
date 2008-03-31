@@ -49,6 +49,7 @@ public class ScrolledComposite extends Composite {
 		}
 	
 		ScrollBar vBar = getVerticalBar ();
+		vBar.setIncrement(10);
 		if (vBar != null) {
 			vBar.addListener (SWT.Selection, new Listener () {
 				public void handleEvent (Event e) {
