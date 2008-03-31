@@ -48,5 +48,6 @@ public class UnknownDropCommand extends DefaultDropCommand {
 		} catch (CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
+		getDefaultModel().setDropData(null);
 	}
 }

@@ -91,6 +91,7 @@ public abstract class DefaultDropCommand implements IDropCommand {
 		} else {
 			execute();
 		}
+		getDefaultModel().setDropData(null);
 	}
 	
 	protected IDropWizard createDropWizard() {

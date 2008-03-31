@@ -15,6 +15,8 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.compare.Splitter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -73,11 +75,11 @@ public class TagAttributesWizardPage extends DefaultDropWizardPage implements Pr
 		tabs.setLayoutData(data);
 		general = new TabItem(tabs,SWT.NONE);
 		general.setText(DropWizardMessages.General_Tab_Title);		
-		TagAttributesComposite generalTabContent = new TagAttributesComposite(tabs,SWT.NONE,getSpecificWizard().getWizardModel(),true);
+		final TagAttributesComposite generalTabContent = new TagAttributesComposite(tabs,SWT.NONE,getSpecificWizard().getWizardModel(),true);
 		general.setControl(generalTabContent);
 		TabItem advanced = new TabItem(tabs,SWT.NONE);
 		advanced.setText(DropWizardMessages.Advanced_Tab_Title);		
-		TagAttributesComposite advancedTabContent = new TagAttributesComposite(tabs,SWT.NONE,getSpecificWizard().getWizardModel());
+		final TagAttributesComposite advancedTabContent = new TagAttributesComposite(tabs,SWT.NONE,getSpecificWizard().getWizardModel());
 		advanced.setControl(advancedTabContent);
 		advancedTabContentOnly = new TagAttributesComposite(composite,SWT.NONE,getSpecificWizard().getWizardModel());
 		
@@ -85,6 +87,14 @@ public class TagAttributesWizardPage extends DefaultDropWizardPage implements Pr
 		composite.setVisible(advancedTabContentOnly,!showAdvansedTab());
 		tabs.addSelectionListener(generalTabContent);
 		tabs.addSelectionListener(advancedTabContent);
+		tabs.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				tabs.removeSelectionListener(generalTabContent);
+				tabs.removeSelectionListener(advancedTabContent);
+				tabs.removeDisposeListener(this);
+				
+			}
+		});
 		setControl(composite);
 		getSpecificWizard().getWizardModel().addPropertyChangeListener(IDropWizardModel.TAG_PROPOSAL,this);
 		updateTitle();
@@ -151,5 +161,10 @@ public class TagAttributesWizardPage extends DefaultDropWizardPage implements Pr
 					throw new ValidationException("Attribute '" + values[i].getName() + "' is required");
 			}
 		}*/
+	}
+
+	public void dispose() {
+		getSpecificWizard().getWizardModel().removePropertyChangeListener(IDropWizardModel.TAG_PROPOSAL,this);
+		super.dispose();
 	}
 }

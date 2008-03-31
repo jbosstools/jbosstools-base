@@ -19,6 +19,8 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.objecteditor.ExtendedCellEditorProvider;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -176,6 +178,12 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 		fFiltered = filtered;
 		fWizardModel = wizardModel;
 		fWizardModel.addPropertyChangeListener(this);
+		addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				fWizardModel.removePropertyChangeListener(TagAttributesComposite.this);
+				removeDisposeListener(this);
+			}
+		});
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;

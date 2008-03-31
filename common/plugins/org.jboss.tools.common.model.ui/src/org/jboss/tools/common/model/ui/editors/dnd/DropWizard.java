@@ -127,4 +127,9 @@ public class DropWizard extends Wizard implements PropertyChangeListener, IDropW
 		}
 	}
 
+	public void dispose() {
+		getWizardModel().removePropertyChangeListener(this);
+		super.dispose();
+	}
+
 }
