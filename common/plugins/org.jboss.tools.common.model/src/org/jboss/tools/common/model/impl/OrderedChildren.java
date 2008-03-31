@@ -51,7 +51,7 @@ public class OrderedChildren extends RegularChildren {
         if(!super.removeObject(o)) return false;
         int i = getIndex(o);
         if(i >= 0) synchronized (this) {
-        	if(list.length == 1) {
+        	if(alist.size() == 1) {
         		list = EMPTY;
         		alist.clear();
         	} else {
