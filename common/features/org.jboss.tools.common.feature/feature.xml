@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.jboss.tools.common_feature"
+      id="org.jboss.tools.common.feature"
       label="Common Feature"
-      version="2.0.0">
+      version="2.0.0"
+      provider-name="JBoss, a division of Red Hat">
 
    <description url="http://www.jboss.org/tools">
       JBossTools Common Feature
@@ -216,6 +217,10 @@ Agreement more than one year after the cause of action arose.
 Each party waives its rights to a jury trial in any resulting
 litigation.
    </license>
+
+   <url>
+      <update label="JBossTools Update Site" url="http://download.jboss.org/jbosstools/updates/stable"/>
+   </url>
 
    <includes
          id="org.eclipse.wst.common_core.feature"
