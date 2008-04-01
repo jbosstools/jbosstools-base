@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.jboss.tools.common.ui_feature"
+      id="org.jboss.tools.common.ui.feature"
       label="Common UI Feature"
-      version="2.0.0">
+      version="2.0.0"
+      provider-name="JBoss, a division of Red Hat">
 
    <description url="http://www.jboss.org/tools">
       JBossTools Common UI Feature
@@ -218,8 +219,8 @@ litigation.
    </license>
 
    <requires>
-      <import feature="org.jboss.tools.common.core_feature" version="1.0.0"/>
-      <import feature="org.jboss.tools.common.text.ext_feature" version="1.0.0"/>
+      <import feature="org.jboss.tools.common.core.feature" version="1.0.0"/>
+      <import feature="org.jboss.tools.common.text.ext.feature" version="1.0.0"/>
    </requires>
 
    <plugin
