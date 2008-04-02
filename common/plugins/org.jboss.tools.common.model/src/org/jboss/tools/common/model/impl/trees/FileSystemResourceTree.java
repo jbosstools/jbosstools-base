@@ -14,6 +14,7 @@ import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.meta.constraint.*;
+import org.jboss.tools.common.model.filesystems.FilePathHelper;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
@@ -118,6 +119,7 @@ public class FileSystemResourceTree implements XFilteredTree {
         if(type != XModelObject.FILE) return false;
         String pathpart = o.getPathPart();
         String pp = pathpart.substring(pathpart.lastIndexOf('.') + 1);
+        pp = FilePathHelper.toPathPath(pp);
         String ent = o.getModelEntity().getName();
         return (extensions == null || extensions.contains(pp)) &&
                (entities == null || entities.contains(ent));
