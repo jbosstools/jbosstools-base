@@ -35,7 +35,9 @@ public class OpenJavaSourceHandler extends AbstractHandler {
     }
     
     protected String getType(XModelObject object) {
-    	return object.getAttributeValue(getAttribute());
+    	String attr = getAttribute();
+    	if(attr == null) return null;
+    	return object.getAttributeValue(attr);
     }
 
     protected String getAttribute() {
@@ -46,6 +48,18 @@ public class OpenJavaSourceHandler extends AbstractHandler {
         if(!isEnabled(object)) return;
         String type = getType(object);
 		type = type.replace('.', '/') + ".java";
+
+		if(p == null || p.getProperty("property") == null) {
+			String n = action.getProperty("property");
+			if(n != null) {
+				String v = object.getAttributeValue(n);
+				if(v != null) {
+					if(p == null) p = new Properties();
+					p.put("property", v);
+				}
+			}
+		}
+
 		try {
 			open(object.getModel(), type, p);
 		} catch (CoreException e) {
