@@ -119,7 +119,8 @@ public class FileSystemResourceTree implements XFilteredTree {
         if(type != XModelObject.FILE) return false;
         String pathpart = o.getPathPart();
         String pp = pathpart.substring(pathpart.lastIndexOf('.') + 1);
-        pp = FilePathHelper.toPathPath(pp);
+//        pp = FilePathHelper.toPathPath(pp); // What about UNIX?
+        pp = pp.toLowerCase();
         String ent = o.getModelEntity().getName();
         return (extensions == null || extensions.contains(pp)) &&
                (entities == null || entities.contains(ent));
