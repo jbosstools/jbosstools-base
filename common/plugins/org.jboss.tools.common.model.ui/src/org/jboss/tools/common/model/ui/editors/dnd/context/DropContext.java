@@ -27,6 +27,7 @@ import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.wst.sse.ui.internal.TextDropAction;
 
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelTransferBuffer;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.ui.editors.dnd.FileTagProposalLoader;
@@ -171,6 +172,7 @@ public class DropContext {
 	
 	class ModelTransferProcessor extends TransferProcessor {
 		public void process(TransferData data) {
+			if(!XModelTransferBuffer.getInstance().isEnabled()) return;
 			XModelObject o = PreferenceModelUtilities.getPreferenceModel().getModelBuffer().source();
 			if(dropAsFileObject(o)) {
 				flavor = "application/x-moz-file";
@@ -187,6 +189,9 @@ public class DropContext {
 			flavor = "text/html";
 			Object ooo = HTMLTransfer.getInstance().nativeToJava(event.currentDataType);
 			mimeData = ooo == null ? null : ooo.toString();
+			if(mimeData == null) {
+				flavor = null;
+			}
 		}
 	}
 
