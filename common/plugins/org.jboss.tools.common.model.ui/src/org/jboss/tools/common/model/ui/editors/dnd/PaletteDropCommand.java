@@ -121,6 +121,9 @@ public class PaletteDropCommand extends FileDropCommand {
 		if(input instanceof IFileEditorInput) {
 			f = ((IFileEditorInput)input).getFile();
 			target = EclipseResourceUtil.getObjectByResource(f);
+			if(target == null && f.exists()) {
+				target = EclipseResourceUtil.createObjectForResource(f);
+			}
 		}
 		if(target == null) {
 			initialize2();
