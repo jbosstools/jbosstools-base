@@ -19,13 +19,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.jboss.tools.common.model.ui.dnd.ControlDragDrop;
-import org.jboss.tools.common.model.ui.navigator.NavigatorLabelProvider;
-import org.jboss.tools.common.model.ui.navigator.NavigatorStatusLineProvider;
-import org.jboss.tools.common.model.ui.navigator.TreeViewerDragDropProvider;
-import org.jboss.tools.common.model.ui.navigator.TreeViewerMenuInvoker;
-import org.jboss.tools.common.model.ui.navigator.TreeViewerModelListenerImpl;
-import org.jboss.tools.common.model.ui.select.XModelObjectSelectionProvider;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -64,6 +57,8 @@ import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.ide.IDEActionFactory;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ISetSelectionTarget;
+import org.eclipse.ui.part.IShowInTarget;
+import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.framelist.FrameList;
 import org.eclipse.ui.views.navigator.IResourceNavigator;
@@ -71,7 +66,6 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 import org.eclipse.ui.views.navigator.ResourceNavigatorActionGroup;
 import org.eclipse.ui.views.navigator.ResourcePatternFilter;
 import org.eclipse.ui.views.navigator.ResourceSorter;
-
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.XFilteredTree;
 import org.jboss.tools.common.model.XJob;
@@ -81,12 +75,19 @@ import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.impl.trees.FileSystemsTree;
 import org.jboss.tools.common.model.project.IModelNature;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.dnd.ControlDragDrop;
+import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
+import org.jboss.tools.common.model.ui.navigator.NavigatorLabelProvider;
+import org.jboss.tools.common.model.ui.navigator.NavigatorStatusLineProvider;
+import org.jboss.tools.common.model.ui.navigator.TreeViewerDragDropProvider;
+import org.jboss.tools.common.model.ui.navigator.TreeViewerMenuInvoker;
+import org.jboss.tools.common.model.ui.navigator.TreeViewerModelListenerImpl;
+import org.jboss.tools.common.model.ui.select.XModelObjectSelectionProvider;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 
-public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSelectionTarget, IResourceNavigator //, ISelectionProvider 
+public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSelectionTarget, IResourceNavigator , IShowInTarget //, ISelectionProvider 
 {
 	public static final String VIEW_ID = "org.jboss.tools.common.model.ui.navigator.NavigatorViewPart";
 	private TreeViewer viewer;
@@ -665,6 +666,35 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	}
 
 	public void setComparator(ResourceComparator comparator) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.part.IShowInTarget#show(org.eclipse.ui.part.ShowInContext)
+	 */
+	public boolean show(ShowInContext context) {
+
+		Object input = context.getInput();
+		XModelObject o = null;
+		if (input instanceof IModelObjectEditorInput) {
+			o = ((IModelObjectEditorInput) input).getXModelObject();
+		} else if (input instanceof IFileEditorInput) {
+			IFileEditorInput fileInput = (IFileEditorInput) input;
+			IFile file = fileInput.getFile();
+			if (file == null)
+				return false;
+			o = getObjectByResource(file);
+		}
+		if (o == null)
+			return false;
+		ISelection newSelection = new StructuredSelection(o);
+		if (!getTreeViewer().getSelection().equals(o)) {
+			getTreeViewer().setSelection(newSelection);
+		}
+
+		return true;
+
 	}
 
 }
