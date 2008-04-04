@@ -21,6 +21,8 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import org.jboss.tools.common.model.XModel;
@@ -28,6 +30,7 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.FindObjectHelper;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
+import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.jboss.tools.jst.web.tld.ITaglibMapping;
 import org.jboss.tools.jst.web.tld.IWebProject;
@@ -42,14 +45,8 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doHyperlink(org.eclipse.jface.text.IRegion)
 	 */
 	protected void doHyperlink(IRegion region) {
-	
-		try {
-			XModelObject object = getFilename(region);
-			if(object != null) FindObjectHelper.findModelObject(object, FindObjectHelper.IN_EDITOR_ONLY);
-		} catch (Exception x) {
-			// could not open editor
-			openFileFailed();
-		}
+		XModelObject object = getFilename(region);
+		if(object != null) FindObjectHelper.findModelObject(object, FindObjectHelper.IN_EDITOR_ONLY);
 	}
 	
 	protected final String JAR_FILE_PROTOCOL = "jar:file:/";//$NON-NLS-1$
@@ -58,18 +55,14 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
      * @see com.ibm.sse.editor.hyperlink.AbstractHyperlink#openFileInEditor(java.lang.String)
      */
     protected void openFileInEditor(String fileString) {
-        try {
-	        if (fileString.startsWith(JAR_FILE_PROTOCOL)) {
-				fileString = fileString.substring(JAR_FILE_PROTOCOL.length());
-				IEditorInput jarEditorInput = createEditorInput(fileString);
-				IEditorPart part = openFileInEditor(jarEditorInput,  fileString);
-		        if (part == null) openFileFailed();
-			} else {
-				super.openFileInEditor(fileString);    
-			}
-        } catch (Exception x) {
-        	openFileFailed();
-        }
+        if (fileString.startsWith(JAR_FILE_PROTOCOL)) {
+			fileString = fileString.substring(JAR_FILE_PROTOCOL.length());
+			IEditorInput jarEditorInput = createEditorInput(fileString);
+			IEditorPart part = openFileInEditor(jarEditorInput,  fileString);
+	        if (part == null) openFileFailed();
+		} else {
+			super.openFileInEditor(fileString);    
+		}
     }
     
 	private XModelObject getFilename(IRegion region) {
@@ -98,9 +91,6 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 			ITaglibMapping tm = wp.getTaglibMapping();
 			if (tm == null) return null;
 			return tm.getTaglibObject(uri);
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in obtaining file name from region", x);
-			return null;
 		} finally {
 			if (model != null)	model.releaseFromRead();
 		}
@@ -118,14 +108,14 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 	}
 	
 	private IRegion getRegion(int offset) {
-		IStructuredModel model = null;
+		StructuredModelWrapper smw = new StructuredModelWrapper();
+		smw.init(getDocument());
 		try {	
-			model = getModelManager().getExistingModelForRead(getDocument());
-			IDOMDocument xmlDocument = (model instanceof IDOMModel) ? ((IDOMModel) model).getDocument() : null;
+			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
 			
 			Node n = Utils.findNodeForOffset(xmlDocument, offset);
-			if (n instanceof IDOMAttr) n = ((IDOMAttr)n).getOwnerElement();
+			if (n instanceof Attr) n = ((Attr)n).getOwnerElement();
 			if (!(n instanceof IDOMElement)) return null;
 			if (!"jsp:directive.taglib".equals(n.getNodeName())) return null;
 
@@ -154,11 +144,8 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 
 			};
 			return region;
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in obtaining region", x);
-			return null;
 		} finally {
-			if (model != null)	model.releaseFromRead();
+			smw.dispose();
 		}
 
 	}

@@ -139,9 +139,10 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 
 	protected IFile getFileFromProject(String fileName) {
 		IFile documentFile = getFile();
+		if(documentFile == null || !documentFile.isAccessible()) return null;
 
+		IProject project = documentFile.getProject();
 		try {
-			IProject project = documentFile.getProject();
 			String name = Utils.trimFilePath(fileName);
 			IPath currentPath = documentFile.getLocation()
 					.removeLastSegments(1);

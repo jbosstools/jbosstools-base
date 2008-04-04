@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -29,8 +30,8 @@ public class JSPStylesheetRelLinkHyperlink extends RelativeLinkHyperlink {
 
 	protected IRegion getRegion (int offset) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
+		smw.init(getDocument());
 		try {
-			smw.init(getDocument());
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
 			
@@ -117,7 +118,7 @@ public class JSPStylesheetRelLinkHyperlink extends RelativeLinkHyperlink {
 			};
 			
 			return region;
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {

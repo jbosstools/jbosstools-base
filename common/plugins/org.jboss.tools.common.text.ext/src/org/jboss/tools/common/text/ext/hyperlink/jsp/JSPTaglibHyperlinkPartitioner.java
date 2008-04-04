@@ -16,7 +16,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkRegion;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkPartitionRecognizer;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkRegion;
@@ -33,9 +32,10 @@ public class JSPTaglibHyperlinkPartitioner extends JSPElementAttributeValueHyper
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
 	protected IHyperlinkRegion parse(IDocument document, IHyperlinkRegion superRegion) {
+		if(document == null || superRegion == null) return null;
 		StructuredModelWrapper smw = new StructuredModelWrapper();
+		smw.init(document);
 		try {
-			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
 			
@@ -56,9 +56,6 @@ public class JSPTaglibHyperlinkPartitioner extends JSPElementAttributeValueHyper
 			
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in parsing region", x);
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -69,9 +66,10 @@ public class JSPTaglibHyperlinkPartitioner extends JSPElementAttributeValueHyper
 	 * @see com.ibm.sse.editor.extensions.hyperlink.IHyperlinkPartitionRecognizer#recognize(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
 	public boolean recognize(IDocument document, IHyperlinkRegion region) {
+		if(document == null || region == null) return false;
 		StructuredModelWrapper smw = new StructuredModelWrapper();
+		smw.init(document);
 		try {
-			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return false;
 			
@@ -79,9 +77,6 @@ public class JSPTaglibHyperlinkPartitioner extends JSPElementAttributeValueHyper
 			if (n instanceof Attr) n = ((Attr)n).getOwnerElement();
 			if (!(n instanceof Element)) return false;
 			return ("jsp:directive.taglib".equals(n.getNodeName()));
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
 		}

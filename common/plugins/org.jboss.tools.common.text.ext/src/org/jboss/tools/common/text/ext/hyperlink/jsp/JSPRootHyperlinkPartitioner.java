@@ -62,8 +62,8 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 	public static String computeAxis(IDocument document, int offset) {
 		String axis = "";
 		StructuredModelWrapper smw = new StructuredModelWrapper();
+		smw.init(document);
 		try {
-			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
 			
@@ -89,8 +89,6 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 					parent = parent.getParentNode();
 				}
 			}
-		} catch (Exception x) {
-			//ignore
 		} finally {
 			smw.dispose();
 		}
@@ -148,6 +146,7 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			return map;
 		} catch (Exception x) {
 			//ignore
+			//TODO narrow catch after study
 			return null;
 		} finally {
 			smw.dispose();

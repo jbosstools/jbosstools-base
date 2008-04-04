@@ -16,7 +16,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkRegion;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkPartitionRecognizer;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkRegion;
@@ -37,8 +36,8 @@ public class JSPTagAttributeHyperlinkPartitioner extends JSPElementAttributeValu
 	 */
 	protected IHyperlinkRegion parse(IDocument document, IHyperlinkRegion superRegion) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
+		smw.init(document);
 		try {
-			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
 			
@@ -58,9 +57,6 @@ public class JSPTagAttributeHyperlinkPartitioner extends JSPElementAttributeValu
 
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in parsing region", x);
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -70,9 +66,10 @@ public class JSPTagAttributeHyperlinkPartitioner extends JSPElementAttributeValu
 	 * @see com.ibm.sse.editor.extensions.hyperlink.IHyperlinkPartitionRecognizer#recognize(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
 	public boolean recognize(IDocument document, IHyperlinkRegion region) {
+		if(region == null) return false;
 		StructuredModelWrapper smw = new StructuredModelWrapper();
+		smw.init(document);
 		try {
-			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return false;
 			
@@ -82,9 +79,6 @@ public class JSPTagAttributeHyperlinkPartitioner extends JSPElementAttributeValu
 			return (JSP_ATTRIBUTE_TAGNAME.equals(n.getNodeName()) && 
 					!JSP_ELEMENT_TAGNAME.equals(n.getParentNode().getNodeName()) && 
 					n.getNodeName().indexOf(':') != -1);
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
 		}

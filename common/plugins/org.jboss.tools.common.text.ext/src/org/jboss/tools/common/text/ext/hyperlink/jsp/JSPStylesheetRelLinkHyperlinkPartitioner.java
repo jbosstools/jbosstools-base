@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.jsp;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.w3c.dom.Attr;
@@ -45,9 +46,10 @@ public class JSPStylesheetRelLinkHyperlinkPartitioner extends AbstractHyperlinkP
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
 	protected IHyperlinkRegion parse(IDocument document, IHyperlinkRegion superRegion) {
+		if(superRegion == null) return null;
 		StructuredModelWrapper smw = new StructuredModelWrapper();
+		smw.init(document);
 		try {
-			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
 			
@@ -64,9 +66,6 @@ public class JSPStylesheetRelLinkHyperlinkPartitioner extends AbstractHyperlinkP
 
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -76,9 +75,10 @@ public class JSPStylesheetRelLinkHyperlinkPartitioner extends AbstractHyperlinkP
 	 * @see com.ibm.sse.editor.extensions.hyperlink.IHyperlinkPartitionRecognizer#recognize(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
 	public boolean recognize(IDocument document, IHyperlinkRegion region) {
+		if(region == null) return false;
 		StructuredModelWrapper smw = new StructuredModelWrapper();
+		smw.init(document);
 		try {
-			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return false;
 			
@@ -104,7 +104,7 @@ public class JSPStylesheetRelLinkHyperlinkPartitioner extends AbstractHyperlinkP
 				if (!LINK_TAGNAME.equalsIgnoreCase(tag.getNodeName())) 
 					return false;
 	
-				String linkRel = getAttributeValue(document, tag, REL_ATTRNAME);
+				String linkRel = Utils.getAttributeValue(document, tag, REL_ATTRNAME);
 				if (!VALID_REL_ATTRVALUE.equalsIgnoreCase(linkRel))
 					return false;
 	
@@ -143,21 +143,8 @@ public class JSPStylesheetRelLinkHyperlinkPartitioner extends AbstractHyperlinkP
 				return false;
 			
 			return true;
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
-		}
-	}
-
-	protected String getAttributeValue (IDocument document, Node node, String attrName) {
-		try {
-			Attr attr = (Attr)node.getAttributes().getNamedItem(attrName);
-			return Utils.getTrimmedValue(document, attr);
-		} catch (Exception x) {
-			//ignore
-			return null;
 		}
 	}
 
@@ -170,8 +157,9 @@ public class JSPStylesheetRelLinkHyperlinkPartitioner extends AbstractHyperlinkP
 
 	protected IRegion getRegion (IDocument document, int offset) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
+		smw.init(document);
+		smw.init(document);
 		try {
-			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
 			
@@ -258,7 +246,7 @@ public class JSPStylesheetRelLinkHyperlinkPartitioner extends AbstractHyperlinkP
 			};
 			
 			return region;
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {
