@@ -86,7 +86,7 @@ public class VRuleSetsLoader extends EnginesLoader {
         }
     }
 
-    protected void mergeRules(XModelObject object, XModelObject update) {
+    protected void mergeRules(XModelObject object, XModelObject update) throws XModelException {
         org.jboss.tools.common.meta.XAttribute[] as = object.getModelEntity().getAttributes();
         for (int i = 0; i < as.length; i++) {
             String n = as[i].getName();
