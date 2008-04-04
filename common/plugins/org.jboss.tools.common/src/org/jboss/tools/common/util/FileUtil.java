@@ -278,7 +278,7 @@ public final class FileUtil {
         }
     }
 
-    public static void unjar(File dest, String jar) throws Exception {
+    public static void unjar(File dest, String jar) throws IOException {
         dest.mkdirs();
         JarFile jf = new JarFile(jar);
         try {
@@ -311,7 +311,7 @@ public final class FileUtil {
         }
     }
 
-    public static void unjar(File dest, InputStream is) throws Exception {
+    public static void unjar(File dest, InputStream is) throws IOException {
         dest.mkdirs();
         JarInputStream jis = new JarInputStream(is);
         try {
