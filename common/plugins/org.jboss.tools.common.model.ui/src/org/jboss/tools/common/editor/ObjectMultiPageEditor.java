@@ -49,6 +49,7 @@ import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
@@ -363,7 +364,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		}
 
 		this.enableSanityChecking(false);
-		f.saveChild(o);
+		try {
+			f.saveChild(o);
+		} catch (XModelException e) {
+			ModelPlugin.getPluginLog().logError(e);
+		}
 		this.updateModificationStamp(this.getEditorInput());
 		this.enableSanityChecking(true);
 		
@@ -759,7 +764,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				fModificationStamp= f.lastModified();
 
 			long stamp= f.lastModified();
+			try {
 				handleEditorInputChanged();
+			} catch (XModelException e) {
+				ModelPlugin.getPluginLog().logError(e);
+			}
 			if (stamp != fModificationStamp) {
 				fModificationStamp= stamp;
 //				handleEditorInputChanged();
@@ -780,7 +789,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		}
 	}
 	
-	private void handleEditorInputChanged() {
+	private void handleEditorInputChanged() throws XModelException {
 		XModelObject o = getModelObject();
 		if(o == null) return;
 		if(input instanceof IFileEditorInput && o.getParent() instanceof FolderImpl) {
@@ -1228,7 +1237,7 @@ class NatureChecker {
 		return false;
 	}
 	
-	private void showWarning() {
+	private void showWarning() throws XModelException {
 		boolean isShowingWarning = "yes".equals(Preference.SHOW_NATURE_WARNING.getValue());
 		if(!isShowingWarning) return;
 		ServiceDialog d = PreferenceModelUtilities.getPreferenceModel().getService();
@@ -1281,7 +1290,7 @@ class Option extends ServiceDialogOption {
 		super(text);
 	}
 	
-	public void run() {
+	public void run() throws XModelException {
 		Preference.SHOW_NATURE_WARNING.setValue("no");
 	}
 }
@@ -1344,7 +1353,7 @@ class NatureOption extends ServiceDialogOption {
 		return super.register(p, k);
 	}
 
-	public void run() {
+	public void run() throws XModelException {
 		Bundle bundle = Platform.getBundle(plugin);
 		if(bundle == null) return;
 		IActionDelegate delegate = null;

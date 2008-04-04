@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.*;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.ServiceDialog;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.AnyElementObjectImpl;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
@@ -226,12 +227,16 @@ public class AnyElementForm extends ExpandableForm {
 			String oldValue = tableProvider.getValueAt(r, c);
 			if(oldValue != null && oldValue.equals(value)) return;
 			tableProvider.attributes[r][c] = "" + value;
-			commitAttributes();
+			try { 
+				commitAttributes();
+			} catch (XModelException e) {
+				throw new IllegalArgumentException(e);
+			}
 		}
 		
 	}
 	
-	void commitAttributes() {
+	void commitAttributes() throws XModelException {
 		if(xmo == null || tableProvider == null || tableProvider.attributes == null) return;
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < tableProvider.attributes.length; i++) {
@@ -252,7 +257,11 @@ public class AnyElementForm extends ExpandableForm {
 			} else if(XChildrenEditor.EDIT.equals(command)) {
 				edit();
 			} else if(XChildrenEditor.DELETE.equals(command)) {
-				delete();
+				try {
+					delete();
+				} catch (XModelException e) {
+					throw new RuntimeException(e.getMessage(), e);
+				}
 			}			
 		}
 	}
@@ -290,7 +299,7 @@ public class AnyElementForm extends ExpandableForm {
 		}
 	}
 	
-	void delete() {
+	void delete() throws XModelException {
 		if(tableEditor.getTable() == null || tableEditor.getTable().isDisposed()) return;
 		int[] is = tableEditor.getTable().getSelectionIndices();
 		if(is == null || is.length == 0) return;

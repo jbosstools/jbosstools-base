@@ -50,7 +50,7 @@ public class XAttributeInfo {
 		this.value = value; 
 	}
 	
-	public void commit() {
+	public void commit() throws XModelException {
 		if(propertyEditor != null && propertyEditor.getInput() instanceof IModelPropertyEditorAdapter) {
 			IModelPropertyEditorAdapter adapter = (IModelPropertyEditorAdapter)propertyEditor.getInput();
 			adapter.setValue(this.value);

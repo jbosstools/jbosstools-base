@@ -16,6 +16,7 @@ import org.jboss.tools.common.model.ui.IActionHelper;
 import org.eclipse.swt.widgets.*;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class Note2Adapter extends DefaultValueAdapter implements IActionHelper {
@@ -44,7 +45,11 @@ public class Note2Adapter extends DefaultValueAdapter implements IActionHelper {
 			String v = encode(getValue().toString());
 			String n = attribute.getName();
 			if(modelObject.isActive()) {
-				modelObject.getModel().editObjectAttribute(modelObject, n, v);
+				try {
+					modelObject.getModel().editObjectAttribute(modelObject, n, v);
+				} catch (XModelException e) {
+					throw new IllegalArgumentException(e);
+				}
 			} else {
 				modelObject.setAttributeValue(attribute.getName(), getValue().toString());
 			}

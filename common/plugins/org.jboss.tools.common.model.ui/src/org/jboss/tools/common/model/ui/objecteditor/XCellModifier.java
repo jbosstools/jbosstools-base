@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.objecteditor;
 
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.swt.widgets.*;
+import org.jboss.tools.common.model.XModelException;
 
 public class XCellModifier implements ICellModifier {
 
@@ -27,7 +28,13 @@ public class XCellModifier implements ICellModifier {
 
 	public void modify(Object element, String property, Object value) {
 		XAttributeInfo v = (XAttributeInfo)value;
-		if(v != null) v.commit();
+		if(v != null) {
+			try {
+				v.commit();
+			} catch (XModelException e) {
+				throw new IllegalArgumentException(e.getMessage(), e);
+			}
+		}
 		TableItem item = (TableItem)element;
 		if (item!=null && !item.isDisposed()) {
 			item.setText(1, XTable.toVisualValue(v.getValue()));

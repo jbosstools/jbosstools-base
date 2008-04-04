@@ -47,6 +47,7 @@ import org.eclipse.ui.texteditor.ResourceAction;
 import org.eclipse.ui.texteditor.RevertToSavedAction;
 import org.eclipse.ui.texteditor.SaveAction;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.DiscardFileHandler;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
@@ -145,7 +146,11 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 		XModelObject o = getModelObject();
 		XModelObject f = o == null ? null : o.getParent();
 		if(f instanceof FolderImpl) {
-			((FolderImpl)f).saveChild(o);
+			try {
+				((FolderImpl)f).saveChild(o);
+			} catch (XModelException e) {
+				ModelPlugin.getPluginLog().logError(e);
+			}
 		} else {
 			//
 		}					

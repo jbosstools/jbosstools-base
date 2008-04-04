@@ -17,6 +17,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.*;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.adapter.IModelObjectAdapter;
 import org.jboss.tools.common.model.event.*;
@@ -62,7 +63,11 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 		String defaultValue = modelObject.getModelEntity().getAttribute(n).getDefaultValue();
 		if(defaultValue == null) return;
 		if(modelObject.isActive()) {
-			modelObject.getModel().editObjectAttribute(modelObject, n, defaultValue.toString());
+			try {
+				modelObject.getModel().editObjectAttribute(modelObject, n, defaultValue.toString());
+			} catch (XModelException e) {
+				throw new IllegalArgumentException(e);
+			}
 		} else {
 			modelObject.setAttributeValue(n, defaultValue.toString());
 		}
@@ -79,7 +84,11 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 		if(value.equals(v)) return;
 		cachedValues.setProperty(n, "" + value);
 		if(modelObject.isActive()) {
-			modelObject.getModel().editObjectAttribute(modelObject, n, value.toString());
+			try {
+				modelObject.getModel().editObjectAttribute(modelObject, n, value.toString());
+			} catch (XModelException e) {
+				throw new IllegalArgumentException(e);
+			}
 		} else {
 			modelObject.setAttributeValue(n, value.toString());
 		}

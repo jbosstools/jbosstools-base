@@ -23,6 +23,7 @@ import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.action.XAttributeData;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.markers.XMarkerManager;
 
@@ -53,7 +54,11 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 			if(v != null && attribute.isTrimmable()) v = v.trim();
 			String n = attribute.getName();
 			if(modelObject.isActive()) {
-				modelObject.getModel().editObjectAttribute(modelObject, n, v);
+				try {
+					modelObject.getModel().editObjectAttribute(modelObject, n, v);
+				} catch (XModelException e) {
+					throw new IllegalArgumentException(e);
+				}
 			} else {
 				modelObject.setAttributeValue(attribute.getName(), getValue().toString());
 			}

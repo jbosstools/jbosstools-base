@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.wizards.one;
 
 import java.util.Properties;
 import org.jboss.tools.common.model.ServiceDialog;
+import org.jboss.tools.common.model.XModelException;
 
 public class ServiceDialogOption {
 	protected String text;
@@ -38,7 +39,7 @@ public class ServiceDialogOption {
 		return Boolean.TRUE.equals(p.get(property));
 	}
 	
-	public void run() {
+	public void run() throws XModelException {
 	}
 
 }

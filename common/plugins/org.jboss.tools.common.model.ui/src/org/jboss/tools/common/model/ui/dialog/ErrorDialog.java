@@ -27,6 +27,8 @@ import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.reporting.ProblemReportingHelper;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.ui.reporting.ProblemReporter;
 import org.jboss.tools.common.model.ui.reporting.ReportPreference;
 
@@ -167,8 +169,12 @@ public class ErrorDialog extends IconAndMessageDialog {
 
     protected void okPressed() {
     	if(getAwayButton.getSelection()) {
-    		ReportPreference.SHOW_ERROR_DIALOG_OPTION.setValue("no");
-    		ReportPreference.SUBMIT_AUTOMATICALLY_OPTION.setValue("yes");
+    		try {
+    			ReportPreference.SHOW_ERROR_DIALOG_OPTION.setValue("no");
+    			ReportPreference.SUBMIT_AUTOMATICALLY_OPTION.setValue("yes");
+    		} catch (XModelException e) {
+    			ModelPlugin.getPluginLog().logError(e);
+    		}
     	}
     	super.okPressed();
     	submit();
@@ -176,7 +182,11 @@ public class ErrorDialog extends IconAndMessageDialog {
     
     protected void cancelPressed() {
     	if(getAwayButton.getSelection()) {
-    		ReportPreference.SHOW_ERROR_DIALOG_OPTION.setValue("no");
+    		try {
+    			ReportPreference.SHOW_ERROR_DIALOG_OPTION.setValue("no");
+    		} catch (XModelException e) {
+    			ModelPlugin.getPluginLog().logError(e);
+    		}
     	}
     	super.cancelPressed();
     }
