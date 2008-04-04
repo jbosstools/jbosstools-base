@@ -42,7 +42,7 @@ public class XModelException extends CoreException {
 		
 	}
 	
-	public static void rethrow(Throwable cause) throws CoreException {
+	public static void rethrow(Throwable cause) throws XModelException {
 		if(cause instanceof XModelException) {
 			throw (XModelException)cause;
 		}
