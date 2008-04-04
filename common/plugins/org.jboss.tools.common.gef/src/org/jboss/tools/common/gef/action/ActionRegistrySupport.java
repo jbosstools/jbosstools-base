@@ -36,7 +36,7 @@ public class ActionRegistrySupport {
 		globalActionKeys.add(key);
 	}
 	
-	public Iterator getGlobalActionKeys() {
+	public Iterator<String> getGlobalActionKeys() {
 		return globalActionKeys.iterator();   
 	}
 	
