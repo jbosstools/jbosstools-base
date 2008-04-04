@@ -171,7 +171,7 @@ public class AnyElementForm extends ExpandableForm {
 	}
 	
 	class TableProviderImpl implements XTableProvider {
-		String[] header = new String[]{"name", "value"};
+		String[] header = new String[]{"Name", "Value"};
 		String[][] attributes = null;
 
 		public int getColumnCount() {

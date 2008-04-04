@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.forms;
 
+import org.jboss.tools.common.meta.key.WizardKeys;
+
 /**
  * @author Igels
  *
@@ -64,7 +66,7 @@ public class FormAttributeData implements IFormAttributeData {
 	 * For use only as table column name
 	 */
 	public String getDisplayName() {
-		return (displayName == null) ? name : displayName;
+		return (displayName == null) ? WizardKeys.toDisplayName(name) : displayName;
 	}
 
     public ILayoutDataFactory getLayoutDataFactory() {
