@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.StringTokenizer;
 import java.util.zip.ZipFile;
 
 import org.eclipse.core.resources.IStorage;
@@ -33,17 +34,17 @@ import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.editors.text.ILocationProvider;
+import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
-
-import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * @author Jeremy
@@ -150,8 +151,22 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 					openFileFailed();
 			} else if (mappedSystemId != null) {
 				openFileInEditor(mappedSystemId);
-			} else 
-				openFileFailed();
+			} else {
+				String uri = getURI(region);
+				if (uri != null && uri.toLowerCase().startsWith("http:")) {
+					URL url = null;
+					try {
+						url = new URL(uri);
+						IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
+						IWebBrowser browser = browserSupport.createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR, null, null, null);
+						browser.openURL(url);
+					} catch (Exception e) {
+						openFileFailed();
+					}
+					
+				} else
+					openFileFailed();
+			}
 
 		} catch (Exception x) {
 			// could not open editor
@@ -185,6 +200,8 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 
 	protected final String JAR_FILE_PROTOCOL = "jar:file:/";//$NON-NLS-1$
 	protected final String JAR_FILE = "jar:file:";//$NON-NLS-1$
+	private int taglibLength;
+	private int taglibOffset;
 	
     /* (non-Javadoc)
      * @see com.ibm.sse.editor.hyperlink.AbstractHyperlink#openFileInEditor(java.lang.String)
@@ -245,7 +262,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 			if (text == null) return null;
 			int spacer = text.indexOf(" ");
 			if (spacer == -1) spacer = text.indexOf("\t");
-			return (spacer == -1 ? null : text.substring(0, spacer));
+			return (spacer == -1 ? text : text.substring(0, spacer));
 		} catch (Exception x) {
 			//ignore
 			return null;
@@ -325,9 +342,29 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 			String value = Utils.trimQuotes(xmlnsAttr.getNodeValue());
 			int start = xmlnsAttr.getValueRegionStartOffset();
 			
-			final int taglibLength = value.length();
-			final int taglibOffset = start + text.indexOf(value);
+			taglibLength = value.length();
+			taglibOffset = start + text.indexOf(value);
 			
+			StringTokenizer tokenizer = new StringTokenizer(value);
+			
+			int newOffset = -1;
+			int newLength = -1;
+			if (tokenizer.countTokens() > 1) {
+				while (tokenizer.hasMoreTokens()) {
+					String next = tokenizer.nextToken();
+					int nextStart = taglibOffset + value.indexOf(next);
+					if (offset >= nextStart
+							&& offset <= nextStart + next.length()) {
+						newOffset = nextStart;
+						newLength = next.length();
+						break;
+					}
+				}
+			}
+			if (newOffset != -1) {
+				taglibLength = newLength;
+				taglibOffset = newOffset;
+			}
 			IRegion region = new IRegion () {
 				public int getLength() {
 					return taglibLength;
