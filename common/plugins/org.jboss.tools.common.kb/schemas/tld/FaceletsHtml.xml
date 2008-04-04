@@ -12897,6 +12897,14 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute-type default="" name="media" required="false">
+            <proposal type="enumeration">
+                <param value="all"/>
+                <param value="screen"/>
+                <param value="print"/>
+                <param value="projection"/>
+                <param value="braille"/>
+                <param value="speech"/>
+            </proposal>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
