@@ -10,10 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta;
 
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public interface XAdoptManager {
     public boolean isAdoptable(XModelObject target, XModelObject object);
-    public void adopt(XModelObject target, XModelObject object, java.util.Properties p);
+    public void adopt(XModelObject target, XModelObject object, java.util.Properties p) throws XModelException;
 }
 

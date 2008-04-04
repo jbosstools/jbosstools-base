@@ -140,7 +140,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 		return get("body");
 	}
 
-	public void edit(String body) {
+	public void edit(String body) throws XModelException {
 		edit(body, false);
 	}
 	
@@ -148,7 +148,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 		return "true".equals(get("forceLoad"));
 	}
 
-    public void edit(String body, boolean update) {
+    public void edit(String body, boolean update) throws XModelException {
         if(body == null) return;
         if(!isForceLoadOn() && body.equals(getAsText())) return;
 
@@ -212,8 +212,8 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     	changeTimeStamp();
     	if(b) set("actualBodyTimeStamp", "" + getTimeStamp());
     }
-    protected void mergeAll(XModelObject f, boolean update) {
-		merge(f, !update);
+    protected void mergeAll(XModelObject f, boolean update) throws XModelException {
+   		merge(f, !update);
     }
     
     protected boolean isMergingChanges() {
@@ -255,7 +255,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         return f;
     }
     
-    protected final void merge(XModelObject update, boolean fire) {
+    protected final void merge(XModelObject update, boolean fire) throws XModelException {
     	if(!"yes".equals(update.get("isIncorrect"))) {
     		super.set("incorrectBody", "");
 			super.set("isIncorrect","no");
@@ -307,7 +307,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     }
      
 	static String NO_MERGE_ATTRIBUTES = ".name.extension._lateload.isIncorrect.incorrectBody.expand.";
-    void mergeAttributes(XModelObject update, boolean fire) {
+    void mergeAttributes(XModelObject update, boolean fire) throws XModelException {
 		XAttribute[] as = update.getModelEntity().getAttributes();
 		for (int i = 0; i < as.length; i++) {
 			String n = as[i].getName();

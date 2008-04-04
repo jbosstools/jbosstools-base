@@ -60,7 +60,12 @@ public class EnginesLoader extends URLRootLoader {
         if(!object.getModel().getFileRegistry().isUpdated(f)) return true;
         XModelObject c = object.copy(0);
         load(c);
-        merge(object, c);
+        try {
+        	merge(object, c);
+        } catch (XModelException e) {
+        	//TODO this method should throw XModelException
+        	throw new RuntimeException(e);
+        }
         return true;
     }
 
@@ -72,11 +77,11 @@ public class EnginesLoader extends URLRootLoader {
         return object.getModelEntity().getName().toLowerCase() + ".rex";
     }
 
-	public static void merge(XModelObject object, XModelObject update) {
+	public static void merge(XModelObject object, XModelObject update) throws XModelException {
 		merge(object, update, object.isActive());
 	}
 
-    public static void merge(XModelObject object, XModelObject update, boolean fire) {
+    public static void merge(XModelObject object, XModelObject update, boolean fire) throws XModelException {
 		XModelObjectLoaderUtil.mergeAttributes(object, update, fire);
         Map<String,XModelObject> map = getChildrenForSaveAsMap(object);
         Set<String> set = null;

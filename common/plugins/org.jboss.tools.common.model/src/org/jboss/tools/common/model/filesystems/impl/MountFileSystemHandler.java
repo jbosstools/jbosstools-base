@@ -30,7 +30,7 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
         mount(object, p, entity);
     }
 
-    public XModelObject mount(XModelObject fs, Properties p, String entity) {
+    public XModelObject mount(XModelObject fs, Properties p, String entity) throws XModelException {
         validateName(fs, p);
         XModelObject c = XModelObjectLoaderUtil.createValidObject(fs.getModel(), entity, p);
         addCreatedObject(fs, c, false, p);

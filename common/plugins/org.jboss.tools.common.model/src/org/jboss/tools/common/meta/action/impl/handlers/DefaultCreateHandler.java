@@ -77,6 +77,7 @@ public class DefaultCreateHandler extends AbstractHandler {
         return p;
     }
     
+    //TODO throw XModelException
     public static String extractProperty(XAttributeData ad) {
 		XAttribute a = ad.getAttribute();
 		String pn = a.getName();
@@ -135,7 +136,7 @@ public class DefaultCreateHandler extends AbstractHandler {
         return (object != null && object.isObjectEditable());
     }
 
-    public static void addCreatedObject(XModelObject parent, XModelObject child, Properties whereSelect) {
+    public static void addCreatedObject(XModelObject parent, XModelObject child, Properties whereSelect) throws XModelException {
         addCreatedObject(parent, child, true, whereSelect);
     }
     
@@ -155,21 +156,21 @@ public class DefaultCreateHandler extends AbstractHandler {
 		return null;
     }
 
-    public static void addCreatedObject(XModelObject parent, XModelObject child, boolean registerundo, Properties whereSelect) {
+    public static void addCreatedObject(XModelObject parent, XModelObject child, boolean registerundo, Properties whereSelect) throws XModelException {
     	addCreatedObject(parent, child, registerundo, extractWhereSelect(whereSelect));
     }
 
-    public static void addCreatedObject(XModelObject parent, XModelObject child, int whereSelect) {
+    public static void addCreatedObject(XModelObject parent, XModelObject child, int whereSelect) throws XModelException {
     	addCreatedObject(parent, child, true, whereSelect);
     }
 
-    public static void addCreatedObject(XModelObject parent, final XModelObject child, boolean registerundo, final int whereSelect) {
-        if(child == null) throw new RuntimeException(getMessageById("OBJECT_CREATION_FAILURE"));
+    public static void addCreatedObject(XModelObject parent, final XModelObject child, boolean registerundo, final int whereSelect) throws XModelException {
+        if(child == null) throw new XModelException(getMessageById("OBJECT_CREATION_FAILURE"));
         String mes = getContainsMessage(parent, child);
-        if(mes != null) throw new RuntimeException(mes);
+        if(mes != null) throw new XModelException(mes);
         String ce = child.getModelEntity().getName();
         XChild c = parent.getModelEntity().getChild(ce);
-        if(c == null) throw new RuntimeException(getMessageById("OBJECT_ADDING_FAILURE"));
+        if(c == null) throw new XModelException(getMessageById("OBJECT_ADDING_FAILURE"));
         int max = c.getMaxCount();
         int cur = parent.getChildren(ce).length;
         if(cur >= max) {
@@ -194,7 +195,7 @@ public class DefaultCreateHandler extends AbstractHandler {
 			b = parent.addChild(child);
 		}
         if(!b) {
-        	throw new RuntimeException(getMessageById("OBJECT_ADDING_FAILURE"));
+        	throw new XModelException(getMessageById("OBJECT_ADDING_FAILURE"));
         }
         XUndoManager undo = getUndoManager(parent);
         if(registerundo && undo != null) {

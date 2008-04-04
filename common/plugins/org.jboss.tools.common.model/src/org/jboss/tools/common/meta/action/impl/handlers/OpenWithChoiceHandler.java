@@ -63,7 +63,7 @@ public class OpenWithChoiceHandler extends AbstractHandler {
         return es.length > 0;
     }
 
-    static void changeDefaultEditor(XModel model, String ext, String editor) {
+    static void changeDefaultEditor(XModel model, String ext, String editor) throws XModelException {
         XModelObject o = model.getByPath(OpenWithHelper.EDITORS);
         StringBuffer sb = new StringBuffer();
         String ov = o.getAttributeValue("extensions");
@@ -81,7 +81,7 @@ public class OpenWithChoiceHandler extends AbstractHandler {
         applyChange(o, ov, sb.toString());
     }
 
-    static void removeDefaultEditor(XModel model, String ext) {
+    static void removeDefaultEditor(XModel model, String ext) throws XModelException {
         XModelObject o = model.getByPath(OpenWithHelper.EDITORS);
         StringBuffer sb = new StringBuffer();
         String ov = o.getAttributeValue("extensions");
@@ -99,7 +99,7 @@ public class OpenWithChoiceHandler extends AbstractHandler {
         sb.append(item);
     }
 
-    private static void applyChange(XModelObject editors, String ov, String nv) {
+    private static void applyChange(XModelObject editors, String ov, String nv) throws XModelException {
         if(nv.equals(ov)) return;
         editors.getModel().changeObjectAttribute(editors, "extensions", nv);
         editors.getModel().saveOptions();

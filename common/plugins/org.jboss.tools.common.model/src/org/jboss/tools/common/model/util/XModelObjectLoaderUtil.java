@@ -912,11 +912,11 @@ public class XModelObjectLoaderUtil {
 		return sb.toString();
 	}
 
-	public static void mergeAttributes(XModelObject destination, XModelObject source) {
+	public static void mergeAttributes(XModelObject destination, XModelObject source) throws XModelException {
 		mergeAttributes(destination, source, destination.isActive());
 	}
 	
-	public static void mergeAttributes(XModelObject destination, XModelObject source, boolean fire) {
+	public static void mergeAttributes(XModelObject destination, XModelObject source, boolean fire) throws XModelException {
 		XAttribute[] as = destination.getModelEntity().getAttributes();
 		for (int i = 0; i < as.length; i++) {
 			String n = as[i].getName();

@@ -18,7 +18,6 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.handlers.*;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
 
 public class CreateFileHandler extends DefaultCreateHandler {
@@ -55,11 +54,7 @@ public class CreateFileHandler extends DefaultCreateHandler {
         final XModelObject q = c;
         if(q != null) Display.getDefault().asyncExec(new Runnable() {
         	public void run() {        
-        		try {
-					XActionInvoker.invoke("Open", q, new Properties());
-				} catch (Exception e) {
-					ModelPlugin.getPluginLog().logError("CreateFileHandler:Open:" + e.getMessage());
-				}
+				XActionInvoker.invoke("Open", q, new Properties());
         	}
         });
     }

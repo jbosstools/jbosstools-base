@@ -56,13 +56,13 @@ public class DefaultEditHandler extends DefaultCreateHandler {
             if(stamp == object.getTimeStamp()) undo.rollbackTransactionInProgress();
         } catch (Exception e) {
             undo.rollbackTransactionInProgress();
-            throw new XModelException(e);
+            XModelException.rethrow(e);
         } finally {
             u.commit();
         }
     }
 
-    public static void edit(XModelObject object, Properties p) {
+    public static void edit(XModelObject object, Properties p) throws XModelException {
         XModelEntity e = object.getModelEntity();
         Enumeration en = p.keys();
         boolean active = object.isActive();

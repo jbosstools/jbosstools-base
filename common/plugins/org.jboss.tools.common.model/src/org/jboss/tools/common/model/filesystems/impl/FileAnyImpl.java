@@ -171,7 +171,7 @@ public class FileAnyImpl extends RegularObjectImpl {
 		return getAttributeValue("body");
 	}
 
-	public void edit(String body) {
+	public void edit(String body) throws XModelException {
 		getModel().changeObjectAttribute(this, "body", body);
 	}
 	
@@ -258,7 +258,7 @@ public class FileAnyImpl extends RegularObjectImpl {
 		w.execute();
 	}
 
-	protected void onAttributeValueEdit(String name, String oldValue, String newValue) {
+	protected void onAttributeValueEdit(String name, String oldValue, String newValue) throws XModelException {
 		if("body".equals(name) && listener != null) {
 			listener.bodyChanged(newValue);
 		}

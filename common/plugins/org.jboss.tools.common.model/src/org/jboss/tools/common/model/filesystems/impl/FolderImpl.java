@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Display;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.ServiceDialog;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.BodySource;
 import org.jboss.tools.common.model.filesystems.FileAuxiliary;
@@ -350,7 +351,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         return f;
     }
 
-    private void updateAuxiliary(Map<String,XModelObject> mc, Map<String,File> mf) {
+    private void updateAuxiliary(Map<String,XModelObject> mc, Map<String,File> mf) throws XModelException {
         Iterator<String> it = mf.keySet().iterator();
         while(it.hasNext()) {
             String nm = (String)it.next();
@@ -445,7 +446,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     	f.set("forceLoad", b ? "true" : "");    	
     }
 
-    protected void updateLoaded(XModelObject o, File f) {
+    protected void updateLoaded(XModelObject o, File f) throws XModelException {
         FileSystemPeer peer = getFileSystem().getPeer();
         if(o instanceof FolderImpl) {
         	if(!o.getAttributeValue("name").equals(f.getName())) {
@@ -473,7 +474,13 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             	final File f1 = f;
             	Display.getDefault().asyncExec(new Runnable() {
             		public void run() {
-            			if(question(f1) == 0) reload(o1, f1);
+            			if(question(f1) == 0) {
+            				try {
+            					reload(o1, f1);
+            				} catch (XModelException e) {
+            					ModelPlugin.getPluginLog().logError(e);
+            				}
+            			}
             		}
             	});
             }
@@ -492,7 +499,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     	}
     }
     
-    public void updateChildFile(XModelObject o, File f) {
+    public void updateChildFile(XModelObject o, File f) throws XModelException {
 		FileSystemPeer peer = getFileSystem().getPeer();
 		if(!registerFileInPeer(peer, f)) return;
 		int i = (!o.isModified()) ? 0 : 
@@ -507,7 +514,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 		return (!o.getModelEntity().getName().equals(p.getProperty("entity")));
     }
     
-    private void reload(XModelObject o, File f) {
+    private void reload(XModelObject o, File f) throws XModelException {
         Properties p = getEntityProperties(f);
         if(!o.getModelEntity().getName().equals(p.getProperty("entity"))) {
             o.removeFromParent();
@@ -538,7 +545,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         }
     }
 
-    protected boolean updateNew(String pathpart, File f, Map<String,XModelObject> toRemove) {
+    protected boolean updateNew(String pathpart, File f, Map<String,XModelObject> toRemove) throws XModelException {
         FileSystemPeer peer = getFileSystem().getPeer();
         if(peer.contains(f) && !peer.isUpdated(f)) return false;
         XModelObject c = null;
@@ -585,7 +592,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     	return null;
     }
 
-    protected void updateRemove(XModelObject o) {
+    protected void updateRemove(XModelObject o) throws XModelException {
         boolean d = (o instanceof FolderImpl);
         FileSystemPeer peer = getFileSystem().getPeer();
         File rf = getChildIOFile(o);
@@ -703,7 +710,12 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             	if(d == null) {
                     d = new File(f, FileAnyImpl.toFileName(cs[i]));
             	}
-                b &= saveChild(cs[i], peer, d);
+            	try {
+            		b &= saveChild(cs[i], peer, d);
+            	} catch (XModelException ee) {
+            		//TODO maybe it should be rethrown
+            		ModelPlugin.getPluginLog().logError(ee);
+            	}
             }
             t.remove(cs[i].getPathPart());
         }
@@ -731,7 +743,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         return b;
     }
 
-    public boolean saveChild(XModelObject c) {
+    public boolean saveChild(XModelObject c) throws XModelException {
         if(c == null || c.getParent() != this) return false;
         if(!c.isModified()) return true;
         File folder = getFile();
@@ -753,7 +765,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         return b;
     }
 
-    private boolean saveChild(XModelObject c, FileSystemPeer peer, File cf) {
+    private boolean saveChild(XModelObject c, FileSystemPeer peer, File cf) throws XModelException {
         boolean b = true;
         if(!cf.exists()) c.setModified(true);
         if(!c.isModified()) return true;
@@ -809,7 +821,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         return true;
     }
 
-    public boolean changeChildTimeStamp(XModelObject c) {
+    public boolean changeChildTimeStamp(XModelObject c) throws XModelException {
         if(c == null || c.getParent() != this) return false;
         File cf = new File(getFile(), FileAnyImpl.toFileName(c));
         if(!cf.exists()) return saveChild(c);
@@ -823,7 +835,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         return true;
     }
     
-    public void discardChildFile(XModelObject c) {
+    public void discardChildFile(XModelObject c) throws XModelException {
     	if(c == null || !c.isActive() || !c.isModified() || c.getParent() != this) return;
     	c.setModified(false);
 		XModelObjectLoaderUtil.updateModifiedOnSave(c);

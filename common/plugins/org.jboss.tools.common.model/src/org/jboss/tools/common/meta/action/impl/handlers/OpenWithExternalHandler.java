@@ -42,7 +42,7 @@ public class OpenWithExternalHandler extends AbstractHandler {
         start(action.getDisplayName(), f, editor);
     }
 
-    static boolean checkSave(String actionname, XModelObject object) {
+    static boolean checkSave(String actionname, XModelObject object) throws XModelException {
         if(!object.isModified() || !object.isActive() || !(object.getParent() instanceof FolderImpl)) return true;
         ServiceDialog d = object.getModel().getService();
         String mes = DefaultCreateHandler.title(object, true) + " is modified.\n" +

@@ -37,8 +37,10 @@ public abstract class CompoundAdoptManager implements XAdoptManager {
 					array[length] = m;
 					length++;
 				}
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load class " + cls + ".", e));
+			} catch (ClassCastException e2) {
+				ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load class " + cls + ".", e2));
 			}
 		}
 		if(length < array.length) {
@@ -58,7 +60,7 @@ public abstract class CompoundAdoptManager implements XAdoptManager {
 		return false;
 	}
 
-	public void adopt(XModelObject target, XModelObject object, java.util.Properties p) {
+	public void adopt(XModelObject target, XModelObject object, java.util.Properties p) throws XModelException {
 		XAdoptManager[] ms = getManagers();
 		for (int i = 0; i < ms.length; i++) {
 			if(ms[i].isAdoptable(target, object)) {

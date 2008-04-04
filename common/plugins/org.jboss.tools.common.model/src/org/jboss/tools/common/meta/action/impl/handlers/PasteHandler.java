@@ -83,7 +83,7 @@ public class PasteHandler extends AbstractHandler {
         }
     }
     
-    protected final void paste(XModelObject parent, int sourceIndex, Properties p) {
+    protected final void paste(XModelObject parent, int sourceIndex, Properties p) throws XModelException {
     	XModelObject source = getBuffer(parent).source(sourceIndex);
         XModelObject copy = getBuffer(parent).copy(sourceIndex);
         XModelObject existing = parent.getChildByPath(copy.getPathPart());

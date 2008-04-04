@@ -124,7 +124,7 @@ public interface XModel {
 	 * @param attributeName
 	 * @param newValue
 	 */
-	public void changeObjectAttribute(XModelObject object, String attributeName, String newValue);
+	public void changeObjectAttribute(XModelObject object, String attributeName, String newValue) throws XModelException;
 	
 	/**
 	 * Does the same as method changeObjectAttribute, but also 
@@ -138,7 +138,7 @@ public interface XModel {
 	 * @param attributeName
 	 * @param newValue
 	 */
-	public void editObjectAttribute(XModelObject object, String attributeName, String newValue);
+	public void editObjectAttribute(XModelObject object, String attributeName, String newValue) throws XModelException;
 	
 	/**
 	 * Returns undo manager that keeps multi-changes transaction 

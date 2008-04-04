@@ -62,7 +62,7 @@ public class ExtensionChange {
         XTransactionUndo u = new XTransactionUndo(d, XTransactionUndo.EDIT);
         undo.addUndoable(u);
         try {
-            XModelObject p = (XModelObject)file.getParent();
+            XModelObject p = file.getParent();
             DefaultRemoveHandler.removeFromParent(file);
             DefaultCreateHandler.addCreatedObject(p, o, FindObjectHelper.IN_NAVIGATOR_ONLY);
         } catch (Exception e) {

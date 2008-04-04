@@ -52,7 +52,7 @@ public abstract class AbstractTableHelper {
         return (f == null) ? "" : f.getAttributeValue(getHeader()[c]);
     }
 
-    public void setValueAt(int r, int c, String value) {
+    public void setValueAt(int r, int c, String value) throws XModelException {
         XModelObject f = getModelObject(r);
         if(f == null) return;
         f.getModel().changeObjectAttribute(f, getHeader()[c], value);

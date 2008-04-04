@@ -57,7 +57,7 @@ public class HiddenPaletteTabsHandler extends AbstractHandler {
     	}
     }
 
-	public void execute(XModel model, String[][] vs, Map objects) {
+	public void execute(XModel model, String[][] vs, Map objects) throws XModelException {
 		fireTransactionEvent("transaction_begin");
 		try {
 			XUndoManager undo = model.getUndoManager();

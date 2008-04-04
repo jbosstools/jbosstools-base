@@ -48,7 +48,7 @@ public class ClassLoaderUtil {
 				String n = activation[i][1];
 				try {
 					b.loadClass(n);
-				} catch (Exception e) {
+				} catch (ClassNotFoundException e) {
 					ModelPlugin.getPluginLog().logError("ClassLoaderUtil:activate: Cannot find class " + n);
 				}
 			}

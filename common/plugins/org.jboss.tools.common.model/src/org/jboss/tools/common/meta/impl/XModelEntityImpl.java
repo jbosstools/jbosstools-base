@@ -433,7 +433,7 @@ class XAdoptWrapper implements XAdoptManager {
 		this.entity = entity;
 	}
 
-	public void adopt(XModelObject target, XModelObject object, Properties p) {
+	public void adopt(XModelObject target, XModelObject object, Properties p) throws XModelException {
 		validate();
 		if(entity.adopt != null) {
 			entity.adopt.adopt(target, object, p);

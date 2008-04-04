@@ -145,6 +145,10 @@ public class SimpleWebFileLoader implements SerializingLoader {
 		f.setUpdateLock();
 		try {
 			f.edit(body);
+		} catch (XModelException e) {
+			ModelPlugin.getPluginLog().logError(e);
+			//TODO update method should throw XModelException
+			throw new RuntimeException(e);
 		} finally {
 			f.releaseUpdateLock();
 		}

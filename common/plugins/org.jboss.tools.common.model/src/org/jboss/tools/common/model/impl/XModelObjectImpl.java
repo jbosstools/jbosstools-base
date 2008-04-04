@@ -166,7 +166,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
         return nv;
     }
 
-	protected void onAttributeValueEdit(String name, String oldValue, String newValue) {
+	protected void onAttributeValueEdit(String name, String oldValue, String newValue) throws XModelException {
 	}
 
     public boolean isModified() {

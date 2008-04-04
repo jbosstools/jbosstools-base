@@ -78,7 +78,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 					iln = Integer.parseInt(ln1);
 					ln1 = "" + (iln - 1);
 				}
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 				ModelPlugin.getPluginLog().logError(e);
 			}
 			String ep = "ERROR: " + FindObjectHelper.makeRef(getPath() + ":" + ln1, ln + ":" + pos) + " " + er;

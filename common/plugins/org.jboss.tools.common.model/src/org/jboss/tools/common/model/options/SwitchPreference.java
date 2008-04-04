@@ -8,6 +8,8 @@ package org.jboss.tools.common.model.options;
 
 import java.util.*;
 
+import org.jboss.tools.common.model.XModelException;
+
 
 /**
  * @author Eskimo
@@ -44,7 +46,7 @@ public class SwitchPreference extends Preference {
 		return preference.getValue();
 	}
 
-	public void setValue(String value) {
+	public void setValue(String value) throws XModelException {
 		if(switchPreference==null) throw new NullPointerException("switchPreference cannot be null, call setSwitchPreferenceFirst.");
 		Preference preference = (Preference)preferencesMap.get(switchPreference.getValue());
 		if(preference==null) throw new IllegalStateException("Preference in't added for switch value '" + switchPreference.getValue() + "'"); 

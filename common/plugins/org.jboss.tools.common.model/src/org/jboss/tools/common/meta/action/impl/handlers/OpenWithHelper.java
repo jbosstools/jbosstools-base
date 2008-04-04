@@ -65,7 +65,7 @@ public class OpenWithHelper {
         return res;
     }
 
-    static boolean validatePath(String actionname, XModelObject o) {
+    static boolean validatePath(String actionname, XModelObject o) throws XModelException {
         String[] paths = getEnvironmentPaths();
         XModel model = o.getModel();
         String en = o.getModelEntity().getName();

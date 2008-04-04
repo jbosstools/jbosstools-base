@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.loaders.impl;
 
 import java.io.*;
+
 import org.w3c.dom.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
@@ -47,8 +48,11 @@ public class DefaultEntityLoader implements XObjectLoader {
             XModelObjectLoaderUtil.setTempBody(object, sw.toString());
             object.setModified(true);
             return true;
-        } catch (Exception exc) {
+        } catch (IOException exc) {
         	ModelPlugin.getPluginLog().logError("DefaultEntityLoader:save(" + object.getPresentationString() + "):" + exc.getMessage());
+            return false;
+        } catch (XModelException e2) {
+        	ModelPlugin.getPluginLog().logError("DefaultEntityLoader:save(" + object.getPresentationString() + "):" + e2.getMessage());
             return false;
         }
     }

@@ -33,6 +33,7 @@ import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelBuffer;
 import org.jboss.tools.common.model.XModelConstants;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelTransferBuffer;
 import org.jboss.tools.common.model.event.XModelChangeManager;
@@ -258,15 +259,15 @@ public class XModelImpl implements XModel {
         return null;
     }
 
-	public void editObjectAttribute(XModelObject object, String attributeName, String value) {
+	public void editObjectAttribute(XModelObject object, String attributeName, String value) throws XModelException {
 		changeObjectAttribute(object, attributeName, value, true);
 	}
 
-	public void changeObjectAttribute(XModelObject object, String attributeName, String value) {
+	public void changeObjectAttribute(XModelObject object, String attributeName, String value) throws XModelException {
 		changeObjectAttribute(object, attributeName, value, false);
 	}
     
-    void changeObjectAttribute(XModelObject object, String attributeName, String value, boolean edit) {
+    void changeObjectAttribute(XModelObject object, String attributeName, String value, boolean edit) throws XModelException {
         if(object == null || object.getPath() == null) return;
         XModelEntity ent = object.getModelEntity();
         XAttribute a = ent.getAttribute(attributeName);

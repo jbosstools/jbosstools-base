@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.options;
 
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
@@ -55,7 +56,7 @@ public class Preference {
 		return attributeName;
 	}
 	
-	public void setValue(String value) {
+	public void setValue(String value) throws XModelException {
 		XModelObject obj = PreferenceModelUtilities.getPreferenceModel().getByPath(option);
 		if(obj == null) {
 			if(ModelPlugin.isDebugEnabled()) {

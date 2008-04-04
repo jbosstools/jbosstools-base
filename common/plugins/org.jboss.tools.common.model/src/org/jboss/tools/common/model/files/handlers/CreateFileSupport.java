@@ -208,7 +208,7 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		});
 	} 
 
-	XModelObject createFile(XModelObject fs, String path, String body, Properties p) {
+	XModelObject createFile(XModelObject fs, String path, String body, Properties p) throws XModelException {
 		StringTokenizer st = new StringTokenizer(path, "/");
 		int c = st.countTokens(), i = 0;
 		while(i < c - 1) {

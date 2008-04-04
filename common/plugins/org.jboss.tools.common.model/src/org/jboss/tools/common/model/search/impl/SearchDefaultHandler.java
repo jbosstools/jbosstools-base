@@ -62,7 +62,7 @@ public class SearchDefaultHandler extends AbstractHandler {
         return sc;
     }
 
-    private XModelObject findOrCreateDefaultSearch(XModelObject object, XModelObject[] objects) {
+    private XModelObject findOrCreateDefaultSearch(XModelObject object, XModelObject[] objects) throws XModelException {
         XModel model = object.getModel();
         XModelObject sr = model.getByPath("XStudio/Search");
         XModelObject ds = sr.getChildByPath("Default");

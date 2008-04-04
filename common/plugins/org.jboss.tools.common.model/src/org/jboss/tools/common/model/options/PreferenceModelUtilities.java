@@ -65,7 +65,7 @@ public class PreferenceModelUtilities {
 	}
 	
 	public static void initPreferenceValue(XModel initialModel, Preference preference)
-	{
+	throws XModelException {
 		String value = preference.getValue(); 
 		if (value == null || "".equals(value))
 		{
