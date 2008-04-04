@@ -105,7 +105,8 @@ public class WizardKeys {
 	
 	static {
 		String[] lcw = new String[]{"the", "web.xml", "for"};
-		String[] ucw = new String[]{"tld", "uri", "jsp", "html", "url", "jsf", "xml"};
+		String[] ucw = new String[]{"tld", "uri", "jsp", "html", "url", "jsf", "xml", 
+				"id", "jms", "esb", "ftp", "jbr", "fs"};
 		for (int i = 0; i < lcw.length; i++) LOWER_CASE_WORDS.add(lcw[i]);
 		for (int i = 0; i < ucw.length; i++) UPPER_CASE_WORDS.add(ucw[i]);
 	}
