@@ -28,6 +28,7 @@ import org.jboss.tools.common.meta.impl.XExtensions;
 import org.jboss.tools.common.meta.impl.XModelEntityImpl;
 import org.jboss.tools.common.meta.impl.XModelMetaDataImpl;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.engines.impl.EnginesLoader;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
@@ -336,7 +337,11 @@ public class MetaModelTest extends TestCase {
 						XModelObjectLoaderUtil.setTempBody(object2, body);
 						loader.load(object2);
 						MergeListener m = new MergeListener(model);
-						EnginesLoader.merge(object, object2);
+						try {
+							EnginesLoader.merge(object, object2);
+						} catch (XModelException e) {
+							fail(e.getMessage());
+						}
 						m.dispose();
 						if(!m.equal) {
 							errors++;
