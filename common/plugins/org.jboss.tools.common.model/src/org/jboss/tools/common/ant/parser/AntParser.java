@@ -22,8 +22,8 @@ public class AntParser {
         Element element = XMLUtil.getElement(new StringReader(body));
         if(element == null) return;
         if(!"project".equals(element.getNodeName())) return;
-        if(element.getAttributeNode("xmlns") != null) return;
-        if(element.getAttributeNode("xsi:schemaLocation") != null) return;
+        if(element.hasAttribute("xmlns")) return;
+        if(element.hasAttribute("xsi:schemaLocation")) return;
         NodeList es = element.getElementsByTagName("target");
         for (int i = 0; i < es.getLength(); i++)
           if(!((Element)es.item(i)).hasAttribute("name")) return;

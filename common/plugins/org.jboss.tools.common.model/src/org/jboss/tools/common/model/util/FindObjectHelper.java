@@ -97,7 +97,7 @@ public class FindObjectHelper implements SpecialWizard {
                 if(q >= 0) {
                     try {
                     	line = Integer.parseInt(p.substring(q + 1));
-                    } catch (Exception e) {
+                    } catch (NumberFormatException e) {
                     	//ignore
                     }
                     p = p.substring(0, q);
@@ -278,7 +278,7 @@ class StackTraceLine {
         String sln = text.substring(sc + 1, cb);
         try {
         	ln = Integer.parseInt(sln) - 1;
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         	//ignore
         }
     }
@@ -316,7 +316,7 @@ class JavacErrorHeadLine {
         int j = command.indexOf(':', i + 6);
         try {
         	ln = Integer.parseInt(command.substring(i + 6, j));
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         	//ignore
         }
         String fn = command.substring(0, i);

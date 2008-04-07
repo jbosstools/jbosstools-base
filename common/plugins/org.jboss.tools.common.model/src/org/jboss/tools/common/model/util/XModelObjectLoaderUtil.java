@@ -314,7 +314,7 @@ public class XModelObjectLoaderUtil {
         		} else if(o.isActive()) try {
             		XModelObject q = o.getChildByPath(co.getPathPart());
             		if(q != null) EnginesLoader.merge(q, co, false);
-            	} catch (Exception exc) {
+            	} catch (XModelException exc) {
             		ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:loadChildren:" + exc.getMessage(), exc);
             	}
             	continue;
@@ -577,13 +577,17 @@ public class XModelObjectLoaderUtil {
 
     public String asString(XModelObject object) {
         StringWriter w = new StringWriter();
+        Exception e = null;
         try {
             serialize(object, w);
             return w.toString();
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:asString:" + e.getMessage(), e);
-            return "";
+        } catch (XModelException e1) {
+        	e = e1;
+        } catch (IOException e2) {
+        	e = e2;
         }
+    	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:asString:" + e.getMessage(), e);
+    	return "";
     }
 
     public static final String getCDATA(Element elem) {
@@ -653,9 +657,15 @@ public class XModelObjectLoaderUtil {
     public boolean save(File f, XModelObject o) {
         if(f.exists() && !o.isModified()) return true;
         StringWriter w = new StringWriter();
+        Exception e = null;
         try {
             if(!serialize(o, w)) return false;
-        } catch (Exception e) {
+        } catch (XModelException e1) {
+        	e = e1;
+        } catch (IOException e2) {
+        	e = e2;
+        }
+        if(e != null) {
         	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:save(f,o):" + e.getMessage(), e);
             return false;
         }
@@ -712,12 +722,8 @@ public class XModelObjectLoaderUtil {
     }
 
     public static String readFile(String filename) {
-        try {
-            return readFile(new File(expandString(filename)));
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:readFile(" + filename + "):" + e.getMessage(), e);
-            return "";
-        }
+    	if(filename == null) return "";
+        return readFile(new File(expandString(filename)));
     }
 
     public static String readFile(File f) {
@@ -729,12 +735,8 @@ public class XModelObjectLoaderUtil {
     }
 
     public static boolean writeFile(String filename, String value) {
-        try {
-            return writeFile(new File(expandString(filename)), value);
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:writeFile(" + filename + "):" + e.getMessage(), e);
-            return false;
-        }
+    	if(filename == null) return false;
+        return writeFile(new File(expandString(filename)), value);
     }
 
     public static boolean writeFile(File f, String value) {

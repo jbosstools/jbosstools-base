@@ -66,21 +66,17 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 		if(prloc.toLowerCase().startsWith(thloc.toLowerCase())) return resource = null;
 		if(thloc.toLowerCase().startsWith(prloc.toLowerCase())) {
 			String relative = thloc.substring(prloc.length());
-			try {
-				IFolder f = project.getFolder(new Path(relative));
-				if(!f.exists()) {
-					try {
-						if(f.getParent() != null && f.getParent().exists()) {
-							f.create(true, true, null);
-						}
-					} catch (Exception e) {
-						ModelPlugin.getPluginLog().logError(e);
+			IFolder f = project.getFolder(new Path(relative));
+			if(!f.exists()) {
+				try {
+					if(f.getParent() != null && f.getParent().exists()) {
+						f.create(true, true, null);
 					}
+				} catch (CoreException e) {
+					ModelPlugin.getPluginLog().logError(e);
 				}
-				return resource = f;			
-			} catch (Exception e) {
-				ModelPlugin.getPluginLog().logError(e);
 			}
+			return resource = f;			
 		}
 
     	IFolder f = project.getFolder(new Path("/" + getAttributeValue("name")));
@@ -88,7 +84,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     		try {
 				f.createLink(new Path(thloc), IFolder.FORCE, null);
 				resource = f;
-    		} catch (Exception e) {
+    		} catch (CoreException e) {
     			ModelPlugin.getPluginLog().logError("Cannot create link: " + e.getMessage());
     			ModelPlugin.getPluginLog().logError("Project path=" + prloc);
     			ModelPlugin.getPluginLog().logError("   Link path=" + thloc);
@@ -103,9 +99,10 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 
     public String getAbsoluteLocation() {
 		String s = XModelObjectUtil.getExpandedValue(this, "location", null);
+		if(s == null || s.length() == 0) return s;
 		try {
 			return new java.io.File(s).getCanonicalPath();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			//ignore if file does not exist, just use its path
 			return s;
 		}
