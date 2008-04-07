@@ -118,10 +118,10 @@ public class WizardKeys {
 		int k = st.countTokens();
 		for (int i = 0; i < k; i++) {
 			String t = st.nextToken();
-			if(i > 0 && (t.length() < 3 || LOWER_CASE_WORDS.contains(t))) {
-				sb.append(t);
-			} else if(UPPER_CASE_WORDS.contains(t)) {
+			if(UPPER_CASE_WORDS.contains(t)) {
 				sb.append(t.toUpperCase());
+			} else if(i > 0 && (t.length() < 3 || LOWER_CASE_WORDS.contains(t))) {
+				sb.append(t);
 			} else {
 				sb.append(t.substring(0, 1).toUpperCase()).append(t.substring(1));
 			}
