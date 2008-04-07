@@ -19,7 +19,8 @@ public class AnyElementObjectImpl extends OrderedObjectImpl {
 	public static char SEPARATOR = ';';
 
 	public String getPresentationString() {
-		return "" + get("tag");
+		String value = AnyElementPresentationManager.instance.getValue(this);
+		return value != null ? value : "" + get("tag");
 	}
 
 	public String name() {

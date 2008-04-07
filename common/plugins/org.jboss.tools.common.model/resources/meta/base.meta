@@ -4,6 +4,7 @@
 <XModelEntityGroup>
  <VERSION MODULE="Model" VERSION="1.0"/>
  <MAPPINGS>
+  <MAPPING name="AnyElementPresentation"/>
   <MAPPING name="AttributeEditor">
    <PAIR name="*" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="AccessibleJava" value="org.jboss.tools.common.model.ui.attribute.editor.JavaEclipseChoicerFieldEditor"/>
@@ -12,6 +13,7 @@
    <PAIR name="CLASSPATH" value="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor"/>
    <PAIR name="CheckBox" value="org.jboss.tools.common.model.ui.attribute.editor.CheckBoxEditor"/>
    <PAIR name="Color" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
+   <PAIR name="CommonFileSystem" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="FileChooser" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="FolderChooser" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="Imports" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
@@ -32,7 +34,6 @@
    <PAIR name="NoteHTML" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="Parameters" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="Properties" value="org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor"/>
-   <PAIR name="CommonFileSystem" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="RemoteParams" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="Text" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
    <PAIR name="TreeChooser" value="org.jboss.tools.common.model.ui.attribute.editor.StringEditor"/>
@@ -327,25 +328,18 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="element" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="tag" xmlname="tag">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="attributes" xmlname="attributes">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="text">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="id=true;generate=true" name="_id_" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;generate=true" name="_id_" visibility="false"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem kind="list" name="CreateActions">
@@ -397,25 +391,16 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="element" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="tag" xmlname="tag">
     <Constraint loader="XMLName"/>
-    <Editor/>
    </XModelAttribute>
-   <XModelAttribute name="text">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="text"/>
    <XModelAttribute name="name">
     <Constraint loader="XMLName"/>
-    <Editor/>
    </XModelAttribute>
-   <XModelAttribute name="value">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="value"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem kind="list" name="EditActions">
@@ -436,7 +421,6 @@
   <XEntityRenderer/>
   <XModelAttributes>
    <XModelAttribute default="Eclipse Workspace" name="name" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -458,17 +442,12 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="root" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Root" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute default="Root" name="project name" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute default="Root" name="project name" visibility="false"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem
@@ -490,17 +469,12 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="root" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Root" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute default="Root" name="project name" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute default="Root" name="project name" visibility="false"/>
   </XModelAttributes>
   <XActionItem kind="list"/>
   <XDependencies/>
@@ -515,11 +489,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="root" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="ExtraRoot" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -536,7 +508,6 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="util" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="name">
@@ -573,7 +544,6 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="util" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="redhat project" visibility="false">
@@ -601,16 +571,13 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="project" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
-  <XActionItem kind="list">
-  </XActionItem>
+  <XActionItem kind="list"/>
   <XDependencies/>
  </XModelEntity>
  <XModelEntity
@@ -627,11 +594,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="partition" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Workspaces" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="yes" name="open workspace" xmlname="OPEN">
@@ -642,8 +607,7 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
-  <XActionItem kind="list">
-  </XActionItem>
+  <XActionItem kind="list"/>
   <XDependencies/>
  </XModelEntity>
 </XModelEntityGroup>
