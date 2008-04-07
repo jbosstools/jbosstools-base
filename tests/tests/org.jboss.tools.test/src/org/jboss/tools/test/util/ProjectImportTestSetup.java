@@ -14,6 +14,10 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.test.util.xpl.EditorTestHelper;
 
 /**
@@ -56,6 +60,15 @@ public class ProjectImportTestSetup extends TestSetup {
 		}
 		return projects;
 	}	
+
+	public static IProject loadProject(String projectName) throws CoreException {
+		IResource project = ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
+		assertNotNull("Can't load " + projectName, project);
+		IProject result = project.getProject();
+		result.build(IncrementalProjectBuilder.FULL_BUILD, null);
+		EditorTestHelper.joinBackgroundActivities();
+		return result;
+	}
 
 	@Override
 	protected void setUp() throws Exception {

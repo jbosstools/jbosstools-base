@@ -12,10 +12,10 @@ package org.jboss.tools.tests;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.jboss.tools.test.util.JUnitUtils;
 
 /**
  * @author eskimo
@@ -36,12 +36,12 @@ public class AbstractResourceMarkerTest extends TestCase {
 		super(name);
 	}
 
-	protected int findMarkerfLine(IFile file, String type, String pattern)
+	protected int findMarkerfLine(IResource resource, String type, String pattern)
 			throws CoreException {
 		int number = -1;
 		IMarker[] markers = new IMarker[0];
 
-		markers = file.findMarkers(type, false, IResource.DEPTH_INFINITE);
+		markers = resource.findMarkers(type, false, IResource.DEPTH_INFINITE);
 
 		for (int i = 0; i < markers.length; i++) {
 			String message = markers[i].getAttribute(IMarker.MESSAGE, "");
@@ -53,27 +53,72 @@ public class AbstractResourceMarkerTest extends TestCase {
 		return number;
 	}
 
-	protected void assertMarkerIsCreated(IFile file, MarkerData markerData) throws CoreException {
-		assertMarkerIsCreated(file, markerData.type, markerData.pattern, markerData.line);
+	protected void assertMarkerIsCreated(IResource resource, MarkerData markerData) throws CoreException {
+		assertMarkerIsCreated(resource, markerData.type, markerData.pattern, markerData.line);
 	}
 
-	protected void assertMarkerIsCreated(IFile file, String type, String pattern, int expectedLine) 
+	protected void assertMarkerIsCreated(IResource resource, String type, String pattern, int expectedLine) 
 		throws CoreException {
-		
+
 		int line = findMarkerfLine(
-				file, type, pattern);
-		
+				resource, type, pattern);
+
 		assertTrue("Marker  matches the '" + pattern + "' pattern wasn't found", 
 				line != -1);
-		
+
 		assertEquals("Marker matches the '" + pattern + "' pattern was found at wrong line",
 				expectedLine,line);
 	}
 
-	protected void assertMarkersIsCreated(IFile file, MarkerData[] markersData) throws CoreException {
+	protected void assertMarkersIsCreated(IResource resource, MarkerData[] markersData) throws CoreException {
 		for (MarkerData markerData : markersData) {
-			assertMarkerIsCreated(file, markerData);
+			assertMarkerIsCreated(resource, markerData);
 		}
+	}
+
+	public static int getMarkersNumber(IResource resource){
+		try{
+			IMarker[] markers = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
+			for(int i=0;i<markers.length;i++){
+				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));
+			}
+			return markers.length;
+		}catch(CoreException ex){
+			JUnitUtils.fail("Can'r get problem markers", ex);
+		}
+		return -1;
+	}
+
+	public static String[] getMarkersMessage(IResource resource){
+		String[] messages = null;
+		try{
+			IMarker[] markers = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
+			messages = new String[markers.length];
+
+			for(int i=0;i<markers.length;i++){
+				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));
+				messages[i] = markers[i].getAttribute(IMarker.MESSAGE, "");
+			}
+		}catch(CoreException ex){
+			JUnitUtils.fail("Can't get problem markers", ex);
+		}
+		return messages;
+	}
+
+	public static int[] getMarkersNumbersOfLine(IResource resource){
+		int[] numbers = null;
+		try{
+			IMarker[] markers = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
+			numbers = new int[markers.length];
+
+			for(int i=0;i<markers.length;i++){
+				System.out.println("Marker line number - "+markers[i].getAttribute(IMarker.LINE_NUMBER, 0));
+				numbers[i] = markers[i].getAttribute(IMarker.LINE_NUMBER, 0);
+			}
+		}catch(CoreException ex){
+			JUnitUtils.fail("Can't get problem markers.", ex);
+		}
+		return numbers;
 	}
 
 	/**
