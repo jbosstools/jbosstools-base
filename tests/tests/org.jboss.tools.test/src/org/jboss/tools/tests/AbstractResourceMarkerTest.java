@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.tests;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IMarker;
@@ -36,21 +39,27 @@ public class AbstractResourceMarkerTest extends TestCase {
 		super(name);
 	}
 
-	protected int findMarkerfLine(IResource resource, String type, String pattern)
+	protected int findMarkerLine(IResource resource, String type, String pattern)
 			throws CoreException {
 		int number = -1;
-		IMarker[] markers = new IMarker[0];
-
-		markers = resource.findMarkers(type, false, IResource.DEPTH_INFINITE);
-
+		IMarker[] markers = findMarkers(resource, type, pattern);
 		for (int i = 0; i < markers.length; i++) {
-			String message = markers[i].getAttribute(IMarker.MESSAGE, "");
-			if (message.matches(pattern)) {
-				number = markers[i].getAttribute(IMarker.LINE_NUMBER, -1);
-			}
+			number = markers[i].getAttribute(IMarker.LINE_NUMBER, -1);
 		}
 
 		return number;
+	}
+
+	protected IMarker[] findMarkers(IResource resource, String type, String pattern) throws CoreException {
+		List<IMarker> result = new ArrayList<IMarker>();
+		IMarker[] markers = resource.findMarkers(type, false, IResource.DEPTH_INFINITE);
+		for (int i = 0; i < markers.length; i++) {
+			String message = markers[i].getAttribute(IMarker.MESSAGE, "");
+			if (message.matches(pattern)) {
+				result.add(markers[i]);
+			}
+		}
+		return result.toArray(new IMarker[0]);
 	}
 
 	protected void assertMarkerIsCreated(IResource resource, MarkerData markerData) throws CoreException {
@@ -60,7 +69,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 	protected void assertMarkerIsCreated(IResource resource, String type, String pattern, int expectedLine) 
 		throws CoreException {
 
-		int line = findMarkerfLine(
+		int line = findMarkerLine(
 				resource, type, pattern);
 
 		assertTrue("Marker  matches the '" + pattern + "' pattern wasn't found", 
@@ -68,6 +77,13 @@ public class AbstractResourceMarkerTest extends TestCase {
 
 		assertEquals("Marker matches the '" + pattern + "' pattern was found at wrong line",
 				expectedLine,line);
+	}
+
+	protected void assertMarkerIsCreated(IResource resource, String type, String pattern) throws CoreException {
+		IMarker[] markers = findMarkers(resource, type, pattern);
+
+		assertTrue("Marker  matches the '" + pattern + "' pattern wasn't found", 
+			markers.length>0);
 	}
 
 	protected void assertMarkersIsCreated(IResource resource, MarkerData[] markersData) throws CoreException {
