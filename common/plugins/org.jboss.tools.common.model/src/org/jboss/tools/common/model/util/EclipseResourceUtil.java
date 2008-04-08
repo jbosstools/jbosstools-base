@@ -516,7 +516,7 @@ public class EclipseResourceUtil {
 	}
 	
 	public static List<String> getJREClassPath(IProject project) throws CoreException {
-		if(!project.hasNature(JavaCore.NATURE_ID)) return null;
+		if(project == null || !project.isAccessible() || !project.hasNature(JavaCore.NATURE_ID)) return null;
 		ArrayList<String> l = new ArrayList<String>();
 		IJavaProject javaProject = JavaCore.create(project);
 		IClasspathEntry[] es0 = javaProject.getRawClasspath();
