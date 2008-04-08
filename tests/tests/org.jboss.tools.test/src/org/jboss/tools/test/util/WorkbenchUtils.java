@@ -54,7 +54,6 @@ public class WorkbenchUtils {
 	 * @return
 	 */
 	public static IWorkbenchPage getWorkbenchActivePage() {
-		// TODO Auto-generated method stub
 		return getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	}
 
@@ -73,16 +72,13 @@ public class WorkbenchUtils {
 	}
 
 	public static PreferenceDialog createPreferenceDialog(String pageId) {
-
 		return PreferencesUtil.createPreferenceDialogOn(WorkbenchUtils
 				.getActiveShell(), pageId, new String[] {pageId}, null);
 	}
 
 	public static PreferenceDialog createPropertyDialog(String pageId,
 			IProject project) {
-		
-		return PreferencesUtil.createPreferenceDialogOn(WorkbenchUtils
-				.getActiveShell(), pageId, new String[] {pageId}, project);
+		return PreferencesUtil.createPropertyDialogOn(WorkbenchUtils
+				.getActiveShell(), project, pageId, new String[] {pageId}, null);
 	}
-
 }
