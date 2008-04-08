@@ -11,6 +11,9 @@
 package org.jboss.tools.common.model.icons.impl;
 
 import java.io.*;
+
+import org.eclipse.swt.SWTError;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.jboss.tools.common.model.*;
@@ -50,6 +53,7 @@ public class XStudioIcons implements ImageComponent {
 
     private byte[] getBytes(String filename) {
         File f = new File(filename);
+        if(!f.isFile()) return new byte[0];
         byte[] b = null;
         try {
             FileInputStream fr = new FileInputStream(f);
@@ -59,7 +63,7 @@ public class XStudioIcons implements ImageComponent {
             while(i < length) {
                 i += fr.read(b, i, length - i);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             b = new byte[0];
         }
         return b;
@@ -79,7 +83,9 @@ public class XStudioIcons implements ImageComponent {
         		ImageData id = new ImageData(is);
         		Image i = new Image(null, id);
         		return i;
-        	} catch (Exception e) {
+        	} catch (SWTException e) {
+        		ModelPlugin.getPluginLog().logError(e);
+        	} catch (SWTError e) {
         		ModelPlugin.getPluginLog().logError(e);
         	}
         }

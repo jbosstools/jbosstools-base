@@ -159,7 +159,7 @@ public class XStudioDataLoaderImpl implements SharableConstants {
         	URL u = b.getResource("meta/options_general.xml");
             URLConnection c = u.openConnection();
             return c.getInputStream();
-    	} catch (Exception e) {
+    	} catch (IOException e) {
     		ModelPlugin.getPluginLog().logError(e);
     		return null;
     	}

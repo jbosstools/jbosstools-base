@@ -16,7 +16,6 @@ import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.impl.*;
 import org.jboss.tools.common.model.loaders.impl.*;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class EnginesLoader extends URLRootLoader {
@@ -29,11 +28,8 @@ public class EnginesLoader extends URLRootLoader {
         for (int i = 0; i < cs.length; i++) {
           if(!cs[i].isRequired() || cs[i].getMaxCount() != 1) continue;
           if(object.getChildren(cs[i].getName()).length > 0) continue;
-          try {
-              object.addChild(XModelObjectLoaderUtil.createValidObject(object.getModel(), cs[i].getName()));
-          } catch (Exception e) {
-        	  ModelPlugin.getPluginLog().logError("EnginesLoader:load:" + e.getMessage());
-          }
+          //April 2008: catch removed. This call is proved to be safe.
+          object.addChild(XModelObjectLoaderUtil.createValidObject(object.getModel(), cs[i].getName()));
         }
         if(isFilePath(getPath(object))) {
             File f = file(object);
@@ -101,7 +97,7 @@ public class EnginesLoader extends URLRootLoader {
 			map.remove(c.getPathPart()); 
         }
         if(!map.isEmpty()) {
-			Iterator it = map.values().iterator();
+			Iterator<XModelObject> it = map.values().iterator();
 			while(it.hasNext()) {
 				XModelObject o = (XModelObject)it.next();
 				XChild childEntity = object.getModelEntity().getChild(o.getModelEntity().getName());
@@ -135,11 +131,11 @@ public class EnginesLoader extends URLRootLoader {
 		return map;
 	}
 	
-	public static Set<String> getChildrenToRemove(Map save, XModelObject update) {
-		Iterator it = save.keySet().iterator();
+	public static Set<String> getChildrenToRemove(Map<String,XModelObject> save, XModelObject update) {
+		Iterator<String> it = save.keySet().iterator();
 		Set<String> set = new HashSet<String>();
 		while(it.hasNext()) {
-			String p = it.next().toString();
+			String p = it.next();
 			if(update.getChildByPath(p) == null) set.add(p); 
 		}
 		return set;

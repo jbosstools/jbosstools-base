@@ -646,11 +646,10 @@ public class XModelObjectLoaderUtil {
     }
 
     public void load(File f, XModelObject o) {
-        try {
-            Element element = XMLUtil.getElement(f.getAbsolutePath());
-            if(element != null) load(element, o);
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:load(f,o):" + e.getMessage(), e);
+    	if(f == null || !f.isFile()) return;
+        Element element = XMLUtil.getElement(f.getAbsolutePath());
+        if(element != null) {
+        	load(element, o);
         }
     }
 
@@ -748,16 +747,8 @@ public class XModelObjectLoaderUtil {
     }
 
     public static XObjectLoader getObjectLoader(XModelObject object) {
-        try {
-            Class<?> c = object.getModelEntity().getLoadingClass();
-            if (c != null) {
-                return (XObjectLoader)c.newInstance();
-            }
-            return null;
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:getObjectLoader(" + object + "):" + e.getMessage(), e);
-            return null;
-        }
+    	if(object == null) return null;
+    	return object.getModelEntity().getObjectLoader();
     }
 
     public static void remove(File f) {

@@ -29,11 +29,11 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     protected XAttribute[] m_Attributes;
     protected XActionListImpl actions = new XActionListImpl();
     protected XEntityRenderer m_Renderer = null;
-    protected ClassHolder implementation = null;
     protected String implementationClassName = null;
+    protected String resolvedImplementationClassName = null;
     protected String m_GeneratorClassName = null;
-    protected ClassHolder loader = null;
     protected String loaderClassName = null;
+    protected String resolvedLoaderClassName = null;
     protected String m_EditorClassName = null;
     protected XDependencies dependencies = new DefaultDependencies();
     protected XAdoptManager adopt = null;
@@ -89,24 +89,69 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
        }
     }
     
-    public Class getImplementingClass(){
-        return implementation.getHoldedClass();
+    public Class getImplementingClass() {
+    	if(resolvedImplementationClassName == UNRESOLVED) {
+    		resolvedImplementationClassName = expand(implementationClassName, "Implementations");
+    	}
+    	if(resolvedImplementationClassName == null) return null;
+    	Class cls = ModelFeatureFactory.getInstance().getFeatureClass(resolvedImplementationClassName);
+    	if(cls == null) {
+    		resolvedImplementationClassName = null;
+    	}
+        return cls;
+    }
+
+    public boolean hasObjectImplementation() {
+    	return implementationClassName != null && implementationClassName.length() > 0;
+    }
+
+    public XModelObject getObjectImplementation() {
+    	if(resolvedImplementationClassName == UNRESOLVED) {
+    		resolvedImplementationClassName = expand(implementationClassName, "Implementations");
+    	}
+    	if(resolvedImplementationClassName == null) return null;
+    	XModelObject o = ModelFeatureFactory.getInstance().createXModelObjectInstance(resolvedImplementationClassName);
+    	if(o == null) {
+    		resolvedImplementationClassName = null;
+    	}
+    	return o;
     }
 
     public void setImplementingClassName(String className){
        if(className != null && className.length() == 0) className = null;
-       implementation = new ClassHolder(className, this, "Implementations");
        implementationClassName = className;
+       if(className != null) {
+    	   resolvedImplementationClassName = UNRESOLVED;
+       }
     }
 
-    public Class getLoadingClass() {
-        return (loader == null) ? null : loader.getHoldedClass();
+    public boolean hasObjectLoader() {
+    	return loaderClassName != null && loaderClassName.length() > 0;
     }
+
+    public XObjectLoader getObjectLoader() {
+    	if(resolvedLoaderClassName == UNRESOLVED) {
+    		resolvedLoaderClassName = expand(loaderClassName, "Loaders");
+    	}
+    	if(resolvedLoaderClassName == null) return null;
+    	Object o = ModelFeatureFactory.getInstance().createFeatureInstance(resolvedLoaderClassName);
+    	if(o == null) {
+    		return null;
+    	}
+    	if(!(o instanceof XObjectLoader)) {
+    		ModelPlugin.getPluginLog().logError("Model object loader" + resolvedLoaderClassName + " must implement " + XObjectLoader.class.getName());
+    		resolvedLoaderClassName = null;
+    		return null;
+    	}
+        return (XObjectLoader)o;
+    }
+    
+    static String UNRESOLVED = "UNRESOLVED";
 
     public void setLoaderClassName(String className) {
        if(className != null && className.length() > 0) {
-         loader = new ClassHolder(className, this, "Loaders");
          loaderClassName = className;
+         resolvedLoaderClassName = UNRESOLVED;
        }
     }
 
@@ -385,43 +430,6 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     	return null;
     }
 
-}
-
-class ClassHolder {
-    private String name = null;
-    private XMetaElementImpl element = null;
-    private String map = null;
-
-    public ClassHolder(String name, XMetaElementImpl element, String map) {
-        this.name = name;
-        this.element = element;
-        this.map = map;
-    }
-    
-    public Class getHoldedClass() {
-    	if(name == null) return null;
-    	validate();
-    	try {
-    		Class c = ModelFeatureFactory.getInstance().getFeatureClass(name);
-    		if(c == null) name = null;
-    		return c;
-    	} catch (Exception e) {
-    		name = null;
-    		return null;
-    	}
-    }
-
-    private void validate() {
-        if(name == null) return;
-        if(map != null && name.startsWith("%")) {
-            name = element.expand(name, map);
-        }
-		map = null;
-    }
-
-	public String getProperty(String name) {
-		return null;
-	}
 }
 
 class XAdoptWrapper implements XAdoptManager {

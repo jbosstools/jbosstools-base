@@ -221,21 +221,31 @@ public class XModelImpl implements XModel {
         return null;
     }
     
-    static Set<String> unknownEntities = new HashSet<String>(); 
+    static Set<String> unknownEntities = new HashSet<String>();
+    
+    static void creationFailed(String entity, String cause) {
+    	if(!unknownEntities.contains(entity)) {
+    		unknownEntities.add(entity);
+    		String message = XBundle.getInstance().getMessage("model", cause, new Object[]{entity});
+    		ModelPlugin.getPluginLog().logInfo(message);
+    	}
+    }
 
     public XModelObject createModelObject(String entity, Properties properties) {
+    	if(unknownEntities.contains(entity)) {
+    		return null;
+    	}
         XModelEntity ent = getMetaData().getEntity(entity);
         if(ent == null) {
-        	if(!unknownEntities.contains(entity)) {
-        		unknownEntities.add(entity);
-        		String message = XBundle.getInstance().getMessage("model", "UNKNOUN_ENTITY", new Object[]{entity});
-        		ModelPlugin.getPluginLog().logInfo(message);
-        	}
+        	creationFailed(entity, "UNKNOUN_ENTITY");
             return null;
         }
+        XModelObjectImpl me = (XModelObjectImpl)ent.getObjectImplementation();
+        if(me == null) {
+        	creationFailed(entity, "CREATION_ENTITY_FAILURE");
+        	return null;
+        }
         try {
-            Class<?> c = ent.getImplementingClass();
-            XModelObjectImpl me = (XModelObjectImpl)c.newInstance();
             me.setModel(this);
             me.setEntityName_0(entity);
             XAttribute[] an = ent.getAttributes();
@@ -250,11 +260,7 @@ public class XModelImpl implements XModel {
             }
             return me;
         } catch (Exception e) {
-        	if(!unknownEntities.contains(entity)) {
-        		unknownEntities.add(entity);
-        		String message = XBundle.getInstance().getMessage("model", "CREATION_ENTITY_FAILURE", new Object[]{entity});
-        		ModelPlugin.getPluginLog().logError(message, e);
-        	}
+        	creationFailed(entity, "CREATION_ENTITY_FAILURE");
         }
         return null;
     }

@@ -11,12 +11,24 @@
 package org.jboss.tools.common.meta;
 
 import org.jboss.tools.common.meta.action.XActionList;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.loaders.XObjectLoader;
 
 public interface XModelEntity extends XMetaElement, XDependencies {
     public XAttribute[] getAttributes();
     public XAttribute getAttribute(String name);
+    
+    /**
+     * 
+     * @deprecated
+     * @return
+     */
     public Class getImplementingClass();
-    public Class getLoadingClass();
+
+    public boolean hasObjectImplementation();
+    public XModelObject getObjectImplementation();
+    public boolean hasObjectLoader();
+    public XObjectLoader getObjectLoader();
     public String getGeneratorClassName();
     public String getEditorClassName();
     public XActionList getActionList();
