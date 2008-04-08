@@ -69,11 +69,13 @@ import org.eclipse.ui.views.navigator.ResourceSorter;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.XFilteredTree;
 import org.jboss.tools.common.model.XJob;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XJob.XRunnable;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.impl.trees.FileSystemsTree;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.ControlDragDrop;
@@ -632,7 +634,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 		}
 		
 	};
-	private void handleActivation() {
+	private void handleActivation() throws XModelException {
 		if(isHandlingActivation) return;
 		isHandlingActivation = true;
 		IProject[] ps = null;
@@ -656,7 +658,11 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 		}
 
 		public void run() {
-			handleActivation();
+			try {
+				handleActivation();
+			} catch (XModelException e) {
+				ModelPlugin.getPluginLog().logError(e);
+			}
 		}
 		
 	}
