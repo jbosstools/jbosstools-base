@@ -418,7 +418,7 @@ public class XModelImpl implements XModel {
         }
     }
 
-    public void update() {
+    public void update() throws XModelException {
         XModelObject r = getRoot();
         XModelObjectLoaderUtil.getObjectLoader(r).update(r);
     }

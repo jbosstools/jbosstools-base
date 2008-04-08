@@ -135,7 +135,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
 		object.setAttributeValue(XModelObjectConstants.ATTR_NAME_ENCODING, encoding);
 	}
     
-    public boolean update(XModelObject object) {
+    public boolean update(XModelObject object) throws XModelException {
 		XModelObject p = object.getParent();
 		if (p == null) return true;
 		FolderLoader fl = (FolderLoader)p;
@@ -145,10 +145,6 @@ public class SimpleWebFileLoader implements SerializingLoader {
 		f.setUpdateLock();
 		try {
 			f.edit(body);
-		} catch (XModelException e) {
-			ModelPlugin.getPluginLog().logError(e);
-			//TODO update method should throw XModelException
-			throw new RuntimeException(e);
 		} finally {
 			f.releaseUpdateLock();
 		}

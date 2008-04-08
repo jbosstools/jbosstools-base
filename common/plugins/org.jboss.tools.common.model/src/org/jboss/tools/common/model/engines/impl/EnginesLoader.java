@@ -54,18 +54,13 @@ public class EnginesLoader extends URLRootLoader {
         return b;
     }
 
-    public boolean update(XModelObject object) {
+    public boolean update(XModelObject object) throws XModelException {
         if(!isFilePath(getPath(object))) return true;
         File f = file(object);
         if(!object.getModel().getFileRegistry().isUpdated(f)) return true;
         XModelObject c = object.copy(0);
         load(c);
-        try {
-        	merge(object, c);
-        } catch (XModelException e) {
-        	//TODO this method should throw XModelException
-        	throw new RuntimeException(e);
-        }
+       	merge(object, c);
         return true;
     }
 

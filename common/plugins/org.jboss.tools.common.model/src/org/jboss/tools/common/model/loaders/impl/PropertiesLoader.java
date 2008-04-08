@@ -121,7 +121,7 @@ public class PropertiesLoader implements XObjectLoader {
         }
     }
 
-    public boolean update(XModelObject object) {
+    public boolean update(XModelObject object) throws XModelException {
         XModelObject c = object.copy(0);
 		XModelObjectLoaderUtil.setTempBody(c, XModelObjectLoaderUtil.getTempBody(object));
         load(c);

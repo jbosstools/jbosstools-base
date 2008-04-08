@@ -36,7 +36,7 @@ public class RootLoaderImpl implements XObjectLoader {
         }
     }
 
-    public boolean update(XModelObject object) {
+    public boolean update(XModelObject object) throws XModelException {
         XModelObject[] children = object.getChildren();
         boolean b = true;
         for (int i = 0; i < children.length; i++) {

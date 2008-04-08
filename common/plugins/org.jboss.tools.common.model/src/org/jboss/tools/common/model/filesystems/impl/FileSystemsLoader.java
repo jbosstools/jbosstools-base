@@ -57,7 +57,7 @@ public class FileSystemsLoader extends URLRootLoader {
         return b;
     }
     
-    public boolean update(XModelObject object) {
+    public boolean update(XModelObject object) throws XModelException {
         boolean b = true;
         XModelObject[] cs = object.getChildren();
         for (int i = 0; i < cs.length; i++) {

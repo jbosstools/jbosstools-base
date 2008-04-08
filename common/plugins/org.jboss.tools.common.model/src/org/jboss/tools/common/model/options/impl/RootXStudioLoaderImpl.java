@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.options.impl;
 
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.loaders.*;
 
@@ -21,7 +22,7 @@ public class RootXStudioLoaderImpl implements XObjectLoader {
         new XStudioDataLoaderImpl().load(object);
     }
 
-    public boolean update(XModelObject object) {
+    public boolean update(XModelObject object) throws XModelException {
         return true;
     }
 

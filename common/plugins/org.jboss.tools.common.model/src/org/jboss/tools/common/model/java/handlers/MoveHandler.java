@@ -37,7 +37,7 @@ public class MoveHandler extends AbstractHandler {
 		return new MoveAction(site);
 	}
 	
-	protected void run(SiteWrapper site, SelectionDispatchAction action, XModelObject object) {
+	protected void run(SiteWrapper site, SelectionDispatchAction action, XModelObject object) throws XModelException {
     	IResource file = EclipseResourceUtil.getResource(object);
     	action.selectionChanged(new SelectionChangedEvent(ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart().getSite().getSelectionProvider(), new StructuredSelection(file)));
     	if(file != null) {

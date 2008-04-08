@@ -28,7 +28,7 @@ public class FileRootLoader implements XObjectLoader {
         util().load(file(object), object);
     }
 
-    public boolean update(XModelObject object) {
+    public boolean update(XModelObject object) throws XModelException {
         return true;
     }
 

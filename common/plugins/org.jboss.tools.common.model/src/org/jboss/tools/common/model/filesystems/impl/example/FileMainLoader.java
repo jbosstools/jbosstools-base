@@ -32,7 +32,7 @@ public class FileMainLoader extends DefaultEntityLoader {
         XModelObjectLoaderUtil.getObjectLoader(ext).load(ext);
     }
 
-    public boolean update(XModelObject object) {
+    public boolean update(XModelObject object) throws XModelException {
         FileAnyImpl c = (FileAnyImpl)object.copy(0);
         XModelObject p = object.getParent();
         FolderLoader fl = (FolderLoader)p;

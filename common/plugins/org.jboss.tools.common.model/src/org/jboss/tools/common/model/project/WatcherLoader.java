@@ -25,7 +25,7 @@ public class WatcherLoader implements XObjectLoader {
         Watcher.getInstance(object.getModel()).forceUpdate();
     }
 
-    public boolean update(XModelObject object) {
+    public boolean update(XModelObject object) throws XModelException {
         return true;
     }
 

@@ -10,11 +10,12 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.loaders;
 
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public interface XObjectLoader {
     public void load(XModelObject object);
-    public boolean update(XModelObject object);
+    public boolean update(XModelObject object) throws XModelException;
     public boolean save(XModelObject object);
 }
 

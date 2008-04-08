@@ -23,7 +23,7 @@ public class BodyLoader implements XObjectLoader {
         object.setAttributeValue("body", body);
     }
 
-    public boolean update(XModelObject object) {
+    public boolean update(XModelObject object) throws XModelException {
         load(object);
         return true;
     }

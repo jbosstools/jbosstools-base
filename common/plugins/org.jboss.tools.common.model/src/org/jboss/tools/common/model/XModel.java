@@ -201,7 +201,7 @@ public interface XModel {
 	 * Implementation of the method invokes update() method on
 	 * object loader of root object.
 	 */
-	public void update();
+	public void update() throws XModelException;
 
 	/**
 	 * Saves the model.
