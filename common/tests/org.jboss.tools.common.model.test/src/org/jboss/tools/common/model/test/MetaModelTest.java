@@ -35,7 +35,6 @@ import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
@@ -280,13 +279,11 @@ public class MetaModelTest extends TestCase {
 		int errors = 0;
 		for (int i = 0; i < entities.length; i++) {
 			XModelEntityImpl entity = (XModelEntityImpl)meta.getEntity(entities[i]);
-			Class cls = entity.getImplementingClass();
-			if(cls != null) {
+			if(entity.hasObjectImplementation()) {
 				XModelObject object = model.createModelObject(entity.getName(), null);
 				if(object == null) {
 					errors++;
-					String error = entity.getName() + ":" + cls.getName();
-					sb.append(entity.getName()).append(" - ").append(error).append("\n");
+					sb.append(entity.getName()).append("\n");
 				}
 			}
 		}
@@ -318,8 +315,7 @@ public class MetaModelTest extends TestCase {
 				errors++;
 				sb.append(entity.getName()).append(" - ").append(error).append("\n");
 			} else {
-				Class cls = entity.getLoadingClass();
-				if(cls == null) continue;
+				if(!entity.hasObjectLoader()) continue;
 				XModelObject object = XModelObjectLoaderUtil.createValidObject(model, entity.getName());
 				if(object == null) {
 					continue;
