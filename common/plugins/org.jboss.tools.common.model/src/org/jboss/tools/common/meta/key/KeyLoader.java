@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.key;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import org.eclipse.core.runtime.*;
@@ -25,17 +26,17 @@ public class KeyLoader {
 		Iterator<URL> it = set.iterator();
 		if(!it.hasNext()) return keys;
 		while(it.hasNext()) {
-			URL url = (URL)it.next();
+			URL url = it.next();
+			Properties p = new Properties();
 			try {
-				Properties p = new Properties();
 				p.load(url.openConnection().getInputStream());
-				Enumeration ks = p.keys();
-				while(ks.hasMoreElements()) {
-					String k = (String)ks.nextElement();
-					keys.setProperty(k, p.getProperty(k));
-				}
-			} catch (Exception e) {
+			} catch (IOException e) {
 				ModelPlugin.getPluginLog().logError("KeyLoader:load" + url);
+			}
+			Enumeration ks = p.keys();
+			while(ks.hasMoreElements()) {
+				String k = (String)ks.nextElement();
+				keys.setProperty(k, p.getProperty(k));
 			}
 		}
 		return keys;
@@ -57,15 +58,9 @@ public class KeyLoader {
 					URL url = bundle.getResource(path);
 					if(url != null) {
 						resources.add(url);
-					} else {
-						if(ModelPlugin.isDebugEnabled()) {
-							ModelPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found.");
-						}
 					}
-				} catch (Exception e) {
-					if(ModelPlugin.isDebugEnabled()) {
-						ModelPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found.");
-					}
+				} catch (IllegalStateException e) {
+					ModelPlugin.getPluginLog().logInfo("KeyLoader: Plugin " + es[i].getNamespaceIdentifier() + " is uninstalled");
 				}
 			}
 		}

@@ -88,9 +88,10 @@ public class ModelEntityRecognizer implements EntityRecognizer {
     }
 
     private int parsePriority(String s) {
+    	if(s == null) return 10;
         try {
             return (s.length() == 0) ? 0 : Integer.parseInt(s);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             return 10;
         }
     }

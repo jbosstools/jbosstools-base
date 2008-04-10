@@ -200,7 +200,9 @@ public class FileAnyImpl extends RegularObjectImpl {
 		if(!n2.equals(n1)) {
 			try {
 				f.move(new Path(f.getParent().getFullPath() + "/" + toFileName(this)), true, null);
-			} catch (Exception e) {
+			} catch (OperationCanceledException e) {
+				super.set(attr, n1);
+			} catch (CoreException e) {
 				super.set(attr, n1);
 			}
 		}			

@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.filesystems.impl;
 
 import java.util.*;
 import java.io.*;
+
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.model.*;
@@ -63,8 +64,8 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
     private String canonize(String location, XModel model) {
         try {
             location = XModelObjectUtil.expand(location, model, null);
-            return (new File(location).getCanonicalPath()).replace('\\', '/');
-        } catch (Exception e) {
+            return location == null ? null : (new File(location).getCanonicalPath()).replace('\\', '/');
+        } catch (IOException e) {
             return location;
         }
     }

@@ -22,6 +22,7 @@ public class MappedEntityRecognizer implements EntityRecognizer {
         map.put("flow", "FileFlow");
         map.put("jspx", "FileJSP");
         map.put("jspf", "FileJSP");
+        map.put("jsf", "FileHTML");
     }
 
     public String getEntityName(String ext, String body) {

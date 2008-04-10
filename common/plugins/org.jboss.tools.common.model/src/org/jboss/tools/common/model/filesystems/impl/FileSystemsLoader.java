@@ -67,11 +67,7 @@ public class FileSystemsLoader extends URLRootLoader {
 		updateLibs(object);
 		removeMissingJarSystems(object);
 		updateSrcs(object);
-        try {
-        	((FileSystemsImpl)object).updateOverlapped();
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError(e);
-        }
+       	((FileSystemsImpl)object).updateOverlapped();
         return b;
     }
 
@@ -83,11 +79,7 @@ public class FileSystemsLoader extends URLRootLoader {
         	auto.load(object.getModel());
        		updateLibs(object);
     		_updateSrcs(object);
-            try {
-            	((FileSystemsImpl)object).updateOverlapped();
-            } catch (Exception e) {
-            	ModelPlugin.getPluginLog().logError(e);
-            }
+           	((FileSystemsImpl)object).updateOverlapped();
         	return;
         }
 		

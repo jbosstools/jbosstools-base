@@ -37,18 +37,13 @@ public class MetaResourceLoader {
 					URL url = bundle.getResource(path);
 					if(url != null) {
 						resources.put(path, url);
-//						if(ModelPlugin.isDebugEnabled()) {
-//							ModelPlugin.log("Loaded meta resource " + path + ".");
-//						}
 					} else {
 						if(ModelPlugin.isDebugEnabled()) {
 							ModelPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found.");
 						}
 					}
-				} catch (Exception e) {
-					if(ModelPlugin.isDebugEnabled()) {
-						ModelPlugin.getPluginLog().logError("Warning: meta resource " + path + " not found.");
-					}
+				} catch (IllegalStateException e) {
+					ModelPlugin.getPluginLog().logError("MetaResourceLoader warning: meta resource " + path + " not found.");
 				}
 			}
 		}

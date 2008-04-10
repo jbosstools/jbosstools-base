@@ -25,32 +25,30 @@ public class EclipseJavaUtil {
 	}
 
 	public static String getMemberTypeAsString(IField f) {
+		if(f == null) return null;
 		try	{
 			String typeName = new String(Signature.toCharArray(f.getTypeSignature().toCharArray()));
 			return resolveType(f.getDeclaringType(), typeName);
-		} catch (Exception e) {
+		} catch (JavaModelException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}
 
 	public static String getMemberTypeAsString(IMethod m) {
+		if(m == null) return null;
 		try	{
 			return resolveTypeAsString(m.getDeclaringType(), m.getReturnType());
-		} catch (Exception e) {
+		} catch (JavaModelException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}
 
 	public static String resolveTypeAsString(IType type, String typeName) {
-		try	{
-			typeName = new String(Signature.toCharArray(typeName.toCharArray()));
-			return resolveType(type, typeName);
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
-		}
-		return null;
+		if(type == null || typeName == null) return null;
+		typeName = new String(Signature.toCharArray(typeName.toCharArray()));
+		return resolveType(type, typeName);
 	}
 
 	static String NULL = ";;;";
@@ -114,6 +112,7 @@ public class EclipseJavaUtil {
 	}
 	
 	private static String __resolveType(IType type, String typeName) {
+		if(type == null || typeName == null) return null;
 		try	{
 			String resolvedArray[][] = type.resolveType(typeName);
 //			resolvedArray == null for primitive types
@@ -122,7 +121,7 @@ public class EclipseJavaUtil {
 			for (int i = 0; i < resolvedArray[0].length; i++) 
 				typeName += (!"".equals(typeName) ? "." : "") + resolvedArray[0][i]; 
 			return typeName;
-		} catch (Exception e) {
+		} catch (JavaModelException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;

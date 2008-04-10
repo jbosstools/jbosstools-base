@@ -74,12 +74,13 @@ public class JavaPropertyGenerator {
 	}
 	
 	static IMethod findGetter(IType type, String methodName) {
+		if(type == null || methodName == null) return null;
 		try {
 			IMethod[] ms = type.getMethods();
 			for (int i = 0; i < ms.length; i++) {
 				if(ms[i].getElementName().equals(methodName) && ms[i].getParameterNames().length == 0) return ms[i];
 			}
-		} catch (Exception e) {
+		} catch (JavaModelException e) {
 			return null;
 		}
 		
@@ -136,7 +137,7 @@ public class JavaPropertyGenerator {
 		IBuffer buf = null;
 		try {
 			buf = cu.getBuffer();
-		} catch (Exception e) {
+		} catch (JavaModelException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		if (buf == null) {

@@ -97,12 +97,12 @@ public class ResourceMarkers {
 			if(dms == null) return;
 			ms = dms.toArray(new IMarker[0]);
 			for (int i = 0; i < ms.length; i++) ms[i].delete(); 
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
 	
-	public static void updateLocation(IMarker marker, int location, int start, int end) throws Exception {
+	public static void updateLocation(IMarker marker, int location, int start, int end) throws CoreException {
 		if(location >= 0 && marker.getAttribute(IMarker.LINE_NUMBER, -1) != location) {
 			marker.setAttribute(IMarker.LINE_NUMBER, location);
 		}
@@ -124,7 +124,7 @@ public class ResourceMarkers {
 					ms[i].setAttribute("path", path);
 				}
 				return ms[i];
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				//ignore
 				continue;
 			}
@@ -167,7 +167,7 @@ public class ResourceMarkers {
 			public void run(IProgressMonitor monitor) throws CoreException {
 				try {
 					for (int i = 0; i < ms.length; i++) ms[i].delete();
-				} catch (Exception e) {
+				} catch (CoreException e) {
 					//ignore
 				}
 			}
@@ -184,19 +184,20 @@ public class ResourceMarkers {
 		ArrayList<IMarker> l = null;
 		try {
 			IMarker[] ms = r.findMarkers(null, false, 1);
-			for (int i = 0; i < ms.length; i++) {
+			if(ms != null) for (int i = 0; i < ms.length; i++) {
 				if(isOwnedMarker(ms[i])) {
 					if(l == null) l = new ArrayList<IMarker>();
 					l.add(ms[i]);
 				}
 			}
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			//ignore
 		}
 		return (l == null) ? null : l.toArray(new IMarker[0]);
 	}
 	
-	protected boolean isOwnedMarker(IMarker m) throws Exception {
+	protected boolean isOwnedMarker(IMarker m) throws CoreException {
+		if(m == null) return false;
 		String _type = m.getType();
 		if(_type == null) return true;
 		if(_type.startsWith("org.jboss.tools.")) {
@@ -240,8 +241,7 @@ public class ResourceMarkers {
 		if(r == null) return;
 		try {
 			IMarker[] ms = r.findMarkers(ResourceMarkers.JST_WEB_PROBLEM, true, 1);
-			for (int i = 0; i < ms.length; i++) {
-//				String type = ms[i].getType();
+			if(ms != null) for (int i = 0; i < ms.length; i++) {
 				String path = ms[i].getAttribute("path", null);
 				if(path == null) continue;
 				XModelObject o = file.getModel().getByPath(path);

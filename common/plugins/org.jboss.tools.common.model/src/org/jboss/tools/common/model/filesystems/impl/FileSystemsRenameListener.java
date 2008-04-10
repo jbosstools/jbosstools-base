@@ -25,8 +25,8 @@ public class FileSystemsRenameListener {
 	static {
 		try {
 			contribution = (Contribution)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.project.FileSystemsRenameListenerContribution");
-		} catch (Exception e) {
-			//ignore
+		} catch (ClassCastException e) {
+			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
 	XModelObject fileSystems;
@@ -90,20 +90,10 @@ public class FileSystemsRenameListener {
 	
 	private IPath getLocation(IPath path) {
 		if(path.segmentCount() > 1) {
-			IFolder folder = null;
-			try {
-				folder = ModelPlugin.getWorkspace().getRoot().getFolder(path);
-			} catch (Exception e) {
-				ModelPlugin.getPluginLog().logError("FileSystemsRenameListener:getLocation: Cannot find folder " + path);
-			}
+			IFolder folder = ModelPlugin.getWorkspace().getRoot().getFolder(path);
 			return folder == null ? null : folder.getLocation();
 		} else {
-			IProject project = null;
-			try {
-				project = ModelPlugin.getWorkspace().getRoot().getProject(path.segments()[0]);
-			} catch (Exception e) {
-				ModelPlugin.getPluginLog().logError("FileSystemsRenameListener:getLocation: Cannot find project " + path);
-			}
+			IProject project = ModelPlugin.getWorkspace().getRoot().getProject(path.segments()[0]);
 			return project == null ? null : project.getLocation();
 		}
 	}

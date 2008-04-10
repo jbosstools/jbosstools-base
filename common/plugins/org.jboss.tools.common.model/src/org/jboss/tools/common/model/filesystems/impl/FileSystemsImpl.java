@@ -77,10 +77,9 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
           status = OV_RUNNING;
           try {
         	  updateOverlappedInternal();
-          } catch (Exception e) {
-        	  ModelPlugin.getPluginLog().logError(e);
+          } finally {
+        	  overlapper = null;
           }
-          overlapper = null;
         }
 
 		public String getId() {
@@ -266,16 +265,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 			} else {
 				doUpdate();
 			}
-//			if(request > 0 && usage < 5) {
-//				usage++;
-//				request = 0;
-//				ModelPlugin.log("run " + usage);
-//				run();
-//			} else {
-///				synchronized(this) {
-					if(this == currentUpdate) currentUpdate = null;
-///				}
-//			}
+			if(this == currentUpdate) currentUpdate = null;
 		}
 		
 	}
@@ -288,29 +278,23 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 			if(b) {
 				XModelObjectLoaderUtil.getObjectLoader(FileSystemsImpl.this).update(FileSystemsImpl.this);
 			} 
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		if(saveRequested) {
 			try {
 				XModelObjectLoaderUtil.getObjectLoader(FileSystemsImpl.this).save(FileSystemsImpl.this);
-			} catch (Exception e) {
-				ModelPlugin.getPluginLog().logError(e);
 			} finally {
 				saveRequested = false;
+				isUpdating = false;
 			}
 		}
 		isUpdating = false;
 	}
 	
 	private boolean isOpenProject() {
-		try {
-			IProject p = (IProject)getModel().getProperties().get("project");
-			return p != null && p.isOpen();		
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
-			return false;
-		}
+		IProject p = (IProject)getModel().getProperties().get("project");
+		return p != null && p.isAccessible() && p.isOpen();		
 	}
 	
 	private IContributorResourceAdapter contributorResourceAdapter = null;

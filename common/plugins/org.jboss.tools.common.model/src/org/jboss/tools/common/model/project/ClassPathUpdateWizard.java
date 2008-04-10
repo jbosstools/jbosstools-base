@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.project;
 
 import java.util.*;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.jboss.tools.common.meta.action.SpecialWizard;
 import org.jboss.tools.common.model.XModel;
@@ -34,7 +35,7 @@ public class ClassPathUpdateWizard implements SpecialWizard {
 	public int execute() {
 		try {
 			u.execute();
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		return 0;

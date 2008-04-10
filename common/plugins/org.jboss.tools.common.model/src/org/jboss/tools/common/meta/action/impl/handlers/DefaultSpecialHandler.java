@@ -29,7 +29,7 @@ public class DefaultSpecialHandler extends AbstractHandler {
     public static SpecialWizardSupport createSpecialWizardSupport(String id) {
         try {
             return (SpecialWizardSupport)ModelFeatureFactory.getInstance().createFeatureInstance(id);
-        } catch (Exception e) {
+        } catch (ClassCastException e) {
 			ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load special wizard support " + id + ".",e));
             return null;
         }

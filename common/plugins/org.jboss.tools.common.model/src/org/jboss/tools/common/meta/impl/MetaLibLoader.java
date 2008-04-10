@@ -41,7 +41,7 @@ public class MetaLibLoader {
         try {
             Class<?> c = MetaLibLoader.class;
             XMLEntityResolver.registerPublicEntity(DOC_PUBLICID, c, "/meta/meta.dtd");
-        } catch (Exception e) {
+        } catch (IOException e) {
         	ModelPlugin.getPluginLog().logError(e);
         }
     }
@@ -57,17 +57,13 @@ public class MetaLibLoader {
 
     public void load(XModelMetaDataImpl meta) {
         this.meta = meta;
-        try {
-			Map<String,URL> resources = MetaResourceLoader.getMetaResources();
-			Iterator<String> it = resources.keySet().iterator();
-			while(it.hasNext()) {
-				String path = it.next();
-				URL url = resources.get(path);
-				load(path, url);
-			}
-        } catch (Exception t) {
-        	ModelPlugin.getPluginLog().logError("Error in loading meta model resources", t);
-        }
+		Map<String,URL> resources = MetaResourceLoader.getMetaResources();
+		Iterator<String> it = resources.keySet().iterator();
+		while(it.hasNext()) {
+			String path = it.next();
+			URL url = resources.get(path);
+			load(path, url);
+		}
 
 //		long t = System.currentTimeMillis();
         for (int i = 0; i < metarefs.size(); i++) {
@@ -92,12 +88,13 @@ public class MetaLibLoader {
     }
     
     void load(String name, URL url) {
+    	if(url == null) return;
 //		long t = System.currentTimeMillis();
 		InputStream stream = null;
 		try {
 			stream = url.openStream();
 			stream = new BufferedInputStream(stream, 16384);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			ModelPlugin.getPluginLog().logError("MetaLoader: Cannot read resource " + url.toString());
 			return;
 		}
@@ -106,10 +103,8 @@ public class MetaLibLoader {
 			//XMLUtil.getElement(stream);
 		if(g == null) {
 			ModelPlugin.getPluginLog().logInfo("Corrupted meta resource " + name);
-		} else try {
+		} else {
 			load0(g, name, url.toString());
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
 		}
 		
 //		long dt = - t + (t = System.currentTimeMillis());
@@ -125,7 +120,7 @@ public class MetaLibLoader {
 						ModelPlugin.getPluginLog().logInfo(errors[i]);
 					}
 				}
-			} catch (Exception e) {
+			} catch (IOException e) {
 				ModelPlugin.getPluginLog().logError(e);
 			}
 //			dt = - t + (t = System.currentTimeMillis());
@@ -138,11 +133,7 @@ public class MetaLibLoader {
 		Parser p = new Parser();
 		p.documentElement = root;
 		p.current = root;
-		try {
-			p.parse(stream);
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
-		}
+		p.parse(stream);
 		Element g = p.documentElement;
 		g = XMLUtilities.getUniqueChild(g, "XModelEntityGroup");
 		p.documentElement.removeChild(g);
@@ -219,9 +210,12 @@ class Parser implements ContentHandler {
 
     public void parse(org.xml.sax.InputSource is) {
     	XMLReader parser = createParser();
+    	if(parser == null) return;
     	try {
     		parser.parse(is);
-    	} catch (Exception e) {
+    	} catch (SAXException e) {
+			ModelPlugin.getPluginLog().logError(e);
+    	} catch (IOException e) {
 			ModelPlugin.getPluginLog().logError(e);
     	}
 	}
@@ -232,7 +226,7 @@ class Parser implements ContentHandler {
 
         try {
             parserInstance = XMLReaderFactory.createXMLReader(DEFAULT_SAX_PARSER_CLASS_NAME);
-        } catch (Exception e) {
+        } catch (SAXException e) {
         	return null;
         }
 
@@ -246,7 +240,7 @@ class Parser implements ContentHandler {
 
         try {
             parserInstance.setProperty(ENTITY_RESOLVER_PROPERTY_ID, new XMLEntityResolverImpl());
-        } catch (Exception e1) {
+        } catch (SAXException e1) {
         	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1);
         }
         
