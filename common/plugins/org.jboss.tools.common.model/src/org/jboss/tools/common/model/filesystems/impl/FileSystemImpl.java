@@ -67,6 +67,13 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 		if(thloc.toLowerCase().startsWith(prloc.toLowerCase())) {
 			String relative = thloc.substring(prloc.length());
 			IFolder f = project.getFolder(new Path(relative));
+			if(!f.exists() && !f.isSynchronized(IResource.DEPTH_ONE)) {
+				try {
+					f.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+				} catch (CoreException e) {
+					ModelPlugin.getPluginLog().logError(e);
+				}
+			}
 			if(!f.exists()) {
 				try {
 					if(f.getParent() != null && f.getParent().exists()) {
