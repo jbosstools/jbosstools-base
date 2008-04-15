@@ -478,11 +478,17 @@ public class TypeInfoCollector {
 		}
 
 		public boolean isGetter() {
-			return (getName().startsWith("get") && !getName().equals("get")) || getName().startsWith("is");
+			if (null == getReturnType())
+				return false;
+
+			return (((getName().startsWith("get") && !getName().equals("get")) || getName().startsWith("is")) && getNumberOfParameters() == 0);
 		}
 
 		public boolean isSetter() {
-			return (getName().startsWith("set") && !getName().equals("set"));
+			if (null != getReturnType())
+				return false;
+			
+			return ((getName().startsWith("set") && !getName().equals("set")) && getNumberOfParameters() == 1);
 		}
 
 		@Override
