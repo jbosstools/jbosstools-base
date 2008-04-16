@@ -30,6 +30,7 @@ public class SelectOverlappedFileSystemHandler extends AbstractHandler {
 
     public void executeHandler(XModelObject object, java.util.Properties p) throws XModelException {
         XModelObject fs = getOverlappedFileSystem(object);
+        if(object == fs) return;
         if(fs == null) {
         	if(object.isActive() && object.getFileType() == XModelObject.FILE
         			&& XActionInvoker.getAction("OpenFile", object) != null) {
