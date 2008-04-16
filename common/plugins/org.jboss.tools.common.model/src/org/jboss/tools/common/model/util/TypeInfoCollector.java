@@ -485,9 +485,6 @@ public class TypeInfoCollector {
 		}
 
 		public boolean isSetter() {
-			if (null != getReturnType())
-				return false;
-			
 			return ((getName().startsWith("set") && !getName().equals("set")) && getNumberOfParameters() == 1);
 		}
 
