@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.util;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +30,7 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
+import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -40,6 +42,7 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 public class TypeInfoCollector {
 	IType fType;
 	MemberInfo fMember;
+	TypeInfo fTypeInfo;
 	List<MethodInfo> fMethods;
 	List<FieldInfo> fFields;
 	
@@ -220,7 +223,6 @@ public class TypeInfoCollector {
 		private int fModifiers;
 		private IType fSourceType;
 		private MemberInfo fParentMember;
-		private String[] fParametersNamesOfDeclaringType;
 		private IType fMemberType;
 		private boolean isDataModel;
 		private Type fType;
@@ -239,19 +241,7 @@ public class TypeInfoCollector {
 			setType(type);
 		}
 
-		protected void initializeParametersOfDeclaringType() {
-			if(fParametersNamesOfDeclaringType!=null && fParametersNamesOfDeclaringType.length>0 && getParentMember()!=null) {
-				Map<String, Type> parametersOfDeclaringType = new HashMap<String, Type>();
-				for (int i = 0; i < fParametersNamesOfDeclaringType.length; i++) {
-					String parameterName = getParameterNameFromType(fParametersNamesOfDeclaringType[i]);
-					Type paramType = getParentMember().getType().getParameter(i);
-					if(paramType!=null) {
-						parametersOfDeclaringType.put(parameterName, paramType);
-					}
-				}
-				getType().initializeParameters(parametersOfDeclaringType);
-			}
-		}
+		abstract void initializeParameters();
 
 		protected void setType(Type type) {
 			fType = type;
@@ -313,22 +303,13 @@ public class TypeInfoCollector {
 			fParentMember = parentMember;
 		}
 
-		public String[] getParametersNamesOfDeclaringType() {
-			return fParametersNamesOfDeclaringType;
-		}
-
-		void setParametersNamesOfDeclaringType(
-				String[] parametersNamesOfDeclaringType) {
-			fParametersNamesOfDeclaringType = parametersNamesOfDeclaringType;
-		}
-
 		public IType getMemberType() {
 			if(fMemberType==null) {
-				initializeParametersOfDeclaringType();
+				initializeParameters();
 				try {
 					if(isDataModel() && getType().isArray()) {
 						fMemberType = getSourceType().getJavaProject().findType(getType().getQualifiedTypeNameOfArrayElement());
-					} else {
+					} else if(getType().getQualifiedName()!=null) {
 						fMemberType = getSourceType().getJavaProject().findType(getType().getQualifiedName());
 					}
 				} catch (JavaModelException e) {
@@ -359,10 +340,23 @@ public class TypeInfoCollector {
 
 	public static class TypeInfo extends MemberInfo {
 		private IType fType;
+		private TypeInfo superType;
+		private Map<String, Type> params = new HashMap<String, Type>();
+		private boolean initialized = false;
 
 		public TypeInfo(IType type, MemberInfo parentMember, boolean dataModel) throws JavaModelException {
-			super(type.getDeclaringType(), (type.getDeclaringType() == null ? null : type.getDeclaringType().getFullyQualifiedName()), type.getFullyQualifiedName(), type.getFlags(), parentMember, dataModel, Type.valueOf(type.getFullyQualifiedName()));
+			super(type.getDeclaringType(),
+					(type.getDeclaringType() == null ? null : type.getDeclaringType().getFullyQualifiedName()),
+					type.getFullyQualifiedName(),
+					type.getFlags(),
+					parentMember,
+					dataModel,
+					Type.valueOf(type.getFullyQualifiedName()));
 			this.fType = type;
+		}
+
+		public Type getParameterType(String name) {
+			return params.get(name);
 		}
 
 		@Override
@@ -374,17 +368,127 @@ public class TypeInfoCollector {
 		public IJavaElement getJavaElement() {
 			return fType;
 		}
+
+		/* (non-Javadoc)
+		 * @see org.jboss.tools.common.model.util.TypeInfoCollector.MemberInfo#initializeParameters()
+		 */
+		@Override
+		void initializeParameters() {
+			if(!initialized) {
+				try {
+					MemberInfo parent = getParentMember();
+					if(parent!=null && parent instanceof TypeMemberInfo) {
+						ITypeParameter[] parameters = fType.getTypeParameters();
+						for (int i = 0; i < parameters.length; i++) {
+							Type type = parent.getType().getParameter(i);
+							if(type!=null) {
+								params.put(parameters[i].getElementName(), type);
+							}
+						}
+					}
+					if(superType!=null) {
+						superType.initializeParameters(this);
+					}
+				} catch (JavaModelException e) {
+					ModelPlugin.getPluginLog().logError(e);
+				}
+			}
+			initialized = true;
+		}
+
+		private void initializeParameters(TypeInfo inheritedType) throws JavaModelException {
+			ITypeParameter[] parameters = fType.getTypeParameters();
+			String signature = inheritedType.fType.getSuperclassTypeSignature();
+			Type classType = new Type(signature, inheritedType.fType);
+			for (int i = 0; i < parameters.length; i++) {
+				Type paramType = classType.getParameter(i);
+				if(paramType!=null) {
+					Type resolvedType = inheritedType.getParameterType(paramType.getName());
+					if(resolvedType!=null) {
+						paramType = resolvedType;
+					}
+					params.put(parameters[i].getElementName(), paramType);
+				}
+			}
+			if(superType!=null) {
+				superType.initializeParameters(this);
+			}
+		}
+
+		public TypeInfo getSuperType() {
+			return superType;
+		}
+
+		public void setSuperType(TypeInfo superType) {
+			this.superType = superType;
+		}
 	}
 
-	public static class FieldInfo extends MemberInfo {
+	public abstract static class TypeMemberInfo extends MemberInfo {
+		private String[] fParametersNamesOfDeclaringType;
+		private TypeInfo declaratedType;
+
+		/**
+		 * @param sourceType
+		 * @param declaringTypeQualifiedName
+		 * @param name
+		 * @param modifiers
+		 * @param parentMember
+		 * @param dataModel
+		 * @param type
+		 */
+		protected TypeMemberInfo(IType sourceType,
+				String declaringTypeQualifiedName, String name, int modifiers,
+				TypeInfo parentMember, TypeInfo declaratedType, boolean dataModel, Type type) {
+			super(sourceType, declaringTypeQualifiedName, name, modifiers, parentMember,
+					dataModel, type);
+			this.declaratedType = declaratedType;
+		}
+
+		public String[] getParametersNamesOfDeclaringType() {
+			return fParametersNamesOfDeclaringType;
+		}
+
+		void setParametersNamesOfDeclaringType(
+				String[] parametersNamesOfDeclaringType) {
+			fParametersNamesOfDeclaringType = parametersNamesOfDeclaringType;
+		}
+
+		protected void initializeParameters() {
+			if(fParametersNamesOfDeclaringType!=null && fParametersNamesOfDeclaringType.length>0 && getParentMember()!=null) {
+				Map<String, Type> parametersOfDeclaringType = new HashMap<String, Type>();
+				TypeInfo parentTypeInfo = (TypeInfo)getParentMember();
+				parentTypeInfo.initializeParameters();
+				for (int i = 0; i < fParametersNamesOfDeclaringType.length; i++) {
+					String parameterName = getParameterNameFromType(fParametersNamesOfDeclaringType[i]);
+					Type paramType = declaratedType.getParameterType(parameterName);
+					if(paramType!=null) {
+						parametersOfDeclaringType.put(parameterName, paramType);
+					}
+				}
+				getType().initializeParameters(parametersOfDeclaringType);
+			}
+		}
+
+		public TypeInfo getDeclaratedType() {
+			return declaratedType;
+		}
+
+		protected void setDeclaratedType(TypeInfo declaratedType) {
+			this.declaratedType = declaratedType;
+		}
+	}
+
+	public static class FieldInfo extends TypeMemberInfo {
 		private IJavaElement fJavaElement;
 
-		public FieldInfo(IField field, MemberInfo parentMember, boolean dataModel) throws JavaModelException {
+		public FieldInfo(IField field, TypeInfo parentMember, TypeInfo declaratedType, boolean dataModel) throws JavaModelException {
 			super(field.getDeclaringType(),
 					(field.getDeclaringType() == null ? null : field.getDeclaringType().getFullyQualifiedName()),
 					field.getElementName(),
 					field.getFlags(),
 					parentMember,
+					declaratedType,
 					dataModel,
 					new Type(field.getTypeSignature(),
 					field.getDeclaringType()));
@@ -395,6 +499,9 @@ public class TypeInfoCollector {
 		public IJavaElement getJavaElement () {
 			if(fJavaElement == null) {
 				try {
+					if(getDeclaringTypeQualifiedName()==null) {
+						return null;
+					}
 					IType declType = getSourceType().getJavaProject().findType(getDeclaringTypeQualifiedName());
 					fJavaElement = (declType == null ? null : declType.getField(getName()));
 				} catch (JavaModelException e) {
@@ -405,7 +512,7 @@ public class TypeInfoCollector {
 		}
 	}
 
-	public static class MethodInfo extends MemberInfo {
+	public static class MethodInfo extends TypeMemberInfo {
 		private String[] fParameterTypeNames;
 		private String[] fParameterTypeQualifiedNames;
 		private String[] fParameterNames;
@@ -415,19 +522,21 @@ public class TypeInfoCollector {
 				int modifiers, String[] parameterTypeQualifiedNames, 
 				String[] parameterNames,
 				String returnTypeQualifiedName,
-				MemberInfo parentMember,
+				TypeInfo parentMember,
+				TypeInfo declaratedType,
 				boolean dataModel) {
-			super(sourceType, declaringTypeQualifiedName, name, modifiers, parentMember, dataModel, Type.valueOf(name));
+			super(sourceType, declaringTypeQualifiedName, name, modifiers, parentMember, declaratedType, dataModel, Type.valueOf(name));
 			setParameterTypeNames(parameterTypeQualifiedNames);
 			setParameterNames(parameterNames);
 		}
 
-		public MethodInfo(IMethod method, MemberInfo parentMember, boolean dataModel) throws JavaModelException {
+		public MethodInfo(IMethod method, TypeInfo parentMember, TypeInfo declaratedType, boolean dataModel) throws JavaModelException {
 			super(method.getDeclaringType(),
 					(method.getDeclaringType() == null ? null : method.getDeclaringType().getFullyQualifiedName()),
 					method.getElementName(),
 					method.getFlags(),
 					parentMember,
+					declaratedType,
 					dataModel,
 					new Type(method.getReturnType(),
 					method.getDeclaringType()));
@@ -474,12 +583,13 @@ public class TypeInfoCollector {
 		}
 
 		public boolean isConstructor () {
-			return getDeclaringTypeQualifiedName().equals(getName());
+			return getDeclaringTypeQualifiedName()!=null && getDeclaringTypeQualifiedName().equals(getName());
 		}
 
 		public boolean isGetter() {
-			if (null == getReturnType())
+			if (null == getType()) {
 				return false;
+			}
 
 			return (((getName().startsWith("get") && !getName().equals("get")) || getName().startsWith("is")) && getNumberOfParameters() == 0);
 		}
@@ -488,12 +598,33 @@ public class TypeInfoCollector {
 			return ((getName().startsWith("set") && !getName().equals("set")) && getNumberOfParameters() == 1);
 		}
 
+		public List<String> getAsPresentedStrings() {
+			List<String> list = new ArrayList<String>(2);
+			StringBuffer name = new StringBuffer(getName());
+
+			// Add method as 'foo'
+			list.add(name.toString());
+
+			// Add method as 'foo(param1,param2)'
+			name.append('(');
+			String[] mParams = getParameterNames();
+			for (int j = 0; mParams != null && j < mParams.length; j++) {
+				if (j > 0) name.append(", "); //$NON-NLS-1$
+				name.append(mParams[j]);
+			}
+			name.append(')');
+			list.add(name.toString());
+			return list;
+		}
+
 		@Override
 		public IJavaElement getJavaElement () {
 			if(fJavaElement == null) {
 				try {
 					IType declType = getSourceType().getJavaProject().findType(getDeclaringTypeQualifiedName());
-	
+					if(declType==null) {
+						return null;
+					}
 					IMethod[] allMethods = declType.getMethods();
 	
 					// filter methods by name
@@ -577,23 +708,36 @@ public class TypeInfoCollector {
 			fFields.clear();
 		}
 
-		if (fType == null) 
+		if (fType == null) {
 			return;
+		}
 		try {
 			IType binType = fType;
+			MemberInfo originalParent = fMember;
+			if(fMember instanceof TypeInfo) {
+				fTypeInfo = (TypeInfo)fMember;
+			} else {
+				fTypeInfo = new TypeInfo(binType, fMember, fMember.isDataModel());
+			}
+			TypeInfo parent = fTypeInfo;
 			while (binType != null) {
 				IMethod[] binMethods = binType.getMethods();
 				for (int i = 0; binMethods != null && i < binMethods.length; i++) {
-					if (binMethods[i].isConstructor()) continue;
-					fMethods.add(new MethodInfo(binMethods[i], fMember, false));
+					if (binMethods[i].isConstructor()) {
+						continue;
+					}
+					fMethods.add(new MethodInfo(binMethods[i], fTypeInfo, parent, false));
 				}
 				binType = getSuperclass(binType);
+				if(binType!=null) {
+					TypeInfo superType = new TypeInfo(binType, originalParent, parent.isDataModel());
+					parent.setSuperType(superType);
+					parent = superType;
+				}
 			}
 
-			// !!!!!!!
 			// This inserts here methods "public int size()" and "public boolean isEmpty()" for javax.faces.model.DataModel 
 			// as requested by Gavin in JBIDE-1256
-			// !!!!!!! 
 			if(isDataModelObject(fType)) {
 				addInfoForDataModelObject();				
 			}
@@ -691,7 +835,8 @@ public class TypeInfoCollector {
 				new String[0],
 				new String[0],
 				"int",
-				fMember,
+				fTypeInfo,
+				fTypeInfo,
 				false));
 	}
 
@@ -702,7 +847,8 @@ public class TypeInfoCollector {
 				new String[0],
 				new String[0],
 				"int",
-				fMember,
+				fTypeInfo,
+				fTypeInfo,
 				false));
 		fMethods.add(new MethodInfo(fType,
 				fType.getFullyQualifiedName(),
@@ -710,7 +856,8 @@ public class TypeInfoCollector {
 				new String[0],
 				new String[0],
 				"boolean",
-				fMember,
+				fTypeInfo,
+				fTypeInfo,
 				false));
 	}
 
@@ -803,13 +950,76 @@ public class TypeInfoCollector {
 	}
 
 	/**
-	 * Returns the method presentation strings for the type specified  
-	 * 
-	 * @param type
+	 * String presentation of member 
+	 * @author Alexey Kazakov
+	 */
+	public static class MemberPresentation {
+		private String presentation;
+		private MemberInfo member;
+
+		public MemberPresentation(String presentation, MemberInfo member) {
+			super();
+			this.presentation = presentation;
+			this.member = member;
+		}
+
+		public String getPresentation() {
+			return presentation;
+		}
+
+		public MemberInfo getMember() {
+			return member;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(obj!=null && obj instanceof MemberPresentation) {
+				return presentation.equals(((MemberPresentation)obj).getPresentation());
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return presentation.hashCode();
+		}
+
+		@Override
+		public String toString() {
+			return presentation;
+		}
+	}
+
+	private static class MemberPresentationComparator implements Comparator<MemberPresentation> {
+		/* (non-Javadoc)
+		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+		 */
+		public int compare(MemberPresentation m1, MemberPresentation m2) {
+			return m1.getPresentation().compareTo(m2.getPresentation());
+		}
+	}
+
+	public final static MemberPresentationComparator MEMBER_PRESENTATION_COMPARATOR = new MemberPresentationComparator();
+
+	/**
+	 * Returns the method presentation strings for the type specified
 	 * @return
 	 */
-	public Set<String> getMethodPresentations() {
-		Set<String> methods = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+	public Set<String> getMethodPresentationStrings() {
+		Set<MemberPresentation> set = getMethodPresentations();
+		Set<String> result = new HashSet<String>();
+		for (MemberPresentation presentation : set) {
+			result.add(presentation.getPresentation());
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the method presentations for the type specified  
+	 * @return
+	 */
+	public Set<MemberPresentation> getMethodPresentations() {
+		Set<MemberPresentation> methods = new TreeSet<MemberPresentation>(MEMBER_PRESENTATION_COMPARATOR);
 		List<MemberInfo> mthds = getMethods();
 		for (MemberInfo info : mthds) {
 			if (!(info instanceof MethodInfo))
@@ -820,7 +1030,7 @@ public class TypeInfoCollector {
 			StringBuffer name = new StringBuffer(method.getName());
 
 			// Add method as 'foo'
-			methods.add(name.toString());
+			methods.add(new MemberPresentation(name.toString(), method));
 
 			// Add method as 'foo(param1,param2)'
 			name.append('(');
@@ -831,7 +1041,7 @@ public class TypeInfoCollector {
 			}
 			name.append(')');
 
-			methods.add(name.toString());
+			methods.add(new MemberPresentation(name.toString(), method));
 		}
 		return methods;
 	}
@@ -867,12 +1077,21 @@ public class TypeInfoCollector {
 	}
 
 	/**
+	 * Returns the property presentations for the type specified  
+	 * 
+	 * @return
+	 */
+	public Set<MemberPresentation> getPropertyPresentations() {
+		return getPropertyPresentations(null);
+	}
+
+	/**
 	 * Returns the property presentation strings for the type specified  
 	 * 
 	 * @return
 	 */
-	public Set<String> getPropertyPresentations() {
-		return getPropertyPresentations(null);
+	public Set<String> getPropertyPresentationStrings() {
+		return getPropertyPresentationStrings(null);
 	}
 
 	/**
@@ -881,8 +1100,23 @@ public class TypeInfoCollector {
 	 * @param unpairedGettersOrSetters - map of unpaired getters or setters of type's properties. 'key' is property name.
 	 * @return
 	 */
-	public Set<String> getPropertyPresentations(Map<String, MethodInfo> unpairedGettersOrSetters) {
-		Set<String> properties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER); 
+	public Set<String> getPropertyPresentationStrings(Map<String, MethodInfo> unpairedGettersOrSetters) {
+		Set<MemberPresentation> set = getPropertyPresentations(unpairedGettersOrSetters);
+		Set<String> result = new HashSet<String>();
+		for (MemberPresentation presentation : set) {
+			result.add(presentation.getPresentation());
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the property presentations for the type specified  
+	 * 
+	 * @param unpairedGettersOrSetters - map of unpaired getters or setters of type's properties. 'key' is property name.
+	 * @return
+	 */
+	public Set<MemberPresentation> getPropertyPresentations(Map<String, MethodInfo> unpairedGettersOrSetters) {
+		Set<MemberPresentation> properties = new TreeSet<MemberPresentation>(MEMBER_PRESENTATION_COMPARATOR); 
 		List<MemberInfo> props = getProperties(); 
 		HashMap<String, MethodInfo> getters = new HashMap<String, MethodInfo>();
 		HashMap<String, MethodInfo> setters = new HashMap<String, MethodInfo>();
@@ -899,8 +1133,9 @@ public class TypeInfoCollector {
 					}
 					name.setCharAt(0, Character.toLowerCase(name.charAt(0)));
 					String propertyName = name.toString();
-					if(!properties.contains(propertyName)) {
-						properties.add(propertyName);
+					MemberPresentation pr = new MemberPresentation(propertyName, m);
+					if(!properties.contains(pr)) {
+						properties.add(pr);
 					}
 					if(unpairedGettersOrSetters!=null) {
 						MethodInfo previousGetter = getters.get(propertyName);
@@ -918,7 +1153,7 @@ public class TypeInfoCollector {
 					}
 				}
 			} else {
-				properties.add(info.getName());
+				properties.add(new MemberPresentation(info.getName(), info));
 			}
 		}	
 		return properties;
@@ -938,12 +1173,17 @@ public class TypeInfoCollector {
 		MemberInfo result = cache == null ? null : cache.get(member);
 		if(result != null) return result;
 		try {
-			if (member instanceof IType)
+			if (member instanceof IType) {
 				result = new TypeInfo((IType)member, null, dataModel);
-			else if (member instanceof IField)
-				result = new FieldInfo((IField)member, null, dataModel);
-			else if (member instanceof IMethod)
-				result = new MethodInfo((IMethod)member, null, dataModel);
+			} else if (member instanceof IField) {
+				IField field = (IField)member;
+				TypeInfo declaringType = new TypeInfo(field.getDeclaringType(), null, dataModel);
+				result = new FieldInfo(field, declaringType, declaringType, dataModel);
+			} else if (member instanceof IMethod) {
+				IMethod method = (IMethod)member;
+				TypeInfo declaringType = new TypeInfo(method.getDeclaringType(), null, dataModel);
+				result = new MethodInfo(method, declaringType, declaringType, dataModel);
+			}
 		} catch (JavaModelException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
@@ -995,5 +1235,4 @@ public class TypeInfoCollector {
 		}
 		return Signature.getTypeVariable(typeSignatures);
 	}
-	
 }
