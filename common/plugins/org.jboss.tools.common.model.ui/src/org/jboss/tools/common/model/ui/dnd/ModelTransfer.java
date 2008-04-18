@@ -55,21 +55,20 @@ public class ModelTransfer extends ByteArrayTransfer {
 	protected Object nativeToJava(TransferData transferData) {
 		try {
 			byte[] bytes = (byte[]) super.nativeToJava(transferData);
-			ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-			DataInputStream dataIn = new DataInputStream(in);
-			/*
-			int len = dataIn.readInt();
-			String[] data = new String[len];
-			for (int i = 0; i < len; i++) {
-				data[i] = dataIn.readUTF();
+			if (bytes != null) {
+				ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+				DataInputStream dataIn = new DataInputStream(in);
+				/*
+				 * int len = dataIn.readInt(); String[] data = new String[len];
+				 * for (int i = 0; i < len; i++) { data[i] = dataIn.readUTF(); }
+				 */
+				String data = dataIn.readUTF();
+				return data;
 			}
-			*/
-			String data = dataIn.readUTF();
-			return data;
 		} catch (IOException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
-		//can't get here
+		// can't get here
 		return null;
 	}
 }
