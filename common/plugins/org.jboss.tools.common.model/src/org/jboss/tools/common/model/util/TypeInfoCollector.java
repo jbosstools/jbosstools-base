@@ -328,10 +328,16 @@ public class TypeInfoCollector {
 		}
 		
 		public TypeInfoCollector getTypeCollector() {
-			if(typeInfo == null) {
-				typeInfo = new TypeInfoCollector(this);
-				typeInfo.collectInfo();
+			// >>> Fix for JBIDE-2090 
+			if(typeInfo != null) return typeInfo;
+			
+			synchronized (this) {
+				if(typeInfo != null) return typeInfo;
+				TypeInfoCollector tic = new TypeInfoCollector(this);
+				tic.collectInfo();
+				typeInfo = tic;
 			}
+			// <<< Fix for JBIDE-2090 
 			return typeInfo;
 		}
 
