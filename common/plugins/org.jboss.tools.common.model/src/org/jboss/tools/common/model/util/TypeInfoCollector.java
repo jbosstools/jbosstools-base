@@ -328,15 +328,14 @@ public class TypeInfoCollector {
 		}
 		
 		public TypeInfoCollector getTypeCollector() {
+			// The rev. 7623 results in a deadlock, so, it's rolled back
 			// >>> Fix for JBIDE-2090 
 			if(typeInfo != null) return typeInfo;
 			
-			synchronized (this) {
-				if(typeInfo != null) return typeInfo;
-				TypeInfoCollector tic = new TypeInfoCollector(this);
-				tic.collectInfo();
-				typeInfo = tic;
-			}
+			TypeInfoCollector tic = new TypeInfoCollector(this);
+			tic.collectInfo();
+			typeInfo = tic;
+
 			// <<< Fix for JBIDE-2090 
 			return typeInfo;
 		}
