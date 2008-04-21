@@ -227,7 +227,7 @@ public class TypeInfoCollector {
 		private boolean isDataModel;
 		private Type fType;
 		
-		TypeInfoCollector typeInfo;
+//		TypeInfoCollector typeInfo;
 
 		protected MemberInfo (
 			IType sourceType,
@@ -328,16 +328,13 @@ public class TypeInfoCollector {
 		}
 		
 		public TypeInfoCollector getTypeCollector() {
+			// The rev. 7651 results in a deadlock, typeInfo is not stored anymore 
 			// The rev. 7623 results in a deadlock, so, it's rolled back
 			// >>> Fix for JBIDE-2090 
-			if(typeInfo != null) return typeInfo;
-			
 			TypeInfoCollector tic = new TypeInfoCollector(this);
 			tic.collectInfo();
-			typeInfo = tic;
-
+			return tic;
 			// <<< Fix for JBIDE-2090 
-			return typeInfo;
 		}
 
 		abstract public IJavaElement getJavaElement();
@@ -714,6 +711,7 @@ public class TypeInfoCollector {
 		}
 
 		if (fType == null) {
+			System.out.println(Thread.currentThread().getId() + ":" + Thread.currentThread() + "<<< TypeInfoCollector<Init>");
 			return;
 		}
 		try {
