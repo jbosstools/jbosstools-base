@@ -711,7 +711,6 @@ public class TypeInfoCollector {
 		}
 
 		if (fType == null) {
-			System.out.println(Thread.currentThread().getId() + ":" + Thread.currentThread() + "<<< TypeInfoCollector<Init>");
 			return;
 		}
 		try {
