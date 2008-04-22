@@ -1227,8 +1227,7 @@
    <XModelAttribute default="Visual/Source" name="option list" xmlname="option_list">
     <Constraint loader="List">
      <value name="Visual/Source"/>
-     <value name="Source"/>
-     <value name="Visual"/>
+     <value name="Preview"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
