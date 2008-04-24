@@ -7,7 +7,7 @@
             <proposal type="jsfVariables"/>
             <proposal type="viewActions"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="java.lang.String"/>
+                <param name="returnType" value="any"/>
             </proposal>
             <proposal type="beanProperty">
                 <param name="type" value="java.lang.String"/>
@@ -252,7 +252,7 @@
             <proposal type="jsfVariables"/>
             <proposal type="viewActions"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="java.lang.String"/>
+                <param name="returnType" value="any"/>
             </proposal>
             <proposal type="beanProperty">
                 <param name="type" value="java.lang.String"/>

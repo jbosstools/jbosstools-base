@@ -148,7 +148,7 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="any"/>
             </proposal>
 			<proposal type="viewActions"/>
         </attribute-type>
@@ -438,7 +438,7 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="any"/>
             </proposal>
 			<proposal type="viewActions"/>
         </attribute-type>

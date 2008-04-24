@@ -32,7 +32,7 @@
             <description>MethodBinding pointing at the application action to be invoked, if this UIComponent is activated by the user, during the Apply Request Values or Invoke Application phase of the request processing lifecycle, depending on the value of the immediate property.</description>
             <proposal type="viewActions"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="java.lang.String"/>
+                <param name="returnType" value="any"/>
             </proposal>
             <proposal type="beanProperty"/>
             <proposal type="jsfVariables"/>
@@ -292,7 +292,7 @@
             <proposal type="beanProperty"/>
             <proposal type="viewActions"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="java.lang.String"/>
+                <param name="returnType" value="any"/>
             </proposal>
             <proposal type="jsfVariables"/>
         </attribute-type>

@@ -76,7 +76,7 @@
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
 				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+					value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -669,7 +669,7 @@
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
 				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+					value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -1057,7 +1057,7 @@
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
 				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+					value="any" />
 			</proposal>
 			<proposal type="viewActions" />
 		</attribute-type>
@@ -1079,10 +1079,10 @@
 			<proposal type="beanProperty" />
 			<proposal type="bundleProperty" />
 			<proposal type="jsfVariables" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+		    <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ActionEvent"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="actionListener" />
 		<attribute-type name="ajaxSingle" required="false">
@@ -3026,7 +3026,7 @@
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
 				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+					value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -3450,7 +3450,7 @@
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
 				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+					value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -3995,7 +3995,7 @@
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
 				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+					value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -4301,7 +4301,7 @@
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
 				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+					value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />

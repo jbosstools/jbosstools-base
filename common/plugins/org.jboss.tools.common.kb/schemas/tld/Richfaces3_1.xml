@@ -103,8 +103,7 @@
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+				<param name="returnType" value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -503,8 +502,7 @@
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+				<param name="returnType" value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -1328,10 +1326,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="validatorMessage" required="false">
@@ -3206,10 +3206,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="validatorMessage" required="false">
@@ -3271,8 +3273,7 @@
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+				<param name="returnType" value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -4056,10 +4057,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="validatorMessage" required="false">
@@ -4115,8 +4118,7 @@
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+				<param name="returnType" value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -4537,8 +4539,7 @@
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+				<param name="returnType" value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -5722,10 +5723,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="validatorMessage" required="false">
@@ -6158,10 +6161,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="validatorMessage" required="false">
@@ -10572,10 +10577,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="validatorMessage" required="false">
@@ -10649,8 +10656,7 @@
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+				<param name="returnType" value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -11423,8 +11429,7 @@
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+				<param name="returnType" value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -13054,10 +13059,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="validatorMessage" required="false">
@@ -13126,8 +13133,7 @@
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+				<param name="returnType" value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -13766,10 +13772,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="validatorMessage" required="false">
@@ -13818,7 +13826,7 @@
 			<proposal type="beanProperty" />
 			<proposal type="beanMethodBySignature">
 				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
+					value="any" />
 			</proposal>
 		</attribute-type>
 		<attribute type="action" />
@@ -14980,10 +14988,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="validatorMessage" required="false">
@@ -16900,10 +16910,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="value" required="false">
@@ -17577,10 +17589,12 @@
 			</description>
 			<proposal type="jsfVariables" />
 			<proposal type="beanProperty" />
-			<proposal type="beanMethodBySignature">
-				<param name="returnType"
-					value="javax.faces.el.MethodBinding" />
-			</proposal>
+            <proposal type="beanMethodBySignature">
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
+            </proposal>
 		</attribute-type>
 		<attribute type="validator" />
 		<attribute-type name="valueChangeListener" required="false">

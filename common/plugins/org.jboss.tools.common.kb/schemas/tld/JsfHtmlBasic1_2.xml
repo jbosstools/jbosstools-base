@@ -62,7 +62,7 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="any"/>
             </proposal>
             <proposal type="viewActions"/>
         </attribute-type>
@@ -76,7 +76,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ActionEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="actionListener"/>
@@ -503,7 +504,7 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="any"/>
             </proposal>
             <proposal type="viewActions"/>
         </attribute-type>
@@ -517,7 +518,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ActionEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="actionListener"/>
@@ -1836,7 +1838,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -1865,7 +1870,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>
@@ -1984,7 +1990,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -2013,7 +2022,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>
@@ -2393,7 +2403,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -2422,7 +2435,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>
@@ -2779,7 +2793,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -2808,7 +2825,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>
@@ -4781,7 +4799,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -4810,7 +4831,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>
@@ -5160,7 +5182,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -5189,7 +5214,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>
@@ -5647,7 +5673,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -5676,7 +5705,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>
@@ -6030,7 +6060,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -6059,7 +6092,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>
@@ -6405,7 +6439,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -6434,7 +6471,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>
@@ -6788,7 +6826,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -6817,7 +6858,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>
@@ -7186,7 +7228,10 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -7215,7 +7260,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.event.ValueChangeEvent"/>
             </proposal>
         </attribute-type>
         <attribute type="valueChangeListener"/>

@@ -155,7 +155,7 @@
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="any"/>
             </proposal>
         </attribute-type>
         <attribute type="action"/>
@@ -791,7 +791,10 @@ Here's an example:
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="void"/>
+                <param name="paramType" value="javax.faces.context.FacesContext"/>
+                <param name="paramType" value="javax.faces.component.UIComponent"/>
+                <param name="paramType" value="java.lang.Object"/>
             </proposal>
         </attribute-type>
         <attribute type="validator"/>
@@ -1959,7 +1962,7 @@ a backing bean</description>
             <proposal type="jsfVariables"/>
             <proposal type="beanProperty"/>
             <proposal type="beanMethodBySignature">
-                <param name="returnType" value="javax.faces.el.MethodBinding"/>
+                <param name="returnType" value="any"/>
             </proposal>
         </attribute-type>
         <attribute type="action"/>
