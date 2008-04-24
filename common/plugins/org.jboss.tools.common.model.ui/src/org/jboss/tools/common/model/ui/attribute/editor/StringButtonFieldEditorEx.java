@@ -49,8 +49,8 @@ import org.jboss.tools.common.model.ui.widgets.WhiteSettings;
 import org.jboss.tools.common.model.ui.widgets.xpl.SelectableFormLabel;
 
 public class StringButtonFieldEditorEx extends StringButtonFieldEditor implements IFieldEditor, IPropertyChangeListener, PropertyChangeListener, IPropertyFieldEditor {
-	public final static String LABEL_SELECTED = "Label.Selected";
-	public final static String BUTTON_SELECTED = "Button.Selected";
+	public final static String LABEL_SELECTED = "Label.Selected"; //$NON-NLS-1$
+	public final static String BUTTON_SELECTED = "Button.Selected"; //$NON-NLS-1$
 	protected PropertyEditorDialog editorDialog;
 	protected IPropertyEditor propertyEditor; 
 	protected IValueProvider valueProvider;
@@ -64,12 +64,12 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 //	private IAction buttonAction;
 
 	public StringButtonFieldEditorEx() {
-		this.setChangeButtonText(JFaceResources.getString("openChange"));
+		this.setChangeButtonText(JFaceResources.getString("openBrowse")); //$NON-NLS-1$
 	}
 	
 	public StringButtonFieldEditorEx(IWidgetSettings settings) {
 		super(settings);
-		this.setChangeButtonText(JFaceResources.getString("openChange"));
+		this.setChangeButtonText(JFaceResources.getString("openBrowse")); //$NON-NLS-1$
 	}
 
 	public Label getLabelControl() {
