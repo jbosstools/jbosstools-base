@@ -59,6 +59,12 @@ public class FileChooserAdapter extends DefaultValueAdapter {
 		return filenames;
 	}
 	
+	public String getFilterPath() {
+		XAttributeConstraintFileFilter c = (XAttributeConstraintFileFilter)attribute.getConstraint();
+		properties = c.getProperties();
+		return properties == null ? null : properties.getProperty("filterFolder");
+	}
+	
 	public Object getAdapter(Class adapter) {
 		if(adapter.isAssignableFrom(getClass())) return this;
 		return super.getAdapter(adapter);	

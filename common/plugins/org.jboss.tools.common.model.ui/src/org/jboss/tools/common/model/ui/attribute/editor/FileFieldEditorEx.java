@@ -59,7 +59,17 @@ public class FileFieldEditorEx extends DirectoryFieldEditorEx {
 			}
 		}
 		if(propertyEditor == null || propertyEditor.getValue() == null || propertyEditor.getValue().toString().trim().length() == 0) {
-			if (lastPath != null && new File(lastPath).exists()) dialog.setFilterPath(lastPath);
+			if (lastPath != null && new File(lastPath).exists()) {
+				dialog.setFilterPath(lastPath);
+			} else {
+				FileChooserAdapter adapter = (FileChooserAdapter)propertyEditor.getAdapter(FileChooserAdapter.class);
+				if(adapter != null) {int oo;
+					String filterPath = adapter.getFilterPath();
+					if(filterPath != null && new File(filterPath).exists()) {
+						dialog.setFilterPath(filterPath);
+					}
+				}
+			}
 		}
 		if (extensions != null)
 			dialog.setFilterExtensions(extensions);
