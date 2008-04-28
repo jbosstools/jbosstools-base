@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN" "meta.dtd">
+<XModelEntityGroup>
+ <VERSION MODULE="Model" VERSION="1.0"/>
+ <MAPPINGS>
+  <MAPPING name="ObjectEditor">
+   <PAIR name="ANT" value="TODO"/>
+  </MAPPING>
+  <MAPPING name="Recognizers">
+   <PAIR name="xml$9" value="org.jboss.tools.common.ant.model.AntEntityRecognizer"/>
+  </MAPPING>
+ </MAPPINGS>
+ <ICONS/>
+ <GlobalActions kind="list"/>
+ <XModelEntity
+  ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.BodyLoader"
+  ImplementingClass="org.jboss.tools.common.model.filesystems.impl.FileXMLImpl"
+  ObjectEditorClass="org.eclipse.ant.ui.internal.editor.AntEditor" name="FileANT">
+  <XChildrenEntities>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.file.ant_file" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="ant file" loader="ElementType"
+    name="element type" visibility="false">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute TRIM="no" name="body" visibility="false">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="isIncorrect" visibility="false">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="xml" name="extension" xmlname="EXTENSION">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem HandlerClassName="%Open%" ICON="main.file.java_file"
+    displayName="Open" kind="action" name="Open"/>
+   <XActionItem displayName="Open With" group="1" kind="list" name="OpenWith">
+    <XActionItem HIDE="always"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler"
+     ICON="main.file.java_file" PROPERTIES="extension=struts-config"
+     displayName="Open with External Program" kind="action" name="OpenWithSelected"/>
+    <XActionItem HIDE="always"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithChoiceHandler"
+     ICON="main.file.java_file" displayName="Choose Program..."
+     kind="action" name="OpenWithChoice">
+     <EntityData EntityName="OpenWithHelper">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="default"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem kind="list" name="SaveActions">
+    <XActionItem HIDE="disabled" HandlerClassName="%SaveFile%"
+     ICON="action.save" displayName="Save" kind="action" name="Save"/>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%DeleteFile%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="Run" kind="list" name="RunActions">
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.model.handlers.RunAntHandler"
+     ICON="action.start" displayName="Run Ant..." kind="action" name="Run"/>
+    <XActionItem HIDE="disabled"
+     HandlerClassName="org.jboss.tools.common.model.engines.impl.StopProcessHandler"
+     ICON="action.stop" displayName="Stop" kind="action" name="Stop"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XEntityExtension name="FileFolder">
+  <XChildrenEntities>
+   <XChildEntity name="FileANT"/>
+  </XChildrenEntities>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="New" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem ICON="action.newattribute" displayName="File" group="1"
+     kind="list" name="CreateFiles">
+     <XActionItem HandlerClassName="%SpecialWizard%"
+      ICON="main.file.ant_file"
+      PROPERTIES="support=org.jboss.tools.common.ant.model.handlers.CreateAntFileSupport;entity=FileANT;extension=xml;validator.addfile=true"
+      displayName="ANT..." kind="action" name="CreateFileANT">
+      <EntityData EntityName="NewFileWizard">
+       <AttributeData AttributeName="folder"/>
+       <AttributeData AttributeName="separator" Mandatory="no"/>
+       <AttributeData AttributeName="name"/>
+      </EntityData>
+     </XActionItem>
+    </XActionItem>
+   </XActionItem>
+  </XActionItem>
+ </XEntityExtension>
+ <XEntityExtension name="FileSystemFolder">
+  <XChildrenEntities>
+   <XChildEntity name="FileANT"/>
+  </XChildrenEntities>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="New" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem ICON="action.newattribute" displayName="File" group="1"
+     kind="list" name="CreateFiles">
+     <XActionItem HandlerClassName="%SpecialWizard%"
+      ICON="main.file.ant_file"
+      PROPERTIES="support=org.jboss.tools.common.ant.model.handlers.CreateAntFileSupport;entity=FileANT;extension=xml;validator.addfile=true"
+      displayName="ANT..." kind="action" name="CreateFileANT">
+      <EntityData EntityName="NewFileWizard">
+       <AttributeData AttributeName="folder"/>
+       <AttributeData AttributeName="separator" Mandatory="no"/>
+       <AttributeData AttributeName="name"/>
+      </EntityData>
+     </XActionItem>
+    </XActionItem>
+   </XActionItem>
+  </XActionItem>
+ </XEntityExtension>
+</XModelEntityGroup>

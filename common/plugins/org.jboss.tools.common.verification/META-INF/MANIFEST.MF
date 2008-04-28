@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Eclipse-LazyStart: true
+Bundle-Name: org.jboss.tools.common.verification
+Bundle-ClassPath: verification.jar
+Bundle-Activator: org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin
+Bundle-Vendor: %providerName
+Bundle-SymbolicName: org.jboss.tools.common.verification; singleton:=true
+Bundle-Localization: plugin
+Provide-Package: org.jboss.tools.common.verification.vrules,
+ org.jboss.tools.common.verification.vrules.impl,
+ org.jboss.tools.common.verification.vrules.layer,
+ org.jboss.tools.common.verification.vrules.core.resources
+Require-Bundle: org.jboss.tools.common,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.views,
+ org.eclipse.jface.text,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.ui.editors,
+ org.eclipse.jdt.core,
+ org.eclipse.ui,
+ org.jboss.tools.common.model,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime
+Bundle-Version: 2.0.0
+

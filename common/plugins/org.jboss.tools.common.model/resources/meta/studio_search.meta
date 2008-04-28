@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN" "meta.dtd">
+<XModelEntityGroup>
+ <VERSION MODULE="Model" VERSION="1.0"/>
+ <MAPPINGS/>
+ <ICONS>
+  <GROUP name="main">
+   <GROUP name="search">
+    <ICON name="command" path="images/actions/find.gif"/>
+   </GROUP>
+  </GROUP>
+ </ICONS>
+ <GlobalActions kind="list"/>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.search.impl.SearchConstraintANDImpl"
+  XMLSUBPATH="AND" name="SearchAND">
+  <XChildrenEntities>
+   <XChildEntity name="SearchAND"/>
+   <XChildEntity name="SearchOR"/>
+   <XChildEntity name="SearchValue"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.search" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="operator AND" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="AND" name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="false" name="not" xmlname="NOT">
+    <Constraint loader="List">
+     <value name="false"/>
+     <value name="true"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Operator AND..." kind="action" name="CreateSearchAND">
+     <EntityData EntityName="SearchAND">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Operator OR..." kind="action" name="CreateSearchOR">
+     <EntityData EntityName="SearchOR">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Value Constraint..." kind="action" name="CreateSearchValue">
+     <EntityData EntityName="SearchValue">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.search.impl.SearchCommandImpl"
+  XMLSUBPATH="SEARCH" name="SearchCommand">
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="SearchMatch" required="yes"/>
+   <XChildEntity maxCount="1" name="SearchRecursion" required="yes"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.search.command" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="search command" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="FileSystems" name="root" xmlname="ROOT">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem
+    HandlerClassName="org.jboss.tools.common.model.search.impl.SearchExecuteHandler"
+    ICON="action.start" displayName="Execute Search" kind="action" name="Execute"/>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.search.impl.SearchConstraintANDImpl"
+  XMLSUBPATH="MATCH" name="SearchMatch">
+  <XChildrenEntities>
+   <XChildEntity name="SearchAND"/>
+   <XChildEntity name="SearchOR"/>
+   <XChildEntity name="SearchValue"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.file.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="match constraints" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Match" name="name" visibility="false" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Operator AND..." kind="action" name="CreateSearchAND">
+     <EntityData EntityName="SearchAND">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Operator OR..." kind="action" name="CreateSearchOR">
+     <EntityData EntityName="SearchOR">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Value Constraint..." kind="action" name="CreateSearchValue">
+     <EntityData EntityName="SearchValue">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Paste"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.search.impl.SearchConstraintORImpl"
+  XMLSUBPATH="AND" name="SearchOR">
+  <XChildrenEntities>
+   <XChildEntity name="SearchAND"/>
+   <XChildEntity name="SearchOR"/>
+   <XChildEntity name="SearchValue"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.search" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="operator AND" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="OR" name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="false" name="not" xmlname="NOT">
+    <Constraint loader="List">
+     <value name="false"/>
+     <value name="true"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Operator AND..." kind="action" name="CreateSearchAND">
+     <EntityData EntityName="SearchAND">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Operator AND..." kind="action" name="CreateSearchOR">
+     <EntityData EntityName="SearchOR">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Value Constraint..." kind="action" name="CreateSearchValue">
+     <EntityData EntityName="SearchValue">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+    <XActionItem BaseActionName="Paste"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.search.impl.SearchConstraintANDImpl"
+  XMLSUBPATH="RECURSION" name="SearchRecursion">
+  <XChildrenEntities>
+   <XChildEntity name="SearchAND"/>
+   <XChildEntity name="SearchOR"/>
+   <XChildEntity name="SearchValue"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.file.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="match constraints" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Recursion" name="name" visibility="false" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Operator AND..." kind="action" name="CreateSearchAND">
+     <EntityData EntityName="SearchAND">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Operator OR..." kind="action" name="CreateSearchOR">
+     <EntityData EntityName="SearchOR">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.xstudio.search" WizardClassName="%Default%"
+     displayName="Create Value Constraint..." kind="action" name="CreateSearchValue">
+     <EntityData EntityName="SearchValue">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Paste"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.PasteHandler"
+     ICON="action.paste" displayName="Paste" kind="action" name="Paste"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.options.impl.SharableElementImpl"
+  XMLSUBPATH="SEARCHS" name="SearchStorage">
+  <XChildrenEntities>
+   <XChildEntity name="SearchCommand"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="action.find" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="partition" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Search" name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="Create" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler"
+     ICON="action.new.file.folder" WizardClassName="%Default%"
+     displayName="Create Search Command..." kind="action" name="CreateSearchCommand">
+     <EntityData EntityName="SearchCommand">
+      <AttributeData AttributeName="name"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.common.model.search.impl.SearchConstraintValueImpl"
+  XMLSUBPATH="AND" name="SearchValue">
+  <XChildrenEntities>
+   <XChildEntity name="SearchAND"/>
+   <XChildEntity name="SearchOR"/>
+   <XChildEntity name="SearchValue"/>
+  </XChildrenEntities>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.search" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="value constraint" loader="ElementType" name="element type">
+    <Constraint/>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="false" name="not" xmlname="NOT">
+    <Constraint loader="List">
+     <value name="false"/>
+     <value name="true"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="scope" visibility="false">
+    <Constraint loader="List">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="project" name="sharing" visibility="false">
+    <Constraint loader="ListAdd">
+     <value name="general"/>
+     <value name="project"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
+   <XModelAttribute default="*" name="property name" xmlname="PROPERTY_NAME">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute TRIM="no" name="text to find" xmlname="PROPERTY_VALUE">
+    <Constraint/>
+    <Editor/>
+   </XModelAttribute>
+   <XModelAttribute default="true" name="ignore case" xmlname="IGNORE_CASE">
+    <Constraint loader="List">
+     <value name="false"/>
+     <value name="true"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
+   <XModelAttribute default="contains" name="equality" xmlname="EQUALITY">
+    <Constraint loader="List">
+     <value name="coincides"/>
+     <value name="contains"/>
+     <value name="is contained"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CopyHandler"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.CutHandler"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+</XModelEntityGroup>
