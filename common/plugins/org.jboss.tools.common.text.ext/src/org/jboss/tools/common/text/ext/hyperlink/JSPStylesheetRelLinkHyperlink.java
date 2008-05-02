@@ -79,7 +79,7 @@ public class JSPStylesheetRelLinkHyperlink extends RelativeLinkHyperlink {
 				bStart--;
 			}
 			// find end of bean property
-			while (bEnd < sb.length()) { 
+			while (bEnd >= 0 && bEnd < sb.length()) { 
 				if (!Character.isJavaIdentifierPart(sb.charAt(bEnd)) &&
 						sb.charAt(bEnd) != '\\' && sb.charAt(bEnd) != '/' &&
 						sb.charAt(bEnd) != ':' && sb.charAt(bEnd) != '-' &&
