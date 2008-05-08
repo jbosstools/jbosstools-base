@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.internal.commands.ICommandImageService;
+import org.eclipse.ui.commands.ICommandImageService;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.osgi.framework.Bundle;
 

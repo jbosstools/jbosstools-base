@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import org.eclipse.ui.IMemento;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -174,4 +176,34 @@ public class MementoDOM implements IMemento {
 	private Element getElement() {
 		return element;
 	}
+	
+	public String[] getAttributeKeys() {
+		NamedNodeMap map = element.getAttributes();
+		int size = map.getLength();
+		String[] attributes = new String[size];
+		for (int i = 0; i < size; i++) {
+			Node node = map.item(i);
+			attributes[i] = node.getNodeName();
+		}
+		return attributes;
+
+	}
+
+	public Boolean getBoolean(String key) {
+        String attr = getString(key);
+        if (attr == null) {
+			return null;
+		}
+        return Boolean.valueOf(attr);
+	}
+   
+	public void putBoolean(String key, boolean value) {
+		putString(key, value ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	public String getType() {
+		return getString(TYPE);
+	}
+	
+	
 }
