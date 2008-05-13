@@ -97,6 +97,10 @@ public class ExtendedPropertiesEditor {
 	public void dispose() {
 		if (xtable!=null) xtable.dispose();
 		xtable = null;
+		if (context != null) {
+			context.clear();
+			context = null;
+		}
 	}
 	
 	class XTableProviderImpl implements XTableProvider {

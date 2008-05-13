@@ -181,6 +181,10 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				fWizardModel.removePropertyChangeListener(TagAttributesComposite.this);
+				if (context != null) {
+					context.clear();
+					context = null;
+				}
 				removeDisposeListener(this);
 			}
 		});
