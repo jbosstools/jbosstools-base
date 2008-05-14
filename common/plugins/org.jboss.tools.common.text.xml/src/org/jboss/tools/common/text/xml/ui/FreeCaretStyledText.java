@@ -76,7 +76,10 @@ public class FreeCaretStyledText extends StyledText implements PaintListener {
 				start = getCharCount();
 			if (start + length > getCharCount())
 				length = getCharCount() - start;
-			super.redrawRange(start, length, clearBackground);
+			//FIX for JBIDE-2192
+			if (length > 0) {
+				super.redrawRange(start, length, clearBackground);
+			}
 		}
 	}
     
