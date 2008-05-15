@@ -14,7 +14,11 @@ import java.io.File;
 import java.net.MalformedURLException;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
@@ -209,8 +213,19 @@ public class DropContext {
 
 	class FileTransferProcessor extends TransferProcessor {
 		public void process(TransferData data) {
-			flavor = "application/x-moz-file";
+			ISelection s = LocalSelectionTransfer.getTransfer().getSelection();
+			if(s != null) {
+				if(s.isEmpty() || !(s instanceof IStructuredSelection)) return;
+				Object o = ((IStructuredSelection)s).getFirstElement();
+				boolean ok = o instanceof IFile;
+				if(!ok && (o instanceof IAdaptable)) {
+					ok = ((IAdaptable)o).getAdapter(IFile.class) != null
+						&& ((IAdaptable)o).getAdapter(IResource.class) != null;
+				}
+				if(!ok) return;
+			}			
 			mimeData = getURL(event);
+			flavor = "application/x-moz-file";
 			if(mimeData != null && isOverAttributeValue) {
 				String path = getFile(event).getAbsolutePath();
 				IFile f = EclipseResourceUtil.getFile(path);
