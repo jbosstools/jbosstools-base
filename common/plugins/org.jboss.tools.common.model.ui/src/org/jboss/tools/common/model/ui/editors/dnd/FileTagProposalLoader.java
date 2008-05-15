@@ -13,6 +13,8 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jboss.tools.common.model.ui.views.palette.PaletteTaglibInserter;
+
 public class FileTagProposalLoader implements ITagProposalLoader {
 
 	private static final Map<String,TagProposal[]> extensionMap = new HashMap<String,TagProposal[]>();
@@ -53,19 +55,36 @@ public class FileTagProposalLoader implements ITagProposalLoader {
 		),
 	};
 	
+	static TagProposal JSP_INCLUDE = new TagProposal(
+		DropURI.JSP_URI,
+		"jsp",
+		"include",
+		new AbsoluteFilePathAttributeValueLoader("page","","")						
+	);
+	
+	static TagProposal JSP_FORWARD = new TagProposal(
+		DropURI.JSP_URI,
+		"jsp",
+		"forward",
+		new AbsoluteFilePathAttributeValueLoader("page","","")
+	);
+	
+	static TagProposal UI_INCLUDE = new TagProposal(
+		PaletteTaglibInserter.faceletUri,
+		"ui",
+		"include",
+		new AbsoluteFilePathAttributeValueLoader("src","","")						
+	);
+		
 	static TagProposal[] PAGE_TAG_PROPOSALS = new TagProposal[]{
-		new TagProposal(
-			DropURI.JSP_URI,
-			"jsp",
-			"include",
-			new AbsoluteFilePathAttributeValueLoader("page","","")						
-		),
-		new TagProposal(
-			DropURI.JSP_URI,
-			"jsp",
-			"forward",
-			new AbsoluteFilePathAttributeValueLoader("page","","")
-		)
+		JSP_INCLUDE,
+		JSP_FORWARD
+	};
+	
+	static TagProposal[] XHTML_PAGE_TAG_PROPOSALS = new TagProposal[]{
+		JSP_INCLUDE,
+		JSP_FORWARD,
+		UI_INCLUDE
 	};
 	
 	static {
@@ -82,7 +101,7 @@ public class FileTagProposalLoader implements ITagProposalLoader {
 		
 		extensionMap.put("jsp",PAGE_TAG_PROPOSALS);
 		extensionMap.put("html",PAGE_TAG_PROPOSALS);
-		extensionMap.put("xhtml",PAGE_TAG_PROPOSALS);
+		extensionMap.put("xhtml",XHTML_PAGE_TAG_PROPOSALS);
 
 		extensionMap.put(
 				"properties",new TagProposal[]{
