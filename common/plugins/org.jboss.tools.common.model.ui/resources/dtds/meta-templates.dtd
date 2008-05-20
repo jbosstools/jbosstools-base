@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT meta-templates (meta-template*)> 
+<!ATTLIST meta-templates uri CDATA #REQUIRED> 
+
+<!ELEMENT meta-template (super-class?, interface*)> 
+<!ATTLIST meta-template	axis CDATA #REQUIRED>
+<!ATTLIST meta-template	displayName CDATA #REQUIRED>
+<!ATTLIST meta-template xEntity CDATA #REQUIRED>
+
+<!ELEMENT super-class EMPTY> 
+<!ATTLIST super-class name CDATA #REQUIRED> 
+
+<!ELEMENT interface EMPTY> 
+<!ATTLIST interface name CDATA #REQUIRED> 

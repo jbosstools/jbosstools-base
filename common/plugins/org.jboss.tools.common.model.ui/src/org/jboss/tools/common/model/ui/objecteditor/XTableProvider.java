@@ -1,0 +1,24 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
+package org.jboss.tools.common.model.ui.objecteditor;
+
+import org.eclipse.swt.graphics.Color;
+
+public interface XTableProvider {
+	public int getColumnCount();
+	public int getRowCount();
+	public String getColumnName(int c);
+	public String getValueAt(int r, int c);
+	public Object getDataAt(int r);
+	public Color getColor(int r);
+	public int getWidthHint(int c);
+	public void dispose();
+}
