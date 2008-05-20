@@ -35,7 +35,6 @@ public class AntEntityRecognizer implements EntityRecognizer {
         	i = d.describe(new StringReader(body), null);
         	if(i == 2) {
         		IContentDescription aa = cd.getDescriptionFor(new StringReader(body), SUPPORTED_OPTIONS);
-        		System.out.println("aaa");
         	}
         } catch (IOException e) {
         	ModelPlugin.getPluginLog().logError(e);
