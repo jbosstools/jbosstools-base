@@ -227,8 +227,6 @@ public class TypeInfoCollector {
 		private boolean isDataModel;
 		private Type fType;
 		
-//		TypeInfoCollector typeInfo;
-
 		protected MemberInfo (
 			IType sourceType,
 			String declaringTypeQualifiedName, String name, int modifiers, MemberInfo parentMember, boolean dataModel, Type type) {
@@ -326,14 +324,12 @@ public class TypeInfoCollector {
 		protected void setDataModel(boolean isDataModel) {
 			this.isDataModel = isDataModel;
 		}
-		
+
 		public TypeInfoCollector getTypeCollector() {
 			// The rev. 7651 results in a deadlock, typeInfo is not stored anymore 
 			// The rev. 7623 results in a deadlock, so, it's rolled back
 			// >>> Fix for JBIDE-2090 
-			TypeInfoCollector tic = new TypeInfoCollector(this);
-			tic.collectInfo();
-			return tic;
+			return new TypeInfoCollector(this);
 			// <<< Fix for JBIDE-2090 
 		}
 
@@ -344,7 +340,6 @@ public class TypeInfoCollector {
 		private IType fType;
 		private TypeInfo superType;
 		private Map<String, Type> params = new HashMap<String, Type>();
-		private boolean initialized = false;
 
 		public TypeInfo(IType type, MemberInfo parentMember, boolean dataModel) throws JavaModelException {
 			super(type.getDeclaringType(),
@@ -376,26 +371,23 @@ public class TypeInfoCollector {
 		 */
 		@Override
 		void initializeParameters() {
-			if(!initialized) {
-				try {
-					MemberInfo parent = getParentMember();
-					if(parent!=null && parent instanceof TypeMemberInfo) {
-						ITypeParameter[] parameters = fType.getTypeParameters();
-						for (int i = 0; i < parameters.length; i++) {
-							Type type = parent.getType().getParameter(i);
-							if(type!=null) {
-								params.put(parameters[i].getElementName(), type);
-							}
+			try {
+				MemberInfo parent = getParentMember();
+				if(parent!=null && parent instanceof TypeMemberInfo) {
+					ITypeParameter[] parameters = fType.getTypeParameters();
+					for (int i = 0; i < parameters.length; i++) {
+						Type type = parent.getType().getParameter(i);
+						if(type!=null) {
+							params.put(parameters[i].getElementName(), type);
 						}
 					}
-					if(superType!=null) {
-						superType.initializeParameters(this);
-					}
-				} catch (JavaModelException e) {
-					ModelPlugin.getPluginLog().logError(e);
 				}
+				if(superType!=null) {
+					superType.initializeParameters(this);
+				}
+			} catch (JavaModelException e) {
+				ModelPlugin.getPluginLog().logError(e);
 			}
-			initialized = true;
 		}
 
 		private void initializeParameters(TypeInfo inheritedType) throws JavaModelException {
@@ -691,6 +683,7 @@ public class TypeInfoCollector {
 	public TypeInfoCollector(MemberInfo member) {
 		this.fMember = member;
 		this.fType = member.getMemberType();
+		collectInfo();
 	}
 
 	public IType getType() {
