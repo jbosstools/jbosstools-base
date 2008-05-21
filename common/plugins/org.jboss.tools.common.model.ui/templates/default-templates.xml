@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<templates>
-
-<template name="au" description="%Templates.au" id="org.jboss.tools.common.model.ui.templates.switch" context="au" enabled="true">The au template.</template>
-
-</templates>
