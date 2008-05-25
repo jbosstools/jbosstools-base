@@ -112,7 +112,7 @@
 		<!-- Additional XML PREFERENCE PAGES -->
 		<page
 			name="%XML_Occurrences.name"
-			category="org.eclipse.wst.sse.ui.preferences.xml"
+			category="org.eclipse.wst.xml.ui.preferences.xml.xml"
 			class="org.jboss.tools.jst.jsp.preferences.xpl.XMLOccurrencesPreferencePage"
 			id="org.eclipse.wst.sse.ui.preferences.xml.occurrences">
 		</page>

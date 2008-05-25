@@ -54,6 +54,7 @@ public class XmlEditorPlugin extends BaseUIPlugin {
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
+		initDefaultPluginPreferences();
 	}
 
 	/**
