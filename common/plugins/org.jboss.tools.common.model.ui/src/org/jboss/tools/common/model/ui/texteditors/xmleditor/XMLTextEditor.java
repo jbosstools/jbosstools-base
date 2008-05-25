@@ -100,7 +100,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 	public XMLTextEditor(final boolean useRHDSConfig) {
 		this.useRHDSConfig = useRHDSConfig;
 		
-		XmlEditorPlugin.getDefault().initDefaultPluginPreferences();
+		//XmlEditorPlugin.getDefault().initDefaultPluginPreferences();
 ///		dnd.setTextEditorDropProvider(new TextEditorDropProviderImpl());
 		
 		if (useRHDSConfig) {
