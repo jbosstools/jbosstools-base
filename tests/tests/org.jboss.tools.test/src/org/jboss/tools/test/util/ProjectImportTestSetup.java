@@ -13,6 +13,7 @@ package org.jboss.tools.test.util;
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 
+import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -65,7 +66,11 @@ public class ProjectImportTestSetup extends TestSetup {
 		IResource project = ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
 		assertNotNull("Can't load " + projectName, project);
 		IProject result = project.getProject();
-		result.build(IncrementalProjectBuilder.FULL_BUILD, null);
+		try {
+			result.build(IncrementalProjectBuilder.FULL_BUILD, null);
+		} catch (ResourceException e) {
+			JUnitUtils.fail(e.getMessage(), e);
+		}
 		EditorTestHelper.joinBackgroundActivities();
 		return result;
 	}
