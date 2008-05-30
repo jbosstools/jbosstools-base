@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.jboss.tools.common.model.XModelConstants;
@@ -100,4 +101,18 @@ public class ProjectHome {
 		return (!webInfDir.exists()) ? null : modulePath;
 	}
 
+	public static IPath getFirstWebContentPath(IProject project) {
+		IPath modulePath = null;
+		try {
+			IVirtualComponent vc = ComponentCore.createComponent(project);
+			if (vc == null || vc.getRootFolder() == null)
+				return null;
+			if (ModuleCoreNature.isFlexibleProject(project)) {
+				modulePath = vc.getRootFolder().getWorkspaceRelativePath();
+			}
+		} catch (Exception ex) {
+		}
+
+		return modulePath;
+	}
 }
