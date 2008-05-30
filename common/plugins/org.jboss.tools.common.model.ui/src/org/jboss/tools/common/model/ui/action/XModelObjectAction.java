@@ -54,15 +54,20 @@ public class XModelObjectAction extends XModelObjectActionItem {
 	}
 	public void actionPerformed() {
 		try {
+			XAction runAction = action;
+			XModelObject runObject = object;
+
 			XRedirect redirect = action.getRedirect();
 			XAction redirectAction = null;
 			XModelObject redirectObject = null;
-			if(redirect != null) {
-				redirectAction = redirect.getRedirectAction(object);
-				redirectObject = redirect.getRedirectSource(object);
+			while(redirect != null) {
+				redirectAction = redirect.getRedirectAction(runObject);
+				redirectObject = redirect.getRedirectSource(runObject);
+				redirect = redirectAction == null ? null : redirectAction.getRedirect();
+				if(redirect != null) {
+					runObject = redirectObject;
+				}
 			}			
-			XAction runAction = action;
-			XModelObject runObject = object;
 			if(redirectAction != null && redirectObject != null) {
 				runAction = redirectAction;
 				runObject = redirectObject;
