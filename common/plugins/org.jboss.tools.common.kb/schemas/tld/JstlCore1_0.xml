@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kb-schema PUBLIC "-//Red Hat, Inc//DTD Knowledge Base 1.0//EN" "http://www.redhat.com/dtds/kb-schema_1_0.dtd">
+<schema
+  location=""
+  prefix="c" uri="http://java.sun.com/jstl/core">
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="catch" start-tag="required">
+    <attribute-type name="var" required="false"/>
+    <attribute type="var"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="choose" start-tag="required"/>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="out" start-tag="required">
+    <attribute-type name="value" required="true"/>
+    <attribute type="value"/>
+    <attribute-type name="default" required="false"/>
+    <attribute type="default"/>
+    <attribute-type name="escapeXml" required="false"/>
+    <attribute type="escapeXml"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="if" start-tag="required">
+    <attribute-type name="test" required="true"/>
+    <attribute type="test"/>
+    <attribute-type name="var" required="false"/>
+    <attribute type="var"/>
+    <attribute-type name="scope" required="false"/>
+    <attribute type="scope"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="import" start-tag="required">
+    <attribute-type name="url" required="true"/>
+    <attribute type="url"/>
+    <attribute-type name="var" required="false"/>
+    <attribute type="var"/>
+    <attribute-type name="scope" required="false"/>
+    <attribute type="scope"/>
+    <attribute-type name="varReader" required="false"/>
+    <attribute type="varReader"/>
+    <attribute-type name="context" required="false"/>
+    <attribute type="context"/>
+    <attribute-type name="charEncoding" required="false"/>
+    <attribute type="charEncoding"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="forEach" start-tag="required">
+    <attribute-type name="items" required="false"/>
+    <attribute type="items"/>
+    <attribute-type name="begin" required="false"/>
+    <attribute type="begin"/>
+    <attribute-type name="end" required="false"/>
+    <attribute type="end"/>
+    <attribute-type name="step" required="false"/>
+    <attribute type="step"/>
+    <attribute-type name="var" required="false"/>
+    <attribute type="var"/>
+    <attribute-type name="varStatus" required="false"/>
+    <attribute type="varStatus"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="forTokens" start-tag="required">
+    <attribute-type name="items" required="true"/>
+    <attribute type="items"/>
+    <attribute-type name="delims" required="true"/>
+    <attribute type="delims"/>
+    <attribute-type name="begin" required="false"/>
+    <attribute type="begin"/>
+    <attribute-type name="end" required="false"/>
+    <attribute type="end"/>
+    <attribute-type name="step" required="false"/>
+    <attribute type="step"/>
+    <attribute-type name="var" required="false"/>
+    <attribute type="var"/>
+    <attribute-type name="varStatus" required="false"/>
+    <attribute type="varStatus"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="otherwise" start-tag="required"/>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="param" start-tag="required">
+    <attribute-type name="name" required="true"/>
+    <attribute type="name"/>
+    <attribute-type name="value" required="false"/>
+    <attribute type="value"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="redirect" start-tag="required">
+    <attribute-type name="var" required="false"/>
+    <attribute type="var"/>
+    <attribute-type name="scope" required="false"/>
+    <attribute type="scope"/>
+    <attribute-type name="url" required="true"/>
+    <attribute type="url"/>
+    <attribute-type name="context" required="false"/>
+    <attribute type="context"/>
+  </element-type>
+  <element-type body-content="refused" content="mixed" end-tag="required"
+    name="remove" start-tag="required">
+    <attribute-type name="var" required="true"/>
+    <attribute type="var"/>
+    <attribute-type name="scope" required="false"/>
+    <attribute type="scope"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="set" start-tag="required">
+    <attribute-type name="var" required="false"/>
+    <attribute type="var"/>
+    <attribute-type name="value" required="false"/>
+    <attribute type="value"/>
+    <attribute-type name="target" required="false"/>
+    <attribute type="target"/>
+    <attribute-type name="property" required="false"/>
+    <attribute type="property"/>
+    <attribute-type name="scope" required="false"/>
+    <attribute type="scope"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="url" start-tag="required">
+    <attribute-type name="var" required="false"/>
+    <attribute type="var"/>
+    <attribute-type name="scope" required="false"/>
+    <attribute type="scope"/>
+    <attribute-type name="value" required="true"/>
+    <attribute type="value"/>
+    <attribute-type name="context" required="false"/>
+    <attribute type="context"/>
+  </element-type>
+  <element-type body-content="allowed" content="mixed" end-tag="required"
+    name="when" start-tag="required">
+    <attribute-type name="test" required="true"/>
+    <attribute type="test"/>
+  </element-type>
+</schema>

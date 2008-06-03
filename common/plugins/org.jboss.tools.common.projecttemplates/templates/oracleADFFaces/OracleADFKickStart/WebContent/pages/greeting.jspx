@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="1.2"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:afh="http://xmlns.oracle.com/adf/faces/EA13/html"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/EA13" >
+	<jsp:directive.page contentType="text/html;charset=iso-8859-1"/>
+
+	<f:loadBundle basename="demo.bundle.Messages" var="Message"/>
+	<f:view>
+		<afh:html>
+			<afh:head title="Greeting Page"/>
+			<afh:body>
+				<af:outputFormatted value="&lt;b>#{Message.greeting_text}&lt;/b>, "/>
+				<af:outputFormatted value="&lt;b>#{GetNameBean.userName}!&lt;/b>"/>
+			</afh:body>
+		</afh:html>	
+	</f:view>
+</jsp:root>

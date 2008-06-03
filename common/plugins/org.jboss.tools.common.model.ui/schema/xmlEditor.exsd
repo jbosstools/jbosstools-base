@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.jboss.tools.common.model.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.jboss.tools.common.model.ui" id="xmlEditor" name="xmlEditor"/>
+      </appInfo>
+      <documentation>
+         Define XML editors for XML files with well known PUBLIC ID.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="xmlEditor" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="xmlEditor">
+      <annotation>
+         <documentation>
+            xmlEditor defines editor that will be opened for XML file that contains one of the root entities that are listed in attribute entities. Everey entity represent one of well known Public ID. Mapping between Entites and Public ID is described in *.meta files.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="contributorClass" type="string">
+            <annotation>
+               <documentation>
+                  class that in charge of Eclipse Retargeting Actions Activation
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  qualifies name of editor class that extends org.jboss.tools.common.editor.ObjectMultipageEditor
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="entities" type="string">
+            <annotation>
+               <documentation>
+                  list of Red Hat Model Entities
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  editor label
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  editor icon
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="priority" type="string">
+            <annotation>
+               <documentation>
+                  editor prioryti
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         2.0.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;pre&gt;&lt;extension id=&quot;e&quot; 
+ name=&quot;XML Editors&quot; 
+ point=&quot;org.jboss.tools.common.model.ui.xmlEditor&quot;&gt;
+ &lt;xmlEditor 
+  class=&quot;org.jboss.tools.struts.ui.editor.StrutsConfigEditor&quot; 
+  contributorClass=&quot;org.jboss.tools.struts.ui.action.StrutsMultiPageContributor&quot; 
+  entities=&quot;StrutsConfig10,StrutsConfig11,StrutsConfig12&quot; 
+  icon=&quot;images/xstudio/editors/struts.gif&quot; 
+  name=&quot;%editors.strutsconfig.name&quot;&gt;
+ &lt;/xmlEditor&gt;
+&lt;/extension&gt;&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         See org.jboss.tools.common.model.ui.editor in org.jboss.tools.common.model.ui plugin.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Red Hat, Inc
+      </documentation>
+   </annotation>
+
+</schema>
