@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JBossIDE Product Test Plugin
+Bundle-SymbolicName: org.jboss.ide.eclipse.core.test
+Bundle-Version: 1.0.0
+Bundle-Activator: org.jboss.ide.eclipse.core.test.CoreTestPlugin
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.junit,
+ org.eclipse.jdt.junit.runtime,
+ org.eclipse.pde.junit.runtime,
+ org.junit,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt,
+ org.eclipse.jdt.debug,
+ org.eclipse.jdt.launching,
+ org.eclipse.jdt.ui,
+ org.eclipse.ui,
+ org.eclipse.ui.ide
+Export-Package: org.jboss.ide.eclipse.core.test,
+ org.jboss.ide.eclipse.core.test.util
+Bundle-ClassPath: org-jboss-ide-eclipse-core-test.jar
