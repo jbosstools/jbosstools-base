@@ -93,7 +93,11 @@ public class OrderedChildren extends RegularChildren {
 	public void replaceChildren(XModelObject[] objects) {
 		super.replaceChildren(objects);
 		synchronized (this) {
-			alist = Arrays.asList(objects);
+			ArrayList<XModelObject> n = new ArrayList<XModelObject>();
+			for (int i = 0; i < objects.length; i++) {
+				n.add(objects[i]);
+			}
+			alist = n;
 			list = null;
 		}
 	}
