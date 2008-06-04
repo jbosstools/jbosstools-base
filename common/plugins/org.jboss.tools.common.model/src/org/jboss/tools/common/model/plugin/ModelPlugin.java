@@ -73,6 +73,16 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 		System.setProperty(XModelConstants.HOME, EclipseResourceUtil.getInstallPath(context.getBundle()));
 		super.start(context);		
 		try {
+			 /*
+			    FIXME 	That's not right solution to obtain workbench because there could be no  workbench yet
+			 			If so it leads to the exception below and problem with model plug-in activation 
+			 	java.lang.IllegalStateException: Workbench has not been created yet.
+		     	[java] 	at org.eclipse.ui.PlatformUI.getWorkbench(PlatformUI.java:92)
+		     	[java] 	at org.jboss.tools.common.model.plugin.ModelPlugin.start(ModelPlugin.java:76)
+		     	[java] 	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$2.run(BundleContextImpl.java:1009)
+		     	[java] 	at java.security.AccessController.doPrivileged(Native Method)
+		     */
+
 			PlatformUI.getWorkbench().addWindowListener(this);
 		} catch (Exception e) {
 			getPluginLog().logError(e);
