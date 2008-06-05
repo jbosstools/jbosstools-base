@@ -17,6 +17,7 @@ import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.ide.IDEActionFactory;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
+import org.eclipse.wst.sse.ui.internal.actions.StructuredTextEditorActionConstants;
 
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.text.xml.xpl.ToggleOccurencesMarkUpAction;
@@ -61,6 +62,7 @@ public class MultiPageContributor extends AbstractMultiPageContributor {
 				actionBars.setGlobalActionHandler(ActionFactory.PRINT.getId(), getAction(editor, ITextEditorActionConstants.PRINT));
 				actionBars.setGlobalActionHandler(ActionFactory.REVERT.getId(), getAction(editor, ITextEditorActionConstants.REVERT));
 				actionBars.setGlobalActionHandler(ActionFactory.SAVE.getId(), getAction(editor, ITextEditorActionConstants.SAVE));
+				actionBars.setGlobalActionHandler(StructuredTextEditorActionConstants.ACTION_NAME_CONTENTASSIST_PROPOSALS, getAction(editor, StructuredTextEditorActionConstants.ACTION_NAME_CONTENTASSIST_PROPOSALS));				
 
 			}
 			// re-register action on key binding service
