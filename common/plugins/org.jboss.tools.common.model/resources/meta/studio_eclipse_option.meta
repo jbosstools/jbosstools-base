@@ -1231,6 +1231,9 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
+    <XModelAttribute default="500" name="Source-Visual Editors Weights" xmlname="source_visual_editors_weights">
+    <Editor name="Slider"/>
+   </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list"/>
   <XDependencies/>
