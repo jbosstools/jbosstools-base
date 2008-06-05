@@ -208,6 +208,8 @@ public abstract class SpecialWizardSupport {
 
     public String getHelpKey() {
     	if(action == null) return null;
+    	String key = action.getProperty("key");
+    	if(key != null && key.length() > 0) return key;
         return target.getModelEntity().getName() + "_" + action.getName() + "_" + stepId;
     }
 
