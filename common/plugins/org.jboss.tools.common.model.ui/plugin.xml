@@ -107,8 +107,12 @@
       </attributeEditor>
       <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.MutableMultipleChoiceEditor" id="MutableMultipleChoice">
       </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.SliderEditor" id="Slider">
+      </attributeEditor>
    </extension>
    <extension point="org.jboss.tools.common.model.ui.attributeAdapter">
+    <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter" id="Slider">
+    </attributeAdapter>   
       <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter" id="Default">
       </attributeAdapter>
       <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.custom.FileSystemListAdapter" id="CommonFileSystem">
