@@ -24,6 +24,7 @@ import org.eclipse.ui.ide.IDEActionFactory;
 import org.eclipse.ui.part.MultiPageEditorActionBarContributor;
 import org.eclipse.ui.texteditor.*;
 import org.eclipse.ui.texteditor.StatusLineContributionItem;
+import org.eclipse.wst.xml.ui.internal.XMLUIMessages;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.text.IRegion;
@@ -103,8 +104,15 @@ public abstract class AbstractMultiPageContributor extends MultiPageEditorAction
 	}
 	
 	protected void createAssistObjects() {
-		fContentAssistProposal = new RetargetTextEditorAction(TextEditorMessages.getResourceBundle(), "ContentAssistProposal."); //$NON-NLS-1$
-		fContentAssistProposal.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS); 
+
+		// JBIDE-2274 There is no any code assist in our XML Editors. >>>
+		ResourceBundle resourceBundle = XMLUIMessages.getResourceBundle();
+		fContentAssistProposal = new RetargetTextEditorAction(resourceBundle, ""); //$NON-NLS-1$
+		fContentAssistProposal.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
+//		fContentAssistProposal = new RetargetTextEditorAction(TextEditorMessages.getResourceBundle(), "ContentAssistProposal."); //$NON-NLS-1$
+//		fContentAssistProposal.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS); 
+		// JBIDE-2274 There is no any code assist in our XML Editors. <<<
+		
 		fContentAssistTip = new RetargetTextEditorAction(TextEditorMessages.getResourceBundle(), "ContentAssistTip."); //$NON-NLS-1$
 		fContentAssistTip.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_CONTEXT_INFORMATION);
 	}
