@@ -95,8 +95,12 @@ public class GenerateHelpKeysHandler extends AbstractHandler {
         String n = a.getAttributeValue("name");
         String dn = a.getAttributeValue("display name");
         if(dn.endsWith("...")) dn = dn.substring(0, dn.length() - 3);
-        if(n.startsWith("Add")) {
-        	String key = pref + n;
+        if(n.startsWith("Add") || n.startsWith("Create")) {
+        	Properties p = getProperties(a);
+        	String key = p.getProperty("key");
+        	if(key == null) {
+        		key = pref + n;
+        	}
         	String wt = dn;
         	if(!wt.startsWith("Add") && !wt.startsWith("New")) {
         		wt = "Add " + wt;
@@ -107,7 +111,7 @@ public class GenerateHelpKeysHandler extends AbstractHandler {
 			validateProperty(q, key + ".Title", on);
         } else if(n.equals("Properties")) {
         	String key = pref + n;
-			validateProperty(q, key + ".WindowTitle", "Properties");
+//			validateProperty(q, key + ".WindowTitle", "Properties");
 			XModelObject b = a;
 			while(b != null && b.getModelEntity().getName().toLowerCase().indexOf("entity") < 0) {
 				b = b.getParent();
@@ -116,7 +120,11 @@ public class GenerateHelpKeysHandler extends AbstractHandler {
 			if(on == null) on = dn;
 			validateProperty(q, key + ".Title", on);
         } else if(a.getAttributeValue("wizard").length() > 0) {
-        	String key = pref + n;
+        	Properties p = getProperties(a);
+        	String key = p.getProperty("key");
+        	if(key == null) {
+        		key = pref + n;
+        	}
 //            validateProperty(q, key, defpath);
 			validateProperty(q, key + ".WindowTitle", dn);
 			validateProperty(q, key + ".Title", "");
@@ -167,6 +175,22 @@ public class GenerateHelpKeysHandler extends AbstractHandler {
     		}
     	}
     	return result.toString();
+    }
+
+    private Properties getProperties(XModelObject a) {
+    	Properties p = new Properties();
+    	String ps = a.getAttributeValue("properties");
+    	if(ps == null || ps.length() == 0) return p;
+    	StringTokenizer st = new StringTokenizer(ps, ";");
+    	while(st.hasMoreTokens()) {
+    		String t = st.nextToken();
+    		int i = t.indexOf('=');
+    		if(i < 0) continue;
+    		String n = t.substring(0, i);
+    		String v = t.substring(i + 1);
+    		p.setProperty(n, v);
+    	}
+    	return p;
     }
 
 }
