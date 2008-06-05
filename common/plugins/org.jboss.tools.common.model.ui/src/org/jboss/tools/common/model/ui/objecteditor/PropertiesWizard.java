@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.objecteditor;
 
 import java.util.Properties;
 
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView;
@@ -54,6 +55,9 @@ class PropertiesWizardView extends AbstractQueryWizardView {
 		try {
 			objectEditor.setModelObject((XModelObject)dataObject);
 			Properties p = findProperties(data);
+			if(windowTitle == null) {
+				windowTitle = WizardKeys.getHeader("Properties");
+			}
 			boolean viewMode = p != null && "true".equals(p.getProperty("viewMode"));
 			objectEditor.setViewMode(viewMode);
 		} catch (Exception e) {

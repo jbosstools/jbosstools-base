@@ -44,6 +44,7 @@ public class AbstractQueryWizard implements SpecialWizard {
 		} else {
 			String title = p.getProperty("title");
 			if(title == null) title = WizardKeys.getHeader(key);
+			if(title == null) title = WizardKeys.getHeader("Properties"); // NON-NLS-1
 			if(title == null) title = "Title is not found for key \"" + key + "\"";
 			view.setWindowTitle(title);
 			String subtitle = p.getProperty("subtitle");

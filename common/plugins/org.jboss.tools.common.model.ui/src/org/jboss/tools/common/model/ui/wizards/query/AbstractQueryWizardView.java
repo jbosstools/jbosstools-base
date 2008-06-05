@@ -35,7 +35,7 @@ public abstract class AbstractQueryWizardView implements CommandBarListener {
 	protected CommandBar commandBar = new CommandBar();	
 	protected XModel model;
 
-	private String windowTitle;
+	protected String windowTitle;
 	private String title = "";
 	private String message;
 	private String errorMessage;
