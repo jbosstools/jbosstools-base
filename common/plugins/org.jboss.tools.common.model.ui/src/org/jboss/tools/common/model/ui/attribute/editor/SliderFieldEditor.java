@@ -109,12 +109,10 @@ public class SliderFieldEditor extends ExtendedFieldEditor implements
 		}
 	}
 
-	@Override
 	public int getNumberOfControls() {
 		return 2;
 	}
 
-	@Override
 	public Control[] getControls(Composite parent) {
 		return new Control[] { 
 				getLabelComposite(parent),
@@ -122,7 +120,6 @@ public class SliderFieldEditor extends ExtendedFieldEditor implements
 				};
 	}
 
-	@Override
 	public void setPropertyEditor(IPropertyEditor propertyEditor) {
 		this.propertyEditor = propertyEditor;
 		if (null != propertyEditor) {
@@ -133,7 +130,6 @@ public class SliderFieldEditor extends ExtendedFieldEditor implements
 		init();
 	}
 
-	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if(ExtendedFieldEditor.VALUE.equals(event.getProperty())) {
 			setPropertyChangeListener(null);
@@ -143,7 +139,6 @@ public class SliderFieldEditor extends ExtendedFieldEditor implements
 		}
 	}
 
-	@Override
 	public void propertyChange(java.beans.PropertyChangeEvent evt) {
 		valueProvider.removeValueChangeListener(this);
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
@@ -195,12 +190,10 @@ public class SliderFieldEditor extends ExtendedFieldEditor implements
 		 * Add listener to handle value change  
 		 */
 		selectionListener = new SelectionListener() {
-			@Override
 			public void widgetSelected(SelectionEvent e) {
 				valueChanged();
 			}
-			
-			@Override
+
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// Do nothing
 			}
