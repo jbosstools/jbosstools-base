@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.eclipse.core.runtime.ISafeRunnable;
+import org.eclipse.core.runtime.SafeRunner;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.XMapping;
 import org.jboss.tools.common.meta.XModelEntity;
@@ -459,9 +461,18 @@ public class XModelImpl implements XModel {
 
 	void fireNodeChanged(XModelObject object, String info, Object details) {
 		if(object.getModel() != this || !object.isActive()) return;
-		XModelTreeEvent event = new XModelTreeEvent(this, object, 0, info, details);
+		final XModelTreeEvent event = new XModelTreeEvent(this, object, 0, info, details);
 		XModelTreeListener[] ls = treeListenersArray;
-		for (int i = 0; i < ls.length; i++) ls[i].nodeChanged(event);
+		for (int i = 0; i < ls.length; i++) {
+			final XModelTreeListener l = ls[i];
+			SafeRunner.run(new ISafeRunnable() {
+				public void handleException(Throwable exception) {
+				}
+				public void run() throws Exception {
+					l.nodeChanged(event);
+				}
+			});
+		}
 	}
 
     public void fireStructureChanged(XModelObject object) {
@@ -471,9 +482,18 @@ public class XModelImpl implements XModel {
 
     public void fireStructureChanged(XModelObject object, int kind, Object info) {
         if(object.getModel() != this || !object.isActive()) return;
-        XModelTreeEvent event = new XModelTreeEvent(this, object, kind, info);
+        final XModelTreeEvent event = new XModelTreeEvent(this, object, kind, info);
         XModelTreeListener[] ls = treeListenersArray;
-        for (int i = 0; i < ls.length; i++) ls[i].structureChanged(event);
+		for (int i = 0; i < ls.length; i++) {
+			final XModelTreeListener l = ls[i];
+			SafeRunner.run(new ISafeRunnable() {
+				public void handleException(Throwable exception) {
+				}
+				public void run() throws Exception {
+					l.structureChanged(event);
+				}
+			});
+		}
     }
     
     protected Map<String,Object> managers = new HashMap<String,Object>();
