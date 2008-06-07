@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWindowListener;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.Workbench;
 import org.jboss.tools.common.log.BaseUIPlugin;
 import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.model.XModelConstants;
@@ -72,22 +73,6 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 	public void start(BundleContext context) throws Exception {
 		System.setProperty(XModelConstants.HOME, EclipseResourceUtil.getInstallPath(context.getBundle()));
 		super.start(context);		
-		try {
-			 /*
-			    FIXME 	That's not right solution to obtain workbench because there could be no  workbench yet
-			 			If so it leads to the exception below and problem with model plug-in activation 
-			 	java.lang.IllegalStateException: Workbench has not been created yet.
-		     	[java] 	at org.eclipse.ui.PlatformUI.getWorkbench(PlatformUI.java:92)
-		     	[java] 	at org.jboss.tools.common.model.plugin.ModelPlugin.start(ModelPlugin.java:76)
-		     	[java] 	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$2.run(BundleContextImpl.java:1009)
-		     	[java] 	at java.security.AccessController.doPrivileged(Native Method)
-		     */
-
-			PlatformUI.getWorkbench().addWindowListener(this);
-		} catch (Exception e) {
-			getPluginLog().logError(e);
-		}
-//		ClassLoaderUtil.init();
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				ClassLoaderUtil.init();
