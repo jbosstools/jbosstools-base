@@ -52,7 +52,7 @@
             rendering.&lt;/p&gt;
             
             &lt;/ul&gt;</description>
-        <attribute-type name="action" required="false">
+        <attribute-type name="action" required="true">
             <description>MethodExpression representing the application action to invoke
                 when this component is activated by the user.  The expression
                 must evaluate to a public method that takes no parameters, and
@@ -114,7 +114,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -376,7 +376,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="commandLink" start-tag="required">
         <description>&lt;p&gt;Render an HTML "a" anchor element that acts like a
             form submit button when clicked.&lt;/p&gt;
@@ -494,7 +494,7 @@
             tag.&lt;/p&gt;
             
             &lt;/ul&gt;</description>
-        <attribute-type name="action" required="false">
+        <attribute-type name="action" required="true">
             <description>MethodExpression representing the application action to invoke
                 when this component is activated by the user.  The expression
                 must evaluate to a public method that takes no parameters, and
@@ -556,7 +556,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -940,14 +940,14 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="rows"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="value"/>
-        <attribute-type name="var" required="false">
+        <attribute-type name="var" required="true">
             <description>Name of a request-scope attribute under which the model data for the
                 row selected by the current value of the "rowIndex" property (i.e.
                 also the current value of the "rowData" property) will be exposed.</description>
@@ -1539,7 +1539,7 @@
             </proposal>
         </attribute-type>
         <attribute type="url"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -1854,7 +1854,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -2006,7 +2006,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -2419,7 +2419,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -2692,7 +2692,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="inputTextarea" start-tag="required">
         <description>&lt;p&gt;Renders an HTML "textarea" element.&lt;/p&gt;
             
@@ -2809,7 +2809,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -3558,7 +3558,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -3631,7 +3631,7 @@
         </attribute-type>
         <attribute type="binding"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="outputLabel" start-tag="required">
         <description>Renders an HTML "label" element.  Render the current value
             of the component as label text if it is specified. If a "for" attribute is
@@ -3665,7 +3665,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -3701,7 +3701,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="escape"/>
-        <attribute-type name="for" required="false">
+        <attribute-type name="for" required="true">
             <description>Client identifier of the component for which this element
                 is a label.</description>
             <proposal type="beanProperty"/>
@@ -3901,7 +3901,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -4200,7 +4200,7 @@
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -4388,7 +4388,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="columnClasses"/>
-        <attribute-type name="columns" required="false">
+        <attribute-type name="columns" required="true">
             <description>The number of columns to render before
                 starting a new row.</description>
             <proposal type="beanProperty"/>
@@ -4815,7 +4815,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -5198,7 +5198,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -5689,7 +5689,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -6076,7 +6076,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -6455,7 +6455,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -6842,7 +6842,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -7244,7 +7244,7 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="validatorMessage"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value of this component.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
