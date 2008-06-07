@@ -386,4 +386,10 @@
 			class="org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateSupport"/>
 
 	</extension>
+ <extension
+       point="org.eclipse.ui.startup">
+    <startup
+          class="org.jboss.tools.common.model.plugin.ModelPluginStartup">
+    </startup>
+ </extension>
 </plugin>
