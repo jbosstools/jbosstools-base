@@ -369,5 +369,10 @@ litigation.
          install-size="0"
          version="0.0.0"/>
 
-</feature>
+   <plugin
+         id="org.jboss.ide.eclipse.archives.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
+</feature>
