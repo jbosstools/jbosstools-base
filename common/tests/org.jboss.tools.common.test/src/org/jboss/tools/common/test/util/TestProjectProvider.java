@@ -62,7 +62,7 @@ public class TestProjectProvider {
 		if(projectPath == null) {
 			projectPath = "/projects/" + name;
 		} else if(name == null) {
-			name = projectPath.substring(projectPath.lastIndexOf('/'));
+			name = projectPath.substring(projectPath.lastIndexOf('/')+1);
 		}
 		this.makeCopy = makeCopy;
 		init(bundleName, projectPath, name);		
