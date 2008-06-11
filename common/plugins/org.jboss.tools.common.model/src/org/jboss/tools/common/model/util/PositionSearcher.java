@@ -149,8 +149,11 @@ public class PositionSearcher {
 				XModelObject parent = object.getParent();
 				selectObject(parent);
 				if(startPos < 0) return;
-				XModelObject[] os = parent.getChildren(object.getModelEntity().getName());
+//				String entity = object.getModelEntity().getName();
+				XModelObject[] os = parent.getChildren();
 				for (int i = 0; i < os.length; i++) {
+					String xml_i = os[i].getModelEntity().getXMLSubPath();
+					if(!xml.equals(xml_i)) continue;
 					boolean ok = false;
 					while(!ok) {
 						startPos = nextStartPos(token, startPos + 1);
