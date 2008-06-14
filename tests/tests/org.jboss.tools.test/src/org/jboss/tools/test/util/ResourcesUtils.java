@@ -65,14 +65,20 @@ public class ResourcesUtils {
 					Arrays.asList(new File(tplPrjLcStr).listFiles()));
 
 		op.setCreateContainerStructure(false);
-		if( Display.getCurrent() == null || Display.getCurrent().getActiveShell() == null )
+		if( Display.getCurrent() == null || Display.getCurrent().getActiveShell() == null ) {
 			op.setContext(new Shell());
-		else
+		} else {
 			op.setContext(Display.getCurrent().getActiveShell());
+		}
 		op.run(monitor);
 		return importedPrj;
 	}
 
+	public static IProject importProject( 
+			Bundle bundle, String templLocation) throws IOException, CoreException, InvocationTargetException, InterruptedException {
+		return importProject(bundle, templLocation, new NullProgressMonitor());
+	}
+	
 	public static IProject createEclipseProject(String projectName,
 			IProgressMonitor monitor) throws CoreException {
 
@@ -102,6 +108,13 @@ public class ResourcesUtils {
 		project.open(IResource.BACKGROUND_REFRESH, monitor);
 
 		return project;
+	}
+	
+	public static IProject createEclipseProject(Bundle bundle,
+			String templateLocation)
+			throws CoreException, IOException {
+
+		return createEclipseProject(bundle,templateLocation, new NullProgressMonitor());
 	}
 	
 	public static IProject createEclipseProject(String bundle,
