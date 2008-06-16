@@ -238,9 +238,12 @@ public abstract class AbstractMultiPageContributor extends MultiPageEditorAction
 			registerKeyBinding(handler, actions[i], action);
 		}
 	}
-	
+
 	protected void registerKeyBinding(IHandlerService handler, String command, IAction action) {
 		if(action == null) return;
+		if(handler == null) {
+			return;
+		}
 		ActionHandler h = used.get(action);
 		if(h == null) {
 			h = new ActionHandler(action);
