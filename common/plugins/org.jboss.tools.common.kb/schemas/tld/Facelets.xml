@@ -17,6 +17,14 @@
             </proposal>
         </attribute-type>
         <attribute type="binding"/>
+        <attribute-type default="" name="xmlns" required="false">
+            <proposal type="taglib"/>
+        </attribute-type>
+        <attribute-type default="" name="xmlns:*" required="false">
+            <proposal type="taglib"/>
+        </attribute-type>
+        <attribute default="" required="false" type="xmlns"/>
+        <attribute default="" required="false" type="xmlns:*"/>
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="composition" start-tag="required">
@@ -30,6 +38,14 @@
             </proposal>
         </attribute-type>
         <attribute type="template"/>
+        <attribute-type default="" name="xmlns" required="false">
+            <proposal type="taglib"/>
+        </attribute-type>
+        <attribute-type default="" name="xmlns:*" required="false">
+            <proposal type="taglib"/>
+        </attribute-type>
+        <attribute default="" required="false" type="xmlns"/>
+        <attribute default="" required="false" type="xmlns:*"/>
     </element-type>
     <element-type body-content="refused" content="mixed" end-tag="required"
         name="debug" start-tag="required">
@@ -67,6 +83,14 @@
             </proposal>
         </attribute-type>
         <attribute type="template"/>
+        <attribute-type default="" name="xmlns" required="false">
+            <proposal type="taglib"/>
+        </attribute-type>
+        <attribute-type default="" name="xmlns:*" required="false">
+            <proposal type="taglib"/>
+        </attribute-type>
+        <attribute default="" required="false" type="xmlns"/>
+        <attribute default="" required="false" type="xmlns:*"/>
     </element-type>
     <element-type body-content="allowed" content="mixed" end-tag="required"
         name="define" start-tag="required">
@@ -95,6 +119,14 @@
             </proposal>
         </attribute-type>
         <attribute type="binding"/>
+          <attribute-type default="" name="xmlns" required="false">
+            <proposal type="taglib"/>
+        </attribute-type>
+        <attribute-type default="" name="xmlns:*" required="false">
+            <proposal type="taglib"/>
+        </attribute-type>
+        <attribute default="" required="false" type="xmlns"/>
+        <attribute default="" required="false" type="xmlns:*"/>
     </element-type>
     <element-type body-content="refused" content="mixed" end-tag="required"
         name="include" start-tag="required">
