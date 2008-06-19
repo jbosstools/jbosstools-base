@@ -25,7 +25,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 	protected String workspaceHome = null;
 	protected IProject project = null;
 	protected XModel model = null;
-	
+
 	public ModelNature() {}
 
 	public void configure() throws CoreException {
@@ -64,12 +64,17 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 	private void updateListener() {
 		if(listener != null) return;
 		listener = new Listener();
-		ModelPlugin.getWorkspace().addResourceChangeListener(listener);
+		ModelPlugin.getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.PRE_DELETE | IResourceChangeEvent.PRE_CLOSE);
 	}
 	
 	static class Listener implements IResourceChangeListener {
 		public void resourceChanged(IResourceChangeEvent event) {
-			if(event.getType() == IResourceChangeEvent.PRE_DELETE) {
+			if(event.getType() == IResourceChangeEvent.PRE_DELETE
+	//TODO It will be good to clean cache on close project, 
+	//but it will need extensive testing, so let's do it later
+	//when having more time before another release. 
+//				|| event.getType() == IResourceChangeEvent.PRE_CLOSE 
+			) {
 				IProject p = event.getResource().getProject();
 				if(p != null && models.containsKey(p)) {
 					models.remove(p);
@@ -80,19 +85,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 	
 	private void createProject() {
 		ClassLoaderUtil.init();
-        model = (XModel)models.get(project);
-        if(model != null) {
-			String home = getWorkspaceHome();
-			String h = XModelConstants.getWorkspace(model);
-			if(home == null || !home.equals(h)) {
-				ModelPlugin.getPluginLog().logInfo("WARNING:" + " workspace home changed from " + h + " to " + home);
-				model.getProperties().setProperty(XModelConstants.WORKSPACE, home);
-				model.getProperties().setProperty(XModelConstants.WORKSPACE_OLD, home);
-				model.getProperties().setProperty("nature", getID());
-				model.load();				
-			}
-        	return;
-        } 
+
 		Properties p = new Properties();
 		p.putAll(System.getProperties());
 		
@@ -114,6 +107,20 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		p.setProperty(ECLIPSE_PROJECT_OLD, project.getLocation().toString());
 		p.put("project", project);
 		p.setProperty("nature", getID());
+
+		model = (XModel)models.get(project);
+        if(model != null) {
+			home = p.getProperty(XModelConstants.WORKSPACE);
+			String h = XModelConstants.getWorkspace(model);
+			if(home == null || !home.equals(h)) {
+				ModelPlugin.getPluginLog().logInfo("WARNING:" + " workspace home changed from " + h + " to " + home);
+				model.getProperties().setProperty(XModelConstants.WORKSPACE, home);
+				model.getProperties().setProperty(XModelConstants.WORKSPACE_OLD, home);
+				model.getProperties().setProperty("nature", getID());
+				model.load();				
+			}
+        	return;
+        }
 		model = XModelFactory.getModel(p);
 		if(model.getService() == null) {
 			model.setService(createServiceDialog());		
