@@ -79,7 +79,6 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 	}
 	
 	private void createProject() {
-//@S_CHECK@
 		ClassLoaderUtil.init();
         model = (XModel)models.get(project);
         if(model != null) {
