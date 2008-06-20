@@ -121,6 +121,9 @@ public class DefaultStandardWizard extends Wizard implements SpecialWizardContro
 			wizardStep.setDescription(null);
 			if(message == null && !isFinishEnabled) {
 				message = support.getMessage(support.getStepId());
+				if(message != null && message.trim().length() == 0) {
+					message = null;
+				}
 			}
 			wizardStep.setErrorMessage(message);
 		}
