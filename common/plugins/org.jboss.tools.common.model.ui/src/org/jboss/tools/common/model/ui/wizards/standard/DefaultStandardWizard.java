@@ -110,6 +110,7 @@ public class DefaultStandardWizard extends Wizard implements SpecialWizardContro
 		if(validator == null) return; 
 		validator.validate(data);
 		String message = validator.getErrorMessage();
+		isFinishEnabled = validator.isCommandEnabled(SpecialWizardSupport.FINISH);
 		DefaultStandardStep wizardStep = steps[support.getStepId()];
 		if(wizardStep != null && !wizardStep.isDataChanged()) {
 			String m = support.getMessage(support.getStepId());
@@ -118,9 +119,11 @@ public class DefaultStandardWizard extends Wizard implements SpecialWizardContro
 			wizardStep.setErrorMessage(null);
 		} else {
 			wizardStep.setDescription(null);
+			if(message == null && !isFinishEnabled) {
+				message = support.getMessage(support.getStepId());
+			}
 			wizardStep.setErrorMessage(message);
 		}
-		isFinishEnabled = validator.isCommandEnabled(SpecialWizardSupport.FINISH);
 		boolean isNextEnabled = validator.isCommandEnabled(SpecialWizardSupport.NEXT);
 		wizardStep.isNextEnabled = isNextEnabled;
 		getContainer().updateButtons();
