@@ -64,6 +64,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 
 	protected void assertMarkerIsCreated(IResource resource, MarkerData markerData) throws CoreException {
 		assertMarkerIsCreated(resource, markerData.type, markerData.pattern, markerData.line);
+
 	}
 
 	protected void assertMarkerIsCreated(IResource resource, String type, String pattern, int expectedLine) 
@@ -77,6 +78,18 @@ public class AbstractResourceMarkerTest extends TestCase {
 
 		assertEquals("Marker matches the '" + pattern + "' pattern was found at wrong line",
 				expectedLine,line);
+	}
+
+	protected void assertMarkerIsNotCreated(IResource resource, String type, String pattern) throws CoreException {
+		IMarker[] markers = findMarkers(resource, type, pattern);
+
+		assertFalse("Marker  matches the '" + pattern + "' pattern was found", markers.length>0);
+	}
+
+	protected void assertMarkerIsNotCreated(IResource resource, String type, String pattern, int expectedLine) throws CoreException {
+		int line = findMarkerLine(resource, type, pattern);
+
+		assertFalse("Marker  matches the '" + pattern + "' pattern was found", line != -1);
 	}
 
 	protected void assertMarkerIsCreated(IResource resource, String type, String pattern) throws CoreException {
