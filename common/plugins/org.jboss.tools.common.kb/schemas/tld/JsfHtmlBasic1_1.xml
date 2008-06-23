@@ -33,12 +33,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -47,12 +42,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="value" required="true">
@@ -185,12 +175,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="style" required="false">
@@ -278,12 +263,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -292,12 +272,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="value" required="true">
@@ -508,12 +483,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="rows" required="false">
@@ -743,12 +713,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="accept" required="false">
@@ -893,12 +858,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="url" required="false">
@@ -944,12 +904,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="ismap"/>
         <attribute-type name="lang" required="false">
@@ -1071,12 +1026,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -1085,12 +1035,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -1099,12 +1044,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -1165,12 +1105,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -1179,12 +1114,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -1193,12 +1123,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -1251,12 +1176,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="lang" required="false">
@@ -1345,12 +1265,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="redisplay" required="false">
@@ -1359,12 +1274,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="redisplay"/>
         <attribute-type name="size" required="false">
@@ -1427,12 +1337,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -1441,12 +1346,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -1455,12 +1355,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -1513,12 +1408,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="lang" required="false">
@@ -1607,12 +1497,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="size" required="false">
@@ -1676,12 +1561,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -1690,12 +1570,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -1704,12 +1579,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -1762,12 +1632,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="lang" required="false">
@@ -1851,12 +1716,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="rows" required="false">
@@ -1914,12 +1774,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="showDetail" required="false">
@@ -1928,12 +1783,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="showDetail"/>
         <attribute-type name="showSummary" required="false">
@@ -1942,12 +1792,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="showSummary"/>
         <attribute-type name="errorClass" required="false">
@@ -2001,12 +1846,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="tooltip"/>
         <attribute-type name="warnClass" required="false">
@@ -2066,12 +1906,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="globalOnly"/>
         <attribute-type name="id" required="false">
@@ -2084,12 +1919,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="showDetail" required="false">
@@ -2098,12 +1928,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="showDetail"/>
         <attribute-type name="showSummary" required="false">
@@ -2112,12 +1937,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="showSummary"/>
         <attribute-type name="errorClass" required="false">
@@ -2180,12 +2000,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="tooltip"/>
         <attribute-type name="warnClass" required="false">
@@ -2233,12 +2048,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="value" required="true">
@@ -2253,12 +2063,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="escape"/>
         <attribute-type name="style" required="false">
@@ -2314,12 +2119,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="value" required="true">
@@ -2465,12 +2265,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="value" required="true">
@@ -2659,12 +2454,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="value" required="true">
@@ -2679,12 +2469,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="escape"/>
         <attribute-type name="style" required="false">
@@ -2732,12 +2517,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="bgcolor" required="false">
@@ -2941,12 +2721,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="style" required="false">
@@ -2993,12 +2768,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -3007,12 +2777,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -3021,12 +2786,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -3074,12 +2834,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="lang" required="false">
@@ -3163,12 +2918,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="style" required="false">
@@ -3229,12 +2979,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -3243,12 +2988,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -3257,12 +2997,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -3315,12 +3050,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="disabledClass" required="false">
@@ -3423,12 +3153,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="style" required="false">
@@ -3502,12 +3227,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -3516,12 +3236,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -3530,12 +3245,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -3583,12 +3293,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="lang" required="false">
@@ -3672,12 +3377,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="size" required="false">
@@ -3794,12 +3494,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -3808,12 +3503,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -3822,12 +3512,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -3875,12 +3560,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="lang" required="false">
@@ -3964,12 +3644,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="style" required="false">
@@ -4042,12 +3717,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -4056,12 +3726,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -4070,12 +3735,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -4123,12 +3783,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="lang" required="false">
@@ -4212,12 +3867,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="size" required="false">
@@ -4297,12 +3947,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -4311,12 +3956,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -4325,12 +3965,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -4378,12 +4013,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="lang" required="false">
@@ -4467,12 +4097,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="style" required="false">
@@ -4543,12 +4168,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="immediate"/>
         <attribute-type name="rendered" required="false">
@@ -4557,12 +4177,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="required" required="false">
@@ -4571,12 +4186,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="required"/>
         <attribute-type name="validator" required="false">
@@ -4629,12 +4239,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="disabled"/>
         <attribute-type name="disabledClass" required="false">
@@ -4737,12 +4342,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="readonly"/>
         <attribute-type name="style" required="false">
@@ -4806,12 +4406,7 @@
                 <param value="true"/>
                 <param value="false"/>
             </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="java.lang.Boolean"/>
-            </proposal>
-            <proposal type="beanProperty">
-                <param name="type" value="boolean"/>
-            </proposal>
+            <proposal type="beanProperty"/>
         </attribute-type>
         <attribute type="rendered"/>
         <attribute-type name="binding" required="false">
