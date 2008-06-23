@@ -356,6 +356,9 @@ public class EclipseResourceUtil {
 	}
 	
 	public static XModelObject findResourceInFileSystem(FileSystemImpl s, IResource resource) {
+		if(resource == null || resource.getLocation() == null) {
+			return null;
+		}
 		IResource sr = s.getResource();
 		if(sr == null) return null;
 		if(!sr.getLocation().isPrefixOf(resource.getLocation())) return null;
