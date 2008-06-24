@@ -21,7 +21,7 @@ public class FileSystemFolderLoader implements XObjectLoader {
 
     public boolean update(XModelObject object) throws XModelException {
         FolderLoader folder = (FolderLoader)object;
-        if(folder.isRemoved() && !isProtectedFileSystem(object)) {
+        if(folder.isRemoved() && !isProtectedFileSystem(object) && object.isActive()) {
         	object.getParent().setModified(true);
         	object.removeFromParent();
         }

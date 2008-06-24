@@ -86,20 +86,26 @@ public class OrderedChildren extends RegularChildren {
         if(c == null) c = comparator;
         if(c == null) return;
         getObjects();
-        Arrays.sort(list, c);
-        alist = Arrays.asList(list);
+        synchronized(this) {
+        	Arrays.sort(list, c);
+        	alist = asList(list);
+        }
     }
 
 	public void replaceChildren(XModelObject[] objects) {
 		super.replaceChildren(objects);
 		synchronized (this) {
-			ArrayList<XModelObject> n = new ArrayList<XModelObject>();
-			for (int i = 0; i < objects.length; i++) {
-				n.add(objects[i]);
-			}
-			alist = n;
+			alist = asList(objects);
 			list = null;
 		}
+	}
+
+	private List<XModelObject> asList(XModelObject[] objects) {
+		ArrayList<XModelObject> n = new ArrayList<XModelObject>();
+		for (int i = 0; i < objects.length; i++) {
+			n.add(objects[i]);
+		}
+		return n;
 	}
 
 }
