@@ -828,9 +828,17 @@ public class EclipseResourceUtil {
 		else {
 			try {
 				IResource children[] = project.members(true);
-				for (int i = 0; i < children.length && result == null; i++)
+				for (int i = 0; i < children.length && result == null; i++) {
 					if (absolutePath.equals(children[i].getLocation()))
 						result = children[i].getFullPath();
+				}
+				for (int i = 0; i < children.length && result == null; i++) {
+					IPath memberPath = children[i].getLocation();
+					if(memberPath == null) continue;
+					if(memberPath.isPrefixOf(absolutePath)) {
+						result = children[i].getFullPath().append(absolutePath.removeFirstSegments(memberPath.segmentCount()));
+					}
+				}
 			} catch (CoreException ex) {			
 				ModelPlugin.getPluginLog().logError(ex);
 			}
