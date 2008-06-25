@@ -10,7 +10,17 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.loaders;
 
+/**
+ * FIXME Add Documentation
+ */
 public interface EntityRecognizer {
+	
+	/**
+	 * FIXME add method documentation
+	 * @param ext
+	 * @param body
+	 * @return
+	 */
     public String getEntityName(String ext, String body);
 }
 
