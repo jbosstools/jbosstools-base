@@ -38,7 +38,7 @@ public class XActionWrapper extends Action {
 		updateState();
 	}
 	
-	private void updateState() {
+	public void updateState() {
 		if ((this.xmo==null)||(path==null)) {
 			setEnabled(Boolean.FALSE.booleanValue());
 		} else {
