@@ -612,8 +612,8 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 		}
 		
 		public void update(ISelection selection) {
-			removeAction.setEnabled(!selection.isEmpty());
-			editAction.setEnabled(!selection.isEmpty());
+			removeAction.updateState();
+			editAction.updateState();
 		}
 		public void setXModelObject(XModelObject xmo) {
 			// add action
