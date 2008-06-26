@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?eclipse version="3.0"?>
+<plugin>
+   <extension point="org.jboss.tools.common.model.meta">
+      <meta path="test_1.meta">
+      </meta>
+   </extension>
+
+   <extension point="org.jboss.tools.common.verification.rules">
+      <rule-set path="rules.xml"/>
+   </extension>
+    
+   <extension
+         point="org.jboss.tools.common.model.resourceMapping">
+      <mapping
+          loader="org.jboss.tools.common.verification.test"
+          priority="1"
+          kind="class"
+          paths=".jboss.tools.common.verification.test."
+      />
+      <mapping
+          loader="org.jboss.tools.common.model"
+          priority="50"
+          kind="class"
+          paths=""
+      />
+   </extension>
+
+	<extension point="org.jboss.tools.common.model.classes">
+		<xclass id="org.jboss.tools.common.verification.test.BundleLoader"
+			class="org.jboss.tools.common.verification.test.BundleLoader"/>
+		<xclass id="org.jboss.tools.common.verification.test.Check_Test_1"
+			class="org.jboss.tools.common.verification.test.Check_Test_1"/>
+	</extension>
+
+</plugin>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension-point id="rules" name="rules" schema="schema/rules.exsd"/>
+
+   <extension point="org.jboss.tools.common.model.meta">
+      <meta path="meta/vrules.meta">
+      </meta>
+      <meta path="meta/vrules_eclipse_option.meta">
+      </meta>
+   </extension>
+
+   <extension id="verifybuilder" name="Project Verifier" point="org.eclipse.core.resources.builders">
+      <builder>
+         <run class="org.jboss.tools.common.verification.vrules.core.resources.VerifyBuilder">
+         </run>
+      </builder>
+   </extension>
+
+   <extension
+         point="org.jboss.tools.common.model.resourceMapping">
+      <mapping
+          loader="org.jboss.tools.common.verification"
+          priority="2"
+          kind="class"
+          paths=".vrules."
+      />
+   </extension>
+
+	<extension point="org.jboss.tools.common.model.classes">
+		<xclass id="org.jboss.tools.common.verification.vrules.handler.VerifyConfigurationHandler"
+			class="org.jboss.tools.common.verification.vrules.handler.VerifyConfigurationHandler"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.handler.VerifyRuleHandler"
+			class="org.jboss.tools.common.verification.vrules.handler.VerifyRuleHandler"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.handler.VerifyRuleSetAllHandler"
+			class="org.jboss.tools.common.verification.vrules.handler.VerifyRuleSetAllHandler"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.handler.VerifyRuleSetHandler"
+			class="org.jboss.tools.common.verification.vrules.handler.VerifyRuleSetHandler"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.handler.VerifyRulesAllHandler"
+			class="org.jboss.tools.common.verification.vrules.handler.VerifyRulesAllHandler"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.handler.VerifyRulesHandler"
+			class="org.jboss.tools.common.verification.vrules.handler.VerifyRulesHandler"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.model.VManagerModel"
+			class="org.jboss.tools.common.verification.vrules.model.VManagerModel"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.model.VResultModel"
+			class="org.jboss.tools.common.verification.vrules.model.VResultModel"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.model.VResultTemplateModel"
+			class="org.jboss.tools.common.verification.vrules.model.VResultTemplateModel"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.model.VRuleModel"
+			class="org.jboss.tools.common.verification.vrules.model.VRuleModel"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.model.VRuleSetModel"
+			class="org.jboss.tools.common.verification.vrules.model.VRuleSetModel"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.model.VRuleSetsLoader"
+			class="org.jboss.tools.common.verification.vrules.model.VRuleSetsLoader"/>
+		<xclass id="org.jboss.tools.common.verification.vrules.model.VRulesTree"
+			class="org.jboss.tools.common.verification.vrules.model.VRulesTree"/>
+   </extension>
+</plugin>
