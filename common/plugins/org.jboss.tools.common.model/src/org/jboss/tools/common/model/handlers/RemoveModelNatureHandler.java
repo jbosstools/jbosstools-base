@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.tools.common.model.markers.ResourceMarkers;
 import org.eclipse.jdt.core.*;
 import org.jboss.tools.common.meta.action.SignificanceMessageFactory;
+import org.jboss.tools.common.meta.action.SpecialWizard;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
@@ -53,7 +54,7 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		IProject project = getProject(object);
-		String nature = (p == null) ? null : p.getProperty("nature"); 
+		String nature = (p == null) ? null : p.getProperty("nature");
 		if(nature == null) nature = getNature(object);
 		if (project == null || nature == null) return;
 		
@@ -67,6 +68,12 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		pd.setProperty(ServiceDialog.CHECKBOX_MESSAGE, checkBoxMessage);
 		pd.put(ServiceDialog.CHECKED, Boolean.FALSE);
 		if(!dialog.openConfirm(pd)) return;
+
+		SpecialWizard contribution = p == null ? null : (SpecialWizard)p.get("contribution");
+		if(contribution != null) {
+			contribution.setObject(object.getModel());
+			contribution.execute();
+		}
 		Boolean b = (Boolean)pd.get(ServiceDialog.CHECKED);
 		unregisterWTP = b.booleanValue();
 		
