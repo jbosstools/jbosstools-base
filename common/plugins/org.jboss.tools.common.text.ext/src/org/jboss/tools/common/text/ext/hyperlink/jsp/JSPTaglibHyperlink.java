@@ -10,9 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.jsp;
 
+import java.text.MessageFormat;
+
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jdt.internal.core.JarEntryFile;
-import org.eclipse.jdt.internal.ui.javaeditor.JarEntryEditorInput;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -21,20 +21,19 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.FindObjectHelper;
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.jboss.tools.jst.web.tld.ITaglibMapping;
 import org.jboss.tools.jst.web.tld.IWebProject;
 import org.jboss.tools.jst.web.tld.WebProjectFactory;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * @author Jeremy
@@ -69,6 +68,20 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 		IFile file = getFile();
 		XModel xModel = getXModel(file);
 		if (xModel == null) return null;
+
+		String uri = getTaglibUri(region);
+		if (uri == null) return null;
+			
+		IWebProject wp = WebProjectFactory.instance.getWebProject(xModel);
+		if (wp == null) return null;
+		
+		ITaglibMapping tm = wp.getTaglibMapping();
+		if (tm == null) return null;
+		
+		return tm.getTaglibObject(uri);
+	}
+	
+	private String getTaglibUri(IRegion region) {
 		IStructuredModel model = null;
 		try {	
 			model = getModelManager().getExistingModelForRead(getDocument());
@@ -85,26 +98,21 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 			String uri = taglib.getAttribute("uri");
 			if (uri == null || uri.trim().length() == 0) return null;
 			
-			IWebProject wp = WebProjectFactory.instance.getWebProject(xModel);
-			if (wp == null) return null;
-			
-			ITaglibMapping tm = wp.getTaglibMapping();
-			if (tm == null) return null;
-			return tm.getTaglibObject(uri);
+			return uri;
 		} finally {
 			if (model != null)	model.releaseFromRead();
 		}
 	}
-	
 
+	IRegion fLastRegion = null;
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @seecom.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
 	 */
 	protected IRegion doGetHyperlinkRegion(int offset) {
-		IRegion region = getRegion(offset);
-		return region;
+		fLastRegion = getRegion(offset);
+		return fLastRegion;
 	}
 	
 	private IRegion getRegion(int offset) {
@@ -147,6 +155,19 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 		} finally {
 			smw.dispose();
 		}
-
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		String uri = getTaglibUri(fLastRegion);
+		if (uri == null)
+			return  MessageFormat.format(Messages.OpenA, Messages.TagLibrary);
+		
+		return MessageFormat.format(Messages.OpenTagLibraryForUri, uri);
+	}
+
 }

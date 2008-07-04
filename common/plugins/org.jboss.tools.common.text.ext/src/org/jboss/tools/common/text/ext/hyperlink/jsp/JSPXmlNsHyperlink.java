@@ -10,26 +10,28 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.jsp;
 
+import java.text.MessageFormat;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.FindObjectHelper;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.jboss.tools.jst.web.tld.ITaglibMapping;
 import org.jboss.tools.jst.web.tld.IWebProject;
 import org.jboss.tools.jst.web.tld.WebProjectFactory;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * @author Jeremy
@@ -104,14 +106,45 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 			smw.dispose();
 		}
 	}
-	
 
+	private String getUri(IRegion region) {
+		IFile file = getFile();
+		XModel xModel = getXModel(file);
+		if (xModel == null) return null;
+
+		StructuredModelWrapper smw = new StructuredModelWrapper();
+		try {
+			smw.init(getDocument());
+			Document xmlDocument = smw.getDocument();
+			if (xmlDocument == null) return null;
+
+			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
+			if (!(n instanceof IDOMAttr)) return null; 
+			Attr xmlnsAttr = (Attr)n;
+			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return null;
+			Element rootElem = (Element)xmlnsAttr.getOwnerElement();
+			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return null;
+
+			String uri = xmlnsAttr.getValue();
+			if (uri == null || uri.trim().length() == 0) return null;
+			
+			return uri;
+		} catch (Exception x) {
+			ExtensionsPlugin.getPluginLog().logError("Error in obtaining file name from region", x);
+			return null;
+		} finally {
+			smw.dispose();
+		}
+	}
+
+
+	IRegion fLastRegion = null;
 	/** 
 	 * @seecom.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
 	 */
 	protected IRegion doGetHyperlinkRegion(int offset) {
-		IRegion region = getRegion(offset);
-		return region;
+		fLastRegion = getRegion(offset);
+		return fLastRegion;
 	}
 	
 	private IRegion getRegion(int offset) {
@@ -159,5 +192,18 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 			smw.dispose();
 		}
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		String uri = getUri(fLastRegion);
+		if (uri == null)
+			return  MessageFormat.format(Messages.NotFound, "URI");
+		
+		return MessageFormat.format(Messages.Open, uri);
 	}
 }

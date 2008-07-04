@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
-
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
 /**
  * @author Jeremy
  *
@@ -21,4 +21,14 @@ public class FilterNameHyperlink extends JumpToHyperlink {
 	protected String getDestinationAxis() {
 		return "/web-app/filter/filter-name/";
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		return Messages.BrowseToFilterNameDefinition;
+	}
+
 }

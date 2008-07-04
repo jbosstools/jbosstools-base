@@ -17,24 +17,22 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMText;
+import org.jboss.tools.common.text.ext.ExtensionsPlugin;
+import org.jboss.tools.common.text.ext.hyperlink.xml.XMLRootHyperlinkPartitioner;
+import org.jboss.tools.common.text.ext.util.RegionHolder;
+import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
+import org.jboss.tools.common.text.ext.util.StructuredSelectionHelper;
+import org.jboss.tools.common.text.ext.util.Utils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
-import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
-import org.jboss.tools.common.text.ext.util.RegionHolder;
-import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
-import org.jboss.tools.common.text.ext.util.StructuredSelectionHelper;
-import org.jboss.tools.common.text.ext.util.Utils;
-import org.jboss.tools.common.text.ext.hyperlink.xml.XMLRootHyperlinkPartitioner;
-
 /**
  * @author Jeremy
  *
  */
-public class JumpToHyperlink extends AbstractHyperlink {
+abstract public class JumpToHyperlink extends AbstractHyperlink {
 
 	/** 
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doHyperlink(org.eclipse.jface.text.IRegion)
@@ -248,5 +246,12 @@ public class JumpToHyperlink extends AbstractHyperlink {
 		}
 		
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	abstract public String getHyperlinkText(); 
 
 }

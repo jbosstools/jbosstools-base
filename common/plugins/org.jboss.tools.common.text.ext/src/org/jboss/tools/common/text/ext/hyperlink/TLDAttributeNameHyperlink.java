@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.eclipse.jface.text.IRegion;
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
+import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
+import org.jboss.tools.common.text.ext.util.Utils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
-import org.jboss.tools.common.text.ext.util.Utils;
 
 /**
  * @author Jeremy
@@ -84,6 +84,15 @@ public class TLDAttributeNameHyperlink extends JumpToHyperlink {
 			//ignore
 			return false;
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		return Messages.BrowseToTLDAttributeNameDeclaration;
 	}
 
 }

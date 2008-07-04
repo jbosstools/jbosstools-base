@@ -10,6 +10,10 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.jsp;
 
+import java.text.MessageFormat;
+
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
+
 /**
  * @author Jeremy
  *
@@ -20,6 +24,19 @@ public class JSPBeanSetPropertyHyperlink extends JSPBeanGetPropertyHyperlink {
 
 	protected String getMethodPrefix() {
 		return SET_METHOD_PREFIX;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		String propertyName = getPropertyName(fLastRegion);
+		if (propertyName == null)
+			return  MessageFormat.format(Messages.OpenA, Messages.Setter);
+		
+		return MessageFormat.format(Messages.OpenGetterOrSetterForProperty, Messages.Setter, propertyName);
 	}
 
 }

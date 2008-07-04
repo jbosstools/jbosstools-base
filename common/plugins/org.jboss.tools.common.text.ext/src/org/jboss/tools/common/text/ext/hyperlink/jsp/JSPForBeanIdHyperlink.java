@@ -10,20 +10,22 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.jsp;
 
+import java.text.MessageFormat;
+
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
+import org.jboss.tools.common.text.ext.ExtensionsPlugin;
+import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
+import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
+import org.jboss.tools.common.text.ext.util.StructuredSelectionHelper;
+import org.jboss.tools.common.text.ext.util.Utils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
-import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
-import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
-import org.jboss.tools.common.text.ext.util.StructuredSelectionHelper;
-import org.jboss.tools.common.text.ext.util.Utils;
 
 /**
  * @author Jeremy
@@ -156,14 +158,15 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 		}
 	}
 
+	IRegion fLastRegion = null;
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
 	 */
 	protected IRegion doGetHyperlinkRegion(int offset) {
-		IRegion region = getRegion(offset);
-		return region;
+		fLastRegion = getRegion(offset);
+		return fLastRegion;
 	}
 
 	private IRegion getRegion(int offset) {
@@ -235,6 +238,19 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 		} finally {
 			smw.dispose();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		String forId = getForId(fLastRegion);
+		if (forId == null)
+			return  MessageFormat.format(Messages.BrowseFor, Messages.BeanId);
+		
+		return MessageFormat.format(Messages.BrowseForBeanId, forId);
 	}
 
 }

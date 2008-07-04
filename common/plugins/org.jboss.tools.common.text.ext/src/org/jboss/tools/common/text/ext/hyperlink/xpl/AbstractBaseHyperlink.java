@@ -19,7 +19,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -300,9 +299,11 @@ public abstract class AbstractBaseHyperlink {
 	 * 
 	 * @see IHyperlink#getHyperlinkText()
 	 */
-	public String getHyperlinkText() {
-		return null;
-	}
+//	public String getHyperlinkText() {
+//		return null;
+//	}
+	
+	abstract public String getHyperlinkText();
 
 	/*
 	 * (non-Javadoc)

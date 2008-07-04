@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
+
 
 /**
  * @author Jeremy
@@ -21,4 +23,14 @@ public class ServletNameHyperlink extends JumpToHyperlink {
 	protected String getDestinationAxis() {
 		return "/web-app/servlet/servlet-name/";
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		return Messages.BrowseToServletNameDefinition;
+	}
+
 }

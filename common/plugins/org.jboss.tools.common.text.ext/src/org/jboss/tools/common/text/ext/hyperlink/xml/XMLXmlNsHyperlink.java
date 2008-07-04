@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.StringTokenizer;
 import java.util.zip.ZipFile;
 
@@ -41,6 +42,7 @@ import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.w3c.dom.Document;
@@ -127,8 +129,6 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 			return null;
 		}
     }
-
-	
 	
 	/*
 	 * (non-Javadoc)
@@ -314,12 +314,13 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 		return fileName;
 	}
 
+	IRegion fLastRegion = null;
 	/** 
-	 * @seecom.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
+	 * @see com.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
 	 */
 	protected IRegion doGetHyperlinkRegion(int offset) {
-		IRegion region = getRegion(offset);
-		return region;
+		fLastRegion = getRegion(offset);
+		return fLastRegion;
 	}
 	
 	protected IRegion getRegion(int offset) {
@@ -394,4 +395,18 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 		}
 
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		String uri = getURI(fLastRegion);
+		if (uri == null)
+			return  MessageFormat.format(Messages.NotFound, "URI");
+		
+		return MessageFormat.format(Messages.Open, uri);
+	}
+
 }

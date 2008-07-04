@@ -15,17 +15,15 @@ import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.IRegion;
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.project.IPromptingProvider;
+import org.jboss.tools.common.model.project.PromptingProviderFactory;
+import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
+import org.jboss.tools.common.text.ext.util.Utils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
-
-import org.jboss.tools.common.model.XModel;
-import org.jboss.tools.common.model.project.IPromptingProvider;
-import org.jboss.tools.common.model.project.PromptingProviderFactory;
-import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
-import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
-import org.jboss.tools.common.text.ext.util.Utils;
 
 /**
  * @author Jeremy
@@ -64,15 +62,13 @@ public abstract class XModelBasedHyperlink extends AbstractHyperlink {
 
 	protected abstract Properties getRequestProperties(IRegion region);
 	
+	protected IRegion fLastRegion = null;
 	/** 
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
 	 */
 	protected IRegion doGetHyperlinkRegion(int offset) {
-		try {
-			return getRegion(offset);
-		} catch (Exception x) {
-			return null;
-		}
+		fLastRegion = getRegion(offset);
+		return fLastRegion;
 	}
 	
 	protected IRegion getRegion (int offset) {

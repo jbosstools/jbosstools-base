@@ -11,21 +11,21 @@
 package org.jboss.tools.common.text.ext.hyperlink;
 
 import java.io.FileNotFoundException;
+import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.ide.IDE;
+import org.jboss.tools.common.text.ext.ExtensionsPlugin;
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
+import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
+import org.jboss.tools.common.text.ext.util.Utils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
-
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
-import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
-import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
-import org.jboss.tools.common.text.ext.util.Utils;
 
 /**
  * @author Jeremy
@@ -78,11 +78,13 @@ public abstract class RelativeLinkHyperlink extends AbstractHyperlink {
 		}
 	}
 
+	IRegion fLastRegion = null;
 	/** 
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
 	 */
 	protected IRegion doGetHyperlinkRegion(int offset) {
-		return getRegion(offset);
+		fLastRegion = getRegion(offset); 
+		return fLastRegion;
 	}
 	
 	protected IRegion getRegion(int offset) {
@@ -157,6 +159,19 @@ public abstract class RelativeLinkHyperlink extends AbstractHyperlink {
 		} finally {
 			smw.dispose();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		String filePath = getFilePath(fLastRegion);
+		if (filePath == null)
+			return  MessageFormat.format(Messages.OpenA, Messages.File);
+		
+		return MessageFormat.format(Messages.OpenFile, filePath);
 	}
 
 }

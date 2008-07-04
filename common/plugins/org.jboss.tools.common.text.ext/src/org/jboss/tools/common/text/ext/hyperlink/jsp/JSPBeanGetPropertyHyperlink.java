@@ -10,20 +10,22 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.jsp;
 
+import java.text.MessageFormat;
+
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.ui.IEditorPart;
+import org.jboss.tools.common.text.ext.ExtensionsPlugin;
+import org.jboss.tools.common.text.ext.hyperlink.ClassMethodHyperlink;
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
+import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
+import org.jboss.tools.common.text.ext.util.Utils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
-import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
-import org.jboss.tools.common.text.ext.util.Utils;
-import org.jboss.tools.common.text.ext.hyperlink.ClassMethodHyperlink;
 
 /**
  * @author Jeremy
@@ -191,6 +193,19 @@ public class JSPBeanGetPropertyHyperlink extends ClassMethodHyperlink {
 		} finally {
 			smw.dispose();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		String propertyName = getPropertyName(fLastRegion);
+		if (propertyName == null)
+			return  MessageFormat.format(Messages.OpenA, Messages.Getter);
+		
+		return MessageFormat.format(Messages.OpenGetterOrSetterForProperty, Messages.Getter, propertyName);
 	}
 
 }

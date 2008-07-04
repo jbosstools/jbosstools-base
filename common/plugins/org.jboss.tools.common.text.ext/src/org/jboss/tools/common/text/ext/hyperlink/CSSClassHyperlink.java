@@ -12,6 +12,7 @@ package org.jboss.tools.common.text.ext.hyperlink;
 
 import java.io.InputStream;
 import java.io.StringReader;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -24,7 +25,6 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.ui.IEditorPart;
@@ -32,22 +32,19 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMText;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
-
-import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
+import org.jboss.tools.common.text.ext.hyperlink.jsp.JSPRootHyperlinkPartitioner;
+import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
 import org.jboss.tools.common.text.ext.util.CSSTextScanner;
 import org.jboss.tools.common.text.ext.util.RegionHolder;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.StructuredSelectionHelper;
 import org.jboss.tools.common.text.ext.util.TextScanner;
 import org.jboss.tools.common.text.ext.util.Utils;
-import org.jboss.tools.common.text.ext.hyperlink.jsp.JSPRootHyperlinkPartitioner;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /*
  * Created on 26.01.2005
@@ -130,16 +127,14 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 
 	}
 	
+	IRegion fLastRegion = null;
+	
 	/** 
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
 	 */
 	protected IRegion doGetHyperlinkRegion(int offset) {
-		try {
-			return getRegion(offset);
-		} catch (Exception x) {
-			//ignore
-			return null;
-		}
+		fLastRegion = getRegion(offset);
+		return fLastRegion;
 	}
 	
 	private RegionHolder getStyleHolder (String styleName) {
@@ -430,6 +425,19 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 		} finally {
 			smw.dispose();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see IHyperlink#getHyperlinkText()
+	 */
+	public String getHyperlinkText() {
+		String styleName = getStyleName(fLastRegion);
+		if (styleName == null)
+			return  MessageFormat.format(Messages.OpenA, Messages.CSSStyle);
+		
+		return MessageFormat.format(Messages.OpenCSSStyle, styleName);
 	}
 
 }
