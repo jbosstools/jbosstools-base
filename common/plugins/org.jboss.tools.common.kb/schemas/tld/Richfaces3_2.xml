@@ -14,7 +14,9 @@
 	<!-- Version 3.2.1 -->
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="calendar" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The calendar component is a UI control used for creating graphical monthly calendar on a page.]]>
+        </description>
         <attribute-type name="ajaxSingle" required="false">
             <description>
 				boolean attribute which provides possibility to limit
@@ -936,7 +938,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="changeExpandListener" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The changeExpandListener represents an action listener method that is notified on an expand/collapse event on the node.]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -951,7 +955,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="column" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The column is a UI component that represents a single column of data within a parent dataTable component.]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -1228,7 +1234,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="columnGroup" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The columnGroup component combines columns in one row to organize complex subparts of a table.]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -1390,7 +1398,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="columns" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The columns is a component that allows to create a dynamic set of columns from your model.]]>
+        </description>
         <attribute-type name="begin" required="false">
             <description>The first iteration item</description>
             <proposal type="beanProperty"/>
@@ -1700,7 +1710,7 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="comboBox" start-tag="required">
-        <description/>
+        <description><![CDATA[The comboBox is a component, that provides editable combo box element on a page.]]></description>
         <attribute-type name="accesskey" required="false">
             <description>
 				This attribute assigns an access key to an element. An
@@ -2328,7 +2338,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="componentControl" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The componentControl allows to call JavaScript API functions on components after some defined events.]]>
+        </description>
         <attribute-type name="attachTiming" required="false">
             <description>
 				Defines the page loading phase when componentControl is
@@ -2456,7 +2468,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="contextMenu" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The contextMenu component is used for creating multileveled context menus that are activated after a user defines an event ( "onmouseover" , "onclick" , etc.) on any element on the page.]]>
+        </description>
         <attribute-type name="attachTiming" required="false">
             <description>
 				Defines the timing when the menu is attached to the
@@ -2728,7 +2742,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dataDefinitionList" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The dataDefinitionList component is used for definition lists rendering. ]]>
+        </description>
         <attribute-type name="ajaxKeys" required="false">
             <description>
 				This attribute defines row keys that are updated after
@@ -2936,8 +2952,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dataFilterSlider" start-tag="required">
         <description>
-			A slider-based action component used for filtering table
-			data.
+			<![CDATA[The dataFilterSlider is a slider-based action component that is used for filtering table data.]]>
 		</description>
         <attribute-type name="action" required="false">
             <description>
@@ -3511,7 +3526,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dataGrid" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The dataGrid component is used to render data as a grid. ]]>
+        </description>
         <attribute-type name="ajaxKeys" required="false">
             <description>
 				This attribute defines row keys that are updated after
@@ -4061,7 +4078,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dataList" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The dataList component is used for unordered lists rendering.]]>
+        </description>
         <attribute-type name="ajaxKeys" required="false">
             <description>
 				This attribute defines row keys that are updated after
@@ -4307,7 +4326,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dataOrderedList" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The dataOrderedList component is used for ordered lists rendering. ]]>
+        </description>
         <attribute-type name="ajaxKeys" required="false">
             <description>
 				This attribute defines row keys that are updated after
@@ -4553,7 +4574,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dataTable" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The dataTable component is used for table rendering. ]]>
+        </description>
         <attribute-type name="ajaxKeys" required="false">
             <description>
 				This attribute defines row keys that are updated after
@@ -5124,7 +5147,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="datascroller" start-tag="required">
-        <description/>
+        <description>
+			<![CDATA[The datascroller component is designed for providing the functionality of tables scrolling using Ajax requests.]]>
+        </description>
         <attribute-type name="action" required="false">
             <description>
 				MethodBinding pointing at the application action to be
@@ -5690,10 +5715,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dndParam" start-tag="required">
         <description>
-			A component is used for parameters transmission in Drag and
-			Drop operations. It's also used for dragIndicator elements
-			definition with transmitting some values for rendering in
-			it.
+			<![CDATA[The dndParam component is used for passing parameters during drag-and-drop operations.]]>
 		</description>
         <attribute-type name="binding" required="false">
             <description>
@@ -5757,9 +5779,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dragIndicator" start-tag="required">
         <description>
-			It's a component appearing under a mouse cursor during
-			Drag'n'Drop operation and containing information on dragged
-			element and elements.
+			<![CDATA[The dragIndicator is a component for defining what appears under the mouse cursor during drag-and-drop operations. The displayed drag indicator can show information about the dragged elements.]]>
 		</description>
         <attribute-type name="acceptClass" required="false">
             <description>
@@ -5834,7 +5854,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dragListener" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The dragListener represents an action listener method that is notified after a drag operation.]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -5849,7 +5871,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dragSupport" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The dragSupport component defines a subtree of the component tree as draggable for drag-and-drop operations. Within such a "drag zone," you can click the mouse button on an item and drag it to any component that supports drop operations (a "drop zone"). It encodes all the necessary JavaScript for supporting drag-and-drop operations.]]>
+        </description>
         <attribute-type name="action" required="false">
             <description>
 				MethodBinding pointing at the application action to be
@@ -6205,7 +6229,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dropDownMenu" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The dropDownMenu component is used for creating multilevel drop-down menus.]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -6517,7 +6543,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dropListener" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The dropListener represents an action listener method that is notified after a drop operation.]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -6532,7 +6560,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="dropSupport" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The dropSupport component transforms a parent component into a target zone for drag-and-drop operations. When a draggable element is moved and dropped onto the area of the parent component, Ajax request processing for this event is started.]]>
+        </description>
         <attribute-type name="acceptCursors" required="false">
             <description>
 				List of comma separated cursors that indicates when
@@ -6903,7 +6933,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="effect" start-tag="required">
         <description>
-			It presents the google map in JSF applications
+			<![CDATA[The effect utilizes a set of effects provided by the scriptaculous JavaScript library. It allows to attach effects to JSF components and html tags. ]]>
 		</description>
         <attribute-type name="binding" required="false">
             <description>
@@ -8037,7 +8067,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="inplaceInput" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The inplaceInput is an input component used for displaying and editing data inputted. ]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -8632,7 +8664,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="inplaceSelect" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The inplaceSelect is used for creation select based inputs: it shows the value as text in one state and enables editing the value, providing a list of options in another state]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -9259,12 +9293,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="inputNumberSlider" start-tag="required">
         <description>
-			A component that lets selecting a number from a numeric
-			region. It is a horizontal aligned scroll-like control with
-			its own input field (optional) present. The keyboard input
-			in a field is possible (optional. Also it is possible to see
-			the current value in the tool tip above a dragged handle
-			control.
+	        <![CDATA[The inputNumberSlider component lets users select a number from a numeric region. It's a horizontal aligned scroll-like control with its own input field (optional) present. The keyboard input in a field is possible (optional). Also it's possible to see the current value in the toolTip above a dragged handle control.]]>
 		</description>
         <attribute-type name="accesskey" required="false">
             <description>
@@ -10388,7 +10417,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="insert" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The insert component is used for highlighting, source code inserting and, optionally, format the file from the application context into the page.]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -10472,7 +10503,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="jQuery" start-tag="required">
         <description>
-			It presents the google map in JSF applications
+			<![CDATA[The jQuery allows to apply styles and behaviour to DOM objects.]]>
 		</description>
         <attribute-type name="binding" required="false">
             <description>
@@ -10559,7 +10590,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="listShuttle" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The listShuttle component is used for moving chosen items from one list into another with their optional reordering there.]]>
+        </description>
         <attribute-type name="activeItem" required="false">
             <description>Stores active item</description>
             <proposal type="beanProperty"/>
@@ -11238,9 +11271,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="menuGroup" start-tag="required">
         <description>
-			Defines expandable group of items inside popup list or
-			another group. Should accept only "menuItem", "menuGroup"
-			and "menuSeparator" components as children.
+			<![CDATA[The menuGroup component is used to define an expandable group of items inside a pop-up list or another group.]]>
 		</description>
         <attribute-type name="binding" required="false">
             <description>
@@ -11489,7 +11520,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="menuItem" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The menuItem component is used for the definition of a single item inside a pop-up list.]]>
+        </description>
         <attribute-type name="action" required="false">
             <description>
 				MethodBinding pointing at the application action to be
@@ -11921,7 +11954,7 @@
     <element-type body-content="refused" content="mixed"
         end-tag="required" name="menuSeparator" start-tag="required">
         <description>
-			A horizontal separator to use in the menu.
+			<![CDATA[The menuSeparator component is used for creating a horizontal separator that can be placed between groups or items.]]>
 		</description>
         <attribute-type name="binding" required="false">
             <description>
@@ -11957,7 +11990,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="message" start-tag="required">
-        <description>richfaces Message Component</description>
+        <description>
+        	<![CDATA[The message component is used for rendering a single message for a specific component. ]]>
+        </description>
         <attribute-type name="ajaxRendered" required="false">
             <description>
 				Define, must be (or not) content of this component will
@@ -12257,7 +12292,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="messages" start-tag="required">
-        <description>richfaces Messages Component</description>
+        <description>
+        	<![CDATA[The messages component is similar to message component but used for rendering all messages for the components.]]>
+		</description>
         <attribute-type name="ajaxRendered" required="false">
             <description>
 				Define, must be (or not) content of this component will
@@ -12570,7 +12607,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="modalPanel" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The modalPanel component implements a modal dialog window. All operations in the main application window are locked out while this window is active. Opening and closing the window is done through client JavaScript code.]]>
+        </description>
         <attribute-type name="autosized" required="false">
             <description>
 				If "true" modalPanel should be autosizeable. Default
@@ -12997,7 +13036,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="nodeSelectListener" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The nodeSelectListener represents an action listener method that is notified after selection of a node.]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -13012,7 +13053,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="orderingList" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The orderingList is a component for ordering items in a list. This component provides possibilities to reorder a list and sort it on the client side.]]>
+        </description>
         <attribute-type name="activeItem" required="false">
             <description>Stores active item</description>
             <proposal type="beanProperty"/>
@@ -13869,9 +13912,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="panelBar" start-tag="required">
         <description>
-			A component with categories sliding up and down to reveal
-			and hide items under selected categories (as used in
-			Microsoft Outlook).
+        	<![CDATA[The panelBar component is used for displaying a number of cascading panels which can be opened with a click on the header.]]>
 		</description>
         <attribute-type name="binding" required="false">
             <description>
@@ -14158,7 +14199,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="panelBarItem" start-tag="required">
         <description>
-			A child component of a slide panel component
+			<![CDATA[The panelBarItem component is used for creating a single panel within a panelBar>.]]>
 		</description>
         <attribute-type name="binding" required="false">
             <description>
@@ -14275,9 +14316,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="panelMenu" start-tag="required">
         <description>
-			Defines the menu on the page and the set of the child
-			elements properties in layout.
-		</description>
+			<![CDATA[The panelMenu component is used to define an in line vertical menu on a page.]]>		</description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -14983,8 +15022,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="panelMenuGroup" start-tag="required">
         <description>
-			Defines expandable group of items inside the panel menu or
-			other group.
+        	<![CDATA[The panelMenuGroup component is used to define an expandable group of items inside the panel menu or other group.]]>
 		</description>
         <attribute-type name="accesskey" required="false">
             <description>
@@ -15717,7 +15755,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="panelMenuItem" start-tag="required">
         <description>
-			Defines single Item inside popup list.
+			<![CDATA[The panelMenuItem component is used to define a single item inside popup list.]]>
 		</description>
         <attribute-type name="action" required="false">
             <description>
@@ -16212,7 +16250,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="pickList" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The pickList component is used for moving selected item(s) from one list into another. ]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -16626,7 +16666,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="progressBar" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The progressBar component is designed for displaying a progress bar which shows the current status of the process. ]]>
+        </description>
         <attribute-type name="actionListener" required="false">
             <description>
 				MethodBinding pointing at method accepting an
@@ -17102,7 +17144,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="recursiveTreeNodesAdaptor" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The recursiveTreeNodesAdaptor is an extension of a treeNodesAdaptor component that provides the possibility to define data models and process nodes recursively.]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a
@@ -17199,7 +17243,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="scrollableDataTable" start-tag="required">
-        <description>Scrollable Data Table</description>
+        <description>
+        	<![CDATA[The scrollableDataTable component is used for the table-like component creation. The component just adds the set of additional features described below in comparison with the standard table. ]]>
+        </description>
         <attribute-type name="activeClass" required="false">
             <description>
 				A CSS class to be applied to an active row
@@ -17660,8 +17706,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="separator" start-tag="required">
         <description>
-			A horizontal line to use as a separator in a layout. The
-			line type can be customized with the lineType parameter.
+	        <![CDATA[The separator component is use to draw a horizontal line to use as a separator in a layout. ]]>
 		</description>
         <attribute-type name="align" required="false">
             <description>
@@ -17862,9 +17907,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="simpleTogglePanel" start-tag="required">
         <description>
-			Wrapper component with named facets. Every facet will be
-			shown after activation corresponding toggleControl(the other
-			will be hidden).
+	        <![CDATA[The simpleTogglePanel is a collapsible panel, which content shows/hides after activating a header control.]]>
 		</description>
         <attribute-type name="action" required="false">
             <description>
@@ -18492,7 +18535,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="subTable" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The subTable component is used for inserting subtables into tables.]]>
+        </description>
         <attribute-type name="ajaxKeys" required="false">
             <description>
 				This attribute defines row keys that are updated after
@@ -19584,7 +19629,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="tab" start-tag="required">
-        <description>A tab section within a tab panel</description>
+        <description>
+        	<![CDATA[The tab component create a single panel within tabPanel.]]>
+		</description>
         <attribute-type name="action" required="false">
             <description>
 				MethodBinding pointing at the application action to be
@@ -20093,7 +20140,7 @@
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="tabPanel" start-tag="required">
         <description>
-			A tab panel displaying tabs for grouping content of a panel.
+			<![CDATA[The tabPanel component displays a panel that contains multiple panels with tabs inside.]]>
 		</description>
         <attribute-type name="activeTabClass" required="false">
             <description>
@@ -21683,7 +21730,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="toolTip" start-tag="required">
-        <description>Defines tooltip for parent component.</description>
+        <description>
+        	<![CDATA[The toolTip component is used for creation of event-triggered non modal popup, that contains information regarding the page element, that event was applied to.]]>
+        </description>
         <attribute-type name="attached" required="false">
             <description>
 				If the value of the "attached" attribute is true, a
@@ -22020,7 +22069,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="tree" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The tree component is designed for hierarchical data presentation and is applied for building a tree structure with a drag-and-drop capability.]]>
+        </description>
         <attribute-type name="acceptCursors" required="false">
             <description>
 				List of comma separated cursors that indicates when
@@ -22814,7 +22865,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="treeNode" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The treeNode component is designed for creating sets of tree elements within a tree component.]]>
+        </description>
         <attribute-type name="acceptCursors" required="false">
             <description>
 				List of comma separated cursors that indicates when
@@ -23450,7 +23503,9 @@
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="treeNodesAdaptor" start-tag="required">
-        <description/>
+        <description>
+        	<![CDATA[The treeNodesAdaptor provides the possibility to define data models and create representations for them.]]>
+        </description>
         <attribute-type name="binding" required="false">
             <description>
 				The attribute takes a value-binding expression for a

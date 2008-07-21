@@ -17,12 +17,12 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
+import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 
 /**
  * @author igels
@@ -145,24 +145,35 @@ public class KbSchemaUtil {
 	 * @param element
 	 * @return
 	 */
-	public static String getDescription(Element element) {
-//		KbPlugin.log("--> KbSchemaUtil.getDescription(Element element)");
-//		KbPlugin.log("    element=" + element);
-		NodeList nl = element.getElementsByTagName(SchemaNodeFactory.DESCRIPTION_NODE);
-		if(nl.getLength()>0) {
-			Text text = (Text)nl.item(0).getFirstChild();
-			if((text!=null)&&(text.getData()!=null)) {
-//				KbPlugin.log("<-- KbSchemaUtil.getDescription(Element element)");
-//				KbPlugin.log("    description=" + text.getData().trim());
-				return text.getData().trim();
+	public static String getElementBody(Element element) {
+		StringBuffer sb = new StringBuffer();
+		NodeList nl = element.getChildNodes();
+		for (int i = 0; i < nl.getLength(); i++) {
+			Node n = nl.item(i);
+			short nodeType = n.getNodeType();
+			if (nodeType == Node.TEXT_NODE || nodeType == Node.CDATA_SECTION_NODE) {
+				sb.append(((CharacterData)n).getData());
 			}
-//			KbPlugin.log("<-- KbSchemaUtil.getDescription(Element element)");
-//			KbPlugin.log("    description=");
-			return "";
 		}
-//		KbPlugin.log("<-- KbSchemaUtil.getDescription(Element element)");
-//		KbPlugin.log("    description=null");
-		return null;
+		return sb.toString();
+	}
+
+	/**
+	 * 
+	 * @param element
+	 * @return
+	 */
+	public static String getDescription(Element element) {
+		NodeList list = element.getChildNodes();
+		for(int i=0; i<list.getLength(); i++) {
+			Node node = list.item(i);
+			if(node instanceof Element) {
+				if(SchemaNodeFactory.DESCRIPTION_NODE.equals(node.getNodeName())) {
+					return getElementBody((Element)node);
+				}
+			}
+		}
+		return "";
 	}
 
 	/**
