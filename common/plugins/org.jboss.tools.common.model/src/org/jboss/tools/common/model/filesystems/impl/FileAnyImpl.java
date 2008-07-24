@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
@@ -217,7 +218,7 @@ public class FileAnyImpl extends RegularObjectImpl {
 		if(f.isFile()) {
 			try {
 				return f.getCanonicalPath().replace('\\', '/');
-			} catch (Exception e) {
+			} catch (IOException e) {
 				//ignore - if file does not exist, do replacements in other way
 			}
 		}
