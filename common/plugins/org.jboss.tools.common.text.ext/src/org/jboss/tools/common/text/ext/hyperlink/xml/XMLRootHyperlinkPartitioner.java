@@ -14,18 +14,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.jface.text.IDocument;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlinkPartitioner;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkRegion;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkPartitionRecognizer;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkRegion;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * @author Jeremy
@@ -76,8 +74,6 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 					parent = parent.getParentNode();
 				}
 			}
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError(x);
 		} finally {
 			smw.dispose();
 		}
@@ -89,19 +85,15 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 	public static String extractName (String name, Map trackersMap) {
 		if (trackersMap == null || trackersMap.size() == 0) return name;
 		if (name == null) return null;
-		try {
-			int column = name.indexOf(":");
-			if (column == -1) return name;
-			String prefix = name.substring(0, column);
-			if (prefix == null || prefix.trim().length() == 0) return name;
-			
-			String uri = (String)trackersMap.get(prefix);
-			if (uri == null || uri.length() == 0) return name;
-			
-			return "[" + uri + "]" + name.substring(column);
-		} catch (Exception x) {
-			return name;
-		}
+		int column = name.indexOf(":");
+		if (column == -1) return name;
+		String prefix = name.substring(0, column);
+		if (prefix == null || prefix.trim().length() == 0) return name;
+		
+		String uri = (String)trackersMap.get(prefix);
+		if (uri == null || uri.length() == 0) return name;
+		
+		return "[" + uri + "]" + name.substring(column);
 	}
 	
 	/**
@@ -117,8 +109,6 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
 
 			return n != null;
-		} catch (Exception x) {
-			return false;
 		} finally {
 			smw.dispose();
 		}

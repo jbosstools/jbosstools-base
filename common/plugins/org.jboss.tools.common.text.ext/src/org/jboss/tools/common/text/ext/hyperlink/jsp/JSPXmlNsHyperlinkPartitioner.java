@@ -12,18 +12,16 @@ package org.jboss.tools.common.text.ext.hyperlink.jsp;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlinkPartitioner;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkRegion;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkPartitionRecognizer;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkRegion;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * @author Jeremy
@@ -56,9 +54,6 @@ public class JSPXmlNsHyperlinkPartitioner extends AbstractHyperlinkPartitioner i
 
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in parsing region", x);
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -82,9 +77,6 @@ public class JSPXmlNsHyperlinkPartitioner extends AbstractHyperlinkPartitioner i
 			Element rootElem = xmlnsAttr.getOwnerElement();
 			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return false;
 			return true;
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
 		}

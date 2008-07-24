@@ -132,7 +132,7 @@ public class HyperlinkPartitionerDefinition {
 				public void run() {
 					try {
 						result[0] = element.createExecutableExtension(name);
-					} catch (Exception e) {
+					} catch (CoreException e) {
 						handleCreateExecutableException(result, e);
 					}
 				}

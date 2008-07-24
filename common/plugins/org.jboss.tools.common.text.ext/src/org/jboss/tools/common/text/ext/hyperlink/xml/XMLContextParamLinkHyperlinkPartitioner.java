@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.xml;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.w3c.dom.Document;
@@ -51,9 +52,6 @@ public abstract class XMLContextParamLinkHyperlinkPartitioner extends AbstractHy
 			
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -121,7 +119,7 @@ public abstract class XMLContextParamLinkHyperlinkPartitioner extends AbstractHy
 			};
 			
 			return region;
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {

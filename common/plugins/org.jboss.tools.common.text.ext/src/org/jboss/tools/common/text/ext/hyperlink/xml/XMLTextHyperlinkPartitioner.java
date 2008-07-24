@@ -53,9 +53,6 @@ public class XMLTextHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -73,9 +70,6 @@ public class XMLTextHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			
 			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
 			return (n != null && n instanceof Text);
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
 		}

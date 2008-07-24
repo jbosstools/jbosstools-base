@@ -10,16 +10,15 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.xml;
 
-import org.eclipse.jdt.internal.core.ModelUpdater;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
+import org.jboss.tools.common.text.ext.ExtensionsPlugin;
+import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
+import org.jboss.tools.common.text.ext.util.Utils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Node;
-
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
-import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
-import org.jboss.tools.common.text.ext.util.Utils;
 
 public class XMLDoctypeHyperlink extends XMLXmlNsHyperlink {
 	
@@ -44,7 +43,7 @@ public class XMLDoctypeHyperlink extends XMLXmlNsHyperlink {
 			String text = "";
 			try {
 				text = getDocument().get(start, end - start); 
-			} catch (Exception x) {
+			} catch (BadLocationException x) {
 				ExtensionsPlugin.getPluginLog().logError(x);
 			};
 			String publicId = (node.getPublicId() == null ? "" : node.getPublicId());
@@ -100,9 +99,6 @@ public class XMLDoctypeHyperlink extends XMLXmlNsHyperlink {
 				}
 			};
 			return region;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -123,13 +119,9 @@ public class XMLDoctypeHyperlink extends XMLXmlNsHyperlink {
 			DocumentType node = (DocumentType)n;
 			
 			return node.getPublicId();
-		} catch (Exception x) {
-			//ignore
 		} finally {
 			smw.dispose();
 		}
-
-		return null;
 	}
 
 	protected String getSystemId(IRegion region) {
@@ -146,13 +138,9 @@ public class XMLDoctypeHyperlink extends XMLXmlNsHyperlink {
 			DocumentType node = (DocumentType)n;
 			
 			return node.getSystemId();
-		} catch (Exception x) {
-			//ignore
 		} finally {
 			smw.dispose();
 		}
-
-		return null;
 	}
 
 

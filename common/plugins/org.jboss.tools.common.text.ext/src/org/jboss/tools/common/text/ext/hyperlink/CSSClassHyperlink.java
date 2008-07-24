@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.text.MessageFormat;
@@ -19,12 +20,14 @@ import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.ui.IEditorPart;
@@ -85,7 +88,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 				openFileFailed();
 			}
 			
-		} catch (Exception x) {
+		} catch (CoreException x) {
 			// could not open editor
 			openFileFailed();
 		}
@@ -94,7 +97,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 	private String getStyleName(IRegion region) {
 		try {
 			return Utils.trimQuotes(getDocument().get(region.getOffset(), region.getLength()));
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		}
@@ -120,7 +123,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 				if(file != null && file.exists()) return file;
 			}
 			return null;
-		} catch (Exception x) {
+		} catch (CoreException x) {
 			//ignore
 			return null;
 		}
@@ -195,7 +198,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 			}
 			
 			return null;
-		} catch (Exception x) {
+		} catch (CoreException x) {
 			//ignore
 			return null;
 		} finally {
@@ -247,14 +250,8 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 				
 				token = scanner.nextToken();
 			}
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error while looking for style region " + styleName, x);
 		} finally {
-			try {
 				reader.close();
-			} catch (Exception x) {
-				//ignore
-			}
 		}
 		return null;
 	}
@@ -294,12 +291,12 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 				
 				token = scanner.nextToken();
 			}
-		} catch (Exception x) {
+		} catch (CoreException x) {
 			ExtensionsPlugin.getPluginLog().logError("Error while looking for style region ", x);
 		} finally {
 			try {
 				stream.close();
-			} catch (Exception x) {
+			} catch (IOException x) {
 				//ignore
 			}
 		}
@@ -308,9 +305,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 	
 	private List<Node> findStyleLinks (NodeList list) {
 		List<Node> styleLinks = new ArrayList<Node>();
-		try {
 			for (int i = 0; list != null && i < list.getLength(); i++) {
-				try {
 					IDOMElement element = (IDOMElement)list.item(i);
 					String axis = JSPRootHyperlinkPartitioner.computeAxis(getDocument(), element.getStartOffset());
 					axis  = axis.toLowerCase();
@@ -338,16 +333,8 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 						if (add != null) 
 							styleLinks.addAll(add);
 					}
-				} catch (Exception x) { 
-					// Probably not an XMLElement
-					//ignore
-				}
 			}
 			return styleLinks;
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error while looking for style links", x);
-			return null;
-		}
 	}
 	
 	protected IRegion getRegion (int offset) {
@@ -419,7 +406,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 				
 			};
 			return region;
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {

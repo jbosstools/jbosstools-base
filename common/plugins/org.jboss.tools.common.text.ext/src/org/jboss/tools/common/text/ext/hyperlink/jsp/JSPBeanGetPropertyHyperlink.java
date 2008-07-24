@@ -12,11 +12,12 @@ package org.jboss.tools.common.text.ext.hyperlink.jsp;
 
 import java.text.MessageFormat;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.ui.IEditorPart;
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.ClassMethodHyperlink;
 import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
@@ -91,7 +92,7 @@ public class JSPBeanGetPropertyHyperlink extends ClassMethodHyperlink {
 			} else {
 				openFileFailed();
 			}
-		} catch (Exception x) {
+		} catch (CoreException x) {
 			openFileFailed();
 		}
 	}
@@ -113,9 +114,6 @@ public class JSPBeanGetPropertyHyperlink extends ClassMethodHyperlink {
 				element = findElementByIDBackward(xmlDocument.getChildNodes(), id, endOffset, tagname); 
 			}
 			return element;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -130,7 +128,6 @@ public class JSPBeanGetPropertyHyperlink extends ClassMethodHyperlink {
 
 			for (int i = list.getLength() - 1; list != null && i >= 0; i--) {
 				if(!(list.item(i) instanceof Element)) continue;
-				try {
 					Element element = (Element)list.item(i);
 					int start = Utils.getValueStart(element);
 					if (start < 0 || start >= endOffset) continue;
@@ -151,13 +148,8 @@ public class JSPBeanGetPropertyHyperlink extends ClassMethodHyperlink {
 						Element child = findElementByIDBackward(element.getChildNodes(), id, endOffset, tagName);
 						if (child != null) return child;
 					}
-				} catch (Exception x) {
-					// Probably not an XMLElement
-					//ignore
-				}
+
 			}
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in finding element by id " + id, x);
 		} finally {
 			smw.dispose();
 		}
@@ -167,7 +159,7 @@ public class JSPBeanGetPropertyHyperlink extends ClassMethodHyperlink {
 	String getPropertyName(IRegion region) {
 		try {
 			return Utils.trimQuotes(getDocument().get(region.getOffset(), region.getLength()));
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		}
@@ -187,9 +179,6 @@ public class JSPBeanGetPropertyHyperlink extends ClassMethodHyperlink {
 			Node node = ((Attr)n).getOwnerElement();
 
 			return getAttributeValue(node, NAME_ATTRNAME);
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}

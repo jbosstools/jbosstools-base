@@ -11,6 +11,7 @@
 package org.jboss.tools.common.text.ext.util;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -129,7 +130,7 @@ public abstract class TextScanner implements ITokenScanner {
 		} else {
 			try {
 				ch = reader.read();
-			} catch (Exception x) {
+			} catch (IOException x) {
 				return ICharacterScanner.EOF;
 			}
 			if ( ch == -1 ) return ICharacterScanner.EOF;
@@ -258,7 +259,7 @@ public abstract class TextScanner implements ITokenScanner {
 				length--;
 			}
 			return d.get(0, length);
-		} catch (Exception ex) {
+		} catch (BadLocationException ex) {
 			return text;
 		}
 	}

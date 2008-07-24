@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.project.IPromptingProvider;
@@ -38,7 +39,6 @@ public abstract class XModelBasedHyperlink extends AbstractHyperlink {
 		XModel xModel = getXModel(documentFile);
 		if (xModel == null) return;
 
-		try {	
 			IPromptingProvider provider = PromptingProviderFactory.WEB;
 
 			Properties p = getRequestProperties(region);
@@ -53,9 +53,6 @@ public abstract class XModelBasedHyperlink extends AbstractHyperlink {
 			if ( error != null && error.length() > 0) {
 				openFileFailed();
 			}
-		} catch (Exception x) {
-			openFileFailed();
-		}
 	}
 	
 	protected abstract String getRequestMethod();
@@ -133,7 +130,7 @@ public abstract class XModelBasedHyperlink extends AbstractHyperlink {
 				
 			};
 			return region;
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {

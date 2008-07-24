@@ -19,7 +19,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMText;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -39,25 +38,20 @@ public class Utils {
 		int bEnd = word.length() - 1;
 		StringBuffer sb = new StringBuffer(attrText);
 
-		try {
-			//find start and end of path property
-			while (bStart < bEnd && 
-					(sb.charAt(bStart) == '\'' || sb.charAt(bStart) == '\"' ||
-							Character.isWhitespace(sb.charAt(bStart)))) { 
-				bStart++;
-			}
-			while (bEnd >= 0 && 
-					(sb.charAt(bEnd) == '\'' || sb.charAt(bEnd) == '\"' ||
-							Character.isWhitespace(sb.charAt(bEnd)))) { 
-				bEnd--;
-			}
-			bEnd++;
-			if (bEnd < bStart) bEnd = bStart;
-			return sb.substring(bStart, bEnd);
-		} catch (Exception x) {
-			//TODO remove that catch after study safety of code
-			return word;
-		}		
+		//find start and end of path property
+		while (bStart < bEnd && 
+				(sb.charAt(bStart) == '\'' || sb.charAt(bStart) == '\"' ||
+						Character.isWhitespace(sb.charAt(bStart)))) { 
+			bStart++;
+		}
+		while (bEnd >= 0 && 
+				(sb.charAt(bEnd) == '\'' || sb.charAt(bEnd) == '\"' ||
+						Character.isWhitespace(sb.charAt(bEnd)))) { 
+			bEnd--;
+		}
+		bEnd++;
+		if (bEnd < bStart) bEnd = bStart;
+		return sb.substring(bStart, bEnd);	
 	}
 
 	static public Node findNodeForOffset(Node node, int offset) {

@@ -59,9 +59,6 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		try {
 			smw.init(getDocument());
 			return smw.getFile();
-		} catch (Exception t) {
-			// ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -72,9 +69,6 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		try {
 			smw.init(getDocument());
 			return smw.getXModel();
-		} catch (Exception t) {
-			// ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -111,26 +105,23 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 	}
 
 	public static IFile getFile(IStructuredModel structuredModel) {
-		if (structuredModel == null)
-			return null;
-		String wsRelativePath = structuredModel.getBaseLocation();
-		if (wsRelativePath == null)
-			return null;
-		try {
-			if (wsRelativePath.startsWith("/")) {
-				IPath path = new Path(wsRelativePath);
-				IResource r = ModelPlugin.getWorkspace().getRoot().findMember(
-						path);
-				if (r.exists() && r instanceof IFile)
-					return (IFile) r;
-			}
-			String path = Platform.getLocation().append(wsRelativePath)
-					.toFile().getAbsolutePath();
-			return EclipseResourceUtil.getFile(path);
-		} catch (Exception e) {
-			//ignore
+		if (structuredModel == null) {
 			return null;
 		}
+		String wsRelativePath = structuredModel.getBaseLocation();
+		if (wsRelativePath == null) {
+			return null;
+		}
+		if (wsRelativePath.startsWith("/")) {
+			IPath path = new Path(wsRelativePath);
+			IResource r = ModelPlugin.getWorkspace().getRoot().findMember(
+					path);
+			if (r.exists() && r instanceof IFile)
+				return (IFile) r;
+		}
+		String path = Platform.getLocation().append(wsRelativePath)
+				.toFile().getAbsolutePath();
+		return EclipseResourceUtil.getFile(path);
 	}
 
 	abstract protected IRegion doGetHyperlinkRegion(int offset);
@@ -142,107 +133,95 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		if(documentFile == null || !documentFile.isAccessible()) return null;
 
 		IProject project = documentFile.getProject();
-		try {
-			String name = Utils.trimFilePath(fileName);
-			IPath currentPath = documentFile.getLocation()
-					.removeLastSegments(1);
-			IResource member = null;
-			StructureEdit se = StructureEdit.getStructureEditForRead(project);
-			if (se == null) {
-				return null;
-			}
-			WorkbenchComponent[] modules = se.getWorkbenchModules();
-			for (int i = 0; i < modules.length; i++) {
-				if (name.startsWith("/")) {
-					member = findFileByAbsolutePath(project, modules[i], name);
-				} else {
-					member = findFileByRelativePath(project, modules[i],
-							currentPath, name);
-					if (member == null && name.length() > 0) {
-						// in some cases path having no leading "/" is
-						// nevertheless absolute
-						member = findFileByAbsolutePath(project, modules[i],
-								"/" + name);
-					}
-				}
-				if (member != null) {
-					if (((IFile) member).exists())
-						return (IFile) member;
+		String name = Utils.trimFilePath(fileName);
+		IPath currentPath = documentFile.getLocation()
+				.removeLastSegments(1);
+		IResource member = null;
+		StructureEdit se = StructureEdit.getStructureEditForRead(project);
+		if (se == null) {
+			return null;
+		}
+		WorkbenchComponent[] modules = se.getWorkbenchModules();
+		for (int i = 0; i < modules.length; i++) {
+			if (name.startsWith("/")) {
+				member = findFileByAbsolutePath(project, modules[i], name);
+			} else {
+				member = findFileByRelativePath(project, modules[i],
+						currentPath, name);
+				if (member == null && name.length() > 0) {
+					// in some cases path having no leading "/" is
+					// nevertheless absolute
+					member = findFileByAbsolutePath(project, modules[i],
+							"/" + name);
 				}
 			}
-		} catch (Exception x) {
-			//ignore
+			if (member != null) {
+				if (((IFile) member).exists())
+					return (IFile) member;
+			}
 		}
 		return null;
 	}
 
 	private IFile findFileByRelativePath(IProject project,
 			WorkbenchComponent module, IPath basePath, String path) {
-		try {
-			ComponentResource[] resources = module.findResourcesBySourcePath(
-					new Path("/"), 0);
-			IPath projectPath = project.getLocation();
-			IResource member = null;
+		ComponentResource[] resources = module.findResourcesBySourcePath(
+				new Path("/"), 0);
+		IPath projectPath = project.getLocation();
+		IResource member = null;
 
-			for (int i = 0; resources != null && i < resources.length; i++) {
-				IPath runtimePath = resources[i].getRuntimePath();
-				IPath sourcePath = resources[i].getSourcePath();
+		for (int i = 0; resources != null && i < resources.length; i++) {
+			IPath runtimePath = resources[i].getRuntimePath();
+			IPath sourcePath = resources[i].getSourcePath();
 
-				// Look in source environment
-				IPath webRootPath = projectPath.append(sourcePath);
-				IPath relativePath = Utils.getRelativePath(webRootPath,
-						basePath);
-				IPath filePath = relativePath.append(path);
-				member = project.getFolder(sourcePath).findMember(filePath);
-				if (member != null) {
-					if (((IFile) member).exists())
-						return (IFile) member;
-				}
-
-				// Look in runtime environment
-				webRootPath = projectPath.append(runtimePath);
-				relativePath = Utils.getRelativePath(webRootPath, basePath);
-				filePath = relativePath.append(path);
-				member = project.getFolder(runtimePath).findMember(filePath);
-				if (member != null) {
-					if (((IFile) member).exists())
-						return (IFile) member;
-				}
+			// Look in source environment
+			IPath webRootPath = projectPath.append(sourcePath);
+			IPath relativePath = Utils.getRelativePath(webRootPath,
+					basePath);
+			IPath filePath = relativePath.append(path);
+			member = project.getFolder(sourcePath).findMember(filePath);
+			if (member != null) {
+				if (((IFile) member).exists())
+					return (IFile) member;
 			}
-		} catch (Exception x) {
-			//ignore
+
+			// Look in runtime environment
+			webRootPath = projectPath.append(runtimePath);
+			relativePath = Utils.getRelativePath(webRootPath, basePath);
+			filePath = relativePath.append(path);
+			member = project.getFolder(runtimePath).findMember(filePath);
+			if (member != null) {
+				if (((IFile) member).exists())
+					return (IFile) member;
+			}
 		}
 		return null;
 	}
 
 	private IFile findFileByAbsolutePath(IProject project,
-			WorkbenchComponent module, String path) {
-		try {
-			ComponentResource[] resources = module.findResourcesBySourcePath(
-					new Path("/"), 0);
+		WorkbenchComponent module, String path) {
+		ComponentResource[] resources = module.findResourcesBySourcePath(
+				new Path("/"), 0);
 //			IPath projectPath = project.getLocation();
-			IResource member = null;
+		IResource member = null;
 
-			for (int i = 0; resources != null && i < resources.length; i++) {
-				IPath runtimePath = resources[i].getRuntimePath();
-				IPath sourcePath = resources[i].getSourcePath();
+		for (int i = 0; resources != null && i < resources.length; i++) {
+			IPath runtimePath = resources[i].getRuntimePath();
+			IPath sourcePath = resources[i].getSourcePath();
 
-				// Look in source environment
-				member = project.getFolder(sourcePath).findMember(path);
-				if (member != null) {
-					if (((IFile) member).exists())
-						return (IFile) member;
-				}
-
-				// Look in runtime environment
-				member = project.getFolder(runtimePath).findMember(path);
-				if (member != null) {
-					if (((IFile) member).exists())
-						return (IFile) member;
-				}
+			// Look in source environment
+			member = project.getFolder(sourcePath).findMember(path);
+			if (member != null) {
+				if (((IFile) member).exists())
+					return (IFile) member;
 			}
-		} catch (Exception x) {
-			//ignore
+
+			// Look in runtime environment
+			member = project.getFolder(runtimePath).findMember(path);
+			if (member != null) {
+				if (((IFile) member).exists())
+					return (IFile) member;
+			}
 		}
 		return null;
 	}
@@ -266,8 +245,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		f.setParent(root);
         JarEntryEditorInput jarEditorInput = new JarEntryEditorInput(f) {
         	public boolean equals(Object arg) {
-        		try {return this.toString().equals(arg.toString());}
-        		catch (Exception x) {return false;}
+        		return this.toString().equals(arg.toString());
         	}
         };
         return jarEditorInput;

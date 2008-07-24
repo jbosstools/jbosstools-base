@@ -57,9 +57,6 @@ public class JSPElementNameHyperlinkPartitioner extends XMLElementNameHyperlinkP
 			
 			Map trackers = JSPRootHyperlinkPartitioner.getTrackersMap(document, region.getOffset());
 			return (trackers != null && trackers.containsKey(nodePrefix));
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
 		}

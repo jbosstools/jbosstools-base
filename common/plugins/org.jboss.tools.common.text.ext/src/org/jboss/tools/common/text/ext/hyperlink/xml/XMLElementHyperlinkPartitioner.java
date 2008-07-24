@@ -56,9 +56,6 @@ public class XMLElementHyperlinkPartitioner extends AbstractHyperlinkPartitioner
 			
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -78,9 +75,6 @@ public class XMLElementHyperlinkPartitioner extends AbstractHyperlinkPartitioner
 			if (!(n instanceof Attr || n instanceof Element)) return false;
 
 			return true;
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
 		}

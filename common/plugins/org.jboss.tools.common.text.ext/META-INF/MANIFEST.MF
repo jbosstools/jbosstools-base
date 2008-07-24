@@ -14,7 +14,7 @@ Bundle-ClassPath: texteditorextensions.jar
 Bundle-ManifestVersion: 2
 Bundle-Vendor: %providerName
 Plugin-Class: org.jboss.tools.common.text.ext.ExtensionsPlugin
-Bundle-SymbolicName: org.jboss.tools.common.text.ext; singleton:=true
+Bundle-SymbolicName: org.jboss.tools.common.text.ext;singleton:=true
 Bundle-Localization: plugin
 Require-Bundle: org.jboss.tools.common,
  org.jboss.tools.common.model,

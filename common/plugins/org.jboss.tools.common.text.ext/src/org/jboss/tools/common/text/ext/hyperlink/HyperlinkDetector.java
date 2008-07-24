@@ -33,13 +33,11 @@ public class HyperlinkDetector extends BaseHyperlinkDetector {
 	protected String[] getPartitionTypes(IDocument document, int offset) {
 		String documentRegionType = null;
 		ITypedRegion region = null;
-		try {
+
 			region = (document instanceof IDocumentExtension3 ? 
 					((IDocumentExtension3)document).getDocumentPartitioner("org.eclipse.wst.sse.core.default_structured_text_partitioning").getPartition(offset) : 
 					document.getDocumentPartitioner().getPartition(offset)); 
-		} catch (Exception x) {
-			//ignore
-		}
+
 		if (region != null) {
 		    documentRegionType = region.getType();
 		} else {

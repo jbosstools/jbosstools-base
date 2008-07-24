@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -77,7 +78,7 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 			} else {
 				openFileFailed();
 			}
-		} catch (Exception x) {
+		} catch (CoreException x) {
 			openFileFailed();
 		}
 	}
@@ -129,7 +130,7 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 			if (propStart > offset || propStart + propLength < offset) return null;
 			IRegion region = new HyperlinkRegion(propStart, propLength);
 			return region;
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {
@@ -195,7 +196,7 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 			IJavaProject javaProject = JavaCore.create(project);
 			return searchForClassMethod(javaProject, className, methodName);
 
-		} catch (Exception x) {
+		} catch (CoreException x) {
 			ExtensionsPlugin.getPluginLog().logError("Error while looking for method " + methodName + " of class " + className, x);
 			return null;
 		}
@@ -206,7 +207,7 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 		try {
 			Attr attr = (Attr)node.getAttributes().getNamedItem(attrName);
 			return Utils.getTrimmedValue(getDocument(), attr);
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		}
@@ -228,7 +229,7 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 			Attr attr = (Attr)node.getAttributes().getNamedItem(attrName);
 			
 			return Utils.getTrimmedValue(getDocument(), attr);
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {

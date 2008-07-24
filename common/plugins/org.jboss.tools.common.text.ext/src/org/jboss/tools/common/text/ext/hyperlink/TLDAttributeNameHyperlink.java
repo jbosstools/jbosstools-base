@@ -52,38 +52,29 @@ public class TLDAttributeNameHyperlink extends JumpToHyperlink {
 				return null;
 			
 			return tagElement.getChildNodes();
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
 	}
 	
 	private boolean validAxis(Node n, String validAxisEnding) {
-		try {
-			if (validAxisEnding == null || validAxisEnding.lastIndexOf('/') == -1) return false;
-			StringTokenizer st = new StringTokenizer(validAxisEnding, "/");
-			List<String> tokens = new ArrayList<String>();
-			while (st.hasMoreTokens()) {
-				tokens.add(st.nextToken());
-			}
-			if (tokens.size() == 0) return false;
-			Node currentElement = n;
-			for (int i = tokens.size() - 1; i >= 0; i--) {
-				if (currentElement == null || !(currentElement instanceof Element))
-					return false;
-				String token = (String)tokens.get(i);
-				if (!token.equals(currentElement.getNodeName()))
-					return false;
-				currentElement = currentElement.getParentNode();
-			}
-			return true;
-
-		} catch (Exception x) {
-			//ignore
-			return false;
+		if (validAxisEnding == null || validAxisEnding.lastIndexOf('/') == -1) return false;
+		StringTokenizer st = new StringTokenizer(validAxisEnding, "/");
+		List<String> tokens = new ArrayList<String>();
+		while (st.hasMoreTokens()) {
+			tokens.add(st.nextToken());
 		}
+		if (tokens.size() == 0) return false;
+		Node currentElement = n;
+		for (int i = tokens.size() - 1; i >= 0; i--) {
+			if (currentElement == null || !(currentElement instanceof Element))
+				return false;
+			String token = (String)tokens.get(i);
+			if (!token.equals(currentElement.getNodeName()))
+				return false;
+			currentElement = currentElement.getParentNode();
+		}
+		return true;
 	}
 
 	/*

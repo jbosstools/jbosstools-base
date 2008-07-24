@@ -51,9 +51,6 @@ public class JSPBeanSetPropertyHyperlinkPartitioner extends AbstractHyperlinkPar
 
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -85,9 +82,6 @@ public class JSPBeanSetPropertyHyperlinkPartitioner extends AbstractHyperlinkPar
 				return false;
 
 			return true;
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
 		}

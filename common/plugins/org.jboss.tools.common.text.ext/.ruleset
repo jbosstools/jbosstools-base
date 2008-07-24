@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset xmlns="http://pmd.sf.net/ruleset/1.0.0" name="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd" xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
+<description></description>
+<rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="" message="Exception catch is too generic" name="Avoid Catching Excetpion" typeResolution="true">
+<description></description>
+<priority>1</priority>
+<properties>
+<property name="xpath">
+<value><![CDATA[//CatchStatement/FormalParameter/Type
+ /ReferenceType/ClassOrInterfaceType[@Image='Exception']]]></value>
+</property>
+</properties>
+<example></example>
+<example></example>
+<example></example>
+</rule>
+</ruleset>

@@ -12,8 +12,10 @@ package org.jboss.tools.common.text.ext.hyperlink.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.StringTokenizer;
@@ -25,6 +27,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.pde.internal.ui.editor.JarEntryEditorInput;
 import org.eclipse.pde.internal.ui.editor.JarEntryFile;
@@ -107,7 +110,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 		public InputStream getContents() throws CoreException {
 			try {
 				return new FileInputStream(fFile);
-			} catch (Exception x) {
+			} catch (FileNotFoundException x) {
 				//ignore
 				return null;
 			}
@@ -155,21 +158,18 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 				String uri = getURI(region);
 				if (uri != null && uri.toLowerCase().startsWith("http:")) {
 					URL url = null;
-					try {
-						url = new URL(uri);
-						IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
-						IWebBrowser browser = browserSupport.createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR, null, null, null);
-						browser.openURL(url);
-					} catch (Exception e) {
-						openFileFailed();
-					}
-					
-				} else
+					url = new URL(uri);
+					IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
+					IWebBrowser browser = browserSupport.createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR, null, null, null);
+					browser.openURL(url);
+				} else {
 					openFileFailed();
+				}
 			}
-
-		} catch (Exception x) {
+		} catch (MalformedURLException x) {
 			// could not open editor
+			openFileFailed();
+		} catch (PartInitException x) {
 			openFileFailed();
 		}
 	}
@@ -207,23 +207,19 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
      * @see com.ibm.sse.editor.hyperlink.AbstractHyperlink#openFileInEditor(java.lang.String)
      */
     protected void openFileInEditor(String fileString) {
-        try {
-	        if (fileString.startsWith(JAR_FILE_PROTOCOL)) {
-				fileString = fileString.substring(JAR_FILE_PROTOCOL.length());
-				IEditorInput jarEditorInput = createEditorInput(fileString);
+        if (fileString.startsWith(JAR_FILE_PROTOCOL)) {
+			fileString = fileString.substring(JAR_FILE_PROTOCOL.length());
+			IEditorInput jarEditorInput = createEditorInput(fileString);
+	        IEditorPart part = openFileInEditor(jarEditorInput,  fileString);
+	        if (part == null) openFileFailed();
+        } else if (fileString.startsWith(JAR_FILE)) {
+				fileString = fileString.substring(JAR_FILE.length());
+				IEditorInput jarEditorInput = createEditorInputAlternate(fileString);
 		        IEditorPart part = openFileInEditor(jarEditorInput,  fileString);
 		        if (part == null) openFileFailed();
-	        } else if (fileString.startsWith(JAR_FILE)) {
-					fileString = fileString.substring(JAR_FILE.length());
-					IEditorInput jarEditorInput = createEditorInputAlternate(fileString);
-			        IEditorPart part = openFileInEditor(jarEditorInput,  fileString);
-			        if (part == null) openFileFailed();
-			} else {
-				super.openFileInEditor(fileString);    
-			}
-        } catch (Exception x) {
-        	openFileFailed();
-        }
+		} else {
+			super.openFileInEditor(fileString);    
+		}
     }
 
 	protected IEditorInput createEditorInputAlternate(String fileString) {
@@ -240,8 +236,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 
 		JarEntryEditorInput jarEditorInput = new JarEntryEditorInput(jarEntryFile) {
         	public boolean equals(Object arg) {
-        		try {return this.toString().equals(arg.toString());}
-        		catch (Exception x) {return false;}
+        		return this.toString().equals(arg.toString());
         	}
         };
         return jarEditorInput;
@@ -250,38 +245,28 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 	String getURI(IRegion region) {
 		try {
 			return Utils.trimQuotes(getDocument().get(region.getOffset(), region.getLength()));
-		} catch (Exception x) {
-			//ignore
+		} catch (BadLocationException x) {
 			return null;
 		}
+		
 	}
 
 	protected String getPublicId(IRegion region) {
-		try {
-			String text = getURI(region);
-			if (text == null) return null;
-			int spacer = text.indexOf(" ");
-			if (spacer == -1) spacer = text.indexOf("\t");
-			return (spacer == -1 ? text : text.substring(0, spacer));
-		} catch (Exception x) {
-			//ignore
-			return null;
-		}
+		String text = getURI(region);
+		if (text == null) return null;
+		int spacer = text.indexOf(" ");
+		if (spacer == -1) spacer = text.indexOf("\t");
+		return (spacer == -1 ? text : text.substring(0, spacer));
 	}
 
 	protected String getSystemId(IRegion region) {
-		try {
-			String text = getURI(region);
-			if (text == null) return null;
-			int spacer = text.indexOf(" ");
-			if (spacer == -1) spacer = text.indexOf("\t");
-			if (spacer == -1) spacer = 0;
-			
-			return text.substring(spacer).trim();
-		} catch (Exception x) {
-			//ignore
-			return null;
-		}
+		String text = getURI(region);
+		if (text == null) return null;
+		int spacer = text.indexOf(" ");
+		if (spacer == -1) spacer = text.indexOf("\t");
+		if (spacer == -1) spacer = 0;
+		
+		return text.substring(spacer).trim();
 	}
 
 	private String getMappedSystemIdFromCatalog(String publicId, String systemId) {
@@ -293,8 +278,8 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 				mappedSystemId = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveSystem(systemId);
 			if (mappedSystemId == null && systemId != null)
 	        	mappedSystemId = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(systemId);
-		} catch (Exception e) {
-			// Ignore, just return null as result
+		} catch (IOException e) {
+			return null;		
 		}
 		return mappedSystemId;
 	}
@@ -308,8 +293,8 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 	                fileName = file.getAbsolutePath();
 	            }
 	        }
-		} catch (Exception x) {
-			//ignore
+		} catch (MalformedURLException x) {
+			return null;
 		}
 		return fileName;
 	}
@@ -386,10 +371,6 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 
 			};
 			return region;
-
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error while obtaining region", x);
-			return null;
 		} finally {
 			smw.dispose();
 		}

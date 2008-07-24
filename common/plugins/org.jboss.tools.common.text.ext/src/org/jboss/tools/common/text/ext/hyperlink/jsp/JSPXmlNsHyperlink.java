@@ -20,7 +20,6 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.FindObjectHelper;
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
 import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
@@ -42,14 +41,8 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doHyperlink(org.eclipse.jface.text.IRegion)
 	 */
 	protected void doHyperlink(IRegion region) {
-	
-		try {
 			XModelObject object = getFilename(region);
 			if(object != null) FindObjectHelper.findModelObject(object, FindObjectHelper.IN_EDITOR_ONLY);
-		} catch (Exception x) {
-			// could not open editor
-			openFileFailed();
-		}
 	}
 	
 	protected final String JAR_FILE_PROTOCOL = "jar:file:/";//$NON-NLS-1$
@@ -58,7 +51,6 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
      * @see com.ibm.sse.editor.hyperlink.AbstractHyperlink#openFileInEditor(java.lang.String)
      */
     protected void openFileInEditor(String fileString) {
-        try {
 	        if (fileString.startsWith(JAR_FILE_PROTOCOL)) {
 				fileString = fileString.substring(JAR_FILE_PROTOCOL.length());
 				IEditorInput jarEditorInput = createEditorInput(fileString);
@@ -67,9 +59,6 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 			} else {
 				super.openFileInEditor(fileString);    
 			}
-        } catch (Exception x) {
-        	openFileFailed();
-        }
     }
     
 	private XModelObject getFilename(IRegion region) {
@@ -99,9 +88,6 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 			ITaglibMapping tm = wp.getTaglibMapping();
 			if (tm == null) return null;
 			return tm.getTaglibObject(uri);
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in obtaining file name from region", x);
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -129,9 +115,6 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 			if (uri == null || uri.trim().length() == 0) return null;
 			
 			return uri;
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in obtaining file name from region", x);
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -185,9 +168,6 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 
 			};
 			return region;
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in obtaining region", x);
-			return null;
 		} finally {
 			smw.dispose();
 		}

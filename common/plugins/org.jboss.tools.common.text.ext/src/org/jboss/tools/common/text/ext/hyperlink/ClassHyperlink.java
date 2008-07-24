@@ -34,6 +34,7 @@ import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -72,7 +73,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 				// could not open editor
 				openFileFailed();
 			}
-		} catch (Exception x) {
+		} catch (CoreException x) {
 			// could not open editor
 			openFileFailed();
 		}
@@ -81,7 +82,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 	private String getClassName(IRegion region) {
 		try {
 			return getDocument().get(region.getOffset(), region.getLength());
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			return null;
 		} finally {
 		}
@@ -122,23 +123,18 @@ public class ClassHyperlink extends AbstractHyperlink {
 	}
 
 	private String getQualifiedClassName(IJavaElement element) {
-		try {
-			String classQualifiedName = null;
-			if (element instanceof SourceType || element instanceof BinaryType ) {
-				classQualifiedName = element.getElementName();
-			}
-			while ( element != null && !(element instanceof PackageFragmentRoot)) {
-				element = element.getParent();
-				if (element instanceof PackageFragment) {
-					classQualifiedName = element.getElementName() + "." + classQualifiedName; 
-				}
-			}
-
-			return classQualifiedName;
-		} catch (Exception x) {
-			//ignore
-			return null;
+		String classQualifiedName = null;
+		if (element instanceof SourceType || element instanceof BinaryType ) {
+			classQualifiedName = element.getElementName();
 		}
+		while ( element != null && !(element instanceof PackageFragmentRoot)) {
+			element = element.getParent();
+			if (element instanceof PackageFragment) {
+				classQualifiedName = element.getElementName() + "." + classQualifiedName; 
+			}
+		}
+
+		return classQualifiedName;
 	}
 	
 	private IJavaElement searchForClass(String className) {
@@ -168,7 +164,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 			IJavaProject javaProject = JavaCore.create(project);
 			return searchForClass(javaProject, className);
 
-		} catch (Exception x) {
+		} catch (CoreException x) {
 			ExtensionsPlugin.getPluginLog().logError("Error while looking for class " + className, x);
 			return null;
 		}
@@ -269,7 +265,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 			};
 			
 			return region;
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {

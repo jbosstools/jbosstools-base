@@ -19,13 +19,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jst.jsp.core.internal.contentmodel.TaglibController;
 import org.eclipse.jst.jsp.core.internal.contentmodel.tld.TLDCMDocumentManager;
 import org.eclipse.jst.jsp.core.internal.contentmodel.tld.TaglibTracker;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlinkPartitioner;
@@ -36,6 +29,11 @@ import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.jboss.tools.jst.web.tld.ITaglibMapping;
 import org.jboss.tools.jst.web.tld.WebProjectFactory;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 /**
  * @author Jeremy
@@ -100,7 +98,6 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 	public static String extractName (String name, Map trackersMap, ITaglibMapping tm) {
 		if (trackersMap == null || trackersMap.size() == 0) return name;
 		if (name == null) return null;
-		try {
 			int column = name.indexOf(":");
 			if (column == -1) return name;
 			String prefix = name.substring(0, column);
@@ -112,10 +109,6 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			String resolvedUri = (tm == null ? uri : tm.resolveURI(uri));
 			
 			return "[" + resolvedUri + "]" + name.substring(column);
-		} catch (Exception x) {
-			//ignore
-			return name;
-		}
 	}
 
 	public static Map getTrackersMap(IDocument document, int offset) {
@@ -144,10 +137,6 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			map = addAlternativeTrackersMap(map, document, offset);
 
 			return map;
-		} catch (Exception x) {
-			//ignore
-			//TODO narrow catch after study
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -189,9 +178,6 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			}
 
 			return map;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -212,9 +198,6 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			if (n == null) return false;
 			
 			return true;
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
 		}

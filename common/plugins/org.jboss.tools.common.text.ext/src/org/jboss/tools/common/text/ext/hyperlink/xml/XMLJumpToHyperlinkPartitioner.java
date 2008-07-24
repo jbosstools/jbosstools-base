@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.w3c.dom.Document;
@@ -61,9 +62,6 @@ public class XMLJumpToHyperlinkPartitioner extends AbstractHyperlinkPartitioner 
 			
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -129,7 +127,7 @@ public class XMLJumpToHyperlinkPartitioner extends AbstractHyperlinkPartitioner 
 			};
 			
 			return region;
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {
@@ -143,7 +141,6 @@ public class XMLJumpToHyperlinkPartitioner extends AbstractHyperlinkPartitioner 
 	}
 	
 	private boolean validAxis(Node n, String validAxisEnding) {
-		try {
 			if (validAxisEnding == null || validAxisEnding.lastIndexOf('/') == -1) return false;
 			StringTokenizer st = new StringTokenizer(validAxisEnding, "/");
 			List<String> tokens = new ArrayList<String>();
@@ -161,11 +158,6 @@ public class XMLJumpToHyperlinkPartitioner extends AbstractHyperlinkPartitioner 
 				currentElement = currentElement.getParentNode();
 			}
 			return true;
-
-		} catch (Exception x) {
-			//ignore
-			return false;
-		}
 	}
 
 	/**
@@ -188,9 +180,6 @@ public class XMLJumpToHyperlinkPartitioner extends AbstractHyperlinkPartitioner 
 				if (validAxis(n.getParentNode(), validAxisEndings[i])) 
 					return true;
 			}
-			return false;
-		} catch (Exception x) {
-			//ignore
 			return false;
 		} finally {
 			smw.dispose();

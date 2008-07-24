@@ -12,9 +12,9 @@ package org.jboss.tools.common.text.ext.hyperlink.jsp;
 
 import java.text.MessageFormat;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
 import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
@@ -39,7 +39,6 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 	 */
 	protected void doHyperlink(IRegion region) {
 		
-		try {
 			String forID = getForId(region);
 			IRegion elementByID = findElementByIDBackward(forID, region.getOffset(), USEBEAN_TAGNAME);
 			if (elementByID != null) {
@@ -47,9 +46,6 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 			} else {
 				openFileFailed();
 			}
-		} catch (Exception x) {
-			openFileFailed();
-		}
 	}
 	
 	private IRegion findElementByIDBackward (String id, int endOffset, String tagname) {
@@ -96,9 +92,6 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 					return "IRegion [" + getOffset() +", " + getLength()+ "]";
 				}
 			};
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -113,7 +106,6 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 
 			for (int i = list.getLength() - 1; list != null && i >= 0; i--) {
 				if(!(list.item(i) instanceof Element)) continue;
-				try {
 					Element element = (Element)list.item(i);
 					int start = Utils.getValueStart(element);
 					if (start < 0 || start >= endOffset) continue;
@@ -134,14 +126,7 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 						Element child = findElementByIDBackward(element.getChildNodes(), id, endOffset, tagName);
 						if (child != null) return child;
 					}
-				} catch (Exception x) {
-					// Probably not an XMLElement
-					//ignore
-				}
 			}
-		} catch (Exception x) {
-			Exception e = x instanceof Exception ? (Exception)x : new Exception(x);
-			ExtensionsPlugin.getPluginLog().logError(e);
 		} finally {
 			smw.dispose();
 		}
@@ -152,7 +137,7 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 	String getForId(IRegion region) {
 		try {
 			return Utils.trimQuotes(getDocument().get(region.getOffset(), region.getLength()));
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		}
@@ -232,7 +217,7 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 			};
 			
 			return region;
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {

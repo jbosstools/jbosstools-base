@@ -13,7 +13,6 @@ package org.jboss.tools.common.text.ext.hyperlink;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IExtension;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
@@ -125,9 +124,6 @@ public abstract class AbstractHyperlinkPartitioner implements IHyperlinkPartitio
 				return Utils.getParentAxisForNode(xmlDocument, attr) + attr.getName() + "/";
 			}
 			return Utils.getParentAxisForNode(xmlDocument, node);
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}

@@ -12,16 +12,14 @@ package org.jboss.tools.common.text.ext.hyperlink.xml;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlinkPartitioner;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkRegion;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkPartitionRecognizer;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkRegion;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * @author Jeremy
@@ -52,9 +50,6 @@ public class XMLElementNameHyperlinkPartitioner extends AbstractHyperlinkPartiti
 			
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error while parsing region", x);
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -80,9 +75,6 @@ public class XMLElementNameHyperlinkPartitioner extends AbstractHyperlinkPartiti
 
 			IHyperlinkRegion region = new HyperlinkRegion(nameStart, nameEnd - nameStart, null, null, null);
 			return region;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -108,9 +100,6 @@ public class XMLElementNameHyperlinkPartitioner extends AbstractHyperlinkPartiti
 			int nameStart = start + (elem.isEndTag() ? "<" : "</").length();
 			int nameEnd = nameStart + tagName.length();
 			return (region.getOffset() > nameStart && region.getOffset() <= nameEnd);
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
 		}

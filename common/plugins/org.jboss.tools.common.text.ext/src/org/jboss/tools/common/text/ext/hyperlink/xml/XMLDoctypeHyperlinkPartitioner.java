@@ -54,9 +54,6 @@ public class XMLDoctypeHyperlinkPartitioner extends AbstractHyperlinkPartitioner
 			
 			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
 			return region;
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -74,9 +71,6 @@ public class XMLDoctypeHyperlinkPartitioner extends AbstractHyperlinkPartitioner
 				return "/@DOCTYPE/" + node.getNodeName() + "/";
 			}
 			return Utils.getParentAxisForNode(xmlDocument, node);
-		} catch (Exception x) {
-			//ignore
-			return null;
 		} finally {
 			smw.dispose();
 		}
@@ -96,9 +90,6 @@ public class XMLDoctypeHyperlinkPartitioner extends AbstractHyperlinkPartitioner
 			if (!(n instanceof DocumentType)) return false;
 
 			return true;
-		} catch (Exception x) {
-			//ignore
-			return false;
 		} finally {
 			smw.dispose();
 		}

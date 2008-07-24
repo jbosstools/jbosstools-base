@@ -39,14 +39,11 @@ public class JSPElementNameHyperlink extends AbstractHyperlink {
 	 */
 	protected void doHyperlink(IRegion region) {
 	
-		try {
-			XModelObject object = getFilename(region);
-			if(object != null) FindObjectHelper.findModelObject(object, FindObjectHelper.IN_EDITOR_ONLY);
-			
-		} catch (Exception x) {
-			// could not open editor
-			openFileFailed();
+		XModelObject object = getFilename(region);
+		if(object != null)  {
+			FindObjectHelper.findModelObject(object, FindObjectHelper.IN_EDITOR_ONLY);
 		}
+
 	}
 	
 	protected final String JAR_FILE_PROTOCOL = "jar:file:/";//$NON-NLS-1$
@@ -93,15 +90,8 @@ public class JSPElementNameHyperlink extends AbstractHyperlink {
 			
 			ITaglibMapping tm = wp.getTaglibMapping();
 			if (tm == null) return null;
-			try {
-				tm.invalidate();
-			} catch (Exception x) {
-				//ignore
-			}
+			tm.invalidate();
 			return tm.getTaglibObject(uri);
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in getting file name from region", x);
-			return null;
 		} finally {
 			smw.dispose();
 		}

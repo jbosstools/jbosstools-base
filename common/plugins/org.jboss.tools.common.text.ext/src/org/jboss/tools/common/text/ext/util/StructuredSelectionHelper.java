@@ -18,8 +18,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
-
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.IEditorWrapper;
 import org.jboss.tools.common.text.ext.IMultiPageEditor;
@@ -30,22 +28,13 @@ import org.jboss.tools.common.text.ext.IMultiPageEditor;
 public class StructuredSelectionHelper {
 	
 	public static IndexedRegion getSourceElement(StructuredTextEditor editor, int offset) {
-		try {
-			return editor.getModel().getIndexedRegion(offset);
-		} catch (Exception x) {
-			return null;
-		}
+		return editor.getModel().getIndexedRegion(offset);
 	}
 	
 	public static void setSelectionAndRevealInActiveEditor(IRegion region) {
-		try {
-			setSelectionAndReveal(null, region);
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in setting selection to active text editor", x);
-		}
+		setSelectionAndReveal(null, region);
 	}
 	public static StructuredTextEditor getStructuredTextEditor (IEditorPart editorPart) {
-		try {
 			IEditorPart activeEditorPart = editorPart;
 			if (activeEditorPart == null) {
 				IWorkbenchPage workbenchPage = ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -58,29 +47,22 @@ public class StructuredSelectionHelper {
 				IEditorWrapper editorPartWraper = (IEditorWrapper)activeEditorPart;
 				return getStructuredTextEditor(editorPartWraper.getEditor());
 			} else if (activeEditorPart instanceof StructuredTextEditor) {
-				return (StructuredTextEditor)activeEditorPart;
-				
+				return (StructuredTextEditor)activeEditorPart;	
 			}
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in obtaining structured text editor", x);
-		}
+
 		return null;
 	}
 	
 	public static void setSelectionAndReveal(IEditorPart editorPart, IRegion region) {
-		try {
-			StructuredTextEditor sourceEditor = getStructuredTextEditor(editorPart);
-			if (sourceEditor == null) {
-				if (editorPart instanceof ITextEditor) {
-					((ITextEditor)editorPart).selectAndReveal(region.getOffset(), region.getLength());
-				}
-				return;
+		StructuredTextEditor sourceEditor = getStructuredTextEditor(editorPart);
+		if (sourceEditor == null) {
+			if (editorPart instanceof ITextEditor) {
+				((ITextEditor)editorPart).selectAndReveal(region.getOffset(), region.getLength());
 			}
-			ISelectionProvider provider = sourceEditor.getSelectionProvider();
-			provider.setSelection(new TextSelection(region.getOffset(), region.getLength()));
-		} catch (Exception x) {
-			ExtensionsPlugin.getPluginLog().logError("Error in setting selection", x);
+			return;
 		}
+		ISelectionProvider provider = sourceEditor.getSelectionProvider();
+		provider.setSelection(new TextSelection(region.getOffset(), region.getLength()));
 	}
 
 }

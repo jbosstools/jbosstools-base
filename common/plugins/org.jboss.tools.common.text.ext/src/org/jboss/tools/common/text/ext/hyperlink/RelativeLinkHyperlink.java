@@ -10,11 +10,12 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
-import java.io.FileNotFoundException;
 import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.ide.IDE;
@@ -36,7 +37,6 @@ public abstract class RelativeLinkHyperlink extends AbstractHyperlink {
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doHyperlink(org.eclipse.jface.text.IRegion)
 	 */
 	protected void doHyperlink(IRegion region) {
-	
 		try {
 			String fileName = getFilePath(region);
 			IFile fileToOpen = getFileFromProject(fileName);
@@ -44,9 +44,9 @@ public abstract class RelativeLinkHyperlink extends AbstractHyperlink {
 				IWorkbenchPage workbenchPage = ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				IDE.openEditor(workbenchPage,fileToOpen,true);
 			} else {
-				throw new FileNotFoundException((fileToOpen == null ? "" : fileToOpen.toString()));
+				openFileFailed();
 			}
-		} catch (Exception x) {
+		} catch (CoreException x) {
 			// could not open editor
 			openFileFailed();
 		}
@@ -55,11 +55,10 @@ public abstract class RelativeLinkHyperlink extends AbstractHyperlink {
 	private String getFilePath(IRegion region) {
 		try {
 			return getDocument().get(region.getOffset(), region.getLength());
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
-		} finally {
-		}
+		} 
 	}
 	
 	protected String updateFilenameForModel(String filename, IProject project) {
@@ -69,13 +68,8 @@ public abstract class RelativeLinkHyperlink extends AbstractHyperlink {
 	protected IFile getFileFromProject(String fileName) {
 		IFile documentFile = getFile();
 		
-		try {	
 			IProject project = documentFile.getProject();
 			return super.getFileFromProject(updateFilenameForModel(fileName, project));
-		} catch (Exception x) {
-			//ignore
-			return null;
-		}
 	}
 
 	IRegion fLastRegion = null;
@@ -153,7 +147,7 @@ public abstract class RelativeLinkHyperlink extends AbstractHyperlink {
 			};
 			
 			return region;
-		} catch (Exception x) {
+		} catch (BadLocationException x) {
 			//ignore
 			return null;
 		} finally {
