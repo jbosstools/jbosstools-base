@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import org.eclipse.core.resources.IFile;
@@ -167,8 +168,10 @@ public class FileSystemsLoader extends URLRootLoader {
 			newPaths = EclipseResourceUtil.getClassPath(project.getProject());
 			List<String> jre = EclipseResourceUtil.getJREClassPath(project.getProject());
 			if(jre != null) newPaths.removeAll(jre);
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			//TODO
+			ModelPlugin.getDefault().logError(e);
+		} catch (IOException e) {
 			ModelPlugin.getDefault().logError(e);
 		}
 		if(paths == null && newPaths == null) return;
