@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.util;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
@@ -19,7 +20,7 @@ public class SafeDocumentBuilderFactory extends Thread {
 	DocumentBuilder d = null;
 	boolean validate = false;
 	
-	private SafeDocumentBuilderFactory(boolean validate) throws Exception {
+	private SafeDocumentBuilderFactory(boolean validate) throws InterruptedException {
 		this.validate = validate;
 		setContextClassLoader(getClass().getClassLoader());
 		start();
@@ -31,7 +32,7 @@ public class SafeDocumentBuilderFactory extends Thread {
 			DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 			if(validate) f.setValidating(validate);
 			d = f.newDocumentBuilder();				
-		} catch (Exception e) {
+		} catch (ParserConfigurationException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 	}
@@ -42,7 +43,7 @@ public class SafeDocumentBuilderFactory extends Thread {
  */
 		try {
 			return new SafeDocumentBuilderFactory(validating).d;
-		} catch (Exception e) {
+		} catch (InterruptedException e) {
 			ModelPlugin.getPluginLog().logError(e);
 			return null;
 		} 

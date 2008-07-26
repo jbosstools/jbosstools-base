@@ -21,6 +21,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusAdapter;
@@ -206,12 +207,13 @@ public class NoteFieldEditor extends ExtendedFieldEditor implements IFieldEditor
 					data.setName(s);
 					try {
 						font = new Font(null, data);
-					} catch (Exception e) {
+						textField.setFont(font);
+					} catch (SWTException e) {
 						ModelUIPlugin.getPluginLog().logError(e);
 					}
 				}
 			}
-			textField.setFont(font);
+			
 			textField.setBackground(bg);
 			textField.setForeground(fg);
 			//textField = new Text(parent, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);

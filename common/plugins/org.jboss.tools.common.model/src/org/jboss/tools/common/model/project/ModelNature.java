@@ -46,11 +46,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 	public void setProject(IProject project) {
 		if(this.project == project) return;		
 		this.project = project;
-		try {
-			createProject();
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError("ModelNature:createProject()", e);
-		}
+		createProject();
 	}
 	
 	public Object getAdapter(Class adapter) {
@@ -127,11 +123,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		}
 		models.put(project, model);
 		ModelPlugin.getDefault().getSaveParticipant().addModel(model);
-		try {
-			updateProjectVersion();
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
-		}
+		updateProjectVersion();
 		updateListener();
 	}
 	

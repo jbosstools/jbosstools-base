@@ -107,11 +107,9 @@ public class SaveModelActionDelegate extends AbstractModelActionDelegate {
 						//ignore
 					}
 					if(stopped) return;
-					if(action != null) try {
+					if(action != null) { 
 						boolean enabled = model != null && model.getRoot().isModified();
 						if(action.isEnabled() != enabled) action.setEnabled(enabled);
-					} catch (Exception e) {
-						ModelUIPlugin.getPluginLog().logError(e);
 					}
 				}
 			}			

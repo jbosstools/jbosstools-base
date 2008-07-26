@@ -254,7 +254,7 @@ public class ResourceMarkers {
 				h.update();
 				ResourceMarkers.updateLocation(ms[i], h.getLine(), h.getStart(), h.getEnd());
 			}
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			//ignore
 		}
 	}	

@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.project;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -38,7 +39,7 @@ public class WatcherLoader implements XObjectLoader {
     	if(p == null) return false;
     	try {
     		return "true".equals(p.getSessionProperty(LOCK));
-    	} catch(Exception e) {
+    	} catch(CoreException e) {
     		//ignore
     		return false;
     	}

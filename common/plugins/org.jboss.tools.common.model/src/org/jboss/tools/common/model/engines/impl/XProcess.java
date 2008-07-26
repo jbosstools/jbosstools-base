@@ -42,7 +42,7 @@ public abstract class XProcess {
             process = Runtime.getRuntime().exec(command_line, null, new File(getRoot()));
             err = new ProcessOut(process, true, w);
             out = new ProcessOut(process, false, w);
-        } catch (Exception e) {
+        } catch (IOException e) {
         	ModelPlugin.getPluginLog().logError(e);
         }
         new HookMonitor();

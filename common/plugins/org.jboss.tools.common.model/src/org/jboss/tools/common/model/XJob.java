@@ -111,29 +111,12 @@ public class XJob extends Job {
 				if(list.size() == 0) break;
 				r = list.remove(0);
 			}
-			try {
-				monitor.subTask(r.getId());
-				int state = 0;
-				try {
-					Bundle b = Platform.getBundle("org.jboss.tools.common.model");
-					state = b.getState();
-				} catch (Exception e2) {
-					//ignore, bundle is not active
-				}
-				if(state == Bundle.ACTIVE) {
-					r.run();
-				}
-			} catch (Exception e) {
-				int state = 0;
-				try {
-					Bundle b = Platform.getBundle("org.jboss.tools.common.model");
-					state = b.getState();
-				} catch (Exception e2) {
-					//ignore, bundle is not active
-				}
-				if(state == Bundle.ACTIVE) {
-					ModelPlugin.getPluginLog().logError(e);
-				}
+			monitor.subTask(r.getId());
+			int state = 0;
+			Bundle b = Platform.getBundle("org.jboss.tools.common.model");
+			state = b==null ? -1 : b.getState();
+			if(state == Bundle.ACTIVE) {
+				r.run();
 			}
 			synchronized (this) {
 				ids.remove(r.getId());

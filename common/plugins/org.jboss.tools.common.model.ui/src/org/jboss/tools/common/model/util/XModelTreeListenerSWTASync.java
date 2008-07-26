@@ -11,6 +11,8 @@
 package org.jboss.tools.common.model.util;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import org.eclipse.swt.widgets.Display;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.*;
@@ -19,9 +21,11 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 public class XModelTreeListenerSWTASync implements XModelTreeListener {
 	private XModelTreeListener listener;
 	
-	private Item head = null;
-	private Item tail = null;
+	
+	Queue<XModelTreeEvent> queue = new ConcurrentLinkedQueue<XModelTreeEvent>();
+	
 	private Set<XModelObject> nodes = new HashSet<XModelObject>();
+	
 	Runnable runnable = null;
 	
 	private synchronized void add(XModelTreeEvent event) {
@@ -29,31 +33,9 @@ public class XModelTreeListenerSWTASync implements XModelTreeListener {
 			if(nodes.contains(event.getModelObject())) {
 				return;
 			}
-			nodes.add(event.getModelObject());
+			queue.add(event);
 		}
-		Item item = new Item();
-		item.event = event;		
-		if(head == null) {
-			head = item;
-			tail = item;
-		} else {
-			tail.next = item;
-			tail = item;
-		}
-	}
-	
-	private synchronized XModelTreeEvent get() {
-		if(head == null) {
-			runnable = null;
-			return null;
-		}
-		XModelTreeEvent event = head.event;
-		head = head.next;
-		if(head == null) tail = null;
-		if(event.kind() == XModelTreeEvent.NODE_CHANGED) {
-			nodes.remove(event.getModelObject());
-		}
-		return event;
+
 	}
 	
 	private void run(XModelTreeEvent event) {
@@ -69,8 +51,6 @@ public class XModelTreeListenerSWTASync implements XModelTreeListener {
 		this.listener = listener;
 	}
 	
-	static int count = 0;
-	
 	public void nodeChanged(final XModelTreeEvent event) {
 		run(event);
 	}
@@ -79,32 +59,25 @@ public class XModelTreeListenerSWTASync implements XModelTreeListener {
 		run(event);
 	}
 	
-	public void dispose() {
+	public synchronized void dispose() {
 		listener = null;
+		queue.clear();
 	}
 	
-	class Item {
-		XModelTreeEvent event;
-		Item next;
+	public synchronized XModelTreeListener getListener() {
+		return listener;
 	}
-	
 	
 	class R implements Runnable {
 		public void run() {
-			++count;
-			XModelTreeListener l = listener;
-			if (listener == null) {
-				ModelUIPlugin.getPluginLog().logInfo("ModelListener is disposed, but cannot removed from model!!!!");
-				head = null;
-				tail = null;
-				return;				
-			}
-			XModelTreeEvent event = null;
-			while((event = get()) != null) {
-				if(event.kind() == XModelTreeEvent.NODE_CHANGED) {
-					l.nodeChanged(event);
-				} else {
-					l.structureChanged(event);
+			XModelTreeListener listener = getListener();
+			if (listener != null) {
+				for (XModelTreeEvent event : queue) {
+					if(event.kind() == XModelTreeEvent.NODE_CHANGED) {
+						listener.nodeChanged(event);
+					} else {
+						listener.structureChanged(event);
+					}
 				}
 			}
 		}

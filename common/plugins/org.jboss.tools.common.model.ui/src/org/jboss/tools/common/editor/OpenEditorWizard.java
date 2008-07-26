@@ -15,11 +15,13 @@ import org.eclipse.ui.*;
 import org.eclipse.ui.ide.IDE;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.model.ServiceDialog;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.eclipse.core.resources.*;
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.common.core.resources.*;
 
 public class OpenEditorWizard implements SpecialWizard {
@@ -43,14 +45,14 @@ public class OpenEditorWizard implements SpecialWizard {
 				if(!b) id = null;
 			}
 			IModelObjectEditorInput input = XModelObjectEditorInput.createInstance(object);
-			if(input == null) throw new Exception("Cannot find resource for object " + object.getPresentationString());
+			if(input == null) throw new IllegalStateException("Cannot find resource for object " + object.getPresentationString());
 			if(input instanceof IFileEditorInput) {
 				IFileEditorInput fei = (IFileEditorInput)input;
 				IFile f = fei.getFile();
 				if(f != null && !f.isSynchronized(IResource.DEPTH_INFINITE)) {
 					try {
 						f.getParent().refreshLocal(IResource.DEPTH_INFINITE, null);
-					} catch (Exception e) {
+					} catch (CoreException e) {
 						ModelUIPlugin.getPluginLog().logError(e);
 					}
 				}
@@ -80,7 +82,10 @@ public class OpenEditorWizard implements SpecialWizard {
 				ObjectMultiPageEditor m = (ObjectMultiPageEditor)editor;
 				m.activateErrorTab();
 			}
-		} catch (Exception e) {
+		} catch (XModelException e) {
+			p.put("exception", e);
+			return 1;
+		} catch (PartInitException e) {
 			p.put("exception", e);
 			return 1;
 		}

@@ -44,7 +44,7 @@ public class ModelObjectAdapterExtensionPoint {
 				Class cls = null;
 				try {
 					cls = bundle.loadClass(classname);
-				} catch (Exception e) {
+				} catch (ClassNotFoundException e) {
 					ModelPlugin.getPluginLog().logError("Cannot load editor class " + classname + " from " + es[i].getNamespaceIdentifier());
 					continue;
 				}
@@ -61,7 +61,9 @@ public class ModelObjectAdapterExtensionPoint {
 		Class cls = (Class)adapters.get(iclassname);
 		try {
 			if(cls != null) return (IModelObjectAdapter)cls.newInstance();
-		} catch (Exception e) {
+		} catch (InstantiationException e) {
+			ModelPlugin.getPluginLog().logError(e);
+		} catch (IllegalAccessException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		return null;

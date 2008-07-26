@@ -11,9 +11,11 @@
 package org.jboss.tools.common.meta.action.impl.handlers;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.util.*;
 import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.model.engines.impl.XProcess;
 import org.jboss.tools.common.model.filesystems.XFileObject;
@@ -114,8 +116,8 @@ class OWEProcess extends XProcess {
             try {
                 java.net.URL u = new File(file).toURL();
                 file = u.getProtocol() + "://" + u.getFile();
-            } catch (Exception e) {
-            	//ignore
+            } catch (MalformedURLException e) {
+            	ModelPlugin.getPluginLog().logError(e);
             }
         }
         l.add(file);

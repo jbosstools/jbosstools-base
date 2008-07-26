@@ -538,18 +538,10 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 			int index = getIndex(list, this.xmo);
 			int targetIndex = getTargetIndex(index);
 			if(index == targetIndex || targetIndex < 0 || targetIndex >= list.length) return;
-			try {
-				XActionInvoker.invoke(COPY_XACTION_PATH, this.xmo, null, new Properties());
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			XActionInvoker.invoke(COPY_XACTION_PATH, this.xmo, null, new Properties());
 			XModelObject prev = list[targetIndex];
-			try {
-				XActionInvoker.invoke(MOVE_XACTION_PATH, prev, null, new Properties());
-				if(table != null && !table.isDisposed()) table.setSelection(targetIndex);
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			XActionInvoker.invoke(MOVE_XACTION_PATH, prev, null, new Properties());
+			if(table != null && !table.isDisposed()) table.setSelection(targetIndex);
 			fireStructureChange();
 		}
 		protected int getTargetIndex(int index) {

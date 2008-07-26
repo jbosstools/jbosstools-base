@@ -25,6 +25,7 @@ import org.jboss.tools.common.meta.action.SignificanceMessageFactory;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionItem;
 import org.jboss.tools.common.meta.action.XRedirect;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.ActionDeclinedException;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
@@ -103,7 +104,7 @@ public class XModelObjectAction extends XModelObjectActionItem {
 		   }
 		} catch (ActionDeclinedException de) {
 			//ignore
-		} catch(Exception e) {
+		} catch(XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}

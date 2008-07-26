@@ -197,11 +197,7 @@ public abstract class SpecialWizardSupport {
     public final void stopThread(boolean force) {
         if(thread == null) return;
         if(thread.isAlive() && force) {
-            try {
             	thread.stop();
-            } catch (Exception e) {
-            	//ignore
-            }
         }
         thread = null;
     }

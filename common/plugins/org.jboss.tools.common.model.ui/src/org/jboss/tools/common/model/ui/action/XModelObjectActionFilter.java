@@ -24,12 +24,18 @@ public class XModelObjectActionFilter implements IActionFilter, IModelObjectAdap
 		this.object = object;
 	}
 
+	/**
+	 * FIXME move to XModel Test Plugin
+	 */
 	public boolean testAttribute(Object target, String name, String value) {
 		try {
 			IModelObjectActionFilter f = (IModelObjectActionFilter)getClass().getClassLoader().loadClass(name).newInstance();
 			return f.isEnabled(object, value);
-		} catch (Exception e) {
-			//debug
+		} catch (ClassNotFoundException e) {
+			return false;
+		} catch (InstantiationException e) {
+			return false;
+		} catch (IllegalAccessException e) {
 			return false;
 		}
 	}

@@ -23,16 +23,15 @@ public class RootLoaderImpl implements XObjectLoader {
         XChild[] cs = object.getModelEntity().getChildren();
         for (int i = 0; i < cs.length; i++) {
           if(!cs[i].isRequired() || cs[i].getMaxCount() != 1) continue;
-          try {
-              object.addChild(object.getModel().createModelObject(cs[i].getName(), new java.util.Properties()));
-          } catch (Exception e) {
-        	  //ignore
-          }
+          object.addChild(object.getModel().createModelObject(cs[i].getName(), new java.util.Properties()));
         }
+        
         XModelObject[] children = object.getChildren();
         for (int i = 0; i < children.length; i++) {
             XObjectLoader rl = XModelObjectLoaderUtil.getObjectLoader(children[i]);
-            if(rl != null) rl.load(children[i]);
+            if(rl != null) {
+            	rl.load(children[i]);
+            }
         }
     }
 
@@ -53,7 +52,7 @@ public class RootLoaderImpl implements XObjectLoader {
             XObjectLoader rl = XModelObjectLoaderUtil.getObjectLoader(children[i]);
             if(rl != null && !rl.save(children[i])) b = false;
         }
-        if(b) object.setModified(false);
+        object.setModified(!b);
         return b;
     }
 

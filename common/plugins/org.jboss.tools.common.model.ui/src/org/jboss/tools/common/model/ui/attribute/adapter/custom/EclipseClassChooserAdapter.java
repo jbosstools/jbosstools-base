@@ -17,6 +17,7 @@ import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.*;
 import org.eclipse.jdt.ui.*;
 import org.eclipse.jface.operation.*;
@@ -52,7 +53,7 @@ public class EclipseClassChooserAdapter extends DefaultValueAdapter implements I
 				IType type = (IType)os[i];
 				return type.getFullyQualifiedName();
 			}
-		} catch (Exception e) {
+		} catch (JavaModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return null;			

@@ -101,16 +101,11 @@ public class OpenWithHelper {
     }
 
     static String[] getEnvironmentPaths() {
-        try {
-//            String jlp = System.getProperties().getProperty("java.library.path");
-            String jlp = OSHelper.getProperty("PATH", "");
-            StringTokenizer st = new StringTokenizer(jlp, File.pathSeparator);
-            String[] ps = new String[st.countTokens()];
-            for (int i = 0; i < ps.length; i++) ps[i] = st.nextToken();
-            return ps;
-        } catch (Exception t) {
-            return null;
-        }
+        String jlp = OSHelper.getProperty("PATH", "");
+        StringTokenizer st = new StringTokenizer(jlp, File.pathSeparator);
+        String[] ps = new String[st.countTokens()];
+        for (int i = 0; i < ps.length; i++) ps[i] = st.nextToken();
+        return ps;
     }
 
     public static String getLogicalExtension(XModelObject object, XAction action) {

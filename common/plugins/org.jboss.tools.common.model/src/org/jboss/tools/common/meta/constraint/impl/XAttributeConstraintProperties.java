@@ -49,12 +49,7 @@ public class XAttributeConstraintProperties extends XAttributeConstraintImpl {
     public boolean getBoolean(String name, boolean def) {
         String v = p.getProperty(name);
         if(v == null || v.length() == 0) return def;
-        try {
-            return Boolean.getBoolean(v);
-        } catch (Exception e) {
-        	//ignore
-            return def;
-        }
+        return Boolean.getBoolean(v);
     }
 
 }

@@ -113,13 +113,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     	Runnable r = new Runnable() {
     		public void run() {
     	    	getResourceMarkers().clear();
-    	    	try {
-    	    		constraintChecker.check();
-    	    	} catch (Exception e) {
-    	    		if(ModelPlugin.isDebugEnabled()) {
-    	    			ModelPlugin.getPluginLog().logError(e);
-    	    		}
-    	    	}    	
+    	   		constraintChecker.check();
     		}
     	};
     	Display.getDefault().asyncExec(r);
@@ -192,11 +186,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 			mergeAll(f, update);
 			set("actualBodyTimeStamp", "" + getTimeStamp());
 			if(errors1) m.fireStructureChanged(this);
-        	try {
-        		if(!isOverlapped) constraintChecker.check();
-        	} catch (Exception e) {
-        		ModelPlugin.getPluginLog().logError(e);
-        	}
+        	if(!isOverlapped) constraintChecker.check();
 		} else {
 			//old edit by replace		
             p.removeChild_0(this);

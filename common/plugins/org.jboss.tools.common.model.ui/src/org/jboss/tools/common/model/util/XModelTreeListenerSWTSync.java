@@ -33,11 +33,11 @@ public class XModelTreeListenerSWTSync implements XModelTreeListener{
 		Display.getDefault().syncExec( 
 			new Runnable() {
 				public void run() {
+					XModelTreeListener listener = getListener();
+					// forward nodeChange event if listener is not disposed
 					if(listener != null) {
 						listener.nodeChanged(event);
-					} else {
-						ModelUIPlugin.getPluginLog().logInfo("ModelListener is disposed, but not removed from model!!!!");
-					}
+					} 
 				}
 			}
 		);
@@ -47,17 +47,21 @@ public class XModelTreeListenerSWTSync implements XModelTreeListener{
 		Display.getDefault().syncExec( 
 			new Runnable() {
 				public void run() {
+					XModelTreeListener listener = getListener();
+					// structureChanged nodeChange event if listener is not disposed
 					if(listener != null) {
 						listener.structureChanged(event);
-					} else {
-						ModelUIPlugin.getPluginLog().logInfo("ModelListener is disposed, but not removed from model!!!!");
 					}
 				}
 			}
 		);
 	}
 	
-	public void dispose() {
+	public synchronized void dispose() {
 		listener = null;
+	}
+	
+	public synchronized XModelTreeListener getListener() {
+		return listener;
 	}
 }

@@ -174,11 +174,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		text.setLayoutData(gd);
 		text.setText(valueProvider.getStringValue(true));
-		try {
-			text.setSelection(valueProvider.getStringValue(true).length());
-		} catch (Exception e) {
-			//ignore
-		}
+		text.setSelection(valueProvider.getStringValue(true).length());
 		text.addModifyListener(this);
 		text.setFocus();
 		return composite;
@@ -224,11 +220,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 			text.removeModifyListener(this);
 			if ((text.getText()!=null)&&(!text.getText().equals(newValue))) {
 				text.setText(newValue);
-				try {
-					text.setSelection(newValue.length());
-				} catch (Exception e) {
-					ModelUIPlugin.getPluginLog().logError(e);
-				}
+				text.setSelection(newValue.length());
 			}
 			PropertyChangeEvent event = new PropertyChangeEvent(this, IPropertyEditor.VALUE, oldValue, newValue);
 			valueChangeListener.valueChange(event);
@@ -442,11 +434,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 				newValue = stringValue;
 				if(newValue == null) newValue = "";
 				text.setText(newValue);
-				try {
-					text.setSelection(newValue.length());
-				} catch(Exception exc) {
-					//ignore
-				}
+				text.setSelection(newValue.length());
 			}
 		} else {
 			valueChanged(newValue.trim());

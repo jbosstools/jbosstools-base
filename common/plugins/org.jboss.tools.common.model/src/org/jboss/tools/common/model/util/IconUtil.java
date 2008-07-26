@@ -112,7 +112,7 @@ public class IconUtil {
       PixelGrabber pg = new PixelGrabber(im.getImage(), 0, 0, w, h, px, 0, w);
       try {
     	  pg.grabPixels();
-      } catch (Exception e) {
+      } catch (InterruptedException e) {
     	  //ignore
       }
       return px;

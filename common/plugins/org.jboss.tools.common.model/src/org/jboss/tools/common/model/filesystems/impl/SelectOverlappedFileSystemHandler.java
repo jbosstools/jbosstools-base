@@ -65,7 +65,7 @@ public class SelectOverlappedFileSystemHandler extends AbstractHandler {
         try {
         	path = new File(path).getCanonicalPath().replace('\\', '/');
             return FilePathHelper.toPathPath(path);
-        } catch (Exception e) {
+        } catch (IOException e) {
         	//ignore
             return null;
         }

@@ -136,15 +136,10 @@ public class XUndoManager {
     }
 
     public void rollbackTransactionInProgress() {
-        if(current.next() != null) return;
-        if(!(current instanceof XTransactionUndo)) return;
+        if(current.next() != null || !(current instanceof XTransactionUndo)) return;
         XTransactionUndo t = (XTransactionUndo)current;
         if(!t.isInProgress()) return;
-        try {
-        	if(t.canUndo()) t.undo();
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError(e);
-        }
+       	if(t.canUndo()) t.undo();
         current = t.prev();
         current.setNext(null);
         fire();

@@ -11,6 +11,7 @@
 package org.jboss.tools.common.editor;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -212,15 +213,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 				}
 			}
 		}
-		try {
-			//bug JSFSTUD-445
-			rightFormContainer.clear();
-		} catch (Exception e) {
-			if(ModelUIPlugin.isDebugEnabled()) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
-		}
-		
+		rightFormContainer.clear();
 		if(form != null) {
 			form.initialize(xmo);
 			// load form from memento
@@ -236,7 +229,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 
 	private IFormFactory getFormFactory(XModelObject selected) {
 		if(selected == null) return null;
-		XModelObjectFormFactory formFactory;
+		XModelObjectFormFactory formFactory = null;
 		String formFactoryClassName = selected.getModelEntity().getProperty("formFactory");
 		
 		if(formFactoryClassName != null) {
@@ -248,10 +241,20 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 			try {
 				Constructor c = cls.getConstructor(new Class[]{XModelObject.class});
 				formFactory = (XModelObjectFormFactory)c.newInstance(new Object[]{selected}); 
-			} catch (Exception e) {
+			} catch (InstantiationException e) {
+				ModelUIPlugin.getPluginLog().logError(e);	
+			} catch (SecurityException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
-				return new FormFactory(selected);
+			} catch (NoSuchMethodException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			} catch (IllegalArgumentException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			} catch (IllegalAccessException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			} catch (InvocationTargetException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
+			return formFactory == null ? new FormFactory(selected) : formFactory;
 		} else {
 			formFactory = new DefaultFormFactory(selected);
 		}

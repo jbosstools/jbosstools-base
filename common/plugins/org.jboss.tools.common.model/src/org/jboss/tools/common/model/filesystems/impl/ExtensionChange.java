@@ -16,6 +16,7 @@ import java.util.Properties;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
 import org.jboss.tools.common.model.undo.XTransactionUndo;
@@ -65,7 +66,7 @@ public class ExtensionChange {
             XModelObject p = file.getParent();
             DefaultRemoveHandler.removeFromParent(file);
             DefaultCreateHandler.addCreatedObject(p, o, FindObjectHelper.IN_NAVIGATOR_ONLY);
-        } catch (Exception e) {
+        } catch (XModelException e) {
             undo.rollbackTransactionInProgress();
             return false;
         } finally {

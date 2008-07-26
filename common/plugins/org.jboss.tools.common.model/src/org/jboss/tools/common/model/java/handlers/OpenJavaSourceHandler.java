@@ -103,7 +103,7 @@ public class OpenJavaSourceHandler extends AbstractHandler {
     	IJavaElement[] cs = null;
     	try {
     		cs = ((IParent)javaElement).getChildren();
-    	} catch (Exception e) {
+    	} catch (JavaModelException e) {
     		//ignore
     	}
     	if(cs != null) for (int i = 0; i < cs.length; i++) {

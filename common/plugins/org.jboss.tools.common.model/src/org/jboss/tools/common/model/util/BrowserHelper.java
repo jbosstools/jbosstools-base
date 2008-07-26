@@ -50,7 +50,7 @@ public class BrowserHelper {
 					  }
 					  return true;
 				  }
-			  } catch (Exception e) {
+			  } catch (XModelException e) {
 				  ModelPlugin.getPluginLog().logError("BrowserHelper:" + e.getMessage());
 			  }
 			int i = d.showDialog("Run", "Enter valid path for " + o.getPresentationString(),
@@ -60,16 +60,11 @@ public class BrowserHelper {
 	}
 
 	static String[] getEnvironmentPaths() {
-		try {
 			String jlp = OSHelper.getProperty("PATH", "");
 			StringTokenizer st = new StringTokenizer(jlp, File.pathSeparator);
 			String[] ps = new String[st.countTokens()];
 			for (int i = 0; i < ps.length; i++) ps[i] = st.nextToken();
 			return ps;
-		} catch (Exception t) {
-			ModelPlugin.getPluginLog().logError("BrowserHelper:" + t.getMessage());
-			return null;
-		}
 	}
 
 	static boolean fileExists(String filename, String[] paths) {

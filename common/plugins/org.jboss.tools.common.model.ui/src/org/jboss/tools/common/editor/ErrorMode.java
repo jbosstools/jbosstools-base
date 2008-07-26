@@ -56,11 +56,7 @@ public class ErrorMode {
 
 	public void dispose() {
 		if(errors != null) {
-			try {
-				if(!errors.isDisposed()) errors.dispose();
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			if(!errors.isDisposed()) errors.dispose();
 			errors = null;
 			labels.clear();
 			es = "";
@@ -251,11 +247,7 @@ class L extends Canvas implements PaintListener, MouseMoveListener {
 	}
 	
 	public int getLineHeight() {
-		try { 
-			return getFont().getFontData()[0].getHeight() + 2; 
-		} catch (Exception e) { 
-			return 20; 
-		}
+		return getFont().getFontData()[0].getHeight() + 2; 
 	}
 		
 	public void paintControl(PaintEvent ev) {

@@ -52,14 +52,9 @@ public class ActionX extends Action {
 
 		setText(displayName);
 
-		try {
-			String iconKey = action.getIconKey();
-			Image image = action.getMetaModel().getIconList().getImage(iconKey);
-			setImageDescriptor(new XImageDescriptor(image));
-		} catch (Exception e) {
-			Image image = action.getMetaModel().getIconList().getImage("action.empty");
-			setImageDescriptor(new XImageDescriptor(image));
-		}
+		String iconKey = action.getIconKey();
+		Image image = action.getMetaModel().getIconList().getImage(iconKey);
+		setImageDescriptor(new XImageDescriptor(image));
 		setEnabled(enabled);
 	}
 	

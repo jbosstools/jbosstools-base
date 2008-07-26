@@ -46,7 +46,6 @@ public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
 
     private XModelMetaDataImpl() {
 		long t = System.currentTimeMillis();
-        try {
             XMetaDataLoader.loadMetaModel(this);
             instance = this;
 
@@ -60,10 +59,6 @@ public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
             XModelEntity[] es = this.entities.values().toArray(new XModelEntity[0]);
             for (int i = 0; i < es.length; i++) ((XModelEntityImpl)es[i]).validate();
 
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError(e);
-            throw new RuntimeException("Cannot create metamodel: " + e.getMessage());
-        }
 		if(reportLoadingTime) {
     		long dt = - t + (t = System.currentTimeMillis());
 			ModelPlugin.getPluginLog().logInfo("Meta model loaded in " + dt + " ms");

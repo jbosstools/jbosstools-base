@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.loaders.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -29,12 +30,8 @@ public class URLRootLoader extends FileRootLoader {
         if(isFilePath(getPath(object))) {
             super.load(object);
         } else {
-            try {
-                Element element = XMLUtil.getElement(getInputStream(object));
-                if(element != null) util().load(element, object);
-            } catch (Exception e) {
-            	ModelPlugin.getPluginLog().logError(e);
-            }
+        	Element element = XMLUtil.getElement(getInputStream(object));
+            if(element != null) util().load(element, object);
         }
     }
 
@@ -57,7 +54,7 @@ public class URLRootLoader extends FileRootLoader {
     public InputStream getInputStream(XModelObject object) {
         try {
             return new URL(getPath(object)).openConnection().getInputStream();
-        } catch (Exception e) {
+        } catch (IOException e) {
         	//ignore
             return null;
         }
@@ -66,7 +63,7 @@ public class URLRootLoader extends FileRootLoader {
     public OutputStream getOutputStream(XModelObject object) {
         try {
             return new URL(getPath(object)).openConnection().getOutputStream();
-        } catch (Exception e) {
+        } catch (IOException e) {
         	//ignore
             return null;
         }

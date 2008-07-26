@@ -66,7 +66,6 @@ import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.text.ext.IMultiPageEditor;
 
 public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModelTreeListener, IGotoMarker, IMultiPageEditor {
-	static String COMPANY_NAME = "Red Hat";
 	protected AbstractSectionEditor treeEditor;
 	protected TreeFormPage treeFormPage;
 	protected ObjectTextEditor textEditor;
@@ -235,12 +234,8 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		doCreatePages();
 		model.addModelTreeListener(syncListener);
 		loadSelectedTab();
-		try {
-			setActivePage(selectedPageIndex);
-			updateSelectionProvider();
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		setActivePage(selectedPageIndex);
+		updateSelectionProvider();
 		new ResourceChangeListener(this, getContainer());
 	}
 	
@@ -251,24 +246,14 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			if(name.equals(h)) {
 				if(selectedPageIndex == i) return;
 				selectedPageIndex = i;
-				try {
-					switchToPage(i);
-				} catch (Exception e) {
-					ModelUIPlugin.getPluginLog().logError(e);
-				}
+				switchToPage(i);
 			}
 		}
 		
 	}
 	
 	protected void createUnloadedPage() {
-		try {
-			createTextPage();
-		} catch (Exception e) { 
-			Label label = new Label(getContainer(), SWT.NONE);
-			label.setText(COMPANY_NAME + " object has not been found");
-			addPage(label);
-		}
+		createTextPage();
 	}
 	
 	protected void doCreatePages() {
@@ -286,7 +271,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			textEditor.setObject(object);
 			textEditor.addFocusListener(new TextFocusListener());
 			outline.addSelectionChangedListener(new OutlineSelectionListener());
-		} catch (Exception ex) {
+		} catch (PartInitException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 	}
@@ -381,6 +366,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		f.updateRegistration(o);
 	}
 	
+	
+	/**
+	 * FIXME remove Java reflection calls
+	 * @param monitor
+	 */
 	void saveX(IProgressMonitor monitor) {
 		if(!(textEditor instanceof AbstractTextEditor)) return;
 		try {

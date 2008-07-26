@@ -21,7 +21,6 @@ public class PreferenceModelUtilities {
 		public static XModel preferenceModel;
 
 		static {
-			try {
 				String f = ModelPlugin.getDefault().getStateLocation().toString();
 				Properties p = new Properties();
 				p.setProperty(XModelConstants.WORKSPACE, f);
@@ -31,20 +30,10 @@ public class PreferenceModelUtilities {
 					d.setModel(preferenceModel);
 					preferenceModel.setService(d);
 				}
-			} catch (Exception e) {
-				ModelPlugin.getPluginLog().logError(e);
-			}
 		}
 
 		private static ServiceDialog createServiceDialog() {
-			try {
-				return (ServiceDialog)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl");
-			} catch (Exception e) {
-				if(ModelPlugin.isDebugEnabled()) {
-					ModelPlugin.getPluginLog().logInfo("Cannot create service dialog.");
-				}
-			}
-			return null;
+			return (ServiceDialog)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl");
 		}
 		
 	}
@@ -54,14 +43,9 @@ public class PreferenceModelUtilities {
 	}
 	
 	public static XModel createPreferenceModel(Properties p) {
-		try {
-			p.putAll(System.getProperties());
-			p.setProperty("rootEntity", "OptionRoot");
-			return XModelFactory.getModel(p);
-		} catch (Exception t) {
-			ModelPlugin.getPluginLog().logError("Error in creating preference model", t);
-		}
-		return null;
+		p.putAll(System.getProperties());
+		p.setProperty("rootEntity", "OptionRoot");
+		return XModelFactory.getModel(p);
 	}
 	
 	public static void initPreferenceValue(XModel initialModel, Preference preference)

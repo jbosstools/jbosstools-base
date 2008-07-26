@@ -16,6 +16,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
@@ -31,11 +32,7 @@ public abstract class AbstractShowUrlActionDelegate implements IWorkbenchWindowA
 	}
 
 	public void run(IAction action) {
-		try {
 			runURL(getUrl());
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
 	}
 
 	protected abstract String getUrl();
@@ -54,7 +51,7 @@ public abstract class AbstractShowUrlActionDelegate implements IWorkbenchWindowA
 		} catch (MalformedURLException mue) {
 			ServiceDialog d = PreferenceModelUtilities.getPreferenceModel().getService();
 			d.showDialog("Error", "Incorrect URL: " + mue.getMessage() + ".", new String[]{"OK"}, null, ServiceDialog.ERROR);
-		} catch (Exception e) {
+		} catch (PartInitException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}

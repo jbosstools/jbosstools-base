@@ -77,14 +77,13 @@ public class JarAccess {
 				templocation = f.getCanonicalPath();
 			} else {
 				File nf = new File(location);
-//				FileUtil.copyFile(nf, f, true);
 				templocation = nf.getCanonicalPath();
 				timeStamp = nf.lastModified();
 				size = nf.length();
 			}
 			init();
 			exists = true;
-		} catch (Exception e) {
+		} catch (IOException e) {
 			timeStamp = -1;
 			size = -1;
 			exists = false;
@@ -94,7 +93,7 @@ public class JarAccess {
 		}
 	}
 
-	private void init() throws Exception {
+	private void init() throws IOException  {
 		ZipFile jar = getZipFile();
 		map.clear();
 		fileEntries.clear();
@@ -103,16 +102,12 @@ public class JarAccess {
 			if(jar == null) return;
 			Enumeration<?> en = jar.entries();
 			while(en.hasMoreElements()) {
-				try {
 					ZipEntry entry = (ZipEntry)en.nextElement();
 					String name = entry.getName();
 					if(name != null && !name.endsWith("/") && entry.getSize() > 0) {
 						fileEntries.put(name, Long.valueOf(entry.getSize()));
 					}
 					register(name);
-				} catch (Exception e) {
-					ModelPlugin.getPluginLog().logError(e);
-				}
 			}
 		} finally {
 			unlockJar();
@@ -190,7 +185,7 @@ public class JarAccess {
 		ZipFile jar = null;
 		try {
 			jar = getZipFile();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			unlockJar();
 			return "";
 		}
@@ -207,7 +202,7 @@ public class JarAccess {
 				sb.append(new String(b, 0, length));
 			}
 			return sb.toString();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			ModelPlugin.getPluginLog().logError(e);
 			return "";
 		} finally {
@@ -240,14 +235,11 @@ public class JarAccess {
 	}
 
 	public boolean isModified() {
-		if (timeStamp == -1)
-			return true;
-		try {
-			File f = new File(location);
-			return (timeStamp != f.lastModified() || size != f.length());
-		} catch (Exception e) {
+		if (timeStamp == -1) {
 			return true;
 		}
+		File f = new File(location);
+		return (timeStamp != f.lastModified() || size != f.length());
 	}
 
 	public void invalidate() {

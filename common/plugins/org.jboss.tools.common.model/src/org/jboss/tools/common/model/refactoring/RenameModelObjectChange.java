@@ -85,17 +85,15 @@ public class RenameModelObjectChange extends TextFileChange {
 	}
 
 	public Change perform(IProgressMonitor pm) throws CoreException {
+		Change result = null;
 		if(ok) {
-			return super.perform(pm);
-		}
-		try {
+			result = super.perform(pm);
+		} else { 
 			for (int i = 0; i < objects.length; i++) {
 				objects[i].getModel().changeObjectAttribute(objects[i], attributeName, newName);
 			}
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
-		}		
-		return null;
+		}
+		return result;
 	}
 
 	public Object getModifiedElement() {

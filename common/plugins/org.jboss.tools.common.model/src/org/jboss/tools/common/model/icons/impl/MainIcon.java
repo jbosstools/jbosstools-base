@@ -22,12 +22,8 @@ public class MainIcon implements ImageComponent {
     }
 
     public Image getImage(XModelObject obj) {
-        try {
-            String s = obj.getMainIconName();
-            return obj.getModelEntity().getMetaModel().getIconList().getImage(s);
-        } catch (Exception e) {
-            return null;
-        }
+        String s = obj.getMainIconName();
+        return obj.getModelEntity().getMetaModel().getIconList().getImage(s);
     }
 
 }

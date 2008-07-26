@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -165,7 +166,7 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 			} else {
 				try {
                     JavaUI.openInEditor(javaElement);
-                } catch (Exception e) {
+                } catch (CoreException e) {
                 	ModelUIPlugin.getPluginLog().logError(e);
                 }
 			}

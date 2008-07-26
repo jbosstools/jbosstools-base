@@ -247,24 +247,20 @@ public class XModelImpl implements XModel {
         	creationFailed(entity, "CREATION_ENTITY_FAILURE");
         	return null;
         }
-        try {
-            me.setModel(this);
-            me.setEntityName_0(entity);
-            XAttribute[] an = ent.getAttributes();
-            for (int i = 0; i < an.length; i++) {
-                String n = an[i].getName();
-                String v = an[i].getDefaultValue();
-                me.set_0(n, v);
-                if(properties != null) {
-                    v = properties.getProperty(n);
-                    if(v != null) me.set_0(n, v);
-                }
+
+        me.setModel(this);
+        me.setEntityName_0(entity);
+        XAttribute[] an = ent.getAttributes();
+        for (int i = 0; i < an.length; i++) {
+            String n = an[i].getName();
+            String v = an[i].getDefaultValue();
+            me.set_0(n, v);
+            if(properties != null) {
+                v = properties.getProperty(n);
+                if(v != null) me.set_0(n, v);
             }
-            return me;
-        } catch (Exception e) {
-        	creationFailed(entity, "CREATION_ENTITY_FAILURE");
         }
-        return null;
+        return me;
     }
 
 	public void editObjectAttribute(XModelObject object, String attributeName, String value) throws XModelException {
@@ -406,12 +402,9 @@ public class XModelImpl implements XModel {
         if(d.lastIndexOf(':') >= 2)
           return (n != null) ? n : d.substring(d.lastIndexOf('/') + 1);
         File f = null;
-        try {
-            f = new File(d);
-            f.mkdirs();
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("XModelImpl:getProjectName:" + e.getMessage());
-        }
+        f = new File(d);
+        f.mkdirs();
+        
         return (f == null || !f.isDirectory()) ? null : (n != null) ? n : f.getName();
     }
 

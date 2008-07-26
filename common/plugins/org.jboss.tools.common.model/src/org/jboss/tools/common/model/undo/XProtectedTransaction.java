@@ -32,7 +32,7 @@ public class XProtectedTransaction {
             EndTransactionUndo ue = new EndTransactionUndo(listener);
             ue.fire();
             undo.addUndoable(ue);
-        } catch (Exception e) {
+        } catch (XModelException e) {
             undo.rollbackTransactionInProgress();
             throw new XModelException(e);
         } finally {

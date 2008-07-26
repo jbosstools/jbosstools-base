@@ -115,15 +115,11 @@ public abstract class XMenuInvoker implements MouseListener, KeyListener {
 		if(object == null) return;
 		XModelObject[] objects = getSelectedModelObjects();
 		if(DnDUtil.getEnabledAction(object, objects, actionPath) == null) return;
-		try {
 			if(objects == null) {
 				XActionInvoker.invoke(actionPath, object, getRunningProperties());
 			} else {
 				XActionInvoker.invoke(actionPath, object, objects, getRunningProperties());
 			}
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
 		
 	}
 	

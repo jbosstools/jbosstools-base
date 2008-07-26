@@ -45,7 +45,7 @@ public final class XModelObjectUtil {
 		for (int i = 0; i < s.length; i++) {
 			try {
 				result[i] = Integer.parseInt(s[i]);
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 				result[i] = 0;
 			}
 		}

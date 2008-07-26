@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.action.impl;
 import java.util.*;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.CreateFileHandler;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -82,12 +83,8 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 			if(entity == null || support.getTarget().getModel().getMetaData().getEntity(entity) == null)
 			  entity = ds[step].getModelEntity().getName();
 		}
-		try {
-			XModelObject o = support.getTarget().getModel().createModelObject(entity, data);
-			if(o != null) message = DefaultCreateHandler.getContainsMessage(support.getTarget(), o);
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError("DefaultWizardDataValidator:validateAddFile:" + e.getMessage());
-		}
+		XModelObject o = support.getTarget().getModel().createModelObject(entity, data);
+		if(o != null) message = DefaultCreateHandler.getContainsMessage(support.getTarget(), o);
 	}
 	
 	public String getErrorMessage() {
@@ -106,14 +103,10 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 	}
 	
 	protected boolean checkChild(XModelObject parent, String entity, Properties data) {
-		try {
-			XModelObject o = support.getTarget().getModel().createModelObject(entity, data);
-			if(o.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) return true;
-			if(o != null && parent == support.getTarget().getParent() && o.getPathPart().equals(support.getTarget().getPathPart())) return true;
-			if(o != null) message = DefaultCreateHandler.getContainsMessage(parent, o);
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError("DefaultWizardDataValidator:checkChild:" + e.getMessage());
-		}
+		XModelObject o = support.getTarget().getModel().createModelObject(entity, data);
+		if(o.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) return true;
+		if(o != null && parent == support.getTarget().getParent() && o.getPathPart().equals(support.getTarget().getPathPart())) return true;
+		if(o != null) message = DefaultCreateHandler.getContainsMessage(parent, o);
 		return message == null;
 	}
 

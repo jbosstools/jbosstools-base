@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.ui.attribute.adapter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.util.Assert;
 
 import org.jboss.tools.common.meta.XAttribute;
@@ -62,7 +63,7 @@ public class AdapterFactory {
 		if(c != null) return c;
 		try {
 			c = ExtensionPointUtil.findClassByElementId(ATTRIBUTE_ADAPTER_EXT_POINT, id).getClass();			
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			if(ModelUIPlugin.getDefault().isDebugging()) {
 				ModelUIPlugin.getPluginLog().logInfo("Default adapter for " + id);
 			}

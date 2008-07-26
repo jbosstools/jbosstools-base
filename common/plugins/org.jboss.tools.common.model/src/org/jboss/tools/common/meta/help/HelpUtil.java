@@ -81,7 +81,7 @@ public class HelpUtil {
         } else {
             try {
                 HelpUtil.callHelp(model, key);
-            } catch (Exception e) {
+            } catch (XModelException e) {
                 d.showDialog("Warning", e.getMessage(), new String[]{"Close"}, null, ServiceDialog.WARNING);
             }
         }
@@ -136,7 +136,7 @@ public class HelpUtil {
 				ZipEntry entry = (ZipEntry)en.nextElement();
 				set.add("/" + entry.getName());
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			//ignore
 		}
 		return set;

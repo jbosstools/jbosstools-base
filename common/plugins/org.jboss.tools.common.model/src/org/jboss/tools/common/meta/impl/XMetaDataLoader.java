@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.impl;
 
+import java.io.IOException;
 import java.util.*;
 import org.w3c.dom.*;
 import org.jboss.tools.common.meta.XMetaElement;
@@ -25,10 +26,12 @@ public class XMetaDataLoader implements XMetaDataConstants {
     private static XMetaElement getDefaultMetaElementInstance(Class defImpl) {
         try {
             return (XMetaElementImpl)defImpl.newInstance();
-        } catch (Exception e) {
+        } catch (InstantiationException e) {
         	ModelPlugin.getPluginLog().logError("Error in getDefaultMetaElementInstance");
-            return null;
-        }
+		} catch (IllegalAccessException e) {
+			ModelPlugin.getPluginLog().logError("Error in getDefaultMetaElementInstance");
+		}
+		return null;
     }
     private static XMetaElement getMetaElementInstance(Element element, Class defImpl, boolean isRequired) {
         if(element == null) {
@@ -39,10 +42,14 @@ public class XMetaDataLoader implements XMetaDataConstants {
         if(loader == null || loader.length() == 0) return null;
         try {
             return (XMetaElementImpl)ClassLoaderUtil.getClassLoader().loadClass(loader).newInstance();
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader);
-            return null;
-        }
+        } catch (InstantiationException e) {
+        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader, e);   
+		} catch (IllegalAccessException e) {
+        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader, e);
+		} catch (ClassNotFoundException e) {
+        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader, e);
+		}
+		return null;
     }
 
     public static XMetaElement loadMetaElement(Element parent, String nodeName, Class defImpl, boolean isRequired){
@@ -88,7 +95,7 @@ public class XMetaDataLoader implements XMetaDataConstants {
     public static int getInt(Element el, String attName, int def){
         try {
         	return Integer.parseInt(el.getAttribute(attName));
-        } catch(Exception ex){
+        } catch(NumberFormatException ex){
         	return def;
         }
     }

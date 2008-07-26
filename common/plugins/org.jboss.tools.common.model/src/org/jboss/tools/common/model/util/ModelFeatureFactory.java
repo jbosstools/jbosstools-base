@@ -25,6 +25,13 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.osgi.framework.Bundle;
 
+
+/**
+ * TODO use IExecutableExtension and IExecutableExtensionFactory
+ * 
+ * @author Slava kabanovich
+ *
+ */
 public class ModelFeatureFactory {
 	public static final String POINT = "org.jboss.tools.common.model.classes";
 	private static final Object mutex = new Object();
@@ -62,15 +69,11 @@ public class ModelFeatureFactory {
 	}
 	
 	private boolean isActive() {
-		int state = 0;
-		try {
-			Bundle b = Platform.getBundle("org.jboss.tools.common.model");
-			state = b.getState();
-		} catch (Exception e2) {
-			return false;
-		}
+		Bundle b = Platform.getBundle("org.jboss.tools.common.model");
+		int state = b == null ? -1 : b.getState() ;
 		return state == Bundle.ACTIVE;
 	}
+	
 	public Object createFeatureInstance(String id) {
 		if(instanceFailures.contains(id)) return null;
 		IConfigurationElement c = elements.get(id);
@@ -84,11 +87,9 @@ public class ModelFeatureFactory {
 			return c.createExecutableExtension("class");
 		} catch (CoreException e) {
 			instanceFailures.add(id);
-			if(!isActive()) return null;
 			ModelPlugin.getPluginLog().logError("Cannot create model feature instance " + id + ".", e);
 		} catch (InvalidRegistryObjectException e) {
 			instanceFailures.add(id);
-			if(!isActive()) return null;
 			ModelPlugin.getPluginLog().logError("Cannot create model feature instance " + id + ".", e);
 		}
 		return null;

@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.loaders.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
@@ -39,7 +40,7 @@ public class PropertiesLoader implements XObjectLoader {
 				String sn = convertName(nm);
 				mapping.put(sn, nm);
 			}
-        } catch (Exception e) {
+        } catch (IOException e) {
         	//ignore
         }
 
@@ -133,13 +134,9 @@ public class PropertiesLoader implements XObjectLoader {
 
     public boolean save(XModelObject object) {
         if(!object.isModified()) return true;
-        try {
-			XModelObjectLoaderUtil.setTempBody(object, generateBody(object, defaultLineSeparator));
-            object.setModified(true);
-            return true;
-        } catch (Exception exc) {
-            return false;
-        }
+		XModelObjectLoaderUtil.setTempBody(object, generateBody(object, defaultLineSeparator));
+        object.setModified(true);
+        return true;
     }
 
     private void appendComments(StringBuffer sb, String comments, String commentSeparator, String lineSeparator) {
@@ -283,7 +280,7 @@ public class PropertiesLoader implements XObjectLoader {
     	ByteArrayOutputStream os = new ByteArrayOutputStream();
     	try {
     		p.store(os, null);
-    	} catch (Exception e) {
+    	} catch (IOException e) {
     		ModelPlugin.getPluginLog().logError(e);
     	}
     	String q = os.toString();
@@ -300,7 +297,7 @@ public class PropertiesLoader implements XObjectLoader {
     	ByteArrayOutputStream os = new ByteArrayOutputStream();
     	try {
     		p.store(os, null);
-    	} catch (Exception e) {
+    	} catch (IOException e) {
     		ModelPlugin.getPluginLog().logError(e);
     	}
     	String q = os.toString();

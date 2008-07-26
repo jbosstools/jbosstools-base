@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.impl;
 
+import java.io.IOException;
 import java.util.*;
 
 import org.w3c.dom.Element;
@@ -310,11 +311,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
 
     private void merge(XModelEntityExtensionImpl ext) {
         children.merge(ext.getChildren());
-        try {
-            actions.merge((XActionListImpl)ext.getActionList());
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("XModelEntityImpl:merge:" + e.getMessage());
-        }
+        actions.merge((XActionListImpl)ext.getActionList());
     }
 
     //optimization
@@ -384,6 +381,10 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
         return (requiredchildren == null) ? null : (HashSet<String>)requiredchildren.clone();
     }
     
+    
+    /**
+     * FIXME Move to ModelTest plugin
+     */
     public String testImplementation() {
     	if(implementationClassName == null || implementationClassName.length() == 0) {
     		return null;
@@ -401,12 +402,18 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     		if(!(h instanceof XModelObject)) {
     			return "cannot reduce implementation to XModelObject";
     		}
-    	} catch (Exception e) {
+    	} catch (InstantiationException e) {
     		return "cannot create implementation object";
-    	}
+		} catch (IllegalAccessException e) {
+			return "cannot create implementation object";
+		}
     	return null;
     }
 
+    
+    /**
+     * FIXME Move to ModelTest plugin
+     */
     public String testLoader() {
     	if(loaderClassName == null || loaderClassName.length() == 0) {
     		return null;
@@ -424,9 +431,11 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     		if(!(h instanceof XObjectLoader)) {
     			return "cannot reduce loader to XObjectLoader";
     		}
-    	} catch (Exception e) {
+    	} catch (InstantiationException e) {
     		return "cannot create loader object";
-    	}
+		} catch (IllegalAccessException e) {
+			return "cannot create loader object";
+		}
     	return null;
     }
 

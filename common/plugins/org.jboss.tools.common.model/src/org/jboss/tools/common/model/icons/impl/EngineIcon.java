@@ -24,14 +24,9 @@ public class EngineIcon implements ImageComponent {
 
 
     public Image getImage(XModelObject obj) {
-        try {
             boolean b = true;
             String s = (b) ? "engine.running" : "engine.stopped";
             return obj.getModelEntity().getMetaModel().getIconList().getImage(s, "default.unknown");
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError(e);
-            return null;
-        }
     }
 
 }

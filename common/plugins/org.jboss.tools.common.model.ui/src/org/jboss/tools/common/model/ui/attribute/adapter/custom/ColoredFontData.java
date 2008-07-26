@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.attribute.adapter.custom;
 
 import java.util.*;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Display;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
@@ -23,7 +24,8 @@ public class ColoredFontData {
 		try {
 			DEFAULT.data = Display.getDefault().getSystemFont().getFontData()[0];
 			DEFAULT.color = Display.getDefault().getSystemColor(SWT.COLOR_BLACK).getRGB();
-		} catch (Exception e) {
+		} catch (SWTException e) {
+			// FIXME See How to handle thos exception in PreferenceConverter Class
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}

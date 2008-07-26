@@ -11,11 +11,13 @@
 package org.jboss.tools.common.model.plugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
@@ -97,7 +99,7 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 				String n = fs[i].getName();
 				if(n.startsWith("efs_")) fs[i].delete();
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			getPluginLog().logError("ModelPlugin:cleanTempFiles:" + e.getMessage());
 		}
 	}
@@ -107,7 +109,7 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 	public void windowClosed(IWorkbenchWindow window) {
 		try {
 			save.saving(null);
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			getPluginLog().logError(e);
 		}
 	}

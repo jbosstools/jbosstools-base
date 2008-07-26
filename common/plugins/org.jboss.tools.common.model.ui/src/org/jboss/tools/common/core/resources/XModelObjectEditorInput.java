@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.URL;
 
 import org.eclipse.core.resources.*;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -154,17 +155,17 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 			Field field = FileEditorInput.class.getDeclaredField("file");
 			field.setAccessible(true);
 			field.set(this, f);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalArgumentException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalAccessException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	
 	private static IFile getFileByObject(XModelObject object) {
-		try {
-			return (IFile)EclipseResourceUtil.getResource(object);
-		} catch (Exception e) {
-			return null;
-		}		
+		return (IFile)EclipseResourceUtil.getResource(object);
 	}
 	
 	public static IEditorInput checkInput(IEditorInput input) {
@@ -176,12 +177,8 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 			URI uri = ((IURIEditorInput)input).getURI();
 			String f = uri.getPath();
 			XModelObject o = null;
-			try {
-				o = EclipseResourceUtil.createObjectForLocation(f);
-				if(o != null && o.getFileType() != XModelObject.FILE) o = null;
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			o = EclipseResourceUtil.createObjectForLocation(f);
+			if(o != null && o.getFileType() != XModelObject.FILE) o = null;
 			return (o == null) ? (IEditorInput)input : new ModelObjectLocationEditorInput(getMainObject(o), new Path(f));
 		}
 		return input;
@@ -193,30 +190,22 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		if(f != null && !f.isSynchronized(IResource.DEPTH_INFINITE)) {
 			try {
 				f.refreshLocal(IResource.DEPTH_INFINITE, null);
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				//ignore
 			}
 		}
 		XModelObject o = EclipseResourceUtil.getObjectByResource(f);
 		if(o == null) {
-			try {
-				o = EclipseResourceUtil.createObjectForResource(f);
-				if(o != null && o.getFileType() != XModelObject.FILE) o = null;
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			o = EclipseResourceUtil.createObjectForResource(f);
+			if(o != null && o.getFileType() != XModelObject.FILE) o = null;
 		}
 		return (o == null) ? input : new XModelObjectEditorInput(getMainObject(o));
 	}
 	
 	private static IEditorInput convertExternalInput(ILocationProvider input) {
 		XModelObject o = null;
-		try {
-			o = EclipseResourceUtil.createObjectForLocation(input.getPath(input).toString());
-			if(o != null && o.getFileType() != XModelObject.FILE) o = null;
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		o = EclipseResourceUtil.createObjectForLocation(input.getPath(input).toString());
+		if(o != null && o.getFileType() != XModelObject.FILE) o = null;
 		return (o == null) ? (IEditorInput)input : new ModelObjectLocationEditorInput(getMainObject(o), input.getPath(input));
 	}
 	
@@ -233,7 +222,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		IStorage storage = null;
 		try {
 			storage = input.getStorage();
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			// ignore
 		}
 		return storage == null ? null : parseJarEntryFile(storage);
@@ -280,7 +269,11 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 			Field field = FileEditorInput.class.getDeclaredField("file");
 			field.setAccessible(true);
 			field.set(this, f);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalArgumentException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalAccessException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}

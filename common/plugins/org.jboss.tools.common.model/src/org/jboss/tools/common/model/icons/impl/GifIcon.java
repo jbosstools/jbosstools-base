@@ -27,17 +27,13 @@ public class GifIcon implements ImageComponent {
     }  
 
     public ImageIcon getIcon(XModelObject obj) {
-        try {
-            String p = XModelObjectLoaderUtil.getResourcePath(obj);
-            if(p == null) return null;
-            p = p.substring(1);
-            if(true) return null;
-            java.net.URL url = null; //obj.getModel().getModelClassLoader().getResource(p);
-            ImageIcon icon = new ImageIcon(url);
-            return (icon.getIconWidth() > 20) ? null : icon;
-        } catch (Exception e) {
-            return null;
-        }
+        String p = XModelObjectLoaderUtil.getResourcePath(obj);
+        if(p == null) return null;
+        p = p.substring(1);
+        if(true) return null;
+        java.net.URL url = null; //obj.getModel().getModelClassLoader().getResource(p);
+        ImageIcon icon = new ImageIcon(url);
+        return (icon.getIconWidth() > 20) ? null : icon;
     }
 
     public Image getImage(XModelObject obj) {

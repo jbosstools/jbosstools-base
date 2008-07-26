@@ -66,11 +66,7 @@ public class XModelObjectIcon {
     }
 
 	public int getIconHash() {
-		try {
-			return getIconHash(object.getModelEntity().getRenderer().getIconNames());
-		} catch (Exception e) {
-			return 0;
-		}
+		return getIconHash(object.getModelEntity().getRenderer().getIconNames());
 	}
 
 	private int getIconHash(String[] types) {
@@ -83,11 +79,7 @@ public class XModelObjectIcon {
 	}
 
 	public Image getEclipseImage() {
-		try {
-			return getEclipseImage0(object.getModelEntity().getRenderer().getIconNames());
-		} catch (Exception e) {
-			return null;
-		}
+		return getEclipseImage0(object.getModelEntity().getRenderer().getIconNames());
 	}
     
 	public Image getEclipseImage0(String[] types) {

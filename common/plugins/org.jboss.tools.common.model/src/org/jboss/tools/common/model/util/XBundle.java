@@ -14,6 +14,7 @@ import java.util.*;
 import java.text.*;
 
 import org.jboss.tools.common.meta.key.WizardKeys;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class XBundle {
     private static XBundle bundle = new XBundle();
@@ -29,11 +30,7 @@ public class XBundle {
     }
 
     private String findTemplate(String resourceid, String templateid) {
-        try {
-            return WizardKeys.getString(templateid);
-        } catch (Exception e) {
-            return MessageFormat.format(messages.getString(XBundle.ERR_TEMPLATE_NOT_FOUND),new Object[]{templateid,resourceid});
-        }
+        return WizardKeys.getString(templateid);
     }
 
     public String getMessage(String resourceid, String templateid) {
@@ -45,7 +42,8 @@ public class XBundle {
         if(args == null) return t;
         try {
             return MessageFormat.format(t, args);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+        	ModelPlugin.getPluginLog().logError(e);
             return MessageFormat.format(messages.getString(XBundle.ERR_GET_MESSAGE),new Object[]{resourceid,templateid,t});
 	    }
     }

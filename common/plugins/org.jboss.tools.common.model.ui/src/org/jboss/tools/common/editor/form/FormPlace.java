@@ -58,7 +58,10 @@ public class FormPlace {
 	private void installForm(Class cls) {
 		try {
 			form = (IForm)cls.newInstance();
-		} catch (Exception e) {
+		} catch (InstantiationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+			return;
+		} catch (IllegalAccessException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 			return;
 		}
@@ -75,11 +78,7 @@ public class FormPlace {
 		if(form != null) form.dispose();
 		form = null;
 		if(composite != null) {
-			try {
-				if(!composite.isDisposed()) composite.dispose();
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			if(!composite.isDisposed()) composite.dispose();
 			composite = null;
 		}
 	}

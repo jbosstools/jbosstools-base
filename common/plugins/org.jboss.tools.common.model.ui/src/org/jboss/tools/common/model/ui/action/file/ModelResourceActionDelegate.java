@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.action.file;
 
 import java.util.*;
 import org.eclipse.core.resources.*;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.*;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.*;
@@ -145,7 +146,7 @@ public class ModelResourceActionDelegate implements IObjectActionDelegate, IWork
 			if(isSupportingImplementation(IFile.class)) {	
 				try {
 					resource = ((IClassFile)object).getCorrespondingResource();
-				} catch (Exception e) {
+				} catch (JavaModelException e) {
 					//ignore
 				}
 			} else if(isWindowAction && isSupportingImplementation(IJavaProject.class)) {
@@ -192,7 +193,7 @@ public class ModelResourceActionDelegate implements IObjectActionDelegate, IWork
 		for (int i = 0; i < s.length; i++) {
 			try {
 				if(project.hasNature(s[i])) return true;
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}

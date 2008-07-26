@@ -13,6 +13,7 @@ package org.jboss.tools.common.core.resources;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorMatchingStrategy;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.PartInitException;
 
 public class MatchingStrategyImpl implements IEditorMatchingStrategy {
 
@@ -21,7 +22,7 @@ public class MatchingStrategyImpl implements IEditorMatchingStrategy {
 		IEditorInput editorInput = null;
 		try {
 			editorInput = editorRef.getEditorInput();
-		} catch(Exception t) {
+		} catch(PartInitException t) {
 			return false;
 		}
 		if(editorInput == null) return false;

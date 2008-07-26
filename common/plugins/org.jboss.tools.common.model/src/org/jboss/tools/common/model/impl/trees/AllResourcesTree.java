@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.impl.trees;
 
 import java.util.*;
 import org.eclipse.core.resources.*;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.constraint.XAttributeConstraintT;
@@ -112,7 +113,7 @@ public abstract class AllResourcesTree implements XFilteredTree {
         	if(!ps[i].isOpen()) continue;
         	try {
         		if(nature != null && !ps[i].hasNature(nature)) continue;
-        	} catch (Exception e) {
+        	} catch (CoreException e) {
         		if(ModelPlugin.isDebugEnabled()){
         			ModelPlugin.getPluginLog().logInfo("AllResourcesTree:" + e.getMessage());
         		}
@@ -145,23 +146,7 @@ public abstract class AllResourcesTree implements XFilteredTree {
 			return (tree == null) ? null : tree.getRoot().getModel().getByPath(value.substring(value.indexOf("//") + 1));
 		}
 		if(value.indexOf("/", 1) < 0) return null;
-		IResource r = null;
-		try {
-			r = ModelPlugin.getWorkspace().getRoot().getFolder(new Path(value));
-		} catch (Exception e) {
-			if(ModelPlugin.isDebugEnabled()){
-				ModelPlugin.getPluginLog().logInfo("AllResourcesTree:" + e.getMessage());
-    		}
-		}
-		if(r == null || !r.exists()) {
-			try {
-				r = ModelPlugin.getWorkspace().getRoot().getFile(new Path(value));
-			} catch (Exception e) {
-				if(ModelPlugin.isDebugEnabled()){
-					ModelPlugin.getPluginLog().logInfo("AllResourcesTree:" + e.getMessage());
-        		}
-			}
-		}
+		IResource r = ModelPlugin.getWorkspace().getRoot().getFolder(new Path(value));
 		if(r == null || !r.exists()) return null;
 		return EclipseResourceUtil.getObjectByResource(r);
 	}

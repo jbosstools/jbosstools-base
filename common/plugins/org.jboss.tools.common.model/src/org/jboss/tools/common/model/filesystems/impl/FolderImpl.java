@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import org.eclipse.core.internal.resources.ResourceException;
@@ -19,6 +20,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.model.markers.ResourceMarkers;
@@ -251,25 +253,29 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 				ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()", re);
 			} else {
 				//ignore we cannot prevent this when project is removed externally
-			}        	
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()",e);
+			}   	
+		} catch (CoreException e) {
+	    	  ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()");
 		} finally {
 			fsi.unlockUpdate();
 		}
-		if(resource != null && resource.exists()) try {
-			IResource[] rs = resource.members();
-			for (int i = 0; i < rs.length; i++) {
-				if(rs[i].isLinked()) {
-					File f = rs[i].getLocation().toFile();
-					String p = FilePathHelper.toPathPath(f.getName());
-					mf.put(p, f);
-					linked.put(p, f);
-					linkedResources.put(p, rs[i]);
-				}
-			}			
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()");
+		
+		
+		try {
+			if(resource != null && resource.exists()) {
+				IResource[] rs = resource.members();
+				for (int i = 0; i < rs.length; i++) {
+					if(rs[i].isLinked()) {
+						File f = rs[i].getLocation().toFile();
+						String p = FilePathHelper.toPathPath(f.getName());
+						mf.put(p, f);
+						linked.put(p, f);
+						linkedResources.put(p, rs[i]);
+					}
+				}			
+			}
+		} catch (CoreException ex) {
+	    	  ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()");
 		}
 		
         File[] fs = getFiles();
@@ -318,7 +324,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
       } catch (NoClassDefFoundError error) {
     	  //Most probably Eclipse is shutting down.
     	  return true;
-      } catch (Exception t) {
+      } catch (XModelException t) {
     	  ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()");
       } finally {  
 		updateLock--;
@@ -385,16 +391,16 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
                    				if(ef != null && !ef.isSynchronized(0)) {
                    					try {
                    						ef.refreshLocal(0, null);
-                   					} catch (Exception e) {
-                   						//ignore
+                   					} catch (CoreException e) {
+                   			    	  ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()");
                    					}
                    				}
                    				ef = getChildFile(r.getName());
                    				if(ef != null && !ef.isSynchronized(0)) {
                    					try {
                    						ef.refreshLocal(0, null);
-                   					} catch (Exception e) {
-                   						//ignore
+                   					} catch (CoreException e) {
+                   			    	  ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()");
                    					}
                    				}
                    				
@@ -405,7 +411,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
                    				if(ef != null && !ef.isSynchronized(0)) {
                    					try {
                    						ef.refreshLocal(0, null);
-                   					} catch (Exception e) {
+                   					} catch (CoreException e) {
                    						//ignore
                    					}
                    				}
@@ -489,14 +495,10 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     
     private int question(File f) {
     	if(Display.getCurrent() == null) return -100;
-    	try {
-    		return getModel().getService().showDialog("Update",
-    				"File " + f.getAbsolutePath() + " is externally modified.\n" +
-    				"Do you want to reload it?", new String[]{"Yes", "No"}, null,
-    				ServiceDialog.QUESTION);
-    	} catch (Exception t) {
-    		return 0;
-    	}
+		return getModel().getService().showDialog("Update",
+				"File " + f.getAbsolutePath() + " is externally modified.\n" +
+				"Do you want to reload it?", new String[]{"Yes", "No"}, null,
+				ServiceDialog.QUESTION);
     }
     
     public void updateChildFile(XModelObject o, File f) throws XModelException {
@@ -618,8 +620,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 			File temp = null;
 			try {
 				temp = File.createTempFile("efs_", rf.getName());
-			} catch (Exception e) {
-				//ignore
+			} catch (IOException e) {
+		    	  ModelPlugin.getPluginLog().logError(e);
 			}
 			if(temp != null) {
 				FileUtil.copyFile(rf, temp);
@@ -633,8 +635,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 		if(r.exists()) {
 			try {
 				r.delete(true, null);
-			} catch (Exception e) {
-				//ignore
+			} catch (CoreException e) {
+				ModelPlugin.getPluginLog().logError(e);
 			}
 		} else {
 			rf.delete();
@@ -645,14 +647,10 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     private static int question(XModelObject o) {
         String t = "File" + " " + o.getModelEntity().getRenderer().getTitle(o);
-        try {
         	return o.getModel().getService().showDialog("Update",
                t + " is removed from the disk.\n " +
                "Do you want to save your changes?", new String[]{"Yes", "No"}, null,
                ServiceDialog.QUESTION);
-        } catch (Exception e) {
-        	return 0;
-        }
     }
 
     private boolean fire = false;
@@ -686,8 +684,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         		IFolder ef = (IFolder)c;
         		try {
         			ef.create(true, ef.getParent().isLocal(0), null);
-        		} catch (Exception e) {
-        			//ignore
+        		} catch (CoreException e) {
+        			ModelPlugin.getPluginLog().logError(e);
         		}
         	}
 			if(!f.exists()) f.mkdirs();
@@ -891,12 +889,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     private void initEditability() {
         if(editability > -1) return;
-        try {
             editability = (null != getModelEntity().getActionList().getItem("DeleteActions").getItem("Delete"))
                           ? 1 : 0;
-        } catch (Exception e) {
-            editability = 0;
-        }
     }
 
     public boolean isObjectEditable() {
@@ -955,7 +949,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 			if(!isActive()) return null;
 	    	IContainer c = getResource();
 			return (c != null) ? c.members() : new IResource[0];
-		} catch (Exception e) {
+		} catch (CoreException e) {
+			ModelPlugin.getPluginLog().logError(e);
 			return new IResource[0];  
 		}
 	}    
@@ -1006,12 +1001,7 @@ class EclipseFileBodySource implements BodySource {
 	}
 
 	public String get() {
-		try {
 			return XModelObjectLoaderUtil.readFile(f);
-///			return FileUtil.readStream(ef.getContents());
-		} catch (Exception e) {
-			return "";
-		}
 	}
 
 	public boolean write(Object object) {
@@ -1032,8 +1022,8 @@ class EclipseFileBodySource implements BodySource {
 				((FolderImpl)p).getFileSystem().getPeer().register(f);
 			}
 			ef.refreshLocal(IFile.DEPTH_INFINITE, null);
-		} catch (Exception e) {   
-			//ignore
+		} catch (CoreException e) {   
+			ModelPlugin.getPluginLog().logError(e);
 		}
 		return true;
 	}

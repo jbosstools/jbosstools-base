@@ -148,6 +148,11 @@ public class XActionImpl extends XActionItemImpl implements XAction {
         return help = a;
     }
     
+    
+    /**
+     * TODO move to XModelTestPlugin  
+     * @deprecated
+     */
     public String testHandler() {
     	if(handlerClassName == null || handlerClassName.trim().length() == 0) {
     		return null; //"handler is not set";
@@ -166,9 +171,11 @@ public class XActionImpl extends XActionItemImpl implements XAction {
     	} catch (NoClassDefFoundError nc) {
     		//just wrong class path in test plugin
     		return null;
-    	} catch (Exception e) {
-    		return "cannot create handler " + cn;
-    	}
+    	} catch (InstantiationException e) {
+			return "cannot create handler " + cn;
+		} catch (IllegalAccessException e) {
+			return "cannot create handler " + cn;
+		}
 		if(!(h instanceof XActionHandler)) {
 			return "cannot reduce handler to XActionHandler";
 		}
@@ -181,9 +188,11 @@ public class XActionImpl extends XActionItemImpl implements XAction {
         	Object so = null;
         	try {
         		so = scls.newInstance();
-        	} catch (Exception e) {
+        	} catch (IllegalAccessException e) {
         		return "cannot create support " + scn;
-        	}
+        	} catch (InstantiationException e) {
+        		return "cannot create support " + scn;
+			}
         	if(!(so instanceof SpecialWizardSupport)) {
         		return "cannot reduce support " + scn + " to SpecialWizardSupport";
         	}

@@ -103,14 +103,11 @@ public class ProjectHome {
 
 	public static IPath getFirstWebContentPath(IProject project) {
 		IPath modulePath = null;
-		try {
-			IVirtualComponent vc = ComponentCore.createComponent(project);
-			if (vc == null || vc.getRootFolder() == null)
-				return null;
-			if (ModuleCoreNature.isFlexibleProject(project)) {
-				modulePath = vc.getRootFolder().getWorkspaceRelativePath();
-			}
-		} catch (Exception ex) {
+		IVirtualComponent vc = ComponentCore.createComponent(project);
+		if (vc == null || vc.getRootFolder() == null)
+			return null;
+		if (ModuleCoreNature.isFlexibleProject(project)) {
+			modulePath = vc.getRootFolder().getWorkspaceRelativePath();
 		}
 
 		return modulePath;

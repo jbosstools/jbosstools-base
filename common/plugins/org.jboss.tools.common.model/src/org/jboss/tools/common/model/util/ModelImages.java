@@ -25,12 +25,7 @@ public class ModelImages {
 	private static ModelImages instance;
 	
 	static {
-		try {
-			instance = new ModelImages(ModelPlugin.getDefault().getBundle().getEntry("/"));
-		} catch (Exception e) {
-			// do nothing
-			ModelPlugin.getPluginLog().logError(e);
-		}
+		instance = new ModelImages(ModelPlugin.getDefault().getBundle().getEntry("/"));
 	}
 
 	public static Image getImage(String key) {

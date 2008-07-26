@@ -59,11 +59,7 @@ public abstract class AbstractSectionEditor extends DefaultEditorPart {
 		l.marginHeight = 0;
 		l.marginWidth = 0;
 		guiControl.setLayout(l);
-		try {
-			wrapper.setWeights(new int[]{10, 30});
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		wrapper.setWeights(new int[]{10, 30});
 		return wrapper;	
 	}
 
@@ -79,14 +75,10 @@ public abstract class AbstractSectionEditor extends DefaultEditorPart {
 	protected abstract void updateGui();
 	
 	protected void disposeGui() { 
-		if(control != null) {
-			try {
-				if(!control.isDisposed()) control.dispose();
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
-			control = null;			
+		if(control != null && !control.isDisposed()) {
+				control.dispose();			
 		}
+		control = null;
 	}
 	 
 	private void createErr() {

@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.impl.bundle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -51,12 +52,8 @@ public class CountriesHelper {
     }
 
     private static void loadAttribute(Map<String,String> map, XModelEntity entity, String attr) {
-        try {
             XAttributeConstraintAList acl = (XAttributeConstraintAList)entity.getAttribute(attr).getConstraint();
             acl.setValues((String[])map.keySet().toArray(new String[0]));
-        } catch (Exception e) {
-        	ModelPlugin.getPluginLog().logError("CountiesHelper:loadAttribute:" + e.getMessage());
-        }
     }
 
     private static void loadMap(Map<String,String> map, String resource) {
@@ -71,7 +68,7 @@ public class CountriesHelper {
                 String code = t.substring(0, i), name = t.substring(j + 1);
                 map.put(code, name);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
         	ModelPlugin.getPluginLog().logError("CountiesHelper:loadMap:" + e.getMessage());
         }
     }

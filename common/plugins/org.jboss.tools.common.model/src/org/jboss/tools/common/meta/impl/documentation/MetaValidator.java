@@ -81,9 +81,13 @@ public class MetaValidator {
         } else {
             try {
                 Class.forName(prefix + classname).newInstance();
-            } catch (Exception e) {
-                message(pref + " class '" + classname + "' not found.");
-            }
+            } catch (ClassNotFoundException e) {
+            	  message(pref + " class '" + classname + "' not found.");              
+            } catch (InstantiationException e) {
+            	  message(pref + " class '" + classname + "' not found.");
+			} catch (IllegalAccessException e) {
+				  message(pref + " class '" + classname + "' not found.");
+			}
         }
     }
 }

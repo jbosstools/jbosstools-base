@@ -121,11 +121,7 @@ public class CheckListAdapter extends DefaultValueAdapter {
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			this.viewer = viewer;
-			try { 
-				if(viewer != null) viewer.refresh();
-			} catch (Exception e) {
-				ignore();
-			}
+			if(viewer != null) viewer.refresh();
 		}
 		
 		void ignore() {}

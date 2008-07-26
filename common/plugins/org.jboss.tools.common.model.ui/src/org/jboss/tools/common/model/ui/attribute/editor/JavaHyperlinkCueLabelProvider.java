@@ -23,11 +23,7 @@ public class JavaHyperlinkCueLabelProvider extends LabelProvider {
 	}
 	
 	static Image createClassImage() {
-		try {
-			return ModelUIImages.getImage("java/wizard.gif");
-		} catch (Exception e) {
-			return null;
-		}
+		return ModelUIImages.getImage("java/wizard.gif");
 	}
 
 	public static JavaHyperlinkCueLabelProvider INSTANCE = new JavaHyperlinkCueLabelProvider();

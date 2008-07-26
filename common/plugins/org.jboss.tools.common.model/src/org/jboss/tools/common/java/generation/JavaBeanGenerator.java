@@ -32,6 +32,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
 import org.eclipse.jdt.ui.CodeGeneration;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.text.edits.TextEdit;
 
@@ -181,7 +182,7 @@ public class JavaBeanGenerator {
 		try {
 			edit.apply(doc, 0);
 			return doc.get();
-		} catch (Exception e) {
+		} catch (BadLocationException e) {
 			return sourceString;
 		}
 	}

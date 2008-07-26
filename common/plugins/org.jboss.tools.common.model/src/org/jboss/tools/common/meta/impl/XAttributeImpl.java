@@ -217,11 +217,7 @@ class AdapterHolder {
 	
 	public XAdapter getAdapter() {
 		if(adapter != null) return adapter;
-		try {
 			doGetAdapter();
-		} catch (Exception t) {
-			ModelPlugin.getPluginLog().logError("Error while obtaining adapter", t);
-		}
 		if(adapter == null) adapter = new XAdapter();
 		return adapter;
 	}
@@ -245,11 +241,7 @@ class AdapterHolder {
         }
 		if(adapter == null) adapter = new XAdapter();
         if(adapter != null) {
-            try {
-            	adapter.reload(element);
-            } catch (Exception e) {
-            	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadAdapter:" + e.getMessage());
-            }
+        	adapter.reload(element);
             adapter.setConstraint(attribute.getConstraint());
         }
 		
@@ -275,11 +267,7 @@ class ConstraintHolder {
 	
 	public XAttributeConstraint getConstraint() {
 		if(constraint == null) {
-			try {
 				doGetConstraint();
-			} catch (Exception t) {
-				ModelPlugin.getPluginLog().logError("Error while obtaining constraint", t);
-			}
 			if(constraint == null) constraint = new XAttributeConstraintImpl();
 		}
 		return constraint;
@@ -299,11 +287,9 @@ class ConstraintHolder {
         	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + e.getMessage(), e);
         }
 		if(constraint == null) constraint = new XAttributeConstraintImpl();
-		if(element != null) try {
+		
+		if(element != null) 
 			((XAttributeConstraintImpl)constraint).load(element);
-		} catch (Exception t) {
-			ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + t.getMessage(), t);
-		}
 		loader = null;
 		element = null;
 		this.constraint = constraint;
