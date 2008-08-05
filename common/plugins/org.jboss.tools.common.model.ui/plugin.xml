@@ -109,6 +109,9 @@
       </attributeEditor>
       <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.SliderEditor" id="Slider">
       </attributeEditor>
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.SliderEditor2" id="Slider2">
+      </attributeEditor>
+      
    </extension>
    <extension point="org.jboss.tools.common.model.ui.attributeAdapter">
     <attributeAdapter class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter" id="Slider">
