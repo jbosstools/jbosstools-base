@@ -1227,12 +1227,13 @@
    <XModelAttribute default="Visual/Source" name="option list" xmlname="option_list">
     <Constraint loader="List">
      <value name="Visual/Source"/>
+     <value name="Source"/>
      <value name="Preview"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-    <XModelAttribute default="500" name="Source-Visual Editors Weights" xmlname="source_visual_editors_weights">
-    <Editor name="Slider"/>
+    <XModelAttribute default="500" name="Size of Visual Editor pane 0-100%" xmlname="source_visual_editors_weights">
+    <Editor name="Slider2"/>
    </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list"/>
