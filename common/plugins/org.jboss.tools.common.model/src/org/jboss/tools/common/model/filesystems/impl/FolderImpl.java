@@ -948,7 +948,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 		try {
 			if(!isActive()) return null;
 	    	IContainer c = getResource();
-			return (c != null) ? c.members() : new IResource[0];
+			return (c != null && c.isAccessible()) ? c.members() : new IResource[0];
 		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 			return new IResource[0];  
