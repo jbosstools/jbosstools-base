@@ -11,6 +11,8 @@
 package org.jboss.tools.common.model.ui.dnd;
 
 import java.util.*;
+
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -29,7 +31,9 @@ public class ControlDragDrop {
 	
 	static {
 		try {
-			paletteAdopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.tld.model.handlers.JSPAdopt");
+			if(Platform.getBundle("org.jboss.tools.jst.web") != null) {
+				paletteAdopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.tld.model.handlers.JSPAdopt");
+			}
 		} catch (ClassCastException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
