@@ -147,6 +147,11 @@ public abstract class AllResourcesTree implements XFilteredTree {
 		}
 		if(value.indexOf("/", 1) < 0) return null;
 		IResource r = ModelPlugin.getWorkspace().getRoot().getFolder(new Path(value));
+		if(r == null || !r.exists()) {
+			//we can have both folders and files in tree
+			//so if resource is not a folder, it still can be a file
+			r = ModelPlugin.getWorkspace().getRoot().getFile(new Path(value));
+		}
 		if(r == null || !r.exists()) return null;
 		return EclipseResourceUtil.getObjectByResource(r);
 	}
