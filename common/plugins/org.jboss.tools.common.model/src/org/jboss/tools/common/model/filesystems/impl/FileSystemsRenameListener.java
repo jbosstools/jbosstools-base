@@ -24,7 +24,9 @@ public class FileSystemsRenameListener {
 	
 	static {
 		try {
-			contribution = (Contribution)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.project.FileSystemsRenameListenerContribution");
+			if(Platform.getBundle("org.jboss.tools.jst.web") != null) {
+				contribution = (Contribution)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.project.FileSystemsRenameListenerContribution");
+			}
 		} catch (ClassCastException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}

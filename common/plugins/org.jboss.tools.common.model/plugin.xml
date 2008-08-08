@@ -331,6 +331,8 @@
 			class="org.jboss.tools.common.meta.impl.adapters.XAdapterModelElement"/>
 		<xclass id="org.jboss.tools.common.meta.impl.adapters.XAdapterModelPath"
 			class="org.jboss.tools.common.meta.impl.adapters.XAdapterModelPath"/>
+		<xclass id="org.jboss.tools.common.meta.impl.adapters.XAdapterProjectsRoot"
+			class="org.jboss.tools.common.meta.impl.adapters.XAdapterProjectsRoot"/>
 
 		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintFileFilter"
 			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintFileFilter"/>

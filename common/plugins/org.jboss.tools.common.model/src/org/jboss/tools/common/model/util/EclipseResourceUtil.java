@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jdt.core.*;
 import org.eclipse.jdt.ui.PreferenceConstants;
@@ -177,10 +178,18 @@ public class EclipseResourceUtil {
 		}
 	}
 
-	private static String[] MODEL_NATURES = new String[]{
-		"org.jboss.tools.struts.strutsnature",
-		"org.jboss.tools.jsf.jsfnature",
-	};
+	private static String[] MODEL_NATURES = new String[0];
+	
+	static {
+		List<String> natures = new ArrayList<String>();
+		if(Platform.getBundle("org.jboss.tools.struts") != null) {
+			natures.add("org.jboss.tools.struts.strutsnature");	
+		}
+		if(Platform.getBundle("org.jboss.tools.jsf") != null) {
+			natures.add("org.jboss.tools.jsf.jsfnature");	
+		}
+		MODEL_NATURES = natures.toArray(new String[0]);
+	}
 	
 	public static String[] getModelNatureNames() {
 		return MODEL_NATURES;
