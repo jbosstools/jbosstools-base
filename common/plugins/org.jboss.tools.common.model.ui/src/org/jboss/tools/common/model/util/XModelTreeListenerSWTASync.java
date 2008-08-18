@@ -16,11 +16,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.eclipse.swt.widgets.Display;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.*;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class XModelTreeListenerSWTASync implements XModelTreeListener {
 	private XModelTreeListener listener;
-	
 	
 	Queue<XModelTreeEvent> queue = new ConcurrentLinkedQueue<XModelTreeEvent>();
 	
@@ -30,12 +28,15 @@ public class XModelTreeListenerSWTASync implements XModelTreeListener {
 	
 	private synchronized void add(XModelTreeEvent event) {
 		if(event.kind() == XModelTreeEvent.NODE_CHANGED) {
+			//If event has other kind than NODE_CHANGED, it should never be filtered out!
 			if(nodes.contains(event.getModelObject())) {
 				return;
 			}
-			queue.add(event);
+			//Add to filter
+			nodes.add(event.getModelObject());
 		}
-
+		//Add event to queue.
+		queue.add(event);
 	}
 	
 	private void run(XModelTreeEvent event) {
@@ -72,12 +73,16 @@ public class XModelTreeListenerSWTASync implements XModelTreeListener {
 		public void run() {
 			XModelTreeListener listener = getListener();
 			if (listener != null) {
-				for (XModelTreeEvent event : queue) {
-					if(event.kind() == XModelTreeEvent.NODE_CHANGED) {
-						listener.nodeChanged(event);
-					} else {
-						listener.structureChanged(event);
+				try {
+					for (XModelTreeEvent event : queue) {
+						if (event.kind() == XModelTreeEvent.NODE_CHANGED) {
+							listener.nodeChanged(event);
+						} else {
+							listener.structureChanged(event);
+						}
 					}
+				} finally {
+					runnable = null;
 				}
 			}
 		}
