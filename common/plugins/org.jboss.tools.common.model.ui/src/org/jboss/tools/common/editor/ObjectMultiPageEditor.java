@@ -466,8 +466,8 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				} else if(object.getParent() instanceof FolderImpl) {
 					((FolderImpl)object.getParent()).discardChildFile(object);
 				}
- 			} catch (Exception e) {	
- 				//ignore 
+ 			} catch (XModelException e) {	
+ 				ModelPlugin.getPluginLog().logError(e);
  			}
 		}
 		if (outline!=null) outline.dispose();
@@ -508,10 +508,9 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				while(needsUpdate()) {
 					update0();
 				}
-			} catch (Exception t) {
-				ModelUIPlugin.getPluginLog().logError("Error in updating editor", t);
+			} finally {
+				lock2 = false;
 			}
-			lock2 = false;
 		}
 	}
 	
@@ -774,7 +773,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				this.fModificationStamp = ((IFileEditorInput)input).getFile()
 					.getLocation().toFile().lastModified();
 			}
-		} catch (Exception ex) {
+		} finally {
 			this.fModificationStamp = -1;
 		}
 	}
@@ -879,7 +878,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		  selectionProvider.addHost("treeEditor", formPage.getSelectionProvider());
 		  //Activate key binding service here
 		  formPage.getEditorSite().getKeyBindingService();
-	  } catch (Exception ex) {
+	  } catch (PartInitException ex) {
 		  ModelUIPlugin.getPluginLog().logError(ex);
 	  }
 		  //getSite().setSelectionProvider(formPage.getSelectionProvider());
