@@ -171,7 +171,7 @@ public class DropUtils {
 //			VpePlugin.reportProblem(e);
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
-		IFile file = EclipseResourceUtil.getFile(newUrl.getPath());
+		IFile file = EclipseResourceUtil.getFile(newUrl == null ? dropData.getMimeData() : newUrl.getPath());
 		if(file != null && file.exists()) return file;
 		file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
 			new Path(newUrl.getPath())
