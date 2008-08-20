@@ -71,7 +71,7 @@ public class SliderFieldEditor2 extends ExtendedFieldEditor implements
 		 */
 		try {
 			intValue = Integer.parseInt(valueProvider.getStringValue(true));
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 			// Do nothing
 		}
 		setPropertyChangeListener(this);
@@ -211,7 +211,7 @@ public class SliderFieldEditor2 extends ExtendedFieldEditor implements
 		slider.addSelectionListener(selectionListener);
 		try {
 			intValue = Integer.parseInt(valueProvider.getStringValue(true).toString());
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 			intValue = DEFAULT_SLIDER_VALUE;
 		}
 		
@@ -258,7 +258,7 @@ public class SliderFieldEditor2 extends ExtendedFieldEditor implements
 				if (null != sliderLabel) {
 					sliderLabel.setText(weightsString);
 				}
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 				// Do nothing
 			}
 		}
