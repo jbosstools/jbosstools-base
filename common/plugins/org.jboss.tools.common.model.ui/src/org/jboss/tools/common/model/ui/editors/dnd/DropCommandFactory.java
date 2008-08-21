@@ -12,54 +12,88 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 
 import java.util.HashMap;
 
+import org.jboss.tools.common.model.ui.dnd.DnDUtil;
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
 
+/**
+ * The Class DropCommandFactory.
+ */
 public class DropCommandFactory {
 
+	/** The Constant INSTANCE. */
 	private static final DropCommandFactory INSTANCE = new DropCommandFactory();
 	
+	/** The Constant PLAIN_MIME_COMMAND. */
 	public static final IDropCommand PLAIN_MIME_COMMAND = new PlainTextDropCommand();
+	
+	/** The Constant UNKNOWN_MIME_COMMAND. */
 	public static final IDropCommand UNKNOWN_MIME_COMMAND = new UnknownDropCommand();
 	
-	public static final String UNKNOWN_MIME_TYPE = "exadel/unknown";
+	/** The Constant UNKNOWN_MIME_TYPE. */
+	public static final String UNKNOWN_MIME_TYPE = "exadel/unknown"; //$NON-NLS-1$
 	
+	/** The Constant fMimeCommandMap. */
 	public static final HashMap<String,String> fMimeCommandMap = new HashMap<String,String>();
 
 	////see nsITransferable
-	public static final String kFileMime = "application/x-moz-file";
-	public static final String kURLMime = "text/x-moz-url";
-	public static final String kUnicodeMime = "text/unicode";
+	/** The Constant kFileMime. */
+	public static final String kFileMime = "application/x-moz-file"; //$NON-NLS-1$
 	
-	static String PACKAGE = "org.jboss.tools.common.model.ui.editors.dnd.";
+	/** The Constant kURLMime. */
+	public static final String kURLMime = "text/x-moz-url"; //$NON-NLS-1$
+	
+	/** The Constant kUnicodeMime. */
+	public static final String kUnicodeMime = "text/unicode"; //$NON-NLS-1$
+	
+	/** The Constant kHtmlText. */
+	public static final String kHtmlText   =  DnDUtil.kHTMLMime;
+	
+	/** The PACKAGE. */
+	static String PACKAGE = "org.jboss.tools.common.model.ui.editors.dnd."; //$NON-NLS-1$
 
 	static {
 		fMimeCommandMap.put(
 			////nsITransferable.kFileMime
-				kFileMime, PACKAGE + "FileDropCommand"	
+				kFileMime, PACKAGE + "FileDropCommand"	 //$NON-NLS-1$
 		);
 		fMimeCommandMap.put(
 			////nsITransferable.kURLMime
-				kURLMime, PACKAGE + "FileDropCommand"	
+				kURLMime, PACKAGE + "FileDropCommand"	 //$NON-NLS-1$
 		);
 		fMimeCommandMap.put(
-			ModelTransfer.MODEL, PACKAGE + "PaletteDropCommand"
+			ModelTransfer.MODEL, PACKAGE + "PaletteDropCommand" //$NON-NLS-1$
 		);
 		fMimeCommandMap.put(
-			"text/plain", PACKAGE + "PlainTextDropCommand"	
+			"text/plain", PACKAGE + "PlainTextDropCommand"	 //$NON-NLS-1$ //$NON-NLS-2$
 		);
 		fMimeCommandMap.put(
 			////nsITransferable.kUnicodeMime
-			kUnicodeMime, PACKAGE + "PlainTextDropCommand"	
+			kUnicodeMime, PACKAGE + "PlainTextDropCommand"	 //$NON-NLS-1$
 		);
+		fMimeCommandMap.put(kHtmlText,PACKAGE + "PlainTextDropCommand"); //$NON-NLS-1$
+		
 		fMimeCommandMap.put(
-			UNKNOWN_MIME_TYPE, PACKAGE + "UnknownDropCommand"
+			UNKNOWN_MIME_TYPE, PACKAGE + "UnknownDropCommand" //$NON-NLS-1$
 		);
 	}
 		
+	/**
+	 * Gets the instance.
+	 * 
+	 * @return the instance
+	 */
 	public static DropCommandFactory getInstance() {
 		return INSTANCE;
 	}
 
+    /**
+     * Gets the drop command.
+     * 
+     * @param mimeType the mime type
+     * @param tagProposalFactory the tag proposal factory
+     * 
+     * @return the drop command
+     */
     public IDropCommand getDropCommand(String mimeType, ITagProposalFactory tagProposalFactory) {
     	IDropCommand fInstance = null;
 		try {

@@ -24,11 +24,14 @@ import org.jboss.tools.common.model.ui.editors.dnd.context.IDNDTextEditor;
 import org.jboss.tools.vpe.xulrunner.XPCOM;
 import org.mozilla.interfaces.nsIComponentManager;
 import org.mozilla.interfaces.nsIDOMEvent;
+import org.mozilla.interfaces.nsIDOMText;
 import org.mozilla.interfaces.nsIDragService;
 import org.mozilla.interfaces.nsIDragSession;
 import org.mozilla.interfaces.nsIFile;
 import org.mozilla.interfaces.nsIServiceManager;
+import org.mozilla.interfaces.nsIStringInputStream;
 import org.mozilla.interfaces.nsISupports;
+import org.mozilla.interfaces.nsISupportsCString;
 import org.mozilla.interfaces.nsITransferable;
 import org.mozilla.xpcom.Mozilla;
 
@@ -227,8 +230,7 @@ public class DnDUtil {
      * 
      * @return the dn D file
      */
-    public static nsIFile getDnDFile(nsIDOMEvent event) {
-        nsIFile aFile = null;
+    public static nsISupports getDnDValue(nsIDOMEvent event) {
         nsIServiceManager serviceManager = Mozilla.getInstance().getServiceManager();
         nsIComponentManager componentManager = Mozilla.getInstance().getComponentManager();
         nsIDragService dragService = (nsIDragService) serviceManager.getServiceByContractID("@mozilla.org/widget/dragservice;1", //$NON-NLS-1$
@@ -241,21 +243,15 @@ public class DnDUtil {
         for (String flavor1 : FLAVORS) {
             if (dragSession.isDataFlavorSupported(flavor1)) {
                 iTransferable.addDataFlavor(flavor1);
-                System.out.println("\n->" + flavor1); //$NON-NLS-1$
             }
         }
         String[] aFlavor = { "" }; //$NON-NLS-1$
         long[] aDataLen = { 0 };
         nsISupports[] aData = { null };
-
-        dragSession.getData(iTransferable, 0);
-
-        iTransferable.getAnyTransferData(aFlavor, aData, aDataLen);
-        System.out.println("aData[0] className = " + aData[0].getClass().getName()); //$NON-NLS-1$
-
         
-        aFile = (nsIFile) aData[0].queryInterface(nsIFile.NS_IFILE_IID);
-        return aFile;
+        dragSession.getData(iTransferable, 0);
+        iTransferable.getAnyTransferData(aFlavor, aData, aDataLen);
+        return aData[0];
     }
 
 }

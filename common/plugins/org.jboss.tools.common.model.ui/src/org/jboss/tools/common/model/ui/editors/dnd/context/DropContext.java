@@ -34,6 +34,7 @@ import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
 import org.jboss.tools.common.model.ui.dnd.VpeDnDEvent;
+import org.jboss.tools.common.model.ui.dnd.VpeTextDropAction;
 import org.jboss.tools.common.model.ui.editors.dnd.FileTagProposalLoader;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.jst.web.tld.TLDUtil;
@@ -154,8 +155,8 @@ public class DropContext {
 		if(event == null) return;
 		if(getFlavor() == null) {
 		    return;
-		} else if (getFlavor().equals("text/html")  && this.event instanceof DropTargetEvent) {
-		    new TextDropAction().run((DropTargetEvent) event, editor);
+		} else if (getFlavor().equals("text/html")) {
+		    new VpeTextDropAction().run(event, editor);
 		} else {
 			editor.runDropCommand(getFlavor(), getMimeData());
 		}
