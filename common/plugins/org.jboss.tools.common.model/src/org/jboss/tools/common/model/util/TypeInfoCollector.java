@@ -1126,7 +1126,9 @@ public class TypeInfoCollector {
 					} else {
 						name.delete(0, 3);
 					}
-					name.setCharAt(0, Character.toLowerCase(name.charAt(0)));
+					if(name.length()<2 || Character.isLowerCase(name.charAt(1))) {
+						name.setCharAt(0, Character.toLowerCase(name.charAt(0)));
+					}
 					String propertyName = name.toString();
 					MemberPresentation pr = new MemberPresentation(propertyName, m);
 					if(!properties.contains(pr)) {
