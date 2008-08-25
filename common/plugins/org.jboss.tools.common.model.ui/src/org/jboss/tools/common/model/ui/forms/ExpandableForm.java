@@ -70,7 +70,10 @@ public class ExpandableForm extends DefaultForm {
 			toolkit = new FormToolkit(parent.getDisplay());
 		}
 
-		section = toolkit.createSection(parent, ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED|ExpandableComposite.TITLE_BAR);
+		// commented by vitali:
+		//section = toolkit.createSection(parent, ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED|ExpandableComposite.TITLE_BAR);
+		// ExpandableComposite.TITLE_BAR option results for the tree flicking in "Hibernate Configuration 3.0 XML Editor"
+		section = toolkit.createSection(parent, ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED|ExpandableComposite.SHORT_TITLE_BAR);
 		section.setText("" + getHeadingText());
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | /*GridData.FILL_VERTICAL |*/ GridData.VERTICAL_ALIGN_BEGINNING));
 		toolkit.adapt(section);
