@@ -292,11 +292,7 @@ public class AnyElementForm extends ExpandableForm {
 		String name = tableProvider.getValueAt(i, 0);
 		Properties p = new Properties();
 		p.setProperty("name", name);
-		try {
-			XActionInvoker.invoke("AnyElementNew", "EditActions.EditAttribute", xmo, p);
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		XActionInvoker.invoke("AnyElementNew", "EditActions.EditAttribute", xmo, p);
 	}
 	
 	void delete() throws XModelException {
