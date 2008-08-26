@@ -163,14 +163,16 @@ public class EditorTestHelper {
 		Logger.global.entering("EditorTestHelper", "joinBackgroundActivities"); //$NON-NLS-1$ //$NON-NLS-2$
 		Logger.global.finer("join builder"); //$NON-NLS-1$
 		boolean interrupted= true;
-		while (interrupted) {
-			try {
-				Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
-				interrupted= false;
-			} catch (InterruptedException e) {
-				interrupted= true;
-			}
-		} 
+		// TODO: Block was commented to fix correlation with ValidationJob that leads
+		// to conflict with ValidationFramework.join() and test hanging forever
+		//		while (interrupted) {
+		//			try {
+		//				Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+		//				interrupted= false;
+		//			} catch (InterruptedException e) {
+		//				interrupted= true;
+		//			}
+		//		} 
 		// Join jobs
 		joinJobs(0, 10000, 500);
 		Logger.global.exiting("EditorTestHelper", "joinBackgroundActivities"); //$NON-NLS-1$ //$NON-NLS-2$
