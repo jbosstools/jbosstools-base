@@ -113,10 +113,5 @@ Require-Bundle: org.jboss.tools.common.model;visibility:=reexport,
  org.eclipse.ant.ui,
  org.eclipse.core.expressions,
  org.eclipse.core.filesystem,
- org.jboss.tools.vpe.xulrunner,
- org.eclipse.wst.html.core,
- org.mozilla.xpcom,
- org.jboss.tools.jst.web
+ org.eclipse.wst.html.core
 Bundle-Version: 2.0.0
-Export-Package: org.jboss.tools.common.editor.el,
- org.jboss.tools.common.editor.rreferences

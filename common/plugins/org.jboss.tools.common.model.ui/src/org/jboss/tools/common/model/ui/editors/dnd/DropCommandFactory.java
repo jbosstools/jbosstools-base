@@ -46,7 +46,7 @@ public class DropCommandFactory {
 	public static final String kUnicodeMime = "text/unicode"; //$NON-NLS-1$
 	
 	/** The Constant kHtmlText. */
-	public static final String kHtmlText   =  DnDUtil.kHTMLMime;
+	public static final String kHtmlText   =  "text/html"; //$NON-NLS-1$
 	
 	/** The PACKAGE. */
 	static String PACKAGE = "org.jboss.tools.common.model.ui.editors.dnd."; //$NON-NLS-1$
