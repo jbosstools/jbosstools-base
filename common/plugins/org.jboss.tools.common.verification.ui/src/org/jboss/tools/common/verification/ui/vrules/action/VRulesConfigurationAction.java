@@ -14,6 +14,7 @@ import org.eclipse.jface.action.*;
 import org.eclipse.jface.preference.*;
 import org.eclipse.jface.viewers.*;
 
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.ui.action.*;
 
@@ -23,7 +24,7 @@ public class VRulesConfigurationAction extends AbstractModelActionDelegate {
 		action.setEnabled(computeEnabled());
 	}
 	
-	public void doRun() throws Exception {
+	public void doRun() throws XModelException {
 		new VRulesPreferenceDialog().open();
 	}
 

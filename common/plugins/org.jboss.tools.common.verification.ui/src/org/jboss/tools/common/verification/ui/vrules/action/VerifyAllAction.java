@@ -12,6 +12,7 @@ package org.jboss.tools.common.verification.ui.vrules.action;
 
 import java.util.*;
 import org.jboss.tools.common.meta.action.*;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.action.*;
 import org.eclipse.jface.action.IAction;
@@ -19,7 +20,7 @@ import org.eclipse.jface.viewers.ISelection;
 
 public class VerifyAllAction extends AbstractModelActionDelegate {
 
-	public void doRun() throws Exception {
+	public void doRun() throws XModelException {
 		Properties p = new Properties();
 		p.put("shell", window.getShell());
 		XActionInvoker.invoke(getActionPath(), object, p);
