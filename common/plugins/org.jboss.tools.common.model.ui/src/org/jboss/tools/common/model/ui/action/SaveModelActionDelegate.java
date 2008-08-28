@@ -24,7 +24,7 @@ public class SaveModelActionDelegate extends AbstractModelActionDelegate {
 	
 	public SaveModelActionDelegate() {}
 
-	protected void doRun() throws Exception {
+	protected void doRun() throws XModelException {
 		(new SaveAllHandler()).executeHandler(object, null);
 	}
 
