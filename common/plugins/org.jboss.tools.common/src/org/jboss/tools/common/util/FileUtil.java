@@ -30,7 +30,7 @@ public final class FileUtil {
         if(encoding == null) return new String(bs.bs, 0, bs.length);
         try {
         	return new String(bs.bs, 0, bs.length, encoding);
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException e) {
         	return new String(bs.bs, 0, bs.length);
         }
     }
@@ -46,7 +46,7 @@ public final class FileUtil {
             br.close();
             fr.close();
             return new ReadBytes(bs, l);
-        } catch (Exception e) {
+        } catch (IOException e) {
         	return null;
         }
     }
@@ -66,7 +66,7 @@ public final class FileUtil {
     	if(bs == null) return null;
         try {
             return new String(bs.bs, 0, bs.length, encoding);
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException e) {
         	return null;
         }
     }
@@ -83,7 +83,7 @@ public final class FileUtil {
             br.close();
             fr.close();
             return isText(new String(cs));
-        } catch (Exception e) {
+        } catch (IOException e) {
             return false;
         }
     }
@@ -108,7 +108,7 @@ public final class FileUtil {
                 sb.append(new String(b, 0, l));
             }
             is.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
         	CommonPlugin.getPluginLog().logError(e);
         }
         return sb.toString();
@@ -134,7 +134,9 @@ public final class FileUtil {
             try {
                 if(f.isFile() && !isSameFile(f)) f.delete();
                 if(!f.exists()) f.createNewFile();
-            } catch (Exception e) {
+            } catch (IOException e) {
+            	CommonPlugin.getPluginLog().logError("Problem writing to file " + f, e);
+            } catch (SecurityException e) {
             	CommonPlugin.getPluginLog().logError("Problem writing to file " + f, e);
             }
             PrintWriter pw = new PrintWriter(new FileWriter(f));
@@ -142,7 +144,7 @@ public final class FileUtil {
             pw.flush();
             pw.close();
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             return false;
         }
     }
@@ -174,7 +176,7 @@ public final class FileUtil {
             os = new BufferedOutputStream(new FileOutputStream(dest), 16 * 1024);
             copyStream(is, os);
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
         	CommonPlugin.getPluginLog().logError(e);
             return false;
         } finally {
@@ -230,9 +232,9 @@ public final class FileUtil {
         try {
            String cn = f.getCanonicalFile().getName();
            return fn.equals(cn);
-        } catch (Exception e) {
+        } catch (IOException e) {
             return false;
-        }
+        } 
     }
 
     public static void copyDir(File from, File to) {
@@ -377,7 +379,7 @@ public final class FileUtil {
         } else {
             try {
                 jos.putNextEntry(entry);
-            } catch (Exception e) {
+            } catch (IOException e) {
                 return;
             }
             FileInputStream is = new FileInputStream(f);
@@ -485,7 +487,7 @@ public final class FileUtil {
 			char[] cs = new char[bs.length];
 			int l = r.read(cs, 0, cs.length);
 			return new String(cs, 0, l);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			if("UTF-8".equals(encoding)) return text;
 			return encode(text, "UTF-8");
 		}
@@ -534,9 +536,12 @@ public final class FileUtil {
             pw.flush();
             pw.close();
             return true;
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
 			//ignore
             return writeFileDefault(f, value);
+        } catch (UnsupportedEncodingException e) {
+			//ignore
+            return writeFileDefault(f, value);        	
         }
     }
     
@@ -569,7 +574,7 @@ public final class FileUtil {
     		}
     		validEncodings.add(encoding);
     		return encoding;
-    	} catch (Exception e) {
+    	} catch (UnsupportedEncodingException e) {
     		invalidEncodings.add(encoding);
     		return defaultEncoding;
     	}
@@ -591,7 +596,7 @@ public final class FileUtil {
     		try {
     			String encoding = getEncoding(new String(bs, 0, i, "UTF-16"));
         		return validateEncoding(encoding, "UTF-16");
-    		} catch (Exception e) {
+    		} catch (UnsupportedEncodingException e) {
     			return null;
     		}
     	}

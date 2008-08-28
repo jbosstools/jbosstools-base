@@ -14,12 +14,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.xerces.xni.XMLResourceIdentifier;
-import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLEntityResolver;
 import org.apache.xerces.xni.parser.XMLInputSource;
-
 import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
 import org.jboss.tools.common.CommonPlugin;
+import org.xml.sax.SAXException;
 
 /**
  * @author Igels
@@ -35,7 +34,7 @@ public class XMLEntityResolverImpl implements XMLEntityResolver {
         this.uriResolver = uriResolver;
     }
 
-    public XMLInputSource resolveEntity(XMLResourceIdentifier rid) throws XNIException, IOException {
+    public XMLInputSource resolveEntity(XMLResourceIdentifier rid) throws IOException {
         XMLInputSource result = null;
         String systemId = null;
         String publicId = null;
@@ -44,18 +43,13 @@ public class XMLEntityResolverImpl implements XMLEntityResolver {
             systemId = rid.getBaseSystemId()==null?rid.getLiteralSystemId():rid.getExpandedSystemId();
             publicId = rid.getPublicId();
         	
-        	if(systemId != null && systemId.indexOf("www.ibm.com") >= 0) {
-//        		CommonPlugin.getPluginLog().logError( "ignore");
-//        		return null;
-        	}
-        	
             InputStream is = resolver.getInputStream(rid.getPublicId(), systemId);
             if(is!=null) {
                 result = new XMLInputSource(rid.getPublicId(), systemId, rid.getBaseSystemId(), is, null);
             }
-        } catch (Exception e) {
+        } catch (SAXException e) {
         	CommonPlugin.getPluginLog().logError( "Exception publicId=" + publicId + " systemId=" + systemId + " exception=" + e.getClass().getName() + ":" + e.getMessage());
-        }
+        } 
 
         return result;
     }

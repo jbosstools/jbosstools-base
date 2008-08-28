@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.CDATASection;
@@ -29,6 +31,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * Class helps to convert TLD to Schema
@@ -120,25 +123,31 @@ public class KbTldConvertor implements KbSchemaConvertor {
 	 * @return
 	 */
 	public Document convertToSchema(InputStream inputStream, Properties attributes, boolean jsfTld) {
+		
+		final String ERR_CANNOT_PARSE_TLD = "ERROR: Can't parse TLD file for converting to the Schema."; //$NON-NLS-N$
 		Document tldDocument = null;
+		Document schema = null;
+		
 		try {
-			tldDocument = KbDocumentBuilderFactory.createDocumentBuilder(false).parse(inputStream);
-		} catch (Exception e) {
-			String message = "ERROR: Can't parse TLD file for converting to the Schema.";
-			KbPlugin.getPluginLog().logError(message, e);
-			return null;
+			DocumentBuilder builder = KbDocumentBuilderFactory.createDocumentBuilder(false);
+			if(builder!=null) {
+				tldDocument = builder.parse(inputStream);
+				Element rootTldElement = tldDocument.getDocumentElement();
+				
+				String prefix = getShortName(rootTldElement);
+				if((prefix!=null)&&(prefix.length()>0)) {
+					attributes.setProperty(SchemaNodeFactory.PREFIX_ATTRIBUTE, prefix);
+				}
+			
+				schema = SchemaNodeFactory.getInstance().createSchemaDocument(attributes);
+				addElementTypes(rootTldElement, schema, jsfTld);
+			}
+		} catch (IOException e) {
+			KbPlugin.getPluginLog().logError(ERR_CANNOT_PARSE_TLD, e);
+		} catch (SAXException e) {
+			KbPlugin.getPluginLog().logError(ERR_CANNOT_PARSE_TLD, e);
 		}
-
-		Element rootTldElement = tldDocument.getDocumentElement();
-
-		String prefix = getShortName(rootTldElement);
-		if((prefix!=null)&&(prefix.length()>0)) {
-			attributes.setProperty(SchemaNodeFactory.PREFIX_ATTRIBUTE, prefix);
-		}
-
-		Document schema = SchemaNodeFactory.getInstance().createSchemaDocument(attributes);
-		addElementTypes(rootTldElement, schema, jsfTld);
-
+		
 		return schema;
 	}
 

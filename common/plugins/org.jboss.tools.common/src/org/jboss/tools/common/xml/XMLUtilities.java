@@ -110,7 +110,7 @@ public class XMLUtilities {
             DOMImplementation domImpl = createDocumentBuilder().getDOMImplementation();
             DocumentType docType = domImpl.createDocumentType(qName, publicId, systemId);
             d = domImpl.createDocument(namespaceURI, name, docType);
-        } catch (Exception e) {
+        } catch (DOMException e) {
             return null;
         }
         Element de = d.getDocumentElement();
@@ -141,7 +141,7 @@ public class XMLUtilities {
 		} finally {
             try {
                 if (fr != null) fr.close();
-            } catch (Exception e) {
+            } catch (IOException e) {
             	CommonPlugin.getPluginLog().logError(e);
             }
         }
@@ -157,7 +157,9 @@ public class XMLUtilities {
         try {
             org.xml.sax.InputSource inSource = new org.xml.sax.InputSource(reader);
             return getDocument(inSource, resolver);
-        } catch (Exception e) {
+        } catch (SAXException e) {
+            return null;
+        } catch (IOException e) {
             return null;
         }
     }
@@ -166,7 +168,9 @@ public class XMLUtilities {
         try {
             org.xml.sax.InputSource inSource = new org.xml.sax.InputSource(is);
             return getElement(inSource, resolver);
-        } catch (Exception e) {
+        } catch (SAXException e) {
+            return null;
+        } catch (IOException e) {
             return null;
         }
     }
@@ -186,12 +190,8 @@ public class XMLUtilities {
 	}
     
     public static String[] getXMLErrors(Reader reader, boolean checkDTD, EntityResolver resolver) {
-        try {
-            org.xml.sax.InputSource inSource = new org.xml.sax.InputSource(reader);
-            return getXMLErrors(inSource, checkDTD, resolver);
-        } catch (Exception e) {
-            return new String[]{e.getMessage()};
-        }
+        org.xml.sax.InputSource inSource = new org.xml.sax.InputSource(reader);
+        return getXMLErrors(inSource, checkDTD, resolver);
     }
     
 	public static String[] getXMLErrors(org.xml.sax.InputSource is, EntityResolver resolver) {
@@ -205,9 +205,11 @@ public class XMLUtilities {
             if(resolver != null) builder.setEntityResolver(resolver);
             builder.setErrorHandler(h);
             builder.parse(is);
-        } catch (Exception e) {
-        	if(h.errors.isEmpty()) return new String[]{"Unidentified parser error:0:0"};
-        }
+        } catch (IOException e) {
+        	if(h.errors.isEmpty()) return new String[]{"Unexpected parser error:0:0",e.toString()};
+        } catch (SAXException e) {
+        	if(h.errors.isEmpty()) return new String[]{"Unexpected parser error:0:0",e.toString()};
+		}
         return h.errors.toArray(new String[0]);        
     }
     
@@ -219,13 +221,15 @@ public class XMLUtilities {
         serialize(element, new BufferedWriter(fw));
         fw.close();
     }
-
+	static final String ENCODING = "encoding=\"";
+	static final String UTF8 = "UTF-8";
+	
 	public static String getEncoding(String body) {
-		int i = body.indexOf("encoding=\"");
-		if(i < 0) return "UTF-8";
-		i = i + "encoding=\"".length();
+		int i = body.indexOf(ENCODING);
+		if(i < 0) return UTF8;
+		i = i + ENCODING.length();
 		int j = body.indexOf('"', i);
-		if(j < 0) return "UTF-8";
+		if(j < 0) return UTF8;
 		return body.substring(i, j);
     	 
 	}
@@ -238,14 +242,14 @@ public class XMLUtilities {
 
     public static final boolean serialize(Element element, Writer w) throws IOException {
         if(element == null) return false;
-        serialize(element, new XMLSerializer(w, createOutputFormat("UTF-8")));
+        serialize(element, new XMLSerializer(w, createOutputFormat(UTF8)));
         w.close();
         return true;
     }
 
     public static final boolean serialize(Element element, OutputStream w) throws IOException {
         if(element == null) return false;
-        serialize(element, new XMLSerializer(w, createOutputFormat("UTF-8")));
+        serialize(element, new XMLSerializer(w, createOutputFormat(UTF8)));
         w.close();
         return true;
     }

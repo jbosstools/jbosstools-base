@@ -11,6 +11,8 @@
 package org.jboss.tools.common.kb;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,11 +20,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.jboss.tools.common.kb.configuration.KbConfigurationFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * @author eskimo
@@ -351,6 +356,8 @@ public class KbHtmlStore implements KbStore {
 	}
 
 	private synchronized boolean activateHtmlSchema() {
+		String ERR_CANNNOT_LOAD_SCHEME = "Can't load HTML schema ''{0}''"; //$NON-NLS-N$
+		String ERR_EXCEPTION_DURING_PARSING = "Exception happend during parsing ''{0}''"; //$NON-NLS-N$
 		if(htmlSchemaIsActivating()) {
 			return false;
 		}
@@ -361,16 +368,21 @@ public class KbHtmlStore implements KbStore {
 
 		File schemaLocation = new File(htmlSchemaLocation);
 		if((schemaLocation == null)||(!schemaLocation.exists())) {
-			KbPlugin.getPluginLog().logError("Can't load HTML schema " + schemaLocation);
+			KbPlugin.getPluginLog().logError(MessageFormat.format(ERR_CANNNOT_LOAD_SCHEME, schemaLocation));
 			return false;
 		}
 
-		try {
-			htmlSchema = KbDocumentBuilderFactory.createDocumentBuilder(false).parse(new File(htmlSchemaLocation));
-		} catch (Exception e) {
-			KbPlugin.getPluginLog().logError(e);
-			return false;
+		DocumentBuilder builder = KbDocumentBuilderFactory.createDocumentBuilder(false);
+		if(builder!=null) {
+			try {
+				htmlSchema = builder.parse(new File(htmlSchemaLocation));
+			} catch (SAXException e) {
+				KbPlugin.getPluginLog().logError(MessageFormat.format(ERR_EXCEPTION_DURING_PARSING, schemaLocation),e);
+			} catch (IOException e) {
+				KbPlugin.getPluginLog().logError(MessageFormat.format(ERR_EXCEPTION_DURING_PARSING, schemaLocation),e);
+			}
 		}
+		
 		return true;
 	}
 

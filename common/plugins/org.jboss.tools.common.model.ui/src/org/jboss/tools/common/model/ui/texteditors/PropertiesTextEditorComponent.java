@@ -14,10 +14,6 @@ import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.jboss.tools.common.editor.ObjectTextEditor;
-import org.jboss.tools.common.propertieseditor.text.*;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.texteditors.propertyeditor.PropertiesTextEditorStub;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
@@ -38,9 +34,12 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.ResourceAction;
 import org.eclipse.ui.texteditor.RevertToSavedAction;
 import org.eclipse.ui.texteditor.SaveAction;
-
+import org.jboss.tools.common.editor.ObjectTextEditor;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
+import org.jboss.tools.common.model.ui.texteditors.propertyeditor.PropertiesTextEditorStub;
+import org.jboss.tools.common.propertieseditor.text.PropertyTextEditorSupport;
 
 /**
  * @author Jeremy
@@ -93,11 +92,7 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 		String text = null;
 		if(getSourceViewer() == null) return null;
 		if(getSourceViewer().getDocument() == null) return null;
-		try {
-			text = getSourceViewer().getDocument().get();
-		} catch (Exception ex) {
-			ModelUIPlugin.getPluginLog().logError(ex);
-		}
+		text = getSourceViewer().getDocument().get();
 		return (text == null) ? "" : text;
 	}
 

@@ -10,22 +10,45 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.texteditors;
 
-import java.util.*;
-import org.eclipse.jface.preference.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.jdt.internal.ui.preferences.OverlayPreferenceStore;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.text.*;
-import org.eclipse.jface.text.source.*;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IDocumentPartitioner;
+import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.TextEvent;
+import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.*;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.custom.ST;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
-import org.eclipse.jface.action.*;
-import org.eclipse.ui.texteditor.*;
-import org.eclipse.jdt.internal.ui.preferences.OverlayPreferenceStore;
-import org.jboss.tools.common.model.*;
+import org.eclipse.ui.texteditor.IStatusField;
+import org.eclipse.ui.texteditor.ITextEditorActionConstants;
+import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
+import org.eclipse.ui.texteditor.ITextEditorExtension;
+import org.eclipse.ui.texteditor.TextNavigationAction;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.util.XModelObjectCache;
@@ -165,11 +188,7 @@ public class TextEditorComponent implements ITextListener, ITextEditorExtension 
 
 	public String getText() {
 		String text = null;
-		try {
-			if (document != null) text = document.get();
-		} catch (Exception ex) {
-			ModelUIPlugin.getPluginLog().logError(ex);
-		}
+		if (document != null) text = document.get();
 		return (text == null) ? "" : text;
 	}
 
@@ -183,7 +202,7 @@ public class TextEditorComponent implements ITextListener, ITextEditorExtension 
 		try {
 			FileAnyImpl f = (FileAnyImpl)getModelObject();
 			if(f != null) f.edit(getText()); 
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			lock = false;
@@ -195,7 +214,7 @@ public class TextEditorComponent implements ITextListener, ITextEditorExtension 
 		try {
 			int i = document.getLineOffset(line - 1) + position -1;
 			preview.setSelectedRange(i, 0);
-		} catch (Exception e) {
+		} catch (BadLocationException e) {
 			//ignore
 		}
 	}

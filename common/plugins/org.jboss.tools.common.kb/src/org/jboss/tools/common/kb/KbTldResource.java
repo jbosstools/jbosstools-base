@@ -14,8 +14,12 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -103,6 +107,7 @@ public class KbTldResource implements KbResource {
 	}
 
 	private InputStream getInputStreamFromTldLocation() {
+		final String ERR_TLD_FILE_DOSENT_EXIST = "ERROR: TLD file ''{0}'' doesn't exist!";
 		InputStream is = null;
         if (tldLocation == null) {
         	return null;
@@ -135,12 +140,15 @@ public class KbTldResource implements KbResource {
 				}
             }
 */
-		} catch (Exception e) {
-            if(KbPlugin.isDebugEnabled()) {
-                String message = "ERROR: TLD file (" + tldLocation + ") doesn't exist!";
-                KbPlugin.getPluginLog().logError(message, e);
+		} catch (MalformedURLException e) {
+            if(KbPlugin.isDebugEnabled()) {              
+                KbPlugin.getPluginLog().logError(MessageFormat.format(ERR_TLD_FILE_DOSENT_EXIST, tldLocation), e);
             }
-		}
+		} catch (IOException e) {
+	        if(KbPlugin.isDebugEnabled()) { 
+	        	KbPlugin.getPluginLog().logError(MessageFormat.format(ERR_TLD_FILE_DOSENT_EXIST, tldLocation), e);
+	        }
+		} 
 		return is;
 	}
 
@@ -234,7 +242,7 @@ public class KbTldResource implements KbResource {
             try {
 				File file = new File(tldLocation);
 				lastModifiedTld = file.lastModified();
-            } catch(Exception e) {
+            } catch(SecurityException e) {
             	return false;
             }
 /*

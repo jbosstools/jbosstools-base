@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.eclipse.core.runtime.FileLocator;
@@ -42,6 +44,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * Describes store whish contains all TLD schemas.
@@ -570,13 +573,19 @@ public class KbTldStore implements KbStore {
 
 		Document document = null;
 		try {
-			document = KbDocumentBuilderFactory.createDocumentBuilder(false).parse(schemaLocation);
-		} catch (Exception e) {
+			DocumentBuilder builder = KbDocumentBuilderFactory.createDocumentBuilder(false);
+			if(builder!=null) {
+				document = builder.parse(schemaLocation);
+			}
+		} catch (IOException e) {
         	KbPlugin.getPluginLog().logError(e);
-			return;
+		} catch (SAXException e) {
+			KbPlugin.getPluginLog().logError(e);
 		}
-
-		activeDocuments.put(regResource, document);
+		
+		if(document!=null) {
+			activeDocuments.put(regResource, document);
+		}
 	}
 
 	private synchronized void activateResources(Collection resources) {
@@ -661,8 +670,16 @@ public class KbTldStore implements KbStore {
 		for(int i=0; i<schemas.length; i++) {
 			Document document = null;
 			try {
-				document = KbDocumentBuilderFactory.createDocumentBuilder(false).parse(schemas[i]);
-			} catch (Exception e) {
+				DocumentBuilder builder = KbDocumentBuilderFactory.createDocumentBuilder(false);
+				if(builder!=null) {
+					document = builder.parse(schemas[i]);
+				} else {
+					continue;
+				}
+			} catch (IOException e) {
+				KbPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, KbPlugin.PLUGIN_ID, IStatus.OK, "Can't parse Schema (location: " + schemas[i] + ")", e));
+				continue;
+			} catch (SAXException e) {
 				KbPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, KbPlugin.PLUGIN_ID, IStatus.OK, "Can't parse Schema (location: " + schemas[i] + ")", e));
 				continue;
 			}
@@ -1076,7 +1093,7 @@ public class KbTldStore implements KbStore {
 				os.close();
 
 //				TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(schemaFile));
-			} catch (Exception e) {
+			} catch (IOException e) {
 	        	KbPlugin.getPluginLog().logError(e);
 				schemaFile.deleteOnExit();
 				loadingResources.remove(resource);

@@ -159,7 +159,7 @@ public class KbQuery {
 					if(++endCode<s.length()) {
 						result.append(s.substring(endCode));
 					}
-				} catch(Exception e) {
+				} catch(NumberFormatException e) {
 					String message = "ERROR: can't decode string=" + s;
 					KbPlugin.getPluginLog().logError(message, e);
 				}

@@ -11,11 +11,14 @@
 package org.jboss.tools.common.model.ui.texteditors;
 
 import java.util.Properties;
-import org.jboss.tools.common.meta.action.*;
-import org.jboss.tools.common.model.*;
+
+import org.jboss.tools.common.meta.action.XAction;
+import org.jboss.tools.common.meta.action.XActionInvoker;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.model.util.XModelObjectCache;
 
 public class TextEditorSupport {
 	protected XModelObjectCache object = null;
@@ -55,11 +58,7 @@ public class TextEditorSupport {
 
 	protected String loadContent() {
 		XModelObject o = getModelObject();
-		try {
-			return ((FileAnyImpl)o).getAsText();
-		} catch (Exception e) {
-			return "";
-		}
+		return ((FileAnyImpl)o).getAsText();
 	}
 
 	public void setModified(boolean set) {
@@ -87,7 +86,7 @@ public class TextEditorSupport {
 		try {
 			FileAnyImpl f = (FileAnyImpl)getModelObject();
 			if(f != null) f.edit(provider.getText()); 
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			lock--;

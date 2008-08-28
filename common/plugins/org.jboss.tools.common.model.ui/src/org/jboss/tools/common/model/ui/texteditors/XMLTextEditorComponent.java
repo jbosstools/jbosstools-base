@@ -21,9 +21,6 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.jboss.tools.common.editor.ObjectTextEditor;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
@@ -47,14 +44,17 @@ import org.eclipse.ui.texteditor.ResourceAction;
 import org.eclipse.ui.texteditor.RevertToSavedAction;
 import org.eclipse.ui.texteditor.SaveAction;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
+import org.jboss.tools.common.editor.ObjectTextEditor;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.DiscardFileHandler;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
 import org.jboss.tools.common.model.filesystems.impl.FolderLoader;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.PositionSearcher;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
+import org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor;
+import org.jboss.tools.common.model.util.PositionSearcher;
 
 public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextEditor, ITextProvider {
 	protected TextEditorSupport support = createSupport();
@@ -202,7 +202,7 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 		}
 		if(old.isModified()) try {
 			new DiscardFileHandler().executeHandler(old, new Properties());
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			//ignore
 //			ModelUIPlugin.log(e);
 		}

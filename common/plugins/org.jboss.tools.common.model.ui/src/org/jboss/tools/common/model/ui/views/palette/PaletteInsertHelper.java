@@ -69,14 +69,10 @@ public class PaletteInsertHelper {
 			d.showDialog("Warning", mes, new String[]{"OK"}, null, ServiceDialog.WARNING);
 			return;
 		}
-        try {
-   			IDocument doc = editor.getDocumentProvider().getDocument(editor.getEditorInput());
-   			ISelectionProvider selProvider = editor.getSelectionProvider();
-   			p.put(PROPOPERTY_SELECTION_PROVIDER, selProvider);
-   			insertIntoEditorInternal(doc, p);
-        } catch (Exception x) {
-        	ModelUIPlugin.getPluginLog().logError(x);
-        }
+		IDocument doc = editor.getDocumentProvider().getDocument(editor.getEditorInput());
+		ISelectionProvider selProvider = editor.getSelectionProvider();
+		p.put(PROPOPERTY_SELECTION_PROVIDER, selProvider);
+		insertIntoEditorInternal(doc, p);
 	}
 
 	static boolean isEditable(ITextEditor editor) {
@@ -96,59 +92,51 @@ public class PaletteInsertHelper {
 	}
 
 	public static void insertIntoEditor(ISourceViewer v, Properties p) {
-		try {
-			String tagname = p.getProperty(PROPOPERTY_TAG_NAME);
-			String startText = p.getProperty(PROPOPERTY_START_TEXT);
-			String endText = p.getProperty(PROPOPERTY_END_TEXT);
-			String uri = p.getProperty(PROPOPERTY_TAGLIBRARY_URI);
+	String tagname = p.getProperty(PROPOPERTY_TAG_NAME);
+	String startText = p.getProperty(PROPOPERTY_START_TEXT);
+	String endText = p.getProperty(PROPOPERTY_END_TEXT);
+	String uri = p.getProperty(PROPOPERTY_TAGLIBRARY_URI);
 
-			ISelectionProvider selProvider = (ISelectionProvider)p.get(PROPOPERTY_SELECTION_PROVIDER);
-			if(selProvider == null) p.put(PROPOPERTY_SELECTION_PROVIDER, v.getSelectionProvider());
+	ISelectionProvider selProvider = (ISelectionProvider)p.get(PROPOPERTY_SELECTION_PROVIDER);
+	if(selProvider == null) p.put(PROPOPERTY_SELECTION_PROVIDER, v.getSelectionProvider());
 
-			IDocument d = v.getDocument();
-			String[] texts = new String[]{startText, endText};
+	IDocument d = v.getDocument();
+	String[] texts = new String[]{startText, endText};
 
-			if(startText!=null && startText.startsWith("<%@ taglib")) {
-				if(PaletteTaglibInserter.inserTaglibInXml(v, p)) {
-					return;
-				}
-			} else {
-				p = PaletteTaglibInserter.inserTaglib(v, p);
+	if(startText!=null && startText.startsWith("<%@ taglib")) {
+		if(PaletteTaglibInserter.inserTaglibInXml(v, p)) {
+			return;
+		}
+	} else {
+		p = PaletteTaglibInserter.inserTaglib(v, p);
+	}
+
+	String defaultPrefix = p.getProperty(PROPOPERTY_DEFAULT_PREFIX);
+	applyPrefix(texts, d, tagname, uri, defaultPrefix);						
+	startText = texts[0];
+	endText = texts[1];
+
+	if(startText != null) p.setProperty(PROPOPERTY_START_TEXT, startText);
+	if(endText != null) p.setProperty(PROPOPERTY_END_TEXT, endText);
+
+		if (v != null ) {
+			IEditorPart activeEditor = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+			IDocument doc = v.getDocument();
+			insertIntoEditorInternal(doc, p);
+			/*
+			 * Leave as is
+			 */
+			if(v instanceof IIgnoreSelection) {
+				((IIgnoreSelection)v).setIgnore(true);
 			}
-
-			String defaultPrefix = p.getProperty(PROPOPERTY_DEFAULT_PREFIX);
-			applyPrefix(texts, d, tagname, uri, defaultPrefix);						
-			startText = texts[0];
-			endText = texts[1];
-
-			if(startText != null) p.setProperty(PROPOPERTY_START_TEXT, startText);
-			if(endText != null) p.setProperty(PROPOPERTY_END_TEXT, endText);
-
-	        try {
-	    		if (v != null ) {
-	    			IEditorPart activeEditor = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-	    			IDocument doc = v.getDocument();
-	    			insertIntoEditorInternal(doc, p);
-	    			/*
-	    			 * Leave as is
-	    			 */
-	    			if(v instanceof IIgnoreSelection) {
-	    				((IIgnoreSelection)v).setIgnore(true);
-	    			}
-	    			if (activeEditor != null)
-	    				activeEditor.getSite().getPage().activate(activeEditor);
-	    			/*
-	    			 * Set Ignore false, to prevent focus losing. 
-	    			 */
-	    			if(v instanceof IIgnoreSelection) {
-	    				((IIgnoreSelection)v).setIgnore(false);
-	    			}
-	    		}
-	        } catch (Exception x) {
-	        	ModelUIPlugin.getPluginLog().logError("Error while inserting text into editor", x);
-	        }
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
+			if (activeEditor != null)
+				activeEditor.getSite().getPage().activate(activeEditor);
+			/*
+			 * Set Ignore false, to prevent focus losing. 
+			 */
+			if(v instanceof IIgnoreSelection) {
+				((IIgnoreSelection)v).setIgnore(false);
+			}
 		}
 	}
 
@@ -265,7 +253,7 @@ public class PaletteInsertHelper {
 
 			if (lineOffset + lineLength - offset - length == 0) 
 				appendLastDelimiter = false;
-		} catch (Exception ex) {
+		} catch (BadLocationException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 
@@ -343,12 +331,7 @@ public class PaletteInsertHelper {
 	}
 
     private static int getTabWidth() {
-		try {
-			return Platform.getPreferencesService().getInt("org.eclipse.ui.editors", AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH, 4, new IScopeContext[]{new InstanceScope()}); 
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-			return 4;
-		}
+		return Platform.getPreferencesService().getInt("org.eclipse.ui.editors", AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH, 4, new IScopeContext[]{new InstanceScope()}); 
 	}
 
     private static boolean useSpaces() {
@@ -440,7 +423,7 @@ public class PaletteInsertHelper {
             int line = d.getLineOfOffset(offset);
             String lineText = d.get(d.getLineOffset(line), d.getLineLength(line));
             return getIndentOfLine(lineText, getLineDelimiter(d));
-        } catch (Exception ex) {
+        } catch (BadLocationException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
         }
         return indent;
@@ -504,14 +487,10 @@ public class PaletteInsertHelper {
 	public static void applyPrefix(String[] text, ITextEditor editor, String tagname, String uri, String defaultPrefix) {
 		if(defaultPrefix == null || defaultPrefix.length() == 0) return;
 		IDocument doc = null;
-        try {
-        	if(editor != null && editor.getDocumentProvider() != null) {
-        		doc = editor.getDocumentProvider().getDocument(editor.getEditorInput());
-        	}
-        } catch (Exception x) {
-			ModelUIPlugin.getPluginLog().logError(x);
-        }
-        applyPrefix(text, doc, tagname, uri, defaultPrefix);
+    	if(editor != null && editor.getDocumentProvider() != null) {
+    		doc = editor.getDocumentProvider().getDocument(editor.getEditorInput());
+    	}
+    	applyPrefix(text, doc, tagname, uri, defaultPrefix);
 	}
 
 	public static void applyPrefix(String[] text, IDocument doc, String tagname, String uri, String defaultPrefix) {
@@ -540,13 +519,9 @@ public class PaletteInsertHelper {
 			String uri = "";
 			String defaultPrefix = "";
 			String pr = "";
-			try {
-				uri = text.substring(i + 8, j1);
-				defaultPrefix = text.substring(j1 + 1, j);
-				pr = prefixes.getProperty(uri, defaultPrefix);
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			uri = text.substring(i + 8, j1);
+			defaultPrefix = text.substring(j1 + 1, j);
+			pr = prefixes.getProperty(uri, defaultPrefix);
 			if(pr.length() > 0) {
 				text = text.substring(0, i) + pr + ":" + text.substring(j + 1);
 			} else {

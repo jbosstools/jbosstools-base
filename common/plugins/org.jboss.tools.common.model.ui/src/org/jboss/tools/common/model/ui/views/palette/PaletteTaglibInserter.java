@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -108,7 +109,7 @@ public class PaletteTaglibInserter {
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (BadLocationException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			if (model != null)	model.releaseFromRead();
@@ -200,8 +201,6 @@ public class PaletteTaglibInserter {
 				checkTL(root, v, p, d);
 				return true;
 			}
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			if (model != null)	model.releaseFromRead();
 		}
@@ -282,7 +281,7 @@ public class PaletteTaglibInserter {
 				}
 				selectedSource.insert(selectedSource.length()-1, attribute);
 				d.replace(so, seo-so, selectedSource.toString());
-			} catch (Exception t) {
+			} catch (BadLocationException t) {
 				ModelUIPlugin.getPluginLog().logError("", t);
 			}
 		}
@@ -330,7 +329,7 @@ public class PaletteTaglibInserter {
 		return st;		
 	}
 
-	private static boolean checkplace(IDOMDocument xmlDocument, IDocument d, String st, StringBuffer tg, Properties p, ISourceViewer v) throws Exception {
+	private static boolean checkplace(IDOMDocument xmlDocument, IDocument d, String st, StringBuffer tg, Properties p, ISourceViewer v) throws BadLocationException {
 		NodeList nl = xmlDocument.getChildNodes();
 		boolean docType = false;
 		IndexedRegion irdt = null;

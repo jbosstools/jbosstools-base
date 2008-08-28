@@ -64,6 +64,7 @@ import org.w3c.dom.Text;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.XModelBuffer;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelTransferBuffer;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
@@ -153,8 +154,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 		setModified(false);
 		getDocumentListenerRegister().unregister();
 		getDocumentListenerRegister().register();
-        try {
-            Object dtid =
+        Object dtid =
                 getSourceViewer().getTextWidget().getData("DropTarget");
             if (dtid != null) {
                 if (dtid instanceof DropTarget) {
@@ -181,64 +181,50 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
                         }
 
                         public void dragEnter(DropTargetEvent event) {
-                            try {
-                                getFreeCaretControl(
-                                    event.widget).enableFreeCaret(
-                                    true);
-                            } catch (Exception x) {
-                            	//ignore
-                            }
-                        }
+                        	FreeCaretStyledText fcst =getFreeCaretControl(
+                                    event.widget);
+                            	if(fcst != null) {
+                            		fcst.enableFreeCaret(true);
+                            	}
+                    }
 
                         public void dragLeave(DropTargetEvent event) {
-                            try {
-                                getFreeCaretControl(
-                                    event.widget).enableFreeCaret(
-                                    false);
-                            } catch (Exception x) {
-                            	//ignore
-                            }
-                        }
+                        	FreeCaretStyledText fcst =getFreeCaretControl(
+                                    event.widget);
+                            	if(fcst != null) {
+                            		fcst.enableFreeCaret(false);
+                            	}
+                    }
 
                         public void dragOperationChanged(DropTargetEvent event) {
-                            try {
-                                getFreeCaretControl(
-                                    event.widget).enableFreeCaret(
-                                    false);
-                            } catch (Exception x) {
-                            	//ignore
-                            }
-                        }
+                        	FreeCaretStyledText fcst =getFreeCaretControl(
+                                event.widget);
+                        	if(fcst != null) {
+                        		fcst.enableFreeCaret(false);
+                        	}
+                    }
 
                         public void dragOver(DropTargetEvent event) {
-                            try {
                                 FreeCaretStyledText fcst =
                                     getFreeCaretControl(event.widget);
-                                int pos = getPosition(fcst, event.x, event.y);
-                                Point p = fcst.getLocationAtOffset(pos);
-                                fcst.myRedraw(p.x, p.y);
-                            } catch (Exception x) {
-                            	//ignore
-                            }
+                                if(fcst != null) {
+		                            int pos = getPosition(fcst, event.x, event.y);
+		                            Point p = fcst.getLocationAtOffset(pos);
+		                            fcst.myRedraw(p.x, p.y);
+                                }
                         }
 
                         public void drop(DropTargetEvent event) {
-                            try {
-                                getFreeCaretControl(
-                                    event.widget).enableFreeCaret(
-                                    false);
-                            } catch (Exception x) {
-                            	//ignore
-                            }
+                            	FreeCaretStyledText fcst =getFreeCaretControl(
+                                        event.widget);
+                                	if(fcst != null) {
+                                		fcst.enableFreeCaret(false);
+                                	}
                         }
                     });
                 }
 
             }
-        } catch (Exception x) {
-        	//ignore
-        }
-
 	}
 
 	/*
@@ -291,7 +277,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 			try {
 				FileAnyImpl f = (FileAnyImpl)getModelObject();
 				if(f != null) f.edit(getSourceViewer().getDocument().get());						
-			} catch (Exception e) {
+			} catch (XModelException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			} finally {
 				setModified(false);
@@ -323,11 +309,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 		super.doSetInput(input);
 		this.input = input;
 		if (input instanceof IModelObjectEditorInput){
-			try {
-				object = ((IModelObjectEditorInput)input).getXModelObject();
-			} catch (Exception ex) {
-				ModelUIPlugin.getPluginLog().logError("Error while getting model object from editor input", ex);
-			}
+			object = ((IModelObjectEditorInput)input).getXModelObject();
 		}
 		if(getSourceViewer() != null && getSourceViewer().getDocument() != null) {
 			getDocumentListenerRegister().unregister();

@@ -12,8 +12,10 @@ package org.jboss.tools.common.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
@@ -78,7 +80,7 @@ public class DtdResolver implements EntityResolver {
 	            } else if("jar".equals(url.getProtocol())) {
 	            	return url.openStream();
 	            }
-            } catch(Exception e) {
+            } catch(FileNotFoundException e) {
     			CommonPlugin.getPluginLog().logError("Error in DtdResolver: " + e.getMessage());
             }
         }
@@ -98,10 +100,13 @@ public class DtdResolver implements EntityResolver {
             	if("http".equals(url.getProtocol())) { 
             		is = HttpUtil.getInputStreamFromUrlByGetMethod(systemId);
             	}
-    		} catch (Exception e) {
+    		} catch (MalformedURLException e) {
       			CommonPlugin.getPluginLog().logError( e.getMessage());
     			// don't handle any exeptions. Bug #ESL-306
-            }
+            } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
         return is;
     }

@@ -61,12 +61,12 @@ public abstract class AbstractModelActionDelegate implements IWorkbenchWindowAct
 	public void run(IAction action) {
 		try {
 			doRun();
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
 	
-	protected abstract void doRun() throws Exception;
+	protected abstract void doRun() throws XModelException;
 
 	public void dispose() {}
 	

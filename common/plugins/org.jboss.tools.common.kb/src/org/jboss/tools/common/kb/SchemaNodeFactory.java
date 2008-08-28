@@ -13,6 +13,8 @@ package org.jboss.tools.common.kb;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -72,7 +74,16 @@ public class SchemaNodeFactory {
 	 * @return
 	 */
 	public Document createSchemaDocument(Properties attributes) {
-		Document document = KbDocumentBuilderFactory.createDocumentBuilder(false).newDocument();
+		Document document = createSchemaDocument(KbDocumentBuilderFactory.createDocumentBuilder(false),attributes);
+		return document; 
+	}
+	
+	/**
+	 *  
+	 * @return
+	 */
+	public Document createSchemaDocument(DocumentBuilder builder, Properties attributes) {
+		Document document = builder.newDocument();
 		Element element = createDocumentElement(SCHEMA_NODE, document, new Properties());
 		initAttributes(element, attributes);
 		document.appendChild(element);

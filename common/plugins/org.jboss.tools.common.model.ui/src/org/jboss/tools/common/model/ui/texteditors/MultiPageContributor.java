@@ -18,8 +18,6 @@ import org.eclipse.ui.ide.IDEActionFactory;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.wst.sse.ui.internal.actions.StructuredTextEditorActionConstants;
-
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.text.xml.xpl.ToggleOccurencesMarkUpAction;
 
 /**
@@ -80,12 +78,8 @@ public class MultiPageContributor extends AbstractMultiPageContributor {
 			actionBars.updateActionBars();
 		}
 		
-		try {
-			fToggleOccurencesMarkUp.setEditor(getTextEditor(part));
-			fToggleOccurencesMarkUp.update();
-		} catch (Exception x) {
-			ModelUIPlugin.getPluginLog().logError(x);
-		}
+		fToggleOccurencesMarkUp.setEditor(getTextEditor(part));
+		fToggleOccurencesMarkUp.update();
 
 		updateStatus();
 	}

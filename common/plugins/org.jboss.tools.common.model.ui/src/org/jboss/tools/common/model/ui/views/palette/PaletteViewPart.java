@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.views.palette;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Properties;
 import org.eclipse.core.runtime.Platform;
@@ -37,6 +38,7 @@ import org.jboss.tools.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.jst.web.tld.URIConstants;
 
 public class PaletteViewPart extends ViewPart implements IPartListener {
+	
 	public static final String VIEW_ID = "org.jboss.tools.common.model.ui.views.palette.PaletteView";
 	public static final String PALETTE_GEF_ID = "org.jboss.tools.vpe.ui.palette";
 
@@ -68,7 +70,11 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 			Bundle b = Platform.getBundle(PALETTE_GEF_ID);
 			Class cls = b == null ? null : b.loadClass("org.jboss.tools.vpe.ui.palette.PaletteAdapter");
 			if(cls != null) return (IPaletteAdapter)cls.newInstance();
-		} catch (Exception t) {
+		} catch (ClassNotFoundException t) {
+			//ignore
+		} catch (InstantiationException e) {
+			//ignore
+		} catch (IllegalAccessException e) {
 			//ignore
 		}
 		return new PaletteAdapter();
@@ -178,7 +184,13 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 			return true;
 		} catch (NoSuchMethodException ne) {
 			return false;
-		} catch (Exception e) {
+		} catch (IllegalAccessException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+			return false;
+		} catch (IllegalArgumentException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+			return false;
+		} catch (InvocationTargetException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 			return false;
 		}
@@ -200,6 +212,10 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 		return lastPart != null; //lastTextEditor != null;
 	}
 
+	// TODO: NLS support
+	private static final String ERROR_GETTING_ACTIVE_EDITOR = "Error while getting active text editor";
+	
+	// FIXME: Rewrite without reflection
 	private ITextEditor getActiveTextEditor(IWorkbenchPart part) {
 		ITextEditor editor = null;
 		if (part instanceof EditorPartWrapper) {
@@ -215,8 +231,14 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 				if (o instanceof ITextEditor) {
 					editor = (ITextEditor)o;
 				}
-			} catch (Exception t) {
-				ModelUIPlugin.getPluginLog().logError("Error while getting active text editor", t);
+			} catch (NoSuchMethodException t) {
+				ModelUIPlugin.getPluginLog().logError(ERROR_GETTING_ACTIVE_EDITOR, t);
+			} catch (IllegalArgumentException t) {
+				ModelUIPlugin.getPluginLog().logError(ERROR_GETTING_ACTIVE_EDITOR, t);
+			} catch (IllegalAccessException t) {
+				ModelUIPlugin.getPluginLog().logError(ERROR_GETTING_ACTIVE_EDITOR, t);
+			} catch (InvocationTargetException t) {
+				ModelUIPlugin.getPluginLog().logError(ERROR_GETTING_ACTIVE_EDITOR, t);
 			}
 		}
 		return editor;

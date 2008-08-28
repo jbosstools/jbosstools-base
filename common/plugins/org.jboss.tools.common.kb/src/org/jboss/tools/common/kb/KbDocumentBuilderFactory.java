@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -29,7 +30,7 @@ public class KbDocumentBuilderFactory {
 	public static synchronized DocumentBuilder createDocumentBuilder(boolean validating) {
 		try {
 			return new DocumentBuilderCreator().createDocumentBuilder(validating);
-		} catch (Exception t) {
+		} catch (InterruptedException t) {
 			KbPlugin.getPluginLog().logError("Cannot create document builder.", t);
 			return null;
 		} 
@@ -39,10 +40,11 @@ public class KbDocumentBuilderFactory {
 		boolean validate = false;
 		DocumentBuilder documentBuilder = null;
 
-		public DocumentBuilder createDocumentBuilder(boolean validate) throws Exception {
+		public DocumentBuilder createDocumentBuilder(boolean validate) throws InterruptedException {
 			this.validate = validate;
 			setContextClassLoader(getClass().getClassLoader());
 			start();
+			// FIXME: Verify that we still need it
 			join();
 			return documentBuilder;
 		}
@@ -64,7 +66,7 @@ public class KbDocumentBuilderFactory {
 						}
 					});
 				}
-			} catch (Exception t) {
+			} catch (ParserConfigurationException t) {
 				KbPlugin.getPluginLog().logError("Document builder creation failed.", t);
 			}
 		}

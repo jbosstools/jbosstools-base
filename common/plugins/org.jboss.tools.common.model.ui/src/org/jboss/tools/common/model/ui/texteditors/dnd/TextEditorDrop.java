@@ -73,45 +73,32 @@ public class TextEditorDrop implements IControlDragDropProvider, IControlDropLis
 	}
 	
 	private int getPosition(int x, int y) {
-		try {
-			ISourceViewer v = provider.getSourceViewer();
-			StyledText t = v.getTextWidget();
-			Point pp = t.toControl(x, y);
-			x = pp.x;
-			y = pp.y;		
-			int lineIndex = (t.getTopPixel() + y) / t.getLineHeight();
-			if (lineIndex >= t.getLineCount()) {
-				return t.getCharCount();
-			} else {
-				int c = 0;
-				try {
-					c = t.getOffsetAtLocation(new Point(x, y));
-					if(c < 0) c = 0;
-				} catch (Exception ex) {
-                    c = t.getOffsetAtLine(lineIndex + 1) - 
-                    (t.getLineDelimiter() == null ? 0 : t.getLineDelimiter().length());					
-				}
-				return c;
-			}
-		} catch (Exception e) {
-			return 0;
+		ISourceViewer v = provider.getSourceViewer();
+		StyledText t = v.getTextWidget();
+		Point pp = t.toControl(x, y);
+		x = pp.x;
+		y = pp.y;		
+		int lineIndex = (t.getTopPixel() + y) / t.getLineHeight();
+		if (lineIndex >= t.getLineCount()) {
+			return t.getCharCount();
+		} else {
+			int c = 0;
+			c = t.getOffsetAtLocation(new Point(x, y));
+			if(c < 0) c = 0;
+			return c;
 		}
 	}
 
 	public void drop(Properties p) {
-		try {
-			ISourceViewer v = provider.getSourceViewer();
-			int x = ((Integer)p.get("drop.x")).intValue();
-			int y = ((Integer)p.get("drop.y")).intValue();
-			int c = getPosition(x, y);		
-			Point sp = v.getTextWidget().getSelectionRange();
-			if(sp == null || c < sp.x || c >= sp.x + sp.y) {
-				v.getTextWidget().setCaretOffset(c);
-			}
-			provider.insert(p);
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
+		ISourceViewer v = provider.getSourceViewer();
+		int x = ((Integer)p.get("drop.x")).intValue();
+		int y = ((Integer)p.get("drop.y")).intValue();
+		int c = getPosition(x, y);		
+		Point sp = v.getTextWidget().getSelectionRange();
+		if(sp == null || c < sp.x || c >= sp.x + sp.y) {
+			v.getTextWidget().setCaretOffset(c);
 		}
+		provider.insert(p);
 	}
 	
 }

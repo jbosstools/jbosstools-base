@@ -33,16 +33,14 @@ public class EditorsPreferencesPage extends XMOBasedPreferencesPage {
 	
 	private static XModel _getPreferenceModel() {
 		XModel model = ModelUtilities.getPreferenceModel();
-		try {
-			initialize();
-		} catch (Exception t) {
-			ModelUIPlugin.getPluginLog().logError("Error in initializing editors preference page", t);
-		}
+		initialize();
 		return model;
 	}
 
 	protected static IPreferenceStore store;
 
+	
+	// FIXME: Remove Reflection
 	private static void initialize() {
 		if(store != null) return;
 		AbstractUIPlugin plugin = (AbstractUIPlugin)Platform.getPlugin("org.jboss.tools.common.text.xml");

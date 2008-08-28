@@ -19,12 +19,13 @@ import java.util.Set;
 
 import org.apache.xerces.util.XMLCatalogResolver;
 import org.apache.xerces.xni.XMLResourceIdentifier;
-import org.apache.xerces.xni.XNIException;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.util.FileUtil;
 import org.osgi.framework.Bundle;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -56,7 +57,7 @@ public class SAXValidator {
 
         try {
             parserInstance = XMLReaderFactory.createXMLReader(DEFAULT_SAX_PARSER_CLASS_NAME);
-        } catch (Exception e) {
+        } catch (SAXException e) {
         	return null;
         }
 
@@ -70,9 +71,11 @@ public class SAXValidator {
 
         try {
             parserInstance.setProperty(ENTITY_RESOLVER_PROPERTY_ID, new XMLEntityResolverImpl());
-        } catch (Exception e1) {
+        } catch (SAXNotRecognizedException e1) {
         	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1);
-        }
+        } catch (SAXNotSupportedException e1) {
+        	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1);
+		}
         
         parserInstance.setContentHandler(handler);
         parserInstance.setErrorHandler(handler);
@@ -124,11 +127,17 @@ public class SAXValidator {
         		return new String[]{ "error: Unable to instantiate parser ("+DEFAULT_SAX_PARSER_CLASS_NAME+")"};
         	parser.setErrorHandler(h);
             parser.parse(is);
-        } catch (Exception e) {
-        	if(h.errors.isEmpty()) 
+        } catch (SAXException e) {
+        	if(h.errors.isEmpty()) {
             	// TODO - Move to NLS bundle
-        		return new String[]{"Unidentified parser error:0:0"};
-        } finally {
+        		return new String[]{"Unidentified parser error:0:0",e.getMessage()};
+        	}
+        } catch (IOException e) {
+        	if(h.errors.isEmpty()) {
+	        	// TODO - Move to NLS bundle
+	        	return new String[]{"Unidentified parser error:0:0",e.getMessage()};
+        	}
+		} finally {
 //        	Thread.currentThread().setContextClassLoader(cc);
         }
         return (String[])h.errors.toArray(new String[0]);        
@@ -140,12 +149,8 @@ public class SAXValidator {
      * @return
      */
     public String[] getXMLErrors(Reader reader) {
-        try {
             org.xml.sax.InputSource inSource = new org.xml.sax.InputSource(reader);
             return getXMLErrors(inSource);
-        } catch (Exception e) {
-            return new String[]{e.getMessage()};
-        }
     }
     
     /**
@@ -164,15 +169,13 @@ public class SAXValidator {
         	urlString = url.toString();
         	if(!urlString.endsWith("/")) urlString += "/";
         	urlString += "schemas";
-    	} catch (Exception e) {
+    	} catch (IOException e) {
     		CommonPlugin.getPluginLog().logError(e);
     	}
     	File f1 = new File(url.getFile() + "/schemas/catalog.xml");
     	File f2 = new File(location + "schemas/catalog.xml");
-    	if(f2.exists()) try {
+    	if(f2.exists()) {
     		return "file:///" + location + "schemas/catalog.xml";
-    	} catch (Exception e) {
-    		return null;
     	}
     	FileUtil.copyDir(f1.getParentFile(), f2.getParentFile(), true);
     	String text = FileUtil.readFile(f2);
@@ -200,7 +203,7 @@ class XMLCatalogResolver1 extends XMLCatalogResolver {
 	/**
 	 * 
 	 */
-    public String resolveIdentifier(XMLResourceIdentifier resourceIdentifier) throws IOException, XNIException {
+    public String resolveIdentifier(XMLResourceIdentifier resourceIdentifier) throws IOException {
     	String literal = resourceIdentifier.getLiteralSystemId();
     	if(literal != null && !literals.contains(literal)) {
     		literals.add(literal);

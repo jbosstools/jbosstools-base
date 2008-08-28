@@ -11,19 +11,22 @@
 package org.jboss.tools.common.model.ui.texteditors;
 
 import org.eclipse.core.runtime.CoreException;
-import org.jboss.tools.common.core.resources.XModelObjectEditorInput;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.util.XModelTreeListenerSWTSync;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.*;
-
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.PartInitException;
+import org.jboss.tools.common.core.resources.XModelObjectEditorInput;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionInvoker;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.util.XModelTreeListenerSWTSync;
 
 public class XMLTextEditorStandAlone extends XMLTextEditorComponent implements XModelTreeListener {
 	protected XModelTreeListenerSWTSync syncListener = new XModelTreeListenerSWTSync(this);
@@ -67,7 +70,7 @@ public class XMLTextEditorStandAlone extends XMLTextEditorComponent implements X
 				} else if(o.getParent() instanceof FolderImpl) {
 					((FolderImpl)o.getParent()).discardChildFile(o);
 				}
- 			} catch (Exception e) {	
+ 			} catch (XModelException e) {	
  				//ignore 
  			}
 		}
@@ -92,13 +95,9 @@ public class XMLTextEditorStandAlone extends XMLTextEditorComponent implements X
 	class U implements Runnable {
 		public void run() {
 			lock2 = true;
-			try {
+			update0();
+			while(needsUpdate()) {
 				update0();
-				while(needsUpdate()) {
-					update0();
-				}
-			} catch (Exception t) {
-				ModelUIPlugin.getPluginLog().logError("Error in updating editor", t);
 			}
 			lock2 = false;
 		}

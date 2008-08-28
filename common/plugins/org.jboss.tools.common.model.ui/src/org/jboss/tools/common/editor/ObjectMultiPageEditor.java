@@ -377,7 +377,15 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			Method m = AbstractTextEditor.class.getDeclaredMethod("performSave", new Class[]{boolean.class, IProgressMonitor.class});
 			m.setAccessible(true);
 			m.invoke(textEditor, new Object[]{Boolean.TRUE, monitor});
-		} catch (Exception e) {
+		} catch (SecurityException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (NoSuchMethodException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalArgumentException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (InvocationTargetException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalAccessException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
@@ -1096,11 +1104,7 @@ class ResourceChangeListener implements IResourceChangeListener {
 					e.setInput(e2);
 					e.updateTitle();
 					if(e.textEditor instanceof AbstractTextEditor) {
-						try {
-							((AbstractTextEditor)e.textEditor).setInput(e2);
-						} catch (Exception exc) {
-							ModelUIPlugin.getPluginLog().logError(exc);
-						}
+						((AbstractTextEditor)e.textEditor).setInput(e2);
 						((XModelObjectEditorInput)ei).synchronize();
 						if(((XModelObjectEditorInput)ei).getXModelObject() != o) {
 							closeEditor();
@@ -1348,7 +1352,11 @@ class NatureOption extends ServiceDialogOption {
 		IActionDelegate delegate = null;
 		try {
 			delegate = (IActionDelegate)bundle.loadClass(actionClass).newInstance();
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e) {
+			//ignore
+		} catch (InstantiationException e) {
+			//ignore
+		} catch (IllegalAccessException e) {
 			//ignore
 		}
 		if(delegate == null) return;

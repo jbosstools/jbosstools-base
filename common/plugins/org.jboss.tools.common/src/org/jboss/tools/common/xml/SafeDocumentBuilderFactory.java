@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.jboss.tools.common.CommonPlugin;
 import org.xml.sax.EntityResolver;
@@ -49,7 +50,7 @@ public class SafeDocumentBuilderFactory extends Thread {
 				d.setEntityResolver(EMPTY_RESOLVER);
 			}
 			d.setErrorHandler(new ErrorHandlerImpl());
-		} catch (Exception e) {
+		} catch (ParserConfigurationException e) {
 			CommonPlugin.getPluginLog().logError(e);
 		} finally {
 			Thread.currentThread().setContextClassLoader(loader);
@@ -64,7 +65,7 @@ public class SafeDocumentBuilderFactory extends Thread {
 		try {
 			t.start();
 			t.join();
-		} catch (Exception e) {
+		} catch (InterruptedException e) {
 			t.run();
 		} 
 		return t.d;

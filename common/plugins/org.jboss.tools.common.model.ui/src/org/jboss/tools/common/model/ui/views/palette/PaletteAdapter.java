@@ -43,6 +43,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.ActionDeclinedException;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
@@ -406,7 +407,7 @@ public class PaletteAdapter implements IPaletteAdapter {
 				} catch (ActionDeclinedException de) {
 					//ignore - this exception is thrown to inform that user 
 					//selected cancel option in dialog. 
-				} catch (Exception e) {
+				} catch (XModelException e) {
 					message(e);
 				}
 			} else {

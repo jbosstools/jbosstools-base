@@ -29,11 +29,7 @@ public class ReplaceTabsAdapter extends XAdapter {
 		XModelObject o = (XModelObject)object;
 		if(!o.isActive()) return;
 		if(EditorsPreferencesPage.store == null) return;
-		try {
-			EditorsPreferencesPage.store.setValue(PROPERTY, "true".equals(value));		
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		EditorsPreferencesPage.store.setValue(PROPERTY, "true".equals(value));		
 	}
 	
 }

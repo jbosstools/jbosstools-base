@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.texteditors;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 
 public class TextMerge {
@@ -45,7 +46,7 @@ public class TextMerge {
 		}
 		try {
 			document.replace(b, e - b, text.substring(b, e2));
-		} catch (Exception exc) {
+		} catch (BadLocationException exc) {
 			return false;
 		}
 		return true;

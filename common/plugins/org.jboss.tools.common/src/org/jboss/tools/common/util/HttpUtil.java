@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -37,7 +38,7 @@ public class HttpUtil {
 	 * @return InputStream of responce to http GET request. Use proxy settings from preferences.
 	 * @throws Exception
 	 */
-	public static InputStream getInputStreamFromUrlByGetMethod(String url) throws Exception {
+	public static InputStream getInputStreamFromUrlByGetMethod(String url) throws IOException {
 		InputStream is = executeGetMethod(url).getResponseBodyAsStream();
 		return is;
 	}
@@ -47,7 +48,7 @@ public class HttpUtil {
 	 * @return InputStream of responce to http GET request. Use proxy settings from preferences.
 	 * @throws Exception
 	 */
-	public static InputStream getInputStreamFromUrlByGetMethod(String url, IProxyService proxyService) throws Exception {
+	public static InputStream getInputStreamFromUrlByGetMethod(String url, IProxyService proxyService) throws IOException {
 		InputStream is = executeGetMethod(url, proxyService).getResponseBodyAsStream();
 		return is;
 	}
@@ -58,7 +59,7 @@ public class HttpUtil {
 	 * @return Status code of responce to http GET request. Use given proxy settings.
 	 * @throws Exception
 	 */
-	public static int getStatusCodeFromUrlByGetMethod(String url, IProxyService proxyService) throws Exception {
+	public static int getStatusCodeFromUrlByGetMethod(String url, IProxyService proxyService) throws IOException {
 		int code = executeGetMethod(url, proxyService).getStatusCode();
 		return code;
 	}
@@ -68,7 +69,7 @@ public class HttpUtil {
 	 * @return Status code of responce to http GET request. Use proxy settings from preferences.
 	 * @throws Exception
 	 */
-	public static int getStatusCodeFromUrlByGetMethod(String url) throws Exception {
+	public static int getStatusCodeFromUrlByGetMethod(String url) throws IOException {
 		int code = executeGetMethod(url).getStatusCode();
 		return code;
 	}
@@ -78,7 +79,7 @@ public class HttpUtil {
 	 * @return InputStream of responce to http POST request. Use proxy settings from preferences.
 	 * @throws Exception
 	 */
-	public static InputStream getInputStreamFromUrlByPostMethod(String url) throws Exception {
+	public static InputStream getInputStreamFromUrlByPostMethod(String url) throws IOException {
 		InputStream is = executePostMethod(url).getResponseBodyAsStream();
 		return is;
 	}
@@ -89,7 +90,7 @@ public class HttpUtil {
 	 * @return Status code of responce to http POST request. Use given proxy settings.
 	 * @throws Exception
 	 */
-	public static int getStatusCodeFromUrlByPostMethod(String url, IProxyService proxyService) throws Exception {
+	public static int getStatusCodeFromUrlByPostMethod(String url, IProxyService proxyService) throws IOException {
 		int code = executePostMethod(url, proxyService).getStatusCode();
 		return code;
 	}
@@ -99,17 +100,17 @@ public class HttpUtil {
 	 * @return Status code of responce to http POST request. Use proxy settings from preferences.
 	 * @throws Exception
 	 */
-	public static int getStatusCodeFromUrlByPostMethod(String url) throws Exception {
+	public static int getStatusCodeFromUrlByPostMethod(String url) throws IOException {
 		int code = executePostMethod(url).getStatusCode();
 		return code;
 	}
 
-	private static GetMethod executeGetMethod(String url) throws Exception {
+	private static GetMethod executeGetMethod(String url) throws IOException {
 		IProxyService proxyService = getProxyService();
 		return executeGetMethod(url, proxyService);
 	}
 
-	private static PostMethod executePostMethod(String url) throws Exception {
+	private static PostMethod executePostMethod(String url) throws IOException {
 		IProxyService proxyService = getProxyService();
 		return executePostMethod(url, proxyService);
 	}
@@ -120,14 +121,14 @@ public class HttpUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static GetMethod executeGetMethod(String url, IProxyService proxyService) throws Exception {
+	public static GetMethod executeGetMethod(String url, IProxyService proxyService) throws IOException {
 		GetMethod httpGet = new GetMethod(url);
 		HttpClient httpClient = createHttpClient(url, proxyService);
 		httpClient.executeMethod(httpGet);
 		return httpGet;
 	}
 
-	private static PostMethod executePostMethod(String url, IProxyService proxyService) throws Exception {
+	private static PostMethod executePostMethod(String url, IProxyService proxyService) throws IOException {
 		PostMethod httpPost = new PostMethod(url);
 		HttpClient httpClient = createHttpClient(url, proxyService);
 	    httpClient.executeMethod(httpPost);
@@ -139,11 +140,11 @@ public class HttpUtil {
 	 * @return HttpClient with internet proxy settings;
 	 * @throws Exception
 	 */
-	public static HttpClient createHttpClient(String url) throws Exception {
+	public static HttpClient createHttpClient(String url) throws IOException {
 		return createHttpClient(url, getProxyService());
 	}
 
-	private static HttpClient createHttpClient(String url, IProxyService proxyService) throws Exception {
+	private static HttpClient createHttpClient(String url, IProxyService proxyService) throws IOException {
 		HttpClient httpClient = new HttpClient();
 
 		if(proxyService.isProxiesEnabled()) {
