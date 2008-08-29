@@ -10,12 +10,24 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.impl.documentation;
 
-import java.io.*;
-import java.util.*;
-import org.w3c.dom.*;
-import org.jboss.tools.common.model.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.model.util.XMLUtil;
+import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
+import org.w3c.dom.Element;
 
 public class DocumentGenerator {
     private XModelObject meta = null;
@@ -29,7 +41,7 @@ public class DocumentGenerator {
     }
 
     public void generate(String filename) {
-        if(meta == null) throw new RuntimeException("Meta root is not set.");
+        if(meta == null) throw new IllegalStateException("Meta root is not set.");
         this.filename = filename;
         Element g = XMLUtil.createDocumentElement("html");
         generateTitle(g);

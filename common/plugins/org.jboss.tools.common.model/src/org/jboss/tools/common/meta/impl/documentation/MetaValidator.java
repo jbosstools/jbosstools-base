@@ -10,7 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.impl.documentation;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Set;
+import java.util.Vector;
+
 import org.jboss.tools.common.model.XModelObject;
 
 public class MetaValidator {
@@ -22,7 +26,7 @@ public class MetaValidator {
 
     public void validate(XModelObject metaroot) {
         if(!"MetaRoot".equals(metaroot.getModelEntity().getName()))
-          throw new RuntimeException("Meta validator must be called with MetaRoot.");
+          throw new IllegalArgumentException("Meta validator must be called with MetaRoot.");
         iv.validate(metaroot.getChildren("MetaIcons")[0]);
         ev.validate(metaroot.getChildren("MetaEntities")[0]);
 ////        mv.validate(metaroot.getChildren("MetaMappings")[0]);

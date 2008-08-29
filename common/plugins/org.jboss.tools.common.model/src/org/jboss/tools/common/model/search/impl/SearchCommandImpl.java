@@ -51,9 +51,9 @@ public class SearchCommandImpl extends SearchConstraintImpl implements SearchCom
 
     public void validate() {
         String rootpath = getAttributeValue("root");
-        if(rootpath.length() == 0) throw new RuntimeException("Attribute 'root' of search command must be set.");
+        if(rootpath.length() == 0) throw new IllegalStateException("Attribute 'root' of search command must be set.");
         XModelObject root = getModel().getByPath(rootpath);
-        if(root == null) throw new RuntimeException("Root of search command is not found in model.");
+        if(root == null) throw new IllegalStateException("Root of search command is not found in model.");
     }
 
     protected void execute(XModelObject o, ArrayList<XModelObject> list) {
