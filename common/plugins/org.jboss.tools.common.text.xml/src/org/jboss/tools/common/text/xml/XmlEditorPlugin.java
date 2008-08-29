@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.xml;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -96,13 +97,17 @@ public class XmlEditorPlugin extends BaseUIPlugin {
 
 //		XmlPreferenceConstants.initializeDefaultValues(getPreferenceStore());
 
-		try {
-			Method m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]);
-			m.setAccessible(true);
-			m.invoke(JavaPlugin.getDefault(), new Object[0]);
-		} catch (Exception e) {
-			//ignore
-		}
+			Method m;
+			try {
+				m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]);
+				m.setAccessible(true);
+				m.invoke(JavaPlugin.getDefault(), new Object[0]);
+			} catch (NoSuchMethodException e) {
+			} catch (IllegalArgumentException e) {
+			} catch (IllegalAccessException e) {
+			} catch (InvocationTargetException e) {
+			}
+
 
 		IPreferenceStore store = getPreferenceStore();
 		

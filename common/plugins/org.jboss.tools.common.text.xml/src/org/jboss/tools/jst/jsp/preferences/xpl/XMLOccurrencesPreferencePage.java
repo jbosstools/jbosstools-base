@@ -79,75 +79,71 @@ public class XMLOccurrencesPreferencePage extends FieldEditorPreferencePage
 	 */
 	protected void createFieldEditors() {
 		// Initialize all field editors.
-		try {
-			mark = new BooleanFieldEditor(
-					PreferenceKeyGenerator
-							.generateKey(
-									XMLOccurrencePreferenceConstants.EDITOR_MARK_OCCURRENCES,
-									fEditorID),
-					Messages
-							.getString("OccurrencesPreferencePage.Mark.occurrences.in.file"),
-					getFieldEditorParent()); //$NON-NLS-1$
-			addField(mark);
+		mark = new BooleanFieldEditor(
+				PreferenceKeyGenerator
+						.generateKey(
+								XMLOccurrencePreferenceConstants.EDITOR_MARK_OCCURRENCES,
+								fEditorID),
+				Messages
+						.getString("OccurrencesPreferencePage.Mark.occurrences.in.file"),
+				getFieldEditorParent()); //$NON-NLS-1$
+		addField(mark);
 
-			markNode = new VarBooleanFieldEditor(
-					PreferenceKeyGenerator
-							.generateKey(
-									XMLOccurrencePreferenceConstants.EDITOR_MARK_NODE_OCCURRENCES,
-									fEditorID), Messages
-							.getString("OccurrencesPreferencePage.Mark.Tags"),
-					getFieldEditorParent()); //$NON-NLS-1$
-			markNode.offset(getFieldEditorParent(), 10); // offset 10
-			addField(markNode);
+		markNode = new VarBooleanFieldEditor(
+				PreferenceKeyGenerator
+						.generateKey(
+								XMLOccurrencePreferenceConstants.EDITOR_MARK_NODE_OCCURRENCES,
+								fEditorID), Messages
+						.getString("OccurrencesPreferencePage.Mark.Tags"),
+				getFieldEditorParent()); //$NON-NLS-1$
+		markNode.offset(getFieldEditorParent(), 10); // offset 10
+		addField(markNode);
 
-			markAttribute = new VarBooleanFieldEditor(
-					PreferenceKeyGenerator
-							.generateKey(
-									XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_OCCURRENCES,
-									fEditorID),
-					Messages
-							.getString("OccurrencesPreferencePage.Mark.Attribute.Names"),
-					getFieldEditorParent()); //$NON-NLS-1$
-			markAttribute.offset(getFieldEditorParent(), 10); // offset 10
-			addField(markAttribute);
+		markAttribute = new VarBooleanFieldEditor(
+				PreferenceKeyGenerator
+						.generateKey(
+								XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_OCCURRENCES,
+								fEditorID),
+				Messages
+						.getString("OccurrencesPreferencePage.Mark.Attribute.Names"),
+				getFieldEditorParent()); //$NON-NLS-1$
+		markAttribute.offset(getFieldEditorParent(), 10); // offset 10
+		addField(markAttribute);
 
-			markAttributeValue = new VarBooleanFieldEditor(
-					PreferenceKeyGenerator
-							.generateKey(
-									XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_VALUE_OCCURRENCES,
-									fEditorID),
-					Messages
-							.getString("OccurrencesPreferencePage.Mark.Attribute.Values"),
-					getFieldEditorParent()); //$NON-NLS-1$
-			markAttributeValue.offset(getFieldEditorParent(), 10); // offset 10
-			addField(markAttributeValue);
+		markAttributeValue = new VarBooleanFieldEditor(
+				PreferenceKeyGenerator
+						.generateKey(
+								XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_VALUE_OCCURRENCES,
+								fEditorID),
+				Messages
+						.getString("OccurrencesPreferencePage.Mark.Attribute.Values"),
+				getFieldEditorParent()); //$NON-NLS-1$
+		markAttributeValue.offset(getFieldEditorParent(), 10); // offset 10
+		addField(markAttributeValue);
 
-			markText = new VarBooleanFieldEditor(
-					PreferenceKeyGenerator
-							.generateKey(
-									XMLOccurrencePreferenceConstants.EDITOR_MARK_TEXT_OCCURRENCES,
-									fEditorID), Messages
-							.getString("OccurrencesPreferencePage.Mark.Text"),
-					getFieldEditorParent());
-			markText.offset(getFieldEditorParent(), 10); // offset 10
-			addField(markText);
+		markText = new VarBooleanFieldEditor(
+				PreferenceKeyGenerator
+						.generateKey(
+								XMLOccurrencePreferenceConstants.EDITOR_MARK_TEXT_OCCURRENCES,
+								fEditorID), Messages
+						.getString("OccurrencesPreferencePage.Mark.Text"),
+				getFieldEditorParent());
+		markText.offset(getFieldEditorParent(), 10); // offset 10
+		addField(markText);
 
-			FieldEditor spacer1 = new LabelFieldEditor(
-					"", getFieldEditorParent()); //$NON-NLS-1$
-			addField(spacer1);
+		FieldEditor spacer1 = new LabelFieldEditor(
+				"", getFieldEditorParent()); //$NON-NLS-1$
+		addField(spacer1);
 
-			sticky = new VarBooleanFieldEditor(
-					PreferenceKeyGenerator
-							.generateKey(
-									XMLOccurrencePreferenceConstants.EDITOR_STICKY_OCCURRENCES,
-									fEditorID), Messages
-							.getString("OccurrencesPreferencePage.Sticky"),
-					getFieldEditorParent()); //$NON-NLS-1$
-			sticky.offset(getFieldEditorParent(), 10); // offset 10
-			addField(sticky);
-		} catch (Exception x) {
-			XmlEditorPlugin.getPluginLog().logError(x);
-		}
+		sticky = new VarBooleanFieldEditor(
+				PreferenceKeyGenerator
+						.generateKey(
+								XMLOccurrencePreferenceConstants.EDITOR_STICKY_OCCURRENCES,
+								fEditorID), Messages
+						.getString("OccurrencesPreferencePage.Sticky"),
+				getFieldEditorParent()); //$NON-NLS-1$
+		sticky.offset(getFieldEditorParent(), 10); // offset 10
+		addField(sticky);
 	}
 
 	/*

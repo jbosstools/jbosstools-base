@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.xml;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +127,13 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 			Method m = initial.getClass().getDeclaredMethod("getContentAssistProcessors", new Class[]{ISourceViewer.class, String.class});
 			m.setAccessible(true);
 			return (IContentAssistProcessor[])m.invoke(initial, new Object[]{sourceViewer, partitionType});
-		} catch (Exception e) {
+		} catch (NoSuchMethodException e) {
+			XmlEditorPlugin.getPluginLog().logError(e);
+		} catch (IllegalArgumentException e) {
+			XmlEditorPlugin.getPluginLog().logError(e);
+		} catch (IllegalAccessException e) {
+			XmlEditorPlugin.getPluginLog().logError(e);
+		} catch (InvocationTargetException e) {
 			XmlEditorPlugin.getPluginLog().logError(e);
 		}
 		
