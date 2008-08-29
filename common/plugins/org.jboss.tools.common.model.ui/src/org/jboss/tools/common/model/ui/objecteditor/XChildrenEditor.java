@@ -13,25 +13,28 @@ package org.jboss.tools.common.model.ui.objecteditor;
 import java.util.Properties;
 import java.util.Set;
 
-import org.jboss.tools.common.editor.AbstractSelectionProvider;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.action.CommandBar;
-import org.jboss.tools.common.model.ui.action.CommandBarListener;
-import org.jboss.tools.common.model.ui.dnd.*;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
-import org.jboss.tools.common.model.ui.swt.util.BorderLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
-
+import org.jboss.tools.common.editor.AbstractSelectionProvider;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.action.CommandBar;
+import org.jboss.tools.common.model.ui.action.CommandBarListener;
+import org.jboss.tools.common.model.ui.dnd.ControlDragDrop;
+import org.jboss.tools.common.model.ui.dnd.IControlDragDropProvider;
+import org.jboss.tools.common.model.ui.dnd.IControlDropListener;
+import org.jboss.tools.common.model.ui.swt.util.BorderLayout;
 import org.jboss.tools.common.model.util.AbstractTableHelper;
 
 public class XChildrenEditor implements CommandBarListener {
@@ -266,15 +269,11 @@ public class XChildrenEditor implements CommandBarListener {
 	}
 	
 	public void callAction(XModelObject o, String path) {
-		try {
-			Properties p = new Properties();
-			p.put("shell", bar.getControl().getShell());
-			int i = xtable.getSelectionIndex();
-			p.put("insertAfter", Integer.valueOf(i));
-			XActionInvoker.invoke(path, o, getTargets(), p);
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		Properties p = new Properties();
+		p.put("shell", bar.getControl().getShell());
+		int i = xtable.getSelectionIndex();
+		p.put("insertAfter", Integer.valueOf(i));
+		XActionInvoker.invoke(path, o, getTargets(), p);
 	}
 	
 	private XModelObject[] getTargets() {

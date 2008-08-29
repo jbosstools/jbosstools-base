@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.action.XAttributeData;
 import org.jboss.tools.common.meta.key.WizardKeys;
@@ -53,12 +54,16 @@ public class PropertyEditorFactory {
 	}
 	
 	private static PropertyEditor createPropertyEditor(Object adapter, XAttribute attribute, boolean required, IWidgetSettings settings) {
-		PropertyEditor propertyEditor;
+		PropertyEditor propertyEditor=null;
 		try {
 			propertyEditor = (PropertyEditor)getEditorClass(attribute).newInstance();
 			propertyEditor.setSettings(settings);
-		} catch (Exception e) {
+		} catch (IllegalAccessException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (InstantiationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
+		if (propertyEditor == null) {
 			propertyEditor = new StringEditor(settings); 
 		}
 		String labelText = WizardKeys.getAttributeDisplayName(attribute, true);
@@ -84,14 +89,14 @@ public class PropertyEditorFactory {
 	private static Class<?> getEditorClass(String id) {
 		Class<?> c = classes.get(id);
 		if(c != null) return c;
+		c = StringEditor.class;
 		try {
 			c = ExtensionPointUtil.findClassByElementId(ATTRIBUTE_EDITOR_EXT_POINT, id).getClass();			
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			if(!defaultEditorIds.contains(id)) {
 				defaultEditorIds.add(id);
 				ModelUIPlugin.getPluginLog().logInfo("PropertyEditorFactory: Default editor used for " + id);
-			}
-			c = StringEditor.class;
+			}		
 		}
 		classes.put(id, c);		
 		return c;

@@ -10,12 +10,17 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.editor;
 
-import java.util.*;
-import org.eclipse.core.runtime.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.part.EditorActionBarContributor;
-import org.osgi.framework.Bundle;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.osgi.framework.Bundle;
 
 public class EditorPartWrapperExtension {
 	static String POINT_ID = "org.jboss.tools.common.model.ui.xmlEditor";
@@ -50,13 +55,13 @@ public class EditorPartWrapperExtension {
 					if(priorityString != null && priorityString.length() > 0) {
 						priority = Integer.parseInt(priorityString);
 					}					
-				} catch (Exception e) {
+				} catch (NumberFormatException e) {
 					ModelUIPlugin.getPluginLog().logError("Incorrect priority value " + priorityString + ".");
 				}
 				Class editorClass = null;
 				try {
 					editorClass = bundle.loadClass(editor);
-				} catch (Exception e) {
+				} catch (ClassNotFoundException e) {
 					if(ModelUIPlugin.getDefault().isDebugging()) {
 						ModelUIPlugin.getPluginLog().logError("Cannot load editor class " + editor + " from " + es[i].getNamespaceIdentifier(),  e);
 					}
@@ -66,7 +71,7 @@ public class EditorPartWrapperExtension {
 				Class contributorClass = null;
 				try {
 					contributorClass = bundle.loadClass(contributor);
-				} catch (Exception e) {
+				} catch (ClassNotFoundException e) {
 					if(ModelUIPlugin.getDefault().isDebugging()) {
 						String message = "Cannot load contributor class " + contributor;
 						ModelUIPlugin.getPluginLog().logError( message, e);
@@ -77,14 +82,10 @@ public class EditorPartWrapperExtension {
 				EditorPartFactory f = null;
 				try {
 					f = new EditorPartFactory(cs[j], editorClass, contributorClass);
-				} catch (ClassCastException e) {
-					if(ModelUIPlugin.getDefault().isDebugging()) {
-						ModelUIPlugin.getPluginLog().logError(e);
-					}
-					continue;
-				} catch (Exception e) {
+				} catch (InstantiationException e) {
 					ModelUIPlugin.getPluginLog().logError(e);
-					continue;
+				} catch (IllegalAccessException e) {
+					ModelUIPlugin.getPluginLog().logError(e);
 				}
 				StringTokenizer st = new StringTokenizer(entities, ",;");
 				while(st.hasMoreTokens()) {

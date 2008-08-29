@@ -11,21 +11,22 @@
 package org.jboss.tools.common.model.util.extension;
 
 import org.eclipse.core.runtime.*;
+import org.jboss.tools.common.model.XModelException;
 
 public class ExtensionPointUtil {
 
-	public static Object findClassByElementId(String pointId, String id) throws CoreException, IllegalArgumentException {
+	public static Object findClassByElementId(String pointId, String id) throws CoreException {
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(pointId);
 		return findClassByElementId(point, id);
 	}
 
-	public static Object findClassByElementId(IExtensionPoint point, String id) throws CoreException, IllegalArgumentException {
+	public static Object findClassByElementId(IExtensionPoint point, String id) throws CoreException {
 		IConfigurationElement element = getElementById(point, id);
 		if(element == null)
-		  throw new IllegalArgumentException("Configuration element with id=" + id + " is not found");
+		  throw new XModelException("Configuration element with id=" + id + " is not found");
 		String className = element.getAttribute("class");
 		if(className == null || className.length() == 0)
-		  throw new IllegalArgumentException("Configuration element with id=" + id + " does not define 'class' attribute");
+		  throw new XModelException("Configuration element with id=" + id + " does not define 'class' attribute");
 		return element.createExecutableExtension("class");
 	}
 	

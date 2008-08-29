@@ -13,16 +13,15 @@ package org.jboss.tools.common.model.ui.reporting;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
 import org.eclipse.core.runtime.IStatus;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.dialog.ErrorDialog;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.ui.dialog.ErrorDialog;
 import org.jboss.tools.common.reporting.IProblemReporter;
-import org.jboss.tools.common.reporting.ProblemReportingHelper;
 
 public class ProblemReporter implements IProblemReporter {
 	static int DO_NOTNING_ACTION = 0;
@@ -44,31 +43,6 @@ public class ProblemReporter implements IProblemReporter {
 			showProblemDialog(status);
 		}
 	}
-
-	/**
-	 * 
-	class R implements Runnable {
-		IStatus status;
-		R(IStatus status) {
-			this.status = status;
-		}
-		public void run() {
-			int action = ADD_TO_BUFFER_ACTION;
-			if(isShowProblemDialogOn() && Display.getDefault()!=null) {
-				action = showProblemDialog(status);
-			} else if(isSubmitProblemAutomaticallyOn()) {
-				action = REPORT_ACTION;
-			}
-			if(action == REPORT_ACTION) {
-		    	String email = ReportPreference.E_MAIL_OPTION.getValue();
-		    	String other = ReportPreference.OTHER_OPTION.getValue();
-				ProblemReportingHelper.buffer.report(throwableToString(status.getMessage(), status.getException()), email, other, false);
-			} else if(action == ADD_TO_BUFFER_ACTION) {
-				ProblemReportingHelper.buffer.writeToBuffer(status);
-			}
-		}
-	}
-	 */
 	
 	private boolean isShowProblemDialogOn() {
 		return "yes".equals(ReportPreference.SHOW_ERROR_DIALOG_OPTION.getValue());
@@ -80,12 +54,7 @@ public class ProblemReporter implements IProblemReporter {
 	
 	private int showProblemDialog(IStatus status) {
 		Shell shell = null;
-		try {
-			shell = ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
-		} catch (Exception e) {
-			//we cannot call reporting service here!
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		shell = ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 		return ErrorDialog.openError(shell, "Error", status.getMessage(), status.getException());
 	}
 	

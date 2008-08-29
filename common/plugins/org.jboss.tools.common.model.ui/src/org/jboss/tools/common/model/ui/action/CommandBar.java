@@ -16,6 +16,8 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.*;
 
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 public class CommandBar {
@@ -274,7 +276,13 @@ public class CommandBar {
 		}
 		
 		public void widgetSelected(SelectionEvent e) {
-			if(listener != null) listener.action(command);
+			if(listener != null) {
+				try {
+					listener.action(command);
+				} catch (XModelException e1) {
+					ModelUIPlugin.getPluginLog().logError(e1);
+				}
+			}
 		}
 
 		public void widgetDefaultSelected(SelectionEvent e) {}

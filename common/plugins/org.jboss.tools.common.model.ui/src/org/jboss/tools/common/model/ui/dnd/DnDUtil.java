@@ -88,7 +88,7 @@ public class DnDUtil {
                 copy.executeHandler(object, targets, p);
             }
             return true;
-        } catch (Exception e) {
+        } catch (XModelException e) {
             return false;
         }
     }

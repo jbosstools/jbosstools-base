@@ -38,12 +38,8 @@ public class BundleEditor extends EditorPart {
 		super.dispose();
 		if(fActivationListener != null && bundleModel != null) {
 			IWorkbenchWindow window = getSite().getWorkbenchWindow();
-			if(window != null) try {
-				window.getPartService().removePartListener(fActivationListener);
-				window.getShell().removeShellListener(fActivationListener);
-			} catch (Exception e) {
-				//ignore
-			}
+			window.getPartService().removePartListener(fActivationListener);
+			window.getShell().removeShellListener(fActivationListener);
 		}
 		fActivationListener = null;
 		if (childrenEditor!=null) childrenEditor.dispose();

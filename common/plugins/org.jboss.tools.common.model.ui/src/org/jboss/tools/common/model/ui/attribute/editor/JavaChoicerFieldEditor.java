@@ -16,15 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.jboss.tools.common.meta.XAttribute;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.ui.IValueChangeListener;
-import org.jboss.tools.common.model.ui.IValueEditor;
-import org.jboss.tools.common.model.ui.IValueProvider;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.attribute.IPropertyDescriptorEx;
-import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
-import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAdapter;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -45,17 +36,22 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-
+import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.IValueChangeListener;
+import org.jboss.tools.common.model.ui.IValueEditor;
+import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.attribute.IPropertyDescriptorEx;
+import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
+import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAdapter;
+import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.util.AccessibleClasses;
-//import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.model.util.AccessibleJava;
 import org.jboss.tools.common.model.util.ISimpleTree;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.model.util.ModelImages;
-import org.jboss.tools.common.model.util.XModelObjectUtil;
-import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFieldEditor, IPropertyFieldEditor, IValueEditor, ModifyListener, ISelectionChangedListener {
 	protected IPropertyEditor propertyEditor;

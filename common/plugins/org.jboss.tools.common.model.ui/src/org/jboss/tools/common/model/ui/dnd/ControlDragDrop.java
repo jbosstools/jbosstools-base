@@ -22,6 +22,7 @@ import org.jboss.tools.common.model.ui.navigator.TreeViewerDragDropProvider;
 import org.jboss.tools.common.meta.XAdoptManager;
 import org.jboss.tools.common.model.event.*;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelTransferBuffer;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
@@ -335,7 +336,7 @@ public class ControlDragDrop {
 					}
 				} catch (ActionDeclinedException de) {
 					ignore();
-				} catch (Exception e) {
+				} catch (XModelException e) {
 					ModelUIPlugin.getPluginLog().logError(e);
 				}
 			}
@@ -367,21 +368,17 @@ public class ControlDragDrop {
 	}
 	
 	public Widget findTreeItem (int x, int y) {
-		try {
-			Tree tree = (provider.getControl() instanceof Tree) ? (Tree)provider.getControl() : null;
-			Vector<TreeItem> items = getTreeExpandedItems(tree);
-			for (int i = 0; i < items.size(); i++) {
-				TreeItem item = items.get(i);
-				Rectangle bounds = item.getBounds();
-				Point p = tree.toDisplay(bounds.x, bounds.y);
-				
-				if (/*x >= p.x && x <= p.x + bounds.width &&*/
-					y >= p.y && y <= p.y + bounds.height) {
-						return item;						
-					}
-			}
-		} catch (Exception ex) {
-			ModelUIPlugin.getPluginLog().logError("Error while looking for tree item at given point", ex);
+		Tree tree = (provider.getControl() instanceof Tree) ? (Tree)provider.getControl() : null;
+		Vector<TreeItem> items = getTreeExpandedItems(tree);
+		for (int i = 0; i < items.size(); i++) {
+			TreeItem item = items.get(i);
+			Rectangle bounds = item.getBounds();
+			Point p = tree.toDisplay(bounds.x, bounds.y);
+			
+			if (/*x >= p.x && x <= p.x + bounds.width &&*/
+				y >= p.y && y <= p.y + bounds.height) {
+					return item;						
+				}
 		}
 		return null;
 	}

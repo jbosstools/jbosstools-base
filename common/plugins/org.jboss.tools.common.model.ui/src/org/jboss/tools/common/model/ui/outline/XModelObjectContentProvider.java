@@ -10,15 +10,15 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.outline;
 
-import java.util.*;
+import java.util.ArrayList;
 
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.model.WorkbenchContentProvider;
-import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.model.XFilteredTreeConstraint;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.util.XModelObjectCache;
 
 public class XModelObjectContentProvider extends WorkbenchContentProvider {
 	XFilteredTreeConstraint[] filters = null;
@@ -29,13 +29,9 @@ public class XModelObjectContentProvider extends WorkbenchContentProvider {
 		if(isEqualObject(cache)) return;
 		this.cache = cache;
 		if(viewer != null) {
-			try {
-				viewer.refresh();
-				((TreeViewer)viewer).expandToLevel(2);
-				if(cache != null) viewer.setSelection(new StructuredSelection(cache.getObject()));
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			viewer.refresh();
+			((TreeViewer)viewer).expandToLevel(2);
+			if(cache != null) viewer.setSelection(new StructuredSelection(cache.getObject()));
 		}
 	}
 	
@@ -107,13 +103,9 @@ public class XModelObjectContentProvider extends WorkbenchContentProvider {
 			((TreeViewer)viewer).setAutoExpandLevel(2);
 		}
 		if(viewer == null || viewer.getControl() == null || viewer.getControl().isDisposed()) return;
-		try { 
-			viewer.refresh();
-			if(viewer.getSelection() == null || viewer.getSelection().isEmpty()) {
-				if(cache != null) viewer.setSelection(new StructuredSelection(cache.getObject()));
-			}
-		} catch (Exception t) {
-			ModelUIPlugin.getPluginLog().logError(t);
+		viewer.refresh();
+		if(viewer.getSelection() == null || viewer.getSelection().isEmpty()) {
+			if(cache != null) viewer.setSelection(new StructuredSelection(cache.getObject()));
 		}
 	}
 	

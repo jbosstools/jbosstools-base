@@ -29,7 +29,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
         try {
         	String path = FileLocator.resolve(MetaConfigurationLoader.class.getResource("/dtds/meta-templates.dtd")).toString();
             XMLEntityResolver.registerPublicEntity("-//Red Hat Inc.//DTD Meta Templates 1.0//EN", path);
-        } catch (Exception e) {
+        } catch (IOException e) {
         	ModelUIPlugin.getPluginLog().logError(e);
         }
 	}
@@ -62,7 +62,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 		StringWriter writer = new StringWriter();
 		try {
 			XMLUtilities.serialize(element, writer);			
-		} catch (Exception e) {
+		} catch (IOException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		ModelUIPlugin.getDefault().getPluginPreferences().setValue(PREFERENCE_KEY, writer.toString());				
@@ -82,7 +82,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 			saveConfiguration(c, element);
 			try {
 				XMLUtilities.serialize(element, location);
-			} catch (Exception e) {
+			} catch (IOException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}
@@ -139,7 +139,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 		Bundle bundle = Platform.getBundle(name);
 		try {
 			url = FileLocator.resolve(bundle.getEntry("/"));
-		} catch (Exception e) {
+		} catch (IOException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		String file = element.getAttribute(FILE);
@@ -184,18 +184,14 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 		if(!file.isFile()) return null;
 		try {
 			return XMLUtilities.getDocument(new FileReader(file), createResolver());
-		} catch (Exception e) {
+		} catch (FileNotFoundException e) {
 			return null;
 		}
 	}
 
 	Document getDocument(String text) {
 		if(text == null) return null;
-		try {
-			return XMLUtilities.getDocument(new StringReader (text), createResolver());
-		} catch (Exception e) {
-			return null;
-		}
+		return XMLUtilities.getDocument(new StringReader (text), createResolver());
 	}
 	
 	XMLEntityResolver createResolver() {

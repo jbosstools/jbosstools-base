@@ -13,6 +13,8 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+
 public class JSPTagProposalFactory implements ITagProposalFactory {
 	private static final JSPTagProposalFactory INSTANCE = new JSPTagProposalFactory(); 
 	public static Map<String,String> loaderMap = new HashMap<String,String>(); 
@@ -30,13 +32,17 @@ public class JSPTagProposalFactory implements ITagProposalFactory {
 	}
     
     public ITagProposalLoader getProposalLoader(String mimeType) {
-    	ITagProposalLoader fInstance = null;
+    	ITagProposalLoader fInstance =  DEFAULT_PROPOSAL_LOADER;
 		try {
 			String fClassName = (String)loaderMap.get(mimeType);
 			Class newClass = this.getClass().getClassLoader().loadClass(fClassName);
 			fInstance = (ITagProposalLoader)newClass.newInstance();
-		} catch (Exception e) {
-			return DEFAULT_PROPOSAL_LOADER;
+		} catch (InstantiationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalAccessException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (ClassNotFoundException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return fInstance;
     }

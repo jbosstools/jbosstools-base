@@ -254,11 +254,7 @@ public class TableStructuredFieldEditor extends ExtendedFieldEditor
 					}
 				});
 			}
-			try {
-				structureChanged(null);
-			} catch (Exception e ) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			structureChanged(null);
 			
 		}
 		return this.tableControl;
@@ -341,15 +337,11 @@ public class TableStructuredFieldEditor extends ExtendedFieldEditor
 		if(table == null || table.isDisposed()) return;
 		int i = table.getSelectionIndex();
 		if(i < 0) i = 0;
-		try {
-			tableViewer.refresh();
-			int c = tableViewer.getTable().getItemCount();
-			while(i >= c) --i;
-			if(i >= 0) {
-				tableViewer.setSelection(new StructuredSelection(tableViewer.getTable().getItem(i).getData()));
-			}
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
+		tableViewer.refresh();
+		int c = tableViewer.getTable().getItemCount();
+		while(i >= c) --i;
+		if(i >= 0) {
+			tableViewer.setSelection(new StructuredSelection(tableViewer.getTable().getItem(i).getData()));
 		}
 	}
 	

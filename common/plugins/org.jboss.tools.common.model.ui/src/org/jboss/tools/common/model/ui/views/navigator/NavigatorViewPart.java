@@ -132,11 +132,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 		dnd.enable();
 		initContextMenu();
 
-		try {
-			activateF3();
-		} catch (Exception e) {
-			//ignore
-		}
+		activateF3();
 
 		getSite().getPage().addPartListener(partListener);
 
@@ -166,11 +162,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	}
 	
 	private IAction createActionInstance(String name) {
-		try {
-			return (IAction)ModelFeatureFactory.getInstance().createFeatureInstance(name);
-		} catch (Exception exc) {
-			return null;
-		}
+		return (IAction)ModelFeatureFactory.getInstance().createFeatureInstance(name);
 	}
 	
 	protected String[] getActionClasses() {
@@ -372,24 +364,16 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	}
 		
 	public void saveState(IMemento _memento) {
-		try {
-			XModelObject o = getSelectedModelObject();
-			if(o != null) _memento.putString("selection", getNodePath(o));
-			saveLinkingEnabled(_memento);
-		} catch (Exception exc) {
-			//ignore
-		}
+		XModelObject o = getSelectedModelObject();
+		if(o != null) _memento.putString("selection", getNodePath(o));
+		saveLinkingEnabled(_memento);
 	}
 
 	public void restoreState(IMemento _memento) {
-		try {
-			String selection = _memento.getString("selection");
-			XModelObject o = findModelObject(selection);
-			if(o != null) viewer.setSelection(new StructuredSelection(o));
-			restoreLinkingEnabled(); 
-		} catch (Exception exc) {
-			//ignore
-		}
+		String selection = _memento.getString("selection");
+		XModelObject o = findModelObject(selection);
+		if(o != null) viewer.setSelection(new StructuredSelection(o));
+		restoreLinkingEnabled(); 
 	}
 	
 	private String getNodePath(XModelObject o) {
@@ -638,11 +622,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 		if(isHandlingActivation) return;
 		isHandlingActivation = true;
 		IProject[] ps = null;
-		try {
-			ps = ModelUIPlugin.getWorkspace().getRoot().getProjects();
-		} catch (Exception e) {
-			//Workspace has been closed. There is no other way to know it. 
-		}
+		ps = ModelUIPlugin.getWorkspace().getRoot().getProjects();
 		if(ps == null) return;
 		for (int i = 0; i < ps.length; i++) {
 			IModelNature n = EclipseResourceUtil.getModelNature(ps[i]);

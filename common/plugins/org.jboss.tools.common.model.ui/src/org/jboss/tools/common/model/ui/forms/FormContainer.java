@@ -11,10 +11,8 @@
 package org.jboss.tools.common.model.ui.forms;
 
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.forms.DefaultFormContainer;
-import org.jboss.tools.common.model.ui.forms.IForm;
+import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 /**
  * @author Igels
@@ -66,7 +64,7 @@ public class FormContainer  extends DefaultFormContainer {
 				child = xmo.getChildByPath(entity);
 				if(child == null) {
 					String message = "Cannot build child form '" + forms[i].getEntityName() + "' for form '" + formData.getEntityName() + "'.";
-					Exception exc = new RuntimeException(message);
+					Exception exc = new FormRuntimeException(message);
 					ModelUIPlugin.getPluginLog().logError(exc);
 				} else {
 					this.get(i).initialize(child);

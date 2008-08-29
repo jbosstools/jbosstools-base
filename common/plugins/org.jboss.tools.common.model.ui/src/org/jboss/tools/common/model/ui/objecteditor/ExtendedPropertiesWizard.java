@@ -12,12 +12,14 @@ package org.jboss.tools.common.model.ui.objecteditor;
 
 import java.util.Properties;
 
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.wizards.query.*;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard;
+import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView;
 
 public class ExtendedPropertiesWizard extends AbstractQueryWizard {
 	
@@ -50,18 +52,14 @@ class ExtendedPropertiesWizardView extends AbstractQueryWizardView {
 
 	public void setObject(Object data) {
 		super.setObject(data);
-		try {
-			Properties p = findProperties(data);
-			ExtendedProperties attributes = (ExtendedProperties)p.get("extendedProperties");
-			objectEditor.setExtendedProperties(attributes);
-			boolean viewMode = p != null && "true".equals(p.getProperty("viewMode"));
-			objectEditor.setReadOnly(viewMode);
-			setWindowTitle("Attributes");
-			String nodeName = attributes.getNodeName();
-			setTitle((nodeName != null) ? "<" + nodeName + ">" : "");
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		Properties p = findProperties(data);
+		ExtendedProperties attributes = (ExtendedProperties)p.get("extendedProperties");
+		objectEditor.setExtendedProperties(attributes);
+		boolean viewMode = p != null && "true".equals(p.getProperty("viewMode"));
+		objectEditor.setReadOnly(viewMode);
+		setWindowTitle("Attributes");
+		String nodeName = attributes.getNodeName();
+		setTitle((nodeName != null) ? "<" + nodeName + ">" : "");
 	}
 
 	public Control createControl(Composite parent) {
@@ -78,11 +76,7 @@ class ExtendedPropertiesWizardView extends AbstractQueryWizardView {
 	}
 	
 	public void stopEditing() {
-		try { 
-			if(objectEditor != null) objectEditor.stopEditing();
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		if(objectEditor != null) objectEditor.stopEditing();
 	}
 	
 	public void dispose() {

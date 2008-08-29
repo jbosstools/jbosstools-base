@@ -12,8 +12,15 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.*;
-import org.eclipse.jdt.core.*;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.IElementChangedListener;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.templates.configuration.MetaClassTemplateHelper;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -52,7 +59,7 @@ class JavaAdapter {
         try {
             javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
         } catch (CoreException e) {
-        	ModelUIPlugin.getPluginLog().logError("Cannot find Java Project Nature.", new Exception());
+        	ModelUIPlugin.getPluginLog().logError("Cannot find Java Project Nature.", e);
 			return null;
         }
 		IResource r = EclipseResourceUtil.getJavaSourceRoot(project);

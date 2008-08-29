@@ -10,13 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.forms;
 
-import java.util.*;
-import org.eclipse.core.runtime.Status;
-import org.jboss.tools.common.model.ui.action.CommandBar;
-import org.jboss.tools.common.model.ui.action.CommandBarListener;
-import org.jboss.tools.common.model.ui.objecteditor.XChildrenEditor;
-import org.jboss.tools.common.model.ui.objecteditor.XTable;
-import org.jboss.tools.common.model.ui.objecteditor.XTableProvider;
+import java.util.Properties;
+import java.util.StringTokenizer;
+
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -24,17 +20,25 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TableItem;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.AnyElementObjectImpl;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.forms.ExpandableForm;
-import org.jboss.tools.common.model.ui.widgets.*;
+import org.jboss.tools.common.model.ui.action.CommandBar;
+import org.jboss.tools.common.model.ui.action.CommandBarListener;
+import org.jboss.tools.common.model.ui.objecteditor.XChildrenEditor;
+import org.jboss.tools.common.model.ui.objecteditor.XTable;
+import org.jboss.tools.common.model.ui.objecteditor.XTableProvider;
+import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
+import org.jboss.tools.common.model.ui.widgets.WhiteSettings;
 
 public class AnyElementForm extends ExpandableForm {
 	private XModelObject xmo;
@@ -251,17 +255,13 @@ public class AnyElementForm extends ExpandableForm {
 	}
 	
 	class CommandBarListenerImpl implements CommandBarListener {
-		public void action(String command) {
+		public void action(String command) throws XModelException  {
 			if(XChildrenEditor.ADD.equals(command)) {
 				add();
 			} else if(XChildrenEditor.EDIT.equals(command)) {
 				edit();
 			} else if(XChildrenEditor.DELETE.equals(command)) {
-				try {
 					delete();
-				} catch (XModelException e) {
-					throw new RuntimeException(e.getMessage(), e);
-				}
 			}			
 		}
 	}

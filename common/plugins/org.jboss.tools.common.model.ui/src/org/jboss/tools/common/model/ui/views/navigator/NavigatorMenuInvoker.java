@@ -11,19 +11,18 @@
 package org.jboss.tools.common.model.ui.views.navigator;
 
 import java.util.Properties;
-import org.eclipse.swt.events.*;
+
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.ui.navigator.TreeViewerMenuInvoker;
 import org.jboss.tools.common.model.util.FindObjectHelper;
-
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.navigator.*;
 
 public class NavigatorMenuInvoker extends TreeViewerMenuInvoker {
 	private static XModelObject eclipseWorkspace = null;
@@ -62,12 +61,7 @@ public class NavigatorMenuInvoker extends TreeViewerMenuInvoker {
 	}
 	
 	private boolean isOpenOnSingleClick() {
-		try {
-			return Platform.getPreferencesService().getBoolean("org.eclipse.ui.workbench", "OPEN_ON_SINGLE_CLICK", true, new IScopeContext[]{new InstanceScope()}); 
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-			return false;
-		}
+		return Platform.getPreferencesService().getBoolean("org.eclipse.ui.workbench", "OPEN_ON_SINGLE_CLICK", true, new IScopeContext[]{new InstanceScope()}); 
 	}
 
 	protected void fillRunningProperties(Properties p) {

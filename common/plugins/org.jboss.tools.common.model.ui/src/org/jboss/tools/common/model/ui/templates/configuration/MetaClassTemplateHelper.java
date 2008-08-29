@@ -56,8 +56,8 @@ public class MetaClassTemplateHelper {
 		QualifiedName qn = new QualifiedName(ModelUIPlugin.ID_PLUGIN, ModelUIPlugin.PROJECT_OVERRIDE); 
 		try {
 			String projectOverride = ResourcesPlugin.getWorkspace().getRoot().getPersistentProperty(qn);
-			return projectOverride != null && Boolean.valueOf(projectOverride).booleanValue();
-		} catch (Exception e) {
+			return projectOverride != null && Boolean.parseBoolean(projectOverride);
+		} catch (CoreException e) {
 			return false;
 		}
     }

@@ -18,7 +18,6 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.jboss.tools.common.log.BasePlugin;
 import org.jboss.tools.common.log.IPluginLog;
 import org.osgi.framework.Bundle;

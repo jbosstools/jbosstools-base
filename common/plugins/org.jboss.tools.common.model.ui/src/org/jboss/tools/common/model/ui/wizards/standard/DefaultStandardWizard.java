@@ -10,16 +10,17 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.wizards.standard;
 
-import java.util.*;
+import java.util.Properties;
+
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
-
 import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardControlListener;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
 import org.jboss.tools.common.meta.action.impl.WizardDataValidator;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class DefaultStandardWizard extends Wizard implements SpecialWizardControlListener {
@@ -37,7 +38,7 @@ public class DefaultStandardWizard extends Wizard implements SpecialWizardContro
 		try {
 			support.action(SpecialWizardSupport.FINISH);
 			return support.isFinished();
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return false;
@@ -77,7 +78,7 @@ public class DefaultStandardWizard extends Wizard implements SpecialWizardContro
 	public IWizardPage getNextPage(IWizardPage page) {
 		try {
 			support.action(SpecialWizardSupport.NEXT);
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		int id = support.getStepId();
@@ -138,7 +139,7 @@ public class DefaultStandardWizard extends Wizard implements SpecialWizardContro
 			step.save();
 			support.action(name);
 
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		

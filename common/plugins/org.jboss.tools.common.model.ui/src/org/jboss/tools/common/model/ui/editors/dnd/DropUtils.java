@@ -23,23 +23,23 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
-
-import org.jboss.tools.common.model.XModel;
-import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
-import org.jboss.tools.common.model.project.IModelNature;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.kb.AttributeDescriptor;
 import org.jboss.tools.common.kb.KbConnectorFactory;
 import org.jboss.tools.common.kb.KbConnectorType;
+import org.jboss.tools.common.kb.KbException;
 import org.jboss.tools.common.kb.KbTldResource;
 import org.jboss.tools.common.kb.TagDescriptor;
 import org.jboss.tools.common.kb.wtp.JspWtpKbConnector;
 import org.jboss.tools.common.kb.wtp.TLDVersionHelper;
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
+import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesComposite;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesComposite.AttributeDescriptorValue;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.jst.web.tld.ITaglibMapping;
 import org.jboss.tools.jst.web.tld.IWebProject;
 import org.jboss.tools.jst.web.tld.WebProjectFactory;
@@ -61,28 +61,22 @@ public class DropUtils {
 	 */
 	public static String getTldContent(IEditorInput input, String uri) {
 		String tldContent = null;
-		try {
-			XModel xModel = null;
-			if(input instanceof IModelObjectEditorInput) {
-				xModel = ((IModelObjectEditorInput)input).getXModelObject().getModel();
-			} else if(input instanceof IFileEditorInput) {
-				IFile f = ((IFileEditorInput)input).getFile();
-				XModelObject o = EclipseResourceUtil.getObjectByResource(f);
-				if(o != null) xModel = o.getModel();
+		XModel xModel = null;
+		if(input instanceof IModelObjectEditorInput) {
+			xModel = ((IModelObjectEditorInput)input).getXModelObject().getModel();
+		} else if(input instanceof IFileEditorInput) {
+			IFile f = ((IFileEditorInput)input).getFile();
+			XModelObject o = EclipseResourceUtil.getObjectByResource(f);
+			if(o != null) xModel = o.getModel();
+		}
+		if(xModel != null) {
+			ITaglibMapping mapping = WebProjectFactory.instance.getWebProject(xModel).getTaglibMapping();
+			XModelObject xmo = mapping.getTaglibObject(uri);
+			if(xmo != null) {
+//				tldLocation = EclipseResourceUtil.getResource(xmo).getFullPath().toString();
+				FileAnyImpl fai = (FileAnyImpl)xmo;
+				tldContent = fai.getAsText();
 			}
-			if(xModel != null) {
-				ITaglibMapping mapping = WebProjectFactory.instance.getWebProject(xModel).getTaglibMapping();
-				XModelObject xmo = mapping.getTaglibObject(uri);
-				if(xmo != null) {
-//					tldLocation = EclipseResourceUtil.getResource(xmo).getFullPath().toString();
-					FileAnyImpl fai = (FileAnyImpl)xmo;
-					tldContent = fai.getAsText();
-				}
-			}
-		} catch (Exception ex) {
-//			VpePlugin.reportProblem(ex);
-			ModelUIPlugin.getPluginLog().logError(ex);
-			// empty TLD content will be set
 		}
 		return tldContent;
 	}
@@ -121,10 +115,8 @@ public class DropUtils {
 			if(tagInfo != null) {
 				attributes = tagInfo.getAttributesDescriptors();
 			}
-		} catch (Exception ex) {
-//			VpePlugin.reportProblem(ex);
+		} catch (KbException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
-			// empty array will be returned
 		}
 		if(attributes==null)return new AttributeDescriptorValue[0]; 
 		List<AttributeDescriptorValue> attributesValues = new ArrayList<AttributeDescriptorValue>();
@@ -152,7 +144,7 @@ public class DropUtils {
 			}
 			wtpKbConnector.registerResource(new KbTldResource(uri, "", tagPrefix, version), true);							
 			tagInfo = wtpKbConnector.getTagInformation("/"+(tagPrefix==TagProposal.EMPTY_PREFIX?"":tagPrefix+":")+tagName);
-		} catch (Exception ex) {
+		} catch (KbException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return tagInfo;

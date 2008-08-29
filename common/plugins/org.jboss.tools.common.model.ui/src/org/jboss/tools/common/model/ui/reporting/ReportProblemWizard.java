@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.Collator;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -276,7 +277,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 						lastOldSession = new String(t);
 						isAccept = false;
 					}
-				}catch(Exception ex){
+				}catch(ParseException ex){
 					//ModelUIPlugin.getPluginLog().logError(ex);
 					sb.append(t);
 					isAccept = true;

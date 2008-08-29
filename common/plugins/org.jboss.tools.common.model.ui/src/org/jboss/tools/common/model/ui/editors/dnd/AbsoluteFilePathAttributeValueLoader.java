@@ -11,14 +11,16 @@
 package org.jboss.tools.common.model.ui.editors.dnd;
 
 import java.util.Properties;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.jboss.tools.common.model.ui.dnd.DnDUtil;
 import org.eclipse.ui.IFileEditorInput;
 import org.jboss.tools.common.model.XModelBuffer;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.dnd.DnDUtil;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class AbsoluteFilePathAttributeValueLoader implements IAttributeValueLoader {
@@ -75,7 +77,7 @@ public class AbsoluteFilePathAttributeValueLoader implements IAttributeValueLoad
 			
 			DnDUtil.paste(t, p);
 			return p.getProperty("start text");
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			return null;
 		} finally {
 			b.clear();

@@ -12,7 +12,6 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 
 import java.util.HashMap;
 
-import org.jboss.tools.common.model.ui.dnd.DnDUtil;
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
 
 /**
@@ -95,14 +94,18 @@ public class DropCommandFactory {
      * @return the drop command
      */
     public IDropCommand getDropCommand(String mimeType, ITagProposalFactory tagProposalFactory) {
-    	IDropCommand fInstance = null;
+    	IDropCommand fInstance = UNKNOWN_MIME_COMMAND;
 		try {
 			String fClassName = (String)fMimeCommandMap.get(mimeType);
 			Class newClass = this.getClass().getClassLoader().loadClass(fClassName);
 			fInstance = (IDropCommand)newClass.newInstance();
 			fInstance.setTagProposalFactory(tagProposalFactory);
-		} catch (Exception e) {
-			return UNKNOWN_MIME_COMMAND;
+		} catch (ClassNotFoundException e) {
+			//ignore
+		} catch (InstantiationException e) {
+			//ignore
+		} catch (IllegalAccessException e) {
+			//ignore
 		}
 		return fInstance;
     }

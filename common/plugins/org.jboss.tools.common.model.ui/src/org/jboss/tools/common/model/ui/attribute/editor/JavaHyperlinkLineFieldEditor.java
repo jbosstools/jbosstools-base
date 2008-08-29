@@ -18,20 +18,13 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.ui.IValueChangeListener;
-import org.jboss.tools.common.model.ui.IValueProvider;
-import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
-import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAdapter;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.action.Action;
@@ -40,19 +33,23 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
-
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
-import org.jboss.tools.common.model.util.AccessibleJava;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.jboss.tools.common.model.util.ModelFeatureFactory;
-import org.jboss.tools.common.model.util.XModelObjectUtil;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.ui.IValueChangeListener;
+import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
+import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAdapter;
 import org.jboss.tools.common.model.ui.templates.ControlContentAssistHelper;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.wizards.NewClassWizard;
 import org.jboss.tools.common.model.ui.wizards.NewTypeWizardAdapter;
+import org.jboss.tools.common.model.util.AccessibleJava;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.jboss.tools.common.model.util.ModelFeatureFactory;
+import org.jboss.tools.common.model.util.XModelObjectUtil;
 
 public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 			implements JavaHyperlinkCueLabelProvider.JavaClassHolder {
@@ -265,17 +262,6 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 		}		
 		return null;
 	}
-
-	//Overrides to show standard dialog
-//	protected String changePressed() {
-//		IJavaSearchScope scope = project != null ? getScope(project.getName()) : null;
-//		FilteredTypesSelectionDialog d = new FilteredTypesSelectionDialog(getChangeControl().getShell(), false, null, scope, 0/*IJavaSearchConstants.CLASS + IJavaSearchConstants.INTERFACE*/);
-//		d.create();
-//		int q = d.open();
-//		Object result = d.getFirstResult();
-//		if(result instanceof String) return result.toString();
-//		return null;
-//	}
 
 	private IJavaSearchScope getScope(String javaProjectName) {
 		IJavaElement[] elements = new IJavaElement[0];

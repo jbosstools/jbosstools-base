@@ -94,13 +94,8 @@ public class EditorPartWrapper extends EditorPart implements IReusableEditor, IE
 		EditorPartWrapperExtension extension = EditorPartWrapperExtension.getInstance();
 		EditorPartFactory f = extension.getFactory(entity);
 		editor = f.createEditorPart();
-////		if(editor == null) editor = new XmlEditor();
 		if(editor != null) {
-			try {
 				((WorkbenchPart)editor).setInitializationData(f.getConfigurationElement(), "", null);
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
 		}
 		editor.init(site, input);
 		setSite(site);

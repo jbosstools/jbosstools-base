@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.ui.wizard.newfile;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.*;
 import org.eclipse.ui.*;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.ui.ModelUIImages;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
@@ -39,7 +40,7 @@ public class NewFileWizard extends Wizard implements INewWizard {
 	public boolean performFinish() {
 		try {
 			context.execute();
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 			return false;
 		}

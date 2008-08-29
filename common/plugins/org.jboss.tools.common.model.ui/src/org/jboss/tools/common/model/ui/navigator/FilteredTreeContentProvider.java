@@ -10,8 +10,12 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.navigator;
 
-import org.eclipse.jface.viewers.*;
-import org.jboss.tools.common.model.*;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.jboss.tools.common.model.XFilteredTree;
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class FilteredTreeContentProvider implements ITreeContentProvider {
@@ -42,8 +46,12 @@ public class FilteredTreeContentProvider implements ITreeContentProvider {
 				String classname = model.getMetaData().getMapping("FilteredTrees").getValue(filteredTreeName);
 				result = (XFilteredTree)getClass().getClassLoader().loadClass(classname).newInstance();
 				result.setModel(model);
-			} catch(Exception ex) {
-				ModelUIPlugin.getPluginLog().logError(ex);
+			} catch (InstantiationException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			} catch (IllegalAccessException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			} catch (ClassNotFoundException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}		
 		return result;

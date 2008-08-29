@@ -10,10 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.forms;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.forms.IForm;
+import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 /**
  * @author Igels
@@ -27,6 +28,7 @@ public class LayouredFormFactory extends XModelObjectFormFactory {
 		initialize();
 	}
 
+	// FIXME: Get rid of reflection
 	private void initialize() {
 //		String entityName = getXModelObject().getModelEntity().getName();
 		String formLayoutDataClassName = null;
@@ -34,7 +36,11 @@ public class LayouredFormFactory extends XModelObjectFormFactory {
 		Class formLayoutDataClass = ModelFeatureFactory.getInstance().getFeatureClass(formLayoutDataClassName);
 		try {
 			formLayoutData = (IFormLayoutData)formLayoutDataClass.getMethod("getInstance", (Class[])null).invoke(null, (Object[])null);
-		} catch(Exception e) {
+		} catch (IllegalAccessException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (InvocationTargetException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (NoSuchMethodException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 	}
@@ -43,20 +49,15 @@ public class LayouredFormFactory extends XModelObjectFormFactory {
 
 	public IForm getForm() {
 		IForm form = null;
-		try {
-			String entity = getXModelObject().getModelEntity().getName();
-			IFormData formData = formLayoutData.getFormData(entity);
-			if(formData == null) {
-				String message = "Cannot find form for entity " + entity + ".";
-				ModelUIPlugin.getPluginLog().logError(new Exception(message));
-			} else if(formData.getForms() != null) {
-				form = new FormContainer(formData);
-			} else {
-				form = new DefaultFormContainer(new Form(formData));
-			}
-		} catch(Exception e) {
-			String message = "Cannot build form.";
-			ModelUIPlugin.getPluginLog().logError( message, e);
+		String entity = getXModelObject().getModelEntity().getName();
+		IFormData formData = formLayoutData.getFormData(entity);
+		if(formData == null) {
+			String message = "Cannot find form for entity " + entity + ".";
+			ModelUIPlugin.getPluginLog().logError(message);
+		} else if(formData.getForms() != null) {
+			form = new FormContainer(formData);
+		} else {
+			form = new DefaultFormContainer(new Form(formData));
 		}
 
 		return form;

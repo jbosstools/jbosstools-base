@@ -10,17 +10,19 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.wizards.standard;
 
-import java.util.*;
 import java.beans.PropertyChangeEvent;
+import java.util.Properties;
 
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.attribute.XAttributeSupport;
 import org.eclipse.jface.preference.FieldEditor;
-import org.eclipse.jface.wizard.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.jface.wizard.IWizard;
+import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.common.meta.action.XAttributeData;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
 import org.jboss.tools.common.meta.action.impl.WizardDataValidator;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.attribute.XAttributeSupport;
 
 public class DefaultStandardStep extends WizardPage implements java.beans.PropertyChangeListener {
 	protected DefaultStandardWizard wizard;
@@ -75,7 +77,7 @@ public class DefaultStandardStep extends WizardPage implements java.beans.Proper
 			if(support.getStepId() > id) {
 				try {
 					support.action(SpecialWizardSupport.BACK);
-				} catch (Exception e) {
+				} catch (XModelException e) {
 					ModelUIPlugin.getPluginLog().logError(e);
 				}
 			}
@@ -96,12 +98,8 @@ public class DefaultStandardStep extends WizardPage implements java.beans.Proper
 	
 	private void validateAll() {
 		attributes.store();
-		try {
-			validate();
-			updateFieldEnablement();
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		validate();
+		updateFieldEnablement();
 	}
 
 	public void propertyChange(PropertyChangeEvent arg0) {

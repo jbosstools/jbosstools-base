@@ -11,9 +11,10 @@
 package org.jboss.tools.common.model.ui.editor;
 
 import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IStorageEditorInput;
-
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class ModelObjectJarEntryEditorInput extends ModelObjectStorageEditorInput {
 	String jarFile;
@@ -39,8 +40,8 @@ public class ModelObjectJarEntryEditorInput extends ModelObjectStorageEditorInpu
 			IStorage storage = null;
 			try {
 				storage = input.getStorage();
-			} catch (Exception e) {
-				//ignore
+			} catch (CoreException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
 			}
 			String s = (storage == null) ? "" : storage.toString();
 			if(jarEntryFileToString().equals(s)) return true;

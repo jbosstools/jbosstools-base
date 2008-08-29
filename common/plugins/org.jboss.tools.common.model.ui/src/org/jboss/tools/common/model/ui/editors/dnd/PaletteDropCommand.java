@@ -13,6 +13,8 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -57,16 +59,12 @@ public class PaletteDropCommand extends FileDropCommand {
 	}
 
 	protected void addCustomProperties(Properties runningProperties) {		
-		try {
-			newLine = properties.getProperty(PaletteInsertHelper.PROPOPERTY_NEW_LINE);
-			if (newLine == null) newLine="true";
-			runningProperties.setProperty(PaletteInsertHelper.PROPOPERTY_NEW_LINE, newLine);
-			String addTaglib = properties.getProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB);
-			if(addTaglib == null) addTaglib = "true";
-			runningProperties.setProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB, addTaglib);
-		} catch (Exception e){
-			ModelUIPlugin.getPluginLog().logError(e);
-		}		
+		newLine = properties.getProperty(PaletteInsertHelper.PROPOPERTY_NEW_LINE);
+		if (newLine == null) newLine="true";
+		runningProperties.setProperty(PaletteInsertHelper.PROPOPERTY_NEW_LINE, newLine);
+		String addTaglib = properties.getProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB);
+		if(addTaglib == null) addTaglib = "true";
+		runningProperties.setProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB, addTaglib);
 	}
 	
 	public void execute() {
@@ -102,7 +100,7 @@ public class PaletteDropCommand extends FileDropCommand {
 								text += "></"+container.getNodeName()+">";
 								document.replace(containerOffset+slashPosition, containerString.length()-slashPosition, text);
 							}
-						}catch(Exception ex){
+						}catch(BadLocationException ex){
 							ModelUIPlugin.getPluginLog().logError(ex);
 						}
 					}
@@ -173,7 +171,7 @@ public class PaletteDropCommand extends FileDropCommand {
 						properties.setProperty("new line", "newLine");
 					}
 				}
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
 			startText = properties.getProperty(TLDToPaletteHelper.START_TEXT);
@@ -308,11 +306,7 @@ public class PaletteDropCommand extends FileDropCommand {
 		
 		IDropWizard wizard = null;
 		if(wizardName != null) {
-			try {
-				wizard = (IDropWizard)PaletteInsertManager.getInstance().createWizardInstance(properties);
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			wizard = (IDropWizard)PaletteInsertManager.getInstance().createWizardInstance(properties);
 		}
 		if(wizard == null) wizard =	new DropWizard();
 		wizard.setCommand(this);

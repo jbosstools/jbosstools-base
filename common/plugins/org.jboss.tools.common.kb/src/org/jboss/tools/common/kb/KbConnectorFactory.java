@@ -76,7 +76,7 @@ public class KbConnectorFactory {
 	 * @throws IllegalAccessException
 	 * @throws ClassNotFoundException
 	 */
-	public KbConnector createConnector(KbConnectorType type, Object key) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public KbConnector createConnector(KbConnectorType type, Object key) throws KbException{
 	    Object realKey = key;
 	    if(type.isSingleton()) {
 	        Object o = connectorInstances.get(type.toString());
@@ -90,9 +90,17 @@ public class KbConnectorFactory {
         if(o!=null) {
             return (KbConnector)o;
         }
-		Object newInstance = type.getConnectorClass().newInstance();
-	    connectorInstances.put(realKey, newInstance);
-		return (KbConnector) newInstance; 
+        
+		try {
+			Object newInstance = newInstance = type.getConnectorClass().newInstance();
+		    connectorInstances.put(realKey, newInstance);
+			return (KbConnector) newInstance; 
+		} catch (InstantiationException e) {
+			throw new KbException(e);
+		} catch (IllegalAccessException e) {
+			throw new KbException(e);
+		}
+
 	}
 
 	public void removeConnector(KbConnectorType type, Object key) {

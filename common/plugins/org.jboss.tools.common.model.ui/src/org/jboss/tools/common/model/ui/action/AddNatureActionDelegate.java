@@ -10,22 +10,23 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.action;
 
-import java.io.*;
+import java.io.File;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.IWizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.wizard.IWizard;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.actions.RefreshAction;
-
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public abstract class AddNatureActionDelegate implements IObjectActionDelegate, IWorkbenchWindowActionDelegate {
@@ -43,14 +44,10 @@ public abstract class AddNatureActionDelegate implements IObjectActionDelegate, 
 			}
 			return;
 		}
-		try	{
-			doRun();
-		} catch(Exception ex) {
-			ModelUIPlugin.getPluginLog().logError(ex);
-		}
+		doRun();
 	}
 	
-	protected void doRun() throws Exception {
+	protected void doRun() {
 		if(project == null) return;
 		RefreshAction refreshAction = new RefreshAction(ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell());
 		refreshAction.selectionChanged(new StructuredSelection(project));
@@ -61,7 +58,7 @@ public abstract class AddNatureActionDelegate implements IObjectActionDelegate, 
 		dialog.open();  
 	}
 	
-	protected abstract IWizard getWizard(IProject project) throws Exception;
+	protected abstract IWizard getWizard(IProject project);
 	protected abstract String getNatureID();
 
 	public void selectionChanged(IAction action, ISelection selection) {
@@ -80,7 +77,7 @@ public abstract class AddNatureActionDelegate implements IObjectActionDelegate, 
 					try {
 						if (!project.isOpen() || project.hasNature(getNatureID()))
 							project = null;
-					} catch (Exception ex) {
+					} catch (CoreException ex) {
 						project = null;
 						ModelUIPlugin.getPluginLog().logError(ex);
 					}

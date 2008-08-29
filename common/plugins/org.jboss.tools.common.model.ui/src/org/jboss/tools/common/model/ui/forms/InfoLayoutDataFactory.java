@@ -43,6 +43,6 @@ public class InfoLayoutDataFactory implements ILayoutDataFactory {
 			gd.heightHint = 60;
 			return gd;
 		}
-		throw new RuntimeException("Attribute control type may be only Label or Editor but this is " + type);
+		throw new FormRuntimeException("Attribute control type may be only Label or Editor but this is " + type);
 	}
 }

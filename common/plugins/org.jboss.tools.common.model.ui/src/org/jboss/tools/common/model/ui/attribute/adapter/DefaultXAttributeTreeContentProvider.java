@@ -104,11 +104,7 @@ public class DefaultXAttributeTreeContentProvider implements ITreeContentProvide
 	}
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		try {
-			viewer.refresh();
-		} catch (Exception e) {
-			ignore();
-		}
+		viewer.refresh();
 	}
 	
 	void ignore() {

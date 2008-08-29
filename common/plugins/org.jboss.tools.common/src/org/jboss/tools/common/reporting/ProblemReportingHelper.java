@@ -12,7 +12,6 @@ package org.jboss.tools.common.reporting;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.jboss.tools.common.CommonPlugin;
 
 /**
  * Helper class for processing all exceptions caught in Red Hat code.  
@@ -52,11 +51,7 @@ public class ProblemReportingHelper {
 			return;
 		}
 		IProblemReporter reporter = ProblemReporterFactory.getInstance().getProblemReporter();
-		try {
-			reporter.reportProblem(status);
-		} catch (Exception t) {
-			CommonPlugin.getPluginLog().logError("Failed to call custom reporter.", t);
-		}
+		reporter.reportProblem(status);
 	}
 	
 	public static final ProblemBuffer buffer = new ProblemBuffer();

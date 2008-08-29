@@ -69,7 +69,7 @@ public class SliderCellEditorEx extends CellEditor {
 			if (intValue <= MAX_SLIDER_VALUE && intValue >= MIN_SLIDER_VALUE) {
 				slider.setSelection(intValue);
 			}
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 			// Do nothing
 		}
 	}

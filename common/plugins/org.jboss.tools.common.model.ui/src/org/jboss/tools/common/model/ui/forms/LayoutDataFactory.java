@@ -38,6 +38,6 @@ public class LayoutDataFactory implements ILayoutDataFactory {
     	} else if(type == AttributeControlType.EDITOR) {
 			return new GridData(GridData.FILL_HORIZONTAL);
 		}
-        throw new RuntimeException("Attribute control type may be only Label or Editor but this is " + type);
+        throw new FormRuntimeException("Attribute control type may be only Label or Editor but this is " + type);
     }
 }

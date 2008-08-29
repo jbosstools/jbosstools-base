@@ -24,22 +24,20 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
-import org.jboss.tools.common.model.util.XModelTreeListenerSWTASync;
-import org.jboss.tools.common.model.ui.navigator.TreeViewerModelListenerImpl;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-
 import org.jboss.tools.common.model.XFilteredTree;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.project.IModelNature;
+import org.jboss.tools.common.model.ui.navigator.TreeViewerModelListenerImpl;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.util.XModelTreeListenerSWTASync;
 
 public class NavigatorContentProvider implements ITreeContentProvider, IResourceChangeListener {
 	protected FilteredTreesCache filteredTrees = FilteredTreesCache.getInstance();
@@ -263,13 +261,8 @@ public class NavigatorContentProvider implements ITreeContentProvider, IResource
 		if(project == null || !project.isOpen()) return null;
 		IModelNature nature = EclipseResourceUtil.getModelNature(project);
 		if(nature == null) return null;
-		try	{
-			XFilteredTree filteredTree = getFilteredTree(nature.getModel().getRoot());
-			return (filteredTree != null) ? filteredTree.getRoot() : null;
-		} catch (Exception ex) {
-			ModelUIPlugin.getPluginLog().logError(ex);
-		}
-		return null;
+		XFilteredTree filteredTree = getFilteredTree(nature.getModel().getRoot());
+		return (filteredTree != null) ? filteredTree.getRoot() : null;
 	}
 	
 	private void check() {
@@ -278,34 +271,24 @@ public class NavigatorContentProvider implements ITreeContentProvider, IResource
 		if(swtTree == null || swtTree.isDisposed()) return;
 		TreeItem[] is = swtTree.getItems();
 		if(is == null || is.length == 0) return;
-		try {
-			for (int i = 0; i < is.length; i++) {
-				XModelObject o = (XModelObject)is[i].getData();
-				if(o == null) continue;
-				IProject p = EclipseResourceUtil.getProject(o);
-				IModelNature nature = EclipseResourceUtil.getModelNature(p);
-				if(nature == null) {
+		for (int i = 0; i < is.length; i++) {
+			XModelObject o = (XModelObject)is[i].getData();
+			if(o == null) continue;
+			IProject p = EclipseResourceUtil.getProject(o);
+			IModelNature nature = EclipseResourceUtil.getModelNature(p);
+			if(nature == null) {
+				o.getModel().removeModelTreeListener(syncListener);
+				viewer.remove(o);
+				projects.remove(p.getLocation().toString());
+			} else {
+				String classname = o.getModel().getMetaData().getMapping("FilteredTrees").getValue(getFilteredTreeName(o.getModel()));
+				XFilteredTree tree = getFilteredTree(o.getModel().getRoot());
+				if(tree != null && !tree.getClass().getName().equals(classname)) {
 					o.getModel().removeModelTreeListener(syncListener);
-					viewer.remove(o);
 					projects.remove(p.getLocation().toString());
-				} else {
-					String classname = o.getModel().getMetaData().getMapping("FilteredTrees").getValue(getFilteredTreeName(o.getModel()));
-					XFilteredTree tree = getFilteredTree(o.getModel().getRoot());
-					if(tree != null && !tree.getClass().getName().equals(classname)) {
-						o.getModel().removeModelTreeListener(syncListener);
-						projects.remove(p.getLocation().toString());
-//						filteredTrees.remove(tree);
-						viewer.remove(o);
-						viewer.refresh();
-					}
+					viewer.remove(o);
+					viewer.refresh();
 				}
-			}
-		} catch (Exception e) {
-			//ModelUIPlugin.log("NavigatorContentProvider:check");
-			try {
-				viewer.refresh();
-			} catch (Exception e2) {
-				//ignore
 			}
 		}
 	}

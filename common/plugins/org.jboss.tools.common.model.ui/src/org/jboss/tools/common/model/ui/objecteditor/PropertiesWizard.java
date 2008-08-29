@@ -12,17 +12,15 @@ package org.jboss.tools.common.model.ui.objecteditor;
 
 import java.util.Properties;
 
-import org.jboss.tools.common.meta.key.WizardKeys;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard;
-import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard;
+import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView;
 
 public class PropertiesWizard extends AbstractQueryWizard {
 
@@ -52,17 +50,13 @@ class PropertiesWizardView extends AbstractQueryWizardView {
 		//this.setMessage(WizardKeys.getString(getHelpKey()+".Message"));
 		Object[] ds = (Object[])data;
 		dataObject = ds[0];
-		try {
-			objectEditor.setModelObject((XModelObject)dataObject);
-			Properties p = findProperties(data);
-			if(windowTitle == null) {
-				windowTitle = WizardKeys.getHeader("Properties");
-			}
-			boolean viewMode = p != null && "true".equals(p.getProperty("viewMode"));
-			objectEditor.setViewMode(viewMode);
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
+		objectEditor.setModelObject((XModelObject)dataObject);
+		Properties p = findProperties(data);
+		if(windowTitle == null) {
+			windowTitle = WizardKeys.getHeader("Properties");
 		}
+		boolean viewMode = p != null && "true".equals(p.getProperty("viewMode"));
+		objectEditor.setViewMode(viewMode);
 	}
 
 	public Control createControl(Composite parent) {
@@ -80,11 +74,7 @@ class PropertiesWizardView extends AbstractQueryWizardView {
 	}
 	
 	public void stopEditing() {
-		try { 
-			if(objectEditor != null) objectEditor.stopEditing();
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		if(objectEditor != null) objectEditor.stopEditing();
 	}
 	
 	public void dispose() {

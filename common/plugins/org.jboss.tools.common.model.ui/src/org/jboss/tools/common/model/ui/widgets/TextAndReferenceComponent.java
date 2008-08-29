@@ -11,11 +11,22 @@
 package org.jboss.tools.common.model.ui.widgets;
 
 import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 public class TextAndReferenceComponent extends Canvas implements PaintListener, MouseMoveListener {
 	int defaultWidth = 100;
@@ -34,13 +45,9 @@ public class TextAndReferenceComponent extends Canvas implements PaintListener, 
 		addPaintListener(this);
 		addMouseMoveListener(this);
 		addMouseListener(new MA());
-		try {
-			plain = getFont();
-			FontData d = plain.getFontData()[0];
-			bold = new Font(null, d.getName(), d.getHeight(), d.getStyle() | SWT.BOLD);
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		plain = getFont();
+		FontData d = plain.getFontData()[0];
+		bold = new Font(null, d.getName(), d.getHeight(), d.getStyle() | SWT.BOLD);
 	}
 
 	public void mouseMove(MouseEvent e) {
@@ -84,11 +91,7 @@ public class TextAndReferenceComponent extends Canvas implements PaintListener, 
 		defaultWidth = width;
 		this.width = width;
 		tokens = Tokenizer.tokenize(text, plain, bold);
-		try {
-			pack();
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		pack();
 	}
 	
 	public void paintControl(PaintEvent ev) {

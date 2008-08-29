@@ -10,9 +10,34 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.util;
 
-import java.io.*;
-import java.util.*;
-import java.util.jar.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -345,11 +370,11 @@ public final class FileUtil {
         }
     }
 
-    public static void jar(File[] fs, String path) throws Exception {
+    public static void jar(File[] fs, String path) throws IOException {
         jar(fs, path, null);
     }
 
-    public static void jar(File[] fs, String path, Manifest mf) throws Exception {
+    public static void jar(File[] fs, String path, Manifest mf) throws IOException  {
         File f = new File(path);
         FileOutputStream fos = new FileOutputStream(f);
         JarOutputStream jos = mf == null ? new JarOutputStream(fos) : new JarOutputStream(fos, mf);
@@ -361,13 +386,13 @@ public final class FileUtil {
         }
     }
 
-    public static void add(File root, File f, JarOutputStream jos) throws Exception {
+    public static void add(File root, File f, JarOutputStream jos) throws IOException {
         int l = root.getAbsolutePath().length();
         String en = f.getAbsolutePath().substring(l + 1).replace('\\', '/');
         add(f, en, jos);
     }
 
-    public static void add(File f, String name, JarOutputStream jos) throws Exception {
+    public static void add(File f, String name, JarOutputStream jos) throws IOException {
         String en = name;
         if(f.isDirectory()) en += "/";
         JarEntry entry = (en.endsWith("/")) ? null : new JarEntry(en);

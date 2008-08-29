@@ -12,12 +12,23 @@ package org.jboss.tools.common.model.ui.editors.dnd.composite;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.objecteditor.ExtendedCellEditorProvider;
-import org.eclipse.jface.viewers.*;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ICellEditorListener;
+import org.eclipse.jface.viewers.ICellModifier;
+import org.eclipse.jface.viewers.IElementComparer;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -26,11 +37,15 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
-import org.jboss.tools.common.model.util.ModelFeatureFactory;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.jboss.tools.common.kb.AttributeDescriptor;
 import org.jboss.tools.common.kb.AttributeValueDescriptor;
 import org.jboss.tools.common.model.ui.editors.dnd.IDropWizardModel;
+import org.jboss.tools.common.model.ui.objecteditor.ExtendedCellEditorProvider;
+import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 /**
  * 
@@ -349,7 +364,7 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 						case ATTRIBUTE_VALUE_INDEX:
 							return attrDescr.getValue()==null?"":attrDescr.getValue().toString();
 					}
-					throw new RuntimeException("Wrong column index for LabelProvider");
+					throw new IllegalArgumentException("Wrong column index for LabelProvider");
 				}
 	
 				public void addListener(ILabelProviderListener listener) {
@@ -372,14 +387,7 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 	private Properties context = new Properties();
 	
 	private ExtendedCellEditorProvider createCellEditorProvider() {
-		try {
-			return (ExtendedCellEditorProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.jsp.outline.JSPCellEditorProviderImpl");
-		} catch (Exception e) {
-//			VpePlugin.reportProblem(e);
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
-		
-		return null;
+		return (ExtendedCellEditorProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.jsp.outline.JSPCellEditorProviderImpl");
 	}
 
 	/**

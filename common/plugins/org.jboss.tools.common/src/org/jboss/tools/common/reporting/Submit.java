@@ -10,13 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.reporting;
 
+import java.io.IOException;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.util.HttpUtil;
 
@@ -55,7 +56,7 @@ public class Submit {
 			public IStatus run(IProgressMonitor monitor) {
 				try {
 					submitReport(reportText);
-				} catch (Exception e) {
+				} catch (IOException e) {
 					String exceptionMessage = e.getMessage();
 					String message = ERROR_MESSAGE;
 					if(exceptionMessage!=null && exceptionMessage.trim().length()>0) {
@@ -74,7 +75,7 @@ public class Submit {
 		job.schedule();
 	}
 
-	private int submitReport(String reportText) throws Exception {
+	private int submitReport(String reportText) throws IOException {
 		HttpClient httpClient = HttpUtil.createHttpClient(URL);
 		PostMethod httpPost = new PostMethod(URL);
 		httpPost.addParameter(REPORT_DESRIPTION_PARAMETER_NAME, reportText);

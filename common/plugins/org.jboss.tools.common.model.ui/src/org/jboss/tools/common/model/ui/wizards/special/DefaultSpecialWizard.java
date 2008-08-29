@@ -11,6 +11,8 @@
 package org.jboss.tools.common.model.ui.wizards.special;
 
 import java.util.Properties;
+
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.ui.action.CommandBar;
 import org.jboss.tools.common.model.ui.wizards.standard.DefaultStandardWizard;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -79,7 +81,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		setStep();
 		try {
 			support.action("STEP");
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		dialog.open();
@@ -91,18 +93,14 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		CommandBar bar = dialog.getCommandBar();
 		bar.disable();
 		if(SpecialWizardSupport.HELP.equals(name)) {
-			try {
-				HelpUtil.helpEclipse(support.getTarget().getModel(), support.getHelpKey());
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+			HelpUtil.helpEclipse(support.getTarget().getModel(), support.getHelpKey());
 			return;
 		}
 		try {
 			save();
 			support.action(name);
 			dialog.setMessage("");
-		} catch (Exception e) {
+		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		setStep();
@@ -132,11 +130,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		dialog.getShell().setText(support.getTitle());
 		dialog.setTitle(support.getSubtitle());
 		if(message != null) dialog.setMessage(message);
-		try {
-			wizardStep.validate();
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		wizardStep.validate();
 	}
 	
 	private ISpecialWizardStep getStep(int i) {
@@ -162,11 +156,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 	public void dispose() {
 		stopValidator();
 		if(dialog == null) return;
-		try { 
-			if(dialog.getShell() != null && !dialog.getShell().isDisposed()) dialog.close(); 
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+		if(dialog.getShell() != null && !dialog.getShell().isDisposed()) dialog.close(); 
 		dialog = null;
 	}
 	

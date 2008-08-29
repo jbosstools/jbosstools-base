@@ -10,13 +10,21 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.select;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jface.viewers.*;
-import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.jboss.tools.common.model.XModelObject;
 
 public class XModelObjectSelectionProvider implements ISelectionProvider, ISelectionChangedListener {
 	private List<ISelectionChangedListener> listeners;
@@ -64,13 +72,7 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 	}
 
 	public ISelection getSelection() {
-		try {
-			return (host == null) ? null : convertSelectionToAdapter(host.getSelection());
-		} catch (Exception e) {
-			//TODO study possible problems and narrow caught exceptions.
-			ModelUIPlugin.getPluginLog().logError(e);
-			return null;
-		}
+		return (host == null) ? null : convertSelectionToAdapter(host.getSelection());
 	}
 
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {

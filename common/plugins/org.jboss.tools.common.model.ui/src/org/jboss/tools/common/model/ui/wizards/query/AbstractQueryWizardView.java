@@ -97,17 +97,11 @@ public abstract class AbstractQueryWizardView implements CommandBarListener {
 		if(CANCEL.equals(command)) {
 			code = 1;
 			dispose();
-		}
-		else if(OK.equalsIgnoreCase(command)) {
+		} else if(OK.equalsIgnoreCase(command)) {
 			code = 0;
 			dispose();
-		}
-		else if(HELP.equals(command)) {
-			if(model != null) try {
-				HelpUtil.helpEclipse(model, helpkey);
-			} catch (Exception e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+		} else if(HELP.equals(command)) {
+			HelpUtil.helpEclipse(model, helpkey);
 		}
 	}
 

@@ -13,6 +13,8 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+
 public class ElementGeneratorFactory {
 	
 	private static final ElementGeneratorFactory INSTANCE
@@ -37,12 +39,14 @@ public class ElementGeneratorFactory {
 	}
     
     public IElementGenerator getElementGenerator(String uri) {
-    	IElementGenerator fInstance = null;
+    	IElementGenerator fInstance = DEFAULT_ELEMENT_GENERATOR;
 		try {
 			Class fClass = (Class)generatorMap.get(uri);
 			fInstance = (IElementGenerator)fClass.newInstance();
-		} catch (Exception e) {
-			return DEFAULT_ELEMENT_GENERATOR;
+		} catch (InstantiationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalAccessException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return fInstance;
     }

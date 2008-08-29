@@ -11,18 +11,10 @@
 package org.jboss.tools.common.model.ui.forms;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.eclipse.core.runtime.Status;
-import org.jboss.tools.common.editor.form.RightFormContainer;
-import org.jboss.tools.common.model.ui.attribute.XAttributeSupport;
-import org.jboss.tools.common.model.ui.attribute.adapter.XChildrenTableStructuredAdapter;
-import org.jboss.tools.common.model.ui.attribute.editor.ExtendedFieldEditor;
-import org.jboss.tools.common.model.ui.attribute.editor.IFieldEditor;
-import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
-import org.jboss.tools.common.model.ui.attribute.editor.IPropertyFieldEditor;
-import org.jboss.tools.common.model.ui.attribute.editor.TableStructuredEditor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -30,12 +22,17 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-
+import org.jboss.tools.common.editor.form.RightFormContainer;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIMessages;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.forms.ExpandableForm;
-import org.jboss.tools.common.model.ui.forms.IFormContainer;
+import org.jboss.tools.common.model.ui.attribute.XAttributeSupport;
+import org.jboss.tools.common.model.ui.attribute.adapter.XChildrenTableStructuredAdapter;
+import org.jboss.tools.common.model.ui.attribute.editor.ExtendedFieldEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.IFieldEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.IPropertyFieldEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.TableStructuredEditor;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 /**
@@ -134,8 +131,15 @@ public class Form extends ExpandableForm {
 							((ExtendedFieldEditor)wraper).setEnabled(xmo.isAttributeEditable(attributes[i].getName()));
 							fieldEditors.add((ExtendedFieldEditor)wraper);
 							support.registerFieldEditor(editor.getAttributeName(), (ExtendedFieldEditor)wraper);
-						}
-						catch (Exception e) {
+						} catch (ClassNotFoundException e) {
+							ModelUIPlugin.getPluginLog().logError(e);
+						} catch (NoSuchMethodException e) {
+							ModelUIPlugin.getPluginLog().logError(e);
+						} catch (InstantiationException e) {
+							ModelUIPlugin.getPluginLog().logError(e);
+						} catch (IllegalAccessException e) {
+							ModelUIPlugin.getPluginLog().logError(e);
+						} catch (InvocationTargetException e) {
 							ModelUIPlugin.getPluginLog().logError(e);
 						}
 					} else {
@@ -148,7 +152,7 @@ public class Form extends ExpandableForm {
 						support.registerFieldEditor(editor.getAttributeName(), (ExtendedFieldEditor)fieldEditor);
 					}
 				} else {
-					ModelUIPlugin.getPluginLog().logInfo( ModelUIMessages.getString(CANNOT_LOAD_ATTRIBUTE, new String[] {attributes[i].getName()}), new Exception(ModelUIMessages.getString(CANNOT_LOAD_ATTRIBUTE, new String[] {attributes[i].getName()})));
+					ModelUIPlugin.getPluginLog().logInfo( ModelUIMessages.getString(CANNOT_LOAD_ATTRIBUTE, new String[] {attributes[i].getName()}));
 				}
             }
 		} else {

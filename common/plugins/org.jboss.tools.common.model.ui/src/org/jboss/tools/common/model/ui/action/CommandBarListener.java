@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.action;
 
+import org.jboss.tools.common.model.XModelException;
+
 public interface CommandBarListener {
-	public void action(String command);
+	public void action(String command) throws XModelException;
 }

@@ -10,17 +10,20 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.wizard.newfile;
 
-import java.util.*;
-import org.eclipse.core.resources.*;
-import org.eclipse.core.runtime.IAdaptable;
-import org.jboss.tools.common.model.ui.util.ModelUtilities;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import java.util.Properties;
 
-import org.jboss.tools.common.meta.action.*;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.jboss.tools.common.meta.action.XAction;
+import org.jboss.tools.common.meta.action.XActionList;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
 import org.jboss.tools.common.meta.key.WizardKeys;
-import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
+import org.jboss.tools.common.model.ui.util.ModelUtilities;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class NewFileContext {
@@ -67,13 +70,8 @@ public class NewFileContext {
 			errorMesage = "Project is closed";
 			return;
 		} 
-		try {
-			if(EclipseResourceUtil.getModelNature(resource.getProject()) == null)
-			  errorMesage = "Add Struts Nature to project";
-		} catch (Exception e) {
-			errorMesage = e.getMessage();
-			return;
-		}
+		if(EclipseResourceUtil.getModelNature(resource.getProject()) == null)
+		  errorMesage = "Add Struts Nature to project";
 		
 		folder = EclipseResourceUtil.getObjectByResource(resource);
 		if(folder != null) {
@@ -102,7 +100,7 @@ public class NewFileContext {
 		return support.getValidator(0).getErrorMessage();
 	}
 	
-	public void execute() throws Exception {
+	public void execute() throws XModelException {
 		Properties p = new Properties();
 		if(resource != null) p.put("resource", resource);
 		action.executeHandler(support.getTarget(), p);

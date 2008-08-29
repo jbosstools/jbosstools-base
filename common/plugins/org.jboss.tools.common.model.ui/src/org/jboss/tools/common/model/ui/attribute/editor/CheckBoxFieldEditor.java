@@ -13,8 +13,6 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.jboss.tools.common.model.ui.IValueChangeListener;
-import org.jboss.tools.common.model.ui.IValueProvider;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -26,7 +24,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-
+import org.jboss.tools.common.MethodNotImplementedException;
+import org.jboss.tools.common.model.ui.IValueChangeListener;
+import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEditor, IPropertyFieldEditor, IPropertyChangeListener, PropertyChangeListener {
@@ -58,6 +58,7 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 		if (style == SKIP_LABEL) numColumns--;
 		((GridData)checkBox.getLayoutData()).horizontalSpan = numColumns;
 	}
+	
 	protected void doFillIntoGrid(Composite parent, int numColumns) {
 		String text = getLabelText();
 		if (style == SKIP_LABEL) {
@@ -76,20 +77,25 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 		checkBox.setLayoutData(gd);
 		if (text != null) checkBox.setText(text);
 	}
+	
 	protected Control createCheckBoxLabelControl (Composite parent) {
 		Button checkBox = createChangeControl(parent);
 		if (getLabelText() != null) checkBox.setText(getLabelText());
 		return checkBox;
 	}
+	
 	protected void doLoad() {
-		throw new RuntimeException("Not implemented");
+		throw new MethodNotImplementedException();
 	}
+	
 	protected void doLoadDefault() {
-		throw new RuntimeException("Not implemented");
+		throw new MethodNotImplementedException();
 	}
+	
 	protected void doStore() {
 //		getPreferenceStore().setValue(getPreferenceName(), checkBox.getSelection());
 	}
+	
 	protected Button createChangeControl(Composite parent) {
 		if (checkBox != null) {
 			checkParent(checkBox, parent);
@@ -109,6 +115,7 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 		checkBox.setSelection(booleanValue);
 		return checkBox;
 	}
+	
 	private void createSelectionListener() {
 		checkBox.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -118,6 +125,7 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			}
 		});
 	}
+	
 	private void createDisposeListener() {
 		checkBox.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent event) {
@@ -125,14 +133,17 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			}
 		});
 	}
+	
 	public int getNumberOfControls() {
 		return (style == SKIP_LABEL || style == SEPARATE_LABEL) ? 2 : 1;
 	}
+	
 	public void setFocus() {
 		if (checkBox != null) {
 			checkBox.setFocus();
 		}
 	}
+	
 	public void setLabelText(String text) {
 		super.setLabelText(text);
 		Control label = getLabelComposite();
@@ -140,6 +151,7 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			checkBox.setText(text);
 		}
 	}
+	
 	protected void valueChanged(boolean oldValue, boolean newValue) {
 		setPresentsDefaultValue(false);
 		if (oldValue != newValue)
@@ -169,6 +181,7 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			}
 		}
 	}
+	
 	public boolean getBooleanValue() {
 		if (checkBox != null)
 			return checkBox.getSelection();
@@ -179,6 +192,7 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 	public int getStyle() {
 		return style;
 	}
+	
 	public void setStyle(int style) {
 		this.style = style;
 	}

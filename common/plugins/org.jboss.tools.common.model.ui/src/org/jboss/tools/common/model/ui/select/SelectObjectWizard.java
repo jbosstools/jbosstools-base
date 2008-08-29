@@ -55,20 +55,12 @@ public class SelectObjectWizard implements SpecialWizard {
 							oe.selectPageByName(preferredPage);
 						}
 					}
-					try {
-						p.getSite().getSelectionProvider().setSelection(getSelection((XModelObject)object));
-					} catch (Exception e) {
-						// we cannot avoid exception if third party editor is used
-					}
+					p.getSite().getSelectionProvider().setSelection(getSelection((XModelObject)object));
 					IWorkbenchPage page = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
 					IViewPart vs = page.findView("org.eclipse.ui.views.ContentOutline");
 					ISelectionProvider sp = vs == null ? null : vs.getSite().getSelectionProvider();
 					if(sp != null) {
-						try {
 							sp.setSelection(getSelection(object));
-						} catch (Exception e) {
-							// we cannot avoid exception if third party outline is used
-						}
 					}
 				}
 			});

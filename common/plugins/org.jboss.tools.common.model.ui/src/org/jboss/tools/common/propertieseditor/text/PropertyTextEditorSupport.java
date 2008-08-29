@@ -10,11 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.propertieseditor.text;
 
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.texteditors.TextEditorSupport;
-
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.loaders.impl.PropertiesLoader;
+import org.jboss.tools.common.model.ui.texteditors.TextEditorSupport;
 
 /**
  * @author Jeremy
@@ -35,8 +33,6 @@ public class PropertyTextEditorSupport extends TextEditorSupport {
 		lock++;
 		try {
 			loader.edit(getModelObject(), provider.getText());
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			lock--;
 			setModified (false);

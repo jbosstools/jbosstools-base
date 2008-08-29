@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.ui.editor;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.ui.IEditorActionBarContributor;
 import org.eclipse.ui.IEditorPart;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class EditorPartFactory {
 	IConfigurationElement element;
@@ -20,7 +21,7 @@ public class EditorPartFactory {
 	Class editorClass;
 	Class contributorClass;
 	
-	EditorPartFactory(IConfigurationElement element, Class editorClass, Class contributorClass) throws Exception {
+	EditorPartFactory(IConfigurationElement element, Class editorClass, Class contributorClass) throws InstantiationException, IllegalAccessException {
 		this.element = element;
 		this.editorClass = editorClass;
 		this.contributorClass = contributorClass;
@@ -34,19 +35,27 @@ public class EditorPartFactory {
 	}
 	
 	public IEditorPart createEditorPart() {
-		try {
-			return (IEditorPart)editorClass.newInstance();
-		} catch (Exception e) {
-			return null;
-		}
+		IEditorPart part = null;
+			try {
+				part = (IEditorPart)editorClass.newInstance();
+			} catch (InstantiationException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			} catch (IllegalAccessException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
+			return part;
 	}
 	
 	public IEditorActionBarContributor createEditorActionBarContributor() {
+		IEditorActionBarContributor contributor = null;
 		try {
-			return (IEditorActionBarContributor)contributorClass.newInstance();
-		} catch (Exception e) {
-			return null;
+			contributor = (IEditorActionBarContributor)contributorClass.newInstance();
+		} catch (InstantiationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalAccessException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		}
+		return contributor;
 	}
 	
 	public IConfigurationElement getConfigurationElement() {

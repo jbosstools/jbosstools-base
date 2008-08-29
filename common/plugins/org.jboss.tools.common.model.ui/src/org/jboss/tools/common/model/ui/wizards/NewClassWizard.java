@@ -94,9 +94,6 @@ public class NewClassWizard extends Wizard {
 			return false;
 		} catch  (InterruptedException e) {
 			return false;
-		} catch (Exception e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-			return false;
 		}
 		return true;
 	}

@@ -27,7 +27,6 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.TypedEvent;
-import org.eclipse.wst.sse.ui.internal.TextDropAction;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelTransferBuffer;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
@@ -124,7 +123,7 @@ public class DropContext {
 		File f = new File(s[0]);
 		try {
 			return f.toURL().toString();
-		} catch (Exception e) {
+		} catch (MalformedURLException e) {
 			return s[0];
 		}
 	}

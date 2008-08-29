@@ -29,16 +29,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.core.runtime.Status;
+import org.jboss.tools.common.model.ui.ModelUIMessages;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.xml.SafeDocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import org.jboss.tools.common.xml.SafeDocumentBuilderFactory;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.ModelUIMessages;
 
 /**
  * @author AU
@@ -237,7 +235,7 @@ public class ResourceLayoutManager {
 			serial.asDOMSerializer();
 			serial.serialize(document);
 			writer.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			//log(Status.ERROR, ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {fullLayoutLocation, fullResourceLocation}), e);
 			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {layoutLocation, fullResourceLocation}), e);
 		}

@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+import org.jboss.tools.common.MethodNotImplementedException;
 import org.jboss.tools.common.model.ui.widgets.BorderedControl;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.widgets.ScrolledComposite;
@@ -110,11 +111,11 @@ public class StringFieldEditor extends ExtendedFieldEditor {
 	}
 
 	protected void doLoad() {
-		throw new RuntimeException("Not implemented");
+		throw new MethodNotImplementedException();
 	}
 
 	protected void doLoadDefault() {
-		throw new RuntimeException("Not implemented");
+		throw new MethodNotImplementedException();
 	}
 
 	protected void doStore() {

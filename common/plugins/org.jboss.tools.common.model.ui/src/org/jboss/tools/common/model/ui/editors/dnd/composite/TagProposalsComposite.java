@@ -26,9 +26,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.editors.dnd.*;
+import org.jboss.tools.common.model.ui.editors.dnd.IDropWizardModel;
+import org.jboss.tools.common.model.ui.editors.dnd.ITagProposalFactory;
+import org.jboss.tools.common.model.ui.editors.dnd.TagProposal;
 
 public class TagProposalsComposite extends Composite {
 	
@@ -90,21 +90,16 @@ public class TagProposalsComposite extends Composite {
 		tableTreeViewer.addCheckStateListener(
 			new ICheckStateListener() {
 				public void checkStateChanged(CheckStateChangedEvent event) {
-					try {
-						TagProposal proposal = (TagProposal) event.getElement();
-						if (event.getChecked()) {
-							if(selection!=IDropWizardModel.UNDEFINED_TAG_PROPOSAL) {
-								tableTreeViewer.setChecked(selection, false);								
-							}
-							selection = proposal;
-						} else {
-							selection = IDropWizardModel.UNDEFINED_TAG_PROPOSAL;
+					TagProposal proposal = (TagProposal) event.getElement();
+					if (event.getChecked()) {
+						if(selection!=IDropWizardModel.UNDEFINED_TAG_PROPOSAL) {
+							tableTreeViewer.setChecked(selection, false);								
 						}
-						fModel.setTagProposal(selection);					
-					} catch (Exception e) {
-//						VpePlugin.reportProblem(e);
-						ModelUIPlugin.getPluginLog().logError(e);
+						selection = proposal;
+					} else {
+						selection = IDropWizardModel.UNDEFINED_TAG_PROPOSAL;
 					}
+					fModel.setTagProposal(selection);					
 				}
 			}
 		);		
@@ -143,7 +138,7 @@ public class TagProposalsComposite extends Composite {
 						case TAG_URI_INDEX:
 							return prop.getUri();
 					}
-					throw new RuntimeException("Wrong column index for LabelProvider");
+					throw new IllegalArgumentException("Wrong column index for LabelProvider");
 				}
 	
 				public void addListener(ILabelProviderListener listener) {

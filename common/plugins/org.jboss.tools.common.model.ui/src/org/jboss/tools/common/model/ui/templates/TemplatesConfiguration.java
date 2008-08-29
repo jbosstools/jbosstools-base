@@ -49,16 +49,12 @@ public class TemplatesConfiguration extends StructuredTextViewerConfigurationXML
 				}	
 			}
 			public void customizeDocumentCommand(IDocument d, DocumentCommand c) {
-				try {
-					if (c instanceof DocumentCommand) {
-						DocumentCommand structuredDocumentCommand = (DocumentCommand)c;
-						if (structuredDocumentCommand.length == 0 && structuredDocumentCommand.text != null && TextUtilities.endsWith(d.getLegalLineDelimiters(), structuredDocumentCommand.text) != -1) {
-							_autoIndentAfterNewLine(d, structuredDocumentCommand);
-							return;
-						}
+				if (c instanceof DocumentCommand) {
+					DocumentCommand structuredDocumentCommand = (DocumentCommand)c;
+					if (structuredDocumentCommand.length == 0 && structuredDocumentCommand.text != null && TextUtilities.endsWith(d.getLegalLineDelimiters(), structuredDocumentCommand.text) != -1) {
+						_autoIndentAfterNewLine(d, structuredDocumentCommand);
+						return;
 					}
-				} catch (Exception x) {
-					ModelUIPlugin.getPluginLog().logError("Error in customizing document command", x);
 				}
 				super.customizeDocumentCommand(d, c);
 			}

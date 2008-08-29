@@ -10,10 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.propertieseditor;
 
-import org.jboss.tools.common.editor.*;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.propertieseditor.text.*;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.ui.PartInitException;
+import org.jboss.tools.common.editor.AbstractSelectionProvider;
+import org.jboss.tools.common.editor.ObjectMultiPageEditor;
+import org.jboss.tools.common.editor.ObjectTextEditor;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.propertieseditor.text.PropertiesTextEditor;
 
 public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
     protected PropertiesEditor propertiesEditor;
@@ -36,7 +39,7 @@ public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
 		try {
 			propertiesEditor.init(getEditorSite(), getEditorInput());
 			index = addPage(propertiesEditor, getEditorInput());
-		} catch (Exception e) {
+		} catch (PartInitException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 			return;
 		}

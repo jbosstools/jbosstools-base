@@ -10,28 +10,41 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.propertieseditor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.ui.*;
-import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.texteditor.*;
-
-import org.jboss.tools.common.meta.action.XAction;
-import org.jboss.tools.common.meta.action.XActionInvoker;
-import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.model.util.*;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-//import org.jboss.tools.common.core.jdt.Messages;
-import org.jboss.tools.common.model.ui.action.*;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
-import org.eclipse.jface.viewers.*;
-import org.jboss.tools.common.model.ui.objecteditor.*;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IPropertyListener;
+import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.ui.texteditor.ITextEditorActionConstants;
+import org.jboss.tools.common.meta.action.XAction;
+import org.jboss.tools.common.meta.action.XActionInvoker;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.action.CommandBar;
+import org.jboss.tools.common.model.ui.action.XMenuInvoker;
+import org.jboss.tools.common.model.ui.objecteditor.XChildrenEditor;
 import org.jboss.tools.common.model.ui.texteditors.TextActionHelper;
+import org.jboss.tools.common.model.util.AbstractTableHelper;
 
 public class PropertiesEditor extends XChildrenEditor implements ITextEditor, ITextOperationTarget {
 	private ArrayList<String> actionMapping = new ArrayList<String>();
@@ -175,12 +188,8 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	public void removePropertyListener(IPropertyListener listener) {}
 
 	public void setFocus() {
-		try {
-			if(xtable == null || !xtable.isActive()) return;
-			xtable.getTable().setFocus();
-		} catch(Exception e) {
-			//ignore
-		}
+		if(xtable == null || !xtable.isActive()) return;
+		xtable.getTable().setFocus();
 	}
 
 	public Object getAdapter(Class adapter) {
@@ -216,7 +225,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 
 	public void doOperation(int operation) {
 		if (operation>actionMapping.size()) {
-			ModelUIPlugin.getPluginLog().logError(new RuntimeException("Can not find global action with index: "+operation));
+			ModelUIPlugin.getPluginLog().logError(new IllegalArgumentException("Can not find global action with index: "+operation));
 		} else {
 			String globalAction = (String)actionMapping.get(operation);
 			doGlobalAction(globalAction);

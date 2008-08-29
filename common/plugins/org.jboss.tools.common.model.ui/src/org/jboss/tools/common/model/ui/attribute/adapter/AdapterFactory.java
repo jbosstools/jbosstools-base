@@ -39,12 +39,15 @@ public class AdapterFactory {
 	}
 	
 	public static IModelPropertyEditorAdapter getAdapter(XAttribute attribute, XModelObject modelObject, XAttributeData attributeData, XModel model) {
-		IModelPropertyEditorAdapter adapter;
-		try {
-			adapter = (IModelPropertyEditorAdapter)getAdapterClass(attribute).newInstance();
-		} catch (Exception e) {
-			adapter = new DefaultValueAdapter(); 
-		}
+		IModelPropertyEditorAdapter adapter =  new DefaultValueAdapter();;
+			try {
+				adapter = (IModelPropertyEditorAdapter)getAdapterClass(attribute).newInstance();
+			} catch (InstantiationException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			} catch (IllegalAccessException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			}
+
 		if (model == null && modelObject != null) model = modelObject.getModel();
 		adapter.setModel(model);
 		adapter.setAttribute(attribute);

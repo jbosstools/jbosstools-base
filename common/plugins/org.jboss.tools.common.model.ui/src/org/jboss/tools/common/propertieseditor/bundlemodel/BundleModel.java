@@ -16,7 +16,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -127,7 +133,7 @@ public class BundleModel {
 		IResource[] rs = new IResource[0];
 		try { 
 			rs = main.getParent().members();
-		} catch (Exception e) {
+		} catch (CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		for (int i = 0; i < rs.length; i++) {
@@ -264,7 +270,7 @@ public class BundleModel {
 			try {
 				 if(f.exists()) f.setContents(is, true, true, null);
 				 else f.create(is, true, null);
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
 		}

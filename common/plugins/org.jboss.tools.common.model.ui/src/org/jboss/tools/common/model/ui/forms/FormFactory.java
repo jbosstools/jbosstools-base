@@ -11,9 +11,8 @@
 package org.jboss.tools.common.model.ui.forms;
 
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.forms.IForm;
+import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 /**
  * @author Igels
@@ -42,7 +41,9 @@ public class FormFactory extends XModelObjectFormFactory {
     	IForm form = null;
 		try {
 			form = (IForm)formClass.newInstance();
-		} catch(Exception e) {
+		} catch (InstantiationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} catch (IllegalAccessException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		return form;

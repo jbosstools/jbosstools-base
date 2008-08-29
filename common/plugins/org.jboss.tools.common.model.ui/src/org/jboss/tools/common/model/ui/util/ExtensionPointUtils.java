@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.util;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.INewWizard;
@@ -23,7 +24,7 @@ public class ExtensionPointUtils {
 		Platform.getBundle(pluginId);
 		try	{
 			return (INewWizard)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.newWizards", wizardId);
-		} catch (Exception ex) {
+		} catch (CoreException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return null;
@@ -33,7 +34,7 @@ public class ExtensionPointUtils {
 		Platform.getBundle(pluginId);
 		try	{
 			return (IImportWizard)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.importWizards", wizardId);
-		} catch (Exception ex) {
+		} catch (CoreException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return null;
@@ -44,7 +45,7 @@ public class ExtensionPointUtils {
 		Platform.getBundle(pluginId);
 		try	{
 			return (IObjectActionDelegate)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.popupMenus", actionId);
-		} catch (Exception ex) {
+		} catch (CoreException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return null;
