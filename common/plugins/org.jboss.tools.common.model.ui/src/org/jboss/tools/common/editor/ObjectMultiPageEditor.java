@@ -837,6 +837,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	}
 
 	protected void pageChange(int newPageIndex) {
+		deactivateSite(false, false);
 		selectedPageIndex = newPageIndex;
 		Control control = getControl(newPageIndex);
 		if (control != null) {
@@ -854,6 +855,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		if(postponedTextSelection.selected != null) {
 			Display.getDefault().asyncExec(postponedTextSelection);
 		}
+		activateSite();
 	}
 	
 	protected void updateSelectionProvider() {

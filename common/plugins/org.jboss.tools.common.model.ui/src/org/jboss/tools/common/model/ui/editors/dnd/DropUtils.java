@@ -117,6 +117,12 @@ public class DropUtils {
 			}
 		} catch (KbException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
+		} catch (InstantiationException ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
+		} catch (IllegalAccessException ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
+		} catch (ClassNotFoundException ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		if(attributes==null)return new AttributeDescriptorValue[0]; 
 		List<AttributeDescriptorValue> attributesValues = new ArrayList<AttributeDescriptorValue>();
@@ -145,6 +151,12 @@ public class DropUtils {
 			wtpKbConnector.registerResource(new KbTldResource(uri, "", tagPrefix, version), true);							
 			tagInfo = wtpKbConnector.getTagInformation("/"+(tagPrefix==TagProposal.EMPTY_PREFIX?"":tagPrefix+":")+tagName);
 		} catch (KbException ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
+		} catch (InstantiationException ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
+		} catch (IllegalAccessException ex) {
+			ModelUIPlugin.getPluginLog().logError(ex);
+		} catch (ClassNotFoundException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}
 		return tagInfo;
