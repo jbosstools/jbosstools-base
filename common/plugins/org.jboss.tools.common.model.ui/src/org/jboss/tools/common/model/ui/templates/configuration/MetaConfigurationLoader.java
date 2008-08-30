@@ -166,13 +166,22 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 		if (path!=null) {
 			File propertiesFile = path.toFile();
 			if (propertiesFile.exists() && propertiesFile.canRead()) {
+				InputStream is = null;
 				try {
-					InputStream is = new FileInputStream(propertiesFile);
+					is = new FileInputStream(propertiesFile);
 					properties = new PropertyResourceBundle(is);
 				} catch (FileNotFoundException e) {
 					ModelUIPlugin.getPluginLog().logError(e);
 				} catch (IOException e) {
 					ModelUIPlugin.getPluginLog().logError(e);
+				} finally {
+					if (is != null) {
+						try {
+							is.close();
+						} catch (IOException e) {
+							// ignore
+						}
+					}
 				}
 			}
 		}

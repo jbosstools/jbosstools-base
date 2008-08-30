@@ -273,8 +273,9 @@ public class DocumentGenerator {
 
     protected void replace() {
         StringBuffer sb = new StringBuffer();
+        BufferedReader br = null;
         try {
-            BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
+            br = new BufferedReader(new FileReader(new File(filename)));
             char[] b = new char[256];
             int i = 0;
             while((i = br.read(b, 0, 256)) > 0) {
@@ -282,7 +283,15 @@ public class DocumentGenerator {
             }
         } catch (IOException e) {
         	ModelPlugin.getPluginLog().logError(e);
-        }
+        }  finally {
+    		try {
+    			if(br!=null) {
+    				br.close();
+    			}
+    		} catch (IOException e) {
+    			// ignore
+    		}
+    	}
         int i = 0;
         while(i < sb.length()) {
             if(sb.charAt(i) == '&') sb.replace(i + 1, i + 5, "");

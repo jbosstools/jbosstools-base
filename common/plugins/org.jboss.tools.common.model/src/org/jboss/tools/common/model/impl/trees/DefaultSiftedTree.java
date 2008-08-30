@@ -10,7 +10,10 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.impl.trees;
 
-import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.MethodNotImplementedException;
+import org.jboss.tools.common.model.XFilteredTree;
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelObject;
 
 public abstract class DefaultSiftedTree implements XFilteredTree {
 
@@ -38,17 +41,17 @@ public abstract class DefaultSiftedTree implements XFilteredTree {
     }
 
     public boolean isSelectable(XModelObject object) {
-        throw new RuntimeException("Not implemented");
+        throw new MethodNotImplementedException("Not implemented");
     }
 
     public String getValue(XModelObject object) {
-        throw new RuntimeException("Not implemented");
+        throw new MethodNotImplementedException("Not implemented");
     }
 
     public void setConstraint(Object object) {}
 
     public XModelObject find(String value) {
-        throw new RuntimeException("Not implemented");
+        throw new MethodNotImplementedException("Not implemented");
     }
 
     public XModelObject getParent(XModelObject object) {

@@ -6,8 +6,8 @@
 
 package org.jboss.tools.common.verification.vrules.model;
 
-import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.model.impl.trees.*;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.impl.trees.DefaultSiftedTree;
 
 /**
  *
@@ -29,7 +29,7 @@ public class VRulesTree extends DefaultSiftedTree {
         VManagerModel man = (VManagerModel)prjs[0];
         if (!man.developer && first) {
             // bad luck :)
-            throw new RuntimeException("Members only");
+            throw new IllegalStateException("Members only");
         }
         first = false;
         return man;

@@ -93,7 +93,18 @@ public class KbTldConvertor implements KbSchemaConvertor {
 			}
 			return null;
 		}
-		Document doc = convertToSchema(is, attributes, tldResource.isJsfResource());
+		Document doc = null;
+		try {
+		 doc = convertToSchema(is, attributes, tldResource.isJsfResource());
+		} finally {
+			if(is!=null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
+		}
 		String tldContent = tldResource.getTldContent();
 		if(doc!=null && tldContent!=null) {
 			Element tldContentElement = doc.createElement(SchemaNodeFactory.TLD_CONTENT_NODE);
@@ -108,11 +119,21 @@ public class KbTldConvertor implements KbSchemaConvertor {
 	 * @see org.jboss.tools.common.kb.KbSchemaConvertor#convertToSchema(java.io.File)
 	 */
 	public Document convertToSchema(File tldFile) {
+		BufferedInputStream bis = null;
 		try {
-			return convertToSchema(new BufferedInputStream(new FileInputStream(tldFile)), new Properties(), false);
+			bis = new BufferedInputStream(new FileInputStream(tldFile));
+			return convertToSchema(bis, new Properties(), false);
 		} catch (FileNotFoundException e) {
 			KbPlugin.getPluginLog().logError(e);
 			return null;
+		} finally {
+			if(bis!=null) {
+				try {
+					bis.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
 		}
 	}
 

@@ -38,12 +38,13 @@ public class XMLEntityResolverImpl implements XMLEntityResolver {
         XMLInputSource result = null;
         String systemId = null;
         String publicId = null;
+        InputStream is = null;
         try {
             DtdResolver resolver = new DtdResolver();
             systemId = rid.getBaseSystemId()==null?rid.getLiteralSystemId():rid.getExpandedSystemId();
             publicId = rid.getPublicId();
         	
-            InputStream is = resolver.getInputStream(rid.getPublicId(), systemId);
+            is = resolver.getInputStream(rid.getPublicId(), systemId);
             if(is!=null) {
                 result = new XMLInputSource(rid.getPublicId(), systemId, rid.getBaseSystemId(), is, null);
             }

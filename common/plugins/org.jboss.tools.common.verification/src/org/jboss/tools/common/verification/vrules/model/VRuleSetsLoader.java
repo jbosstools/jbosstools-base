@@ -5,18 +5,22 @@
 
 package org.jboss.tools.common.verification.vrules.model;
 
-import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.model.options.PreferenceModelUtilities;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.*;
-import org.jboss.tools.common.model.engines.impl.EnginesLoader;
-import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
-
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.engines.impl.EnginesLoader;
+import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.util.XMLUtil;
+import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
 import org.w3c.dom.Element;
 
 /**

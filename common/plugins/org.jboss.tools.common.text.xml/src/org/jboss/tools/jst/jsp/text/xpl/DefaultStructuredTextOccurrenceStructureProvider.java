@@ -56,17 +56,17 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMText;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import org.jboss.tools.common.text.xml.XmlEditorPlugin;
 import org.jboss.tools.common.text.xml.ui.xpl.ISelectionListenerWithSM;
 import org.jboss.tools.common.text.xml.ui.xpl.SelectionListenerWithSMManager;
 import org.jboss.tools.common.text.xml.ui.xpl.UIMessages;
 import org.jboss.tools.jst.jsp.preferences.xpl.PreferenceKeyGenerator;
 import org.jboss.tools.jst.jsp.preferences.xpl.XMLOccurrencePreferenceConstants;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Jeremy
@@ -353,7 +353,6 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 	 * @see com.ibm.sse.editor.ui.text.IStructuredTextOccurenceStructureProvider#install(org.eclipse.ui.texteditor.ITextEditor, org.eclipse.jface.text.source.projection.ProjectionViewer)
 	 */
 	public void install(StructuredTextEditor editor, ProjectionViewer viewer) {
-		// TODO Auto-generated method stub
 		this.fEditor = editor;
 		this.fViewer = viewer;
 		
@@ -368,7 +367,6 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 	 * @see com.ibm.sse.editor.ui.text.IStructuredTextOccurenceStructureProvider#uninstall()
 	 */
 	public void uninstall() {
-		// TODO Auto-generated method stub
 		// cancel possible running computation
 		fMarkOccurrenceAnnotations= false;
 		uninstallOccurrencesFinder();
@@ -380,43 +378,37 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 	 * @see com.ibm.sse.editor.ui.text.IStructuredTextOccurenceStructureProvider#initialize()
 	 */
 	public void initialize() {
-		// Initialize preferences
-		try {
-			fPreferenceStore.addPropertyChangeListener(fPropertyChangeListener);
+		fPreferenceStore.addPropertyChangeListener(fPropertyChangeListener);
 
-			fMarkOccurrenceAnnotations = fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey(
-					XMLOccurrencePreferenceConstants.EDITOR_MARK_OCCURRENCES,
-					fEditorID));
+		fMarkOccurrenceAnnotations = fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey(
+				XMLOccurrencePreferenceConstants.EDITOR_MARK_OCCURRENCES,
+				fEditorID));
 
-			fMarkNodeOccurrences = 
-				fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey(
-					XMLOccurrencePreferenceConstants.EDITOR_MARK_NODE_OCCURRENCES,
-					fEditorID));
+		fMarkNodeOccurrences = 
+			fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey(
+				XMLOccurrencePreferenceConstants.EDITOR_MARK_NODE_OCCURRENCES,
+				fEditorID));
 
-			
-			fMarkAttributeOccurrences = 
-				fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey(
-					XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_OCCURRENCES,
-					fEditorID));
+		
+		fMarkAttributeOccurrences = 
+			fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey(
+				XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_OCCURRENCES,
+				fEditorID));
 
-			fMarkAttributeValueOccurrences = 
-				fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey(
-					XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_VALUE_OCCURRENCES,
-					fEditorID)); 
+		fMarkAttributeValueOccurrences = 
+			fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey(
+				XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_VALUE_OCCURRENCES,
+				fEditorID)); 
 
-			fMarkTextOccurrences =
-				fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey(
-					XMLOccurrencePreferenceConstants.EDITOR_MARK_TEXT_OCCURRENCES,
-					fEditorID));
+		fMarkTextOccurrences =
+			fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey(
+				XMLOccurrencePreferenceConstants.EDITOR_MARK_TEXT_OCCURRENCES,
+				fEditorID));
 
-			fStickyOccurrenceAnnotations = 
-				fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey( 
-					XMLOccurrencePreferenceConstants.EDITOR_STICKY_OCCURRENCES,
-					fEditorID));
-			
-		} catch (Exception x) {
-			XmlEditorPlugin.getPluginLog().logError(x);
-		}
+		fStickyOccurrenceAnnotations = 
+			fPreferenceStore.getBoolean(PreferenceKeyGenerator.generateKey( 
+				XMLOccurrencePreferenceConstants.EDITOR_STICKY_OCCURRENCES,
+				fEditorID));
 	}
 	
 	ProjectionViewer getSourceViewer() {
@@ -512,18 +504,15 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 		Document dom = (model instanceof IDOMModel) ? ((IDOMModel) model).getDocument() : null;
 
 		List matches = findMatches(dom, model, selection);
-//		System.out.println("Matches size = " + (matches == null || matches.size() == 0 ? 0 : matches.size()));
 		if (matches == null || matches.size() == 0) {
 			if (!fStickyOccurrenceAnnotations)
 				removeOccurrenceAnnotations();
 			return;
 		}
 		
-//		Position[] positions= new Position[matches.size()];
 		List positionsList = new ArrayList();
 		int i= 0;
 		for (Iterator each= matches.iterator(); each.hasNext();) {
-//			ASTNode currentNode= (ASTNode)each.next();
 			Object current = each.next();
 			if (current instanceof IDOMElement) {
 				IDOMElement currentNode = (IDOMElement)current;
@@ -539,24 +528,17 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 					positionsList.add(new Position(start, end - start));
 				}
 				
-//				positions[i++]= new Position(currentNode.getStartOffset(), currentNode.getEndOffset() - currentNode.getStartOffset());
 			} else if (current instanceof ITextRegion) {
 				ITextRegion currentRegion = (ITextRegion)current;
 				positionsList.add(new Position(currentRegion.getStart(), currentRegion.getLength()));
-//				positions[i++]= new Position(currentRegion.getStart(), currentRegion.getLength());
 			} else if (current instanceof Position) {
 				Position currentPosition = (Position)current;
 				positionsList.add(new Position(currentPosition.getOffset(), currentPosition.getLength()));
-//				positions[i++]= new Position(currentPosition.getOffset(), currentPosition.getLength());
 			}
 		}
 		if (positionsList.size() == 0) return;
-//		removeOccurrenceAnnotations();
 		fOccurrencesFinderJob= new OccurrencesFinderJob(document, 
 				(Position[])positionsList.toArray(new Position[positionsList.size()]), selection);
-		//fOccurrencesFinderJob.setPriority(Job.DECORATE);
-		//fOccurrencesFinderJob.setSystem(true);
-		//fOccurrencesFinderJob.schedule();
 		fOccurrencesFinderJob.run(new NullProgressMonitor());
 	}
 
@@ -584,7 +566,7 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 				IDOMText xmlText = (IDOMText)region;
 				return findTextMatches(dom, xmlText.getData().trim());
 			}
-		} catch (Exception x) {
+		} catch (DOMException x) {
 			XmlEditorPlugin.getPluginLog().logError(x);
 		}
 		return new ArrayList();
@@ -596,12 +578,9 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 		if (fMarkNodeOccurrences) {
 			NodeList children = (NodeContainer)dom.getChildNodes();
 			for (int i = 0; children != null && i < children.getLength(); i++) {
-				if(!(children.item(i) instanceof IDOMNode)) continue;
-				try {
+				if(children.item(i) instanceof IDOMNode) {
 					IDOMNode xmlNode = (IDOMNode)children.item(i);
 					addTagOccurencies(matches, xmlNode, tagName);
-				} catch (Exception x) {
-					XmlEditorPlugin.getPluginLog().logError(x);
 				}
 			}
 		}
@@ -629,12 +608,9 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 		if (fMarkAttributeOccurrences) {
 			NodeList children = (NodeContainer)dom.getChildNodes();
 			for (int i = 0; children != null && i < children.getLength(); i++) {
-				if(!(children.item(i) instanceof IDOMNode)) continue;
-				try {
+				if(children.item(i) instanceof IDOMNode) {
 					IDOMNode xmlNode = (IDOMNode)children.item(i);
 					addTagAttrNameOccurencies(matches, xmlNode, attrName);
-				} catch (Exception x) {
-					XmlEditorPlugin.getPluginLog().logError(x);
 				}
 			}
 		}
@@ -666,12 +642,9 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 		if (fMarkAttributeValueOccurrences) {
 			NodeList children = (NodeContainer)dom.getChildNodes();
 			for (int i = 0; children != null && i < children.getLength(); i++) {
-				if(!(children.item(i) instanceof IDOMNode)) continue;
-				try {
+				if(children.item(i) instanceof IDOMNode) {
 					IDOMNode xmlNode = (IDOMNode)children.item(i);
 					addTagAttrValueOccurencies(matches, xmlNode, attrValue);
-				} catch (Exception x) {
-					XmlEditorPlugin.getPluginLog().logError(x);
 				}
 			}
 		}
@@ -704,12 +677,9 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 		if (fMarkTextOccurrences && !isEmptyString (data)) { 
 			NodeList children = (NodeContainer)dom.getChildNodes();
 			for (int i = 0; children != null && i < children.getLength(); i++) {
-				if(!(children.item(i) instanceof IDOMNode)) continue;
-				try {
+				if (children.item(i) instanceof IDOMNode) {
 					IDOMNode xmlNode = (IDOMNode)children.item(i);
 					addTextOccurencies(matches, xmlNode, data);
-				} catch (Exception x) {
-					XmlEditorPlugin.getPluginLog().logError(x);
 				}
 			}
 		}
@@ -717,8 +687,7 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 	}
 	
 	private boolean isEmptyString(String str) {
-		if (str == null || str.trim().length() == 0) return true;
-		return false;
+		return str == null || str.trim().length() == 0;
 	}
 	
 	private void addTextOccurencies(List matches, IDOMNode xmlNode, String data) {
@@ -728,7 +697,6 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 				IDOMText xmlText = (IDOMText)xmlNode;
 				String xmlData = xmlText.getData();
 				if (xmlData != null && xmlData.indexOf(data) != -1) {
-//					matches.add(xmlText);
 					matches.add(
 						new Position(
 							xmlText.getStartOffset() + xmlData.indexOf(data), data.length()));
@@ -742,17 +710,7 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 	}	
 
 	private boolean getEventNewBooleanValue(PropertyChangeEvent event) {
-		boolean newValue = false;
-		if (event.getNewValue() instanceof Boolean)
-			newValue = ((Boolean) event.getNewValue()).booleanValue();
-		else if (event.getNewValue() instanceof String) {
-			String s= (String) event.getNewValue();
-			if (IPreferenceStore.TRUE.equals(s))
-				newValue= true;
-			else if (IPreferenceStore.FALSE.equals(s))
-				newValue= false;
-		}
-		return newValue;
+		return Boolean.getBoolean(event.getNewValue().toString());
 	}
 
 	/*
@@ -760,32 +718,25 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 	 */
 	public void handlePreferenceStoreChanged(PropertyChangeEvent event) {
 		
-		try {			
-			ISourceViewer sourceViewer= getSourceViewer();
-			if (sourceViewer == null)
-				return;
-				
+		ISourceViewer sourceViewer= getSourceViewer();
+		if (getSourceViewer() != null) {
 			String property= event.getProperty();	
 			if (PreferenceKeyGenerator.generateKey(
 					XMLOccurrencePreferenceConstants.EDITOR_MARK_OCCURRENCES,
 					fEditorID).equals(property)) {
-//				System.out.println("Preference changed: " + property);
 				boolean markOccurrences = getEventNewBooleanValue(event);
 				if (markOccurrences != fMarkOccurrenceAnnotations) {
 					fMarkOccurrenceAnnotations= markOccurrences;
-
-					if (!fMarkOccurrenceAnnotations)
+	
+					if (!fMarkOccurrenceAnnotations) {
 						uninstallOccurrencesFinder();
-					else
+					} else {
 						installOccurrencesFinder();
+					}
 				}
-
-				return;
-			}
-			if (PreferenceKeyGenerator.generateKey(
+			} else if (PreferenceKeyGenerator.generateKey(
 					XMLOccurrencePreferenceConstants.EDITOR_OCCURRENCE_PROVIDER,
 					fEditorID).equals(property)) {
-//				System.out.println("Preference changed: " + property);
 				if (event.getNewValue() instanceof String) {
 					String occurrenceProvider= (String)event.getNewValue();
 					if (occurrenceProvider != fOccurrenceProvider) {
@@ -796,52 +747,27 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 						}
 					}
 				}
-				return;
-			}
-			if (PreferenceKeyGenerator.generateKey(
+			} else if (PreferenceKeyGenerator.generateKey(
 					XMLOccurrencePreferenceConstants.EDITOR_MARK_NODE_OCCURRENCES,
 					fEditorID).equals(property)) {
-//				System.out.println("Preference changed: " + property);
 				fMarkNodeOccurrences= getEventNewBooleanValue(event);
-
-				return;
-			}
-			if (PreferenceKeyGenerator.generateKey(
+			} else if (PreferenceKeyGenerator.generateKey(
 					XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_OCCURRENCES,
 					fEditorID).equals(property)) {
-//				System.out.println("Preference changed: " + property);
 				fMarkAttributeOccurrences= getEventNewBooleanValue(event);
-
-				return;
-			}
-			if (PreferenceKeyGenerator.generateKey(
+			} else if (PreferenceKeyGenerator.generateKey(
 					XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_VALUE_OCCURRENCES,
 					fEditorID).equals(property)) {
-//				System.out.println("Preference changed: " + property);
 				fMarkAttributeValueOccurrences= getEventNewBooleanValue(event);
-
-				return;
-			}
-			if (PreferenceKeyGenerator.generateKey(
+			} else if (PreferenceKeyGenerator.generateKey(
 					XMLOccurrencePreferenceConstants.EDITOR_MARK_TEXT_OCCURRENCES,
 					fEditorID).equals(property)) {
-//				System.out.println("Preference changed: " + property);
 					fMarkAttributeValueOccurrences= getEventNewBooleanValue(event);
-
-				return;
-			}
-			
-			if (PreferenceKeyGenerator.generateKey(
+			} else if (PreferenceKeyGenerator.generateKey(
 					XMLOccurrencePreferenceConstants.EDITOR_STICKY_OCCURRENCES,
 					fEditorID).equals(property)) {
-//				System.out.println("Preference changed: " + property);
 				fStickyOccurrenceAnnotations= getEventNewBooleanValue(event);
-
-				return;
 			}
-
-		} catch (Exception x) {
-			XmlEditorPlugin.getPluginLog().logError("", x);
 		}
 	}
 

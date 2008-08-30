@@ -8,7 +8,11 @@ package org.jboss.tools.common.verification.vrules.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.RegularObjectImpl;
 import org.jboss.tools.common.model.plugin.ModelPlugin;

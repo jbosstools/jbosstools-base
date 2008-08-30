@@ -55,8 +55,9 @@ public class XStudioIcons implements ImageComponent {
         File f = new File(filename);
         if(!f.isFile()) return new byte[0];
         byte[] b = null;
+        FileInputStream fr = null;
         try {
-            FileInputStream fr = new FileInputStream(f);
+            fr = new FileInputStream(f);
             int length = fr.available();
             b = new byte[length];
             int i = 0;
@@ -65,6 +66,14 @@ public class XStudioIcons implements ImageComponent {
             }
         } catch (IOException e) {
             b = new byte[0];
+        } finally {
+        	if(fr != null) {
+        		try {
+					fr.close();
+				} catch (IOException e) {
+					// ignore
+				}
+        	}
         }
         return b;
     }

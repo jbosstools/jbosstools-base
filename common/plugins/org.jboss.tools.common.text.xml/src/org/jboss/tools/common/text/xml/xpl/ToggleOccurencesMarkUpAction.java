@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.jboss.tools.common.text.xml.xpl;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,7 +25,6 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.TextEditorAction;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
-
 import org.jboss.tools.common.text.xml.IOccurrencePreferenceProvider;
 import org.jboss.tools.common.text.xml.XmlEditorPlugin;
 import org.jboss.tools.jst.jsp.preferences.xpl.Messages;
@@ -56,20 +56,16 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 	 */
 	public void setEditor(ITextEditor editor) {
 		super.setEditor(editor);
-		try {
-			fOccurrencePreferenceProvider = null;
-			StructuredTextEditor sse = getStructuredTextEditor(getTextEditor());
-			if (sse != null && sse instanceof IOccurrencePreferenceProvider) {
-				fOccurrencePreferenceProvider = (IOccurrencePreferenceProvider)sse;
-				if (fOccurrencePreferenceProvider != null) {
-					fEditorId = fOccurrencePreferenceProvider.getOccurrencePreferenceProvider().getEditorId();
-					fKey = PreferenceKeyGenerator.generateKey(
-							OccurrencePreferenceConstants.EDITOR_MARK_OCCURRENCES,
-							fEditorId);
-				}
+		fOccurrencePreferenceProvider = null;
+		StructuredTextEditor sse = getStructuredTextEditor(getTextEditor());
+		if (sse != null && sse instanceof IOccurrencePreferenceProvider) {
+			fOccurrencePreferenceProvider = (IOccurrencePreferenceProvider)sse;
+			if (fOccurrencePreferenceProvider != null) {
+				fEditorId = fOccurrencePreferenceProvider.getOccurrencePreferenceProvider().getEditorId();
+				fKey = PreferenceKeyGenerator.generateKey(
+						OccurrencePreferenceConstants.EDITOR_MARK_OCCURRENCES,
+						fEditorId);
 			}
-		} catch (Exception x) {
-			XmlEditorPlugin.getPluginLog().logError(x);
 		}
 		update();
 	}
@@ -125,13 +121,9 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 
 	public void run() {
 		boolean markOccurences = false;
-		try {	
-			// determine if action should be enabled or not
-			markOccurences = fPreferenceStore.getBoolean(fKey);
-			fPreferenceStore.setValue(fKey, !markOccurences);
-		} catch (Exception x) {
-			//ignore
-		}
+		// determine if action should be enabled or not
+		markOccurences = fPreferenceStore.getBoolean(fKey);
+		fPreferenceStore.setValue(fKey, !markOccurences);
 	}
 
 	/**
@@ -140,19 +132,14 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 	 */
 	public void update() {
 		IPreferenceStore newStore = null;
-		
-		try {
-			super.update();
-			newStore = (fOccurrencePreferenceProvider == null ? null : fOccurrencePreferenceProvider.getOccurrencePreferenceProvider().getPreferenceStore());
-			if (newStore != fPreferenceStore) {
-				if (fPreferenceStore != null) 
-					fPreferenceStore.removePropertyChangeListener(this);
-				fPreferenceStore = newStore;
-				if (fPreferenceStore != null) 
-					fPreferenceStore.addPropertyChangeListener(this);
-			}
-		} catch (Exception x) {
-			//ignore
+		super.update();
+		newStore = (fOccurrencePreferenceProvider == null ? null : fOccurrencePreferenceProvider.getOccurrencePreferenceProvider().getPreferenceStore());
+		if (newStore != fPreferenceStore) {
+			if (fPreferenceStore != null) 
+				fPreferenceStore.removePropertyChangeListener(this);
+			fPreferenceStore = newStore;
+			if (fPreferenceStore != null) 
+				fPreferenceStore.addPropertyChangeListener(this);
 		}
 			
 		boolean markOccurences = false;
@@ -183,7 +170,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		URL base = null;
 		try {
 			base = FileLocator.resolve(XmlEditorPlugin.getDefault().getBundle().getEntry("/"));
-		} catch (Exception e) {
+		} catch (IOException e) {
 			XmlEditorPlugin.getPluginLog().logError(e);
 			return null;
 		}

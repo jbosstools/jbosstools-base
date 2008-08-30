@@ -6,10 +6,13 @@
 
 package org.jboss.tools.common.verification.vrules.model;
 
-import org.jboss.tools.common.verification.vrules.*;
-import org.jboss.tools.common.model.impl.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import org.jboss.tools.common.model.impl.RegularObjectImpl;
+import org.jboss.tools.common.verification.vrules.VMessageFormat;
+import org.jboss.tools.common.verification.vrules.VResultTemplate;
+import org.jboss.tools.common.verification.vrules.VRule;
 
 /**
  *

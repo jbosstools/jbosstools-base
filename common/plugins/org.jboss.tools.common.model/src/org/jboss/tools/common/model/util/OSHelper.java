@@ -19,6 +19,7 @@ package org.jboss.tools.common.model.util;
  * @version 1.0
  */
 
+import java.io.IOException;
 import java.util.*;
 
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -88,6 +89,14 @@ public class OSHelper {
       }
     } catch (java.io.IOException e) {
     	ModelPlugin.getPluginLog().logError(e);
+    } finally {
+    	if(br!=null) {
+    		try {
+				br.close();
+			} catch (IOException e) {
+				// ignore
+			}
+    	}
     }
     return envVars;
   }

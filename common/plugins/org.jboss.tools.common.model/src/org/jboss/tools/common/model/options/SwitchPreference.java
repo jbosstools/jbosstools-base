@@ -6,7 +6,11 @@
  */
 package org.jboss.tools.common.model.options;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.List;
 
 import org.jboss.tools.common.model.XModelException;
 
@@ -47,7 +51,7 @@ public class SwitchPreference extends Preference {
 	}
 
 	public void setValue(String value) throws XModelException {
-		if(switchPreference==null) throw new NullPointerException("switchPreference cannot be null, call setSwitchPreferenceFirst.");
+		if(switchPreference==null) throw new IllegalStateException("switchPreference cannot be null, call setSwitchPreferenceFirst.");
 		Preference preference = (Preference)preferencesMap.get(switchPreference.getValue());
 		if(preference==null) throw new IllegalStateException("Preference in't added for switch value '" + switchPreference.getValue() + "'"); 
 		preference.setValue(value);

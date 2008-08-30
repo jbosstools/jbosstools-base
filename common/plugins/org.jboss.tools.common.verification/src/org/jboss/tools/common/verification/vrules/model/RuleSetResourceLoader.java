@@ -28,8 +28,7 @@ public class RuleSetResourceLoader {
 			IConfigurationElement[] elements = es[i].getConfigurationElements();
 			for (int j = 0; j < elements.length; j++) {
 				String path = elements[j].getAttribute("path");
-				if(path == null) continue;
-				try {
+				if(path != null) {
 					URL url = bundle.getResource(path);
 					if(url != null) {
 						resources.add(url);
@@ -37,10 +36,6 @@ public class RuleSetResourceLoader {
 						if(ModelPlugin.isDebugEnabled()) {
 							VerificationPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found.");
 						}
-					}
-				} catch (Exception e) {
-					if(ModelPlugin.isDebugEnabled()) {
-						VerificationPlugin.getPluginLog().logError("Warning: meta resource " + path + " not found.");
 					}
 				}
 			}

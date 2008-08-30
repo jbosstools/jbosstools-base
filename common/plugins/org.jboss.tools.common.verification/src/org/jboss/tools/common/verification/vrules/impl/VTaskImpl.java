@@ -117,9 +117,7 @@ public class VTaskImpl implements VTask, Runnable {
                     VResult[] results = action.check(object);
                     notifyApplied(rule, object, results);
                 } catch (Exception e) {
-                	if(VerificationPlugin.isDebugEnabled()) {
                 		VerificationPlugin.getPluginLog().logError("Exception in action "+action+" ignored: "+e, e);
-                	}
                 }
                 checked = true;
                 if (checkChildren) break;
@@ -152,9 +150,7 @@ public class VTaskImpl implements VTask, Runnable {
     }
     
     private void logListener(VTaskListener listener, Throwable e) { 
-		if(VerificationPlugin.isDebugEnabled()) {
-			VerificationPlugin.getPluginLog().logInfo("Exception in listener "+listener+" ignored: "+e, e);
-		}
+		VerificationPlugin.getPluginLog().logInfo("Exception in listener "+listener+" ignored: "+e, e);
     }
 
     private void notifyApplied(VRule rule, VObject object, VResult[] results) {

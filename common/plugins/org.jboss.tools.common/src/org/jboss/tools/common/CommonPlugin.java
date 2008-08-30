@@ -70,13 +70,15 @@ public class CommonPlugin extends BasePlugin {
 			if(eclipse!=null) {
 				Dictionary eclipseDic = eclipse.getHeaders();
 				eclipseVersion = (String)eclipseDic.get("Bundle-Version");
+				FileInputStream fis = null;
 				try {
 					String path = FileLocator.resolve(eclipse.getEntry("/")).getPath();
 					if(path!=null) {
 						File aboutMappings = new File(path, "about.mappings");
 						if(aboutMappings.exists()) {
 							Properties properties = new Properties();
-							properties.load(new FileInputStream(aboutMappings));
+							fis = new FileInputStream(aboutMappings);
+							properties.load(fis);
 							String buildId = properties.getProperty("0");
 							if(buildId!=null && buildId.length()>0) {
 								eclipseBuildId = buildId;
@@ -85,6 +87,14 @@ public class CommonPlugin extends BasePlugin {
 					}
 				} catch (IOException e) {
 					getPluginLog().logError("Error in getting environment info: " + e.getMessage());
+				} finally {
+					if(fis!=null) {
+						try {
+							fis.close();
+						} catch (IOException e) {
+							// ignore
+						}
+					}
 				}
 			}
 			StringBuffer result = new StringBuffer(studioName).append(" ").append(studioVersion).

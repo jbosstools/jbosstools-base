@@ -36,12 +36,9 @@ public class MarkerClearer {
 		IProject[] ps = ModelPlugin.getWorkspace().getRoot().getProjects();
 		for (int i = 0; i < ps.length; i++) {
 			IModelNature n = (IModelNature)EclipseResourceUtil.getModelNature(ps[i]);
-			if(n == null) continue;
-			try {
+			if (n != null) {
 				XModelObject o = FileSystemsHelper.getWebInf(n.getModel());
-				clear(o);				
-			} catch (Exception e) {
-				ModelPlugin.getPluginLog().logError(e);
+				clear(o);
 			}
 		}
 	}

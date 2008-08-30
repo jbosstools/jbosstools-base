@@ -67,32 +67,23 @@ public class FreeCaretStyledText extends StyledText implements PaintListener {
     }
     
     public void redrawRange(int start, int length, boolean clearBackground) {
-		try {
+		//FIX for JBIDE-1479 added by Max Areshkau
+		if (start > getCharCount())
+			start = getCharCount();
+		if (start + length > getCharCount())
+			length = getCharCount() - start;
+		
+		//FIX for JBIDE-2192
+		if (length > 0) {
 			super.redrawRange(start, length, clearBackground);
-		} catch (Exception x) {
-			// ignore
-			//FIX for JBIDE-1479 added by Max Areshkau
-			if (start > getCharCount())
-				start = getCharCount();
-			if (start + length > getCharCount())
-				length = getCharCount() - start;
-			
-			//FIX for JBIDE-2192
-			if (length > 0) {
-				super.redrawRange(start, length, clearBackground);
-			}
 		}
 	}
     
     public int getLineAtOffset(int offset) {
-		try {
-			return super.getLineAtOffset(offset);
-		} catch (Exception e) {
-			if (offset > getCharCount())
-				offset = getCharCount();
-			if (offset < 0)
-				offset = 0;
-			return super.getLineAtOffset(offset);
-		}
+		if (offset > getCharCount())
+			offset = getCharCount();
+		if (offset < 0)
+			offset = 0;
+		return super.getLineAtOffset(offset);
 	}
 }

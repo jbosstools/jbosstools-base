@@ -74,7 +74,7 @@ public class OpenWithExternalHandler extends AbstractHandler {
     public static void start(String actionname, String filename, XModelObject editor) throws XModelException {
         int i = filename.indexOf('#');
         String fn = (i < 0) ? filename : filename.substring(0, i);
-        if(!new File(fn).isFile()) throw new RuntimeException("Cannot find file " + fn + ".");
+        if(!new File(fn).isFile()) throw new IllegalArgumentException("Cannot find file " + fn + ".");
         if(OpenWithHelper.validatePath(actionname, editor)) new OWEProcess(editor, filename).start();
     }
 

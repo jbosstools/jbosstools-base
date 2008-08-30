@@ -90,29 +90,40 @@ public class MetaLibLoader {
     void load(String name, URL url) {
     	if(url == null) return;
 //		long t = System.currentTimeMillis();
-		InputStream stream = null;
+		InputStream stream1 = null;
+		InputStream stream2 = null;
 		try {
-			stream = url.openStream();
-			stream = new BufferedInputStream(stream, 16384);
+			stream1 = url.openStream();
+			stream2 = new BufferedInputStream(stream1, 16384);
+		
+		
+			Element g = parse(stream2);
+			if(g == null) {
+				ModelPlugin.getPluginLog().logInfo("Corrupted meta resource " + name);
+			} else {
+				load0(g, name, url.toString());
+			}
+		
 		} catch (IOException e) {
 			ModelPlugin.getPluginLog().logError("MetaLoader: Cannot read resource " + url.toString());
 			return;
-		}
-		
-		Element g = parse(stream);
-			//XMLUtil.getElement(stream);
-		if(g == null) {
-			ModelPlugin.getPluginLog().logInfo("Corrupted meta resource " + name);
-		} else {
-			load0(g, name, url.toString());
+		} finally {
+			if(stream2!=null) {
+				try {
+					stream2.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
 		}
 		
 //		long dt = - t + (t = System.currentTimeMillis());
 //		System.out.println("Loaded " + url + " in " + dt + " ms");
 		if(validateMetaXML) {
+			InputStream stream3 = null;
 			try {
-				stream = url.openStream();
-				InputSource is = new InputSource(stream);
+				stream3 = url.openStream();
+				InputSource is = new InputSource(stream3);
 				String[] errors = XMLUtil.getXMLErrors(is, true);
 				if(errors != null && errors.length > 0) {
 					ModelPlugin.getPluginLog().logInfo("Errors in " + name);
@@ -122,6 +133,14 @@ public class MetaLibLoader {
 				}
 			} catch (IOException e) {
 				ModelPlugin.getPluginLog().logError(e);
+			}finally {
+				if(stream3!=null) {
+					try {
+						stream3.close();
+					} catch (IOException e) {
+						// ignore
+					}
+				}
 			}
 //			dt = - t + (t = System.currentTimeMillis());
 //			System.out.println("Validated " + url + " in " + dt + " ms");

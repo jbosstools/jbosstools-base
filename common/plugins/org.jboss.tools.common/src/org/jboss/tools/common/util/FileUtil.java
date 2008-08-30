@@ -62,9 +62,10 @@ public final class FileUtil {
 
     public static ReadBytes readBytes(File f) {
         if(!f.isFile()) return null;
+        BufferedInputStream br = null;
         try {
             FileInputStream fr = new FileInputStream(f);
-            BufferedInputStream br = new BufferedInputStream(fr);
+            br = new BufferedInputStream(fr);
             int l = (int)f.length();
             byte[] bs = new byte[l];
             l = br.read(bs, 0, l);
@@ -73,6 +74,14 @@ public final class FileUtil {
             return new ReadBytes(bs, l);
         } catch (IOException e) {
         	return null;
+        } finally {
+        	if(br!=null) {
+        		try {
+					br.close();
+				} catch (IOException e) {
+					//ignore
+				}
+        	}
         }
     }
     
@@ -98,9 +107,10 @@ public final class FileUtil {
 
     public static boolean isTextFile(File f, int length) {
         if(!f.isFile()) return false;
+        BufferedReader br = null;
         try {
             FileReader fr = new FileReader(f);
-            BufferedReader br = new BufferedReader(fr);
+            br = new BufferedReader(fr);
             int l = (int)f.length();
             if(l > length) l = length;
             char[] cs = new char[l];
@@ -110,6 +120,14 @@ public final class FileUtil {
             return isText(new String(cs));
         } catch (IOException e) {
             return false;
+        } finally {
+        	if(br!=null) {
+        		try {
+					br.close();
+				} catch (IOException e) {
+					// ignore
+				}
+        	}
         }
     }
 

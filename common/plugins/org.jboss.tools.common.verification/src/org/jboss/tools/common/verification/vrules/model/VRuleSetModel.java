@@ -8,10 +8,14 @@ package org.jboss.tools.common.verification.vrules.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.RegularObjectImpl;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.verification.vrules.VEntity;
 import org.jboss.tools.common.verification.vrules.VModel;
@@ -102,7 +106,7 @@ public class VRuleSetModel extends RegularObjectImpl implements PropertyChangeLi
         }
         bundles.put(baseName, NULL);
         if(VerificationPlugin.isDebugEnabled()) {
-        	VerificationPlugin.getPluginLog().logInfo("Resource not found: " + baseName + " by org.jboss.tools.common.verification.vrules.model.VRuleSetModel:getBundle()", new Exception(baseName));
+        	VerificationPlugin.getPluginLog().logInfo("Resource not found: " + baseName + " by org.jboss.tools.common.verification.vrules.model.VRuleSetModel:getBundle()");
         }
         return null;
     }

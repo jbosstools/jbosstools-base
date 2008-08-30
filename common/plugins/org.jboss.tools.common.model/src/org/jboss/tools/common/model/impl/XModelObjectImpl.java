@@ -10,19 +10,29 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.impl;
 
-import java.io.*;
-import java.util.*;
-import org.eclipse.core.resources.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IActionFilter;
 import org.eclipse.ui.views.properties.IPropertySource;
-
-import org.jboss.tools.common.meta.*;
-import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.XMapping;
+import org.jboss.tools.common.meta.XModelEntity;
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.adapter.IModelObjectAdapter;
 import org.jboss.tools.common.model.adapter.ModelObjectAdapterExtensionPoint;
-import org.jboss.tools.common.model.icons.impl.*;
+import org.jboss.tools.common.model.icons.impl.XModelObjectIcon;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
@@ -54,9 +64,9 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     public void changeEntity(String name) {
     	if(entity.getName().equals(name)) return;
     	XModelEntity newEntity = entity.getMetaModel().getEntity(name);
-    	if(newEntity == null) throw new RuntimeException("Entity " + name + " does not exist.");
+    	if(newEntity == null) throw new IllegalArgumentException("Entity " + name + " does not exist.");
     	if(entity.getImplementingClass() != newEntity.getImplementingClass()) { 
-			throw new RuntimeException("Cannot convert entity " + entity.getName() + " to " + name + " because they have different implementations.");
+			throw new IllegalArgumentException("Cannot convert entity " + entity.getName() + " to " + name + " because they have different implementations.");
     	}
     	Properties p = new Properties();
     	XAttribute[] as = entity.getAttributes();

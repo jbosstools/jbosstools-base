@@ -190,9 +190,10 @@ public class JarAccess {
 			return "";
 		}
 		int length = 0;
+		BufferedInputStream bs = null;
 		try {
 			InputStream is = jar.getInputStream(jar.getEntry(path));
-			BufferedInputStream bs = new BufferedInputStream(is);
+			bs = new BufferedInputStream(is);
 			while ((length = bs.available()) > 0) {
 				if (length > size)
 					length = size;
@@ -207,6 +208,13 @@ public class JarAccess {
 			return "";
 		} finally {
 			unlockJar();
+			if(bs!=null) {
+				try {
+					bs.close();
+				} catch (IOException e) {
+					//ignore
+				}
+			}
 		}
 	}
 

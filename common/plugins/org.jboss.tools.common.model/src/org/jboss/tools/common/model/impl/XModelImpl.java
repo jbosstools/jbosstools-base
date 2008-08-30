@@ -438,7 +438,7 @@ public class XModelImpl implements XModel {
 
     public void setExtraRoot(XModelObject r) {
         String pathpart = r.getPathPart();
-        if(!pathpart.startsWith("root:")) throw new RuntimeException("Not extra root: " + pathpart);
+        if(!pathpart.startsWith("root:")) throw new IllegalArgumentException("Not extra root: " + pathpart);
         extraroots.put(pathpart, r);
     }
 

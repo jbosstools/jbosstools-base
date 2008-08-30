@@ -10,13 +10,19 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.options.impl;
 
-import java.util.*;
-import org.w3c.dom.*;
-import org.jboss.tools.common.meta.*;
+import java.util.Properties;
+
+import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.XChild;
+import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.XModelConstants;
-import org.jboss.tools.common.model.options.*;
+import org.jboss.tools.common.model.options.SharableConstants;
+import org.jboss.tools.common.model.options.SharableElement;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class SharableLoaderImpl implements SharableConstants {
 

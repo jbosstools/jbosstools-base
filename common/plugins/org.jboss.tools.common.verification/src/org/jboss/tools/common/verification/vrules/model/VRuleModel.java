@@ -6,13 +6,26 @@
 
 package org.jboss.tools.common.verification.vrules.model;
 
-import java.util.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.StringTokenizer;
+
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.RegularObjectImpl;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
-import org.jboss.tools.common.verification.vrules.*;
+import org.jboss.tools.common.verification.vrules.VAction;
+import org.jboss.tools.common.verification.vrules.VEntity;
+import org.jboss.tools.common.verification.vrules.VModel;
+import org.jboss.tools.common.verification.vrules.VObject;
+import org.jboss.tools.common.verification.vrules.VResult;
+import org.jboss.tools.common.verification.vrules.VResultTemplate;
+import org.jboss.tools.common.verification.vrules.VRule;
+import org.jboss.tools.common.verification.vrules.VRuleSet;
 import org.jboss.tools.common.verification.vrules.impl.VResultFactoryImpl;
 import org.jboss.tools.common.verification.vrules.impl.VRuleImpl;
 import org.jboss.tools.common.verification.vrules.layer.VModelFactory;

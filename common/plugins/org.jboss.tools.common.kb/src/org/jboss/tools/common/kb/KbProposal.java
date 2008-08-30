@@ -163,10 +163,7 @@ public class KbProposal implements Comparable, Serializable {
 	 * @return
 	 */
 	public boolean isCloseTag() {
-		if((label!=null)&&(label.startsWith("/"))) {
-			return true;
-		}
-		return false;
+		return label != null && label.startsWith("/");
 	}
 
 	/**

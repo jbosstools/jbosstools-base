@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.impl;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import org.w3c.dom.*;
@@ -102,9 +103,9 @@ public class XMetaDataLoader implements XMetaDataConstants {
 
     // meta data loading
 
-    static Element loadDocument(String filename) {
+    static Element loadDocument(String filename) throws FileNotFoundException {
         Element e = XMLUtil.getElement(filename);
-        if(e == null) throw new RuntimeException("Can't load meta model from " + filename);
+        if(e == null) throw new FileNotFoundException("Can't load meta model from " + filename);
         return e;
     }
 

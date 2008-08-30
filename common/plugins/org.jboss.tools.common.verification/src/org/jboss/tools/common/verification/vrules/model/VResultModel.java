@@ -6,8 +6,8 @@
 
 package org.jboss.tools.common.verification.vrules.model;
 
-import org.jboss.tools.common.verification.vrules.*;
-import org.jboss.tools.common.model.impl.*;
+import org.jboss.tools.common.model.impl.XModelObjectImpl;
+import org.jboss.tools.common.verification.vrules.VResult;
 
 /**
  *
