@@ -155,7 +155,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 							"/" + name);
 				}
 			}
-			if (member != null) {
+			if (member != null && (member instanceof IFile)) {
 				if (((IFile) member).exists())
 					return (IFile) member;
 			}
@@ -165,6 +165,10 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 
 	private IFile findFileByRelativePath(IProject project,
 			WorkbenchComponent module, IPath basePath, String path) {
+		
+		if (path == null || path.trim().length() == 0)
+			return null;
+		
 		ComponentResource[] resources = module.findResourcesBySourcePath(
 				new Path("/"), 0);
 		IPath projectPath = project.getLocation();
@@ -180,7 +184,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 					basePath);
 			IPath filePath = relativePath.append(path);
 			member = project.getFolder(sourcePath).findMember(filePath);
-			if (member != null) {
+			if (member != null && (member instanceof IFile)) { 
 				if (((IFile) member).exists())
 					return (IFile) member;
 			}
@@ -190,7 +194,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 			relativePath = Utils.getRelativePath(webRootPath, basePath);
 			filePath = relativePath.append(path);
 			member = project.getFolder(runtimePath).findMember(filePath);
-			if (member != null) {
+			if (member != null && (member instanceof IFile)) { 
 				if (((IFile) member).exists())
 					return (IFile) member;
 			}
