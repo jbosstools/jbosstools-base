@@ -4,6 +4,7 @@ Bundle-Localization: plugin
 Bundle-Name: Resources to references Plug-in
 Bundle-SymbolicName: corg.jboss.tools.common.rreferences;singleton:=true
 Bundle-Version: 2.0.0
+Bundle-ManifestVersion: 2
 Bundle-Activator: org.jboss.tools.common.rreferences.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
