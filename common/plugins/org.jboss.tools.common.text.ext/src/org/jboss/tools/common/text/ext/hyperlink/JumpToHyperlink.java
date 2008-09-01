@@ -125,20 +125,21 @@ abstract public class JumpToHyperlink extends AbstractHyperlink {
 		String requiredAxis = axis.toLowerCase();
 		List<Node> elements = new ArrayList<Node>();
 			for (int i = 0; list != null && i < list.getLength(); i++) {
-					IDOMElement element = (IDOMElement)list.item(i);
-					String currentAxis = XMLRootHyperlinkPartitioner.computeAxis(getDocument(), element.getStartOffset()) + "/";
-					currentAxis  = currentAxis.toLowerCase();
-					
-					if (currentAxis.endsWith(requiredAxis)) {
-						elements.add(element);
-					}
-					
-					if (element.hasChildNodes()) {
-						List<Node> add = findElementsByAxis(element.getChildNodes(), axis);
-						if (add != null) 
-							elements.addAll(add);
-					}
-
+				if (!(list.item(i) instanceof IDOMElement))
+					continue;
+				IDOMElement element = (IDOMElement)list.item(i);
+				String currentAxis = XMLRootHyperlinkPartitioner.computeAxis(getDocument(), element.getStartOffset()) + "/";
+				currentAxis  = currentAxis.toLowerCase();
+				
+				if (currentAxis.endsWith(requiredAxis)) {
+					elements.add(element);
+				}
+				
+				if (element.hasChildNodes()) {
+					List<Node> add = findElementsByAxis(element.getChildNodes(), axis);
+					if (add != null) 
+						elements.addAll(add);
+				}
 			}
 			return elements;
 	}
