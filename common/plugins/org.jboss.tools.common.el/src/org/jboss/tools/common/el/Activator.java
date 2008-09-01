@@ -1,4 +1,4 @@
-package org.jboss.tools.vpe.el;
+package org.jboss.tools.common.el;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.jboss.tools.vpe.el";
+	public static final String PLUGIN_ID = "org.jboss.tools.common.el";
 
 	// The shared instance
 	private static Activator plugin;
