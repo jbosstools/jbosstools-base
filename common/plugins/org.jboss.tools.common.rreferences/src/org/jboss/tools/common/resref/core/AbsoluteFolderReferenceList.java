@@ -8,12 +8,19 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.common.rreferences.core;
+package org.jboss.tools.common.resref.core;
 
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.QualifiedName;
 
-public interface ResourceReferenceListListener {
-	public IPath getPath();
-	public void changed(Object source);
+public class AbsoluteFolderReferenceList extends ResourceReferenceList {
+	private static QualifiedName PROPERTY_NAME = new QualifiedName("", "org.jboss.tools.vpe.editor.css.AbsoluteFolder");
+	static AbsoluteFolderReferenceList instance = new AbsoluteFolderReferenceList();
 	
+	public static AbsoluteFolderReferenceList getInstance() {
+		return instance;
+	}
+
+	protected QualifiedName getPropertyName() {
+		return PROPERTY_NAME;
+	}	
 }

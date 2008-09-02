@@ -8,7 +8,7 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.common.rreferences.core;
+package org.jboss.tools.common.resref.core;
 
 
 public class RelativeFolderReferenceComposite extends FolderReferenceComposite {

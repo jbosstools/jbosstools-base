@@ -8,20 +8,20 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.common.rreferences.core;
+package org.jboss.tools.common.resref.core;
 
 import org.eclipse.core.runtime.QualifiedName;
 
-public class TaglibReferenceList extends ResourceReferenceList {
-	private static QualifiedName PROPERTY_NAME = new QualifiedName("", "org.jboss.tools.vpe.editor.css.TLDList");
-	static TaglibReferenceList instance = new TaglibReferenceList();
+public class RelativeFolderReferenceList extends ResourceReferenceList {
+	private static QualifiedName PROPERTY_NAME = new QualifiedName("", "org.jboss.tools.vpe.editor.css.RelativeFolder");
+	static RelativeFolderReferenceList instance = new RelativeFolderReferenceList();
 	
-	public static TaglibReferenceList getInstance() {
+	public static RelativeFolderReferenceList getInstance() {
 		return instance;
 	}
 
 	protected QualifiedName getPropertyName() {
 		return PROPERTY_NAME;
 	}
-
+	
 }

@@ -1,4 +1,4 @@
-package org.jboss.tools.common.rreferences;
+package org.jboss.tools.common.resref;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.jboss.tools.common.rreferences";
+	public static final String PLUGIN_ID = "org.jboss.tools.common.resref";
 
 	// The shared instance
 	private static Activator plugin;

@@ -8,11 +8,11 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.common.rreferences.core;
+package org.jboss.tools.common.resref.core;
 
 import java.util.List;
 
-import org.jboss.tools.common.rreferences.messages.Messages;
+import org.jboss.tools.common.resref.messages.Messages;
 
 public class CssReferencesComposite extends ResourceReferencesComposite {
 

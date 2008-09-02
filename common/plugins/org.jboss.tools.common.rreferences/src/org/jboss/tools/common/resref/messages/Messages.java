@@ -9,7 +9,7 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.common.rreferences.messages;
+package org.jboss.tools.common.resref.messages;
 
 import java.util.ResourceBundle;
 
