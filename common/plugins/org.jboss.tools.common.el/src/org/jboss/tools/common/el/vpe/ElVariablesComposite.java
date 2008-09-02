@@ -2,10 +2,10 @@ package org.jboss.tools.common.el.vpe;
 
 import java.util.List;
 
-import org.jboss.tools.common.rreferences.core.ResourceReferenceList;
-import org.jboss.tools.common.rreferences.core.ResourceReferencesComposite;
-import org.jboss.tools.common.rreferences.core.ResourceReferencesTableProvider;
-import org.jboss.tools.common.rreferences.messages.Messages;
+import org.jboss.tools.common.resref.core.ResourceReferenceList;
+import org.jboss.tools.common.resref.core.ResourceReferencesComposite;
+import org.jboss.tools.common.resref.core.ResourceReferencesTableProvider;
+import org.jboss.tools.common.resref.messages.Messages;
 
 /**
  * The Class ElVariablesComposite.

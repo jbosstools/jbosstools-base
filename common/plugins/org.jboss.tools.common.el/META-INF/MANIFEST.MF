@@ -11,5 +11,5 @@ Provide-Package:  org.jboss.tools.common.el,
 Bundle-Activator: org.jboss.tools.common.el.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.tools.common.rreferences;bundle-version="2.0.0",
+ org.jboss.tools.common.resref;bundle-version="2.0.0",
  org.eclipse.core.resources;bundle-version="3.4.0"

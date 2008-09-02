@@ -13,10 +13,10 @@ package org.jboss.tools.common.el.global;
 
 import java.util.List;
 
-import org.jboss.tools.common.rreferences.core.ResourceReference;
-import org.jboss.tools.common.rreferences.core.ResourceReferenceList;
-import org.jboss.tools.common.rreferences.core.ResourceReferencesComposite;
-import org.jboss.tools.common.rreferences.core.ResourceReferencesTableProvider;
+import org.jboss.tools.common.resref.core.ResourceReference;
+import org.jboss.tools.common.resref.core.ResourceReferenceList;
+import org.jboss.tools.common.resref.core.ResourceReferencesComposite;
+import org.jboss.tools.common.resref.core.ResourceReferencesTableProvider;
 
 
 /**
@@ -27,7 +27,7 @@ import org.jboss.tools.common.rreferences.core.ResourceReferencesTableProvider;
 public class GlobalElVariablesComposite extends ResourceReferencesComposite {
 
     /**
-     * @see org.jboss.tools.common.rreferences.core.ResourceReferencesComposite#createGroupLabel()
+     * @see org.jboss.tools.common.resref.core.ResourceReferencesComposite#createGroupLabel()
      */
     @Override
     protected String createGroupLabel() {
@@ -35,7 +35,7 @@ public class GlobalElVariablesComposite extends ResourceReferencesComposite {
     }
 
     /**
-     * @see org.jboss.tools.common.rreferences.core.ResourceReferencesComposite#createTableProvider(java.util.List)
+     * @see org.jboss.tools.common.resref.core.ResourceReferencesComposite#createTableProvider(java.util.List)
      */
     @Override
     protected ResourceReferencesTableProvider createTableProvider(List dataList) {
@@ -43,7 +43,7 @@ public class GlobalElVariablesComposite extends ResourceReferencesComposite {
     }
 
     /**
-     * @see org.jboss.tools.common.rreferences.core.ResourceReferencesComposite#getEntity()
+     * @see org.jboss.tools.common.resref.core.ResourceReferencesComposite#getEntity()
      */
     @Override
     protected String getEntity() {
@@ -51,7 +51,7 @@ public class GlobalElVariablesComposite extends ResourceReferencesComposite {
     }
 
     /**
-     * @see org.jboss.tools.common.rreferences.core.ResourceReferencesComposite#getReferenceList()
+     * @see org.jboss.tools.common.resref.core.ResourceReferencesComposite#getReferenceList()
      */
     @Override
     protected ResourceReferenceList getReferenceList() {

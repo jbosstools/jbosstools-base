@@ -12,7 +12,7 @@
 package org.jboss.tools.common.el.global;
 
 import org.eclipse.core.runtime.QualifiedName;
-import org.jboss.tools.common.rreferences.core.ResourceReferenceList;
+import org.jboss.tools.common.resref.core.ResourceReferenceList;
 
 /**
  * @author Evgenij Stherbin
