@@ -23,7 +23,7 @@ import org.eclipse.osgi.util.NLS;
 public final class Messages {
     
     /** The Constant BUNDLE_NAME. */
-    private static final String BUNDLE_NAME = "org.jboss.tools.common.rreferences.messages.messages";//$NON-NLS-1$
+    private static final String BUNDLE_NAME = "org.jboss.tools.common.resref.messages.messages";//$NON-NLS-1$
     
     /** The f resource bundle. */
     private static ResourceBundle fResourceBundle;
