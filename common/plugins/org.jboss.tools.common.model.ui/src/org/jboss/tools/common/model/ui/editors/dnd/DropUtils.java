@@ -11,6 +11,8 @@
 package org.jboss.tools.common.model.ui.editors.dnd;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,20 +158,31 @@ public class DropUtils {
 	 * @return
 	 */
 	public static IFile getResourceForMimeData(DropData dropData) {
-		URL newUrl = null;
-		try {
-			newUrl = new URL(dropData.getMimeData());
-		} catch (MalformedURLException e) {
-//			VpePlugin.reportProblem(e);
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
-		IFile file = EclipseResourceUtil.getFile(newUrl == null ? dropData.getMimeData() : newUrl.getPath());
-		if(file != null && file.exists()) return file;
-		file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-			new Path(newUrl.getPath())
-		);
-		return file;
-	}	
+        // estherbin why in code below create url instance -?
+        // URL newUrl = null;
+        // URI newUri = null;
+        // try {
+        // newUri = new URI(dropData.getMimeData());
+        // // newUrl = new URL(dropData.getMimeData());
+        // } catch (URISyntaxException e) {
+        // ModelUIPlugin.getPluginLog().logError(e);
+        // }
+        IFile file = EclipseResourceUtil.getFile(dropData.getMimeData());
+        
+        if (file == null || !file.exists()) {
+            URL newUrl = null;
+            try {
+                newUrl = new URL(dropData.getMimeData());
+                file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(newUrl.getPath()));
+                // newUrl = new URL(dropData.getMimeData());
+            } catch (MalformedURLException e) {
+                ModelUIPlugin.getPluginLog().logError(e);
+            }
+            file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(newUrl.getPath()));
+        }
+
+        return file;
+    }	
 
 	/**
 	 * Find WEB-ROOT container for given project
