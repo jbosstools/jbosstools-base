@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Eclipse-LazyStart: true
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-Name: El Plug-in
+Bundle-SymbolicName: org.jboss.tools.common.el.core
+Bundle-Version: 2.0.0
+Provide-Package:  org.jboss.tools.common.el,
+ org.jboss.tools.common.el.global,
+ org.jboss.tools.common.el.vpe
+Bundle-Activator: org.jboss.tools.common.el.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.4.0",
+ org.jboss.tools.common.resref.core;bundle-version="1.0.0";reprovide=true
