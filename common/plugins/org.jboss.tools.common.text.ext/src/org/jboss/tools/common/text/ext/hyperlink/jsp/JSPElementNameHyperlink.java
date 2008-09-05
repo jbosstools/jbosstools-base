@@ -105,7 +105,7 @@ public class JSPElementNameHyperlink extends AbstractHyperlink {
 		try {
 			nodeName = getDocument().get(region.getOffset(), region.getLength());
 		} catch (BadLocationException e) {
-			ExtensionsPlugin.getPluginLog().logError(e);
+			// Ignore
 			return null;
 		}
 		if (nodeName.indexOf(":") != -1) {

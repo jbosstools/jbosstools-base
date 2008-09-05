@@ -246,6 +246,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 		try {
 			return Utils.trimQuotes(getDocument().get(region.getOffset(), region.getLength()));
 		} catch (BadLocationException x) {
+			// Ignore
 			return null;
 		}
 		
@@ -279,6 +280,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 			if (mappedSystemId == null && systemId != null)
 	        	mappedSystemId = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(systemId);
 		} catch (IOException e) {
+			// Ignore
 			return null;		
 		}
 		return mappedSystemId;
@@ -294,6 +296,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 	            }
 	        }
 		} catch (MalformedURLException x) {
+			// Ignore
 			return null;
 		}
 		return fileName;

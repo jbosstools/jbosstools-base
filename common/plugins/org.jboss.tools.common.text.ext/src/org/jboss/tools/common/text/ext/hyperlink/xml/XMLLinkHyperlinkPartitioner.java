@@ -129,6 +129,7 @@ public abstract class XMLLinkHyperlinkPartitioner extends AbstractHyperlinkParti
 			
 			return region;
 		} catch (BadLocationException x) {
+			// Ignore
 			return null;
 		} finally {
 			smw.dispose();

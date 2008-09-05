@@ -83,6 +83,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 		try {
 			return getDocument().get(region.getOffset(), region.getLength());
 		} catch (BadLocationException x) {
+			// Ignore
 			return null;
 		} finally {
 		}
@@ -108,6 +109,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 	    try {
 	    	searchEngine.search(pattern, new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()}, scope, requestor, null);
 	    } catch (CoreException ex) {
+	    	// Ignore
 //	    	ExtensionsPlugin.log(ex);
 	    }
 	    for (Iterator i = matches.iterator(); i != null && i.hasNext();) {
