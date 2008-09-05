@@ -61,14 +61,18 @@ public class ClassHyperlink extends AbstractHyperlink {
 	protected void doHyperlink(IRegion region) {
 	
 		try {
+			IJavaElement element = null;
+			IEditorPart part = null;
 			String className = getClassName(region);
-			IJavaElement element = searchForClass(className);
+			
+			if (className != null && className.trim().length() > 0)
+				element = searchForClass(className);
 
-			IEditorPart part = JavaUI.openInEditor(element);
-			if (part != null) {
-				if (element != null)
+			if (element != null)
+				part = JavaUI.openInEditor(element);
+			
+			if (part != null && element != null)
 					JavaUI.revealInEditor(part, element);
-			}
 			else {
 				// could not open editor
 				openFileFailed();

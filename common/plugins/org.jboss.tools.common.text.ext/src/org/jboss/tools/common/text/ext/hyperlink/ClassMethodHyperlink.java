@@ -68,8 +68,7 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 			if (classMethod != null) {
 				IEditorPart part = JavaUI.openInEditor(classMethod);
 				if (part != null) {
-					if (classMethod != null)
-						JavaUI.revealInEditor(part, classMethod);
+					JavaUI.revealInEditor(part, classMethod);
 				}
 				else {
 					// could not open editor

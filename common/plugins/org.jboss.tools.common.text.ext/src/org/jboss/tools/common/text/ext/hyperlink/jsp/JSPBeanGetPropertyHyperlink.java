@@ -82,8 +82,7 @@ public class JSPBeanGetPropertyHyperlink extends ClassMethodHyperlink {
 			if (beanMethod != null) {
 				IEditorPart part = JavaUI.openInEditor(beanMethod);
 				if (part != null) {
-					if (beanMethod != null)
-						JavaUI.revealInEditor(part, beanMethod);
+					JavaUI.revealInEditor(part, beanMethod);
 				}
 				else {
 					// could not open editor

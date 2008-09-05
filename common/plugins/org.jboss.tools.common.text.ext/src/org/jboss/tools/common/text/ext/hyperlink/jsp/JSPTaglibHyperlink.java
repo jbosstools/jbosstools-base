@@ -45,7 +45,12 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 	 */
 	protected void doHyperlink(IRegion region) {
 		XModelObject object = getFilename(region);
-		if(object != null) FindObjectHelper.findModelObject(object, FindObjectHelper.IN_EDITOR_ONLY);
+		if(object != null) 
+			FindObjectHelper.findModelObject(object, FindObjectHelper.IN_EDITOR_ONLY);
+		else {
+			openFileFailed();
+		}
+
 	}
 	
 	protected final String JAR_FILE_PROTOCOL = "jar:file:/";//$NON-NLS-1$

@@ -40,7 +40,7 @@ public abstract class RelativeLinkHyperlink extends AbstractHyperlink {
 		try {
 			String fileName = getFilePath(region);
 			IFile fileToOpen = getFileFromProject(fileName);
-			if (fileToOpen.exists()) {
+			if ( fileToOpen!= null && fileToOpen.exists()) {
 				IWorkbenchPage workbenchPage = ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				IDE.openEditor(workbenchPage,fileToOpen,true);
 			} else {
@@ -66,10 +66,12 @@ public abstract class RelativeLinkHyperlink extends AbstractHyperlink {
 	}
 	
 	protected IFile getFileFromProject(String fileName) {
-		IFile documentFile = getFile();
+		if (fileName == null || fileName.trim().length() == 0)
+			return null;
 		
-			IProject project = documentFile.getProject();
-			return super.getFileFromProject(updateFilenameForModel(fileName, project));
+		IFile documentFile = getFile();
+		IProject project = documentFile.getProject();
+		return super.getFileFromProject(updateFilenameForModel(fileName, project));
 	}
 
 	IRegion fLastRegion = null;

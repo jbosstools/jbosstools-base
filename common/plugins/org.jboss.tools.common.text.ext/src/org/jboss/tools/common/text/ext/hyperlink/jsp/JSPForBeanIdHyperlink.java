@@ -38,14 +38,13 @@ public class JSPForBeanIdHyperlink extends AbstractHyperlink {
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doHyperlink(org.eclipse.jface.text.IRegion)
 	 */
 	protected void doHyperlink(IRegion region) {
-		
-			String forID = getForId(region);
-			IRegion elementByID = findElementByIDBackward(forID, region.getOffset(), USEBEAN_TAGNAME);
-			if (elementByID != null) {
-				StructuredSelectionHelper.setSelectionAndRevealInActiveEditor(elementByID);
-			} else {
-				openFileFailed();
-			}
+		String forID = getForId(region);
+		IRegion elementByID = findElementByIDBackward(forID, region.getOffset(), USEBEAN_TAGNAME);
+		if (elementByID != null) {
+			StructuredSelectionHelper.setSelectionAndRevealInActiveEditor(elementByID);
+		} else {
+			openFileFailed();
+		}
 	}
 	
 	private IRegion findElementByIDBackward (String id, int endOffset, String tagname) {
