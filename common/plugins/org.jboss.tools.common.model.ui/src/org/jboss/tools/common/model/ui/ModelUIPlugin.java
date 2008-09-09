@@ -64,13 +64,13 @@ public class ModelUIPlugin extends BaseUIPlugin implements IModelPlugin {
 	
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		configureJavaPlugin();
+		//configureJavaPlugin();
 	}
 
-	private void configureJavaPlugin() {
+	/*private void configureJavaPlugin() {
 		TemplateContextType contextType = new ExtendedTemplateContextType();
 		JavaPlugin.getDefault().getTemplateContextRegistry().addContextType(contextType);
-	}
+	}*/
 	
 	protected void initializeDefaultPluginPreferences() {		
 		Platform.getBundle(JavaUI.ID_PLUGIN);		
