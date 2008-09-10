@@ -133,7 +133,9 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 	public void update() {
 		IPreferenceStore newStore = null;
 		super.update();
-		newStore = (fOccurrencePreferenceProvider == null ? null : fOccurrencePreferenceProvider.getOccurrencePreferenceProvider().getPreferenceStore());
+		newStore = ((fOccurrencePreferenceProvider == null 
+				|| fOccurrencePreferenceProvider.getOccurrencePreferenceProvider() == null) 
+				? null : fOccurrencePreferenceProvider.getOccurrencePreferenceProvider().getPreferenceStore());
 		if (newStore != fPreferenceStore) {
 			if (fPreferenceStore != null) 
 				fPreferenceStore.removePropertyChangeListener(this);
