@@ -42,6 +42,10 @@ public class ElementGeneratorFactory {
     	IElementGenerator fInstance = DEFAULT_ELEMENT_GENERATOR;
 		try {
 			Class fClass = (Class)generatorMap.get(uri);
+			if(fClass == null) {
+				//No need to report, just there is no specific generator for this uri
+				return fInstance;
+			}
 			fInstance = (IElementGenerator)fClass.newInstance();
 		} catch (InstantiationException e) {
 			ModelUIPlugin.getPluginLog().logError(e);

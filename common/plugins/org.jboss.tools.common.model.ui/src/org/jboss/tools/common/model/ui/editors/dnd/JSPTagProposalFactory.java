@@ -35,6 +35,10 @@ public class JSPTagProposalFactory implements ITagProposalFactory {
     	ITagProposalLoader fInstance =  DEFAULT_PROPOSAL_LOADER;
 		try {
 			String fClassName = (String)loaderMap.get(mimeType);
+			if(fClassName == null) {
+				//No need to report, just there is no specific proposal loader for this myme type.
+				return fInstance;
+			}
 			Class newClass = this.getClass().getClassLoader().loadClass(fClassName);
 			fInstance = (ITagProposalLoader)newClass.newInstance();
 		} catch (InstantiationException e) {
