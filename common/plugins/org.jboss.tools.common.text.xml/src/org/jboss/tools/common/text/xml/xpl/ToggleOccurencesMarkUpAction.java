@@ -56,6 +56,10 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 	 */
 	public void setEditor(ITextEditor editor) {
 		super.setEditor(editor);
+		if(editor == null) {
+			dispose();
+			return;
+		}
 		fOccurrencePreferenceProvider = null;
 		StructuredTextEditor sse = getStructuredTextEditor(getTextEditor());
 		if (sse != null && sse instanceof IOccurrencePreferenceProvider) {
@@ -126,6 +130,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		fPreferenceStore.setValue(fKey, !markOccurences);
 	}
 
+	static int listenerCount = 0;
 	/**
 	 * Enables and initialzies the action, or disables.
 	 * @see org.eclipse.ui.texteditor.TextEditorAction#update()
@@ -137,11 +142,13 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 				|| fOccurrencePreferenceProvider.getOccurrencePreferenceProvider() == null) 
 				? null : fOccurrencePreferenceProvider.getOccurrencePreferenceProvider().getPreferenceStore());
 		if (newStore != fPreferenceStore) {
-			if (fPreferenceStore != null) 
+			if (fPreferenceStore != null) { 
 				fPreferenceStore.removePropertyChangeListener(this);
+			}
 			fPreferenceStore = newStore;
-			if (fPreferenceStore != null) 
+			if (fPreferenceStore != null) { 
 				fPreferenceStore.addPropertyChangeListener(this);
+			}
 		}
 			
 		boolean markOccurences = false;
@@ -163,11 +170,6 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		update();
 	}
 
-	protected void finalize() throws Throwable {
-		if (fPreferenceStore != null) fPreferenceStore.removePropertyChangeListener(this);
-	}
-
-
 	private static URL makeIconFileURL(String prefix, String name) throws MalformedURLException {
 		URL base = null;
 		try {
@@ -180,6 +182,14 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		buffer.append('/');
 		buffer.append(name);
 		return new URL(base, buffer.toString());
+	}
+
+	public void dispose() {
+		if (fPreferenceStore != null) {
+			fPreferenceStore.removePropertyChangeListener(this);
+			fPreferenceStore = null;
+		}
+		fOccurrencePreferenceProvider = null;
 	}
 
 }
