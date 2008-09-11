@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
+import org.eclipse.core.internal.resources.ICoreConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -221,10 +222,12 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 			}
 
 			// Look in runtime environment
-			member = project.getFolder(runtimePath).findMember(path);
-			if (member != null) {
-				if (((IFile) member).exists())
-					return (IFile) member;
+			if (runtimePath.segmentCount() >= ICoreConstants.MINIMUM_FOLDER_SEGMENT_LENGTH - 1) {
+				member = project.getFolder(runtimePath).findMember(path);
+				if (member != null) {
+					if (((IFile) member).exists())
+						return (IFile) member;
+				}
 			}
 		}
 		return null;
