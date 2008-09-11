@@ -256,6 +256,15 @@ public abstract class AbstractMultiPageContributor extends MultiPageEditorAction
 		if(a != null) registered.put(id, a);
 	}
 
+	public void dispose() {
+		if (fToggleOccurencesMarkUp != null) {
+			fToggleOccurencesMarkUp.setEditor(null);
+			fToggleOccurencesMarkUp = null;
+		}
+		super.dispose();
+	}
+	
+
 	protected class AFakeTextEditor implements ITextEditor, ITextOperationTarget {
 		protected HashMap<String,IAction> actions = new HashMap<String,IAction>();
 
