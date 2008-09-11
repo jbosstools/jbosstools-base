@@ -77,6 +77,9 @@ public class XModelTreeListenerSWTASync implements XModelTreeListener {
 					
 					while (!queue.isEmpty()) {
 						XModelTreeEvent event = queue.poll();
+						synchronized(XModelTreeListenerSWTASync.this) {
+							nodes.remove(event.getModelObject());
+						}
 						if (event.kind() == XModelTreeEvent.NODE_CHANGED) {
 							listener.nodeChanged(event);
 						} else {
