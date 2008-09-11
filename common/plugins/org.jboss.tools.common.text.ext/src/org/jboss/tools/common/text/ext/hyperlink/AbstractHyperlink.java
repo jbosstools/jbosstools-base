@@ -191,13 +191,15 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 			}
 
 			// Look in runtime environment
-			webRootPath = projectPath.append(runtimePath);
-			relativePath = Utils.getRelativePath(webRootPath, basePath);
-			filePath = relativePath.append(path);
-			member = project.getFolder(runtimePath).findMember(filePath);
-			if (member != null && (member instanceof IFile)) { 
-				if (((IFile) member).exists())
-					return (IFile) member;
+			if (runtimePath.segmentCount() >= ICoreConstants.MINIMUM_FOLDER_SEGMENT_LENGTH - 1) {
+				webRootPath = projectPath.append(runtimePath);
+				relativePath = Utils.getRelativePath(webRootPath, basePath);
+				filePath = relativePath.append(path);
+				member = project.getFolder(runtimePath).findMember(filePath);
+				if (member != null && (member instanceof IFile)) { 
+					if (((IFile) member).exists())
+						return (IFile) member;
+				}
 			}
 		}
 		return null;
