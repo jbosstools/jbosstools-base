@@ -13,7 +13,7 @@ package org.jboss.tools.common.el.ui;
 
 import java.util.List;
 
-import org.jboss.tools.common.el.global.GlobalELReferenceList;
+import org.jboss.tools.common.el.core.GlobalELReferenceList;
 import org.jboss.tools.common.resref.core.ResourceReference;
 import org.jboss.tools.common.resref.core.ResourceReferenceList;
 import org.jboss.tools.common.resref.ui.AbstractResourceReferencesComposite;

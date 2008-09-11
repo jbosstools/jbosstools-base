@@ -1,4 +1,4 @@
-package org.jboss.tools.common.el;
+package org.jboss.tools.common.el.core;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

@@ -81,12 +81,8 @@ public abstract class AbstractResourceReferencesComposite {
 	}
 
 	public Control createControl(Composite parent) {
-		Composite c1 = new Composite(parent, SWT.NONE);
 		
-		c1.setLayoutData(new GridData(GridData.FILL_BOTH));
-		c1.setLayout(new GridLayout(2,false));
-		
-		final Group group = new Group(c1,SWT.NONE);
+		final Group group = new Group(parent,SWT.NONE);
 		
 		group.setText(createGroupLabel());
 		group.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -110,7 +106,7 @@ public abstract class AbstractResourceReferencesComposite {
 			}
 		});
 		update();
-		return c1;
+		return group;
 	}
 	
 	protected ResourceReference[] getReferenceArray() {
@@ -133,7 +129,8 @@ public abstract class AbstractResourceReferencesComposite {
 			getReferenceList().setAllResources(path, getReferenceArray());
 		}
 	}
-	class BarListener implements CommandBarListener {
+	
+	public class BarListener implements CommandBarListener {
 		public void action(String command) {
 			int index = table.getSelectionIndex();
 			if(ADD.equals(command)) {
@@ -169,10 +166,23 @@ public abstract class AbstractResourceReferencesComposite {
 		updateBars();
 	}
 
-	void updateBars() {
+	protected void updateBars() {
 		boolean canModify = table.getSelectionIndex() >= 0;
 		bar.setEnabled(EDIT, canModify);
 		bar.setEnabled(REMOVE, canModify);
 	}
 
+	protected void initFilterInFileChooser() {
+		String entityName = getEntity();
+		XModelEntity entity = XModelMetaDataImpl.getInstance().getEntity(entityName);
+		if(entity != null && file != null && file.getProject() != null) {
+			XAttribute[] as = entity.getAttributes();
+			for (int i = 0; i < as.length; i++) {
+				 if(as[i].getConstraint() instanceof XAttributeConstraintFileFilter) {
+					 XAttributeConstraintFileFilter f = (XAttributeConstraintFileFilter)as[i].getConstraint();
+					 f.getProperties().setProperty("filterFolder", file.getProject().getLocation().toFile().getAbsolutePath());
+				 }
+			}
+		}
+	}
 }

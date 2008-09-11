@@ -454,10 +454,6 @@ public class XAttributeSupport {
 	
 	protected Layout getDefaultLayout() {
 		GridLayout gridLayout = new GridLayout(2, false);
-		gridLayout.marginHeight = 10;
-		gridLayout.marginWidth = 10;
-		gridLayout.horizontalSpacing = 10;
-		gridLayout.verticalSpacing = 10;
 		return gridLayout;
 	}
 	

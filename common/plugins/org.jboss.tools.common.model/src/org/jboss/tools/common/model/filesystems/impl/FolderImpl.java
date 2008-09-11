@@ -255,7 +255,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 				//ignore we cannot prevent this when project is removed externally
 			}   	
 		} catch (CoreException e) {
-	    	  ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()");
+	    	  ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()", e);
 		} finally {
 			fsi.unlockUpdate();
 		}

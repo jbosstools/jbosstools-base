@@ -1,4 +1,4 @@
-package org.jboss.tools.common.el.vpe;
+package org.jboss.tools.common.el.core;
 
 
 import org.eclipse.core.runtime.QualifiedName;

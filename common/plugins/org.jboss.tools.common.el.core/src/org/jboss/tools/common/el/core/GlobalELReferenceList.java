@@ -9,7 +9,7 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.common.el.global;
+package org.jboss.tools.common.el.core;
 
 import org.eclipse.core.runtime.QualifiedName;
 import org.jboss.tools.common.resref.core.ResourceReferenceList;
