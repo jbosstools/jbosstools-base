@@ -28,7 +28,6 @@ import org.eclipse.wst.common.componentcore.internal.ComponentResource;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -173,7 +172,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		ComponentResource[] resources = module.findResourcesBySourcePath(
 				new Path("/"), 0);
 		IPath projectPath = project.getLocation();
-		IResource member = null;
+		IFile member = null;
 
 		for (int i = 0; resources != null && i < resources.length; i++) {
 			IPath runtimePath = resources[i].getRuntimePath();
@@ -184,10 +183,9 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 			IPath relativePath = Utils.getRelativePath(webRootPath,
 					basePath);
 			IPath filePath = relativePath.append(path);
-			member = project.getFolder(sourcePath).findMember(filePath);
-			if (member != null && (member instanceof IFile)) { 
-				if (((IFile) member).exists())
-					return (IFile) member;
+			member = project.getFolder(sourcePath).getFile(filePath);
+			if (member.exists()) {
+				return member;
 			}
 
 			// Look in runtime environment
@@ -195,10 +193,9 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 				webRootPath = projectPath.append(runtimePath);
 				relativePath = Utils.getRelativePath(webRootPath, basePath);
 				filePath = relativePath.append(path);
-				member = project.getFolder(runtimePath).findMember(filePath);
-				if (member != null && (member instanceof IFile)) { 
-					if (((IFile) member).exists())
-						return (IFile) member;
+				member = project.getFolder(runtimePath).getFile(filePath);
+				if (member.exists()) {
+					return member;
 				}
 			}
 		}
@@ -209,26 +206,24 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		WorkbenchComponent module, String path) {
 		ComponentResource[] resources = module.findResourcesBySourcePath(
 				new Path("/"), 0);
-//			IPath projectPath = project.getLocation();
-		IResource member = null;
+
+		IFile member = null;
 
 		for (int i = 0; resources != null && i < resources.length; i++) {
 			IPath runtimePath = resources[i].getRuntimePath();
 			IPath sourcePath = resources[i].getSourcePath();
 
 			// Look in source environment
-			member = project.getFolder(sourcePath).findMember(path);
-			if (member != null) {
-				if (((IFile) member).exists())
-					return (IFile) member;
-			}
+			member = project.getFolder(sourcePath).getFile(path);
+			if(member.exists()) {
+					return member;
+			} 
 
 			// Look in runtime environment
 			if (runtimePath.segmentCount() >= ICoreConstants.MINIMUM_FOLDER_SEGMENT_LENGTH - 1) {
-				member = project.getFolder(runtimePath).findMember(path);
-				if (member != null) {
-					if (((IFile) member).exists())
-						return (IFile) member;
+				member = project.getFolder(runtimePath).getFile(path);
+					if (member.exists()) {
+						return member;
 				}
 			}
 		}
