@@ -13,6 +13,8 @@ package org.jboss.tools.common.model;
 import java.util.*;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -24,7 +26,7 @@ import org.eclipse.ui.progress.UIJob;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.osgi.framework.Bundle;
 
-public class XJob extends Job {
+public class XJob extends WorkspaceJob {
 	public static Object FAMILY_XJOB = new Object();
 
 	public interface XRunnable extends Runnable {
@@ -103,27 +105,6 @@ public class XJob extends Job {
 	public boolean belongsTo(Object family) {
 		return family == FAMILY_XJOB;
 	}
-
-	protected IStatus run(IProgressMonitor monitor) {
-		while(true) {
-			XRunnable r = null;
-			synchronized (this) {
-				if(list.size() == 0) break;
-				r = list.remove(0);
-			}
-			monitor.subTask(r.getId());
-			int state = 0;
-			Bundle b = Platform.getBundle("org.jboss.tools.common.model");
-			state = b==null ? -1 : b.getState();
-			if(state == Bundle.ACTIVE) {
-				r.run();
-			}
-			synchronized (this) {
-				ids.remove(r.getId());
-			}
-		}
-		return Status.OK_STATUS;
-	}
 	
 	void addRunnableInternal(XRunnable runnable) {
 		synchronized (this) {
@@ -145,6 +126,29 @@ public class XJob extends Job {
 		if(getState() == Job.NONE) {
 			schedule(0);
 		}
+	}
+
+	@Override
+	public IStatus runInWorkspace(IProgressMonitor monitor)
+			throws CoreException {
+		while(true) {
+			XRunnable r = null;
+			synchronized (this) {
+				if(list.size() == 0) break;
+				r = list.remove(0);
+			}
+			monitor.subTask(r.getId());
+			int state = 0;
+			Bundle b = Platform.getBundle("org.jboss.tools.common.model");
+			state = b==null ? -1 : b.getState();
+			if(state == Bundle.ACTIVE) {
+				r.run();
+			}
+			synchronized (this) {
+				ids.remove(r.getId());
+			}
+		}
+		return Status.OK_STATUS;
 	}
 
 }
