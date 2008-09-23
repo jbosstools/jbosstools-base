@@ -206,6 +206,7 @@ public class EditorTestHelper {
 		Job[] jobs= jobManager.find(null);
 		for (int i= 0; i < jobs.length; i++) {
 			Job job= jobs[i];
+			if ("Usage Data Event consumer".equals(job.getName()) || "Flush Cache Job".equals(job.getName())) continue;
 			int state= job.getState();
 			if (state == Job.RUNNING || state == Job.WAITING) {
 				Logger.global.finest(job.getName());
