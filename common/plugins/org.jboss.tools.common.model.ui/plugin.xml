@@ -223,7 +223,12 @@
    </extension>
    <extension point="org.eclipse.ui.preferencePages">
       <page
-            category="org.jboss.ide.eclipse.ui.MainPreferencePage"
+            name="%MainPreferencePage"
+            class="org.jboss.tools.common.model.ui.preferences.MainPreferencePage"
+            id="org.jboss.tools.common.model.ui.MainPreferencePage">
+      </page>
+      <page
+            category="org.jboss.tools.common.model.ui.MainPreferencePage"
             class="org.jboss.tools.common.model.ui.preferences.CompanyPreferencesPage"
             id="org.jboss.tools.common.model.ui"
             name="Web">
@@ -243,7 +248,15 @@
          name="Templates">
       </page>
    </extension>
-
+   
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="%org.jboss.tools.common.model.ui.views"
+            id="org.jboss.tools.common.model.ui.views">
+      </category>
+   </extension>
+   
    <extension point="org.eclipse.ui.propertyPages">
       <page 
           adaptable="true" 
