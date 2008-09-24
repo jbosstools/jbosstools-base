@@ -10,7 +10,10 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.model;
 
+import java.util.List;
+
 import org.jboss.tools.common.el.core.parser.LexicalToken;
+import org.jboss.tools.common.el.core.parser.SyntaxError;
 
 /**
  * Instance of EL includes opening token, the expression proper, 
@@ -28,5 +31,7 @@ public interface ELInstance extends ELObject {
 	public ELExpression getExpression();
 
 	public LexicalToken getCloseInstanceToken();
+
+	public List<SyntaxError> getErrors();
 
 }

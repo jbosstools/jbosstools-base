@@ -16,6 +16,7 @@ import java.util.List;
 import org.jboss.tools.common.el.core.model.ELInstance;
 import org.jboss.tools.common.el.core.model.ELModel;
 import org.jboss.tools.common.el.core.model.ELObjectType;
+import org.jboss.tools.common.el.core.parser.SyntaxError;
 
 /**
  * 
@@ -67,6 +68,19 @@ public class ELModelImpl extends ELObjectImpl implements ELModel {
 
 	public ELObjectType getType() {
 		return ELObjectType.EL_MODEL;
+	}
+
+	public void setErrors(List<SyntaxError> errors) {
+		for (SyntaxError e: errors) {
+			for (ELInstance i: instances) {
+				ELInstanceImpl im = (ELInstanceImpl)i;
+				if(im.contains(e.getPosition())) {
+					im.addError(e);
+					break;
+				}
+			}
+		}
+		
 	}
 
 }

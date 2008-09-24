@@ -10,10 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.model.ELInstance;
 import org.jboss.tools.common.el.core.model.ELObjectType;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
+import org.jboss.tools.common.el.core.parser.SyntaxError;
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.StartELTokenDescription;
 
@@ -23,6 +27,7 @@ import org.jboss.tools.common.el.internal.core.parser.token.StartELTokenDescript
  */
 public class ELInstanceImpl extends ELObjectImpl implements ELInstance {
 	ELExpressionImpl expression;
+	List<SyntaxError> errors = new ArrayList<SyntaxError>();
 
 	public ELInstanceImpl() {
 	}
@@ -47,6 +52,10 @@ public class ELInstanceImpl extends ELObjectImpl implements ELInstance {
 
 	public ELExpression getExpression() {
 		return expression;
+	}
+
+	public List<SyntaxError> getErrors() {
+		return errors;
 	}
 
 	public void addChild(ELObjectImpl child) {
@@ -86,6 +95,20 @@ public class ELInstanceImpl extends ELObjectImpl implements ELInstance {
 
 	public ELObjectType getType() {
 		return ELObjectType.EL_INSTANCE;
+	}
+
+	public boolean contains(int position) {
+		if(position < getFirstToken().getStart()) return false;
+		LexicalToken l = getLastToken();
+		if(l == null) l = getFirstToken();
+		int end = l.getStart() + l.getLength();
+		if(position > end) return false;
+		if(getCloseInstanceToken() != null && position == end) return false;
+		return true;
+	}
+
+	public void addError(SyntaxError error) {
+		errors.add(error);
 	}
 
 }

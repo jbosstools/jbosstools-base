@@ -37,6 +37,7 @@ public class ELParserFactory {
 				}
 				ELModelImpl model = impl.parse(token);
 				model.setSource(source);
+				model.setErrors(errors);
 				return model;
 			}
 
@@ -60,6 +61,7 @@ public class ELParserFactory {
 				}
 				ELModelImpl model = impl.parse(token);
 				model.setSource(source);
+				model.setErrors(errors);
 				return model;
 			}
 
