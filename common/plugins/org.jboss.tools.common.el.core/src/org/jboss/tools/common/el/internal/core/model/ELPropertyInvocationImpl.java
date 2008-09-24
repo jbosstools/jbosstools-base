@@ -40,6 +40,7 @@ public class ELPropertyInvocationImpl extends ELInvocationExpressionImpl impleme
 		this.name = name;
 		if(name != null) {
 			if(left == null) setFirstToken(name);
+			setLastToken(name);
 		}
 	}
 

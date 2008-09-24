@@ -13,6 +13,7 @@ package org.jboss.tools.common.el.internal.core.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.model.ELObject;
 import org.jboss.tools.common.el.core.model.ELObjectType;
 
@@ -75,6 +76,12 @@ public class ELMultiExpressionImpl extends ELExpressionImpl {
 
 	public ELObjectType getType() {
 		return ELObjectType.EL_MULTI_EXPRESSION;
+	}
+
+	public void collectInvocations(List<ELInvocationExpression> list) {
+		for (ELExpressionImpl expr: expressions) {
+			expr.collectInvocations(list);
+		}
 	}
 
 }

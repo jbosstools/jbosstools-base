@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.model;
 
+import java.util.List;
+
+import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.model.ELObjectType;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.el.internal.core.parser.token.ExprEndTokenDescription;
@@ -89,4 +92,9 @@ public class ELComplexExpressionImpl extends ELExpressionImpl {
 		return ELObjectType.EL_COMPLEX_EXPRESSION;
 	}
 
+	public void collectInvocations(List<ELInvocationExpression> list) {
+		if(expression != null) {
+			expression.collectInvocations(list);
+		}
+	}
 }

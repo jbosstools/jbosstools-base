@@ -10,7 +10,10 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.model;
 
+import java.util.List;
+
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
+import org.jboss.tools.common.el.core.model.ELObject;
 
 /**
  * 
@@ -34,6 +37,11 @@ public abstract class ELInvocationExpressionImpl extends ELExpressionImpl implem
 		if(left != null) {
 			left.setParent(this);
 			setFirstToken(left.getFirstToken());
+			ELObject p = parent;
+			while(p instanceof ELInvocationExpressionImpl) {
+				((ELInvocationExpressionImpl)p).setFirstToken(firstToken);
+				p = p.getParent();
+			}
 		}
 	}
 
@@ -41,4 +49,8 @@ public abstract class ELInvocationExpressionImpl extends ELExpressionImpl implem
 		return left != null ? left.toString() : "";
 	}
 
+	public void collectInvocations(List<ELInvocationExpression> list) {
+		list.add(this);
+		//We do not need left part expression, it is part of this invocation 
+	}
 }

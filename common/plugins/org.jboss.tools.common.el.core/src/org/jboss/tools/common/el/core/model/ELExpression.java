@@ -10,11 +10,19 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.model;
 
+import java.util.List;
+
 /**
  * 
  * @author V. Kabanovich
  *
  */
 public interface ELExpression extends ELObject {
+
+	/**
+	 * Utility method
+	 * @return
+	 */
+	public List<ELInvocationExpression> getInvocations();
 
 }

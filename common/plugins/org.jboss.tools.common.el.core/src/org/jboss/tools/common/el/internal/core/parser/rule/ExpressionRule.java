@@ -75,12 +75,12 @@ public class ExpressionRule implements IRule, BasicStates {
 			case STATE_EXPECTING_EXPRESSION:
 				return new int[] {
 					WhiteSpaceTokenDescription.WHITESPACE,
+					UnaryTokenDescription.UNARY,
 					EndELTokenDescription.END_EL,
 					PrimitiveValueTokenDescription.PRIMITIVE_VALUE,					
 					JavaNameTokenDescription.JAVA_NAME,
 					StringTokenDescription.STRING,
 					ExprStartTokenDescription.EXPR_START,
-					UnaryTokenDescription.UNARY,
 				};
 			case STATE_EXPECTING_NAME:
 				return new int[] {
@@ -90,20 +90,20 @@ public class ExpressionRule implements IRule, BasicStates {
 			case STATE_EXPECTING_PARAM:
 				return new int[] {
 					WhiteSpaceTokenDescription.WHITESPACE,
+					UnaryTokenDescription.UNARY,
 					PrimitiveValueTokenDescription.PRIMITIVE_VALUE,
 					JavaNameTokenDescription.JAVA_NAME,
 					StringTokenDescription.STRING,
 					ExprStartTokenDescription.EXPR_START,
-					UnaryTokenDescription.UNARY,
 					ParamEndTokenDescription.PARAM_END
 				};
 			case STATE_EXPECTING_OPERAND:
 				return new int[] {
 					WhiteSpaceTokenDescription.WHITESPACE,
+					UnaryTokenDescription.UNARY,
 					PrimitiveValueTokenDescription.PRIMITIVE_VALUE,
 					StringTokenDescription.STRING,
 					ExprStartTokenDescription.EXPR_START,
-					UnaryTokenDescription.UNARY,
 					JavaNameTokenDescription.JAVA_NAME,
 				};
 				

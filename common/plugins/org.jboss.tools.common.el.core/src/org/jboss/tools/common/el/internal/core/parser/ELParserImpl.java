@@ -181,8 +181,8 @@ public class ELParserImpl {
 			case ParamStartTokenDescription.PARAM_START:
 				ELParametersImpl params = readParameters();
 				ELMethodInvocationImpl method = new ELMethodInvocationImpl();
-				method.setParameters(params);
 				method.setName(name.getName());
+				method.setParameters(params);
 				result = method;
 		}
 		if(current.getType() == DotTokenDescription.DOT) {

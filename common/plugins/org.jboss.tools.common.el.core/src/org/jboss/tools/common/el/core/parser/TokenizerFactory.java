@@ -13,6 +13,7 @@ package org.jboss.tools.common.el.core.parser;
 import java.util.List;
 
 import org.jboss.tools.common.el.core.model.ELExpression;
+import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.model.ELModel;
 import org.jboss.tools.common.el.internal.core.parser.rule.ArgRule;
 import org.jboss.tools.common.el.internal.core.parser.rule.CallRule;
@@ -99,8 +100,8 @@ public class TokenizerFactory {
 	}
 
 	public static void main(String[] args) {
-		String text = //"#{a.b.}";
-"#{a.b + s.h((6 != -8) & (7 + -iy88.g[9].h(7  div 8).i.j)+(8) ? 4 : 7,'p', a.b.c.d[null])}";
+		String text = "#{a.b().b()}";
+//"#{not a.b(x,y) + s.h((6 != -8) & (7 + -iy88.g[9].h(7  div 8).i.j)+(8) ? 4 : 7,'p', a.b.c.d[null])}";
 //"q82#{a(  g.h(7  +  8) + 8, g['h'].j(),'p')}k#{b}";
 		Tokenizer t = createJbossTokenizer();
 		LexicalToken token = t.parse(text);
@@ -120,6 +121,11 @@ public class TokenizerFactory {
 		System.out.println(model);
 		ELExpression expr = model.getInstances().get(0).getExpression();
 		System.out.println("Expression=" + expr);
+		List<ELInvocationExpression> is = expr.getInvocations();
+		System.out.println("Invocations:");
+		for (ELInvocationExpression i : is) {
+			System.out.println(i);
+		}
 	}
 
 }

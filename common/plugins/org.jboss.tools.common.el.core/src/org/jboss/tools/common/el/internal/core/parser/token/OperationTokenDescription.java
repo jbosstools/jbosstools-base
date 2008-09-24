@@ -56,7 +56,8 @@ public class OperationTokenDescription implements ITokenDescription {
 		if(end < 0) return false;
 		char ch = tokenizer.lookUpChar(end);
 		if(Character.isWhitespace(ch) || ch == '\0' || ch == '('
-			|| (canBeFollowedByOperand && Character.isJavaIdentifierPart(ch))) {
+			|| (canBeFollowedByOperand && Character.isJavaIdentifierPart(ch) 
+					|| ch == '\'' || ch == '"' || ch == '-')) {
 			return true;
 		}
 		

@@ -10,7 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jboss.tools.common.el.core.model.ELExpression;
+import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 
 /**
  * 
@@ -20,5 +24,14 @@ import org.jboss.tools.common.el.core.model.ELExpression;
 public abstract class ELExpressionImpl extends ELObjectImpl implements ELExpression {
 
 	public ELExpressionImpl() {}
+
+	public List<ELInvocationExpression> getInvocations() {
+		List<ELInvocationExpression> list = new ArrayList<ELInvocationExpression>();
+		collectInvocations(list);
+		return list;
+	}
+
+	public void collectInvocations(List<ELInvocationExpression> list) {
+	}
 
 }
