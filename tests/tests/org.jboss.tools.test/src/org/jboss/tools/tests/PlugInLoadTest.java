@@ -78,8 +78,7 @@ public class PlugInLoadTest extends TestCase {
 				rhdsNS + "jsf.vpe.ajax4jsf", 
 				rhdsNS + "jsf.vpe.facelets",
 				rhdsNS + "jsf.vpe.richfaces", 
-				rhdsNS + "jsf.vpe.seam",
-				rhdsNS + "jsf.vpe.tomahawk" });
+				rhdsNS + "jsf.vpe.seam" });
 	}
 
 	public void testJstPluginsResolved() {
@@ -114,13 +113,7 @@ public class PlugInLoadTest extends TestCase {
 	public void testCorePluginsResolved() {
 		assertPluginsResolved(new String[] { 
 				jbideNS + "archives.core",
-				jbideNS + "archives.ui", 
-				jbideNS + "core", 
-				jbideNS + "help",
-				jbideNS + "jdt.core", 
-				jbideNS + "jdt.j2ee.xml.ui",
-				jbideNS + "jdt.ui", 
-				jbideNS + "ui" });
+				jbideNS + "archives.ui"});
 	}
 
 	public void testASPluginsResolved() {
@@ -140,10 +133,12 @@ public class PlugInLoadTest extends TestCase {
 				hibNS + "jdt.apt.ui" });
 	}
 
-	public void testJbpmPluginsResolved() {
-		assertPluginsResolved(new String[] { 
-				jbpmNS });
-	}
+	
+	// TODO: Move this test to JBDS
+//	public void testJbpmPluginsResolved() {
+//		assertPluginsResolved(new String[] { 
+//				jbpmNS });
+//	}
 
 	public void testFreemarkerPluginsResolved() {
 		assertPluginsResolved(new String[] { 
