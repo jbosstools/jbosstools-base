@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.ui.ide.ResourceUtil;
 import org.jboss.tools.test.util.xpl.EditorTestHelper;
 
 /**
@@ -82,9 +83,11 @@ public class ProjectImportTestSetup extends TestSetup {
 
 	@Override
 	protected void tearDown() throws Exception {
+		boolean saveAutoBuild = ResourcesUtils.setBuildAutomatically(false);
 		for (int i = 0; i < projectNames.length; i++) {
 			ResourcesUtils.deleteProject(projectNames[i]);
 			EditorTestHelper.joinBackgroundActivities();
 		}
+		ResourcesUtils.setBuildAutomatically(saveAutoBuild);
 	}
 }
