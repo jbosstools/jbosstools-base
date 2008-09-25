@@ -35,10 +35,15 @@ public abstract class ELObjectImpl implements ELObject {
 	}
 
 	public int getLength() {
-		int start = firstToken.getStart();
+		return getEndPosition() - getStartPosition();
+	}
+
+	public int getStartPosition() {
+		return firstToken == null ? -1 : firstToken.getStart();
+	}
+	public int getEndPosition() {
 		LexicalToken lt = (lastToken != null) ? lastToken : firstToken;
-		int end = lt.getStart() + lt.getLength();
-		return end - start;
+		return lt == null ? -1 : lt.getStart() + lt.getLength();
 	}
 
 	public String getText() {

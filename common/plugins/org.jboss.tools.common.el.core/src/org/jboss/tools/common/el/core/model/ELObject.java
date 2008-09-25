@@ -25,6 +25,8 @@ public interface ELObject {
 
 	public ELModel getModel();
 
+	public int getStartPosition();
+	public int getEndPosition();
 	public int getLength();
 
 	public String getText();

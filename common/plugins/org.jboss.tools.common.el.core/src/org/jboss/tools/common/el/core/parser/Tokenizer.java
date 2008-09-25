@@ -70,14 +70,20 @@ public class Tokenizer {
 	}
 
 	public LexicalToken parse(String sourceString) {
+		return parse(sourceString, 0, sourceString.length());
+	}
+
+	public LexicalToken parse(String sourceString, int initialOffset, int length) {
 		this.sourceString = sourceString;
 		errors.clear();
-		index = 0;
+		index = initialOffset;
 		start = new LexicalToken(0, 0, "", -1000);
 		last = start;
 		state = BasicStates.STATE_EXPECTING_EL;
-		
-		while(index < sourceString.length()) {
+
+		int lastIndex = initialOffset + length;
+		if(lastIndex > sourceString.length()) lastIndex = sourceString.length();
+		while(index < lastIndex) {
 			boolean done = false;
 			List<IRule> rs = rules.get(state);
 			for (IRule rule : rs) {

@@ -53,8 +53,7 @@ public class ELMethodInvocationImpl extends ELPropertyInvocationImpl implements 
 		return ELObjectType.EL_METHOD_INVOCATION;
 	}
 
-	public void collectInvocations(List<ELInvocationExpression> list) {
-		super.collectInvocations(list);
+	public void collectInvocationsInParameters(List<ELInvocationExpression> list) {
 		if(parameters != null) {
 			List<ELExpression> ps = parameters.getParameters();
 			for (ELExpression expr: ps) {

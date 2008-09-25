@@ -199,6 +199,12 @@ public class ELParserImpl {
 				}
 				r.setLeft(result);				
 				result = right;
+			} else {
+				ELPropertyInvocationImpl incompleteProperty = new ELPropertyInvocationImpl();
+				incompleteProperty.setSeparator(dot);
+				incompleteProperty.setLastToken(dot);
+				incompleteProperty.setLeft(result);
+				result = incompleteProperty;
 			}
 		}
 		return result;

@@ -51,6 +51,13 @@ public abstract class ELInvocationExpressionImpl extends ELExpressionImpl implem
 
 	public void collectInvocations(List<ELInvocationExpression> list) {
 		list.add(this);
-		//We do not need left part expression, it is part of this invocation 
+		//We do not need left part expression, it is part of this invocation
+		ELInvocationExpressionImpl l = this;
+		while(l != null) {
+			if(l instanceof ELMethodInvocationImpl) {
+				((ELMethodInvocationImpl)l).collectInvocationsInParameters(list);
+			}
+			l = l.getLeft();
+		}
 	}
 }
