@@ -117,6 +117,7 @@ public class DefaultStandardWizard extends Wizard implements SpecialWizardContro
 			String m = support.getMessage(support.getStepId());
 			if (m == null || m.length() == 0) m = message;
 			wizardStep.setDescription(m);
+			wizardStep.setMessage(support.getSubtitle());
 			wizardStep.setErrorMessage(null);
 		} else {
 			wizardStep.setDescription(null);
