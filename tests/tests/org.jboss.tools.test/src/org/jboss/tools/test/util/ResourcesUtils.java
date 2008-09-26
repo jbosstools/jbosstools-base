@@ -16,7 +16,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -34,9 +36,13 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
+import org.jboss.tools.tests.ImportBean;
+import org.jboss.tools.tests.ImportProvider;
+
 import org.osgi.framework.Bundle;
 
 /**
@@ -55,23 +61,24 @@ public class ResourcesUtils {
 		String tplPrjLcStr;
 			tplPrjLcStr = FileLocator.resolve(bundle.getEntry(templLocation))
 				.getFile();
-			IProject importedPrj = createEclipseProject(bundle,tplPrjLcStr,monitor);
-			ImportOperation op = new ImportOperation(importedPrj.getFullPath(),
-					new File(tplPrjLcStr),
-					FileSystemStructureProvider.INSTANCE,
-					new IOverwriteQuery() {
-						public String queryOverwrite(String pathString) {
-							return IOverwriteQuery.ALL;
-						}},
-					Arrays.asList(new File(tplPrjLcStr).listFiles()));
-
-		op.setCreateContainerStructure(false);
-		if( Display.getCurrent() == null || Display.getCurrent().getActiveShell() == null ) {
-			op.setContext(new Shell());
-		} else {
-			op.setContext(Display.getCurrent().getActiveShell());
-		}
-		op.run(monitor);
+			IProject importedPrj = importProjectIntoWorkspace(tplPrjLcStr, new Path(tplPrjLcStr).lastSegment());
+//			IProject importedPrj = createEclipseProject(bundle,tplPrjLcStr,monitor);
+//			ImportOperation op = new ImportOperation(importedPrj.getFullPath(),
+//					new File(tplPrjLcStr),
+//					FileSystemStructureProvider.INSTANCE,
+//					new IOverwriteQuery() {
+//						public String queryOverwrite(String pathString) {
+//							return IOverwriteQuery.ALL;
+//						}},
+//					Arrays.asList(new File(tplPrjLcStr).listFiles()));
+//
+//		op.setCreateContainerStructure(false);
+//		if( Display.getCurrent() == null || Display.getCurrent().getActiveShell() == null ) {
+//			op.setContext(new Shell());
+//		} else {
+//			op.setContext(Display.getCurrent().getActiveShell());
+//		}
+//		op.run(monitor);
 		return importedPrj;
 	}
 
@@ -177,5 +184,57 @@ public class ResourcesUtils {
 	           workspace.setDescription(description);
 	       }
 	       return oldAutoBuilding;
+	}
+
+	static public void importProjectIntoWorkspace(ImportBean bean) {
+		importProjectIntoWorkspace(bean);
+	}
+
+	/**
+	 * Import project into workspace.
+	 * 
+	 * @param path the path
+	 * @param projectName the project name
+	 */
+	static public IProject importProjectIntoWorkspace(String path, String projectName) {
+	
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				projectName);
+	
+		try {
+	
+			IOverwriteQuery overwrite = new IOverwriteQuery() {
+				public String queryOverwrite(String pathString) {
+					return ALL;
+				}
+			};
+	
+			ImportProvider importProvider = new ImportProvider();
+	
+			// need to remove from imported project "svn" files
+			List<String> unimportedFiles = new ArrayList<String>();
+			unimportedFiles.add(".svn"); //$NON-NLS-1$
+	
+			importProvider.setUnimportedFiles(unimportedFiles);
+	
+			// create import operation
+			ImportOperation importOp = new ImportOperation(project
+					.getFullPath(), new File(path), importProvider, overwrite);
+	
+			// import files just to project folder ( without old structure )
+			importOp.setCreateContainerStructure(false);
+	
+			importOp.setContext(PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getShell());
+	
+			// run import
+			importOp.run(null);
+	
+		} catch (InvocationTargetException ite) {
+//			TePlugin.getDefault().logError(ite.getCause());
+		} catch (InterruptedException ie) {
+//			VPETestPlugin.getDefault().logError(ie);
+		}
+		return project;
 	}
 }
