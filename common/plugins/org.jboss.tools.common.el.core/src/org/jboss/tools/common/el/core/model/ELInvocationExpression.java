@@ -34,4 +34,8 @@ public interface ELInvocationExpression extends ELExpression {
 	 */
 	public ELInvocationExpression getLeft();
 
+	public int getInvocationStartPosition();
+
+	public String getMemberName();
+
 }

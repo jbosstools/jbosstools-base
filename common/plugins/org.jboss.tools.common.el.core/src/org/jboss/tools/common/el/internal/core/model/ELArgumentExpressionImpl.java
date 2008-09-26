@@ -45,4 +45,13 @@ public class ELArgumentExpressionImpl extends ELInvocationExpressionImpl impleme
 		return ELObjectType.EL_ARGUMENT_INVOCATION;
 	}
 
+	public int getInvocationStartPosition() {
+		return argument == null ? -1 : argument.getStartPosition();
+	}
+
+	public String getMemberName() {
+		if(argument == null) return null;
+		return argument.getArgument().getText();
+	}
+
 }

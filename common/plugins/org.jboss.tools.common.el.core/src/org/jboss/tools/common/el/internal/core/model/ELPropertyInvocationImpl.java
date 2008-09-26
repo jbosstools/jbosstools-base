@@ -68,4 +68,18 @@ public class ELPropertyInvocationImpl extends ELInvocationExpressionImpl impleme
 		return ELObjectType.EL_PROPERTY_INVOCATION;
 	}
 
+	public int getInvocationStartPosition() {
+		if(name != null) {
+			return name.getStart();
+		}
+		if(dot != null) {
+			return dot.getStart(); // ?
+		}
+		return -1;
+	}
+
+	public String getMemberName() {
+		return name == null ? null : name.getText();
+	}
+
 }
