@@ -63,6 +63,9 @@ public class ELParserImpl {
 			} else if(!hasNextToken()) {
 				break;
 			} else {
+				if(lookUpNextToken(current) == null) {
+					break;
+				}
 				setNextToken();
 			}
 		}
@@ -70,7 +73,7 @@ public class ELParserImpl {
 	}
 
 	protected ELInstanceImpl readELInstance() {
-		if(current.getType() != StartELTokenDescription.START_EL) {
+		if(current == null || current.getType() != StartELTokenDescription.START_EL) {
 			return null;
 		}
 		ELInstanceImpl instance = new ELInstanceImpl();
@@ -82,7 +85,12 @@ public class ELParserImpl {
 			instance.setLastToken(expression.getLastToken());
 		}
 		do {
-			if(current.getType() == StartELTokenDescription.START_EL) {
+			if(current == null) {
+				if(instance.getLastToken() == null) {
+					instance.setLastToken(instance.getFirstToken());
+				}
+				return instance;
+			} else if(current.getType() == StartELTokenDescription.START_EL) {
 				instance.setLastToken(current.getPreviousToken());
 				return instance;
 			} else if(current.getType() == EndELTokenDescription.END_EL) {
@@ -98,15 +106,16 @@ public class ELParserImpl {
 	}
 
 	protected ELExpressionImpl readExpression() {
+		if(current == null) return null;
 		ELExpressionImpl single = readSingleExpression();
 		if(single == null) return null;
-		if(current.getType() != OperationTokenDescription.OPERATION) {
+		if(current == null || current.getType() != OperationTokenDescription.OPERATION) {
 			return single;
 		}
 		ELMultiExpressionImpl multi = new ELMultiExpressionImpl();
 		multi.setFirstToken(single.getFirstToken());
 		multi.addExpression(single);		
-		while(current.getType() == OperationTokenDescription.OPERATION && hasNextToken()) {
+		while(current != null && current.getType() == OperationTokenDescription.OPERATION && hasNextToken()) {
 			ELOperatorImpl operator = new ELOperatorImpl();
 			operator.setFirstToken(current);
 			operator.setLastToken(current);
@@ -123,6 +132,7 @@ public class ELParserImpl {
 	}
 
 	protected ELExpressionImpl readSingleExpression() {
+		if(current == null) return null;
 		switch(current.getType()) {
 			case ExprStartTokenDescription.EXPR_START:
 			case UnaryTokenDescription.UNARY:
@@ -153,7 +163,7 @@ public class ELParserImpl {
 			expr.setExpression(child);
 			expr.setLastToken(child.getLastToken());
 		}
-		if(current.getType() == ExprEndTokenDescription.EXPR_END) {
+		if(current != null && current.getType() == ExprEndTokenDescription.EXPR_END) {
 			expr.setLastToken(current);
 			setNextToken();
 		}
@@ -161,14 +171,14 @@ public class ELParserImpl {
 	}
 
 	protected ELInvocationExpressionImpl readInvocationExpression() {
-		if(current.getType() != JavaNameTokenDescription.JAVA_NAME) {
+		if(current == null || current.getType() != JavaNameTokenDescription.JAVA_NAME) {
 			return null;
 		}
 		ELPropertyInvocationImpl name = new ELPropertyInvocationImpl();
 		name.setName(current);
 		ELInvocationExpressionImpl result = name;
 		setNextToken();
-		switch (current.getType()) {
+		if(current != null) switch (current.getType()) {
 			case ArgStartTokenDescription.ARG_START:
 				while(current.getType() == ArgStartTokenDescription.ARG_START) {
 					ELArgumentImpl arg = readArgument();
@@ -185,7 +195,7 @@ public class ELParserImpl {
 				method.setParameters(params);
 				result = method;
 		}
-		if(current.getType() == DotTokenDescription.DOT) {
+		if(current != null && current.getType() == DotTokenDescription.DOT) {
 			LexicalToken dot = current;
 			setNextToken();
 			ELInvocationExpressionImpl right = readInvocationExpression();
@@ -223,7 +233,7 @@ public class ELParserImpl {
 			parameters.addParameter(expression);
 			parameters.setLastToken(expression.getLastToken());
 		}
-		while(current.getType() == CommaTokenDescription.COMMA) {
+		while(current != null && current.getType() == CommaTokenDescription.COMMA) {
 			if(!hasNextToken()) {
 				parameters.setLastToken(current);
 				return parameters;
@@ -235,7 +245,7 @@ public class ELParserImpl {
 				parameters.setLastToken(expression.getLastToken());
 			}
 		}
-		if(current.getType() == ParamEndTokenDescription.PARAM_END) {
+		if(current != null && current.getType() == ParamEndTokenDescription.PARAM_END) {
 			parameters.setLastToken(current);
 			setNextToken();
 		}
@@ -254,7 +264,7 @@ public class ELParserImpl {
 			arg.setArgument(expr);
 			arg.setLastToken(expr.getLastToken());
 		}
-		if(current.getType() == ArgEndTokenDescription.ARG_END) {
+		if(current != null && current.getType() == ArgEndTokenDescription.ARG_END) {
 			arg.setLastToken(current);
 			setNextToken();
 		}
@@ -274,8 +284,7 @@ public class ELParserImpl {
 	}
 
 	private void setNextToken() {
-		LexicalToken t = lookUpNextToken(current);
-		if(t != null) current = t;
+		current = lookUpNextToken(current);
 	}
 
 }
