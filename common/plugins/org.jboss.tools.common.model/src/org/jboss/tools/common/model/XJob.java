@@ -28,6 +28,8 @@ import org.osgi.framework.Bundle;
 
 public class XJob extends WorkspaceJob {
 	public static Object FAMILY_XJOB = new Object();
+	
+	private static boolean suspended = false;
 
 	public interface XRunnable extends Runnable {
 		public String getId();
@@ -107,24 +109,30 @@ public class XJob extends WorkspaceJob {
 	}
 	
 	void addRunnableInternal(XRunnable runnable) {
-		synchronized (this) {
-			if(ids.contains(runnable.getId())) return;
-			ids.add(runnable.getId());
-			list.add(runnable);
-		}
-		if(getState() == Job.NONE) {
-			schedule(1000);
+		if (!isSuspended()) {
+			synchronized (this) {
+				if (ids.contains(runnable.getId()))
+					return;
+				ids.add(runnable.getId());
+				list.add(runnable);
+			}
+			if (getState() == Job.NONE) {
+				schedule(1000);
+			}
 		}
 	}
 
 	void addRunnableInternalWithPriority(XRunnable runnable) {
-		synchronized (this) {
-			if(ids.contains(runnable.getId())) return;
-			ids.add(runnable.getId());
-			list.add(0, runnable);
-		}
-		if(getState() == Job.NONE) {
-			schedule(0);
+		if (!isSuspended()) {
+			synchronized (this) {
+				if (ids.contains(runnable.getId()))
+					return;
+				ids.add(runnable.getId());
+				list.add(0, runnable);
+			}
+			if (getState() == Job.NONE) {
+				schedule(0);
+			}
 		}
 	}
 
@@ -137,18 +145,30 @@ public class XJob extends WorkspaceJob {
 				if(list.size() == 0) break;
 				r = list.remove(0);
 			}
-			monitor.subTask(r.getId());
-			int state = 0;
-			Bundle b = Platform.getBundle("org.jboss.tools.common.model");
-			state = b==null ? -1 : b.getState();
-			if(state == Bundle.ACTIVE) {
+			// monitor.subTask(r.getId()) is irrelevant for system jobs 
+			//monitor.subTask(r.getId());
+			// XJob is a class from the org.jboss.tools.common.model plugin. This plugin must be active
+			//int state = 0;
+			//Bundle b = Platform.getBundle("org.jboss.tools.common.model");
+			//state = b==null ? -1 : b.getState();
+			//if(state == Bundle.ACTIVE) {
+			if (!isSuspended()) {
 				r.run();
 			}
+			//}
 			synchronized (this) {
 				ids.remove(r.getId());
 			}
 		}
 		return Status.OK_STATUS;
+	}
+
+	public static boolean isSuspended() {
+		return suspended;
+	}
+
+	public static void setSuspended(boolean suspended) {
+		XJob.suspended = suspended;
 	}
 
 }

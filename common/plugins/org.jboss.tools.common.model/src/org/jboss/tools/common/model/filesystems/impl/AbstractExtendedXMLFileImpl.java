@@ -7,6 +7,11 @@ package org.jboss.tools.common.model.filesystems.impl;
 import java.io.StringReader;
 import java.util.*;
 
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -102,7 +107,17 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         	runCheckerOnLoad();
         }
     }
-    
+    WorkspaceJob checkerOnLoad = new WorkspaceJob("Checking on load...") {
+
+		@Override
+		public IStatus runInWorkspace(IProgressMonitor monitor)
+				throws CoreException {
+			getResourceMarkers().clear();
+	   		constraintChecker.check();
+			return Status.OK_STATUS;
+		}
+    	
+    };
     void runCheckerOnLoad() {
     	if(!isActive()) return;
     	XModelObject s = getParent();
@@ -110,13 +125,14 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     	if(s == null || !s.getModelEntity().getName().equals("FileSystemFolder")) {
     		return;
     	}
-    	Runnable r = new Runnable() {
+    	/*Runnable r = new Runnable() {
     		public void run() {
     	    	getResourceMarkers().clear();
     	   		constraintChecker.check();
     		}
     	};
-    	Display.getDefault().asyncExec(r);
+    	Display.getDefault().asyncExec(r);*/
+    	checkerOnLoad.schedule();
     }
 
     public void set(String name, String value) {
