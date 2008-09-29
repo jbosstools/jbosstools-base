@@ -180,7 +180,7 @@ public class ELParserImpl {
 		setNextToken();
 		if(current != null) switch (current.getType()) {
 			case ArgStartTokenDescription.ARG_START:
-				while(current.getType() == ArgStartTokenDescription.ARG_START) {
+				while(current != null && current.getType() == ArgStartTokenDescription.ARG_START) {
 					ELArgumentImpl arg = readArgument();
 					ELArgumentExpressionImpl call = new ELArgumentExpressionImpl();
 					call.setArgument(arg);
