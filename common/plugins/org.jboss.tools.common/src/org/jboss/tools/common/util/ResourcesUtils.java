@@ -67,12 +67,18 @@ public class ResourcesUtils {
 	}
 
 	public static IProject importExistingProject(IProject project, String location, String name) throws CoreException {
+		return importExistingProject(project, location, name, new NullProgressMonitor(), true);
+	}
+
+	public static IProject importExistingProject(IProject project, String location, String name, IProgressMonitor monitor, boolean refreshWorkspace) throws CoreException {
 		IPath path = new Path(location).append(".project");
 		IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(path);
 		description.setName(name);
-		project.create(description, new NullProgressMonitor());
-		project.open(IResource.NONE, new NullProgressMonitor());
-		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		project.create(description, monitor);
+		project.open(IResource.NONE, monitor);
+		if(refreshWorkspace) {
+			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		}
 		return project;
 	}
 
