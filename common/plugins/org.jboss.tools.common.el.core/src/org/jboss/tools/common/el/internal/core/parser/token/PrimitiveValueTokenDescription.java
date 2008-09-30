@@ -56,9 +56,11 @@ public class PrimitiveValueTokenDescription implements ITokenDescription {
 	}
 
 	private boolean isNumber(Tokenizer tokenizer, int offset) {
-		//TODO improve
 		char ch = tokenizer.lookUpChar(offset);
-		return Character.isDigit(ch);
+		if(ch == '.') {
+			ch = tokenizer.lookUpChar(offset + 1);
+		}
+		return ch != '\0' && Character.isDigit(ch);
 	}
 
 	public boolean read(Tokenizer tokenizer, int offset) {
@@ -75,20 +77,31 @@ public class PrimitiveValueTokenDescription implements ITokenDescription {
 		return true;
 	}
 
+	static String TYPE_CHAR = "lLfFdD";
 	private boolean readNumber(Tokenizer tokenizer, int offset) {
 		int i = offset;
+		int dotCount = 1;
+		if(tokenizer.startsWith("0x")) {
+			i += 2;
+			dotCount = 0;
+		}
 		char ch = '\0';
 		boolean lastCharIsWrong = false;
-		int dotCount = 0;
 		while((ch = tokenizer.readNextChar()) != '\0') {
 			if(ch == '.') {
-				dotCount++;
-				if(dotCount > 1) {
+				dotCount--;
+				if(dotCount < 0) {
 					lastCharIsWrong = true;
 					break;
 				}
 			} else if(!Character.isDigit(ch)) {
-				//TODO improve: 0x1, 1d, .f, etc
+				if(TYPE_CHAR.indexOf(ch) >= 0) {
+					char ch1 = tokenizer.lookUpChar(i + 1);
+					if(ch1 == '\0' || !Character.isJavaIdentifierPart(ch1)) {
+						i++;
+						break;
+					}
+				}
 				lastCharIsWrong = true;
 				break;
 			}
