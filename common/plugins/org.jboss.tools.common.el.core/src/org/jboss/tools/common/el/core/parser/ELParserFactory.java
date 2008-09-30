@@ -51,9 +51,6 @@ public class ELParserFactory {
 			Tokenizer t = createTokenizer();
 			LexicalToken token = t.parse(source, start, length);
 			errors = t.getErrors();
-			if(token == null) {
-				return null;
-			}
 			ELModelImpl model = impl.parse(token);
 			model.setSource(source);
 			model.setErrors(errors);

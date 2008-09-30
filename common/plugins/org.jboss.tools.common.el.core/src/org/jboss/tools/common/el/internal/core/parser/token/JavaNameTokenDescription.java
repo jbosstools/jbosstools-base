@@ -33,13 +33,13 @@ public class JavaNameTokenDescription implements ITokenDescription {
 
 	public boolean isStart(Tokenizer tokenizer, int offset) {
 		char ch = tokenizer.lookUpChar(offset);
-		return Character.isJavaIdentifierStart(ch);
+		return Character.isJavaIdentifierStart(ch) && ch != '\0';
 	}
 
 	public boolean read(Tokenizer tokenizer, int offset) {
 		int i = offset;
 		char ch = '\0';
-		while(Character.isJavaIdentifierPart(ch = tokenizer.readNextChar())) {
+		while(Character.isJavaIdentifierPart(ch = tokenizer.readNextChar()) && ch != '\0') {
 			i++;
 		}
 		if(ch != '\0') {
