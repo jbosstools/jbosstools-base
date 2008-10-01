@@ -13,6 +13,7 @@ package org.jboss.tools.common.el.core.parser;
 import java.util.List;
 
 import org.jboss.tools.common.el.core.model.ELExpression;
+import org.jboss.tools.common.el.core.model.ELInstance;
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.model.ELModel;
 import org.jboss.tools.common.el.core.model.ELUtil;
@@ -101,13 +102,14 @@ public class TokenizerFactory {
 	}
 
 	public static void main(String[] args) {
-		String text = "#{g11.g12.y13}   #{a14.b15(x.t.u(uu.ii[9],  j)).b16(m17(v18(i19[2]).u20).)+ a21(c.).b.}";
+		String text = "#{.8 +(.9d / - (-.8))}";
+//"#{g11.g12.y13} #{#{  #{a14.b15(x.t.u(uu.ii[9],  j)).b16(m17(v18(i19[2]).u20).)+ a21(c.).b.}";
 //"#{not a.b(x,y) + s.h((6 != -8) & (7 + -iy88.g[9].h(7  div 8).i.j)+(8) ? 4 : 7,'p', a.b.c.d[null])}";
 //"q82#{a(  g.h(7  +  8) + 8, g['h'].j(),'p')}k#{b}";
 		Tokenizer t = createJbossTokenizer();
 		LexicalToken token = t.parse(text);
 		LexicalToken ti = token;
-
+		
 		while(ti != null) {
 			int type = ti.getType();
 			System.out.println(type + ":" + ti.getText() + ":");
@@ -117,9 +119,10 @@ public class TokenizerFactory {
 		for (SyntaxError e: errors) {
 			System.out.println("state=" + e.getState() + " position=" + e.getPosition());
 		}
-		ELParser parser = ELParserFactory.createJbossParser();
-		ELModel model = parser.parse(text, 0, 13);
+		ELParser parser = ELParserUtil.getJbossFactory().createParser();
+		ELModel model = parser.parse(text, 0, 90);
 		System.out.println(model);
+
 		ELExpression expr = model.getInstances().get(0).getExpression();
 		System.out.println("Expression=" + expr);
 		List<ELInvocationExpression> is = expr.getInvocations();

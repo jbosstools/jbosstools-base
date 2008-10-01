@@ -49,9 +49,9 @@ public abstract class ELObjectImpl implements ELObject {
 	public String getText() {
 		if(getModel() == null) return null;
 		String source = getModel().getSource();
-		int start = firstToken.getStart();
+		int start = firstToken.getStart() - getModel().delta;
 		LexicalToken lt = (lastToken != null) ? lastToken : firstToken;
-		int end = lt.getStart() + lt.getLength();
+		int end = lt.getStart() + lt.getLength() - getModel().delta;
 		return source.substring(start, end);
 	}
 

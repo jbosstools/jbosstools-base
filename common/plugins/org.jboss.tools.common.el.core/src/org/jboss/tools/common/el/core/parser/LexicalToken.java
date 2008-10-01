@@ -138,4 +138,9 @@ public class LexicalToken implements IToken {
 		return next.findTokenForward(type);
 	}
 
+	public void shift(int delta) {
+		start += delta;
+		if(next != null) next.shift(delta);
+	}
+
 }

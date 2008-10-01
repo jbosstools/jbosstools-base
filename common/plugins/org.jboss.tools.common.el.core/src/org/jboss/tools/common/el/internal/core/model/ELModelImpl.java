@@ -26,6 +26,7 @@ import org.jboss.tools.common.el.core.parser.SyntaxError;
 public class ELModelImpl extends ELObjectImpl implements ELModel {
 	String source;
 	List<ELInstance> instances = new ArrayList<ELInstance>();
+	int delta = 0;
 
 	public ELModelImpl() {}
 
@@ -83,4 +84,10 @@ public class ELModelImpl extends ELObjectImpl implements ELModel {
 		
 	}
 
+	public void shift(int delta) {
+		this.delta = delta;
+		if(instances.size() > 0) {
+			instances.get(0).getFirstToken().shift(delta);
+		}
+	}
 }

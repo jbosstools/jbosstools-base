@@ -8,23 +8,19 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/ 
-package org.jboss.tools.common.el.core.model;
+package org.jboss.tools.common.el.core.resolver;
 
 import java.util.List;
 
-/**
- * ELModel object is the result of EL parsing that includes 
- * all found instances of EL in the source string.
- * 
- * @author V. Kabanovich
- *
- */
-public interface ELModel extends ELObject {
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.text.BadLocationException;
+import org.jboss.tools.common.el.core.model.ELExpression;
+import org.jboss.tools.common.el.core.parser.ELParserFactory;
 
-	public String getSource();
+public interface ELCompletionEngine {
 
-	public List<ELInstance> getInstances();
+	public ELOperandResolveStatus resolveELOperand(IFile file, ELExpression operand,  
+			boolean returnEqualedVariablesOnly, List<Var> vars, ElVarSearcher varSearcher) throws BadLocationException, StringIndexOutOfBoundsException;
 
-	public void shift(int delta);
-
+	public ELParserFactory getParserFactory();
 }
