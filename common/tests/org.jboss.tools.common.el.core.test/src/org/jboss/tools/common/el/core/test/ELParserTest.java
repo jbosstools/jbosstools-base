@@ -28,7 +28,6 @@ public class ELParserTest extends TestCase {
 	
 	public void testTokenizerOnCorrectEL() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-
 		//1. One variable
 		checkCorrectEL(t, "#{a}");
 		//2. Two EL instances
@@ -51,8 +50,97 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t, "#{a.b(7 + 8) * 4 / 2 - 1}");
 		//9. Complex expressions
 		checkCorrectEL(t, "#{a.b(7 + 8) * (4 / 2 - 1)/c.d}");
+		//10. Complex expressions
+		checkCorrectEL(t, "#{a.b(7 + 8) * (4 / 2 - 1)/c.d}");		
 	}
 
+	public void testElEmptyOperator() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{empty a}");	
+	}
+	
+	public void testElLogicalNotOperators() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{not a == null}");
+		checkCorrectEL(t, "#{!a eq null}");
+	}
+	
+	public void testElLogicalAndOperators() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{a!=null and a!=1}");
+		checkCorrectEL(t, "#{a!=null && a!=1}");
+	}
+	
+	public void testElLogicalOrOperators() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{a!=null or a!=1}");
+		checkCorrectEL(t, "#{a!=null || a!=1}");
+	}
+	
+	public void testElConditionalOperator() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{a?1:2}");
+	}
+	
+	public void testElRelationalOperator() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{a == b}");
+		checkCorrectEL(t, "#{a eq b}");
+		checkCorrectEL(t, "#{a != b}");
+		checkCorrectEL(t, "#{a ne b}");
+		checkCorrectEL(t, "#{a < b}");
+		checkCorrectEL(t, "#{a lt b}");
+		checkCorrectEL(t, "#{a > b}");
+		checkCorrectEL(t, "#{a < b}");
+		checkCorrectEL(t, "#{a <= b}");
+		checkCorrectEL(t, "#{a ge b}");
+		checkCorrectEL(t, "#{a >= b}");
+		checkCorrectEL(t, "#{a le b}");
+		checkCorrectEL(t, "#{'a' < 'b'}");
+		
+	}
+	
+	public void testElArithmeticOperators() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{a*b}");
+		checkCorrectEL(t, "#{a/b}");
+		checkCorrectEL(t, "#{a div b}");
+		checkCorrectEL(t, "#{a%b}");
+		checkCorrectEL(t, "#{a mod b}");
+		checkCorrectEL(t, "#{a-b}");
+		checkCorrectEL(t, "#{a+b}");
+		checkCorrectEL(t, "#{-b+1}");
+		checkCorrectEL(t, "#{-b}");
+	}	
+	
+	public void testElLiteralExpressions() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t,"#{\"#{\"}");
+		checkCorrectEL(t,"#{’#’}");
+		checkCorrectEL(t,"\\#{exprA}");
+		checkCorrectEL(t,"#{\"\\\"exprA\\\"\"}");
+		checkCorrectEL(t,"#{\"\\\"#\\\"\"}");
+	}
+	
+	public void testElReferencesObjectProperties() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t,"#{customer.address[\"street\"]}");
+		checkCorrectEL(t,"#{customer.address['street']}");
+		checkCorrectEL(t,"#{planets[object.counter].mass}");
+	}
+	
+	public void testElSimpleTypes() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t,"#{\"string\"}");
+		checkCorrectEL(t,"#{'string'}");
+		checkCorrectEL(t,"#{11.0}");
+		checkCorrectEL(t,"#{1.2E4}");
+		checkCorrectEL(t,"#{null}");
+		checkCorrectEL(t,"#{1}");
+		checkCorrectEL(t,"#{true}");
+		checkCorrectEL(t,"#{false}");
+	}
+	
 	private void checkCorrectEL(Tokenizer t, String test) {
 		LexicalToken token = t.parse(test);
 		assertEquals(test, restore(token));
@@ -63,10 +151,8 @@ public class ELParserTest extends TestCase {
 
 	public void testTokenizerOnIncorrectEL() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-
 		//1. Dot unfollowed by name
 		checkIncorrectEL(t, "#{a.}", 4);
-
 		//2. Incorrect use of ')'
 		checkIncorrectEL(t, "#{a.b + -c.d + g)}", 16);
 		//2. Incorrect use of ')' in second EL instance
