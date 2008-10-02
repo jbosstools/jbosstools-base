@@ -11,6 +11,8 @@
 package org.jboss.tools.common.el.internal.core.parser.rule;
 
 import org.jboss.tools.common.el.core.parser.IRule;
+import org.jboss.tools.common.el.core.parser.Tokenizer;
+import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ExprStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.JavaNameTokenDescription;
@@ -37,6 +39,7 @@ public class ExpressionRule implements IRule, BasicStates {
 			STATE_EXPECTING_EXPRESSION,
 			STATE_EXPECTING_NAME,
 			STATE_EXPECTING_PARAM,
+			STATE_EXPECTING_ARG,
 			STATE_EXPECTING_OPERAND
 		};
 	}
@@ -56,6 +59,7 @@ public class ExpressionRule implements IRule, BasicStates {
 			case PrimitiveValueTokenDescription.PRIMITIVE_VALUE:
 					return STATE_EXPECTING_OPERATION;
 			case ParamEndTokenDescription.PARAM_END:
+			case ArgEndTokenDescription.ARG_END:
 					return STATE_EXPECTING_CALL_AFTER_METHOD;
 			case ExprStartTokenDescription.EXPR_START:
 			case UnaryTokenDescription.UNARY:
@@ -97,6 +101,15 @@ public class ExpressionRule implements IRule, BasicStates {
 					ExprStartTokenDescription.EXPR_START,
 					ParamEndTokenDescription.PARAM_END
 				};
+			case STATE_EXPECTING_ARG:
+				return new int[] {
+					WhiteSpaceTokenDescription.WHITESPACE,
+					UnaryTokenDescription.UNARY,
+					PrimitiveValueTokenDescription.PRIMITIVE_VALUE,
+					JavaNameTokenDescription.JAVA_NAME,
+					StringTokenDescription.STRING,
+					ExprStartTokenDescription.EXPR_START
+				};
 			case STATE_EXPECTING_OPERAND:
 				return new int[] {
 					WhiteSpaceTokenDescription.WHITESPACE,
@@ -109,6 +122,14 @@ public class ExpressionRule implements IRule, BasicStates {
 				
 		}
 		return new int[0];
+	}
+
+	public String getProblem(int state, Tokenizer tokenizer) {
+		if(state == STATE_EXPECTING_NAME) {
+			return "Expecting Java method or property name";
+		} else {
+			return "Expecting expression";
+		}
 	}
 
 }

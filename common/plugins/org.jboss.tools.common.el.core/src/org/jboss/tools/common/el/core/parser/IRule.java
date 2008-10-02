@@ -23,4 +23,6 @@ public interface IRule {
 
 	public int getFinalState(int state, int token);
 
+	public String getProblem(int state, Tokenizer tokenizer);
+
 }

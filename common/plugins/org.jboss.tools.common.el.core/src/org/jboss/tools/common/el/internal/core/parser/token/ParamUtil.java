@@ -43,6 +43,11 @@ public class ParamUtil {
 		return i != null && i.size() > 0 && "params".equals(i.get(i.size() - 1));
 	}
 
+	public static boolean isArgContext(Properties context) {
+		ParamHistory i = (ParamHistory)(context.get(PARAM_HISTORY));
+		return i != null && i.size() > 0 && "arg".equals(i.get(i.size() - 1));
+	}
+
 	public static boolean isComplexExpressionContext(Properties context) {
 		ParamHistory i = (ParamHistory)(context.get("(_level"));
 		return i != null && i.size() > 0 && "expr".equals(i.get(i.size() - 1));
@@ -64,5 +69,11 @@ public class ParamUtil {
 		ParamHistory i = (ParamHistory)(context.get("(_level"));
 		i.add("expr");
 	}
+
+	public static void openArgContext(Properties context) {
+		ParamHistory i = (ParamHistory)(context.get("(_level"));
+		i.add("arg");
+	}
+
 
 }

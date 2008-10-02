@@ -18,6 +18,7 @@ package org.jboss.tools.common.el.core.parser;
 public class SyntaxError {
 	int position;
 	int state;
+	String problem;
 
 	public SyntaxError(int position, int state) {
 		this.position = position;
@@ -30,6 +31,14 @@ public class SyntaxError {
 
 	public int getPosition() {
 		return position;
+	}
+
+	public String getProblem() {
+		return problem;
+	}
+
+	void setProblem(String problem) {
+		this.problem = problem;
 	}
 
 }

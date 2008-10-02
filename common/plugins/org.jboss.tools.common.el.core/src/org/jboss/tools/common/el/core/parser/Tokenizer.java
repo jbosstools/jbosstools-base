@@ -102,7 +102,14 @@ public class Tokenizer {
 					char ch = readNextChar();
 					if(ch == '\0') break;
 				} else {
-					errors.add(new SyntaxError(index, state));
+					SyntaxError error = new SyntaxError(index, state);
+					String problem = null;
+					for (IRule rule : rs) {
+						problem = rule.getProblem(state, this);
+						if(problem != null) break;
+					}
+					error.setProblem(problem);
+					errors.add(error);
 					state = BasicStates.STATE_ERROR;
 				}
 			}
@@ -174,5 +181,9 @@ public class Tokenizer {
 
 	public int getState() {
 		return state;
+	}
+
+	public int getCurrentIndex() {
+		return index;
 	}
 }

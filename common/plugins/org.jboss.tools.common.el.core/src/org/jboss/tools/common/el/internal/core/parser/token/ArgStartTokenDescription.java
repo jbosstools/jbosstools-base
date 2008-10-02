@@ -30,7 +30,7 @@ public class ArgStartTokenDescription extends ConstantTokenDescription {
 	public boolean read(Tokenizer tokenizer, int offset) {
 		boolean b = super.read(tokenizer, offset);
 		if(b) {
-			tokenizer.getContext().put("arg", OPEN);
+			ParamUtil.openArgContext(tokenizer.getContext());
 		}
 		return b;
 	}

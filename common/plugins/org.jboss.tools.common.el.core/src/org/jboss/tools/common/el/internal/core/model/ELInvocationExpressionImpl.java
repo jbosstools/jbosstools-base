@@ -56,6 +56,8 @@ public abstract class ELInvocationExpressionImpl extends ELExpressionImpl implem
 		while(l != null) {
 			if(l instanceof ELMethodInvocationImpl) {
 				((ELMethodInvocationImpl)l).collectInvocationsInParameters(list);
+			} else if(l instanceof ELArgumentExpressionImpl) {
+				((ELArgumentExpressionImpl)l).collectInvocationsInArgument(list);
 			}
 			l = l.getLeft();
 		}

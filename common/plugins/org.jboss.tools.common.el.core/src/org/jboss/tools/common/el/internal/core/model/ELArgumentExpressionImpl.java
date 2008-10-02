@@ -10,7 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.model;
 
+import java.util.List;
+
 import org.jboss.tools.common.el.core.model.ELArgumentInvocation;
+import org.jboss.tools.common.el.core.model.ELExpression;
+import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.model.ELObjectType;
 
 /**
@@ -54,4 +58,11 @@ public class ELArgumentExpressionImpl extends ELInvocationExpressionImpl impleme
 		return argument.getArgument().getText();
 	}
 
+	public void collectInvocationsInArgument(List<ELInvocationExpression> list) {
+		if(argument != null) {
+			if(argument.getArgument() != null) {
+				argument.getArgument().collectInvocations(list);
+			}
+		}
+	}
 }

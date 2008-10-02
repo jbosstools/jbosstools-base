@@ -11,11 +11,14 @@
 package org.jboss.tools.common.el.internal.core.parser.rule;
 
 import org.jboss.tools.common.el.core.parser.IRule;
+import org.jboss.tools.common.el.core.parser.Tokenizer;
+import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.CommaTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ExprEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.OperationTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamEndTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ParamUtil;
 import org.jboss.tools.common.el.internal.core.parser.token.WhiteSpaceTokenDescription;
 
 /**
@@ -43,6 +46,7 @@ public class OperationRule implements IRule, BasicStates {
 			case OperationTokenDescription.OPERATION:
 					return STATE_EXPECTING_OPERAND;
 			case ParamEndTokenDescription.PARAM_END:
+			case ArgEndTokenDescription.ARG_END:
 					return STATE_EXPECTING_CALL_AFTER_METHOD;
 			case ExprEndTokenDescription.EXPR_END:
 					return STATE_EXPECTING_OPERATION;
@@ -56,6 +60,7 @@ public class OperationRule implements IRule, BasicStates {
 			return new int[] {
 				WhiteSpaceTokenDescription.WHITESPACE,
 				ParamEndTokenDescription.PARAM_END,
+				ArgEndTokenDescription.ARG_END,
 				ExprEndTokenDescription.EXPR_END,
 				CommaTokenDescription.COMMA,
 				OperationTokenDescription.OPERATION,
@@ -63,6 +68,17 @@ public class OperationRule implements IRule, BasicStates {
 			};
 		}
 		return new int[0];
+	}
+
+	public String getProblem(int state, Tokenizer tokenizer) {
+		if(ParamUtil.isMethodParamContext(tokenizer.getContext())) {
+			return "Expecting ')'";
+		} else if(ParamUtil.isComplexExpressionContext(tokenizer.getContext())) {
+			return "Expecting ')'";
+		} else if(ParamUtil.isArgContext(tokenizer.getContext())) {
+			return "Expecting ']'";
+		}
+		return "Expecting '}'";
 	}
 
 }

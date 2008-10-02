@@ -13,11 +13,9 @@ package org.jboss.tools.common.el.core.parser;
 import java.util.List;
 
 import org.jboss.tools.common.el.core.model.ELExpression;
-import org.jboss.tools.common.el.core.model.ELInstance;
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.model.ELModel;
 import org.jboss.tools.common.el.core.model.ELUtil;
-import org.jboss.tools.common.el.internal.core.parser.rule.ArgRule;
 import org.jboss.tools.common.el.internal.core.parser.rule.CallRule;
 import org.jboss.tools.common.el.internal.core.parser.rule.ErrorRecoveryRule;
 import org.jboss.tools.common.el.internal.core.parser.rule.ExpressionRule;
@@ -63,7 +61,6 @@ public class TokenizerFactory {
 		});
 		t.setRules(new IRule[]{
 			ExpressionRule.INSTANCE,
-			ArgRule.INSTANCE,
 			CallRule.INSTANCE,
 			OperationRule.INSTANCE,
 			ErrorRecoveryRule.INSTANCE,
@@ -93,7 +90,6 @@ public class TokenizerFactory {
 		});
 		t.setRules(new IRule[]{
 			ExpressionRule.INSTANCE,
-			ArgRule.INSTANCE,
 			CallRule.INSTANCE,
 			OperationRule.INSTANCE,
 			ErrorRecoveryRule.INSTANCE,
@@ -102,7 +98,8 @@ public class TokenizerFactory {
 	}
 
 	public static void main(String[] args) {
-		String text = "#{.8 +(.9d / - (-.8))}";
+		String text = "#{a.b + 7d -c.d + g}#{hh.vv..m()}";
+//"#{a[b()['l'].j]}";
 //"#{g11.g12.y13} #{#{  #{a14.b15(x.t.u(uu.ii[9],  j)).b16(m17(v18(i19[2]).u20).)+ a21(c.).b.}";
 //"#{not a.b(x,y) + s.h((6 != -8) & (7 + -iy88.g[9].h(7  div 8).i.j)+(8) ? 4 : 7,'p', a.b.c.d[null])}";
 //"q82#{a(  g.h(7  +  8) + 8, g['h'].j(),'p')}k#{b}";
@@ -117,7 +114,7 @@ public class TokenizerFactory {
 		}
 		List<SyntaxError> errors = t.getErrors();
 		for (SyntaxError e: errors) {
-			System.out.println("state=" + e.getState() + " position=" + e.getPosition());
+			System.out.println("state=" + e.getState() + " position=" + e.getPosition() + " problem=" + e.getProblem());
 		}
 		ELParser parser = ELParserUtil.getJbossFactory().createParser();
 		ELModel model = parser.parse(text, 0, 90);
@@ -131,7 +128,7 @@ public class TokenizerFactory {
 			System.out.println(i);
 		}
 
-		int off = 2;
+		int off = 8;
 		ELExpression expr1 = ELUtil.findExpression(model, off);
 		System.out.println("Expression at " + off + ": " + expr1);
 		

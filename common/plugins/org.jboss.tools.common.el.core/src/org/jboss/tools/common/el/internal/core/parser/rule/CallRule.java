@@ -11,6 +11,8 @@
 package org.jboss.tools.common.el.internal.core.parser.rule;
 
 import org.jboss.tools.common.el.core.parser.IRule;
+import org.jboss.tools.common.el.core.parser.Tokenizer;
+import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.CommaTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.DotTokenDescription;
@@ -19,6 +21,7 @@ import org.jboss.tools.common.el.internal.core.parser.token.ExprEndTokenDescript
 import org.jboss.tools.common.el.internal.core.parser.token.OperationTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamStartTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ParamUtil;
 import org.jboss.tools.common.el.internal.core.parser.token.WhiteSpaceTokenDescription;
 
 /**
@@ -49,6 +52,7 @@ public class CallRule implements IRule, BasicStates {
 			case OperationTokenDescription.OPERATION:
 					return STATE_EXPECTING_OPERAND;
 			case ParamEndTokenDescription.PARAM_END:
+			case ArgEndTokenDescription.ARG_END:
 					return STATE_EXPECTING_CALL_AFTER_METHOD;
 			case ParamStartTokenDescription.PARAM_START:
 					return STATE_EXPECTING_PARAM;
@@ -71,6 +75,7 @@ public class CallRule implements IRule, BasicStates {
 					CommaTokenDescription.COMMA,
 					OperationTokenDescription.OPERATION,
 					ParamEndTokenDescription.PARAM_END,
+					ArgEndTokenDescription.ARG_END,
 					ExprEndTokenDescription.EXPR_END,
 					ParamStartTokenDescription.PARAM_START,
 					ArgStartTokenDescription.ARG_START,
@@ -83,10 +88,28 @@ public class CallRule implements IRule, BasicStates {
 					CommaTokenDescription.COMMA,
 					OperationTokenDescription.OPERATION,
 					ParamEndTokenDescription.PARAM_END,
+					ArgEndTokenDescription.ARG_END,
 					ExprEndTokenDescription.EXPR_END,
+					ArgStartTokenDescription.ARG_START,
 				};
 		}
 		return new int[0];
+	}
+
+	public String getProblem(int state, Tokenizer tokenizer) {
+		if(ParamUtil.isMethodParamContext(tokenizer.getContext())) {
+			return "Expecting ',' or ')'";
+		} else if(ParamUtil.isComplexExpressionContext(tokenizer.getContext())) {
+			return "Expecting ')'";
+		} else if(ParamUtil.isArgContext(tokenizer.getContext())) {
+			return "Expecting ']'";
+		}
+		if(state == STATE_EXPECTING_CALL_AFTER_METHOD) {
+			if(ParamStartTokenDescription.INSTANCE.isStart(tokenizer, tokenizer.getCurrentIndex())) {
+				return "Unexpected symbol '('";
+			}
+		}
+		return "Expecting '}'";
 	}
 
 }

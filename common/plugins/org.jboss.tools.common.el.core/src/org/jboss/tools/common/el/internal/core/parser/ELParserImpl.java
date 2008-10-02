@@ -179,6 +179,13 @@ public class ELParserImpl {
 		ELInvocationExpressionImpl result = name;
 		setNextToken();
 		if(current != null) switch (current.getType()) {
+			case ParamStartTokenDescription.PARAM_START:
+				ELParametersImpl params = readParameters();
+				ELMethodInvocationImpl method = new ELMethodInvocationImpl();
+				method.setName(name.getName());
+				method.setParameters(params);
+				result = method;
+				//do not break we are ready to have [] suffix here
 			case ArgStartTokenDescription.ARG_START:
 				while(current != null && current.getType() == ArgStartTokenDescription.ARG_START) {
 					ELArgumentImpl arg = readArgument();
@@ -188,12 +195,6 @@ public class ELParserImpl {
 					result = call;
 				}
 				break;
-			case ParamStartTokenDescription.PARAM_START:
-				ELParametersImpl params = readParameters();
-				ELMethodInvocationImpl method = new ELMethodInvocationImpl();
-				method.setName(name.getName());
-				method.setParameters(params);
-				result = method;
 		}
 		if(current != null && current.getType() == DotTokenDescription.DOT) {
 			LexicalToken dot = current;

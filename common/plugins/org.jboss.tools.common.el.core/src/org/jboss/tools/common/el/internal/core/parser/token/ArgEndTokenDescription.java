@@ -38,19 +38,15 @@ public class ArgEndTokenDescription extends ConstantTokenDescription {
 	}
 
 	public boolean isStart(Tokenizer tokenizer, int offset) {
-		return isInArg(tokenizer) && super.isStart(tokenizer, offset);
+		return ParamUtil.isArgContext(tokenizer.getContext()) && super.isStart(tokenizer, offset);
 	}
 
 	public boolean read(Tokenizer tokenizer, int offset) {
 		boolean b = super.read(tokenizer, offset);
 		if(b) {
-			tokenizer.getContext().remove("arg");
+			ParamUtil.closeCurrentParamContext(tokenizer.getContext());
 		}
 		return b;
-	}
-
-	private boolean isInArg(Tokenizer tokenizer) {
-		return tokenizer.getContext().get("arg") != null;
 	}
 
 }
