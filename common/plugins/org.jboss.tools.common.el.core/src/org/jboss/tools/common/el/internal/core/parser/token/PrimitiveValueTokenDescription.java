@@ -87,6 +87,7 @@ public class PrimitiveValueTokenDescription implements ITokenDescription {
 		}
 		char ch = '\0';
 		boolean lastCharIsWrong = false;
+		boolean inE = false;
 		while((ch = tokenizer.readNextChar()) != '\0') {
 			if(ch == '.') {
 				dotCount--;
@@ -95,11 +96,30 @@ public class PrimitiveValueTokenDescription implements ITokenDescription {
 					break;
 				}
 			} else if(!Character.isDigit(ch)) {
-				if(TYPE_CHAR.indexOf(ch) >= 0) {
+				if(inE) {
+					//
+				} if(TYPE_CHAR.indexOf(ch) >= 0) {
 					char ch1 = tokenizer.lookUpChar(i + 1);
 					if(ch1 == '\0' || !Character.isJavaIdentifierPart(ch1)) {
 						i++;
 						break;
+					}
+				} else if(ch == 'e' || ch == 'E') {
+					char ch1 = tokenizer.lookUpChar(i + 1);
+					char ch2 = tokenizer.lookUpChar(i + 2);
+					if((ch1 == '+' || ch1 == '-') && Character.isDigit(ch2)) {
+						tokenizer.readNextChar();
+						tokenizer.readNextChar();
+						i += 3;
+						inE = true;
+						dotCount = 0;
+						continue;
+					} else if(Character.isDigit(ch1)) {
+						tokenizer.readNextChar();
+						i += 2;
+						inE = true;
+						dotCount = 0;
+						continue;
 					}
 				}
 				lastCharIsWrong = true;

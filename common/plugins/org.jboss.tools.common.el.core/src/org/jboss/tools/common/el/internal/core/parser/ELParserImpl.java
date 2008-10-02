@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.parser;
 
+import org.jboss.tools.common.el.core.model.ELObjectType;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.el.internal.core.model.ELArgumentImpl;
 import org.jboss.tools.common.el.internal.core.model.ELArgumentExpressionImpl;
@@ -80,6 +81,14 @@ public class ELParserImpl {
 		instance.setFirstToken(current);
 		setNextToken();
 		ELExpressionImpl expression = readExpression();
+		if(expression == null) {
+			//create fake invocation expression
+			expression = new ELPropertyInvocationImpl();
+			int p = current != null ? current.getStart() : instance.getEndPosition();
+			LexicalToken t = new LexicalToken(p, 0, "", JavaNameTokenDescription.JAVA_NAME);
+			expression.setFirstToken(t);
+			expression.setLastToken(t);
+		}
 		if(expression != null) {
 			instance.setExpression(expression);
 			instance.setLastToken(expression.getLastToken());

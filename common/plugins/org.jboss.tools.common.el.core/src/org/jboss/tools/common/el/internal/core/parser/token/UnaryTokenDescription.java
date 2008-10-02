@@ -23,7 +23,7 @@ public class UnaryTokenDescription extends ConstantTokenDescription {
 	public static UnaryTokenDescription INSTANCE = new UnaryTokenDescription();
 
 	private static final String[] OPS_2 = {
-		"not",
+		"not", "empty"
 	};
 
 	public UnaryTokenDescription() {

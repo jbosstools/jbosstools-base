@@ -98,7 +98,7 @@ public class TokenizerFactory {
 	}
 
 	public static void main(String[] args) {
-		String text = "#{a.b + 7d -c.d + g}#{hh.vv..m()}";
+		String text = "ioioio#{1.2e1}ioioio#{0}";
 //"#{a[b()['l'].j]}";
 //"#{g11.g12.y13} #{#{  #{a14.b15(x.t.u(uu.ii[9],  j)).b16(m17(v18(i19[2]).u20).)+ a21(c.).b.}";
 //"#{not a.b(x,y) + s.h((6 != -8) & (7 + -iy88.g[9].h(7  div 8).i.j)+(8) ? 4 : 7,'p', a.b.c.d[null])}";

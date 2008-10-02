@@ -24,6 +24,7 @@ import org.jboss.tools.common.el.internal.core.parser.rule.BasicStates;
  *
  */
 public class Tokenizer {
+	static int LITERAL = -10;
 	
 	private Map<Integer, ITokenDescription> tokenDescriptions = new HashMap<Integer, ITokenDescription>();
 	private Map<Integer, List<IRule>> rules = new HashMap<Integer, List<IRule>>();
@@ -127,6 +128,14 @@ public class Tokenizer {
 
 	public void addToken(int type, int start, int end) {
 		if(end < 0) return;
+		int lastEnd = last.getStart() + last.getLength();
+		if(start > lastEnd) {
+			int length = start - lastEnd;
+			LexicalToken t = new LexicalToken(lastEnd, length, getCharSequence(lastEnd, start), LITERAL);
+			last.setNextToken(t);
+			last = t;
+			index = start;
+		}
 		LexicalToken t = new LexicalToken(start, end - start, getCharSequence(start, end), type);
 		last.setNextToken(t);
 		last = t;
