@@ -116,10 +116,10 @@ public class ELParserTest extends TestCase {
 	public void testElLiteralExpressions() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		checkCorrectEL(t,"#{\"#{\"}");
-		checkCorrectEL(t,"#{’#’}");
 		checkCorrectEL(t,"\\#{exprA}");
 		checkCorrectEL(t,"#{\"\\\"exprA\\\"\"}");
 		checkCorrectEL(t,"#{\"\\\"#\\\"\"}");
+		checkCorrectEL(t,"#{’#’}"); //Why this is correct?
 	}
 	
 	public void testElReferencesObjectProperties() {
@@ -156,7 +156,7 @@ public class ELParserTest extends TestCase {
 		//2. Incorrect use of ')'
 		checkIncorrectEL(t, "#{a.b + -c.d + g)}", 16);
 		//2. Incorrect use of ')' in second EL instance
-		checkIncorrectEL(t, "#{a.b + -c.d + g}#{hh.vv..m()}", 16);
+		checkIncorrectEL(t, "#{a.b + -c.d + g}#{hh.vv..m()}", 25);
 	}
 
 	private void checkIncorrectEL(Tokenizer t, String test, int expectedErrorPosition) {
