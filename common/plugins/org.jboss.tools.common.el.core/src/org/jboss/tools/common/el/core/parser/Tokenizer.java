@@ -78,7 +78,7 @@ public class Tokenizer {
 		this.sourceString = sourceString;
 		errors.clear();
 		index = initialOffset;
-		start = new LexicalToken(0, 0, "", -1000);
+		start = new LexicalToken(initialOffset, 0, "", -1000);
 		last = start;
 		state = BasicStates.STATE_EXPECTING_EL;
 

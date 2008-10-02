@@ -54,6 +54,7 @@ public class ELParserImpl {
 
 	public ELModelImpl parse(LexicalToken start) {
 		model = new ELModelImpl();
+		model.setFirstToken(start);
 		current = start;
 		while(current != null) {
 			if(current.getType() == StartELTokenDescription.START_EL) {
