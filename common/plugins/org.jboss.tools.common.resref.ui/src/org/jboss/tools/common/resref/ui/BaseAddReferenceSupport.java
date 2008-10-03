@@ -68,11 +68,16 @@ public abstract class BaseAddReferenceSupport extends SpecialWizardSupport {
 		if(initialPrefix != null) {
 			setAttributeValue(0, "prefix", initialPrefix); //$NON-NLS-1$
 		}
-	    final XAttributeConstraintL scopeAttribute = ((XAttributeConstraintL) getTarget().getModelEntity().getAttribute("scope") //$NON-NLS-1$
+		if(getTarget().getModelEntity().getAttribute("scope") != null) { 
+			final XAttributeConstraintL scopeAttribute = ((XAttributeConstraintL) getTarget().getModelEntity().getAttribute("scope") //$NON-NLS-1$
 	            .getConstraint());
-	    if (scopeAttribute != null) {
-	        scopeNames = scopeAttribute.getValues();
-	    }
+			if (scopeAttribute != null) {
+				scopeNames = scopeAttribute.getValues();
+			}
+		} else {
+			//just in case. should not happen
+			scopeNames = ResourceReference.SCOPE_NAMES;
+		}
 		int scopeIndex = ((Integer)getProperties().get("scope")).intValue(); //$NON-NLS-1$
 		
 		if(scopeIndex == 1 && scopeNames.length == 1){
