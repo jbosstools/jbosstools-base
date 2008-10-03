@@ -24,7 +24,7 @@ import org.jboss.tools.common.el.internal.core.parser.rule.BasicStates;
  *
  */
 public class Tokenizer {
-	static int LITERAL = -10;
+	public static int LITERAL = -10;
 	
 	private Map<Integer, ITokenDescription> tokenDescriptions = new HashMap<Integer, ITokenDescription>();
 	private Map<Integer, List<IRule>> rules = new HashMap<Integer, List<IRule>>();

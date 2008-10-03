@@ -12,6 +12,7 @@ package org.jboss.tools.common.el.internal.core.parser;
 
 import org.jboss.tools.common.el.core.model.ELObjectType;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
+import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.model.ELArgumentImpl;
 import org.jboss.tools.common.el.internal.core.model.ELArgumentExpressionImpl;
 import org.jboss.tools.common.el.internal.core.model.ELComplexExpressionImpl;
@@ -288,7 +289,10 @@ public class ELParserImpl {
 
 	private LexicalToken lookUpNextToken(LexicalToken token) {
 		LexicalToken c = token;
-		while(c != null && (c == token || c.getType() == WhiteSpaceTokenDescription.WHITESPACE)) {
+		while(c != null 
+				&& (c == token 
+					|| c.getType() == WhiteSpaceTokenDescription.WHITESPACE
+					|| c.getType() == Tokenizer.LITERAL)) {
 			c = c.getNextToken();
 		}
 		return c;
