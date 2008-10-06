@@ -270,7 +270,42 @@ public class XModelImpl implements XModel {
 	public void changeObjectAttribute(XModelObject object, String attributeName, String value) throws XModelException {
 		changeObjectAttribute(object, attributeName, value, false);
 	}
-    
+
+	/**
+	 * Returns validation error.
+	 * @param object
+	 * @param attributeName
+	 * @param value
+	 * @return
+	 */
+	public String getError(XModelObject object, String attributeName, String value) {
+		if(object == null || object.getPath() == null) return null;
+		XModelEntity ent = object.getModelEntity();
+		XAttribute a = ent.getAttribute(attributeName);
+		if(a == null) return null;
+		if(a.isTrimmable() && value != null) value = value.trim();
+		String ov = object.getAttributeValue(attributeName);
+		ov = (ov == null) ? "" : ov;
+		if(!isDifferent(ov, value)) return null;
+		if(value.length() == 0 && "true".equals(a.getProperty("required"))) {
+			String mes = "Attribute " + a.getName() + " is required.";
+			return mes;
+		}
+		XAttributeConstraint c = a.getConstraint();
+		if(c != null && service != null) {
+			String error = (c instanceof XAttributeConstraintV)
+							? ((XAttributeConstraintV)c).getError(value, object)
+							: c.getError(value);
+			if(error != null) {
+				String mes = XBundle.getInstance().getMessage("model",
+							 "SET_ATTRIBUTE_FAILURE",
+							 new Object[]{attributeName, value, error});
+				return mes;
+			}
+		}
+		return null;
+	}
+
     void changeObjectAttribute(XModelObject object, String attributeName, String value, boolean edit) throws XModelException {
         if(object == null || object.getPath() == null) return;
         XModelEntity ent = object.getModelEntity();
