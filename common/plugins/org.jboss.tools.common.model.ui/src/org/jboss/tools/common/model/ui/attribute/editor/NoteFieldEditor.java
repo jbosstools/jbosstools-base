@@ -418,6 +418,7 @@ public class NoteFieldEditor extends ExtendedFieldEditor implements IFieldEditor
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
+		super.propertyChange(evt);
 		valueProvider.removeValueChangeListener(this);
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			setStringValue(valueProvider.getStringValue(true));

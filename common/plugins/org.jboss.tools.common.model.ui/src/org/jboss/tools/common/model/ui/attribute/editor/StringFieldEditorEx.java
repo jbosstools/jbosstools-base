@@ -72,6 +72,7 @@ public class StringFieldEditorEx extends StringFieldEditor implements IFieldEdit
 	
 	// PropertyChangeListener
 	public void propertyChange(PropertyChangeEvent evt) {
+		super.propertyChange(evt);
 		valueProvider.removeValueChangeListener(this);
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			Object v = evt.getNewValue();

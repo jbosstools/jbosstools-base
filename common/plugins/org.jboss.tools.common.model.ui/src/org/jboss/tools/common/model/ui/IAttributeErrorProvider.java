@@ -10,7 +10,10 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui;
 
+import java.beans.PropertyChangeListener;
+
 public interface IAttributeErrorProvider {
 	public boolean hasErrors();
 	public String getError();
+	public void addErrorStateListener(PropertyChangeListener l);
 }

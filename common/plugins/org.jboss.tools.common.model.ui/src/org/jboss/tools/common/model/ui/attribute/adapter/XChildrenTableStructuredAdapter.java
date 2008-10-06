@@ -817,4 +817,9 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 	public String getError() {
 		return null;
 	}
+
+	public void addErrorStateListener(PropertyChangeListener l) {
+		// TODO Auto-generated method stub		
+	}
+
 }

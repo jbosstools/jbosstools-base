@@ -200,6 +200,7 @@ public class ListSelectionFieldEditor extends ExtendedFieldEditor implements IFi
 	}
 
 	public void propertyChange(java.beans.PropertyChangeEvent evt) {
+		super.propertyChange(evt);
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			Object v = evt.getNewValue();
 			valueProvider.removeValueChangeListener(this);

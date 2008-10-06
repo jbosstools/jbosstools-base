@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute;
 
+import org.jboss.tools.common.model.impl.XModelImpl;
 import org.jboss.tools.common.model.ui.*;
 import org.jboss.tools.common.model.ui.attribute.adapter.*;
 import org.jboss.tools.common.model.ui.attribute.editor.*;
@@ -56,7 +57,21 @@ public class XAttributePropertyDescription implements IPropertyDescriptorEx, IXM
 
 	// CellEditor
 	public CellEditor createPropertyEditor(Composite parent) {
-		return (!isEditable()) ? null : propertyEditor.getCellEditor(parent);
+		if(!isEditable()) {
+			return null;
+		}
+		CellEditor editor = propertyEditor.getCellEditor(parent);
+		if(editor != null) {
+			editor.setValidator(new ICellEditorValidator() {
+				public String isValid(Object value) {
+					if(modelObject == null) return null;
+					String error = ((XModelImpl)modelObject.getModel()).getError(modelObject, attribute.getName(), value == null ? "" : value.toString());
+					return error;
+				}
+				
+			});
+		}
+		return (!isEditable()) ? null : editor;
 	}
 	
 	// FieldEditor

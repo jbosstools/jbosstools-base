@@ -116,13 +116,34 @@ public class ComboBoxCellEditorEx extends CellEditor {
 		
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				valueChanged(true, true);
+				check();
 			}
 		});
 
 		setValueValid(true);
 
 		return combo;
+	}
+
+	protected boolean check() {
+        String value = combo.getText();
+        if (value == null) {
+			value = "";//$NON-NLS-1$
+		}
+        Object typedValue = value;
+        boolean oldValidState = isValueValid();
+        boolean newValidState = isCorrect(typedValue);
+        if (typedValue == null && newValidState) {
+			Assert.isTrue(false,
+                    "Validator isn't limiting the cell editor's type range");//$NON-NLS-1$
+		}
+        if (!newValidState) {
+            // try to insert the current value into the error message.
+            setErrorMessage(MessageFormat.format(getErrorMessage(),
+                    new Object[] { value }));
+        }
+        valueChanged(oldValidState, newValidState);
+        return newValidState;
 	}
 
 	protected Object doGetValue() {
@@ -134,8 +155,10 @@ public class ComboBoxCellEditorEx extends CellEditor {
 	}
 
 	public void focusLost() {
-		value = combo.getText();
-		valueChanged(true, true);
+		if(check()) {		
+			value = combo.getText();
+		}
+//		valueChanged(true, true);
 		this.fireApplyEditorValue();
 		super.focusLost();
 	}

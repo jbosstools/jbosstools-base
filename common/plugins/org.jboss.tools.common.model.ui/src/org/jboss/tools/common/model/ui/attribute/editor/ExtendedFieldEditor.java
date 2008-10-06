@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute.editor;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.navigator.LabelDecoratorImpl;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -206,6 +209,9 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 
 	public void setErrorProvider(IAttributeErrorProvider errorProvider) {
 		this.errorProvider = errorProvider;
+		if(this instanceof PropertyChangeListener) {
+			errorProvider.addErrorStateListener((PropertyChangeListener)this);
+		}
 	}
 
 	public IAttributeErrorProvider getErrorProvider() {
@@ -279,10 +285,17 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 			} else {
 				image = LabelDecoratorImpl.emptyImage;
 			}
-			if(errorStateImage != image) {
+			if(errorStateImage != image ||
+				(image != null && errorSymbolLabel != null && tooltip != null && !tooltip.equals(errorSymbolLabel.getToolTipText()) )) {
 				errorSymbolLabel.setImage(errorStateImage = image);
 				errorSymbolLabel.setToolTipText(tooltip);
 			}
+		}
+	}
+
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (IPropertyEditor.ERROR.equals(evt.getPropertyName())) {
+			updateErrorState();
 		}
 	}
 

@@ -25,12 +25,14 @@ import org.jboss.tools.common.meta.action.XAttributeData;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.impl.XModelImpl;
 import org.jboss.tools.common.model.markers.XMarkerManager;
 
 public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdaptable {
 
 	protected Object value = "";
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	protected PropertyChangeSupport pcs2 = new PropertyChangeSupport(this);
 	
 	protected XModel model; 
 	protected XAttribute attribute; 
@@ -45,6 +47,10 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 	protected boolean autoStore = true;
 	protected boolean storeLocked = false;
 
+	protected String invalidValue = null;
+	protected String lastCorrectValue = null;
+	protected String currentError = null;
+
 	public DefaultValueAdapter() {}
 
 	public void store() {
@@ -54,6 +60,26 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 			if(v != null && attribute.isTrimmable()) v = v.trim();
 			String n = attribute.getName();
 			if(modelObject.isActive()) {
+
+				currentError = ((XModelImpl)modelObject.getModel()).getError(modelObject, n, v);
+				
+				if(currentError != null) {
+					invalidValue = getStringValue(true);
+					lastCorrectValue = modelObject.getAttributeValue(n);
+					if(pcs2 != null) {
+						pcs2.firePropertyChange(IPropertyEditor.ERROR, Boolean.FALSE, Boolean.TRUE);
+					}
+					fireValueChange(v, v);
+					return;
+				} else {
+					boolean changed = invalidValue != null;
+					invalidValue = null;
+					lastCorrectValue = null;
+					if(changed && pcs2 != null) {
+						pcs2.firePropertyChange(IPropertyEditor.ERROR, Boolean.TRUE, Boolean.FALSE);
+					}
+				}
+
 				try {
 					modelObject.getModel().editObjectAttribute(modelObject, n, v);
 				} catch (XModelException e) {
@@ -75,7 +101,13 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 
 	public void load() {
 		if (MODELOBJECT_TARGET == storeTarget) {
-			this.setValue(modelObject.getAttributeValue(attribute.getName()));
+			String value = modelObject.getAttributeValue(attribute.getName());
+			if(currentError != null && invalidValue != null) {
+				if(value != null && value.equals(lastCorrectValue)) {
+					return;
+				}
+			}
+			this.setValue(value);
 		} else {
 			this.setValue(attributeData.getValue());
 		}
@@ -102,6 +134,10 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 	}
 	public void removeValueChangeListener(PropertyChangeListener l) {
 		if (pcs!=null) pcs.removePropertyChangeListener(l);
+	}
+
+	public void addErrorStateListener(PropertyChangeListener l) {
+		if (pcs2!=null) pcs2.addPropertyChangeListener(l);
 	}
 	
 	// IValueChangeListener
@@ -186,11 +222,19 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 
 	public boolean hasErrors() {
 		if(ATTRIBUTEDATA_TARGET == storeTarget) return false;
+		if(invalidValue != null && currentError != null) {
+			return true;
+		}
 		return attribute != null && XMarkerManager.getInstance().hasErrors(modelObject, attribute.getName());
 	}
 
 	public String getError() {
 		if(modelObject == null || attribute == null) return null;
+		if(ATTRIBUTEDATA_TARGET != storeTarget) {
+			if(invalidValue != null && currentError != null) {
+				return currentError;
+			}
+		}
 		return XMarkerManager.getInstance().getError(modelObject, attribute.getName());
 	}
 }

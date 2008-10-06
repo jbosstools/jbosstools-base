@@ -422,6 +422,7 @@ public class ListStructuredFieldEditor extends ExtendedFieldEditor
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
+		super.propertyChange(evt);
 		valueProvider.removeValueChangeListener(this);
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			elements = null;

@@ -164,6 +164,7 @@ public class MultipleChoiceFieldEditor extends ExtendedFieldEditor
 	boolean propertyChangeEnabled = true;
 	public void propertyChange(PropertyChangeEvent evt) {
 		if(!propertyChangeEnabled) return;
+		super.propertyChange(evt);
 		valueProvider.removeValueChangeListener(this);
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			updateChoices();
