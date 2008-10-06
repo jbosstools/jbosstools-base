@@ -34,6 +34,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMText;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.jsp.JSPRootHyperlinkPartitioner;
@@ -306,16 +307,17 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 	private List<Node> findStyleLinks (NodeList list) {
 		List<Node> styleLinks = new ArrayList<Node>();
 			for (int i = 0; list != null && i < list.getLength(); i++) {
-					IDOMElement element = (IDOMElement)list.item(i);
+
+					IDOMNode element = (IDOMNode)list.item(i);
 					String axis = JSPRootHyperlinkPartitioner.computeAxis(getDocument(), element.getStartOffset());
 					axis  = axis.toLowerCase();
 					
 					if (axis.endsWith("/link")) {
-						Attr relAttr = element.getAttributeNode("rel");
+						Node relAttr = element.getAttributes().getNamedItem("rel");
 						if (relAttr != null) {
 							String val = relAttr.getNodeValue().toLowerCase();
 							if ("stylesheet".equalsIgnoreCase(val) || "\"stylesheet\"".equalsIgnoreCase(val)) {
-								Attr hrefAttr = element.getAttributeNode("href");
+								Node hrefAttr = element.getAttributes().getNamedItem("href");
 								if (hrefAttr != null) {
 									styleLinks.add(hrefAttr);
 								}
