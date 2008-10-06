@@ -286,7 +286,6 @@ public class XModelImpl implements XModel {
 		if(a.isTrimmable() && value != null) value = value.trim();
 		String ov = object.getAttributeValue(attributeName);
 		ov = (ov == null) ? "" : ov;
-		if(!isDifferent(ov, value)) return null;
 		if(value.length() == 0 && "true".equals(a.getProperty("required"))) {
 			String mes = "Attribute " + a.getName() + " is required.";
 			return mes;
