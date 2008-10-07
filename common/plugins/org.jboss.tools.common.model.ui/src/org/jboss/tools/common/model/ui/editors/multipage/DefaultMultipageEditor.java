@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.editors.multipage;
 
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.jboss.tools.common.model.ui.texteditors.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.editor.*;
@@ -93,6 +95,12 @@ public class DefaultMultipageEditor extends ObjectMultiPageEditor {
 		} else {
 			if (treeFormPage != null) {
 				selectionProvider.setHost(treeFormPage.getSelectionProvider());
+				if(getTextSelectionProvider() == null) return;
+				ISelection s = getTextSelectionProvider().getSelection();
+				if(s == null || s.isEmpty() || !(s instanceof IStructuredSelection)) return;
+				Object o = ((IStructuredSelection)s).getFirstElement();
+				if(!(o instanceof XModelObject) || o == getModelObject()) return;
+				treeFormPage.getSelectionProvider().setSelection(s);
 			}
 		}
 	}
