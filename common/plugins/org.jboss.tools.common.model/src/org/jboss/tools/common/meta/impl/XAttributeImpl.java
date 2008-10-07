@@ -165,6 +165,9 @@ public class XAttributeImpl extends XMetaElementImpl implements XAttribute {
         if(!XMetaDataLoader.hasAttribute(element, LOADER) || loader.trim().length() == 0) {
         	loader = "";
         }
+        if(loader != null && loader.startsWith("%")) {
+        	loader = expand(loader, "AttributeConstraints");
+        }
         constraint.init(loader, element);
     }
 
