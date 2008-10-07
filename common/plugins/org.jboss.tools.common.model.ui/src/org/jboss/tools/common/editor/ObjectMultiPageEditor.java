@@ -395,7 +395,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	}
 
 	public void gotoMarker(IMarker marker) {
-		if(marker == null || getModelObject() == null) return;
+		if(marker == null || getModelObject() == null || !marker.exists()) return;
 		String path = marker.getAttribute("path", null);
 		if(path != null) {
 			XModelObject o = getModelObject().getModel().getByPath(path);
@@ -415,19 +415,12 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				}
 			}
 		} else {
-			try {
-				if ("org.eclipse.search.searchmarker".equals(marker.getType())) {
-					int offset = marker.getAttribute(IMarker.CHAR_START, -1);
-					int length = marker.getAttribute(IMarker.CHAR_END, -1);	
-					if (offset > -1 && length > -1) {
-						postponedTextSelection.clean();
-						textEditor.gotoMarker(marker);
-					}
-				}
-			} catch (CoreException e) {
-				ModelUIPlugin.getPluginLog().logError(e);
+			int offset = marker.getAttribute(IMarker.CHAR_START, -1);
+			int length = marker.getAttribute(IMarker.CHAR_END, -1);	
+			if (offset > -1 && length > -1) {
+				postponedTextSelection.clean();
+				textEditor.gotoMarker(marker);
 			}
-
 		}
 	}
 	

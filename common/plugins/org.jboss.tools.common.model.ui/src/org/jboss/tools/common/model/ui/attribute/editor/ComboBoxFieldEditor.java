@@ -279,6 +279,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 	 * In this case current value should be set to combo field.
 	 */
 	private void revalidateValue() {
+		if(valueProvider == null) return;
 		Object v = valueProvider.getValue();
 		if(v == null || !(propertyEditor.getInput() instanceof DefaultValueAdapter)) return;
 		String s = v.toString();
