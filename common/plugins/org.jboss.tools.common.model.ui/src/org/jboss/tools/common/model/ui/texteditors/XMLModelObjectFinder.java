@@ -60,7 +60,11 @@ public class XMLModelObjectFinder {
 		String childEntity = getChildEntity(chain.name, o);
 		if(childEntity != null) {
 			XModelObject[] cs = o.getChildren();
-			if(cs.length <= chain.index) return o;
+			if(cs.length <= chain.index) {
+				XModelObject c = findModelObject(chain.child, o);
+				if(c != null) return c;
+				return o;
+			}
 			int index = -1;
 			for (int i = 0; i < cs.length; i++) {
 				if(chain.name != null && chain.name.equals(cs[i].getModelEntity().getXMLSubPath())) {
@@ -70,6 +74,8 @@ public class XMLModelObjectFinder {
 					}
 				}
 			}
+			XModelObject c = findModelObject(chain.child, o);
+			if(c != null) return c;
 			return o;
 		} else {
 			XModelObject[] cs = o.getChildren();
