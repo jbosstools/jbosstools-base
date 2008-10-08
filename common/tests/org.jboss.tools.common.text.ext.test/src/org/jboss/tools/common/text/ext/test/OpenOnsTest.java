@@ -43,7 +43,12 @@ public class OpenOnsTest extends TestCase {
 	protected void setUp() {
 		project = ResourcesPlugin.getWorkspace().getRoot().getProject(
 				STYLE_OPENON_PROJECT);
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
 		JobUtils.waitForIdle();
+	}
+	
+	protected void tearDown() {
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
 	}
 
 	public OpenOnsTest() {
