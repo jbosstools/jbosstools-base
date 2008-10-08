@@ -6,6 +6,16 @@
   <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
   <param-value>server</param-value>
  </context-param>
+ <filter>
+  <description>JUnit Test Filter</description>
+  <display-name>JUnit Test Filter Display Name</display-name>
+  <filter-name>Filter1</filter-name>
+  <filter-class>org.jboss.tools.test.FilterTest</filter-class>
+ </filter>
+ <filter-mapping>
+  <filter-name>Filter1</filter-name>
+  <url-pattern>*</url-pattern>
+ </filter-mapping>
  <listener>
   <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
  </listener>
@@ -20,7 +30,36 @@
   <servlet-name>Faces Servlet</servlet-name>
   <url-pattern>*.jsf</url-pattern>
  </servlet-mapping>
+ <security-constraint>
+  <display-name>Accessible For Role1</display-name>
+  <web-resource-collection>
+   <web-resource-name>stylesheets</web-resource-name>
+   <url-pattern>/stylesheet*</url-pattern>
+  </web-resource-collection>
+  <auth-constraint>
+   <role-name>Designer</role-name>
+  </auth-constraint>
+ </security-constraint>
+ <security-constraint>
+  <display-name>Accessible For Role1</display-name>
+  <web-resource-collection>
+   <web-resource-name>stylesheets</web-resource-name>
+   <url-pattern>*.jsp</url-pattern>
+  </web-resource-collection>
+  <auth-constraint>
+   <role-name>Developer</role-name>
+  </auth-constraint>
+ </security-constraint>
  <login-config>
   <auth-method>BASIC</auth-method>
  </login-config>
+ <security-role>
+  <role-name>Administrator</role-name>
+ </security-role>
+ <security-role>
+  <role-name>Designer</role-name>
+ </security-role>
+ <security-role>
+  <role-name>Developer</role-name>
+ </security-role>
 </web-app>

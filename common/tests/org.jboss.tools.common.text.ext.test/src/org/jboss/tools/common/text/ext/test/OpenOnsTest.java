@@ -10,6 +10,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.IEditorDescriptor;
@@ -42,6 +43,7 @@ public class OpenOnsTest extends TestCase {
 	protected void setUp() {
 		project = ResourcesPlugin.getWorkspace().getRoot().getProject(
 				STYLE_OPENON_PROJECT);
+		JobUtils.waitForIdle();
 	}
 
 	public OpenOnsTest() {
@@ -49,6 +51,56 @@ public class OpenOnsTest extends TestCase {
 	}
 	
 	public static final String WEB_XML_FILE_PATH = "WebContent/WEB-INF/web.xml";
+	
+	public void testFilterNameOpenOn() throws PartInitException, BadLocationException {
+		IFile webXml = project.getFile(WEB_XML_FILE_PATH);
+		IEditorDescriptor descriptor = IDE.getEditorDescriptor(webXml);
+		IEditorPart editor = WorkbenchUtils.openEditor(webXml, descriptor.getId());
+		editor = ((EditorPartWrapper)editor).getEditor();
+		JobUtils.waitForIdle();
+		DefaultMultipageEditor xmlMultyPageEditor = (DefaultMultipageEditor) editor;
+		xmlMultyPageEditor.selectPageByName("Source");
+		ISourceViewer viewer = xmlMultyPageEditor.getSourceEditor().getTextViewer(); 
+			
+		IDocument document = viewer.getDocument();
+		IRegion reg = new FindReplaceDocumentAdapter(document).find(0,
+				"Filter1", true, true, false, false);
+		reg = new FindReplaceDocumentAdapter(document).find(reg.getOffset()+reg.getLength()+1,
+				"Filter1", true, true, false, false);
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		links[0].open();
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		ITextSelection selection = (ITextSelection)viewer.getSelectionProvider().getSelection();
+		assertEquals("<filter-name>", selection.getText());
+	}
+	
+	public void testRoleNameOpenOn() throws PartInitException, BadLocationException {
+		IFile webXml = project.getFile(WEB_XML_FILE_PATH);
+		IEditorDescriptor descriptor = IDE.getEditorDescriptor(webXml);
+		IEditorPart editor = WorkbenchUtils.openEditor(webXml, descriptor.getId());
+		editor = ((EditorPartWrapper)editor).getEditor();
+		JobUtils.waitForIdle();
+		DefaultMultipageEditor xmlMultyPageEditor = (DefaultMultipageEditor) editor;
+		xmlMultyPageEditor.selectPageByName("Source");
+		ISourceViewer viewer = xmlMultyPageEditor.getSourceEditor().getTextViewer(); 
+			
+		IDocument document = viewer.getDocument();
+		IRegion reg = new FindReplaceDocumentAdapter(document).find(0,
+				"Designer", true, true, false, false);
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		links[0].open();
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		ITextSelection selection = (ITextSelection)viewer.getSelectionProvider().getSelection();
+		assertEquals("<role-name>", selection.getText());
+	}
 	
 	public void testServletNameOpenOn() throws PartInitException, BadLocationException {
 		IFile webXml = project.getFile(WEB_XML_FILE_PATH);
@@ -70,28 +122,63 @@ public class OpenOnsTest extends TestCase {
 		reg = new FindReplaceDocumentAdapter(document).find(reg.getOffset()+reg.getLength()+1,
 				"Faces Servlet", true, true, false, false);
 		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
 		links[0].open();
 		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		System.out.println(editor.getSite().getSelectionProvider().getSelection().toString());
+		ITextSelection selection = (ITextSelection)viewer.getSelectionProvider().getSelection();
+		assertEquals("<servlet-name>", selection.getText());
 	}
+
+	public static final String TAGLIB_URI_TEST_FILE = "WebContent/tldUriHyperlinkTests.jsp";
 	
-	public void testTagAttributeOpenOn() throws BadLocationException {
+	public void testTaglibUriFromJarOpenOn() throws BadLocationException {
 		IEditorPart editor = WorkbenchUtils.openEditor(project
-				.getFile(STYLE_TEST_FILE), JSPMultiPageEditor.EDITOR_ID);
+				.getFile(TAGLIB_URI_TEST_FILE), JSPMultiPageEditor.EDITOR_ID);
 		assertTrue(editor instanceof JSPMultiPageEditor);
 		JobUtils.waitForIdle();
 		JSPMultiPageEditor jspMultyPageEditor = (JSPMultiPageEditor) editor;
 		ISourceViewer viewer = jspMultyPageEditor.getSourceEditor().getTextViewer();
 		IDocument document = jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument();
 		IRegion reg = new FindReplaceDocumentAdapter(document).find(0,
-				"value", true, true, false, false);
+				"jsf/core", true, true, false, false);
 		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
 		links[0].open();
 		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		
 		String fileName = editor.getEditorInput().getName();
 		System.out.println(fileName);
-		assertTrue("style1.css".equals(fileName));
+		assertTrue("jsf_core.tld".equals(fileName));
+	}
+	public static final String TAGLIB_URI_JSP_ROOT_TEST_FILE = "WebContent/jspTagsHyperlinkTests.jsp";
+	
+	public void testTaglibUriFromJarinJspRootOpenOn() throws BadLocationException {
+		IEditorPart editor = WorkbenchUtils.openEditor(project
+				.getFile(TAGLIB_URI_JSP_ROOT_TEST_FILE), JSPMultiPageEditor.EDITOR_ID);
+		assertTrue(editor instanceof JSPMultiPageEditor);
+		JobUtils.waitForIdle();
+		JSPMultiPageEditor jspMultyPageEditor = (JSPMultiPageEditor) editor;
+		ISourceViewer viewer = jspMultyPageEditor.getSourceEditor().getTextViewer();
+		IDocument document = jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument();
+		IRegion reg = new FindReplaceDocumentAdapter(document).find(0,
+				"jsf/core", true, true, false, false);
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		links[0].open();
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		
+		String fileName = editor.getEditorInput().getName();
+		System.out.println(fileName);
+		assertTrue("jsf_core.tld".equals(fileName));
 	}
 	
 	public static final String STYLE_TEST_FILE = "WebContent/styleHyperlinkTests.jsp";
@@ -109,6 +196,10 @@ public class OpenOnsTest extends TestCase {
 		IRegion reg = new FindReplaceDocumentAdapter(document).find(0,
 				"stylesheet/style1.css", true, true, false, false);
 		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
 		links[0].open();
 		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		
@@ -127,6 +218,10 @@ public class OpenOnsTest extends TestCase {
 		IRegion reg = new FindReplaceDocumentAdapter(document).find(0,
 				"style-class9\"", true, true, false, false);
 		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
 		links[0].open();
 		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		
@@ -136,6 +231,10 @@ public class OpenOnsTest extends TestCase {
 		reg = new FindReplaceDocumentAdapter(document).find(0,
 				"style-class3", true, true, false, false);
 		links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
 		links[0].open();
 		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		
@@ -146,14 +245,15 @@ public class OpenOnsTest extends TestCase {
 				"style-class6", true, true, false, false);
 		links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
 		links[0].open();
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		links[0].open();
 		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		
 		fileName = editor.getEditorInput().getName();
 		assertTrue("style2.css".equals(fileName));
-	}
-	
-	public void testFilterNameOpenOn() {
-		
 	}
 	
 	public static final String CLASS_TEST_FILE = "WebContent/classHyperlinkTests.jsp";
@@ -166,24 +266,41 @@ public class OpenOnsTest extends TestCase {
 		JSPMultiPageEditor jspMultyPageEditor = (JSPMultiPageEditor) editor;
 		ISourceViewer viewer = jspMultyPageEditor.getSourceEditor().getTextViewer();
 
-//		IEditorInput fileInput = new FileEditorInput(project
-//				.getFile(CLASS_TEST_FILE));
-//		IDocumentProvider documentProvider = DocumentProviderRegistry
-//				.getDefault().getDocumentProvider(fileInput);
-//
-//		documentProvider.connect(fileInput);
-//		IDocument document = documentProvider.getDocument(fileInput);
 		IRegion reg = new FindReplaceDocumentAdapter(jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument()).find(0,
 				"org.jboss.tools.test.ChangeListenerInstance", true, true, false, false);
 		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
-//		ClassHyperlink classHyper = new ClassHyperlink();
-//		classHyper.setOffset(reg.getOffset());
-//		classHyper.setDocument(document);
-//		classHyper.open();
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
 		links[0].open();
 		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		
 		String fileName = editor.getEditorInput().getName();
 		assertTrue("ChangeListenerInstance.java".equals(fileName));
 	}
+	
+	public void testTaglibTagNameOpenOn() throws CoreException, BadLocationException {
+		IEditorPart editor = WorkbenchUtils.openEditor(project
+				.getFile(CLASS_TEST_FILE), JSPMultiPageEditor.EDITOR_ID);
+		assertTrue(editor instanceof JSPMultiPageEditor);
+		JSPMultiPageEditor jspMultyPageEditor = (JSPMultiPageEditor) editor;
+		ISourceViewer viewer = jspMultyPageEditor.getSourceEditor().getTextViewer();
+
+		IRegion reg = new FindReplaceDocumentAdapter(jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument()).find(0,
+				"view", true, true, false, false);
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		System.out.println(links[0].getClass().getName());
+		links[0].open();
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		
+		String fileName = editor.getEditorInput().getName();
+		assertTrue("jsf_core.tld".equals(fileName));
+	}
+	
+	
 }

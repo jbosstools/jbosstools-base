@@ -29,7 +29,7 @@
 	<f:view>
 		<h1 class="style-class1">
 			<f:valueChangeListener type="org.jboss.tools.test.ChangeListenerInstance"/>
-		</h1>
+		</h1>	
 	</f:view>
     </body>
 </html>
