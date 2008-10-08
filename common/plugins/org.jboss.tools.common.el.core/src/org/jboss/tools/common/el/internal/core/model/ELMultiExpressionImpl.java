@@ -13,7 +13,9 @@ package org.jboss.tools.common.el.internal.core.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
+import org.jboss.tools.common.el.core.model.ELMultiExpression;
 import org.jboss.tools.common.el.core.model.ELObject;
 import org.jboss.tools.common.el.core.model.ELObjectType;
 
@@ -21,14 +23,14 @@ import org.jboss.tools.common.el.core.model.ELObjectType;
  *    expression (operation expression)+
  * @author V. Kabanovich
  */
-public class ELMultiExpressionImpl extends ELExpressionImpl {
-	List<ELExpressionImpl> expressions = new ArrayList<ELExpressionImpl>();
+public class ELMultiExpressionImpl extends ELExpressionImpl implements ELMultiExpression {
+	List<ELExpression> expressions = new ArrayList<ELExpression>();
 	List<ELOperatorImpl> operators = new ArrayList<ELOperatorImpl>();
 
 	public ELMultiExpressionImpl() {
 	}
 
-	public List<ELExpressionImpl> getExpressions() {
+	public List<ELExpression> getExpressions() {
 		return expressions;
 	}
 
@@ -79,8 +81,8 @@ public class ELMultiExpressionImpl extends ELExpressionImpl {
 	}
 
 	public void collectInvocations(List<ELInvocationExpression> list) {
-		for (ELExpressionImpl expr: expressions) {
-			expr.collectInvocations(list);
+		for (ELExpression expr: expressions) {
+			((ELExpressionImpl)expr).collectInvocations(list);
 		}
 	}
 
