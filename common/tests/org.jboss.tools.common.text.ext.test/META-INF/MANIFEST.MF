@@ -12,7 +12,7 @@ Require-Bundle: org.jboss.tools.common.text.ext,
  org.eclipse.ui.ide,
  org.eclipse.core.runtime,
  org.jboss.tools.jst.web,
- org.eclipse.jface.text;bundle-version="3.4.1",
- org.jboss.tools.common.model.ui;bundle-version="2.0.0"
+ org.eclipse.jface.text,
+ org.jboss.tools.common.model.ui
 Export-Package: org.jboss.tools.common.text.ext.test
 Bundle-ClassPath: common-text-ext-test.jar
