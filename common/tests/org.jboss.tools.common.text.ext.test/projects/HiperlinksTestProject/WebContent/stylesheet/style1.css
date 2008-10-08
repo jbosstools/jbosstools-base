@@ -1,0 +1,46 @@
+<!--
+/* Comment */
+.style-class1 {
+	/* in style comment 1 */
+	color: #0D5798;
+	border: 1px solid #BBB000;
+	/* in style comment 2 */
+	font-size: 16px;
+	   
+	background: #F0A8FF;
+	/* in style comment 3 */
+}
+   
+/* Comment */
+.style-class2 {
+	/* in style comment 4 */
+	color: #8CAFCD;
+	border:	 1px 	solid 	#000BBB;
+	/* in style comment 5 */
+	font-size:    16px;
+	background:      #3BF8FF;
+	/* in style comment 6 */
+}
+   
+/* Comment */
+.style-class3 {
+	/* in style comment 7 */
+	color: black;
+	border: 1px solid #111111;
+	/* in style comment 8 */
+	font-size: 16px;
+	background: #3458FF;
+	/* in style comment 9 */
+}
+/* Comment */
+b, i, p {
+	/* in style comment 7 */
+	color: black;
+	border: 1px solid #111111;
+	/* in style comment 8 */
+	font-size: 16px;
+	background: #3458FF;
+	/* in style comment 9 */
+}
+/* in style comment 10 */
+//-->
