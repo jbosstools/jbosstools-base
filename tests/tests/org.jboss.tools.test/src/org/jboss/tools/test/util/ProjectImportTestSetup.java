@@ -83,9 +83,10 @@ public class ProjectImportTestSetup extends TestSetup {
 	@Override
 	protected void tearDown() throws Exception {
 		boolean saveAutoBuild = ResourcesUtils.setBuildAutomatically(false);
+		JobUtils.waitForIdle();
 		for (int i = 0; i < projectNames.length; i++) {
 			ResourcesUtils.deleteProject(projectNames[i]);
-			EditorTestHelper.joinBackgroundActivities();
+			JobUtils.waitForIdle();
 		}
 		ResourcesUtils.setBuildAutomatically(saveAutoBuild);
 	}
