@@ -140,6 +140,21 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t,"#{true}");
 		checkCorrectEL(t,"#{false}");
 	}
+
+	public void testComplexMath() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{(7 * (13 + 7.9)) * (a + b.c / d) / (1.E5) - (1/a.b+8./c.d)}");
+	}
+
+	public void testComplexInvocation() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{a.b[a1.b1(a2.b2,a3.b3(x))][y].c(a4.b4,a5.b5[a6(b6)])}");
+	}
+
+	public void testSeveralELInstances() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "aaa#{a}bbb#{1}#{c()}");
+	}
 	
 	private void checkCorrectEL(Tokenizer t, String test) {
 		LexicalToken token = t.parse(test);
@@ -155,7 +170,7 @@ public class ELParserTest extends TestCase {
 		checkIncorrectEL(t, "#{a.}", 4);
 		//2. Incorrect use of ')'
 		checkIncorrectEL(t, "#{a.b + -c.d + g)}", 16);
-		//2. Incorrect use of ')' in second EL instance
+		//2. Incorrect use of '.' in second EL instance
 		checkIncorrectEL(t, "#{a.b + -c.d + g}#{hh.vv..m()}", 25);
 	}
 

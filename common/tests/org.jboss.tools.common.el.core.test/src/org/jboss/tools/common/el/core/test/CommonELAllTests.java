@@ -23,6 +23,7 @@ public class CommonELAllTests {
 		TestSuite suite = new TestSuite();
 		suite.setName("All tests for " + PLUGIN_ID);
 		suite.addTestSuite(ELParserTest.class);
+		suite.addTestSuite(ELModelTest.class);
 		return suite;
 	}
 }
