@@ -54,16 +54,12 @@ public abstract class AbstractBaseHyperlink {
 		super();
 	}
 
-	private ITextViewer fTextViewer; 
+	private IDocument fDocument; 
 
 	private int fOffset;
 
-	public void setTextViewer(ITextViewer textViewer) {
-		fTextViewer = textViewer;
-	}
-
-	public ITextViewer getTextViewer() {
-		return fTextViewer;
+	public void setDocument(IDocument document) {
+		fDocument = document;
 	}
 
 	public void setOffset(int offset) {
@@ -291,7 +287,7 @@ public abstract class AbstractBaseHyperlink {
 	 * @return IDocument
 	 */
 	public IDocument getDocument() {
-		return (fTextViewer == null ? null : fTextViewer.getDocument());
+		return fDocument;
 	}
 
 	/*

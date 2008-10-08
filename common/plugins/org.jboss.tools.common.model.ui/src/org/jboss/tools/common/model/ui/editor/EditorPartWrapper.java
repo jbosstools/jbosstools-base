@@ -48,6 +48,9 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.text.ext.IEditorWrapper;
 
 public class EditorPartWrapper extends EditorPart implements IReusableEditor, IEditorWrapper {
+	
+	public static final String EDITOR_ID = "org.jboss.tools.common.model.ui.editor.EditorPartWrapper";
+	
 	IEditorPart editor;	
 	String entity = null;
 

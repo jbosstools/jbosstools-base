@@ -770,34 +770,7 @@ public class EclipseResourceUtil {
 	 * @location Absolute path on disk
 	 */
 	public static IFile getFile(String location) {
-		location = new java.io.File(location).getAbsolutePath().replace('\\', '/');
-		IProject[] projects = ModelPlugin.getWorkspace().getRoot().getProjects();
-		for (int i = 0; projects != null && i < projects.length; i++) {
-			if (!projects[i].isOpen()) continue;
-			String l = projects[i].getLocation().toFile().getAbsolutePath().replace('\\', '/');
-			if (!l.endsWith("/")) l += "/";
-			if (location.startsWith(l)) {
-				String relative = location.substring(l.length());
-				return projects[i].getFile(relative);
-			}
-			IResource[] ms = null;
-			try {
-				ms = projects[i].members(true);
-			} catch (CoreException e) {
-				//ignore - we do not care if project can give its members here.
-			}
-			if(ms != null) for (int j = 0; j < ms.length; j++) {
-				if(!ms[j].isLinked() || !(ms[j] instanceof IContainer)) continue;
-				IContainer c = (IContainer)ms[j];
-				l = c.getLocation().toFile().getAbsolutePath().replace('\\', '/');
-				if (!l.endsWith("/")) l += "/";
-				if (location.startsWith(l)) {
-					String relative = location.substring(l.length());
-					return c.getFile(new Path(relative));
-				}
-			}
-		}
-		return null;
+		return ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(location).makeAbsolute());
 	}
 
 	public static IResource getFolder(String location) {

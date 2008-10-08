@@ -104,33 +104,6 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 		}
 	}
 	
-	//is never used
-	IFile getFileToOpen(String fileName, String fileExt) {
-		IFile documentFile = getFile();
-		
-		try {	
-			IProject project = documentFile.getProject();
-			
-			String name = fileName.replace('.','/')+ (fileExt != null ? "." + fileExt : "");
-			
-			if(project == null || !project.isOpen()) return null;
-			if(!project.hasNature(JavaCore.NATURE_ID)) return null;
-			IJavaProject javaProject = JavaCore.create(project);		
-			IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
-
-			for (int i = 0; i < es.length; i++) {
-				if(es[i].getEntryKind() != IClasspathEntry.CPE_SOURCE) continue;
-				IFile file = (IFile)project.getFile(es[i].getPath().lastSegment()+"/"+name);
-				if(file != null && file.exists()) return file;
-			}
-			return null;
-		} catch (CoreException x) {
-			//ignore
-			return null;
-		}
-
-	}
-	
 	IRegion fLastRegion = null;
 	
 	/** 

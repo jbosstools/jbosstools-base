@@ -72,7 +72,7 @@ public class BaseHyperlinkDetector implements IHyperlinkDetector{
 			    IHyperlink hyperlink = defs[i].createHyperlink();
 			    if(!hyperlinks.contains(hyperlink)) {
 			    	if (hyperlink instanceof AbstractHyperlink) {
-			    		((AbstractHyperlink)hyperlink).setTextViewer(textViewer);
+			    		((AbstractHyperlink)hyperlink).setDocument(textViewer.getDocument());
 			    		((AbstractHyperlink)hyperlink).setOffset(region.getOffset());
 			    	}
 				    hyperlinks.add(hyperlink);			        

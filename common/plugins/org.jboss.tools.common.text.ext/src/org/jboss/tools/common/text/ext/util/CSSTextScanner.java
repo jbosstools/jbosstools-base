@@ -116,11 +116,6 @@ public class CSSTextScanner extends TextScanner {
 				state = STATE_NAME;
 				return (readsCount > 0 ? getToken(CSS_CLASS_NAME_SEPARATOR) : nextNameToken());
 			}
-			if (WS_DETECTOR.isWhitespace((char)ch)) {
-				unread();
-				state = STATE_NAME_SEPARATOR;
-				return (readsCount > 0 ? getToken(CSS_CLASS_NAME_SEPARATOR) : nextNameSeparatorToken());
-			}
 			if (ch == '{') {
 				unread();
 				state = STATE_BODY;
@@ -128,13 +123,19 @@ public class CSSTextScanner extends TextScanner {
 			}
 			if (ch == '/') {
 				ch = read();
-				if (ch == ICharacterScanner.EOF) break; 
+				if (ch == ICharacterScanner.EOF)  {
+					break; 
+				}
 				if (ch == '*') {
 					// Comment openning
 					unread(); // Unread '*'-char
 					unread(); // Unread '/'-char
 					setState(STATE_COMMENT);
-					return (readsCount > 0 ? getToken(CSS_CLASS_NAME_SEPARATOR) : nextCommentToken());
+					if (readsCount > 0) {
+						return getToken(CSS_CLASS_NAME_SEPARATOR); 
+					} else {
+						return nextCommentToken();
+					}
 				}
 				// Broken file ??? Emulate END of text
 				clearText();
@@ -162,7 +163,9 @@ public class CSSTextScanner extends TextScanner {
 			}
 			if (ch == '/') {
 				ch = read();
-				if (ch == ICharacterScanner.EOF) break; 
+				if (ch == ICharacterScanner.EOF) {
+					break; 
+				}
 				if (ch == '*') {
 					// Comment openning
 					unread(); // Unread '*'-char
