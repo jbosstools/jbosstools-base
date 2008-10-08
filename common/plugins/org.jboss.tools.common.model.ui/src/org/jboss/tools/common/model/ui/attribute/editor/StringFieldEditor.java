@@ -312,6 +312,10 @@ public class StringFieldEditor extends ExtendedFieldEditor {
 		String newValue = textField.getText();
 		if (!newValue.equals(oldValue)) {
 			fireValueChanged(VALUE, oldValue, newValue);
+			if(textField == null) {
+				//disposed while firing
+				return;
+			}
 			oldValue = textField.getText();
 		}
 	}
