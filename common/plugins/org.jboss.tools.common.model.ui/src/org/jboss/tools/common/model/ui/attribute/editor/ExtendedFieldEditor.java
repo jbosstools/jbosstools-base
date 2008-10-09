@@ -209,7 +209,7 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 
 	public void setErrorProvider(IAttributeErrorProvider errorProvider) {
 		this.errorProvider = errorProvider;
-		if(this instanceof PropertyChangeListener) {
+		if(this instanceof PropertyChangeListener && errorProvider != null) {
 			errorProvider.addErrorStateListener((PropertyChangeListener)this);
 		}
 	}
