@@ -62,23 +62,6 @@ public class ResourcesUtils {
 			tplPrjLcStr = FileLocator.resolve(bundle.getEntry(templLocation))
 				.getFile();
 			IProject importedPrj = importProjectIntoWorkspace(tplPrjLcStr, new Path(tplPrjLcStr).lastSegment());
-//			IProject importedPrj = createEclipseProject(bundle,tplPrjLcStr,monitor);
-//			ImportOperation op = new ImportOperation(importedPrj.getFullPath(),
-//					new File(tplPrjLcStr),
-//					FileSystemStructureProvider.INSTANCE,
-//					new IOverwriteQuery() {
-//						public String queryOverwrite(String pathString) {
-//							return IOverwriteQuery.ALL;
-//						}},
-//					Arrays.asList(new File(tplPrjLcStr).listFiles()));
-//
-//		op.setCreateContainerStructure(false);
-//		if( Display.getCurrent() == null || Display.getCurrent().getActiveShell() == null ) {
-//			op.setContext(new Shell());
-//		} else {
-//			op.setContext(Display.getCurrent().getActiveShell());
-//		}
-//		op.run(monitor);
 		return importedPrj;
 	}
 
