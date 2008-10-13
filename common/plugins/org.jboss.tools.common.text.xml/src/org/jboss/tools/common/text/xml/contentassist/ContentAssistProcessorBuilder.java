@@ -12,6 +12,8 @@
 package org.jboss.tools.common.text.xml.contentassist;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -26,6 +28,7 @@ public class ContentAssistProcessorBuilder extends org.eclipse.wst.sse.ui.intern
 	public static final String PL_CONTENTASSISTPROCESSOR = "contentAssistProcessor"; //$NON-NLS-1$
 
 	public static final String TAG_CONTENTASSISTPROCESSOR = "contentAssistProcessor"; //$NON-NLS-1$
+	public static final String TAG_CONTENT_TYPE = "contenttype"; //$NON-NLS-1$
 	public static final String TAG_PARTITION_TYPE = "partitiontype"; //$NON-NLS-1$
 
 	public static final String ATT_ID = "id"; //$NON-NLS-1$
@@ -37,6 +40,7 @@ public class ContentAssistProcessorBuilder extends org.eclipse.wst.sse.ui.intern
 
 	private List<ContentAssistProcessorDefinition> fContentAssistProcessorDefs = null;
 	private ContentAssistProcessorDefinition fCurrentDefinition = null;
+	private String fCurrentDefinitionContentType = null;
 
 	/**
 	 * returns singleton instance of ContentAssistProcessorBuilder
@@ -94,6 +98,24 @@ public class ContentAssistProcessorBuilder extends org.eclipse.wst.sse.ui.intern
 	}
 
 	/**
+	 * Processes element which should be a configuration element specifying an
+	 * open on object.  Creates a new ContentAssistProcessor definitio object and adds it to the
+	 * list of ContentAssistProcessor definition objects
+	 * 
+	 * @param element ContentAssistProcessor configuration element
+	 */
+	private void processContentTypeTag(IConfigurationElement element) {
+		String theId = getId(element);
+
+		if (theId != null && fCurrentDefinition != null) {
+			fCurrentDefinitionContentType = theId;
+		}
+		else {
+			fCurrentDefinitionContentType = null;
+		}
+	}
+
+	/**
 	 * Processes element which should be a configuration element specifying a partition
 	 * type for the current contentAssistProcessor tag.  Assumes that there is a valid
 	 * current contentAssistProcessor tag.
@@ -104,8 +126,8 @@ public class ContentAssistProcessorBuilder extends org.eclipse.wst.sse.ui.intern
 		// add to current HyperlinkDefinition/contentType
 		String theId = getId(element);
 
-		if (theId != null) {
-			fCurrentDefinition.addPartitionType(theId);
+		if (theId != null && fCurrentDefinition != null && fCurrentDefinitionContentType != null) {
+			fCurrentDefinition.addPartitionType(fCurrentDefinitionContentType, theId);
 		}
 	}
 
@@ -117,6 +139,14 @@ public class ContentAssistProcessorBuilder extends org.eclipse.wst.sse.ui.intern
 
 		if (tag.equals(targetContributionTag)) {
 			processContentAssistProcessorTag(element);
+
+			if (fCurrentDefinition != null) {
+				readElementChildren(element);
+			}
+			return true;
+		}
+		else if (tag.equals(TAG_CONTENT_TYPE)) {
+			processContentTypeTag(element);
 
 			if (fCurrentDefinition != null) {
 				readElementChildren(element);
@@ -147,6 +177,35 @@ public class ContentAssistProcessorBuilder extends org.eclipse.wst.sse.ui.intern
 		(ContentAssistProcessorDefinition[])fContentAssistProcessorDefs.toArray(new ContentAssistProcessorDefinition[fContentAssistProcessorDefs.size()]));
 	}
 
+	
+	/**
+	 * Returns all the valid ContentTypes for partitionType
+	 *
+	 * @param partitionType
+	 * @return if partitionType is null, null is returned 
+	 */
+	public Collection<String> getContentAssistProcessorContentTypes(String partitionType) {
+		if (partitionType == null) {
+			return null;
+		}
+
+		ContentAssistProcessorDefinition[] allDefs = getContentAssistProcessorDefinitions();
+		List<ContentAssistProcessorDefinition> defs = new ArrayList<ContentAssistProcessorDefinition>();
+		List<ContentAssistProcessorDefinition> lastDefs = new ArrayList<ContentAssistProcessorDefinition>();
+
+		HashSet<String> validContentTypes = new HashSet<String>();
+		for (int i = 0; i < allDefs.length; ++i) {
+			Collection<String> contentTypes = allDefs[i].getContentTypes();
+			
+			if (contentTypes != null) {
+				validContentTypes.addAll(contentTypes);
+			}
+		}
+
+		return validContentTypes;
+	}
+	
+	
 	/**
 	 * Returns all the ContentAssistProcessor definition objects valid for partitionType
 	 *
@@ -159,25 +218,28 @@ public class ContentAssistProcessorBuilder extends org.eclipse.wst.sse.ui.intern
 		}
 
 		ContentAssistProcessorDefinition[] allDefs = getContentAssistProcessorDefinitions();
-		List defs = new ArrayList();
-		List lastDefs = new ArrayList();
+		List<ContentAssistProcessorDefinition> defs = new ArrayList<ContentAssistProcessorDefinition>();
+		List<ContentAssistProcessorDefinition> lastDefs = new ArrayList<ContentAssistProcessorDefinition>();
 
 		for (int i = 0; i < allDefs.length; ++i) {
-			List partitions = (List) allDefs[i].getPartitionTypes();
-			if (partitions != null) {
-				if (partitions.isEmpty()) {
-					lastDefs.add(allDefs[i]);
-				}
-				else {
-					int j = 0; 
-					boolean added = false; 
-					while (j < partitions.size() && !added) {
-						if (partitionType.equals(partitions.get(j))) {
-							defs.add(allDefs[i]);
-							added = true;
-						}
-						else {
-							++j;
+			for (String contentType : allDefs[i].getContentTypes()) {
+				List<String> partitions = allDefs[i].getPartitionTypes(contentType);
+				
+				if (partitions != null) {
+					if (partitions.isEmpty()) {
+						lastDefs.add(allDefs[i]);
+					}
+					else {
+						int j = 0; 
+						boolean added = false; 
+						while (j < partitions.size() && !added) {
+							if (partitionType.equals(partitions.get(j))) {
+								defs.add(allDefs[i]);
+								added = true;
+							}
+							else {
+								++j;
+							}
 						}
 					}
 				}

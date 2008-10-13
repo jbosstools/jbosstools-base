@@ -26,6 +26,7 @@ import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.jboss.tools.common.text.xml.contentassist.ContentAssistProcessorBuilder;
 import org.jboss.tools.common.text.xml.contentassist.ContentAssistProcessorDefinition;
+import org.jboss.tools.common.text.xml.contentassist.SortingCompoundContentAssistProcessor;
 
 /**
  * @author Igels
@@ -43,7 +44,15 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 	}
 
 	protected IContentAssistProcessor[] getContentAssistProcessors(ISourceViewer sourceViewer, String partitionType) {
-
+		
+		SortingCompoundContentAssistProcessor sortingCompoundProcessor = new SortingCompoundContentAssistProcessor(sourceViewer, partitionType);
+		List<IContentAssistProcessor> processors = new ArrayList<IContentAssistProcessor>();
+		
+//		if (sortingCompoundProcessor.size() > 0) {
+		if (sortingCompoundProcessor.supportsPartitionType(partitionType)) {
+			processors.add(sortingCompoundProcessor);
+		}
+/*		
 		// if we have our own processors we need 
 		// to define them in plugin.xml file of their
 		// plugins using extention point 
@@ -53,18 +62,17 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 
 		if(defs==null) return null;
 
-		List processors = new ArrayList();
 		for(int i=0; i<defs.length; i++) {
 		    IContentAssistProcessor processor = defs[i].createContentAssistProcessor();
 		    if(!processors.contains(processor)) {
 			    processors.add(processor);			        
 		    }
 		}
-
+*/
 		IContentAssistProcessor[] in = getInitialProcessors(sourceViewer, partitionType);
 		if(in != null && in.length > 0) {
 
-			//we do not need super processors - make initial processors responcible for that 
+			//we do not need super processors - make initial processors responsible for that 
 			for(int i=0; i<in.length; i++) {
 			    if(!processors.contains(in[i])) {
 				    processors.add(in[i]);			        

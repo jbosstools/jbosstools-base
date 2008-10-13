@@ -12,7 +12,10 @@
 package org.jboss.tools.common.text.xml.contentassist;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -26,8 +29,8 @@ public class ContentAssistProcessorDefinition {
 	private String fId = null;
 	private String fClassName = null;
 
-	// a list of partition types (String) 
-	private List fPartitionTypes = null;
+	// a list of content types (String) 
+	private Map<String, List<String>> fContentTypes = null;
 
 	private IConfigurationElement fConfigurationElement = null;
 
@@ -41,12 +44,20 @@ public class ContentAssistProcessorDefinition {
 		fId = id;
 		fClassName = class1;
 		fConfigurationElement = configurationElement;
-		fPartitionTypes = new ArrayList();
+		fContentTypes = new HashMap<String, List<String>>();
 	}
 
-	public void addPartitionType(String partitionType) {
-		if (!fPartitionTypes.contains(partitionType))
-			fPartitionTypes.add(partitionType);
+	public void addPartitionType(String contentType, String partitionType) {
+		List<String> partitionTypes = new ArrayList<String>();
+		
+		if (fContentTypes.containsKey(contentType)) {
+			partitionTypes = fContentTypes.get(contentType);
+		}
+		
+		if (!partitionTypes.contains(partitionType)) {
+			partitionTypes.add(partitionType);
+			fContentTypes.put(contentType, partitionTypes);
+		}
 	}
 
 	/**
@@ -131,9 +142,18 @@ public class ContentAssistProcessorDefinition {
 	}
 	
 	/**
-	 * @return Returns the fPartitionTypes.
+	 * @return Returns the collection of ContentTypes.
 	 */
-	public List getPartitionTypes() {
-		return fPartitionTypes;
+	public Collection<String> getContentTypes() {
+		return fContentTypes.keySet();
 	}
+	
+	/**
+	 * @return Returns the list of Partition Types for the specified ContentType.
+	 */
+	public List<String> getPartitionTypes(String contentType) {
+		return (fContentTypes == null || !fContentTypes.containsKey(contentType) ?
+				new ArrayList<String>(): fContentTypes.get(contentType));
+	}
+	
 }

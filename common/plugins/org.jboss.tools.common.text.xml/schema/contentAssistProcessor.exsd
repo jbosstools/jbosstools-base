@@ -74,6 +74,26 @@
       </complexType>
    </element>
 
+   <element name="contenttype">
+      <annotation>
+         <documentation>
+            Defined the editor&apos;s content type to be assotiated with the Content Assist Processor. The value is either one of the WTP structured model content type ID or any other structured text content type ID
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="partitiontype" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A unique ID for this contenttype. The value is either one of the WTP structured model content type ID or any other structured text content type ID.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
    <element name="partitiontype">
       <annotation>
          <documentation>
