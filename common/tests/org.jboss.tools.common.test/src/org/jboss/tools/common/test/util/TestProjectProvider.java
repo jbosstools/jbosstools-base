@@ -10,30 +10,25 @@
  ******************************************************************************/
 package org.jboss.tools.common.test.util;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.jboss.tools.common.test.CommonAllTests;
 import org.jboss.tools.common.util.FileUtil;
-import org.osgi.framework.Bundle;
+import org.jboss.tools.test.util.JobUtils;
+import org.jboss.tools.test.util.ResourcesUtils;
 
 /**
  * Test plugins may define test projects to be added 
@@ -59,80 +54,36 @@ public class TestProjectProvider {
 	 * @throws Exception
 	 */
 	public TestProjectProvider(String bundleName, String projectPath, String name, boolean makeCopy) throws CoreException {
-		if(projectPath == null) {
-			projectPath = "/projects/" + name;
-		} else if(name == null) {
-			name = projectPath.substring(projectPath.lastIndexOf('/')+1);
+		try {
+			if( null == projectPath ) {
+				project = ResourcesUtils.importProject(bundleName, "projects" + Path.SEPARATOR + name, null);
+			} else {
+				project = ResourcesUtils.importProject(bundleName, projectPath, null);
+			}
+		} catch (IOException e) {
+			throw new CoreException(new Status(Status.ERROR,bundleName,e.getMessage(),e));
+		} catch (InvocationTargetException e) {
+			throw new CoreException(new Status(Status.ERROR,bundleName,e.getMessage(),e));
+		} catch (InterruptedException e) {
+			throw new CoreException(new Status(Status.ERROR,bundleName,e.getMessage(),e));
 		}
-		this.makeCopy = makeCopy;
-		init(bundleName, projectPath, name);		
 	}
 	
 	public IProject getProject() {
 		return project;
 	}
 	
-	private void init(String bundleName, String projectPath, String name) throws CoreException {
-		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
-		if(p.exists()) {
-			project = p;
-			if(!p.isOpen()) {
-				project.open(new NullProgressMonitor());
-				System.out.println("open");
-			}
-			return;
-		}
-		
-		Bundle bundle = Platform.getBundle(bundleName);
-		URL url = null;
-		try {
-			url = FileLocator.resolve(bundle.getEntry(projectPath));
-		} catch (IOException e) {
-			String msg = "Cannot find project " + name + " in " + bundleName;
-			IStatus status = new Status(IStatus.ERROR, CommonAllTests.PLUGIN_ID, msg, e);
-			throw new CoreException(status);
-		}
-		String location = url.getFile();
-		if(makeCopy) {
-			IPath root = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-			File destination = new File(root.toFile(), name);
-			FileUtil.copyDir(new File(location), destination, true);
-			importExistingProject(p, destination.getAbsolutePath(), name);
-			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		} else {
-			importExistingProject(p, location, name);
-		}
-		if(p.exists()) {
-			project = p;
-		}
-	}
-
-	static void importExistingProject(IProject project, String location, String name) throws CoreException {
-		IPath path = new Path(location).append(".project");
-		IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(path);
-		description.setName(name);
-		try {
-			project.create(description, new NullProgressMonitor());
-			project.open(IResource.BACKGROUND_REFRESH, new NullProgressMonitor());
-			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot create project " + name + " from " + location, e);
-		}
-	}
-	
 	public void dispose() throws CoreException {
 		if(project == null || !project.exists()) return;
-		ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
-				IPath loc = project.getLocation();
-				project.close(new NullProgressMonitor());
-				project.delete(false, true, new NullProgressMonitor());
-				if(makeCopy) {
-					FileUtil.remove(loc.toFile());
-				}
-				ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-			}
-		}, new NullProgressMonitor());
+	    boolean oldAutoBuilding = true; 
+		try {
+			oldAutoBuilding = ResourcesUtils.setBuildAutomatically(false);
+		    JobUtils.waitForIdle(); 
+			project.delete(true, null);
+			JobUtils.waitForIdle();
+		} finally {
+			ResourcesUtils.setBuildAutomatically(oldAutoBuilding); 
+		}		
 	}
 	
 	TestDescriptionFactory tests = null;

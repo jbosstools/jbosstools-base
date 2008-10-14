@@ -19,7 +19,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.jboss.tools.test.util.xpl.EditorTestHelper;
 
 /**
  * @author eskimo
@@ -55,9 +54,9 @@ public class ProjectImportTestSetup extends TestSetup {
 	public IProject[] importProjects() throws Exception {
 		IProject[] projects = new IProject[projectPaths.length]; 
 		for (int i = 0; i < projectPaths.length; i++) {
-			EditorTestHelper.joinBackgroundActivities();
+			JobUtils.waitForIdle();
 			projects[i] = (IProject)ResourcesUtils.importProject(bundleName, projectPaths[i]);
-			EditorTestHelper.joinBackgroundActivities();
+			JobUtils.waitForIdle();
 		}
 		return projects;
 	}	
@@ -71,7 +70,7 @@ public class ProjectImportTestSetup extends TestSetup {
 		} catch (ResourceException e) {
 			JUnitUtils.fail(e.getMessage(), e);
 		}
-		EditorTestHelper.joinBackgroundActivities();
+		JobUtils.waitForIdle();
 		return result;
 	}
 

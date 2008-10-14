@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -18,10 +20,8 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.test.util.TestProjectProvider;
-import org.jboss.tools.test.util.xpl.EditorTestHelper;
+import org.jboss.tools.test.util.JobUtils;
 import org.osgi.framework.Bundle;
-
-import junit.framework.TestCase;
 
 /**
  * Automatic test for JBIDE-1811.
@@ -53,7 +53,7 @@ public class ClassPathTest extends TestCase {
 		project1.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		project2.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		
-		EditorTestHelper.joinBackgroundActivities();
+		JobUtils.waitForIdle();
 		
 		IJavaProject jp = JavaCore.create(project2);
 		IClasspathEntry[] es = jp.getRawClasspath();
@@ -70,7 +70,7 @@ public class ClassPathTest extends TestCase {
 		
 		jp.setRawClasspath(esn, new NullProgressMonitor());
 		
-		EditorTestHelper.joinBackgroundActivities();
+		JobUtils.waitForIdle();
 	}
 
 	public void testGetClassPath() throws CoreException, IOException {

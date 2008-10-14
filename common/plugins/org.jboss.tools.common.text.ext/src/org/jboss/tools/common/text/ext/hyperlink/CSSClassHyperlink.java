@@ -24,9 +24,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.rules.IToken;
@@ -37,7 +34,6 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMText;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
-import org.jboss.tools.common.text.ext.hyperlink.jsp.JSPRootHyperlinkPartitioner;
 import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
 import org.jboss.tools.common.text.ext.util.CSSTextScanner;
 import org.jboss.tools.common.text.ext.util.RegionHolder;
@@ -282,10 +278,10 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 			for (int i = 0; list != null && i < list.getLength(); i++) {
 
 					IDOMNode element = (IDOMNode)list.item(i);
-					String axis = JSPRootHyperlinkPartitioner.computeAxis(getDocument(), element.getStartOffset());
-					axis  = axis.toLowerCase();
+					//String axis = JSPRootHyperlinkPartitioner.computeAxis(getDocument(), element.getStartOffset());
+					//axis  = axis.toLowerCase();
 					
-					if (axis.endsWith("/link")) {
+					if ("link".equals(element.getNodeName())) {
 						Node relAttr = element.getAttributes().getNamedItem("rel");
 						if (relAttr != null) {
 							String val = relAttr.getNodeValue().toLowerCase();
@@ -298,7 +294,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 						}
 					}
 					
-					if (axis.endsWith("/style")) {
+					if ("link".equals(element.getNodeName())) {
 //						String value = element.getNodeValue();
 						styleLinks.add(element);
 					}

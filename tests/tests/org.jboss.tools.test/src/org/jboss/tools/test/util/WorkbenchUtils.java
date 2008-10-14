@@ -100,4 +100,8 @@ public class WorkbenchUtils {
 		}
 		return part;
 	}
+
+	public static void closeAllEditors() {
+		getWorkbenchActivePage().closeAllEditors(false);
+	}
 }
