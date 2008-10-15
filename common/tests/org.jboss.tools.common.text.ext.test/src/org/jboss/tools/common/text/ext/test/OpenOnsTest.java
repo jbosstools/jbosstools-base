@@ -16,8 +16,10 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.DocumentProviderRegistry;
@@ -45,6 +47,7 @@ public class OpenOnsTest extends TestCase {
 				OPENON_TEST_PROJECT);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
 		JobUtils.waitForIdle();
+		IWorkbench workbench = PlatformUI.getWorkbench();
 	}
 	
 	protected void tearDown() {
@@ -314,22 +317,10 @@ public class OpenOnsTest extends TestCase {
 		ISourceViewer viewer = jspMultyPageEditor.getSourceEditor().getTextViewer();
 
 		IRegion reg = new FindReplaceDocumentAdapter(jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument()).find(0,
-				"org.jboss.tools.test.TestBean1", true, true, false, false);
-		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
-		assertNotNull(links);
-		assertTrue(links.length!=0);
-		//assertNotNull(links[0].getHyperlinkText());
-		assertNotNull(links[0].toString());
-		links[0].open();
-		JobUtils.waitForIdle();
-		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		
-		String fileName = editor.getEditorInput().getName();
-		assertTrue("TestBean1.java".equals(fileName));
-		
-		reg = new FindReplaceDocumentAdapter(jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument()).find(reg.getOffset(),
 				"b1", true, true, false, false);
-		links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		reg = new FindReplaceDocumentAdapter(jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument()).find(reg.getOffset()+reg.getLength(),
+				"b1", true, true, false, false);
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
 		assertNotNull(links);
 		assertTrue(links.length!=0);
 		//assertNotNull(links[0].getHyperlinkText());
@@ -339,6 +330,19 @@ public class OpenOnsTest extends TestCase {
 		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		ITextSelection selection = (ITextSelection)viewer.getSelectionProvider().getSelection();
 		assertEquals("<jsp:useBean id=\"b1\" class=\"org.jboss.tools.test.TestBean1\">", selection.getText());
+		
+		reg = new FindReplaceDocumentAdapter(jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument()).find(0,
+				"org.jboss.tools.test.TestBean1", true, true, false, false);
+		links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		links[0].open();
+		JobUtils.waitForIdle();
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		String fileName = editor.getEditorInput().getName();
+		assertTrue("TestBean1.java".equals(fileName));
 	}
 	
 	public static final String FORWARD_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/forwardHiperlinkTests.jsp";
@@ -379,7 +383,7 @@ public class OpenOnsTest extends TestCase {
 		assertTrue("forwardHiperlinkPage1Tests.jsp".equals(fileName));
 	}
 	
-	public static final String INCLUDE_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/includeHiperlinkTests.page.jsp";
+	public static final String INCLUDE_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/includeHiperlinkTests.jsp";
 
 	
 	public void testJspIncludeOpenOn() throws CoreException, BadLocationException {
