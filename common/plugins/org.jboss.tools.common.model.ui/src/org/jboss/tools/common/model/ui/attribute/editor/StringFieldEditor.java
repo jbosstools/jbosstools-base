@@ -70,7 +70,10 @@ public class StringFieldEditor extends ExtendedFieldEditor {
 	protected boolean validate() {
 		boolean result = false;
 		if (emptyStringAllowed) result = true;
-		if (textField == null) result = false;
+		if (textField == null) {
+			result = false;
+			return result;
+		}
 		String txt = textField.getText();
 		if (txt == null) {
 			result = false;
@@ -308,7 +311,11 @@ public class StringFieldEditor extends ExtendedFieldEditor {
 	
 		if (isValid != oldState)
 			fireStateChanged(IS_VALID, oldState, isValid);
-	
+
+		if(textField == null) {
+			//disposed
+			return;
+		}
 		String newValue = textField.getText();
 		if (!newValue.equals(oldValue)) {
 			fireValueChanged(VALUE, oldValue, newValue);

@@ -95,14 +95,17 @@ public class DefaultMultipageEditor extends ObjectMultiPageEditor {
 		} else {
 			if (treeFormPage != null) {
 				selectionProvider.setHost(treeFormPage.getSelectionProvider());
-				if(getTextSelectionProvider() == null) return;
-				ISelection s = getTextSelectionProvider().getSelection();
-				if(s == null || s.isEmpty() || !(s instanceof IStructuredSelection)) return;
-				Object o = ((IStructuredSelection)s).getFirstElement();
-				if(!(o instanceof XModelObject) || o == getModelObject()) return;
-				treeFormPage.getSelectionProvider().setSelection(s);
 			}
 		}
+	}
+
+	protected void synchronizeSelectionWithText() {
+		if(getTextSelectionProvider() == null || treeFormPage == null) return;
+		ISelection s = getTextSelectionProvider().getSelection();
+		if(s == null || s.isEmpty() || !(s instanceof IStructuredSelection)) return;
+		Object o = ((IStructuredSelection)s).getFirstElement();
+		if(!(o instanceof XModelObject) || o == getModelObject()) return;
+		treeFormPage.getSelectionProvider().setSelection(s);
 	}
 	
 }

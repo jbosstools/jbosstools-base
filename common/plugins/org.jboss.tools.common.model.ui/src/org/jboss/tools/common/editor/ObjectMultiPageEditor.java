@@ -848,9 +848,15 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		if(postponedTextSelection.selected != null) {
 			Display.getDefault().asyncExec(postponedTextSelection);
 		}
+		if(newPageIndex != getSourcePageIndex()) {
+			synchronizeSelectionWithText();
+		}
 		activateSite();
 	}
-	
+
+	protected void synchronizeSelectionWithText() {
+	}
+
 	protected void updateSelectionProvider() {
 	}
 	

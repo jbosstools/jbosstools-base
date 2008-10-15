@@ -270,6 +270,10 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 		PropertyChangeEvent event = new PropertyChangeEvent(this, IPropertyEditor.VALUE, oldValue, stringValue);
 		valueChangeListener.valueChange(event);
 		revalidateValue();
+		if(this.valueProvider == null) {
+			//disposed already
+			return;
+		}
 		this.valueProvider.addValueChangeListener(this);
 	}
 	
