@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -207,8 +208,31 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		ICompletionProposal[] resultArray = ret.toArray(new ICompletionProposal[ret.size()]);
 		Object[] sorted = createSorter().sort(resultArray);
 		System.arraycopy(sorted, 0, resultArray, 0, sorted.length);
+		resultArray = makeUnique(resultArray);
 		
 		return resultArray;
+	}
+
+	/**
+	 * Removes duplicates of completion strings
+	 *
+	 * @param suggestions a list of suggestions ({@link String}).
+	 * @return a list of unique completion suggestions.
+	 */
+	public ICompletionProposal[] makeUnique(ICompletionProposal[] proposals) {
+		HashSet<String> present = new HashSet<String>();
+		ArrayList<ICompletionProposal> unique= new ArrayList<ICompletionProposal>();
+
+		for (int i = 0; proposals != null && i < proposals.length; i++) {
+
+			if (!present.contains(proposals[i].getDisplayString())) {
+				present.add(proposals[i].getDisplayString());
+				unique.add(proposals[i]);
+			}
+		}
+
+		present.clear();
+		return unique.toArray(new ICompletionProposal[unique.size()]);
 	}
 
 	protected Sorter createSorter() {
@@ -233,7 +257,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 					return str2.compareTo(str1) > 0;
 				}
 
-				return (pr1 < pr2);
+				return (pr2 > pr1);
 			}
 		};
 	}
