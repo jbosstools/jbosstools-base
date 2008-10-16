@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2008 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -37,6 +37,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
+import org.eclipse.wst.sse.ui.internal.contentassist.IRelevanceCompletionProposal;
+import org.eclipse.wst.sse.ui.internal.util.Sorter;
 
 /**
  * Reads the plugin.xml file for the processors defined using the 
@@ -203,19 +205,39 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		}
 		
 		ICompletionProposal[] resultArray = ret.toArray(new ICompletionProposal[ret.size()]);
-		// TODO: Need to improve the sorting algorithm
-/*		Arrays.sort(resultArray, new Comparator<ICompletionProposal>() {
-			public int compare(ICompletionProposal arg0,
-					ICompletionProposal arg1) {
-				String str0 = (arg0 == null ? "" : arg0.getDisplayString()); //$NON-NLS-1$
-				String str1 = (arg1 == null ? "" : arg1.getDisplayString()); //$NON-NLS-1$
-				return str0.compareTo(str1);
-			}});
-*/
+		Object[] sorted = createSorter().sort(resultArray);
+		System.arraycopy(sorted, 0, resultArray, 0, sorted.length);
 		
 		return resultArray;
 	}
 
+	protected Sorter createSorter() {
+		return new Sorter() {
+			public boolean compare(Object proposal1, Object proposal2) {
+				ICompletionProposal p1 = (ICompletionProposal)proposal1;
+				ICompletionProposal p2 = (ICompletionProposal)proposal2;
+
+				int pr1 = Integer.MIN_VALUE;
+				int pr2 = Integer.MIN_VALUE;
+				
+				if (p1 instanceof IRelevanceCompletionProposal)
+					pr1 = ((IRelevanceCompletionProposal)p1).getRelevance();
+
+				if (p2 instanceof IRelevanceCompletionProposal)
+					pr2 = ((IRelevanceCompletionProposal)p2).getRelevance();
+				
+				
+				if (pr1 == pr2) {
+					String str1 = p1.getDisplayString(); //$NON-NLS-1$
+					String str2 = p2.getDisplayString(); //$NON-NLS-1$
+					return str2.compareTo(str1) > 0;
+				}
+
+				return (pr1 < pr2);
+			}
+		};
+	}
+	
 	/**
 	 * Returns information about possible contexts based on the
 	 * specified location within the document that corresponds
