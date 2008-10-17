@@ -509,5 +509,28 @@ public class OpenOnsTest extends TestCase {
 		String fileName = editor.getEditorInput().getName();
 		assertTrue("html_basic.tld".equals(fileName));
 	}
-	
+
+	public static final String TLD_ATTRIBUTE_NAME_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/WEB-INF/tldAttributeNameOpenOnTests.tld";
+
+	public void testTldAttributeNameOpenOn() throws CoreException, BadLocationException {
+		IEditorPart editor = WorkbenchUtils.openEditor(TLD_ATTRIBUTE_NAME_TEST_FILE);
+		assertTrue(editor instanceof DefaultMultipageEditor);
+		DefaultMultipageEditor tldEditor = (DefaultMultipageEditor) editor;
+		tldEditor.selectPageByName("Source");
+		ISourceViewer viewer = tldEditor.getSourceEditor().getTextViewer();
+
+		IRegion reg = new FindReplaceDocumentAdapter(tldEditor.getSourceEditor().getTextViewer().getDocument()).find(0,
+				"attr1", true, true, false, false);
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		links[0].open();
+		JobUtils.waitForIdle();
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		
+		ITextSelection selection = (ITextSelection)viewer.getSelectionProvider().getSelection();
+		assertEquals("<name>", selection.getText());
+	}
 }

@@ -15,10 +15,10 @@ import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.IEditorWrapper;
 import org.jboss.tools.common.text.ext.IMultiPageEditor;
 
@@ -37,7 +37,7 @@ public class StructuredSelectionHelper {
 	public static StructuredTextEditor getStructuredTextEditor (IEditorPart editorPart) {
 			IEditorPart activeEditorPart = editorPart;
 			if (activeEditorPart == null) {
-				IWorkbenchPage workbenchPage = ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+				IWorkbenchPage workbenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				activeEditorPart = workbenchPage.getActiveEditor();
 			}
 			if (activeEditorPart instanceof IMultiPageEditor) {
