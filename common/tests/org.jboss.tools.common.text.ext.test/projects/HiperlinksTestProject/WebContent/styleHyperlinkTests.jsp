@@ -4,7 +4,7 @@
 <html>
     <head>
     	<title>Input User Name Page</title>	
-	   	 <link href="stylesheet/style15.css" rel="stylesheet" type="text/css" />    	
+	   	 <link href="stylesheet/style15.css" rel="stylesheet" type="text/css" />
 	   	 <link href="stylesheet/style14.css" rel="stylesheet" type="text/css" />
 	   	 <link href="stylesheet/style13.css" rel="stylesheet" type="text/css" />
 	   	 <link href="stylesheet/style12.css" rel="stylesheet" type="text/css" />

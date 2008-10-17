@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
@@ -182,7 +183,7 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 					IStorageEditorInput moeInput = (IStorageEditorInput)editorInput;
 					IPath p = moeInput.getStorage().getFullPath();
 					String s0 = p.segment(0);
-					project = ExtensionsPlugin.getWorkspace().getRoot().getProject(s0); 
+					project = ResourcesPlugin.getWorkspace().getRoot().getProject(s0); 
 				}
 			} else {
 				project = documentFile.getProject();

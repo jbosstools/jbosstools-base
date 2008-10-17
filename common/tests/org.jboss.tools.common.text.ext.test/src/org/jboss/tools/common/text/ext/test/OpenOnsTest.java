@@ -366,6 +366,27 @@ public class OpenOnsTest extends TestCase {
 		assertTrue("TestBean1.java".equals(fileName));		
 	}
 	
+	public void testSetBeanPropertyOpenOn() throws CoreException, BadLocationException {
+		IEditorPart editor = WorkbenchUtils.openEditor(USE_BEAN_TEST_FILE);
+		assertTrue(editor instanceof JSPMultiPageEditor);
+		JSPMultiPageEditor jspMultyPageEditor = (JSPMultiPageEditor) editor;
+		ISourceViewer viewer = jspMultyPageEditor.getSourceEditor().getTextViewer();
+
+		IRegion reg = new FindReplaceDocumentAdapter(jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument()).find(0,
+				"property2", true, true, false, false);
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		links[0].open();
+		JobUtils.waitForIdle();
+	
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		String fileName = editor.getEditorInput().getName();
+		assertTrue("TestBean1.java".equals(fileName));		
+	}
+	
 	public static final String FORWARD_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/forwardHiperlinkTests.jsp";
 
 	
@@ -439,6 +460,54 @@ public class OpenOnsTest extends TestCase {
 		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		fileName = editor.getEditorInput().getName();
 		assertTrue("includeHiperlinkPage1Tests.jsp".equals(fileName));
+	}
+	
+	public static final String FACELETS_XHTML_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/faceletsHiperlinkTests.xhtml";
+
+	
+	public void testJspXmlElementNameOpenOn() throws CoreException, BadLocationException {
+		IEditorPart editor = WorkbenchUtils.openEditor(FACELETS_XHTML_TEST_FILE);
+		assertTrue(editor instanceof JSPMultiPageEditor);
+		JSPMultiPageEditor jspMultyPageEditor = (JSPMultiPageEditor) editor;
+		ISourceViewer viewer = jspMultyPageEditor.getSourceEditor().getTextViewer();
+
+		IRegion reg = new FindReplaceDocumentAdapter(jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument()).find(0,
+				"message", true, true, false, false);
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		links[0].open();
+		JobUtils.waitForIdle();
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		
+		String fileName = editor.getEditorInput().getName();
+		assertTrue("html_basic.tld".equals(fileName));
+	}
+	
+	public static final String JSP_XMLNS_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/jspXmlFormatTests.jsp";
+
+	
+	public void testJspXmlnsNameOpenOn() throws CoreException, BadLocationException {
+		IEditorPart editor = WorkbenchUtils.openEditor(FACELETS_XHTML_TEST_FILE);
+		assertTrue(editor instanceof JSPMultiPageEditor);
+		JSPMultiPageEditor jspMultyPageEditor = (JSPMultiPageEditor) editor;
+		ISourceViewer viewer = jspMultyPageEditor.getSourceEditor().getTextViewer();
+
+		IRegion reg = new FindReplaceDocumentAdapter(jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument()).find(0,
+				"http://java.sun.com/jsf/html", true, true, false, false);
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		links[0].open();
+		JobUtils.waitForIdle();
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		
+		String fileName = editor.getEditorInput().getName();
+		assertTrue("html_basic.tld".equals(fileName));
 	}
 	
 }

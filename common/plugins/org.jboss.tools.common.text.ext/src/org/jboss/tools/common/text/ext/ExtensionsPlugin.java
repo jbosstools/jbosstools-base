@@ -10,11 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
@@ -32,8 +27,6 @@ import org.jboss.tools.common.text.ext.hyperlink.HyperlinkDetector;
 public class ExtensionsPlugin extends BaseUIPlugin implements IAdaptable {
 	//The shared instance.
 	private static ExtensionsPlugin plugin;
-	//Resource bundle.
-	private ResourceBundle resourceBundle;
 	
 	public static final String PLUGIN_ID = "org.jboss.tools.common.text.ext"; 
 
@@ -42,25 +35,6 @@ public class ExtensionsPlugin extends BaseUIPlugin implements IAdaptable {
 	 */
     public ExtensionsPlugin() {
         super();
-		plugin = this;
-		try {
-			resourceBundle= ResourceBundle.getBundle("org.jboss.tools.common.text.ext.ExtensionsPlugin");
-		} catch (MissingResourceException x) {
-			resourceBundle = null;
-		}
-    }
-
-    /**
-	 * The constructor.
-	 */
-    public ExtensionsPlugin(IPluginDescriptor descriptor) {
-        super();
-		plugin = this;
-		try {
-			resourceBundle= ResourceBundle.getBundle("org.jboss.tools.common.text.ext.ExtensionsPlugin");
-		} catch (MissingResourceException x) {
-			resourceBundle = null;
-		}
     }
 
     /**
@@ -69,34 +43,6 @@ public class ExtensionsPlugin extends BaseUIPlugin implements IAdaptable {
 	public static ExtensionsPlugin getDefault() {
 		return plugin;
 	}
-
-	/**
-	 * Returns the workspace instance.
-	 */
-	public static IWorkspace getWorkspace() {
-		return ResourcesPlugin.getWorkspace();
-	}
-
-	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
-	 */
-	public static String getResourceString(String key) {
-		ResourceBundle bundle= ExtensionsPlugin.getDefault().getResourceBundle();
-		try {
-			return bundle.getString(key);
-		} catch (MissingResourceException e) {
-			return key;
-		}
-	}
-
-	/**
-	 * Returns the plugin's resource bundle,
-	 */
-	public ResourceBundle getResourceBundle() {
-		return resourceBundle;
-	}
-	
 
 	public Object getAdapter(Class adapter) {
 		if (adapter == IHyperlinkDetector.class) {

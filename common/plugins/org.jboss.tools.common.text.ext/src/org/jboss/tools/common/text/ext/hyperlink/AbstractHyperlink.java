@@ -14,6 +14,7 @@ import org.eclipse.core.internal.resources.ICoreConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -233,7 +234,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 	protected IEditorInput createEditorInput(String fileString) {
 		String jarName = fileString.substring(0,fileString.indexOf("!"));
 
-        IFile[] fs = ExtensionsPlugin.getDefault().getWorkspace().getRoot().findFilesForLocation(new Path(jarName));
+        IFile[] fs = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(new Path(jarName));
         if(fs == null || fs.length == 0) return null;
         
         IProject p = fs[0].getProject();
