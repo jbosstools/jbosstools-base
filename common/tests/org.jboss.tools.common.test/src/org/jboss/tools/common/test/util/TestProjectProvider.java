@@ -79,6 +79,7 @@ public class TestProjectProvider {
 		try {
 			oldAutoBuilding = ResourcesUtils.setBuildAutomatically(false);
 		    JobUtils.waitForIdle(); 
+		    project.close(null);
 			project.delete(true, null);
 			JobUtils.waitForIdle();
 		} finally {
