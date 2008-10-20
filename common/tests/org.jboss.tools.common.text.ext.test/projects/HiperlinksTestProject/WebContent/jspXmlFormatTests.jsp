@@ -15,7 +15,7 @@
 	</head>
 	<body>
 		<f:view>
-			
+			<jsp:attribute name="locale">ru</jsp:attribute>
 		</f:view>
 	</body>
 </html>

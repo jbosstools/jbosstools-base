@@ -533,4 +533,28 @@ public class OpenOnsTest extends TestCase {
 		ITextSelection selection = (ITextSelection)viewer.getSelectionProvider().getSelection();
 		assertEquals("<name>", selection.getText());
 	}
+	
+	public static final String XHTML_STYLE_CLASS_NAME_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/xhtmlStyleClassHiperlinkTests.xhtml";
+
+	
+	public void testFacletsStyleClassOpenOnJbide2890() throws BadLocationException {
+		IEditorPart editor = WorkbenchUtils.openEditor(XHTML_STYLE_CLASS_NAME_TEST_FILE);
+		assertTrue(editor instanceof JSPMultiPageEditor);
+		JSPMultiPageEditor jspMultyPageEditor = (JSPMultiPageEditor) editor;
+		ISourceViewer viewer = jspMultyPageEditor.getSourceEditor().getTextViewer();
+
+		IRegion reg = new FindReplaceDocumentAdapter(jspMultyPageEditor.getSourceEditor().getTextViewer().getDocument()).find(0,
+				"style-class1", true, true, false, false);
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length!=0);
+		//assertNotNull(links[0].getHyperlinkText());
+		assertNotNull(links[0].toString());
+		links[0].open();
+		JobUtils.waitForIdle();
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		
+		String fileName = editor.getEditorInput().getName();
+		assertTrue("style1.css".equals(fileName));		
+	}
 }

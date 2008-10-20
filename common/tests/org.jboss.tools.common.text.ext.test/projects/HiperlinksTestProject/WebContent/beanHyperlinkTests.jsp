@@ -4,10 +4,8 @@
 <jsp:getProperty property="property1" name="b1"/>
 <jsp:setProperty property="property2" name="b1"/>
 <html>
-	<head>
-	<link rel="" >
-	</head>
-	
-<a href="classHyperlinkTests.jsp">test</a>
-
+<body>	
+	<a href="classHyperlinkTests.jsp">${b1.property2}</a>
+</body>
+</html>
 
