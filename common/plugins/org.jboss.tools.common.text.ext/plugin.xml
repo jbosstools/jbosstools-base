@@ -761,6 +761,9 @@
 			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
 				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_CSS_CLASS" />
 			</contenttypeidentifier>
+   			<contenttypeidentifier id="org.eclipse.wst.html.core.htmlsource">
+				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_CSS_CLASS" />
+			</contenttypeidentifier>
 		</hyperlink>
 
 		<hyperlink 
