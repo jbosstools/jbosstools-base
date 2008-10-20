@@ -123,7 +123,7 @@ public class ResourcesUtils {
 		do {
 			line = contentReader.readLine();
 			if(line!=null && !patternIsFound) {
-				patternIsFound = line.matches(pattern);
+				patternIsFound = line.trim().matches(pattern);
 			}
 		} while (line != null && !patternIsFound);
 		return patternIsFound;
