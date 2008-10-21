@@ -185,6 +185,10 @@ public class FileAnyImpl extends RegularObjectImpl {
 	}
 	
 	public void fileRenamed(String name, String extension) {
+		if(name != null && name.equals(super.get("NAME"))
+			&& extension != null && extension.equals(super.get("EXTENSION"))) {
+			return;
+		}
 		super.set("NAME", name);
 		super.set("EXTENSION", extension);
 		fireObjectChanged(null);

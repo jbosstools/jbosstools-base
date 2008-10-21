@@ -67,11 +67,11 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 		for (int i = 0; i < errors.length; i++) {
 			String er = errors[i];
 			int q = er.lastIndexOf(':');
-			String pos = er.substring(q + 1);
-			er = er.substring(0, q);
+			String pos = (q < 0) ? "" : er.substring(q + 1);
+			if(q >= 0) er = er.substring(0, q);
 			q = er.lastIndexOf(':');
-			String ln = er.substring(q + 1), ln1 = ln;
-			er = er.substring(0, q);
+			String ln = (q < 0) ? "" : er.substring(q + 1), ln1 = ln;
+			if(q >= 0) er = er.substring(0, q);
 			int iln = -1;
 			try {
 				if(q >= 0 && ln1.length() > 0) {
