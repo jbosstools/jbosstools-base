@@ -21,6 +21,7 @@ import org.eclipse.ui.editors.text.ILocationProvider;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.impl.*;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.jboss.tools.common.util.FileUtil;
 
 public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implements IStorageEditorInput {
 	
@@ -40,7 +41,19 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 			ByteArrayInputStream b = null;
 			if(object instanceof FileAnyImpl) {
 				FileAnyImpl f = (FileAnyImpl)object;
-				b = new ByteArrayInputStream(f.getAsText().getBytes());
+				String s = f.getAsText();
+				String encoding = FileUtil.getEncoding(s);
+				byte[] bs = null;
+				if(encoding == null) { 
+					bs = s.getBytes();
+				} else {
+					try {
+						bs = s.getBytes(encoding);
+					} catch (UnsupportedEncodingException e) {
+						bs = s.getBytes();
+					}
+				}
+				b = new ByteArrayInputStream(bs);
 			} else {
 				b = new ByteArrayInputStream(new byte[0]);
 			}			
