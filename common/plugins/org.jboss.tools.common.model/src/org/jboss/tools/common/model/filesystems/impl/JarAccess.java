@@ -191,6 +191,8 @@ public class JarAccess {
 		}
 		int length = 0;
 		BufferedInputStream bs = null;
+		String encoding = null;
+		boolean first = true;
 		try {
 			InputStream is = jar.getInputStream(jar.getEntry(path));
 			bs = new BufferedInputStream(is);
@@ -200,7 +202,15 @@ public class JarAccess {
 				length = bs.read(b, 0, length);
 				if (length < 0)
 					break;
-				sb.append(new String(b, 0, length));
+				if(first) {
+					first = false;
+					encoding = FileUtil.getEncoding(b);
+				}
+				if(encoding != null) {
+					sb.append(new String(b, 0, length, encoding));
+				} else {
+					sb.append(new String(b, 0, length));
+				}
 			}
 			return sb.toString();
 		} catch (IOException e) {
