@@ -23,10 +23,10 @@ public class KbProposal implements Comparable, Serializable {
 	}
 
 	public static final int R_NONE = 0;
-	public static final int R_JSP_JSF_EL_VARIABLE_ATTRIBUTE_VALUE = 650;
-	public static final int R_JSP_ATTRIBUTE_VALUE = 700;
-	public static final int R_XML_ATTRIBUTE_VALUE = 800;
-	public static final int R_XML_ATTRIBUTE_NAME = 900;
+	public static final int R_JSP_JSF_EL_VARIABLE_ATTRIBUTE_VALUE = 810;
+	public static final int R_JSP_ATTRIBUTE_VALUE = 830;
+	public static final int R_XML_ATTRIBUTE_VALUE = 850;
+	public static final int R_XML_ATTRIBUTE_NAME = 910;
 
 	private static final long serialVersionUID = 3257007635692926512L;
 
