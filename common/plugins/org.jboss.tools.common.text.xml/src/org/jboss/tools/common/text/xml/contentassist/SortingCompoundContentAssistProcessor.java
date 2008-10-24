@@ -257,7 +257,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 					return str2.compareTo(str1) > 0;
 				}
 
-				return (pr2 > pr1);
+				return (pr1 > pr2);
 			}
 		};
 	}
