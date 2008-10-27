@@ -14,6 +14,7 @@ import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
@@ -137,26 +138,7 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 			final int taglibLength = taglib.getEndOffset() - taglib.getStartOffset();
 			final int taglibOffset = taglib.getStartOffset();
 			
-			IRegion region = new IRegion () {
-				public int getLength() {
-					return taglibLength;
-				}
-
-				public int getOffset() {
-					return taglibOffset;
-				}
-				
-				public boolean equals(Object arg) {
-					if (!(arg instanceof IRegion)) return false;
-					IRegion region = (IRegion)arg;
-					
-					if (getOffset() != region.getOffset()) return false;
-					if (getLength() != region.getLength()) return false;
-					return true;
-				}
-
-			};
-			return region;
+			return new Region(taglibOffset,taglibLength);
 		} finally {
 			smw.dispose();
 		}

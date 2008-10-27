@@ -12,6 +12,7 @@ package org.jboss.tools.common.text.ext.hyperlink;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -96,28 +97,7 @@ public class JSPStylesheetRelLinkHyperlink extends RelativeLinkHyperlink {
 			
 			if (propStart > offset || propStart + propLength < offset) return null;
 			
-//			String propText = text.substring(bStart, bEnd);
-			IRegion region = new IRegion () {
-				public int getLength() {
-					return propLength;
-				}
-
-				public int getOffset() {
-					return propStart;
-				}
-				
-				
-				public boolean equals(Object arg) {
-					if (!(arg instanceof IRegion)) return false;
-					IRegion region = (IRegion)arg;
-					
-					if (getOffset() != region.getOffset()) return false;
-					if (getLength() != region.getLength()) return false;
-					return true;
-				}
-			};
-			
-			return region;
+			return new Region(propStart,propLength);
 		} catch (BadLocationException x) {
 			//ignore
 			return null;

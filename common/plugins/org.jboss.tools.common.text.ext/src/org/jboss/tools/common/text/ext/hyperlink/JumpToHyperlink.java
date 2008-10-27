@@ -190,25 +190,7 @@ abstract public class JumpToHyperlink extends AbstractHyperlink {
 			
 			if (propStart > offset || propStart + propLength < offset) return null;
 	
-			IRegion region = new IRegion () {
-				public int getLength() {
-					return propLength;
-				}
-
-				public int getOffset() {
-					return propStart;
-				}
-
-				public boolean equals(Object arg) {
-					if (!(arg instanceof IRegion)) return false;
-					IRegion region = (IRegion)arg;
-					
-					if (getOffset() != region.getOffset()) return false;
-					if (getLength() != region.getLength()) return false;
-					return true;
-				}
-			};
-			return region;
+			return new Region(propStart,propLength);
 		} catch (BadLocationException e) {
 			openFileFailed();
 		} finally {

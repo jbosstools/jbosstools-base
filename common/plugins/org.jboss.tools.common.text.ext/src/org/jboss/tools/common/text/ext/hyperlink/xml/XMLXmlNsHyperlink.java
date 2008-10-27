@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.pde.internal.ui.editor.JarEntryEditorInput;
 import org.eclipse.pde.internal.ui.editor.JarEntryFile;
 import org.eclipse.ui.IEditorInput;
@@ -354,26 +355,8 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 				taglibLength = newLength;
 				taglibOffset = newOffset;
 			}
-			IRegion region = new IRegion () {
-				public int getLength() {
-					return taglibLength;
-				}
 
-				public int getOffset() {
-					return taglibOffset;
-				}
-				
-				public boolean equals(Object arg) {
-					if (!(arg instanceof IRegion)) return false;
-					IRegion region = (IRegion)arg;
-					
-					if (getOffset() != region.getOffset()) return false;
-					if (getLength() != region.getLength()) return false;
-					return true;
-				}
-
-			};
-			return region;
+			return new Region(taglibOffset,taglibLength);
 		} finally {
 			smw.dispose();
 		}
