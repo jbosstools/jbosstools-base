@@ -52,7 +52,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="partitiontype" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="contenttype" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="id" type="string" use="required">
             <annotation>
