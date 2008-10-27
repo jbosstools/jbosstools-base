@@ -322,15 +322,19 @@ public class TypeInfoCollector {
 			return isDataModel;
 		}
 
-		protected void setDataModel(boolean isDataModel) {
+		public void setDataModel(boolean isDataModel) {
 			this.isDataModel = isDataModel;
 		}
 
 		public TypeInfoCollector getTypeCollector() {
+			return getTypeCollector(false);
+		}
+
+		public TypeInfoCollector getTypeCollector(boolean varIsUsed) {
 			// The rev. 7651 results in a deadlock, typeInfo is not stored anymore 
 			// The rev. 7623 results in a deadlock, so, it's rolled back
 			// >>> Fix for JBIDE-2090 
-			return new TypeInfoCollector(this);
+			return new TypeInfoCollector(this, varIsUsed);
 			// <<< Fix for JBIDE-2090 
 		}
 
@@ -682,9 +686,13 @@ public class TypeInfoCollector {
 	}
 
 	public TypeInfoCollector(MemberInfo member) {
+		this(member, false);
+	}
+
+	public TypeInfoCollector(MemberInfo member, boolean varIsUsed) {
 		this.fMember = member;
 		this.fType = member.getMemberType();
-		collectInfo();
+		collectInfo(varIsUsed);
 	}
 
 	public IType getType() {
@@ -692,6 +700,10 @@ public class TypeInfoCollector {
 	}
 
 	public void collectInfo() {
+		collectInfo(false);
+	}
+
+	public void collectInfo(boolean var) {
 		if (fMethods == null) {
 			fMethods = new ArrayList<MethodInfo>();
 		} else {
@@ -722,7 +734,12 @@ public class TypeInfoCollector {
 					if (binMethods[i].isConstructor()) {
 						continue;
 					}
-					fMethods.add(new MethodInfo(binMethods[i], fTypeInfo, parent, false));
+					MethodInfo info = new MethodInfo(binMethods[i], fTypeInfo, parent, false);
+					if(info.getType().isArray() && var) {
+						info.setDataModel(true);
+					}
+					fMethods.add(info);
+					
 				}
 				binType = getSuperclass(binType);
 				if(binType!=null) {

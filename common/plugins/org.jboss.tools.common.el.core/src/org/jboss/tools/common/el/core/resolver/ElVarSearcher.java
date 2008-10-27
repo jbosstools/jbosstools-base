@@ -171,7 +171,8 @@ public class ElVarSearcher {
 	 */
 	public List<Var> findAllVars(Node node) {
 		ArrayList<Var> vars = null;
-		Node parentNode = node.getParentNode();
+//		Node parentNode = node.getParentNode();
+		Node parentNode = node;
 		while(parentNode!=null) {
 			Var var = findVar(parentNode);
 			if(var!=null) {
@@ -248,7 +249,7 @@ public class ElVarSearcher {
 				ELExpression token = var.getElToken();
 				if(token!=null && !token.getText().endsWith(".")) {
 					String varName = var.getName();
-					if(el.startsWith(varName)) { //TODO it was el.equals(varName) and did not work. Why?
+					if(el.equals(varName) || el.startsWith(varName.trim()+".")) {
 						if(var.getElToken()!=null && initializeNestedVars) {
 							Var parentVar = findVarForEl(var.getElToken().getText(), parentVars, true);
 							if(parentVar!=null) {
