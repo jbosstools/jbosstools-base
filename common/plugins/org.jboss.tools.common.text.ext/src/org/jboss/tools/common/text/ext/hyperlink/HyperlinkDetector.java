@@ -33,52 +33,42 @@ public class HyperlinkDetector extends BaseHyperlinkDetector {
 	protected String[] getPartitionTypes(IDocument document, int offset) {
 		String documentRegionType = null;
 		ITypedRegion region = null;
-
+		ArrayList<String> types = new ArrayList<String>();
+		
 			region = (document instanceof IDocumentExtension3 ? 
 					((IDocumentExtension3)document).getDocumentPartitioner("org.eclipse.wst.sse.core.default_structured_text_partitioning").getPartition(offset) : 
 					document.getDocumentPartitioner().getPartition(offset)); 
 
 		if (region != null) {
 		    documentRegionType = region.getType();
-		} else {
-		    return null;
-		}
-		String contentType = getContentType(document);
-	    ArrayList<String> types = new ArrayList<String>();
-		HyperlinkPartitionerDefinition[] defs = HyperlinkPartitionerBuilder.getInstance().getHyperlinkPartitionerDefinitions(contentType, documentRegionType, null);
-
-		if(defs==null || defs.length==0) {
-		    return new String[]{documentRegionType};
-		}
-		for(int i=0; i<defs.length; i++) {
-		    final ITypedRegion finalDocumentRegion = region;
-		    final IDocument finalDocument = document;
-		    final String finalContentType = contentType;
-		    IHyperlinkPartitioner hyperlinkPartitioner = defs[i].createHyperlinkPartitioner();
-		    IHyperlinkRegion startHyperlinkRegion = new IHyperlinkRegion() {
-		        public String getAxis() {
-                    return AxisUtil.getAxis(finalDocument, finalDocumentRegion.getOffset());
-                }
-                public String getContentType() {
-                    return finalContentType;
-                }
-                public String getType() {
-                    return finalDocumentRegion.getType();
-                }
-                public int getLength() {
-                    return finalDocumentRegion.getLength();
-                }
-                public int getOffset() {
-                    return finalDocumentRegion.getOffset();
-                }
-            };
-            if((!(hyperlinkPartitioner instanceof IHyperlinkPartitionRecognizer)) || 
-            		((IHyperlinkPartitionRecognizer)hyperlinkPartitioner).recognize(document, startHyperlinkRegion)) {
-                String type = hyperlinkPartitioner.getChildPartitionType(document, startHyperlinkRegion);
-    		    if(type!=null && !types.contains(type)) {
-    		        types.add(type);			        
-    		    }
-            }
+		
+			String contentType = getContentType(document);
+		    
+			HyperlinkPartitionerDefinition[] defs = HyperlinkPartitionerBuilder.getInstance().getHyperlinkPartitionerDefinitions(contentType, documentRegionType, null);
+	
+			if(defs==null || defs.length==0) {
+				types.add(documentRegionType);
+			} else {
+				for(int i=0; i<defs.length; i++) {
+				    final ITypedRegion finalDocumentRegion = region;
+				    final IDocument finalDocument = document;
+				    final String finalContentType = contentType;
+				    IHyperlinkPartitioner hyperlinkPartitioner = defs[i].createHyperlinkPartitioner();
+				    IHyperlinkRegion startHyperlinkRegion = new HyperlinkRegion(
+				    		finalDocumentRegion.getOffset(),
+				    		finalDocumentRegion.getLength(),
+				    		AxisUtil.getAxis(finalDocument, finalDocumentRegion.getOffset()),
+				    		finalContentType,
+				    		finalDocumentRegion.getType());
+		            if((!(hyperlinkPartitioner instanceof IHyperlinkPartitionRecognizer)) || 
+		            		((IHyperlinkPartitionRecognizer)hyperlinkPartitioner).recognize(document, startHyperlinkRegion)) {
+		                String type = hyperlinkPartitioner.getChildPartitionType(document, startHyperlinkRegion);
+		    		    if(type!=null && !types.contains(type)) {
+		    		        types.add(type);			        
+		    		    }
+		            }
+				}
+			}
 		}
 		return types.toArray(new String[types.size()]);
 	}

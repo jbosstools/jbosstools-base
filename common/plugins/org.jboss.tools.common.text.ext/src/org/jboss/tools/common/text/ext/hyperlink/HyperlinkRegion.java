@@ -10,24 +10,20 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
-public class HyperlinkRegion implements IHyperlinkRegion {
-	int start;
-	int length;
-	
+import org.eclipse.jface.text.TypedRegion;
+
+public class HyperlinkRegion extends TypedRegion implements IHyperlinkRegion {
 	String axis;
 	String contentType;
-	String type;
 	
 	public HyperlinkRegion(int propStart, int propLength) {
 		this(propStart, propLength, null, null, null);
 	}
 
 	public HyperlinkRegion(int start, int length, String axis, String contentType, String type) {
-		this.start = start;
-		this.length = length;
+		super(start,length,type);
 		this.axis = axis;
 		this.contentType = contentType;
-		this.type = type;
 	}
 
 	public String getAxis() {
@@ -37,28 +33,14 @@ public class HyperlinkRegion implements IHyperlinkRegion {
 	public String getContentType() {
 		return contentType;
 	}
-
-	public String getType() {
-		return type;
-	}
-
-	public int getLength() {
-		return length;
-	}
-
-	public int getOffset() {
-		return start;
-	}
-
+	
 	public boolean equals(Object arg) {
 		if (!(arg instanceof IHyperlinkRegion)) return false;
 		IHyperlinkRegion region = (IHyperlinkRegion)arg;
-		if (getOffset() != region.getOffset()) return false;
-		if (getLength() != region.getLength()) return false;
-		if(!areArqumentsEqual(getContentType(), region.getContentType())) return false;
-		if(!areArqumentsEqual(getType(), region.getType())) return false;
-		if(!areArqumentsEqual(getAxis(), region.getAxis())) return false;
-		return true;
+		return getOffset() == region.getOffset() 
+			&& getLength() == region.getLength()
+			&& areArqumentsEqual(getContentType(), region.getContentType())
+			&& areArqumentsEqual(getAxis(), region.getAxis());
 	}
 	
 	private boolean areArqumentsEqual(String s1, String s2) {
