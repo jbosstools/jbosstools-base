@@ -2,7 +2,7 @@
 <!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN"
                                    "meta.dtd">
 <XModelEntityGroup>
- <VERSION MODULE="Meta Editor" VERSION="1.0"/>
+ <VERSION MODULE="Meta" VERSION="1.0"/>
  <MAPPINGS>
   <MAPPING name="Implementations">
    <PAIR name="Meta" value="org.jboss.tools.common.meta.ui.editor.MetaElementImpl"/>
@@ -1476,6 +1476,10 @@
       HandlerClassName="org.jboss.tools.common.meta.ui.editor.GenerateHelpKeysHandler"
       ICON="action.empty" PROPERTIES="default=/model/noHelpYet.html"
       displayName="Generate Help Keys" kind="action" name="GenerateHelpKeys"/>
+     <XActionItem
+      HandlerClassName="org.jboss.tools.common.meta.ui.editor.GenerateKeysGloballyHandler"
+      ICON="action.empty" PROPERTIES="default=/model/noHelpYet.html"
+      displayName="Generate Keys Globally" kind="action" name="GenerateKeysGlobally"/>
     </XActionItem>
    </XActionItem>
   </XActionItem>
