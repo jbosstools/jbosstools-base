@@ -11,7 +11,12 @@
 package org.jboss.tools.common.el.core.test;
 
 import java.util.List;
+import java.util.Random;
 
+import org.jboss.tools.common.el.core.model.ELModel;
+import org.jboss.tools.common.el.core.parser.ELParser;
+import org.jboss.tools.common.el.core.parser.ELParserFactory;
+import org.jboss.tools.common.el.core.parser.ELParserUtil;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.el.core.parser.SyntaxError;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
@@ -192,6 +197,74 @@ public class ELParserTest extends TestCase {
 			token = token.getNextToken();
 		}
 		return sb.toString();
+	}
+
+	static int TREAD_NUMBER = 20;
+	static int CALL_NUMBER = 1000;
+
+	public void testMultiThreadAccess() {
+		
+		final ELParserFactory factory = ELParserUtil.getJbossFactory();
+		final Random random = new Random();
+		class Z {
+			int counter = 0;
+			int parserErrors = 0;
+			int syntaxErrors = 0;
+			int expectedSyntaxErrors = 0;
+			synchronized void addParserError() {
+				parserErrors++;
+			}
+			synchronized void addSyntaxError() {
+				syntaxErrors++;
+			}
+			synchronized void addExpectedSyntaxError() {
+				expectedSyntaxErrors++;
+			}
+		}
+		final Z z = new Z();
+
+		for (int i = 0; i < TREAD_NUMBER; i++) {
+			Runnable r = new Runnable() {
+				public void run() {
+					z.counter++;
+					try {
+						for (int j = 0; j < CALL_NUMBER; j++) {
+							boolean addError = random.nextInt(100) < 50;
+							if(addError) z.addExpectedSyntaxError();
+							ELParser parser = factory.createParser();
+							String el = "#{(a + b(c.d" + random.nextInt(1000) + ") + c().k" + (addError ? "." : "") + ") + 9.7}";
+							ELModel model = parser.parse(el);
+							LexicalToken t = model.getFirstToken();
+							if(!el.equals(restore(t))) {
+								z.addParserError();
+							}
+							if(model.getSyntaxErrors() != null && model.getSyntaxErrors().size() > 0) {
+								z.addSyntaxError();
+							}
+						}
+					} finally {
+						z.counter--;
+					}
+				}
+			};
+			new Thread(r).start();
+		}
+
+		while(z.counter > 0) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				
+			}
+		}
+
+		System.out.println("testMultiThreadAccess: Expected syntax errors=" + z.expectedSyntaxErrors);
+
+		assertEquals(0, z.parserErrors);
+
+		assertEquals(z.expectedSyntaxErrors, z.syntaxErrors);
+		
+		
 	}
 
 }
