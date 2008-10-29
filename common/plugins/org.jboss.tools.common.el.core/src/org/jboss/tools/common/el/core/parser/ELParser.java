@@ -25,6 +25,4 @@ public interface ELParser {
 
 	public ELModel parse(String source, int start, int length);	
 
-	public List<SyntaxError> getSyntaxErrors();
-
 }

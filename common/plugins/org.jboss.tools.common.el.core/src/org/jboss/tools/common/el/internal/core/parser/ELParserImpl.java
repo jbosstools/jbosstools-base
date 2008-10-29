@@ -10,7 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.parser;
 
-import org.jboss.tools.common.el.core.model.ELObjectType;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.model.ELArgumentImpl;
@@ -49,30 +48,35 @@ import org.jboss.tools.common.el.internal.core.parser.token.WhiteSpaceTokenDescr
  *
  */
 public class ELParserImpl {
-	ELModelImpl model;
-
 	LexicalToken current;
 
 	public ELModelImpl parse(LexicalToken start) {
-		model = new ELModelImpl();
-		model.setFirstToken(start);
-		current = start;
-		while(current != null) {
-			if(current.getType() == StartELTokenDescription.START_EL) {
-				ELInstanceImpl instance = readELInstance();
-				if(instance != null) {
-					model.addInstance(instance);
-				}
-			} else if(!hasNextToken()) {
-				break;
-			} else {
-				if(lookUpNextToken(current) == null) {
-					break;
-				}
-				setNextToken();
-			}
+		if(current != null) {
+			throw new RuntimeException("Cannot reuse parser while it is running.");
 		}
-		return model;
+		try {
+			ELModelImpl model = new ELModelImpl();
+			model.setFirstToken(start);
+			current = start;
+			while (current != null) {
+				if (current.getType() == StartELTokenDescription.START_EL) {
+					ELInstanceImpl instance = readELInstance();
+					if (instance != null) {
+						model.addInstance(instance);
+					}
+				} else if (!hasNextToken()) {
+					break;
+				} else {
+					if (lookUpNextToken(current) == null) {
+						break;
+					}
+					setNextToken();
+				}
+			}
+			return model;
+		} finally {
+			current = null;
+		}
 	}
 
 	protected ELInstanceImpl readELInstance() {

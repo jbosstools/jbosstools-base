@@ -24,6 +24,7 @@ import org.jboss.tools.common.el.core.parser.SyntaxError;
  *
  */
 public class ELModelImpl extends ELObjectImpl implements ELModel {
+	List<SyntaxError> errors = null;
 	String source;
 	List<ELInstance> instances = new ArrayList<ELInstance>();
 	int delta = 0;
@@ -72,6 +73,7 @@ public class ELModelImpl extends ELObjectImpl implements ELModel {
 	}
 
 	public void setErrors(List<SyntaxError> errors) {
+		this.errors = errors;
 		for (SyntaxError e: errors) {
 			for (ELInstance i: instances) {
 				ELInstanceImpl im = (ELInstanceImpl)i;
@@ -84,10 +86,15 @@ public class ELModelImpl extends ELObjectImpl implements ELModel {
 		
 	}
 
+	public List<SyntaxError> getSyntaxErrors() {
+		return errors;
+	}
+
 	public void shift(int delta) {
 		this.delta = delta;
 		if(instances.size() > 0) {
 			instances.get(0).getFirstToken().shift(delta);
 		}
 	}
+
 }

@@ -12,6 +12,8 @@ package org.jboss.tools.common.el.core.model;
 
 import java.util.List;
 
+import org.jboss.tools.common.el.core.parser.SyntaxError;
+
 /**
  * ELModel object is the result of EL parsing that includes 
  * all found instances of EL in the source string.
@@ -24,6 +26,8 @@ public interface ELModel extends ELObject {
 	public String getSource();
 
 	public List<ELInstance> getInstances();
+
+	public List<SyntaxError> getSyntaxErrors();
 
 	public void shift(int delta);
 

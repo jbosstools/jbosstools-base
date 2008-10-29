@@ -44,61 +44,69 @@ import org.jboss.tools.common.el.internal.core.parser.token.WhiteSpaceTokenDescr
  */
 public class TokenizerFactory {
 
+	private static ITokenDescription[] DEFAULT_DESCRIPTION_SET = new ITokenDescription[] {
+		ArgEndTokenDescription.INSTANCE,
+		ArgStartTokenDescription.INSTANCE,
+		DotTokenDescription.INSTANCE,
+		EndELTokenDescription.INSTANCE,
+		JavaNameTokenDescription.INSTANCE,
+		OperationTokenDescription.INSTANCE,
+		UnaryTokenDescription.INSTANCE,
+		PrimitiveValueTokenDescription.INSTANCE,
+		StartELTokenDescription.INSTANCE,
+		StringTokenDescription.INSTANCE,
+		WhiteSpaceTokenDescription.INSTANCE,			
+	};
+
+	private static IRule[] DEFAULT_RULE_SET = new IRule[] {
+		ExpressionRule.INSTANCE,
+		CallRule.INSTANCE,
+		OperationRule.INSTANCE,
+		ErrorRecoveryRule.INSTANCE,
+	};
+
 	public static Tokenizer createDefaultTokenizer() {
 		Tokenizer t = new Tokenizer();
-		t.setTokenDescriptions(new ITokenDescription[]{
-			ArgEndTokenDescription.INSTANCE,
-			ArgStartTokenDescription.INSTANCE,
-			DotTokenDescription.INSTANCE,
-			EndELTokenDescription.INSTANCE,
-			JavaNameTokenDescription.INSTANCE,
-			OperationTokenDescription.INSTANCE,
-			UnaryTokenDescription.INSTANCE,
-			PrimitiveValueTokenDescription.INSTANCE,
-			StartELTokenDescription.INSTANCE,
-			StringTokenDescription.INSTANCE,
-			WhiteSpaceTokenDescription.INSTANCE,			
-		});
-		t.setRules(new IRule[]{
-			ExpressionRule.INSTANCE,
-			CallRule.INSTANCE,
-			OperationRule.INSTANCE,
-			ErrorRecoveryRule.INSTANCE,
-		});
+		t.setTokenDescriptions(DEFAULT_DESCRIPTION_SET);
+		t.setRules(DEFAULT_RULE_SET);
 		return t;
 	}
 
+	private static ITokenDescription[] JBOSS_DESCRIPTION_SET = new ITokenDescription[]{
+		ArgEndTokenDescription.INSTANCE,
+		ArgStartTokenDescription.INSTANCE,
+		CommaTokenDescription.INSTANCE,
+		DotTokenDescription.INSTANCE,
+		EndELTokenDescription.INSTANCE,
+		JavaNameTokenDescription.INSTANCE,
+		OperationTokenDescription.INSTANCE,
+		ParamEndTokenDescription.INSTANCE,
+		ParamStartTokenDescription.INSTANCE,
+		ExprStartTokenDescription.INSTANCE,
+		ExprEndTokenDescription.INSTANCE,
+		UnaryTokenDescription.INSTANCE,
+		PrimitiveValueTokenDescription.INSTANCE,
+		StartELTokenDescription.INSTANCE,
+		StringTokenDescription.INSTANCE,
+		WhiteSpaceTokenDescription.INSTANCE,			
+	};
+
+	private static IRule[] JBOSS_RULE_SET = new IRule[] {
+		ExpressionRule.INSTANCE,
+		CallRule.INSTANCE,
+		OperationRule.INSTANCE,
+		ErrorRecoveryRule.INSTANCE,
+	};
+
 	public static Tokenizer createJbossTokenizer() {
 		Tokenizer t = new Tokenizer();
-		t.setTokenDescriptions(new ITokenDescription[]{
-			ArgEndTokenDescription.INSTANCE,
-			ArgStartTokenDescription.INSTANCE,
-			CommaTokenDescription.INSTANCE,
-			DotTokenDescription.INSTANCE,
-			EndELTokenDescription.INSTANCE,
-			JavaNameTokenDescription.INSTANCE,
-			OperationTokenDescription.INSTANCE,
-			ParamEndTokenDescription.INSTANCE,
-			ParamStartTokenDescription.INSTANCE,
-			ExprStartTokenDescription.INSTANCE,
-			ExprEndTokenDescription.INSTANCE,
-			UnaryTokenDescription.INSTANCE,
-			PrimitiveValueTokenDescription.INSTANCE,
-			StartELTokenDescription.INSTANCE,
-			StringTokenDescription.INSTANCE,
-			WhiteSpaceTokenDescription.INSTANCE,			
-		});
-		t.setRules(new IRule[]{
-			ExpressionRule.INSTANCE,
-			CallRule.INSTANCE,
-			OperationRule.INSTANCE,
-			ErrorRecoveryRule.INSTANCE,
-		});
+		t.setTokenDescriptions(JBOSS_DESCRIPTION_SET);
+		t.setRules(JBOSS_RULE_SET);
 		return t;
 	}
 
 	public static void main(String[] args) {
-		String text = "ioioio#{1.2e1}ioioio#{0}";
+		String text = "ioioio#{a(1.2e1i) + b c + d}ioioio#{0}";
 //"#{a[b()['l'].j]}";
 //"#{g11.g12.y13} #{#{  #{a14.b15(x.t.u(uu.ii[9],  j)).b16(m17(v18(i19[2]).u20).)+ a21(c.).b.}";
 //"#{not a.b(x,y) + s.h((6 != -8) & (7 + -iy88.g[9].h(7  div 8).i.j)+(8) ? 4 : 7,'p', a.b.c.d[null])}";

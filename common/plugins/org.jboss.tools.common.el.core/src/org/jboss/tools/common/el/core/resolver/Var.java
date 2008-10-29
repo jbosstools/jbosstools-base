@@ -51,7 +51,7 @@ public class Var {
 		if(el.length()>3 && el.startsWith("#{") && el.endsWith("}")) {
 			ELParser parser = factory.createParser();
 			ELModel model = parser.parse(el);
-			if(model == null || parser.getSyntaxErrors().size() > 0) return null;
+			if(model == null || model.getSyntaxErrors().size() > 0) return null;
 			List<ELInstance> is = model.getInstances();
 			if(is.size() == 0) return null;
 			return is.get(0).getExpression();

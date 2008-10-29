@@ -32,8 +32,8 @@ public class Tokenizer {
 	private String sourceString;
 	private int index = 0;
 
-	private LexicalToken start = new LexicalToken(0, 0, "", -1000);
-	private LexicalToken last = start;
+	private LexicalToken start;
+	private LexicalToken last;
 	
 	private int state;
 	private Properties context = new Properties();
@@ -42,7 +42,21 @@ public class Tokenizer {
 
 	public Tokenizer() {}
 
+	/**
+	 * Prepares this tokenizer to be reused with the same token descriptions and rules.
+	 * 
+	 */
+	public void dispose() {
+		sourceString = null;
+		index = 0;
+		start = null;
+		last = null;
+		context.clear();
+		errors.clear();
+	}
+
 	public void setTokenDescriptions(ITokenDescription[] ds) {
+		tokenDescriptions.clear();
 		for (int i = 0; i < ds.length; i++) {
 			int type = ds[i].getType();
 			if(tokenDescriptions.containsKey(type)) {
@@ -57,6 +71,7 @@ public class Tokenizer {
 	}
 
 	public void setRules(IRule[] rules) {
+		this.rules.clear();
 		for (int i = 0; i < rules.length; i++) {
 			int[] ss = rules[i].getStartStates();
 			for (int j = 0; j < ss.length; j++) {
@@ -122,8 +137,17 @@ public class Tokenizer {
 		return result;
 	}
 
+	private static List<SyntaxError> EMPTY = new ArrayList<SyntaxError>();
+
+	/**
+	 * Copies errors in order to reuse this object.
+	 * @return
+	 */
 	public List<SyntaxError> getErrors() {
-		return errors;
+		if(errors.size() == 0) return EMPTY;
+		List<SyntaxError> copy = new ArrayList<SyntaxError>();
+		copy.addAll(errors);
+		return copy;
 	}
 
 	public void addToken(int type, int start, int end) {
@@ -195,4 +219,5 @@ public class Tokenizer {
 	public int getCurrentIndex() {
 		return index;
 	}
+
 }
