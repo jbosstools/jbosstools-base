@@ -39,7 +39,8 @@ public class FileAuxiliary {
     }
 
     public FileAnyAuxiliaryImpl getAuxiliaryFile(XModelObject folder, XModelObject main, boolean create) {
-        String name = getAuxiliaryName(main);
+        if(folder==null) return null;
+    	String name = getAuxiliaryName(main);
         String p = name + "." + extension;
         XModelObject f = folder.getChildByPath(p);
         if(!(f instanceof FileAnyAuxiliaryImpl)) {
