@@ -97,6 +97,9 @@ public class WizardKeys {
 			String labelText = a.getModelEntity().getName() + "_" + a.getName();
 			s = getLabelText(labelText);
 		}
+		if(s == null) {
+			s = getLabelText(a.getModelEntity().getModule(), a.getName());
+		}
 		return s;
 	}
 	
