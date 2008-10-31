@@ -88,6 +88,8 @@
 			class="org.jboss.tools.common.meta.ui.editor.FileMetaLoader"/>
 		<xclass id="org.jboss.tools.common.meta.ui.editor.GenerateHelpKeysHandler"
 			class="org.jboss.tools.common.meta.ui.editor.GenerateHelpKeysHandler"/>
+		<xclass id="org.jboss.tools.common.meta.ui.editor.GenerateKeysGloballyHandler"
+			class="org.jboss.tools.common.meta.ui.editor.GenerateKeysGloballyHandler"/>
 		<xclass id="org.jboss.tools.common.meta.ui.editor.MetaAttributeDataImpl"
 			class="org.jboss.tools.common.meta.ui.editor.MetaAttributeDataImpl"/>
 		<xclass id="org.jboss.tools.common.meta.ui.editor.MetaAttributeEditorImpl"
