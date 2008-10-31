@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.util.*;
 import org.w3c.dom.*;
 import org.jboss.tools.common.meta.XMetaElement;
+import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.xml.XMLUtilities;
 
 public class XMetaDataLoader implements XMetaDataConstants {
 
@@ -115,15 +117,22 @@ public class XMetaDataLoader implements XMetaDataConstants {
 
     static void loadEntityGroup(XModelMetaDataImpl factory, Element g) {
 //        String n = g.getAttribute("NAME");
+    	String module = "";
+    	Element v = XMLUtilities.getUniqueChild(g, "VERSION");
+    	if(v != null && v.hasAttribute("MODULE")) {
+    		module = v.getAttribute("module");
+    	}
         loadMappings(factory, g);
         factory.createIconList(getUniqueChild(g, ICONS));
         loadGlobalActions(factory, g);
-        loadEntities(factory, g);
+        loadEntities(factory, g, module);
     }
 
-    private static void loadEntities(XModelMetaDataImpl factory, Element element) {
+    private static void loadEntities(XModelMetaDataImpl factory, Element element, String module) {
         Element[] cs = getChildrenElements(element, XMODEL_ENTITY);
-        for (int i = 0; i < cs.length; i++) factory.createEntity(cs[i]);
+        for (int i = 0; i < cs.length; i++) {
+        	factory.createEntity(cs[i], module);
+        }
         cs = getChildrenElements(element, XENTITY_EXTENTION);
         XExtensions extensions = factory.getExtensions();
         for (int i = 0; i < cs.length; i++) extensions.addExtension(cs[i]);

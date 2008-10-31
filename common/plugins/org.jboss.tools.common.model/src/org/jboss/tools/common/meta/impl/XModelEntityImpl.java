@@ -26,6 +26,7 @@ import org.jboss.tools.common.model.util.*;
 
 public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
 	public static boolean hideHelp = true;
+	protected String module;
     protected XChildrenImpl children = new XChildrenImpl();
     protected XAttribute[] m_Attributes;
     protected XActionListImpl actions = new XActionListImpl();
@@ -43,6 +44,14 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     protected Element element = null;
 
     protected XModelEntityImpl() {}
+
+    public void setModule(String s) {
+    	module = s;
+    }
+
+    public String getModule() {
+    	return module;
+    }
 
     void setElement(Element element) {
         this.element = element;

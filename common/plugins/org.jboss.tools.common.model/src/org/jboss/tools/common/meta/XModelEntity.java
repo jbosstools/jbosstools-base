@@ -15,6 +15,9 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
 
 public interface XModelEntity extends XMetaElement, XDependencies {
+
+	public String getModule();
+
     public XAttribute[] getAttributes();
     public XAttribute getAttribute(String name);
     

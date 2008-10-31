@@ -18,6 +18,8 @@ import org.jboss.tools.common.model.icons.*;
 import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.*;
+import org.jboss.tools.common.meta.constraint.XAttributeConstraint;
+import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintAList;
 import org.jboss.tools.common.model.icons.impl.*;
 
 public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
@@ -59,10 +61,48 @@ public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
             XModelEntity[] es = this.entities.values().toArray(new XModelEntity[0]);
             for (int i = 0; i < es.length; i++) ((XModelEntityImpl)es[i]).validate();
 
+//            makeStatistics(es);
 		if(reportLoadingTime) {
     		long dt = - t + (t = System.currentTimeMillis());
 			ModelPlugin.getPluginLog().logInfo("Meta model loaded in " + dt + " ms");
 		}
+    }
+
+    private void makeStatistics(XModelEntity[] es) {
+        Set<String> attNames = new HashSet<String>();
+        Set<String> listValues = new HashSet<String>();
+        Set<String> actionMenuNames = new HashSet<String>();
+        int attrCount = 0;
+        for (int i = 0; i < es.length; i++) {
+        	XAttribute[] as = es[i].getAttributes();
+        	for (int j = 0; j < as.length; j++) {
+        		if(!as[j].isVisible()) continue;
+            	attrCount++;
+        		attNames.add(as[j].getName());
+        		XAttributeConstraint c = as[j].getConstraint();
+        		if(c instanceof XAttributeConstraintAList) {
+        			String[] values = ((XAttributeConstraintAList)c).getValues();
+        			for (int k = 0; k < values.length; k++)
+        				listValues.add(values[k]);
+        		}
+        	}
+        	
+        	XActionList al = es[i].getActionList();
+        	makeActionList(al, actionMenuNames);
+        }
+        System.out.println("------> Attributes=" + attNames.size() + " (total " + attrCount + ")");
+        System.out.println("------> List values=" + listValues.size());
+        System.out.println("------> Action menu names=" + actionMenuNames.size());
+    }
+
+    private void makeActionList(XActionList list,  Set<String> actionMenuNames) {
+    	XActionItem[] is = list.getActionItems();
+    	for (int i = 0; i < is.length; i++) {
+    		actionMenuNames.add(is[i].getName());
+    		if(is[i] instanceof XActionList) {
+    			makeActionList((XActionList)is[i], actionMenuNames);
+    		}
+    	}
     }
 
     public XIconList getIconList() {
@@ -83,8 +123,9 @@ public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
         return extensions;
     }
 
-    public XModelEntity createEntity(Element element) {
+    public XModelEntity createEntity(Element element, String module) {
         XModelEntityImpl entity = new XModelEntityImpl();
+        entity.setModule(module);
         entity.setElement(element);
         entities.put(entity.getName(), entity);
         return entity;
