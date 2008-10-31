@@ -22,6 +22,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.action.XAttributeData;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.*;
 
 public class XAttributePropertyDescription implements IPropertyDescriptorEx, IXModelSupport {
@@ -88,7 +89,8 @@ public class XAttributePropertyDescription implements IPropertyDescriptorEx, IXM
 	}
 
 	public String getDisplayName() {
-		return attribute.getName();
+		String s = WizardKeys.getAttributeDisplayName(attribute);
+		return s != null ? s : attribute.getName();
 	}
 
 	public String[] getFilterFlags() {
