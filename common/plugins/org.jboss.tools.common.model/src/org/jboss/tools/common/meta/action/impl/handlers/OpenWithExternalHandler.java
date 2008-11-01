@@ -14,6 +14,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.util.*;
 import org.jboss.tools.common.meta.action.impl.*;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
@@ -36,12 +37,13 @@ public class OpenWithExternalHandler extends AbstractHandler {
 
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
-        if(!checkSave(action.getDisplayName(), object)) return;
+		String displayName = WizardKeys.getMenuItemDisplayName(action, object == null ? null : object.getModelEntity());
+        if(!checkSave(displayName, object)) return;
         String f = getFileName(object);
         String ext = OpenWithHelper.getLogicalExtension(object, action);
         XModelObject editor = OpenWithHelper.getEditorObject(object.getModel(), ext);
         if(editor == null) throw new RuntimeException("External editor for file extension '" + ext + "' is not set.");
-        start(action.getDisplayName(), f, editor);
+        start(displayName, f, editor);
     }
 
     static boolean checkSave(String actionname, XModelObject object) throws XModelException {

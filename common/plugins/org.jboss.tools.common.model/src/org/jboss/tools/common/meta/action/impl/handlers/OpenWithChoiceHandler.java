@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.action.impl.handlers;
 import java.util.*;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.*;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.model.filesystems.XFileObject;
@@ -28,7 +29,8 @@ public class OpenWithChoiceHandler extends AbstractHandler {
 
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
-        if(!OpenWithExternalHandler.checkSave(action.getDisplayName(), object)) return;
+		String displayName = WizardKeys.getMenuItemDisplayName(action, object == null ? null : object.getModelEntity());
+        if(!OpenWithExternalHandler.checkSave(displayName, object)) return;
         ServiceDialog d = object.getModel().getService();
         String ext = OpenWithHelper.getLogicalExtension(object, action);
         XAttributeData a1 = HUtil.find(data, 0, "name");
@@ -54,7 +56,7 @@ public class OpenWithChoiceHandler extends AbstractHandler {
         }
         XModelObject editor = object.getModel().getByPath(OpenWithHelper.EDITORS + "/" + en);
         String f = OpenWithHelper.getFileName(object);
-        OpenWithExternalHandler.start(action.getDisplayName(), f, editor);
+        OpenWithExternalHandler.start(displayName, f, editor);
     }
 
     protected boolean check(XModelObject object) {

@@ -13,6 +13,8 @@ package org.jboss.tools.common.meta.key;
 import java.util.*;
 
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.XModelEntity;
+import org.jboss.tools.common.meta.action.XActionItem;
 import org.jboss.tools.common.meta.action.XAttributeData;
 
 public class WizardKeys {
@@ -130,6 +132,34 @@ public class WizardKeys {
 			}
 		}
 		return sb.toString();
+	}
+
+	/**
+	 * Display name for menu item generated for meta declaration of action item.
+	 * Several keys are checked in resources, the first found key is used.
+	 * 1) Entity specific: %Entity name%.%Item name%.menu
+	 * 2) Module specific: %Module name%.%Item name%.menu
+	 * 3) Global:          %Item name%.menu
+	 * If no key is found, item.getDisplayName() is returned.
+	 * 
+	 * @param item
+	 * @param entity
+	 * @return
+	 */
+	public static String getMenuItemDisplayName(XActionItem item, XModelEntity entity) {
+		if(entity != null) {
+			String key = entity.getName() + "." + item.getName() + ".menu";
+			String s = keys.getProperty(key);
+			if(s != null) return s;
+			key = entity.getModule() + "." + item.getName() + ".menu";
+			s = keys.getProperty(key);
+			if(s != null) return s;
+		}
+		String key = item.getName() + ".menu";
+		String s = keys.getProperty(key);
+		if(s != null) return s;
+
+		return item.getDisplayName();
 	}
 
 }
