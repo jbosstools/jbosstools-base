@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.jboss.tools.common.meta.action.XAction;
+import org.jboss.tools.common.meta.key.WizardKeys;
 
 /**
  * Converts action description of XModel into Eclipse action.
@@ -30,7 +31,7 @@ public class ActionX extends Action {
 		wrapper = a;
 		this.action = a.action;
 		boolean enabled = (wrapper.targets == null) ? action.isEnabled(wrapper.object) : action.isEnabled(wrapper.object, wrapper.targets);
-		String displayName = action.getDisplayName();
+		String displayName = WizardKeys.getMenuItemDisplayName(action, wrapper.object == null ? null : wrapper.object.getModelEntity());
 
 		String baseName = action.getBaseActionName();
 		if("Copy".equals(baseName)) {

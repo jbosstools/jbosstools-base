@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.actions.OpenWithMenu;
 
 import org.jboss.tools.common.meta.action.*;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -38,7 +39,8 @@ public class XModelObjectActionList extends XModelObjectActionItem {
 			fillMenu(parent);		
 		} else {
 			MenuItem item = new MenuItem(parent, SWT.CASCADE);
-			item.setText(list.getDisplayName());
+			String displayName = WizardKeys.getMenuItemDisplayName(list, object == null ? null : object.getModelEntity());
+			item.setText(displayName);
 			Menu menu = new Menu(item);
 			item.setMenu(menu);
 			fillMenu(menu);
@@ -79,8 +81,9 @@ public class XModelObjectActionList extends XModelObjectActionItem {
 					if (object.getFileType() == XFileObject.FILE && (targets == null || targets.length < 2)) {
 						IResource resource = EclipseResourceUtil.getResource(object);
 						if (resource != null && resource.getType() == IResource.FILE) {
+							String displayName = WizardKeys.getMenuItemDisplayName(l, object == null ? null : object.getModelEntity());
 							MenuItem item = new MenuItem(menu, SWT.CASCADE);
-							item.setText(l.getDisplayName());
+							item.setText(displayName);
 							Menu subMenu = new Menu(item);
 							OpenWithMenu openMenu = new OpenWithMenu(
 							ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage(),
