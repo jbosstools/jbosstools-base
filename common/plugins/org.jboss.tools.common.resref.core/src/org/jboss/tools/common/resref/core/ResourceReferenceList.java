@@ -11,6 +11,9 @@
 package org.jboss.tools.common.resref.core;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
@@ -18,6 +21,10 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.XModelObjectUtil;
 
 public abstract class ResourceReferenceList {
+	
+	//Fix for JBIDE-2979
+	private static final String CODING = "UTF-16";//$NON-NLS-1$
+	
 	ResourceReferenceListListener[] listeners = new ResourceReferenceListListener[0];
 	
 	protected abstract QualifiedName getPropertyName();
@@ -82,16 +89,35 @@ public abstract class ResourceReferenceList {
 		return (ResourceReference[])css.toArray(new ResourceReference[0]);		
 	}
 	
-	private String[] getDeclaredResources(IResource resource) {
+	private  String[] getDeclaredResources(IResource resource) {
 		String s = null;
 		try {
 			s = resource.getPersistentProperty(getPropertyName());
 		} catch (CoreException e) {
 			//ignore
 		}
-		if(s == null || s.length() == 0) return new String[0];
-		return XModelObjectUtil.asStringArray(s);
+		if(s == null || s.length() == 0) {
+			return new String[0];
+		} else  {
+			return decodeResourceString(s);
+		}
 	}
+	//Fix for JBIDE-2979
+	private static String[] decodeResourceString(String resource) {
+		String[] results = XModelObjectUtil.asStringArray(resource);
+		String[] returnValues = new String [results.length]; 
+		try {
+			for (int i=0;i<results.length;i++) {	
+					returnValues[i] = URLDecoder.decode(results[i], CODING);	
+			}
+		} catch (UnsupportedEncodingException e) {
+			ResourceReferencePlugin.getPluginLog().logError(e);
+			//in case of exception we return undecoded values
+			return results;
+		}
+		return returnValues;
+	}
+	
 	
 	public void setAllResources(IFile file, ResourceReference[] entries) {
 		IResource changed = null;
@@ -134,8 +160,14 @@ public abstract class ResourceReferenceList {
 			if(scope < 10 && s != scope) continue;
 			if(scope == 10 && s == ResourceReference.FILE_SCOPE) continue;
 			if(scope == ResourceReference.FOLDER_SCOPE && entries[i].getDepth() != depth) continue;
-			if(sb.length() > 0) sb.append(";");
-			sb.append(entries[i].getLocationAndProperties());
+			if(sb.length() > 0) 
+				sb.append(';');
+			try {
+				sb.append(URLEncoder.encode(entries[i].getLocationAndProperties(),CODING));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return sb.toString();
 	}
@@ -169,7 +201,7 @@ public abstract class ResourceReferenceList {
 		return allExternalResources;
 	}
 	private void parseExternalResources(String s) {
-		StringTokenizer st = new StringTokenizer(s, "#");
+		StringTokenizer st = new StringTokenizer(s, "#"); //$NON-NLS-1$
 		while(st.hasMoreTokens()) {
 			String t = st.nextToken();
 			int e = t.indexOf('=');
@@ -234,7 +266,11 @@ public abstract class ResourceReferenceList {
 
 	private String[] getDeclaredResources(IPath path) {
 		String s = (String)getAllExternalResources().get(path.toString());
-		return (s == null || s.length() == 0) ? new String[0] : XModelObjectUtil.asStringArray(s);
+		if(s == null || s.length() == 0) {
+			return new String[0];
+		}else {
+			return	decodeResourceString(s);
+		}
 	}
 
 	public void setAllResources(IPath path, ResourceReference[] entries) {

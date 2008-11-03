@@ -28,7 +28,7 @@ public final class XModelObjectUtil {
     }
 
     public static String[] asStringArray(String s) {
-        return asStringArray(s, ",;");
+        return asStringArray(s, ",;"); //$NON-NLS-1$
     }
 
     public static String[] asStringArray(String s, String separator) {
