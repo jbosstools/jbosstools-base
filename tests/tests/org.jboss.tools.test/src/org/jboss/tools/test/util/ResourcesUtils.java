@@ -181,12 +181,13 @@ public class ResourcesUtils {
 	 */
 	static public IProject importProjectIntoWorkspace(String path, String projectName) {
 	
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
-				projectName);
+		IProject project = null;
 	
 		try {
-	
-			IOverwriteQuery overwrite = new IOverwriteQuery() {
+			 project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+			 project.create(null);
+			 project.open(null);
+			 IOverwriteQuery overwrite = new IOverwriteQuery() {
 				public String queryOverwrite(String pathString) {
 					return ALL;
 				}
@@ -217,6 +218,9 @@ public class ResourcesUtils {
 //			TePlugin.getDefault().logError(ite.getCause());
 		} catch (InterruptedException ie) {
 //			VPETestPlugin.getDefault().logError(ie);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return project;
 	}
