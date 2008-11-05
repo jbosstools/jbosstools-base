@@ -53,8 +53,8 @@ public class ProjectImportTestSetup extends TestSetup {
 
 	public IProject[] importProjects() throws Exception {
 		IProject[] projects = new IProject[projectPaths.length]; 
+		JobUtils.waitForIdle();
 		for (int i = 0; i < projectPaths.length; i++) {
-			JobUtils.waitForIdle();
 			projects[i] = (IProject)ResourcesUtils.importProject(bundleName, projectPaths[i]);
 			JobUtils.waitForIdle();
 		}

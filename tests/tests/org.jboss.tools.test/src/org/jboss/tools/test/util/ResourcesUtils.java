@@ -187,33 +187,34 @@ public class ResourcesUtils {
 			 project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 			 project.create(null);
 			 project.open(null);
+			 JobUtils.waitForIdle();
+
 			 IOverwriteQuery overwrite = new IOverwriteQuery() {
 				public String queryOverwrite(String pathString) {
 					return ALL;
 				}
 			};
-	
+
 			ImportProvider importProvider = new ImportProvider();
-	
+
 			// need to remove from imported project "svn" files
 			List<String> unimportedFiles = new ArrayList<String>();
 			unimportedFiles.add(".svn"); //$NON-NLS-1$
-	
+
 			importProvider.setUnimportedFiles(unimportedFiles);
-	
+
 			// create import operation
 			ImportOperation importOp = new ImportOperation(project
 					.getFullPath(), new File(path), importProvider, overwrite);
-	
+
 			// import files just to project folder ( without old structure )
 			importOp.setCreateContainerStructure(false);
-	
+
 			importOp.setContext(PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getShell());
-	
 			// run import
 			importOp.run(null);
-	
+
 		} catch (InvocationTargetException ite) {
 //			TePlugin.getDefault().logError(ite.getCause());
 		} catch (InterruptedException ie) {
