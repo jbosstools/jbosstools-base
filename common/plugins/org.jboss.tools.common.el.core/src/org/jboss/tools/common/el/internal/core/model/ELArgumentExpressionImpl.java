@@ -54,7 +54,7 @@ public class ELArgumentExpressionImpl extends ELInvocationExpressionImpl impleme
 	}
 
 	public String getMemberName() {
-		if(argument == null) return null;
+		if(argument == null || argument.getArgument() == null) return null;
 		return argument.getArgument().getText();
 	}
 
