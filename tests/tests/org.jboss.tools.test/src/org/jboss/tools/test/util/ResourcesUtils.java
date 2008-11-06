@@ -214,6 +214,7 @@ public class ResourcesUtils {
 					.getActiveWorkbenchWindow().getShell());
 			// run import
 			importOp.run(null);
+			JobUtils.waitForIdle();
 
 		} catch (InvocationTargetException ite) {
 //			TePlugin.getDefault().logError(ite.getCause());
