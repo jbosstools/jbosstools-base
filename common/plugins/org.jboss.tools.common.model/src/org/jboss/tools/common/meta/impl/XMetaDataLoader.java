@@ -120,7 +120,7 @@ public class XMetaDataLoader implements XMetaDataConstants {
     	String module = "";
     	Element v = XMLUtilities.getUniqueChild(g, "VERSION");
     	if(v != null && v.hasAttribute("MODULE")) {
-    		module = v.getAttribute("module");
+    		module = v.getAttribute("MODULE");
     	}
         loadMappings(factory, g);
         factory.createIconList(getUniqueChild(g, ICONS));
