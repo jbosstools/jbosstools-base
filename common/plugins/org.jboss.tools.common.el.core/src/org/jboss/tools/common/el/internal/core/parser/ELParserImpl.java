@@ -273,7 +273,10 @@ public class ELParserImpl {
 		ELArgumentImpl arg = new ELArgumentImpl();
 		arg.setFirstToken(current);
 		arg.setLastToken(current);
-		if(!hasNextToken()) return arg;
+		if(!hasNextToken()) {
+			setNextToken();
+			return arg;
+		}
 		setNextToken();
 		ELExpressionImpl expr = readExpression();
 		if(expr != null) {
