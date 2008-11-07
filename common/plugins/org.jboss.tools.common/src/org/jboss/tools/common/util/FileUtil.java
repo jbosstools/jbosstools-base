@@ -41,17 +41,43 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.common.CommonPlugin;
 
 public final class FileUtil {
 
     public FileUtil() {}
 
+    public static String getEncoding(IFile f) {
+    	String encoding = null;
+    	if(f != null && f.exists() && f.isSynchronized(0)) try {
+    		encoding = f.getCharset();
+    	} catch (CoreException e) {
+    		CommonPlugin.getPluginLog().logError(e);
+    	}
+    	return encoding != null ? encoding : "8859_1";
+    }
+
     public static String readFile(File f) {
         if(!f.isFile()) return "";
     	ReadBytes bs = readBytes(f);
     	if(bs == null) return "";
         String encoding = getEncoding(bs.bs);
+        if(encoding == null) return new String(bs.bs, 0, bs.length);
+        try {
+        	return new String(bs.bs, 0, bs.length, encoding);
+        } catch (UnsupportedEncodingException e) {
+        	return new String(bs.bs, 0, bs.length);
+        }
+    }
+
+    public static String readFileWithEncodingCheck(File f, String defaultEncoding) {
+        if(!f.isFile()) return "";
+    	ReadBytes bs = readBytes(f);
+    	if(bs == null) return "";
+        String encoding = getEncoding(bs.bs);
+        if(encoding == null) encoding = validateEncoding(defaultEncoding, null);
         if(encoding == null) return new String(bs.bs, 0, bs.length);
         try {
         	return new String(bs.bs, 0, bs.length, encoding);
@@ -158,8 +184,13 @@ public final class FileUtil {
     }
 
     public static boolean writeFile(File f, String value) {
+    	return writeFileWithEncodingCheck(f, value, null);
+    }
+
+    public static boolean writeFileWithEncodingCheck(File f, String value, String defaultEncoding) {
     	if(value == null) return false;
     	String encoding = getEncoding(value);
+    	if(encoding == null) encoding = validateEncoding(defaultEncoding, null);
     	if(value.startsWith("<?xml")) {
     		String s = validateEncoding(encoding, "UTF-8");
     		if(encoding == null) {
@@ -610,7 +641,7 @@ public final class FileUtil {
     	if(validEncodings.contains(encoding)) return encoding;
     	if(invalidEncodings.contains(encoding)) return defaultEncoding;
     	try {
-    		if(defaultEncoding.equals("UTF-16")) {
+    		if(defaultEncoding != null && defaultEncoding.equals("UTF-16")) {
     			new String(XML_16, 0, XML_16.length, encoding);
     		} else {
     			new String(XML_8, 0, XML_8.length, encoding);
