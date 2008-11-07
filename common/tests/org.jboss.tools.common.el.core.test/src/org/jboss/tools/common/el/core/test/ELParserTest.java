@@ -13,6 +13,7 @@ package org.jboss.tools.common.el.core.test;
 import java.util.List;
 import java.util.Random;
 
+import org.jboss.tools.common.el.core.model.ELInstance;
 import org.jboss.tools.common.el.core.model.ELModel;
 import org.jboss.tools.common.el.core.parser.ELParser;
 import org.jboss.tools.common.el.core.parser.ELParserFactory;
@@ -57,6 +58,18 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t, "#{a.b(7 + 8) * (4 / 2 - 1)/c.d}");
 		//10. Complex expressions
 		checkCorrectEL(t, "#{a.b(7 + 8) * (4 / 2 - 1)/c.d}");		
+	}
+
+	/**
+	 * JBIDE-3132 An OutOfMemory exception is thrown by Code assist for "#{messages[ "
+	 */
+	public void testJBIDE3132() {
+		ELParser parser = ELParserUtil.getJbossFactory().createParser();
+		String el = "#{messages[";
+		ELModel model = parser.parse(el);
+		List<ELInstance> is = model.getInstances();
+		assertEquals(1, is.size());
+		assertEquals(el, is.get(0).getText());
 	}
 
 	public void testElEmptyOperator() {
