@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -39,6 +40,7 @@ import org.jboss.tools.common.model.impl.RegularObjectImpl;
 import org.jboss.tools.common.model.impl.XModelImpl;
 import org.jboss.tools.common.model.loaders.Reloadable;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
+import org.jboss.tools.common.model.loaders.impl.PropertiesLoader;
 import org.jboss.tools.common.model.util.Paths;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 import org.jboss.tools.common.util.FileUtil;
@@ -208,6 +210,10 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             if(loader != null) {
                 if(body == null) body = bs.get();
                 XModelObjectLoaderUtil.setTempBody(c, body);
+                	if("FilePROPERTIES".equals(entity) && bs instanceof EclipseFileBodySource) {
+                		String encoding = FileUtil.getEncoding(((EclipseFileBodySource)bs).ef);
+                		if(encoding != null) c.set("_encoding_", encoding);
+                	}
                 loader.load(c);
             } else if(c.getModelEntity().getAttribute("_file") != null) {
                 c.set("_file", f.getAbsolutePath());
@@ -461,7 +467,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         	}
             ((FolderImpl)o).update();
         } else {
-            if(!registerFileInPeer(peer, f)) {
+            if(!registerFileInPeer(peer, f) && !isEncodingChanged(o)) {
             	if(!f.getName().equals(FileAnyImpl.toFileName(o))) {
             		String n = f.getName();
             		int i = n.lastIndexOf(".");
@@ -492,7 +498,25 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             }
         }
     }
-    
+
+    private boolean isEncodingChanged(XModelObject o) {
+    	if(o != null && o.getModelEntity().getName().equals("FilePROPERTIES")) {
+    		String encoding = o.getAttributeValue("encoding");
+    		if(encoding == null) {
+    			return false;
+    		}
+    		String newEncoding = PropertiesLoader.getEncoding(o);
+    		if(newEncoding == null) {
+    			newEncoding = "8859_1";
+    		}
+
+    		if(!encoding.equals(newEncoding)) {
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
     private int question(File f) {
     	if(Display.getCurrent() == null) return -100;
 		return getModel().getService().showDialog("Update",
@@ -538,6 +562,10 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             XObjectLoader loader = XModelObjectLoaderUtil.getObjectLoader(o);
             if(loader != null) {
                 XModelObjectLoaderUtil.setTempBody(o, bs.get());
+            	if("FilePROPERTIES".equals(o.getModelEntity().getName()) && bs instanceof EclipseFileBodySource) {
+            		String encoding = FileUtil.getEncoding(((EclipseFileBodySource)bs).ef);
+            		if(encoding != null) o.setAttributeValue("encoding", encoding);
+            	}
                 loader.update(o);
             } else if(o instanceof Reloadable) {
                 ((Reloadable)o).reload();
@@ -980,20 +1008,21 @@ class FileBodySource implements BodySource {
     }
 
     public String get() {
-        return XModelObjectLoaderUtil.readFile(f);
+    	String encoding = ResourcesPlugin.getEncoding();
+		return FileUtil.readFileWithEncodingCheck(f, encoding);
     }
 
     public boolean write(Object object) {
         if(!(object instanceof XModelObject)) return false;
         XModelObject o = (XModelObject)object;
-        return XModelObjectLoaderUtil.saveBody(f, o);
+        return XModelObjectLoaderUtil.saveBody(f, o, ResourcesPlugin.getEncoding());
     }
 
 }
 
 class EclipseFileBodySource implements BodySource {
-	private IFile ef = null;
-	private File f;
+	IFile ef = null;
+	File f;
 
 	public EclipseFileBodySource(IFile ef, File f) {
 		this.ef = ef;
@@ -1001,14 +1030,28 @@ class EclipseFileBodySource implements BodySource {
 	}
 
 	public String get() {
-			return XModelObjectLoaderUtil.readFile(f);
+		String encoding = null;
+			if(ef != null && ef.exists()) {
+				encoding = FileUtil.getEncoding(ef);
+			}
+			if(encoding == null) {
+				encoding = ResourcesPlugin.getEncoding();
+			}
+		return FileUtil.readFileWithEncodingCheck(f, encoding);
 	}
 
 	public boolean write(Object object) {
 		if(!(object instanceof XModelObject)) return false;
 		XModelObject o = (XModelObject)object;
 		try {
-			XModelObjectLoaderUtil.saveBody(f, o);
+			String encoding = null;
+			if(ef != null && ef.exists()) {
+				encoding = FileUtil.getEncoding(ef);
+			}
+			if(encoding == null) {
+				encoding = ResourcesPlugin.getEncoding();
+			}
+			XModelObjectLoaderUtil.saveBody(f, o, encoding);
 			/*
 			String r = XModelObjectLoaderUtil.getTempBody(o);
 			ByteArrayInputStream is = new ByteArrayInputStream(r.getBytes());

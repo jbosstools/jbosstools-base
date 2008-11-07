@@ -11,15 +11,21 @@
 package org.jboss.tools.common.model.loaders.impl;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
+
+import org.eclipse.core.internal.resources.Workspace;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 import org.jboss.tools.common.model.impl.*;
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.util.FileUtil;
 
 public class PropertiesLoader implements XObjectLoader {
 	static String INTERNAL_SEPARATOR = "@";
@@ -27,17 +33,32 @@ public class PropertiesLoader implements XObjectLoader {
 
     public PropertiesLoader() {}
 
+    public static String getEncoding(XModelObject object) {
+    	if(!object.isActive()) {
+    		String encoding = object.get("_encoding_");
+    		return encoding != null && encoding.length() > 0 ? encoding : "8859_1";
+    	}
+    	IResource resource = (IResource)object.getAdapter(IResource.class);
+    	if(!(resource instanceof IFile)) return null;
+    	IFile f = (IFile)resource;
+    	return FileUtil.getEncoding(f);
+    }
+
     public void load(XModelObject object) {
+        String encoding = getEncoding(object);
+
+        object.setAttributeValue("encoding", encoding);
         String body = XModelObjectLoaderUtil.getTempBody(object);
-        Properties properties = new Properties();
+        Properties_ properties = new Properties_();
+        properties.setEncoding(encoding);
         Properties mapping = new Properties();
         try {
-        	ByteArrayInputStream s = new ByteArrayInputStream(body.getBytes());
+        	ByteArrayInputStream s = new ByteArrayInputStream(body.getBytes(encoding));
 			properties.load(s);
 			Iterator it = properties.keySet().iterator();
 			while(it.hasNext()) {
 				String nm = it.next().toString();
-				String sn = convertName(nm);
+				String sn = Properties_.saveConvert(nm, true); // convertName(nm);
 				mapping.put(sn, nm);
 			}
         } catch (IOException e) {
@@ -123,7 +144,9 @@ public class PropertiesLoader implements XObjectLoader {
     }
 
     public boolean update(XModelObject object) throws XModelException {
+    	String encoding = getEncoding(object);
         XModelObject c = object.copy(0);
+        if(encoding != null) c.set("_encoding_", encoding);
 		XModelObjectLoaderUtil.setTempBody(c, XModelObjectLoaderUtil.getTempBody(object));
         load(c);
         ////EnginesLoader.merge(object, c, false);
@@ -159,11 +182,11 @@ public class PropertiesLoader implements XObjectLoader {
 			appendComments(sb, cs[i].get("COMMENTS"), cs[i].get("SEPARATOR"), lineSeparator);
 			if("no".equals(cs[i].get("ENABLED"))) sb.append('#');
 			String dirtyname = cs[i].getAttributeValue("dirtyname");
-			String name = convertName(cs[i].get("NAME"));
+			String name = Properties_.saveConvert(cs[i].get("NAME"), true); // convertName(cs[i].get("NAME"));
 			String value = cs[i].get("VALUE");
 			String dirtyvalue = cs[i].getAttributeValue("dirtyvalue");
 			if(value == null || dirtyvalue == null || !value.equals(dirtyvalue.trim())) {
-				value = convertValue(value);
+				value = Properties_.saveConvert(value, false); // convertValue(value);
 			}
 			String resolved = resolveValue(value, dirtyvalue);
 			//preserve one white space after separator
@@ -274,40 +297,6 @@ public class PropertiesLoader implements XObjectLoader {
 		if(ch || mod) o1.setModified(true);
     }
     
-    private String convertName(String n) {
-    	Properties p = new Properties();
-    	p.setProperty(n, "value");
-    	ByteArrayOutputStream os = new ByteArrayOutputStream();
-    	try {
-    		p.store(os, null);
-    	} catch (IOException e) {
-    		ModelPlugin.getPluginLog().logError(e);
-    	}
-    	String q = os.toString();
-    	int i = q.indexOf("=value");
-    	q = q.substring(0, i);
-    	i = q.lastIndexOf('\n');
-    	if(i >= 0) q = q.substring(i + 1);
-    	return q.trim();
-    }
-    
-    private String convertValue(String v) {
-    	Properties p = new Properties();
-    	p.setProperty("name", v);
-    	ByteArrayOutputStream os = new ByteArrayOutputStream();
-    	try {
-    		p.store(os, null);
-    	} catch (IOException e) {
-    		ModelPlugin.getPluginLog().logError(e);
-    	}
-    	String q = os.toString();
-    	int i = q.indexOf("name=");
-    	q = q.substring(i + 5);
-    	while(q.endsWith("\n")) q = q.substring(0, q.length() - 1);
-    	while(q.endsWith("\r")) q = q.substring(0, q.length() - 1);
-    	return q;
-    }
-
 	private static int getSeparatorIndex(String s) {
 		String tr = s.trim();
 		if(tr.length() == 0 || tr.charAt(0) == '#' || tr.charAt(0) == '!') return -1;

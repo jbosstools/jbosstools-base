@@ -677,7 +677,7 @@ public class XModelObjectLoaderUtil {
         return true;
     }
 
-    public static boolean saveBody(File f, XModelObject o) {
+    public static boolean saveBody(File f, XModelObject o, String defaultEncoding) {
         boolean same = FileUtil.isSameFile(f);
         if(same && !o.isModified()) return true;
         String r = getTempBody(o);
@@ -685,7 +685,7 @@ public class XModelObjectLoaderUtil {
         int i = (c) ? 0 : handleReadOnly(f, o);
         if(i != 0) return (i == 1);
         if(!c) {
-       		if(!writeFile(f, r)) return false;
+       		if(!FileUtil.writeFileWithEncodingCheck(f, r, defaultEncoding)) return false;
         }
         o.setModified(false);
         return true;

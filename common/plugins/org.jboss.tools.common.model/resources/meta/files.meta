@@ -291,6 +291,7 @@
     visibility="false" xmlname="EXTENSION">
     <Editor name="Uneditable"/>
    </XModelAttribute>
+   <XModelAttribute name="encoding"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem HandlerClassName="%Open%" ICON="main.file.java_file"
