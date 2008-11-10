@@ -49,7 +49,7 @@ public class PropertiesLoader implements XObjectLoader {
 
         object.setAttributeValue("encoding", encoding);
         String body = XModelObjectLoaderUtil.getTempBody(object);
-        Properties_ properties = new Properties_();
+        EncodedProperties properties = new EncodedProperties();
         properties.setEncoding(encoding);
         Properties mapping = new Properties();
         try {
@@ -58,7 +58,7 @@ public class PropertiesLoader implements XObjectLoader {
 			Iterator it = properties.keySet().iterator();
 			while(it.hasNext()) {
 				String nm = it.next().toString();
-				String sn = Properties_.saveConvert(nm, true); // convertName(nm);
+				String sn = EncodedProperties.saveConvert(nm, true); // convertName(nm);
 				mapping.put(sn, nm);
 			}
         } catch (IOException e) {
@@ -182,11 +182,11 @@ public class PropertiesLoader implements XObjectLoader {
 			appendComments(sb, cs[i].get("COMMENTS"), cs[i].get("SEPARATOR"), lineSeparator);
 			if("no".equals(cs[i].get("ENABLED"))) sb.append('#');
 			String dirtyname = cs[i].getAttributeValue("dirtyname");
-			String name = Properties_.saveConvert(cs[i].get("NAME"), true); // convertName(cs[i].get("NAME"));
+			String name = EncodedProperties.saveConvert(cs[i].get("NAME"), true); // convertName(cs[i].get("NAME"));
 			String value = cs[i].get("VALUE");
 			String dirtyvalue = cs[i].getAttributeValue("dirtyvalue");
 			if(value == null || dirtyvalue == null || !value.equals(dirtyvalue.trim())) {
-				value = Properties_.saveConvert(value, false); // convertValue(value);
+				value = EncodedProperties.saveConvert(value, false); // convertValue(value);
 			}
 			String resolved = resolveValue(value, dirtyvalue);
 			//preserve one white space after separator

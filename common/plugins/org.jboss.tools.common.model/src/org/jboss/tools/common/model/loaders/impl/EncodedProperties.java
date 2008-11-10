@@ -12,7 +12,7 @@ import java.util.Properties;
 
 import org.jboss.tools.common.CommonPlugin;
 
-public class Properties_ extends Properties {
+public class EncodedProperties extends Properties {
      private static final long serialVersionUID = 4112578634029123456L;
 
     /**
@@ -23,7 +23,7 @@ public class Properties_ extends Properties {
     /**
      * Creates an empty property list with no default values.
      */
-    public Properties_() {
+    public EncodedProperties() {
     	this(null);
     }
 
@@ -32,7 +32,7 @@ public class Properties_ extends Properties {
      *
      * @param   defaults   the defaults.
      */
-    public Properties_(Properties_ defaults) {
+    public EncodedProperties(EncodedProperties defaults) {
     	super(defaults);
     }
 
@@ -393,7 +393,7 @@ public class Properties_ extends Properties {
 
     public static void main(String[] args) {
     	String ps = "p1:v1 \\\n  hh \\\n gg\n\np2=v2\\u0034\\u0055";
-    	Properties_ p = new Properties_();
+    	EncodedProperties p = new EncodedProperties();
     	ByteArrayInputStream s = new ByteArrayInputStream(ps.getBytes());
     	try {
     		p.load(s);
