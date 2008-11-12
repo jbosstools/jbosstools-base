@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute.adapter;
 
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
@@ -18,6 +19,7 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.ILabelProvider;
 
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.key.WizardKeys;
 
 public class DefaultComboBoxValueAdapter extends DefaultValueAdapter {
 	protected ILabelProvider labelProvider;
@@ -51,7 +53,7 @@ public class DefaultComboBoxValueAdapter extends DefaultValueAdapter {
 		if (adapter == IAttributeErrorProvider.class) return this;
 		if (adapter == ILabelProvider.class) {
 			if (this.labelProvider==null) {
-				this.labelProvider = new DefaultXModelObjectLabelProvider();
+				this.labelProvider = new KeyLabelProvider();
 			}
 			return this.labelProvider;
 		}
@@ -68,5 +70,21 @@ public class DefaultComboBoxValueAdapter extends DefaultValueAdapter {
 	public void setListContentProvider(IListContentProvider listContentProvider)
 	{
 		this.listContentProvider = listContentProvider;
+	}
+
+	class KeyLabelProvider extends DefaultXModelObjectLabelProvider {
+
+		public String getText(Object element) {
+			if(element != null && !(element instanceof XModelObject)) {
+				XAttribute a = attribute;
+				if(a == null && attributeData != null) a = attributeData.getAttribute();
+				if(a != null) {
+					String v = element.toString();
+					return WizardKeys.getVisualListValue(a, v);
+				}
+			}
+			return super.getText(element);
+		}
+
 	}
 }

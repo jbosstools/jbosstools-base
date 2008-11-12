@@ -15,8 +15,16 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.bindings.keys.KeyStroke;
+import org.eclipse.jface.bindings.keys.ParseException;
+import org.eclipse.jface.fieldassist.ComboContentAdapter;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
+import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
@@ -237,6 +245,34 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			if(textLimit > 0){//Only set limits above 0 - see SWT spec
 				comboField.setTextLimit(textLimit);
 			}
+			
+			String[] ts = getTags();			
+			Set<String> set = new TreeSet<String>();
+			for (int i = 0; i < ts.length; i++) set.add(ts[i]);
+			if(elements != null) for (int i = 0; i < elements.length; i++) {
+				set.add(elements[i].toString());
+			}
+			
+			
+			SimpleContentProposalProvider cpp = new SimpleContentProposalProvider(set.toArray(new String[0]));
+			KeyStroke ks = null;
+			
+			try {
+				ks = KeyStroke.getInstance("Ctrl+Space");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			ContentProposalAdapter adapter = new ContentProposalAdapter(
+				comboField,
+				new ComboContentAdapter(),
+					cpp,
+					ks,
+					null
+			);
+			adapter.setPropagateKeys(true);
+			adapter
+					.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
 		} else {
 			checkParent(comboField, parent);
 		}
