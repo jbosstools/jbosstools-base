@@ -118,7 +118,11 @@ public class XModelObjectEditor {
 		public String getValueAt(int r, int c) {
 			if(c == 0) {
 				String labelText = WizardKeys.getAttributeDisplayName(attributes[r], true);
-				labelText = (labelText == null) ? attributes[r].getName() : labelText.toLowerCase();
+				if(labelText == null) {
+					labelText = attributes[r].getName();
+				}
+//use visual name as everywhere
+//				labelText = (labelText == null) ? attributes[r].getName() : labelText.toLowerCase();
 				return labelText;
 
 			}
