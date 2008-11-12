@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.util;
 
+import java.util.Properties;
+
+import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.impl.*;
@@ -31,6 +34,14 @@ public class XModelUtil {
     	if(fss == null) return DEFAULT_MODEL_VERSION;
 		String modelVersionStr = fss.getAttributeValue(XModelConstants.MODEL_VERSION);
 		return (modelVersionStr == null || "".equals(modelVersionStr)) ? DEFAULT_MODEL_VERSION : modelVersionStr;
+	}
+	
+	public static void openProperyDialog(XModelObject object){
+		XActionInvoker.invoke("Properties/Properties", object, new Properties());
+	}
+	
+	public static void openEditor(XModelObject object){
+		XActionInvoker.invoke("Edit", object, null);
 	}
 }
 
