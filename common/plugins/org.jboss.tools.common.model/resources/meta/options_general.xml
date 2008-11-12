@@ -1698,518 +1698,501 @@
 		<PageTabHTML DESCRIPTION="" EDITOR_TYPE="" HIDDEN="no"
 			NAME="JBoss" NATURE_TYPE="" SCOPE="project" TABTYPE="HTML"
 			model-entity="SharablePageTabHTML">
-   <GroupHTML HIDDEN="no" ICON="" NAME="Ajax4Jsf" PREFIX="a4j"
-    SCOPE="project" URI="http://richfaces.org/a4j" add_taglib="true"
-    library-version="" model-entity="SharableGroupHTML">
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, eventsQueue, focus, id, ignoreDupResponses, immediate, limitToList, name, onbeforedomupdate, oncomplete, process, reRender, rendered, requestDelay, status, timeout&lt;/code>"
-     ENDTEXT="&lt;/jsFunction>" ICON="" NAME="jsFunction" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;jsFunction>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:log&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:log&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, dir, height, hotkey, id, lang, level, name, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, popup, rendered, style, styleClass, title, width&lt;/code>"
-     ENDTEXT="&lt;/log>" ICON="" NAME="log" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;log>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:repeat&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:repeat&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, binding, componentState, first, id, rendered, rowKeyConverter, rowKeyVar, rows, stateVar, value, var&lt;/code>"
-     ENDTEXT="&lt;/repeat>" ICON="%Icons%/JBoss RichFaces/repeat"
-     NAME="repeat" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;repeat>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:form&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:form&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accept, acceptCharset, ajaxSingle, ajaxSubmit, binding, bypassUpdates, data, enctype, eventsQueue, focus, id, ignoreDupResponses, limitToList, onbeforedomupdate, oncomplete, onreset, onsubmit, prependId, process, reRender, rendered, requestDelay, status, target, timeout&lt;/code>"
-     ENDTEXT="&lt;/form>" ICON="%Icons%/Struts HTML/form" NAME="form"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;form>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:mediaOutput&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:mediaOutput&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, align, archive, binding, border, cacheable, charset, classid, codebase, codetype, converter, coords, createContent, createContentExpression, declare, dir, element, expires, hreflang, hspace, id, ismap, lang, lastModified, mimeType, onblur, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rel, rendered, rev, session, shape, standby, style, styleClass, tabindex, target, title, type, uriAttribute, usemap, value, vspace&lt;/code>"
-     ENDTEXT="&lt;/mediaOutput>" ICON="" NAME="mediaOutput"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;mediaOutput>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:loadBundle&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:loadBundle&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>basename, binding, id, rendered, var&lt;/code>"
-     ENDTEXT="&lt;/loadBundle>" ICON="" NAME="loadBundle" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;loadBundle>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:region&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:region&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxListener, binding, id, immediate, renderRegionOnly, rendered, selfRendered&lt;/code>"
-     ENDTEXT="&lt;/region>" ICON="" NAME="region" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;region>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:outputPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:outputPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxRendered, binding, dir, id, keepTransient, lang, layout, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass, title&lt;/code>"
-     ENDTEXT="&lt;/outputPanel>" ICON="" NAME="outputPanel"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;outputPanel>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:include&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:include&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxRendered, binding, dir, id, keepTransient, lang, layout, rendered, style, styleClass, title, viewId&lt;/code>"
-     ENDTEXT="&lt;/include>" ICON="" NAME="include" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;include>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:status&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:status&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, dir, for, forceId, id, lang, layout, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onstart, onstop, rendered, startStyle, startStyleClass, startText, stopStyle, stopStyleClass, stopText, style, styleClass, title&lt;/code>"
-     ENDTEXT="&lt;/status>" ICON="" NAME="status" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;status>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:htmlCommandLink&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:htmlCommandLink&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, action, actionListener, binding, charset, coords, dir, disabled, hreflang, id, immediate, lang, onblur, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rel, rendered, rev, shape, style, styleClass, tabindex, target, title, type, value&lt;/code>"
-     ENDTEXT="&lt;/htmlCommandLink>" ICON="%Icons%/Struts HTML/link"
-     NAME="htmlCommandLink" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;htmlCommandLink>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;%@ taglib uri=&quot;http://richfaces.org/a4j&quot; prefix=&quot;a4j&quot; %&amp;gt;&lt;/code>"
-     ENDTEXT="" ICON="%Icons%/Struts Common/taglib"
-     NAME="JBoss Ajax4jsf taglib" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;%@ taglib uri=&quot;http://richfaces.org/a4j&quot; prefix=&quot;a4j&quot; %>\\n|"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:push&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:push&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, enabled, eventProducer, eventsQueue, focus, id, ignoreDupResponses, immediate, interval, limitToList, onbeforedomupdate, oncomplete, process, reRender, rendered, status, timeout&lt;/code>"
-     ENDTEXT="&lt;/push>" ICON="" NAME="push" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;push>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:commandLink&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:commandLink&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, action, actionListener, ajaxSingle, binding, bypassUpdates, charset, coords, data, dir, disabled, eventsQueue, focus, hreflang, id, ignoreDupResponses, immediate, lang, limitToList, onbeforedomupdate, onblur, onclick, oncomplete, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, process, reRender, rel, rendered, requestDelay, rev, shape, status, style, styleClass, tabindex, target, timeout, title, type, value&lt;/code>"
-     ENDTEXT="&lt;/commandLink>" ICON="%Icons%/Struts HTML/link"
-     NAME="commandLink" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;commandLink>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:page&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:page&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxListener, binding, contentType, dir, format, id, immediate, lang, namespace, onload, onunload, pageTitle, rendered, selfRendered, style, styleClass, title&lt;/code>"
-     ENDTEXT="&lt;/page>" ICON="" NAME="page" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;page>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:actionparam&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:actionparam&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, assignTo, binding, converter, id, name, noEscape, value&lt;/code>"
-     ENDTEXT="&lt;/actionparam>" ICON="" NAME="actionparam"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;actionparam>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:portlet&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:portlet&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered&lt;/code>"
-     ENDTEXT="&lt;/portlet>" ICON="" NAME="portlet" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;portlet>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:loadScript&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:loadScript&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered, &lt;/code>"
-     ENDTEXT="&lt;/loadScript>" ICON="" NAME="loadScript" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;loadScript>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:keepAlive&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:keepAlive&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxOnly, &lt;/code>"
-     ENDTEXT="&lt;/keepAlive>" ICON="" NAME="keepAlive" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;keepAlive>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:loadStyle&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:loadStyle&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, media, rendered, &lt;/code>"
-     ENDTEXT="&lt;/loadStyle>" ICON="" NAME="loadStyle" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;loadStyle>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:commandButton&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:commandButton&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, action, actionListener, ajaxSingle, alt, binding, bypassUpdates, data, dir, disabled, eventsQueue, focus, id, ignoreDupResponses, image, immediate, lang, limitToList, onbeforedomupdate, onblur, onchange, onclick, oncomplete, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, process, reRender, rendered, requestDelay, size, status, style, styleClass, tabindex, timeout, title, type, value&lt;/code>"
-     ENDTEXT="&lt;/commandButton>" ICON="%Icons%/Struts HTML/button"
-     NAME="commandButton" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;commandButton>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:poll&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:poll&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, enabled, eventsQueue, focus, id, ignoreDupResponses, immediate, interval, limitToList, onbeforedomupdate, oncomplete, onsubmit, process, reRender, rendered, status, timeout&lt;/code>"
-     ENDTEXT="&lt;/poll>" ICON="" NAME="poll" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;poll>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:ajaxListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:ajaxListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;/code>"
-     ENDTEXT="&lt;/ajaxListener>" ICON="" NAME="ajaxListener"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;ajaxListener>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:support&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:support&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, disableDefault, disabled, event, eventsQueue, focus, id, ignoreDupResponses, immediate, limitToList, onbeforedomupdate, oncomplete, onsubmit, process, reRender, rendered, requestDelay, status, timeout&lt;/code>"
-     ENDTEXT="&lt;/support>" ICON="" NAME="support" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;support>" large-icon="" model-entity="SharableMacroHTML"/>
-   </GroupHTML>
-   <GroupHTML HIDDEN="no" ICON="" NAME="RichFaces" PREFIX="rich"
-    SCOPE="project" URI="http://richfaces.org/rich" add_taglib="true"
-    library-version="" model-entity="SharableGroupHTML">
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:hotKey&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:hotKey&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, checkParent, disableInInput, disableInInputTypes, handler, id, key, rendered, selector, timing, type&lt;/code>"
-     ENDTEXT="&lt;/hotKey>" ICON="" NAME="hotKey" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;hotKey>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tree&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tree&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptCursors, acceptedTypes, adviseNodeOpened, adviseNodeSelected, ajaxSingle, ajaxSubmitSelection, binding, bypassUpdates, changeExpandListener, componentState, cursorTypeMapping, data, dragIndicator, dragListener, dragType, dragValue, dropListener, dropValue, eventsQueue, focus, grabCursors, grabbingCursors, highlightedClass, icon, iconCollapsed, iconExpanded, iconLeaf, id, ignoreDupResponses, immediate, limitToList, nodeFace, nodeSelectListener, onbeforedomupdate, onclick, oncollapse, oncomplete, ondblclick, ondragend, ondragenter, ondragexit, ondragstart, ondrop, ondropend, ondropout, ondropover, onexpand, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselected, preserveDataInRequest, preserveModel, process, reRender, rejectCursors, rendered, requestDelay, rowKeyVar, selectedClass, showConnectingLines, stateAdvisor, stateVar, status, style, styleClass, switchType, timeout, toggleOnClick, treeNodeVar, typeMapping, value, var&lt;/code>"
-     ENDTEXT="&lt;/tree>" ICON="%Icons%/JBoss RichFaces/tree"
-     NAME="tree" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;tree>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:scrollableDataTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:scrollableDataTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>activeClass, activeRowKey, ajaxKeys, binding, bypassUpdates, columnClasses, componentState, data, eventsQueue, first, footerClass, frozenColCount, headerClass, height, hideWhenScrolling, id, ignoreDupResponses, onRowClick, onRowDblClick, onRowMouseDown, onRowMouseUp, onselectionchange, process, reRender, rendered, requestDelay, rowClasses, rowKeyConverter, rowKeyVar, rows, scriptVar, selectedClass, selection, sortMode, sortOrder, stateVar, status, style, styleClass, timeout, value, var, width&lt;/code>"
-     ENDTEXT="&lt;/scrollableDataTable>"
-     ICON="%Icons%/JBoss RichFaces/scrollableDataTable"
-     NAME="scrollableDataTable" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;scrollableDataTable>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toggleControl&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toggleControl&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, action, actionListener, ajaxSingle, binding, bypassUpdates, data, dir, eventsQueue, focus, for, id, ignoreDupResponses, immediate, lang, limitToList, onbeforedomupdate, onblur, onclick, oncomplete, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, panelId, process, rendered, requestDelay, status, style, styleClass, switchToState, tabindex, timeout, title, value&lt;/code>"
-     ENDTEXT="&lt;/toggleControl>" ICON="" NAME="toggleControl"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;toggleControl>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:suggestionbox&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:suggestionbox&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxSingle, bgcolor, binding, border, bypassUpdates, cellpadding, cellspacing, dir, entryClass, eventsQueue, fetchValue, first, for, frame, frequency, id, ignoreDupResponses, immediate, lang, limitToList, minChars, nothingLabel, onbeforedomupdate, oncomplete, onobjectchange, onselect, onsubmit, param, popupClass, popupStyle, process, reRender, rendered, requestDelay, rowClasses, rules, selectValueClass, selectedClass, selfRendered, shadowDepth, shadowOpacity, status, style, styleClass, suggestionAction, summary, timeout, title, tokens, usingSuggestObjects, var, zindex, &lt;/code>"
-     ENDTEXT="&lt;/suggestionbox>"
-     ICON="%Icons%/JBoss RichFaces/suggestionBox" NAME="suggestionbox"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;suggestionbox>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:columns&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:columns&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>begin, breakBefore, colspan, columns, comparator, dir, end, filterBy, filterEvent, filterExpression, filterMethod, filterValue, footerClass, headerClass, id, index, label, lang, rendered, rowspan, selfSorted, sortBy, sortExpression, sortIcon, sortIconAscending, sortIconDescending, sortOrder, sortable, style, styleClass, title, value, var, visible, width&lt;/code>"
-     ENDTEXT="&lt;/columns>" ICON="" NAME="columns" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;columns>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:calendar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:calendar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxSingle, binding, boundaryDatesMode, buttonClass, buttonIcon, buttonIconDisabled, buttonLabel, bypassUpdates, cellHeight, cellWidth, converter, converterMessage, currentDate, currentDateChangeListener, dataModel, datePattern, dayStyleClass, defaultTime, direction, disabled, enableManualInput, eventsQueue, firstWeekDay, focus, horizontalOffset, id, ignoreDupResponses, immediate, inputClass, inputSize, inputStyle, isDayEnabled, jointPoint, label, limitToList, locale, minDaysInFirstWeek, mode, monthLabels, monthLabelsShort, onbeforedomupdate, onchanged, oncollapse, oncomplete, oncurrentdateselect, oncurrentdateselected, ondatemouseout, ondatemouseover, ondateselect, ondateselected, onexpand, oninputblur, oninputchange, oninputclick, oninputfocus, oninputkeydown, oninputkeypress, oninputkeyup, oninputselect, ontimeselect, ontimeselected, popup, preloadDateRangeBegin, preloadDateRangeEnd, process, reRender, rendered, requestDelay, required, requiredMessage, resetTimeOnDateSelect, showApplyButton, showFooter, showHeader, showInput, showWeekDaysBar, showWeeksBar, status, style, styleClass, timeZone, timeout, todayControlMode, toolTipMode, validator, validatorMessage, value, valueChangeListener, verticalOffset, weekDayLabels, weekDayLabelsShort, zindex&lt;/code>"
-     ENDTEXT="&lt;/calendar>" ICON="%Icons%/JBoss RichFaces/Calendar"
-     NAME="calendar" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;calendar>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:componentControl&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:componentControl&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>attachTiming, attachTo, binding, disableDefault, event, for, id, name, operation, params, rendered&lt;/code>"
-     ENDTEXT="&lt;/componentControl>" ICON="" NAME="componentControl"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;componentControl>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:inputNumberSlider&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:inputNumberSlider&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, barClass, barStyle, binding, clientErrorMessage, converter, converterMessage, disabled, enableManualInput, handleClass, handleSelectedClass, id, immediate, inputClass, inputPosition, inputSize, inputStyle, label, maxValue, maxlength, minValue, onblur, onchange, onclick, ondblclick, onerror, onfocus, oninputclick, oninputdblclick, oninputkeydown, oninputkeypress, oninputkeyup, oninputmousedown, oninputmousemove, oninputmouseout, oninputmouseover, oninputmouseup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onslide, rendered, required, requiredMessage, showBoundaryValues, showInput, showToolTip, step, style, styleClass, tabindex, tipClass, tipStyle, validator, validatorMessage, value, valueChangeListener, width&lt;/code>"
-     ENDTEXT="&lt;/inputNumberSlider>"
-     ICON="%Icons%/JBoss RichFaces/inputNumberSlider"
-     NAME="inputNumberSlider" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;inputNumberSlider>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:ajaxValidator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:ajaxValidator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxListener, binding, data, disableDefault, event, eventsQueue, focus, id, ignoreDupResponses, limitToList, onbeforedomupdate, oncomplete, onsubmit, reRender, rendered, requestDelay, status, summary, timeout&lt;/code>"
-     ENDTEXT="&lt;/ajaxValidator>" ICON="%Icons%/JSF Core/validator"
-     NAME="ajaxValidator" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;ajaxValidator>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dndParam&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dndParam&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered, type, value, &lt;/code>"
-     ENDTEXT="&lt;/dndParam>" ICON="%Icons%/JBoss RichFaces/dndParam"
-     NAME="dndParam" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;dndParam>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:menuItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, disabled, eventsQueue, focus, icon, iconClass, iconDisabled, iconStyle, id, ignoreDupResponses, immediate, labelClass, limitToList, onbeforedomupdate, onclick, oncomplete, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, process, reRender, rendered, requestDelay, selectClass, selectStyle, status, style, styleClass, submitMode, target, timeout, value&lt;/code>"
-     ENDTEXT="&lt;/menuItem>" ICON="%Icons%/JBoss RichFaces/menuItem"
-     NAME="menuItem" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;menuItem>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:modalPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:modalPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>autosized, binding, controlsClass, headerClass, height, id, keepVisualState, label, left, minHeight, minWidth, moveable, onbeforehide, onbeforeshow, onhide, onmaskclick, onmaskcontextmenu, onmaskdblclick, onmaskmousedown, onmaskmousemove, onmaskmouseout, onmaskmouseover, onmaskmouseup, onmove, onresize, onshow, rendered, resizeable, shadowDepth, shadowOpacity, showWhenRendered, style, styleClass, top, tridentIVEngineSelectBehavior, trimOverlayedElements, validator, validatorMessage, value, visualOptions, width, zindex&lt;/code>"
-     ENDTEXT="&lt;/modalPanel>"
-     ICON="%Icons%/JBoss RichFaces/modalPanel" NAME="modalPanel"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;modalPanel>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:fileUpload&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:fileUpload&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptedTypes, accesskey, addButtonClass, addButtonClassDisabled, addControlLabel, ajaxSingle, allowFlash, alt, autoclear, binding, cancelEntryControlLabel, cleanButtonClass, cleanButtonClassDisabled, clearAllControlLabel, clearControlLabel, disabled, doneLabel, fileEntryClass, fileEntryClassDisabled, fileEntryControlClass, fileEntryControlClassDisabled, fileUploadListener, id, immediate, immediateUpload, listHeight, listWidth, locale, maxFilesQuantity, noDuplicate, onadd, onblur, onchange, onclear, onclick, ondblclick, onerror, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onsizerejected, ontyperejected, onupload, onuploadcanceled, onuploadcomplete, progressLabel, rendered, required, requiredMessage, sizeErrorLabel, status, stopButtonClass, stopButtonClassDisabled, stopControlLabel, stopEntryControlLabel, style, styleClass, tabindex, transferErrorLabel, uploadButtonClass, uploadButtonClassDisabled, uploadControlLabel, uploadData, uploadListClass, uploadListClassDisabled, validator, validatorMessage&lt;/code>"
-     ENDTEXT="&lt;/fileUpload>" ICON="" NAME="fileUpload" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;fileUpload>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tabPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tabPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>activeTabClass, binding, contentClass, contentStyle, converter, converterMessage, dir, disabledTabClass, headerAlignment, headerClass, headerSpacing, height, id, immediate, inactiveTabClass, label, lang, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, ontabchange, rendered, required, requiredMessage, selectedTab, style, styleClass, switchType, tabClass, title, validator, validatorMessage, value, valueChangeListener, width&lt;/code>"
-     ENDTEXT="&lt;/tabPanel>" ICON="%Icons%/JBoss RichFaces/tabPanel"
-     NAME="tabPanel" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;tabPanel>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:recursiveTreeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:recursiveTreeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, included, includedNode, includedRoot, nodes, rendered, roots, var&lt;/code>"
-     ENDTEXT="&lt;/recursiveTreeNodesAdaptor>"
-     ICON="%Icons%/JBoss RichFaces/recursiveTreeNodesAdaptor"
-     NAME="recursiveTreeNodesAdaptor" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;recursiveTreeNodesAdaptor>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;%@ taglib uri=&quot;http://richfaces.org/rich&quot; prefix=&quot;rich&quot; %&amp;gt;&lt;/code>"
-     ENDTEXT="" ICON="%Icons%/Struts Common/taglib"
-     NAME="JBoss RichFaces taglib" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;%@ taglib uri=&quot;http://richfaces.org/rich&quot; prefix=&quot;rich&quot; %>\\n|"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:contextMenu&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:contextMenu&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>attachTiming, attachTo, attached, binding, disableDefaultMenu, disabledItemClass, disabledItemStyle, event, hideDelay, id, itemClass, itemStyle, oncollapse, onexpand, ongroupactivate, onitemselect, onmousemove, onmouseout, onmouseover, popupWidth, rendered, selectItemClass, selectItemStyle, showDelay, style, styleClass, submitMode&lt;/code>"
-     ENDTEXT="&lt;/contextMenu>"
-     ICON="%Icons%/JBoss RichFaces/contextMenu" NAME="contextMenu"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;contextMenu>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:subTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:subTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, binding, columnClasses, componentState, filterMethod, filterValue, first, footerClass, headerClass, id, onRowClick, onRowDblClick, onRowMouseDown, onRowMouseMove, onRowMouseOut, onRowMouseOver, onRowMouseUp, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, rowClasses, rowKeyConverter, rowKeyVar, rows, selfSorted, sortExpression, sortMode, sortOrder, sortPriority, stateVar, value, var&lt;/code>"
-     ENDTEXT="&lt;/subTable>" ICON="%Icons%/JBoss RichFaces/dataTable"
-     NAME="subTable" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;subTable>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dropSupport&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dropSupport&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptCursors, acceptedTypes, action, actionListener, ajaxSingle, binding, bypassUpdates, cursorTypeMapping, data, disableDefault, dropListener, dropValue, eventsQueue, focus, id, ignoreDupResponses, immediate, limitToList, onbeforedomupdate, oncomplete, ondragenter, ondragexit, ondrop, ondropend, process, reRender, rejectCursors, rendered, requestDelay, status, timeout, typeMapping, value&lt;/code>"
-     ENDTEXT="&lt;/dropSupport>"
-     ICON="%Icons%/JBoss RichFaces/dropSupport" NAME="dropSupport"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dropSupport>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding&lt;/code>"
-     ENDTEXT="&lt;/dragListener>"
-     ICON="%Icons%/JBoss RichFaces/dragListener" NAME="dragListener"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dragListener>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelBar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelBar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, contentClass, contentStyle, converter, converterMessage, headerClass, headerClassActive, headerStyle, headerStyleActive, height, id, immediate, label, onclick, onitemchange, onmousemove, onmouseout, onmouseover, rendered, required, requiredMessage, selectedPanel, style, styleClass, validator, validatorMessage, value, valueChangeListener, width&lt;/code>"
-     ENDTEXT="&lt;/panelBar>" ICON="%Icons%/JBoss RichFaces/panelBar"
-     NAME="panelBar" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;panelBar>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:nodeSelectListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:nodeSelectListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding&lt;/code>"
-     ENDTEXT="&lt;/nodeSelectListener>" ICON=""
-     NAME="nodeSelectListener" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;nodeSelectListener>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:datascroller&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:datascroller&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, align, binding, boundaryControls, bypassUpdates, data, eventsQueue, fastControls, fastStep, focus, for, handleValue, id, ignoreDupResponses, immediate, inactiveStyle, inactiveStyleClass, limitToList, maxPages, onbeforedomupdate, onclick, oncomplete, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onpagechange, page, pageIndexVar, pagesVar, process, reRender, renderIfSinglePage, rendered, requestDelay, scrollerListener, selectedStyle, selectedStyleClass, status, stepControls, style, styleClass, tableStyle, tableStyleClass, timeout, value&lt;/code>"
-     ENDTEXT="&lt;/datascroller>"
-     ICON="%Icons%/JBoss RichFaces/dataScroller" NAME="datascroller"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;datascroller>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuSeparator /&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered&lt;/code>"
-     ENDTEXT="" ICON="%Icons%/JBoss RichFaces/menuSeparator"
-     NAME="menuSeparator" REFORMAT="no" SCOPE="project"
-     STARTTEXT="&lt;menuSeparator/>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dropListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dropListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding&lt;/code>"
-     ENDTEXT="&lt;/dropListener>"
-     ICON="%Icons%/JBoss RichFaces/dropListener" NAME="dropListener"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dropListener>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragSupport&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragSupport&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, disableDefault, dragIndicator, dragListener, dragType, dragValue, eventsQueue, focus, grabCursors, grabbingCursors, id, ignoreDupResponses, immediate, limitToList, onbeforedomupdate, oncomplete, ondragend, ondragstart, ondropout, ondropover, process, reRender, rendered, requestDelay, status, timeout, value&lt;/code>"
-     ENDTEXT="&lt;/dragSupport>"
-     ICON="%Icons%/JBoss RichFaces/dragSupport" NAME="dragSupport"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dragSupport>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:virtualEarth&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:virtualEarth&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, dashboardSize, id, lat, lng, mapStyle, onLoadMap, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass, var, version, zoom&lt;/code>"
-     ENDTEXT="&lt;/virtualEarth>"
-     ICON="%Icons%/JBoss RichFaces/virtualEarth" NAME="virtualEarth"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;virtualEarth>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenuItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenuItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, disabled, disabledClass, disabledStyle, eventsQueue, focus, hoverClass, hoverStyle, icon, iconClass, iconDisabled, iconStyle, id, ignoreDupResponses, immediate, label, limitToList, mode, name, onbeforedomupdate, onclick, oncomplete, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, process, reRender, rendered, requestDelay, status, style, styleClass, target, timeout, value&lt;/code>"
-     ENDTEXT="&lt;/panelMenuItem>"
-     ICON="%Icons%/JBoss RichFaces/panelMenuItem" NAME="panelMenuItem"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panelMenuItem>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dropDownMenu&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dropDownMenu&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, direction, disabled, disabledItemClass, disabledItemStyle, disabledLabelClass, event, hideDelay, horizontalOffset, id, itemClass, itemStyle, jointPoint, oncollapse, onexpand, ongroupactivate, onitemselect, onmousemove, onmouseout, onmouseover, popupWidth, rendered, selectItemClass, selectItemStyle, selectedLabelClass, showDelay, style, styleClass, submitMode, value, verticalOffset&lt;/code>"
-     ENDTEXT="&lt;/dropDownMenu>"
-     ICON="%Icons%/JBoss RichFaces/dropDownMenu" NAME="dropDownMenu"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dropDownMenu>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:paint2D&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:paint2D&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>align, bgcolor, binding, border, cacheable, data, format, height, hspace, id, lang, paint, rendered, style, styleClass, title, value, vspace, width&lt;/code>"
-     ENDTEXT="&lt;/paint2D>" ICON="%Icons%/JBoss RichFaces/paint2D"
-     NAME="paint2D" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;paint2D>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataDefinitionList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataDefinitionList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, binding, columnClasses, componentState, dir, first, id, lang, rendered, rowClasses, rowKey, rowKeyConverter, rowKeyVar, rows, style, styleClass, title, value, var&lt;/code>"
-     ENDTEXT="&lt;/dataDefinitionList>"
-     ICON="%Icons%/JBoss RichFaces/dataDefinitionList"
-     NAME="dataDefinitionList" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;dataDefinitionList>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:inputNumberSpinner&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:inputNumberSpinner&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, binding, clientErrorMessage, converter, converterMessage, cycled, disableBrowserAutoComplete, disabled, enableManualInput, id, immediate, inputClass, inputSize, inputStyle, label, maxValue, minValue, onblur, onchange, onclick, ondblclick, ondownclick, onerror, onfocus, oninputclick, oninputdblclick, oninputkeydown, oninputkeypress, oninputkeyup, oninputmousedown, oninputmousemove, oninputmouseout, oninputmouseover, oninputmouseup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onupclick, rendered, required, requiredMessage, step, style, styleClass, tabindex, validator, validatorMessage, value, valueChangeListener&lt;/code>"
-     ENDTEXT="&lt;/inputNumberSpinner>"
-     ICON="%Icons%/JBoss RichFaces/inputNumberSpinner"
-     NAME="inputNumberSpinner" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;inputNumberSpinner>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataGrid&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataGrid&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, align, bgcolor, binding, border, captionClass, captionStyle, cellpadding, cellspacing, columnClasses, columns, componentState, dir, elements, first, footerClass, frame, headerClass, id, lang, onRowClick, onRowDblClick, onRowMouseDown, onRowMouseMove, onRowMouseOut, onRowMouseOver, onRowMouseUp, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, rowClasses, rowKey, rowKeyConverter, rowKeyVar, rules, stateVar, style, styleClass, summary, title, value, var, width&lt;/code>"
-     ENDTEXT="&lt;/dataGrid>" ICON="%Icons%/JBoss RichFaces/dataGrid"
-     NAME="dataGrid" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;dataGrid>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:state&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:state&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered&lt;/code>"
-     ENDTEXT="&lt;/state>" ICON="" NAME="state" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;state>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:menuGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, converter, direction, disabled, event, icon, iconClass, iconDisabled, iconFolder, iconFolderDisabled, iconStyle, id, labelClass, onclose, onmousemove, onmouseout, onmouseover, onopen, rendered, selectClass, selectStyle, showDelay, style, styleClass, &lt;/code>"
-     ENDTEXT="&lt;/menuGroup>" ICON="%Icons%/JBoss RichFaces/menuGroup"
-     NAME="menuGroup" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;menuGroup>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:messages&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:messages&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxRendered, binding, errorClass, errorLabelClass, errorMarkerClass, fatalClass, fatalLabelClass, fatalMarkerClass, for, globalOnly, id, infoClass, infoLabelClass, infoMarkerClass, keepTransient, labelClass, layout, level, markerClass, markerStyle, passedLabel, rendered, showDetail, showSummary, style, styleClass, title, tooltip, warnClass, warnLabelClass, warnMarkerClass&lt;/code>"
-     ENDTEXT="&lt;/messages>" ICON="%Icons%/JBoss RichFaces/messages"
-     NAME="messages" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;messages>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:comboBox&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:comboBox&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>align, binding, buttonClass, buttonDisabledClass, buttonDisabledStyle, buttonIcon, buttonIconDisabled, buttonIconInactive, buttonInactiveClass, buttonInactiveStyle, buttonStyle, converter, converterMessage, defaultLabel, directInputSuggestions, disabled, enableManualInput, filterNewValues, hideDelay, id, immediate, inputClass, inputDisabledClass, inputDisabledStyle, inputInactiveClass, inputInactiveStyle, inputStyle, itemClass, itemSelectedClass, listClass, listHeight, listStyle, listWidth, onblur, onchange, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onlistcall, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, rendered, required, requiredMessage, selectFirstOnUpdate, showDelay, style, styleClass, suggestionValues, tabindex, validator, validatorMessage, value, valueChangeListener, width&lt;/code>"
-     ENDTEXT="&lt;/comboBox>" ICON="%Icons%/Struts HTML/select"
-     NAME="comboBox" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;comboBox>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:graphValidator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:graphValidator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, profile, summary, value&lt;/code>"
-     ENDTEXT="&lt;/graphValidator>" ICON="%Icons%/JSF Core/validator"
-     NAME="graphValidator" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;graphValidator>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataOrderedList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataOrderedList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, binding, dir, first, id, lang, rendered, rowClasses, rowKey, rowKeyConverter, rowKeyVar, rows, style, styleClass, title, type, value, var&lt;/code>"
-     ENDTEXT="&lt;/dataOrderedList>"
-     ICON="%Icons%/JBoss RichFaces/dataOrderedList"
-     NAME="dataOrderedList" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;dataOrderedList>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:inplaceInput&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:inplaceInput&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, cancelControlIcon, changedClass, changedHoverClass, controlClass, controlHoverClass, controlPressedClass, controlsHorizontalPosition, controlsVerticalPosition, converter, converterMessage, defaultLabel, editClass, editEvent, id, immediate, inputWidth, layout, maxInputWidth, minInputWidth, onblur, onchange, onclick, ondblclick, oneditactivated, oneditactivation, onfocus, oninputclick, oninputdblclick, oninputkeydown, oninputkeypress, oninputkeyup, oninputmousedown, oninputmousemove, oninputmouseout, oninputmouseover, oninputmouseup, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onviewactivated, onviewactivation, rendered, required, requiredMessage, saveControlIcon, selectOnEdit, showControls, styleClass, tabindex, validator, validatorMessage, value, valueChangeListener, viewClass, viewHoverClass&lt;/code>"
-     ENDTEXT="&lt;/inplaceInput>" ICON="" NAME="inplaceInput"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;inplaceInput>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:column&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:column&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, breakBefore, colspan, comparator, dir, filterBy, filterEvent, filterExpression, filterMethod, filterValue, footerClass, headerClass, id, label, lang, rendered, rowspan, selfSorted, sortBy, sortExpression, sortIcon, sortIconAscending, sortIconDescending, sortOrder, sortable, style, styleClass, title, visible, width&lt;/code>"
-     ENDTEXT="&lt;/column>" ICON="%Icons%/JBoss RichFaces/column"
-     NAME="column" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;column>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:message&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:message&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxRendered, binding, errorClass, errorLabelClass, errorMarkerClass, fatalClass, fatalLabelClass, fatalMarkerClass, for, id, infoClass, infoLabelClass, infoMarkerClass, keepTransient, labelClass, level, markerClass, markerStyle, passedLabel, rendered, showDetail, showSummary, style, styleClass, title, tooltip, warnClass, warnLabelClass, warnMarkerClass&lt;/code>"
-     ENDTEXT="&lt;/message>" ICON="%Icons%/JBoss RichFaces/message"
-     NAME="message" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;message>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, binding, componentState, dir, first, id, lang, rendered, rowClasses, rowKey, rowKeyConverter, rowKeyVar, rows, stateVar, style, styleClass, title, type, value, var&lt;/code>"
-     ENDTEXT="&lt;/dataList>" ICON="%Icons%/JBoss RichFaces/dataList"
-     NAME="dataList" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;dataList>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolBarGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolBarGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, itemSeparator, location, onclick, ondblclick, onitemclick, onitemdblclick, onitemkeydown, onitemkeypress, onitemkeyup, onitemmousedown, onitemmousemove, onitemmouseout, onitemmouseover, onitemmouseup, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, separatorClass, style, styleClass&lt;/code>"
-     ENDTEXT="&lt;/toolBarGroup>"
-     ICON="%Icons%/JBoss RichFaces/toolBarGroup" NAME="toolBarGroup"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;toolBarGroup>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenu&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenu&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, converter, converterMessage, disabled, disabledGroupClass, disabledGroupStyle, disabledItemClass, disabledItemStyle, event, expandMode, expandSingle, groupClass, groupStyle, hoveredGroupClass, hoveredGroupStyle, hoveredItemClass, hoveredItemStyle, iconCollapsedGroup, iconCollapsedTopGroup, iconDisabledGroup, iconDisabledItem, iconExpandedGroup, iconExpandedTopGroup, iconGroupPosition, iconGroupTopPosition, iconItem, iconItemPosition, iconItemTopPosition, iconTopDisableGroup, iconTopDisabledItem, iconTopItem, id, immediate, itemClass, itemStyle, label, mode, onclick, ondblclick, ongroupcollapse, ongroupexpand, onitemhover, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, required, requiredMessage, selectedChild, style, styleClass, topGroupClass, topGroupStyle, topItemClass, topItemStyle, validator, validatorMessage, value, valueChangeListener, width&lt;/code>"
-     ENDTEXT="&lt;/panelMenu>" ICON="%Icons%/JBoss RichFaces/panelMenu"
-     NAME="panelMenu" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;panelMenu>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:jQuery&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:jQuery&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, name, rendered, selector, timing, &lt;/code>"
-     ENDTEXT="&lt;/jQuery>" ICON="" NAME="jQuery" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;jQuery>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:gmap&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:gmap&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, enableContinuousZoom, enableDoubleClickZoom, enableDragging, enableInfoWindow, gmapKey, gmapVar, id, lat, lng, locale, mapType, onclick, ondblclick, oninit, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, showGLargeMapControl, showGMapTypeControl, showGScaleControl, style, styleClass, warningMessage, zoom&lt;/code>"
-     ENDTEXT="&lt;/gmap>" ICON="%Icons%/JBoss RichFaces/gmap"
-     NAME="gmap" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;gmap>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:orderingList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:orderingList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>activeItem, ajaxKeys, binding, bottomControlLabel, captionLabel, columnClasses, componentState, controlsHorizontalAlign, controlsType, controlsVerticalAlign, converter, downControlLabel, fastOrderControlsVisible, id, immediate, listHeight, listWidth, onbottomclick, onclick, ondblclick, ondownclick, onheaderclick, onmousemove, onmouseout, onmouseover, onorderchanged, ontopclick, onupclick, orderControlsVisible, rendered, required, rowClasses, rowKeyConverter, rowKeyVar, rows, selection, showButtonLabels, style, styleClass, topControlLabel, upControlLabel, validator, value, valueChangeListener, var&lt;/code>"
-     ENDTEXT="&lt;/orderingList>"
-     ICON="%Icons%/JBoss RichFaces/orderingList" NAME="orderingList"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;orderingList>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:inplaceSelect&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:inplaceSelect&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, cancelControlIcon, changedClass, controlClass, controlHoverClass, controlPressClass, controlsHorizontalPosition, controlsVerticalPosition, converter, converterMessage, defaultLabel, editClass, editEvent, id, immediate, layout, listHeight, listWidth, maxSelectWidth, minSelectWidth, onblur, onchange, onclick, ondblclick, oneditactivated, oneditactivation, onfocus, oninputblur, oninputclick, oninputdblclick, oninputfocus, oninputkeydown, oninputkeypress, oninputkeyup, oninputmousedown, oninputmousemove, oninputmouseout, oninputmouseover, oninputmouseup, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onviewactivated, onviewactivation, openOnEdit, rendered, required, requiredMessage, saveControlIcon, selectWidth, showControls, styleClass, tabindex, validator, validatorMessage, value, valueChangeListener, viewClass, viewHoverClass&lt;/code>"
-     ENDTEXT="&lt;/inplaceSelect>" ICON="" NAME="inplaceSelect"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;inplaceSelect>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:beanValidator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:beanValidator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, summary&lt;/code>"
-     ENDTEXT="&lt;/beanValidator>" ICON="%Icons%/JSF Core/validator"
-     NAME="beanValidator" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;beanValidator>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:effect&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:effect&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, disableDefault, event, for, id, name, params, rendered, targetId, type&lt;/code>"
-     ENDTEXT="&lt;/effect>" ICON="%Icons%/JBoss RichFaces/effect"
-     NAME="effect" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;effect>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:separator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:separator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>align, binding, height, id, lineType, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass, title, width&lt;/code>"
-     ENDTEXT="&lt;/separator>" ICON="%Icons%/JBoss RichFaces/separator"
-     NAME="separator" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;separator>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolBar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolBar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, contentClass, contentStyle, height, id, itemSeparator, onclick, ondblclick, onitemclick, onitemdblclick, onitemkeydown, onitemkeypress, onitemkeyup, onitemmousedown, onitemmousemove, onitemmouseout, onitemmouseover, onitemmouseup, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, separatorClass, style, styleClass, width&lt;/code>"
-     ENDTEXT="&lt;/toolBar>" ICON="%Icons%/JBoss RichFaces/toolBar"
-     NAME="toolBar" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;toolBar>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragIndicator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragIndicator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptClass, binding, id, rejectClass, rendered, style, styleClass&lt;/code>"
-     ENDTEXT="&lt;/dragIndicator>"
-     ICON="%Icons%/JBoss RichFaces/dragIndicator" NAME="dragIndicator"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dragIndicator>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:insert&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:insert&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, content, encoding, errorContent, highlight, id, rendered, src&lt;/code>"
-     ENDTEXT="&lt;/insert>" ICON="" NAME="insert" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;insert>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:changeExpandListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:changeExpandListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding&lt;/code>"
-     ENDTEXT="&lt;/changeExpandListener>" ICON=""
-     NAME="changeExpandListener" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;changeExpandListener>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolTip&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolTip&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, attached, binding, direction, disabled, event, followMouse, for, hideDelay, hideEvent, horizontalOffset, id, immediate, layout, mode, onclick, oncomplete, ondblclick, onhide, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onshow, rendered, showDelay, showEvent, style, styleClass, value, verticalOffset, zorder&lt;/code>"
-     ENDTEXT="&lt;/toolTip>" ICON="%Icons%/JBoss RichFaces/toolTip"
-     NAME="toolTip" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;toolTip>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:states&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:states&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered&lt;/code>"
-     ENDTEXT="&lt;/states>" ICON="" NAME="states" REFORMAT="yes"
-     SCOPE="project" STARTTEXT="&lt;states>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, align, bgcolor, binding, border, captionClass, captionStyle, cellpadding, cellspacing, columnClasses, columns, columnsWidth, componentState, dir, first, footerClass, frame, headerClass, id, lang, onRowClick, onRowDblClick, onRowMouseDown, onRowMouseMove, onRowMouseOut, onRowMouseOver, onRowMouseUp, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, reRender, rendered, rowClasses, rowKeyConverter, rowKeyVar, rows, rules, sortMode, sortPriority, stateVar, style, styleClass, title, value, var, width&lt;/code>"
-     ENDTEXT="&lt;/dataTable>" ICON="%Icons%/JBoss RichFaces/dataTable"
-     NAME="dataTable" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;dataTable>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelBarItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelBarItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, contentClass, contentStyle, headerClass, headerClassActive, headerStyle, headerStyleActive, id, label, name, onenter, onleave, rendered&lt;/code>"
-     ENDTEXT="&lt;/panelBarItem>"
-     ICON="%Icons%/JBoss RichFaces/panelBarItem" NAME="panelBarItem"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panelBarItem>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:columnGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:columnGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, columnClasses, dir, filterMethod, filterValue, id, lang, rendered, rowClasses, selfSorted, sortOrder, style, styleClass, title&lt;/code>"
-     ENDTEXT="&lt;/columnGroup>"
-     ICON="%Icons%/JBoss RichFaces/columnGroup" NAME="columnGroup"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;columnGroup>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:treeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:treeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, includedNode, nodes, rendered, var&lt;/code>"
-     ENDTEXT="&lt;/treeNodesAdaptor>"
-     ICON="%Icons%/JBoss RichFaces/treeNodesAdaptor"
-     NAME="treeNodesAdaptor" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;treeNodesAdaptor>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:treeNode&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:treeNode&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptCursors, acceptedTypes, ajaxSingle, ajaxSubmitSelection, binding, bypassUpdates, changeExpandListener, cursorTypeMapping, data, dragIndicator, dragListener, dragType, dragValue, dropListener, dropValue, eventsQueue, focus, grabCursors, grabbingCursors, highlightedClass, icon, iconCollapsed, iconExpanded, iconLeaf, id, ignoreDupResponses, limitToList, nodeClass, nodeSelectListener, onbeforedomupdate, onclick, oncollapse, oncomplete, oncontextmenu, ondblclick, ondragend, ondragenter, ondragexit, ondragstart, ondrop, ondropend, ondropout, ondropover, onexpand, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselected, process, reRender, rejectCursors, rendered, requestDelay, selectedClass, status, timeout, type, typeMapping&lt;/code>"
-     ENDTEXT="&lt;/treeNode>" ICON="%Icons%/JBoss RichFaces/treeNode"
-     NAME="treeNode" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;treeNode>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:togglePanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:togglePanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, converter, converterMessage, id, immediate, initialState, label, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, required, requiredMessage, stateOrder, style, styleClass, switchType, validator, validatorMessage, value, valueChangeListener&lt;/code>"
-     ENDTEXT="&lt;/togglePanel>"
-     ICON="%Icons%/JBoss RichFaces/togglePanel" NAME="togglePanel"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;togglePanel>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenuGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenuGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, action, actionListener, ajaxSingle, align, alt, binding, bypassUpdates, converter, converterMessage, data, disabled, disabledClass, disabledStyle, eventsQueue, expandMode, expanded, focus, hoverClass, hoverStyle, iconClass, iconCollapsed, iconDisabled, iconExpanded, iconStyle, id, ignoreDupResponses, immediate, label, limitToList, maxlength, name, onbeforedomupdate, onblur, onchange, onclick, oncollapse, oncomplete, ondblclick, onexpand, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, process, reRender, rendered, requestDelay, required, requiredMessage, size, status, style, styleClass, tabindex, target, timeout, validator, validatorMessage, value, valueChangeListener&lt;/code>"
-     ENDTEXT="&lt;/panelMenuGroup>"
-     ICON="%Icons%/JBoss RichFaces/panelMenuGroup" NAME="panelMenuGroup"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panelMenuGroup>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:simpleTogglePanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:simpleTogglePanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bodyClass, bypassUpdates, data, eventsQueue, focus, headerClass, height, id, ignoreDupResponses, immediate, label, limitToList, onbeforedomupdate, onclick, oncollapse, oncomplete, ondblclick, onexpand, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, opened, openedSet, process, reRender, rendered, requestDelay, status, style, styleClass, switchType, timeout, value, width&lt;/code>"
-     ENDTEXT="&lt;/simpleTogglePanel>"
-     ICON="%Icons%/JBoss RichFaces/simpleTogglePanel"
-     NAME="simpleTogglePanel" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;simpleTogglePanel>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataFilterSlider&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataFilterSlider&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, clientErrorMessage, data, endRange, eventsQueue, fieldStyleClass, filterBy, focus, for, forValRef, handleStyleClass, handleValue, id, ignoreDupResponses, immediate, increment, limitToList, manualInput, onSlideSubmit, onbeforedomupdate, onchange, onclick, oncomplete, ondblclick, onerror, oninputkeydown, oninputkeypress, oninputkeyup, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onslide, process, rangeStyleClass, reRender, rendered, requestDelay, sliderListener, startRange, status, storeResults, style, styleClass, submitOnSlide, timeout, trackStyleClass, trailer, trailerStyleClass, value, width&lt;/code>"
-     ENDTEXT="&lt;/dataFilterSlider>"
-     ICON="%Icons%/JBoss RichFaces/dataFilterSlider"
-     NAME="dataFilterSlider" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;dataFilterSlider>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:progressBar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:progressBar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, ajaxSingle, binding, bypassUpdates, completeClass, data, enabled, eventsQueue, finishClass, focus, id, ignoreDupResponses, immediate, initialClass, interval, label, limitToList, maxValue, minValue, mode, onbeforedomupdate, onclick, oncomplete, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onsubmit, parameters, process, progressVar, reRender, reRenderAfterComplete, remainClass, rendered, status, style, styleClass, timeout, title, value&lt;/code>"
-     ENDTEXT="&lt;/progressBar>"
-     ICON="%Icons%/JBoss RichFaces/progressBar" NAME="progressBar"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;progressBar>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:listShuttle&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:listShuttle&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>activeItem, ajaxKeys, binding, bottomControlClass, bottomControlLabel, columnClasses, componentState, controlsType, controlsVerticalAlign, converter, copyAllControlClass, copyAllControlLabel, copyControlClass, copyControlLabel, disabledControlClass, downControlClass, downControlLabel, fastMoveControlsVisible, fastOrderControlsVisible, first, id, immediate, listClass, listsHeight, moveControlsVisible, onblur, onbottomclick, onclick, oncopyallclick, oncopyclick, ondblclick, ondownclick, onfocus, onlistchanged, onmousemove, onmouseout, onmouseover, onorderchanged, onremoveallclick, onremoveclick, ontopclick, onupclick, orderControlsVisible, removeAllControlClass, removeAllControlLabel, removeControlClass, removeControlLabel, rendered, required, rowClasses, rowKeyConverter, rowKeyVar, rows, showButtonLabels, sourceCaptionLabel, sourceListWidth, sourceRequired, sourceSelection, sourceValue, style, styleClass, switchByClick, targetCaptionLabel, targetListWidth, targetRequired, targetSelection, targetValue, topControlClass, topControlLabel, upControlClass, upControlLabel, validator, valueChangeListener, var&lt;/code>"
-     ENDTEXT="&lt;/listShuttle>"
-     ICON="%Icons%/JBoss RichFaces/listShuttle" NAME="listShuttle"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;listShuttle>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tab&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tab&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, disabled, eventsQueue, focus, id, ignoreDupResponses, immediate, label, labelWidth, limitToList, name, onbeforedomupdate, onclick, oncomplete, ondblclick, onkeydown, onkeypress, onkeyup, onlabelclick, onlabeldblclick, onlabelkeydown, onlabelkeypress, onlabelkeyup, onlabelmousedown, onlabelmousemove, onlabelmouseup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, ontabenter, ontableave, process, reRender, rendered, requestDelay, status, style, styleClass, switchType, timeout, title&lt;/code>"
-     ENDTEXT="&lt;/tab>" ICON="%Icons%/JBoss RichFaces/tab" NAME="tab"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;tab>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:pickList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:pickList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, controlClass, converter, converterMessage, copyAllControlLabel, copyControlLabel, disabled, disabledStyle, disabledStyleClass, enabledStyle, enabledStyleClass, id, immediate, listClass, listsHeight, moveControlsVerticalAlign, onblur, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onlistchanged, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, removeAllControlLabel, removeControlLabel, rendered, required, requiredMessage, showButtonsLabel, sourceListWidth, style, styleClass, switchByClick, targetListWidth, title, validator, validatorMessage, value, valueChangeListener&lt;/code>"
-     ENDTEXT="&lt;/pickList>" ICON="%Icons%/JBoss RichFaces/pickList"
-     NAME="pickList" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;pickList>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:extendedDataTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:extendedDataTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>activeClass, activeRowKey, ajaxKeys, align, bgcolor, binding, border, captionClass, captionStyle, cellpadding, cellspacing, columnClasses, componentState, dir, first, footerClass, frame, groupingColumn, headerClass, height, id, lang, onRowClick, onRowDblClick, onRowMouseDown, onRowMouseMove, onRowMouseOut, onRowMouseOver, onRowMouseUp, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselectionchange, rendered, rowClasses, rowKeyConverter, rowKeyVar, rows, rules, selectedClass, selection, selectionMode, sortMode, sortPriority, stateVar, style, styleClass, tableState, title, value, var, width&lt;/code>"
-     ENDTEXT="&lt;/extendedDataTable>"
-     ICON="%Icons%/JBoss RichFaces/dataTable" NAME="extendedDataTable"
-     REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;extendedDataTable>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:spacer&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:spacer&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, height, id, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass, title, width&lt;/code>"
-     ENDTEXT="&lt;/spacer>" ICON="%Icons%/JBoss RichFaces/spacer"
-     NAME="spacer" REFORMAT="yes" SCOPE="project"
-     STARTTEXT="&lt;spacer>" large-icon="" model-entity="SharableMacroHTML"/>
-    <MacroHTML
-     DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, bodyClass, header, headerClass, id, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass&lt;/code>"
-     ENDTEXT="&lt;/panel>" ICON="%Icons%/JBoss RichFaces/panel"
-     NAME="panel" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panel>"
-     large-icon="" model-entity="SharableMacroHTML"/>
-   </GroupHTML>
+			<GroupHTML HIDDEN="no" ICON="" NAME="Ajax4Jsf" PREFIX="a4j"
+				SCOPE="project" URI="http://richfaces.org/a4j" add_taglib="true"
+				library-version="" model-entity="SharableGroupHTML">
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, eventsQueue, focus, id, ignoreDupResponses, immediate, limitToList, name, onbeforedomupdate, oncomplete, process, reRender, rendered, requestDelay, status, timeout&lt;/code>"
+					ENDTEXT="&lt;/jsFunction>" ICON="" NAME="jsFunction" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;jsFunction>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:log&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:log&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, dir, height, hotkey, id, lang, level, name, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, popup, rendered, style, styleClass, title, width&lt;/code>"
+					ENDTEXT="&lt;/log>" ICON="" NAME="log" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;log>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:repeat&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:repeat&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, binding, componentState, first, id, rendered, rowKeyConverter, rowKeyVar, rows, stateVar, value, var&lt;/code>"
+					ENDTEXT="&lt;/repeat>" ICON="%Icons%/JBoss RichFaces/repeat" NAME="repeat"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;repeat>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:form&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:form&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accept, acceptCharset, ajaxSingle, ajaxSubmit, binding, bypassUpdates, data, enctype, eventsQueue, focus, id, ignoreDupResponses, limitToList, onbeforedomupdate, oncomplete, onreset, onsubmit, prependId, process, reRender, rendered, requestDelay, status, target, timeout&lt;/code>"
+					ENDTEXT="&lt;/form>" ICON="%Icons%/Struts HTML/form" NAME="form"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;form>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:mediaOutput&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:mediaOutput&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, align, archive, binding, border, cacheable, charset, classid, codebase, codetype, converter, coords, createContent, createContentExpression, declare, dir, element, expires, hreflang, hspace, id, ismap, lang, lastModified, mimeType, onblur, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rel, rendered, rev, session, shape, standby, style, styleClass, tabindex, target, title, type, uriAttribute, usemap, value, vspace&lt;/code>"
+					ENDTEXT="&lt;/mediaOutput>" ICON="" NAME="mediaOutput" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;mediaOutput>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:loadBundle&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:loadBundle&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>basename, binding, id, rendered, var&lt;/code>"
+					ENDTEXT="&lt;/loadBundle>" ICON="" NAME="loadBundle" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;loadBundle>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:region&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:region&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxListener, binding, id, immediate, renderRegionOnly, rendered, selfRendered&lt;/code>"
+					ENDTEXT="&lt;/region>" ICON="" NAME="region" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;region>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:outputPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:outputPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxRendered, binding, dir, id, keepTransient, lang, layout, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass, title&lt;/code>"
+					ENDTEXT="&lt;/outputPanel>" ICON="" NAME="outputPanel" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;outputPanel>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:include&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:include&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxRendered, binding, dir, id, keepTransient, lang, layout, rendered, style, styleClass, title, viewId&lt;/code>"
+					ENDTEXT="&lt;/include>" ICON="" NAME="include" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;include>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:status&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:status&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, dir, for, forceId, id, lang, layout, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onstart, onstop, rendered, startStyle, startStyleClass, startText, stopStyle, stopStyleClass, stopText, style, styleClass, title&lt;/code>"
+					ENDTEXT="&lt;/status>" ICON="" NAME="status" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;status>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:htmlCommandLink&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:htmlCommandLink&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, action, actionListener, binding, charset, coords, dir, disabled, hreflang, id, immediate, lang, onblur, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rel, rendered, rev, shape, style, styleClass, tabindex, target, title, type, value&lt;/code>"
+					ENDTEXT="&lt;/htmlCommandLink>" ICON="%Icons%/Struts HTML/link"
+					NAME="htmlCommandLink" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;htmlCommandLink>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;%@ taglib uri=&quot;http://richfaces.org/a4j&quot; prefix=&quot;a4j&quot; %&amp;gt;&lt;/code>"
+					ENDTEXT="" ICON="%Icons%/Struts Common/taglib" NAME="JBoss Ajax4jsf taglib"
+					REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;%@ taglib uri=&quot;http://richfaces.org/a4j&quot; prefix=&quot;a4j&quot; %>\\n|"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:push&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:push&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, enabled, eventProducer, eventsQueue, focus, id, ignoreDupResponses, immediate, interval, limitToList, onbeforedomupdate, oncomplete, process, reRender, rendered, status, timeout&lt;/code>"
+					ENDTEXT="&lt;/push>" ICON="" NAME="push" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;push>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:commandLink&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:commandLink&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, action, actionListener, ajaxSingle, binding, bypassUpdates, charset, coords, data, dir, disabled, eventsQueue, focus, hreflang, id, ignoreDupResponses, immediate, lang, limitToList, onbeforedomupdate, onblur, onclick, oncomplete, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, process, reRender, rel, rendered, requestDelay, rev, shape, status, style, styleClass, tabindex, target, timeout, title, type, value&lt;/code>"
+					ENDTEXT="&lt;/commandLink>" ICON="%Icons%/Struts HTML/link" NAME="commandLink"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;commandLink>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:page&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:page&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxListener, binding, contentType, dir, format, id, immediate, lang, namespace, onload, onunload, pageTitle, rendered, selfRendered, style, styleClass, title&lt;/code>"
+					ENDTEXT="&lt;/page>" ICON="" NAME="page" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;page>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:actionparam&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:actionparam&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, assignTo, binding, converter, id, name, noEscape, value&lt;/code>"
+					ENDTEXT="&lt;/actionparam>" ICON="" NAME="actionparam" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;actionparam>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:portlet&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:portlet&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered&lt;/code>"
+					ENDTEXT="&lt;/portlet>" ICON="" NAME="portlet" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;portlet>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:loadScript&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:loadScript&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered, &lt;/code>"
+					ENDTEXT="&lt;/loadScript>" ICON="" NAME="loadScript" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;loadScript>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:keepAlive&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:keepAlive&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxOnly, &lt;/code>"
+					ENDTEXT="&lt;/keepAlive>" ICON="" NAME="keepAlive" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;keepAlive>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:loadStyle&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:loadStyle&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, media, rendered, &lt;/code>"
+					ENDTEXT="&lt;/loadStyle>" ICON="" NAME="loadStyle" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;loadStyle>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:commandButton&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:commandButton&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, action, actionListener, ajaxSingle, alt, binding, bypassUpdates, data, dir, disabled, eventsQueue, focus, id, ignoreDupResponses, image, immediate, lang, limitToList, onbeforedomupdate, onblur, onchange, onclick, oncomplete, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, process, reRender, rendered, requestDelay, size, status, style, styleClass, tabindex, timeout, title, type, value&lt;/code>"
+					ENDTEXT="&lt;/commandButton>" ICON="%Icons%/Struts HTML/button"
+					NAME="commandButton" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;commandButton>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:poll&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:poll&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, enabled, eventsQueue, focus, id, ignoreDupResponses, immediate, interval, limitToList, onbeforedomupdate, oncomplete, onsubmit, process, reRender, rendered, status, timeout&lt;/code>"
+					ENDTEXT="&lt;/poll>" ICON="" NAME="poll" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;poll>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:ajaxListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:ajaxListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;/code>"
+					ENDTEXT="&lt;/ajaxListener>" ICON="" NAME="ajaxListener" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;ajaxListener>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:support&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:support&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, disableDefault, disabled, event, eventsQueue, focus, id, ignoreDupResponses, immediate, limitToList, onbeforedomupdate, oncomplete, onsubmit, process, reRender, rendered, requestDelay, status, timeout&lt;/code>"
+					ENDTEXT="&lt;/support>" ICON="" NAME="support" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;support>" large-icon=""
+					model-entity="SharableMacroHTML" />
+			</GroupHTML>
+			<GroupHTML HIDDEN="no" ICON="" NAME="RichFaces" PREFIX="rich"
+				SCOPE="project" URI="http://richfaces.org/rich" add_taglib="true"
+				library-version="" model-entity="SharableGroupHTML">
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:hotKey&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:hotKey&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, checkParent, disableInInput, disableInInputTypes, handler, id, key, rendered, selector, timing, type&lt;/code>"
+					ENDTEXT="&lt;/hotKey>" ICON="" NAME="hotKey" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;hotKey>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tree&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tree&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptCursors, acceptedTypes, adviseNodeOpened, adviseNodeSelected, ajaxSingle, ajaxSubmitSelection, binding, bypassUpdates, changeExpandListener, componentState, cursorTypeMapping, data, dragIndicator, dragListener, dragType, dragValue, dropListener, dropValue, eventsQueue, focus, grabCursors, grabbingCursors, highlightedClass, icon, iconCollapsed, iconExpanded, iconLeaf, id, ignoreDupResponses, immediate, limitToList, nodeFace, nodeSelectListener, onbeforedomupdate, onclick, oncollapse, oncomplete, ondblclick, ondragend, ondragenter, ondragexit, ondragstart, ondrop, ondropend, ondropout, ondropover, onexpand, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselected, preserveDataInRequest, preserveModel, process, reRender, rejectCursors, rendered, requestDelay, rowKeyVar, selectedClass, showConnectingLines, stateAdvisor, stateVar, status, style, styleClass, switchType, timeout, toggleOnClick, treeNodeVar, typeMapping, value, var&lt;/code>"
+					ENDTEXT="&lt;/tree>" ICON="%Icons%/JBoss RichFaces/tree" NAME="tree"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;tree>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:scrollableDataTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:scrollableDataTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>activeClass, activeRowKey, ajaxKeys, binding, bypassUpdates, columnClasses, componentState, data, eventsQueue, first, footerClass, frozenColCount, headerClass, height, hideWhenScrolling, id, ignoreDupResponses, onRowClick, onRowDblClick, onRowMouseDown, onRowMouseUp, onselectionchange, process, reRender, rendered, requestDelay, rowClasses, rowKeyConverter, rowKeyVar, rows, scriptVar, selectedClass, selection, sortMode, sortOrder, stateVar, status, style, styleClass, timeout, value, var, width&lt;/code>"
+					ENDTEXT="&lt;/scrollableDataTable>" ICON="%Icons%/JBoss RichFaces/scrollableDataTable"
+					NAME="scrollableDataTable" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;scrollableDataTable>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toggleControl&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toggleControl&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, action, actionListener, ajaxSingle, binding, bypassUpdates, data, dir, eventsQueue, focus, for, id, ignoreDupResponses, immediate, lang, limitToList, onbeforedomupdate, onblur, onclick, oncomplete, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, panelId, process, rendered, requestDelay, status, style, styleClass, switchToState, tabindex, timeout, title, value&lt;/code>"
+					ENDTEXT="&lt;/toggleControl>" ICON="" NAME="toggleControl"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;toggleControl>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:suggestionbox&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:suggestionbox&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxSingle, bgcolor, binding, border, bypassUpdates, cellpadding, cellspacing, dir, entryClass, eventsQueue, fetchValue, first, for, frame, frequency, id, ignoreDupResponses, immediate, lang, limitToList, minChars, nothingLabel, onbeforedomupdate, oncomplete, onobjectchange, onselect, onsubmit, param, popupClass, popupStyle, process, reRender, rendered, requestDelay, rowClasses, rules, selectValueClass, selectedClass, selfRendered, shadowDepth, shadowOpacity, status, style, styleClass, suggestionAction, summary, timeout, title, tokens, usingSuggestObjects, var, zindex, &lt;/code>"
+					ENDTEXT="&lt;/suggestionbox>" ICON="%Icons%/JBoss RichFaces/suggestionBox"
+					NAME="suggestionbox" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;suggestionbox>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:columns&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:columns&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>begin, breakBefore, colspan, columns, comparator, dir, end, filterBy, filterEvent, filterExpression, filterMethod, filterValue, footerClass, headerClass, id, index, label, lang, rendered, rowspan, selfSorted, sortBy, sortExpression, sortIcon, sortIconAscending, sortIconDescending, sortOrder, sortable, style, styleClass, title, value, var, visible, width&lt;/code>"
+					ENDTEXT="&lt;/columns>" ICON="" NAME="columns" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;columns>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:calendar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:calendar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxSingle, binding, boundaryDatesMode, buttonClass, buttonIcon, buttonIconDisabled, buttonLabel, bypassUpdates, cellHeight, cellWidth, converter, converterMessage, currentDate, currentDateChangeListener, dataModel, datePattern, dayStyleClass, defaultTime, direction, disabled, enableManualInput, eventsQueue, firstWeekDay, focus, horizontalOffset, id, ignoreDupResponses, immediate, inputClass, inputSize, inputStyle, isDayEnabled, jointPoint, label, limitToList, locale, minDaysInFirstWeek, mode, monthLabels, monthLabelsShort, onbeforedomupdate, onchanged, oncollapse, oncomplete, oncurrentdateselect, oncurrentdateselected, ondatemouseout, ondatemouseover, ondateselect, ondateselected, onexpand, oninputblur, oninputchange, oninputclick, oninputfocus, oninputkeydown, oninputkeypress, oninputkeyup, oninputselect, ontimeselect, ontimeselected, popup, preloadDateRangeBegin, preloadDateRangeEnd, process, reRender, rendered, requestDelay, required, requiredMessage, resetTimeOnDateSelect, showApplyButton, showFooter, showHeader, showInput, showWeekDaysBar, showWeeksBar, status, style, styleClass, timeZone, timeout, todayControlMode, toolTipMode, validator, validatorMessage, value, valueChangeListener, verticalOffset, weekDayLabels, weekDayLabelsShort, zindex&lt;/code>"
+					ENDTEXT="&lt;/calendar>" ICON="%Icons%/JBoss RichFaces/Calendar"
+					NAME="calendar" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;calendar>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:componentControl&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:componentControl&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>attachTiming, attachTo, binding, disableDefault, event, for, id, name, operation, params, rendered&lt;/code>"
+					ENDTEXT="&lt;/componentControl>" ICON="" NAME="componentControl"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;componentControl>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:inputNumberSlider&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:inputNumberSlider&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, barClass, barStyle, binding, clientErrorMessage, converter, converterMessage, disabled, enableManualInput, handleClass, handleSelectedClass, id, immediate, inputClass, inputPosition, inputSize, inputStyle, label, maxValue, maxlength, minValue, onblur, onchange, onclick, ondblclick, onerror, onfocus, oninputclick, oninputdblclick, oninputkeydown, oninputkeypress, oninputkeyup, oninputmousedown, oninputmousemove, oninputmouseout, oninputmouseover, oninputmouseup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onslide, rendered, required, requiredMessage, showBoundaryValues, showInput, showToolTip, step, style, styleClass, tabindex, tipClass, tipStyle, validator, validatorMessage, value, valueChangeListener, width&lt;/code>"
+					ENDTEXT="&lt;/inputNumberSlider>" ICON="%Icons%/JBoss RichFaces/inputNumberSlider"
+					NAME="inputNumberSlider" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;inputNumberSlider>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:ajaxValidator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:ajaxValidator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxListener, binding, data, disableDefault, event, eventsQueue, focus, id, ignoreDupResponses, limitToList, onbeforedomupdate, oncomplete, onsubmit, reRender, rendered, requestDelay, status, summary, timeout&lt;/code>"
+					ENDTEXT="&lt;/ajaxValidator>" ICON="%Icons%/JSF Core/validator"
+					NAME="ajaxValidator" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;ajaxValidator>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dndParam&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dndParam&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered, type, value, &lt;/code>"
+					ENDTEXT="&lt;/dndParam>" ICON="%Icons%/JBoss RichFaces/dndParam"
+					NAME="dndParam" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dndParam>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:menuItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, disabled, eventsQueue, focus, icon, iconClass, iconDisabled, iconStyle, id, ignoreDupResponses, immediate, labelClass, limitToList, onbeforedomupdate, onclick, oncomplete, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, process, reRender, rendered, requestDelay, selectClass, selectStyle, status, style, styleClass, submitMode, target, timeout, value&lt;/code>"
+					ENDTEXT="&lt;/menuItem>" ICON="%Icons%/JBoss RichFaces/menuItem"
+					NAME="menuItem" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;menuItem>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:modalPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:modalPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>autosized, binding, controlsClass, headerClass, height, id, keepVisualState, label, left, minHeight, minWidth, moveable, onbeforehide, onbeforeshow, onhide, onmaskclick, onmaskcontextmenu, onmaskdblclick, onmaskmousedown, onmaskmousemove, onmaskmouseout, onmaskmouseover, onmaskmouseup, onmove, onresize, onshow, rendered, resizeable, shadowDepth, shadowOpacity, showWhenRendered, style, styleClass, top, tridentIVEngineSelectBehavior, trimOverlayedElements, validator, validatorMessage, value, visualOptions, width, zindex&lt;/code>"
+					ENDTEXT="&lt;/modalPanel>" ICON="%Icons%/JBoss RichFaces/modalPanel"
+					NAME="modalPanel" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;modalPanel>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:fileUpload&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:fileUpload&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptedTypes, accesskey, addButtonClass, addButtonClassDisabled, addControlLabel, ajaxSingle, allowFlash, alt, autoclear, binding, cancelEntryControlLabel, cleanButtonClass, cleanButtonClassDisabled, clearAllControlLabel, clearControlLabel, disabled, doneLabel, fileEntryClass, fileEntryClassDisabled, fileEntryControlClass, fileEntryControlClassDisabled, fileUploadListener, id, immediate, immediateUpload, listHeight, listWidth, locale, maxFilesQuantity, noDuplicate, onadd, onblur, onchange, onclear, onclick, ondblclick, onerror, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onsizerejected, ontyperejected, onupload, onuploadcanceled, onuploadcomplete, progressLabel, rendered, required, requiredMessage, sizeErrorLabel, status, stopButtonClass, stopButtonClassDisabled, stopControlLabel, stopEntryControlLabel, style, styleClass, tabindex, transferErrorLabel, uploadButtonClass, uploadButtonClassDisabled, uploadControlLabel, uploadData, uploadListClass, uploadListClassDisabled, validator, validatorMessage&lt;/code>"
+					ENDTEXT="&lt;/fileUpload>" ICON="" NAME="fileUpload" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;fileUpload>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tabPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tabPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>activeTabClass, binding, contentClass, contentStyle, converter, converterMessage, dir, disabledTabClass, headerAlignment, headerClass, headerSpacing, height, id, immediate, inactiveTabClass, label, lang, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, ontabchange, rendered, required, requiredMessage, selectedTab, style, styleClass, switchType, tabClass, title, validator, validatorMessage, value, valueChangeListener, width&lt;/code>"
+					ENDTEXT="&lt;/tabPanel>" ICON="%Icons%/JBoss RichFaces/tabPanel"
+					NAME="tabPanel" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;tabPanel>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:recursiveTreeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:recursiveTreeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, included, includedNode, includedRoot, nodes, rendered, roots, var&lt;/code>"
+					ENDTEXT="&lt;/recursiveTreeNodesAdaptor>" ICON="%Icons%/JBoss RichFaces/recursiveTreeNodesAdaptor"
+					NAME="recursiveTreeNodesAdaptor" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;recursiveTreeNodesAdaptor>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;%@ taglib uri=&quot;http://richfaces.org/rich&quot; prefix=&quot;rich&quot; %&amp;gt;&lt;/code>"
+					ENDTEXT="" ICON="%Icons%/Struts Common/taglib" NAME="JBoss RichFaces taglib"
+					REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;%@ taglib uri=&quot;http://richfaces.org/rich&quot; prefix=&quot;rich&quot; %>\\n|"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:contextMenu&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:contextMenu&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>attachTiming, attachTo, attached, binding, disableDefaultMenu, disabledItemClass, disabledItemStyle, event, hideDelay, id, itemClass, itemStyle, oncollapse, onexpand, ongroupactivate, onitemselect, onmousemove, onmouseout, onmouseover, popupWidth, rendered, selectItemClass, selectItemStyle, showDelay, style, styleClass, submitMode&lt;/code>"
+					ENDTEXT="&lt;/contextMenu>" ICON="%Icons%/JBoss RichFaces/contextMenu"
+					NAME="contextMenu" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;contextMenu>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:subTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:subTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, binding, columnClasses, componentState, filterMethod, filterValue, first, footerClass, headerClass, id, onRowClick, onRowDblClick, onRowMouseDown, onRowMouseMove, onRowMouseOut, onRowMouseOver, onRowMouseUp, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, rowClasses, rowKeyConverter, rowKeyVar, rows, selfSorted, sortExpression, sortMode, sortOrder, sortPriority, stateVar, value, var&lt;/code>"
+					ENDTEXT="&lt;/subTable>" ICON="%Icons%/JBoss RichFaces/dataTable"
+					NAME="subTable" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;subTable>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dropSupport&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dropSupport&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptCursors, acceptedTypes, action, actionListener, ajaxSingle, binding, bypassUpdates, cursorTypeMapping, data, disableDefault, dropListener, dropValue, eventsQueue, focus, id, ignoreDupResponses, immediate, limitToList, onbeforedomupdate, oncomplete, ondragenter, ondragexit, ondrop, ondropend, process, reRender, rejectCursors, rendered, requestDelay, status, timeout, typeMapping, value&lt;/code>"
+					ENDTEXT="&lt;/dropSupport>" ICON="%Icons%/JBoss RichFaces/dropSupport"
+					NAME="dropSupport" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dropSupport>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding&lt;/code>"
+					ENDTEXT="&lt;/dragListener>" ICON="%Icons%/JBoss RichFaces/dragListener"
+					NAME="dragListener" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dragListener>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelBar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelBar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, contentClass, contentStyle, converter, converterMessage, headerClass, headerClassActive, headerStyle, headerStyleActive, height, id, immediate, label, onclick, onitemchange, onmousemove, onmouseout, onmouseover, rendered, required, requiredMessage, selectedPanel, style, styleClass, validator, validatorMessage, value, valueChangeListener, width&lt;/code>"
+					ENDTEXT="&lt;/panelBar>" ICON="%Icons%/JBoss RichFaces/panelBar"
+					NAME="panelBar" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panelBar>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:nodeSelectListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:nodeSelectListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding&lt;/code>"
+					ENDTEXT="&lt;/nodeSelectListener>" ICON="" NAME="nodeSelectListener"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;nodeSelectListener>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:datascroller&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:datascroller&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, align, binding, boundaryControls, bypassUpdates, data, eventsQueue, fastControls, fastStep, focus, for, handleValue, id, ignoreDupResponses, immediate, inactiveStyle, inactiveStyleClass, limitToList, maxPages, onbeforedomupdate, onclick, oncomplete, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onpagechange, page, pageIndexVar, pagesVar, process, reRender, renderIfSinglePage, rendered, requestDelay, scrollerListener, selectedStyle, selectedStyleClass, status, stepControls, style, styleClass, tableStyle, tableStyleClass, timeout, value&lt;/code>"
+					ENDTEXT="&lt;/datascroller>" ICON="%Icons%/JBoss RichFaces/dataScroller"
+					NAME="datascroller" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;datascroller>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuSeparator /&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered&lt;/code>"
+					ENDTEXT="" ICON="%Icons%/JBoss RichFaces/menuSeparator" NAME="menuSeparator"
+					REFORMAT="no" SCOPE="project" STARTTEXT="&lt;menuSeparator/>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dropListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dropListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding&lt;/code>"
+					ENDTEXT="&lt;/dropListener>" ICON="%Icons%/JBoss RichFaces/dropListener"
+					NAME="dropListener" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dropListener>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragSupport&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragSupport&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, disableDefault, dragIndicator, dragListener, dragType, dragValue, eventsQueue, focus, grabCursors, grabbingCursors, id, ignoreDupResponses, immediate, limitToList, onbeforedomupdate, oncomplete, ondragend, ondragstart, ondropout, ondropover, process, reRender, rendered, requestDelay, status, timeout, value&lt;/code>"
+					ENDTEXT="&lt;/dragSupport>" ICON="%Icons%/JBoss RichFaces/dragSupport"
+					NAME="dragSupport" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dragSupport>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:virtualEarth&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:virtualEarth&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, dashboardSize, id, lat, lng, mapStyle, onLoadMap, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass, var, version, zoom&lt;/code>"
+					ENDTEXT="&lt;/virtualEarth>" ICON="%Icons%/JBoss RichFaces/virtualEarth"
+					NAME="virtualEarth" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;virtualEarth>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenuItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenuItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, disabled, disabledClass, disabledStyle, eventsQueue, focus, hoverClass, hoverStyle, icon, iconClass, iconDisabled, iconStyle, id, ignoreDupResponses, immediate, label, limitToList, mode, name, onbeforedomupdate, onclick, oncomplete, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, process, reRender, rendered, requestDelay, status, style, styleClass, target, timeout, value&lt;/code>"
+					ENDTEXT="&lt;/panelMenuItem>" ICON="%Icons%/JBoss RichFaces/panelMenuItem"
+					NAME="panelMenuItem" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panelMenuItem>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dropDownMenu&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dropDownMenu&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, direction, disabled, disabledItemClass, disabledItemStyle, disabledLabelClass, event, hideDelay, horizontalOffset, id, itemClass, itemStyle, jointPoint, oncollapse, onexpand, ongroupactivate, onitemselect, onmousemove, onmouseout, onmouseover, popupWidth, rendered, selectItemClass, selectItemStyle, selectedLabelClass, showDelay, style, styleClass, submitMode, value, verticalOffset&lt;/code>"
+					ENDTEXT="&lt;/dropDownMenu>" ICON="%Icons%/JBoss RichFaces/dropDownMenu"
+					NAME="dropDownMenu" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dropDownMenu>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:paint2D&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:paint2D&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>align, bgcolor, binding, border, cacheable, data, format, height, hspace, id, lang, paint, rendered, style, styleClass, title, value, vspace, width&lt;/code>"
+					ENDTEXT="&lt;/paint2D>" ICON="%Icons%/JBoss RichFaces/paint2D"
+					NAME="paint2D" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;paint2D>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataDefinitionList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataDefinitionList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, binding, columnClasses, componentState, dir, first, id, lang, rendered, rowClasses, rowKey, rowKeyConverter, rowKeyVar, rows, style, styleClass, title, value, var&lt;/code>"
+					ENDTEXT="&lt;/dataDefinitionList>" ICON="%Icons%/JBoss RichFaces/dataDefinitionList"
+					NAME="dataDefinitionList" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;dataDefinitionList>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:inputNumberSpinner&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:inputNumberSpinner&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, binding, clientErrorMessage, converter, converterMessage, cycled, disableBrowserAutoComplete, disabled, enableManualInput, id, immediate, inputClass, inputSize, inputStyle, label, maxValue, minValue, onblur, onchange, onclick, ondblclick, ondownclick, onerror, onfocus, oninputclick, oninputdblclick, oninputkeydown, oninputkeypress, oninputkeyup, oninputmousedown, oninputmousemove, oninputmouseout, oninputmouseover, oninputmouseup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onupclick, rendered, required, requiredMessage, step, style, styleClass, tabindex, validator, validatorMessage, value, valueChangeListener&lt;/code>"
+					ENDTEXT="&lt;/inputNumberSpinner>" ICON="%Icons%/JBoss RichFaces/inputNumberSpinner"
+					NAME="inputNumberSpinner" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;inputNumberSpinner>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataGrid&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataGrid&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, align, bgcolor, binding, border, captionClass, captionStyle, cellpadding, cellspacing, columnClasses, columns, componentState, dir, elements, first, footerClass, frame, headerClass, id, lang, onRowClick, onRowDblClick, onRowMouseDown, onRowMouseMove, onRowMouseOut, onRowMouseOver, onRowMouseUp, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, rowClasses, rowKey, rowKeyConverter, rowKeyVar, rules, stateVar, style, styleClass, summary, title, value, var, width&lt;/code>"
+					ENDTEXT="&lt;/dataGrid>" ICON="%Icons%/JBoss RichFaces/dataGrid"
+					NAME="dataGrid" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dataGrid>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:state&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:state&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered&lt;/code>"
+					ENDTEXT="&lt;/state>" ICON="" NAME="state" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;state>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:menuGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:menuGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, converter, direction, disabled, event, icon, iconClass, iconDisabled, iconFolder, iconFolderDisabled, iconStyle, id, labelClass, onclose, onmousemove, onmouseout, onmouseover, onopen, rendered, selectClass, selectStyle, showDelay, style, styleClass, &lt;/code>"
+					ENDTEXT="&lt;/menuGroup>" ICON="%Icons%/JBoss RichFaces/menuGroup"
+					NAME="menuGroup" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;menuGroup>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:messages&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:messages&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxRendered, binding, errorClass, errorLabelClass, errorMarkerClass, fatalClass, fatalLabelClass, fatalMarkerClass, for, globalOnly, id, infoClass, infoLabelClass, infoMarkerClass, keepTransient, labelClass, layout, level, markerClass, markerStyle, passedLabel, rendered, showDetail, showSummary, style, styleClass, title, tooltip, warnClass, warnLabelClass, warnMarkerClass&lt;/code>"
+					ENDTEXT="&lt;/messages>" ICON="%Icons%/JBoss RichFaces/messages"
+					NAME="messages" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;messages>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:comboBox&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:comboBox&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>align, binding, buttonClass, buttonDisabledClass, buttonDisabledStyle, buttonIcon, buttonIconDisabled, buttonIconInactive, buttonInactiveClass, buttonInactiveStyle, buttonStyle, converter, converterMessage, defaultLabel, directInputSuggestions, disabled, enableManualInput, filterNewValues, hideDelay, id, immediate, inputClass, inputDisabledClass, inputDisabledStyle, inputInactiveClass, inputInactiveStyle, inputStyle, itemClass, itemSelectedClass, listClass, listHeight, listStyle, listWidth, onblur, onchange, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onlistcall, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, rendered, required, requiredMessage, selectFirstOnUpdate, showDelay, style, styleClass, suggestionValues, tabindex, validator, validatorMessage, value, valueChangeListener, width&lt;/code>"
+					ENDTEXT="&lt;/comboBox>" ICON="%Icons%/Struts HTML/select" NAME="comboBox"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;comboBox>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:graphValidator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:graphValidator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, profile, summary, value&lt;/code>"
+					ENDTEXT="&lt;/graphValidator>" ICON="%Icons%/JSF Core/validator"
+					NAME="graphValidator" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;graphValidator>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataOrderedList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataOrderedList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, binding, dir, first, id, lang, rendered, rowClasses, rowKey, rowKeyConverter, rowKeyVar, rows, style, styleClass, title, type, value, var&lt;/code>"
+					ENDTEXT="&lt;/dataOrderedList>" ICON="%Icons%/JBoss RichFaces/dataOrderedList"
+					NAME="dataOrderedList" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dataOrderedList>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:inplaceInput&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:inplaceInput&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, cancelControlIcon, changedClass, changedHoverClass, controlClass, controlHoverClass, controlPressedClass, controlsHorizontalPosition, controlsVerticalPosition, converter, converterMessage, defaultLabel, editClass, editEvent, id, immediate, inputWidth, layout, maxInputWidth, minInputWidth, onblur, onchange, onclick, ondblclick, oneditactivated, oneditactivation, onfocus, oninputclick, oninputdblclick, oninputkeydown, oninputkeypress, oninputkeyup, oninputmousedown, oninputmousemove, oninputmouseout, oninputmouseover, oninputmouseup, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onviewactivated, onviewactivation, rendered, required, requiredMessage, saveControlIcon, selectOnEdit, showControls, styleClass, tabindex, validator, validatorMessage, value, valueChangeListener, viewClass, viewHoverClass&lt;/code>"
+					ENDTEXT="&lt;/inplaceInput>" ICON="" NAME="inplaceInput" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;inplaceInput>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:column&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:column&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, breakBefore, colspan, comparator, dir, filterBy, filterEvent, filterExpression, filterMethod, filterValue, footerClass, headerClass, id, label, lang, rendered, rowspan, selfSorted, sortBy, sortExpression, sortIcon, sortIconAscending, sortIconDescending, sortOrder, sortable, style, styleClass, title, visible, width&lt;/code>"
+					ENDTEXT="&lt;/column>" ICON="%Icons%/JBoss RichFaces/column" NAME="column"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;column>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:message&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:message&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxRendered, binding, errorClass, errorLabelClass, errorMarkerClass, fatalClass, fatalLabelClass, fatalMarkerClass, for, id, infoClass, infoLabelClass, infoMarkerClass, keepTransient, labelClass, level, markerClass, markerStyle, passedLabel, rendered, showDetail, showSummary, style, styleClass, title, tooltip, warnClass, warnLabelClass, warnMarkerClass&lt;/code>"
+					ENDTEXT="&lt;/message>" ICON="%Icons%/JBoss RichFaces/message"
+					NAME="message" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;message>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, binding, componentState, dir, first, id, lang, rendered, rowClasses, rowKey, rowKeyConverter, rowKeyVar, rows, stateVar, style, styleClass, title, type, value, var&lt;/code>"
+					ENDTEXT="&lt;/dataList>" ICON="%Icons%/JBoss RichFaces/dataList"
+					NAME="dataList" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dataList>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolBarGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolBarGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, itemSeparator, location, onclick, ondblclick, onitemclick, onitemdblclick, onitemkeydown, onitemkeypress, onitemkeyup, onitemmousedown, onitemmousemove, onitemmouseout, onitemmouseover, onitemmouseup, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, separatorClass, style, styleClass&lt;/code>"
+					ENDTEXT="&lt;/toolBarGroup>" ICON="%Icons%/JBoss RichFaces/toolBarGroup"
+					NAME="toolBarGroup" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;toolBarGroup>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenu&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenu&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, converter, converterMessage, disabled, disabledGroupClass, disabledGroupStyle, disabledItemClass, disabledItemStyle, event, expandMode, expandSingle, groupClass, groupStyle, hoveredGroupClass, hoveredGroupStyle, hoveredItemClass, hoveredItemStyle, iconCollapsedGroup, iconCollapsedTopGroup, iconDisabledGroup, iconDisabledItem, iconExpandedGroup, iconExpandedTopGroup, iconGroupPosition, iconGroupTopPosition, iconItem, iconItemPosition, iconItemTopPosition, iconTopDisableGroup, iconTopDisabledItem, iconTopItem, id, immediate, itemClass, itemStyle, label, mode, onclick, ondblclick, ongroupcollapse, ongroupexpand, onitemhover, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, required, requiredMessage, selectedChild, style, styleClass, topGroupClass, topGroupStyle, topItemClass, topItemStyle, validator, validatorMessage, value, valueChangeListener, width&lt;/code>"
+					ENDTEXT="&lt;/panelMenu>" ICON="%Icons%/JBoss RichFaces/panelMenu"
+					NAME="panelMenu" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panelMenu>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:jQuery&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:jQuery&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, name, rendered, selector, timing, &lt;/code>"
+					ENDTEXT="&lt;/jQuery>" ICON="" NAME="jQuery" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;jQuery>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:gmap&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:gmap&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, enableContinuousZoom, enableDoubleClickZoom, enableDragging, enableInfoWindow, gmapKey, gmapVar, id, lat, lng, locale, mapType, onclick, ondblclick, oninit, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, showGLargeMapControl, showGMapTypeControl, showGScaleControl, style, styleClass, warningMessage, zoom&lt;/code>"
+					ENDTEXT="&lt;/gmap>" ICON="%Icons%/JBoss RichFaces/gmap" NAME="gmap"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;gmap>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:orderingList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:orderingList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>activeItem, ajaxKeys, binding, bottomControlLabel, captionLabel, columnClasses, componentState, controlsHorizontalAlign, controlsType, controlsVerticalAlign, converter, downControlLabel, fastOrderControlsVisible, id, immediate, listHeight, listWidth, onbottomclick, onclick, ondblclick, ondownclick, onheaderclick, onmousemove, onmouseout, onmouseover, onorderchanged, ontopclick, onupclick, orderControlsVisible, rendered, required, rowClasses, rowKeyConverter, rowKeyVar, rows, selection, showButtonLabels, style, styleClass, topControlLabel, upControlLabel, validator, value, valueChangeListener, var&lt;/code>"
+					ENDTEXT="&lt;/orderingList>" ICON="%Icons%/JBoss RichFaces/orderingList"
+					NAME="orderingList" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;orderingList>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:inplaceSelect&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:inplaceSelect&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, cancelControlIcon, changedClass, controlClass, controlHoverClass, controlPressClass, controlsHorizontalPosition, controlsVerticalPosition, converter, converterMessage, defaultLabel, editClass, editEvent, id, immediate, layout, listHeight, listWidth, maxSelectWidth, minSelectWidth, onblur, onchange, onclick, ondblclick, oneditactivated, oneditactivation, onfocus, oninputblur, oninputclick, oninputdblclick, oninputfocus, oninputkeydown, oninputkeypress, oninputkeyup, oninputmousedown, oninputmousemove, oninputmouseout, oninputmouseover, oninputmouseup, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onviewactivated, onviewactivation, openOnEdit, rendered, required, requiredMessage, saveControlIcon, selectWidth, showControls, styleClass, tabindex, validator, validatorMessage, value, valueChangeListener, viewClass, viewHoverClass&lt;/code>"
+					ENDTEXT="&lt;/inplaceSelect>" ICON="" NAME="inplaceSelect"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;inplaceSelect>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:beanValidator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:beanValidator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, summary&lt;/code>"
+					ENDTEXT="&lt;/beanValidator>" ICON="%Icons%/JSF Core/validator"
+					NAME="beanValidator" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;beanValidator>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:effect&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:effect&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, disableDefault, event, for, id, name, params, rendered, targetId, type&lt;/code>"
+					ENDTEXT="&lt;/effect>" ICON="%Icons%/JBoss RichFaces/effect" NAME="effect"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;effect>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:separator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:separator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>align, binding, height, id, lineType, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass, title, width&lt;/code>"
+					ENDTEXT="&lt;/separator>" ICON="%Icons%/JBoss RichFaces/separator"
+					NAME="separator" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;separator>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolBar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolBar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, contentClass, contentStyle, height, id, itemSeparator, onclick, ondblclick, onitemclick, onitemdblclick, onitemkeydown, onitemkeypress, onitemkeyup, onitemmousedown, onitemmousemove, onitemmouseout, onitemmouseover, onitemmouseup, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, separatorClass, style, styleClass, width&lt;/code>"
+					ENDTEXT="&lt;/toolBar>" ICON="%Icons%/JBoss RichFaces/toolBar"
+					NAME="toolBar" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;toolBar>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dragIndicator&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dragIndicator&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptClass, binding, id, rejectClass, rendered, style, styleClass&lt;/code>"
+					ENDTEXT="&lt;/dragIndicator>" ICON="%Icons%/JBoss RichFaces/dragIndicator"
+					NAME="dragIndicator" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dragIndicator>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:insert&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:insert&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, content, encoding, errorContent, highlight, id, rendered, src&lt;/code>"
+					ENDTEXT="&lt;/insert>" ICON="" NAME="insert" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;insert>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:changeExpandListener&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:changeExpandListener&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding&lt;/code>"
+					ENDTEXT="&lt;/changeExpandListener>" ICON="" NAME="changeExpandListener"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;changeExpandListener>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:toolTip&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:toolTip&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, attached, binding, direction, disabled, event, followMouse, for, hideDelay, hideEvent, horizontalOffset, id, immediate, layout, mode, onclick, oncomplete, ondblclick, onhide, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onshow, rendered, showDelay, showEvent, style, styleClass, value, verticalOffset, zorder&lt;/code>"
+					ENDTEXT="&lt;/toolTip>" ICON="%Icons%/JBoss RichFaces/toolTip"
+					NAME="toolTip" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;toolTip>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:states&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:states&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered&lt;/code>"
+					ENDTEXT="&lt;/states>" ICON="" NAME="states" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;states>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>ajaxKeys, align, bgcolor, binding, border, captionClass, captionStyle, cellpadding, cellspacing, columnClasses, columns, columnsWidth, componentState, dir, first, footerClass, frame, headerClass, id, lang, onRowClick, onRowDblClick, onRowMouseDown, onRowMouseMove, onRowMouseOut, onRowMouseOver, onRowMouseUp, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, reRender, rendered, rowClasses, rowKeyConverter, rowKeyVar, rows, rules, sortMode, sortPriority, stateVar, style, styleClass, title, value, var, width&lt;/code>"
+					ENDTEXT="&lt;/dataTable>" ICON="%Icons%/JBoss RichFaces/dataTable"
+					NAME="dataTable" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;dataTable>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelBarItem&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelBarItem&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, contentClass, contentStyle, headerClass, headerClassActive, headerStyle, headerStyleActive, id, label, name, onenter, onleave, rendered&lt;/code>"
+					ENDTEXT="&lt;/panelBarItem>" ICON="%Icons%/JBoss RichFaces/panelBarItem"
+					NAME="panelBarItem" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panelBarItem>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:columnGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:columnGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, columnClasses, dir, filterMethod, filterValue, id, lang, rendered, rowClasses, selfSorted, sortOrder, style, styleClass, title&lt;/code>"
+					ENDTEXT="&lt;/columnGroup>" ICON="%Icons%/JBoss RichFaces/columnGroup"
+					NAME="columnGroup" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;columnGroup>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:treeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:treeNodesAdaptor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, includedNode, nodes, rendered, var&lt;/code>"
+					ENDTEXT="&lt;/treeNodesAdaptor>" ICON="%Icons%/JBoss RichFaces/treeNodesAdaptor"
+					NAME="treeNodesAdaptor" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;treeNodesAdaptor>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:treeNode&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:treeNode&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>acceptCursors, acceptedTypes, ajaxSingle, ajaxSubmitSelection, binding, bypassUpdates, changeExpandListener, cursorTypeMapping, data, dragIndicator, dragListener, dragType, dragValue, dropListener, dropValue, eventsQueue, focus, grabCursors, grabbingCursors, highlightedClass, icon, iconCollapsed, iconExpanded, iconLeaf, id, ignoreDupResponses, limitToList, nodeClass, nodeSelectListener, onbeforedomupdate, onclick, oncollapse, oncomplete, oncontextmenu, ondblclick, ondragend, ondragenter, ondragexit, ondragstart, ondrop, ondropend, ondropout, ondropover, onexpand, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselected, process, reRender, rejectCursors, rendered, requestDelay, selectedClass, status, timeout, type, typeMapping&lt;/code>"
+					ENDTEXT="&lt;/treeNode>" ICON="%Icons%/JBoss RichFaces/treeNode"
+					NAME="treeNode" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;treeNode>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:togglePanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:togglePanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, converter, converterMessage, id, immediate, initialState, label, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, required, requiredMessage, stateOrder, style, styleClass, switchType, validator, validatorMessage, value, valueChangeListener&lt;/code>"
+					ENDTEXT="&lt;/togglePanel>" ICON="%Icons%/JBoss RichFaces/togglePanel"
+					NAME="togglePanel" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;togglePanel>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panelMenuGroup&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panelMenuGroup&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, action, actionListener, ajaxSingle, align, alt, binding, bypassUpdates, converter, converterMessage, data, disabled, disabledClass, disabledStyle, eventsQueue, expandMode, expanded, focus, hoverClass, hoverStyle, iconClass, iconCollapsed, iconDisabled, iconExpanded, iconStyle, id, ignoreDupResponses, immediate, label, limitToList, maxlength, name, onbeforedomupdate, onblur, onchange, onclick, oncollapse, oncomplete, ondblclick, onexpand, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, process, reRender, rendered, requestDelay, required, requiredMessage, size, status, style, styleClass, tabindex, target, timeout, validator, validatorMessage, value, valueChangeListener&lt;/code>"
+					ENDTEXT="&lt;/panelMenuGroup>" ICON="%Icons%/JBoss RichFaces/panelMenuGroup"
+					NAME="panelMenuGroup" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panelMenuGroup>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:simpleTogglePanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:simpleTogglePanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bodyClass, bypassUpdates, data, eventsQueue, focus, headerClass, height, id, ignoreDupResponses, immediate, label, limitToList, onbeforedomupdate, onclick, oncollapse, oncomplete, ondblclick, onexpand, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, opened, openedSet, process, reRender, rendered, requestDelay, status, style, styleClass, switchType, timeout, value, width&lt;/code>"
+					ENDTEXT="&lt;/simpleTogglePanel>" ICON="%Icons%/JBoss RichFaces/simpleTogglePanel"
+					NAME="simpleTogglePanel" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;simpleTogglePanel>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:dataFilterSlider&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:dataFilterSlider&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, clientErrorMessage, data, endRange, eventsQueue, fieldStyleClass, filterBy, focus, for, forValRef, handleStyleClass, handleValue, id, ignoreDupResponses, immediate, increment, limitToList, manualInput, onSlideSubmit, onbeforedomupdate, onchange, onclick, oncomplete, ondblclick, onerror, oninputkeydown, oninputkeypress, oninputkeyup, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onslide, process, rangeStyleClass, reRender, rendered, requestDelay, sliderListener, startRange, status, storeResults, style, styleClass, submitOnSlide, timeout, trackStyleClass, trailer, trailerStyleClass, value, width&lt;/code>"
+					ENDTEXT="&lt;/dataFilterSlider>" ICON="%Icons%/JBoss RichFaces/dataFilterSlider"
+					NAME="dataFilterSlider" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;dataFilterSlider>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:progressBar&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:progressBar&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>actionListener, ajaxSingle, binding, bypassUpdates, completeClass, data, enabled, eventsQueue, finishClass, focus, id, ignoreDupResponses, immediate, initialClass, interval, label, limitToList, maxValue, minValue, mode, onbeforedomupdate, onclick, oncomplete, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onsubmit, parameters, process, progressVar, reRender, reRenderAfterComplete, remainClass, rendered, status, style, styleClass, timeout, title, value&lt;/code>"
+					ENDTEXT="&lt;/progressBar>" ICON="%Icons%/JBoss RichFaces/progressBar"
+					NAME="progressBar" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;progressBar>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:listShuttle&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:listShuttle&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>activeItem, ajaxKeys, binding, bottomControlClass, bottomControlLabel, columnClasses, componentState, controlsType, controlsVerticalAlign, converter, copyAllControlClass, copyAllControlLabel, copyControlClass, copyControlLabel, disabledControlClass, downControlClass, downControlLabel, fastMoveControlsVisible, fastOrderControlsVisible, first, id, immediate, listClass, listsHeight, moveControlsVisible, onblur, onbottomclick, onclick, oncopyallclick, oncopyclick, ondblclick, ondownclick, onfocus, onlistchanged, onmousemove, onmouseout, onmouseover, onorderchanged, onremoveallclick, onremoveclick, ontopclick, onupclick, orderControlsVisible, removeAllControlClass, removeAllControlLabel, removeControlClass, removeControlLabel, rendered, required, rowClasses, rowKeyConverter, rowKeyVar, rows, showButtonLabels, sourceCaptionLabel, sourceListWidth, sourceRequired, sourceSelection, sourceValue, style, styleClass, switchByClick, targetCaptionLabel, targetListWidth, targetRequired, targetSelection, targetValue, topControlClass, topControlLabel, upControlClass, upControlLabel, validator, valueChangeListener, var&lt;/code>"
+					ENDTEXT="&lt;/listShuttle>" ICON="%Icons%/JBoss RichFaces/listShuttle"
+					NAME="listShuttle" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;listShuttle>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:tab&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:tab&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, disabled, eventsQueue, focus, id, ignoreDupResponses, immediate, label, labelWidth, limitToList, name, onbeforedomupdate, onclick, oncomplete, ondblclick, onkeydown, onkeypress, onkeyup, onlabelclick, onlabeldblclick, onlabelkeydown, onlabelkeypress, onlabelkeyup, onlabelmousedown, onlabelmousemove, onlabelmouseup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, ontabenter, ontableave, process, reRender, rendered, requestDelay, status, style, styleClass, switchType, timeout, title&lt;/code>"
+					ENDTEXT="&lt;/tab>" ICON="%Icons%/JBoss RichFaces/tab" NAME="tab"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;tab>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:pickList&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:pickList&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, controlClass, converter, converterMessage, copyAllControlLabel, copyControlLabel, disabled, disabledStyle, disabledStyleClass, enabledStyle, enabledStyleClass, id, immediate, listClass, listsHeight, moveControlsVerticalAlign, onblur, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onlistchanged, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, removeAllControlLabel, removeControlLabel, rendered, required, requiredMessage, showButtonsLabel, sourceListWidth, style, styleClass, switchByClick, targetListWidth, title, validator, validatorMessage, value, valueChangeListener&lt;/code>"
+					ENDTEXT="&lt;/pickList>" ICON="%Icons%/JBoss RichFaces/pickList"
+					NAME="pickList" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;pickList>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:extendedDataTable&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:extendedDataTable&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>activeClass, activeRowKey, ajaxKeys, align, bgcolor, binding, border, captionClass, captionStyle, cellpadding, cellspacing, columnClasses, componentState, dir, first, footerClass, frame, groupingColumn, headerClass, height, id, lang, onRowClick, onRowDblClick, onRowMouseDown, onRowMouseMove, onRowMouseOut, onRowMouseOver, onRowMouseUp, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselectionchange, rendered, rowClasses, rowKeyConverter, rowKeyVar, rows, rules, selectedClass, selection, selectionMode, sortMode, sortPriority, stateVar, style, styleClass, tableState, title, value, var, width&lt;/code>"
+					ENDTEXT="&lt;/extendedDataTable>" ICON="%Icons%/JBoss RichFaces/dataTable"
+					NAME="extendedDataTable" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;extendedDataTable>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:spacer&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:spacer&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, height, id, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass, title, width&lt;/code>"
+					ENDTEXT="&lt;/spacer>" ICON="%Icons%/JBoss RichFaces/spacer" NAME="spacer"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;spacer>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:panel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:panel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, bodyClass, header, headerClass, id, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass&lt;/code>"
+					ENDTEXT="&lt;/panel>" ICON="%Icons%/JBoss RichFaces/panel" NAME="panel"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panel>" large-icon=""
+					model-entity="SharableMacroHTML" />
+			</GroupHTML>
 			<GroupHTML HIDDEN="no" ICON="" NAME="Seam" PREFIX="s"
 				SCOPE="project" URI="http://jboss.com/products/seam/taglib"
 				add_taglib="true" library-version="" model-entity="SharableGroupHTML">
