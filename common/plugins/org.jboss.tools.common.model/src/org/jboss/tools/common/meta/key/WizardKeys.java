@@ -162,4 +162,30 @@ public class WizardKeys {
 		return item.getDisplayName();
 	}
 
+	public static String getVisualListValue(XAttribute attr, String value) {
+		if(attr == null || value == null || value.length() == 0) return value;
+		String keyPart = toKey(value);
+		String module = attr.getModelEntity().getModule();
+		String key1 = module + "." + "lists." + keyPart;
+		String result = WizardKeys.getString(key1);
+		if(result != null) return result;
+		String key2 = "lists." + keyPart;
+		result = WizardKeys.getString(key2);
+		if(result != null) return result;
+		return value;		
+	}
+
+	public static String toKey(String s) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if(c == '.' || Character.isJavaIdentifierPart(c)) {
+				sb.append(c);
+			} else {
+				sb.append('_');
+			}
+		}
+		return sb.toString();
+	}
+
 }

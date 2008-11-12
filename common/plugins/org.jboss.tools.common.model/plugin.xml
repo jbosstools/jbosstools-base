@@ -50,6 +50,7 @@
       <keys path="help/keys-model.properties"/>
       <keys path="help/keys-model-attrs.properties"/>
       <keys path="help/keys-model-menu.properties"/>
+      <keys path="help/keys-model-lists.properties"/>
    </extension>
    <extension id="modelnature" point="org.eclipse.core.resources.natures">
       <runtime>
