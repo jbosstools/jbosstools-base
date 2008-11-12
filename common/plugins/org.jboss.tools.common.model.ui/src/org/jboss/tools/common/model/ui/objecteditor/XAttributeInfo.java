@@ -10,10 +10,15 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.objecteditor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAdapter;
 import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
 
 import org.jboss.tools.common.meta.*;
+import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintAList;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.*;
 
 public class XAttributeInfo {
@@ -22,10 +27,26 @@ public class XAttributeInfo {
 	String value;
 	IPropertyEditor propertyEditor;
 	
+	Map<String, String> visualToModel = null;
+	Map<String, String> modelToVisual = null;
+	
 	public XAttributeInfo(XModelObject object, String name) {
 		this.object = object;
 		this.name = name;
 		this.value = getValue();
+		
+		XAttribute a = object.getModelEntity().getAttribute(name);
+		visualToModel = null;
+		if(a != null && a.getConstraint() instanceof XAttributeConstraintAList) {
+			visualToModel = new HashMap<String, String>();
+			modelToVisual = new HashMap<String, String>();
+			String[] vs = ((XAttributeConstraintAList)a.getConstraint()).getValues();
+			for (int i = 0; i < vs.length; i++) {
+				String vv = WizardKeys.getVisualListValue(a, vs[i]);
+				visualToModel.put(vv, vs[i]);
+				modelToVisual.put(vs[i], vv);
+			}
+		}
 	}
 	
 	public XModelObject getObject() {
@@ -37,7 +58,9 @@ public class XAttributeInfo {
 	}
 	
 	public String getValue() {
-		return object.getAttributeValue(name);
+		String v = object.getAttributeValue(name);
+		if(modelToVisual != null && v != null && modelToVisual.containsKey(v)) v = modelToVisual.get(v);
+		return v;
 	}
 	
 	public boolean isEditable() {
@@ -47,16 +70,20 @@ public class XAttributeInfo {
 	}
 	
 	public void setValue(String value) {
-		this.value = value; 
+		this.value = value;
 	}
 	
 	public void commit() throws XModelException {
+		String modelValue = value;
+		if(visualToModel != null && visualToModel.containsKey(value)) {
+			modelValue = visualToModel.get(value);
+		}
 		if(propertyEditor != null && propertyEditor.getInput() instanceof IModelPropertyEditorAdapter) {
 			IModelPropertyEditorAdapter adapter = (IModelPropertyEditorAdapter)propertyEditor.getInput();
-			adapter.setValue(this.value);
+			adapter.setValue(modelValue);
 			adapter.store();
 		} else {
-			object.getModel().editObjectAttribute(object, name, value);
+			object.getModel().editObjectAttribute(object, name, modelValue);
 		}
 		value = getValue();
 	}

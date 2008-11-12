@@ -13,6 +13,8 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 import java.beans.PropertyChangeEvent;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintAList;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
@@ -53,7 +55,15 @@ public abstract class ValueEditor extends PropertyEditor { // {implements ICellE
 			if (cellEditor!=null) {
 				IValueProvider valueProvider = (IValueProvider)getAdapter(IValueProvider.class);
 //				IValueChangeListener valueChangeListener = (IValueChangeListener)getAdapter(IValueChangeListener.class);
-				cellEditor.setValue(valueProvider.getValue());
+				
+				Object value = valueProvider.getValue();
+				if(getInput() instanceof DefaultValueAdapter) {
+					DefaultValueAdapter a = (DefaultValueAdapter)getInput();
+					if(a.getAttribute().getConstraint() instanceof XAttributeConstraintAList) {
+						value = WizardKeys.getVisualListValue(a.getAttribute(), value.toString());
+					}
+				}
+				cellEditor.setValue(value);
 				//cellEditor.addListener(this);
 			}
 		}

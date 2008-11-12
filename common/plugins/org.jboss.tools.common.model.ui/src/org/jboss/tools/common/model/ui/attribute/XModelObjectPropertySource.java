@@ -16,6 +16,8 @@ import org.jboss.tools.common.model.util.XModelTreeListenerSWTASync;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.*;
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintAList;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
@@ -48,6 +50,10 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 	public Object getPropertyValue(Object id) {
 		String n = getAttributeNameById(id);
 		String v = modelObject.getAttributeValue(n);
+		XAttribute a = modelObject.getModelEntity().getAttribute(n);
+		if(a != null && v != null && a.getConstraint() instanceof XAttributeConstraintAList) {
+			v = WizardKeys.getVisualListValue(a, v);
+		}
 		cachedValues.setProperty(n, "" + v);
 		return v;
 	}
@@ -83,6 +89,7 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 		String v = cachedValues.getProperty(n);
 		if(value.equals(v)) return;
 		cachedValues.setProperty(n, "" + value);
+		value = fromVisualToModel(n, value.toString());
 		if(modelObject.isActive()) {
 			try {
 				modelObject.getModel().editObjectAttribute(modelObject, n, value.toString());
@@ -95,6 +102,17 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 		
 	}
 
+	private String fromVisualToModel(String n, String value) {
+		XAttribute a = modelObject.getModelEntity().getAttribute(n);
+		if(a != null && value != null && a.getConstraint() instanceof XAttributeConstraintAList) {
+			String[] vs = ((XAttributeConstraintAList)a.getConstraint()).getValues();
+			for (int i = 0; i < vs.length; i++) {
+				String v = WizardKeys.getVisualListValue(a, vs[i]);
+				if(value.equals(v)) return vs[i];
+			}
+		}
+		return value;
+	}
 	// custom methods
 
 	public void setModelObject(XModelObject object) {

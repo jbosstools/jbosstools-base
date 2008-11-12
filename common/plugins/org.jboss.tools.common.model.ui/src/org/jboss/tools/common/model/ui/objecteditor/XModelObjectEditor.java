@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintAList;
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -126,7 +127,11 @@ public class XModelObjectEditor {
 				return labelText;
 
 			}
-			return "" + object.getAttributeValue(attributes[r].getName());
+			String v = "" + object.getAttributeValue(attributes[r].getName());
+			if(attributes[r].getConstraint() instanceof XAttributeConstraintAList) {
+				v = WizardKeys.getVisualListValue(attributes[r], v);
+			}
+			return v;
 		}
 
 		public Object getDataAt(int r) {
