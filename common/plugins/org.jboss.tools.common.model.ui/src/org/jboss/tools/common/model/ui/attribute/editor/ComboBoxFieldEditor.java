@@ -49,6 +49,7 @@ import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
 import org.jboss.tools.common.model.ui.attribute.IListContentProvider;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.jboss.tools.common.model.ui.widgets.BorderedControl;
@@ -255,13 +256,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			
 			
 			SimpleContentProposalProvider cpp = new SimpleContentProposalProvider(set.toArray(new String[0]));
-			KeyStroke ks = null;
-			
-			try {
-				ks = KeyStroke.getInstance("Ctrl+Space");
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			KeyStroke ks = AttributeContentProposalProviderFactory.getCtrlSpaceKeyStroke();
 			
 			ContentProposalAdapter adapter = new ContentProposalAdapter(
 				comboField,

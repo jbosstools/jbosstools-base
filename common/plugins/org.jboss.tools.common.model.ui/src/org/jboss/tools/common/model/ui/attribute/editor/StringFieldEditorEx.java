@@ -12,12 +12,21 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
+import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
+import org.jboss.tools.common.model.ui.attribute.IAttributeContentProposalProvider;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.IContentProposalProvider;
+import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -132,6 +141,13 @@ public class StringFieldEditorEx extends StringFieldEditor implements IFieldEdit
 			}
 		}
 		return oldTextValue != null && oldTextValue.equals(newValue);
+	}
+
+	protected void addContentAssist(Text text) {
+		if(propertyEditor != null && propertyEditor.getInput() instanceof DefaultValueAdapter) {
+			DefaultValueAdapter valueAdapter = (DefaultValueAdapter)propertyEditor.getInput();
+			AttributeContentProposalProviderFactory.registerContentAssist(valueAdapter, text);
+		}
 	}
 
 }

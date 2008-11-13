@@ -10,6 +10,12 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute.editor;
 
+import java.util.ArrayList;
+
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.IContentProposal;
+import org.eclipse.jface.fieldassist.IContentProposalProvider;
+import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -214,6 +220,9 @@ public class StringFieldEditor extends ExtendedFieldEditor {
 			if(textLimit > 0){//Only set limits above 0 - see SWT spec
 				textField.setTextLimit(textLimit);
 			}
+
+			addContentAssist(textField);
+
 		} else {
 			checkParent(textControl, parent);
 		}
@@ -229,6 +238,9 @@ public class StringFieldEditor extends ExtendedFieldEditor {
 		});
 		return textControl;
 	}
+
+	protected void addContentAssist(Text text) {}
+
 	
 	/**
 	 * We cannot controls to provide READ-ONLY property on the fly.

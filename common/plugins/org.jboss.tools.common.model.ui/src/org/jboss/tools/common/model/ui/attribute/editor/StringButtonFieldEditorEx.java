@@ -16,6 +16,7 @@ import java.beans.PropertyChangeSupport;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
 import org.eclipse.jface.action.IAction;
@@ -396,4 +397,12 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 		}
 		return oldTextValue != null && oldTextValue.equals(newValue);
 	}
+
+	protected void addContentAssist(Text text) {
+		if(propertyEditor != null && propertyEditor.getInput() instanceof DefaultValueAdapter) {
+			DefaultValueAdapter valueAdapter = (DefaultValueAdapter)propertyEditor.getInput();
+			AttributeContentProposalProviderFactory.registerContentAssist(valueAdapter, text);
+		}
+	}
+
 }
