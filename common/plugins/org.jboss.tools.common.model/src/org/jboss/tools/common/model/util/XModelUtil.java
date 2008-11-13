@@ -19,6 +19,9 @@ import org.jboss.tools.common.model.impl.*;
 
 public class XModelUtil {
 	private static final String DEFAULT_MODEL_VERSION = "5.0";
+	
+	private static final String PROPERTIES_ACTION = "Properties/Properties";
+	private static final String EDIT_ACTION = "5.0";
 
     public static void addModifyListener(XModel model, Object listener) {
         RootImpl impl = (RootImpl)model.getRoot();
@@ -37,11 +40,11 @@ public class XModelUtil {
 	}
 	
 	public static void openProperyDialog(XModelObject object){
-		XActionInvoker.invoke("Properties/Properties", object, new Properties());
+		XActionInvoker.invoke(PROPERTIES_ACTION, object, new Properties());
 	}
 	
 	public static void openEditor(XModelObject object){
-		XActionInvoker.invoke("Edit", object, null);
+		XActionInvoker.invoke(EDIT_ACTION, object, null);
 	}
 }
 
