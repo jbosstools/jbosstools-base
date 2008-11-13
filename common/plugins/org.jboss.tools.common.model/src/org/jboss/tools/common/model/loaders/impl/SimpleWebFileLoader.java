@@ -49,6 +49,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
         String body = XModelObjectLoaderUtil.getTempBody(object);
         Document doc = loadDocument(object, body);
         if(doc == null) {
+        	XModelObjectLoaderUtil.addRequiredChildren(object);
         	return;
         }
         Element element = doc.getDocumentElement();
