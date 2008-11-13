@@ -21,7 +21,7 @@ public class XModelUtil {
 	private static final String DEFAULT_MODEL_VERSION = "5.0";
 	
 	private static final String PROPERTIES_ACTION = "Properties/Properties";
-	private static final String EDIT_ACTION = "5.0";
+	private static final String EDIT_ACTION = "Edit";
 
     public static void addModifyListener(XModel model, Object listener) {
         RootImpl impl = (RootImpl)model.getRoot();
