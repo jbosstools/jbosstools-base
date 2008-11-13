@@ -71,7 +71,6 @@ public class AttributeContentProposalProviderFactory {
 		if (!ps.isEmpty()) {
 			control.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
-					System.out.println("dispose");
 					for (IAttributeContentProposalProvider p : ps) {
 						p.dispose();
 					}
@@ -81,6 +80,7 @@ public class AttributeContentProposalProviderFactory {
 	}
 
 	public List<IAttributeContentProposalProvider> getContentProposalProviders(XModelObject object, XAttribute attribute) {
+		//TODO
 		if(true) {
 			List<IAttributeContentProposalProvider> list = new ArrayList<IAttributeContentProposalProvider>();
 			list.add(new TestAttributeContentProposalProvider());
