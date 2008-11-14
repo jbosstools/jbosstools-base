@@ -9,6 +9,7 @@
    <extension-point id="metaTemplates" name="Meta Templates" schema="schema/metaTemplates.exsd"/>
    <extension-point id="InsertTagWizard" name="InsertTagWizard" schema="schema/InsertTagWizard.exsd"/>
    <extension-point id="labelDecorator" name="Model Object Label Decorator" schema="schema/labelDecorator.exsd"/>
+   <extension-point id="attributeContentProposalProviders" name="Attribute Content Proposal Providers" schema="schema/attributeContentProposalProviders.exsd"/>
 
    <extension point="org.eclipse.ui.elementFactories">
       <factory class="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory" id="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory">
