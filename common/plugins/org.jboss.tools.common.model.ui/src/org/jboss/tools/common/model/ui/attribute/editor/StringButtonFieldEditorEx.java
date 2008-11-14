@@ -285,11 +285,12 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 				getLabelAction().setEnabled((value!=null && value.length()>0));
 			}
 		}
-		
-		IContentAssistProcessor processor = (IContentAssistProcessor)propertyEditor.getAdapter(IContentAssistProcessor.class);
-		if(processor != null) {
-			ControlContentAssistHelper.createTextContentAssistant(getTextField(), processor);
-		}
+
+// deprecated - now addContentAssist works
+//		IContentAssistProcessor processor = (IContentAssistProcessor)propertyEditor.getAdapter(IContentAssistProcessor.class);
+//		if(processor != null) {
+//			ControlContentAssistHelper.createTextContentAssistant(getTextField(), processor);
+//		}
 		
 		return composite;
 	}

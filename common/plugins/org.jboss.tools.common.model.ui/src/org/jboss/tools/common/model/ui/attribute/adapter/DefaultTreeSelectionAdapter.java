@@ -87,7 +87,9 @@ public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements 
 		if (adapter == IActionProvider.class) {
 			return getActionProvider();
 		}
+
 		if(adapter == IContentAssistProcessor.class) {
+			//deprecated, replaced by AttributeContentProposalProviderFactory
 			DefaultTreeSelectionContentAssistProcessor processor = new DefaultTreeSelectionContentAssistProcessor();
 			ITreeContentProvider tree = getTreeContentProvider();
 			if(tree instanceof DefaultXAttributeTreeContentProvider) {
@@ -97,6 +99,7 @@ public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements 
 				return null;
 			}
 		}
+
 		Assert.isTrue(true, "DefaultTreeSelectionAdapter instance itself cannot provide adapter for "+adapter.getName());
 		return null;
 	}

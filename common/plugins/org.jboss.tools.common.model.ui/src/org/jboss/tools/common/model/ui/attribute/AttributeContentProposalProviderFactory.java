@@ -129,6 +129,27 @@ public class AttributeContentProposalProviderFactory {
 		
 		return result;
 	}
+
+	public static IContentProposal makeContentProposal(final String proposal, final String label) {
+		return new IContentProposal() {
+			public String getContent() {
+				return proposal;
+			}
+
+			public String getDescription() {
+				return null;
+			}
+
+			public String getLabel() {
+				return label;
+			}
+
+			public int getCursorPosition() {
+				return proposal.length();
+			}
+		};
+	}
+
 }
 
 /**
@@ -153,7 +174,7 @@ class TestAttributeContentProposalProvider implements IAttributeContentProposalP
 				ArrayList<IContentProposal> ps = new ArrayList<IContentProposal>();
 				
 				if(position <= contents.length() && position > 3 && "test".equals(contents.substring(position - 4, position))) {
-					ps.add(makeContentProposal("aaa", ".aaa"));
+					ps.add(AttributeContentProposalProviderFactory.makeContentProposal("aaa", ".aaa"));
 				}
 				
 				return ps.toArray(new IContentProposal[0]);
@@ -169,26 +190,5 @@ class TestAttributeContentProposalProvider implements IAttributeContentProposalP
 
 	public void dispose() {
 	}
-
-	private IContentProposal makeContentProposal(final String proposal, final String label) {
-		return new IContentProposal() {
-			public String getContent() {
-				return proposal;
-			}
-
-			public String getDescription() {
-				return null;
-			}
-
-			public String getLabel() {
-				return label;
-			}
-
-			public int getCursorPosition() {
-				return proposal.length();
-			}
-		};
-	}
-
 
 }

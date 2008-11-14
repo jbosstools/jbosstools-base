@@ -494,4 +494,9 @@
             pattern="org\.jboss\.tools\.jst\.web\.ui/.*SaveProjectAsTemplateActionDelegate"/>
    </extension>
 
+ <extension
+       point="org.jboss.tools.common.model.ui.attributeContentProposalProviders">
+    <provider class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultTreeSelectionContentAssistProvider"/>
+ </extension>
+
 </plugin>
