@@ -53,10 +53,15 @@ public abstract class ResourceReferenceList {
 		}
 		return -1;
 	}
-	
+		/**
+		 * Returns all resources for current file
+		 * @param file
+		 * @return
+		 */
 	public ResourceReference[] getAllResources(IFile file) {
-		Set locations = new HashSet();
-		List css = new ArrayList();
+		Set<String> locations = new HashSet<String>();
+		List<ResourceReference> css = new ArrayList<ResourceReference>();
+		
 		if(file.getProject() != null) {
 			String[] dcss = getDeclaredResources(file.getProject());
 			for (int i = 0; i < dcss.length; i++) {
@@ -86,7 +91,7 @@ public abstract class ResourceReferenceList {
 			locations.add(dcss[i]);
 			css.add(ref);
 		}
-		return (ResourceReference[])css.toArray(new ResourceReference[0]);		
+		return css.toArray(new ResourceReference[0]);		
 	}
 	
 	private  String[] getDeclaredResources(IResource resource) {
