@@ -22,10 +22,14 @@ import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.fieldassist.IControlContentAdapter;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Combo;
@@ -76,6 +80,7 @@ public class AttributeContentProposalProviderFactory {
 		AttributeContentProposalProviderFactory factory = new AttributeContentProposalProviderFactory();
 		final List<IAttributeContentProposalProvider> ps = factory
 				.getContentProposalProviders(object, attr);
+		boolean added = false;
 		for (IAttributeContentProposalProvider p : ps) {
 			p.init(object, attr);
 			IContentProposalProvider cpp = p.getContentProposalProvider();
@@ -89,6 +94,7 @@ public class AttributeContentProposalProviderFactory {
 				null);
 			adapter.setPropagateKeys(true);
 			adapter.setProposalAcceptanceStyle(p.getProposalAcceptanceStyle());
+			added = true;
 		}
 		if (!ps.isEmpty()) {
 			control.addDisposeListener(new DisposeListener() {
@@ -98,6 +104,21 @@ public class AttributeContentProposalProviderFactory {
 					}
 				}
 			});
+		}
+		if(added) {
+			int bits = SWT.TOP | SWT.LEFT;
+			ControlDecoration controlDecoration = new ControlDecoration(control, bits);
+			// Configure text widget decoration
+			// No margin
+			controlDecoration.setMarginWidth(0);
+			// Custom hover tip text
+			controlDecoration.setDescriptionText("code assist" /*PDEUIMessages.PDEJavaHelper_msgContentAssistAvailable*/);
+			// Custom hover properties
+			controlDecoration.setShowHover(true);
+			controlDecoration.setShowOnlyOnFocus(true);
+			// Hover image to use
+			FieldDecoration contentProposalImage = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL);
+			controlDecoration.setImage(contentProposalImage.getImage());
 		}
 	}
 
