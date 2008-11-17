@@ -56,6 +56,15 @@ public class AttributeContentProposalProviderFactory {
 	}
 
 	public static void registerContentAssist(DefaultValueAdapter valueAdapter, Control control) {
+		XModelObject object = valueAdapter.getModelObject();
+		XAttribute attr = valueAdapter.getAttribute();
+		if (attr == null && valueAdapter.getAttributeData() != null) {
+			attr = valueAdapter.getAttributeData().getAttribute();
+		}
+		registerContentAssist(object, attr, control);
+	}
+
+	public static void registerContentAssist(XModelObject object, XAttribute attr, Control control) {
 		IControlContentAdapter controlAdapter = control instanceof Text 
 			? new TextContentAdapter()
 			: control instanceof Combo
@@ -63,11 +72,6 @@ public class AttributeContentProposalProviderFactory {
 			: null;
 		if(controlAdapter == null) {
 			return;
-		}
-		XModelObject object = valueAdapter.getModelObject();
-		XAttribute attr = valueAdapter.getAttribute();
-		if (attr == null && valueAdapter.getAttributeData() != null) {
-			attr = valueAdapter.getAttributeData().getAttribute();
 		}
 		AttributeContentProposalProviderFactory factory = new AttributeContentProposalProviderFactory();
 		final List<IAttributeContentProposalProvider> ps = factory
