@@ -93,6 +93,18 @@ public class JavaHyperlinkCellEditor extends DialogCellEditorEx
 	String textCache = null;
 	long timeStamp = -1;
 	
+	public boolean canCreateClass() {
+	    String text = (getTextField() != null) ? getTextField().getText()
+	    		: (valueProvider != null) ? valueProvider.getStringValue(true) : null;
+	    if(text == null) return false;
+	    if(text.length() == 0) return true;
+	    for (int i = 0; i < text.length(); i++) {
+	    	char ch = text.charAt(i);
+	    	if(ch != '.' && !Character.isJavaIdentifierPart(ch)) return false;
+	    }
+	    return true;
+	}
+
 	public boolean classExists() {
 	    String text = (getTextField() != null) ? getTextField().getText()
 	    		: (valueProvider != null) ? valueProvider.getStringValue(true) : null;

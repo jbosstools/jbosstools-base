@@ -203,30 +203,30 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 		return control;
 	}
 	
-	
 	public Control createTextControl(Composite parent) {
 		Control control = super.createTextControl(parent);
-        IPackageFragmentRoot root = (project == null) ? null : JavaAdapter.getInstance().getPackageFragmentRoot(project);
-        if (root != null) {
-    		String pkg = null;
-    		if(cpp != null) {
-    			pkg = cpp.getContextPackage();
-    		}
-    		if(pkg == null) pkg = "";
-    		JavaTypeCompletionProcessor contentAssistentProcessor = new JavaTypeCompletionProcessor(false, false, pkg.length() == 0);
-       		IPackageFragment currentPackage = root.getPackageFragment(pkg);
-       		contentAssistentProcessor.setPackageFragment(currentPackage);
-            Text text = getTextField();
-            text.setData("JavaHyperlinkLineFieldEditor", this);
-    		ControlContentAssistHelper.createTextContentAssistant(getTextField(), contentAssistentProcessor, JavaHyperlinkCueLabelProvider.INSTANCE);
-        }
-		return control;
+        Text text = getTextField();
+        text.setData("JavaHyperlinkLineFieldEditor", this);
+
+        return control;
 	}
 	
 	boolean classExists;
 	String textCache = null;
 	long timeStamp = -1;
-	
+
+	public boolean canCreateClass() {
+	    String text = (getTextField() != null) ? getTextField().getText()
+	    		: (valueProvider != null) ? valueProvider.getStringValue(true) : null;
+	    if(text == null) return false;
+	    if(text.length() == 0) return true;
+	    for (int i = 0; i < text.length(); i++) {
+	    	char ch = text.charAt(i);
+	    	if(ch != '.' && !Character.isJavaIdentifierPart(ch)) return false;
+	    }
+	    return true;
+	}
+
 	public boolean classExists() {
 	    String text = (getTextField() != null) ? getTextField().getText()
 	    		: (valueProvider != null) ? valueProvider.getStringValue(true) : null;

@@ -497,6 +497,7 @@
  <extension
        point="org.jboss.tools.common.model.ui.attributeContentProposalProviders">
     <provider class="org.jboss.tools.common.model.ui.attribute.adapter.DefaultTreeSelectionContentAssistProvider"/>
+    <provider class="org.jboss.tools.common.model.ui.attribute.adapter.JavaClassContentAssistProvider"/>
  </extension>
 
 </plugin>

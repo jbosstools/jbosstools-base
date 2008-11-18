@@ -14,6 +14,7 @@ import java.util.*;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.*;
@@ -100,6 +101,10 @@ public class DefaultTreeSelectionContentAssistProvider implements IAttributeCont
 		this.object = object;
 		this.attribute = attribute;
 		treeProvider = new DefaultXAttributeTreeContentProvider(attribute, object.getModel(), object);
+	}
+
+	public LabelProvider getCustomLabelProbider() {
+		return null;
 	}
 
 	public void dispose() {

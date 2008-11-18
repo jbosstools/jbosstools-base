@@ -29,9 +29,11 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.fieldassist.IControlContentAdapter;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -107,7 +109,18 @@ public class AttributeContentProposalProviderFactory {
 		}
 		if(added) {
 			int bits = SWT.TOP | SWT.LEFT;
-			ControlDecoration controlDecoration = new ControlDecoration(control, bits);
+			ControlDecoration controlDecoration = new ControlDecoration(control, bits) {
+				public Image getImage() {
+					for (IAttributeContentProposalProvider p : ps) {
+						LabelProvider lp = p.getCustomLabelProbider();
+						if(lp != null) {
+							Image image = lp.getImage(getControl());
+							if(image != null) return image;
+						}
+					}
+					return super.getImage();
+				}
+			};
 			// Configure text widget decoration
 			// No margin
 			controlDecoration.setMarginWidth(0);
@@ -147,11 +160,6 @@ public class AttributeContentProposalProviderFactory {
 			}
 		}
 
-		if(false) {
-			//Test
-			result.add(new TestAttributeContentProposalProvider());
-		}
-		
 		return result;
 	}
 
@@ -173,47 +181,6 @@ public class AttributeContentProposalProviderFactory {
 				return proposal.length();
 			}
 		};
-	}
-
-}
-
-/**
- * Example
- * @author glory
- *
- */
-class TestAttributeContentProposalProvider implements IAttributeContentProposalProvider {
-
-	public boolean isRelevant(XModelObject object, XAttribute attribute) {
-		return true;
-	}
-
-	public void init(XModelObject object, XAttribute attribute) {
-	}
-
-	public IContentProposalProvider getContentProposalProvider() {
-		IContentProposalProvider cpp = new IContentProposalProvider() {
-
-			public IContentProposal[] getProposals(String contents,
-					int position) {
-				ArrayList<IContentProposal> ps = new ArrayList<IContentProposal>();
-				
-				if(position <= contents.length() && position > 3 && "test".equals(contents.substring(position - 4, position))) {
-					ps.add(AttributeContentProposalProviderFactory.makeContentProposal("aaa", ".aaa"));
-				}
-				
-				return ps.toArray(new IContentProposal[0]);
-			}
-			
-		};
-		return cpp;
-	}
-
-	public int getProposalAcceptanceStyle() {
-		return ContentProposalAdapter.PROPOSAL_INSERT;
-	}
-
-	public void dispose() {
 	}
 
 }

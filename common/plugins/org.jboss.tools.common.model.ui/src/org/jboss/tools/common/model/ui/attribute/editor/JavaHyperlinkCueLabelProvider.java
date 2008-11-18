@@ -20,6 +20,7 @@ public class JavaHyperlinkCueLabelProvider extends LabelProvider {
 	
 	public interface JavaClassHolder {
 		public boolean classExists();
+		public boolean canCreateClass();
 	}
 	
 	static Image createClassImage() {
@@ -38,7 +39,7 @@ public class JavaHyperlinkCueLabelProvider extends LabelProvider {
 		Text text = (Text)element;
 		if(text.isDisposed()) return null;
 		JavaClassHolder editor = (JavaClassHolder)text.getData("JavaHyperlinkLineFieldEditor");
-	    return (editor == null || editor.classExists()) ? null : CLASS_IMAGE;
+	    return (editor == null || editor.classExists() || !editor.canCreateClass()) ? null : CLASS_IMAGE;
 	}
 	
 }

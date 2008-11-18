@@ -113,5 +113,6 @@ Require-Bundle: org.jboss.tools.common.model;visibility:=reexport,
  org.eclipse.ant.ui,
  org.eclipse.core.expressions,
  org.eclipse.core.filesystem,
- org.eclipse.wst.html.core
+ org.eclipse.wst.html.core,
+ org.eclipse.pde.ui
 Bundle-Version: 2.0.0
