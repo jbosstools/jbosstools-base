@@ -21,10 +21,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.jboss.tools.common.util.FileUtil;
 import org.jboss.tools.test.util.JobUtils;
@@ -73,18 +76,30 @@ public class TestProjectProvider {
 		return project;
 	}
 	
-	public void dispose() throws CoreException {
-		if(project == null || !project.exists()) return;
-	    boolean oldAutoBuilding = true; 
+	public void dispose() {
+		if (project == null || !project.exists()) {
+			return;
+		}
 		try {
-			oldAutoBuilding = ResourcesUtils.setBuildAutomatically(false);
-		    JobUtils.waitForIdle(); 
-		    project.close(null);
-			project.delete(true, null);
-			JobUtils.waitForIdle();
-		} finally {
-			ResourcesUtils.setBuildAutomatically(oldAutoBuilding); 
-		}		
+			boolean oldAutoBuilding = true;
+			try {
+				oldAutoBuilding = ResourcesUtils.setBuildAutomatically(false);
+				JobUtils.waitForIdle(10);
+				project.close(null);
+				JobUtils.waitForIdle(10);
+				project.delete(true, null);
+				JobUtils.waitForIdle(10);
+			} finally {
+				ResourcesUtils.setBuildAutomatically(oldAutoBuilding);
+			}
+		} catch (CoreException ex) {
+			ILog log = Platform.getLog(Platform.getBundle("org.jboss.tools.common.test"));
+			IStatus error = new Status(
+					IStatus.ERROR,
+					"org.jboss.tools.common.test",
+					"Exception occurs during project deletion",ex);
+			log.log(error);
+		}
 	}
 	
 	TestDescriptionFactory tests = null;
