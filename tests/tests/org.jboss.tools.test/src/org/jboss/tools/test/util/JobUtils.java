@@ -21,15 +21,20 @@ import org.eclipse.swt.widgets.Display;
 public class JobUtils {
 	
 	private static final long MAX_IDLE = 30*60*1000L;
+	private static final long DEFAULT_DELAY = 500;
 
 	public static void waitForIdle() {
+		waitForIdle(DEFAULT_DELAY);
+	}
+	
+	public static void waitForIdle(long delay) {
 		long start = System.currentTimeMillis();
 		// Job.getJobManager().isIdle() is more efficient than EditorTestHelper.allJobsQuiet()
 		// EditorTestHelper.allJobsQuiet() isn't thread-safe
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=198241 is fixed 
 		//while (!EditorTestHelper.allJobsQuiet()) {
 		while (!Job.getJobManager().isIdle()) {
-			delay(500);
+			delay(delay);
 			if ( (System.currentTimeMillis()-start) > MAX_IDLE ) 
 				throw new RuntimeException("A long running task detected"); //$NON-NLS-1$
 		}
