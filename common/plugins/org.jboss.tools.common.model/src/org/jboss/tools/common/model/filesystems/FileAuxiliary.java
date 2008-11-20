@@ -60,7 +60,9 @@ public class FileAuxiliary {
     	String auxname = aux.getAttributeValue("name");
     	if(replaceExtension) return auxname;
 		int i = auxname.lastIndexOf('.');
-		return (i < 0) ? auxname : auxname.substring(0, i);
+		String s = (i < 0) ? auxname : auxname.substring(0, i);
+		if(addLeadingDot && s.startsWith(".")) s = s.substring(1);
+		return s;
     }
     
     public String getAuxiliaryName(XModelObject main) {

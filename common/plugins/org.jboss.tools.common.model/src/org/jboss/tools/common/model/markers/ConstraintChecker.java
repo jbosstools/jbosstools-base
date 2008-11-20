@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.markers;
 
+import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.markers.ResourceMarkers;
 
 import org.jboss.tools.common.meta.XAttribute;
@@ -42,7 +43,7 @@ public class ConstraintChecker {
 			String error = as[i].getConstraint().getError(o.getAttributeValue(as[i].getName()));
 			if(error != null) addProblem(o, as[i].getName(), "Value " + error);
 		}
-		XModelObject[] cs = o.getChildrenForSave();
+		XModelObject[] cs = ((XModelObjectImpl)o).getLoadedChildren();
 		for (int i = 0; i < cs.length; i++) check(cs[i]);
 	}
 

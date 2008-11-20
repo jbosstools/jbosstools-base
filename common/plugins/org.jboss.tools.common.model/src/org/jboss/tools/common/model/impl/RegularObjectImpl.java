@@ -57,6 +57,10 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
         return children.getObjects();
     }
     
+    public XModelObject[] getLoadedChildren() {
+    	return children.getObjects();
+    }
+
     public boolean addChild_0(XModelObject o) {
     	if(o == null) {
     		return false;

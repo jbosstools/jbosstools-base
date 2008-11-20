@@ -237,6 +237,10 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
         return getChildren();
     } 
 
+    public XModelObject[] getLoadedChildren() {
+    	return getChildren();
+    }
+
     public XModelObject getChildAt(int i) {
         XModelObject[] children = getChildren();
         return (i < 0 || i >= children.length) ? null : children[i];

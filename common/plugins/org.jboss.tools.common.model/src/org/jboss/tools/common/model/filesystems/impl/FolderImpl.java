@@ -38,6 +38,7 @@ import org.jboss.tools.common.model.filesystems.FilePathHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.impl.RegularObjectImpl;
 import org.jboss.tools.common.model.impl.XModelImpl;
+import org.jboss.tools.common.model.loaders.AuxiliaryLoader;
 import org.jboss.tools.common.model.loaders.Reloadable;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
 import org.jboss.tools.common.model.loaders.impl.PropertiesLoader;
@@ -151,8 +152,23 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         	linkedResources.put(pp, rs[i]);
         	_loadChild(peer, f);
         }
+        
+        bindAuxiliary();
+
         fire = true;
     }
+
+	private void bindAuxiliary() {
+        XModelObject[] cs = getChildren();
+        for (int i = 0; i < cs.length; i++) {
+        	if(cs[i].getFileType() == XModelObject.FILE) {
+        		XObjectLoader loader = XModelObjectLoaderUtil.getObjectLoader(cs[i]);
+                if(loader instanceof AuxiliaryLoader) {
+                	((AuxiliaryLoader)loader).bind(cs[i]);
+                }
+        	}
+        }
+	}
 	
 	private void _loadChild(FileSystemPeer peer, File f) {
         if(f.isDirectory()) {
@@ -327,6 +343,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             String nm = (String)it.next();
             updateRemove((XModelObject)toRemove.get(nm));
         }
+        
+        bindAuxiliary();
       } catch (NoClassDefFoundError error) {
     	  //Most probably Eclipse is shutting down.
     	  return true;
@@ -1015,7 +1033,16 @@ class FileBodySource implements BodySource {
     public boolean write(Object object) {
         if(!(object instanceof XModelObject)) return false;
         XModelObject o = (XModelObject)object;
-        return XModelObjectLoaderUtil.saveBody(f, o, ResourcesPlugin.getEncoding());
+        
+        boolean b = XModelObjectLoaderUtil.saveBody(f, o, ResourcesPlugin.getEncoding());
+
+		XModelObject p = o.getParent();
+		while(p != null && p.getFileType() < XFileObject.FOLDER) p = p.getParent();
+		if(p instanceof FolderImpl) {
+			((FolderImpl)p).getFileSystem().getPeer().register(f);
+		}
+
+		return b;
     }
 
 }
