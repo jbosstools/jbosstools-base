@@ -15,18 +15,24 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.jboss.tools.common.model.XModelObject;
+
 public class NamespaceMapping {
+	public static String ATTR_NAMESPACE_MAPPING = "namespaceMapping";
+
 	Map<String, String> defaultToActual = new HashMap<String, String>();
 	Map<String, String> actualToDefault = new HashMap<String, String>();
+	Map<String, String> defaultToURI = new HashMap<String, String>();
 
 	Map<String, String> defaultToActualCache = new HashMap<String, String>();
 	Map<String, String> actualToDefaultCache = new HashMap<String, String>();
 
 	public NamespaceMapping() {}
 	
-	public void addNamespace(String defaultNamespace, String actualNamespace) {
+	public void addNamespace(String defaultNamespace, String actualNamespace, String uri) {
 		defaultToActual.put(defaultNamespace, actualNamespace);
 		actualToDefault.put(actualNamespace, defaultNamespace);
+		defaultToURI.put(defaultNamespace, uri);
 	}
 
 	public String getActualNamespace(String defaultNamespace) {
@@ -35,6 +41,15 @@ public class NamespaceMapping {
 	
 	public String getDefaultNamespace(String actualNamespace) {
 		return actualToDefault.get(actualNamespace);
+	}
+
+	public String getURIForDefaultNamespace(String defaultNamespace) {
+		return defaultNamespace == null ? null : defaultToURI.get(defaultNamespace);
+	}
+	
+	public String getURIForActualNamespace(String actualNamespace) {
+		String defaultNamespace = getDefaultNamespace(actualNamespace);
+		return getURIForDefaultNamespace(defaultNamespace);
 	}
 	
 	public String convertToDefault(String name) {
@@ -99,12 +114,18 @@ public class NamespaceMapping {
 		while(i.hasNext()) {
 			String d = i.next();
 			String a = defaultToActual.get(d);
-			sb.append(d).append(' ').append(a).append(' ');
+			String u = defaultToURI.get(d);
+			sb.append(d).append(' ').append(a).append(' ').append(u).append(' ');
 		}
 		
 		return sb.toString();
 	}
-	
+
+	public static NamespaceMapping load(XModelObject file) {
+		String nms = file.get(ATTR_NAMESPACE_MAPPING);
+		return nms == null ? null : load(nms);
+	}
+
 	public static NamespaceMapping load(String s) {
 		if(s == null || s.length() == 0) return null;
 		NamespaceMapping m = new NamespaceMapping();
@@ -112,7 +133,8 @@ public class NamespaceMapping {
 		while(st.hasMoreTokens()) {
 			String d = st.nextToken();
 			String a = st.hasMoreTokens() ? st.nextToken() : d;
-			m.addNamespace(d, a);
+			String u = st.hasMoreTokens() ? st.nextToken() : "http://";
+			m.addNamespace(d, a, u);
 		}		
 		return m;
 	}
