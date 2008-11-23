@@ -12,7 +12,13 @@ package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IContainer;
@@ -23,11 +29,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.jboss.tools.common.model.markers.ResourceMarkers;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
-
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelException;
@@ -42,6 +47,8 @@ import org.jboss.tools.common.model.loaders.AuxiliaryLoader;
 import org.jboss.tools.common.model.loaders.Reloadable;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
 import org.jboss.tools.common.model.loaders.impl.PropertiesLoader;
+import org.jboss.tools.common.model.markers.ResourceMarkers;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.Paths;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 import org.jboss.tools.common.util.FileUtil;
@@ -1058,13 +1065,24 @@ class EclipseFileBodySource implements BodySource {
 
 	public String get() {
 		String encoding = null;
-			if(ef != null && ef.exists()) {
-				encoding = FileUtil.getEncoding(ef);
+		if (ef != null && ef.exists()) {
+			encoding = FileUtil.getEncoding(ef);
+		}
+		if (encoding == null) {
+			encoding = ResourcesPlugin.getEncoding();
+		}
+		try {
+			boolean isUTF8BOM = ModelPlugin.isUTF8BOM(encoding, ef);
+			if (!isUTF8BOM) {
+				return FileUtil.readFileWithEncodingCheck(f, encoding);
+			} else {
+				return ModelPlugin.getContent(ef.getContents(), encoding, true);
 			}
-			if(encoding == null) {
-				encoding = ResourcesPlugin.getEncoding();
-			}
-		return FileUtil.readFileWithEncodingCheck(f, encoding);
+		} catch (CoreException e) {
+			IStatus status = new Status(IStatus.ERROR, ModelPlugin.PLUGIN_ID, IStatus.OK,e.getLocalizedMessage(), e);
+			ModelPlugin.getDefault().getLog().log(status);
+			return null;
+		}
 	}
 
 	public boolean write(Object object) {

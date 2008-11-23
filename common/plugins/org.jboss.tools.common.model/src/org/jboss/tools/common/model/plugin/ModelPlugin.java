@@ -10,21 +10,25 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.plugin;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWindowListener;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.Workbench;
 import org.jboss.tools.common.log.BaseUIPlugin;
 import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.model.XModelConstants;
@@ -126,4 +130,59 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 	public static IPluginLog getPluginLog() {
 		return getDefault();
 	}
+	
+	public static boolean isUTF8BOM(String encoding, IFile file) throws CoreException {
+		if ("UTF-8".equals(encoding) && file != null && file.exists()) { //$NON-NLS-1$
+			IContentDescription description= file.getContentDescription();
+			if (description != null) {
+				byte[] bom= (byte[]) description.getProperty(IContentDescription.BYTE_ORDER_MARK);
+				if (bom != null) {
+					if (bom != IContentDescription.BOM_UTF_8)
+						throw new CoreException(new Status(IStatus.ERROR, ModelPlugin.PLUGIN_ID, IStatus.OK,"wrongByteOrderMark", null));
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static String getContent(InputStream contentStream, String encoding, boolean skipUTF8BOM) throws CoreException {
+		Reader in= null;
+		
+		try {
+			if (skipUTF8BOM) {
+				for (int i= 0; i < 3; i++)
+					if (contentStream.read() == -1) {
+						throw new IOException("notEnoughBytesForBOM");
+				}
+			}
+
+			final int DEFAULT_FILE_SIZE= 15 * 1024;
+			if (encoding == null)
+				in= new BufferedReader(new InputStreamReader(contentStream), DEFAULT_FILE_SIZE);
+			else
+				in= new BufferedReader(new InputStreamReader(contentStream, encoding), DEFAULT_FILE_SIZE);
+			StringBuffer buffer= new StringBuffer(DEFAULT_FILE_SIZE);
+			char[] readBuffer= new char[2048];
+			int n= in.read(readBuffer);
+			while (n > 0) {
+				buffer.append(readBuffer, 0, n);
+				n= in.read(readBuffer);
+			}
+
+			return buffer.toString();
+
+		} catch (IOException x) {
+			throw new CoreException(new Status(IStatus.ERROR, ModelPlugin.PLUGIN_ID, IStatus.OK, "Failed to access or read underlying storage", x)); //$NON-NLS-1$
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+				else
+					contentStream.close();
+			} catch (IOException ignored) {
+			}
+		}
+	}
+
 }
