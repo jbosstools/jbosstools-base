@@ -491,7 +491,7 @@ public class TypeInfoCollector {
 					dataModel,
 					new Type(field.getTypeSignature(),
 					field.getDeclaringType()));
-
+			fJavaElement = field;
 			setParametersNamesOfDeclaringType(getTypeErasureFromSignatureArray(field.getDeclaringType().getTypeParameterSignatures()));
 		}
 
@@ -539,7 +539,7 @@ public class TypeInfoCollector {
 					dataModel,
 					new Type(method.getReturnType(),
 					method.getDeclaringType()));
-
+			fJavaElement = method;
 			setParameterNames(method.getParameterNames());
 			setParameterTypeNames(resolveSignatures(method.getDeclaringType(), method.getParameterTypes()));
 			setParametersNamesOfDeclaringType(getTypeErasureFromSignatureArray(method.getDeclaringType().getTypeParameterSignatures()));
