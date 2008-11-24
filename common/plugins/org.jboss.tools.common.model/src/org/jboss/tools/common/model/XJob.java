@@ -44,8 +44,12 @@ public class XJob extends WorkspaceJob {
 	public static void addRunnableWithPriority(XRunnable runnable) {
 		JOB.addRunnableInternalWithPriority(runnable);
 	}
-	
+
 	public static void waitForJob() throws InterruptedException {
+		waitForJob(false);
+	}
+
+	public static void waitForJob(boolean immediateOnly) throws InterruptedException {
 		Object[] o = {
 			XJob.FAMILY_XJOB, ResourcesPlugin.FAMILY_AUTO_REFRESH, ResourcesPlugin.FAMILY_AUTO_BUILD
 		};
@@ -58,7 +62,7 @@ public class XJob extends WorkspaceJob {
 					stop = false;
 				}
 			}
-			if(stop) {
+			if(stop && !immediateOnly) {
 				Job running = getJobRunning(10);
 				if(running != null) {
 					running.join();
