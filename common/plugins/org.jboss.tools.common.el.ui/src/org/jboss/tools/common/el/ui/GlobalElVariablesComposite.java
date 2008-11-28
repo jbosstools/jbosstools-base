@@ -49,7 +49,7 @@ public class GlobalElVariablesComposite extends AbstractResourceReferencesCompos
      */
     @Override
     protected String getEntity() {
-        return (file != null) ? "VPEGlobalElReference" : "VPEGlobalElReferenceExt";
+        return "VPEGlobalElReference";
     }
 
     /**
