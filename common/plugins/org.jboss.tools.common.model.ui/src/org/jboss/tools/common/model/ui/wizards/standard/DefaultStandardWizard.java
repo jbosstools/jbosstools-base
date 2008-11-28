@@ -113,14 +113,13 @@ public class DefaultStandardWizard extends Wizard implements SpecialWizardContro
 		String message = validator.getErrorMessage();
 		isFinishEnabled = validator.isCommandEnabled(SpecialWizardSupport.FINISH);
 		DefaultStandardStep wizardStep = steps[support.getStepId()];
+		String m = support.getMessage(support.getStepId());
 		if(wizardStep != null && !wizardStep.isDataChanged()) {
-			String m = support.getMessage(support.getStepId());
 			if (m == null || m.length() == 0) m = message;
 			wizardStep.setDescription(m);
-			wizardStep.setMessage(support.getSubtitle());
 			wizardStep.setErrorMessage(null);
 		} else {
-			wizardStep.setDescription(null);
+			wizardStep.setDescription(m);
 			if(message == null && !isFinishEnabled) {
 				message = support.getMessage(support.getStepId());
 				if(message != null && message.trim().length() == 0) {
