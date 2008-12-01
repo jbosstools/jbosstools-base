@@ -272,6 +272,18 @@ litigation.
          version="0.0.0"/>
 
    <plugin
+         id="org.jboss.tools.jmx.core.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.jmx.ui.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
          id="org.jboss.tools.vpe.test"
          download-size="0"
          install-size="0"
