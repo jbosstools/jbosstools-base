@@ -796,7 +796,7 @@ public class KbTldStore implements KbStore {
 				proposal.setReplacementString(value);
 				proposal.setContextInfo(null);
 				proposal.setPosition(value.length());
-
+				proposal.setImage(KbPlugin.getDefault().getImage(KbPlugin.CA_ENUMERATION_IMAGE_PATH));
 				enumeration.add(proposal);
 			}
 		}

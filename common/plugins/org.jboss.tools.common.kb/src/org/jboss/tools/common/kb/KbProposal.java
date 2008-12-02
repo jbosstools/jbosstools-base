@@ -12,6 +12,8 @@ package org.jboss.tools.common.kb;
 
 import java.io.Serializable;
 
+import org.eclipse.swt.graphics.Image;
+
 /**
  * Describes a proposal for content assistants
  * @author igels
@@ -32,6 +34,8 @@ public class KbProposal implements Comparable, Serializable {
 
 	private String label;
 	private String contextInfo;
+	private Image image;
+	private boolean emptyImage = true;
 	private String replacementString;
 	private boolean emptyContextInfo = true;
 	private int relevance = R_NONE;
@@ -67,6 +71,13 @@ public class KbProposal implements Comparable, Serializable {
 	}
 
 	/**
+	 * @return 
+	 */
+	public Image getImage() {
+		return image;
+	}
+	
+	/**
 	 * @return
 	 */
 	public String getLabel() {
@@ -93,6 +104,16 @@ public class KbProposal implements Comparable, Serializable {
 	/**
 	 * @param string
 	 */
+	public void setImage(Image img) {
+		this.image = img;
+		if(this.image != null) {
+			emptyImage = false; 
+		}
+	}
+
+	/**
+	 * @param string
+	 */
 	public void setLabel(String string) {
 		label = string;
 	}
@@ -109,6 +130,13 @@ public class KbProposal implements Comparable, Serializable {
 	 */
 	public boolean hasContextInfo() {
 		return !emptyContextInfo;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean hasImage() {
+		return !emptyImage;
 	}
 
 	/**
