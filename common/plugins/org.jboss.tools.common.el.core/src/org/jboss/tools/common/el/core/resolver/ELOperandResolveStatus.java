@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
+import org.jboss.tools.common.kb.KbProposal;
 
 /**
  * Status of EL resolving.
@@ -24,7 +25,7 @@ import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 public class ELOperandResolveStatus {
 	private ELInvocationExpression tokens;
 	Map<String, TypeInfoCollector.MethodInfo> unpairedGettersOrSetters;
-	Set<String> proposals;
+	Set<KbProposal> proposals;
 	private ELInvocationExpression lastResolvedToken;
 	private boolean isMapOrCollectionOrBundleAmoungTheTokens = false;
 	private TypeInfoCollector.MemberInfo memberOfResolvedOperand;
@@ -68,6 +69,7 @@ public class ELOperandResolveStatus {
 	 * @return true if EL is resolved.
 	 */
 	public boolean isOK() {
+//		return !getProposals().isEmpty() || isMapOrCollectionOrBundleAmoungTheTokens(); 
 		return !getProposals().isEmpty() || isMapOrCollectionOrBundleAmoungTheTokens(); 
 	}
 
@@ -129,16 +131,17 @@ public class ELOperandResolveStatus {
 	}
 
 	/**
-	 * @return Set of proposals for EL.
+	 * 
+	 * @return Set of proposals for EL
 	 */
-	public Set<String> getProposals() {
-		return proposals == null ? new TreeSet<String>() : proposals;
+	public Set<KbProposal> getProposals() {
+		return proposals == null ? new TreeSet<KbProposal>() : proposals;
 	}
 
 	/**
-	 * @param proposals Set of proposals.
+	 * @param proposals Set of KbProposal proposals.
 	 */
-	public void setProposals(Set<String> proposals) {
+	public void setProposals(Set<KbProposal> proposals) {
 		this.proposals = proposals;
 	}
 
