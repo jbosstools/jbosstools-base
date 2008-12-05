@@ -231,7 +231,7 @@ litigation.
          version="0.0.0"/>
 
    <requires>
-      <import feature="org.jboss.tools.common.text.ext_feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="org.jboss.tools.common.text.ext.feature" version="0.0.0" match="greaterOrEqual"/>
    </requires>
 
 </feature>
