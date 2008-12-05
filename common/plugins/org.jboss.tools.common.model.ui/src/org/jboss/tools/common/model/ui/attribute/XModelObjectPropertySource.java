@@ -14,6 +14,7 @@ import java.util.*;
 
 import org.jboss.tools.common.model.util.XModelTreeListenerSWTASync;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.IPage;
 import org.eclipse.ui.views.properties.*;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintAList;
@@ -146,9 +147,12 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 				//ignore
 			}
 			if(sh == null) return;
-			PropertySheetPage p = (PropertySheetPage)sh.getCurrentPage();
-			if(p == null || p.getControl() == null || p.getControl().isDisposed()) return;
-			p.refresh();
+			IPage page = sh.getCurrentPage();
+			if(page instanceof PropertySheetPage) {
+				PropertySheetPage p = (PropertySheetPage)page;
+				if(p == null || p.getControl() == null || p.getControl().isDisposed()) return;
+				p.refresh();
+			}
 		}
 		public void structureChanged(XModelTreeEvent event) {}
 	}
