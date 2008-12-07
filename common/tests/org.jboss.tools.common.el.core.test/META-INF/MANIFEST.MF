@@ -4,7 +4,7 @@ Bundle-Name: JSF Tests Plug-in
 Bundle-SymbolicName: org.jboss.tools.common.el.core.test;singleton:=true
 Bundle-Version: 2.0.0
 Bundle-ClassPath: common-el-tests.jar
-Bundle-Vendor: Red Hat, Inc.
+Bundle-Vendor: JBoss, a division of Red Hat
 Export-Package: org.jboss.tools.common.el.core.test
 Require-Bundle: 
  org.junit,
