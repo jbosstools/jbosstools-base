@@ -16,3 +16,4 @@ Require-Bundle: org.jboss.tools.common.text.ext,
  org.jboss.tools.common.model.ui
 Export-Package: org.jboss.tools.common.text.ext.test
 Bundle-ClassPath: common-text-ext-test.jar
+Bundle-Vendor: JBoss, a division of Red Hat
