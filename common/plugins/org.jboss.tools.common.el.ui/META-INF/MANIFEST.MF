@@ -15,3 +15,4 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.common.resref.ui;bundle-version="1.0.0",
  org.eclipse.core.resources;bundle-version="3.4.0",
  org.jboss.tools.common.model.ui;bundle-version="2.0.0"
+Bundle-Vendor: JBoss, a division of Red Hat
