@@ -13,3 +13,4 @@ Require-Bundle: org.junit;visibility:=reexport,
  org.jboss.tools.jst.web.ui,
  org.jboss.tools.common.test
 Export-Package: org.jboss.tools.common.model.ui.test
+Bundle-Vendor: JBoss, a division of Red Hat
