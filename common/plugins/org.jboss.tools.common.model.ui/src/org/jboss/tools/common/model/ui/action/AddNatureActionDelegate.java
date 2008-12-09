@@ -11,6 +11,8 @@
 package org.jboss.tools.common.model.ui.action;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -88,18 +90,31 @@ public abstract class AddNatureActionDelegate implements IObjectActionDelegate, 
 	
 	protected String findWebXML(String root) {
 		if(root == null) return "";
-		String s = root + "/WEB-INF/web.xml";
-		if(new File(s).isFile()) return s;
 		File rf = new File(root);
-		File[] fs = rf.listFiles();
-		if(fs == null) return "";
-		for (int i = 0; i < fs.length; i++) { 
-			s = fs[i].getAbsolutePath().replace('\\', '/') + "/WEB-INF/web.xml";
-			if(new File(s).isFile()) return s;
-		}		
-		return "";
+		if(!rf.isDirectory()) return "";
+		List<File> folders = new ArrayList<File>();
+		folders.add(rf);
+		return findWebXML(folders);
 	}
 
+	protected String findWebXML(List<File> folders) {
+		if(folders == null || folders.size() == 0) return "";
+		for (File f: folders) {
+			if(!f.isDirectory()) continue;
+			String s = f.getAbsolutePath().replace('\\', '/') + "/WEB-INF/web.xml";
+			if(new File(s).isFile()) return s;
+		}
+		List<File> nextLevelFolders = new ArrayList<File>();
+		for (File f: folders) {
+			File[] fs = f.listFiles();
+			if(fs == null) continue;
+			for (int i = 0; i < fs.length; i++) {
+				if(fs[i].isDirectory()) nextLevelFolders.add(fs[i]);
+			}
+		}
+		return findWebXML(nextLevelFolders);
+	}
+	
 	public void dispose() {}
 
 	protected boolean isWindowAction;
