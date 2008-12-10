@@ -842,7 +842,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		IEditorActionBarContributor contributor = getEditorSite().getActionBarContributor();
 		if(contributor instanceof EditorActionBarContributorWrapper)
 		  contributor = ((EditorActionBarContributorWrapper)contributor).getActiveContributer();
-		if (contributor != null && contributor instanceof MultiPageEditorActionBarContributor) {
+		if (contributor instanceof MultiPageEditorActionBarContributor) {
 			((MultiPageEditorActionBarContributor) contributor).setActivePage(activeEditor);
 		}
 		updateSelectionProvider();

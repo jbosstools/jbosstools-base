@@ -151,7 +151,7 @@ public class XAttributeSupport {
 			Object object;
 			while (i.hasNext()) {
 				object = i.next();
-				if (object!=null && object instanceof FieldEditor) ((FieldEditor)object).dispose();
+				if (object instanceof FieldEditor) ((FieldEditor)object).dispose();
 			}
 			editors.clear();
 			editors = null;
@@ -161,7 +161,7 @@ public class XAttributeSupport {
 			Object object;
 			while (i.hasNext()) {
 				object = i.next();
-				if (object!=null && object instanceof DefaultValueAdapter) ((DefaultValueAdapter)object).dispose();
+				if (object instanceof DefaultValueAdapter) ((DefaultValueAdapter)object).dispose();
 			}
 			adapters.clear();
 			adapters = null;

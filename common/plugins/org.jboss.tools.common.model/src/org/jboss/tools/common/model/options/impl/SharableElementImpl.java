@@ -45,7 +45,7 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
 
     public SharableElement getSharableParent() {
         Object p = getParent();
-        return (p != null && p instanceof SharableElement)
+        return (p instanceof SharableElement)
                ? (SharableElement)p : null;
     }
 

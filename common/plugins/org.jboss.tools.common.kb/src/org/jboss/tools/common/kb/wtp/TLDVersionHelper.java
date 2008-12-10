@@ -39,7 +39,7 @@ public class TLDVersionHelper {
 
 	public static String getTldVersion(TaglibTracker tracker) {
 		CMDocument cmd = tracker.getDocument();
-		if(cmd!=null && cmd instanceof CMDocumentImpl) {
+		if(cmd instanceof CMDocumentImpl) {
 			CMDocumentImpl doc = (CMDocumentImpl)cmd;
 			return doc.getTlibversion();
 		}

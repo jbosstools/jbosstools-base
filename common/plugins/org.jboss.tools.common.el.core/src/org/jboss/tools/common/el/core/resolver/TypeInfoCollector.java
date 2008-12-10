@@ -378,7 +378,7 @@ public class TypeInfoCollector {
 		void initializeParameters() {
 			try {
 				MemberInfo parent = getParentMember();
-				if(parent!=null && parent instanceof TypeMemberInfo) {
+				if(parent instanceof TypeMemberInfo) {
 					ITypeParameter[] parameters = fType.getTypeParameters();
 					for (int i = 0; i < parameters.length; i++) {
 						Type type = parent.getType().getParameter(i);
@@ -986,7 +986,7 @@ public class TypeInfoCollector {
 
 		@Override
 		public boolean equals(Object obj) {
-			if(obj!=null && obj instanceof MemberPresentation) {
+			if(obj instanceof MemberPresentation) {
 				return presentation.equals(((MemberPresentation)obj).getPresentation());
 			}
 			return false;

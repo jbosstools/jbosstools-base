@@ -62,7 +62,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		}
 		fOccurrencePreferenceProvider = null;
 		StructuredTextEditor sse = getStructuredTextEditor(getTextEditor());
-		if (sse != null && sse instanceof IOccurrencePreferenceProvider) {
+		if (sse instanceof IOccurrencePreferenceProvider) {
 			fOccurrencePreferenceProvider = (IOccurrencePreferenceProvider)sse;
 			if (fOccurrencePreferenceProvider != null) {
 				fEditorId = fOccurrencePreferenceProvider.getOccurrencePreferenceProvider().getEditorId();

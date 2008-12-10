@@ -79,7 +79,7 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 					axis = "/" + nodeName;
 				}
 				Node parent = (n instanceof Attr)? ((Attr)n).getOwnerElement() : n.getParentNode();
-				while (parent != null && (parent instanceof Element)) {
+				while (parent instanceof Element) {
 					// Get the axis part depending on the type and name of node
 					String nodeName = extractName(parent.getNodeName(), trackersMap, tm);
 					if (nodeName != null && nodeName.length() > 0) 

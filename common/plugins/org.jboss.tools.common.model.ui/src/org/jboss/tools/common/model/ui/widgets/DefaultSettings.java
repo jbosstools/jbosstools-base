@@ -241,7 +241,7 @@ public class DefaultSettings implements IWidgetSettings {
 	 */
 	public void setupControl(Control control) {
 		FormToolkit toolkit = getToolkit(control.getDisplay());
-		if(toolkit != null && control instanceof Composite) {
+		if(control instanceof Composite) {
 			toolkit.adapt((Composite)control);
 		}
 		if (control instanceof CCombo || control instanceof Combo) {

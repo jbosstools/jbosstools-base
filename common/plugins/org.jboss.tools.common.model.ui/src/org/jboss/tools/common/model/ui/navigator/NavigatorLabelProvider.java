@@ -42,7 +42,7 @@ public class NavigatorLabelProvider extends LabelProvider implements IColorProvi
 	
 	public Image getImage(Object element) {
 		Image result = null;		
-		if (element != null && element instanceof XModelObject)
+		if (element instanceof XModelObject)
 			result = EclipseResourceUtil.getImage((XModelObject)element);			
 		return result; 
 	}

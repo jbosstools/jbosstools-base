@@ -45,7 +45,7 @@ public class DefaultXModelObjectLabelProvider extends LabelProvider {
 	}
 	
 	public Image getImage(Object element) {
-		if (element != null && element instanceof XModelObject) {
+		if (element instanceof XModelObject) {
 			return EclipseResourceUtil.getImage((XModelObject)element);
 		}
 		return null; 

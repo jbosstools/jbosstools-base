@@ -48,7 +48,7 @@ public class SelectObjectWizard implements SpecialWizard {
 		if(p != null && p.getSite().getSelectionProvider() != null && (object instanceof XModelObject)) {
 			Display.getDefault().syncExec(new Runnable() {
 				public void run() {
-					if(preferredPage != null && p instanceof EditorPartWrapper) {
+					if(p instanceof EditorPartWrapper) {
 						EditorPartWrapper w = (EditorPartWrapper)p;
 						if(w.getEditor() instanceof ObjectMultiPageEditor) {
 							ObjectMultiPageEditor oe = (ObjectMultiPageEditor)w.getEditor();

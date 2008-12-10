@@ -92,7 +92,7 @@ public class Utils {
 		String axis = "";
 		if (node == null) return null;
 		Node parent = (node instanceof Attr)? ((Attr)node).getOwnerElement():node.getParentNode();
-		while (parent != null && (parent instanceof Element)) {
+		while (parent instanceof Element) {
 			String nodeName = parent.getNodeName();
 			axis = "/" + nodeName + axis;
 			parent = parent.getParentNode();

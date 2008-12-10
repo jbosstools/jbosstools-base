@@ -70,7 +70,7 @@ public class Form extends ExpandableForm {
 			Iterator i = fieldEditors.iterator();
 			while (i.hasNext()) {
 				object = i.next();
-				if (object!=null && object instanceof ExtendedFieldEditor) ((ExtendedFieldEditor)object).dispose();
+				if (object instanceof ExtendedFieldEditor) ((ExtendedFieldEditor)object).dispose();
 			}
 			fieldEditors.clear();
 		}

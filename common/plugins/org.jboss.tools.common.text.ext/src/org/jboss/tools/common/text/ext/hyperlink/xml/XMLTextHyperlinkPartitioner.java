@@ -69,7 +69,7 @@ public class XMLTextHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			if (xmlDocument == null) return false;
 			
 			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
-			return (n != null && n instanceof Text);
+			return (n instanceof Text);
 		} finally {
 			smw.dispose();
 		}

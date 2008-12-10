@@ -856,7 +856,7 @@ public class EclipseResourceUtil {
 			} else if(es[i].getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
 				IPath path = es[i].getPath();
 				IResource r = project.getWorkspace().getRoot().findMember(path);
-				if(r != null && (r instanceof IContainer)) {
+				if(r instanceof IContainer) {
 					l.add(r);
 				} else if(r != null && !project.getFullPath().isPrefixOf(r.getFullPath())) {
 					l.add(r); //probably it is jar 

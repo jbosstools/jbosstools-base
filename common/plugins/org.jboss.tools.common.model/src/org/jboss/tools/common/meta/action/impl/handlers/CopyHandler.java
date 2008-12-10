@@ -71,7 +71,7 @@ public class CopyHandler extends AbstractHandler {
         for (int i = 0; i < buffer.getSize(); i++) {
             XModelObject o = buffer.source(i);
             IResource resource = (IResource)o.getAdapter(IResource.class);
-            if(resource != null && (resource instanceof IFile || resource instanceof IContainer)) {
+            if(resource instanceof IFile || resource instanceof IContainer) {
             	resources.add(resource);
             }
             if(texts.length() > 0) texts.append(' ');
