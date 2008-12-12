@@ -17,19 +17,27 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.action.XActionItem;
 import org.jboss.tools.common.meta.action.XActionList;
 import org.jboss.tools.common.meta.action.XActionItem.Acceptor;
 import org.jboss.tools.common.meta.help.HelpUtil;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.options.SharableConstants;
+import org.jboss.tools.common.model.options.SharableElement;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.navigator.FilteredTreeContentProvider;
 import org.jboss.tools.common.model.ui.navigator.NavigatorLabelProvider;
@@ -46,6 +54,8 @@ public class PaletteDialog extends Dialog {
 	protected XModelTreeListenerSWTSync syncListener = new XModelTreeListenerSWTSync(listener);
 	protected XModelTreeListener listener2 = new ObjectListener();
 	protected XModelTreeListenerSWTSync syncListener2 = new XModelTreeListenerSWTSync(listener2);
+
+	Button restoreDefaults = null;
 
 	TreeViewerMenuInvoker menu = new TreeViewerMenuInvoker() {
 		protected XActionList getActionList(XModelObject o) {
@@ -124,8 +134,35 @@ public class PaletteDialog extends Dialog {
 		treeViewer.getTree().addKeyListener(menu);
 		treeViewer.getTree().addSelectionListener(sl);	
 		treeViewer.getTree().setVisible(true);
-		treeViewer.setAutoExpandLevel(2);	
-		objectEditor.createControl(panel);
+		treeViewer.setAutoExpandLevel(2);
+
+		Composite right = new Composite(panel, SWT.NONE);
+		right.setLayoutData(new GridData(GridData.FILL_BOTH));
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginTop = 0;
+		layout.marginLeft = 0;
+		layout.marginRight = 0;
+		layout.marginBottom = 0;
+		right.setLayout(layout);
+		
+		Control c = objectEditor.createControl(right);
+		c.setLayoutData(new GridData(GridData.FILL_BOTH));
+		restoreDefaults = new Button(right, SWT.NONE);
+		restoreDefaults.setText("Restore Defaults");
+		GridData gd = new GridData();
+		gd.horizontalAlignment = SWT.END;
+		restoreDefaults.setLayoutData(gd);
+
+		restoreDefaults.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+			public void widgetSelected(SelectionEvent e) {
+				restoreDefaults();
+			}
+			
+		});
+		
 		activate();
 		treeViewer.setAutoExpandLevel(2);
 	}
@@ -138,7 +175,12 @@ public class PaletteDialog extends Dialog {
 	
 	class SL extends SelectionAdapter {
 		public void widgetSelected(SelectionEvent e) {
-			objectEditor.setModelObject(menu.getSelectedModelObject());
+			XModelObject o = menu.getSelectedModelObject();
+			objectEditor.setModelObject(o);
+			if(restoreDefaults != null && !restoreDefaults.isDisposed()) {
+				SharableElement element = getSelectedElementWithGeneralScope(o);
+				restoreDefaults.setEnabled(element != null);
+			}
 		}
 	}
 		
@@ -182,5 +224,39 @@ public class PaletteDialog extends Dialog {
 
 		public void structureChanged(XModelTreeEvent event) {}		
 	}
+
+	private SharableElement getSelectedElementWithGeneralScope(XModelObject o) {
+		if(!(o instanceof SharableElement)) return null;
+		SharableElement e = (SharableElement)o;
+		return e.scopeExists(SharableConstants.GENERAL) ? e : null;
+	}
+	private void restoreDefaults() {
+		XModelObject o = menu.getSelectedModelObject();
+		SharableElement e = getSelectedElementWithGeneralScope(o);
+		if(e == null) return;
+		restoreDefaults(e);
+	}
 	
+	private void restoreDefaults(SharableElement e) {
+		if(!e.scopeExists(SharableConstants.GENERAL)) return;
+		XAttribute[] as = e.getModelEntity().getAttributes();
+		for (int i = 0; i < as.length; i++) {
+			if(!as[i].isVisible()) continue;
+			String n = as[i].getName();
+			if("name".equals(n)) continue;
+			String v = e.getAttributeValue(n, SharableConstants.GENERAL);
+			String cv = e.getAttributeValue(n);
+			if(cv != null && cv.equals(v)) continue;
+			try {
+				e.getModel().editObjectAttribute(e, n, v);
+			} catch (XModelException exc) {
+				ModelPlugin.getPluginLog().logError(exc);
+			}
+		}
+		SharableElement[] cs = e.getSharableChildren();
+		for (int i = 0; i < cs.length; i++) {
+			restoreDefaults(cs[i]);
+		}
+	}
+
 }
