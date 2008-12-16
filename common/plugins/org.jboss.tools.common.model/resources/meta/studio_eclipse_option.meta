@@ -199,6 +199,7 @@
    <XChildEntity maxCount="1" name="SharableJSFEditor" required="yes"/>
    <XChildEntity maxCount="1" name="SharableTilesEditor" required="yes"/>
    <XChildEntity maxCount="1" name="SharableVPEEditor" required="yes"/>
+   <XChildEntity maxCount="1" name="SharableSeamPagesEditor" required="yes"/>
   </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
@@ -855,6 +856,81 @@
   <XActionItem kind="list"/>
   <XDependencies/>
  </XModelEntity>
+ <XModelEntity ImplementingClass="%Options%" name="SharableSeamPagesEditor">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.options.root" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="options" loader="ElementType"
+    name="element type" visibility="false">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Seam Pages Diagram" name="name"
+    visibility="false" xmlname="NAME">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="yes" name="Show Grid" xmlname="show_grid">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
+   <XModelAttribute default="16" name="Grid Step" xmlname="grid_step">
+    <Constraint loader="List">
+     <value name="8"/>
+     <value name="16"/>
+     <value name="24"/>
+     <value name="32"/>
+     <value name="40"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute default="default,size=8,style=1"
+    name="Link Path Font" xmlname="link_path_font">
+    <Editor name="FontChooser"/>
+   </XModelAttribute>
+   <XModelAttribute default="default,size=8,style=1"
+    name="View Path Font" xmlname="view_path_font">
+    <Editor name="FontChooser"/>
+   </XModelAttribute>
+   <XModelAttribute default="yes" name="removePageWithFile"
+    visibility="false" xmlname="removePageWithFile">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
+   <XModelAttribute default="yes"
+    name="enableControlModeOnTransitionCompleted" xmlname="enableControlModeOnTransitionCompleted">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
+   <XModelAttribute default="yes" name="showShortcutIcon" xmlname="showShortcutIcon">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
+   <XModelAttribute default="yes" name="showShortcutPath" xmlname="showShortcutPath">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list"/>
+  <XDependencies/>
+ </XModelEntity>
  <XModelEntity ImplementingClass="%Options%" name="SharableStruts10Support">
   <XChildrenEntities/>
   <XEntityRenderer>
@@ -1193,7 +1269,7 @@
     </Constraint>
     <Editor name="CheckBox"/>
    </XModelAttribute>
-      <XModelAttribute default="no" name="show non-visual tags" xmlname="show_invisible_tags">
+   <XModelAttribute default="no" name="show non-visual tags" xmlname="show_invisible_tags">
     <Constraint loader="List">
      <value name="yes"/>
      <value name="no"/>
@@ -1239,7 +1315,8 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-    <XModelAttribute default="500" name="Size of Visual Editor pane 0-100%" xmlname="source_visual_editors_weights">
+   <XModelAttribute default="500"
+    name="Size of Visual Editor pane 0-100%" xmlname="source_visual_editors_weights">
     <Editor name="Slider2"/>
    </XModelAttribute>
   </XModelAttributes>
