@@ -5302,8 +5302,8 @@
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
             <proposal type="enumeration">
-                <param value="horizontal"/>
-                <param value="vertical"/>
+                <param value="pageDirection"/>
+                <param value="lineDirection"/>
             </proposal>
         </attribute-type>
         <attribute type="layout"/>
