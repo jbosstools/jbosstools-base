@@ -10,13 +10,24 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action.impl.handlers;
 
-import java.util.*;
-import org.jboss.tools.common.meta.*;
-import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.meta.action.*;
-import org.jboss.tools.common.meta.action.impl.*;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import org.jboss.tools.common.meta.XAdoptManager;
+import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.XChild;
+import org.jboss.tools.common.meta.XModelEntity;
+import org.jboss.tools.common.meta.action.XAttributeData;
+import org.jboss.tools.common.meta.action.XEntityData;
+import org.jboss.tools.common.meta.action.impl.AbstractHandler;
+import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
+import org.jboss.tools.common.meta.action.impl.XEntityDataImpl;
 import org.jboss.tools.common.meta.impl.XModelMetaDataImpl;
-import org.jboss.tools.common.model.event.ActionDeclinedException;
+import org.jboss.tools.common.model.ServiceDialog;
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelBuffer;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class PasteHandler extends AbstractHandler {	
@@ -98,7 +109,7 @@ public class PasteHandler extends AbstractHandler {
 		boolean mustGenerate = (found != null && mustGenerate(entity));
 		if(!mustGenerate) {
 			int i = (found == null) ? 0 : PasteEnterNewNameSupport.run(parent, source, copy, data[0]);
-			if(i != 0) throw new ActionDeclinedException("Paste declined.");
+			if(i != 0) throw new XModelException("Paste declined.");
 		}
         for (int j = 0; j < ad.length; j++)
           copy.setAttributeValue(ad[j].getAttribute().getName(), ad[j].getValue());

@@ -10,8 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.action;
 
-import java.util.*;
-import org.jboss.tools.common.model.ui.wizards.OneStepWizard;
+import java.util.Properties;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -27,8 +27,7 @@ import org.jboss.tools.common.meta.action.XActionItem;
 import org.jboss.tools.common.meta.action.XRedirect;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.event.ActionDeclinedException;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.wizards.OneStepWizard;
 
 public class XModelObjectAction extends XModelObjectActionItem {
 	protected XAction action;
@@ -53,60 +52,55 @@ public class XModelObjectAction extends XModelObjectActionItem {
 		}
 		
 	}
-	public void actionPerformed() {
-		try {
-			XAction runAction = action;
-			XModelObject runObject = object;
 
-			XRedirect redirect = action.getRedirect();
-			XAction redirectAction = null;
-			XModelObject redirectObject = null;
-			while(redirect != null) {
-				redirectAction = redirect.getRedirectAction(runObject);
-				redirectObject = redirect.getRedirectSource(runObject);
-				redirect = redirectAction == null ? null : redirectAction.getRedirect();
-				if(redirect != null) {
-					runObject = redirectObject;
-				}
-			}			
-			if(redirectAction != null && redirectObject != null) {
-				runAction = redirectAction;
+	public void actionPerformed() {
+		XAction runAction = action;
+		XModelObject runObject = object;
+
+		XRedirect redirect = action.getRedirect();
+		XAction redirectAction = null;
+		XModelObject redirectObject = null;
+		while(redirect != null) {
+			redirectAction = redirect.getRedirectAction(runObject);
+			redirectObject = redirect.getRedirectSource(runObject);
+			redirect = redirectAction == null ? null : redirectAction.getRedirect();
+			if(redirect != null) {
 				runObject = redirectObject;
 			}
-			if(action.getSignificantFlag(object)) {
-				String message = SignificanceMessageFactory.getInstance().getMessage(action, object, targets) + "?";
-				MessageDialog d = new MessageDialog(getShell(), "Confirmation", null, message, MessageDialog.QUESTION, new String[]{"OK", "Cancel"}, 0);
-				int m = d.open();
-				if(m != 0) return;
-			}
-			String wizardName = runAction.getWizardClassName();
-			if(wizardName == null || wizardName.equals("")) {
-				action.getEntityData(object);
-				try {
-					Properties p = prepareProperties();
-					if(p == null) p = new Properties();
-					if(getShell() != null) p.put("shell", getShell());
-					if(targets == null) action.executeHandler(object, p);
-					else action.executeHandler(object, targets, p);
-				} catch (ActionDeclinedException e) {
-					return;
-				}
-			} else {
-				runAction.getEntityData(runObject);
-				OneStepWizard w = new OneStepWizard();
+		}			
+		if(redirectAction != null && redirectObject != null) {
+			runAction = redirectAction;
+			runObject = redirectObject;
+		}
+		if(action.getSignificantFlag(object)) {
+			String message = SignificanceMessageFactory.getInstance().getMessage(action, object, targets) + "?";
+			MessageDialog d = new MessageDialog(getShell(), "Confirmation", null, message, MessageDialog.QUESTION, new String[]{"OK", "Cancel"}, 0);
+			int m = d.open();
+			if(m != 0) return;
+		}
+		String wizardName = runAction.getWizardClassName();
+		if(wizardName == null || wizardName.equals("")) {
+			action.getEntityData(object);
+			try {
 				Properties p = prepareProperties();
 				if(p == null) p = new Properties();
-				p.put("action", runAction);
-				p.put("object", runObject);
 				if(getShell() != null) p.put("shell", getShell());
-				w.setObject(p);
-				w.execute();
-		   }
-		} catch (ActionDeclinedException de) {
-			//ignore
-		} catch(XModelException e) {
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
+				if(targets == null) action.executeHandler(object, p);
+				else action.executeHandler(object, targets, p);
+			} catch (XModelException e) {
+				return;
+			}
+		} else {
+			runAction.getEntityData(runObject);
+			OneStepWizard w = new OneStepWizard();
+			Properties p = prepareProperties();
+			if(p == null) p = new Properties();
+			p.put("action", runAction);
+			p.put("object", runObject);
+			if(getShell() != null) p.put("shell", getShell());
+			w.setObject(p);
+			w.execute();
+	   }
 	}
 	
 	protected Properties prepareProperties() {

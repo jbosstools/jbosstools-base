@@ -10,20 +10,25 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action.impl.handlers;
 
-import java.util.*;
+import java.util.Properties;
 
 import org.eclipse.swt.widgets.Display;
-
-import org.jboss.tools.common.meta.*;
-import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.meta.action.*;
-import org.jboss.tools.common.meta.constraint.*;
-import org.jboss.tools.common.meta.key.WizardKeys;
+import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.XChild;
+import org.jboss.tools.common.meta.action.XAttributeData;
+import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
-import org.jboss.tools.common.model.event.ActionDeclinedException;
+import org.jboss.tools.common.meta.constraint.XAttributeConstraint;
+import org.jboss.tools.common.meta.key.WizardKeys;
+import org.jboss.tools.common.model.ServiceDialog;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.RegularObjectImpl;
-import org.jboss.tools.common.model.undo.*;
-import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.model.undo.XCreateUndo;
+import org.jboss.tools.common.model.undo.XUndoManager;
+import org.jboss.tools.common.model.util.FindObjectHelper;
+import org.jboss.tools.common.model.util.XBundle;
+import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class DefaultCreateHandler extends AbstractHandler {
 
@@ -179,7 +184,7 @@ public class DefaultCreateHandler extends AbstractHandler {
             mes = title(parent, true) + " can contain only " + max +
                          ((max == 1) ? " child " : " children ") +
                          "with entity " + ce + ".";
-            throw new ActionDeclinedException(mes);
+            throw new XModelException(mes);
         }
         boolean b = parent.addChild(child);
 		if(!b && child.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) {
