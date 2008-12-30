@@ -4327,7 +4327,7 @@
 				<NewJSFProject model-entity="SharableNewJSFProject"
 					NAME="New Project" SCOPE="project" directory=""
 					register_web_context="yes" template="JSFBlank" use_default="yes"
-					version="JSF 1.1.01 - Reference Implementation" />
+					version="JSF 1.2" />
 			</JSFProject>
 		</JSFStudio>
 		<StrutsStudio model-entity="SharableStrutsStudio" NAME="Struts Studio"
