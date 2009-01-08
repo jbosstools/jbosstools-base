@@ -82,17 +82,16 @@ public abstract class AbstractResourceReferencesComposite {
 
 	public Control createControl(Composite parent) {
 		
-		final Group group = new Group(parent,SWT.NONE);
+		final Composite composite = new Composite(parent,SWT.NONE);
 		
-		group.setText(createGroupLabel());
-		group.setLayoutData(new GridData(GridData.FILL_BOTH));
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		GridLayout g = new GridLayout(2, false);
-		group.setLayout(g);
+		composite.setLayout(g);
 
 	    
-		Control slc = table.createControl(group);
+		Control slc = table.createControl(composite);
 		slc.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Control bc = bar.createControl(group);
+		Control bc = bar.createControl(composite);
 		
 	
 		GridData gd = new GridData(GridData.FILL_VERTICAL);
@@ -106,7 +105,7 @@ public abstract class AbstractResourceReferencesComposite {
 			}
 		});
 		update();
-		return group;
+		return composite;
 	}
 	
 	protected ResourceReference[] getReferenceArray() {
