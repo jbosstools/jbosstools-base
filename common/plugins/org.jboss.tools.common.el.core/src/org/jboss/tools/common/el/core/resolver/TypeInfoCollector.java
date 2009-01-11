@@ -954,10 +954,16 @@ public class TypeInfoCollector {
 	public List<MemberInfo> getMethods() {
 		List<MemberInfo> methods = new ArrayList<MemberInfo>();
 		for (MethodInfo info : fMethods) {
-			if (info.isPublic() && !info.isConstructor() 
-					&& !info.isStatic() && !info.isJavaLangObject()
-					&& !info.isGetter() && !info.isSetter())
-				methods.add(info);
+			try {
+				if (((info.getSourceType()!=null && info.getSourceType().isInterface()) || info.isPublic())
+						&& !info.isConstructor() 
+						&& !info.isStatic() && !info.isJavaLangObject()
+						&& !info.isGetter() && !info.isSetter()) {
+					methods.add(info);
+				}
+			} catch (JavaModelException e) {
+				Activator.getPluginLog().logError(e);
+			}
 		}
 		return methods;
 	}
@@ -1067,10 +1073,16 @@ public class TypeInfoCollector {
 	public List<MemberInfo> getProperties() {
 		List<MemberInfo> properties = new ArrayList<MemberInfo>();
 		for (MethodInfo info : fMethods) {
-			if (info.isPublic() && !info.isConstructor() 
-					&& !info.isStatic() && !info.isJavaLangObject()
-					&& (info.isGetter() || info.isSetter()))
-				properties.add(info);
+			try {
+				if ((info.getSourceType()!=null && info.getSourceType().isInterface()) || (info.isPublic())
+						&& !info.isConstructor() 
+						&& !info.isStatic() && !info.isJavaLangObject()
+						&& (info.isGetter() || info.isSetter())) {
+					properties.add(info);					
+				}
+			} catch (JavaModelException e) {
+				Activator.getPluginLog().logError(e);
+			}
 		}
 
 		/*
