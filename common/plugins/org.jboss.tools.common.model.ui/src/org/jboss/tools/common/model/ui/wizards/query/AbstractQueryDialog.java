@@ -35,6 +35,7 @@ public class AbstractQueryDialog extends TitleAreaDialog implements IQueryDialog
 	
 	public AbstractQueryDialog(Shell shell) {
 		super(shell);
+		setShellStyle(getShellStyle()|SWT.RESIZE);
 	}
 	
 	public void setView(AbstractQueryWizardView view) {
@@ -78,7 +79,7 @@ public class AbstractQueryDialog extends TitleAreaDialog implements IQueryDialog
 		gridLayout.horizontalSpacing = 0;
 		gridLayout.verticalSpacing = 0;
 		composite.setLayout(gridLayout);
-		GridData gd = new GridData(GridData.FILL_BOTH);
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		composite.setLayoutData(gd);
 
 		Label titleBarSeparator = new Label(composite, SWT.HORIZONTAL | SWT.SEPARATOR);
@@ -97,7 +98,7 @@ public class AbstractQueryDialog extends TitleAreaDialog implements IQueryDialog
 		commandBar.setDefaultCommand(view.getDefaultCommand());
 		Control control = commandBar.createControl(composite);
 		commandBar.getLayout().alignment = SWT.RIGHT;
-		gd = new GridData(GridData.FILL_BOTH);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.heightHint = commandBar.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
 		control.setLayoutData(gd);
 		if(view.getHelpKey() == null)
