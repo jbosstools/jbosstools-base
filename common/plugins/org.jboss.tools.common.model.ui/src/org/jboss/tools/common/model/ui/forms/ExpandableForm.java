@@ -11,7 +11,12 @@
 package org.jboss.tools.common.model.ui.forms;
 
 
+import java.util.HashMap;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -113,7 +118,21 @@ public class ExpandableForm extends DefaultForm {
 //		section.setClient(composite);
 		section.setClient(client);
 
+		section.setFont(getFontFromMap(section.getFont().getDevice(), section.getFont().getFontData()));
+		
 		return control;
+	}
+	
+	private HashMap<FontData[], Font> fonts = new HashMap<FontData[], Font>();
+	
+	private Font getFontFromMap(Device device, FontData[] fontData){
+		if(fonts.containsKey(fontData))
+			return fonts.get(fontData);
+		else{
+			Font font = new Font(device, fontData);
+			fonts.put(fontData, font);
+			return font;
+		}
 	}
 
 	protected void reflow() {
