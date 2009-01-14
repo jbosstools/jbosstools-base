@@ -2,14 +2,14 @@
 <?eclipse version="3.0"?>
 <plugin>
 
-   <extension-point id="attributeEditor" name="Attribute Editor" schema="schema/attributeEditor.exsd"/>
-   <extension-point id="attributeAdapter" name="Attribute Adapter" schema="schema/attributeAdapter.exsd"/>
-   <extension-point id="xmlEditor" name="XML Editor" schema="schema/xmlEditor.exsd"/>
-   <extension-point id="paletteConstraints" name="Palette Constraints" schema="schema/paletteConstraints.exsd"/>
-   <extension-point id="metaTemplates" name="Meta Templates" schema="schema/metaTemplates.exsd"/>
-   <extension-point id="InsertTagWizard" name="InsertTagWizard" schema="schema/InsertTagWizard.exsd"/>
-   <extension-point id="labelDecorator" name="Model Object Label Decorator" schema="schema/labelDecorator.exsd"/>
-   <extension-point id="attributeContentProposalProviders" name="Attribute Content Proposal Providers" schema="schema/attributeContentProposalProviders.exsd"/>
+   <extension-point id="attributeEditor" name="%ExtensionName_attributeEditor" schema="schema/attributeEditor.exsd"/>
+   <extension-point id="attributeAdapter" name="%ExtensionName_attributeAdapter" schema="schema/attributeAdapter.exsd"/>
+   <extension-point id="xmlEditor" name="%ExtensionName_xmlEditor" schema="schema/xmlEditor.exsd"/>
+   <extension-point id="paletteConstraints" name="%ExtensionName_paletteConstraints" schema="schema/paletteConstraints.exsd"/>
+   <extension-point id="metaTemplates" name="%ExtensionName_metaTemplates" schema="schema/metaTemplates.exsd"/>
+   <extension-point id="InsertTagWizard" name="%ExtensionName_InsertTagWizard" schema="schema/InsertTagWizard.exsd"/>
+   <extension-point id="labelDecorator" name="%ExtensionName_labelDecorator" schema="schema/labelDecorator.exsd"/>
+   <extension-point id="attributeContentProposalProviders" name="%ExtensionName_attributeContentProposalProviders" schema="schema/attributeContentProposalProviders.exsd"/>
 
    <extension point="org.eclipse.ui.elementFactories">
       <factory class="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory" id="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory">
@@ -232,13 +232,13 @@
             category="org.jboss.tools.common.model.ui.MainPreferencePage"
             class="org.jboss.tools.common.model.ui.preferences.CompanyPreferencesPage"
             id="org.jboss.tools.common.model.ui"
-            name="Web">
+            name="%PreferencePage_Web">
       </page>
       <page
             category="org.jboss.tools.common.model.ui"
             class="org.jboss.tools.common.model.ui.preferences.DecoratorPreferencesPage"
             id="org.jboss.tools.common.model.ui.decorator"
-            name="Label Decorations">
+            name="%PreferencePage_LabelDecorations">
       </page>
    </extension>
    <extension point="org.eclipse.ui.preferencePages">
@@ -246,7 +246,7 @@
          category="org.jboss.tools.common.model.ui" 
          class="org.jboss.tools.common.model.ui.templates.preferences.GlobalTemplatePreferencePage" 
          id="org.jboss.tools.common.model.ui.templates" 
-         name="Templates">
+         name="%PreferencePage_Templates">
       </page>
    </extension>
    
@@ -263,7 +263,7 @@
           adaptable="true" 
           class="org.jboss.tools.common.model.ui.templates.preferences.ProjectTemplatePreferencePage" 
           id="ExadelTemplatesPropertiesPage" 
-          name="Templates" 
+          name="%PropertyPage_templates" 
           objectClass="org.eclipse.core.resources.IProject">
       </page>
    </extension>
@@ -302,7 +302,7 @@
    
    <extension point="org.eclipse.core.runtime.contentTypes"> 
       <content-type id="xml" 
-       name="JBoss Tools XML"
+       name="%ContentType_JBossToolsXML"
        base-type="org.eclipse.core.runtime.xml"
        describer="org.jboss.tools.common.model.ui.editor.XMLContentDescriber"
        file-extensions="xml,meta"
@@ -330,7 +330,10 @@
       </xmlEditor>
    </extension>
    <extension point="org.eclipse.ui.preferencePages">
-      <page category="org.jboss.tools.common.model.ui" class="org.jboss.tools.common.model.ui.texteditors.preferences.EditorsPreferencesPage" id="org.jboss.tools.common.xstudio.editors" name="Editors">
+      <page category="org.jboss.tools.common.model.ui" 
+         class="org.jboss.tools.common.model.ui.texteditors.preferences.EditorsPreferencesPage" 
+         id="org.jboss.tools.common.xstudio.editors" 
+         name="%PreferencePage_Editors">
       </page>
    </extension>
    <extension point="org.jboss.tools.common.model.ui.paletteConstraints">
@@ -459,15 +462,15 @@
    <extension
          point="org.eclipse.ui.activities">
       <category
-            description="It allows create Custom Capabilities, Library sets and Project templates for JSF/Struts projects"
+            description="%CategoryDescription_experimental"
             id="org.jboss.tools.common.model.ui.experimental"
-            name="JBoss Tools Experimental configuration"/>
+            name="%CategoryName_experimental"/>
       <categoryActivityBinding
             activityId="org.jboss.tools.common.model.ui.templates"
             categoryId="org.jboss.tools.common.model.ui.experimental"/>
       <activity
             id="org.jboss.tools.common.model.ui.templates"
-            name="JSF/Struts Project Templates Development"/>
+            name="%ActivityName_templates"/>
       <activityPatternBinding
             activityId="org.jboss.tools.common.model.ui.templates"
             pattern="org\.jboss\.tools\.common\.model\.ui/.*templates"/>

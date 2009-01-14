@@ -45,6 +45,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.ui.ModelUIMessages;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultXModelObjectLabelProvider;
 import org.jboss.tools.common.model.ui.navigator.decorator.DecoratorManager;
 import org.jboss.tools.common.model.ui.navigator.decorator.Variable;
@@ -68,7 +69,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 	Map<XModelObjectDecorator,String> currentValues = new HashMap<XModelObjectDecorator, String>();
 	
 	public DecoratorTextPreferencesPage() {
-		setTitle("Text");
+		setTitle(ModelUIMessages.getString("DecoratorTextPreferencesPage.Text")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -78,7 +79,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 		g.setLayout(new GridLayout(1, false));
 
 		Label label = new Label(g, SWT.NONE);
-		label.setText("Select decorator:");
+		label.setText(ModelUIMessages.getString("DecoratorTextPreferencesPage.Decorator")); //$NON-NLS-1$
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		decorators = new TreeViewer(g, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
@@ -168,13 +169,13 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 		c.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		Label cLabel = new Label(c, SWT.NONE);
-		cLabel.setText("Format:");
+		cLabel.setText(ModelUIMessages.getString("DecoratorTextPreferencesPage.Format")); //$NON-NLS-1$
 		
 		formatField = new Text(c, SWT.SINGLE | SWT.BORDER);
 		formatField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		addVariableButton = new Button(c, SWT.PUSH);
-		addVariableButton.setText("Add Variable...");
+		addVariableButton.setText(ModelUIMessages.getString("DecoratorTextPreferencesPage.AddVariable")); //$NON-NLS-1$
 		
 		addVariableButton.addSelectionListener(new SelectionListener() {
 
@@ -190,7 +191,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 		
 
 		label = new Label(g, SWT.NONE);
-		label.setText("Preview:");
+		label.setText(ModelUIMessages.getString("DecoratorTextPreferencesPage.Preview")); //$NON-NLS-1$
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		examples = new TreeViewer(g, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		examples.setContentProvider(new ITreeContentProvider() {
@@ -221,14 +222,14 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 				if(selection == null) {
 					return super.getText(element);
 				}
-				String result = "";
+				String result = ""; //$NON-NLS-1$
 				if (element instanceof XModelObject) {
 					XModelObject modelObject = (XModelObject)element; 
 					XModelObjectDecorator d = selection.getWorkingCopy();
 					d.setValue(formatField.getText());
 					result = d.getLabel(modelObject);
 				} else {
-					result = "?";
+					result = ModelUIMessages.getString("DecoratorTextPreferencesPage.DefaultLabel"); //$NON-NLS-1$
 				}
 				return result; 
 			}
@@ -316,13 +317,13 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 //			editor.setVisible(false);
 			formatField.setEnabled(false);
 			addVariableButton.setEnabled(false);
-			setText("");
+			setText(""); //$NON-NLS-1$
 		}
 		examples.refresh(true);
 	}
 	
 	private void setText(String text) {
-		if(text == null) text = "";
+		if(text == null) text = ""; //$NON-NLS-1$
 		formatField.removeModifyListener(formatListener);
 		formatField.setText(text);
 		formatField.addModifyListener(formatListener);
@@ -366,7 +367,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 			}			
 		);
 		dialog.setInput(selection);
-		dialog.setTitle("Select Variable");
+		dialog.setTitle(ModelUIMessages.getString("DecoratorTextPreferencesPage.SelectVariable")); //$NON-NLS-1$
 		dialog.create();
 		int result = dialog.open();
 		if(result == Window.OK) {

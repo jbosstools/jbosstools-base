@@ -17,9 +17,9 @@ import org.jboss.tools.common.model.XModelObject;
 
 public class VerificationPreferencePage extends TabbedPreferencesPage {
 	public static final String PREFERENCES[] = {
-		"%Options%/Struts Studio/Verification" 
+		"%Options%/Struts Studio/Verification"  //$NON-NLS-1$
 	};
-	public static String ATTR_ERRORS_NUMBER_LIMIT = "Reported Errors Number Limit";
+	public static String ATTR_ERRORS_NUMBER_LIMIT = "Reported Errors Number Limit"; //$NON-NLS-1$
 	
 	public VerificationPreferencePage() {
 		addPreferencePage(new RulesConfigurationPage());
@@ -35,7 +35,7 @@ public class VerificationPreferencePage extends TabbedPreferencesPage {
 			super(o);
 		}
 		public String getTitle() {
-			return "Options";
+			return Messages.VerificationPreferencePage_OptionsTitle;
 		}
 	}
 	

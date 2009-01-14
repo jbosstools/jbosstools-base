@@ -165,7 +165,7 @@ public class RulesConfigurationPage extends PreferencePage implements IPreferenc
 	}
 	
 	public String getTitle() {
-		return "Rules Configuration";
+		return Messages.RulesConfigurationPage_RulesConfigurationTitle;
 	}
 	
 }

@@ -35,9 +35,9 @@ import org.jboss.tools.common.resref.core.ResourceReference;
 import org.jboss.tools.common.resref.core.ResourceReferenceList;
 
 public abstract class AbstractResourceReferencesComposite {
-	protected static String ADD = "Add";
-	protected static String EDIT = "Edit";
-	protected static String REMOVE = "Remove";
+	protected static String ADD = Messages.AbstractResourceReferencesComposite_Add;
+	protected static String EDIT = Messages.AbstractResourceReferencesComposite_Edit;
+	protected static String REMOVE = Messages.AbstractResourceReferencesComposite_Remove;
 	protected XTable table = new XTable();
 	protected CommandBar bar = new CommandBar();
 	protected ResourceReferencesTableProvider tableProvider;// = new TemplatesTableProvider();
@@ -72,8 +72,8 @@ public abstract class AbstractResourceReferencesComposite {
 
 	public void setObject(Object object) {
 		Properties p = (Properties)object;
-		file = (IFile)p.get("file");
-		path = (IPath)p.get("path");
+		file = (IFile)p.get("file"); //$NON-NLS-1$
+		path = (IPath)p.get("path"); //$NON-NLS-1$
 		ResourceReference[] rs = (file != null) ? getReferenceList().getAllResources(file) :
 							(path != null) ? getReferenceList().getAllResources(path)
 							               : new ResourceReference[0];
@@ -149,7 +149,7 @@ public abstract class AbstractResourceReferencesComposite {
      * @return
      */
 	protected ResourceReference getDefaultResourceReference() {
-        return new ResourceReference("", ResourceReference.FOLDER_SCOPE);
+        return new ResourceReference("", ResourceReference.FOLDER_SCOPE); //$NON-NLS-1$
     }
 	
 	abstract protected void edit(int index);
@@ -179,7 +179,7 @@ public abstract class AbstractResourceReferencesComposite {
 			for (int i = 0; i < as.length; i++) {
 				 if(as[i].getConstraint() instanceof XAttributeConstraintFileFilter) {
 					 XAttributeConstraintFileFilter f = (XAttributeConstraintFileFilter)as[i].getConstraint();
-					 f.getProperties().setProperty("filterFolder", file.getProject().getLocation().toFile().getAbsolutePath());
+					 f.getProperties().setProperty("filterFolder", file.getProject().getLocation().toFile().getAbsolutePath()); //$NON-NLS-1$
 				 }
 			}
 		}

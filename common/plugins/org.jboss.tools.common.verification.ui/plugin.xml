@@ -3,7 +3,8 @@
 <plugin>
 
    <extension point="org.eclipse.ui.preferencePages">
-      <page category="org.jboss.tools.common.model.ui" class="org.jboss.tools.common.verification.ui.vrules.preferences.VerificationPreferencePage" id="org.jboss.tools.common.verification.ui" name="Verification">
+      <page category="org.jboss.tools.common.model.ui" class="org.jboss.tools.common.verification.ui.vrules.preferences.VerificationPreferencePage" id="org.jboss.tools.common.verification.ui" 
+            name="%PreferencePage_Verification">
       </page>
    </extension>
 

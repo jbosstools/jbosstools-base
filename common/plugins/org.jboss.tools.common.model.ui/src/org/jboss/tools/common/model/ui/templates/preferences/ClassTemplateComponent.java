@@ -42,7 +42,7 @@ public class ClassTemplateComponent {
 	XModel model;
     // xpath
 	Label xPathLabelValue;
-	String initValue = "";
+	String initValue = ""; //$NON-NLS-1$
     // base class
     JavaChoicerEditor baseClassEditor;
     BaseClassAdapter baseClassAdapter;
@@ -64,7 +64,7 @@ public class ClassTemplateComponent {
         gd = new GridData(GridData.FILL_HORIZONTAL);
         Label xPathLabel = new Label(composite, SWT.NONE);
         xPathLabel.setLayoutData(gd);
-        xPathLabel.setText("XPath");
+        xPathLabel.setText(Messages.ClassTemplateComponent_XPATH);
 
         gd = new GridData(GridData.FILL_HORIZONTAL);
         xPathLabelValue = new Label(composite, SWT.NONE);
@@ -72,7 +72,7 @@ public class ClassTemplateComponent {
         xPathLabelValue.setText(initValue);
 
         // base class
-        baseClassEditor.setLabelText("Base Class");
+        baseClassEditor.setLabelText(Messages.ClassTemplateComponent_LABEL_BASECLASS);
 
         StringButtonFieldEditorEx sb;
 		sb = new StringButtonFieldEditorEx();
@@ -88,7 +88,7 @@ public class ClassTemplateComponent {
         control[1].setLayoutData(gd);
 
         // interfaces
-        interfacesEditor.setLabelText("Interfaces");
+        interfacesEditor.setLabelText(Messages.ClassTemplateComponent_LABEL_INTERFACES);
         control = getControls(composite, interfacesEditor);
         control[0].dispose(); // dispose empty label
         gd = new GridData(GridData.FILL_BOTH);
@@ -113,7 +113,7 @@ public class ClassTemplateComponent {
 	    interfacesAdapter = new DefaultTableStructuredAdapter();
 	    interfaceActions = new ActionProvider();
 	    interfacesAdapter.setActionProvider(interfaceActions);
-	    interfacesAdapter.addColumnDescription(new ColumnDescription("Interfaces", null, 100, SWT.LEFT, true, null));
+	    interfacesAdapter.addColumnDescription(new ColumnDescription(Messages.ClassTemplateComponent_COLUMN_INTERFACES, null, 100, SWT.LEFT, true, null));
 	    interfacesAdapter.setTableLabelProvider(new TableLabelProvider());
 	    interfacesEditor.setInput(interfacesAdapter);
     }
@@ -122,10 +122,11 @@ public class ClassTemplateComponent {
 		MetaValue value;
 		public void load() {
 			if(value == null) {
-				setValue("");
+				setValue(""); //$NON-NLS-1$
 			} else {
 				String v = value.getValue();
-				if(v == null) v = "java.lang.Object";
+				if (v == null)
+					v = "java.lang.Object"; //$NON-NLS-1$
 				setValue(v);
 			}
 		}
@@ -197,9 +198,9 @@ public class ClassTemplateComponent {
     	this.selectedTemplate = selectedTemplate;
     	if(selectedTemplate == null) {
     	    if(xPathLabelValue!=null) {
-    	        xPathLabelValue.setText("");
+    	        xPathLabelValue.setText(""); //$NON-NLS-1$
     	    } else {
-    	        initValue = "";
+    	        initValue = ""; //$NON-NLS-1$
     	    }
     		baseClassAdapter.value = null;
     		baseClassAdapterListener.value = null;
@@ -230,17 +231,17 @@ public class ClassTemplateComponent {
     	IAction editAction;
     	
     	public ActionProvider() {
-    		addAction = new Action("Add") {
+    		addAction = new Action(Messages.ClassTemplateComponent_ADD) {
     	    	public void run() {
     	    	    addInterface();
     	    	}
     	    };
-    		removeAction = new Action("Remove") {
+    		removeAction = new Action(Messages.ClassTemplateComponent_REMOVE) {
     	    	public void run() {
     	    	    removeInterface();
     	    	}
     	    };
-    		editAction = new Action("Edit") {
+    		editAction = new Action(Messages.ClassTemplateComponent_EDIT) {
     	    	public void run() {
     	    	    editInterface();
     	    	}

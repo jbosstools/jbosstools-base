@@ -40,11 +40,11 @@ import org.jboss.tools.common.model.util.AbstractTableHelper;
 public class XChildrenEditor implements CommandBarListener {
 	protected static Color DEFAULT_COLOR = new Color(null, 0, 0, 0);
 	protected static Color GREYED_COLOR = new Color(null, 127, 127, 127);
-	public static String ADD = "&Add";
-	public static String DELETE = "&Delete";
-	public static String EDIT = "&Edit";
-	public static String UP = "&Up";
-	public static String DOWN = "Do&wn";
+	public static String ADD = Messages.XChildrenEditor_Add;
+	public static String DELETE = Messages.XChildrenEditor_Delete;
+	public static String EDIT = Messages.XChildrenEditor_Edit;
+	public static String UP = Messages.XChildrenEditor_Up;
+	public static String DOWN = Messages.XChildrenEditor_Down;
 	protected Composite control; 
 	protected AbstractTableHelper helper = createHelper();
 	protected XTable xtable = new XTable();
@@ -210,12 +210,12 @@ public class XChildrenEditor implements CommandBarListener {
 	
 	protected void delete() {
 		XModelObject o = helper.getModelObject(xtable.getSelectionIndex());
-		if(o != null) callAction(o, "DeleteActions.Delete");
+		if(o != null) callAction(o, "DeleteActions.Delete"); //$NON-NLS-1$
 	}
 	
 	protected void edit() {
 		XModelObject o = helper.getModelObject(xtable.getSelectionIndex());
-		if(o != null) callAction(o, "Edit");
+		if(o != null) callAction(o, "Edit"); //$NON-NLS-1$
 	}
 	
 	protected void up() {
@@ -232,8 +232,8 @@ public class XChildrenEditor implements CommandBarListener {
 	
 	private void move(int r1, int r2) {
 		XModelObject o1 = helper.getModelObject(r1), o2 = helper.getModelObject(r2);
-		callAction(o1, "CopyActions.Copy");
-		callAction(o2, "MoveActions.Move");
+		callAction(o1, "CopyActions.Copy"); //$NON-NLS-1$
+		callAction(o2, "MoveActions.Move"); //$NON-NLS-1$
 		if(helper.getModelObject(r2) == o1)
 		  xtable.getTable().setSelection(r2);
 	}
@@ -247,7 +247,7 @@ public class XChildrenEditor implements CommandBarListener {
 	}
 
 	protected String getAddActionPath() {
-		return "CreateActions.AddKeyPair";
+		return Messages.XChildrenEditor_9;
 	}
 
 	protected void updateBar() {
@@ -270,9 +270,9 @@ public class XChildrenEditor implements CommandBarListener {
 	
 	public void callAction(XModelObject o, String path) {
 		Properties p = new Properties();
-		p.put("shell", bar.getControl().getShell());
+		p.put(Messages.XChildrenEditor_10, bar.getControl().getShell());
 		int i = xtable.getSelectionIndex();
-		p.put("insertAfter", Integer.valueOf(i));
+		p.put(Messages.XChildrenEditor_11, Integer.valueOf(i));
 		XActionInvoker.invoke(path, o, getTargets(), p);
 	}
 	
@@ -372,7 +372,7 @@ public class XChildrenEditor implements CommandBarListener {
 		}
 
 		public void drop(Properties p) {
-			XModelObject draggedObject = (XModelObject)p.get("draggedObject");
+			XModelObject draggedObject = (XModelObject)p.get(Messages.XChildrenEditor_12);
 			if(draggedObject == null) return;
 			update();
 			xtable.getViewer().setSelection(new StructuredSelection(draggedObject));

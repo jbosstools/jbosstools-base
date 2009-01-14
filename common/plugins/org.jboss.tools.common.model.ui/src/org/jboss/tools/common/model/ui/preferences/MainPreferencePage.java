@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.jboss.tools.common.model.ui.ModelUIMessages;
 
 /**
  * Empty preference page for JBoss-IDE.
@@ -42,7 +43,7 @@ public class MainPreferencePage extends PreferencePage implements
 
 	/** Default constructor */
 	public MainPreferencePage() {
-		this.setDescription("JBossTools preferences");
+		this.setDescription(ModelUIMessages.getString("MainPreferencePage.Description")); //$NON-NLS-1$
 	}
 
 	/** Description of the Method */
