@@ -28,6 +28,7 @@ import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelBuffer;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.event.ActionDeclinedException;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class PasteHandler extends AbstractHandler {	
@@ -109,7 +110,7 @@ public class PasteHandler extends AbstractHandler {
 		boolean mustGenerate = (found != null && mustGenerate(entity));
 		if(!mustGenerate) {
 			int i = (found == null) ? 0 : PasteEnterNewNameSupport.run(parent, source, copy, data[0]);
-			if(i != 0) throw new XModelException("Paste declined.");
+			if(i != 0) throw new ActionDeclinedException("Paste declined.");
 		}
         for (int j = 0; j < ad.length; j++)
           copy.setAttributeValue(ad[j].getAttribute().getName(), ad[j].getValue());

@@ -11,12 +11,12 @@
 package org.jboss.tools.common.meta.action.impl;
 
 import java.util.*;
+
+import org.jboss.tools.common.meta.XChild;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
-import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.CreateFileHandler;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class DefaultWizardDataValidator implements WizardDataValidator {
@@ -44,6 +44,16 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 				String entity = support.action.getProperty("entity");
 				if(entity == null) entity = ds[step].getModelEntity().getName();
 				if(!checkChild(support.getTarget(), entity, data)) return;
+
+				XModelObject parent = support.getTarget();
+				int childCount = parent.getChildren(entity).length;
+				XChild c = support.getTarget().getModelEntity().getChild(entity);
+				int max = c == null ? 0 : c.getMaxCount();
+				if(c != null && max <= childCount) {
+					message = DefaultCreateHandler.title(parent, true) + " can contain only " + max +
+                    ((max == 1) ? " child " : " children ") +
+                    "with entity " + entity + ".";
+				}
 			} else if("true".equals(support.action.getProperty("validator.edit"))) {
 				String entity = support.action.getProperty("entity");
 				if(entity == null) entity = ds[step].getModelEntity().getName();

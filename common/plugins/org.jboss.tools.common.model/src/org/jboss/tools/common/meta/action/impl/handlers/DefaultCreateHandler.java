@@ -23,6 +23,7 @@ import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.event.ActionDeclinedException;
 import org.jboss.tools.common.model.impl.RegularObjectImpl;
 import org.jboss.tools.common.model.undo.XCreateUndo;
 import org.jboss.tools.common.model.undo.XUndoManager;
@@ -184,7 +185,7 @@ public class DefaultCreateHandler extends AbstractHandler {
             mes = title(parent, true) + " can contain only " + max +
                          ((max == 1) ? " child " : " children ") +
                          "with entity " + ce + ".";
-            throw new XModelException(mes);
+            throw new ActionDeclinedException(mes);
         }
         boolean b = parent.addChild(child);
 		if(!b && child.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) {
