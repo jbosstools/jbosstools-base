@@ -110,9 +110,6 @@
                 <param value="none"/>
                 <param value="end"/>
             </proposal>
-            <proposal type="file">
-            	<param name="extensions" value="%image%"/>
-             </proposal>
         </attribute-type>
         <attribute type="propagation"/>
         <attribute-type name="style" required="false">
