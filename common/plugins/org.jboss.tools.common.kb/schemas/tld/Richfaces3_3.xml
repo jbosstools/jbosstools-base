@@ -4820,6 +4820,15 @@
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="lang"/>
+        <attribute-type name="onRowContextMenu" required="false">
+            <description>
+				JavaScript handler to be called on right click. Returning false prevents default browser context menu from being displayed
+			</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="onRowContextMenu"/>
         <attribute-type name="onRowClick" required="false">
             <description>
 				HTML: a script expression; a pointer button is clicked
@@ -9671,6 +9680,19 @@
         <description>
 	        <![CDATA[The inputNumberSlider component lets users select a number from a numeric region. It's a horizontal aligned scroll-like control with its own input field (optional) present. The keyboard input in a field is possible (optional). Also it's possible to see the current value in the toolTip above a dragged handle control.]]>
 		</description>
+        <attribute-type name="orientation" required="false">
+            <description>
+				Attribute can have the values "vertical" and "horizontal" to define in which direction the slider should be moveable.
+			</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="vertical"/>
+                <param value="horizontal"/>
+            </proposal>
+        </attribute-type>
+        <attribute type="orientation"/>
         <attribute-type name="accesskey" required="false">
             <description>
 				This attribute assigns an access key to an element. An
