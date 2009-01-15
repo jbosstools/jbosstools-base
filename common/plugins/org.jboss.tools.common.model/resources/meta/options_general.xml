@@ -1816,6 +1816,10 @@
 					ENDTEXT="&lt;/support>" ICON="" NAME="support" REFORMAT="yes"
 					SCOPE="project" STARTTEXT="&lt;support>" large-icon=""
 					model-entity="SharableMacroHTML" />
+				<MacroHTML
+     				DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:queue /&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, disabled, id, ignoreDupResponses, name, onbeforedomupdate, oncomplete, onerror, onrequestdequeue, onrequestqueue, onsizeexceeded, onsubmit, requestDelay, size, sizeExceededBehavior, status, timeout&lt;/code>"
+     				ENDTEXT="" ICON="%Icons%/JBoss RichFaces/queue" NAME="queue" REFORMAT="no" SCOPE="project"
+     				STARTTEXT="&lt;queue/>" large-icon="" model-entity="SharableMacroHTML"/>
 			</GroupHTML>
 			<GroupHTML HIDDEN="no" ICON="" NAME="RichFaces" PREFIX="rich"
 				SCOPE="project" URI="http://richfaces.org/rich" add_taglib="true"
@@ -2192,6 +2196,10 @@
 					ENDTEXT="&lt;/panel>" ICON="%Icons%/JBoss RichFaces/panel" NAME="panel"
 					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;panel>" large-icon=""
 					model-entity="SharableMacroHTML" />
+				<MacroHTML
+     				DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:editor&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:editor&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>autoResize, binding, configuration, converter, converterMessage, customPlugins, dialogType, height, id, immediate, label, language, onchange, oninit, onsave, onsetup, plugins, readonly, rendered, required, requiredMessage, skin, style, styleClass, tabindex, theme, useSeamText, validator, validatorMessage, value, valueChangeListener, viewMode, width&lt;/code>"
+     				ENDTEXT="&lt;/editor>" ICON="%Icons%/JBoss RichFaces/editor" NAME="editor" REFORMAT="yes"
+     				SCOPE="project" STARTTEXT="&lt;editor>" large-icon="" model-entity="SharableMacroHTML"/>
 			</GroupHTML>
 			<GroupHTML HIDDEN="no" ICON="" NAME="Seam" PREFIX="s"
 				SCOPE="project" URI="http://jboss.com/products/seam/taglib"
@@ -3896,6 +3904,12 @@
 			<Icon
 				IMAGE="mhmjmgliljobjaiajaiaeejfiaaibccjclakogclakofccamphbgapanclalofanbcccbnaoacbbbbbhbbbabichamonccanphbmaoacbhapanchamoocmalogambccbclalogaldhhhafbdcphnhohohphphpiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiakbhjieibiaiajfiakmiaiaiaiajaiajaiaiaifmcoakfaooeojboggcecocmmkmonckmepfdflfokemagnpmipbaagbobaickbkfaglniecjabgejbmiahggaombjkmikjilbcgdckkaijkcacmakehcaiieikodbepkenooahiaiall"
 				NAME="panel" SCOPE="project" model-entity="SharableIcon" />
+			<Icon
+    			IMAGE="mhmjmgliljobjaiajaiaddikiaficmohficmoggeegalhihaeihafpcpdpfjhpncpbcpafbdcpdbpplnfablmohphphpiaiaiaiaiaiaiaiaiaiaiaiaiaiaiakbhjieibiaiaikiakmiaiaiaiajaiajaiaiaiemjnaejmjcldnghgkbdkfhpganhpemhobbogiojkimggldoondbokfelbfdfdannpmjbpkidonpnabcjiimjamakddcpikejciielohjemkjeiibgnggmbfiiiikmdlnpcpiembmgbgengfbnkficiall"
+    			NAME="queue" SCOPE="project" model-entity="SharableIcon"/>
+   			<Icon
+    			IMAGE="mhmjmgliljobjaiajaiaddiliaflgihclmkljfdpfjhpphphphdbpplnhihaeigeegalncpbcpafbdcpfablmohphphphphphpiaiaiaiaiaiaiaiaiaiaiaiakbhjieibiaiailiakmiaiaiaiajaiajaiaiaienbpaejmjcldfkiepedllnpijkajofccbbmkiniaeicdjbiciccjkmgfcmknjlofhijpbgnajjocfidjejojakfnjccmailhkmoeinhhbijbnkmjdlmoknfdcnmijodakgimoalakioicaehekcehaoigicdpdinmjcibiall"
+    			NAME="editor" SCOPE="project" model-entity="SharableIcon"/>
 		</Icons>
 		<Icons NAME="Struts Logic" SCOPE="project" model-entity="SharableIcons">
 			<Icon
