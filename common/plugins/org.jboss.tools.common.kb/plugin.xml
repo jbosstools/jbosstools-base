@@ -54,6 +54,13 @@
             jsf="true"
             name="JBoss Rich Faces 3.2"
             schema-location="schemas/tld/Richfaces3_2.xml"
+            uri="http://richfaces.org/rich"
+            version="3.2"/>
+            
+      <tld
+            jsf="true"
+            name="JBoss Rich Faces 3.3"
+            schema-location="schemas/tld/Richfaces3_3.xml"
             uri="http://richfaces.org/rich"/>
 
       <tld
@@ -76,6 +83,12 @@
             jsf="true"
             name="JBoss Ajax4jsf 3.2"
             schema-location="schemas/tld/Ajax4jsf3_2.xml"
+            uri="http://richfaces.org/a4j"
+            version="3.2"/>
+      <tld
+            jsf="true"
+            name="JBoss Ajax4jsf 3.3"
+            schema-location="schemas/tld/Ajax4jsf3_3.xml"
             uri="http://richfaces.org/a4j"/>
 
       <tld
