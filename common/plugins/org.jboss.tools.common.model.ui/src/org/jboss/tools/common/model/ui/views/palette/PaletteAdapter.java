@@ -16,11 +16,6 @@ import java.util.Properties;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.dnd.DND;
@@ -42,20 +37,24 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.IMenuManager;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.event.ActionDeclinedException;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.jboss.tools.common.model.util.IconUtil;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.DnDUtil;
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
+import org.jboss.tools.common.model.ui.views.palette.model.*;
 import org.jboss.tools.common.model.ui.util.StringUtilities;
-import org.jboss.tools.common.model.ui.views.palette.model.IPaletteNode;
-import org.jboss.tools.common.model.ui.views.palette.model.PaletteElement;
-import org.jboss.tools.common.model.ui.views.palette.model.PaletteModel;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.jboss.tools.common.model.util.IconUtil;
 
 public class PaletteAdapter implements IPaletteAdapter {
 	private static final int TEXT_MARGIN = 4;
@@ -405,6 +404,9 @@ public class PaletteAdapter implements IPaletteAdapter {
 				try {
 					DnDUtil.paste(o, new Properties());
 					model.getXModel().saveOptions();
+				} catch (ActionDeclinedException ade) {
+					//ignore - this exception is thrown to inform that user 
+					//selected cancel option in dialog. 
 				} catch (XModelException e) {
 					message(e);
 				}

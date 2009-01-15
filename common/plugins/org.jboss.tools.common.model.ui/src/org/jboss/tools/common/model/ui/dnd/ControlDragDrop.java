@@ -334,6 +334,8 @@ public class ControlDragDrop {
 						if(draggedObject != null) p.put("draggedObject", draggedObject);
 						((IControlDropListener)provider).drop(p);
 					}
+				} catch (ActionDeclinedException ade) {
+					ignore();
 				} catch (XModelException e) {
 					ModelUIPlugin.getPluginLog().logError(e);
 				}
