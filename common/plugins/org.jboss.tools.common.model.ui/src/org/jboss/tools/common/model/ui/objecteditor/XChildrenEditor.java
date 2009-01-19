@@ -247,7 +247,7 @@ public class XChildrenEditor implements CommandBarListener {
 	}
 
 	protected String getAddActionPath() {
-		return Messages.XChildrenEditor_9;
+		return "CreateActions.AddKeyPair"; //$NON-NLS-1$
 	}
 
 	protected void updateBar() {
@@ -270,9 +270,9 @@ public class XChildrenEditor implements CommandBarListener {
 	
 	public void callAction(XModelObject o, String path) {
 		Properties p = new Properties();
-		p.put(Messages.XChildrenEditor_10, bar.getControl().getShell());
+		p.put("shell", bar.getControl().getShell()); //$NON-NLS-1$
 		int i = xtable.getSelectionIndex();
-		p.put(Messages.XChildrenEditor_11, Integer.valueOf(i));
+		p.put("insertAfter", Integer.valueOf(i)); //$NON-NLS-1$
 		XActionInvoker.invoke(path, o, getTargets(), p);
 	}
 	
@@ -372,7 +372,7 @@ public class XChildrenEditor implements CommandBarListener {
 		}
 
 		public void drop(Properties p) {
-			XModelObject draggedObject = (XModelObject)p.get(Messages.XChildrenEditor_12);
+			XModelObject draggedObject = (XModelObject)p.get("draggedObject"); //$NON-NLS-1$
 			if(draggedObject == null) return;
 			update();
 			xtable.getViewer().setSelection(new StructuredSelection(draggedObject));

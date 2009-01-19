@@ -4,10 +4,6 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.common.model.ui.objecteditor.messages"; //$NON-NLS-1$
-	public static String XChildrenEditor_10;
-	public static String XChildrenEditor_11;
-	public static String XChildrenEditor_12;
-	public static String XChildrenEditor_9;
 	public static String XChildrenEditor_Add;
 	public static String XChildrenEditor_Delete;
 	public static String XChildrenEditor_Down;
