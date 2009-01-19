@@ -21,6 +21,7 @@ import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import org.jboss.tools.common.meta.action.XEntityData;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.options.impl.SharableElementImpl;
@@ -52,9 +53,16 @@ public class XMOBasedPreferencesPage extends PreferencePage implements IPreferen
 		support = null;
 	}
 
-  public String getTitle() {
-  	return support.getTitle();
-  }
+	public String getTitle() {
+		String value = support.getTitle();
+		if(object != null) {
+			String s = WizardKeys.getVisualListValue(object.getModelEntity().getAttribute("name"), value);
+			if(s != null) {
+				return s;
+			}
+		}
+		return value;
+	}
 
 	public void init(IWorkbench workbench)  {
 	}
