@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Eclipse-LazyStart: true
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-Name: El Plug-in
+Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.el.core
 Bundle-Version: 2.0.0
 Provide-Package: org.jboss.tools.common.el.core,

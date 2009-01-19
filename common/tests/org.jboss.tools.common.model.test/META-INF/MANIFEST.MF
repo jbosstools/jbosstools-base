@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JSF Tests Plug-in
+Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.model.test;singleton:=true
 Bundle-Version: 2.0.0
 Bundle-ClassPath: common-model-tests.jar
-Bundle-Vendor: JBoss, a division of Red Hat
+Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.common.model.test
 Require-Bundle: 
  org.junit,
@@ -15,3 +15,4 @@ Require-Bundle:
  org.jboss.tools.tests,
  org.jboss.tools.common.model.ui
 Provide-Package: org.jboss.tools.common.model.test
+Bundle-Localization: plugin

@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Tests Plug-in
+Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.tests
 Bundle-Version: 2.0.0
-Bundle-Vendor: JBoss, a division of Red Hat
+Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -15,3 +15,4 @@ Export-Package: org.jboss.tools.test.util,
  org.jboss.tools.test.util.xpl,
  org.jboss.tools.tests
 Bundle-ClassPath: tools-tests.jar
+Bundle-Localization: plugin

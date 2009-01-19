@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Text Ext Test Plug-in
+Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.text.ext.test
 Bundle-Version: 1.0.0
 Require-Bundle: org.jboss.tools.common.text.ext,
@@ -16,4 +16,5 @@ Require-Bundle: org.jboss.tools.common.text.ext,
  org.jboss.tools.common.model.ui
 Export-Package: org.jboss.tools.common.text.ext.test
 Bundle-ClassPath: common-text-ext-test.jar
-Bundle-Vendor: JBoss, a division of Red Hat
+Bundle-Vendor: %Bundle-Vendor.0
+Bundle-Localization: plugin

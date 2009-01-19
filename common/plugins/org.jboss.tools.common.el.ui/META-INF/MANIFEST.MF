@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Eclipse-LazyStart: true
 Bundle-Localization: plugin
-Bundle-Name: EL UI Plug-in
+Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.el.ui
 Bundle-Version: 1.0.0
 Provide-Package: org.jboss.tools.common.el,
@@ -15,4 +15,4 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.common.resref.ui;bundle-version="1.0.0",
  org.eclipse.core.resources;bundle-version="3.4.0",
  org.jboss.tools.common.model.ui;bundle-version="2.0.0"
-Bundle-Vendor: JBoss, a division of Red Hat
+Bundle-Vendor: %Bundle-Vendor.0

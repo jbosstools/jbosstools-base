@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Eclipse-LazyStart: true
-Bundle-Name: JBoss Tools Model
+Bundle-Name: %Bundle-Name.0
 Bundle-ClassPath: model.jar,lib/j2ee.jar,lib/Bundles.jar
 Bundle-Activator: org.jboss.tools.common.model.plugin.ModelPlugin
 Bundle-Vendor: %providerName
