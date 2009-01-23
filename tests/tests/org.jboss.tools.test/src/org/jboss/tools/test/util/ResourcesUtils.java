@@ -186,6 +186,7 @@ public class ResourcesUtils {
 		IProject project = null;
 	
 		try {
+			 boolean state = ResourcesUtils.setBuildAutomatically(false);
 			 project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 			 project.create(null);
 			 project.open(null);
@@ -216,6 +217,8 @@ public class ResourcesUtils {
 					.getActiveWorkbenchWindow().getShell());
 			// run import
 			importOp.run(null);
+			JobUtils.waitForIdle(IMPORT_DELAY);
+			ResourcesUtils.setBuildAutomatically(state);
 			JobUtils.waitForIdle(IMPORT_DELAY);
 
 		} catch (InvocationTargetException ite) {
