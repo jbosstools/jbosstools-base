@@ -219,7 +219,6 @@ public class ResourcesUtils {
 			importOp.run(null);
 			JobUtils.waitForIdle(IMPORT_DELAY);
 			ResourcesUtils.setBuildAutomatically(state);
-			JobUtils.waitForIdle(IMPORT_DELAY);
 
 		} catch (InvocationTargetException ite) {
 //			TePlugin.getDefault().logError(ite.getCause());
