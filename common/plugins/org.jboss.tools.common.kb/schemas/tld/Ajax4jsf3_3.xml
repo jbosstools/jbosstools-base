@@ -82,6 +82,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="noEscape"/>
         <attribute-type name="value" required="false">
@@ -163,6 +167,10 @@ to the component which send the request only</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ajaxSingle"/>
         <attribute-type name="alt" required="false">
@@ -186,6 +194,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="bypassUpdates"/>
         <attribute-type name="data" required="false">
@@ -202,6 +214,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="LTR"/>
+                <param value="RTL"/>
+            </proposal>
         </attribute-type>
         <attribute type="dir"/>
         <attribute-type name="disabled" required="false">
@@ -240,6 +256,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ignoreDupResponses"/>
         <attribute-type name="image" required="false">
@@ -280,6 +300,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="limitToList"/>
         <attribute-type name="onbeforedomupdate" required="false">
@@ -542,6 +566,10 @@ to the component which send the request only</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ajaxSingle"/>
         <attribute-type name="binding" required="false">
@@ -558,6 +586,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="bypassUpdates"/>
         <attribute-type name="charset" required="false">
@@ -594,6 +626,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="LTR"/>
+                <param value="RTL"/>
+            </proposal>
         </attribute-type>
         <attribute type="dir"/>
         <attribute-type name="disabled" required="false">
@@ -639,6 +675,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ignoreDupResponses"/>
         <attribute-type name="immediate" required="false">
@@ -667,6 +707,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="limitToList"/>
         <attribute-type name="onbeforedomupdate" required="false">
@@ -825,6 +869,12 @@ When the delay time is over, the request will be sent to the server or removed i
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="default"/>
+                <param value="rect"/>
+                <param value="circle"/>
+                <param value="poly"/>
+            </proposal>
         </attribute-type>
         <attribute type="shape"/>
         <attribute-type name="status" required="false">
@@ -919,6 +969,10 @@ to the component which send the request only</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ajaxSingle"/>
         <attribute-type name="ajaxSubmit" required="false">
@@ -926,6 +980,10 @@ to the component which send the request only</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ajaxSubmit"/>
         <attribute-type name="binding" required="false">
@@ -942,6 +1000,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="bypassUpdates"/>
         <attribute-type name="data" required="false">
@@ -983,6 +1045,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ignoreDupResponses"/>
         <attribute-type name="limitToList" required="false">
@@ -990,6 +1056,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="limitToList"/>
         <attribute-type name="onbeforedomupdate" required="false">
@@ -1154,6 +1224,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="LTR"/>
+                <param value="RTL"/>
+            </proposal>
         </attribute-type>
         <attribute type="dir"/>
         <attribute-type name="disabled" required="false">
@@ -1319,6 +1393,12 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="default"/>
+                <param value="rect"/>
+                <param value="circle"/>
+                <param value="poly"/>
+            </proposal>
         </attribute-type>
         <attribute type="shape"/>
         <attribute-type name="style" required="false">
@@ -1386,6 +1466,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ajaxRendered"/>
         <attribute-type name="binding" required="false">
@@ -1404,6 +1488,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="LTR"/>
+                <param value="RTL"/>
+            </proposal>
         </attribute-type>
         <attribute type="dir"/>
         <attribute-type name="id" required="false">
@@ -1421,6 +1509,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="keepTransient"/>
         <attribute-type name="lang" required="false">
@@ -1442,6 +1534,11 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="block"/>
+                <param value="inline"/>
+                <param value="none"/>
+            </proposal>
         </attribute-type>
         <attribute type="layout"/>
         <attribute-type name="rendered" required="false">
@@ -1516,6 +1613,10 @@ to the component which send the request only</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            	<proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>>
         </attribute-type>
         <attribute type="ajaxSingle"/>
         <attribute-type name="binding" required="false">
@@ -1532,6 +1633,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="bypassUpdates"/>
         <attribute-type name="data" required="false">
@@ -1566,6 +1671,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ignoreDupResponses"/>
         <attribute-type name="immediate" required="false">
@@ -1587,6 +1696,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="limitToList"/>
         <attribute-type name="name" required="false">
@@ -1674,6 +1787,10 @@ When the delay time is over, the request will be sent to the server or removed i
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ajaxOnly"/>
     </element-type>
@@ -1811,6 +1928,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="LTR"/>
+                <param value="RTL"/>
+            </proposal>
         </attribute-type>
         <attribute type="dir"/>
         <attribute-type name="height" required="false">
@@ -1846,6 +1967,14 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="FATAL"/>
+                <param value="ERROR"/>
+                <param value="WARN"/>
+                <param value="INFO"/>
+                <param value="DEBUG"/>
+                <param value="ALL"/>
+            </proposal>
         </attribute-type>
         <attribute type="level"/>
         <attribute-type name="name" required="false">
@@ -1997,6 +2126,11 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="bottom"/>
+                <param value="middle"/>
+                <param value="top"/>
+            </proposal>            
         </attribute-type>
         <attribute type="align"/>
         <attribute-type name="archive" required="false">
@@ -2027,6 +2161,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="cacheable"/>
         <attribute-type name="charset" required="false">
@@ -2108,6 +2246,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="LTR"/>
+                <param value="RTL"/>
+            </proposal>
         </attribute-type>
         <attribute type="dir"/>
         <attribute-type name="element" required="false">
@@ -2285,6 +2427,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="session"/>
         <attribute-type name="shape" required="false">
@@ -2298,6 +2444,12 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="default"/>
+                <param value="rect"/>
+                <param value="circle"/>
+                <param value="poly"/>
+            </proposal>
         </attribute-type>
         <attribute type="shape"/>
         <attribute-type name="standby" required="false">
@@ -2400,6 +2552,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ajaxRendered"/>
         <attribute-type name="binding" required="false">
@@ -2418,6 +2574,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="LTR"/>
+                <param value="RTL"/>
+            </proposal>
         </attribute-type>
         <attribute type="dir"/>
         <attribute-type name="id" required="false">
@@ -2435,6 +2595,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="keepTransient"/>
         <attribute-type name="lang" required="false">
@@ -2456,6 +2620,11 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="block"/>
+                <param value="inline"/>
+                <param value="none"/>
+            </proposal>
         </attribute-type>
         <attribute type="layout"/>
         <attribute-type name="onclick" required="false">
@@ -2679,6 +2848,12 @@ a backing bean</description>
         <proposal type="beanProperty" />
         <proposal type="bundleProperty" />
         <proposal type="jsfVariables" />
+         <proposal type="enumeration">
+                <param value="dropNext"/>
+                <param value="dropNew"/>
+                <param value="fireNext"/>
+                <param value="fireNew"/>
+            </proposal> 
     </attribute-type>
     <attribute type="sizeExceededBehavior" />
     <attribute-type name="status" required="false">
@@ -2749,6 +2924,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="LTR"/>
+                <param value="RTL"/>
+            </proposal>
         </attribute-type>
         <attribute type="dir"/>
         <attribute-type name="format" required="false">
@@ -2824,6 +3003,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="selfRendered"/>
         <attribute-type name="style" required="false">
@@ -2881,6 +3064,10 @@ to the component which send the request only</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ajaxSingle"/>
         <attribute-type name="binding" required="false">
@@ -2897,6 +3084,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="bypassUpdates"/>
         <attribute-type name="data" required="false">
@@ -2911,6 +3102,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="enabled"/>
         <attribute-type name="eventsQueue" required="false">
@@ -2938,6 +3133,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ignoreDupResponses"/>
         <attribute-type name="immediate" required="false">
@@ -2966,6 +3165,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="limitToList"/>
         <attribute-type name="onbeforedomupdate" required="false">
@@ -3091,6 +3294,10 @@ to the component which send the request only</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ajaxSingle"/>
         <attribute-type name="binding" required="false">
@@ -3107,6 +3314,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="bypassUpdates"/>
         <attribute-type name="data" required="false">
@@ -3121,6 +3332,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="enabled"/>
         <attribute-type name="eventProducer" required="false">
@@ -3159,6 +3374,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ignoreDupResponses"/>
         <attribute-type name="immediate" required="false">
@@ -3187,6 +3406,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="limitToList"/>
         <attribute-type name="onbeforedomupdate" required="false">
@@ -3291,6 +3514,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="renderRegionOnly"/>
         <attribute-type name="rendered" required="false">
@@ -3309,6 +3536,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="selfRendered"/>
     </element-type>
@@ -3458,6 +3689,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="LTR"/>
+                <param value="RTL"/>
+            </proposal>
         </attribute-type>
         <attribute type="dir"/>
         <attribute-type name="for" required="false">
@@ -3475,6 +3710,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="forceId"/>
         <attribute-type name="id" required="false">
@@ -3494,6 +3733,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="block"/>
+                <param value="inline"/>
+            </proposal>
         </attribute-type>
         <attribute type="layout"/>
         <attribute-type name="onclick" required="false">
@@ -3715,6 +3958,10 @@ to the component which send the request only</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ajaxSingle"/>
         <attribute-type name="binding" required="false">
@@ -3731,6 +3978,10 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="bypassUpdates"/>
         <attribute-type name="data" required="false">
@@ -3792,6 +4043,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="ignoreDupResponses"/>
         <attribute-type name="immediate" required="false">
@@ -3813,6 +4068,10 @@ but just allows to avoid unnecessary updates on the client side if the response 
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="true"/>
+                <param value="false"/>
+            </proposal>
         </attribute-type>
         <attribute type="limitToList"/>
         <attribute-type name="onbeforedomupdate" required="false">
