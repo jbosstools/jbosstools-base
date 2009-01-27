@@ -11,7 +11,7 @@
 -->
 <!-- Version 3.3 -->
 <schema prefix="a4j">
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="actionparam" start-tag="required">
         <description>A combination of the functionality of two JSF tags,
 				&amp;lt;f:actionListener&amp;gt;; and &amp;lt;f:param&amp;gt;. At the
@@ -96,7 +96,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="value"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="ajaxListener" start-tag="required">
         <description>This works the same as ActionListener or ValueChangeListener, but for an AJAX container. Add the specified class
 			as a listener for AjaxEvent (sent in case of an AJAX request
@@ -109,7 +109,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="type"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="commandButton" start-tag="required">
         <description>Renders an HTML "input" element.
 			&amp;lt;br /&amp;gt;
@@ -137,7 +137,7 @@ a backing bean</description>
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="accesskey"/>
-        <attribute-type name="action" required="false">
+        <attribute-type name="action" required="true">
             <description>MethodBinding pointing at the application action to be invoked,
             if this UIComponent is activated by you, during the Apply
             Request Values or Invoke Application phase of the request
@@ -500,7 +500,7 @@ When the delay time is over, the request will be sent to the server or removed i
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="type"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value for this component</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -508,7 +508,7 @@ When the delay time is over, the request will be sent to the server or removed i
         </attribute-type>
         <attribute type="value"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="commandLink" start-tag="required">
         <description>Renders an HTML "a" anchor element that acts like a form
 			submit button when clicked.
@@ -537,7 +537,7 @@ When the delay time is over, the request will be sent to the server or removed i
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="accesskey"/>
-        <attribute-type name="action" required="false">
+        <attribute-type name="action" required="true">
             <description>MethodBinding pointing at the application action to be invoked,
             if this UIComponent is activated by you, during the Apply
             Request Values or Invoke Application phase of the request
@@ -935,7 +935,7 @@ When the delay time is over, the request will be sent to the server or removed i
             <proposal type="jsfVariables"/>
         </attribute-type>
         <attribute type="type"/>
-        <attribute-type name="value" required="false">
+        <attribute-type name="value" required="true">
             <description>The current value for this component</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -1453,7 +1453,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="value"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="include" start-tag="required">
         <description>include content of external view. Navigation cases in included file change only viewId of included page,
 		and don't perform navigation in root view.</description>
@@ -1771,7 +1771,7 @@ When the delay time is over, the request will be sent to the server or removed i
         </attribute-type>
         <attribute type="timeout"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="keepAlive" start-tag="required">
         <description>This tag get bean by EL expression '#{'+name+'}' and store bean instance in component tree. After restoring view state, bean is putted to request-scope attributes with name.
 			Since, every view will be use own instance of bean for expressions '#{name....}'</description>
@@ -1794,12 +1794,12 @@ When the delay time is over, the request will be sent to the server or removed i
         </attribute-type>
         <attribute type="ajaxOnly"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="loadBundle" start-tag="required">
         <description>Load a resource bundle localized for the Locale of the current view, and expose it (as a Map) 
 			in the request attributes of the current request.
 			 In difference of original f:loadBundle tag, stored in components tree and activate on ajax/non ajax responses</description>
-        <attribute-type name="basename" required="false">
+        <attribute-type name="basename" required="true">
             <description>Base name of the resource bundle to be loaded.</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
@@ -1830,7 +1830,7 @@ a backing bean</description>
             </proposal>
         </attribute-type>
         <attribute type="rendered"/>
-        <attribute-type name="var" required="false">
+        <attribute-type name="var" required="true">
             <description>Name of a request scope attribute under which the
 				resource bundle will be exposed as a Map.</description>
             <proposal type="beanProperty"/>
@@ -1839,7 +1839,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="var"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="loadScript" start-tag="required">
         <description/>
         <attribute-type name="binding" required="false">
@@ -1874,7 +1874,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="src"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="loadStyle" start-tag="required">
         <description/>
         <attribute-type name="binding" required="false">
@@ -1909,7 +1909,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="src"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="log" start-tag="required">
         <description>Encode javaScript to open popup window with client-side Log information.</description>
         <attribute-type name="binding" required="false">
@@ -2101,7 +2101,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="width"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="mediaOutput" start-tag="required">
         <description>Class for create any link-type elements to user-generated resources :
 		images, sounds, video, active objects, applets etc.
@@ -2730,7 +2730,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="title"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
 	end-tag="required" name="queue" start-tag="required">
 	<description>The component creates a queue of the Ajax requests. The
 		Ajax4JSF or RichFaces components with built-in Ajax can reference the
@@ -3031,7 +3031,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="title"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="poll" start-tag="required">
         <description>Periodically perform AJAX request to server, to simulate
 			'poll' data.</description>
@@ -3261,7 +3261,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="rendered"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="push" start-tag="required">
         <description>Periodically perform AJAX request to server, to simulate
 			'push' data.</description>
@@ -3902,7 +3902,7 @@ a backing bean</description>
         </attribute-type>
         <attribute type="title"/>
     </element-type>
-    <element-type body-content="allowed" content="mixed"
+    <element-type body-content="refused" content="mixed"
         end-tag="required" name="support" start-tag="required">
         <description>Adds the AJAX functionality for those UIComponent-based
 			component that have properties for JavaScript events.
