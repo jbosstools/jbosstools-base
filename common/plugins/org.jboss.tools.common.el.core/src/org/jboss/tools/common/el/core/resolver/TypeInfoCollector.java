@@ -1074,7 +1074,7 @@ public class TypeInfoCollector {
 		List<MemberInfo> properties = new ArrayList<MemberInfo>();
 		for (MethodInfo info : fMethods) {
 			try {
-				if ((info.getSourceType()!=null && info.getSourceType().isInterface()) || (info.isPublic())
+				if (((info.getSourceType()!=null && info.getSourceType().isInterface()) || (info.isPublic()))
 						&& !info.isConstructor() 
 						&& !info.isStatic() && !info.isJavaLangObject()
 						&& (info.isGetter() || info.isSetter())) {
