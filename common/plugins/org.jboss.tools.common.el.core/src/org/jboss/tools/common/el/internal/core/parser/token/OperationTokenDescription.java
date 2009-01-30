@@ -27,7 +27,7 @@ public class OperationTokenDescription implements ITokenDescription {
 	};
 	private static final String[] OPS_2 = {
 		"div", "and", "or", "not", "mod",
-		"eq", "ne", "lt", "ge", "le", 
+		"eq", "ne", "lt", "gt", "ge", "le", 
 	};
 
 	public static OperationTokenDescription INSTANCE = new OperationTokenDescription();
