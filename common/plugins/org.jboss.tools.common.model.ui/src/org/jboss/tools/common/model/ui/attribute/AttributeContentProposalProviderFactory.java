@@ -26,6 +26,7 @@ import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.fieldassist.IContentProposal;
+import org.eclipse.jface.fieldassist.IContentProposalListener2;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.fieldassist.IControlContentAdapter;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
@@ -62,15 +63,23 @@ public class AttributeContentProposalProviderFactory {
 	}
 
 	public static void registerContentAssist(DefaultValueAdapter valueAdapter, Control control) {
+		registerContentAssist(valueAdapter, control, null);
+	}
+
+	public static void registerContentAssist(DefaultValueAdapter valueAdapter, Control control, IContentProposalListener2 listener) {
 		XModelObject object = valueAdapter.getModelObject();
 		XAttribute attr = valueAdapter.getAttribute();
 		if (attr == null && valueAdapter.getAttributeData() != null) {
 			attr = valueAdapter.getAttributeData().getAttribute();
 		}
-		registerContentAssist(object, attr, control);
+		registerContentAssist(object, attr, control, listener);
 	}
 
 	public static void registerContentAssist(XModelObject object, XAttribute attr, Control control) {
+		registerContentAssist(object, attr, control, null);
+	}
+
+	public static void registerContentAssist(XModelObject object, XAttribute attr, Control control, IContentProposalListener2 listener) {
 		IControlContentAdapter controlAdapter = control instanceof Text 
 			? new TextContentAdapter()
 			: control instanceof Combo
@@ -96,6 +105,9 @@ public class AttributeContentProposalProviderFactory {
 				null);
 			adapter.setPropagateKeys(true);
 			adapter.setProposalAcceptanceStyle(p.getProposalAcceptanceStyle());
+			if(listener != null) {
+				adapter.addContentProposalListener(listener);
+			}
 			added = true;
 		}
 		if (!ps.isEmpty()) {

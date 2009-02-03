@@ -12,8 +12,11 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.IContentProposalListener2;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.resource.JFaceResources;
@@ -146,10 +149,11 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 	public void setPropertyEditor(PropertyEditor editor) {
 		propertyEditor = editor;
 		if(editor != null) {
-			IContentAssistProcessor processor = (IContentAssistProcessor)editor.getAdapter(IContentAssistProcessor.class);
-			if(processor != null) {
-				ControlContentAssistHelper.createTextContentAssistant(text, processor);
-			}
+			addContentAssist(text);
+//			IContentAssistProcessor processor = (IContentAssistProcessor)editor.getAdapter(IContentAssistProcessor.class);
+//			if(processor != null) {
+//				ControlContentAssistHelper.createTextContentAssistant(text, processor);
+//			}
 		}
 	}
 
@@ -169,6 +173,7 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 		text.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if ((byte)e.character == (byte)13) { // Enter
+					if(popup.isPopupOpened) return;
 					fireApplyEditorValue();
 					fireCancelEditor();
 				}
@@ -257,7 +262,28 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 		}
 		else if(text != null && !text.isDisposed() && editable) text.forceFocus();
 	}
+
+	protected void addContentAssist(Text text) {
+		if(propertyEditor != null && propertyEditor.getInput() instanceof DefaultValueAdapter) {
+			DefaultValueAdapter valueAdapter = (DefaultValueAdapter)propertyEditor.getInput();
+			AttributeContentProposalProviderFactory.registerContentAssist(valueAdapter, text, popup);
+		}
+	}
+
+	CPL2 popup = new CPL2();
 	
+	class CPL2 implements IContentProposalListener2 {
+		boolean isPopupOpened = false;
+
+		public void proposalPopupClosed(ContentProposalAdapter adapter) {
+			isPopupOpened = false;			
+		}
+
+		public void proposalPopupOpened(ContentProposalAdapter adapter) {
+			isPopupOpened = true;			
+		}
+	}
+
 	protected void fireCancelEditor() {
 		skipDeactivate = Boolean.TRUE.booleanValue();
 		super.fireCancelEditor();

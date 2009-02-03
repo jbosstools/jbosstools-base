@@ -14,7 +14,10 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
+import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
+import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 public class StringEditor extends ValueEditor {
@@ -27,7 +30,11 @@ public class StringEditor extends ValueEditor {
 	}
 
 	protected CellEditor createCellEditor(Composite parent) {
-		return (cellEditor = new TextCellEditor(parent, SWT.NONE));
+		TextCellEditor t = new TextCellEditor(parent, SWT.NONE);
+		Text text = (Text)t.getControl();
+		DefaultValueAdapter valueAdapter = (DefaultValueAdapter)getInput();
+		AttributeContentProposalProviderFactory.registerContentAssist(valueAdapter, text);
+		return (cellEditor = t);
 	}
 
 	protected ExtendedFieldEditor createFieldEditor(Composite parent) {
