@@ -190,4 +190,41 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		return null;
 	}
 
+	/**
+	 * These hack methods are used to prevent loading model nature
+	 * when its project data is not stored in xmodel settings and should 
+	 * be loaded from WTP, but project is not synchronized yet so that 
+	 * loading will fail and xmodel will be corrupted.
+	 * @param project
+	 * @return
+	 */
+	public static boolean checkModelNature(IProject project) {
+		if(project == null || !project.isOpen()) return false;
+		String nature = null;
+		try {
+			if(project.hasNature("org.jboss.tools.jsf.jsfnature")) {
+				nature = "org.jboss.tools.jsf.jsfnature";
+			} else if(project.hasNature("org.jboss.tools.struts.strutsnature")) {
+				nature = "org.jboss.tools.struts.strutsnature";
+			}
+		} catch (CoreException e) {
+			ModelPlugin.getPluginLog().logError(e);
+			return false;
+		}
+		return checkModelNature(project, nature);
+	}
+
+	public static boolean checkModelNature(IProject project, String nature) {
+		if(project == null || !project.isOpen()) return false;
+		if(nature == null) return false;
+		String home = new ProjectHome().getLocation(project);
+		if(home != null && home.length() > 0) {
+			return true;
+		}
+		if(!project.isSynchronized(1)) {
+			return false;
+		}
+		return true;
+	}
+
 }

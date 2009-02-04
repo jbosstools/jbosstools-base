@@ -37,6 +37,7 @@ import org.jboss.tools.common.model.icons.impl.*;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
+import org.jboss.tools.common.model.project.ModelNature;
 
 public class EclipseResourceUtil {
 	
@@ -213,6 +214,9 @@ public class EclipseResourceUtil {
 		for (int i = 0; i < natures.length; i++) {
 			try {
 				if(p.hasNature(natures[i])) {
+					if(!ModelNature.checkModelNature(p, natures[i])) {
+						continue;
+					}
 					IModelNature n = (IModelNature)p.getNature(natures[i]);
 					if(n == null) return null;
 					n = testNature(n);
@@ -242,6 +246,9 @@ public class EclipseResourceUtil {
 		if(p == null || !p.isOpen()) return null;
 		try {
 			if(p.hasNature(id)) {
+				if(!ModelNature.checkModelNature(p, id)) {
+					return null;
+				}
 				IModelNature n = (IModelNature)p.getNature(id);
 				if(n == null) return null;
 				n = testNature(n);
