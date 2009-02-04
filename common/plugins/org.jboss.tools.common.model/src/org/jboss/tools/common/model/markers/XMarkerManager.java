@@ -14,7 +14,9 @@ import java.util.*;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 
+import org.jboss.tools.common.model.XJob;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XJob.XRunnable;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -39,7 +41,18 @@ public class XMarkerManager implements IResourceChangeListener {
 	}
 
 	public void resourceChanged(IResourceChangeEvent event) {
-		reload();
+		if(ResourcesPlugin.getWorkspace().isTreeLocked()) {
+			XJob.addRunnable(new XRunnable() {
+				public String getId() {
+					return "XMarkerManager";
+				}
+				public void run() {
+					reload();					
+				}
+			});
+		} else {
+			reload();
+		}
 	}
 	
 	public void reload() {
