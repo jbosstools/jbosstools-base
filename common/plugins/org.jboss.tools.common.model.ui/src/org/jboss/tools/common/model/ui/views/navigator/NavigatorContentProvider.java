@@ -35,6 +35,7 @@ import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.project.IModelNature;
+import org.jboss.tools.common.model.project.ModelNature;
 import org.jboss.tools.common.model.ui.navigator.TreeViewerModelListenerImpl;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.XModelTreeListenerSWTASync;
@@ -226,6 +227,9 @@ public class NavigatorContentProvider implements ITreeContentProvider, IResource
 					(affectedChildren[i].getKind() == IResourceDelta.CHANGED && 
 					 ((affectedChildren[i].getFlags() & IResourceDelta.OPEN) != 0)) || 
 					 !projects.contains(project.getLocation().toString())) {
+					if(!ModelNature.checkModelNature(project)) {
+						continue;
+					}
 					XModelObject root = addProject(project);
 					if (root != null) affected.add(root);
 				}
