@@ -64,7 +64,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		StructuredTextEditor sse = getStructuredTextEditor(getTextEditor());
 		if (sse instanceof IOccurrencePreferenceProvider) {
 			fOccurrencePreferenceProvider = (IOccurrencePreferenceProvider)sse;
-			if (fOccurrencePreferenceProvider != null) {
+			if (fOccurrencePreferenceProvider != null && fOccurrencePreferenceProvider.getOccurrencePreferenceProvider() != null) {
 				fEditorId = fOccurrencePreferenceProvider.getOccurrencePreferenceProvider().getEditorId();
 				fKey = PreferenceKeyGenerator.generateKey(
 						OccurrencePreferenceConstants.EDITOR_MARK_OCCURRENCES,
