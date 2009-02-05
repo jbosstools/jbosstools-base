@@ -25,4 +25,5 @@ public class UIMessages extends NLS {
 	public static String PROPERTIES;
 	public static String PREVIEW;
 	public static String MUST_BE_IFILEEDITORINPUT;
+	public static String CANNOT_DISPLAY_DOCUMENT_CONTENTS;
 }

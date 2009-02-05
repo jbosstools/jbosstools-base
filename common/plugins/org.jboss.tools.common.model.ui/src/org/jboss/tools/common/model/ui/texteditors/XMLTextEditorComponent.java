@@ -27,9 +27,12 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -53,6 +56,7 @@ import org.jboss.tools.common.model.filesystems.impl.FolderLoader;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
+import org.jboss.tools.common.model.ui.messages.UIMessages;
 import org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor;
 import org.jboss.tools.common.model.util.PositionSearcher;
 
@@ -81,8 +85,24 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 	public TextEditorSupport getSupport() {
 		return support; 
 	}
-	
+
+	boolean isNullEditor = false;
+
+	public void createPartControl(Composite parent) {
+		if(getModel() == null) {
+			setObject(null);
+			isNullEditor = true;
+			Label label = new Label(parent, SWT.NONE);
+			label.setText(UIMessages.CANNOT_DISPLAY_DOCUMENT_CONTENTS);
+			label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+			return;
+		} else {
+			super.createPartControl(parent);
+		}
+	}
+
 	public void setObject(XModelObject object) {
+		if(isNullEditor) return;
 		isObjectNull = (object == null);
 		if(isObjectNull) return;
 		getDocumentListenerRegister().unregister();
@@ -157,11 +177,13 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 	}
 	
 	public void addFocusListener(FocusListener listener) {
-		getSourceViewer().getTextWidget().addFocusListener(listener);
+		ISourceViewer sv = getSourceViewer();
+		if (sv != null) sv.getTextWidget().addFocusListener(listener);
 	}
 	
 	public void removeFocusListener(FocusListener listener) {
-		getSourceViewer().getTextWidget().removeFocusListener(listener);
+		ISourceViewer sv = getSourceViewer();
+		if (sv != null) getSourceViewer().getTextWidget().removeFocusListener(listener);
 	}
 	
 	public void setCursor(int line, int position) {

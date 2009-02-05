@@ -25,7 +25,6 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.util.XModelTreeListenerSWTSync;
 
 public class XMLTextEditorStandAlone extends XMLTextEditorComponent implements XModelTreeListener {
@@ -43,6 +42,9 @@ public class XMLTextEditorStandAlone extends XMLTextEditorComponent implements X
 	
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
+		if(getModel() == null) {
+			return;
+		}
 		XModelObject o = getModelObject();
 		setObject(o);
 		if(o != null) o.getModel().addModelTreeListener(syncListener);
