@@ -32,5 +32,11 @@ public abstract class NewFileWizardEx extends DefaultStandardWizard implements I
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		context.setSelection(selection);
 	}
+	
+	
+	// added for test https://jira.jboss.org/jira/browse/JBIDE-3500
+	public NewFileContextEx getFileContext(){
+		return context;
+	}
 
 }
