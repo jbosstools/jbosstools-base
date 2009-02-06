@@ -57,10 +57,15 @@ public class SelectObjectWizard implements SpecialWizard {
 					}
 					p.getSite().getSelectionProvider().setSelection(getSelection((XModelObject)object));
 					IWorkbenchPage page = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					IViewPart vs = page.findView("org.eclipse.ui.views.ContentOutline");
-					ISelectionProvider sp = vs == null ? null : vs.getSite().getSelectionProvider();
-					if(sp != null) {
+					
+					ISelection s = p.getSite().getSelectionProvider().getSelection();
+					
+					if(isXModelSelection(s)) {
+						IViewPart vs = page.findView("org.eclipse.ui.views.ContentOutline");
+						ISelectionProvider sp = vs == null ? null : vs.getSite().getSelectionProvider();
+						if(sp != null) {
 							sp.setSelection(getSelection(object));
+						}
 					}
 				}
 			});
@@ -70,6 +75,15 @@ public class SelectObjectWizard implements SpecialWizard {
 	
 	private StructuredSelection getSelection(XModelObject o) {
 		return new StructuredSelection(new Object[]{o});
+	}
+
+	private boolean isXModelSelection(ISelection s) {
+		if(s == null || s.isEmpty() || !(s instanceof IStructuredSelection)) {
+			return false;
+		}
+		IStructuredSelection ss = (IStructuredSelection)s;
+		Object o = ss.getFirstElement();
+		return o instanceof XModelObject;
 	}
 	
 	String[] views = new String[]{
