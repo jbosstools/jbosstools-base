@@ -110,7 +110,7 @@ public class EclipseResourceUtil {
 			}
 			fs = fso.getChildren("FileSystemJar");
 			String location = path == null ? null : path.toString().replace('\\', '/');
-			if(location != null && location.toLowerCase().endsWith(".jar")) { 
+			if(location != null && isJar(location)) { 
 				for (int i = 0; i < fs.length; i++) {
 					JarSystemImpl jar = (JarSystemImpl)fs[i];
 					String jl = jar.getLocation();
@@ -356,7 +356,7 @@ public class EclipseResourceUtil {
 	}
 	
 	private static boolean isJar(IResource resource) {
-		return (resource instanceof IFile && resource.getName().endsWith(".jar"));		
+		return (resource instanceof IFile && isJar(resource.getName()));		
 	}
 	
 	private static void validateJarSystem(XModelObject fs, IResource resource) {
@@ -899,4 +899,10 @@ public class EclipseResourceUtil {
 		return null;
 	}
 	
+	public static boolean isJar(String path) {
+		if(path == null) return false;
+		path = path.toLowerCase();
+		return path.endsWith(".jar") || path.endsWith(".zip");
+	}
+
 }

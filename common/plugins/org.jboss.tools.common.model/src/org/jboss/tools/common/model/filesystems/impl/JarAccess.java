@@ -67,7 +67,9 @@ public class JarAccess {
 		try {
 			int ind = location.indexOf(":/");
 			if (ind != 1 && ind != -1) {
-				File f = File.createTempFile("efs_", ".jar");
+				int extI = location.lastIndexOf('.');
+				String ext = extI >= 0 ? location.substring(extI) : ".jar";
+				File f = File.createTempFile("efs_", ext);
 				f.deleteOnExit();
 				InputStream i = new java.net.URL(location).openConnection().getInputStream();
 				FileOutputStream o = new FileOutputStream(f);

@@ -191,7 +191,7 @@ public class FileSystemsLoader extends URLRootLoader {
 		
 		for (int i = 0; i < paths.size(); i++) {
 			String path = paths.get(i);
-			if(!path.endsWith(".jar")) continue; //$NON-NLS-1$
+			if(!EclipseResourceUtil.isJar(path)) continue;
 			String fileName = new File(path).getName();
 			if(SYSTEM_JAR_SET.contains(fileName)) continue;
 			String jsname = "lib-" + fileName; //$NON-NLS-1$
