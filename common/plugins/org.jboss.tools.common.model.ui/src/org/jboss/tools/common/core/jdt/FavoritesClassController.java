@@ -49,7 +49,7 @@ public class FavoritesClassController {
 		StringBuffer buffer = new StringBuffer();
 		Iterator i = list.iterator();
 		while (i.hasNext()) {
-			buffer.append((String)i.next()+",");
+			buffer.append((String)i.next()).append(",");
 		}
 		return buffer.toString();
 	}

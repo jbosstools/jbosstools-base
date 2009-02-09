@@ -71,7 +71,7 @@ public class DefaultRedirectHandler extends AbstractHandler implements XRedirect
 
     public XEntityData[] getEntityData(XModelObject object) {
         XAction a = getTrueAction(object);
-        return (a == null) ? null : a.getEntityData(getTrueSource(object));
+        return (a == null) ? new XEntityData[0] : a.getEntityData(getTrueSource(object));
     }
 
     public void executeHandler(XModelObject object, Properties p) throws XModelException {

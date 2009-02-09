@@ -79,9 +79,8 @@ public class TLDToPaletteHelper {
 //        String info = TLDUtil.getTagDescription(tag);
         StringBuffer sb = new StringBuffer();
         sb.append("<b>Syntax:</b><br><code>");
-        if (empty) sb.append("&lt;" + name + " /&gt;"); else sb.append("&lt;" + name + "&gt;</code><br><code>&lt;/" + name + "&gt;");
-        sb.append("</code><br>");
-        sb.append("<b>Attributes:</b><br><code>");
+        if (empty) sb.append("&lt;").append(name).append(" /&gt;"); else sb.append("&lt;").append(name).append("&gt;</code><br><code>&lt;/").append(name).append("&gt;");
+        sb.append("</code><br><b>Attributes:</b><br><code>");
 		int k = 0;
 		 XModelObject[] as = tag.getChildren();
 		 for (int i = 0; i < as.length; i++) {

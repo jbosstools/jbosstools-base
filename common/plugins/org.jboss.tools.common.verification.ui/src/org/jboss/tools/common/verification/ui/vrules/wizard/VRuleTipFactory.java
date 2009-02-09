@@ -19,7 +19,7 @@ public class VRuleTipFactory {
 		VResultTemplate[] ts = f.getTemplates();
 		if(ts == null) return null;
 		StringBuffer sb = new StringBuffer();
-		sb.append("<html><body>" + rule.getDescription() + "<br>");
+		sb.append("<html><body>").append(rule.getDescription()).append("<br>");
 		for (int i = 0; i < ts.length; i++) {
 			int si = ts[i].getSignificance();
 			sb.append("&nbsp;");

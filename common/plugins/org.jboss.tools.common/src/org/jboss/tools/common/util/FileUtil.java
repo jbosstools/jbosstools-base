@@ -167,6 +167,8 @@ public final class FileUtil {
         return true;
     }
 
+    // FIXME Size of string buffer should be set to size of file by default 
+    // to avoid StringBuffer extension on each append
     public static String readStream(InputStream is) {
         StringBuffer sb = new StringBuffer("");
         try {
