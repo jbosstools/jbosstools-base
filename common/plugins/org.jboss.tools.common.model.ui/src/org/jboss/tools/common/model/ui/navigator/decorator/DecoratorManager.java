@@ -31,9 +31,6 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 public class DecoratorManager {
 	public static final String EXTENSION_POINT_ID = ModelUIPlugin.PLUGIN_ID + ".labelDecorator";
 	
-	private static Object LOCK = new Object();
-	private static DecoratorManager INSTANCE;
-	
 	private Map<String, XModelObjectDecorator> mapByName = new HashMap<String, XModelObjectDecorator>();
 	private Map<String, XModelObjectDecorator> mapByEntity = new HashMap<String, XModelObjectDecorator>();
 	private Map<String, Set<XModelObjectDecorator>> mapByPartition = new HashMap<String, Set<XModelObjectDecorator>>();
@@ -44,15 +41,11 @@ public class DecoratorManager {
 	}
 	
 	public static DecoratorManager getInstance() {
-		if(INSTANCE == null) {
-			synchronized(LOCK) {
-				if(INSTANCE == null) {
-					DecoratorManager d = new DecoratorManager();
-					INSTANCE = d;
-				}
-			}
-		}
-		return INSTANCE;
+		return DecoratorManagerHolder.INSTANCE;
+	}
+	
+	public static class DecoratorManagerHolder {
+		public static DecoratorManager INSTANCE = new DecoratorManager();
 	}
 	
 	public XModelObjectDecorator getDecoratorByEntity(String entity) {

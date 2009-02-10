@@ -34,18 +34,9 @@ import org.osgi.framework.Bundle;
  */
 public class ModelFeatureFactory {
 	public static final String POINT = "org.jboss.tools.common.model.classes";
-	private static final Object mutex = new Object();
-	private static ModelFeatureFactory instance;
 	
 	public static ModelFeatureFactory getInstance() {
-		if(instance == null) {
-			synchronized (mutex) {
-				if(instance == null) {
-					instance = new ModelFeatureFactory();
-				}
-			}
-		}
-		return instance;
+		return ModelFeatureFactoryHolder.INSTANCE;
 	}
 	
 	private Map<String,IConfigurationElement> elements = new HashMap<String, IConfigurationElement>();
@@ -127,6 +118,10 @@ public class ModelFeatureFactory {
 			ModelPlugin.getPluginLog().logError("Model feature " + id + " is not instance of XModelObject", e);
 			return null;
 		}
+	}
+	
+	public static class ModelFeatureFactoryHolder {
+		public static final ModelFeatureFactory INSTANCE = new ModelFeatureFactory();
 	}
 
 }
