@@ -8946,7 +8946,7 @@
             <proposal type="jsfVariables"/>
             <proposal type="enumeration">
                 <param value="Fade"/>
-                <param value="BlindDown"/>
+                <param value="Blind"/>
                 <param value="BlindUp"/>
                 <param value="Opacity"/>
                 <param value="SwitchOff"/>
