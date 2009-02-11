@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.test;
 
+import org.jboss.tools.common.core.jdt.test.FavoritesClassControllerTest;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -25,6 +27,7 @@ public class ModelUiAllTests {
 		suite.setName("All tests for " + PLUGIN_ID);
 		suite.addTestSuite(ModelUiPreferencesPageTest.class);
 		suite.addTestSuite(ObjectDecoratorTest.class);
+		suite.addTestSuite(FavoritesClassControllerTest.class);
 		return suite;
 	}
 

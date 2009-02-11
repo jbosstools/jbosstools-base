@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.test;
 
+import org.jboss.tools.common.ant.parser.test.AntParserTest;
+import org.jboss.tools.common.model.exception.test.DeveloperExceptionTest;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 /**
@@ -24,6 +27,8 @@ public class CommonModelAllTests {
 		suite.setName("All tests for " + PLUGIN_ID);
 		suite.addTestSuite(MetaModelTest.class);
 		suite.addTestSuite(ClassPathTest.class);
+		suite.addTestSuite(AntParserTest.class);
+		suite.addTestSuite(DeveloperExceptionTest.class);
 		return suite;
 	}
 }
