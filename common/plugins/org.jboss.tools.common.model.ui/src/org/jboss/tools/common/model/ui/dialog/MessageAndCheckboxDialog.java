@@ -126,9 +126,9 @@ public class MessageAndCheckboxDialog extends MessageDialog {
 	}
 	
 	protected void buttonPressed(int buttonId) {
-		properties.put(CHECKED, new Boolean(button.getSelection()));
+		properties.put(CHECKED, Boolean.valueOf(button.getSelection()));
 		for (int i = 0; i < buttons.length; i++) {
-			properties.put(CHECKED + "_" + (i + 1), new Boolean(buttons[i].getSelection()));
+			properties.put(CHECKED + "_" + (i + 1), Boolean.valueOf(buttons[i].getSelection()));
 		}
 		super.buttonPressed(buttonId);
 	}

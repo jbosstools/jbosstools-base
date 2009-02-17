@@ -11,6 +11,9 @@
 package org.jboss.tools.common.model.ui.test;
 
 import org.jboss.tools.common.core.jdt.test.FavoritesClassControllerTest;
+import org.jboss.tools.common.model.ui.dialog.MessageAndCheckboxDialog;
+import org.jboss.tools.common.model.ui.dialog.test.ErrorDialogTest;
+import org.jboss.tools.common.model.ui.dialog.test.MessageAndCheckboxDialogTest;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -28,6 +31,8 @@ public class ModelUiAllTests {
 		suite.addTestSuite(ModelUiPreferencesPageTest.class);
 		suite.addTestSuite(ObjectDecoratorTest.class);
 		suite.addTestSuite(FavoritesClassControllerTest.class);
+		suite.addTestSuite(ErrorDialogTest.class);
+		suite.addTestSuite(MessageAndCheckboxDialogTest.class);
 		return suite;
 	}
 
