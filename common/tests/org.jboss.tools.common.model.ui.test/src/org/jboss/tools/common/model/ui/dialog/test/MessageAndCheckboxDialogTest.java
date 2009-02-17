@@ -26,17 +26,50 @@ import junit.framework.TestCase;
  */
 public class MessageAndCheckboxDialogTest extends TestCase {
 
-	public void testDialogCreated() {
+	public void testDialogSingleCheckBox() {
 		Properties properties = new Properties();
 		properties.put(MessageAndCheckboxDialog.MESSAGE, "Message");
 		properties.put(MessageAndCheckboxDialog.CHECKBOX_MESSAGE, "Checkbox message");
 		properties.put(MessageAndCheckboxDialog.CHECKED, Boolean.TRUE);
+		properties.put(MessageAndCheckboxDialog.BUTTONS, new String[]{" B1","B2"});
+		MessageAndCheckboxDialog dialog = new MessageAndCheckboxDialog(Display.getCurrent().getActiveShell(),"title",MessageDialog.ERROR,properties);
+		dialog.setBlockOnOpen(false);
+		dialog.open();
+		dialog.close();
+	}	
+
+	public void testDialogMultiCheckBox() {
+		Properties properties = new Properties();
+		properties.put(MessageAndCheckboxDialog.MESSAGE, "Message");
+		properties.put(MessageAndCheckboxDialog.CHECKBOX_MESSAGE, "Checkbox message");
+		properties.put(MessageAndCheckboxDialog.CHECKBOX_MESSAGE+"_1", "Checkbox message1");
+		properties.put(MessageAndCheckboxDialog.CHECKBOX_MESSAGE+"_2", "Checkbox message2");
+		properties.put(MessageAndCheckboxDialog.CHECKED, Boolean.TRUE);
+		properties.put(MessageAndCheckboxDialog.CHECKED + "_1", Boolean.TRUE);
+		properties.put(MessageAndCheckboxDialog.CHECKED + "_2", Boolean.TRUE);
+		properties.put(MessageAndCheckboxDialog.SEPARATOR + "_" + 1, "5");
+		properties.put(MessageAndCheckboxDialog.SEPARATOR + "_" + 2, "5");
 		MessageAndCheckboxDialog dialog = new MessageAndCheckboxDialog(Display.getCurrent().getActiveShell(),"title",MessageDialog.ERROR,properties);
 		dialog.setBlockOnOpen(false);
 		dialog.open();
 		dialog.close();
 	}
 	
+	public void testDialogMultiCheckBoxNoSeparator() {
+		Properties properties = new Properties();
+		properties.put(MessageAndCheckboxDialog.MESSAGE, "Message");
+		properties.put(MessageAndCheckboxDialog.CHECKBOX_MESSAGE, "Checkbox message");
+		properties.put(MessageAndCheckboxDialog.CHECKBOX_MESSAGE+"_1", "Checkbox message1");
+		properties.put(MessageAndCheckboxDialog.CHECKBOX_MESSAGE+"_2", "Checkbox message2");
+		properties.put(MessageAndCheckboxDialog.CHECKED, Boolean.TRUE);
+		properties.put(MessageAndCheckboxDialog.CHECKED + "_1", Boolean.TRUE);
+		properties.put(MessageAndCheckboxDialog.CHECKED + "_2", Boolean.TRUE);
+		MessageAndCheckboxDialog dialog = new MessageAndCheckboxDialog(Display.getCurrent().getActiveShell(),"title",MessageDialog.ERROR,properties);
+		dialog.setBlockOnOpen(false);
+		dialog.open();
+		dialog.close();
+	}
+
 	/**
 	 * Test method for {@link org.jboss.tools.common.model.ui.dialog.MessageAndCheckboxDialog#buttonPressed(int)}.
 	 */
