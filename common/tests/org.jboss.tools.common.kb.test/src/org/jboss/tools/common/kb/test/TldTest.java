@@ -42,8 +42,8 @@ import org.xml.sax.SAXException;
  */
 public class TldTest extends TestCase {
 
-	private static String A4J_TLD_PATH = "/RichFaces/richfaces-ui-3.1.3.GA.jar!/META-INF/ajax4jsf.tld";
-	private static String RICHFACES_TLD_PATH = "/RichFaces/richfaces-ui-3.1.3.GA.jar!/META-INF/rich.tld";
+	private static String A4J_TLD_PATH = "/RichFaces3.3/richfaces-ui-3.3.0.GA.jar!/META-INF/ajax4jsf.tld";
+	private static String RICHFACES_TLD_PATH = "/RichFaces3.3/richfaces-ui-3.3.0.GA.jar!/META-INF/rich.tld";
 
 	private JspWtpKbConnector connector = new JspWtpKbConnector();
 	private String libFolderPath = null;
