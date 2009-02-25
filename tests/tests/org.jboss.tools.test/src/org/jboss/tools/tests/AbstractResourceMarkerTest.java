@@ -52,7 +52,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 
 	protected IMarker[] findMarkers(IResource resource, String type, String pattern) throws CoreException {
 		List<IMarker> result = new ArrayList<IMarker>();
-		IMarker[] markers = resource.findMarkers(type, false, IResource.DEPTH_INFINITE);
+		IMarker[] markers = resource.findMarkers(type, true, IResource.DEPTH_INFINITE);
 		for (int i = 0; i < markers.length; i++) {
 			String message = markers[i].getAttribute(IMarker.MESSAGE, "");
 			if (message.matches(pattern)) {
