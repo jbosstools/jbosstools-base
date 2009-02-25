@@ -130,6 +130,13 @@ a backing bean</description>
 			attribute. If the "styleClass" attribute is specified,
 			render its value as the value of the "class" attribute.
 			Renders child components inside the HTML "input" element.</description>
+        <attribute-type name="similarityGroupingId" required="false">
+            <description>If there are any component requests with identical IDs then these requests will be grouped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="similarityGroupingId"/>
         <attribute-type name="accesskey" required="false">
             <description>This attribute assigns an access key to an element. An access key is a single character from the document character set. Note: Authors should consider the input method of the expected reader when specifying an accesskey</description>
             <proposal type="beanProperty"/>
@@ -530,6 +537,13 @@ When the delay time is over, the request will be sent to the server or removed i
 			value of the "class" attribute. Render any non-UIParameter
 			children as normal inside of the "a" element. These will
 			appear as the link text.</description>
+        <attribute-type name="similarityGroupingId" required="false">
+            <description>If there are any component requests with identical IDs then these requests will be grouped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="similarityGroupingId"/>
         <attribute-type name="accesskey" required="false">
             <description>This attribute assigns an access key to an element. An access key is a single character from the document character set. Note: Authors should consider the input method of the expected reader when specifying an accesskey</description>
             <proposal type="beanProperty"/>
@@ -947,6 +961,27 @@ When the delay time is over, the request will be sent to the server or removed i
         end-tag="required" name="form" start-tag="required">
         <description>Ajax-related version of html form. Main difference with original component - all hidden fields,
 		necessary to command links alwais rendered, not depended of rendering links on initial page.</description>
+        <attribute-type name="style" required="false">
+            <description>CSS style(s) is/are to be applied when this component is rendered</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="style"/>
+        <attribute-type name="styleClass" required="false">
+            <description>Corresponds to the HTML class attribute</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="styleClass"/>
+        <attribute-type name="similarityGroupingId" required="false">
+            <description>If there are any component requests with identical IDs then these requests will be grouped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="similarityGroupingId"/>
         <attribute-type name="accept" required="false">
             <description>This attribute specifies a comma-separated list of content types that a server processing this form will handle correctly. User agents may use this information to filter out non-conforming files when prompting you to select files to be sent to the server (cf. the INPUT element when type="file")</description>
             <proposal type="beanProperty"/>
@@ -1583,7 +1618,19 @@ a backing bean</description>
     </element-type>
     <element-type body-content="allowed" content="mixed"
         end-tag="required" name="jsFunction" start-tag="required">
-        <description/>
+	    <description>MethodBinding pointing at the application action to be invoked,
+            if this UIComponent is activated by you, during the Apply
+            Request Values or Invoke Application phase of the request
+            processing lifecycle, depending on the value of the immediate
+            property
+        </description>
+        <attribute-type name="similarityGroupingId" required="false">
+            <description>If there are any component requests with identical IDs then these requests will be grouped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="similarityGroupingId"/>
         <attribute-type name="action" required="false">
             <description>MethodBinding pointing at the application action to be invoked,
             if this UIComponent is activated by you, during the Apply
@@ -1877,6 +1924,22 @@ a backing bean</description>
     <element-type body-content="refused" content="mixed"
         end-tag="required" name="loadStyle" start-tag="required">
         <description/>
+        <attribute-type name="media" required="false">
+            <description>This attribute defines the device to which it is necessary to apply style registration. 
+				The possible values are "all", "screen" (by default), "print", "projection", "braille" and "speech".</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="all"/>
+                <param value="screen"/>
+                <param value="print"/>
+                <param value="projection"/>
+                <param value="braille"/>
+                <param value="speech"/>
+            </proposal>
+        </attribute-type>
+        <attribute type="media"/>
         <attribute-type name="binding" required="false">
             <description>The attribute takes a value-binding expression for a component property of
 a backing bean</description>
@@ -3035,6 +3098,13 @@ a backing bean</description>
         end-tag="required" name="poll" start-tag="required">
         <description>Periodically perform AJAX request to server, to simulate
 			'poll' data.</description>
+        <attribute-type name="similarityGroupingId" required="false">
+            <description>If there are any component requests with identical IDs then these requests will be grouped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="similarityGroupingId"/>
         <attribute-type name="action" required="false">
             <description>MethodBinding pointing at the application action to be invoked,
             if this UIComponent is activated by you, during the Apply
@@ -3265,6 +3335,13 @@ a backing bean</description>
         end-tag="required" name="push" start-tag="required">
         <description>Periodically perform AJAX request to server, to simulate
 			'push' data.</description>
+        <attribute-type name="similarityGroupingId" required="false">
+            <description>If there are any component requests with identical IDs then these requests will be grouped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="similarityGroupingId"/>
         <attribute-type name="action" required="false">
             <description>MethodBinding pointing at the application action to be invoked,
             if this UIComponent is activated by you, during the Apply
@@ -3929,6 +4006,13 @@ a backing bean</description>
 			ajaxType property is "input", submits the value of the input
 			field, also. In this case, you can submit a single input
 			field outside of UIForm.</description>
+        <attribute-type name="similarityGroupingId" required="false">
+            <description>If there are any component requests with identical IDs then these requests will be grouped.</description>
+            <proposal type="beanProperty"/>
+            <proposal type="bundleProperty"/>
+            <proposal type="jsfVariables"/>
+        </attribute-type>
+        <attribute type="similarityGroupingId"/>
         <attribute-type name="action" required="false">
             <description>MethodBinding pointing at the application action to be invoked,
             if this UIComponent is activated by you, during the Apply
