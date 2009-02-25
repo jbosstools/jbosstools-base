@@ -37,7 +37,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Tests some tld. This test load tld and try to get information of each tag and attribute from KB. 
+ * Tests RichFaces TLDs. This test loads TLD and try to get information of each tag and an attribute from KB. 
  * @author Alexey Kazakov
  */
 public class TldTest extends TestCase {
