@@ -36,9 +36,9 @@ public class ReportProblemActionDelegate implements IWorkbenchWindowActionDelega
 		
 		ReportProblemWizard wizard = new ReportProblemWizard();
 		Properties p = new Properties();
-		p.setProperty("help", "ReportProblemWizard");		
+		p.setProperty(ReportProblemWizard.Property.HELP, "ReportProblemWizard");		
 		wizard.setObject(p);
-		wizard.execute();		
+		wizard.execute();
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {}

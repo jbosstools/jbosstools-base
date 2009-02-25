@@ -19,6 +19,16 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class AbstractQueryWizard implements SpecialWizard {
+	
+	public static class Property {
+		public static final String HELP = "help";
+		public static final String MODAL = "modal";
+		public static final String TITLE = "title";
+		public static final String SUBTITLE = "subtitle";
+		public static final String MESSAGE = "message";
+		public static final String BLOCKING = "blocking";
+	}
+	
 	private AbstractQueryWizardView view = null;
 
 	public void dispose() {
@@ -42,16 +52,18 @@ public class AbstractQueryWizard implements SpecialWizard {
 		if(key == null) {
 			//put debuggin here
 		} else {
-			String title = p.getProperty("title");
+			String title = p.getProperty(Property.TITLE);
 			if(title == null) title = WizardKeys.getHeader(key);
 			if(title == null) title = WizardKeys.getHeader("Properties"); // NON-NLS-1
 			if(title == null) title = "Title is not found for key \"" + key + "\"";
 			view.setWindowTitle(title);
-			String subtitle = p.getProperty("subtitle");
+			
+			String subtitle = p.getProperty(Property.SUBTITLE);
 			if(subtitle == null) subtitle = WizardKeys.getTitle(key);
 			if(subtitle == null) subtitle = "Subtitle is not found for key \"" + key + "\"";
 			view.setTitle(subtitle);
-			String message = p.getProperty("message");
+			
+			String message = p.getProperty(Property.MESSAGE);
 			if(message == null) message = WizardKeys.getString(key + ".Message");
 			if(message != null) view.setMessage(message);
 		}		
@@ -90,15 +102,15 @@ public class AbstractQueryWizard implements SpecialWizard {
 	public int execute() {
 		Shell shell = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 		IQueryDialog dialog = createDialog(shell);
-		dialog.setView(view);
-		dialog.getDialog().create();
-		view.setDialog(dialog.getDialog());
 		dialog.getDialog().open();
 		return view.code();
 	}
 	
-	protected IQueryDialog createDialog(Shell shell) {
-		return new AbstractQueryDialog(shell);
+	public IQueryDialog createDialog(Shell shell) {
+		IQueryDialog dialog = new AbstractQueryDialog(shell);
+		dialog.setView(view);
+		dialog.getDialog().create();
+		view.setDialog(dialog.getDialog());
+		return dialog;
 	}
-	
 }

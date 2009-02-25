@@ -20,7 +20,7 @@ public class VerifyWizard extends AbstractQueryWizard {
 		setView(new VerifyWizardView());
 	}
 
-	protected IQueryDialog createDialog(Shell shell) {
+	public IQueryDialog createDialog(Shell shell) {
 		return new VerifyDialog(shell);
 	}
 	
