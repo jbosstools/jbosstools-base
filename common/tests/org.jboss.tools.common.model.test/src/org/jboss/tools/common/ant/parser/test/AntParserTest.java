@@ -10,7 +10,7 @@ public class AntParserTest extends TestCase {
 	
 	public void testGetTargets() {
 		AntParser parser = new AntParser(ANT_FILE_CONTENT);
-		assertEquals(3,parser.getTargets());
+		assertEquals(3,parser.getTargets().length);
 	}
 
 }
