@@ -117,7 +117,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 			IPath path = new Path(wsRelativePath);
 			IResource r = ModelPlugin.getWorkspace().getRoot().findMember(
 					path);
-			if (r.exists() && r instanceof IFile)
+			if (r != null && r.exists() && r instanceof IFile)
 				return (IFile) r;
 		}
 		String path = Platform.getLocation().append(wsRelativePath)
