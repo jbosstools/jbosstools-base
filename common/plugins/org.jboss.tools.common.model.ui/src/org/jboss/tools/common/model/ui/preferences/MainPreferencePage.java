@@ -39,6 +39,9 @@ import org.jboss.tools.common.model.ui.ModelUIMessages;
 
 public class MainPreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
+	
+	public static final String ID = "org.jboss.tools.common.model.ui.MainPreferencePage";
+	
 	private Image image;
 
 	/** Default constructor */

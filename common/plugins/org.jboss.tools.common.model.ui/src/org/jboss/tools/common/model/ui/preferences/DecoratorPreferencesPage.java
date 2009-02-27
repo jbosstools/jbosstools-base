@@ -23,6 +23,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * @author Viacheslav Kabanovich
  */
 public class DecoratorPreferencesPage extends PreferencePage implements IWorkbenchPreferencePage {
+	
+	public static final String ID = "org.jboss.tools.common.model.ui.decorator";
+	
 	DecoratorGeneralPreferencesPage general = new DecoratorGeneralPreferencesPage();
 	DecoratorTextPreferencesPage text = new DecoratorTextPreferencesPage();
 	
