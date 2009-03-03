@@ -81,8 +81,10 @@ public class WorkbenchUtils {
 	}
 
 	public static PreferenceDialog createPreferenceDialog(String pageId) {
-		return PreferencesUtil.createPreferenceDialogOn(WorkbenchUtils
+		PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(WorkbenchUtils
 				.getActiveShell(), pageId, new String[] {pageId}, null);
+		dialog.setBlockOnOpen(false);
+		return dialog;
 	}
 
 	public static PreferenceDialog createPropertyDialog(String pageId,

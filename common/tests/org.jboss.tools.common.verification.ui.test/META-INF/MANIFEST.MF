@@ -8,4 +8,5 @@ Require-Bundle: org.junit,
  org.eclipse.jface,
  org.jboss.tools.common.verification.ui,
  org.jboss.tools.common.model.ui
-Export-Package: org.jboss.tools.common.verification.ui.vrules.preferences.test
+Export-Package: org.jboss.tools.common.verification.ui.test,
+ org.jboss.tools.common.verification.ui.vrules.preferences.test
