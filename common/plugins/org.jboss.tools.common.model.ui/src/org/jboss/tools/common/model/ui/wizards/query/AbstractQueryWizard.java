@@ -108,9 +108,14 @@ public class AbstractQueryWizard implements SpecialWizard {
 	
 	public IQueryDialog createDialog(Shell shell) {
 		IQueryDialog dialog = new AbstractQueryDialog(shell);
+		setUpDialog(dialog);
+		return dialog;
+	}
+
+	protected final void setUpDialog(IQueryDialog dialog) {
 		dialog.setView(view);
 		dialog.getDialog().create();
 		view.setDialog(dialog.getDialog());
-		return dialog;
 	}
+
 }
