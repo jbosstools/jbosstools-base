@@ -30,7 +30,6 @@ public class ModelUiAllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 		suite.setName("All tests for " + PLUGIN_ID);
-		suite.addTestSuite(DecoratorPreferencesPage.class);
 		suite.addTestSuite(ModelUiPreferencesPageTest.class);
 		suite.addTestSuite(ObjectDecoratorTest.class);
 		suite.addTestSuite(FavoritesClassControllerTest.class);
