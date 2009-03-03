@@ -21,7 +21,9 @@ public class VerifyWizard extends AbstractQueryWizard {
 	}
 
 	public IQueryDialog createDialog(Shell shell) {
-		return new VerifyDialog(shell);
+		IQueryDialog dialog = new VerifyDialog(shell);
+		setUpDialog(dialog);
+		return dialog;
 	}
 	
 }
