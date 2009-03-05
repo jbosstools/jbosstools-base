@@ -137,7 +137,7 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t,"\\#{exprA}");
 		checkCorrectEL(t,"#{\"\\\"exprA\\\"\"}");
 		checkCorrectEL(t,"#{\"\\\"#\\\"\"}");
-		checkCorrectEL(t,"#{’#’}"); //Why this is correct?
+		//checkCorrectEL(t,"#{’#’}"); //Why this is correct?
 	}
 	
 	public void testElReferencesObjectProperties() {
