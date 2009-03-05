@@ -22,6 +22,7 @@ public class VRuleImpl implements VRule {
     protected String name;
     protected VResult[] results;
     protected boolean enabled;
+    protected boolean defaultEnabled = true;
     protected VAction action;
     protected VRuleSet ruleSet;
     protected int significance;
@@ -83,6 +84,14 @@ public class VRuleImpl implements VRule {
         boolean oldEnabled = this.enabled;
         this.enabled = enabled;
         propertyChangeSupport.firePropertyChange("enabled", oldEnabled, enabled);
+    }
+    
+    public void setDefaultEnabled(boolean b) {
+    	defaultEnabled = b;
+    }
+
+    public boolean isDefaultEnabled() {
+    	return defaultEnabled;
     }
     
     public VAction getAction() {

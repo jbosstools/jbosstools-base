@@ -51,6 +51,10 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
             rule.setDescription(getAttributeValue("description"));
             rule.setCategory(getAttributeValue("category"));
             rule.setEnabled(Boolean.valueOf(getAttributeValue("enabled")).booleanValue());
+            String defaultEnabled = get("default-enabled");
+            if("false".equals(defaultEnabled)) {
+            	rule.setDefaultEnabled(false);
+            }
             rule.setResults(new VResult[0]);
             VEntity[] entities = getEntities(getAttributeValue("entities"));
             rule.setEntities(entities);
@@ -116,6 +120,17 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
         return new VActionWrapper(className);
     }
     
+    public void set(String name, String value) {
+    	super.set(name, value);
+    	if (rule != null) {
+    		if ("default-enabled".equals(name)) {
+                if("false".equals(value)) {
+                	rule.setDefaultEnabled(false);
+                }
+    		}
+    	}
+    }
+
     public String setAttributeValue(String name, String value) {
         String result = super.setAttributeValue(name, value);
         if (rule != null) {

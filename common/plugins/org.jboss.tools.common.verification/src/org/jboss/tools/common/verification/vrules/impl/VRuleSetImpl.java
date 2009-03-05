@@ -29,6 +29,7 @@ public class VRuleSetImpl implements VRuleSet {
     protected String vendor;
     protected String version;
     protected boolean enabled;
+    protected boolean defaultEnabled = true;
     protected ResourceBundle bundle;
     protected PropertyChangeSupport propertyChangeSupport;
     protected Object managerKey;
@@ -87,6 +88,14 @@ public class VRuleSetImpl implements VRuleSet {
         boolean oldEnabled = this.enabled;
         this.enabled = enabled;
         propertyChangeSupport.firePropertyChange("enabled", oldEnabled, enabled);
+    }
+
+    public void setDefaultEnabled(boolean b) {
+    	defaultEnabled = b;
+    }
+
+    public boolean isDefaultEnabled() {
+    	return defaultEnabled;
     }
     
 	public VRuleSet getParentRuleSet() {

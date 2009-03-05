@@ -51,6 +51,10 @@ public class VRuleSetModel extends RegularObjectImpl implements PropertyChangeLi
             ruleSet.setName(getAttributeValue("name"));
             ruleSet.setDescription(getAttributeValue("description"));
             ruleSet.setEnabled(Boolean.valueOf(getAttributeValue("enabled")).booleanValue());
+            String defaultEnabled = get("default-enabled");
+            if("false".equals(defaultEnabled)) {
+            	ruleSet.setDefaultEnabled(false);
+            }
             ruleSet.setURL(getAttributeValue("url"));
             ruleSet.setVendor(getAttributeValue("vendor"));
             ruleSet.setVersion(getAttributeValue("version"));
@@ -109,6 +113,17 @@ public class VRuleSetModel extends RegularObjectImpl implements PropertyChangeLi
         	VerificationPlugin.getPluginLog().logInfo("Resource not found: " + baseName + " by org.jboss.tools.common.verification.vrules.model.VRuleSetModel:getBundle()");
         }
         return null;
+    }
+
+    public void set(String name, String value) {
+    	super.set(name, value);
+    	if (ruleSet != null) {
+    		if ("default-enabled".equals(name)) {
+                if("false".equals(value)) {
+                	ruleSet.setDefaultEnabled(false);
+                }
+    		}
+    	}
     }
 
     public String setAttributeValue(String name, String value) {

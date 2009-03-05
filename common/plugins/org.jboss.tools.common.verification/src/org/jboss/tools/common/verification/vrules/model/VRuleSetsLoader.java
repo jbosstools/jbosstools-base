@@ -94,6 +94,10 @@ public class VRuleSetsLoader extends EnginesLoader {
         org.jboss.tools.common.meta.XAttribute[] as = object.getModelEntity().getAttributes();
         for (int i = 0; i < as.length; i++) {
             String n = as[i].getName();
+            if ("enabled".equals(n)) {
+            	String nv = update.getAttributeValue(n);
+            	object.set("default-enabled", nv);
+            }
             if ("enabled".equals(n) || "installed".equals(n)) continue;
             String ov = object.getAttributeValue(n);
             String nv = update.getAttributeValue(n);
