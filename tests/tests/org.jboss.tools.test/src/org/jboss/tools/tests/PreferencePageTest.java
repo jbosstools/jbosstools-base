@@ -48,7 +48,7 @@ public class PreferencePageTest extends TestCase {
 			prefDialog.open();
 			
 			Object selectedPage = prefDialog.getSelectedPage();
-			assertTrue("Selected page is not an instance of SeamPreferencePage", instanceOf.isInstance(selectedPage));
+			assertTrue("Selected page is not an instance of " + instanceOf.getName() + "but instance class is " + selectedPage.getClass().getName() , instanceOf.isInstance(selectedPage));
 		} finally {
 			prefDialog.close();
 		}
