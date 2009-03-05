@@ -688,7 +688,7 @@ public class EclipseResourceUtil {
 	                        
 	public static IResource getJavaSourceRoot(IProject project) {
 		IJavaProject javaProject = getJavaProject(project);
-		if(javaProject == null || !javaProject.isOpen()) return null;
+		if(javaProject == null) return null;
 		try	{
 			IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
 			for (int i = 0; i < es.length; i++) {
