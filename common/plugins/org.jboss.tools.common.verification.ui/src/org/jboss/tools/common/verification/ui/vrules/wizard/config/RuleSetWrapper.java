@@ -11,6 +11,7 @@
 package org.jboss.tools.common.verification.ui.vrules.wizard.config;
 
 import org.jboss.tools.common.verification.vrules.VRuleSet;
+import org.jboss.tools.common.verification.vrules.impl.VRuleSetImpl;
 import org.jboss.tools.common.verification.ui.vrules.wizard.VRuleTipFactory;
 
 public class RuleSetWrapper extends ConfigItemWrapper {
@@ -34,7 +35,11 @@ public class RuleSetWrapper extends ConfigItemWrapper {
 		o.setEnabled(!o.isEnabled());
 	}
 	public void setDefaults() {
-		o.setEnabled(true);
+		boolean defaultEnabled = true;
+		if(o instanceof VRuleSetImpl) {
+			defaultEnabled = ((VRuleSetImpl)o).isDefaultEnabled();
+		}
+		o.setEnabled(defaultEnabled);
 		for (int j = 0; j < children.length; j++) children[j].setDefaults();
 	}
 	public String getTip() {

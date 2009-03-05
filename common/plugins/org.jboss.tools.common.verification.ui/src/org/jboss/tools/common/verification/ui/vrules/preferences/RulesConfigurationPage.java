@@ -120,7 +120,12 @@ public class RulesConfigurationPage extends PreferencePage implements IPreferenc
 	}
 	
 	private void setChecked(TreeItem item){
-		item.setChecked(true);
+		Object data = item.getData();
+		boolean checked = true;
+		if(data instanceof ConfigItemWrapper) {
+			checked = ((ConfigItemWrapper)data).isSelected();
+		}
+		item.setChecked(checked);
 		for(int i=0;i<item.getItemCount();i++){
 			TreeItem child = item.getItem(i);
 			setChecked(child);
