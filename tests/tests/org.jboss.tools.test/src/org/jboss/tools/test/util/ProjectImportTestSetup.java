@@ -89,4 +89,8 @@ public class ProjectImportTestSetup extends TestSetup {
 		}
 		ResourcesUtils.setBuildAutomatically(saveAutoBuild);
 	}
+	
+	public void deleteProjects() throws Exception {
+		tearDown();
+	}
 }
