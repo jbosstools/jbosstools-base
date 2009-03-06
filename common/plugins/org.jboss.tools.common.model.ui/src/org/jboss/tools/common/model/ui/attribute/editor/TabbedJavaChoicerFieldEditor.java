@@ -146,7 +146,7 @@ public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements
 
 	public void store() {
 		super.store();
-		if (selectedTab==1)	eclipseEditor.doStore(); // bugfix 8136 && 8155
+		//if (selectedTab==1)	eclipseEditor.doStore(); // bugfix 8136 && 8155
 		IValueProvider valueProvider = (IValueProvider)propertyEditor.getAdapter(IValueProvider.class);
 		String selectedClass = (String)valueProvider.getValue();
 		FavoritesClassController.push(selectedClass);
