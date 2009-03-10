@@ -16,6 +16,7 @@ import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescripti
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ExprStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.JavaNameTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.OperationTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.PrimitiveValueTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.StartELTokenDescription;
@@ -128,6 +129,12 @@ public class ExpressionRule implements IRule, BasicStates {
 		if(state == STATE_EXPECTING_NAME) {
 			return "Expecting Java method or property name";
 		} else {
+			if(OperationTokenDescription.INSTANCE.isStart(tokenizer, tokenizer.getCurrentIndex())) {
+				return "Expression cannot start with binary operator.";
+			}
+			if(JavaNameTokenDescription.INSTANCEOF_INSTANCE.isStart(tokenizer, tokenizer.getCurrentIndex())) {
+				return "Expression cannot start with instanceof.";
+			}
 			return "Expecting expression";
 		}
 	}

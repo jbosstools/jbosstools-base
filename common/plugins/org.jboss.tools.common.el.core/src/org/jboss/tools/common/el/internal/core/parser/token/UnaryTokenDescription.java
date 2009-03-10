@@ -46,7 +46,7 @@ public class UnaryTokenDescription extends ConstantTokenDescription {
 		}
 		if(end < 0) return false;
 		char ch = tokenizer.lookUpChar(end);
-		if(Character.isWhitespace(ch) || ch == '\0' || ch == '('
+		if(Character.isWhitespace(ch) || ch == '\0' || ch == '(' || !Character.isJavaIdentifierPart(ch)
 			) {
 			return true;
 		}

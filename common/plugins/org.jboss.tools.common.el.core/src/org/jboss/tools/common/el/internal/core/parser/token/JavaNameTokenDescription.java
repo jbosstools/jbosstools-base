@@ -22,6 +22,8 @@ public class JavaNameTokenDescription implements ITokenDescription {
 	public static final int JAVA_NAME = 3;
 
 	public static JavaNameTokenDescription INSTANCE = new JavaNameTokenDescription();
+	
+	public static ConstantTokenDescription INSTANCEOF_INSTANCE = InstanceofTokenDescription.INSTANCE;
 
 	public String getName() {
 		return "NAME";
@@ -32,8 +34,14 @@ public class JavaNameTokenDescription implements ITokenDescription {
 	}
 
 	public boolean isStart(Tokenizer tokenizer, int offset) {
+		if(OperationTokenDescription.INSTANCE.isStart(tokenizer, offset)) {
+			return false;
+		}
+		if(InstanceofTokenDescription.INSTANCE.isStart(tokenizer, offset)) {
+			return false;
+		}
 		char ch = tokenizer.lookUpChar(offset);
-		return Character.isJavaIdentifierStart(ch) && ch != '\0';
+		return Character.isJavaIdentifierStart(ch) && ch != '\0' && ch != '$';
 	}
 
 	public boolean read(Tokenizer tokenizer, int offset) {
@@ -47,6 +55,55 @@ public class JavaNameTokenDescription implements ITokenDescription {
 		}
 		tokenizer.addToken(getType(), offset, i);
 		return false;
+	}
+
+}
+
+class InstanceofTokenDescription extends ConstantTokenDescription {
+	public static final int INSTANCEOF = 16;
+
+	public static InstanceofTokenDescription INSTANCE = new InstanceofTokenDescription();
+
+	private static final String[] OPS_2 = {
+		"instanceof"
+	};
+
+	public InstanceofTokenDescription() {
+		super("!", INSTANCEOF);
+	}
+
+	public boolean isStart(Tokenizer tokenizer, int offset) {
+		if(super.isStart(tokenizer, offset)) {
+			return true;
+		}
+		int end = -1;
+		for (int i = 0; end < 0 && i < OPS_2.length; i++) {
+			if(tokenizer.startsWith(OPS_2[i])) {
+				end = offset + OPS_2[i].length();
+			}
+		}
+		if(end < 0) return false;
+		char ch = tokenizer.lookUpChar(end);
+		if(Character.isWhitespace(ch) || ch == '\0' || ch == '(' || !Character.isJavaIdentifierPart(ch)
+			) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean read(Tokenizer tokenizer, int offset) {
+		if(super.isStart(tokenizer, offset)) {
+			return super.read(tokenizer, offset);
+		}
+		int end = -1;
+		for (int i = 0; end < 0 && i < OPS_2.length; i++) {
+			if(tokenizer.startsWith(OPS_2[i])) {
+				end = offset + OPS_2[i].length();
+			}
+		}
+		tokenizer.addToken(getType(), offset, end);
+		return true;
 	}
 
 }

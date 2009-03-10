@@ -134,6 +134,13 @@ public class Tokenizer {
 		if(result != null) {
 			result.makeItFirst();
 		}
+		if(last != null && last.getStart() + last.getLength() < sourceString.length()
+			&& last.getType() != LITERAL) {
+			int lastEnd = last.getStart() + last.getLength();
+			LexicalToken t = new LexicalToken(lastEnd, length, getCharSequence(lastEnd, sourceString.length()), LITERAL);
+			last.setNextToken(t);
+			last = t;
+		}
 		return result;
 	}
 
