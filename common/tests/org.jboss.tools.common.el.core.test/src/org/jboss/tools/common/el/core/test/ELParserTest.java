@@ -142,7 +142,7 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t,"#{'+'}");
 		// Ask google :)
 		// http://java.sun.com/javaee/5/docs/tutorial/doc/bnahq.html#indexterm-357
-		checkCorrectEL(t,"#{’#{’}exprB}"); //Why this is correct?
+		checkCorrectEL(t,"#{'#{'}exprB}"); //Why this is correct?
 	}
 
 	public void testElReferencesObjectProperties() {
@@ -178,7 +178,9 @@ public class ELParserTest extends TestCase {
 	
 	public void testReservedWordNot() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		doReservedWordTest(t,"not");
+		checkIncorrectEL(t, "#{"+"not"+"}",5);
+		checkIncorrectEL(t, "#{"+"not"+".method1}", 5);
+		checkIncorrectEL(t, "#{"+"not"+"*"+"not"+"}", 5);
 	}		
 	
 	public void testReservedWordEq() {
@@ -195,9 +197,9 @@ public class ELParserTest extends TestCase {
 		doReservedWordTest(t,"lt");
 	}	
 	
-	public void testReservedWordQt() {
+	public void testReservedWordGt() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		doReservedWordTest(t,"qt");
+		doReservedWordTest(t,"gt");
 	}
 	
 	public void testReservedWordLe() {
@@ -212,17 +214,17 @@ public class ELParserTest extends TestCase {
 	
 	public void testReservedWordTrue() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		checkIncorrectEL(t, "#{true.method1}", 3);
+		checkIncorrectEL(t, "#{true.method1}", 6);
 	}
 	
-	public void testReservedWordFlase() {
+	public void testReservedWordFalse() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		checkIncorrectEL(t, "#{false.method1}", 3);
+		checkIncorrectEL(t, "#{false.method1}", 7);
 	}
 	
 	public void testReservedWordNull() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		checkIncorrectEL(t, "#{null.method1}", 3);
+		checkIncorrectEL(t, "#{null.method1}", 6);
 	}
 	
 	public void testReservedWordInstanceof() {
@@ -232,7 +234,7 @@ public class ELParserTest extends TestCase {
 	
 	public void testReservedWordEmpty() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		checkIncorrectEL(t, "#{empty.method1}", 3);
+		checkIncorrectEL(t, "#{empty.method1}", 7);
 	}
 	
 	public void testReservedWordDiv() {
@@ -246,9 +248,9 @@ public class ELParserTest extends TestCase {
 	}
 	
 	private void doReservedWordTest(Tokenizer t, String keyword) {
-		checkIncorrectEL(t, "#{"+keyword+"}",3);
-		checkIncorrectEL(t, "#{"+keyword+".method1}", 3);
-		checkIncorrectEL(t, "#{"+keyword+"+"+keyword+"}", 3);
+		checkIncorrectEL(t, "#{"+keyword+"}",2);
+		checkIncorrectEL(t, "#{"+keyword+".method1}", 2);
+		checkIncorrectEL(t, "#{"+keyword+"+"+keyword+"}", 2);
 	}
 	
 	public void testComplexMath() {
@@ -286,34 +288,35 @@ public class ELParserTest extends TestCase {
 		// 2. Incorrect use of '.' in second EL instance
 		checkIncorrectEL(t, "#{a.b + -c.d + g}#{hh.vv..m()}", 25);
 		// incorrect operation
-		checkIncorrectEL(t, "#{c.a[1.5E7]}",7);
 		checkIncorrectEL(t, "#{!}", 3);
 		checkIncorrectEL(t, "#{+}", 3);
 		checkIncorrectEL(t, "#{-}", 3);
-		checkIncorrectEL(t, "#{()}", 4);
-		checkIncorrectEL(t, "#{[1]}", 3);
-		checkIncorrectEL(t, "#{%}", 3);
-		checkIncorrectEL(t, "#{:}", 3);
-		checkIncorrectEL(t, "#{/}", 3);
-		checkIncorrectEL(t, "#{*}", 3);
-		checkIncorrectEL(t, "#{&&}", 3);
-		checkIncorrectEL(t, "#{||}", 3);
-		checkIncorrectEL(t, "#{<}", 3);
-		checkIncorrectEL(t, "#{>}", 3);
-		checkIncorrectEL(t, "#{<=}", 3);
-		checkIncorrectEL(t, "#{>=}", 3);
-		checkIncorrectEL(t, "#{==}", 3);
+		checkIncorrectEL(t, "#{()}", 3);
+		checkIncorrectEL(t, "#{[1]}", 2);
+		checkIncorrectEL(t, "#{%}", 2);
+		checkIncorrectEL(t, "#{:}", 2);
+		checkIncorrectEL(t, "#{/}", 2);
+		checkIncorrectEL(t, "#{*}", 2);
+		checkIncorrectEL(t, "#{&&}", 2);
+		checkIncorrectEL(t, "#{||}", 2);
+		checkIncorrectEL(t, "#{<}", 2);
+		checkIncorrectEL(t, "#{>}", 2);
+		checkIncorrectEL(t, "#{<=}", 2);
+		checkIncorrectEL(t, "#{>=}", 2);
+		checkIncorrectEL(t, "#{==}", 2);
 		checkIncorrectEL(t, "#{!=}", 3);
-		checkIncorrectEL(t, "#{?}", 3);
-		checkIncorrectEL(t, "#{=}", 3);
+		checkIncorrectEL(t, "#{?}", 2);
+		checkIncorrectEL(t, "#{=}", 2);
+
+		checkIncorrectEL(t, "#{c.a[1.5E7]}",7); //TODO
 	}
 
 	public void testLexemas() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		checkIncorrectEL(t, "#{#identifier}", 3);
+		checkIncorrectEL(t, "#{#identifier}", 2);
 		checkIncorrectEL(t, "#{2identifier}", 3);
-		checkIncorrectEL(t, "#{$identifier}", 3);
-		checkIncorrectEL(t, "#{i1.2methodorproperty}", 6);
+		checkIncorrectEL(t, "#{$identifier}", 2);
+		checkIncorrectEL(t, "#{i1.2methodorproperty}", 5);
 	}
 	
 	private void checkIncorrectEL(Tokenizer t, String test,
