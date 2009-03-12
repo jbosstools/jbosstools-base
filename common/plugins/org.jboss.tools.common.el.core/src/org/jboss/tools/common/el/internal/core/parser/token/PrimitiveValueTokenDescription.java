@@ -11,7 +11,9 @@
 package org.jboss.tools.common.el.internal.core.parser.token;
 
 import org.jboss.tools.common.el.core.parser.ITokenDescription;
+import org.jboss.tools.common.el.core.parser.SyntaxError;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
+import org.jboss.tools.common.el.internal.core.parser.rule.BasicStates;
 
 /**
  * 
@@ -81,6 +83,7 @@ public class PrimitiveValueTokenDescription implements ITokenDescription {
 	private boolean readNumber(Tokenizer tokenizer, int offset) {
 		int i = offset;
 		int dotCount = 1;
+		int dotOffset = -1;
 		if(tokenizer.startsWith("0x")) {
 			i += 2;
 			dotCount = 0;
@@ -94,6 +97,8 @@ public class PrimitiveValueTokenDescription implements ITokenDescription {
 				if(dotCount < 0) {
 					lastCharIsWrong = true;
 					break;
+				} else {
+					dotOffset = tokenizer.getCurrentIndex() - 1;
 				}
 			} else if(!Character.isDigit(ch)) {
 				if(inE) {
@@ -130,6 +135,13 @@ public class PrimitiveValueTokenDescription implements ITokenDescription {
 		}
 		if(lastCharIsWrong) {
 			tokenizer.releaseChar();
+		}
+		if(tokenizer.getLastToken() != null 
+			&& tokenizer.getLastToken().getType() == ArgStartTokenDescription.ARG_START
+			&& dotCount < 1) {
+			SyntaxError error = new SyntaxError(dotOffset, BasicStates.STATE_EXPECTING_ARG);
+			error.setProblem("Argument must resolve to integer or string.");
+			tokenizer.getErrors().add(error);
 		}
 		tokenizer.addToken(getType(), offset, i);
 		return true;

@@ -37,7 +37,7 @@ public class SyntaxError {
 		return problem;
 	}
 
-	void setProblem(String problem) {
+	public void setProblem(String problem) {
 		this.problem = problem;
 	}
 
