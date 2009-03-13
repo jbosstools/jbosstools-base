@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.jboss.tools.common.model.XModelBuffer;
 import org.jboss.tools.common.model.XModelException;
@@ -39,10 +40,18 @@ public class AbsoluteFilePathAttributeValueLoader implements IAttributeValueLoad
 	}
 	
 	public void fillTagAttributes(IDropWizardModel model) {
-		IFileEditorInput input = ((IFileEditorInput)model.getDropData().getEditorInput());
-		IProject project = input.getFile().getProject();
-		IContainer container = DropUtils.getWebRootContainer(project);
 		IFile file = DropUtils.getResourceForMimeData(model.getDropData());
+		if(file == null) return;
+		IProject project = null;
+		IEditorInput editorInput = model.getDropData().getEditorInput();
+		IFileEditorInput input = null;
+		if(editorInput instanceof IFileEditorInput) {
+			input = (IFileEditorInput)editorInput;
+			project = input.getFile().getProject();
+		} else {
+			project = file.getProject();
+		}
+		IContainer container = DropUtils.getWebRootContainer(project);
 		if(file != null){
 			IPath filePath = file.getProjectRelativePath();
 			IPath containerPath = container.getProjectRelativePath();
@@ -51,7 +60,7 @@ public class AbsoluteFilePathAttributeValueLoader implements IAttributeValueLoad
 			// TODO Eskimo - think, how deside what url to image use, absolute or relative
 			// Now it is absolute. 
 			// TODO Eskimo - think what we have to do id dropped file is not from WEB-ROOT folder
-			String v = dropFileToFile(file, input.getFile(), model);
+			String v = (input == null) ? null : dropFileToFile(file, input.getFile(), model);
 			if(v == null) v = "/"+filePath.toString();
 			model.setAttributeValue(fPathAttributeName, v);
 		}
