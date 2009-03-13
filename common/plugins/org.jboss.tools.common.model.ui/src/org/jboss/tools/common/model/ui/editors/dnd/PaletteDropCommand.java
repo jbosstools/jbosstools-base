@@ -28,6 +28,7 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.DnDUtil;
+import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesComposite.AttributeDescriptorValue;
 import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
 import org.jboss.tools.common.model.ui.views.palette.PaletteInsertManager;
@@ -122,6 +123,8 @@ public class PaletteDropCommand extends FileDropCommand {
 			if(target == null && f.exists()) {
 				target = EclipseResourceUtil.createObjectForResource(f);
 			}
+		} else if(input instanceof IModelObjectEditorInput) {
+			target = ((IModelObjectEditorInput)input).getXModelObject();
 		}
 		if(target == null) {
 			initialize2();
