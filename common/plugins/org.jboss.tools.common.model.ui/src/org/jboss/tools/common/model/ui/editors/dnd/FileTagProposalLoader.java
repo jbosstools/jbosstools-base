@@ -37,13 +37,15 @@ public class FileTagProposalLoader implements ITagProposalLoader {
 			"html",
 			"img",
 			new AbsoluteFilePathAttributeValueLoader("page","","")
-		),
-		new TagProposal(
-			DropURI.TOMOHAWK_URI,
-			"t",
-			"graphicImage",
-			new AbsoluteFilePathAttributeValueLoader("url","","")
 		)
+// yradtsevich: fix of JBIDE-3984: Exclude t:graphicImage option from Insert tag dialog 		
+//		,
+//		new TagProposal(
+//			DropURI.TOMOHAWK_URI,
+//			"t",
+//			"graphicImage",
+//			new AbsoluteFilePathAttributeValueLoader("url","","")
+//		)
 	};
 	
 	static TagProposal[] CSS_TAG_PROPOSALS = new TagProposal[]{

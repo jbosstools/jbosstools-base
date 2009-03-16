@@ -17,6 +17,6 @@ public class DropURI {
 	public static final String HTML_4_0_URI = "-//w3c//dtd html 4.0 transitional//en";
 	public static final String STRUTS_HTML_URI = "http://struts.apache.org/tags-html";
 	public static final String JSP_URI = "http://java.sun.com/JSP/Page";
-	public static final String TOMOHAWK_URI = "http://myfaces.apache.org/tomahawk";
-	
+//	yradtsevich: fix of JBIDE-3984: Exclude t:graphicImage option from Insert tag dialog
+//	public static final String TOMOHAWK_URI = "http://myfaces.apache.org/tomahawk";
 }
