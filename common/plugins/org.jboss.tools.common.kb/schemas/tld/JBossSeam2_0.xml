@@ -458,6 +458,9 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="file">
+                <param name="extensions" value="%page%"/>
+            </proposal>
         </attribute-type>
         <attribute type="template"/>
         <attribute-type name="style" required="false">
