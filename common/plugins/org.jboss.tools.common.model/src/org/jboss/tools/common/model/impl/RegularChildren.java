@@ -247,7 +247,11 @@ class SMap {
 
 	public void put(String key, XModelObject value) {
 		entries.put(key, value);
-		cache = null;
+		if(cache != null) {
+			synchronized(this) {
+				cache = null;
+			}
+		}
 	}
     
 	/**
@@ -269,7 +273,10 @@ class SMap {
 	 * @return
 	 */
 	public XModelObject[] getSortedValues(Comparator<XModelObject> comparator) {
-		if (cache != null) return cache;
+		XModelObject[] c = cache;
+		//Otherwise, cache can be made null between 'if' and 'return', but we 
+		//avoid synchronizing this line for the most probable return to be very fast.
+		if (c != null) return c;
 		synchronized (this) {
 			if (cache != null) return cache;
 			if (size() == 0) {
@@ -279,13 +286,17 @@ class SMap {
 				if (comparator != null)
 					Arrays.sort(cache, comparator);
 			}
+			return cache;
 		}
-		return cache;
 	}
 
 	public void remove(String key) {
 		entries.remove(key);
-		cache = null;
+		if(cache != null) {
+			synchronized(this) {
+				cache = null;
+			}
+		}
 	}
 
 	/**
