@@ -189,17 +189,18 @@ public class PaletteTaglibInserter {
 			Properties tl = getPrefixes(v);
 			if(tl == null) tl = PaletteInsertHelper.getPrefixes(d.get());
 			Element root = xmlDocument.getDocumentElement();
-			// for xhtml facelets
-			if (root != null && xmlDocument.getDoctype() != null /* && tagLibListConainsFacelet(tl)*/ ) {
-				String publicId = xmlDocument.getDoctype().getPublicId();
-				if (publicId!=null && publicId.toUpperCase().startsWith("-//W3C//DTD XHTML")) { // && root.getNodeName().equalsIgnoreCase(HTML_SOURCE_ROOT_ELEMENT)) {
+			if(root != null) {
+				// for xhtml and jsp:root 
+				if (xmlDocument.getDoctype() != null /* && tagLibListConainsFacelet(tl)*/ ) {
+					String publicId = xmlDocument.getDoctype().getPublicId();
+					if (publicId!=null && publicId.toUpperCase().startsWith("-//W3C//DTD XHTML")) { // && root.getNodeName().equalsIgnoreCase(HTML_SOURCE_ROOT_ELEMENT)) {
+						checkTL(root, v, p, d);
+						return true;
+					}
+				} else if(xmlDocument.isXMLType() || root.getNodeName().equals(JSP_SOURCE_ROOT_ELEMENT)) {
 					checkTL(root, v, p, d);
 					return true;
 				}
-			// for jsp:root
-			} else if (root != null && root.getNodeName().equals(JSP_SOURCE_ROOT_ELEMENT)) {
-				checkTL(root, v, p, d);
-				return true;
 			}
 		} finally {
 			if (model != null)	model.releaseFromRead();
