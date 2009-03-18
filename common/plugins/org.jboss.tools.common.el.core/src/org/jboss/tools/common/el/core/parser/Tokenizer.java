@@ -157,6 +157,10 @@ public class Tokenizer {
 		return copy;
 	}
 
+	public void addSyntaxError(SyntaxError error) {
+		errors.add(error);
+	}
+
 	public void addToken(int type, int start, int end) {
 		if(end < 0) return;
 		int lastEnd = last.getStart() + last.getLength();

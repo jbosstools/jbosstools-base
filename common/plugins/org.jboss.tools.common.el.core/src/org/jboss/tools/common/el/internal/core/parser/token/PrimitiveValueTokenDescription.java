@@ -141,7 +141,7 @@ public class PrimitiveValueTokenDescription implements ITokenDescription {
 			&& dotCount < 1) {
 			SyntaxError error = new SyntaxError(dotOffset, BasicStates.STATE_EXPECTING_ARG);
 			error.setProblem("Argument must resolve to integer or string.");
-			tokenizer.getErrors().add(error);
+			tokenizer.addSyntaxError(error);
 		}
 		tokenizer.addToken(getType(), offset, i);
 		return true;
