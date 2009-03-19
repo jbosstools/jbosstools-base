@@ -27,7 +27,7 @@ public class DropData {
 	private ISourceViewer fViewer; 
 	private ISelectionProvider fProvider;	
 	private String fMimeType;
-	private String fData;
+	private String fMimeData;
 	private IDropCommand fDropCommand = null;
 	private Node container = null;
 	private String attributeName = null;
@@ -56,7 +56,7 @@ public class DropData {
 	/**
 	 * 
 	 * @param mimeType
-	 * @param data
+	 * @param mimeData
 	 * @param pageContext
 	 * @param input
 	 * @param viewer
@@ -64,13 +64,13 @@ public class DropData {
 	 */
 	public DropData(
 		String mimeType,
-		String data,
+		String mimeData,
 		IEditorInput input, 
 		ISourceViewer viewer, 
 		ISelectionProvider provider
 	) {
 		fMimeType = mimeType;
-		fData = data;
+		fMimeData = mimeData;
 		fInput = input;
 		fViewer = viewer;
 		fProvider = provider;
@@ -89,14 +89,14 @@ public class DropData {
 	 * 
 	 */
 	public String getMimeData() {
-		return fData;
+		return fMimeData;
 	}
 
 	/**
 	 * 
 	 */
-	public void setMimeData(String data) {
-		fData = data;
+	public void setMimeData(String mimeData) {
+		fMimeData = mimeData;
 	}
 
 	/**

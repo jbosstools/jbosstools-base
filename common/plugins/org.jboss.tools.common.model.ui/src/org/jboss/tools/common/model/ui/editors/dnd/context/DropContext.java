@@ -34,6 +34,7 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
 import org.jboss.tools.common.model.ui.dnd.VpeDnDEvent;
 import org.jboss.tools.common.model.ui.dnd.VpeTextDropAction;
+import org.jboss.tools.common.model.ui.editors.dnd.DropUtils;
 import org.jboss.tools.common.model.ui.editors.dnd.FileTagProposalLoader;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.jst.web.tld.TLDUtil;
@@ -119,12 +120,10 @@ public class DropContext {
 
 	private String getURL(TypedEvent event) {
 		String[] s = (String[])event.data;
-		if(s == null || s.length == 0) return null;
-		File f = new File(s[0]);
-		try {
-			return f.toURL().toString();
-		} catch (MalformedURLException e) {
-			return s[0];
+		if(s == null || s.length == 0) {
+			return null;
+		} else {
+			return DropUtils.convertPathToUrl(s[0]);
 		}
 	}
 	private File getFile(TypedEvent event) {
