@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.editors.dnd;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -203,5 +204,18 @@ public class DropUtils {
 			container = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(new Path(p.getWebRootLocation()));
 		}
 		return container;
+	}
+	
+	/**
+	 * If it is possible, then converts given {@code path} into URL,
+	 * otherwise returns {@code path} unchanged
+	 * @return
+	 */
+	public static String convertPathToUrl(String path) {
+		try {
+			return new File(path).toURL().toString();
+		} catch (MalformedURLException e) {
+			return path;
+		}
 	}
 }
