@@ -47,8 +47,10 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t, "#{a.b()}");
 		// 5b. Method invocation with one parameter
 		checkCorrectEL(t, "#{a.b(c)}");
-		// 5b. Method invocation with two parameters
+		// 5c. Method invocation with two parameters
 		checkCorrectEL(t, "#{a.b(c.d , e['u'])}");
+		// 5d. Method invocation on a string
+		checkCorrectEL(t, "#{'a'.compareTo('c')}");
 		// 6. Numeric
 		checkCorrectEL(t, "#{a.b(16.900)}");
 		// 7. Boolean
