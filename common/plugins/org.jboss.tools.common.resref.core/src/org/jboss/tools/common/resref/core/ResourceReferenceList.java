@@ -17,8 +17,13 @@ import java.net.URLEncoder;
 import java.util.*;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.XModelObjectUtil;
+import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.prefs.Preferences;
 
 public abstract class ResourceReferenceList {
 	
@@ -53,11 +58,12 @@ public abstract class ResourceReferenceList {
 		}
 		return -1;
 	}
-		/**
-		 * Returns all resources for current file
-		 * @param file
-		 * @return
-		 */
+	
+	/**
+	 * Returns all resources for current file
+	 * @param file
+	 * @return
+	 */
 	public ResourceReference[] getAllResources(IFile file) {
 		Set<String> locations = new HashSet<String>();
 		List<ResourceReference> css = new ArrayList<ResourceReference>();
@@ -94,19 +100,34 @@ public abstract class ResourceReferenceList {
 		return css.toArray(new ResourceReference[0]);		
 	}
 	
-	private  String[] getDeclaredResources(IResource resource) {
-		String s = null;
-		try {
-			s = resource.getPersistentProperty(getPropertyName());
-		} catch (CoreException e) {
-			//ignore
+	private String[] getDeclaredResources(IResource resource) {
+	    String s = null;
+	    /*
+	     * https://jira.jboss.org/jira/browse/JBIDE-3211
+	     * Storing project preferences to project scope in .settings
+	     */
+	    IScopeContext projectScope = new ProjectScope(resource.getProject());
+	    IEclipsePreferences root = projectScope
+	    	.getNode(ResourceReferencePlugin.PLUGIN_ID);
+	    if (root != null) {
+		/*
+		 * Create subnode for file/folder/project
+		 */
+		IPath path = resource.getProjectRelativePath();
+		String nodeString = path.toString();
+		Preferences node = root.node(nodeString);
+		if (null != node) {
+		    String old = node.get(getPropertyName().getLocalName(), ""); //$NON-NLS-1$
+		    s = old;
 		}
-		if(s == null || s.length() == 0) {
-			return new String[0];
-		} else  {
-			return decodeResourceString(s);
-		}
+	    }
+	    if (s == null || s.length() == 0) {
+		return new String[0];
+	    } else {
+		return decodeResourceString(s);
+	    }
 	}
+	
 	//Fix for JBIDE-2979
 	private static String[] decodeResourceString(String resource) {
 		String[] results = XModelObjectUtil.asStringArray(resource);
@@ -125,14 +146,16 @@ public abstract class ResourceReferenceList {
 	
 	
 	public void setAllResources(IFile file, ResourceReference[] entries) {
-		IResource changed = null;
+	    	IResource changed = null;
 		boolean b = setDeclaredResources(file, entries, ResourceReference.FILE_SCOPE, 0);
 		if(b) changed = file;
 		IResource parent = file.getParent();
 		int depth = 0;
 		while(parent instanceof IFolder) {
 			b = setDeclaredResources(parent, entries, ResourceReference.FOLDER_SCOPE, depth);
-			if(b) changed = parent;
+			if(b) {
+			    changed = parent;
+			}
 			parent = parent.getParent();
 			depth++;
 		}
@@ -140,22 +163,41 @@ public abstract class ResourceReferenceList {
 			int scope = ResourceReference.PROJECT_SCOPE;
 			if(file.getParent() == file.getProject()) scope = 10;
 			b = setDeclaredResources(file.getProject(), entries, scope, 0);
-			if(b) changed = file.getProject();
+			if(b) {
+			    changed = file.getProject();
+			}
 		}
 		if(changed != null) fire(changed.getFullPath());
 	}
 
 	private boolean setDeclaredResources(IResource resource, ResourceReference[] entries, int scope, int depth) {
-		try {
-			String oldValue = resource.getPersistentProperty(getPropertyName());
-			if(oldValue == null) oldValue = "";
-			String newValue = encodeDeclaredResources(entries, scope, depth);
-			if(oldValue.equals(newValue)) return false;
-			resource.setPersistentProperty(getPropertyName(), newValue);
-		} catch (CoreException e) {
-			return false;
+	    /*
+	     * https://jira.jboss.org/jira/browse/JBIDE-3211 Reading project
+	     * Reading preferences from project scope from .settings
+	     */
+	    IScopeContext projectScope = new ProjectScope(resource.getProject());
+	    IEclipsePreferences root = projectScope
+	    	.getNode(ResourceReferencePlugin.PLUGIN_ID);
+	    if (root != null) {
+		/*
+		 * Get subnode for file/folder/project
+		 */
+		IPath path = resource.getProjectRelativePath();
+		String nodeString = path.toString();
+		Preferences node = root.node(nodeString);
+		String oldValue = node.get(getPropertyName().getLocalName(), ""); //$NON-NLS-1$
+		String newValue = encodeDeclaredResources(entries, scope, depth);
+		if (oldValue.equals(newValue)) {
+		    return false;
 		}
-		return true;
+		node.put(getPropertyName().getLocalName(), newValue);
+		try {
+		    root.flush();
+		} catch (BackingStoreException e) {
+		    ResourceReferencePlugin.getPluginLog().logError(e);
+		}
+	    }
+	    return true;
 	}
 	
 	private String encodeDeclaredResources(ResourceReference[] entries, int scope, int depth) {
@@ -193,18 +235,28 @@ public abstract class ResourceReferenceList {
 	TreeMap allExternalResources = null;
 	
 	private TreeMap getAllExternalResources() {
-		if(allExternalResources == null) {
-			allExternalResources = new TreeMap();
-			String s = null;
-			try {
-				s = ModelPlugin.getWorkspace().getRoot().getPersistentProperty(getPropertyName());
-				if(s != null) parseExternalResources(s);
-			} catch (CoreException e) {
-				//ignore
-			}
+	    if (allExternalResources == null) {
+		allExternalResources = new TreeMap();
+		String s = null;
+		/*
+		 * https://jira.jboss.org/jira/browse/JBIDE-3211 Reading project
+		 * Reading global preferences from instance scope.
+		 */
+		IScopeContext instanceContext = new InstanceScope();
+		Preferences root = instanceContext.getNode(ModelPlugin.PLUGIN_ID);
+		if (null != root) {
+		    Preferences node = root
+		    	.node(ResourceReferencePlugin.PLUGIN_ID);
+		    s = node.get(getPropertyName().getLocalName(), ""); //$NON-NLS-1$
 		}
-		return allExternalResources;
+
+		if (s != null) {
+		    parseExternalResources(s);
+		}
+	    }
+	    return allExternalResources;
 	}
+	
 	private void parseExternalResources(String s) {
 		StringTokenizer st = new StringTokenizer(s, "#"); //$NON-NLS-1$
 		while(st.hasMoreTokens()) {
@@ -212,26 +264,41 @@ public abstract class ResourceReferenceList {
 			int e = t.indexOf('=');
 			String path = t.substring(0, e);
 			String list = t.substring(e + 1);
-			if(new File(path).exists()) allExternalResources.put(path, list);
+			if(new File(path).exists()) {
+			    allExternalResources.put(path, list);
+			}
 		}
 	}
 
 	private void setAllExternalResources() {
-		StringBuffer sb = new StringBuffer();
-		Iterator it = allExternalResources.keySet().iterator();
-		while(it.hasNext()) {
-			String path = it.next().toString();
-			String list = (String)allExternalResources.get(path);
-			if(path != null && list != null && new File(path).exists()) {
-				if(sb.length() > 0) sb.append('#');
-				sb.append(path).append('=').append(list);
-			}
+	    StringBuffer sb = new StringBuffer();
+	    Iterator it = allExternalResources.keySet().iterator();
+	    while (it.hasNext()) {
+		String path = it.next().toString();
+		String list = (String) allExternalResources.get(path);
+		if (path != null && list != null && new File(path).exists()) {
+		    if (sb.length() > 0)
+			sb.append('#');
+		    sb.append(path).append('=').append(list);
 		}
+	    }
+	    /*
+	     * https://jira.jboss.org/jira/browse/JBIDE-3211 Reading project
+	     * Storing global preferences to instance scope to
+	     * ${workspace}\.metadata\.plugins\org.eclipse.core.runtime\
+	     * .settings\org.jboss.tools.common.model.prefs
+	     */
+	    IScopeContext instanceContext = new InstanceScope();
+	    Preferences root = instanceContext.getNode(ModelPlugin.PLUGIN_ID);
+	    if (null != root) {
+		Preferences node = root.node(ResourceReferencePlugin.PLUGIN_ID);
+		node.put(getPropertyName().getLocalName(), sb.toString());
 		try {
-			ModelPlugin.getWorkspace().getRoot().setPersistentProperty(getPropertyName(), sb.toString());
-		} catch (CoreException e) {
-			//ignore
+		    root.flush();
+		} catch (BackingStoreException e) {
+		    ResourceReferencePlugin.getPluginLog().logError(e);
 		}
+	    }
 	}
 
 	public ResourceReference[] getAllResources(IPath path) {
@@ -270,7 +337,7 @@ public abstract class ResourceReferenceList {
 	}
 
 	private String[] getDeclaredResources(IPath path) {
-		String s = (String)getAllExternalResources().get(path.toString());
+	    String s = (String)getAllExternalResources().get(path.toString());
 		if(s == null || s.length() == 0) {
 			return new String[0];
 		}else {
@@ -283,7 +350,7 @@ public abstract class ResourceReferenceList {
 		boolean b = false;
 		int checkScope = path.equals(Platform.getLocation()) ? ResourceReference.GLOBAL_SCOPE : ResourceReference.FILE_SCOPE;
 
-        b = setDeclaredResources(path, entries, checkScope, 0);
+		b = setDeclaredResources(path, entries, checkScope, 0);
 		if(b) changed = path;
 		IPath parent = path.removeLastSegments(1);
 		int depth = 0;
@@ -300,8 +367,10 @@ public abstract class ResourceReferenceList {
 	}
 
 	private boolean setDeclaredResources(IPath path, ResourceReference[] entries, int scope, int depth) {
-			String oldValue = (String)getAllExternalResources().get(path.toString());
-			if(oldValue == null) oldValue = "";
+	    		String oldValue = (String)getAllExternalResources().get(path.toString());
+			if(oldValue == null) {
+			    oldValue = ""; //$NON-NLS-1$
+			}
 			String newValue = encodeDeclaredResources(entries, scope, depth);
 			if(oldValue.equals(newValue)) return false;
 			if(newValue == null || newValue.length() == 0) {
