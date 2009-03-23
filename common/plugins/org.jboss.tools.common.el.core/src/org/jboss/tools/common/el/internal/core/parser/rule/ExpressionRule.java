@@ -55,8 +55,8 @@ public class ExpressionRule implements IRule, BasicStates {
 			case EndELTokenDescription.END_EL:
 					return STATE_EXPECTING_EL;
 			case JavaNameTokenDescription.JAVA_NAME:
-					return STATE_EXPECTING_CALL;
 			case StringTokenDescription.STRING:
+					return STATE_EXPECTING_CALL;
 			case PrimitiveValueTokenDescription.PRIMITIVE_VALUE:
 					return STATE_EXPECTING_OPERATION;
 			case ParamEndTokenDescription.PARAM_END:

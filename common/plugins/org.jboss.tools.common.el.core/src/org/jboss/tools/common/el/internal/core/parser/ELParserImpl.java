@@ -152,8 +152,12 @@ public class ELParserImpl {
 			case ExprStartTokenDescription.EXPR_START:
 			case UnaryTokenDescription.UNARY:
 				return readComplexExpression();
-			case PrimitiveValueTokenDescription.PRIMITIVE_VALUE:
 			case StringTokenDescription.STRING:
+				LexicalToken f = lookUpNextToken(current);
+				if(f != null && f.getType() == DotTokenDescription.DOT) {
+					return readInvocationExpression();
+				}
+			case PrimitiveValueTokenDescription.PRIMITIVE_VALUE:
 				ELExpressionImpl expr = new ELValueExpressionImpl();
 				expr.setFirstToken(current);
 				expr.setLastToken(current);
@@ -186,7 +190,9 @@ public class ELParserImpl {
 	}
 
 	protected ELInvocationExpressionImpl readInvocationExpression() {
-		if(current == null || current.getType() != JavaNameTokenDescription.JAVA_NAME) {
+		if(current == null || 
+			(current.getType() != JavaNameTokenDescription.JAVA_NAME &&
+			 current.getType() != StringTokenDescription.STRING)) {
 			return null;
 		}
 		ELPropertyInvocationImpl name = new ELPropertyInvocationImpl();
