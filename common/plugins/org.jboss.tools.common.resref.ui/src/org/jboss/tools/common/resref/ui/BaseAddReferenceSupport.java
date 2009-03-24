@@ -32,6 +32,7 @@ public abstract class BaseAddReferenceSupport extends SpecialWizardSupport {
 					object.setAttributeValue("prefix", css.getProperties()); //$NON-NLS-1$
 				}
 				Properties p = new Properties();
+				p.put("resourceReference", css); //$NON-NLS-1$
 				p.put("scope",Integer.valueOf(css.getScope())); //$NON-NLS-1$
 				p.put("list", list); //$NON-NLS-1$
 				if(file != null) p.put("file", file); //$NON-NLS-1$
@@ -111,7 +112,7 @@ public abstract class BaseAddReferenceSupport extends SpecialWizardSupport {
 		getProperties().put("scope", Integer.valueOf(scope)); //$NON-NLS-1$
 	}
 
-	int getSelectedScope(Properties p0) {
+	public int getSelectedScope(Properties p0) {
 		String scopeName = p0.getProperty("scope"); //$NON-NLS-1$
 		for (int i = 0; i < scopeNames.length; i++) {
 			if(scopeNames[i].equals(scopeName)) return i;
