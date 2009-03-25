@@ -23,6 +23,7 @@ import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
+import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.jboss.tools.common.text.xml.contentassist.ContentAssistProcessorBuilder;
 import org.jboss.tools.common.text.xml.contentassist.ContentAssistProcessorDefinition;
@@ -131,12 +132,14 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 
 	IContentAssistProcessor[] getInitialProcessors(ISourceViewer sourceViewer, String partitionType) {
 		if(initial == null) return null;
+		//method getContentAssistProcessors() is declared in StructuredTextViewerConfiguration
+		//and its subclasses
+		if(!(initial instanceof StructuredTextViewerConfiguration)) return null;
 		try {
-			Method m = initial.getClass().getDeclaredMethod("getContentAssistProcessors", new Class[]{ISourceViewer.class, String.class});
+			Method m = findDeclaredMethod(initial.getClass(), "getContentAssistProcessors", new Class[]{ISourceViewer.class, String.class});
+			if(m == null) return null;
 			m.setAccessible(true);
 			return (IContentAssistProcessor[])m.invoke(initial, new Object[]{sourceViewer, partitionType});
-		} catch (NoSuchMethodException e) {
-			XmlEditorPlugin.getPluginLog().logError(e);
 		} catch (IllegalArgumentException e) {
 			XmlEditorPlugin.getPluginLog().logError(e);
 		} catch (IllegalAccessException e) {
@@ -146,6 +149,25 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 		}
 		
 		return null;
+	}
+
+	private Method findDeclaredMethod(Class cls, String name, Class[] paramTypes) {
+		Method[] ms = cls.getDeclaredMethods();
+		if (ms != null) for (int i = 0; i < ms.length; i++) {
+			if(!ms[i].getName().equals(name)) continue;
+			Class<?>[] ps = ms[i].getParameterTypes();
+			if(ps == null || ps.length != paramTypes.length) continue;
+			boolean equal = true;
+			for (int j = 0; j < ps.length && equal; j++) {
+				if(!ps[j].getName().equals(paramTypes[j].getName())) equal = false;
+			}
+			if(!equal) continue;
+			return ms[i];
+		}
+		Class<?> sc = cls.getSuperclass();
+		if(sc == null || sc == Object.class) 
+			return null;
+		return findDeclaredMethod(sc, name, paramTypes);
 	}
 
 }
