@@ -7,24 +7,26 @@
  *
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
+ ******************************************************************************/
 package org.jboss.tools.common.resref.core;
 
 public class ResourceReference {
+	// Do not alter the values of the scopes!
+	// FILE_SCOPE should have the lowest value and GLOBAL_SCOPE should have the highest value
 	public final static int FILE_SCOPE = 0;
 	public final static int FOLDER_SCOPE = 1;
 	public final static int PROJECT_SCOPE = 2;
 	public final static int GLOBAL_SCOPE  = 3;
-	
+
 	public final  static String[] SCOPE_NAMES = new String[]{"Page", "Folder", "Project","Global"};
 
 	protected String location;
 	protected int scope;
 	protected int depth = 0;
 	protected String properties = "";
-	
+
 	protected boolean isGlobal = false;
-	
+
 	public boolean isGlobal() {
         return isGlobal;
     }
@@ -42,43 +44,43 @@ public class ResourceReference {
 			this.location = location.substring(0, q);
 		}
 	}
-	
+
 	public String getLocation() {
 		return location;
 	}
-	
+
 	public int getScope() {
 		return scope;
 	}
-	
+
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	
+
 	public void setProperties(String properties) {
 		this.properties = properties;
 	}
-	
+
 	public String getProperties() {
 		return properties;
 	}
-	
+
 	public void setScope(int scope) {
 		this.scope = scope;
 	}
-	
+
 	public String getScopeName() {
 		return SCOPE_NAMES[scope];
 	}
-	
+
 	public void setDepth(int depth) {
 		this.depth = depth;
 	}
-	
+
 	public int getDepth() {
 		return depth;
 	}
-	
+
 	public String getLocationAndProperties() {
 		String v = location;
 		if(properties.length() > 0) {
@@ -86,8 +88,7 @@ public class ResourceReference {
 		}
 		return v;
 	}
-	
-	
+
 //	public static ResourceReference createResourceReference(String location, int scope) {
 //        ResourceReference rst = null;
 //
