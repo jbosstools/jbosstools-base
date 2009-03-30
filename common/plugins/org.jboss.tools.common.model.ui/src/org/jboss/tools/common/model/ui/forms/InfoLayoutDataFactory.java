@@ -20,14 +20,22 @@ import org.eclipse.swt.layout.GridData;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class InfoLayoutDataFactory implements ILayoutDataFactory {
+	int height = 60;
 
-	private static InfoLayoutDataFactory INSTANCE = new InfoLayoutDataFactory();
+	private static InfoLayoutDataFactory INSTANCE = new InfoLayoutDataFactory(60);
 
-	private InfoLayoutDataFactory() {
+	private static InfoLayoutDataFactory HIGH_INSTANCE = new InfoLayoutDataFactory(120);
+
+	private InfoLayoutDataFactory(int height) {
+		this.height = height;
 	}
 
 	public static InfoLayoutDataFactory getInstance() {
 		return INSTANCE;
+	}
+
+	public static InfoLayoutDataFactory getHighInstance() {
+		return HIGH_INSTANCE;
 	}
 
 	/* (non-Javadoc)
@@ -40,7 +48,7 @@ public class InfoLayoutDataFactory implements ILayoutDataFactory {
 			return gd;
 		} else if(type == AttributeControlType.EDITOR) {
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.heightHint = 60;
+			gd.heightHint = height;
 			return gd;
 		}
 		throw new FormRuntimeException("Attribute control type may be only Label or Editor but this is " + type);
