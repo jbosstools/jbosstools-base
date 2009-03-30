@@ -17,6 +17,8 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -97,6 +99,13 @@ public class TreeSelectionFieldEditor extends ExtendedFieldEditor implements IFi
 			if (selectionChangedListener!=null) {
 				treeViewer.addSelectionChangedListener(selectionChangedListener);
 			}
+			treeViewer.getTree().addMouseListener(new MouseAdapter() {
+				public void mouseDoubleClick(MouseEvent e) {
+					if(getOwnerDialog() != null) {
+						getOwnerDialog().okPressed();
+					}
+				}
+			});
 		}
 		return treeViewer.getTree();
 	}

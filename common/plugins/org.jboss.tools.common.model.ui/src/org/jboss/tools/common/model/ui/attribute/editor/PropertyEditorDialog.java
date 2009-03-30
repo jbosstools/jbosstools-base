@@ -41,7 +41,7 @@ public class PropertyEditorDialog extends Dialog {
 	public PropertyEditorDialog(Shell parentShell, IPropertyEditor editor) {
 		super(parentShell);
 		this.propertyEditor = editor;
-		initValue = editor.getValue();		
+		initValue = editor.getValue();
 	}
 	
 	protected Control createDialogArea(Composite parent) {
@@ -84,8 +84,17 @@ public class PropertyEditorDialog extends Dialog {
 			parent.setLayout(layout);
 		} else cn = 2;
 		editor.fillIntoGrid(parent, cn);
+		editor.setOwnerDialog(this);
 	}
-	
+
+	public void okPressed() {
+		Button b = getButton(IDialogConstants.OK_ID);
+		if(b == null || !b.isEnabled()) {
+			return;
+		}
+		super.okPressed();
+	}
+
 	protected void buttonPressed(int buttonId) {
 		if (IDialogConstants.OK_ID == buttonId) {
 			editor.store();
@@ -98,6 +107,7 @@ public class PropertyEditorDialog extends Dialog {
 			adapter.removeValueChangeListener(listener);
 			adapter = null;
 		}
+		if(editor != null) editor.setOwnerDialog(null);
 	}
 	
 	class VCL implements PropertyChangeListener {

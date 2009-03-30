@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -162,6 +163,14 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 		}
 		tree.addSelectionChangedListener(this);
 		tree.setAutoExpandLevel(2);
+
+		tree.getControl().addMouseListener(new MouseAdapter() {
+			public void mouseDoubleClick(MouseEvent e) {
+				if(getOwnerDialog() != null) {
+					getOwnerDialog().okPressed();
+				}
+			}
+		});
 
 		label = new Label(composite, SWT.NONE);
 		label.setText(EditorMessages.getString("JavaChoicerFieldEditor.Tab1.Text.Label"));

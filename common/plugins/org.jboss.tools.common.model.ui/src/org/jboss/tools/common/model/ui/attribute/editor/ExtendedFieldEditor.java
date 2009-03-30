@@ -48,6 +48,9 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 	private Label label;
 	private boolean enabled = Boolean.TRUE.booleanValue();
 	private IAttributeErrorProvider errorProvider;
+	
+	// Introduced to give opportunities of submitting or cancelling dialog from within editor controls.
+	private PropertyEditorDialog ownerDialog;
 	//
 	protected IWidgetSettings settings;
 	
@@ -55,6 +58,14 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 
 	public ExtendedFieldEditor(IWidgetSettings settings) {
 		this.settings = settings;
+	}
+
+	public void setOwnerDialog(PropertyEditorDialog dialog) {
+		ownerDialog = dialog;
+	}
+
+	public PropertyEditorDialog getOwnerDialog() {
+		return ownerDialog;
 	}
 
 	protected abstract void adjustForNumColumns(int numColumns);

@@ -48,6 +48,12 @@ public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements
 		favoritesEditor = new JavaFavoritesFieldEditor(settings);
 	}
 
+	public void setOwnerDialog(PropertyEditorDialog dialog) {
+		classicEditor.setOwnerDialog(dialog);
+		eclipseEditor.setOwnerDialog(dialog);
+		favoritesEditor.setOwnerDialog(dialog);
+	}
+
 	protected void adjustForNumColumns(int numColumns) {
 	}
 

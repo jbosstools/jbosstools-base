@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.eclipse.core.resources.IProject;
@@ -27,12 +28,17 @@ import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.TypeNameMatch;
+import org.eclipse.jdt.internal.ui.dialogs.TypeInfoViewer;
 import org.eclipse.jdt.internal.ui.dialogs.TypeSelectionComponent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Table;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
@@ -136,9 +142,37 @@ public class JavaEclipseChoicerFieldEditor extends ExtendedFieldEditor implement
 				if(hasFocus(tc)) handle(tc.getSelection());
 			}
 		});
+		
+		Table table = getTable();
+		if(table != null) {
+			table.addMouseListener(new MouseAdapter() {
+				public void mouseDoubleClick(MouseEvent e) {
+					if(getOwnerDialog() != null) {
+						getOwnerDialog().okPressed();
+					}
+				}
+			});
+		}
 		return composite;
 	}
-	
+
+	Table getTable() {
+		try {
+			Field f = TypeSelectionComponent.class.getDeclaredField("fViewer");
+			if(f == null) return null;
+			f.setAccessible(true);
+			TypeInfoViewer v = (TypeInfoViewer)f.get(tc);
+			return v == null ? null : v.getTable();
+		} catch (NoSuchFieldException ee) {
+			
+		} catch (IllegalArgumentException e2) {
+			
+		} catch (IllegalAccessException e3) {
+			
+		}
+		return null;
+	}
+
 	boolean hasFocus(Composite c) {
 		if(c.isFocusControl()) return true;
 		Control[] cs = c.getChildren();

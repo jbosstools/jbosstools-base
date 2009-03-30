@@ -25,6 +25,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -125,6 +127,14 @@ public class JavaFavoritesFieldEditor  extends ExtendedFieldEditor implements IF
 			}
 		});
 		
+		classList.getControl().addMouseListener(new MouseAdapter() {
+			public void mouseDoubleClick(MouseEvent e) {
+				if(getOwnerDialog() != null) {
+					getOwnerDialog().okPressed();
+				}
+			}
+		});
+
 		return classList;
 	}
 	
