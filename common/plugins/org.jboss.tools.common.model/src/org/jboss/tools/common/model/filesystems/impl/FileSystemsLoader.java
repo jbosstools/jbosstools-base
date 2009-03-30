@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.*;
+import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
@@ -363,7 +364,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 		oldAttributes.put("src", "SRC");
 	}
 
-    public String getAttribute(Element element, String xmlname) {
+    public String getAttribute(Element element, String xmlname, XAttribute attr) {
     	if(element == null || xmlname == null) return null;
     	if(!element.hasAttribute(xmlname)) {
     		String oldAttribute = xmlname;
@@ -375,7 +376,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
         		}
     		}
     	}
-    	return super.getAttribute(element, xmlname);
+    	return super.getAttribute(element, xmlname, attr);
     }
 
 }
