@@ -217,7 +217,7 @@ public class XModelObjectLoaderUtil {
             String xmlname = as[i].getXMLName();
             if (xmlname == null || xmlname.length() == 0) continue;
             String n = as[i].getName();
-            String value = getAttribute(element, xmlname);
+            String value = getAttribute(element, xmlname, as[i]);
             if (value != null) o.setAttributeValue(n, value);
             String commentName = getAttributeCommentName(xmlname);
             if(commentName != null) {
@@ -257,9 +257,14 @@ public class XModelObjectLoaderUtil {
     	return xmlname;
     }
 
+    //TODO final. getAttribute(Element, String, XAttribute) should be overridden
     public String getAttribute(Element element, String xmlname) {
+    	return getAttribute(element, xmlname, null);
+    }
+
+    public String getAttribute(Element element, String xmlname, XAttribute attr) {
         if (xmlname.equals("CDATA") || xmlname.equals("#text")) {
-            return getCDATA(element, true);
+            return getCDATA(element, attr == null || attr.isTrimmable());
         } else if (xmlname.equals("#comment")) {
             return getComment(element);
         } else {
@@ -273,7 +278,7 @@ public class XModelObjectLoaderUtil {
        				childName = namespace + ":" + childName;
        			}
        			Element child = XMLUtil.getFirstChild(element, childName);
-       			if (child != null) return getAttribute(child, xmlname.substring(ind+1));
+       			if (child != null) return getAttribute(child, xmlname.substring(ind+1), attr);
        		} else {
                	xmlname = applyNamespaceToAttribute(xmlname);
                	if (XMLUtil.hasAttribute(element, xmlname)) {
