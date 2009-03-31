@@ -67,6 +67,8 @@ public class VRuleSetsLoader extends EnginesLoader {
                     if (c == null) {
                         c = nc[j].copy();
                         object.addChild(c);
+                        	//done to provide 'default-enabled'
+                        	mergeRules(c, c);
                     } else {
                         mergeRules(c, nc[j]);
                     }
@@ -89,6 +91,8 @@ public class VRuleSetsLoader extends EnginesLoader {
             }
         }
     }
+    
+    static int i = 0;
 
     protected void mergeRules(XModelObject object, XModelObject update) throws XModelException {
         org.jboss.tools.common.meta.XAttribute[] as = object.getModelEntity().getAttributes();
