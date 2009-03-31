@@ -42,6 +42,10 @@ public class StructuredModelWrapper {
 		return AbstractHyperlink.getFile(model);
 	}
 	
+	public String getBaseLocation() {
+		return AbstractHyperlink.getBaseLocation(model);
+	}
+	
 	public void dispose() {
 		if(model != null) {
 			model.releaseFromRead();

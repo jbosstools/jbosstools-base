@@ -64,7 +64,17 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 			smw.dispose();
 		}
 	}
-
+	
+	protected String getBaseLocation() {
+		StructuredModelWrapper smw = new StructuredModelWrapper();
+		try {
+			smw.init(getDocument());
+			return smw.getBaseLocation();
+		} finally {
+			smw.dispose();
+		}
+	}
+	
 	protected XModel getXModel() {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
@@ -105,6 +115,13 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		return null;
 	}
 
+	public static String getBaseLocation(IStructuredModel structuredModel) {
+		if (structuredModel == null) {
+			return null;
+		}
+		return structuredModel.getBaseLocation();
+	}
+	
 	public static IFile getFile(IStructuredModel structuredModel) {
 		if (structuredModel == null) {
 			return null;
