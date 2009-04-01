@@ -234,7 +234,9 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		doCreatePages();
 		model.addModelTreeListener(syncListener);
 		loadSelectedTab();
-		setActivePage(selectedPageIndex);
+		if(selectedPageIndex < getPageCount()) {
+			setActivePage(selectedPageIndex);
+		}
 		updateSelectionProvider();
 		new ResourceChangeListener(this, getContainer());
 	}
@@ -273,6 +275,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			outline.addSelectionChangedListener(new OutlineSelectionListener());
 		} catch (PartInitException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
+			textEditor = null;
 		}
 	}
 	
@@ -405,7 +408,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 
 			if(marker.getAttribute(IMarker.LINE_NUMBER, -1) != -1) {
 				postponedTextSelection.clean();
-				textEditor.gotoMarker(marker);
+				if(textEditor != null) textEditor.gotoMarker(marker);
 			} else {
 				String attr = marker.getAttribute("attribute", "");
 				if(attr == null || attr.length() == 0) {
@@ -419,7 +422,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			int length = marker.getAttribute(IMarker.CHAR_END, -1);	
 			if (offset > -1 && length > -1) {
 				postponedTextSelection.clean();
-				textEditor.gotoMarker(marker);
+				if(textEditor != null) textEditor.gotoMarker(marker);
 			}
 		}
 	}
@@ -601,7 +604,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	void doErrorSelected(int line, int position) {
 		setActivePage(getSourcePageIndex());
 		pageChange(getSourcePageIndex());
-		textEditor.setCursor(line, position);			
+		if(textEditor != null) textEditor.setCursor(line, position);			
 	}
 	
 	public void activateErrorTab() {
@@ -637,11 +640,13 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		public void init() {
 			if(inites) return;
 			inites = true;
-			((TextEditor)textEditor).getSelectionProvider().addSelectionChangedListener(this);
+			if(textEditor instanceof TextEditor) {
+				((TextEditor)textEditor).getSelectionProvider().addSelectionChangedListener(this);
+			}
 		}
 
 		protected XModelObject getSelectedModelObject() {
-			XModelObject o = textEditor.findModelObjectAtCursor();
+			XModelObject o = textEditor == null ? null : textEditor.findModelObjectAtCursor();
 			if(o != null) return o;
 			return getModelObject();
 		}
@@ -655,7 +660,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		}
 		
 		public void dispose() {
-			if(textEditor != null) {
+			if(textEditor instanceof TextEditor) {
 				((TextEditor)textEditor).getSelectionProvider().removeSelectionChangedListener(this);
 			}
 		}
