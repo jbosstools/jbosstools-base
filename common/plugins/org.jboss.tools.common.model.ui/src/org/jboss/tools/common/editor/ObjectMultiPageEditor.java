@@ -269,7 +269,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		textEditor = createTextEditor();
 		try {
 			int index = addPage((IEditorPart)textEditor, getEditorInput());
-			setPageText(index, "Source"); 
+			setPageText(index, ObjectMultiPageEditorMessages.PAGES_EDITOR_SOURCE_TAB); 
 			textEditor.setObject(object);
 			textEditor.addFocusListener(new TextFocusListener());
 			outline.addSelectionChangedListener(new OutlineSelectionListener());

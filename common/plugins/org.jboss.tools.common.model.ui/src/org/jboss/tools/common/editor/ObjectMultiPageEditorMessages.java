@@ -10,27 +10,36 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.editor;
 
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.osgi.util.NLS;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+
 /**
  * @author Jeremy
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class ObjectMultiPageEditorMessages {
-	private static ResourceBundle bundle = ResourceBundle
-		.getBundle("org.jboss.tools.common.editor.ObjectMultiPageEditorMessages"); //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.jboss.tools.common.editor.ObjectMultiPageEditorMessages"; //$NON-NLS-1$
 
-	private ObjectMultiPageEditorMessages() {}
-
-	public static String getString( String key ) {
-		try {
-			return bundle.getString( key );
-		} catch ( MissingResourceException e ) {
-			return "!!!" + key + "!!!"; //$NON-NLS-1$ //$NON-NLS-2$
-		}
+	private static ResourceBundle fResourceBundle;
+	static {
+		// load message values from bundle file
+		NLS.initializeMessages(BUNDLE_NAME, ObjectMultiPageEditorMessages.class);
 	}
 
+	public static String PAGES_EDITOR_SOURCE_TAB;
+
+	public static ResourceBundle getResourceBundle() {
+		try {
+			if (fResourceBundle == null)
+				fResourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, Locale.getDefault());
+		}
+		catch (MissingResourceException x) {
+			ModelUIPlugin.getPluginLog().logError(x);
+			fResourceBundle = null;
+		}
+		return fResourceBundle;
+	}
 }
