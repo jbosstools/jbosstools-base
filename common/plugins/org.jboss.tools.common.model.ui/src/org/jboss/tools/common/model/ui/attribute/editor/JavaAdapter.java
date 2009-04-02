@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
@@ -96,7 +97,17 @@ class JavaAdapter {
 		packageFragmentRoot = javaProject == null ? null : javaProject.getPackageFragmentRoot(javaProject.getResource());
 		
 		try {
-            javaElement = javaProject == null ? null : javaProject.findElement(new Path(fullClassName));
+			if(javaProject == null) {
+				javaElement = null;
+			} else {
+	            javaElement = javaProject.findElement(new Path(fullClassName));
+	            if(javaElement == null) {
+	            	javaElement = javaProject.findType(name);
+	            }
+	            if(javaElement == null) {
+	            	javaElement = javaProject.findType(name, new NullProgressMonitor());
+	            }
+			}
         } catch (JavaModelException e) {
         	javaElement = null;
 //        	no validation here
