@@ -20,9 +20,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -30,10 +33,6 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.internal.core.BinaryType;
-import org.eclipse.jdt.internal.core.PackageFragment;
-import org.eclipse.jdt.internal.core.PackageFragmentRoot;
-import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
@@ -95,8 +94,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 		}
 	}
 	
-	private IJavaElement searchForClass(IJavaProject javaProject, String className) {
-		try {
+	private IJavaElement searchForClass(IJavaProject javaProject, String className) throws JavaModelException {
 //		 Get the search pattern
 	    SearchPattern pattern = SearchPattern.createPattern(className, IJavaSearchConstants.TYPE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE);
 	    // Get the search scope
@@ -124,25 +122,14 @@ public class ClassHyperlink extends AbstractHyperlink {
 	    	if (className.equals(classQualifiedName)) 
 	    		return element;
 	    }
-	    return null;
-		} finally {
-			//
-		}
+	    return javaProject.findType(className, new NullProgressMonitor());
 	}
 
 	private String getQualifiedClassName(IJavaElement element) {
-		String classQualifiedName = null;
-		if (element instanceof SourceType || element instanceof BinaryType ) {
-			classQualifiedName = element.getElementName();
+		if(element instanceof IType) {
+			return ((IType)element).getFullyQualifiedName('.');
 		}
-		while ( element != null && !(element instanceof PackageFragmentRoot)) {
-			element = element.getParent();
-			if (element instanceof PackageFragment) {
-				classQualifiedName = element.getElementName() + "." + classQualifiedName; 
-			}
-		}
-
-		return classQualifiedName;
+		return null;
 	}
 	
 	private IJavaElement searchForClass(String className) {
