@@ -20,10 +20,5 @@ public class UIMessages extends NLS {
 		// load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, UIMessages.class);		
 	}
-	public static String ERROR_CREATING_NESTED_TEXT_EDITOR;
-	public static String CHANGE_FONT;
-	public static String PROPERTIES;
-	public static String PREVIEW;
-	public static String MUST_BE_IFILEEDITORINPUT;
 	public static String CANNOT_DISPLAY_DOCUMENT_CONTENTS;
 }
