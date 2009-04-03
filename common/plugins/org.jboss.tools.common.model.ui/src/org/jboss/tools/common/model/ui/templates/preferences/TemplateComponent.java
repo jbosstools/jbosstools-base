@@ -24,8 +24,6 @@ import org.jboss.tools.common.model.ui.templates.model.*;
 
 public class TemplateComponent {
 
-	private static final String RESOURCE_BUNDLE= "org.jboss.tools.common.model.ui.templates.preferences.messages";
-	private static ResourceBundle resourceBundle= ResourceBundle.getBundle(RESOURCE_BUNDLE);
 	private MetaConfiguration configuration;
 //    private XModel model;
     boolean isGlobal = true;
@@ -59,7 +57,7 @@ public class TemplateComponent {
         Control[] control;
         // checkbox
         if(!isGlobal) {  //.getString CHECKBOX_LABEL
-        	allowOverrideEditor.setLabelText(resourceBundle.getString("CHECKBOX_LABEL"));
+        	allowOverrideEditor.setLabelText(Messages.CHECKBOX_LABEL);
         	allowOverrideAdapter.setValue("" + MetaClassTemplateHelper.instance. isProjectOverrideTemplates());
             control = getControls(composite, allowOverrideEditor);
             control[0].dispose(); // dispose empty label
@@ -69,7 +67,7 @@ public class TemplateComponent {
         }
       
         // list of templates
-        templateGroupsEditor.setLabelText("List of template groups.");
+        templateGroupsEditor.setLabelText(Messages.ClassTemplateComponent_LIST_OF_TEMPLATE_GROUPS);
         control = getControls(composite, templateGroupsEditor);
         control[0].dispose(); // dispose empty label
         gd = new GridData(GridData.FILL_HORIZONTAL);

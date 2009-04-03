@@ -4,6 +4,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.common.model.ui.templates.preferences.messages"; //$NON-NLS-1$
+	public static String CHECKBOX_LABEL;
 	public static String ClassTemplateComponent_ADD;
 	public static String ClassTemplateComponent_COLUMN_INTERFACES;
 	public static String ClassTemplateComponent_EDIT;
@@ -11,6 +12,7 @@ public class Messages extends NLS {
 	public static String ClassTemplateComponent_LABEL_INTERFACES;
 	public static String ClassTemplateComponent_REMOVE;
 	public static String ClassTemplateComponent_XPATH;
+	public static String ClassTemplateComponent_LIST_OF_TEMPLATE_GROUPS;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

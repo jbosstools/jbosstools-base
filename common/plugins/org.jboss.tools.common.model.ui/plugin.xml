@@ -348,8 +348,6 @@
 			class="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory"/>
 		<xclass id="org.jboss.tools.common.editor.DeleteFileUnderEditingSpecialWizard"
 			class="org.jboss.tools.common.editor.DeleteFileUnderEditingSpecialWizard"/>
-		<xclass id="org.jboss.tools.common.editor.ObjectMultiPageEditorMessages"
-			class="org.jboss.tools.common.editor.ObjectMultiPageEditorMessages"/>
 		<xclass id="org.jboss.tools.common.editor.OpenEditorWizard"
 			class="org.jboss.tools.common.editor.OpenEditorWizard"/>
 
