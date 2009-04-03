@@ -22,7 +22,7 @@ public class Messages {
 	
 	static {
 		NLS.initializeMessages(
-				"org.jboss.tools.common.text.ext.hyperlink.xpl.Messages", 
+				"org.jboss.tools.common.text.ext.hyperlink.xpl.Messages",  //$NON-NLS-1$
 				Messages.class);
 	}
 	
