@@ -10,28 +10,16 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.core.jdt;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import org.eclipse.osgi.util.NLS;
 
-public class Messages {
+public class Messages extends NLS {
 
-	private static final String RESOURCE_BUNDLE = "org.jboss.tools.common.core.jdt.messages";
+	private static final String BUNDLE_NAME = "org.jboss.tools.common.core.jdt.messages";
 
-	private static ResourceBundle resourceBundle = ResourceBundle.getBundle(RESOURCE_BUNDLE);
-
-	private Messages() {
+	static {
+		// load message values from bundle file
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);		
 	}
 
-	public static String getString(String key) {
-		try {
-			return resourceBundle.getString(key);
-		} catch (MissingResourceException e) {
-			return "%" + key + "%";
-		}
-	}
-	
-	public static ResourceBundle getResourceBundle() {
-		return resourceBundle;
-	}
-
+	public static String FavoritesClassController_defaultClasses;
 }

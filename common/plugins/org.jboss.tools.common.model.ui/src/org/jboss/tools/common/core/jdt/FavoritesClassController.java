@@ -28,7 +28,6 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 public class FavoritesClassController {
 
 	private static final String FAVORITES_CLASSES_LIST 	= "JavaFavoritesFieldEditor.classes";
-	private static final String DEFAULT_CLASSES_LIST 	= "FavoritesClassController.defaultClasses";
 	private static final Image CLASS_ICON				= JavaPluginImages.get(JavaPluginImages.IMG_OBJS_CLASS);
 
 
@@ -36,7 +35,7 @@ public class FavoritesClassController {
 		ArrayList<String> list = new ArrayList<String>();
 		String classesList = ModelUIPlugin.getDefault().getPreferenceStore().getString(FAVORITES_CLASSES_LIST);
 		if ((classesList==null)||(classesList.length()==0)) {
-			classesList = Messages.getString(DEFAULT_CLASSES_LIST);
+			classesList = Messages.FavoritesClassController_defaultClasses;
 		}
 		StringTokenizer st = new StringTokenizer(classesList,",");
 		while (st.hasMoreTokens()) {
