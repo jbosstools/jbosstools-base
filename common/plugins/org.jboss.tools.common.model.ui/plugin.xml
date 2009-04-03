@@ -395,8 +395,6 @@
 			class="org.jboss.tools.common.model.ui.select.SelectObjectWizard"/>
 		<xclass id="org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor"
 			class="org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor"/>
-		<xclass id="org.jboss.tools.common.model.ui.util.JavaUIMessages"
-			class="org.jboss.tools.common.model.ui.util.JavaUIMessages"/>
 		<xclass id="org.jboss.tools.common.model.ui.views.palette.editor.HiddenPaletteTabsWizard"
 			class="org.jboss.tools.common.model.ui.views.palette.editor.HiddenPaletteTabsWizard"/>
 		<xclass id="org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard"
