@@ -25,21 +25,21 @@ import org.osgi.framework.Bundle;
  */
 public class PlugInLoadTest extends TestCase {
 
-	public static final String rhdsNS = "org.jboss.tools.";
-	private static String jbideNS = "org.jboss.ide.eclipse.";
-	private static String hibNS = "org.hibernate.eclipse.";
-	private static String jbpmNS = "org.jbpm.gd.jpdl";
-	private static String jbwsNS = "com.eviware.soapui.";
+	public static final String rhdsNS = "org.jboss.tools."; //$NON-NLS-1$
+	private static String jbideNS = "org.jboss.ide.eclipse."; //$NON-NLS-1$
+	private static String hibNS = "org.hibernate.eclipse."; //$NON-NLS-1$
+	private static String jbpmNS = "org.jbpm.gd.jpdl"; //$NON-NLS-1$
+	private static String jbwsNS = "com.eviware.soapui."; //$NON-NLS-1$
 
 	private boolean isPluginResolved(String pluginId) {
 		Bundle bundle = Platform.getBundle(pluginId);
-		assertNotNull(pluginId + " failed to load.", bundle);
+		assertNotNull(pluginId + " failed to load.", bundle); //$NON-NLS-1$
 		try {
 			// In 3.3 when test case is running plug-in.getState always returns
 			// STARTING state
 			// to move plug-in in ACTIVE state at  one class should be loaded
 			// from plug-in
-			bundle.loadClass("fake class");
+			bundle.loadClass("fake class"); //$NON-NLS-1$
 		} catch (Exception e) {
 			// It happens always because loaded class doesn't not exist
 		}
@@ -49,88 +49,88 @@ public class PlugInLoadTest extends TestCase {
 
 	private void assertPluginsResolved(String[] pluginIds) {
 		for (int i = 0; i < pluginIds.length; i++) {
-			assertTrue("plugin '" + pluginIds[i] + "' is not resolved",
+			assertTrue("plugin '" + pluginIds[i] + "' is not resolved", //$NON-NLS-1$ //$NON-NLS-2$
 					isPluginResolved(pluginIds[i]));
 		}
 	}
 
 	public void testCommonPluginsResolved() {
 		assertPluginsResolved(new String[] { 
-				rhdsNS + "common",
-				rhdsNS + "common.gef", 
-				rhdsNS + "common.kb",
-				rhdsNS + "common.model", 
-				rhdsNS + "common.model.ui",
-				rhdsNS + "common.projecttemplates", 
-				rhdsNS + "common.text.ext",
-				rhdsNS + "common.text.xml", 
-				rhdsNS + "common.verification",
-				rhdsNS + "common.verification.ui", });
+				rhdsNS + "common", //$NON-NLS-1$
+				rhdsNS + "common.gef",  //$NON-NLS-1$
+				rhdsNS + "common.kb", //$NON-NLS-1$
+				rhdsNS + "common.model",  //$NON-NLS-1$
+				rhdsNS + "common.model.ui", //$NON-NLS-1$
+				rhdsNS + "common.projecttemplates",  //$NON-NLS-1$
+				rhdsNS + "common.text.ext", //$NON-NLS-1$
+				rhdsNS + "common.text.xml",  //$NON-NLS-1$
+				rhdsNS + "common.verification", //$NON-NLS-1$
+				rhdsNS + "common.verification.ui", }); //$NON-NLS-1$
 	}
 
 	public void testJsfPluginsResolved() {
 		assertPluginsResolved(new String[] { 
-				rhdsNS + "jsf",
-				rhdsNS + "jsf.text.ext", 
-				rhdsNS + "jsf.text.ext.facelets",
-				rhdsNS + "jsf.ui", 
-				rhdsNS + "jsf.verification",
-				rhdsNS + "jsf.vpe.ajax4jsf", 
-				rhdsNS + "jsf.vpe.facelets",
-				rhdsNS + "jsf.vpe.richfaces", 
-				rhdsNS + "jsf.vpe.seam" });
+				rhdsNS + "jsf", //$NON-NLS-1$
+				rhdsNS + "jsf.text.ext",  //$NON-NLS-1$
+				rhdsNS + "jsf.text.ext.facelets", //$NON-NLS-1$
+				rhdsNS + "jsf.ui",  //$NON-NLS-1$
+				rhdsNS + "jsf.verification", //$NON-NLS-1$
+				rhdsNS + "jsf.vpe.ajax4jsf",  //$NON-NLS-1$
+				rhdsNS + "jsf.vpe.facelets", //$NON-NLS-1$
+				rhdsNS + "jsf.vpe.richfaces",  //$NON-NLS-1$
+				rhdsNS + "jsf.vpe.seam" }); //$NON-NLS-1$
 	}
 
 	public void testJstPluginsResolved() {
 		assertPluginsResolved(new String[] { 
-				rhdsNS + "jst.jsp",
-				rhdsNS + "jst.web", 
-				rhdsNS + "jst.web.debug",
-				rhdsNS + "jst.web.debug.ui", 
-				rhdsNS + "jst.web.tiles",
-				rhdsNS + "jst.web.tiles.ui", 
-				rhdsNS + "jst.web.ui",
-				rhdsNS + "jst.web.verification" });
+				rhdsNS + "jst.jsp", //$NON-NLS-1$
+				rhdsNS + "jst.web",  //$NON-NLS-1$
+				rhdsNS + "jst.web.debug", //$NON-NLS-1$
+				rhdsNS + "jst.web.debug.ui",  //$NON-NLS-1$
+				rhdsNS + "jst.web.tiles", //$NON-NLS-1$
+				rhdsNS + "jst.web.tiles.ui",  //$NON-NLS-1$
+				rhdsNS + "jst.web.ui", //$NON-NLS-1$
+				rhdsNS + "jst.web.verification" }); //$NON-NLS-1$
 	}
 
 	public void testVpePluginsResolved() {
 		assertPluginsResolved(new String[] { 
-				rhdsNS + "vpe",
-				rhdsNS + "vpe.ui.palette", 
-				rhdsNS + "vpe.xulrunner" });
+				rhdsNS + "vpe", //$NON-NLS-1$
+				rhdsNS + "vpe.ui.palette",  //$NON-NLS-1$
+				rhdsNS + "vpe.xulrunner" }); //$NON-NLS-1$
 	}
 
 	public void testStrutsPluginsResolved() {
 		assertPluginsResolved(new String[] { 
-				rhdsNS + "struts",
-				rhdsNS + "struts.debug", 
-				rhdsNS + "struts.text.ext",
-				rhdsNS + "struts.ui", 
-				rhdsNS + "struts.validator.ui",
-				rhdsNS + "struts.verification" });
+				rhdsNS + "struts", //$NON-NLS-1$
+				rhdsNS + "struts.debug",  //$NON-NLS-1$
+				rhdsNS + "struts.text.ext", //$NON-NLS-1$
+				rhdsNS + "struts.ui",  //$NON-NLS-1$
+				rhdsNS + "struts.validator.ui", //$NON-NLS-1$
+				rhdsNS + "struts.verification" }); //$NON-NLS-1$
 	}
 
 	public void testCorePluginsResolved() {
 		assertPluginsResolved(new String[] { 
-				jbideNS + "archives.core",
-				jbideNS + "archives.ui"});
+				jbideNS + "archives.core", //$NON-NLS-1$
+				jbideNS + "archives.ui"}); //$NON-NLS-1$
 	}
 
 	public void testASPluginsResolved() {
 		assertPluginsResolved(new String[] { 
-				jbideNS + "as.core",
-				jbideNS + "as.ui", 
-				jbideNS + "as.ui.mbeans" });
+				jbideNS + "as.core", //$NON-NLS-1$
+				jbideNS + "as.ui",  //$NON-NLS-1$
+				jbideNS + "as.ui.mbeans" }); //$NON-NLS-1$
 	}
 
 	public void testHibernatePluginsResolved() {
 		assertPluginsResolved(new String[] { 
-				"org.hibernate.eclipse",
-				hibNS + "console", 
-				hibNS + "help", 
-				hibNS + "mapper",
-				hibNS + "jdt.ui", 
-				hibNS + "jdt.apt.ui" });
+				"org.hibernate.eclipse", //$NON-NLS-1$
+				hibNS + "console",  //$NON-NLS-1$
+				hibNS + "help",  //$NON-NLS-1$
+				hibNS + "mapper", //$NON-NLS-1$
+				hibNS + "jdt.ui",  //$NON-NLS-1$
+				hibNS + "jdt.apt.ui" }); //$NON-NLS-1$
 	}
 
 	
@@ -142,7 +142,7 @@ public class PlugInLoadTest extends TestCase {
 
 	public void testFreemarkerPluginsResolved() {
 		assertPluginsResolved(new String[] { 
-				jbideNS + "freemarker" });
+				jbideNS + "freemarker" }); //$NON-NLS-1$
 	}
 
 	public void testDroolsPluginsResolved() {

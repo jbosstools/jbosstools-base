@@ -54,7 +54,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 		List<IMarker> result = new ArrayList<IMarker>();
 		IMarker[] markers = resource.findMarkers(type, true, IResource.DEPTH_INFINITE);
 		for (int i = 0; i < markers.length; i++) {
-			String message = markers[i].getAttribute(IMarker.MESSAGE, "");
+			String message = markers[i].getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
 			if (message.matches(pattern)) {
 				result.add(markers[i]);
 			}
@@ -73,29 +73,29 @@ public class AbstractResourceMarkerTest extends TestCase {
 		int line = findMarkerLine(
 				resource, type, pattern);
 
-		assertTrue("Marker  matches the '" + pattern + "' pattern wasn't found", 
+		assertTrue("Marker  matches the '" + pattern + "' pattern wasn't found",  //$NON-NLS-1$ //$NON-NLS-2$
 				line != -1);
 
-		assertEquals("Marker matches the '" + pattern + "' pattern was found at wrong line",
+		assertEquals("Marker matches the '" + pattern + "' pattern was found at wrong line",  //$NON-NLS-1$//$NON-NLS-2$
 				expectedLine,line);
 	}
 
 	protected void assertMarkerIsNotCreated(IResource resource, String type, String pattern) throws CoreException {
 		IMarker[] markers = findMarkers(resource, type, pattern);
 
-		assertFalse("Marker  matches the '" + pattern + "' pattern was found", markers.length>0);
+		assertFalse("Marker  matches the '" + pattern + "' pattern was found", markers.length>0); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	protected void assertMarkerIsNotCreated(IResource resource, String type, String pattern, int expectedLine) throws CoreException {
 		int line = findMarkerLine(resource, type, pattern);
 
-		assertFalse("Marker  matches the '" + pattern + "' pattern was found", line != -1);
+		assertFalse("Marker  matches the '" + pattern + "' pattern was found", line != -1); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	protected void assertMarkerIsCreated(IResource resource, String type, String pattern) throws CoreException {
 		IMarker[] markers = findMarkers(resource, type, pattern);
 
-		assertTrue("Marker  matches the '" + pattern + "' pattern wasn't found", 
+		assertTrue("Marker  matches the '" + pattern + "' pattern wasn't found",  //$NON-NLS-1$ //$NON-NLS-2$
 			markers.length>0);
 	}
 
@@ -109,11 +109,11 @@ public class AbstractResourceMarkerTest extends TestCase {
 		try{
 			IMarker[] markers = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
 			for(int i=0;i<markers.length;i++){
-				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));
+				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));  //$NON-NLS-1$//$NON-NLS-2$
 			}
 			return markers.length;
 		}catch(CoreException ex){
-			JUnitUtils.fail("Can'r get problem markers", ex);
+			JUnitUtils.fail("Can't get problem markers", ex); //$NON-NLS-1$
 		}
 		return -1;
 	}
@@ -125,11 +125,11 @@ public class AbstractResourceMarkerTest extends TestCase {
 			messages = new String[markers.length];
 
 			for(int i=0;i<markers.length;i++){
-				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));
-				messages[i] = markers[i].getAttribute(IMarker.MESSAGE, "");
+				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));  //$NON-NLS-1$//$NON-NLS-2$
+				messages[i] = markers[i].getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
 			}
 		}catch(CoreException ex){
-			JUnitUtils.fail("Can't get problem markers", ex);
+			JUnitUtils.fail("Can't get problem markers", ex); //$NON-NLS-1$
 		}
 		return messages;
 	}
@@ -141,11 +141,11 @@ public class AbstractResourceMarkerTest extends TestCase {
 			numbers = new int[markers.length];
 
 			for(int i=0;i<markers.length;i++){
-				System.out.println("Marker line number - "+markers[i].getAttribute(IMarker.LINE_NUMBER, 0));
+				System.out.println("Marker line number - "+markers[i].getAttribute(IMarker.LINE_NUMBER, 0)); //$NON-NLS-1$
 				numbers[i] = markers[i].getAttribute(IMarker.LINE_NUMBER, 0);
 			}
 		}catch(CoreException ex){
-			JUnitUtils.fail("Can't get problem markers.", ex);
+			JUnitUtils.fail("Can't get problem markers.", ex); //$NON-NLS-1$
 		}
 		return numbers;
 	}

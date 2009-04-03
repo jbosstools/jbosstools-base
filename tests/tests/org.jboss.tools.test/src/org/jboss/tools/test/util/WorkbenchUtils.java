@@ -40,13 +40,13 @@ public class WorkbenchUtils {
 	static public IWizard findWizardByDefId(String definitionId) {
 		IWizardDescriptor aWizardDescr = getWorkbench().getNewWizardRegistry()
 				.findWizard(definitionId);
-		TestCase.assertNotNull("Cannot find wizard " + definitionId
-				+ " definition in wizard registry", aWizardDescr);
+		TestCase.assertNotNull("Cannot find wizard " + definitionId //$NON-NLS-1$
+				+ " definition in wizard registry", aWizardDescr); //$NON-NLS-1$
 		IWorkbenchWizard aWizard = null;
 		try {
 			aWizard = aWizardDescr.createWizard();
 		} catch (CoreException e) {
-			JUnitUtils.fail("Cannot create IWorkbenchWizard instance", e);
+			JUnitUtils.fail("Cannot create IWorkbenchWizard instance", e); //$NON-NLS-1$
 		}
 		return aWizard;
 	}

@@ -63,7 +63,7 @@ public class ProjectImportTestSetup extends TestSetup {
 
 	public static IProject loadProject(String projectName) throws CoreException {
 		IResource project = ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
-		assertNotNull("Can't load " + projectName, project);
+		assertNotNull("Can't load " + projectName, project); //$NON-NLS-1$
 		IProject result = project.getProject();
 		try {
 			result.build(IncrementalProjectBuilder.FULL_BUILD, null);
