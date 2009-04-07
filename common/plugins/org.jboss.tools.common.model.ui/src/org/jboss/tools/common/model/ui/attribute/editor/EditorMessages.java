@@ -14,21 +14,19 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class EditorMessages {
+	private static final String BUNDLE_NAME = "org.jboss.tools.common.model.ui.attribute.editor.messages"; //$NON-NLS-1$
 
-	private static final String RESOURCE_BUNDLE= "org.jboss.tools.common.model.ui.attribute.editor.messages";//$NON-NLS-1$
-
-	private static ResourceBundle bundle= ResourceBundle.getBundle(RESOURCE_BUNDLE);
+	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
+			.getBundle(BUNDLE_NAME);
 
 	private EditorMessages() {
 	}
 
 	public static String getString(String key) {
 		try {
-			return bundle.getString(key);
+			return RESOURCE_BUNDLE.getString(key);
 		} catch (MissingResourceException e) {
-			return key;
+			return '!' + key + '!';
 		}
 	}
 }
-
-
