@@ -77,7 +77,7 @@ public class PropertiesLoader implements XObjectLoader {
             	continue;
             } 
             if(s.equals("\n")) {
-                if(state < 2) sb.append(s); else lineEnd.append(s);
+                if(state != 2) sb.append(s); else lineEnd.append(s);
                 if(state == 0) {
                 	state = 1;
                 } else if(state == 2) {
@@ -228,13 +228,21 @@ public class PropertiesLoader implements XObjectLoader {
     	StringTokenizer st = new StringTokenizer(dirtyvalue, INTERNAL_SEPARATOR, true);
     	StringBuffer cv = new StringBuffer();
     	StringBuffer dv = new StringBuffer();
+    	String rightWhites = "";
     	while(st.hasMoreTokens()) {
     		String t = st.nextToken();
     		if(t.equals(INTERNAL_SEPARATOR)) {
-				dv.append("\\\n");
+    			if(rightWhites.length() > 0) {
+    				cv.append(rightWhites);
+    				rightWhites = "";
+    			}
+				dv.append("\\");
     		} else {
 				if(t.startsWith("#")) cv.append("\\");
-				cv.append(t.trim());
+				String app = t.trim();
+				int off = t.indexOf(app);
+				rightWhites = t.substring(off + app.length());
+				cv.append(app);
 				dv.append(t);
     		}
     	}
