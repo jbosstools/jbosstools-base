@@ -18,9 +18,7 @@ import java.util.logging.Logger;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
@@ -162,7 +160,7 @@ public class EditorTestHelper {
 		// Join Building
 		Logger.global.entering("EditorTestHelper", "joinBackgroundActivities"); //$NON-NLS-1$ //$NON-NLS-2$
 		Logger.global.finer("join builder"); //$NON-NLS-1$
-		boolean interrupted= true;
+		//boolean interrupted= true;
 		// TODO: Block was commented to fix correlation with ValidationJob that leads
 		// to conflict with ValidationFramework.join() and test hanging forever
 		//		while (interrupted) {
@@ -189,7 +187,7 @@ public class EditorTestHelper {
 		};
 		boolean quiet= helper.waitForCondition(getActiveDisplay(), maxTime > 0 ? maxTime : Long.MAX_VALUE, intervalTime);
 		runEventQueue(minTime);
-		Logger.global.exiting("EditorTestHelper", "joinJobs", new Boolean(quiet)); //$NON-NLS-1$ //$NON-NLS-2$
+		Logger.global.exiting("EditorTestHelper", "joinJobs", Boolean.valueOf(quiet)); //$NON-NLS-1$ //$NON-NLS-2$
 		return quiet;
 	}
 	
@@ -202,7 +200,7 @@ public class EditorTestHelper {
 	}
 	
 	public static boolean allJobsQuiet() {
-		IJobManager jobManager= Platform.getJobManager();
+		IJobManager jobManager= Job.getJobManager();
 		Job[] jobs= jobManager.find(null);
 		for (int i= 0; i < jobs.length; i++) {
 			Job job= jobs[i];
