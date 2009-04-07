@@ -69,7 +69,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 	Map<XModelObjectDecorator,String> currentValues = new HashMap<XModelObjectDecorator, String>();
 	
 	public DecoratorTextPreferencesPage() {
-		setTitle(ModelUIMessages.getString("DecoratorTextPreferencesPage.Text")); //$NON-NLS-1$
+		setTitle(ModelUIMessages.DecoratorTextPreferencesPage_Text); 
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 		g.setLayout(new GridLayout(1, false));
 
 		Label label = new Label(g, SWT.NONE);
-		label.setText(ModelUIMessages.getString("DecoratorTextPreferencesPage.Decorator")); //$NON-NLS-1$
+		label.setText(ModelUIMessages.DecoratorTextPreferencesPage_Decorator); 
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		decorators = new TreeViewer(g, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
@@ -169,13 +169,13 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 		c.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		Label cLabel = new Label(c, SWT.NONE);
-		cLabel.setText(ModelUIMessages.getString("DecoratorTextPreferencesPage.Format")); //$NON-NLS-1$
+		cLabel.setText(ModelUIMessages.DecoratorTextPreferencesPage_Format); 
 		
 		formatField = new Text(c, SWT.SINGLE | SWT.BORDER);
 		formatField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		addVariableButton = new Button(c, SWT.PUSH);
-		addVariableButton.setText(ModelUIMessages.getString("DecoratorTextPreferencesPage.AddVariable")); //$NON-NLS-1$
+		addVariableButton.setText(ModelUIMessages.DecoratorTextPreferencesPage_AddVariable); 
 		
 		addVariableButton.addSelectionListener(new SelectionListener() {
 
@@ -191,7 +191,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 		
 
 		label = new Label(g, SWT.NONE);
-		label.setText(ModelUIMessages.getString("DecoratorTextPreferencesPage.Preview")); //$NON-NLS-1$
+		label.setText(ModelUIMessages.DecoratorTextPreferencesPage_Preview); 
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		examples = new TreeViewer(g, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		examples.setContentProvider(new ITreeContentProvider() {
@@ -229,7 +229,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 					d.setValue(formatField.getText());
 					result = d.getLabel(modelObject);
 				} else {
-					result = ModelUIMessages.getString("DecoratorTextPreferencesPage.DefaultLabel"); //$NON-NLS-1$
+					result = ModelUIMessages.DecoratorTextPreferencesPage_DefaultLabel; 
 				}
 				return result; 
 			}
@@ -367,7 +367,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 			}			
 		);
 		dialog.setInput(selection);
-		dialog.setTitle(ModelUIMessages.getString("DecoratorTextPreferencesPage.SelectVariable")); //$NON-NLS-1$
+		dialog.setTitle(ModelUIMessages.DecoratorTextPreferencesPage_SelectVariable); 
 		dialog.create();
 		int result = dialog.open();
 		if(result == Window.OK) {

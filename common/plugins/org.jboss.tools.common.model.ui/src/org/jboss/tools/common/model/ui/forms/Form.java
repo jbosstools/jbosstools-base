@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -41,8 +42,6 @@ import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
  */
 public class Form extends ExpandableForm {
 	
-	private static final String CANNOT_LOAD_ATTRIBUTE = "org.jboss.tools.common.model.ui.forms.Form.CANNOT_LOAD_ATTRIBUTE";
-
 	private XAttributeSupport support;
 	private XModelObject xmo;
 //	private XModel model;
@@ -152,7 +151,7 @@ public class Form extends ExpandableForm {
 						support.registerFieldEditor(editor.getAttributeName(), (ExtendedFieldEditor)fieldEditor);
 					}
 				} else {
-					ModelUIPlugin.getPluginLog().logInfo( ModelUIMessages.getString(CANNOT_LOAD_ATTRIBUTE, new String[] {attributes[i].getName()}));
+					ModelUIPlugin.getPluginLog().logInfo( NLS.bind(ModelUIMessages.Form_CANNOT_LOAD_ATTRIBUTE, attributes[i].getName()));
 				}
             }
 		} else {

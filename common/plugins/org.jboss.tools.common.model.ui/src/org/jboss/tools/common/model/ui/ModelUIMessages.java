@@ -7,39 +7,51 @@
  *
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
+ ******************************************************************************/
 package org.jboss.tools.common.model.ui;
 
-import java.text.MessageFormat;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import org.eclipse.osgi.util.NLS;
 
-/**
- * @author Aleksey
- */
-public class ModelUIMessages {
+public final class ModelUIMessages extends NLS {
 
-	private static final String RESOURCE_BUNDLE= "org.jboss.tools.common.model.ui.messages";
-
-	private static ResourceBundle resourceBundle= ResourceBundle.getBundle(RESOURCE_BUNDLE);
+	private static final String BUNDLE_NAME = "org.jboss.tools.common.model.ui.messages";//$NON-NLS-1$
 
 	private ModelUIMessages() {
+		// Do not instantiate
 	}
 
-	public static String getString(String key) {
-		try {
-			return resourceBundle.getString(key);
-		} catch (MissingResourceException e) {
-			return "%" + key + "%";
-		}
-	}
+	public static String DecoratorTextPreferencesPage_AddVariable;
+	public static String DecoratorTextPreferencesPage_Decorator;
+	public static String DecoratorTextPreferencesPage_DefaultLabel;
+	public static String DecoratorTextPreferencesPage_Format;
+	public static String DecoratorTextPreferencesPage_Preview;
+	public static String DecoratorTextPreferencesPage_SelectVariable;
+	public static String DecoratorTextPreferencesPage_Text;
+	public static String ResourceLayoutManager_ERROR_RESOURCE_NULL;
+	public static String ResourceLayoutManager_ERROR_CREATE_DOCUMENT;
+	public static String ResourceLayoutManager_WARNING_HEAD_EMPTY;
+	public static String ResourceLayoutManager_ERROR_ANOTHER_HEAD;
+	public static String ResourceLayoutManager_ERROR_UNKNOWN_EXCEPTION;
+	public static String Editor_Cut_label;
+	public static String Editor_Cut_tooltip;
+	public static String Editor_Cut_image;
+	public static String Editor_Cut_description;
+	public static String Editor_Copy_label;
+	public static String Editor_Copy_tooltip;
+	public static String Editor_Copy_image;
+	public static String Editor_Copy_description;
+	public static String Editor_Paste_label;
+	public static String Editor_Paste_tooltip;
+	public static String Editor_Paste_image;
+	public static String Editor_Paste_description;
+	public static String Editor_Delete_label;
+	public static String Editor_Delete_tooltip;
+	public static String Editor_Delete_image;
+	public static String Editor_Delete_description;
+	public static String MainPreferencePage_Description;
+	public static String Form_CANNOT_LOAD_ATTRIBUTE;
 
-	public static String getString(String key, String[] args) {
-		return MessageFormat.format(getString(key), args);	
-	}	
-	
-	public static ResourceBundle getResourceBundle() {
-		return resourceBundle;
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, ModelUIMessages.class);
 	}
-
 }

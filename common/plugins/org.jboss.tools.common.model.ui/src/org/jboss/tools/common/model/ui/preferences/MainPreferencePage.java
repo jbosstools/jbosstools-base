@@ -40,13 +40,13 @@ import org.jboss.tools.common.model.ui.ModelUIMessages;
 public class MainPreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 	
-	public static final String ID = "org.jboss.tools.common.model.ui.MainPreferencePage";
+	public static final String ID = "org.jboss.tools.common.model.ui.MainPreferencePage"; //$NON-NLS-1$
 	
 	private Image image;
 
 	/** Default constructor */
 	public MainPreferencePage() {
-		this.setDescription(ModelUIMessages.getString("MainPreferencePage.Description")); //$NON-NLS-1$
+		this.setDescription(ModelUIMessages.MainPreferencePage_Description); 
 	}
 
 	/** Description of the Method */

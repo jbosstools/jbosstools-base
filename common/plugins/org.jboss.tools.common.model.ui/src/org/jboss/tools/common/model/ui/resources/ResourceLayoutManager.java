@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.common.model.ui.ModelUIMessages;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.xml.SafeDocumentBuilderFactory;
@@ -44,19 +45,13 @@ import org.xml.sax.SAXException;
 public class ResourceLayoutManager {
 	
 	// public	
-	public static final String ROOT_TAG = "Layout";
-	public static final String RESOURCE_ATTR = "resource";
-	public static final String LAYOUT_EXT = "l4t";
-	public static final String LAYOUT_PROPERTY = "layout";
+	public static final String ROOT_TAG = "Layout"; //$NON-NLS-1$
+	public static final String RESOURCE_ATTR = "resource"; //$NON-NLS-1$
+	public static final String LAYOUT_EXT = "l4t"; //$NON-NLS-1$
+	public static final String LAYOUT_PROPERTY = "layout"; //$NON-NLS-1$
 
 	// static
 	private static ResourceLayoutManager instance;
-	private static final String ERROR_UNKNOW_EXCEPTION = "org.jboss.tools.common.model.ui.resources.ResourceLayoutManager.ERROR_UNKNOW_EXCEPTION";
-	private static final String ERROR_RESOURCE_NULL = "org.jboss.tools.common.model.ui.resources.ResourceLayoutManager.ERROR_RESOURCE_NULL";
-	private static final String ERROR_CREATE_DOCUMENT = "org.jboss.tools.common.model.ui.resources.ResourceLayoutManager.ERROR_CREATE_DOCUMENT";
-	private static final String WARNING_EMPTY_HEAD = "org.jboss.tools.common.model.ui.resources.ResourceLayoutManager.WARNING_HEAD_EMPTY";
-	private static final String ERROR_ANOTHER_HEAD = "org.jboss.tools.common.model.ui.resources.ResourceLayoutManager.ERROR_ANOTHER_HEAD";
-	
 	// documents hash, key == fullPathToResource, value == document
 	private HashMap<String,Document> hashMap = new HashMap<String,Document>(); 
 
@@ -93,7 +88,7 @@ public class ResourceLayoutManager {
 	private Document getLayoutDocument(IResource resource) {
 		Document document = null;
 		if (resource == null) {
-			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_RESOURCE_NULL));
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.ResourceLayoutManager_ERROR_RESOURCE_NULL);
 			return null;
 		}
 		
@@ -101,7 +96,7 @@ public class ResourceLayoutManager {
 		String layoutLocation = null;
 		try {
 			if(resource.isAccessible()) {
-				layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY));
+				layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY)); //$NON-NLS-1$
 			}
 		} catch (CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
@@ -117,13 +112,13 @@ public class ResourceLayoutManager {
 		try {
 			document = loadDocument(resource);
 		} catch (ParserConfigurationException e) {
-			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_UNKNOW_EXCEPTION), e);
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.ResourceLayoutManager_ERROR_UNKNOWN_EXCEPTION, e);
 		} catch (SAXException e) {
-			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_UNKNOW_EXCEPTION), e);
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.ResourceLayoutManager_ERROR_UNKNOWN_EXCEPTION, e);
 		} catch (IOException e) {
-			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_UNKNOW_EXCEPTION), e);
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.ResourceLayoutManager_ERROR_UNKNOWN_EXCEPTION, e);
 		} catch (AnotherResourceException e) {
-			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_ANOTHER_HEAD), e);
+			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.ResourceLayoutManager_ERROR_ANOTHER_HEAD, e);
 		}
 		if (document!=null){
 			hashMap.put(fullResourceLocation, document);
@@ -135,7 +130,7 @@ public class ResourceLayoutManager {
 			document = createNewDocument(resource);
 		} catch (ParserConfigurationException e) {
 			//log(Status.ERROR, ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {fullLayoutLocation, fullResourceLocation}));
-			ModelUIPlugin.getPluginLog().logError( ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {layoutLocation, fullResourceLocation}));
+			ModelUIPlugin.getPluginLog().logError( NLS.bind(ModelUIMessages.ResourceLayoutManager_ERROR_CREATE_DOCUMENT, layoutLocation, fullResourceLocation));
 		}
 		if (document!=null){
 			hashMap.put(fullResourceLocation, document);
@@ -163,7 +158,7 @@ public class ResourceLayoutManager {
 		String layoutLocation = null;
 		try {
 			if(resource != null && resource.isAccessible()) {
-				layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY));
+				layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY)); //$NON-NLS-1$
 			}
 		} catch (CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
@@ -184,7 +179,7 @@ public class ResourceLayoutManager {
 			if (nodeList==null || nodeList.getLength()==0 || nodeList.item(0)==null) {
 				// warning
 				//log(ModelUIMessages.getString(WARNING_EMPTY_HEAD, new String[] {fullLayoutLocation}));
-				ModelUIPlugin.getPluginLog().logInfo(ModelUIMessages.getString(WARNING_EMPTY_HEAD, new String[] {layoutLocation}));
+				ModelUIPlugin.getPluginLog().logInfo(NLS.bind(ModelUIMessages.ResourceLayoutManager_WARNING_HEAD_EMPTY, layoutLocation));
 				// create new head
 				createRoot(resource, document);
 			} /*else {
@@ -211,7 +206,7 @@ public class ResourceLayoutManager {
 		String layoutLocation = null;
 		try {
 			if(resource != null && resource.isAccessible()) {
-				layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY));
+				layoutLocation = resource.getPersistentProperty(new QualifiedName("",LAYOUT_PROPERTY)); //$NON-NLS-1$
 			}
 		} catch (CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
@@ -231,20 +226,20 @@ public class ResourceLayoutManager {
 		try {
 			//FileWriter writer = new FileWriter(fullLayoutLocation);
 			FileWriter writer = new FileWriter(layoutLocation);
-			XMLSerializer serial = new XMLSerializer(writer, createOutputFormat("UTF-8"));
+			XMLSerializer serial = new XMLSerializer(writer, createOutputFormat("UTF-8")); //$NON-NLS-1$
 			serial.asDOMSerializer();
 			serial.serialize(document);
 			writer.close();
 		} catch (IOException e) {
 			//log(Status.ERROR, ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {fullLayoutLocation, fullResourceLocation}), e);
-			ModelUIPlugin.getPluginLog().logError(ModelUIMessages.getString(ERROR_CREATE_DOCUMENT, new String[] {layoutLocation, fullResourceLocation}), e);
+			ModelUIPlugin.getPluginLog().logError(NLS.bind(ModelUIMessages.ResourceLayoutManager_ERROR_CREATE_DOCUMENT, layoutLocation, fullResourceLocation), e);
 		}
 	}
 
 	private OutputFormat createOutputFormat(String encoding) {
-		if(encoding == null || encoding.length() == 0) encoding = "UTF-8";
+		if(encoding == null || encoding.length() == 0) encoding = "UTF-8"; //$NON-NLS-1$
 		OutputFormat format = new OutputFormat(Method.XML, encoding, true);
-		format.setLineSeparator(System.getProperty("line.separator", LineSeparator.Web));
+		format.setLineSeparator(System.getProperty("line.separator", LineSeparator.Web)); //$NON-NLS-1$
 		format.setIndent(1);
 		return format;
 	}
@@ -266,12 +261,12 @@ public class ResourceLayoutManager {
 	}
 	
 	private String createNewLayoutLocation(IResource resource) {
-		String fileName = resource.getProject().getName()+"_"+resource.getName()+"_"+System.currentTimeMillis();
+		String fileName = resource.getProject().getName()+"_"+resource.getName()+"_"+System.currentTimeMillis();  //$NON-NLS-1$//$NON-NLS-2$
 		String layoutLocation = getPluginMetadataPath().toString();
-		String result = layoutLocation+"/"+fileName+"."+LAYOUT_EXT; 
+		String result = layoutLocation+"/"+fileName+"."+LAYOUT_EXT;   //$NON-NLS-1$//$NON-NLS-2$
 		try {
 			if(resource != null && resource.isAccessible()) {
-				resource.setPersistentProperty(new QualifiedName("", LAYOUT_PROPERTY), result);
+				resource.setPersistentProperty(new QualifiedName("", LAYOUT_PROPERTY), result); //$NON-NLS-1$
 			}
 		} catch (CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
