@@ -10,8 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.util;
 
-import java.util.*;
-import java.text.*;
+import java.text.MessageFormat;
 
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -19,10 +18,6 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 public class XBundle {
     private static XBundle bundle = new XBundle();
 	
-    private static ResourceBundle messages = ResourceBundle.getBundle(XBundle.class.getName());
-    private static String ERR_GET_MESSAGE        = "ERR_GET_MESSAGE";
-    private static String ERR_TEMPLATE_NOT_FOUND = "ERR_TEMPLATE_NOT_FOUND"; 
-    
     private XBundle() {}
 
     public static XBundle getInstance() {
@@ -44,7 +39,7 @@ public class XBundle {
             return MessageFormat.format(t, args);
         } catch (IllegalArgumentException e) {
         	ModelPlugin.getPluginLog().logError(e);
-            return MessageFormat.format(messages.getString(XBundle.ERR_GET_MESSAGE),new Object[]{resourceid,templateid,t});
+            return MessageFormat.format(Messages.getString("ERR_GET_MESSAGE"),new Object[]{resourceid,templateid,t}); //$NON-NLS-1$
 	    }
     }
 

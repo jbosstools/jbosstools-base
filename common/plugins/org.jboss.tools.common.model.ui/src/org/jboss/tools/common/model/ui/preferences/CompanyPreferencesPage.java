@@ -10,20 +10,20 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.preferences;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.ui.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class CompanyPreferencesPage extends PreferencePage implements IWorkbenchPreferencePage {
 
-	public static final String WEB_PREFERENCES_ID = "org.jboss.tools.common.model.ui";
+	public static final String WEB_PREFERENCES_ID = "org.jboss.tools.common.model.ui"; //$NON-NLS-1$
 	
 	protected Control contents;
 
@@ -48,15 +48,14 @@ public class CompanyPreferencesPage extends PreferencePage implements IWorkbench
 	protected Control createContents(Composite parent) {
 		noDefaultAndApplyButton();
 		StyledText newControl = new StyledText(parent, SWT.WRAP);
-		ResourceBundle bundle = ResourceBundle.getBundle(getClass().getPackage().getName() + ".preferences", Locale.getDefault(), getClass().getClassLoader());
-		newControl.setText(bundle.getString(getKey()));
+		newControl.setText(getPrefsName());
 		newControl.setBackground(parent.getBackground());
 		newControl.setEditable(false);
 		return contents = newControl;
 	}
 	
-	protected String getKey() {
-		return "REDHAT";
+	protected String getPrefsName() {
+		return Messages.getString("REDHAT"); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {}
