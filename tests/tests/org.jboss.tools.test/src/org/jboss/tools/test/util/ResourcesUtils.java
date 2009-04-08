@@ -36,7 +36,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
-import org.jboss.tools.tests.ImportBean;
 import org.jboss.tools.tests.ImportProvider;
 import org.osgi.framework.Bundle;
 
@@ -111,16 +110,37 @@ public class ResourcesUtils {
 	}
 	
 	public static boolean findLineInFile(IFile file, String pattern) throws CoreException, IOException {
-		InputStream content = file.getContents(true);
-		LineNumberReader contentReader = new LineNumberReader(new InputStreamReader(content));
-		String line;
+		InputStream content = null;
+		InputStreamReader isr = null;
 		boolean patternIsFound = false;
-		do {
-			line = contentReader.readLine();
-			if(line!=null && !patternIsFound) {
-				patternIsFound = line.trim().matches(pattern);
+		try {
+			content = file.getContents(true);
+			isr = new InputStreamReader(content);
+			LineNumberReader contentReader = new LineNumberReader(isr);
+			String line;
+			do {
+				line = contentReader.readLine();
+				if(line!=null && !patternIsFound) {
+					patternIsFound = line.trim().matches(pattern);
+				}
+			} while (line != null && !patternIsFound);
+		}
+		finally {
+			if (isr != null) {
+				try {
+					isr.close();
+				} catch (IOException e) {
+					// ignore
+				}
 			}
-		} while (line != null && !patternIsFound);
+			if (content != null) {
+				try {
+					content.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
+		}
 		return patternIsFound;
 	}
 
@@ -164,9 +184,9 @@ public class ResourcesUtils {
 	       return oldAutoBuilding;
 	}
 
-	static public void importProjectIntoWorkspace(ImportBean bean) {
-		importProjectIntoWorkspace(bean);
-	}
+	//static public void importProjectIntoWorkspace(ImportBean bean) {
+	//	importProjectIntoWorkspace(bean);
+	//}
 
 	private static final long IMPORT_DELAY = 50;
 	
