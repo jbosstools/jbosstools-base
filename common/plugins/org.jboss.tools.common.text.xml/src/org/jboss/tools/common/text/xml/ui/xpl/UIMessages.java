@@ -12,37 +12,20 @@
  *******************************************************************************/
 package org.jboss.tools.common.text.xml.ui.xpl;
 
-import java.text.MessageFormat;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import org.eclipse.osgi.util.NLS;
 
-/**
- * @author Jeremy
- *
- */
-public class UIMessages {
+public final class UIMessages extends NLS {
 
-	private static final String RESOURCE_BUNDLE= "org.jboss.tools.common.text.xml.ui.xpl.UIMessages";//$NON-NLS-1$
-
-	private static ResourceBundle fgResourceBundle= ResourceBundle.getBundle(RESOURCE_BUNDLE);
+	private static final String BUNDLE_NAME = "org.jboss.tools.common.text.xml.ui.xpl.UIMessages";//$NON-NLS-1$
 
 	private UIMessages() {
+		// Do not instantiate
 	}
 
-	public static String getString(String key) {
-		try {
-			return fgResourceBundle.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
-	}
-	
-	public static String getFormattedString(String key, String arg) {
-		return getFormattedString(key, new String[] { arg });
-	}
-	
-	public static String getFormattedString(String key, String[] args) {
-		return MessageFormat.format(getString(key), (Object[])args);	
-	}	
+	public static String SelectionListenerWithSMManager_job_title;
+	public static String RedHatStructuredTextEditor_markOccurrences_job_name;
 
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, UIMessages.class);
+	}
 }

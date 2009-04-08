@@ -7,35 +7,23 @@
  *
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
+ ******************************************************************************/
 package org.jboss.tools.common.model.ui.templates;
 
-import java.text.MessageFormat;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import org.eclipse.osgi.util.NLS;
 
-/**
- * @author au
- */
-public class TemplateMessages {
-    /*
-     * implements singelton pattern
-     */
-	private static final String RESOURCE_BUNDLE= "org.jboss.tools.common.model.ui.templates.messages";
+public final class TemplateMessages extends NLS {
 
-	private static ResourceBundle resourceBundle = ResourceBundle.getBundle(RESOURCE_BUNDLE);
+	private static final String BUNDLE_NAME = "org.jboss.tools.common.model.ui.templates.messages";//$NON-NLS-1$
 
-	private TemplateMessages() {}
-
-	public static String getString(String key) {
-		try {
-			return resourceBundle.getString(key);
-		} catch (MissingResourceException e) {
-			return "%"+key+"%";
-		}
+	private TemplateMessages() {
+		// Do not instantiate
 	}
 
-	public static String getString(String key, String[] args) {
-		return MessageFormat.format(getString(key), args);	
-	}	
+	public static String preferenceTextLabel;
+	public static String propertyTextLabel;
+
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, TemplateMessages.class);
+	}
 }

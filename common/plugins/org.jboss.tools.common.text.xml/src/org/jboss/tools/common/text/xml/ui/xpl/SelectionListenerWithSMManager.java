@@ -123,7 +123,7 @@ public class SelectionListenerWithSMManager {
 				return;
 			}
 			
-			fCurrentJob= new Job(UIMessages.getString("SelectionListenerWithSMManager.job.title")) { //$NON-NLS-1$
+			fCurrentJob= new Job(UIMessages.SelectionListenerWithSMManager_job_title) { 
 				public IStatus run(IProgressMonitor monitor) {
 					if (monitor == null) {
 						monitor= new NullProgressMonitor();

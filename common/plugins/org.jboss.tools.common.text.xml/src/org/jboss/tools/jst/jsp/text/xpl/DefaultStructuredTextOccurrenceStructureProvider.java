@@ -166,7 +166,7 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 		private Position[] fPositions;
 		
 		public OccurrencesFinderJob(IDocument document, Position[] positions, ISelection selection) {
-			super(UIMessages.getString("RedHatStructuredTextEditor.markOccurrences.job.name")); //$NON-NLS-1$
+			super(UIMessages.RedHatStructuredTextEditor_markOccurrences_job_name); 
 			fDocument= document;
 			fSelection= selection;
 			fPositions= positions;
