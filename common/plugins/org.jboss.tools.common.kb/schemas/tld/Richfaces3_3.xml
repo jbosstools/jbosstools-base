@@ -153,16 +153,6 @@
 			<proposal type="bundleProperty" />
 		</attribute-type>
 		<attribute type="onbeforedomupdate" />
-		<attribute-type name="onbeforedomupdate" required="false">
-			<description>
-				JavaScript code for call before DOM has been updated on
-				client side
-			</description>
-			<proposal type="beanProperty" />
-			<proposal type="jsfVariables" />
-			<proposal type="bundleProperty" />
-		</attribute-type>
-		<attribute type="onbeforedomupdate" />
 		<attribute-type name="oncomplete" required="false">
 			<description>
 				JavaScript code for call after request completed on
@@ -1143,15 +1133,6 @@
             <proposal type="bundleProperty"/>
         </attribute-type>
         <attribute type="handler"/>
-        <attribute-type name="type" required="false">
-            <description>
-				JSF Validator type, that implements GraphValidator interface.This validator is used for the Graph and input fields validation.
-			</description>
-            <proposal type="beanProperty"/>
-            <proposal type="jsfVariables"/>
-            <proposal type="bundleProperty"/>
-        </attribute-type>
-        <attribute type="type"/>
         <attribute-type name="key" required="false">
             <description>
 				Defines the hotkey itself
