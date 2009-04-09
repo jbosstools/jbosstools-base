@@ -72,7 +72,7 @@
       </attributeEditor>
       <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.MutableComboBoxEditor" id="MutableCombo">
       </attributeEditor>
-      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.JavaChoicerEditor" id="AccessibleJava">
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.JavaEclipseChoicerEditor" id="AccessibleJava">
       </attributeEditor>
       <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.StringEditor" id="AccessibleJava2">
       </attributeEditor>

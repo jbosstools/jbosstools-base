@@ -202,6 +202,10 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 
 	protected String changePressed() {
 		if (propertyEditor!=null) {
+			if(((PropertyEditor)propertyEditor).callsExternal()) {
+				Object result = ((PropertyEditor)propertyEditor).callExternal(getShell());
+				return result != null ? result.toString() : null;
+			}
 			editorDialog = new PropertyEditorDialog(ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell(), propertyEditor);
 			//editorDialog.create();
 			//ExtendedFieldEditor fieldEditor = propertyEditor.getFieldEditor(null);

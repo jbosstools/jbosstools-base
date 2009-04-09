@@ -33,6 +33,7 @@ import org.jboss.tools.common.model.ui.attribute.editor.ExtendedFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IPropertyFieldEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.JavaEclipseChoicerEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.TableStructuredEditor;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
@@ -118,7 +119,8 @@ public class Form extends ExpandableForm {
 			for(int i=0; i<attributes.length; i++) {
 				IPropertyEditor editor = support.getPropertyEditorByName(attributes[i].getName());
 				if(editor != null) {
-					if(attributes[i].getWraperClassName()!=null) {
+					if(attributes[i].getWraperClassName()!=null 
+							&& !(editor instanceof JavaEclipseChoicerEditor)) {
 						try {
 							Class wraperClass = Class.forName(attributes[i].getWraperClassName());
 							Constructor wraperConstructor = wraperClass.getConstructor(new Class[]{IWidgetSettings.class});

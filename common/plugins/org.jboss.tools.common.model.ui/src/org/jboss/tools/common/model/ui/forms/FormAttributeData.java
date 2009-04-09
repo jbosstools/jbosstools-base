@@ -28,6 +28,7 @@ public class FormAttributeData implements IFormAttributeData {
 
 	public FormAttributeData(String name, ILayoutDataFactory layoutDataFactory, String wraperClassName, int width, String displayname) {
 		this.name = name;
+		if(layoutDataFactory == null) layoutDataFactory = LayoutDataFactory.getInstance();
 		this.layoutDataFactory = layoutDataFactory;
 		this.wraperClassName = wraperClassName;
 		this.width = width;

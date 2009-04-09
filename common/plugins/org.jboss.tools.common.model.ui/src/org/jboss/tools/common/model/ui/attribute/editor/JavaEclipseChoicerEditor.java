@@ -1,0 +1,122 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
+package org.jboss.tools.common.model.ui.attribute.editor;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.search.IJavaSearchConstants;
+import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
+
+import org.jboss.tools.common.meta.key.WizardKeys;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
+import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
+
+public class JavaEclipseChoicerEditor extends ValueEditor {
+
+	protected JavaHyperlinkCellEditor cellEditor;
+	//protected JavaChoicerFieldEditor fieldEditor;
+	protected JavaHyperlinkLineFieldEditor fieldEditor;
+	
+	public JavaEclipseChoicerEditor() {}
+
+	public JavaEclipseChoicerEditor(IWidgetSettings settings) {
+		super(settings);
+	}
+
+	public void dispose() {
+		super.dispose();
+		if (cellEditor!=null) cellEditor.dispose();
+		cellEditor = null;
+		if (fieldEditor!=null) fieldEditor.dispose();
+		fieldEditor = null;
+	}
+
+	public boolean isGreedyEditor() {
+		return true;
+	}
+
+	protected CellEditor createCellEditor(Composite parent) {
+//		cellEditor = new DialogCellEditorEx(parent, SWT.NONE);
+		cellEditor = new JavaHyperlinkCellEditor(parent, SWT.NONE);		
+		cellEditor.setPropertyEditor(this);
+		return cellEditor;
+	}
+
+	protected ExtendedFieldEditor createFieldEditor(Composite parent) {
+		//fieldEditor = new JavaChoicerFieldEditor();
+		fieldEditor = new JavaHyperlinkLineFieldEditor(settings);
+		//fieldEditor.setLabelText(getLabelText());
+		return fieldEditor;
+	}
+	
+	public String getChangeButtonName() {
+		return JFaceResources.getString("openBrowse");
+	}
+
+	public boolean callsExternal() {
+		return true;
+	}
+
+	public Object callExternal(Shell shell) {
+		IJavaProject jp = null;
+		DefaultValueAdapter adapter = (DefaultValueAdapter)getInput();
+		XModelObject o = adapter.getModelObject();
+		if(o != null) {
+			IProject p = EclipseResourceUtil.getProject(o);
+			if(p != null) {
+				jp = EclipseResourceUtil.getJavaProject(p);
+			}
+		}
+		String title = "Select " + getAttributeName();
+		if(adapter != null && adapter.getAttribute() != null) {
+			String key = "" + adapter.getAttribute().getModelEntity().getName() + "." + adapter.getAttribute().getName().replace(' ', '_') + ".edit";
+			String t = WizardKeys.getLabelText(key);
+			if(t != null) {
+				title = t;
+			} else {
+				title = "Select " + WizardKeys.getAttributeDisplayName(adapter.getAttribute(), true);
+			}
+		}
+		
+	FilteredTypesSelectionDialog dialog = new FilteredTypesSelectionDialog(
+			shell, 
+			false, 
+			ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow(), 
+			SearchEngine.createJavaSearchScope(jp != null ? new IJavaElement[]{jp} : new IJavaElement[0]), 
+			IJavaSearchConstants.TYPE);
+	dialog.setTitle(title);
+	IValueProvider valueProvider = (IValueProvider)adapter.getAdapter(IValueProvider.class);
+	String v = valueProvider.getStringValue(true);
+	dialog.setInitialPattern(v);
+	int status = dialog.open();
+	if(status == FilteredItemsSelectionDialog.OK) {
+		Object result = dialog.getFirstResult();
+		if(result instanceof IType) {
+			return ((IType)result).getFullyQualifiedName('.');
+		}
+	}
+	return null;
+	}
+	
+}

@@ -121,4 +121,10 @@ public class JavaHyperlinkCellEditor extends DialogCellEditorEx
 	    return classExists = (javaAdapter.getJavaElement() != null);
 	}
 	
+	public Object callExternal(Shell shell) {
+		if(propertyEditor instanceof JavaEclipseChoicerEditor) {
+			return ((JavaEclipseChoicerEditor)propertyEditor).callExternal(shell);
+		}
+		return null;
+	}
 }

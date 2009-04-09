@@ -28,8 +28,8 @@ import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.TypeNameMatch;
-import org.eclipse.jdt.internal.ui.dialogs.TypeInfoViewer;
-import org.eclipse.jdt.internal.ui.dialogs.TypeSelectionComponent;
+//import org.eclipse.jdt.internal.ui.dialogs.TypeInfoViewer;
+//import org.eclipse.jdt.internal.ui.dialogs.TypeSelectionComponent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -47,12 +47,13 @@ import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
+@Deprecated
 public class JavaEclipseChoicerFieldEditor extends ExtendedFieldEditor implements IFieldEditor, IPropertyFieldEditor, PropertyChangeListener {
 	protected IPropertyEditor propertyEditor;
 	protected IValueChangeListener valueChangeListener;
 	protected IValueProvider valueProvider;
 
-	protected TypeSelectionComponent tc;
+//	protected TypeSelectionComponent tc;
 	protected String filter;
 	protected String javaProjectName;
 
@@ -75,9 +76,9 @@ public class JavaEclipseChoicerFieldEditor extends ExtendedFieldEditor implement
 	}
 
 	protected void doStore() {
-		if(tc != null && tc.getSelection() != null && tc.getSelection().length > 0) {
-			valueProvider.setValue(tc.getSelection()[0].getFullyQualifiedName());
-		}
+//		if(tc != null && tc.getSelection() != null && tc.getSelection().length > 0) {
+//			valueProvider.setValue(tc.getSelection()[0].getFullyQualifiedName());
+//		}
 	}
 
 	public int getNumberOfControls() {
@@ -108,10 +109,10 @@ public class JavaEclipseChoicerFieldEditor extends ExtendedFieldEditor implement
 		return SearchEngine.createJavaSearchScope(elements);
 	}
 
-	private class TitleLabel implements TypeSelectionComponent.ITitleLabel {
-		public void setText(String text) {
-		}
-	}
+//	private class TitleLabel implements TypeSelectionComponent.ITitleLabel {
+//		public void setText(String text) {
+//		}
+//	}
 	
 	protected Control getControl(Composite parent) {
 		IJavaSearchScope scope = getScope();
@@ -123,9 +124,9 @@ public class JavaEclipseChoicerFieldEditor extends ExtendedFieldEditor implement
 			filter = "java.lang.Object";
 		}
 
-		tc = new TypeSelectionComponent(parent, 0, message, false, scope, 0/*IJavaSearchConstants.CLASS + IJavaSearchConstants.INTERFACE*/, Signature.getSimpleName(filter), new TitleLabel(), null);
-		Composite composite = tc;
-		tc.triggerSearch();
+//		tc = new TypeSelectionComponent(parent, 0, message, false, scope, 0/*IJavaSearchConstants.CLASS + IJavaSearchConstants.INTERFACE*/, Signature.getSimpleName(filter), new TitleLabel(), null);
+		Composite composite = null; //tc;
+//		tc.triggerSearch();
 		
 		GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
@@ -134,14 +135,14 @@ public class JavaEclipseChoicerFieldEditor extends ExtendedFieldEditor implement
 		layout.marginHeight = 10;
 		layout.marginWidth = 10;
 
-		tc.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				if(hasFocus(tc)) handle(tc.getSelection());
-			}
-			public void widgetSelected(SelectionEvent e) {
-				if(hasFocus(tc)) handle(tc.getSelection());
-			}
-		});
+//		tc.addSelectionListener(new SelectionListener() {
+//			public void widgetDefaultSelected(SelectionEvent e) {
+//				if(hasFocus(tc)) handle(tc.getSelection());
+//			}
+//			public void widgetSelected(SelectionEvent e) {
+//				if(hasFocus(tc)) handle(tc.getSelection());
+//			}
+//		});
 		
 		Table table = getTable();
 		if(table != null) {
@@ -157,19 +158,19 @@ public class JavaEclipseChoicerFieldEditor extends ExtendedFieldEditor implement
 	}
 
 	Table getTable() {
-		try {
-			Field f = TypeSelectionComponent.class.getDeclaredField("fViewer");
-			if(f == null) return null;
-			f.setAccessible(true);
-			TypeInfoViewer v = (TypeInfoViewer)f.get(tc);
-			return v == null ? null : v.getTable();
-		} catch (NoSuchFieldException ee) {
-			
-		} catch (IllegalArgumentException e2) {
-			
-		} catch (IllegalAccessException e3) {
-			
-		}
+//		try {
+//			Field f = TypeSelectionComponent.class.getDeclaredField("fViewer");
+//			if(f == null) return null;
+//			f.setAccessible(true);
+//			TypeInfoViewer v = (TypeInfoViewer)f.get(tc);
+//			return v == null ? null : v.getTable();
+//		} catch (NoSuchFieldException ee) {
+//			
+//		} catch (IllegalArgumentException e2) {
+//			
+//		} catch (IllegalAccessException e3) {
+//			
+//		}
 		return null;
 	}
 

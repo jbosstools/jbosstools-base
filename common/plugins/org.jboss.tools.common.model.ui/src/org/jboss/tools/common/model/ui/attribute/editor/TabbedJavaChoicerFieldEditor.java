@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
+@Deprecated
 public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements IPropertyFieldEditor {
 	
 	private static final String LAST_CHOICER = "TabbedJavaChoicerFieldEditor.LastChoicer";
@@ -44,13 +45,13 @@ public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements
 	public TabbedJavaChoicerFieldEditor(IWidgetSettings settings) {
 		super(settings);
 		classicEditor = new JavaChoicerFieldEditor(settings);
-		eclipseEditor = new JavaEclipseChoicerFieldEditor(settings);
+//		eclipseEditor = new JavaEclipseChoicerFieldEditor(settings);
 		favoritesEditor = new JavaFavoritesFieldEditor(settings);
 	}
 
 	public void setOwnerDialog(PropertyEditorDialog dialog) {
 		classicEditor.setOwnerDialog(dialog);
-		eclipseEditor.setOwnerDialog(dialog);
+//		eclipseEditor.setOwnerDialog(dialog);
 		favoritesEditor.setOwnerDialog(dialog);
 	}
 
@@ -97,9 +98,9 @@ public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements
 		gd.heightHint = WINDOW_HEIGHT;
 		tabbedPane.setLayoutData(gd);
 		// eclipse
-		TabItem eclipseChooser = new TabItem(tabbedPane, SWT.NONE);
-		eclipseChooser.setControl(createEclipseChooser(tabbedPane));
-		eclipseChooser.setText(EditorMessages.getString("TabbedJavaChoicerFieldEditor.Tab2.Label"));
+//		TabItem eclipseChooser = new TabItem(tabbedPane, SWT.NONE);
+//		eclipseChooser.setControl(createEclipseChooser(tabbedPane));
+//		eclipseChooser.setText(EditorMessages.getString("TabbedJavaChoicerFieldEditor.Tab2.Label"));
 		// classic
 		TabItem classicChooser = new TabItem(tabbedPane, SWT.NONE);
 		classicChooser.setControl(createClassicChooser(tabbedPane));
@@ -135,9 +136,9 @@ public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements
 	protected Control createClassicChooser(Composite parent) {
 		return classicEditor.getControls(parent)[0];
 	}
-	protected Control createEclipseChooser(Composite parent) {
-		return eclipseEditor.getControls(parent)[0];
-	}
+//	protected Control createEclipseChooser(Composite parent) {
+//		return eclipseEditor.getControls(parent)[0];
+//	}
 	protected Control createFavoritesChooser(Composite parent) {
 		return favoritesEditor.getControls(parent)[0];
 	}
@@ -146,7 +147,7 @@ public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements
 	public void setPropertyEditor(IPropertyEditor propertyEditor) {
 		this.propertyEditor = propertyEditor;
 		classicEditor.setPropertyEditor(propertyEditor);
-		eclipseEditor.setPropertyEditor(propertyEditor);
+//		eclipseEditor.setPropertyEditor(propertyEditor);
 		favoritesEditor.setPropertyEditor(propertyEditor);
 	}
 
@@ -161,7 +162,7 @@ public class TabbedJavaChoicerFieldEditor extends ExtendedFieldEditor implements
 	public void setEnabled(boolean enabled){
 		super.setEnabled(enabled);
 		if (classicEditor!=null) classicEditor.setEnabled(enabled);		
-		if (eclipseEditor!=null) eclipseEditor.setEnabled(enabled);		
+//		if (eclipseEditor!=null) eclipseEditor.setEnabled(enabled);		
 		if (favoritesEditor!=null) favoritesEditor.setEnabled(enabled);		
 	}
 

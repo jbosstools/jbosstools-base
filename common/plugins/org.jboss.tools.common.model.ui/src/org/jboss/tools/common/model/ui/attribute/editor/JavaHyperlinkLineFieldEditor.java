@@ -22,9 +22,13 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog;
+import org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.action.Action;
@@ -32,8 +36,11 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -281,6 +288,13 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 			elements = l.toArray(new IJavaElement[0]);
 		}
 		return SearchEngine.createJavaSearchScope(elements);
+	}
+
+	public Object callExternal(Shell shell) {
+		if(propertyEditor instanceof JavaEclipseChoicerEditor) {
+			return ((JavaEclipseChoicerEditor)propertyEditor).callExternal(shell);
+		}
+		return null;
 	}
 
 }

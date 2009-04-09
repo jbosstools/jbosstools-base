@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
+@Deprecated
 public class JavaChoicerEditor extends ValueEditor {
 
 	protected DialogCellEditorEx cellEditor;
