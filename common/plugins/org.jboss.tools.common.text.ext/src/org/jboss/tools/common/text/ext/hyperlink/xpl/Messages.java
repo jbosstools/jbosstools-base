@@ -18,12 +18,11 @@ import org.eclipse.osgi.util.NLS;
 public class Messages {
 
 	
+	private static final String BUNDLE_NAME = "org.jboss.tools.common.text.ext.hyperlink.xpl.Messages"; //$NON-NLS-1$
 	private Messages() { }
 	
 	static {
-		NLS.initializeMessages(
-				"org.jboss.tools.common.text.ext.hyperlink.xpl.Messages",  //$NON-NLS-1$
-				Messages.class);
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 	
 	public static String cannotOpenLink;
