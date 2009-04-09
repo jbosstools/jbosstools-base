@@ -20,7 +20,7 @@ import org.jboss.tools.common.model.ui.attribute.adapter.CompositeActionProvider
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultTableStructuredAdapter;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.jboss.tools.common.model.ui.attribute.editor.IFieldEditor;
-import org.jboss.tools.common.model.ui.attribute.editor.JavaChoicerEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.JavaEclipseChoicerEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.StringButtonFieldEditorEx;
 import org.jboss.tools.common.model.ui.attribute.editor.TableStructuredEditor;
@@ -44,7 +44,7 @@ public class ClassTemplateComponent {
 	Label xPathLabelValue;
 	String initValue = ""; //$NON-NLS-1$
     // base class
-    JavaChoicerEditor baseClassEditor;
+    JavaEclipseChoicerEditor baseClassEditor;
     BaseClassAdapter baseClassAdapter;
     BaseClassAdapterListener baseClassAdapterListener;
     // interfaces
@@ -102,7 +102,7 @@ public class ClassTemplateComponent {
     	this.model = model;
 
 	    // base class
-	    baseClassEditor = new JavaChoicerEditor();
+	    baseClassEditor = new JavaEclipseChoicerEditor();
 	    baseClassAdapter = new BaseClassAdapter();
 	    baseClassAdapter.setModel(model);
 	    baseClassAdapterListener = new BaseClassAdapterListener();
