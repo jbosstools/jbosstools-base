@@ -102,8 +102,9 @@ public class JavaEclipseChoicerEditor extends ValueEditor {
 	FilteredTypesSelectionDialog dialog = new FilteredTypesSelectionDialog(
 			shell, 
 			false, 
-			ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow(), 
-			SearchEngine.createJavaSearchScope(jp != null ? new IJavaElement[]{jp} : new IJavaElement[0]), 
+			ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow(),
+			jp == null ? SearchEngine.createWorkspaceScope() 
+					   : SearchEngine.createJavaSearchScope(new IJavaElement[]{jp}), 
 			IJavaSearchConstants.TYPE);
 	dialog.setTitle(title);
 	IValueProvider valueProvider = (IValueProvider)adapter.getAdapter(IValueProvider.class);
