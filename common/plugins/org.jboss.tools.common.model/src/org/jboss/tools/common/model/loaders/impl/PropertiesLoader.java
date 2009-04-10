@@ -141,6 +141,10 @@ public class PropertiesLoader implements XObjectLoader {
         if(state == 1 && sb.length() > 0) {
         	object.set("conclusion", sb.toString()); 
         }
+        if(state == 2) {
+			c.setAttributeValue("dirtyvalue", sb.toString());
+			c.setAttributeValue("line-end", lineEnd.toString());
+        }
     }
 
     public boolean update(XModelObject object) throws XModelException {
