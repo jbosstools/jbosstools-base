@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<adf-faces-config xmlns="http://xmlns.oracle.com/adf/view/faces/config">
-  <debug-output>true</debug-output>
-
-  <accessibility-mode>#{prefs.proxy.accessibilityMode}</accessibility-mode>
-  <look-and-feel>#{prefs.proxy.lookAndFeel}</look-and-feel>
-
-</adf-faces-config>

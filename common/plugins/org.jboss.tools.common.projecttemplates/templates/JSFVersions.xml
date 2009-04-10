@@ -17,11 +17,4 @@
   <refLib type="servlet" location="../servlet" />
   <projectTempl location="./jsf-1.2-facelets" />
  </version>
- <version displayName="MyFaces 1.1.4">
-  <lib type="core" location="../lib/myFaces1.1.4" />
-  <lib type="common" location="../lib/CommonMyFacesSet" />
-  <lib type="struts" location="../lib/Tiles" />
-  <refLib type="servlet" location="../servlet" />
-  <projectTempl location="./myFaces" />
- </version>
 </versions>
