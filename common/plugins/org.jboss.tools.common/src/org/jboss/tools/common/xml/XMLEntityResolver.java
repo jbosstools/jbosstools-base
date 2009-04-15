@@ -10,7 +10,9 @@ import java.net.URL;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
-import org.xml.sax.*;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * @author  valera
@@ -26,7 +28,9 @@ public class XMLEntityResolver implements EntityResolver {
 
     public static void registerPublicEntity(String publicId, Class<?> loader, String resourceName) throws IOException {
     	URL url = resolve(loader, resourceName);
-    	if(url != null) registerPublicEntity(publicId, url.toString());
+    	if(url != null) {
+			registerPublicEntity(publicId, url.toString());
+		}
     }
 
 	public static void registerSystemEntity(String systemId, String url) {
@@ -35,7 +39,9 @@ public class XMLEntityResolver implements EntityResolver {
 
     public static void registerSystemEntity(String systemId, Class<?> loader, String resourceName) throws IOException {
     	URL url = resolve(loader, resourceName);
-    	if(url != null) registerSystemEntity(systemId, url.toString());
+    	if(url != null) {
+			registerSystemEntity(systemId, url.toString());
+		}
     }
     
     static URL resolve(Class<?> loader, String resourceName) throws IOException {

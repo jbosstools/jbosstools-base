@@ -10,13 +10,36 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.xml;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+
 import javax.xml.parsers.DocumentBuilder;
-import org.apache.xml.serialize.*;
+
+import org.apache.xml.serialize.LineSeparator;
+import org.apache.xml.serialize.Method;
+import org.apache.xml.serialize.OutputFormat;
+import org.apache.xml.serialize.XMLSerializer;
 import org.jboss.tools.common.CommonPlugin;
-import org.w3c.dom.*;
-import org.xml.sax.*;
+import org.w3c.dom.Comment;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class XMLUtilities {
     public static boolean hasAttribute(Element e, String s) {
@@ -68,7 +91,9 @@ public class XMLUtilities {
 
     public static Element[] getAncestors(Element parent, String name) {
         int i = name.indexOf('.');
-        if(i < 0) return getChildren(parent, name);
+        if(i < 0) {
+			return getChildren(parent, name);
+		}
         Element p = getUniqueChild(parent, name.substring(0, i));
         return (p == null) ? new Element[0] : getAncestors(p, name.substring(i + 1));
     }
@@ -126,7 +151,9 @@ public class XMLUtilities {
     }
 
     public static Element getElement(File file, EntityResolver resolver) {
-    	if(file == null || !file.isFile()) return null;
+    	if(file == null || !file.isFile()) {
+			return null;
+		}
     	java.io.FileReader fr = null;
     	try {
     		fr = new java.io.FileReader(file);
@@ -140,7 +167,9 @@ public class XMLUtilities {
         	CommonPlugin.getPluginLog().logError(e);
 		} finally {
             try {
-                if (fr != null) fr.close();
+                if (fr != null) {
+					fr.close();
+				}
             } catch (IOException e) {
             	CommonPlugin.getPluginLog().logError(e);
             }
@@ -181,7 +210,9 @@ public class XMLUtilities {
     
     public static Document getDocument(InputSource is, EntityResolver resolver) throws SAXException, IOException{
 		DocumentBuilder builder = createDocumentBuilder(false);
-		if(resolver != null) builder.setEntityResolver(resolver);
+		if(resolver != null) {
+			builder.setEntityResolver(resolver);
+		}
 		return builder.parse(is);
     }
 
@@ -202,21 +233,31 @@ public class XMLUtilities {
 		ErrorHandlerImpl h = new ErrorHandlerImpl();
         try {
 			DocumentBuilder builder = createDocumentBuilder(checkDTD);
-            if(resolver != null) builder.setEntityResolver(resolver);
+            if(resolver != null) {
+				builder.setEntityResolver(resolver);
+			}
             builder.setErrorHandler(h);
             builder.parse(is);
         } catch (IOException e) {
-        	if(h.errors.isEmpty()) return new String[]{"Unexpected parser error:0:0",e.toString()};
+        	if(h.errors.isEmpty()) {
+				return new String[]{"Unexpected parser error:0:0",e.toString()};
+			}
         } catch (SAXException e) {
-        	if(h.errors.isEmpty()) return new String[]{"Unexpected parser error:0:0",e.toString()};
+        	if(h.errors.isEmpty()) {
+				return new String[]{"Unexpected parser error:0:0",e.toString()};
+			}
 		}
         return h.errors.toArray(new String[0]);        
     }
     
     public static final void serialize(Element element, String filename) throws IOException {
         File f = new File(filename);
-        if(f.exists() && !f.canWrite()) return;
-        if(!f.exists()) f.createNewFile();
+        if(f.exists() && !f.canWrite()) {
+			return;
+		}
+        if(!f.exists()) {
+			f.createNewFile();
+		}
         FileWriter fw = new FileWriter(f);
         serialize(element, new BufferedWriter(fw));
         fw.close();
@@ -226,10 +267,14 @@ public class XMLUtilities {
 	
 	public static String getEncoding(String body) {
 		int i = body.indexOf(ENCODING);
-		if(i < 0) return UTF8;
+		if(i < 0) {
+			return UTF8;
+		}
 		i = i + ENCODING.length();
 		int j = body.indexOf('"', i);
-		if(j < 0) return UTF8;
+		if(j < 0) {
+			return UTF8;
+		}
 		return body.substring(i, j);
     	 
 	}
@@ -241,14 +286,18 @@ public class XMLUtilities {
     }
 
     public static final boolean serialize(Element element, Writer w) throws IOException {
-        if(element == null) return false;
+        if(element == null) {
+			return false;
+		}
         serialize(element, new XMLSerializer(w, createOutputFormat(UTF8)));
         w.close();
         return true;
     }
 
     public static final boolean serialize(Element element, OutputStream w) throws IOException {
-        if(element == null) return false;
+        if(element == null) {
+			return false;
+		}
         serialize(element, new XMLSerializer(w, createOutputFormat(UTF8)));
         w.close();
         return true;
@@ -260,7 +309,9 @@ public class XMLUtilities {
     }
 
     public static void serialize(Document document, XMLSerializer serial) throws IOException {
-    	if(serial == null || document == null) return;
+    	if(serial == null || document == null) {
+			return;
+		}
         serial.asDOMSerializer();
         serial.serialize(document);
     }
@@ -270,7 +321,9 @@ public class XMLUtilities {
     }
 
 	public static final boolean serialize(Document document, Writer w, String encoding) throws IOException {
-		if(document == null) return false;
+		if(document == null) {
+			return false;
+		}
 		serialize(document, new XMLSerializer(w, createOutputFormat(encoding)));
 		w.close();
 		return true;
@@ -289,7 +342,9 @@ public class XMLUtilities {
                 sb.append(((Text) nc).getData());
             } else if (nc.getNodeType() == Node.TEXT_NODE) {
             	String txt = ((Text) nc).getData();
-            	if(trim) txt = txt.trim();
+            	if(trim) {
+					txt = txt.trim();
+				}
                 sb.append(txt);
             }
         }
@@ -300,7 +355,9 @@ public class XMLUtilities {
         StringBuffer sb = new StringBuffer();
         Node node = elem.getPreviousSibling();
         while (node != null) {
-            if (node.getNodeType() == Node.ELEMENT_NODE) break;
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+				break;
+			}
             if (node.getNodeType() == Node.COMMENT_NODE) {
                 if (sb.length() > 0) {
                     sb.insert(0, '\n');

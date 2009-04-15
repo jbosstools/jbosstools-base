@@ -11,14 +11,15 @@
 package org.jboss.tools.common.reporting;
 
 import java.io.File;
+
 import org.eclipse.core.internal.runtime.PlatformLogWriter;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.adaptor.EclipseLog;
 import org.eclipse.osgi.framework.log.FrameworkLog;
-import org.osgi.framework.Bundle;
 import org.jboss.tools.common.util.FileUtil;
+import org.osgi.framework.Bundle;
 
 /**
  * This class is intended only to be called by Report Problem Framework.
@@ -43,7 +44,9 @@ public class ProblemBuffer {
 	 */	
 	public int getSize() {
 		String s = getContent();
-		if(s.length() == 0) return 0;
+		if(s.length() == 0) {
+			return 0;
+		}
 		int i = 0;
 		int c = 0;
 		while(i < s.length()) {
@@ -51,7 +54,9 @@ public class ProblemBuffer {
 			if(i >= 0) {
 				++c;
 				++i;
-			} else break;
+			} else {
+				break;
+			}
 		}		
 		return c;
 	}
@@ -72,7 +77,9 @@ public class ProblemBuffer {
 	
 	public void clean() {
 		File f = getLogFile();
-		if(f.exists()) f.delete();
+		if(f.exists()) {
+			f.delete();
+		}
 	}
 	
 	/**
@@ -88,7 +95,9 @@ public class ProblemBuffer {
 		if(other != null && other.length() > 0) {
 			sb.append("Other=" + other + "\n");
 		}
-		if(text != null) sb.append(text);
+		if(text != null) {
+			sb.append(text);
+		}
 		String reportText = sb.toString();
 		Submit.getInstance().submit(reportText, cleanBuffer);
 	}

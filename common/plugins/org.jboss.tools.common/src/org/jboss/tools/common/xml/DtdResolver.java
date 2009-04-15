@@ -23,13 +23,12 @@ import java.util.Set;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.util.HttpUtil;
 import org.osgi.framework.Bundle;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * @author igels
@@ -39,8 +38,12 @@ public class DtdResolver implements EntityResolver {
 
     public InputStream getInputStream(String publicId, String systemId) throws SAXException, IOException {
         String location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolvePublic(publicId, systemId);
-        if(location == null) location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveSystem(systemId);
-        if(location == null) location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(systemId);
+        if(location == null) {
+			location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveSystem(systemId);
+		}
+        if(location == null) {
+			location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(systemId);
+		}
         if(location == null) {
         	if(systemId != null && systemId.startsWith("file:") && systemId.endsWith(".xsd")) {
         		int i = systemId.replace('\\', '/').lastIndexOf('/');
@@ -56,11 +59,15 @@ public class DtdResolver implements EntityResolver {
         		String s = systemId.substring(q + 1);
         		URL u = b.getEntry("/dtdsAndSchemas/" + s);
         		try {
-        			if(u != null) u = FileLocator.resolve(u);
+        			if(u != null) {
+						u = FileLocator.resolve(u);
+					}
         		} catch (IOException ee) {
         			u = null;
         		}
-        		if(u != null) location = u.toString();
+        		if(u != null) {
+					location = u.toString();
+				}
         	}
         }
         if(location == null) {

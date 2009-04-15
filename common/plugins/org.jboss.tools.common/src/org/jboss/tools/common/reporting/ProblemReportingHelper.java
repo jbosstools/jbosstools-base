@@ -35,7 +35,9 @@ public class ProblemReportingHelper {
 	 * @param throwable
 	 */
 	public static void reportProblem(String plugin, String message, Throwable throwable) {
-		if(message==null) throw new IllegalArgumentException("Message parameter cannot be null");
+		if(message==null) {
+			throw new IllegalArgumentException("Message parameter cannot be null");
+		}
 		IStatus status = new Status(IStatus.ERROR, plugin, 0, message, throwable);
 		reportProblem(status);
 	}

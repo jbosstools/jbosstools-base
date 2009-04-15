@@ -53,6 +53,7 @@ public class Submit {
 	 */
 	public void submit(final String reportText, final boolean cleanBuffer) {
 		Job job = new Job(JOB_NAME) {
+			@Override
 			public IStatus run(IProgressMonitor monitor) {
 				try {
 					submitReport(reportText);
@@ -62,7 +63,7 @@ public class Submit {
 					if(exceptionMessage!=null && exceptionMessage.trim().length()>0) {
 						message = message + ".\r\n" + e.getClass().getName() + ": " + exceptionMessage;
 					}
-					Status status = new Status(Status.WARNING, CommonPlugin.PLUGIN_ID, Status.WARNING, message, e);
+					Status status = new Status(IStatus.WARNING, CommonPlugin.PLUGIN_ID, IStatus.WARNING, message, e);
 					return status;
 				}
 				if(cleanBuffer) {

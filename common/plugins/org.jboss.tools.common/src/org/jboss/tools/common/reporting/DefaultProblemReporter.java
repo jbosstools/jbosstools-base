@@ -20,7 +20,9 @@ import org.eclipse.core.runtime.Platform;
 public class DefaultProblemReporter implements IProblemReporter {
 
 	public void reportProblem(IStatus status) {
-		if(status != null) Platform.getLog(Platform.getBundle("org.jboss.tools.common")).log(status);
+		if(status != null) {
+			Platform.getLog(Platform.getBundle("org.jboss.tools.common")).log(status);
+		}
 	}
 
 }

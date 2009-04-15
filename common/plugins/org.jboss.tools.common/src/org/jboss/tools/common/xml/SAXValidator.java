@@ -122,9 +122,10 @@ public class SAXValidator {
 		ErrorHandlerImpl h = new ErrorHandlerImpl();
         try {
         	XMLReader parser = createParser();
-        	if(parser==null)
-            	// TODO - Move to NLS bundle
+        	if(parser==null) {
+				// TODO - Move to NLS bundle
         		return new String[]{ "error: Unable to instantiate parser ("+DEFAULT_SAX_PARSER_CLASS_NAME+")"};
+			}
         	parser.setErrorHandler(h);
             parser.parse(is);
         } catch (SAXException e) {
@@ -140,7 +141,7 @@ public class SAXValidator {
 		} finally {
 //        	Thread.currentThread().setContextClassLoader(cc);
         }
-        return (String[])h.errors.toArray(new String[0]);        
+        return h.errors.toArray(new String[0]);        
     }
 
     /**
@@ -161,13 +162,17 @@ public class SAXValidator {
 
     	Bundle b = Platform.getBundle(CommonPlugin.PLUGIN_ID);
     	String location = Platform.getStateLocation(b).toString().replace('\\', '/');
-    	if(!location.endsWith("/")) location += "/";
+    	if(!location.endsWith("/")) {
+			location += "/";
+		}
     	String urlString = null;
     	URL url = null;
     	try {
     		url = Platform.resolve(b.getEntry("/"));
         	urlString = url.toString();
-        	if(!urlString.endsWith("/")) urlString += "/";
+        	if(!urlString.endsWith("/")) {
+				urlString += "/";
+			}
         	urlString += "schemas";
     	} catch (IOException e) {
     		CommonPlugin.getPluginLog().logError(e);
@@ -203,7 +208,8 @@ class XMLCatalogResolver1 extends XMLCatalogResolver {
 	/**
 	 * 
 	 */
-    public String resolveIdentifier(XMLResourceIdentifier resourceIdentifier) throws IOException {
+    @Override
+	public String resolveIdentifier(XMLResourceIdentifier resourceIdentifier) throws IOException {
     	String literal = resourceIdentifier.getLiteralSystemId();
     	if(literal != null && !literals.contains(literal)) {
     		literals.add(literal);

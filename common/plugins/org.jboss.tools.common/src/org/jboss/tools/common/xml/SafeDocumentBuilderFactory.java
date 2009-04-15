@@ -38,12 +38,15 @@ public class SafeDocumentBuilderFactory extends Thread {
 		this.validate = validate;
 	}
 	
+	@Override
 	public void run () {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
 		try {
 			DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-			if(validate) f.setValidating(validate);
+			if(validate) {
+				f.setValidating(validate);
+			}
 ///			f.setExpandEntityReferences(false);
 			d = f.newDocumentBuilder();
 			if(!validate) {
