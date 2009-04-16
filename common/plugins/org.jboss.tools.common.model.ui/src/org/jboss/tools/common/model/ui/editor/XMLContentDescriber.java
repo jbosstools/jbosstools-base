@@ -23,7 +23,7 @@ import org.jboss.tools.common.util.FileUtil;
 /**
  * @author Viacheslav Kabanovich
  */
-public class XMLContentDescriber extends org.eclipse.core.internal.content.XMLContentDescriber implements ITextContentDescriber {
+public class XMLContentDescriber extends org.eclipse.core.runtime.content.XMLContentDescriber implements ITextContentDescriber {
 
 	public int describe(InputStream contents, IContentDescription description) throws IOException {
 		super.describe(contents, description);
