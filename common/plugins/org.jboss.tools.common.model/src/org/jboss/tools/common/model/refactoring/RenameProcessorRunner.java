@@ -12,7 +12,7 @@ package org.jboss.tools.common.model.refactoring;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.internal.corext.refactoring.tagging.*;
-import org.eclipse.jdt.internal.ui.refactoring.RefactoringSaveHelper;
+import org.eclipse.jdt.ui.refactoring.RefactoringSaveHelper;
 import org.eclipse.jdt.internal.ui.refactoring.reorg.*;
 import org.eclipse.ltk.core.refactoring.participants.*;
 import org.eclipse.swt.widgets.Shell;
