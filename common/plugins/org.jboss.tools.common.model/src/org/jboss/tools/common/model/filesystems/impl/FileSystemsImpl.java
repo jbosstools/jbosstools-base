@@ -41,7 +41,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
     	IProject p = (IProject)getModel().getProperties().get("project");
 		String app = getAttributeValue("application name");
     	if(p != null && !app.equals(p.getName())) {
-    		app = p.getName() + " (" + app + ")";
+    		app = app.length() > 0 ? p.getName() + " (" + app + ")" : p.getName();
     	}
         return (app != null && app.length() > 0) ? app : super.getPresentationString();
     }

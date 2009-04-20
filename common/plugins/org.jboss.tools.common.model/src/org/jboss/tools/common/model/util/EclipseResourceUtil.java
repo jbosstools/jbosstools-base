@@ -25,6 +25,9 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jdt.core.*;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.ModuleCoreNature;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.osgi.framework.Bundle;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
@@ -341,6 +344,16 @@ public class EclipseResourceUtil {
 		properties.setProperty("name", project.getName());
 		s = (FileSystemImpl)model.createModelObject("FileSystemFolder", properties);
 		fs.addChild(s);
+		if(!isJar(resource)) {
+			IResource webRoot = getFirstWebContentResource(project);
+			if(webRoot != null && webRoot.exists() && webRoot != project) {
+				fsLoc = webRoot.getLocation().toString();
+				properties.setProperty("location", fsLoc);
+				properties.setProperty("name", "WEB-ROOT");
+				s = (FileSystemImpl)model.createModelObject("FileSystemFolder", properties);
+				fs.addChild(s);
+			}
+		}
 
 		if(!isJar(resource) || getObjectByResource(model, resource) == null) {
 			properties = new Properties();
@@ -370,6 +383,17 @@ public class EclipseResourceUtil {
 		return getObjectByResource(model, resource);
 	}
 	
+	public static IResource getFirstWebContentResource(IProject project) {
+		IVirtualComponent vc = ComponentCore.createComponent(project);
+		if (vc == null || vc.getRootFolder() == null)
+			return null;
+		if (ModuleCoreNature.isFlexibleProject(project)) {
+			return vc.getRootFolder().getUnderlyingResource();
+		}
+
+		return null;
+	}
+
 	private static boolean isJar(IResource resource) {
 		return (resource instanceof IFile && isJar(resource.getName()));		
 	}

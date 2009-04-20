@@ -161,6 +161,9 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     		if(resourceName != null && resource.isLinked()) return resourceName.replace('#', '/');
     		return resourceName;
     	}
+    	if("true".equals(getModel().getProperties().getProperty("isProjectFragment"))) {
+    		return resourceName;
+    	}
     	return p.replace('#', '/') + " (" + resourceName + ")";
     }
 }
