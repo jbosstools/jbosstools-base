@@ -152,19 +152,19 @@ public class EclipseResourceUtil {
 	public static XModelObject addFileSystem(IResource resource, XModel model) {
 		XModelObject fss = FileSystemsHelper.getFileSystems(model);
 		if(fss == null) return null;
-		while(resource != null && resource != resource.getProject() && resource.getParent() != null && resource.getParent() != resource.getProject()) {
-			resource = resource.getParent();
-		}
 		if(resource == null) return null;
-		if(resource != resource.getProject() && resource.getParent() != resource.getProject()) return null;
-		if(resource.isLinked()) return null;
 		Properties properties = new Properties();
 		String fsLoc = resource.getLocation().toString();
 		if(resource == resource.getProject()) {
 			fsLoc = "%" + IModelNature.ECLIPSE_PROJECT + "%";
 		} else {
 			fsLoc = getRelativeLocation(model, fsLoc);
-		} 
+		}
+		XModelObject[] cs = fss.getChildren("FileSystemFolder");
+		for (int i = 0; i < cs.length; i++) {
+			String loc = cs[i].getAttributeValue("location");
+			if(fsLoc.equals(loc)) return null;
+		}	
 		properties.setProperty("location", fsLoc);
 		String name = resource.getName();
 		name = XModelObjectUtil.createNewChildName(name, fss);
@@ -288,6 +288,13 @@ public class EclipseResourceUtil {
 					fs = addFileSystem(resource.getProject(), sp.getModel());
 					if(fs != null) result = getObjectByResource(resource);
 				}
+				if(result == null && resource != project) {
+					IResource r = resource.getParent();
+					if(r != null && r != project) {
+						fs = addFileSystem(r, sp.getModel());
+						if(fs != null) result = getObjectByResource(resource);
+					}
+				}
 			}
 			return result;
 		}
@@ -295,7 +302,15 @@ public class EclipseResourceUtil {
 		XModel model = models.get(project);
 		if(model != null) {
 			validateJarSystem(FileSystemsHelper.getFileSystems(model), resource);
-			return getObjectByResource(model, resource);
+			XModelObject result = getObjectByResource(model, resource);
+			if(result == null && resource instanceof IFile) {
+				IResource r = resource.getParent();
+				if(r != null && project != r) {
+					XModelObject fs = addFileSystem(r, model);
+					if(fs != null) return getObjectByResource(model, resource);
+				}
+			}
+			return result;
 		}
 		
 		Properties properties = new Properties();
@@ -388,8 +403,16 @@ public class EclipseResourceUtil {
 			s.update();
 			o = s.getChildByPath(relpath.substring(1));
 		}
+		if(o == null) return null;
 		XModelObject p = o;
 		while(p != null && !"true".equals(p.get("overlapped"))) p = p.getParent();
+		if(p == null) {
+			IResource r = (IResource)o.getAdapter(IResource.class);
+			if(r == null || !resource.getLocation().equals(r.getLocation())) {
+				//failure, more detailed file system is needed.
+				return null;
+			}
+		}
 		return (p == null) ? o : null;
 	}
 	
