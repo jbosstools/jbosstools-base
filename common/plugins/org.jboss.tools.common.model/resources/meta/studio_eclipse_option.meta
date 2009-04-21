@@ -1315,6 +1315,14 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
+   <XModelAttribute default="Horizontal"
+    name="Visual/Source editors splitting" xmlname="visual_source_editors_splitting">
+    <Constraint loader="List">
+     <value name="Horizontal"/>
+     <value name="Vertical"/>
+    </Constraint>
+    <Editor name="RadioArray"/>
+   </XModelAttribute>
    <XModelAttribute default="500"
     name="Size of Visual Editor pane 0-100%" xmlname="source_visual_editors_weights">
     <Editor name="Slider2"/>

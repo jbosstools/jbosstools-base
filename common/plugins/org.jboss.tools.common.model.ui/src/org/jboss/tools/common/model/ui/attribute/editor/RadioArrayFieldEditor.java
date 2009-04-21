@@ -82,7 +82,13 @@ public class RadioArrayFieldEditor extends ExtendedFieldEditor implements IField
 	}
 
 	public Control[] getControls(Composite parent) {
-		return new Control[] {new Label(parent,SWT.NONE), getPanelControl(parent)};
+	    Control label = null;
+	    if (makeGroup()) {
+		label = new Label(parent,SWT.NONE);
+	    } else {
+		label = getLabelComposite(parent);
+	    }
+		return new Control[] {label, getPanelControl(parent)};
 	}
 
 	public Composite getPanelControl(Composite parent) {
