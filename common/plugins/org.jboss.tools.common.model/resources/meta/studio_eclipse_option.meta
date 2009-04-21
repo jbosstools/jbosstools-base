@@ -1315,7 +1315,7 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute default="Horizontal"
+   <XModelAttribute default="Vertical"
     name="Visual/Source editors splitting" xmlname="visual_source_editors_splitting">
     <Constraint loader="List">
      <value name="Horizontal"/>
