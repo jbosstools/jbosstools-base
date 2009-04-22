@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute;
  
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,7 +28,6 @@ import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAda
 import org.jboss.tools.common.model.ui.attribute.editor.ExtendedFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
-import org.jboss.tools.common.model.ui.attribute.editor.JavaChoicerEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.PropertyEditorFactory;
@@ -291,11 +291,9 @@ public class XAttributeSupport {
 				fieldEditor = editor.getFieldEditor(composite);
 			} else {
 				StringButtonFieldEditorEx sb;
-				if (editor instanceof JavaChoicerEditor) {
-					sb = new JavaHyperlinkLineFieldEditor(settings);
-				} else {
-					sb = new StringButtonFieldEditorEx(settings);       
-				}
+
+				sb = new StringButtonFieldEditorEx(settings);       
+
 				sb.setLabelText(editor.getLabelText());
 				sb.setPropertyEditor(editor);
 				String changeButtonName = editor.getChangeButtonName();
@@ -338,11 +336,9 @@ public class XAttributeSupport {
 				fieldEditor = editor.getFieldEditor(composite);
 			} else {
 				StringButtonFieldEditorEx sb = null;       
-				if (editor instanceof JavaChoicerEditor) {
-					sb = new JavaHyperlinkLineFieldEditor(settings);
-				} else {
-					sb = new StringButtonFieldEditorEx(settings);       
-				}
+
+				sb = new StringButtonFieldEditorEx(settings);
+
 				sb.setLabelText(editor.getLabelText());
 				String changeButtonName = editor.getChangeButtonName();
 				if(changeButtonName != null) {

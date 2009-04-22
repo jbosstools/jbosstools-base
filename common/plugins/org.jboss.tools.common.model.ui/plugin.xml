@@ -357,8 +357,6 @@
 			class="org.jboss.tools.common.model.ui.action.XModelObjectActionInvoker"/>
 		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.CheckBoxEditor"
 			class="org.jboss.tools.common.model.ui.attribute.editor.CheckBoxEditor"/>
-		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.JavaEclipseChoicerFieldEditor"
-			class="org.jboss.tools.common.model.ui.attribute.editor.JavaEclipseChoicerFieldEditor"/>
 		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor"
 			class="org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor"/>
 		<xclass id="org.jboss.tools.common.model.ui.attribute.editor.NoteEditor"

@@ -64,9 +64,7 @@ public class JavaEclipseChoicerEditor extends ValueEditor {
 	}
 
 	protected ExtendedFieldEditor createFieldEditor(Composite parent) {
-		//fieldEditor = new JavaChoicerFieldEditor();
 		fieldEditor = new JavaHyperlinkLineFieldEditor(settings);
-		//fieldEditor.setLabelText(getLabelText());
 		return fieldEditor;
 	}
 	
