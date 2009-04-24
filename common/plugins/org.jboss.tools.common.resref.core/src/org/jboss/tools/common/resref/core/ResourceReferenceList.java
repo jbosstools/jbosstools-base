@@ -101,7 +101,21 @@ public abstract class ResourceReferenceList {
 	}
 	
 	private String[] getDeclaredResources(IResource resource) {
+	    /*
+	     * Property value
+	     */
 	    String s = null;
+	    /*
+	     * Old preferences format property value.
+	     */
+	    String old = null;
+	    try {
+		old = resource.getPersistentProperty(getPropertyName());
+	    } catch (CoreException e) {
+		/*
+		 * Ignore, there is no properties for this resource.
+		 */
+	    }
 	    /*
 	     * https://jira.jboss.org/jira/browse/JBIDE-3211
 	     * Storing project preferences to project scope in .settings
@@ -117,12 +131,19 @@ public abstract class ResourceReferenceList {
 		String nodeString = path.toString();
 		Preferences node = root.node(nodeString);
 		if (null != node) {
-		    String old = node.get(getPropertyName().getLocalName(), ""); //$NON-NLS-1$
-		    s = old;
+		    s = node.get(getPropertyName().getLocalName(), ""); //$NON-NLS-1$
 		}
 	    }
 	    if (s == null || s.length() == 0) {
-		return new String[0];
+		if (old == null || old.length() == 0) {
+		    return new String[0];
+		} else {
+		    /*
+		     * If there is property stored in the old preferences format
+		     * return this value.
+		     */
+		    return decodeResourceString(old);
+		}
 	    } else {
 		return decodeResourceString(s);
 	    }
@@ -237,7 +258,21 @@ public abstract class ResourceReferenceList {
 	private TreeMap getAllExternalResources() {
 	    if (allExternalResources == null) {
 		allExternalResources = new TreeMap();
+		/*
+		 * Property value
+		 */
 		String s = null;
+		/*
+		 * Old preferences format property value.
+		 */
+		String old = null;
+		try {
+			old = ModelPlugin.getWorkspace().getRoot().getPersistentProperty(getPropertyName());
+		} catch (CoreException e) {
+		    /*
+		     * Ignore, there is no properties for this resource.
+		     */
+		}
 		/*
 		 * https://jira.jboss.org/jira/browse/JBIDE-3211 Reading project
 		 * Reading global preferences from instance scope.
@@ -245,13 +280,17 @@ public abstract class ResourceReferenceList {
 		IScopeContext instanceContext = new InstanceScope();
 		Preferences root = instanceContext.getNode(ModelPlugin.PLUGIN_ID);
 		if (null != root) {
-		    Preferences node = root
-		    	.node(ResourceReferencePlugin.PLUGIN_ID);
+		    Preferences node = root.node(ResourceReferencePlugin.PLUGIN_ID);
 		    s = node.get(getPropertyName().getLocalName(), ""); //$NON-NLS-1$
 		}
-
-		if (s != null) {
+		/*
+		 * If there is property stored in the old preferences format
+		 * and there are no other properties old value will be returned
+		 */
+		if (s != null && s.length() > 0) {
 		    parseExternalResources(s);
+		} else if (old != null && old.length() > 0) {
+		    parseExternalResources(old);
 		}
 	    }
 	    return allExternalResources;
