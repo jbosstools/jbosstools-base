@@ -106,17 +106,6 @@ public abstract class ResourceReferenceList {
 	     */
 	    String s = null;
 	    /*
-	     * Old preferences format property value.
-	     */
-	    String old = null;
-	    try {
-		old = resource.getPersistentProperty(getPropertyName());
-	    } catch (CoreException e) {
-		/*
-		 * Ignore, there is no properties for this resource.
-		 */
-	    }
-	    /*
 	     * https://jira.jboss.org/jira/browse/JBIDE-3211
 	     * Storing project preferences to project scope in .settings
 	     */
@@ -135,6 +124,17 @@ public abstract class ResourceReferenceList {
 		}
 	    }
 	    if (s == null || s.length() == 0) {
+		    /*
+		     * Old preferences format property value.
+		     */
+		    String old = null;
+		    try {
+			old = resource.getPersistentProperty(getPropertyName());
+		    } catch (CoreException e) {
+			/*
+			 * Ignore, there is no properties for this resource.
+			 */
+		    }
 		if (old == null || old.length() == 0) {
 		    return new String[0];
 		} else {
@@ -262,17 +262,7 @@ public abstract class ResourceReferenceList {
 		 * Property value
 		 */
 		String s = null;
-		/*
-		 * Old preferences format property value.
-		 */
-		String old = null;
-		try {
-			old = ModelPlugin.getWorkspace().getRoot().getPersistentProperty(getPropertyName());
-		} catch (CoreException e) {
-		    /*
-		     * Ignore, there is no properties for this resource.
-		     */
-		}
+		
 		/*
 		 * https://jira.jboss.org/jira/browse/JBIDE-3211 Reading project
 		 * Reading global preferences from instance scope.
@@ -289,8 +279,21 @@ public abstract class ResourceReferenceList {
 		 */
 		if (s != null && s.length() > 0) {
 		    parseExternalResources(s);
-		} else if (old != null && old.length() > 0) {
-		    parseExternalResources(old);
+		} else {
+		    /*
+		     * Old preferences format property value.
+		     */
+		    String old = null;
+		    try {
+			old = ModelPlugin.getWorkspace().getRoot().getPersistentProperty(getPropertyName());
+		    } catch (CoreException e) {
+			/*
+			 * Ignore, there is no properties for this resource.
+			 */
+		    }
+		    if (old != null && old.length() > 0) {
+			parseExternalResources(old);
+		    }
 		}
 	    }
 	    return allExternalResources;
