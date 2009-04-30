@@ -17,7 +17,6 @@ import org.jboss.tools.common.el.core.model.ELInstance;
 import org.jboss.tools.common.el.core.model.ELModel;
 import org.jboss.tools.common.el.core.parser.ELParser;
 import org.jboss.tools.common.el.core.parser.ELParserFactory;
-import org.jboss.tools.common.el.core.parser.ELParserUtil;
 
 /**
  * Represents "var"/"value" attributes.
@@ -32,7 +31,7 @@ public class Var {
 	int declOffset;
 	int declLength;
 	ELParserFactory factory;
-	
+
 	/**
 	 * Constructor
 	 * @param name - value of "var" attribute. 
@@ -111,14 +110,14 @@ public class Var {
 	public String getResolvedValue() {
 		return resolvedValue;
 	}
-	
+
 	/**
 	 * @return offset of the var declaration
 	 */
 	public int getDeclarationOffset() {
 		return declOffset;
 	}
-	
+
 	/**
 	 * @return length of the var declaration
 	 */
@@ -145,5 +144,4 @@ public class Var {
 		}
 		return false;
 	}
-
 }

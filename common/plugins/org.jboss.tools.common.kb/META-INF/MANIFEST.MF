@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Bundle-Name: %pluginName
 Bundle-ClassPath: kb.jar,
  lib/dtdparser121.jar
@@ -7,11 +7,10 @@ Bundle-Activator: org.jboss.tools.common.kb.KbPlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.kb;singleton:=true
 Bundle-Localization: plugin
-Provide-Package: org.jboss.tools.common.kb,
+Export-Package: com.wutka.dtd,
+ org.jboss.tools.common.kb,
  org.jboss.tools.common.kb.configuration,
- org.jboss.tools.common.kb.dtd,org.jboss.tools.common.kb.wtp,
- org.jboss.tools.common.kb.xml,
- com.wutka.dtd
+ org.jboss.tools.common.kb.wtp
 Require-Bundle: org.jboss.tools.common,
  org.junit,
  org.eclipse.swt,

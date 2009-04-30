@@ -19,5 +19,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.sse.ui,
  org.jboss.tools.common,
  org.jboss.tools.common.model,
- org.jboss.tools.common.resref.core;reprovide=true,
- org.jboss.tools.common.kb;bundle-version="2.0.0"
+ org.jboss.tools.common.resref.core;reprovide=true

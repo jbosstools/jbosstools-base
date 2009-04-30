@@ -138,11 +138,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.uriresolver;visibility:=reexport,
  org.eclipse.core.net
 Bundle-Version: 2.0.0
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
 Export-Package: org.jboss.tools.common,
  org.jboss.tools.common.log,
  org.jboss.tools.common.reporting,
+ org.jboss.tools.common.text,
  org.jboss.tools.common.util,
  org.jboss.tools.common.xml
 

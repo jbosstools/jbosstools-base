@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
-import org.jboss.tools.common.kb.KbProposal;
+import org.jboss.tools.common.text.TextProposal;
 
 /**
  * Status of EL resolving.
@@ -25,7 +25,7 @@ import org.jboss.tools.common.kb.KbProposal;
 public class ELOperandResolveStatus {
 	private ELInvocationExpression tokens;
 	Map<String, TypeInfoCollector.MethodInfo> unpairedGettersOrSetters;
-	Set<KbProposal> proposals;
+	Set<TextProposal> proposals;
 	private ELInvocationExpression lastResolvedToken;
 	private boolean isMapOrCollectionOrBundleAmoungTheTokens = false;
 	private TypeInfoCollector.MemberInfo memberOfResolvedOperand;
@@ -134,14 +134,14 @@ public class ELOperandResolveStatus {
 	 * 
 	 * @return Set of proposals for EL
 	 */
-	public Set<KbProposal> getProposals() {
-		return proposals == null ? new TreeSet<KbProposal>() : proposals;
+	public Set<TextProposal> getProposals() {
+		return proposals == null ? new TreeSet<TextProposal>() : proposals;
 	}
 
 	/**
-	 * @param proposals Set of KbProposal proposals.
+	 * @param proposals Set of TextProposal proposals.
 	 */
-	public void setProposals(Set<KbProposal> proposals) {
+	public void setProposals(Set<TextProposal> proposals) {
 		this.proposals = proposals;
 	}
 
