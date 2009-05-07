@@ -75,13 +75,36 @@ public class JSPRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			if (n != null) {
 				if ((n instanceof Element || n instanceof Attr) &&
 						n.getNodeName() != null && n.getNodeName().length() > 0) {
-					String nodeName = extractName(n.getNodeName(), trackersMap, tm);
+					
+					String name = n.getNodeName();
+
+					// The node name extraction must be done by taking into account 'jsfc' attribute value
+					if (n instanceof Element) {
+						Element e = (Element)n;
+						String jsfcAttrValue = e.getAttribute("jsfc");
+						if (jsfcAttrValue != null && jsfcAttrValue.trim().length() > 0) {
+							name = jsfcAttrValue;
+						}
+					}
+					
+					String nodeName = extractName(name, trackersMap, tm);
 					axis = "/" + nodeName;
 				}
 				Node parent = (n instanceof Attr)? ((Attr)n).getOwnerElement() : n.getParentNode();
 				while (parent instanceof Element) {
 					// Get the axis part depending on the type and name of node
-					String nodeName = extractName(parent.getNodeName(), trackersMap, tm);
+					String name = parent.getNodeName();
+
+					// The node name extraction must be done by taking into account 'jsfc' attribute value
+					if (parent instanceof Element) {
+						Element e = (Element)parent;
+						String jsfcAttrValue = e.getAttribute("jsfc");
+						if (jsfcAttrValue != null && jsfcAttrValue.trim().length() > 0) {
+							name = jsfcAttrValue;
+						}
+					}
+					
+					String nodeName = extractName(name, trackersMap, tm);
 					if (nodeName != null && nodeName.length() > 0) 
 						axis = "/" + nodeName + axis;
 					parent = parent.getParentNode();
