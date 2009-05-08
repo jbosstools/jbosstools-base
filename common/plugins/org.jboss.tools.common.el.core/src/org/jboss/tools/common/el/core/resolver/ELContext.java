@@ -24,9 +24,14 @@ public interface ELContext {
 	IFile getResource();
 
 	/**
-	 * Returns "var" attributes which are available in particular offset.
+	 * Returns "var" attributes
 	 * @param offset
 	 * @return
 	 */
-	Var[] getVars(int offset);
+	Var[] getVars();
+
+	/**
+	 * @return
+	 */
+	ElVarSearcher getVarSearcher();
 }

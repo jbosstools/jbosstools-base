@@ -22,13 +22,13 @@ import org.jboss.tools.common.text.TextProposal;
 public interface ELResolver {
 
 	/**
-	 * 
 	 * @param elString
 	 * @param position
 	 * @param context
+	 * @param returnEqualedVariablesOnly
 	 * @return
 	 */
-	List<TextProposal> getCompletions(String elString, int position, ELContext context);
+	List<TextProposal> getCompletions(String elString, boolean returnEqualedVariablesOnly, int position, ELContext context);
 
 	/**
 	 * 
@@ -36,5 +36,5 @@ public interface ELResolver {
 	 * @param context
 	 * @return
 	 */
-	ELOperandResolveStatus resolveELOperand(ELExpression operand, ELContext context);
+	ELOperandResolveStatus resolveELOperand(ELExpression operand, ELContext context, boolean returnEqualedVariablesOnly);
 }

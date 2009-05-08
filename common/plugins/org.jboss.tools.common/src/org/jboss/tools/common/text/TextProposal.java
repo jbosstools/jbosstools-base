@@ -41,10 +41,10 @@ public class TextProposal {
 	private int relevance = R_NONE;
 	private int position = -1;
 	private boolean autoActivationContentAssistantAfterApplication = false;
-	
+
 	private int start = -1;
 	private int end = -1;
-	
+
 	PostProcessing postProcessing;
 
 	/**
@@ -76,7 +76,7 @@ public class TextProposal {
 	public Image getImage() {
 		return image;
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -205,7 +205,7 @@ public class TextProposal {
 		buffer.append(contextInfo);
 		buffer.append("\nreplacementString: ");
 		buffer.append(replacementString);
-		
+
 		return buffer.toString();
 	}
 
@@ -262,36 +262,34 @@ public class TextProposal {
 	public void setAutoActivationContentAssistantAfterApplication(boolean autoActivationContentAssistantAfterApplication) {
 		this.autoActivationContentAssistantAfterApplication = autoActivationContentAssistantAfterApplication;
 	}
-	
+
 	public void setStart(int n) {
 		start = n;
 	}
-	
+
 	public void setEnd(int n) {
 		end = n;
 	}
-	
+
 	public int getStart() {
 		return start;
 	}
-	
+
 	public int getEnd() {
 		return end;
 	}
-	
+
 	public void setPostProcessing(PostProcessing postProcessing) {
 		this.postProcessing = postProcessing;
 	}
-	
+
 	public void postProcess(String value, int offset) {
 		if(postProcessing != null) postProcessing.process(this, value, offset);
 	}
 
-    public static final Comparator<TextProposal> KB_PROPOSAL_ORDER
-    			= new TextProposalComparator();
+    public static final Comparator<TextProposal> KB_PROPOSAL_ORDER = new TextProposalComparator();
 
     private static class TextProposalComparator implements Comparator<TextProposal> {
-	
 		public int compare(TextProposal p1, TextProposal p2) {
 			int n1=p1.replacementString.length(), n2=p2.replacementString.length();
 			for (int i1=0, i2=0; i1<n1 && i2<n2; i1++, i2++) {
