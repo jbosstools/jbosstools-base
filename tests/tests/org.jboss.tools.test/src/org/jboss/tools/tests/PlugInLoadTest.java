@@ -85,8 +85,6 @@ public class PlugInLoadTest extends TestCase {
 		assertPluginsResolved(new String[] { 
 				rhdsNS + "jst.jsp", //$NON-NLS-1$
 				rhdsNS + "jst.web",  //$NON-NLS-1$
-				rhdsNS + "jst.web.debug", //$NON-NLS-1$
-				rhdsNS + "jst.web.debug.ui",  //$NON-NLS-1$
 				rhdsNS + "jst.web.tiles", //$NON-NLS-1$
 				rhdsNS + "jst.web.tiles.ui",  //$NON-NLS-1$
 				rhdsNS + "jst.web.ui", //$NON-NLS-1$
@@ -103,7 +101,6 @@ public class PlugInLoadTest extends TestCase {
 	public void testStrutsPluginsResolved() {
 		assertPluginsResolved(new String[] { 
 				rhdsNS + "struts", //$NON-NLS-1$
-				rhdsNS + "struts.debug",  //$NON-NLS-1$
 				rhdsNS + "struts.text.ext", //$NON-NLS-1$
 				rhdsNS + "struts.ui",  //$NON-NLS-1$
 				rhdsNS + "struts.validator.ui", //$NON-NLS-1$
