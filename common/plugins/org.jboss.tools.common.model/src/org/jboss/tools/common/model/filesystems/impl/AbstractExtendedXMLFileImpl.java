@@ -197,9 +197,15 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 			m.fireStructureChanged(this);
 			if(!isOverlapped) getResourceMarkers().update();
 		} else if(isMergingChanges()) {
+			String oldBody = get("correctBody");
+			boolean changed = body != null && !body.equals(oldBody);
 			set("correctBody", body);
 			set("actualBodyTimeStamp", "0");
+			long ots = getTimeStamp();
 			mergeAll(f, update);
+			if(changed && ots == getTimeStamp()) {
+				changeTimeStamp();
+			}
 			set("actualBodyTimeStamp", "" + getTimeStamp());
 			if(errors1) m.fireStructureChanged(this);
         	if(!isOverlapped) constraintChecker.check();
