@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.util;
 
+import java.util.StringTokenizer;
+
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.XModelObject;
 
@@ -67,7 +69,7 @@ public class PositionSearcher {
 		if(xml == null || xml.length() == 0) return;
 		if(xml.indexOf(".") < 0) {
 			String s = text.substring(startPosition, endPosition);
-			int i1 = s.indexOf(xml);
+			int i1 = findAttrPosition(s, xml);
 			if(selectAttributeName) {
 				if(i1 < 0) return;
 				startPosition = startPosition + i1;
@@ -101,6 +103,31 @@ public class PositionSearcher {
 				}
 			}
 		}				
+	}
+
+	private int findAttrPosition(String s, String name) {
+		int i = s.indexOf(name);
+		if(i < 0) {
+			return -1;
+		}
+		StringTokenizer st = new StringTokenizer(s, "\"", true);
+		int pos = 0;
+		boolean inValue = false;
+		while(st.hasMoreTokens()) {
+			String t = st.nextToken();
+			if(t.equals("\"")) {
+				inValue = !inValue;
+			} else {
+				if(!inValue) {
+					int k = t.indexOf(name);
+					if(k >= 0) {
+						return pos + k;
+					}
+				}
+			}
+			pos += t.length();
+		}
+		return -1;
 	}
 	
 	public int getStartPosition() {
