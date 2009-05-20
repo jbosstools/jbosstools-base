@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.common.util.test;
 
+import java.io.IOException;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.jboss.tools.common.util.HttpUtil;
 
@@ -17,12 +19,8 @@ import junit.framework.TestCase;
 
 public class HttpUtilTest extends TestCase {
 
-	public void testCreateHttpClient() {
-		try {
-			HttpClient client  = HttpUtil.createHttpClient("http://www.jboss.com");
-			assertNotNull("HTTP Client object wasn't created", client);
-		} catch (Exception e) {
-			fail("Error occurs when creating HTTP Client object");
-		}
+	public void testCreateHttpClient() throws IOException {
+		HttpClient client  = HttpUtil.createHttpClient("http://www.jboss.com");
+		assertNotNull("HTTP Client object wasn't created", client);		
 	}
 }
