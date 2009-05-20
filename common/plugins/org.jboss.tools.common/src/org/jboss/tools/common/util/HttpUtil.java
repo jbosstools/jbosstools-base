@@ -165,7 +165,13 @@ public class HttpUtil {
 					IProxyData proxy = proxyData[i];
 					if(IProxyData.HTTP_PROXY_TYPE.equals(proxy.getType())) {
 						String proxyHostName = proxy.getHost();
+						if(proxyHostName==null) {
+							break;
+						}
 						int portNumber = proxy.getPort();
+						if(portNumber==-1) {
+							portNumber = 80;
+						}
 						httpClient.getHostConfiguration().setProxy(proxyHostName, portNumber);
 						if(proxy.isRequiresAuthentication()) {
 						    String userName = proxy.getUserId();
