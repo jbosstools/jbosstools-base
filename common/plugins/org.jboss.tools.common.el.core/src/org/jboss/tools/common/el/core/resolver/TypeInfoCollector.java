@@ -1214,7 +1214,7 @@ public class TypeInfoCollector {
 		} catch (JavaModelException e) {
 			Activator.getPluginLog().logError(e);
 		}
-		if(result != null) {
+		if(result != null && cache!=null) {
 			cache.put(member, result);
 		}
 
