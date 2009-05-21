@@ -247,14 +247,14 @@ public class EditorTestHelper {
  
 	
 	public static IFile[] findFiles(IResource resource) throws CoreException {
-		List files= new ArrayList();
+		List<IFile> files= new ArrayList<IFile>();
 		findFiles(resource, files);
-		return (IFile[]) files.toArray(new IFile[files.size()]);
+		return files.toArray(new IFile[files.size()]);
 	}
 	
-	private static void findFiles(IResource resource, List files) throws CoreException {
+	private static void findFiles(IResource resource, List<IFile> files) throws CoreException {
 		if (resource instanceof IFile) {
-			files.add(resource);
+			files.add((IFile) resource);
 			return;
 		}
 		if (resource instanceof IContainer) {

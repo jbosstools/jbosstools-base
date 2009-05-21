@@ -55,7 +55,7 @@ public class ProjectImportTestSetup extends TestSetup {
 		IProject[] projects = new IProject[projectPaths.length]; 
 		JobUtils.waitForIdle();
 		for (int i = 0; i < projectPaths.length; i++) {
-			projects[i] = (IProject)ResourcesUtils.importProject(bundleName, projectPaths[i]);
+			projects[i] = ResourcesUtils.importProject(bundleName, projectPaths[i]);
 			JobUtils.waitForIdle();
 		}
 		return projects;
