@@ -20,7 +20,7 @@ public class TestSuiteWithParams extends TestSuite {
 	
 	Properties parameters = new Properties();
 	
-	public TestSuiteWithParams(Class theClass, Properties params) {
+	public TestSuiteWithParams(Class<?> theClass, Properties params) {
 		super(theClass);
 		this.parameters.putAll(params);
 	}

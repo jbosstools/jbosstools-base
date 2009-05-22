@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Control;
  *
  */
 public class SwtUtils {
-	public static Control findControlByClass(Composite comp, Class claz) {
+	public static Control findControlByClass(Composite comp, Class<? extends Control> claz) {
 		for (Control child : comp.getChildren()) {
 			if(child.getClass()==claz) {
 				return child;
