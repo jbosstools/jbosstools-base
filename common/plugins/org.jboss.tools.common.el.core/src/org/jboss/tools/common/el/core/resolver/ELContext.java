@@ -31,11 +31,6 @@ public interface ELContext {
 	Var[] getVars();
 
 	/**
-	 * @return
-	 */
-	ElVarSearcher getVarSearcher();
-
-	/**
 	 * Returns EL Resolvers which are declared for this resource
 	 * @return
 	 */

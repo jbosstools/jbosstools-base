@@ -26,7 +26,6 @@ public class ELContextImpl implements ELContext {
 
 	protected IFile resource;
 	protected ELResolver[] elResolvers;
-	protected ElVarSearcher varSearcher;
 	protected Map<Region, Set<Var>> vars = new HashMap<Region, Set<Var>>();
 	protected Set<Var> allVars = new HashSet<Var>();
 
@@ -52,21 +51,6 @@ public class ELContextImpl implements ELContext {
 
 	public void setResource(IFile resource) {
 		this.resource = resource;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getVarSearcher()
-	 */
-	public ElVarSearcher getVarSearcher() {
-		return varSearcher;
-	}
-
-	/**
-	 * @param varSearcher the varSearcher to set
-	 */
-	public void setVarSearcher(ElVarSearcher varSearcher) {
-		this.varSearcher = varSearcher;
 	}
 
 	/*
