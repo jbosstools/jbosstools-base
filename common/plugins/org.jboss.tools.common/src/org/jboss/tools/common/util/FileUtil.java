@@ -56,13 +56,13 @@ public final class FileUtil {
     	} catch (CoreException e) {
     		CommonPlugin.getPluginLog().logError(e);
     	}
-    	return encoding != null ? encoding : "8859_1";
+    	return encoding != null ? encoding : "8859_1"; //$NON-NLS-1$
     }
 
     public static String readFile(File f) {
-        if(!f.isFile()) return "";
+        if(!f.isFile()) return ""; //$NON-NLS-1$
     	ReadBytes bs = readBytes(f);
-    	if(bs == null) return "";
+    	if(bs == null) return ""; //$NON-NLS-1$
         String encoding = getEncoding(bs.bs);
         if(encoding == null) return new String(bs.bs, 0, bs.length);
         try {
@@ -73,9 +73,9 @@ public final class FileUtil {
     }
 
     public static String readFileWithEncodingCheck(File f, String defaultEncoding) {
-        if(!f.isFile()) return "";
+        if(!f.isFile()) return ""; //$NON-NLS-1$
     	ReadBytes bs = readBytes(f);
-    	if(bs == null) return "";
+    	if(bs == null) return ""; //$NON-NLS-1$
         String encoding = getEncoding(bs.bs);
         if(encoding == null) encoding = validateEncoding(defaultEncoding, null);
         if(encoding == null) return new String(bs.bs, 0, bs.length);
@@ -170,7 +170,7 @@ public final class FileUtil {
     // FIXME Size of string buffer should be set to size of file by default 
     // to avoid StringBuffer extension on each append
     public static String readStream(InputStream is) {
-        StringBuffer sb = new StringBuffer("");
+        StringBuffer sb = new StringBuffer(""); //$NON-NLS-1$
         try {
             byte[] b = new byte[4096];
             while(true) {
@@ -193,8 +193,8 @@ public final class FileUtil {
     	if(value == null) return false;
     	String encoding = getEncoding(value);
     	if(encoding == null) encoding = validateEncoding(defaultEncoding, null);
-    	if(value.startsWith("<?xml")) {
-    		String s = validateEncoding(encoding, "UTF-8");
+    	if(value.startsWith("<?xml")) { //$NON-NLS-1$
+    		String s = validateEncoding(encoding, "UTF-8"); //$NON-NLS-1$
     		if(encoding == null) {
     			encoding = s;
     		} else if(s == null || !s.equals(encoding)) {
@@ -211,9 +211,9 @@ public final class FileUtil {
                 if(f.isFile() && !isSameFile(f)) f.delete();
                 if(!f.exists()) f.createNewFile();
             } catch (IOException e) {
-            	CommonPlugin.getPluginLog().logError("Problem writing to file " + f, e);
+            	CommonPlugin.getPluginLog().logError("Problem writing to file " + f, e); //$NON-NLS-1$
             } catch (SecurityException e) {
-            	CommonPlugin.getPluginLog().logError("Problem writing to file " + f, e);
+            	CommonPlugin.getPluginLog().logError("Problem writing to file " + f, e); //$NON-NLS-1$
             }
             PrintWriter pw = new PrintWriter(new FileWriter(f));
             pw.print(value);
@@ -445,10 +445,10 @@ public final class FileUtil {
 
     public static void add(File f, String name, JarOutputStream jos) throws IOException {
         String en = name;
-        if(f.isDirectory()) en += "/";
-        JarEntry entry = (en.endsWith("/")) ? null : new JarEntry(en);
+        if(f.isDirectory()) en += "/"; //$NON-NLS-1$
+        JarEntry entry = (en.endsWith("/")) ? null : new JarEntry(en); //$NON-NLS-1$
         if(f.isDirectory()) {
-            if("/".equals(en)) en = "";
+            if("/".equals(en)) en = ""; //$NON-NLS-1$ //$NON-NLS-2$
             File[] fs = f.listFiles();
             if(fs != null) for (int i = 0; i < fs.length; i++)
               add(fs[i], en + fs[i].getName(), jos);
@@ -519,7 +519,7 @@ public final class FileUtil {
         if(url == null) return null;
         String resultUrl = url.replace('\\', '/');
 ///        if(!url.startsWith("file:/")) return url;
-		if(!resultUrl.startsWith("file:")) return resultUrl;
+		if(!resultUrl.startsWith("file:")) return resultUrl; //$NON-NLS-1$
         int iLast = resultUrl.lastIndexOf(':'), iFirst = resultUrl.indexOf(':');
         return (iLast == iFirst) ? resultUrl.substring(5) : resultUrl.substring(iLast - 1);
     }
@@ -533,19 +533,19 @@ public final class FileUtil {
 		int i = 0;
 		while(i < r.length && i < p.length && r[i].equalsIgnoreCase(p[i])) ++i;
 		StringBuffer sb = new StringBuffer();
-		for (int k = i; k < r.length; k++) sb.append("/..");
-		for (int k = i; k < p.length; k++) sb.append("/").append(p[k]);
+		for (int k = i; k < r.length; k++) sb.append("/.."); //$NON-NLS-1$
+		for (int k = i; k < p.length; k++) sb.append("/").append(p[k]); //$NON-NLS-1$
 		return sb.toString();
 	}
 
 	private static String[] tokenizePath(String path) {
 		String tokenizedPath = path.replace('\\', '/');
-		StringTokenizer st = new StringTokenizer(tokenizedPath, "/");
+		StringTokenizer st = new StringTokenizer(tokenizedPath, "/"); //$NON-NLS-1$
 		ArrayList l = new ArrayList();
 		while(st.hasMoreTokens()) {
 			String t = st.nextToken();
-			if(t.length() == 0 || t.equals(".")) continue;
-			if(t.equals("..")) {
+			if(t.length() == 0 || t.equals(".")) continue; //$NON-NLS-1$
+			if(t.equals("..")) { //$NON-NLS-1$
 				if(l.size() > 0) l.remove(l.size() - 1);
 				continue;
 			}
@@ -557,20 +557,20 @@ public final class FileUtil {
 	public static String encode(String text, String encoding) {
 		if(true) return text;
 		try {
-			byte[] bs = text.getBytes(System.getProperty("file.encoding"));
+			byte[] bs = text.getBytes(System.getProperty("file.encoding")); //$NON-NLS-1$
 			ByteArrayInputStream is = new ByteArrayInputStream(bs);
 			InputStreamReader r = new InputStreamReader(is, encoding);
 			char[] cs = new char[bs.length];
 			int l = r.read(cs, 0, cs.length);
 			return new String(cs, 0, l);
 		} catch (IOException e) {
-			if("UTF-8".equals(encoding)) return text;
-			return encode(text, "UTF-8");
+			if("UTF-8".equals(encoding)) return text; //$NON-NLS-1$
+			return encode(text, "UTF-8"); //$NON-NLS-1$
 		}
 	}
 
 	public static String encodeDefault(String text) {
-		return encode(text, System.getProperties().getProperty("file.encoding"));
+		return encode(text, System.getProperties().getProperty("file.encoding")); //$NON-NLS-1$
 	}
 	
 /*
@@ -624,10 +624,10 @@ public final class FileUtil {
     
     public static String getEncoding(String s) {
     	if(s == null) return null;
-    	if(s.startsWith("<?xml")) {
-    		int i = s.indexOf("encoding=");
+    	if(s.startsWith("<?xml")) { //$NON-NLS-1$
+    		int i = s.indexOf("encoding="); //$NON-NLS-1$
     		if(i < 0) return null;
-    		i += "encoding=".length() + 1;
+    		i += "encoding=".length() + 1; //$NON-NLS-1$
     		int j = s.indexOf('\"', i);
     		if(j < 0) return null;
     		return s.substring(i, j);
@@ -643,7 +643,7 @@ public final class FileUtil {
     	if(validEncodings.contains(encoding)) return encoding;
     	if(invalidEncodings.contains(encoding)) return defaultEncoding;
     	try {
-    		if(defaultEncoding != null && defaultEncoding.equals("UTF-16")) {
+    		if(defaultEncoding != null && defaultEncoding.equals("UTF-16")) { //$NON-NLS-1$
     			new String(XML_16, 0, XML_16.length, encoding);
     		} else {
     			new String(XML_8, 0, XML_8.length, encoding);
@@ -663,15 +663,15 @@ public final class FileUtil {
     	if(bs.length < 20) return null;
     	if(startsWith(bs, XML_8)) {
     		int i = getIndex(bs, (byte)'?', 5);
-    		if(i < 0) return "UTF-8";
+    		if(i < 0) return "UTF-8"; //$NON-NLS-1$
     		String encoding = getEncoding(new String(bs, 0, i));
-    		return validateEncoding(encoding, "UTF-8");
+    		return validateEncoding(encoding, "UTF-8"); //$NON-NLS-1$
     	} else if(startsWith(bs, XML_16)) {
     		int i = getIndex(bs, (byte)'?', XML_16.length);
-    		if(i < 0) return "UTF-16";
+    		if(i < 0) return "UTF-16"; //$NON-NLS-1$
     		try {
-    			String encoding = getEncoding(new String(bs, 0, i, "UTF-16"));
-        		return validateEncoding(encoding, "UTF-16");
+    			String encoding = getEncoding(new String(bs, 0, i, "UTF-16")); //$NON-NLS-1$
+        		return validateEncoding(encoding, "UTF-16"); //$NON-NLS-1$
     		} catch (UnsupportedEncodingException e) {
     			return null;
     		}

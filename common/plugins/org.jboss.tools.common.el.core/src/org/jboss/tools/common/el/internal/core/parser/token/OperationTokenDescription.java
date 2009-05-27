@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.parser.token;
 
+import org.jboss.tools.common.el.core.Messages;
 import org.jboss.tools.common.el.core.parser.ITokenDescription;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 
@@ -22,18 +23,18 @@ public class OperationTokenDescription implements ITokenDescription {
 	public static final int OPERATION = 12;
 
 	static String[] OPS = {
-		"&&", "||", "==", "!=", "<=", ">=", 
-		"+", "-", "*", "/", "&", "%", "|", "?" , ":", "^", "<", ">",
+		"&&", "||", "==", "!=", "<=", ">=",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		"+", "-", "*", "/", "&", "%", "|", "?" , ":", "^", "<", ">", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
 	};
 	private static final String[] OPS_2 = {
-		"div", "and", "or", "not", "mod",
-		"eq", "ne", "lt", "gt", "ge", "le", 
+		"div", "and", "or", "not", "mod", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		"eq", "ne", "lt", "gt", "ge", "le",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 	};
 
 	public static OperationTokenDescription INSTANCE = new OperationTokenDescription();
 
 	public String getName() {
-		return "Operator";
+		return Messages.OperationTokenDescription_Name;
 	}
 
 	public int getType() {

@@ -291,7 +291,7 @@ public class TypeInfoCollector {
 		}
 
 		public boolean isJavaLangObject() {
-			return "java.lang.Object".equals(getDeclaringTypeQualifiedName());
+			return "java.lang.Object".equals(getDeclaringTypeQualifiedName()); //$NON-NLS-1$
 		}
 
 		public MemberInfo getParentMember() {
@@ -590,11 +590,11 @@ public class TypeInfoCollector {
 				return false;
 			}
 
-			return (((getName().startsWith("get") && !getName().equals("get")) || getName().startsWith("is")) && getNumberOfParameters() == 0);
+			return (((getName().startsWith("get") && !getName().equals("get")) || getName().startsWith("is")) && getNumberOfParameters() == 0); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 		public boolean isSetter() {
-			return ((getName().startsWith("set") && !getName().equals("set")) && getNumberOfParameters() == 1);
+			return ((getName().startsWith("set") && !getName().equals("set")) && getNumberOfParameters() == 1); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		public List<String> getAsPresentedStrings() {
@@ -764,12 +764,12 @@ public class TypeInfoCollector {
 	}
 
 	boolean isDataModelObject(IType type) throws JavaModelException {
-		return isInstanceofType(type, "javax.faces.model.DataModel");
+		return isInstanceofType(type, "javax.faces.model.DataModel"); //$NON-NLS-1$
 	}
 
 	public static boolean isResourceBundle(IType type) {
 		try {
-			return isInstanceofType(type, "java.util.ResourceBundle");
+			return isInstanceofType(type, "java.util.ResourceBundle"); //$NON-NLS-1$
 		} catch (JavaModelException e) {
 			return false;
 		}
@@ -782,7 +782,7 @@ public class TypeInfoCollector {
 			}
 			IType type = mbr.getMemberType();
 			if(type!=null) {
-				return isInstanceofType(type, "java.util.Map") || isInstanceofType(type, "java.util.Collection");
+				return isInstanceofType(type, "java.util.Map") || isInstanceofType(type, "java.util.Collection"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return false;
 		} catch (JavaModelException e) {
@@ -844,10 +844,10 @@ public class TypeInfoCollector {
 	void addInfoForDataModelVariable() {
 		fMethods.add(new MethodInfo(fType,
 				fType.getFullyQualifiedName(),
-				"getRowCount", Modifier.PUBLIC, 
+				"getRowCount", Modifier.PUBLIC,  //$NON-NLS-1$
 				new String[0],
 				new String[0],
-				"int",
+				"int", //$NON-NLS-1$
 				fTypeInfo,
 				fTypeInfo,
 				false));
@@ -856,19 +856,19 @@ public class TypeInfoCollector {
 	void addInfoForDataModelObject() {
 		fMethods.add(new MethodInfo(fType,
 				fType.getFullyQualifiedName(),
-				"size", Modifier.PUBLIC, 
+				"size", Modifier.PUBLIC,  //$NON-NLS-1$
 				new String[0],
 				new String[0],
-				"int",
+				"int", //$NON-NLS-1$
 				fTypeInfo,
 				fTypeInfo,
 				false));
 		fMethods.add(new MethodInfo(fType,
 				fType.getFullyQualifiedName(),
-				"isEmpty", Modifier.PUBLIC, 
+				"isEmpty", Modifier.PUBLIC,  //$NON-NLS-1$
 				new String[0],
 				new String[0],
-				"boolean",
+				"boolean", //$NON-NLS-1$
 				fTypeInfo,
 				fTypeInfo,
 				false));

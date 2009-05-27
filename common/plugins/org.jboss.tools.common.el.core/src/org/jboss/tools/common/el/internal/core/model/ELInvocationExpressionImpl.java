@@ -46,7 +46,7 @@ public abstract class ELInvocationExpressionImpl extends ELExpressionImpl implem
 	}
 
 	public String toString() {
-		return left != null ? left.toString() : "";
+		return left != null ? left.toString() : ""; //$NON-NLS-1$
 	}
 
 	public void collectInvocations(List<ELInvocationExpression> list) {

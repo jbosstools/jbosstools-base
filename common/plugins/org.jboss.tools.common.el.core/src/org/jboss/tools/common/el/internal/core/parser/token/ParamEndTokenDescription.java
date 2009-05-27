@@ -23,7 +23,7 @@ public class ParamEndTokenDescription extends ConstantTokenDescription {
 	public static ParamEndTokenDescription INSTANCE = new ParamEndTokenDescription();
 
 	public ParamEndTokenDescription () {
-		super(")", PARAM_END);
+		super(")", PARAM_END); //$NON-NLS-1$
 	}
 
 	public boolean isStart(Tokenizer tokenizer, int offset) {

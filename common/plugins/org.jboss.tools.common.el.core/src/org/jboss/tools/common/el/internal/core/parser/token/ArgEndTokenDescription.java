@@ -29,7 +29,7 @@ import org.jboss.tools.common.el.core.parser.Tokenizer;
  */
 public class ArgEndTokenDescription extends ConstantTokenDescription {
 	public static final int ARG_END = 11;
-	public static final String CLOSE = "]";
+	public static final String CLOSE = "]"; //$NON-NLS-1$
 
 	public static ArgEndTokenDescription INSTANCE = new ArgEndTokenDescription();
 

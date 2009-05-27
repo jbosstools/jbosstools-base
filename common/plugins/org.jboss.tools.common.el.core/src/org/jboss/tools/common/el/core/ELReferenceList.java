@@ -19,7 +19,7 @@ import org.jboss.tools.common.resref.core.ResourceReferenceList;
 public class ELReferenceList extends ResourceReferenceList {
     
     /** The PROPERT y_ NAME. */
-    private static QualifiedName PROPERTY_NAME = new QualifiedName("", "org.jboss.tools.vpe.editor.css.ELReference");
+    private static QualifiedName PROPERTY_NAME = new QualifiedName("", "org.jboss.tools.vpe.editor.css.ELReference"); //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The instance. */
     static ELReferenceList instance = new ELReferenceList();

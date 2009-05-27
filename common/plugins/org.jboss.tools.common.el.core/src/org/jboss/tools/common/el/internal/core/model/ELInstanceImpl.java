@@ -62,7 +62,7 @@ public class ELInstanceImpl extends ELObjectImpl implements ELInstance {
 		if(child instanceof ELExpressionImpl) {
 			setExpression((ELExpressionImpl)child);
 		} else {
-			throw new IllegalArgumentException("EL instance can have only EL expression as child.");
+			throw new IllegalArgumentException("EL instance can have only EL expression as child."); //$NON-NLS-1$
 		}
 	}
 

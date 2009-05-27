@@ -19,7 +19,7 @@ import java.util.Properties;
  *
  */
 public class ParamUtil {
-	static String PARAM_HISTORY = "(_level";
+	static String PARAM_HISTORY = "(_level"; //$NON-NLS-1$
 	
 	static class ParamHistory extends ArrayList<String>{
 		private static final long serialVersionUID = 1L;
@@ -40,17 +40,17 @@ public class ParamUtil {
 
 	public static boolean isMethodParamContext(Properties context) {
 		ParamHistory i = (ParamHistory)(context.get(PARAM_HISTORY));
-		return i != null && i.size() > 0 && "params".equals(i.get(i.size() - 1));
+		return i != null && i.size() > 0 && "params".equals(i.get(i.size() - 1)); //$NON-NLS-1$
 	}
 
 	public static boolean isArgContext(Properties context) {
 		ParamHistory i = (ParamHistory)(context.get(PARAM_HISTORY));
-		return i != null && i.size() > 0 && "arg".equals(i.get(i.size() - 1));
+		return i != null && i.size() > 0 && "arg".equals(i.get(i.size() - 1)); //$NON-NLS-1$
 	}
 
 	public static boolean isComplexExpressionContext(Properties context) {
-		ParamHistory i = (ParamHistory)(context.get("(_level"));
-		return i != null && i.size() > 0 && "expr".equals(i.get(i.size() - 1));
+		ParamHistory i = (ParamHistory)(context.get("(_level")); //$NON-NLS-1$
+		return i != null && i.size() > 0 && "expr".equals(i.get(i.size() - 1)); //$NON-NLS-1$
 	}
 
 	public static void closeCurrentParamContext(Properties context) {
@@ -61,18 +61,18 @@ public class ParamUtil {
 	}
 
 	public static void openMethodParamContext(Properties context) {
-		ParamHistory i = (ParamHistory)(context.get("(_level"));
-		i.add("params");
+		ParamHistory i = (ParamHistory)(context.get("(_level")); //$NON-NLS-1$
+		i.add("params"); //$NON-NLS-1$
 	}
 
 	public static void openComplexExpressionContext(Properties context) {
-		ParamHistory i = (ParamHistory)(context.get("(_level"));
-		i.add("expr");
+		ParamHistory i = (ParamHistory)(context.get("(_level")); //$NON-NLS-1$
+		i.add("expr"); //$NON-NLS-1$
 	}
 
 	public static void openArgContext(Properties context) {
-		ParamHistory i = (ParamHistory)(context.get("(_level"));
-		i.add("arg");
+		ParamHistory i = (ParamHistory)(context.get("(_level")); //$NON-NLS-1$
+		i.add("arg"); //$NON-NLS-1$
 	}
 
 

@@ -25,7 +25,7 @@ public class ELOperatorImpl extends ELObjectImpl {
 	}
 
 	public String toString() {
-		return getFirstToken() != null ? getFirstToken().getText() : "";
+		return getFirstToken() != null ? getFirstToken().getText() : ""; //$NON-NLS-1$
 	}
 
 	public ELObjectType getType() {

@@ -19,7 +19,7 @@ import org.jboss.tools.common.el.core.parser.Tokenizer;
  */
 public class ArgStartTokenDescription extends ConstantTokenDescription {
 	public static final int ARG_START = 10;
-	public static final String OPEN = "[";
+	public static final String OPEN = "["; //$NON-NLS-1$
 	
 	public static ArgStartTokenDescription INSTANCE = new ArgStartTokenDescription();
 

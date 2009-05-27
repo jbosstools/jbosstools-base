@@ -45,19 +45,19 @@ public class DtdResolver implements EntityResolver {
 			location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(systemId);
 		}
         if(location == null) {
-        	if(systemId != null && systemId.startsWith("file:") && systemId.endsWith(".xsd")) {
+        	if(systemId != null && systemId.startsWith("file:") && systemId.endsWith(".xsd")) { //$NON-NLS-1$ //$NON-NLS-2$
         		int i = systemId.replace('\\', '/').lastIndexOf('/');
         		String systemId2 = systemId.substring(i + 1);
         		location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(systemId2);
         	}
         	
         }
-        if((location == null || location.startsWith("http:")) && systemId != null) {
-        	Bundle b = Platform.getBundle("org.eclipse.jst.standard.schemas");
+        if((location == null || location.startsWith("http:")) && systemId != null) { //$NON-NLS-1$
+        	Bundle b = Platform.getBundle("org.eclipse.jst.standard.schemas"); //$NON-NLS-1$
         	if(b != null) {
-        		int q = systemId.lastIndexOf("/");
+        		int q = systemId.lastIndexOf("/"); //$NON-NLS-1$
         		String s = systemId.substring(q + 1);
-        		URL u = b.getEntry("/dtdsAndSchemas/" + s);
+        		URL u = b.getEntry("/dtdsAndSchemas/" + s); //$NON-NLS-1$
         		try {
         			if(u != null) {
 						u = FileLocator.resolve(u);
@@ -73,9 +73,9 @@ public class DtdResolver implements EntityResolver {
         if(location == null) {
         	if(systemId != null && !unfound.contains(systemId)) {
         		unfound.add(systemId);
-            	CommonPlugin.getPluginLog().logError("Cannot find locally: " 
-            			+ "Public ID " + publicId
-            			+ " System ID " + systemId);
+            	CommonPlugin.getPluginLog().logError("Cannot find locally: "  //$NON-NLS-1$
+            			+ "Public ID " + publicId //$NON-NLS-1$
+            			+ " System ID " + systemId); //$NON-NLS-1$
         	}
         }
         if(location!=null) {
@@ -84,27 +84,27 @@ public class DtdResolver implements EntityResolver {
 	            File file = new File(url.getFile());
 	            if(file.isFile()) {
 	                return new FileInputStream(file);
-	            } else if("jar".equals(url.getProtocol())) {
+	            } else if("jar".equals(url.getProtocol())) { //$NON-NLS-1$
 	            	return url.openStream();
 	            }
             } catch(FileNotFoundException e) {
-    			CommonPlugin.getPluginLog().logError("Error in DtdResolver: " + e.getMessage());
+    			CommonPlugin.getPluginLog().logError("Error in DtdResolver: " + e.getMessage()); //$NON-NLS-1$
             }
         }
 
         String resourceType = null;
         if(systemId!=null) {
-	        if(systemId.toLowerCase().endsWith(".dtd")) {
-	            resourceType = "DTD";
-	        } else if(systemId.toLowerCase().endsWith(".xsd")) {
-	            resourceType = "XSD";
+	        if(systemId.toLowerCase().endsWith(".dtd")) { //$NON-NLS-1$
+	            resourceType = "DTD"; //$NON-NLS-1$
+	        } else if(systemId.toLowerCase().endsWith(".xsd")) { //$NON-NLS-1$
+	            resourceType = "XSD"; //$NON-NLS-1$
 	        }
         }
         InputStream is = null;
         if(resourceType!=null) { // this deactivates DTD and XSD
             try {
             	URL url = new URL(systemId);
-            	if("http".equals(url.getProtocol())) { 
+            	if("http".equals(url.getProtocol())) {  //$NON-NLS-1$
             		is = HttpUtil.getInputStreamFromUrlByGetMethod(systemId);
             	}
     		} catch (MalformedURLException e) {

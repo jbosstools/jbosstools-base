@@ -27,11 +27,11 @@ import org.jboss.tools.common.util.HttpUtil;
  */
 public class Submit {
 
-	public static String REPORT_DESRIPTION_PARAMETER_NAME = CommonPlugin.getMessage("%reportParameterName");
+	public static String REPORT_DESRIPTION_PARAMETER_NAME = CommonPlugin.getMessage("%reportParameterName"); //$NON-NLS-1$
 
-	private static String URL = CommonPlugin.getMessage("%reportingUrl");
-	private static String JOB_NAME = CommonPlugin.getMessage("%reportingJobName");
-	private static String ERROR_MESSAGE = CommonPlugin.getMessage("%errorReportingMessage");
+	private static String URL = CommonPlugin.getMessage("%reportingUrl"); //$NON-NLS-1$
+	private static String JOB_NAME = CommonPlugin.getMessage("%reportingJobName"); //$NON-NLS-1$
+	private static String ERROR_MESSAGE = CommonPlugin.getMessage("%errorReportingMessage"); //$NON-NLS-1$
 
 	private static Submit INSTANCE = new Submit();
 
@@ -61,7 +61,7 @@ public class Submit {
 					String exceptionMessage = e.getMessage();
 					String message = ERROR_MESSAGE;
 					if(exceptionMessage!=null && exceptionMessage.trim().length()>0) {
-						message = message + ".\r\n" + e.getClass().getName() + ": " + exceptionMessage;
+						message = message + ".\r\n" + e.getClass().getName() + ": " + exceptionMessage; //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					Status status = new Status(IStatus.WARNING, CommonPlugin.PLUGIN_ID, IStatus.WARNING, message, e);
 					return status;

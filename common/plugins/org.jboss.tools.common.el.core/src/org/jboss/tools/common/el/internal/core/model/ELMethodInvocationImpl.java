@@ -46,7 +46,7 @@ public class ELMethodInvocationImpl extends ELPropertyInvocationImpl implements 
 	}
 
 	public String toString() {
-		return super.toString() + ((parameters != null) ? parameters.toString() : "");
+		return super.toString() + ((parameters != null) ? parameters.toString() : ""); //$NON-NLS-1$
 	}
 
 	public ELObjectType getType() {

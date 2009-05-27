@@ -56,7 +56,7 @@ public class ELParametersImpl extends ELObjectImpl implements ELParameters {
 		if(child instanceof ELExpressionImpl) {
 			addParameter((ELExpressionImpl)child);
 		} else {
-			throw new IllegalArgumentException("EL parameters can have only EL expressions as its children.");
+			throw new IllegalArgumentException("EL parameters can have only EL expressions as its children."); //$NON-NLS-1$
 		}
 	}
 

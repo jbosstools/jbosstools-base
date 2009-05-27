@@ -23,8 +23,8 @@ public class StartELTokenDescription extends ConstantTokenDescription {
 	public static StartELTokenDescription INSTANCE = new StartELTokenDescription();
 
 	public StartELTokenDescription () {
-		super("#{", START_EL);
-		addContent("${");
+		super("#{", START_EL); //$NON-NLS-1$
+		addContent("${"); //$NON-NLS-1$
 	}
 
 	public boolean read(Tokenizer tokenizer, int offset) {

@@ -60,7 +60,7 @@ public class Tokenizer {
 		for (int i = 0; i < ds.length; i++) {
 			int type = ds[i].getType();
 			if(tokenDescriptions.containsKey(type)) {
-				throw new IllegalArgumentException("Token type " + type + " is not unique.");
+				throw new IllegalArgumentException("Token type " + type + " is not unique."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			tokenDescriptions.put(type, ds[i]);
 		}
@@ -93,7 +93,7 @@ public class Tokenizer {
 		this.sourceString = sourceString;
 		errors.clear();
 		index = initialOffset;
-		start = new LexicalToken(initialOffset, 0, "", -1000);
+		start = new LexicalToken(initialOffset, 0, "", -1000); //$NON-NLS-1$
 		last = start;
 		state = BasicStates.STATE_EXPECTING_EL;
 

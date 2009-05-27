@@ -33,7 +33,7 @@ public class GlobalElVariablesComposite extends AbstractResourceReferencesCompos
      */
     @Override
     protected String createGroupLabel() {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
     /**
@@ -49,7 +49,7 @@ public class GlobalElVariablesComposite extends AbstractResourceReferencesCompos
      */
     @Override
     protected String getEntity() {
-        return "VPEGlobalElReference";
+        return "VPEGlobalElReference"; //$NON-NLS-1$
     }
 
     /**
@@ -62,7 +62,7 @@ public class GlobalElVariablesComposite extends AbstractResourceReferencesCompos
     
     @Override
     protected ResourceReference getDefaultResourceReference() {
-        ResourceReference rf = new ResourceReference("", ResourceReference.GLOBAL_SCOPE);
+        ResourceReference rf = new ResourceReference("", ResourceReference.GLOBAL_SCOPE); //$NON-NLS-1$
         rf.setGlobal(true);
         return rf;
     }

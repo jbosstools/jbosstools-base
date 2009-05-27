@@ -23,15 +23,15 @@ public class UnaryTokenDescription extends ConstantTokenDescription {
 	public static UnaryTokenDescription INSTANCE = new UnaryTokenDescription();
 
 	private static final String[] OPS_2 = {
-		"not", "empty"
+		"not", "empty"  //$NON-NLS-1$//$NON-NLS-2$
 	};
 
 	public UnaryTokenDescription() {
-		super("!", UNARY);
-		addContent("--");
-		addContent("++");
-		addContent("+");
-		addContent("-");
+		super("!", UNARY); //$NON-NLS-1$
+		addContent("--"); //$NON-NLS-1$
+		addContent("++"); //$NON-NLS-1$
+		addContent("+"); //$NON-NLS-1$
+		addContent("-"); //$NON-NLS-1$
 	}
 
 	public boolean isStart(Tokenizer tokenizer, int offset) {

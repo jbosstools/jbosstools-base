@@ -20,7 +20,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends BaseUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.jboss.tools.common.el";
+	public static final String PLUGIN_ID = "org.jboss.tools.common.el"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

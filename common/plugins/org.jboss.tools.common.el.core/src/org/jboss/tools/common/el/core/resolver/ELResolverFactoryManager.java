@@ -64,22 +64,22 @@ public class ELResolverFactoryManager {
 		}
 		Set<ELResolver> resolverSet = new HashSet<ELResolver>();
         IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint extensionPoint = registry.getExtensionPoint("org.jboss.tools.common.el.core.elResolver"); //$NON-NLS-N$1
+		IExtensionPoint extensionPoint = registry.getExtensionPoint("org.jboss.tools.common.el.core.elResolver");  //$NON-NLS-1$
 		IExtension[] extensions = extensionPoint.getExtensions();
 		for (int i=0; i<extensions.length; i++) {
 			IExtension extension = extensions[i];
 			IConfigurationElement[] elements = extension.getConfigurationElements();
 			for(int j=0; j<elements.length; j++) {
-				IConfigurationElement[] natures = elements[i].getChildren("project-nature"); //$NON-NLS-N$1
+				IConfigurationElement[] natures = elements[i].getChildren("project-nature"); //$NON-NLS-1$
 				for (int k = 0; k < natures.length; k++) {
-					String natureId = natures[k].getAttribute("id"); //$NON-NLS-N$1
+					String natureId = natures[k].getAttribute("id"); //$NON-NLS-1$
 					try {
 						if(project.hasNature(natureId)) {
-							Object resolver = natures[k].createExecutableExtension("resolver-class"); //$NON-NLS-N$1
+							Object resolver = natures[k].createExecutableExtension("resolver-class"); //$NON-NLS-1$
 							if(resolver instanceof ELResolver) {
 								resolverSet.add((ELResolver)resolver);
 							} else {
-								Activator.getPluginLog().logError(resolver.getClass().getName() + " must be instance of org.jboss.tools.common.el.core.resolver.ELResolver");
+								Activator.getPluginLog().logError(resolver.getClass().getName() + " must be instance of org.jboss.tools.common.el.core.resolver.ELResolver"); //$NON-NLS-1$
 							}
 						}
 					} catch (InvalidRegistryObjectException e) {
@@ -88,17 +88,17 @@ public class ELResolverFactoryManager {
 						Activator.getPluginLog().logError(e);
 					}
 				}
-				IConfigurationElement[] factories = elements[i].getChildren("factory"); //$NON-NLS-N$1
+				IConfigurationElement[] factories = elements[i].getChildren("factory"); //$NON-NLS-1$
 				for (int k = 0; k < factories.length; k++) {
 					try {
-						Object factory = factories[k].createExecutableExtension("class"); //$NON-NLS-N$1
+						Object factory = factories[k].createExecutableExtension("class"); //$NON-NLS-1$
 						if(factory instanceof ELResolverFactory) {
 							ELResolver resolver = ((ELResolverFactory)factory).createResolver(resource);
 							if(resolver!=null) {
 								resolverSet.add(resolver);
 							}
 						} else {
-							Activator.getPluginLog().logError(factory.getClass().getName() + " must be instance of org.jboss.tools.common.el.core.resolver.ELResolverFactory");
+							Activator.getPluginLog().logError(factory.getClass().getName() + " must be instance of org.jboss.tools.common.el.core.resolver.ELResolverFactory"); //$NON-NLS-1$
 						}
 					} catch (CoreException e) {
 						Activator.getPluginLog().logError(e);

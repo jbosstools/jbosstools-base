@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +22,7 @@ import org.apache.xerces.util.XMLCatalogResolver;
 import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.Messages;
 import org.jboss.tools.common.util.FileUtil;
 import org.osgi.framework.Bundle;
 import org.xml.sax.SAXException;
@@ -36,16 +38,16 @@ import org.xml.sax.helpers.XMLReaderFactory;
  */
 public class SAXValidator {
 	
-	protected static final String FATAL_ERROR_PROCESSING_FEATURE_ID 	= "http://apache.org/xml/features/continue-after-fatal-error";
-	protected static final String ENTITY_RESOLVER_PROPERTY_ID 			= "http://apache.org/xml/properties/internal/entity-resolver";
-	protected static final String NAMESPACES_FEATURE_ID 				= "http://xml.org/sax/features/namespaces";
-    protected static final String NAMESPACE_PREFIXES_FEATURE_ID 		= "http://xml.org/sax/features/namespace-prefixes";
-    protected static final String VALIDATION_FEATURE_ID 				= "http://xml.org/sax/features/validation";
-    protected static final String VALIDATION_SCHEMA_FEATURE_ID 			= "http://apache.org/xml/features/validation/schema";
-    protected static final String VALIDATION_SCHEMA_CHECKING_FEATURE_ID = "http://apache.org/xml/features/validation/schema-full-checking";
-    protected static final String VALIDATION_DYNAMIC_FEATURE_ID 		= "http://apache.org/xml/features/validation/dynamic";
+	protected static final String FATAL_ERROR_PROCESSING_FEATURE_ID 	= "http://apache.org/xml/features/continue-after-fatal-error"; //$NON-NLS-1$
+	protected static final String ENTITY_RESOLVER_PROPERTY_ID 			= "http://apache.org/xml/properties/internal/entity-resolver"; //$NON-NLS-1$
+	protected static final String NAMESPACES_FEATURE_ID 				= "http://xml.org/sax/features/namespaces"; //$NON-NLS-1$
+    protected static final String NAMESPACE_PREFIXES_FEATURE_ID 		= "http://xml.org/sax/features/namespace-prefixes"; //$NON-NLS-1$
+    protected static final String VALIDATION_FEATURE_ID 				= "http://xml.org/sax/features/validation"; //$NON-NLS-1$
+    protected static final String VALIDATION_SCHEMA_FEATURE_ID 			= "http://apache.org/xml/features/validation/schema"; //$NON-NLS-1$
+    protected static final String VALIDATION_SCHEMA_CHECKING_FEATURE_ID = "http://apache.org/xml/features/validation/schema-full-checking"; //$NON-NLS-1$
+    protected static final String VALIDATION_DYNAMIC_FEATURE_ID 		= "http://apache.org/xml/features/validation/dynamic"; //$NON-NLS-1$
     
-    protected static final String DEFAULT_SAX_PARSER_CLASS_NAME 		= "org.apache.xerces.parsers.SAXParser";
+    protected static final String DEFAULT_SAX_PARSER_CLASS_NAME 		= "org.apache.xerces.parsers.SAXParser"; //$NON-NLS-1$
 
     /**
      * 
@@ -72,9 +74,9 @@ public class SAXValidator {
         try {
             parserInstance.setProperty(ENTITY_RESOLVER_PROPERTY_ID, new XMLEntityResolverImpl());
         } catch (SAXNotRecognizedException e1) {
-        	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1);
+        	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1); //$NON-NLS-1$
         } catch (SAXNotSupportedException e1) {
-        	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1);
+        	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1); //$NON-NLS-1$
 		}
         
         parserInstance.setContentHandler(handler);
@@ -93,7 +95,7 @@ public class SAXValidator {
             parser.setFeature(name, value);
         } catch (SAXException e) {
         	// TODO - Move to NLS bundle
-        	CommonPlugin.getPluginLog().logError("warning: Parser does not support feature ("+name+")", e);
+        	CommonPlugin.getPluginLog().logError("warning: Parser does not support feature ("+name+")", e); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -107,7 +109,7 @@ public class SAXValidator {
         try {
             parser.setProperty(name, value);
         } catch (SAXException e) {
-        	CommonPlugin.getPluginLog().logError("warning: Parser does not support feature ("+name+")", e);
+        	CommonPlugin.getPluginLog().logError("warning: Parser does not support feature ("+name+")", e); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }    
     
@@ -123,20 +125,18 @@ public class SAXValidator {
         try {
         	XMLReader parser = createParser();
         	if(parser==null) {
-				// TODO - Move to NLS bundle
-        		return new String[]{ "error: Unable to instantiate parser ("+DEFAULT_SAX_PARSER_CLASS_NAME+")"};
+        		return new String[]{ MessageFormat.format(
+						Messages.SAXValidator_UnableToInstantiateMessage, DEFAULT_SAX_PARSER_CLASS_NAME)};
 			}
         	parser.setErrorHandler(h);
             parser.parse(is);
         } catch (SAXException e) {
         	if(h.errors.isEmpty()) {
-            	// TODO - Move to NLS bundle
-        		return new String[]{"Unidentified parser error:0:0",e.getMessage()};
+        		return new String[]{Messages.SAXValidator_SAXExceptionMessage+":0:0",e.getMessage()}; //$NON-NLS-1$
         	}
         } catch (IOException e) {
         	if(h.errors.isEmpty()) {
-	        	// TODO - Move to NLS bundle
-	        	return new String[]{"Unidentified parser error:0:0",e.getMessage()};
+	        	return new String[]{Messages.SAXValidator_IOExceptionMessage+":0:0",e.getMessage()}; //$NON-NLS-1$
         	}
 		} finally {
 //        	Thread.currentThread().setContextClassLoader(cc);
@@ -162,34 +162,34 @@ public class SAXValidator {
 
     	Bundle b = Platform.getBundle(CommonPlugin.PLUGIN_ID);
     	String location = Platform.getStateLocation(b).toString().replace('\\', '/');
-    	if(!location.endsWith("/")) {
-			location += "/";
+    	if(!location.endsWith("/")) { //$NON-NLS-1$
+			location += "/"; //$NON-NLS-1$
 		}
     	String urlString = null;
     	URL url = null;
     	try {
-    		url = Platform.resolve(b.getEntry("/"));
+    		url = Platform.resolve(b.getEntry("/")); //$NON-NLS-1$
         	urlString = url.toString();
-        	if(!urlString.endsWith("/")) {
-				urlString += "/";
+        	if(!urlString.endsWith("/")) { //$NON-NLS-1$
+				urlString += "/"; //$NON-NLS-1$
 			}
-        	urlString += "schemas";
+        	urlString += "schemas"; //$NON-NLS-1$
     	} catch (IOException e) {
     		CommonPlugin.getPluginLog().logError(e);
     	}
-    	File f1 = new File(url.getFile() + "/schemas/catalog.xml");
-    	File f2 = new File(location + "schemas/catalog.xml");
+    	File f1 = new File(url.getFile() + "/schemas/catalog.xml"); //$NON-NLS-1$
+    	File f2 = new File(location + "schemas/catalog.xml"); //$NON-NLS-1$
     	if(f2.exists()) {
-    		return "file:///" + location + "schemas/catalog.xml";
+    		return "file:///" + location + "schemas/catalog.xml"; //$NON-NLS-1$ //$NON-NLS-2$
     	}
     	FileUtil.copyDir(f1.getParentFile(), f2.getParentFile(), true);
     	String text = FileUtil.readFile(f2);
-    	while(text.indexOf("%install%") >= 0) {
-    		int i = text.indexOf("%install%");
+    	while(text.indexOf("%install%") >= 0) { //$NON-NLS-1$
+    		int i = text.indexOf("%install%"); //$NON-NLS-1$
     		text = text.substring(0, i) + urlString + text.substring(i + 9);
     	}
     	FileUtil.writeFile(f2, text);
-    	return "file:///" + location + "schemas/catalog.xml";
+    	return "file:///" + location + "schemas/catalog.xml"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 } 
 

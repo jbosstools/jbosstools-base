@@ -23,7 +23,7 @@ public class ExprStartTokenDescription extends ConstantTokenDescription {
 	public static ExprStartTokenDescription INSTANCE = new ExprStartTokenDescription();
 
 	public ExprStartTokenDescription () {
-		super("(", EXPR_START);
+		super("(", EXPR_START); //$NON-NLS-1$
 	}
 
 	public boolean read(Tokenizer tokenizer, int offset) {

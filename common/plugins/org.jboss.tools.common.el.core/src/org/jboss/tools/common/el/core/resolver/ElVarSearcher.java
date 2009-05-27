@@ -35,8 +35,8 @@ import org.w3c.dom.Node;
  */
 public class ElVarSearcher {
 
-	private final static String VAR_ATTRIBUTE_NAME = "var";
-	private final static String VALUE_ATTRIBUTE_NAME = "value";
+	private final static String VAR_ATTRIBUTE_NAME = "var"; //$NON-NLS-1$
+	private final static String VALUE_ATTRIBUTE_NAME = "value"; //$NON-NLS-1$
 
 	private IFile file;
 	private ELCompletionEngine engine;
@@ -219,7 +219,7 @@ public class ElVarSearcher {
 					declLength = varNameEnd - varNameStart;
 				}
 				var = var.trim();
-				if(!"".equals(var)) {
+				if(!"".equals(var)) { //$NON-NLS-1$
 					String value = element.getAttribute(VALUE_ATTRIBUTE_NAME);
 					if(value!=null) {
 						value = value.trim();
@@ -247,9 +247,9 @@ public class ElVarSearcher {
 			ArrayList<Var> parentVars = new ArrayList<Var>();
 			for (Var var : vars) {
 				ELExpression token = var.getElToken();
-				if(token!=null && !token.getText().endsWith(".")) {
+				if(token!=null && !token.getText().endsWith(".")) { //$NON-NLS-1$
 					String varName = var.getName();
-					if(el.equals(varName) || el.startsWith(varName.trim()+".")) {
+					if(el.equals(varName) || el.startsWith(varName.trim()+".")) { //$NON-NLS-1$
 						if(var.getElToken()!=null && initializeNestedVars) {
 							Var parentVar = findVarForEl(var.getElToken().getText(), parentVars, true);
 							if(parentVar!=null) {
@@ -267,7 +267,7 @@ public class ElVarSearcher {
 								}
 								if(resolvedToken!=null) {
 									String oldText = var.getElToken().getText();
-									String newValue = "#{" + resolvedToken.getText() + oldText.substring(parentVar.getName().length()) + "}";
+									String newValue = "#{" + resolvedToken.getText() + oldText.substring(parentVar.getName().length()) + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 									var.value = newValue;
 									var.elToken = var.parseEl(newValue);
 								}

@@ -28,6 +28,7 @@ import org.apache.xml.serialize.Method;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.Messages;
 import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
@@ -240,11 +241,11 @@ public class XMLUtilities {
             builder.parse(is);
         } catch (IOException e) {
         	if(h.errors.isEmpty()) {
-				return new String[]{"Unexpected parser error:0:0",e.toString()};
+				return new String[]{Messages.XMLUtilities_IOExceptionMessage+":0:0",e.toString()}; //$NON-NLS-1$
 			}
         } catch (SAXException e) {
         	if(h.errors.isEmpty()) {
-				return new String[]{"Unexpected parser error:0:0",e.toString()};
+				return new String[]{Messages.XMLUtilities_SAXExceptionMessage+":0:0",e.toString()}; //$NON-NLS-1$
 			}
 		}
         return h.errors.toArray(new String[0]);        
@@ -262,8 +263,8 @@ public class XMLUtilities {
         serialize(element, new BufferedWriter(fw));
         fw.close();
     }
-	static final String ENCODING = "encoding=\"";
-	static final String UTF8 = "UTF-8";
+	static final String ENCODING = "encoding=\""; //$NON-NLS-1$
+	static final String UTF8 = "UTF-8"; //$NON-NLS-1$
 	
 	public static String getEncoding(String body) {
 		int i = body.indexOf(ENCODING);
@@ -280,7 +281,7 @@ public class XMLUtilities {
 	}
     public static OutputFormat createOutputFormat(String encoding) {
         OutputFormat format = new OutputFormat(Method.XML, encoding == null || encoding.length() == 0?null:encoding, true);
-        format.setLineSeparator(System.getProperty("line.separator", LineSeparator.Web));
+        format.setLineSeparator(System.getProperty("line.separator", LineSeparator.Web)); //$NON-NLS-1$
         format.setIndent(1);
         return format;
     }
@@ -373,17 +374,17 @@ public class XMLUtilities {
 
     public static final void setCDATA(Element element, String data) {
         element.appendChild(element.getOwnerDocument().createCDATASection(
-        												data!=null?data:""));
+        												data!=null?data:"")); //$NON-NLS-1$
     }
 
     public static final void setText(Element element, String data) {
         element.appendChild(element.getOwnerDocument().createTextNode(
-														data!=null?data:""));
+														data!=null?data:"")); //$NON-NLS-1$
     }
 
     public static final void setComment(Element element, String data) {
         Comment comm = element.getOwnerDocument().createComment(
-				data!=null?data:"");
+				data!=null?data:""); //$NON-NLS-1$
         element.getParentNode().insertBefore(comm, element);
     }
 

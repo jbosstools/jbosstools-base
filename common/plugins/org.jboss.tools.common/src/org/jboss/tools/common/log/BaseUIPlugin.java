@@ -15,6 +15,7 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.common.Messages;
 
 /**
  * Provides an easy way to log status of events.
@@ -65,6 +66,6 @@ public class BaseUIPlugin extends AbstractUIPlugin implements IPluginLog {
 		logError(message, t);
 		Shell shell = Display.getDefault().getActiveShell();
 		IStatus s = StatusFactory.getInstance(IStatus.ERROR, this.getBundle().getSymbolicName(), message, t);
-		ErrorDialog.openError(shell, "Hibernate Console", message, s);				
+		ErrorDialog.openError(shell, Messages.BaseUIPlugin_ErrorDialogTitle, message, s);				
 	}
 }

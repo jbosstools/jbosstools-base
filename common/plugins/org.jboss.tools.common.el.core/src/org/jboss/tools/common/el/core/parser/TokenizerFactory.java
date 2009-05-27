@@ -106,7 +106,7 @@ public class TokenizerFactory {
 	}
 
 	public static void main(String[] args) {
-		String text = "ioioio#{a(1.2e1i) + b c + d}ioioio#{0}";
+		String text = "ioioio#{a(1.2e1i) + b c + d}ioioio#{0}"; //$NON-NLS-1$
 //"#{a[b()['l'].j]}";
 //"#{g11.g12.y13} #{#{  #{a14.b15(x.t.u(uu.ii[9],  j)).b16(m17(v18(i19[2]).u20).)+ a21(c.).b.}";
 //"#{not a.b(x,y) + s.h((6 != -8) & (7 + -iy88.g[9].h(7  div 8).i.j)+(8) ? 4 : 7,'p', a.b.c.d[null])}";
@@ -117,28 +117,28 @@ public class TokenizerFactory {
 		
 		while(ti != null) {
 			int type = ti.getType();
-			System.out.println(type + ":" + ti.getText() + ":");
+			System.out.println(type + ":" + ti.getText() + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 			ti = ti.getNextToken();
 		}
 		List<SyntaxError> errors = t.getErrors();
 		for (SyntaxError e: errors) {
-			System.out.println("state=" + e.getState() + " position=" + e.getPosition() + " problem=" + e.getProblem());
+			System.out.println("state=" + e.getState() + " position=" + e.getPosition() + " problem=" + e.getProblem()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		ELParser parser = ELParserUtil.getJbossFactory().createParser();
 		ELModel model = parser.parse(text, 0, 90);
 		System.out.println(model);
 
 		ELExpression expr = model.getInstances().get(0).getExpression();
-		System.out.println("Expression=" + expr);
+		System.out.println("Expression=" + expr); //$NON-NLS-1$
 		List<ELInvocationExpression> is = expr.getInvocations();
-		System.out.println("Invocations:");
+		System.out.println("Invocations:"); //$NON-NLS-1$
 		for (ELInvocationExpression i : is) {
 			System.out.println(i);
 		}
 
 		int off = 8;
 		ELExpression expr1 = ELUtil.findExpression(model, off);
-		System.out.println("Expression at " + off + ": " + expr1);
+		System.out.println("Expression at " + off + ": " + expr1); //$NON-NLS-1$ //$NON-NLS-2$
 		
 	}
 

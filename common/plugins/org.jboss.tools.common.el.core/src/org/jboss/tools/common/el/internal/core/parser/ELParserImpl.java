@@ -52,7 +52,7 @@ public class ELParserImpl {
 
 	public ELModelImpl parse(LexicalToken start) {
 		if(current != null) {
-			throw new RuntimeException("Cannot reuse parser while it is running.");
+			throw new RuntimeException("Cannot reuse parser while it is running."); //$NON-NLS-1$
 		}
 		try {
 			ELModelImpl model = new ELModelImpl();
@@ -91,7 +91,7 @@ public class ELParserImpl {
 			//create fake invocation expression
 			expression = new ELPropertyInvocationImpl();
 			int p = current != null ? current.getStart() : instance.getEndPosition();
-			LexicalToken t = new LexicalToken(p, 0, "", JavaNameTokenDescription.JAVA_NAME);
+			LexicalToken t = new LexicalToken(p, 0, "", JavaNameTokenDescription.JAVA_NAME); //$NON-NLS-1$
 			expression.setFirstToken(t);
 			expression.setLastToken(t);
 		}

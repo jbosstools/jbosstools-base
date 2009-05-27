@@ -24,8 +24,8 @@ import org.xml.sax.SAXException;
 public class SafeDocumentBuilderFactory extends Thread {
 	public static final EntityResolver EMPTY_RESOLVER = new EntityResolver() {
 		public InputSource resolveEntity(java.lang.String publicId, java.lang.String systemId) throws SAXException, java.io.IOException {
-			if((systemId != null) && systemId.toLowerCase().endsWith(".dtd")) { // this deactivates DTD
-				return new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes()));
+			if((systemId != null) && systemId.toLowerCase().endsWith(".dtd")) { // this deactivates DTD //$NON-NLS-1$
+				return new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes())); //$NON-NLS-1$
 			} else {
 				return null;
 			}

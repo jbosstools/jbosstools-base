@@ -191,7 +191,7 @@ public class TextProposal {
 	 * @return
 	 */
 	public boolean isCloseTag() {
-		return label != null && label.startsWith("/");
+		return label != null && label.startsWith("/"); //$NON-NLS-1$
 	}
 
 	/**
@@ -199,11 +199,11 @@ public class TextProposal {
 	 */
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("label: ");
+		buffer.append("label: "); //$NON-NLS-1$
 		buffer.append(label);
-		buffer.append("\ncontextInfo: ");
+		buffer.append("\ncontextInfo: "); //$NON-NLS-1$
 		buffer.append(contextInfo);
-		buffer.append("\nreplacementString: ");
+		buffer.append("\nreplacementString: "); //$NON-NLS-1$
 		buffer.append(replacementString);
 
 		return buffer.toString();

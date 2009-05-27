@@ -42,7 +42,7 @@ public class ELArgumentExpressionImpl extends ELInvocationExpressionImpl impleme
 	}
 
 	public String toString() {
-		return super.toString() + ((argument != null) ? argument.toString() : "");
+		return super.toString() + ((argument != null) ? argument.toString() : ""); //$NON-NLS-1$
 	}
 
 	public ELObjectType getType() {

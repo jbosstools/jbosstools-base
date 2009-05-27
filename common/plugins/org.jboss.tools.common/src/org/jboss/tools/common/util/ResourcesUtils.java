@@ -71,7 +71,7 @@ public class ResourcesUtils {
 	}
 
 	public static IProject importExistingProject(IProject project, String location, String name, IProgressMonitor monitor, boolean refreshWorkspace) throws CoreException {
-		IPath path = new Path(location).append(".project");
+		IPath path = new Path(location).append(".project"); //$NON-NLS-1$
 		IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(path);
 		description.setName(name);
 		project.create(description, monitor);

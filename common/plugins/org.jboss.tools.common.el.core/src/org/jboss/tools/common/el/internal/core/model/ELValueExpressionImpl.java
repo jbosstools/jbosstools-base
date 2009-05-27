@@ -24,7 +24,7 @@ public class ELValueExpressionImpl extends ELExpressionImpl {
 	}
 
 	public String toString() {
-		return getFirstToken() != null ? getFirstToken().getText() : "";
+		return getFirstToken() != null ? getFirstToken().getText() : ""; //$NON-NLS-1$
 	}
 
 	public ELObjectType getType() {

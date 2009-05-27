@@ -49,7 +49,7 @@ public class XMLEntityResolverImpl implements XMLEntityResolver {
                 result = new XMLInputSource(rid.getPublicId(), systemId, rid.getBaseSystemId(), is, null);
             }
         } catch (SAXException e) {
-        	CommonPlugin.getPluginLog().logError( "Exception publicId=" + publicId + " systemId=" + systemId + " exception=" + e.getClass().getName() + ":" + e.getMessage());
+        	CommonPlugin.getPluginLog().logError( "Exception publicId=" + publicId + " systemId=" + systemId + " exception=" + e.getClass().getName() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         } 
 
         return result;

@@ -24,7 +24,7 @@ public class EndELTokenDescription extends ConstantTokenDescription {
 	public static EndELTokenDescription INSTANCE = new EndELTokenDescription();
 
 	public EndELTokenDescription () {
-		super("}", END_EL);
+		super("}", END_EL); //$NON-NLS-1$
 	}
 
 	public boolean isStart(Tokenizer tokenizer, int offset) {

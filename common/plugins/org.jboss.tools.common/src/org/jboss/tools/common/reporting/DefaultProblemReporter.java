@@ -21,7 +21,7 @@ public class DefaultProblemReporter implements IProblemReporter {
 
 	public void reportProblem(IStatus status) {
 		if(status != null) {
-			Platform.getLog(Platform.getBundle("org.jboss.tools.common")).log(status);
+			Platform.getLog(Platform.getBundle("org.jboss.tools.common")).log(status); //$NON-NLS-1$
 		}
 	}
 

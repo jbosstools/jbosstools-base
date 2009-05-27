@@ -56,12 +56,12 @@ public class ELPropertyInvocationImpl extends ELInvocationExpressionImpl impleme
 		}
 		String p = ((ELPropertyInvocationImpl)left).getQualifiedName();
 		if(p == null) return null;
-		return p + "." + name.getText();
+		return p + "." + name.getText(); //$NON-NLS-1$
 	}
 
 	public String toString() {
-		return super.toString() + (dot != null ? dot.getText() : "")
-			+ (name != null ? name.getText() : "");
+		return super.toString() + (dot != null ? dot.getText() : "") //$NON-NLS-1$
+			+ (name != null ? name.getText() : ""); //$NON-NLS-1$
 	}
 
 	public ELObjectType getType() {

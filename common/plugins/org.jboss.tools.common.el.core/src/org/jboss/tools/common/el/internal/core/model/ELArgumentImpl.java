@@ -52,7 +52,7 @@ public class ELArgumentImpl extends ELObjectImpl implements ELArgument {
 		if(child instanceof ELExpressionImpl) {
 			setArgument((ELExpressionImpl)child);
 		} else {
-			throw new IllegalArgumentException("EL argument can have only EL expression as its child.");
+			throw new IllegalArgumentException("EL argument can have only EL expression as its child."); //$NON-NLS-1$
 		}
 	}
 

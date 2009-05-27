@@ -51,7 +51,7 @@ public class ELModelImpl extends ELObjectImpl implements ELModel {
 		if(child instanceof ELInstanceImpl) {
 			addInstance((ELInstanceImpl)child);
 		} else {
-			throw new IllegalArgumentException("EL root can have onle ELInstances as its children.");
+			throw new IllegalArgumentException("EL root can have only ELInstances as its children."); //$NON-NLS-1$
 		}
 	}
 

@@ -94,8 +94,8 @@ public class XMLEntityResolver implements EntityResolver {
 			}
         }
 
-		if(deactivate && (systemId != null) && (source == null) && (systemId.toLowerCase().endsWith(".dtd"))) { // this deactivates DTD
-			source = new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes()));
+		if(deactivate && (systemId != null) && (source == null) && (systemId.toLowerCase().endsWith(".dtd"))) { // this deactivates DTD //$NON-NLS-1$
+			source = new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes())); //$NON-NLS-1$
 		}
 
         return source;

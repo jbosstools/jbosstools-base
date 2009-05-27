@@ -36,7 +36,7 @@ public class ProblemReportingHelper {
 	 */
 	public static void reportProblem(String plugin, String message, Throwable throwable) {
 		if(message==null) {
-			throw new IllegalArgumentException("Message parameter cannot be null");
+			throw new IllegalArgumentException("Message parameter cannot be null"); //$NON-NLS-1$
 		}
 		IStatus status = new Status(IStatus.ERROR, plugin, 0, message, throwable);
 		reportProblem(status);
@@ -48,8 +48,8 @@ public class ProblemReportingHelper {
 	 */
 	public static void reportProblem(IStatus status) {
 		if(status == null) {
-			reportProblem("org.jboss.tools.common", 
-					new IllegalArgumentException("Parameter 'status' cannt be null"));
+			reportProblem("org.jboss.tools.common",  //$NON-NLS-1$
+					new IllegalArgumentException("Parameter 'status' cannot be null")); //$NON-NLS-1$
 			return;
 		}
 		IProblemReporter reporter = ProblemReporterFactory.getInstance().getProblemReporter();

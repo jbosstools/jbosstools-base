@@ -47,7 +47,7 @@ public class Var {
 	}
 
 	ELExpression parseEl(String el) {
-		if(el.length()>3 && el.startsWith("#{") && el.endsWith("}")) {
+		if(el.length()>3 && el.startsWith("#{") && el.endsWith("}")) { //$NON-NLS-1$ //$NON-NLS-2$
 			ELParser parser = factory.createParser();
 			ELModel model = parser.parse(el);
 			if(model == null || model.getSyntaxErrors().size() > 0) return null;

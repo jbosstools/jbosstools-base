@@ -23,7 +23,7 @@ public class CommaTokenDescription extends ConstantTokenDescription {
 	public static CommaTokenDescription INSTANCE = new CommaTokenDescription();
 
 	public CommaTokenDescription () {
-		super(",", COMMA);
+		super(",", COMMA); //$NON-NLS-1$
 	}
 
 	public boolean isStart(Tokenizer tokenizer, int offset) {

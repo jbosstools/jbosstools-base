@@ -34,7 +34,7 @@ class ErrorHandlerImpl implements ErrorHandler {
 	  }
 
 	  private void add(SAXParseException e) {
-	      errors.add("" + e.getMessage() + ":" + e.getLineNumber() + ":" + e.getColumnNumber());
+	      errors.add("" + e.getMessage() + ":" + e.getLineNumber() + ":" + e.getColumnNumber()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	  }
 
 	}

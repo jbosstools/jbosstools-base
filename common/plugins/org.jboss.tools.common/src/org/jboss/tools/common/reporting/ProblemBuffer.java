@@ -35,7 +35,7 @@ public class ProblemBuffer {
 	 */
 	public void writeToBuffer(IStatus status) {
 		getEclipseLog();
-		writer.logging(status, "org.jboss.tools.common");
+		writer.logging(status, "org.jboss.tools.common"); //$NON-NLS-1$
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class ProblemBuffer {
 		int i = 0;
 		int c = 0;
 		while(i < s.length()) {
-			i = s.indexOf("!ENTRY", i);
+			i = s.indexOf("!ENTRY", i); //$NON-NLS-1$
 			if(i >= 0) {
 				++c;
 				++i;
@@ -67,12 +67,12 @@ public class ProblemBuffer {
 	 */	
 	public String getContent() {
 		File f = getLogFile();
-		return (!f.isFile()) ? "" : FileUtil.readFile(f);
+		return (!f.isFile()) ? "" : FileUtil.readFile(f); //$NON-NLS-1$
 	}
 	
 	public String getEclipseLogContent() {
 		File f = Platform.getLogFileLocation().toFile();
-		return (f.isFile()) ? FileUtil.readFile(f) : "";
+		return (f.isFile()) ? FileUtil.readFile(f) : ""; //$NON-NLS-1$
 	}
 	
 	public void clean() {
@@ -90,10 +90,10 @@ public class ProblemBuffer {
 	public void report(String text, String userEMail, String other, boolean cleanBuffer) {
 		StringBuffer sb = new StringBuffer();
 		if(userEMail != null && userEMail.trim().length() > 0) {
-			sb.append("Customer e-mail=" + userEMail + "\n");
+			sb.append("Customer e-mail=" + userEMail + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if(other != null && other.length() > 0) {
-			sb.append("Other=" + other + "\n");
+			sb.append("Other=" + other + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if(text != null) {
 			sb.append(text);
@@ -114,9 +114,9 @@ public class ProblemBuffer {
 	}
 
 	private File getLogFile() {
-		Bundle b = Platform.getBundle("org.jboss.tools.common");
+		Bundle b = Platform.getBundle("org.jboss.tools.common"); //$NON-NLS-1$
 		String stateLocation = Platform.getStateLocation(b).toString().replace('\\', '/');
-		String logLocation = stateLocation + "/.log";
+		String logLocation = stateLocation + "/.log"; //$NON-NLS-1$
 		return new File(logLocation);
 	}
 }

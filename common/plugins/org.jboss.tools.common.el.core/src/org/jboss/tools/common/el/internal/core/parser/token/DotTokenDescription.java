@@ -21,7 +21,7 @@ public class DotTokenDescription extends ConstantTokenDescription {
 	public static DotTokenDescription INSTANCE = new DotTokenDescription();
 
 	public DotTokenDescription () {
-		super(".", DOT);
+		super(".", DOT); //$NON-NLS-1$
 	}
 
 }

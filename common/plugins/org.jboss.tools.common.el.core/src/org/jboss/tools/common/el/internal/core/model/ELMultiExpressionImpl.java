@@ -44,13 +44,13 @@ public class ELMultiExpressionImpl extends ELExpressionImpl implements ELMultiEx
 		} else if(child instanceof ELOperatorImpl) {
 			addOperator((ELOperatorImpl)child);
 		} else {
-			throw new IllegalArgumentException("EL instance can have only EL expression as child.");
+			throw new IllegalArgumentException("EL instance can have only EL expression as child."); //$NON-NLS-1$
 		}
 	}
 
 	public void addExpression(ELExpressionImpl expression) {
 		if(expressions.size() > operators.size()) {
-			throw new IllegalArgumentException("Expecting operator");
+			throw new IllegalArgumentException("Expecting operator"); //$NON-NLS-1$
 		}
 		super.addChild(expression);
 		expressions.add(expression);
