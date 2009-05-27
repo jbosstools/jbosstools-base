@@ -107,13 +107,13 @@ public class KbTldResource implements KbResource {
 	}
 
 	private InputStream getInputStreamFromTldLocation() {
-		final String ERR_TLD_FILE_DOSENT_EXIST = "ERROR: TLD file ''{0}'' doesn't exist!";
+		final String ERR_TLD_FILE_DOSENT_EXIST = "ERROR: TLD file ''{0}'' doesn't exist!"; //$NON-NLS-1$
 		InputStream is = null;
         if (tldLocation == null) {
         	return null;
         }
         try {
-            if (tldLocation.indexOf(":/") < 2) {
+            if (tldLocation.indexOf(":/") < 2) { //$NON-NLS-1$
                 File file = new File(tldLocation);
                 if (!file.exists()) {
                 	return null;
@@ -121,7 +121,7 @@ public class KbTldResource implements KbResource {
                 is = new BufferedInputStream(new FileInputStream(file));
             } else {
 				URL url = new URL(tldLocation);
-				if("jar".equals(url.getProtocol()) || "file".equals(url.getProtocol())) {
+				if("jar".equals(url.getProtocol()) || "file".equals(url.getProtocol())) { //$NON-NLS-1$ //$NON-NLS-2$
 					is = url.openStream(); // Bug 8385 -fixed
 				}
             }
@@ -308,17 +308,17 @@ public class KbTldResource implements KbResource {
 	 */
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("[TLDlocation=\"");
+		buffer.append("[TLDlocation=\""); //$NON-NLS-1$
 		buffer.append(tldLocation);
-		buffer.append("\" SchemaLocation=\"");
+		buffer.append("\" SchemaLocation=\""); //$NON-NLS-1$
 		buffer.append(schemaLocation);
-		buffer.append("\"");
-		buffer.append(" Prefixes=\"");
+		buffer.append("\""); //$NON-NLS-1$
+		buffer.append(" Prefixes=\""); //$NON-NLS-1$
 		buffer.append(prefixes);
-		buffer.append("\"");
-		buffer.append(" uri=\"");
+		buffer.append("\""); //$NON-NLS-1$
+		buffer.append(" uri=\""); //$NON-NLS-1$
 		buffer.append(uri);
-		buffer.append("\"]");
+		buffer.append("\"]"); //$NON-NLS-1$
 
 		return buffer.toString();
 	}

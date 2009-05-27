@@ -21,17 +21,17 @@ import java.util.StringTokenizer;
  */
 public class KbQuery {
 
-	public static final String XML_DECLARATION_QUERY = "?";
-	public static final String TAG_SEPARATOR = "/";
-	public static final String ATTRIBUTE_SEPARATOR = "@";
-	public static final String PREFIX_SEPARATOR = ":";
-	public static final String ENUMERATION_SEPARATOR = "=";
-	public static final String DONT_FILTER_END_TAG_CHAR = "^";
-	public static final String JSP_DIRECTIVE_QUERY = "@";
+	public static final String XML_DECLARATION_QUERY = "?"; //$NON-NLS-1$
+	public static final String TAG_SEPARATOR = "/"; //$NON-NLS-1$
+	public static final String ATTRIBUTE_SEPARATOR = "@"; //$NON-NLS-1$
+	public static final String PREFIX_SEPARATOR = ":"; //$NON-NLS-1$
+	public static final String ENUMERATION_SEPARATOR = "="; //$NON-NLS-1$
+	public static final String DONT_FILTER_END_TAG_CHAR = "^"; //$NON-NLS-1$
+	public static final String JSP_DIRECTIVE_QUERY = "@"; //$NON-NLS-1$
 	private static final char START_CODE_CHAR = '%';
 	private static final char END_CODE_CHAR = ';';
 
-	private String query = "";
+	private String query = ""; //$NON-NLS-1$
 	private Collection resources = new ArrayList();
 	private Collection dinamicResources = new ArrayList();
 
@@ -75,11 +75,11 @@ public class KbQuery {
 	 */
 	public String toString() {
 		StringBuffer result = new StringBuffer();
-		result.append("Query string = [");
+		result.append("Query string = ["); //$NON-NLS-1$
 		result.append(query);
-		result.append("]; Resources size = [");
+		result.append("]; Resources size = ["); //$NON-NLS-1$
 		result.append(resources.size());
-		result.append("];");
+		result.append("];"); //$NON-NLS-1$
 		return result.toString();
 	}
 
@@ -144,8 +144,8 @@ public class KbQuery {
 			return str;
 		}
 		StringBuffer result = new StringBuffer(str.length());
-		StringTokenizer st = new StringTokenizer(str, "" + START_CODE_CHAR, false);
-		if((!str.startsWith("" + START_CODE_CHAR))&&(st.hasMoreElements())) {
+		StringTokenizer st = new StringTokenizer(str, "" + START_CODE_CHAR, false); //$NON-NLS-1$
+		if((!str.startsWith("" + START_CODE_CHAR))&&(st.hasMoreElements())) { //$NON-NLS-1$
 			result.append(st.nextElement());
 		}
 		while(st.hasMoreElements()) {
@@ -160,7 +160,7 @@ public class KbQuery {
 						result.append(s.substring(endCode));
 					}
 				} catch(NumberFormatException e) {
-					String message = "ERROR: can't decode string=" + s;
+					String message = "ERROR: can't decode string=" + s; //$NON-NLS-1$
 					KbPlugin.getPluginLog().logError(message, e);
 				}
 			}

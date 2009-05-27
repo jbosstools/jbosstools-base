@@ -24,7 +24,7 @@ public class KbPluginConfiguration implements KbConfiguration {
 	public static final String CUSTOM_SCHEMA_LOCATION = copyKbSchemasFromPluginToWorkSpace();
 
 	public static final String CUSTOM_SCHEMA_DTD_LOCATION = CUSTOM_SCHEMA_LOCATION + File.separator + SCHEMA_DTD_FOLDER_NAME;
-	public static final String CUSTOM_SCHEMA_TLD_LOCATION = CUSTOM_SCHEMA_LOCATION + File.separator + "custom" + File.separator + SCHEMA_TLD_FOLDER_NAME;
+	public static final String CUSTOM_SCHEMA_TLD_LOCATION = CUSTOM_SCHEMA_LOCATION + File.separator + "custom" + File.separator + SCHEMA_TLD_FOLDER_NAME; //$NON-NLS-1$
 	public static final String SCHEMA_HTML_FILE_LOCATION = KbPlugin.getDefault().getLocation() + File.separator + SCHEMA_FOLDER_NAME + File.separator + SCHEMA_HTML_FOLDER_NAME + File.separator + SCHEMA_HTML_FILE_NAME;
 	public static final String SCHEMA_JSP_FILE_LOCATION = KbPlugin.getDefault().getLocation() + File.separator + SCHEMA_FOLDER_NAME + File.separator + SCHEMA_JSP_FOLDER_NAME + File.separator + SCHEMA_JSP_FILE_NAME;
 	public static final String CUSTOM_SCHEMA_JSP_DIRECTIVE_FILE_LOCATION = CUSTOM_SCHEMA_LOCATION + File.separator + SCHEMA_JSP_FOLDER_NAME + File.separator + SCHEMA_JSP_DIRECTIVE_FILE_NAME;
@@ -36,7 +36,7 @@ public class KbPluginConfiguration implements KbConfiguration {
 	}
 
 	private static String copyKbSchemasFromPluginToWorkSpace() {
-		IPath path = Platform.getLocation().append(".metadata/.plugins/").append(KbPlugin.PLUGIN_ID).append(SCHEMA_FOLDER_NAME);
+		IPath path = Platform.getLocation().append(".metadata/.plugins/").append(KbPlugin.PLUGIN_ID).append(SCHEMA_FOLDER_NAME); //$NON-NLS-1$
 		File workSpaceCustomSchemaLocation = path.toFile();
 
 	    return workSpaceCustomSchemaLocation.toString();

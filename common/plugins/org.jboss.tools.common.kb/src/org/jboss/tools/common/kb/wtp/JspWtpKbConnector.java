@@ -104,7 +104,7 @@ public class JspWtpKbConnector implements WtpKbConnector {
 	 */
 	public JspWtpKbConnector() {
 		jspResource = KbTldStore.getInstance().getJspResource();
-		((KbTldResource)jspResource).addPrefix("jsp");
+		((KbTldResource)jspResource).addPrefix("jsp"); //$NON-NLS-1$
 		registerResources = new ArrayList<KbResource>();
 		registerJspResource();
 		registretedDinamicResources = new ArrayList<KbDinamicResource>();
@@ -135,8 +135,8 @@ public class JspWtpKbConnector implements WtpKbConnector {
      * @see org.jboss.tools.common.kb.wtp.WtpKbConnector#getProposal(java.lang.String)
      */
     public KbProposal getProposal(String query) throws KbException {
-    	if(!query.endsWith("/")) {
-    		query = query + "/";
+    	if(!query.endsWith("/")) { //$NON-NLS-1$
+    		query = query + "/"; //$NON-NLS-1$
     	}
     	// tracing would be fine here
 //    	KbPlugin.log(query);
@@ -216,7 +216,7 @@ public class JspWtpKbConnector implements WtpKbConnector {
 	 */
 	public Collection<KbProposal> getProposals(String query) throws KbException {
 		boolean emptyQuery = false;
-		if(query.equals("/")) {
+		if(query.equals("/")) { //$NON-NLS-1$
 			emptyQuery = true;
 		}
 		if(emptyQuery) {
@@ -301,7 +301,7 @@ public class JspWtpKbConnector implements WtpKbConnector {
 		    registretedDinamicResources.add((KbDinamicResource)resource);
 		    KbTldStore.getInstance().registerResource(resource);
 		} else {
-		    throw new IllegalArgumentException("JspWtpKbConnector.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
+		    throw new IllegalArgumentException("JspWtpKbConnector.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource"); //$NON-NLS-1$
 		}
 		if(clearCash) {
 			clearCache(modified, false);
@@ -326,7 +326,7 @@ public class JspWtpKbConnector implements WtpKbConnector {
         }
 
 	    KbTldStore store = KbTldStore.getInstance();
-	    KbTldResource resource = new KbTldResource(uri, "", "", version);
+	    KbTldResource resource = new KbTldResource(uri, "", "", version); //$NON-NLS-1$ //$NON-NLS-2$
 	    List<String> result = store.getAllTagNamesFromResource(resource);
 	    getTagNamesCache().put(key, result);
 	    return result;
@@ -356,7 +356,7 @@ public class JspWtpKbConnector implements WtpKbConnector {
 			KbTldStore.getInstance().unregisterResource(resource);
 			registretedDinamicResources.remove(resource);
 		} else {
-			throw new IllegalArgumentException("JspKbConnector.unregisterResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
+			throw new IllegalArgumentException("JspKbConnector.unregisterResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource"); //$NON-NLS-1$
 		}
 	}
 

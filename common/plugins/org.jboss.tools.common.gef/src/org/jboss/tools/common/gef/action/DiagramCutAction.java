@@ -14,6 +14,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.internal.WorkbenchImages;
+import org.jboss.tools.common.gef.Messages;
 
 public abstract class DiagramCutAction extends DiagramSelectionAction {
 
@@ -38,7 +39,7 @@ public abstract class DiagramCutAction extends DiagramSelectionAction {
 		setDisabledImageDescriptor(
 			WorkbenchImages.getImageDescriptor(
 				ISharedImages.IMG_TOOL_CUT_DISABLED));
-		setAccelerator(convertAccelerator("CTRL+X"));
+		setAccelerator(convertAccelerator(Messages.DiagramCutAction_AcceleratorText));
 		setEnabled(false);
 	}
 

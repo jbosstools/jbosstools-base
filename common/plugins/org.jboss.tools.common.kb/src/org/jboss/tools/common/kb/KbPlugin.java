@@ -29,7 +29,7 @@ import org.osgi.framework.BundleContext;
  */
 public class KbPlugin extends BaseUIPlugin {
 
-	public static final String PLUGIN_ID = "org.jboss.tools.common.kb";
+	public static final String PLUGIN_ID = "org.jboss.tools.common.kb"; //$NON-NLS-1$
 	private File location;
 	
 	// The shared instance
@@ -38,7 +38,7 @@ public class KbPlugin extends BaseUIPlugin {
 	// A Map to save a descriptor for each image
 	private HashMap fImageDescRegistry = null;
 
-	public static final String CA_ENUMERATION_IMAGE_PATH = "images/ca/icons_Enumeration.gif";
+	public static final String CA_ENUMERATION_IMAGE_PATH = "images/ca/icons_Enumeration.gif"; //$NON-NLS-1$
 
 	public KbPlugin() {
 	}
@@ -61,7 +61,7 @@ public class KbPlugin extends BaseUIPlugin {
 		if(!isLocationSet) {
 			try {
 				isLocationSet = true;
-				location = new File(FileLocator.resolve(KbPlugin.getDefault().getBundle().getEntry("/")).getPath());
+				location = new File(FileLocator.resolve(KbPlugin.getDefault().getBundle().getEntry("/")).getPath()); //$NON-NLS-1$
 			} catch (IOException e) {
 				getPluginLog().logError(e);
 			}

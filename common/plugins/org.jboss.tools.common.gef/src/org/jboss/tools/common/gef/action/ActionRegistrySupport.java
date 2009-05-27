@@ -79,7 +79,7 @@ public class ActionRegistrySupport {
 	}
 
 	public void contributeGEFToToolBar(IToolBarManager tbm) {
-		tbm.add(getAction("Print_Diagram"));
+		tbm.add(getAction(PrintRetargetAction.ACTION_ID));
 		tbm.add(new Separator());
 		tbm.add(getAction(GEFActionConstants.ALIGN_LEFT));
 		tbm.add(getAction(GEFActionConstants.ALIGN_CENTER));

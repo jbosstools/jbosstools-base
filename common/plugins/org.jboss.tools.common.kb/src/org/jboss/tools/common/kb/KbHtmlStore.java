@@ -127,7 +127,7 @@ public class KbHtmlStore implements KbStore {
 
 		String strQuery = cleanQuery(query);
 		if(strQuery == null) {
-			String errorMessage = "ERROR: Bad query: \"" + query.getQuery() + "\". Query must starts with \"" + KbQuery.TAG_SEPARATOR + "\"";
+			String errorMessage = "ERROR: Bad query: \"" + query.getQuery() + "\". Query must starts with \"" + KbQuery.TAG_SEPARATOR + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //			KbPlugin.log(errorMessage);
 			throw new IllegalArgumentException(errorMessage);
 		}
@@ -138,7 +138,7 @@ public class KbHtmlStore implements KbStore {
 		int lastTagSeparator = strQuery.lastIndexOf(KbQuery.TAG_SEPARATOR);
 
 		String firstTag = null;
-		String tagMask = "";
+		String tagMask = ""; //$NON-NLS-1$
 		if(lastTagSeparator > firstTagSeparator) {
 			firstTag = strQuery.substring(firstTagSeparator + KbQuery.TAG_SEPARATOR.length(), lastTagSeparator);
 			if(lastTagSeparator + KbQuery.TAG_SEPARATOR.length() < strQuery.length()) {
@@ -237,18 +237,18 @@ public class KbHtmlStore implements KbStore {
 
 	private KbProposal getEndTagProposal(KbQuery kbQuery) {
 		String query = kbQuery.getQuery();
-		String mask = "";
+		String mask = ""; //$NON-NLS-1$
 		int lastSeparator = query.lastIndexOf(KbQuery.TAG_SEPARATOR);
 		if((lastSeparator!=-1)&&(lastSeparator + KbQuery.TAG_SEPARATOR.length()<query.length())) {
 			mask = query.substring(lastSeparator + KbQuery.TAG_SEPARATOR.length());
 		}
 
 		String lastTag = kbQuery.getLastTag();
-		if((lastTag != null)&&(((mask.indexOf(KbQuery.DONT_FILTER_END_TAG_CHAR)!=-1)&&(KbQuery.DONT_FILTER_END_TAG_CHAR + lastTag).startsWith(mask))||(mask.equals("")))) {
+		if((lastTag != null)&&(((mask.indexOf(KbQuery.DONT_FILTER_END_TAG_CHAR)!=-1)&&(KbQuery.DONT_FILTER_END_TAG_CHAR + lastTag).startsWith(mask))||(mask.equals("")))) { //$NON-NLS-1$
 			if(checkNonRefusedEndTag(lastTag)) {
 				KbProposal proposal = new KbProposal();
-				proposal.setLabel("/" + lastTag);
-				proposal.setReplacementString("/" + lastTag);
+				proposal.setLabel("/" + lastTag); //$NON-NLS-1$
+				proposal.setReplacementString("/" + lastTag); //$NON-NLS-1$
 				return proposal;
 			} 
 		}
@@ -338,7 +338,7 @@ public class KbHtmlStore implements KbStore {
 		String tagName = tagMask.substring(0, startAttributeName);
 		startAttributeName+=KbQuery.ATTRIBUTE_SEPARATOR.length();
 		if(startAttributeName == tagMask.length()) {
-			return getAttributes(tagName, "");
+			return getAttributes(tagName, ""); //$NON-NLS-1$
 		}
 
 		int startAttributeValue = tagMask.indexOf(KbQuery.ENUMERATION_SEPARATOR);
@@ -349,15 +349,15 @@ public class KbHtmlStore implements KbStore {
 		String attributeName = tagMask.substring(startAttributeName, startAttributeValue);
 		startAttributeValue+=KbQuery.ENUMERATION_SEPARATOR.length();
 		if(startAttributeValue == tagMask.length()) {
-			return getEnumeration(tagName, attributeName, "");
+			return getEnumeration(tagName, attributeName, ""); //$NON-NLS-1$
 		}
 
 		return getEnumeration(tagName, attributeName, KbQuery.decode(tagMask.substring(startAttributeValue)));
 	}
 
 	private synchronized boolean activateHtmlSchema() {
-		String ERR_CANNNOT_LOAD_SCHEME = "Can't load HTML schema ''{0}''"; //$NON-NLS-N$
-		String ERR_EXCEPTION_DURING_PARSING = "Exception happend during parsing ''{0}''"; //$NON-NLS-N$
+		String ERR_CANNNOT_LOAD_SCHEME = "Can't load HTML schema ''{0}''"; //$NON-NLS-1$
+		String ERR_EXCEPTION_DURING_PARSING = "Exception happend during parsing ''{0}''"; //$NON-NLS-1$
 		if(htmlSchemaIsActivating()) {
 			return false;
 		}

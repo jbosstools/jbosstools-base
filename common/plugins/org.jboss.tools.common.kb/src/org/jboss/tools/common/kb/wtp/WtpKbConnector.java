@@ -22,7 +22,7 @@ import org.jboss.tools.common.kb.KbProposal;
  * @author Igels
  */
 public interface WtpKbConnector extends KbConnector {
-	public static String ADD_HTML_PREFIX = "4YTR:";
+	public static String ADD_HTML_PREFIX = "4YTR:"; //$NON-NLS-1$
 	
 	/**
 	 * 

@@ -15,6 +15,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.internal.WorkbenchImages;
 import org.eclipse.gef.internal.GEFMessages;
+import org.jboss.tools.common.gef.Messages;
 
 
 /**
@@ -43,7 +44,7 @@ public abstract class DiagramCopyAction extends DiagramSelectionAction {
 		setDisabledImageDescriptor(
 			WorkbenchImages.getImageDescriptor(
 				ISharedImages.IMG_TOOL_COPY_DISABLED));
-		setAccelerator(convertAccelerator("CTRL+C"));
+		setAccelerator(convertAccelerator(Messages.DiagramCopyAction_AcceleratorText));
 		setEnabled(false);
 	}
 

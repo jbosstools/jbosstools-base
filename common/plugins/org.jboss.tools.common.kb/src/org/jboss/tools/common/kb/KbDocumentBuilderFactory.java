@@ -31,7 +31,7 @@ public class KbDocumentBuilderFactory {
 		try {
 			return new DocumentBuilderCreator().createDocumentBuilder(validating);
 		} catch (InterruptedException t) {
-			KbPlugin.getPluginLog().logError("Cannot create document builder.", t);
+			KbPlugin.getPluginLog().logError("Cannot create document builder.", t); //$NON-NLS-1$
 			return null;
 		} 
 	}
@@ -58,8 +58,8 @@ public class KbDocumentBuilderFactory {
 				if(!validate) {
 					documentBuilder.setEntityResolver(new EntityResolver() {
 						public InputSource resolveEntity(java.lang.String publicId, java.lang.String systemId) throws SAXException, java.io.IOException {
-							if((systemId != null) && systemId.toLowerCase().endsWith(".dtd")) { // this deactivates DTD
-								return new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes()));
+							if((systemId != null) && systemId.toLowerCase().endsWith(".dtd")) { // this deactivates DTD //$NON-NLS-1$
+								return new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes())); //$NON-NLS-1$
 							} else {
 								return null;
 							}
@@ -67,7 +67,7 @@ public class KbDocumentBuilderFactory {
 					});
 				}
 			} catch (ParserConfigurationException t) {
-				KbPlugin.getPluginLog().logError("Document builder creation failed.", t);
+				KbPlugin.getPluginLog().logError("Document builder creation failed.", t); //$NON-NLS-1$
 			}
 		}
 	}

@@ -15,6 +15,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.internal.WorkbenchImages;
 import org.eclipse.gef.internal.GEFMessages;
+import org.jboss.tools.common.gef.Messages;
 
 /**
  * An action to delete selected objects.
@@ -43,7 +44,7 @@ public abstract class DiagramPasteAction extends DiagramSelectionAction {
 		setDisabledImageDescriptor(
 			WorkbenchImages.getImageDescriptor(
 				ISharedImages.IMG_TOOL_PASTE_DISABLED));
-		setAccelerator(convertAccelerator("CTRL+V"));
+		setAccelerator(convertAccelerator(Messages.DiagramPasteAction_AcceleratorText));
 	
 		setEnabled(false);
 	}

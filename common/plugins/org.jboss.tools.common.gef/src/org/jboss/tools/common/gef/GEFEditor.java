@@ -80,11 +80,11 @@ public class GEFEditor extends GraphicalEditor implements MouseListener,
 
 	protected static final int PALETTE_MIN_SIZE = 23;
 
-	private static final QualifiedName PALETTE_SIZE_KEY = new QualifiedName("",
-			"palette_size");
+	private static final QualifiedName PALETTE_SIZE_KEY = new QualifiedName("", //$NON-NLS-1$
+			"palette_size"); //$NON-NLS-1$
 
-	private static final QualifiedName ZOOM_SIZE_KEY = new QualifiedName("",
-			"zoom_size");
+	private static final QualifiedName ZOOM_SIZE_KEY = new QualifiedName("", //$NON-NLS-1$
+			"zoom_size"); //$NON-NLS-1$
 
 	protected int lastPaletteLayout = -1;
 
@@ -460,7 +460,7 @@ public class GEFEditor extends GraphicalEditor implements MouseListener,
 			return;
 		}
 		try {
-			String s = "" + fixedSise;
+			String s = "" + fixedSise; //$NON-NLS-1$
 			file.setPersistentProperty(PALETTE_SIZE_KEY, s);
 		} catch (CoreException e) {
 			CommonPlugin.getPluginLog().logError(e);
@@ -492,7 +492,7 @@ public class GEFEditor extends GraphicalEditor implements MouseListener,
 			return;
 		}
 		try {
-			String s = "" + zoom;
+			String s = "" + zoom; //$NON-NLS-1$
 			file.setPersistentProperty(ZOOM_SIZE_KEY, s);
 		} catch (CoreException e) {
 			CommonPlugin.getPluginLog().logError(e);

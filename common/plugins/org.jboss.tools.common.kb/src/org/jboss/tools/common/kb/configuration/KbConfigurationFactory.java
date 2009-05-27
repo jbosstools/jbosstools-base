@@ -15,10 +15,10 @@ package org.jboss.tools.common.kb.configuration;
  */
 public class KbConfigurationFactory {
 
-	public static final String CONFIGURATION_SYSTEM_PROPERTY_NAME = "org.jboss.tools.common.kb.configuration";
+	public static final String CONFIGURATION_SYSTEM_PROPERTY_NAME = "org.jboss.tools.common.kb.configuration"; //$NON-NLS-1$
 
-	public static final String TEST_CONFIGURATION = "test";
-	public static final String PLUGIN_CONFIGURATION = "plugin";
+	public static final String TEST_CONFIGURATION = "test"; //$NON-NLS-1$
+	public static final String PLUGIN_CONFIGURATION = "plugin"; //$NON-NLS-1$
 
 	private static final KbConfigurationFactory INSTANCE = new KbConfigurationFactory();
 

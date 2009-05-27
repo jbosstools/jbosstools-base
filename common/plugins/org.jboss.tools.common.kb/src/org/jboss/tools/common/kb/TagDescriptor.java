@@ -58,13 +58,13 @@ public class TagDescriptor {
      */
     public String toString() {
     	StringBuffer sb = new StringBuffer();
-    	sb.append("[tagName=")
+    	sb.append("[tagName=") //$NON-NLS-1$
     		.append(tagName)
-    		.append("; hasBody=")
+    		.append("; hasBody=") //$NON-NLS-1$
     		.append(hasBody)
-    		.append("; hasClosingTag=")
+    		.append("; hasClosingTag=") //$NON-NLS-1$
     		.append(hasClosingTag)
-    		.append(";]");
+    		.append(";]"); //$NON-NLS-1$
         return sb.toString();
     }
 
@@ -156,7 +156,7 @@ public class TagDescriptor {
 	public KbProposal generateProposal() {
 		KbProposal proposal = new KbProposal();
 
-		String endTag = hasBody()?"":" /";
+		String endTag = hasBody()?"":" /"; //$NON-NLS-1$ //$NON-NLS-2$
 		StringBuffer lb = new StringBuffer();
 		if(prefix!=null && prefix.length()>0) {
 			lb.append(prefix);
@@ -171,7 +171,7 @@ public class TagDescriptor {
 		for(int i=0; i<attributeList.size(); i++) {
 			AttributeDescriptor attribute = (AttributeDescriptor)attributeList.get(i);
 			if(attribute.isRequired()) {
-				attributes.append(" ").append(attribute.getName()).append("=\"\"");
+				attributes.append(" ").append(attribute.getName()).append("=\"\""); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		lb.append(attributes);

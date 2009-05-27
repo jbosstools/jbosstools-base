@@ -17,6 +17,7 @@ import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.customize.DefaultEntryPage;
 import org.eclipse.gef.ui.palette.customize.DrawerEntryPage;
 import org.eclipse.gef.ui.palette.customize.EntryPage;
+import org.jboss.tools.common.gef.Messages;
 
 /**
  * 
@@ -25,7 +26,7 @@ import org.eclipse.gef.ui.palette.customize.EntryPage;
  */
 public class DefaultPaletteCustomizer extends PaletteCustomizer {
 
-	protected static final String ERROR_MESSAGE = "Error";
+	protected static final String ERROR_MESSAGE = Messages.DefaultPaletteCustomizer_ErrorMessage;
 
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteCustomizer#getPropertiesPage(PaletteEntry)

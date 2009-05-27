@@ -25,7 +25,7 @@ public class GEFSplitter extends Composite {
 	private static final int SASH_WIDTH = 5;
 	private static final int FIXED_DRAG_MINIMUM = 62;
 	private static final int OTHER_DRAG_MINIMUM = 0;
-	private static final String MAINTAIN_SIZE = "maintain size";
+	private static final String MAINTAIN_SIZE = "maintain size"; //$NON-NLS-1$
 
 	private int fixedSize = 150;
 	private int fixedDragMinimum;

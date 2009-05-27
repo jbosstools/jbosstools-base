@@ -149,7 +149,7 @@ public class KbTldStore implements KbStore {
 
 		String key = needResources.hashCode() + cleanQuary;
 
-		boolean faceletsHtml = cleanQuary.indexOf("0fHP:")>-1;
+		boolean faceletsHtml = cleanQuary.indexOf("0fHP:")>-1; //$NON-NLS-1$
 		Object o = faceletsHtml?getFaceletsHtmlTagInfoCache().get(key):getTagInfoCache().get(key);
 		if(o!=null) {
     	  	return (TagDescriptor)o;
@@ -254,7 +254,7 @@ public class KbTldStore implements KbStore {
 		}
 
 		if(strQuery.length() == KbQuery.TAG_SEPARATOR.length()) {
-			return getTags(needResources, "");
+			return getTags(needResources, ""); //$NON-NLS-1$
 		}
 
 		int startTagName = strQuery.indexOf(KbQuery.PREFIX_SEPARATOR);
@@ -268,7 +268,7 @@ public class KbTldStore implements KbStore {
 		if(startAttributeName < 0){
 			String tagName = strQuery.substring(startTagName);
 			boolean tagMask = true;
-			if(tagName.endsWith("/")) {
+			if(tagName.endsWith("/")) { //$NON-NLS-1$
 				tagMask = false;
 				tagName = tagName.substring(0, tagName.length()-1);
 			}
@@ -282,7 +282,7 @@ public class KbTldStore implements KbStore {
 		String tagName = strQuery.substring(startTagName, startAttributeName);
 		startAttributeName+=KbQuery.ATTRIBUTE_SEPARATOR.length();
 		if(startAttributeName == strQuery.length()) {
-			return getAttributes(needResources, prefixName, tagName, "");
+			return getAttributes(needResources, prefixName, tagName, ""); //$NON-NLS-1$
 		}
 
 		int startAttributeValue = strQuery.indexOf(KbQuery.ENUMERATION_SEPARATOR);
@@ -296,7 +296,7 @@ public class KbTldStore implements KbStore {
 //		Collection needDinamicResources = convertQueryDinamicResourceToRegistretedDinamicResource(query.getDinamicResources());
 		Collection needDinamicResources = query.getDinamicResources();
 		if(startAttributeValue == strQuery.length()) {
-			return getAttributeValue(needResources, needDinamicResources, prefixName, tagName, attributeName, "");
+			return getAttributeValue(needResources, needDinamicResources, prefixName, tagName, attributeName, ""); //$NON-NLS-1$
 		}
 
 		return getAttributeValue(needResources, needDinamicResources, prefixName, tagName, attributeName, KbQuery.decode(strQuery.substring(startAttributeValue)));
@@ -366,7 +366,7 @@ public class KbTldStore implements KbStore {
 //			return registerDinamicResource((KbDinamicResource)resource);
 			return (KbDinamicResource)resource;
 		} else {
-			throw new IllegalArgumentException("KbTldStore.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
+			throw new IllegalArgumentException("KbTldStore.registerResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource"); //$NON-NLS-1$
 		}
 	}
 
@@ -445,7 +445,7 @@ public class KbTldStore implements KbStore {
 //				TODO Stop loading and registration resource
 			}
 		} else {
-			throw new IllegalArgumentException("KbTldStore.unregisterResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource");
+			throw new IllegalArgumentException("KbTldStore.unregisterResource(KbResource resource): resource must be instance of KbTldResource or KbDinamicResource"); //$NON-NLS-1$
 		}
 	}
 
@@ -566,7 +566,7 @@ public class KbTldStore implements KbStore {
 		File schemaLocation = regResource.getSchemaLocation();
 		if((schemaLocation == null)||(!schemaLocation.exists())) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.getPluginLog().logWarning("WARNING: Schema (location: " + schemaLocation + ") for resource (" + regResource +") does not exist!");
+				KbPlugin.getPluginLog().logWarning("WARNING: Schema (location: " + schemaLocation + ") for resource (" + regResource +") does not exist!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 			return;
 		}
@@ -616,23 +616,23 @@ public class KbTldStore implements KbStore {
 	private void loadRegistratedResources() {
 		// Get the schemas from extention point.
         IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint extensionPoint = registry.getExtensionPoint("org.jboss.tools.common.kb.tldResource");
+		IExtensionPoint extensionPoint = registry.getExtensionPoint("org.jboss.tools.common.kb.tldResource"); //$NON-NLS-1$
 		IExtension[] extensions = extensionPoint.getExtensions();
 		for (int i=0; i<extensions.length; i++) {
 			IExtension extension = extensions[i];
 			IConfigurationElement[] elements = extension.getConfigurationElements();
 			for(int j=0; j<elements.length; j++) {
-				String uri = elements[j].getAttribute("uri");
-				String location = elements[j].getAttribute("schema-location");
-				String version = elements[j].getAttribute("version");
-				String jsf = elements[j].getAttribute("jsf");
+				String uri = elements[j].getAttribute("uri"); //$NON-NLS-1$
+				String location = elements[j].getAttribute("schema-location"); //$NON-NLS-1$
+				String version = elements[j].getAttribute("version"); //$NON-NLS-1$
+				String jsf = elements[j].getAttribute("jsf"); //$NON-NLS-1$
 				if(uri==null || uri.length()==0 || location==null || location.length()==0) {
 					continue;
 				}
 				Bundle sourcePlugin = Platform.getBundle(elements[j].getNamespaceIdentifier());
 				File shemaLocation = null;
 				try {
-					shemaLocation = new File(FileLocator.resolve(sourcePlugin.getEntry("/")).getPath(), location);
+					shemaLocation = new File(FileLocator.resolve(sourcePlugin.getEntry("/")).getPath(), location); //$NON-NLS-1$
 				} catch (IOException e) {
 					KbPlugin.getPluginLog().logError(e);
 					continue;
@@ -644,10 +644,10 @@ public class KbTldStore implements KbStore {
 						resource.setVersion(version);
 					}
 					resource.setCustomTld(false);
-					resource.setJsfResource("true".equals(jsf));
+					resource.setJsfResource("true".equals(jsf)); //$NON-NLS-1$
 					registratedResources.put(resource, resource);
 				} else {
-					String message = "Can't load KB schema: " + shemaLocation;
+					String message = "Can't load KB schema: " + shemaLocation; //$NON-NLS-1$
 					KbPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, KbPlugin.PLUGIN_ID, IStatus.WARNING, message, null));
 				}
 			}
@@ -677,10 +677,10 @@ public class KbTldStore implements KbStore {
 					continue;
 				}
 			} catch (IOException e) {
-				KbPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, KbPlugin.PLUGIN_ID, IStatus.OK, "Can't parse Schema (location: " + schemas[i] + ")", e));
+				KbPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, KbPlugin.PLUGIN_ID, IStatus.OK, "Can't parse Schema (location: " + schemas[i] + ")", e)); //$NON-NLS-1$ //$NON-NLS-2$
 				continue;
 			} catch (SAXException e) {
-				KbPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, KbPlugin.PLUGIN_ID, IStatus.OK, "Can't parse Schema (location: " + schemas[i] + ")", e));
+				KbPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, KbPlugin.PLUGIN_ID, IStatus.OK, "Can't parse Schema (location: " + schemas[i] + ")", e)); //$NON-NLS-1$ //$NON-NLS-2$
 				continue;
 			}
 //			String tldLocation = schemas[i].getAbsolutePath();
@@ -704,7 +704,7 @@ public class KbTldStore implements KbStore {
 			resource.setTldContent(tldContent);
 			resource.setSchemaLocation(schemas[i]);
 			resource.setCustomTld(true);
-			resource.setJsfResource("true".equals(jsf));
+			resource.setJsfResource("true".equals(jsf)); //$NON-NLS-1$
 			registratedResources.put(resource, resource);
 		}
 	}
@@ -713,7 +713,7 @@ public class KbTldStore implements KbStore {
 	 * @return
 	 */
 	public KbResource getJspResource() {
-		return getRegistratedResource(new KbTldResource("http://java.sun.com/JSP/Page", "", "jsp", null));
+		return getRegistratedResource(new KbTldResource("http://java.sun.com/JSP/Page", "", "jsp", null)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	private ArrayList<KbProposal> getTags(Collection resources, String prefixMask) {
@@ -818,14 +818,14 @@ public class KbTldStore implements KbStore {
 
 			boolean ignoreCase = false;
 			String attr = element.getOwnerDocument().getDocumentElement().getAttribute(SchemaNodeFactory.IGNORE_CASE_ATTRIBUTE);
-			ignoreCase = attr!=null && attr.equals("true");
+			ignoreCase = attr!=null && attr.equals("true"); //$NON-NLS-1$
 
 			ArrayList attributeTypes = KbSchemaUtil.getAttributeTypes(element);
 			for(int i=0; i<attributeTypes.size(); i++) {
 				Element attributeType = (Element)attributeTypes.get(i);
 
 				String attributeTypeName = attributeType.getAttribute(SchemaNodeFactory.NAME_ATTRIBUTE);
-				boolean endsWithWildCard = attributeTypeName.endsWith("" + SchemaNodeFactory.WILD_CARD_CHAR);
+				boolean endsWithWildCard = attributeTypeName.endsWith("" + SchemaNodeFactory.WILD_CARD_CHAR); //$NON-NLS-1$
 				if(endsWithWildCard) {
 					attributeTypeName = attributeTypeName.substring(0, attributeTypeName.length() - 1);
 				}
@@ -868,7 +868,7 @@ public class KbTldStore implements KbStore {
 				String label = element.getAttribute(SchemaNodeFactory.NAME_ATTRIBUTE);
 				if(label == null || label.indexOf(SchemaNodeFactory.WILD_CARD_CHAR) >= 0) continue;
 
-				String endTag = SchemaNodeFactory.REFUSED_BODY_CONTENT_TYPE.equals(element.getAttribute(SchemaNodeFactory.BODY_CONTENT_ATTRIBUTE))?" /":"";
+				String endTag = SchemaNodeFactory.REFUSED_BODY_CONTENT_TYPE.equals(element.getAttribute(SchemaNodeFactory.BODY_CONTENT_ATTRIBUTE))?" /":""; //$NON-NLS-1$ //$NON-NLS-2$
 				StringBuffer lb = new StringBuffer();
 				lb.append(prefix);
 				lb.append(KbQuery.PREFIX_SEPARATOR);
@@ -936,8 +936,8 @@ public class KbTldStore implements KbStore {
 	}
 
 	private HashMap<String,TldElement> getTldElementsByPrefix(Collection resources, String prefix, boolean mask) {
-		String cacheKey = resources.hashCode() + "/" + prefix + "/" + mask;
-		boolean faceletsHtml = prefix.equals("0fHP");
+		String cacheKey = resources.hashCode() + "/" + prefix + "/" + mask; //$NON-NLS-1$ //$NON-NLS-2$
+		boolean faceletsHtml = prefix.equals("0fHP"); //$NON-NLS-1$
 		HashMap<String,TldElement> o = faceletsHtml?getFaceletsHtmlTldElementsByPrefix().get(cacheKey):getTldElementsByPrefix().get(cacheKey);
         if(o != null) return o;
 
@@ -993,7 +993,7 @@ public class KbTldStore implements KbStore {
 	}
 
 	private ArrayList<TldElement> getTldElementsByName(Collection resources, String prefixName, String name, boolean mask) {
-		String cacheKey = resources.hashCode() + "/" + prefixName + "/" + name + "/" + mask;
+		String cacheKey = resources.hashCode() + "/" + prefixName + "/" + name + "/" + mask; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ArrayList<TldElement> o = getTldElementsByName().get(cacheKey);
         if(o != null) {
             return o;
@@ -1003,7 +1003,7 @@ public class KbTldStore implements KbStore {
 
 		HashMap tldElementTypes = getTldElementsByPrefix(resources, prefixName, false);
 		if(!mask) {
-			TldElement tldElementType = "0fHP".equals(prefixName)?(TldElement)tldElementTypes.get(name.toUpperCase()):(TldElement)tldElementTypes.get(name);
+			TldElement tldElementType = "0fHP".equals(prefixName)?(TldElement)tldElementTypes.get(name.toUpperCase()):(TldElement)tldElementTypes.get(name); //$NON-NLS-1$
 			if(tldElementType!=null) {
 				tldElementType.setElementType(TldElementType.TAG);
 				tldElements.add(tldElementType);
@@ -1017,7 +1017,7 @@ public class KbTldStore implements KbStore {
 				Element element = tldElementType.getElement();
 				if(i==0) {
 					String attr = element.getOwnerDocument().getDocumentElement().getAttribute(SchemaNodeFactory.IGNORE_CASE_ATTRIBUTE);
-					ignoreCase = attr!=null && attr.equals("true");
+					ignoreCase = attr!=null && attr.equals("true"); //$NON-NLS-1$
 				}
 				String schemaTagName = element.getAttribute(SchemaNodeFactory.NAME_ATTRIBUTE);
 				boolean match = false;
@@ -1057,7 +1057,7 @@ public class KbTldStore implements KbStore {
 
 		public void run() {
 			loadingResources.put(resource, resource);
-			String uniqFileName = "schema";
+			String uniqFileName = "schema"; //$NON-NLS-1$
 
 			Document document = KbTldConvertor.getInstance().convertToSchema(resource);
 //			KbPlugin.log("document: " + KbTldConvertor.getInstance().serialize(document.getDocumentElement()));
@@ -1071,10 +1071,10 @@ public class KbTldStore implements KbStore {
 			File schemaFolder = new File(schemaLocation);
 
 			schemaFolder.mkdirs();
-			File schemaFile = new File(schemaLocation + "/" + uniqFileName + ".xml");
+			File schemaFile = new File(schemaLocation + "/" + uniqFileName + ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
 			int i=1;
 			while(schemaFile.exists()) {
-				schemaFile = new File(schemaLocation + "/" + uniqFileName + i++ + ".xml");
+				schemaFile = new File(schemaLocation + "/" + uniqFileName + i++ + ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			try {
@@ -1112,8 +1112,8 @@ public class KbTldStore implements KbStore {
 		}
 
 		public OutputFormat createOutputFormat() {
-			OutputFormat format = new OutputFormat("xml", "UTF-8", true);
-			format.setLineSeparator("\r\n");
+			OutputFormat format = new OutputFormat("xml", "UTF-8", true); //$NON-NLS-1$ //$NON-NLS-2$
+			format.setLineSeparator("\r\n"); //$NON-NLS-1$
 			format.setIndent(2);
 			return format;
 		}
@@ -1183,15 +1183,15 @@ public class KbTldStore implements KbStore {
 
 		public String toString() {
 			StringBuffer result = new StringBuffer();
-			result.append("Element: [");
+			result.append("Element: ["); //$NON-NLS-1$
 			result.append(element);
-			result.append("]; Type: [");
+			result.append("]; Type: ["); //$NON-NLS-1$
 			result.append(elementType);
-			result.append("]; Resource: [");
+			result.append("]; Resource: ["); //$NON-NLS-1$
 			result.append(resource);
-			result.append("]; Prefix: [");
+			result.append("]; Prefix: ["); //$NON-NLS-1$
 			result.append(prefix);
-			result.append("]");
+			result.append("]"); //$NON-NLS-1$
 
 			return result.toString();
 		}
@@ -1209,9 +1209,9 @@ public class KbTldStore implements KbStore {
 			return type;
 		}
 
-		public static final TldElementType PREFIX = new TldElementType("Prefix");
-		public static final TldElementType TAG = new TldElementType("Tag");
-		public static final TldElementType ATTRIBUTE = new TldElementType("Attribute");
-		public static final TldElementType ATTRIBUTE_VALUE = new TldElementType("Attribute value");
+		public static final TldElementType PREFIX = new TldElementType("Prefix"); //$NON-NLS-1$
+		public static final TldElementType TAG = new TldElementType("Tag"); //$NON-NLS-1$
+		public static final TldElementType ATTRIBUTE = new TldElementType("Attribute"); //$NON-NLS-1$
+		public static final TldElementType ATTRIBUTE_VALUE = new TldElementType("Attribute value"); //$NON-NLS-1$
 	}
 }

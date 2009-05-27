@@ -105,7 +105,7 @@ public class KbSchemaUtil {
 			String name = attributeType.getAttribute(SchemaNodeFactory.NAME_ATTRIBUTE);
 			attributes.append(' ');
 			attributes.append(name);
-			attributes.append("=\"");
+			attributes.append("=\""); //$NON-NLS-1$
 			attributes.append('"');
 		}
 		return attributes.toString();
@@ -173,7 +173,7 @@ public class KbSchemaUtil {
 				}
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -209,9 +209,9 @@ public class KbSchemaUtil {
 					attributesD.remove(typeLow);
 					attributesI.add(typeLow);
 				} else if(attributesI.contains(typeLow)) {
-					KbPlugin.getPluginLog().logWarning("Warning: attribute type " + type + " is declared more than once in element " + elementName + ".");
+					KbPlugin.getPluginLog().logWarning("Warning: attribute type " + type + " is declared more than once in element " + elementName + "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				} else if(!attributesI.contains(typeLow)) {
-					KbPlugin.getPluginLog().logWarning("Warning: attribute type " + type + " is never used by an attribute in element " + elementName + ".");
+					KbPlugin.getPluginLog().logWarning("Warning: attribute type " + type + " is never used by an attribute in element " + elementName + "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 			}
 		}
@@ -236,7 +236,7 @@ public class KbSchemaUtil {
 			Iterator it = attributesD.iterator();
 			while(it.hasNext()) {
 				String a = it.next().toString();
-				KbPlugin.getPluginLog().logWarning("Warning: attribute type is not defined for attribute " + a + " in element " + elementName + ".");
+				KbPlugin.getPluginLog().logWarning("Warning: attribute type is not defined for attribute " + a + " in element " + elementName + "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		}
 

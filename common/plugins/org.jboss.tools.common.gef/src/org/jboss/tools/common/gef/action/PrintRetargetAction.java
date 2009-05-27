@@ -13,15 +13,18 @@ import org.eclipse.ui.actions.RetargetAction;
 
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.jboss.tools.common.gef.Messages;
 
 
 
 public class PrintRetargetAction extends RetargetAction{
 
+	static final String ACTION_ID = "Print_Diagram"; //$NON-NLS-1$
+
 	public PrintRetargetAction() {
-		super("Print_Diagram","Print Diagram"); 
-		setToolTipText("Print Diagram");
-		setImageDescriptor(ImageDescriptor.createFromFile(getClass(), "icons/print.gif"));
+		super(ACTION_ID,Messages.PrintRetargetAction_Name);
+		setToolTipText(Messages.PrintRetargetAction_Name);
+		setImageDescriptor(ImageDescriptor.createFromFile(getClass(), "icons/print.gif")); //$NON-NLS-1$
 	}
 
 }

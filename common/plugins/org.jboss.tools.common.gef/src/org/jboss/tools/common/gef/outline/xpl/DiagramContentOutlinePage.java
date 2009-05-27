@@ -41,8 +41,8 @@ import org.eclipse.ui.part.PageBook;
 
 public class DiagramContentOutlinePage extends ContentOutlinePage implements IAdaptable {
 	//Warning: these icons may be moved from xpl!
-	private static String OUTLINE_ICON_PATH  = "outline.gif";
-	private static String OVERVIEW_ICON_PATH = "overview.gif";
+	private static String OUTLINE_ICON_PATH  = "outline.gif"; //$NON-NLS-1$
+	private static String OVERVIEW_ICON_PATH = "overview.gif"; //$NON-NLS-1$
 	
 	private org.eclipse.ui.views.contentoutline.ContentOutlinePage poutline;
 	private GraphicalViewer graphicalViewer;

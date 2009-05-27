@@ -39,16 +39,16 @@ import org.xml.sax.SAXException;
  */
 public class KbTldConvertor implements KbSchemaConvertor {
 
-	private final static String TAG_ELEMENT_NAME = "tag";
-	private final static String NAME_ELEMENT_NAME = "name";
-	private final static String DESCRIPTION_ELEMENT_NAME = "description";
-	private final static String ATTRIBUTE_ELEMENT_NAME = "attribute";
-	private final static String REQUIRED_ELEMENT_NAME = "required";
-	private final static String BODYCONTENT_ELEMENT_NAME_1_1 = "bodycontent";
-	private final static String BODYCONTENT_ELEMENT_NAME_1_2 = "body-content";
-	private final static String EMPTY_BODYCONTENT_TYPE = "empty";
-	private final static String SHORT_NAME_1_1 = "shortname";
-	private final static String SHORT_NAME_1_2 = "short-name";
+	private final static String TAG_ELEMENT_NAME = "tag"; //$NON-NLS-1$
+	private final static String NAME_ELEMENT_NAME = "name"; //$NON-NLS-1$
+	private final static String DESCRIPTION_ELEMENT_NAME = "description"; //$NON-NLS-1$
+	private final static String ATTRIBUTE_ELEMENT_NAME = "attribute"; //$NON-NLS-1$
+	private final static String REQUIRED_ELEMENT_NAME = "required"; //$NON-NLS-1$
+	private final static String BODYCONTENT_ELEMENT_NAME_1_1 = "bodycontent"; //$NON-NLS-1$
+	private final static String BODYCONTENT_ELEMENT_NAME_1_2 = "body-content"; //$NON-NLS-1$
+	private final static String EMPTY_BODYCONTENT_TYPE = "empty"; //$NON-NLS-1$
+	private final static String SHORT_NAME_1_1 = "shortname"; //$NON-NLS-1$
+	private final static String SHORT_NAME_1_2 = "short-name"; //$NON-NLS-1$
 
 	private static final KbTldConvertor INSTANCE = new KbTldConvertor();
 
@@ -76,11 +76,11 @@ public class KbTldConvertor implements KbSchemaConvertor {
 		if(resource instanceof KbTldResource) {
 			tldResource = (KbTldResource)resource;
 		} else {
-			throw new IllegalArgumentException("KbTldConvertor.convertToSchema(KbResource resource): resource must be instance of KbTldResource");
+			throw new IllegalArgumentException("KbTldConvertor.convertToSchema(KbResource resource): resource must be instance of KbTldResource"); //$NON-NLS-1$
 		}
 		Properties attributes = new Properties();
 		attributes.put(SchemaNodeFactory.LOCATION_ATTRIBUTE, tldResource.getTldLocation());
-		attributes.put(SchemaNodeFactory.JSF_ATTRIBUTE, "" + tldResource.isJsfResource());
+		attributes.put(SchemaNodeFactory.JSF_ATTRIBUTE, "" + tldResource.isJsfResource()); //$NON-NLS-1$
 		if(tldResource.getUri()!=null) {
 			attributes.put(SchemaNodeFactory.URI_ATTRIBUTE, tldResource.getUri());
 		}
@@ -89,7 +89,7 @@ public class KbTldConvertor implements KbSchemaConvertor {
 		InputStream is = tldResource.getInputStream();
 		if(is==null) {
 			if(KbPlugin.isDebugEnabled()) {
-				KbPlugin.getPluginLog().logWarning("    WARNING! Can't get InputSource from resource (location: " + tldResource.getTldLocation() + ").");
+				KbPlugin.getPluginLog().logWarning("    WARNING! Can't get InputSource from resource (location: " + tldResource.getTldLocation() + ")."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return null;
 		}
@@ -145,7 +145,7 @@ public class KbTldConvertor implements KbSchemaConvertor {
 	 */
 	public Document convertToSchema(InputStream inputStream, Properties attributes, boolean jsfTld) {
 		
-		final String ERR_CANNOT_PARSE_TLD = "ERROR: Can't parse TLD file for converting to the Schema."; //$NON-NLS-N$
+		final String ERR_CANNOT_PARSE_TLD = "ERROR: Can't parse TLD file for converting to the Schema."; //$NON-NLS-1$
 		Document tldDocument = null;
 		Document schema = null;
 		
@@ -235,7 +235,7 @@ public class KbTldConvertor implements KbSchemaConvertor {
 		Element attributeType = SchemaNodeFactory.getInstance().createAttributeType(schemaElement, attributes);
 		SchemaNodeFactory.getInstance().createDescription(attributeType, description);
 
-		if(jsfTld || tldAttribute.getElementsByTagName("deferred-value").getLength()>0) {
+		if(jsfTld || tldAttribute.getElementsByTagName("deferred-value").getLength()>0) { //$NON-NLS-1$
 			// Add default proposals
 			Element[] proposals = createDefaultELProposals(schemaElement.getOwnerDocument());
 			for(int i=0; i<proposals.length; i++) {
@@ -259,19 +259,19 @@ public class KbTldConvertor implements KbSchemaConvertor {
 		String methodName = null;
 		Element proposal = null;
 		ArrayList<String> paramTypes = new ArrayList<String>();
-		StringTokenizer st = new StringTokenizer(signature.trim(), " ()", false);
+		StringTokenizer st = new StringTokenizer(signature.trim(), " ()", false); //$NON-NLS-1$
 		if(st.hasMoreTokens()) {
-			returnType = st.nextToken(" ");
+			returnType = st.nextToken(" "); //$NON-NLS-1$
 			if(st.hasMoreTokens()) {
-				methodName = st.nextToken("(");
+				methodName = st.nextToken("("); //$NON-NLS-1$
 				if(methodName!=null) {
 					methodName = methodName.trim();
 				}
 			}
 			if(st.hasMoreTokens()) {
-				String params = st.nextToken("()");
+				String params = st.nextToken("()"); //$NON-NLS-1$
 				if(params!=null) {
-					StringTokenizer stParams = new StringTokenizer(params, ",", false);
+					StringTokenizer stParams = new StringTokenizer(params, ",", false); //$NON-NLS-1$
 					while(stParams.hasMoreTokens()) {
 						String param = stParams.nextToken().trim();
 						if(param.length()>0) {
@@ -283,17 +283,17 @@ public class KbTldConvertor implements KbSchemaConvertor {
 		}
 
 		if(returnType!=null && methodName!=null) {
-			proposal = document.createElement("proposal");
-    		proposal.setAttribute("type", "beanMethodBySignature");
-    		Element param = document.createElement("param");
-			param.setAttribute("name", "returnType");
-			param.setAttribute("value", returnType);
+			proposal = document.createElement("proposal"); //$NON-NLS-1$
+    		proposal.setAttribute("type", "beanMethodBySignature"); //$NON-NLS-1$ //$NON-NLS-2$
+    		Element param = document.createElement("param"); //$NON-NLS-1$
+			param.setAttribute("name", "returnType"); //$NON-NLS-1$ //$NON-NLS-2$
+			param.setAttribute("value", returnType); //$NON-NLS-1$
 			proposal.appendChild(param);
 
 			for(int i=0; i<paramTypes.size(); i++) {
-	    		param = document.createElement("param");
-				param.setAttribute("name", "paramType");
-				param.setAttribute("value", paramTypes.get(i).toString());
+	    		param = document.createElement("param"); //$NON-NLS-1$
+				param.setAttribute("name", "paramType"); //$NON-NLS-1$ //$NON-NLS-2$
+				param.setAttribute("value", paramTypes.get(i).toString()); //$NON-NLS-1$
 				proposal.appendChild(param);
 			}
 	   	}
@@ -302,23 +302,23 @@ public class KbTldConvertor implements KbSchemaConvertor {
 	}
 
 	private Element[] createDefaultELProposals(Document document) {
-		Element jsfBeanProperty = document.createElement("proposal");
-		jsfBeanProperty.setAttribute("type", "beanProperty");
+		Element jsfBeanProperty = document.createElement("proposal"); //$NON-NLS-1$
+		jsfBeanProperty.setAttribute("type", "beanProperty"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		Element jsfBundleProperty = document.createElement("proposal");
-		jsfBundleProperty.setAttribute("type", "bundleProperty");
+		Element jsfBundleProperty = document.createElement("proposal"); //$NON-NLS-1$
+		jsfBundleProperty.setAttribute("type", "bundleProperty"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		Element jsfVariables = document.createElement("proposal");
-		jsfVariables.setAttribute("type", "jsfVariables");
+		Element jsfVariables = document.createElement("proposal"); //$NON-NLS-1$
+		jsfVariables.setAttribute("type", "jsfVariables"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return new Element[]{jsfBeanProperty, jsfBundleProperty, jsfVariables};
 	}
 
 	private static String getDeferredMethodSignature(Element tldAttribute) {
-		NodeList deferredMethods = tldAttribute.getElementsByTagName("deferred-method");
+		NodeList deferredMethods = tldAttribute.getElementsByTagName("deferred-method"); //$NON-NLS-1$
 		for(int i=0; i<deferredMethods.getLength(); i++) {
 			Element deferredMethod = (Element)deferredMethods.item(i);
-			return getChildElementBody(deferredMethod, "method-signature");
+			return getChildElementBody(deferredMethod, "method-signature"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -377,7 +377,7 @@ public class KbTldConvertor implements KbSchemaConvertor {
 			}
 			return sb.toString();
 		} else {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 
@@ -414,8 +414,8 @@ public class KbTldConvertor implements KbSchemaConvertor {
 	 * @return
 	 */
 	public OutputFormat createOutputFormat() {
-		OutputFormat format = new OutputFormat("xml", "UTF-8", true);
-		format.setLineSeparator("\r\n");
+		OutputFormat format = new OutputFormat("xml", "UTF-8", true); //$NON-NLS-1$ //$NON-NLS-2$
+		format.setLineSeparator("\r\n"); //$NON-NLS-1$
 		format.setIndent(4);
 		return format;
 	}
