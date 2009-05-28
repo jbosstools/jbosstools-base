@@ -16,14 +16,15 @@ import org.eclipse.core.runtime.*;
 import org.eclipse.search.ui.*;
 
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.ui.Messages;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class MetaSearchQuery implements ISearchQuery {
 	MetaSearchResult result;
-	String text = "=";
+	String text = "="; //$NON-NLS-1$
 	boolean ignoreCase = true;
-	String attributeMask = "*";
+	String attributeMask = "*"; //$NON-NLS-1$
 	List scope = new ArrayList();
 	
 	public void setScope(List scope) {
@@ -54,7 +55,7 @@ public class MetaSearchQuery implements ISearchQuery {
 		for (int i = 0; i < rs.length; i++) {
 			processResource(rs[i]);
 		}
-		return new Status(IStatus.OK, "org.jboss.common.meta.ui", 0, "", null);
+		return new Status(IStatus.OK, "org.jboss.common.meta.ui", 0, "", null);  //$NON-NLS-1$//$NON-NLS-2$
 	}
 	
 	private void processResource(IResource resource) {
@@ -65,7 +66,7 @@ public class MetaSearchQuery implements ISearchQuery {
 			if(rs != null) for (int i = 0; i < rs.length; i++) processResource(rs[i]);
 		} else if(resource instanceof IFile) {
 			IFile f = (IFile)resource;
-			if(!f.getName().endsWith(".meta")) return;
+			if(!f.getName().endsWith(".meta")) return; //$NON-NLS-1$
 			XModelObject o = EclipseResourceUtil.getObjectByResource(f);
 			if(o == null) o = EclipseResourceUtil.createObjectForResource(f);
 			if(o == null) return;
@@ -78,7 +79,7 @@ public class MetaSearchQuery implements ISearchQuery {
 		for (int i = 0; i < as.length; i++) {
 			if(!as[i].isVisible()) continue;
 			String n = as[i].getName();
-			if(!attributeMask.equals("*") && attributeMask.length() > 0 && !attributeMask.equals(n)) continue;
+			if(!attributeMask.equals("*") && attributeMask.length() > 0 && !attributeMask.equals(n)) continue; //$NON-NLS-1$
 			String v = o.getAttributeValue(n);
 			if(v == null) continue;
 			if(ignoreCase) {
@@ -96,7 +97,7 @@ public class MetaSearchQuery implements ISearchQuery {
 	}
 
 	public String getLabel() {
-		return "Meta Search";
+		return Messages.MetaSearchQuery_Label;
 	}
 
 	public boolean canRerun() {

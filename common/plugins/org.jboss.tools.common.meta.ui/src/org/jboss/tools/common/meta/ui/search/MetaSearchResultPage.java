@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.ui.search;
 
+import java.text.MessageFormat;
+
+import org.jboss.tools.common.meta.ui.Messages;
 import org.jboss.tools.common.model.ui.navigator.NavigatorLabelProvider;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.search.ui.*;
@@ -75,10 +78,11 @@ public class MetaSearchResultPage implements ISearchResultPage, ISearchResultLis
 			ISearchQuery query = search.getQuery();
 			if(query instanceof MetaSearchQuery) {
 				MetaSearchQuery q = (MetaSearchQuery)query;
-				return "\"" + q.getTextToFind() + "\"" + " - " + search.getObjects().size() + " matches"; 
+				return MessageFormat.format(Messages.MetaSearchResultPage_TextToFindNMatches, q.getTextToFind(),
+						search.getObjects().size()); 
 			}
 		}
-		return "Meta Search";
+		return Messages.MetaSearchResultPage_Label;
 	}
 
 	public IPageSite getSite() {
@@ -183,15 +187,16 @@ public class MetaSearchResultPage implements ISearchResultPage, ISearchResultLis
 				XModelObject o = (XModelObject)element;
 				XModelObject f = o;
 				while(f != null && f.getFileType() == XModelObject.NONE) f = f.getParent();
-				String file = f == null ? "" : FileAnyImpl.toFileName(f);
+				String file = f == null ? "" : FileAnyImpl.toFileName(f); //$NON-NLS-1$
 				String entity = o.getModelEntity().getName();
-				if("MetaEntity".equals(entity)) {
-					return super.getText(element) + " - " + file;
-				} else if("MetaAttribute".equals(entity)) {
+				if("MetaEntity".equals(entity)) { //$NON-NLS-1$
+					return super.getText(element) + " - " + file; //$NON-NLS-1$
+				} else if("MetaAttribute".equals(entity)) { //$NON-NLS-1$
 					XModelObject p = o.getParent().getParent();
-					return super.getText(element) + " - entity " + p.getPresentationString() + " - " + file;
+					return MessageFormat.format(Messages.MetaSearchResultPage_MetaAttributeLabel, 
+							super.getText(element), p.getPresentationString(), file);
 				} else {
-					return super.getText(element) + " - " + file;
+					return super.getText(element) + " - " + file; //$NON-NLS-1$
 				}
 			}
 			return super.getText(element);

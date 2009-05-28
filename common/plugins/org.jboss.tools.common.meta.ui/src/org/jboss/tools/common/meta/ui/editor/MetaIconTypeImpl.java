@@ -16,6 +16,6 @@ public class MetaIconTypeImpl extends MetaElementImpl {
     public MetaIconTypeImpl() {}
     
     public String name() {
-        return (String)properties.get("type");
+        return (String)properties.get("type"); //$NON-NLS-1$
     }
 }

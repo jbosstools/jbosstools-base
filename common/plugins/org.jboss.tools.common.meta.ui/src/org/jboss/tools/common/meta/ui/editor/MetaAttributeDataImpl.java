@@ -16,7 +16,7 @@ public class MetaAttributeDataImpl extends MetaElementImpl {
     public MetaAttributeDataImpl() {}
 
     public String name() {
-        return (String)properties.get("AttributeName");
+        return (String)properties.get("AttributeName"); //$NON-NLS-1$
     }
 
 }

@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.ui.form;
 
+import org.jboss.tools.common.meta.ui.Messages;
 import org.jboss.tools.common.model.ui.forms.FormAttributeData;
 import org.jboss.tools.common.model.ui.forms.FormData;
 import org.jboss.tools.common.model.ui.forms.FormLayoutDataUtil;
@@ -19,18 +20,18 @@ public class ExtensionFormLayoutData implements MetaConstants {
 
 	private final static IFormData[] EXTENSION_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Entity Extension",
-			"", //"Description
+			Messages.ExtensionFormLayoutData_EntityExtension,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(EXTENSION_ENTITY)
 		),
 		EntityFormLayoutData.CHILDREN_FOLDER_DEFINITION,
 		new FormData(
-			"Action List",
-			"", //"Description
-			"ActionList",
-			new FormAttributeData[]{new FormAttributeData("name", 70), new FormAttributeData("element type", 30)},
+			Messages.ExtensionFormLayoutData_ActionList,
+			"", //"Description //$NON-NLS-1$
+			"ActionList", //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("name", 70), new FormAttributeData("element type", 30)}, //$NON-NLS-1$ //$NON-NLS-2$
 			new String[]{ACTION_LIST_ENTITY, ACTION_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddItem")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddItem") //$NON-NLS-1$
 		)
 	};
 

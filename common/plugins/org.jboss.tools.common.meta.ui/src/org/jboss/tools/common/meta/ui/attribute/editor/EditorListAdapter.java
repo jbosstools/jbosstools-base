@@ -36,7 +36,7 @@ class EditorListContentProvider extends DefaultXAttributeListContentProvider {
 
 	protected void loadTags() {
 		MappingHelper h = MappingHelper.getMappingHelper(model);
-		tags = h.getList("AttributeEditor");
+		tags = h.getList("AttributeEditor"); //$NON-NLS-1$
 	}
 
 }

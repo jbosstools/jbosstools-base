@@ -18,7 +18,7 @@ public class MetaElementImpl extends RegularObjectImpl {
     public MetaElementImpl() {}
 
     public String name() {
-        return (String)properties.get("name");
+        return (String)properties.get("name"); //$NON-NLS-1$
     }
 
 }

@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.ui.form;
 
+import org.jboss.tools.common.meta.ui.Messages;
 import org.jboss.tools.common.model.ui.forms.FormAttributeData;
 import org.jboss.tools.common.model.ui.forms.FormData;
 import org.jboss.tools.common.model.ui.forms.FormLayoutDataUtil;
@@ -19,16 +20,16 @@ public class ActionListFormLayoutData implements MetaConstants {
 
 	private final static IFormData[] ACTION_LIST_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Action List",
-			"", //"Description
+			Messages.ActionListFormLayoutData_ActionList,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(ACTION_LIST_ENTITY)
 		),
 		new FormData(
-			"Items",
-			"", //"Description
-			new FormAttributeData[]{new FormAttributeData("name", 70), new FormAttributeData("element type", 30)},
+			Messages.ActionListFormLayoutData_Items,
+			"", //"Description //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("name", 70), new FormAttributeData("element type", 30)}, //$NON-NLS-1$ //$NON-NLS-2$
 			new String[]{ACTION_LIST_ENTITY, ACTION_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddItem")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddItem") //$NON-NLS-1$
 		)
 	};
 
@@ -38,20 +39,20 @@ public class ActionListFormLayoutData implements MetaConstants {
 
 	private final static IFormData[] ACTION_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Action",
-			"", //"Description
+			Messages.ActionListFormLayoutData_Action,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(ACTION_ENTITY)
 		),
 		new FormData(
-			"Items",
-			"", //"Description
-			new FormAttributeData[]{new FormAttributeData("entity name", 70), new FormAttributeData("mandatory", 30)},
+			Messages.ActionListFormLayoutData_Items,
+			"", //"Description //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("entity name", 70), new FormAttributeData("mandatory", 30)}, //$NON-NLS-1$ //$NON-NLS-2$
 			new String[]{ENTITY_DATA_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateMetaEntityData")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateMetaEntityData") //$NON-NLS-1$
 		),
 		new FormData(
-			"Advanced",
-			"", //"Description
+			Messages.ActionListFormLayoutData_Advanced,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createAdvancedFormAttributeData(ACTION_ENTITY)
 		),
 	};
@@ -62,16 +63,16 @@ public class ActionListFormLayoutData implements MetaConstants {
 
 	private final static IFormData[] ENTITY_DATA_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Entity Data",
-			"", //"Description
+			Messages.ActionListFormLayoutData_EntityData,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(ENTITY_DATA_ENTITY)
 		),
 		new FormData(
-			"Items",
-			"", //"Description
-			new FormAttributeData[]{new FormAttributeData("attribute name", 70), new FormAttributeData("mandatory", 30)},
+			Messages.ActionListFormLayoutData_Items,
+			"", //"Description //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("attribute name", 70), new FormAttributeData("mandatory", 30)}, //$NON-NLS-1$ //$NON-NLS-2$
 			new String[]{ATTRIBUTE_DATA_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateMetaAttributeData")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateMetaAttributeData") //$NON-NLS-1$
 		),
 	};
 

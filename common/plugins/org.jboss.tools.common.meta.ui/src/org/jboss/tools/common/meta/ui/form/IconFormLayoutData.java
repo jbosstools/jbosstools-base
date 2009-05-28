@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.ui.form;
 
+import org.jboss.tools.common.meta.ui.Messages;
 import org.jboss.tools.common.model.ui.forms.FormAttributeData;
 import org.jboss.tools.common.model.ui.forms.FormData;
 import org.jboss.tools.common.model.ui.forms.FormLayoutDataUtil;
@@ -19,23 +20,23 @@ public class IconFormLayoutData implements MetaConstants {
 
 	private final static IFormData[] ICON_GROUP_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Icon Group",
-			"", //"Description
+			Messages.IconFormLayoutData_IconGroup,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(ICON_GROUP_ENTITY)
 		),
 		new FormData(
-			"Subgroups",
-			"", //"Description
-			new FormAttributeData[]{new FormAttributeData("name", 100)},
+			Messages.IconFormLayoutData_Subgroups,
+			"", //"Description //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 			new String[]{ICON_GROUP_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateIconGroup")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateIconGroup") //$NON-NLS-1$
 		),
 		new FormData(
-			"Icons",
-			"", //"Description
-			new FormAttributeData[]{new FormAttributeData("name", 30), new FormAttributeData("path", 70)},
+			Messages.IconFormLayoutData_Icons,
+			"", //"Description //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("name", 30), new FormAttributeData("path", 70)}, //$NON-NLS-1$ //$NON-NLS-2$
 			new String[]{ICON_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateIcon")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateIcon") //$NON-NLS-1$
 		)
 	};
 
@@ -45,11 +46,11 @@ public class IconFormLayoutData implements MetaConstants {
 
 	private final static IFormData[] ICONS_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Icon Groups",
-			"", //"Description
-			new FormAttributeData[]{new FormAttributeData("name", 100)},
+			Messages.IconFormLayoutData_IconsDefinitions,
+			"", //"Description //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 			new String[]{ICON_GROUP_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateIconGroup")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateIconGroup") //$NON-NLS-1$
 		),
 	};
 

@@ -18,7 +18,7 @@ public class MetaElementOrderedImpl extends OrderedObjectImpl {
     public MetaElementOrderedImpl() {}
 
     public String name() {
-        return (String)properties.get("name");
+        return (String)properties.get("name"); //$NON-NLS-1$
     }
 
 }

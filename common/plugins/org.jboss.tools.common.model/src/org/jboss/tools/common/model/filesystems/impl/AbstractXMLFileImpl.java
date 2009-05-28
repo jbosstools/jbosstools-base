@@ -32,7 +32,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 	public final static boolean turnOffDTDCheck = true;
 	
 	public boolean isIncorrect() {
-		return ("yes".equals(get("isIncorrect")));
+		return ("yes".equals(get("isIncorrect")));  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public AbstractXMLFileImpl() {
@@ -67,16 +67,16 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 		for (int i = 0; i < errors.length; i++) {
 			String er = errors[i];
 			int q = er.lastIndexOf(':');
-			String pos = (q < 0) ? "" : er.substring(q + 1);
+			String pos = (q < 0) ? "" : er.substring(q + 1); //$NON-NLS-1$
 			if(q >= 0) er = er.substring(0, q);
 			q = er.lastIndexOf(':');
-			String ln = (q < 0) ? "" : er.substring(q + 1), ln1 = ln;
+			String ln = (q < 0) ? "" : er.substring(q + 1), ln1 = ln; //$NON-NLS-1$
 			if(q >= 0) er = er.substring(0, q);
 			int iln = -1;
 			try {
 				if(q >= 0 && ln1.length() > 0) {
 					iln = Integer.parseInt(ln1);
-					ln1 = "" + (iln - 1);
+					ln1 = "" + (iln - 1); //$NON-NLS-1$
 				}
 			} catch (NumberFormatException e) {
 				ModelPlugin.getPluginLog().logError(e);
@@ -88,17 +88,17 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 			this.errors[i] = ep;
 		}
 		String s = sb.toString();
-		if(s.equals(get("errors"))) return;
-		super.set("incorrectBody", body);
-		set("errors", s);
-		setAttributeValue("isIncorrect", (errors.length == 0 && loaderError == null) ? "no" : "yes");
+		if(s.equals(get("errors"))) return; //$NON-NLS-1$
+		super.set("incorrectBody", body); //$NON-NLS-1$
+		set("errors", s); //$NON-NLS-1$
+		setAttributeValue("isIncorrect", (errors.length == 0 && loaderError == null) ? "no" : "yes");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		if(!isOverlapped())	markers.update();
 		
 	}
     
 	protected boolean isOverlapped() {
 		XModelObject p = getParent();
-		while(p != null && !"true".equals(p.get("overlapped"))) p = p.getParent();
+		while(p != null && !"true".equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$ //$NON-NLS-2$
 		return (p != null);
 	}
 
@@ -109,7 +109,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 		}
 		protected String[] getErrors() {
 			if(!isIncorrect()) return new String[0];
-			String es = (String)get("errors");
+			String es = (String)get("errors"); //$NON-NLS-1$
 			if(es == null || es.length() == 0) return new String[0]; 
 			return errors;
 		}

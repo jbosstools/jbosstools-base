@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.ui.form;
 
+import org.jboss.tools.common.meta.ui.Messages;
 import org.jboss.tools.common.model.ui.forms.FormAttributeData;
 import org.jboss.tools.common.model.ui.forms.FormData;
 import org.jboss.tools.common.model.ui.forms.FormLayoutDataUtil;
@@ -19,53 +20,53 @@ public class AttributeFormLayoutData implements MetaConstants {
 
 	private final static IFormData[] ATTRIBUTE_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Attribute",
-			"", //"Description
+			Messages.AttributeFormLayoutData_Attribute,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(ATTRIBUTE_ENTITY)
 		),
 		new FormData(
-			"Constraint",
-			"", //"Description
-			"Constraint",
+			Messages.AttributeFormLayoutData_Constraint,
+			"", //"Description //$NON-NLS-1$
+			"Constraint", //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(ATTRIBUTE_CONSTRAINT_ENTITY)
 		),
 		new FormData(
-			"Editor",
-			"", //"Description
-			"Editor",
+			Messages.AttributeFormLayoutData_Editor,
+			"", //"Description //$NON-NLS-1$
+			"Editor", //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(ATTRIBUTE_EDITOR_ENTITY)
 		),
 		new FormData(
-			"Advanced",
-			"", //"Description
+			Messages.AttributeFormLayoutData_Advanced,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createAdvancedFormAttributeData(ATTRIBUTE_ENTITY)
 		),
 	};
 
 	private final static IFormData[] ATTRIBUTE_REF_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Attribute Reference",
-			"", //"Description
+			Messages.AttributeFormLayoutData_AttributeReference,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(ATTRIBUTE_REF_ENTITY)
 		),
 	};
 
 	final static IFormData ATTRIBUTES_FOLDER_DEFINITION = new FormData(
-		"Attributes",
-		"", //"Description,
-		"Attributes",
-		new FormAttributeData[]{new FormAttributeData("name", 100)},
+		Messages.AttributeFormLayoutData_AttributesFolder,
+		"", //"Description, //$NON-NLS-1$
+		"Attributes", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 		new String[]{ATTRIBUTE_ENTITY,ATTRIBUTE_REF_ENTITY},
-		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateAttribute")
+		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateAttribute") //$NON-NLS-1$
 	);
 
 	final static IFormData ATTRIBUTES_LIST_DEFINITION = new FormData(
-		"Attributes",
-		"", //"Description,
+		Messages.AttributeFormLayoutData_AttributesList,
+		"", //"Description, //$NON-NLS-1$
 		ATTRIBUTES_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("name", 100)},
+		new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 		new String[]{ATTRIBUTE_ENTITY,ATTRIBUTE_REF_ENTITY},
-		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateAttribute")
+		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateAttribute") //$NON-NLS-1$
 	);
 
 	final static IFormData ATTRIBUTE_DEFINITION = new FormData(
@@ -78,16 +79,16 @@ public class AttributeFormLayoutData implements MetaConstants {
 
 	private final static IFormData[] ATTRIBUTE_CONSTRAINT_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Constraint",
-			"", //"Description
+			Messages.AttributeFormLayoutData_ConstraintDefinitions,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(ATTRIBUTE_CONSTRAINT_ENTITY)
 		),
 		new FormData(
-			"Items",
-			"", //"Description
-			new FormAttributeData[]{new FormAttributeData("name", 100)},
+			Messages.AttributeFormLayoutData_Items,
+			"", //"Description //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 			new String[]{CONSTRAINT_ITEM_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateConstraintItem")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateConstraintItem") //$NON-NLS-1$
 		),
 	};
 

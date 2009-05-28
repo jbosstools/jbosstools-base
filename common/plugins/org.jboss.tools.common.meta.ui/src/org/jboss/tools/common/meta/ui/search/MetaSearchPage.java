@@ -58,10 +58,11 @@ public class MetaSearchPage extends DialogPage implements ISearchPage {
 	}
 
     private XEntityData getSearchEntityData() {
-        String[][] ds = new String[][]{{"SearchValue", "yes"},
-                                       {"text to find", "yes"},
-                                       {"property name", "no"},
-                                       {"ignore case", "no"}};
+    	// TODO might need to make use of setDisplayName if these strings appear in the UI
+        String[][] ds = new String[][]{{"SearchValue", "yes"},  //$NON-NLS-1$//$NON-NLS-2$
+                                       {"text to find", "yes"},  //$NON-NLS-1$//$NON-NLS-2$
+                                       {"property name", "no"},  //$NON-NLS-1$//$NON-NLS-2$
+                                       {"ignore case", "no"}};  //$NON-NLS-1$//$NON-NLS-2$
         XEntityData d = XEntityDataImpl.create(ds);
         XAttributeData[] as = d.getAttributeData();
         for (int i = 0; i < as.length; i++) {
@@ -95,9 +96,9 @@ public class MetaSearchPage extends DialogPage implements ISearchPage {
 		org.eclipse.search.ui.NewSearchUI.activateSearchResultView();
 	
 		MetaSearchQuery wsJob = new MetaSearchQuery();
-		wsJob.setTextToFind(data.getValue("text to find"));
-		wsJob.setIgnoreCase("true".equals(data.getValue("ignore case")));
-		wsJob.setAttributeMask(data.getValue("property name"));
+		wsJob.setTextToFind(data.getValue("text to find")); //$NON-NLS-1$
+		wsJob.setIgnoreCase("true".equals(data.getValue("ignore case"))); //$NON-NLS-1$ //$NON-NLS-2$
+		wsJob.setAttributeMask(data.getValue("property name")); //$NON-NLS-1$
 		wsJob.setScope(scope);
 		if (forground) {
 			IStatus status= NewSearchUI.runQueryInForeground(getRunnableContext(), wsJob);

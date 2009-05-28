@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.ui.form;
 
+import org.jboss.tools.common.meta.ui.Messages;
 import org.jboss.tools.common.model.ui.forms.FormAttributeData;
 import org.jboss.tools.common.model.ui.forms.FormData;
 import org.jboss.tools.common.model.ui.forms.FormLayoutDataUtil;
@@ -19,23 +20,23 @@ public class GroupFormLayoutData implements MetaConstants {
 
 	private final static IFormData[] GROUP_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Meta Group",
-			"", //"Description
+			Messages.GroupFormLayoutData_MetaGroup,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(GROUP_ENTITY)
 		),
 		new FormData(
-			"Entities",
-			"", //"Description
-			new FormAttributeData[]{new FormAttributeData("name", 100)},
+			Messages.GroupFormLayoutData_Entities,
+			"", //"Description //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 			new String[]{ENTITY_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateEntity")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateEntity") //$NON-NLS-1$
 		),
 		new FormData(
-			"Extensions",
-			"", //"Description
-			new FormAttributeData[]{new FormAttributeData("name", 100)},
+			Messages.GroupFormLayoutData_Extensions,
+			"", //"Description //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 			new String[]{EXTENSION_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateEntityExtension")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateEntityExtension") //$NON-NLS-1$
 		),
 		MappingFormLayoutData.MAPPING_FOLDER_DEFINITION
 	};

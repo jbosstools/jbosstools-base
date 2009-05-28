@@ -61,12 +61,12 @@ public class XAttributeDataImpl implements XAttributeData, XMetaDataConstants {
     }
 
     public void load(Element el) {
-        attributename = el.getAttribute("AttributeName");
-        entityname = ((Element)el.getParentNode()).getAttribute("EntityName");
-        String m = el.getAttribute("Mandatory");
-        mandatory = "yes".equals(m) || "".equals(m);
-        m = el.getAttribute("Advanced");
-        isAdvanced = "yes".equals(m);
+        attributename = el.getAttribute("AttributeName"); //$NON-NLS-1$
+        entityname = ((Element)el.getParentNode()).getAttribute("EntityName"); //$NON-NLS-1$
+        String m = el.getAttribute("Mandatory"); //$NON-NLS-1$
+        mandatory = "yes".equals(m) || "".equals(m);  //$NON-NLS-1$//$NON-NLS-2$
+        m = el.getAttribute("Advanced"); //$NON-NLS-1$
+        isAdvanced = "yes".equals(m); //$NON-NLS-1$
     }
     
     public String getAttributeName() {

@@ -48,7 +48,7 @@ public class PropertiesStringFieldEditor extends ExtendedFieldEditor implements 
 
 	public PropertiesStringFieldEditor(IWidgetSettings settings) {
 		super(settings);
-		object = PreferenceModelUtilities.getPreferenceModel().createModelObject("FilePROPERTIES", null);
+		object = PreferenceModelUtilities.getPreferenceModel().createModelObject("FilePROPERTIES", null); //$NON-NLS-1$
 		table = new XChildrenEditorImpl();
 		table.setObject(object);
 	}
@@ -93,15 +93,15 @@ public class PropertiesStringFieldEditor extends ExtendedFieldEditor implements 
 		for (int i = 0; i < cs.length; i++) {
 			cs[i].removeFromParent();
 		}
-		StringTokenizer st = new StringTokenizer(value, ",;");
+		StringTokenizer st = new StringTokenizer(value, ",;"); //$NON-NLS-1$
 		while(st.hasMoreTokens()) {
 			String t = st.nextToken();
 			int h = t.indexOf('=');
 			String n = (h < 0) ? t : t.substring(0, h);
 			String v = t.substring(h + 1);
-			XModelObject p = object.getModel().createModelObject("Property", null);
-			p.setAttributeValue("name", n);
-			p.setAttributeValue("value", v);
+			XModelObject p = object.getModel().createModelObject("Property", null); //$NON-NLS-1$
+			p.setAttributeValue("name", n); //$NON-NLS-1$
+			p.setAttributeValue("value", v); //$NON-NLS-1$
 			object.addChild(p);
 		}
 		table.update();
@@ -164,7 +164,7 @@ public class PropertiesStringFieldEditor extends ExtendedFieldEditor implements 
 			return new Helper();
 		}
 		protected String getAddActionPath() {
-			return "CreateActions.CreateProperty";
+			return "CreateActions.CreateProperty"; //$NON-NLS-1$
 		}
 		public void action(String command) {
 			super.action(command);
@@ -180,8 +180,8 @@ public class PropertiesStringFieldEditor extends ExtendedFieldEditor implements 
 		StringBuffer sb = new StringBuffer();
 		XModelObject[] os = object.getChildren();
 		for (int i = 0; i < os.length; i++) {
-			String n = os[i].getAttributeValue("name");
-			String v = os[i].getAttributeValue("value");
+			String n = os[i].getAttributeValue("name"); //$NON-NLS-1$
+			String v = os[i].getAttributeValue("value"); //$NON-NLS-1$
 			if(n.length() == 0 && v.length() == 0) continue;
 			if(sb.length() > 0) sb.append(';');
 			sb.append(n).append('=').append(v);
@@ -190,7 +190,7 @@ public class PropertiesStringFieldEditor extends ExtendedFieldEditor implements 
 	}
 
 	class Helper extends AbstractTableHelper {
-		String[] HEADER = new String[]{"name", "value"};
+		String[] HEADER = new String[]{"name", "value"}; //$NON-NLS-1$ //$NON-NLS-2$
 		
 		public String[] getHeader() {
 			return HEADER;

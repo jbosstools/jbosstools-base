@@ -77,7 +77,7 @@ public class XAttributeImpl extends XMetaElementImpl implements XAttribute {
     }
 
     public void setDefaultValue(String value) {
-        m_DefValue = replace(value, "%cr%", "\n");
+        m_DefValue = replace(value, "%cr%", "\n");  //$NON-NLS-1$//$NON-NLS-2$
     }
 
     public boolean isTrimmable() {
@@ -125,7 +125,7 @@ public class XAttributeImpl extends XMetaElementImpl implements XAttribute {
     }
 
     public boolean isFake() {
-        return "FAKE".equals(m_XMLName);
+        return "FAKE".equals(m_XMLName); //$NON-NLS-1$
     }
 
     public void load(Element el){
@@ -144,8 +144,8 @@ public class XAttributeImpl extends XMetaElementImpl implements XAttribute {
         setDefaultValue(el.getAttribute(DEFAULT_VALUE));
         setXMLName(el.getAttribute(XML_NAME));
         loadAdapter(el);
-        trimmable = !"no".equals(el.getAttribute("TRIM"));
-        copyable = !"no".equals(el.getAttribute("COPYABLE"));
+        trimmable = !"no".equals(el.getAttribute("TRIM"));  //$NON-NLS-1$//$NON-NLS-2$
+        copyable = !"no".equals(el.getAttribute("COPYABLE"));  //$NON-NLS-1$//$NON-NLS-2$
         loadProperties(el);
     }
 
@@ -153,27 +153,27 @@ public class XAttributeImpl extends XMetaElementImpl implements XAttribute {
         return getName();
     }
 
-    public static final String LOADER = "loader";
+    public static final String LOADER = "loader"; //$NON-NLS-1$
     public static final String CONSTRAINT_PREFIX =
-       "org.jboss.tools.common.meta.constraint.impl.XAttributeConstraint";
+       "org.jboss.tools.common.meta.constraint.impl.XAttributeConstraint"; //$NON-NLS-1$
     public static final String ATTRIBUTE_PREFIX =
-       "org.jboss.tools.common.meta.impl.adapters.XAdapter";
+       "org.jboss.tools.common.meta.impl.adapters.XAdapter"; //$NON-NLS-1$
 
     public void loadConstraint(Element element) {
         if(element == null) return;
         String loader = element.getAttribute(LOADER);
         if(!XMetaDataLoader.hasAttribute(element, LOADER) || loader.trim().length() == 0) {
-        	loader = "";
+        	loader = ""; //$NON-NLS-1$
         }
-        if(loader != null && loader.startsWith("%")) {
-        	loader = expand(loader, "AttributeConstraints");
+        if(loader != null && loader.startsWith("%")) { //$NON-NLS-1$
+        	loader = expand(loader, "AttributeConstraints"); //$NON-NLS-1$
         }
         constraint.init(loader, element);
     }
 
     public void loadAdapter(Element element) {
         String loader = element.getAttribute(LOADER);
-        if(loader.length() == 0 && getXMLName().length() > 0) loader = "ModelElement";
+        if(loader.length() == 0 && getXMLName().length() > 0) loader = "ModelElement"; //$NON-NLS-1$
         adapter.init(this, loader, element);
         loadValueListeners(element);
     }
@@ -239,7 +239,7 @@ class AdapterHolder {
                 	adapter = (XAdapter)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
                 }
             } catch (ClassCastException e) {
-            	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadAdapter:" + e.getMessage());
+            	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadAdapter:" + e.getMessage()); //$NON-NLS-1$
             }
         }
 		if(adapter == null) adapter = new XAdapter();
@@ -287,7 +287,7 @@ class ConstraintHolder {
             	constraint = (XAttributeConstraint)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
             }
         } catch (ClassCastException e) {
-        	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + e.getMessage(), e);
+        	ModelPlugin.getPluginLog().logError("XAttributeImpl:loadConstraint:" + e.getMessage(), e); //$NON-NLS-1$
         }
 		if(constraint == null) constraint = new XAttributeConstraintImpl();
 		

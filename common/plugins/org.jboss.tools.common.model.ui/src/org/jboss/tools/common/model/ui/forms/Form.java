@@ -175,7 +175,7 @@ public class Form extends ExpandableForm {
 	public void initialize(Object model) {
 		this.xmo = (XModelObject)model;
 		if(xmo == null) {
-			ModelUIPlugin.getPluginLog().logInfo( "Error to create form "+formData.getHeader()+". Model object cannot be null.", new IllegalArgumentException("Parameter cannot be null"));
+			ModelUIPlugin.getPluginLog().logInfo( "Error to create form "+formData.getHeader()+". Model object cannot be null.", new IllegalArgumentException("Parameter cannot be null")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			return;
 		}
 		this.model = xmo.getModel();

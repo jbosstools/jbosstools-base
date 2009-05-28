@@ -21,7 +21,7 @@ public class MetaCompoundEditor extends DefaultMultipageEditor {
 	protected void doCreatePages() {
 		if(isAppropriateNature()) {
 			treeFormPage = createTreeFormPage();
-			treeFormPage.setTitle("Meta Editor");
+			treeFormPage.setTitle(Messages.MetaCompoundEditor_PageTitle);
 			treeFormPage.initialize(object);
 			addFormPage(treeFormPage);
 		}

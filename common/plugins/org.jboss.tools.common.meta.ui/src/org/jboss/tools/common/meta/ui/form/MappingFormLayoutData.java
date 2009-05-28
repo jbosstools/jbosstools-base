@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.ui.form;
 
+import org.jboss.tools.common.meta.ui.Messages;
 import org.jboss.tools.common.model.ui.forms.FormAttributeData;
 import org.jboss.tools.common.model.ui.forms.FormData;
 import org.jboss.tools.common.model.ui.forms.FormLayoutDataUtil;
@@ -18,35 +19,35 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
 public class MappingFormLayoutData implements MetaConstants {
 	
 	final static IFormData MAPPING_FOLDER_DEFINITION = new FormData(
-		"Mappings",
-		"", //"Description
-		"Mappings",
-		new FormAttributeData[]{new FormAttributeData("name", 100)},
+		Messages.MappingFormLayoutData_MappingsFolder,
+		"", //"Description //$NON-NLS-1$
+		"Mappings", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 		new String[]{MAPPING_ENTITY},
-		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateMapping")
+		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateMapping") //$NON-NLS-1$
 	);
 
 	final static IFormData MAPPING_LIST_DEFINITION = new FormData(
-		"Mappings",
-		"", //"Description
+		Messages.MappingFormLayoutData_MappingsList,
+		"", //"Description //$NON-NLS-1$
 		MAPPINGS_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("name", 100)},
+		new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 		new String[]{MAPPING_ENTITY},
-		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateMapping")
+		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateMapping") //$NON-NLS-1$
 	);
 
 	private final static IFormData[] MAPPING_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Mapping",
-			"", //"Description
+			Messages.MappingFormLayoutData_MappingDefinitions,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(MAPPING_ENTITY)
 		),
 		new FormData(
-			"Items",
-			"", //"Description
-			new FormAttributeData[]{new FormAttributeData("name", 30), new FormAttributeData("value", 70)},
+			Messages.MappingFormLayoutData_Items,
+			"", //"Description //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("name", 30), new FormAttributeData("value", 70)}, //$NON-NLS-1$ //$NON-NLS-2$
 			new String[]{MAPPING_ITEM_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateItem")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateItem") //$NON-NLS-1$
 		)
 	};
 

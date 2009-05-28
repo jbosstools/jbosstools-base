@@ -10,9 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.ui.search;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.search.ui.*;
+import org.jboss.tools.common.meta.ui.Messages;
 
 public class MetaSearchResult implements ISearchResult {
 	Set listeners = new HashSet();
@@ -35,13 +37,14 @@ public class MetaSearchResult implements ISearchResult {
 	public String getLabel() {
 		if(query instanceof MetaSearchQuery) {
 			MetaSearchQuery q = (MetaSearchQuery)query;
-			return "Meta Search - '" + q.getTextToFind() + "' - " + objects.size() + " matches";
+			return MessageFormat.format(Messages.MetaSearchResult_MetaSearchTextToFindNMatches,
+					q.getTextToFind(), objects.size());
 		}
-		return "Meta Search";
+		return Messages.MetaSearchResult_Label;
 	}
 
 	public String getTooltip() {
-		return "Meta Search";
+		return Messages.MetaSearchResult_Tooltip;
 	}
 
 	public ImageDescriptor getImageDescriptor() {

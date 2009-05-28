@@ -16,7 +16,7 @@ public class MetaEntityDataImpl extends MetaElementOrderedImpl {
     public MetaEntityDataImpl() {}
 
     public String name() {
-        return (String)properties.get("EntityName");
+        return (String)properties.get("EntityName"); //$NON-NLS-1$
     }
 
 }

@@ -20,7 +20,7 @@ public class MetaLoaderUtil extends XModelObjectLoaderUtil {
 
     public MetaLoaderUtil() {
 		Hashtable _singular = new Hashtable();
-		_singular.put("kind", "kind");
+		_singular.put("kind", "kind"); //$NON-NLS-1$ //$NON-NLS-2$
 		setup(_singular, false);
     }
     
@@ -100,9 +100,9 @@ public class MetaLoaderUtil extends XModelObjectLoaderUtil {
     private static String calculateEntity(Element element, String def) {
     	String entity = getModelEntityAttribute(element);
     	if(entity != null) return entity;
-        if(def.equals("MetaActionList")) {
-            String k = element.getAttribute("kind");
-            if("action".equals(k)) return "MetaAction";
+        if(def.equals("MetaActionList")) { //$NON-NLS-1$
+            String k = element.getAttribute("kind"); //$NON-NLS-1$
+            if("action".equals(k)) return "MetaAction"; //$NON-NLS-1$ //$NON-NLS-2$
         }
         return def;
     }
@@ -114,8 +114,8 @@ public class MetaLoaderUtil extends XModelObjectLoaderUtil {
     boolean needToSave(XModelObject o) {
     	if(o == null) return false;
     	String entity = o.getModelEntity().getName();
-    	if("MetaAttributeConstraint".equals(entity)
-    		|| "MetaAttributeEditor".equals(entity)) {
+    	if("MetaAttributeConstraint".equals(entity) //$NON-NLS-1$
+    		|| "MetaAttributeEditor".equals(entity)) { //$NON-NLS-1$
     		return (hasSetAttributes(o) 
     				|| o.getChildren().length > 0
     				);
@@ -128,11 +128,11 @@ public class MetaLoaderUtil extends XModelObjectLoaderUtil {
     	for (int i = 0; i < as.length; i++) {
     		String xml = as[i].getXMLName();
     		// it would be more safe to check isSavable
-    		if(xml == null || xml.length() == 0 || "NAME".equals(xml)) continue;
+    		if(xml == null || xml.length() == 0 || "NAME".equals(xml)) continue; //$NON-NLS-1$
     		String v = o.getAttributeValue(as[i].getName());
     		if(v != null && v.length() > 0 && !v.equals(as[i].getDefaultValue())) return true;
     	}
-    	String finalComment = o.get("#final-comment");
+    	String finalComment = o.get("#final-comment"); //$NON-NLS-1$
     	if(finalComment != null && finalComment.length() > 0) return true;
     	return false;
     }

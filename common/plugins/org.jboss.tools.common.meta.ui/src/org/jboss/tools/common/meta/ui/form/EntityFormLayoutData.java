@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.ui.form;
 
+import org.jboss.tools.common.meta.ui.Messages;
 import org.jboss.tools.common.model.ui.forms.FormAttributeData;
 import org.jboss.tools.common.model.ui.forms.FormData;
 import org.jboss.tools.common.model.ui.forms.FormLayoutDataUtil;
@@ -18,42 +19,42 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
 public class EntityFormLayoutData implements MetaConstants {
 
 	final static IFormData CHILDREN_FOLDER_DEFINITION = new FormData(
-		"Children",
-		"", //"Description
-		"Children",
-		new FormAttributeData[]{new FormAttributeData("name", 100)},
+		Messages.EntityFormLayoutData_ChildrenFolder,
+		"", //"Description //$NON-NLS-1$
+		"Children", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 		new String[]{CHILD_ENTITY},
-		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateChild")
+		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateChild") //$NON-NLS-1$
 	);
 
 	final static IFormData CHILDREN_LIST_DEFINITION = new FormData(
-		"Children",
-		"", //"Description
+		Messages.EntityFormLayoutData_ChildrenList,
+		"", //"Description //$NON-NLS-1$
 		CHILDREN_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("name", 100)},
+		new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 		new String[]{CHILD_ENTITY},
-		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateChild")
+		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateChild") //$NON-NLS-1$
 	);
 
 	private final static IFormData[] ENTITY_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Entity",
-			"", //"Description
+			Messages.EntityFormLayoutData_Entity,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createGeneralFormAttributeData(ENTITY_ENTITY)
 		),
 		CHILDREN_FOLDER_DEFINITION,
 		AttributeFormLayoutData.ATTRIBUTES_FOLDER_DEFINITION,
 		new FormData(
-			"Action List",
-			"", //"Description
-			"ActionList",
-			new FormAttributeData[]{new FormAttributeData("name", 70), new FormAttributeData("element type", 30)},
+			Messages.EntityFormLayoutData_AttributesFolder,
+			"", //"Description //$NON-NLS-1$
+			"ActionList", //$NON-NLS-1$
+			new FormAttributeData[]{new FormAttributeData("name", 70), new FormAttributeData("element type", 30)}, //$NON-NLS-1$ //$NON-NLS-2$
 			new String[]{ACTION_LIST_ENTITY, ACTION_ENTITY},
-			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddItem")
+			FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddItem") //$NON-NLS-1$
 		),
 		new FormData(
-			"Advanced",
-			"", //"Description
+			Messages.EntityFormLayoutData_Advanced,
+			"", //"Description //$NON-NLS-1$
 			FormLayoutDataUtil.createAdvancedFormAttributeData(ENTITY_ENTITY)
 		)
 	};

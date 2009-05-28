@@ -18,7 +18,7 @@ import org.jboss.tools.common.model.XModel;
 public class MappingHelper {
 	
 	public static MappingHelper getMappingHelper(XModel model) {
-		MappingHelper h = (MappingHelper)model.getManager("MappingHelper");
+		MappingHelper h = (MappingHelper)model.getManager("MappingHelper"); //$NON-NLS-1$
 		if(h == null) {
 			h = new MappingHelper();
 			h.setModel(model);

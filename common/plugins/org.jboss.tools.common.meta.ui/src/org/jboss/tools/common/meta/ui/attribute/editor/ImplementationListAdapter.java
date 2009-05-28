@@ -38,9 +38,9 @@ class ImplementationListContentProvider extends DefaultXAttributeListContentProv
 
 	protected void loadTags() {
 		MappingHelper h = MappingHelper.getMappingHelper(model);
-		tags = h.getList("Implementations");
+		tags = h.getList("Implementations"); //$NON-NLS-1$
 		for (int i = 0; i < tags.length; i++) {
-			tags[i] = "%" + tags[i] + "%";
+			tags[i] = "%" + tags[i] + "%"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

@@ -16,7 +16,7 @@ public class MetaAttributeEditorImpl extends MetaElementImpl {
 	public MetaAttributeEditorImpl() {}
 
     public String getPathPart() {
-        return "Editor";
+        return "Editor"; //$NON-NLS-1$
     }
 
 }
