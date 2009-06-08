@@ -156,7 +156,7 @@ public abstract class AbstractSectionEditor extends DefaultEditorPart {
 
 	public void setFocus() {
 		if(control == null) return;
-		wrapper.setFocus();
+		if(!wrapper.isDisposed()) wrapper.setFocus();
 	}
 
 	public Object getAdapter(Class adapter) {
