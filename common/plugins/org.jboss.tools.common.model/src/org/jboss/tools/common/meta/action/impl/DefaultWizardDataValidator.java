@@ -114,7 +114,9 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 	
 	protected boolean checkChild(XModelObject parent, String entity, Properties data) {
 		XModelObject o = support.getTarget().getModel().createModelObject(entity, data);
-		if(o.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) return true;
+		if(o.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null
+			&& !"true".equals(o.getModelEntity().getProperty("unique"))) return true;
+		System.out.println(o.getModelEntity().getProperty("unique") + ":" + o.getPathPart());
 		if(o != null && parent == support.getTarget().getParent() && o.getPathPart().equals(support.getTarget().getPathPart())) return true;
 		if(o != null) message = DefaultCreateHandler.getContainsMessage(parent, o);
 		return message == null;

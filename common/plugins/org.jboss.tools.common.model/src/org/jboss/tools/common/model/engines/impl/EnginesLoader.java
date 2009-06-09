@@ -84,10 +84,17 @@ public class EnginesLoader extends URLRootLoader {
             	c = findAppropriateChild(set, cs[i], map);
             	if(c == null) {
             		c = cs[i].copy();
+                    object.addChild(c);
             	} else {
-            		merge(c, cs[i], fire);
+            		boolean has_id = c.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null;
+            		if(has_id) {
+            			c.removeFromParent();
+            			EnginesLoader.merge(c, cs[i], false);
+            			object.addChild(c);
+            		} else {
+            			EnginesLoader.merge(c, cs[i], fire);
+            		}
             	}
-                object.addChild(c);
             } else if(c.getModelEntity().getName().equals(cs[i].getModelEntity().getName())) {
                 merge(c, cs[i], fire);
             } else {

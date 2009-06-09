@@ -210,16 +210,21 @@ public class EclipseResourceUtil {
 		}
 		return false;
 	}
-	
+	static int count = 0;
 	public static IModelNature getModelNature(IProject p) {
 		if(p == null || !p.isOpen()) return null;
 		String[] natures = getModelNatureNames();
 		for (int i = 0; i < natures.length; i++) {
 			try {
 				if(p.hasNature(natures[i])) {
+					long t1 = System.currentTimeMillis();
+					count++;
 					if(!ModelNature.checkModelNature(p, natures[i])) {
 						continue;
 					}
+					long dt = System.currentTimeMillis() - t1;
+					count += (int)dt;
+//					System.out.println("--->" + count);
 					IModelNature n = (IModelNature)p.getNature(natures[i]);
 					if(n == null) return null;
 					n = testNature(n);

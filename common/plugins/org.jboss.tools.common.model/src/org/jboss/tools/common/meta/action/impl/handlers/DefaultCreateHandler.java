@@ -145,12 +145,20 @@ public class DefaultCreateHandler extends AbstractHandler {
     public static void addCreatedObject(XModelObject parent, XModelObject child, Properties whereSelect) throws XModelException {
         addCreatedObject(parent, child, true, whereSelect);
     }
-    
+
     public static String getContainsMessage(XModelObject parent, XModelObject child) {
+    	return getContainsMessage(parent, child, true);
+    }
+
+    private static String getContainsMessage(XModelObject parent, XModelObject child, boolean forceUnique) {
 		String pathpart = child.getPathPart();
 		XModelObject e = parent.getChildByPath(pathpart);
 		if(e != null && e != parent && e != parent.getParent()) {
-			if(child.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) return null;
+			if(child.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) {
+				if(!forceUnique || !"true".equals(child.getModelEntity().getProperty("unique"))) {
+					return null;
+				}
+			}
 			String tp = title(parent, true), tc = title(child, false), te = title(e, false);
 			String mes = (tc.equals(te))
 						 ? bundle.getMessage("model", "CONTAINS_OBJECT_1",
@@ -172,7 +180,7 @@ public class DefaultCreateHandler extends AbstractHandler {
 
     public static void addCreatedObject(XModelObject parent, final XModelObject child, boolean registerundo, final int whereSelect) throws XModelException {
         if(child == null) throw new XModelException(getMessageById("OBJECT_CREATION_FAILURE"));
-        String mes = getContainsMessage(parent, child);
+        String mes = getContainsMessage(parent, child, false);
         if(mes != null) throw new XModelException(mes);
         String ce = child.getModelEntity().getName();
         XChild c = parent.getModelEntity().getChild(ce);

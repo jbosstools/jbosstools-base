@@ -291,7 +291,14 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
             		c = cs[i].copy();
             		addChild(c);
             	} else {
-            		EnginesLoader.merge(c, cs[i], fire);
+            		boolean has_id = c.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null;
+            		if(has_id) {
+            			c.removeFromParent();
+            			EnginesLoader.merge(c, cs[i], false);
+            			addChild(c);
+            		} else {
+            			EnginesLoader.merge(c, cs[i], fire);
+            		}
             	}
             } else if(c.getModelEntity().getName().equals(cs[i].getModelEntity().getName())) {
             	EnginesLoader.merge(c, cs[i], fire);

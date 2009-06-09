@@ -14,6 +14,7 @@ import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
+import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObject {
     private static final long serialVersionUID = 7942041044569562286L;
@@ -106,8 +107,19 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
         RegularObjectImpl p = (RegularObjectImpl)po;
         XModelObject c = p.children.change(this, opp, npp);
         if(c != null) {
-            if(ov == null) properties.remove(name); else super.set(name, ov);
-            elementExists(c, name, value);
+        	if(getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) {
+        		int k = 1;
+        		while(c != null) {
+        			super.set(XModelObjectLoaderUtil.ATTR_ID_NAME, "" + k);
+        			npp = getPathPart();
+        			c = p.children.change(this, opp, npp);
+        			k++;
+        		}
+        		return;
+        	} else {
+        		if(ov == null) properties.remove(name); else super.set(name, ov);
+        		elementExists(c, name, value);
+        	}
         }
     }
 
