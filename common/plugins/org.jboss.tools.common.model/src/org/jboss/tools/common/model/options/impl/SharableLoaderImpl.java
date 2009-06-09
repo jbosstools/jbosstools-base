@@ -72,14 +72,10 @@ public class SharableLoaderImpl implements SharableConstants {
         if(sc == null) {
             Properties p = new Properties();
             if(hasName) p.setProperty("name", name);
-            try {
-                sc = (SharableElement)sharable.getModel().createModelObject(en, p);
-                sc.setScopeExists(PROJECT, false);
-                sharable.addChild(sc);
-                if(!hasName) sharable.setName(name);
-            } catch (Exception e) {
-            	ModelPlugin.getPluginLog().logError("SharableLoaderImpl:loadChild:" + e.getMessage());
-            }
+            sc = (SharableElement)sharable.getModel().createModelObject(en, p);
+            sc.setScopeExists(PROJECT, false);
+            sharable.addChild(sc);
+            if(!hasName) sharable.setName(name);
         }
         if(sc != null) {
             if(sc instanceof SharableContainerImpl)

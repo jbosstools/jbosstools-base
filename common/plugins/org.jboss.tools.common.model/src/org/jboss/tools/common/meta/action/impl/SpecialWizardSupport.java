@@ -113,7 +113,7 @@ public abstract class SpecialWizardSupport {
      * May return preset or previosly entered data (name-value)
      */
     public String[][] getInfo(int stepId) {
-        return null;
+        return new String[0][0];
     }
 
     /*

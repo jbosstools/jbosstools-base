@@ -29,3 +29,4 @@ Provide-Package: org.jboss.tools.common.meta.ui.editor,
  org.jboss.tools.common.meta.ui.form,
  org.jboss.tools.common.meta.ui.attribute.editor,
  org.jboss.tools.common.meta.ui.search
+Bundle-Activator: org.jboss.tools.common.meta.ui.MetaUIPlugin

@@ -13,7 +13,10 @@ package org.jboss.tools.common.meta.ui.search;
 import java.text.MessageFormat;
 
 import org.jboss.tools.common.meta.ui.Messages;
+import org.jboss.tools.common.meta.ui.MetaUIPlugin;
 import org.jboss.tools.common.model.ui.navigator.NavigatorLabelProvider;
+import org.eclipse.core.runtime.ISafeRunnable;
+import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.search.ui.*;
 import org.eclipse.swt.layout.*;
@@ -46,12 +49,17 @@ public class MetaSearchResultPage implements ISearchResultPage, ISearchResultLis
 		search.removeListener(this);
 		search.addListener(this);
 		this.uiState = uiState;
-		if(viewer != null) {
-			try {
-				viewer.refresh();
-			} catch (Exception e) {
-				//ignore
-			}
+		if (viewer != null) {
+			SafeRunner.run(new ISafeRunnable() {
+
+				public void run() throws Exception {
+					viewer.refresh();
+				}
+
+				public void handleException(Throwable exception) {
+					MetaUIPlugin.getDefault().logError(exception);
+				}
+			});
 		}
 	}
 
@@ -147,7 +155,15 @@ public class MetaSearchResultPage implements ISearchResultPage, ISearchResultLis
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if(viewer == null || newInput == null) return;
-					try { viewer.refresh(); } catch (Exception e) {}
+					SafeRunner.run(new ISafeRunnable() {
+						
+					public void run() throws Exception {
+						viewer.refresh();
+					}
+
+					public void handleException(Throwable exception) {
+						MetaUIPlugin.getDefault().logError(exception);
+					}});
 				}
 			});
 		}

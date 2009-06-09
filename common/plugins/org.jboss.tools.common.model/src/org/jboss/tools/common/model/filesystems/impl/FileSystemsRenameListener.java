@@ -47,7 +47,7 @@ public class FileSystemsRenameListener {
 
 	public void checkFileSystemRename(IResourceChangeEvent event) {
 		String[] r = processDelta(event.getDelta());
-		if(r == null) return;
+		if(r.length == 0) return;
 		pathRenamed(r[0], r[1]);
 	}
 	
@@ -64,7 +64,7 @@ public class FileSystemsRenameListener {
 				}
 			}
 		}
-		return null;
+		return new String[0];
 	}
 	
 	private String[] extractRename(IResourceDelta delta) {
