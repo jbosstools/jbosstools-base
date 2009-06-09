@@ -10,11 +10,18 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.ui.editor;
 
-import java.util.*;
-import org.w3c.dom.*;
-import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.meta.*;
-import org.jboss.tools.common.model.util.*;
+import java.util.Hashtable;
+import java.util.Properties;
+
+import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.XChild;
+import org.jboss.tools.common.meta.XModelEntity;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.util.XMLUtil;
+import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class MetaLoaderUtil extends XModelObjectLoaderUtil {
 
@@ -43,9 +50,7 @@ public class MetaLoaderUtil extends XModelObjectLoaderUtil {
         XModelEntity entity = o.getModelEntity();
         XChild[] childs = entity.getChildren();
         for (int i = 0; i < childs.length; i++) if(childs[i].isRequired()) {
-          try {
-              o.addChild(o.getModel().createModelObject(childs[i].getName(), new Properties()));
-          } catch (Exception e) {}
+        	o.addChild(o.getModel().createModelObject(childs[i].getName(), new Properties()));
         }
         for (int i = 0; i < childs.length; i++) {
             String en = childs[i].getName();

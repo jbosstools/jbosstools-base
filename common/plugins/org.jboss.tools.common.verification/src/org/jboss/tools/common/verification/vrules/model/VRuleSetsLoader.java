@@ -75,11 +75,11 @@ public class VRuleSetsLoader extends EnginesLoader {
                     c.setAttributeValue("installed", "true");
                     installed.add(c.getPathPart());
                 }
-            } catch (Exception e) {
-				if(VerificationPlugin.isDebugEnabled()) {
-					VerificationPlugin.getPluginLog().logError(e);
-				}
-            }
+            } catch (XModelException e) {
+				VerificationPlugin.getPluginLog().logError(e);
+            } catch (IOException e) {
+				VerificationPlugin.getPluginLog().logError(e);
+			}
         }
         XModelObject[] ch = object.getChildren();
         for (int i = 0; i < ch.length; i++) {

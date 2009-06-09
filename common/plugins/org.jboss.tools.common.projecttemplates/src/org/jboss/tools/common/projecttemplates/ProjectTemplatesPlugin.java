@@ -12,6 +12,7 @@ package org.jboss.tools.common.projecttemplates;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -19,9 +20,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.common.util.FileUtil;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.jboss.tools.common.util.FileUtil;
 
 public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 	public static final String PLUGIN_ID = "org.jboss.tools.common.projecttemplates";
@@ -41,11 +42,7 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 	
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		try {
-			copyProjectTemplates();
-		} catch (Exception e) {
-			log(e);
-		}
+		copyProjectTemplates();
 	}
 
 	public static String getInstallPath() {
@@ -53,7 +50,7 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 		URL url = null;
 		try {
 			url = bundle == null ? null : FileLocator.resolve(bundle.getEntry("/"));
-		} catch (Exception e) {
+		} catch (IOException e) {
 			url = bundle.getEntry("/");
 		}
 		return (url == null) ? null : url.getPath();

@@ -146,10 +146,10 @@ public class JspWtpKbConnector implements WtpKbConnector {
         }
 		KbTldStore store = KbTldStore.getInstance();
 		KbQuery kbQuery = new KbQuery(query, registerResources);
-		Collection proposals = store.queryProposal(kbQuery);
-		if(proposals.size()>0) {
-		    Iterator iterator = proposals.iterator();
-		    KbProposal p = (KbProposal)iterator.next();
+		Collection<KbProposal> proposals = store.queryProposal(kbQuery);
+		if(!proposals.isEmpty()) {
+		    Iterator<KbProposal> iterator = proposals.iterator();
+		    KbProposal p = iterator.next();
 		    getProposalCache().put(query, p);
 		    return p;
 		}

@@ -10,17 +10,12 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.verification.ui.vrules.wizard.config;
 
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard;
 
 public class VRulesConfigurationWizard extends AbstractQueryWizard {
 
 	public VRulesConfigurationWizard() {
-		try {
-			setView(new VRulesConfigurationWizardView());
-		} catch (Exception e) {
-			ModelPlugin.getPluginLog().logError(e);
-		}
+		setView(new VRulesConfigurationWizardView());
 	}
 
 }

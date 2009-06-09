@@ -62,7 +62,11 @@ public class MetaSearchQuery implements ISearchQuery {
 		if(resource instanceof IContainer) {
 			IContainer c = (IContainer)resource;
 			IResource[] rs = null;
-			try { rs = c.members(); } catch (Exception e) {}
+			try {
+				rs = c.members();
+			} catch (CoreException e) {
+				// TODO add activator and route error reporting to it
+			}
 			if(rs != null) for (int i = 0; i < rs.length; i++) processResource(rs[i]);
 		} else if(resource instanceof IFile) {
 			IFile f = (IFile)resource;

@@ -24,7 +24,6 @@ import org.jboss.tools.common.verification.vrules.VRuleSet;
 import org.jboss.tools.common.verification.vrules.impl.VManagerImpl;
 import org.jboss.tools.common.verification.vrules.layer.VModelFactory;
 import org.jboss.tools.common.verification.vrules.layer.VModelImpl;
-import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
 
 /**
  *
@@ -74,13 +73,7 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
         if(bundle != null) {
         	return bundle;
         }
-        try {
-            bundle = ResourceBundle.getBundle(baseName);
-        } catch (RuntimeException e) {
-        	if(VerificationPlugin.isDebugEnabled()) {
-        		VerificationPlugin.getPluginLog().logError(e);
-        	}
-        }
+        bundle = ResourceBundle.getBundle(baseName);
         Object bo = (bundle == null) ? (Object)"null" : bundle;
         bundles.put(baseName, bo);
         return bundle;
@@ -96,16 +89,10 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
     }
     
     protected void loadChildren() {
-        try {
-        	if(getParent() != null) VHelper.setManager(this);
-        	//it would be nice to remove this init
-        	//but then menu will not be initialized
-            if (manager == null && getParent() != null) init();
-        } catch (Exception e) {
-			if(VerificationPlugin.isDebugEnabled()) {
-				ModelPlugin.getPluginLog().logError(e);
-			}
-        }
+		if(getParent() != null) VHelper.setManager(this);
+		//it would be nice to remove this init
+		//but then menu will not be initialized
+	    if (manager == null && getParent() != null) init();
     }
 
     public boolean addChild(XModelObject child) {

@@ -8,7 +8,18 @@ package org.jboss.tools.common.verification.vrules.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.jboss.tools.common.verification.vrules.*;
+
+import org.eclipse.core.runtime.ISafeRunnable;
+import org.eclipse.core.runtime.SafeRunner;
+import org.jboss.tools.common.verification.vrules.VAction;
+import org.jboss.tools.common.verification.vrules.VEntity;
+import org.jboss.tools.common.verification.vrules.VHelper;
+import org.jboss.tools.common.verification.vrules.VManager;
+import org.jboss.tools.common.verification.vrules.VObject;
+import org.jboss.tools.common.verification.vrules.VResult;
+import org.jboss.tools.common.verification.vrules.VRule;
+import org.jboss.tools.common.verification.vrules.VTask;
+import org.jboss.tools.common.verification.vrules.VTaskListener;
 import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
 
 /**
@@ -112,18 +123,20 @@ public class VTaskImpl implements VTask, Runnable {
             if(!running) return;
             if (entity != null && entities[i] != null && entity.getName().equals(entities[i].getName())) {
                 VAction action = rule.getAction();
-                if (action == null) continue;// should not happen
-                try {
-                    VResult[] results = action.check(object);
-                    notifyApplied(rule, object, results);
-                } catch (Exception e) {
-                		VerificationPlugin.getPluginLog().logError("Exception in action "+action+" ignored: "+e, e);
+                if (action == null) {
+                	continue;// should not happen
                 }
+                VResult[] results = action.check(object);
+                notifyApplied(rule, object, results);
                 checked = true;
-                if (checkChildren) break;
+                if (checkChildren) {
+                	break;
+                }
             } else if (entity.isDescendant(entities[i].getName())) {
                 checkChildren = true;
-                if (checked) break;
+                if (checked) {
+                	break;
+                }
             }
         }
         if (checkChildren) {
@@ -139,12 +152,7 @@ public class VTaskImpl implements VTask, Runnable {
         sleeping = false;
         synchronized (listeners) {
             for (int i = 0; i < listeners.size(); i++) {
-                VTaskListener listener = (VTaskListener)listeners.get(i);
-                try {
-                    listener.onStart();
-                } catch (Exception e) {
-					logListener(listener, e);
-                }
+                SafeRunner.run(new OnStartNotifier((VTaskListener)listeners.get(i)));
             }
         }
     }
@@ -156,12 +164,7 @@ public class VTaskImpl implements VTask, Runnable {
     private void notifyApplied(VRule rule, VObject object, VResult[] results) {
         synchronized (listeners) {
             for (int i = 0; i < listeners.size(); i++) {
-                VTaskListener listener = (VTaskListener)listeners.get(i);
-                try {
-                    listener.onRuleApplied(rule, object, results);
-                } catch (Exception e) {
-					logListener(listener, e);
-                }
+               SafeRunner.run(new OnRuleAppliedNotifier((VTaskListener)listeners.get(i),rule, object, results));
             }
         }
     }
@@ -170,12 +173,7 @@ public class VTaskImpl implements VTask, Runnable {
 		if(!running) return;
         synchronized (listeners) {
             for (int i = 0; i < listeners.size(); i++) {
-                VTaskListener listener = (VTaskListener)listeners.get(i);
-                try {
-                    listener.onRuleFinished(rule, object);
-                } catch (Exception e) {
-					logListener(listener, e);
-                }
+               SafeRunner.run(new OnRuleFinishedNotifier((VTaskListener)listeners.get(i),rule, object));
             }
         }
     }
@@ -184,12 +182,7 @@ public class VTaskImpl implements VTask, Runnable {
     	if(!running) return;
         synchronized (listeners) {
             for (int i = 0; i < listeners.size(); i++) {
-                VTaskListener listener = (VTaskListener)listeners.get(i);
-                try {
-                    listener.onPause();
-                } catch (Exception e) {
-					logListener(listener, e);
-                }
+                SafeRunner.run(new OnPauseNotifier((VTaskListener)listeners.get(i)));
             }
         }
     }
@@ -198,12 +191,7 @@ public class VTaskImpl implements VTask, Runnable {
 		if(!running) return;
         synchronized (listeners) {
             for (int i = 0; i < listeners.size(); i++) {
-                VTaskListener listener = (VTaskListener)listeners.get(i);
-                try {
-                    listener.onResume();
-                } catch (Exception e) {
-					logListener(listener, e);
-                }
+                SafeRunner.run(new OnResumeNotifier((VTaskListener)listeners.get(i)));
             }
         }
     }
@@ -217,11 +205,7 @@ public class VTaskImpl implements VTask, Runnable {
         	ls = (VTaskListener[])listeners.toArray(new VTaskListener[0]);
         }
         for (int i = 0; i < ls.length; i++) {
-            try {
-                ls[i].onFinish();
-            } catch (Exception e) {
-				logListener(ls[i], e);
-            }
+            SafeRunner.run(new OnFinishNotifier(ls[i]));
         }
     }
 
@@ -237,4 +221,80 @@ public class VTaskImpl implements VTask, Runnable {
         }
     }
     
+    public class SafeNotifier implements ISafeRunnable {
+    	
+		protected VTaskListener listener;
+		
+		public SafeNotifier(VTaskListener listener) {
+			this.listener = listener;
+		}
+		public void run() throws Exception {
+		       listener.onStart();
+		}
+		public void handleException(Throwable exception) {
+			logListener(listener, exception);
+		}
+    }
+    
+    public class OnStartNotifier extends SafeNotifier {
+		public OnStartNotifier(VTaskListener listener) {
+			super(listener);
+		}
+		public void run() throws Exception {
+		       listener.onStart();
+		}
+    }
+    
+    public class OnPauseNotifier extends SafeNotifier {
+		public OnPauseNotifier(VTaskListener listener) {
+			super(listener);
+		}
+		public void run() throws Exception {
+		       listener.onPause();
+		}
+    }
+    
+    public class OnResumeNotifier extends SafeNotifier {
+		public OnResumeNotifier(VTaskListener listener) {
+			super(listener);
+		}
+		public void run() throws Exception {
+		       listener.onResume();
+		}
+    }
+    
+    public class OnFinishNotifier extends SafeNotifier {
+		public OnFinishNotifier(VTaskListener listener) {
+			super(listener);
+		}
+		public void run() throws Exception {
+		       listener.onFinish();
+		}
+    }
+    
+    public class OnRuleFinishedNotifier extends SafeNotifier {
+    	VRule rule;
+    	VObject object; 
+		public OnRuleFinishedNotifier(VTaskListener listener,VRule rule, VObject object) {
+			super(listener);
+			this.rule = rule;
+			this.object = object;
+		}
+		public void run() throws Exception {
+		       listener.onRuleFinished(rule, object);
+		}
+    }
+    
+    public class OnRuleAppliedNotifier extends OnRuleFinishedNotifier {
+    	VResult[] results;
+		public OnRuleAppliedNotifier(VTaskListener listener,VRule rule, VObject object, VResult[] results) {
+			super(listener,rule,object);
+			this.results =results;
+		}
+		public void run() throws Exception {
+		       listener.onRuleApplied(rule, object, results);
+		}
+    }
+    
+
 }
