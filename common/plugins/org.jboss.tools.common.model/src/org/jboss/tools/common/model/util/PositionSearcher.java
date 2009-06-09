@@ -121,7 +121,12 @@ public class PositionSearcher {
 				if(!inValue) {
 					int k = t.indexOf(name);
 					if(k >= 0) {
-						return pos + k;
+						boolean ok = true;
+						if(k > 0) {
+							char c = t.charAt(k - 1);
+							if(Character.isJavaIdentifierPart(c) || c == '-') ok = false;
+						}
+						if(ok) return pos + k;
 					}
 				}
 			}
