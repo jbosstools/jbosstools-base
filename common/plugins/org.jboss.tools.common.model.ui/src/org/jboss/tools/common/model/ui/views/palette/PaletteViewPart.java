@@ -98,7 +98,9 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 		paletteAdapter = null;
 	}
 
-	public void setFocus() {}
+	public void setFocus() {
+		if(palette != null && !palette.isDisposed()) palette.setFocus();
+	}
 
 	public void partActivated(IWorkbenchPart part) {
 	    IEditorPart part1  = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
