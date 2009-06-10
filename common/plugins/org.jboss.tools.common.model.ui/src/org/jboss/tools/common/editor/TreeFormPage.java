@@ -410,6 +410,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 	}
 
 	public void setFocus() {
+		if(control != null && !control.isDisposed()) control.setFocus();
 	}
 
 	public Object getAdapter(Class adapter) {
