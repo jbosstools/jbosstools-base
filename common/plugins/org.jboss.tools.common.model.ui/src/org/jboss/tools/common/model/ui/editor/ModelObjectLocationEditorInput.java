@@ -45,6 +45,9 @@ public class ModelObjectLocationEditorInput extends ModelObjectEditorInput imple
 	public boolean equals(Object o)	{
 		if(super.equals(o)) return true;
 		if(o instanceof IPathEditorInput) {
+			if(!((IPathEditorInput)o).exists()) {
+				return false;
+			}
 			IPath p = ((IPathEditorInput)o).getPath();
 			return path != null && path.equals(p);
 		}
