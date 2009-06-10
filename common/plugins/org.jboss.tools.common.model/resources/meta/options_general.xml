@@ -1702,11 +1702,6 @@
 				SCOPE="project" URI="http://richfaces.org/a4j" add_taglib="true"
 				library-version="" model-entity="SharableGroupHTML">
 				<MacroHTML
-					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, eventsQueue, focus, id, ignoreDupResponses, immediate, limitToList, name, onbeforedomupdate, oncomplete, process, reRender, rendered, requestDelay, status, timeout&lt;/code>"
-					ENDTEXT="&lt;/jsFunction>" ICON="" NAME="jsFunction" REFORMAT="yes"
-					SCOPE="project" STARTTEXT="&lt;jsFunction>" large-icon=""
-					model-entity="SharableMacroHTML" />
-				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:log&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:log&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, dir, height, hotkey, id, lang, level, name, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, popup, rendered, style, styleClass, title, width&lt;/code>"
 					ENDTEXT="&lt;/log>" ICON="" NAME="log" REFORMAT="yes" SCOPE="project"
 					STARTTEXT="&lt;log>" large-icon="" model-entity="SharableMacroHTML" />
@@ -1758,7 +1753,7 @@
 					ENDTEXT="" ICON="%Icons%/Struts Common/taglib" NAME="JBoss Ajax4jsf taglib"
 					REFORMAT="yes" SCOPE="project"
 					STARTTEXT="&lt;%@ taglib uri=&quot;http://richfaces.org/a4j&quot; prefix=&quot;a4j&quot; %>\\n|"
-					large-icon="" model-entity="SharableMacroHTML" />
+					large-icon="" model-entity="SharableMacroHTML" ></MacroHTML>
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:push&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:push&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, enabled, eventProducer, eventsQueue, focus, id, ignoreDupResponses, immediate, interval, limitToList, onbeforedomupdate, oncomplete, process, reRender, rendered, status, timeout&lt;/code>"
 					ENDTEXT="&lt;/push>" ICON="" NAME="push" REFORMAT="yes" SCOPE="project"
@@ -1824,6 +1819,33 @@
 			<GroupHTML HIDDEN="no" ICON="" NAME="RichFaces" PREFIX="rich"
 				SCOPE="project" URI="http://richfaces.org/rich" add_taglib="true"
 				library-version="" model-entity="SharableGroupHTML">
+				<MacroHTML
+     				DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:page&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:page&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, bodyClass, contentType, dir, footerClass, headerClass, id, lang, markupType, namespace, onload, onunload, pageTitle, rendered, sidebarClass, sidebarPosition, sidebarWidth, style, styleClass, theme, title, width&lt;/code>"
+     				ENDTEXT="&lt;/page>" ICON="%Icons%/JBoss RichFaces/page"
+     				NAME="page" REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;page>"
+     				large-icon="" model-entity="SharableMacroHTML"/>
+     			<MacroHTML
+     				DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:layout&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:layout&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered&lt;/code>"
+     				ENDTEXT="&lt;/layout>" ICON="%Icons%/JBoss RichFaces/layout"
+     				NAME="layout" REFORMAT="yes" SCOPE="project"
+     				STARTTEXT="&lt;layout>" large-icon="" model-entity="SharableMacroHTML"/>
+     			<MacroHTML
+     				DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:layoutPanel&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:layoutPanel&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, rendered, width, &lt;/code>"
+     				ENDTEXT="&lt;/layoutPanel>"
+     				ICON="%Icons%/JBoss RichFaces/layoutPanel" NAME="layoutPanel"
+     				REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;layoutPanel>"
+     				large-icon="" model-entity="SharableMacroHTML"/>
+     			<MacroHTML
+     				DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:colorPicker&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:colorPicker&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, colorMode, converter, converterMessage, flat, id, immediate, onbeforeshow, onchange, onclick, ondblclick, onhide, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onselect, onshow, rendered, required, requiredMessage, showEvent, validator, validatorMessage, value, valueChangeListener&lt;/code>"
+     				ENDTEXT="&lt;/colorPicker>"
+     				ICON="%Icons%/JBoss RichFaces/colorPicker" NAME="colorPicker"
+     				REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;colorPicker>"
+     				large-icon="" model-entity="SharableMacroHTML"/>
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/a4j:jsFunction&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>action, actionListener, ajaxSingle, binding, bypassUpdates, data, eventsQueue, focus, id, ignoreDupResponses, immediate, limitToList, name, onbeforedomupdate, oncomplete, process, reRender, rendered, requestDelay, status, timeout&lt;/code>"
+					ENDTEXT="&lt;/jsFunction>" ICON="" NAME="jsFunction" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;jsFunction>" large-icon=""
+					model-entity="SharableMacroHTML" />				
 				<MacroHTML
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;rich:hotKey&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/rich:hotKey&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, checkParent, disableInInput, disableInInputTypes, handler, id, key, rendered, selector, timing, type&lt;/code>"
 					ENDTEXT="&lt;/hotKey>" ICON="" NAME="hotKey" REFORMAT="yes" SCOPE="project"
@@ -3909,7 +3931,12 @@
     			NAME="queue" SCOPE="project" model-entity="SharableIcon"/>
    			<Icon
     			IMAGE="mhmjmgliljobjaiajaiaddiliaflgihclmkljfdpfjhpphphphdbpplnhihaeigeegalncpbcpafbdcpfablmohphphphphphpiaiaiaiaiaiaiaiaiaiaiaiakbhjieibiaiailiakmiaiaiaiajaiajaiaiaienbpaejmjcldfkiepedllnpijkajofccbbmkiniaeicdjbiciccjkmgfcmknjlofhijpbgnajjocfidjejojakfnjccmailhkmoeinhhbijbnkmjdlmoknfdcnmijodakgimoalakioicaehekcehaoigicdpdinmjcibiall"
-    			NAME="editor" SCOPE="project" model-entity="SharableIcon"/>
+    			NAME="editor" SCOPE="project" model-entity="SharableIcon"/><Icon
+   				IMAGE="mhmjmgliljobjaiajaiaccigiaaldhhhafbdcpncpbcphkgkeehphphpdbpplnhphphpiaiaiakbhjieibiaiaigiakmiaiaiaiajaiajaiaiaidmcjidkfmjckaekijmipnkcglenidhjoajilomeobbocimjbaefgadopadbpkojknddopiliplhbngpdmnjgjdhglbfomkicbiogilckcbdkebbheadgbnilfagcmpgellfkeiaiall" NAME="page" SCOPE="project" model-entity="SharableIcon">
+</Icon>
+			<Icon IMAGE="mhmjmgliljobjaiajaiaddiiiahkgkeeflgihcdbpplndpfjhpfablmoafbdcpncpbcphphphphphphpiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiakbhjieibiaiaiiiakmiaiaiaiajaiajaiaiaiemmjaejmjchlblfodldikeobcjbpafoihkcfmdfcjgmnfpoegkbepmhfmcjkiknfljojkgklmmdabjcblifipmdelamiakajaiedcgegpeapemccdmebjhdmjbdggcmfhbjdhjigoogpfogmlobenooplkdiall" NAME="colorPicker" SCOPE="project" model-entity="SharableIcon"></Icon>
+			<Icon IMAGE="mhmjmgliljobjaiajaiabbidiafablmodbpplnhkgkeehphphpkbhjieibiaiaidiakmiaiaiaiajaiajaiaiaiclgbmapojeagndoaebmneagjidcfogciofakjjihgligbnhcfkhcipfnldaagkmlccdnhlnfkhknbephieoocpejolbjfefidpikjldcccgcbiaiall" NAME="layout" SCOPE="project" model-entity="SharableIcon"></Icon>
+			<Icon IMAGE="mhmjmgliljobjaiajaiaccieiacmdoeoflgihcapchdmhphphphphphpiaiaiaiaiaiaiaiaiakbhjieibiaiaieiakmiaiaiaiajaiajaiaiaidlimidkfmhoooeimjkfjlkcgllncoiioaiiicfnaciboibkbgmkgfdciebgejbmjhbanpmifkdidiblbpboioagdjjfahjofemjmfpmnbkafagikdibiall" NAME="layoutPanel" SCOPE="project" model-entity="SharableIcon"></Icon>
 		</Icons>
 		<Icons NAME="Struts Logic" SCOPE="project" model-entity="SharableIcons">
 			<Icon
