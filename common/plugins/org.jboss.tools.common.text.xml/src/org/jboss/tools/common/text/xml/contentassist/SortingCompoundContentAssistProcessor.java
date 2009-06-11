@@ -125,7 +125,13 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 			return false;
 		
 		String objClassName = obj.getClass().getName();
+		if (objClassName == null)
+			return false;
+		
 		for (Object o : collection) {
+			if (o == null || o.getClass() == null) 
+				continue;
+			
 			if (objClassName.equals(o.getClass().getName()))
 				return true;
 		}
@@ -234,11 +240,12 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	protected Sorter createSorter() {
 		return new Sorter() {
 			public boolean compare(Object proposal1, Object proposal2) {
-				ICompletionProposal p1 = (ICompletionProposal)proposal1;
-				ICompletionProposal p2 = (ICompletionProposal)proposal2;
 
 				int pr1 = Integer.MIN_VALUE;
 				int pr2 = Integer.MIN_VALUE;
+				
+				ICompletionProposal p1 = (ICompletionProposal)proposal1;
+				ICompletionProposal p2 = (ICompletionProposal)proposal2;
 				
 				if (p1 instanceof IRelevanceCompletionProposal)
 					pr1 = ((IRelevanceCompletionProposal)p1).getRelevance();
@@ -248,8 +255,8 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 				
 				
 				if (pr1 == pr2) {
-					String str1 = p1.getDisplayString(); //$NON-NLS-1$
-					String str2 = p2.getDisplayString(); //$NON-NLS-1$
+					String str1 = (p1.getDisplayString() == null ? "" : p1.getDisplayString()); //$NON-NLS-1$
+					String str2 = (p2.getDisplayString() == null ? "" : p2.getDisplayString()); //$NON-NLS-1$
 					return str2.compareTo(str1) > 0;
 				}
 
