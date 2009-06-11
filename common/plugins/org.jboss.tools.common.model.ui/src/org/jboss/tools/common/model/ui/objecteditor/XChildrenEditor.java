@@ -234,8 +234,10 @@ public class XChildrenEditor implements CommandBarListener {
 		XModelObject o1 = helper.getModelObject(r1), o2 = helper.getModelObject(r2);
 		callAction(o1, "CopyActions.Copy"); //$NON-NLS-1$
 		callAction(o2, "MoveActions.Move"); //$NON-NLS-1$
-		if(helper.getModelObject(r2) == o1)
-		  xtable.getTable().setSelection(r2);
+		if(helper.getModelObject(r2) == o1) {
+			xtable.getViewer().setSelection(new StructuredSelection(o1) , true);
+			((SP)getSelectionProvider()).fireSelectionChanged();
+		}
 	}
 	
 	protected Set getKeys() {
