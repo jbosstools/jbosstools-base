@@ -193,14 +193,12 @@ public class XTable {
 			Color color = provider.getColor(i);
 			if(color != null) item.setForeground(color);
 		}
-		for (int i = table.getItemCount() - 1; i >= provider.getRowCount() ; i--) {
-			item = table.getItem(i);
-			try {
-				item.dispose();
-			} catch (SWTException e) {
-				ModelUIPlugin.getPluginLog().logError(e);
-			}
+		if(table.getTopIndex() > provider.getRowCount()) {
+			int ti = provider.getRowCount() - 20;
+			if(ti < 0) ti = 0;
+			table.setTopIndex(ti);
 		}
+		table.remove(provider.getRowCount(), table.getItemCount()- 1);
 		if(r >= 0) try {
 			table.setSelection(r);
 		} catch (SWTException e) {
