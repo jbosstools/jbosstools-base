@@ -18,8 +18,10 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -293,8 +295,37 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 	}
 
 	public XModelObject findModelObjectAtCursor() {
+		XModelObject o = getModelObject();
+		if(o == null) return null;
+		ISelection selection = getSelectionProvider().getSelection();
+		if(!(selection instanceof ITextSelection)) return null;
+		int offset = ((ITextSelection)selection).getOffset();
+		IDocument doc = getDocumentProvider().getDocument(getEditorInput());
+		try {
+			int line = doc.getLineOfOffset(offset);
+			int lineStart = doc.getLineOffset(line);
+			int length = doc.getLineLength(line);
+			String txt = doc.get(lineStart, length);
+			XModelObject[] cs = o.getChildren();
+			String trimmed = txt.trim();
+			for (int i = 0; i < cs.length; i++) {
+				String n = cs[i].getAttributeValue("name");
+				if(!trimmed.startsWith(n)) continue;
+				String sep = cs[i].getAttributeValue("name-value-separator");
+				if(sep == null || sep.length() == 0) sep = "=";
+				int q = trimmed.indexOf('=');
+				if(q < 0) continue;
+				String s = trimmed.substring(n.length(), q).trim();
+				if(s.length() > 0) continue;
+
+				return cs[i];
+			}
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
+
 }
 
 class RevertToSavedAction3 extends RevertToSavedAction {

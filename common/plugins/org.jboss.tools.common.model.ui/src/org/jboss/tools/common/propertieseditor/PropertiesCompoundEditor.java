@@ -10,11 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.propertieseditor;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.PartInitException;
 import org.jboss.tools.common.editor.AbstractSelectionProvider;
 import org.jboss.tools.common.editor.ObjectMultiPageEditor;
 import org.jboss.tools.common.editor.ObjectTextEditor;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.propertieseditor.text.PropertiesTextEditor;
 
@@ -48,6 +51,7 @@ public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
 		setPageText(index, "Properties"); 
 		propertiesEditor.setObject(object);
 		propertiesEditor.update();
+		propertiesEditor.refresh();
 	}
 	
 	protected ObjectTextEditor createTextEditor() {
@@ -108,4 +112,14 @@ public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
 		return new String[0];
 	}
 
+	protected void synchronizeSelectionWithText() {
+		if(getTextSelectionProvider() == null || propertiesEditor == null) return;
+		ISelection s = getTextSelectionProvider().getSelection();
+		if(s == null || s.isEmpty() || !(s instanceof IStructuredSelection)) return;
+		Object o = ((IStructuredSelection)s).getFirstElement();
+		if(!(o instanceof XModelObject) || o == getModelObject()) return;
+		propertiesEditor.getSelectionProvider().setSelection(s);
+		if(outline != null) outline.setSelection(s);
+	}
+	
 }

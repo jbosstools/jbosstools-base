@@ -21,4 +21,6 @@ public class UIMessages extends NLS {
 		NLS.initializeMessages(BUNDLE_NAME, UIMessages.class);		
 	}
 	public static String CANNOT_DISPLAY_DOCUMENT_CONTENTS;
+	public static String PROPERTIES_EDITOR_FILTER;
+	public static String PROPERTIES_EDITOR_FILTER_MATCHES;
 }

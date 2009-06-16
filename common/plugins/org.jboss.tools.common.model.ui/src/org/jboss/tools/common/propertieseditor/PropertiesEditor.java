@@ -10,47 +10,86 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.propertieseditor;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.events.IExpansionListener;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionInvoker;
+import org.jboss.tools.common.meta.action.impl.XEntityDataImpl;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.action.CommandBar;
 import org.jboss.tools.common.model.ui.action.XMenuInvoker;
+import org.jboss.tools.common.model.ui.attribute.XAttributeSupport;
+import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
+import org.jboss.tools.common.model.ui.messages.UIMessages;
 import org.jboss.tools.common.model.ui.objecteditor.XChildrenEditor;
 import org.jboss.tools.common.model.ui.texteditors.TextActionHelper;
 import org.jboss.tools.common.model.util.AbstractTableHelper;
 
 public class PropertiesEditor extends XChildrenEditor implements ITextEditor, ITextOperationTarget {
+	static final String ENT_PROPERTY = "Property"; //$NON-NLS-1$
+	static final String ATTR_NAME = "name"; //$NON-NLS-1$
+	static final String ATTR_VALUE = "value"; //$NON-NLS-1$
+	static final String ATTR_ENABLED = "enabled"; //$NON-NLS-1$
+	XModelObject property = PreferenceModelUtilities.getPreferenceModel().createModelObject(ENT_PROPERTY, null);
+	XAttributeSupport support = new XAttributeSupport(property, XEntityDataImpl.create(new String[][]{
+			{ENT_PROPERTY, "yes"}, //$NON-NLS-1$
+			{ATTR_NAME, "no"}, //$NON-NLS-1$
+			{ATTR_VALUE, "no"} //$NON-NLS-1$
+	}));
+	private Label statistics;
+	Composite panel = null;
 	private ArrayList<String> actionMapping = new ArrayList<String>();
 	private Map<String,IAction> actions = new HashMap<String,IAction>();
 	private IEditorInput input;
 	IEditorSite site;
+	FPTableHelper pHelper;
+	
+	private QualifiedName filterOpenedId = new QualifiedName("", "filterOpened"); //$NON-NLS-1$
+	private QualifiedName nameFilterId = new QualifiedName("", "nameFilter"); //$NON-NLS-1$
+	private QualifiedName valueFilterId = new QualifiedName("", "valueFilter"); //$NON-NLS-1$
+	private boolean filterOpened = false;
+	
 	
 	public PropertiesEditor() {
 		xtable.setMultiSelected();
@@ -58,7 +97,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	}
 
 	protected AbstractTableHelper createHelper() {
-		return new FPTableHelper();
+		return pHelper = new FPTableHelper(this);
 	}
 
 	protected int[] getColumnWidthHints() {
@@ -70,12 +109,48 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	}
 
 	public Control createControl(Composite parent) {
-		super.createControl(parent);
+		panel = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout(1, false);
+		panel.setLayout(layout);
+	
+		support.getPropertyEditorAdapterByName(ATTR_NAME).setValue(pHelper.nameFilter);
+		support.getPropertyEditorAdapterByName(ATTR_VALUE).setValue(pHelper.valueFilter);
+		
+		ExpandableComposite g = new ExpandableComposite(panel, SWT.NONE);
+		g.setText(UIMessages.PROPERTIES_EDITOR_FILTER);
+		g.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		Composite g1 = new Composite(g, SWT.NONE);
+		g1.setLayout(new GridLayout(2, false));
+		g1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		g.setClient(g1);
+		g.setExpanded(filterOpened);
+		g.addExpansionListener(new IExpansionListener() {		
+			public void expansionStateChanging(ExpansionEvent e) {
+			}		
+			public void expansionStateChanged(ExpansionEvent e) {
+				filterOpened = e.getState();
+				panel.update();
+				panel.layout();
+			}
+		});
+		support.fillComposite(g1);
+		support.addPropertyChangeListener(pHelper);
+		
+		statistics = new Label(panel, SWT.NONE);
+		statistics.setVisible(false);
+		GridData d = new GridData(GridData.FILL_HORIZONTAL);
+		d.heightHint = 1;
+		statistics.setLayoutData(d);
+		
+		Control c = super.createControl(panel);
+		c.setLayoutData(new GridData(GridData.FILL_BOTH));
+	
 		TMenuInvoker menu = new TMenuInvoker();
 		menu.setViewer(xtable.getViewer()); 
 		xtable.getViewer().getTable().addMouseListener(menu);
 		getControl().addMouseListener(menu);
-		return getControl();	
+
+		return panel;	
 	}
 	
 	protected void setMargins(CommandBar bar) {
@@ -84,7 +159,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 
 	protected Color getItemColor(int i) {
 		XModelObject o = helper.getModelObject(i);
-		boolean disabled = "no".equals(o.getAttributeValue("enabled"));
+		boolean disabled = "no".equals(o.getAttributeValue(ATTR_ENABLED));
 		return ((disabled) ? GREYED_COLOR : DEFAULT_COLOR);
 	}
 
@@ -160,12 +235,40 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		this.site = site;
 		this.input = input;
+		if(input instanceof IFileEditorInput) {
+			IFile f = ((IFileEditorInput)input).getFile();
+			loadPreferences(f);
+		}
+	}
+
+	void loadPreferences(IFile f) {
+		if(f == null || !f.exists()) return;
+		try {
+			filterOpened = "true".equals(f.getPersistentProperty(filterOpenedId));
+			pHelper.nameFilter = f.getPersistentProperty(nameFilterId);
+			pHelper.valueFilter = f.getPersistentProperty(valueFilterId);
+			if(pHelper.nameFilter == null) pHelper.nameFilter = "";
+			if(pHelper.valueFilter == null) pHelper.valueFilter = "";
+		} catch (CoreException e) {
+			//ignore
+		}
+	}
+	
+	void savePreferences(IFile f) {
+		if(f == null || !f.exists()) return;
+		try {
+			f.setPersistentProperty(filterOpenedId, "" + filterOpened);
+			f.setPersistentProperty(nameFilterId, pHelper.nameFilter);
+			f.setPersistentProperty(valueFilterId, "" + pHelper.valueFilter);
+		} catch (CoreException e) {
+			//ignore
+		}
 	}
 
 	public void addPropertyListener(IPropertyListener listener) {}
 
 	public void createPartControl(Composite parent) {
-		super.createControl(parent);
+		createControl(parent);
 		createActions();
 	}
 
@@ -293,12 +396,111 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		}
 	}
 
+	public void refresh() {
+		xtable.update();
+		updateBar();
+		validateStatistics();
+	}
+	
+	void validateStatistics() {
+		int filtered = pHelper.filteredChildren.length;
+		int total = pHelper.getModelObject().getChildren().length;
+		boolean mod = (filtered != total) != statistics.isVisible();
+		if(mod) {
+			statistics.setVisible(filtered != total);
+			GridData d = (GridData)statistics.getLayoutData();
+			d.heightHint = (filtered != total) ? SWT.DEFAULT : 1;
+			panel.update();
+			panel.layout();
+		}
+		if(filtered != total) {
+			statistics.setText(NLS.bind(UIMessages.PROPERTIES_EDITOR_FILTER_MATCHES, filtered, total));
+		}
+	}
+
+	public void dispose() {
+		super.dispose();
+		if(input instanceof IFileEditorInput) {
+			IFile f = ((IFileEditorInput)input).getFile();
+			savePreferences(f);
+		}
+	}
 }
 
-class FPTableHelper extends AbstractTableHelper {
-	public FPTableHelper() {}
+class FPTableHelper extends AbstractTableHelper implements PropertyChangeListener {
+	PropertiesEditor pe;
+	String nameFilter = "";
+	String valueFilter = "";
+
+	XModelObject[] filteredChildren = new XModelObject[0];
+	long ts = -1;
+
+	public void setModelObject(XModelObject object) {
+		super.setModelObject(object);
+	}
+
+	void applyFilters() {
+		ts = object == null ? -1 : object.getTimeStamp();
+		if(object == null) {
+			filteredChildren = new XModelObject[0];
+		} else if(nameFilter.length() == 0 && valueFilter.length() == 0) {
+			filteredChildren = object.getChildren();
+		} else {
+			XModelObject[] children = object.getChildren();
+			List<XModelObject> list = new ArrayList<XModelObject>();
+			for (XModelObject c: children) {
+				String n = c.getAttributeValue(PropertiesEditor.ATTR_NAME);
+				String v = c.getAttributeValue(PropertiesEditor.ATTR_VALUE);
+				if(nameFilter.length() > 0) {
+					if(n.indexOf(nameFilter) < 0) continue; //TODO improve
+				}
+				if(valueFilter.length() > 0) {
+					if(v.indexOf(valueFilter) < 0) continue; //TODO improve
+				}
+				
+				list.add(c);
+			}
+			filteredChildren = list.toArray(new XModelObject[0]);
+		}
+	}
+	public FPTableHelper(PropertiesEditor pe) {
+		this.pe = pe;
+	}
+
+    public int size() {
+    	if(object == null) return 0;
+    	if(ts != object.getTimeStamp()) {
+    		applyFilters(); 
+    	}
+        return filteredChildren.length;
+    }
+
+    public XModelObject getModelObject(int r) {
+        if(object == null) return null;
+    	if(ts != object.getTimeStamp()) {
+    		applyFilters(); 
+    	}
+        XModelObject[] cs = filteredChildren;
+        return (r < 0 || r >= cs.length) ? null : cs[r];
+    }
+
 
 	public String[] getHeader() {
 		return new String[]{"name", "value"};
+	}
+
+	public void propertyChange(PropertyChangeEvent evt) {
+		if(evt.getSource() instanceof DefaultValueAdapter) {
+			DefaultValueAdapter a = (DefaultValueAdapter)evt.getSource();
+			String name = a.getAttribute().getName();
+			if(PropertiesEditor.ATTR_NAME.equals(name)) {
+				nameFilter = "" + evt.getNewValue();
+			} else if(PropertiesEditor.ATTR_VALUE.equals(name)) {
+				valueFilter = "" + evt.getNewValue();
+			}
+			applyFilters();
+			pe.refresh();
+		}
+		
 	}
 }
