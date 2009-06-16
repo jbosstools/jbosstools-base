@@ -105,28 +105,42 @@ public class AbstractResourceMarkerTest extends TestCase {
 		}
 	}
 
-	public static int getMarkersNumber(IResource resource){
+	public static int getMarkersNumber(IResource resource) {
+		return getMarkersNumber(resource, null);
+	}
+
+	public static int getMarkersNumber(IResource resource, IMarkerFilter filter) {
 		try{
 			IMarker[] markers = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
+			int length = markers.length;
 			for(int i=0;i<markers.length;i++){
-				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));  //$NON-NLS-1$//$NON-NLS-2$
+//				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));  //$NON-NLS-1$//$NON-NLS-2$
+				if(filter!=null && !filter.accept(markers[i])) {
+					length--;
+				}
 			}
-			return markers.length;
+			return length;
 		}catch(CoreException ex){
 			JUnitUtils.fail("Can't get problem markers", ex); //$NON-NLS-1$
 		}
 		return -1;
 	}
 
-	public static String[] getMarkersMessage(IResource resource){
+	public static String[] getMarkersMessage(IResource resource) {
+		return getMarkersMessage(resource, null);
+	}
+
+	public static String[] getMarkersMessage(IResource resource, IMarkerFilter filter) {
 		String[] messages = null;
 		try{
 			IMarker[] markers = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
 			messages = new String[markers.length];
 
+//			System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));  //$NON-NLS-1$//$NON-NLS-2$
 			for(int i=0;i<markers.length;i++){
-				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));  //$NON-NLS-1$//$NON-NLS-2$
-				messages[i] = markers[i].getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
+				if(filter==null || filter.accept(markers[i])) {
+					messages[i] = markers[i].getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
+				}
 			}
 		}catch(CoreException ex){
 			JUnitUtils.fail("Can't get problem markers", ex); //$NON-NLS-1$
@@ -134,20 +148,25 @@ public class AbstractResourceMarkerTest extends TestCase {
 		return messages;
 	}
 
-	public static int[] getMarkersNumbersOfLine(IResource resource){
-		int[] numbers = null;
+	public static Integer[] getMarkersNumbersOfLine(IResource resource) {
+		return getMarkersNumbersOfLine(resource, null);
+	}
+
+	public static Integer[] getMarkersNumbersOfLine(IResource resource, IMarkerFilter filter) {
+		List<Integer> numbers = new ArrayList<Integer>();
 		try{
 			IMarker[] markers = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
-			numbers = new int[markers.length];
 
 			for(int i=0;i<markers.length;i++){
-				System.out.println("Marker line number - "+markers[i].getAttribute(IMarker.LINE_NUMBER, 0)); //$NON-NLS-1$
-				numbers[i] = markers[i].getAttribute(IMarker.LINE_NUMBER, 0);
+//				System.out.println("Marker line number - "+markers[i].getAttribute(IMarker.LINE_NUMBER, 0)); //$NON-NLS-1$
+				if(filter==null || filter.accept(markers[i])) {
+					numbers.add(markers[i].getAttribute(IMarker.LINE_NUMBER, 0));
+				}
 			}
 		}catch(CoreException ex){
 			JUnitUtils.fail("Can't get problem markers.", ex); //$NON-NLS-1$
 		}
-		return numbers;
+		return numbers.toArray(new Integer[0]);
 	}
 
 	/**
