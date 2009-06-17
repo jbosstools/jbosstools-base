@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.viewers.ISelection;
@@ -35,6 +36,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -71,12 +73,18 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	static final String ATTR_NAME = "name"; //$NON-NLS-1$
 	static final String ATTR_VALUE = "value"; //$NON-NLS-1$
 	static final String ATTR_ENABLED = "enabled"; //$NON-NLS-1$
+
 	XModelObject property = PreferenceModelUtilities.getPreferenceModel().createModelObject(ENT_PROPERTY, null);
-	XAttributeSupport support = new XAttributeSupport(property, XEntityDataImpl.create(new String[][]{
+	XAttributeSupport nsupport = new XAttributeSupport(property, XEntityDataImpl.create(new String[][]{
 			{ENT_PROPERTY, "yes"}, //$NON-NLS-1$
 			{ATTR_NAME, "no"}, //$NON-NLS-1$
+	}), true);
+	XAttributeSupport vsupport = new XAttributeSupport(property, XEntityDataImpl.create(new String[][]{
+			{ENT_PROPERTY, "yes"}, //$NON-NLS-1$
 			{ATTR_VALUE, "no"} //$NON-NLS-1$
 	}));
+	Button fake = null;
+	
 	private Label statistics;
 	Composite panel = null;
 	private ArrayList<String> actionMapping = new ArrayList<String>();
@@ -113,14 +121,19 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		GridLayout layout = new GridLayout(1, false);
 		panel.setLayout(layout);
 	
-		support.getPropertyEditorAdapterByName(ATTR_NAME).setValue(pHelper.nameFilter);
-		support.getPropertyEditorAdapterByName(ATTR_VALUE).setValue(pHelper.valueFilter);
+		nsupport.getPropertyEditorAdapterByName(ATTR_NAME).setValue(pHelper.nameFilter);
+		vsupport.getPropertyEditorAdapterByName(ATTR_VALUE).setValue(pHelper.valueFilter);
 		
 		ExpandableComposite g = new ExpandableComposite(panel, SWT.NONE);
 		g.setText(UIMessages.PROPERTIES_EDITOR_FILTER);
 		g.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		Composite g1 = new Composite(g, SWT.NONE);
-		g1.setLayout(new GridLayout(2, false));
+		GridLayout l1 = new GridLayout(3, false);
+		l1.horizontalSpacing = 10;
+		l1.marginRight = 0;
+		l1.marginHeight = 0;
+		l1.verticalSpacing = 0;
+		g1.setLayout(l1);
 		g1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		g.setClient(g1);
 		g.setExpanded(filterOpened);
@@ -133,9 +146,31 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 				panel.layout();
 			}
 		});
-		support.fillComposite(g1);
-		support.addPropertyChangeListener(pHelper);
-		
+
+		Composite ng = new Composite(g1, SWT.NONE);
+		GridLayout nl = new GridLayout(2, false);
+		nl.marginRight = 5;
+		nl.marginHeight = 0;
+		ng.setLayout(nl);
+		ng.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		nsupport.fillComposite(ng);
+		nsupport.addPropertyChangeListener(pHelper);
+
+		Composite vg = new Composite(g1, SWT.NONE);
+		GridLayout vl = new GridLayout(2, false);
+		vl.marginHeight = 0;
+		vg.setLayout(vl);
+		vg.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		vsupport.fillComposite(vg);
+		vsupport.addPropertyChangeListener(pHelper);
+
+		fake = new Button(g1, SWT.NONE);
+		fake.setText(ADD);
+		GridData fd = new GridData();
+		fd.widthHint = convertHorizontalDLUsToPixels(g1, IDialogConstants.BUTTON_WIDTH);
+		fake.setLayoutData(fd);
+		fake.setVisible(false);
+
 		statistics = new Label(panel, SWT.NONE);
 		statistics.setVisible(false);
 		GridData d = new GridData(GridData.FILL_HORIZONTAL);
