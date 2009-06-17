@@ -131,21 +131,20 @@ public class AbstractResourceMarkerTest extends TestCase {
 	}
 
 	public static String[] getMarkersMessage(IResource resource, IMarkerFilter filter) {
-		String[] messages = null;
+		List<String> messages = new ArrayList<String>();
 		try{
 			IMarker[] markers = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
-			messages = new String[markers.length];
 
 //			System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));  //$NON-NLS-1$//$NON-NLS-2$
 			for(int i=0;i<markers.length;i++){
 				if(filter==null || filter.accept(markers[i])) {
-					messages[i] = markers[i].getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
+					messages.add(markers[i].getAttribute(IMarker.MESSAGE, "")); //$NON-NLS-1$
 				}
 			}
 		}catch(CoreException ex){
 			JUnitUtils.fail("Can't get problem markers", ex); //$NON-NLS-1$
 		}
-		return messages;
+		return messages.toArray(new String[0]);
 	}
 
 	public static Integer[] getMarkersNumbersOfLine(IResource resource) {
