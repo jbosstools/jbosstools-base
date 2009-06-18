@@ -32,6 +32,7 @@ public class TextProposal {
 
 	private static final long serialVersionUID = 3257007635692926512L;
 
+	private Object source;
 	private String label;
 	private String contextInfo;
 	private Image image;
@@ -287,7 +288,21 @@ public class TextProposal {
 		if(postProcessing != null) postProcessing.process(this, value, offset);
 	}
 
-    public static final Comparator<TextProposal> KB_PROPOSAL_ORDER = new TextProposalComparator();
+    /**
+	 * @return the source
+	 */
+	public Object getSource() {
+		return source;
+	}
+
+	/**
+	 * @param source the source to set
+	 */
+	public void setSource(Object source) {
+		this.source = source;
+	}
+
+	public static final Comparator<TextProposal> KB_PROPOSAL_ORDER = new TextProposalComparator();
 
     private static class TextProposalComparator implements Comparator<TextProposal> {
 		public int compare(TextProposal p1, TextProposal p2) {
