@@ -60,7 +60,7 @@ public class XChangeSetUndo extends XUndoableImpl {
     }
 
     protected String createDescription(XModelObject o) {
-        return o.getAttributeValue("element type") + " " +
+        return o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
                o.getModelEntity().getRenderer().getTitle(o);
     }
 

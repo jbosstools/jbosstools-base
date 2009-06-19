@@ -50,7 +50,7 @@ public class FileAnyAuxiliaryImpl extends FileAnyImpl {
     	XModelObject o = main.getObject();
     	if(o == null || !o.isActive()) return true;
     	String n = helper.getMainName(this);
-        return !n.equals(o.getAttributeValue("name"));
+        return !n.equals(o.getAttributeValue(XModelObjectConstants.ATTR_NAME));
     }
 
     public void setModified(boolean value) {}

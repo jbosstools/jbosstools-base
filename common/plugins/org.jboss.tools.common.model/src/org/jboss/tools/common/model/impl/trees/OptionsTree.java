@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.impl.trees;
 
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.options.SharableConstants;
 
 public class OptionsTree extends DefaultSiftedTree {
 
@@ -19,7 +20,7 @@ public class OptionsTree extends DefaultSiftedTree {
 	public void dispose() {}
 	
     public XModelObject getRoot() {
-        return model.getRoot("Options");
+        return model.getRoot(SharableConstants.OPTIONS);
     }
 
 }

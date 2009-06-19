@@ -13,7 +13,9 @@ package org.jboss.tools.common.model.filesystems.impl;
 import java.util.*;
 import org.jboss.tools.common.model.markers.ResourceMarkers;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl;
 import org.jboss.tools.common.model.util.FindObjectHelper;
 import org.jboss.tools.common.model.util.XMLUtil;
@@ -32,7 +34,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 	public final static boolean turnOffDTDCheck = true;
 	
 	public boolean isIncorrect() {
-		return ("yes".equals(get("isIncorrect")));  //$NON-NLS-1$//$NON-NLS-2$
+		return (XModelObjectConstants.YES.equals(get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT)));
 	}
 
 	public AbstractXMLFileImpl() {
@@ -91,14 +93,14 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 		if(s.equals(get("errors"))) return; //$NON-NLS-1$
 		super.set("incorrectBody", body); //$NON-NLS-1$
 		set("errors", s); //$NON-NLS-1$
-		setAttributeValue("isIncorrect", (errors.length == 0 && loaderError == null) ? "no" : "yes");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, (errors.length == 0 && loaderError == null) ? XModelObjectConstants.NO : XModelObjectConstants.YES);
 		if(!isOverlapped())	markers.update();
 		
 	}
     
 	protected boolean isOverlapped() {
 		XModelObject p = getParent();
-		while(p != null && !"true".equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$ //$NON-NLS-2$
+		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$ //$NON-NLS-2$
 		return (p != null);
 	}
 

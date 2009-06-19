@@ -32,7 +32,7 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
     }
 
     public boolean isAttributeEditable(String name) {
-        return super.isAttributeEditable(name) && "name".equals(name);
+        return super.isAttributeEditable(name) && XModelObjectConstants.ATTR_NAME.equals(name);
     }
 
     protected String getAbsolutePath() {
@@ -52,13 +52,13 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
     }
     
     public String getLocation() {
-		return Paths.expand(get("location"), getModel().getProperties());
+		return Paths.expand(get(XModelObjectConstants.ATTR_NAME_LOCATION), getModel().getProperties());
     }
 
     public String getTempLocation() {
 		if(!jar.isLoaded()) loadChildren();
         String s = jar.getTempLocation();
-        return (s == null) ? get("location") : s;
+        return (s == null) ? get(XModelObjectConstants.ATTR_NAME_LOCATION) : s;
     }
 
     public LFileObject getFileObject(String relpath) {

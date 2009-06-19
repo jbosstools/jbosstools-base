@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.XMapping;
 import org.jboss.tools.common.meta.XModelEntity;
@@ -36,6 +37,7 @@ import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelBuffer;
 import org.jboss.tools.common.model.XModelConstants;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelTransferBuffer;
 import org.jboss.tools.common.model.event.XModelChangeManager;
@@ -47,11 +49,11 @@ import org.jboss.tools.common.model.filesystems.impl.FileSystemPeer;
 import org.jboss.tools.common.model.loaders.EntityRecognizer;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
 import org.jboss.tools.common.model.loaders.impl.ModelEntityRecognizer;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.undo.XChangeUndo;
 import org.jboss.tools.common.model.undo.XUndoManager;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
-import org.jboss.tools.common.model.util.XBundle;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 import org.jboss.tools.common.util.FileUtil;
 
@@ -69,14 +71,14 @@ public class XModelImpl implements XModel {
     private FileSystemPeer fileregistry = new FileSystemPeer();
     private PrintWriter out = new PrintWriter(System.out, true);
     private HashMap<String,XModelObject> extraroots = new HashMap<String,XModelObject>(2);
-    private String rootEntity = "Root";
+    private String rootEntity = XModelObjectConstants.ROOT_OBJECT;
 
     public XModelImpl(Properties properties, XModelMetaData metadata) {
         this.metadata = metadata;
         this.properties = properties;
         recognizer.setMetaData(metadata);
-        if(properties.getProperty("rootEntity") != null) {
-        	rootEntity = properties.getProperty("rootEntity");
+        if(properties.getProperty(XModelObjectConstants.PROP_ROOT_ENTITY) != null) {
+        	rootEntity = properties.getProperty(XModelObjectConstants.PROP_ROOT_ENTITY);
         }
         XModelConstants.validate(this);
     }
@@ -154,7 +156,7 @@ public class XModelImpl implements XModel {
             XModelObject r = extraroots.get(path.substring(0, i));
             return (r == null) ? null : r.getChildByPath(path.substring(i + 1));
         }
-        if(path.startsWith("/")) {
+        if(path.startsWith(XModelObjectConstants.SEPARATOR)) {
             return getByPathInFileSystem(path.substring(1));
         } else if(path.startsWith("%")) {
             int i = path.indexOf("%"), j = path.lastIndexOf("%");
@@ -175,14 +177,14 @@ public class XModelImpl implements XModel {
 
     public static XModelObject getByRelativePath(XModel model, String path) {
         XModelObject o = null;
-        if(path != null && path.startsWith("/")) {
+        if(path != null && path.startsWith(XModelObjectConstants.SEPARATOR)) {
         	XModelObject wr = FileSystemsHelper.getWebRoot(model);
         	if(wr != null) o = wr.getChildByPath(path.substring(1));
         }
         if(o == null) o = model.getByPath(path);
-        if(o == null || !path.startsWith("/")) return o;
+        if(o == null || !path.startsWith(XModelObjectConstants.SEPARATOR)) return o;
         XModelObject p = o;
-        while(p != null && !"true".equals(p.get("overlapped"))) p = p.getParent();
+        while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent();
         if(p == null) return o;
         path = o.getPath().substring(p.getPath().length());
         if(p.getModelEntity().getName().equals("FileFolder")) {
@@ -203,7 +205,7 @@ public class XModelImpl implements XModel {
     	if(!(p instanceof FileSystemImpl)) return null;
     	String loc = ((FileSystemImpl)p).getAbsoluteLocation().replace('\\', '/');
     	XModelObject fs = FileSystemsHelper.getFileSystems(folder.getModel());
-        XModelObject[] cs = fs.getChildren("FileSystemFolder");
+        XModelObject[] cs = fs.getChildren(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER);
         for (int i = 0; i < cs.length; i++) {
         	if(!(cs[i] instanceof FileSystemImpl)) continue;
         	String loci = ((FileSystemImpl)cs[i]).getAbsoluteLocation().replace('\\', '/');
@@ -213,7 +215,7 @@ public class XModelImpl implements XModel {
     }
 
     public XModelObject getByPathInFileSystem(String path) {
-    	XModelObject fs = getByPath("FileSystems");
+    	XModelObject fs = getByPath(FileSystemsHelper.FILE_SYSTEMS);
     	if(fs == null) return null;
         XModelObject[] cs = fs.getChildren();
         for (int i = 0; i < cs.length; i++) {
@@ -228,7 +230,7 @@ public class XModelImpl implements XModel {
     static void creationFailed(String entity, String cause) {
     	if(!unknownEntities.contains(entity)) {
     		unknownEntities.add(entity);
-    		String message = XBundle.getInstance().getMessage("model", cause, new Object[]{entity});
+    		String message = NLS.bind(cause, new Object[]{entity});
     		ModelPlugin.getPluginLog().logInfo(message);
     	}
     }
@@ -239,12 +241,12 @@ public class XModelImpl implements XModel {
     	}
         XModelEntity ent = getMetaData().getEntity(entity);
         if(ent == null) {
-        	creationFailed(entity, "UNKNOUN_ENTITY");
+        	creationFailed(entity, ModelMessages.UNKNOUN_ENTITY);
             return null;
         }
         XModelObjectImpl me = (XModelObjectImpl)ent.getObjectImplementation();
         if(me == null) {
-        	creationFailed(entity, "CREATION_ENTITY_FAILURE");
+        	creationFailed(entity, ModelMessages.CREATION_ENTITY_FAILURE);
         	return null;
         }
 
@@ -286,7 +288,7 @@ public class XModelImpl implements XModel {
 		if(a.isTrimmable() && value != null) value = value.trim();
 		String ov = object.getAttributeValue(attributeName);
 		ov = (ov == null) ? "" : ov;
-		if(value.length() == 0 && "true".equals(a.getProperty("required"))) {
+		if(value.length() == 0 && XModelObjectConstants.TRUE.equals(a.getProperty("required"))) {
 			String mes = "Attribute " + a.getName() + " is required.";
 			return mes;
 		}
@@ -296,9 +298,7 @@ public class XModelImpl implements XModel {
 							? ((XAttributeConstraintV)c).getError(value, object)
 							: c.getError(value);
 			if(error != null) {
-				String mes = XBundle.getInstance().getMessage("model",
-							 "SET_ATTRIBUTE_FAILURE",
-							 new Object[]{attributeName, value, error});
+				String mes = NLS.bind(ModelMessages.SET_ATTRIBUTE_FAILURE, new Object[]{attributeName, value, error});
 				return mes;
 			}
 		}
@@ -314,7 +314,7 @@ public class XModelImpl implements XModel {
         String ov = object.getAttributeValue(attributeName);
         ov = (ov == null) ? "" : ov;
         if(!isDifferent(ov, value)) return;
-        if(value.length() == 0 && "true".equals(a.getProperty("required"))) {
+        if(value.length() == 0 && XModelObjectConstants.TRUE.equals(a.getProperty("required"))) {
         	String mes = "Attribute " + a.getName() + " is required.";
         	service.showDialog("Error",
                     mes, new String[]{"OK"}, null, ServiceDialog.ERROR);
@@ -327,16 +327,14 @@ public class XModelImpl implements XModel {
                            : c.getError(value);
             if(error != null) {
                 if(edit) {
-                    String mes = XBundle.getInstance().getMessage("model",
-                                "SET_ATTRIBUTE_FAILURE",
-                                new Object[]{attributeName, value, error});
+                    String mes = NLS.bind(ModelMessages.SET_ATTRIBUTE_FAILURE, new Object[]{attributeName, value, error});
                    if(service != null) {
                 	   XEntityData data = XEntityDataImpl.create(new String[][]{
-                			{object.getModelEntity().getName(), "yes"},
-                			{attributeName, "no"}
+                			{object.getModelEntity().getName(), XModelObjectConstants.YES},
+                			{attributeName, XModelObjectConstants.NO}
                 	   });
                 	   data.setValue(attributeName, value);
-                	   int q = service.showDialog("Error", mes, new String[]{"Finish", "Cancel"}, data, ServiceDialog.ERROR);
+                	   int q = service.showDialog(ModelMessages.Error, mes, new String[]{ModelMessages.Finish, ModelMessages.Cancel}, data, ServiceDialog.ERROR);
                 	   if(q != 0) return;
                 	   changeObjectAttribute(object, attributeName, data.getValue(attributeName), true);
                    }                                       
@@ -414,9 +412,9 @@ public class XModelImpl implements XModel {
 
         ////ProjectWatcher
     private void loadWatcher() {
-    	if(getProperties().get("project") == null) return;
+    	if(getProperties().get(XModelObjectConstants.PROJECT) == null) return;
         XObjectLoader l = (XObjectLoader)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.project.WatcherLoader");
-        XModelObject fs = getByPath("FileSystems");
+        XModelObject fs = getByPath(FileSystemsHelper.FILE_SYSTEMS);
         if(l != null && fs != null) l.load(fs);
     }
 
@@ -460,7 +458,7 @@ public class XModelImpl implements XModel {
 
     public void save() {
         XModelObject r = getRoot();
-        r.set("isSaveOn", "true");
+        r.set("isSaveOn", XModelObjectConstants.TRUE);
         XModelObjectLoaderUtil.getObjectLoader(r).save(r);
         r.set("isSaveOn", "");
     }

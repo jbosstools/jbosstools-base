@@ -114,13 +114,13 @@ public class FileSystemsRenameListener {
 		fileSystems.getModel().getProperties().setProperty(XModelConstants.WORKSPACE, ws);
 
 		//now just recreate folder file systems
-		XModelObject[] fs = fileSystems.getChildren("FileSystemFolder");
+		XModelObject[] fs = fileSystems.getChildren(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER);
 		for (int i = 0; i < fs.length; i++) {
-			String s = XModelObjectUtil.getExpandedValue(fs[i], "location", null);
+			String s = XModelObjectUtil.getExpandedValue(fs[i], XModelObjectConstants.ATTR_NAME_LOCATION, null);
 			s = s.replace('\\', '/');
-//			String name = fs[i].getAttributeValue("name");
+//			String name = fs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
 			XModelObject ns = fs[i].copy(0);
-///			ns.setAttributeValue("location", newPath);
+///			ns.setAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION, newPath);
 			fs[i].removeFromParent();
 			fileSystems.addChild(ns);
 			((XModelImpl)fileSystems.getModel()).fireStructureChanged(ns);

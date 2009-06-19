@@ -34,9 +34,12 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
 import org.jboss.tools.common.meta.action.XActionInvoker;
+import org.jboss.tools.common.meta.impl.XMetaDataConstants;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.BodySource;
 import org.jboss.tools.common.model.filesystems.FileAuxiliary;
 import org.jboss.tools.common.model.filesystems.FilePathHelper;
@@ -110,7 +113,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         if(parent.linked.containsKey(getPathPart())) {
         	return parent.linked.get(getPathPart()).getAbsolutePath();
         }
-        return (p == null) ? null : p + "/" + name();
+        return (p == null) ? null : p + XModelObjectConstants.SEPARATOR + name();
     }
     
 	public IProject getProject() {
@@ -126,7 +129,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
 
     public void set(String name, String value) {
-        if("NAME".equals(name) && isActive()) {
+        if(XModelObjectConstants.XML_ATTR_NAME.equals(name) && isActive()) {
             if(value != null && !value.equals(get(name))) copy();
         }
         super.set(name, value);
@@ -180,7 +183,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 	private void _loadChild(FileSystemPeer peer, File f) {
         if(f.isDirectory()) {
             Properties p = new Properties();
-            p.setProperty("name", f.getName());
+            p.setProperty(XModelObjectConstants.ATTR_NAME, f.getName());
             XModelObject c = getModel().createModelObject("FileFolder", p);
             String pp = FilePathHelper.toPathPath(f.getName());
             if(linked.containsKey(pp)) {
@@ -196,20 +199,20 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     private Properties getEntityProperties(File f) {
         Properties p = new Properties();
         parseFileName(p, f.getName());
-        String ext = p.getProperty("extension");
+        String ext = p.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
         String body = null;
         String entity = getModel().getEntityRecognizer().getEntityName(ext, body);
         if("FileAny".equals(entity)) {
         	boolean isText = XModelObjectLoaderUtil.isTextFile(f, 100);
-            if(f.length() > 100000 || !isText) entity = "FileAnyLong";
+            if(f.length() > 100000 || !isText) entity = XModelObjectConstants.ENT_FILE_ANY_LONG;
             else if(isText) entity = "FileTXT";
         } else if(entity == null) {
             body = getBodySource(f).get();
             entity = getModel().getEntityRecognizer().getEntityName(ext, body);
         }
         if(entity == null || getModel().getMetaData().getEntity(entity) == null) entity = "FileAny";
-        p.setProperty("entity", entity);
-        if(body != null) p.setProperty("body", body);
+        p.setProperty(XMetaDataConstants.ENTITY, entity);
+        if(body != null) p.setProperty(XModelObjectConstants.ATTR_NAME_BODY, body);
         return p;
     }
 
@@ -219,8 +222,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     private void createFileObject(File f, Properties p) {
     	BodySource bs = getBodySource(f);
-        String body = p.getProperty("body");
-        String entity = p.getProperty("entity");
+        String body = p.getProperty(XModelObjectConstants.ATTR_NAME_BODY);
+        String entity = p.getProperty(XMetaDataConstants.ENTITY);
         XModelObject c = getModel().createModelObject(entity, p);
         if(c == null) {
         	ModelPlugin.getPluginLog().logInfo("Cannot create file for entity " + entity);
@@ -238,8 +241,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
                 		if(encoding != null) c.set("_encoding_", encoding);
                 	}
                 loader.load(c);
-            } else if(c.getModelEntity().getAttribute("_file") != null) {
-                c.set("_file", f.getAbsolutePath());
+            } else if(c.getModelEntity().getAttribute(XModelObjectConstants.ATTR_NAME__FILE) != null) {
+                c.set(XModelObjectConstants.ATTR_NAME__FILE, f.getAbsolutePath());
             }
         }
         if(linked.containsValue(f)) {
@@ -403,10 +406,10 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
                 XModelObject main = aux.getMainObject();
                 if(main != null && main.isActive() && h != null) {
                 	String n = h.getAuxiliaryName(main);
-                	String p = n + "." + aux.getAttributeValue("extension");
+                	String p = n + "." + aux.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION);
                 	XModelObject other = getChildByPath(p);
                 	if(other != null && other != aux) other.removeFromParent();                	
-                	aux.fileRenamed(n, aux.getAttributeValue("extension"));
+                	aux.fileRenamed(n, aux.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION));
                 	aux.updateBodySource();
                    	if(!isOverlapped()) {
                    		File r = new File(f.getParentFile(), FileAnyImpl.toFileName(aux));
@@ -480,14 +483,14 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
     
     private void setForceLoadProperty(XModelObject f, boolean b) {
-    	f.set("forceLoad", b ? "true" : "");    	
+    	f.set("forceLoad", b ? XModelObjectConstants.TRUE : "");    	
     }
 
     protected void updateLoaded(XModelObject o, File f) throws XModelException {
         FileSystemPeer peer = getFileSystem().getPeer();
         if(o instanceof FolderImpl) {
-        	if(!o.getAttributeValue("name").equals(f.getName())) {
-        		o.setAttributeValue("name", f.getName());
+        	if(!o.getAttributeValue(XModelObjectConstants.ATTR_NAME).equals(f.getName())) {
+        		o.setAttributeValue(XModelObjectConstants.ATTR_NAME, f.getName());
         		((FolderImpl)o).getResource();
         	}
             ((FolderImpl)o).update();
@@ -562,12 +565,12 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     
     public boolean isChangedEntity(XModelObject o, File f) {
 		Properties p = getEntityProperties(f);
-		return (!o.getModelEntity().getName().equals(p.getProperty("entity")));
+		return (!o.getModelEntity().getName().equals(p.getProperty(XMetaDataConstants.ENTITY)));
     }
     
     private void reload(XModelObject o, File f) throws XModelException {
         Properties p = getEntityProperties(f);
-        if(!o.getModelEntity().getName().equals(p.getProperty("entity"))) {
+        if(!o.getModelEntity().getName().equals(p.getProperty(XMetaDataConstants.ENTITY))) {
             o.removeFromParent();
             createFileObject(f, p);
             return;
@@ -594,7 +597,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
                 loader.update(o);
             } else if(o instanceof Reloadable) {
                 ((Reloadable)o).reload();
-            } else if("FileAnyLong".equals(o.getModelEntity().getName())) {
+            } else if(XModelObjectConstants.ENT_FILE_ANY_LONG.equals(o.getModelEntity().getName())) {
             	o.setModified(false);
             }
         }
@@ -606,7 +609,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         XModelObject c = null;
         if(f.isDirectory()) {
             Properties p = new Properties();
-            p.setProperty("name", f.getName());
+            p.setProperty(XModelObjectConstants.ATTR_NAME, f.getName());
             c = getModel().createModelObject("FileFolder", p);
 			String pp = FilePathHelper.toPathPath(f.getName());
             if(linked.containsKey(pp)) {
@@ -614,14 +617,14 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             }
         } else {
         	Properties ep = getEntityProperties(f);
-        	XModelObject old = findOldObject(ep.getProperty("entity"), toRemove);
+        	XModelObject old = findOldObject(ep.getProperty(XMetaDataConstants.ENTITY), toRemove);
         	if(old != null) {
         		String ofn = FileAnyImpl.toFileName(old);
             	if(!f.getName().equals(ofn)) {
             		File of = new File(f.getParent(), ofn);
             		peer.unregister(of);
-            		String nm = ep.getProperty("name");
-            		String ext = ep.getProperty("extension");
+            		String nm = ep.getProperty(XModelObjectConstants.ATTR_NAME);
+            		String ext = ep.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
             		((FileAnyImpl)old).fileRenamed(nm, ext);
             	}
         		updateLoaded(old, f);
@@ -669,7 +672,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 		File rf = getChildIOFile(o);
 		boolean c = (d && peer.containsDir(rf)) || ((!d) && peer.contains(rf));
 		if(!c) return;
-		if(o.getModel().getModelBuffer().source() == o && rf.exists() && o.getModelEntity().getAttribute("_file") != null) {
+		if(o.getModel().getModelBuffer().source() == o && rf.exists() && o.getModelEntity().getAttribute(XModelObjectConstants.ATTR_NAME__FILE) != null) {
 			File temp = null;
 			try {
 				temp = File.createTempFile("efs_", rf.getName());
@@ -679,10 +682,10 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 			if(temp != null) {
 				FileUtil.copyFile(rf, temp);
 				temp.deleteOnExit();
-				o.set("_file", temp.getAbsolutePath());
+				o.set(XModelObjectConstants.ATTR_NAME__FILE, temp.getAbsolutePath());
 			}
 		}
-		IResource r = (d) ? (IResource) getChildContainer(o.getAttributeValue("name"))
+		IResource r = (d) ? (IResource) getChildContainer(o.getAttributeValue(XModelObjectConstants.ATTR_NAME))
 		                  : (IResource) getChildFile(FileAnyImpl.toFileName(o));
 		o.removeFromParent();
 		if(r.exists()) {
@@ -855,8 +858,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     private boolean saveFileWithoutLoader(File f, XModelObject o) {
         if(!o.isModified()) return true;
-        if(o.getModelEntity().getAttribute("_file") == null) return true;
-        String sfn = o.get("_file");
+        if(o.getModelEntity().getAttribute(XModelObjectConstants.ATTR_NAME__FILE) == null) return true;
+        String sfn = o.get(XModelObjectConstants.ATTR_NAME__FILE);
         if(sfn.length() == 0) return true;
         if(f.getAbsolutePath().equalsIgnoreCase(sfn)) {
             o.setModified(false);
@@ -867,7 +870,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         	f.getParentFile().mkdirs();
         	FileUtil.copyFile(sf, f);
         }
-        o.set("_file", f.getAbsolutePath());
+        o.set(XModelObjectConstants.ATTR_NAME__FILE, f.getAbsolutePath());
         o.setModified(false);
         return true;
     }
@@ -906,12 +909,12 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         int i = fn.lastIndexOf('.');
         String n = (i < 0) ? fn : fn.substring(0, i);
         String e = (i < 0) ? "" : fn.substring(i + 1);
-        p.setProperty("name", n);
-        p.setProperty("extension", e);
+        p.setProperty(XModelObjectConstants.ATTR_NAME, n);
+        p.setProperty(XModelObjectConstants.ATTR_NAME_EXTENSION, e);
     }
 
     public String getPathPart() {
-        String s = get("NAME");
+        String s = get(XModelObjectConstants.XML_ATTR_NAME);
         return FilePathHelper.toPathPath(s);
     }
 
@@ -922,7 +925,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     static boolean isLateloadFile(XModelObject o) {
         return (o.getModelEntity().getAttribute("_lateload") != null &&
-                o.getModelEntity().getAttribute("body") != null);
+                o.getModelEntity().getAttribute(XModelObjectConstants.ATTR_NAME_BODY) != null);
     }
 
     static boolean isLateloadFile2(XModelObject o) {
@@ -948,11 +951,11 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     public boolean isObjectEditable() {
         initEditability();
-        return (editability == 1 && !"true".equals(get("overlapped")) && isActive());
+        return (editability == 1 && !XModelObjectConstants.TRUE.equals(get("overlapped")) && isActive());
     }
 
     public String getMainIconName() {
-        if("true".equals(get("overlapped")) && isActive()) {
+        if(XModelObjectConstants.TRUE.equals(get("overlapped")) && isActive()) {
           String oin = get("overlappedSystem");
           XModelObject o = (oin == null || oin.length() == 0) ? null : getModel().getByPath(oin);
           if(o == null) {
@@ -970,7 +973,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 			return r instanceof IContainer ? (IContainer)r : null;
 		}
     	IContainer c = getResource();
-    	return (c == null) ? null : c.getFolder(new Path("/" + name));
+    	return (c == null) ? null : c.getFolder(new Path(XModelObjectConstants.SEPARATOR + name));
     }
     
 	public IFile getChildFile(String name) {
@@ -979,18 +982,18 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 			return r instanceof IFile ? (IFile)r : null;
 		}
     	IContainer c = getResource();
-		return (c == null) ? null : c.getFile(new Path("/" + name));
+		return (c == null) ? null : c.getFile(new Path(XModelObjectConstants.SEPARATOR + name));
 	}
 
 	public IContainer getResource() {
 		if(!needUpdateResource()) return resource;
-		resource = ((FolderImpl)getParent()).getChildContainer(getAttributeValue("name"));
+		resource = ((FolderImpl)getParent()).getChildContainer(getAttributeValue(XModelObjectConstants.ATTR_NAME));
 		pathForResource = getPath();
 		return resource;
 	}
 	
 	protected boolean needUpdateResource() {
-		if(resource != null && !resource.getName().equals(getAttributeValue("name"))) return true;
+		if(resource != null && !resource.getName().equals(getAttributeValue(XModelObjectConstants.ATTR_NAME))) return true;
 		if(!isActive()) return false;
 		if(pathForResource == null || resource == null) return true;
 		String path = getPath();
@@ -1010,7 +1013,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
 	public boolean isOverlapped() {
 		XModelObject p = this;
-		while(p != null && !"true".equals(get("overlapped"))) p = p.getParent();
+		while(p != null && !XModelObjectConstants.TRUE.equals(get("overlapped"))) p = p.getParent();
 		return p != null;
 	}
 

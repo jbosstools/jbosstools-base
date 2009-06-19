@@ -19,7 +19,7 @@ public class XAdapterProjectsRoot extends XAdapterModelElement {
 
 	public String getProperty(XProperty object) {
 		XModelObject o = (XModelObject)object;
-		if("yes".equals(o.getAttributeValue(USE_DEFAULT))) {
+		if(XModelObjectConstants.YES.equals(o.getAttributeValue(USE_DEFAULT))) {
 			return ModelPlugin.getWorkspace().getRoot().getLocation().toOSString();
 		}
 		return super.getProperty(object);

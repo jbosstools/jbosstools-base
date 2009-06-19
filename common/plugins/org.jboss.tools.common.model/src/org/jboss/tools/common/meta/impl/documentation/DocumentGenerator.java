@@ -23,7 +23,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.XMLUtil;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
@@ -67,7 +69,7 @@ public class DocumentGenerator {
     }
 
     protected void generateBody(Element e) {
-        Element b = XMLUtil.createElement(e, "body");
+        Element b = XMLUtil.createElement(e, XModelObjectConstants.ATTR_NAME_BODY);
         XModelObject entities = meta.getChildren("MetaEntities")[0];
         parents = new Parents();
         parents.set(entities);
@@ -86,7 +88,7 @@ public class DocumentGenerator {
     protected void processEntity(Element e, XModelObject o) {
         XMLUtil2.hr(e);
         Element t = XMLUtil.createElement(e, "table");
-        XMLUtil2.entityRow(t, "Name:", o.getAttributeValue("name"));
+        XMLUtil2.entityRow(t, "Name:", o.getAttributeValue(XModelObjectConstants.ATTR_NAME));
         XMLUtil2.simpleRow(t, "Editor:", o.getAttributeValue("editor"));
         processHierarchy(e, o);
         processAttributeList(e, o.getChildren("MetaAttributes")[0]);
@@ -140,7 +142,7 @@ public class DocumentGenerator {
             tr = XMLUtil.createElement(tr, "tr");
             Element td = XMLUtil.createElement(tr, "td");
             td.setAttribute("class", "value");
-            XMLUtil2.createEntityReference(td, as[i].getAttributeValue("name"));
+            XMLUtil2.createEntityReference(td, as[i].getAttributeValue(XModelObjectConstants.ATTR_NAME));
             createValueCell(tr, as[i].getAttributeValue("required"));
         }
     }
@@ -157,10 +159,10 @@ public class DocumentGenerator {
         XModelObject[] as = o.getChildren("MetaAttribute");
         for (int i = 0; i < as.length; i++) {
             tr = XMLUtil.createElement(tr, "tr");
-            createValueCell(tr, as[i].getAttributeValue("name"));
+            createValueCell(tr, as[i].getAttributeValue(XModelObjectConstants.ATTR_NAME));
             createValueCell(tr, as[i].getAttributeValue("visibility"));
             XModelObject oe = as[i].getChildren("MetaAttributeEditor")[0];
-            String ed = oe.getAttributeValue("name");
+            String ed = oe.getAttributeValue(XModelObjectConstants.ATTR_NAME);
             createValueCell(tr, ed);
             String dv = as[i].getAttributeValue("default value");
             createValueCell(tr, dv);
@@ -187,7 +189,7 @@ public class DocumentGenerator {
     }
     void createHeaderCell(Element e, String name, int width) {
         Element td = XMLUtil.createElement(e, "td");
-        td.setAttribute("class", "name");
+        td.setAttribute("class", XModelObjectConstants.ATTR_NAME);
         if(width > 0) td.setAttribute("width", "" + width);
         XMLUtil2.createText(td, name);
     }
@@ -203,7 +205,7 @@ public class DocumentGenerator {
         for (int i = 0; i < vs.length; i++) {
             Element s = XMLUtil.createElement(td, "span");
             s.setAttribute("class", "value");
-            XMLUtil2.createText(s, vs[i].getAttributeValue("name"));
+            XMLUtil2.createText(s, vs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME));
             XMLUtil.createElement(td, "br");
         }
     }
@@ -248,7 +250,7 @@ public class DocumentGenerator {
             for (int i = 0; i < cs.length; i++) set(cs[i]);
             cs = o.getChildren("MetaEntity");
             for (int i = 0; i < cs.length; i++) {
-                String n = cs[i].getAttributeValue("name");
+                String n = cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
                 ent.put(n, cs[i]);
                 par.put(n, new ArrayList<String>());
             }
@@ -257,17 +259,17 @@ public class DocumentGenerator {
             Iterator it = ent.values().iterator();
             while(it.hasNext()) {
                 XModelObject o = (XModelObject)it.next();
-                String p = o.getAttributeValue("name");
+                String p = o.getAttributeValue(XModelObjectConstants.ATTR_NAME);
                 XModelObject[] os = o.getChildren("MetaChildren")[0].getChildren();
                 for (int i = 0; i < os.length; i++) {
-                    String n = os[i].getAttributeValue("name");
+                    String n = os[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
                     ArrayList<String> v = par.get(n);
                     if(v != null) v.add(p);
                 }
             }
         }
         public ArrayList<String> get(XModelObject o) {
-            return par.get(o.getAttributeValue("name"));
+            return par.get(o.getAttributeValue(XModelObjectConstants.ATTR_NAME));
         }
     }
 
@@ -337,7 +339,7 @@ class XMLUtil2 {
     public static void simpleRow(Element e, String name, String value) {
         Element tr = XMLUtil.createElement(e, "tr");
         Element td1 = XMLUtil.createElement(tr, "td");
-        td1.setAttribute("class", "name");
+        td1.setAttribute("class", XModelObjectConstants.ATTR_NAME);
         createText(td1, name);
         Element td2 = XMLUtil.createElement(tr, "td");
         td1.setAttribute("class", "value");
@@ -356,12 +358,12 @@ class XMLUtil2 {
     public static void entityRow(Element e, String name, String value) {
         Element tr = XMLUtil.createElement(e, "tr");
         Element td1 = XMLUtil.createElement(tr, "td");
-        td1.setAttribute("class", "name");
+        td1.setAttribute("class", XModelObjectConstants.ATTR_NAME);
         createText(td1, name);
         Element td2 = XMLUtil.createElement(tr, "td");
         td1.setAttribute("class", "value");
         Element a = XMLUtil.createElement(td2, "a");
-        a.setAttribute("name", value);
+        a.setAttribute(XModelObjectConstants.ATTR_NAME, value);
         createText(a, value);
     }
 
@@ -393,7 +395,7 @@ class ContentGenerator {
 
     private void processGroup(XModelObject o) {
         XModelObject[] es = o.getChildren("MetaEntity");
-        for (int i = 0; i < es.length; i++) list.put(es[i].getAttributeValue("name"), es[i]);
+        for (int i = 0; i < es.length; i++) list.put(es[i].getAttributeValue(XModelObjectConstants.ATTR_NAME), es[i]);
         XModelObject[] gs = o.getChildren("MetaEntityGroup");
         for (int i = 0; i < gs.length; i++) processGroup(gs[i]);
     }

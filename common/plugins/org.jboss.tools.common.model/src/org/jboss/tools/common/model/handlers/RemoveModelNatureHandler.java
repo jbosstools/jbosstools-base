@@ -42,18 +42,14 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		return true;
 	}
 	
-	private IProject getProject(XModelObject object) {
-		return (object == null) ? null : (IProject)object.getModel().getProperties().get("project");
-	}
-	
 	private String getNature(XModelObject object) {
-		IProject p = getProject(object);
+		IProject p = EclipseResourceUtil.getProject(object);
 		IModelNature n = EclipseResourceUtil.getModelNature(p);
 		return n == null ? null : n.getID();		
 	}
 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException {
-		IProject project = getProject(object);
+		IProject project = EclipseResourceUtil.getProject(object);
 		String nature = (p == null) ? null : p.getProperty("nature");
 		if(nature == null) nature = getNature(object);
 		if (project == null || nature == null) return;
@@ -104,7 +100,7 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 	}
 	
 	private void removeFiles(String location, String workspace) {
-		File f = new File(location + "/" + IModelNature.PROJECT_FILE);
+		File f = new File(location + XModelObjectConstants.SEPARATOR + IModelNature.PROJECT_FILE);
 		if(f.exists()) f.delete();
 	}
 
@@ -171,8 +167,8 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		XAction action = XActionInvoker.getAction("Registration.UnregisterInServerXML", fs);
 		if(action != null) {
 			Properties runningProperties = new Properties();
-			runningProperties.setProperty("unregisterFromAllServers", "true");
-			runningProperties.setProperty("showResult", "false");
+			runningProperties.setProperty("unregisterFromAllServers", XModelObjectConstants.TRUE);
+			runningProperties.setProperty("showResult", XModelObjectConstants.FALSE);
 			XActionInvoker.invoke("Registration.UnregisterInServerXML", fs, runningProperties);
 		}
 	}

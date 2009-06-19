@@ -20,6 +20,9 @@ public class XModelTreeEvent extends EventObject {
     public static final int CHILD_REMOVED = 2;
     public static final int STRUCTURE_CHANGED = 3;
 
+    public static final String BEFORE_MERGE = "beforeMerge";
+    public static final String AFTER_MERGE = "afterMerge";
+
     private XModelObject object;
     private Object info;
 	private Object details;

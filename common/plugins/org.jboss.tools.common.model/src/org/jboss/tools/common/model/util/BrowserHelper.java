@@ -15,6 +15,7 @@ import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.engines.impl.XProcess;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.*;
@@ -35,7 +36,7 @@ public class BrowserHelper {
 	static boolean validatePath(ServiceDialog d, XModelObject o) {
 		String[] paths = getEnvironmentPaths();
 		String en = o.getModelEntity().getName();
-		XEntityData[] dt = new XEntityData[]{XEntityDataImpl.create(new String[][]{{en, "yes"}, {ATTRIBUTE, "yes"}})};
+		XEntityData[] dt = new XEntityData[]{XEntityDataImpl.create(new String[][]{{en, XModelObjectConstants.YES}, {ATTRIBUTE, XModelObjectConstants.YES}})};
 		String path = o.getAttributeValue(ATTRIBUTE).replace('\\','/');
 		XAttributeData ad = HUtil.find(dt, 0, ATTRIBUTE);
 		ad.setValue(path);
@@ -54,7 +55,7 @@ public class BrowserHelper {
 				  ModelPlugin.getPluginLog().logError("BrowserHelper:" + e.getMessage());
 			  }
 			int i = d.showDialog("Run", "Enter valid path for " + o.getPresentationString(),
-								 new String[]{"OK", "Cancel"}, dt[0], ServiceDialog.QUESTION);
+								 new String[]{ModelMessages.OK, ModelMessages.Cancel}, dt[0], ServiceDialog.QUESTION);
 			if(i != 0) return false;
 		}
 	}
@@ -71,7 +72,7 @@ public class BrowserHelper {
 		filename = filename.replace('\\', '/');
 		if(paths == null || filename.indexOf('/') >= 0) return new File(filename).isFile();
 		for (int i = 0; i < paths.length; i++) {
-			String f = paths[i] + "/" + filename;
+			String f = paths[i] + XModelObjectConstants.SEPARATOR + filename;
 			if(new File(f).isFile()) return true;
 		}
 		return false;

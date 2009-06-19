@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.constraint.impl;
 
+import org.jboss.tools.common.model.plugin.ModelMessages;
+
 public class XAttributeConstraintXMLName extends XAttributeConstraintImpl {
 
     public XAttributeConstraintXMLName() {}
@@ -25,7 +27,7 @@ public class XAttributeConstraintXMLName extends XAttributeConstraintImpl {
     }
 
     public String getError(String value) {
-        return accepts(value) ? null : getErrorById("CONSTRAINT_XML_NAME");
+        return accepts(value) ? null : ModelMessages.CONSTRAINT_XML_NAME;
     }
 
     public static final boolean isXMLStartChar(char c) {

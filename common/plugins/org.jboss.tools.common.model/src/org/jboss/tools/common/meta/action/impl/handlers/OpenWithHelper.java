@@ -15,6 +15,7 @@ import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.XEntityDataImpl;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
@@ -28,9 +29,9 @@ public class OpenWithHelper {
         while(o != null) {
             int i = o.getFileType();
             if(i == XFileObject.FILE) l.add(FileAnyImpl.toFileName(o));
-            else if(i == XFileObject.FOLDER) l.add(o.get("NAME"));
+            else if(i == XFileObject.FOLDER) l.add(o.get(XModelObjectConstants.XML_ATTR_NAME));
             else {
-                l.add(XModelObjectUtil.expand((String)o.get("location"), o.getModel(), null));
+                l.add(XModelObjectUtil.expand((String)o.get(XModelObjectConstants.ATTR_NAME_LOCATION), o.getModel(), null));
                 break;
             }
             o = o.getParent();
@@ -61,7 +62,7 @@ public class OpenWithHelper {
         XModelObject o = model.getByPath(EDITORS);
         XModelObject[] os = o.getChildren();
         String[] res = new String[os.length];
-        for (int i = 0; i < res.length; i++) res[i] = os[i].get("NAME");
+        for (int i = 0; i < res.length; i++) res[i] = os[i].get(XModelObjectConstants.XML_ATTR_NAME);
         return res;
     }
 
@@ -69,7 +70,7 @@ public class OpenWithHelper {
         String[] paths = getEnvironmentPaths();
         XModel model = o.getModel();
         String en = o.getModelEntity().getName();
-        XEntityData[] dt = new XEntityData[]{XEntityDataImpl.create(new String[][]{{en, "yes"}, {"path", "yes"}})};
+        XEntityData[] dt = new XEntityData[]{XEntityDataImpl.create(new String[][]{{en, XModelObjectConstants.YES}, {"path", XModelObjectConstants.YES}})};
         String path = o.getAttributeValue("path").replace('\\','/');
         XAttributeData ad = HUtil.find(dt, 0, "path");
         ad.setValue(path);
@@ -85,7 +86,7 @@ public class OpenWithHelper {
                 return true;
             }
             int i = d.showDialog(actionname, "Enter valid path for " + o.getPresentationString(),
-                                 new String[]{"OK", "Cancel"}, dt[0], ServiceDialog.QUESTION);
+                                 new String[]{ModelMessages.OK, ModelMessages.Cancel}, dt[0], ServiceDialog.QUESTION);
             if(i != 0) return false;
         }
     }
@@ -94,7 +95,7 @@ public class OpenWithHelper {
         filename = filename.replace('\\', '/');
         if(paths == null || filename.indexOf('/') >= 0) return new File(filename).isFile();
         for (int i = 0; i < paths.length; i++) {
-            String f = paths[i] + "/" + filename;
+            String f = paths[i] + XModelObjectConstants.SEPARATOR + filename;
             if(new File(f).isFile()) return true;
         }
         return false;
@@ -109,7 +110,7 @@ public class OpenWithHelper {
     }
 
     public static String getLogicalExtension(XModelObject object, XAction action) {
-        String extension = action.getProperty("extension");
+        String extension = action.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
         return (extension != null) ? extension : getExtension(getFileName(object));
     }
 

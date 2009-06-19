@@ -37,7 +37,7 @@ public class DefaultRedirectHandler extends AbstractHandler implements XRedirect
         if (ts == null) return null;
         String apath = action.getProperty("actionpath");
         if(apath == null) return null;
-        StringTokenizer st = new StringTokenizer(apath, "/");
+        StringTokenizer st = new StringTokenizer(apath, XModelObjectConstants.SEPARATOR);
         XActionItem l = ts.getModelEntity().getActionList();
         while(st.hasMoreElements()) {
             l = l.getItem(st.nextToken());

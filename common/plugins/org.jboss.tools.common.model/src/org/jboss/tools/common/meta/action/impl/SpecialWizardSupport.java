@@ -21,13 +21,13 @@ import org.jboss.tools.common.meta.help.HelpUtil;
 import org.jboss.tools.common.meta.key.*;
 
 public abstract class SpecialWizardSupport {
-    public static final String OK = "OK";
-    public static final String CANCEL = "Cancel";
-    public static final String BACK = "<< Back";
-    public static final String NEXT = "Next >>";
-    public static final String FINISH = "Finish";
-	public static final String HELP = "Help";
-	public static final String CLOSE = "Close";
+    public static final String OK = "OK"; //$NON-NLS-1$
+    public static final String CANCEL = "Cancel"; //$NON-NLS-1$
+    public static final String BACK = "<< Back"; //$NON-NLS-1$
+    public static final String NEXT = "Next >>"; //$NON-NLS-1$
+    public static final String FINISH = "Finish"; //$NON-NLS-1$
+	public static final String HELP = "Help"; //$NON-NLS-1$
+	public static final String CLOSE = "Close"; //$NON-NLS-1$
 	
 	static final Set<String> standardButtons = new HashSet<String>();
 	

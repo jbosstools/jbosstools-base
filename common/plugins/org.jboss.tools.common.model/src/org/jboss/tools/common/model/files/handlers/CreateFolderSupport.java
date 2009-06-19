@@ -9,11 +9,14 @@ import org.jboss.tools.common.meta.action.impl.DefaultWizardDataValidator;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
 import org.jboss.tools.common.meta.action.impl.WizardDataValidator;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
+import org.jboss.tools.common.meta.impl.XMetaDataConstants;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.CreateFileHandler;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 
 public class CreateFolderSupport extends SpecialWizardSupport {
 	protected TargetHolder targetHolder = new TargetHolder();
@@ -54,7 +57,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 		if(targetHolder.addPath.length() == 0) return true;
 		ServiceDialog d = getTarget().getModel().getService();
 		String message = "Folder " + targetHolder.path + " does not exist. Do you want to create it?";
-		int q = d.showDialog("Warning", message, new String[]{SpecialWizardSupport.OK, SpecialWizardSupport.CANCEL}, null, ServiceDialog.QUESTION);
+		int q = d.showDialog(ModelMessages.WARNING, message, new String[]{SpecialWizardSupport.OK, SpecialWizardSupport.CANCEL}, null, ServiceDialog.QUESTION);
 		return q == 0;
 	}
 	
@@ -66,20 +69,20 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 	
 	boolean isCorrectPath(String path) {
 		path = revalidatePath(path);
-		if(path == null || path.equals("/") || path.indexOf("//") >= 0) return false;
+		if(path == null || path.equals(XModelObjectConstants.SEPARATOR) || path.indexOf("//") >= 0) return false;
 		  return true;
 	}
 	
 	boolean resourceExists(String path) {
 		if(path == null || targetHolder.target == null) return false;
 		path = revalidatePath(path);
-		if(path.startsWith("/")) path = path.substring(1);
+		if(path.startsWith(XModelObjectConstants.SEPARATOR)) path = path.substring(1);
 		return targetHolder.target.getChildByPath(path) != null;
 	} 
 	
 	protected String revalidatePath(String path) {
 		if(path == null || path.length() == 0) return path;
-		if(!path.startsWith("/")) path = "/" + path;
+		if(!path.startsWith(XModelObjectConstants.SEPARATOR)) path = XModelObjectConstants.SEPARATOR + path;
 		if(targetHolder.addPath.length() > 0) {
 			path = targetHolder.addPath + path;
 		}
@@ -88,7 +91,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 
 	protected void execute() throws XModelException {
 		Properties p = extractStepData(0);
-		String path = p.getProperty("name");
+		String path = p.getProperty(XModelObjectConstants.ATTR_NAME);
 		path = revalidatePath(path);
 		XModelObject f = createFolder(path);
 		if(f != null) targetHolder.saveLastPath();
@@ -98,14 +101,14 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 		if(!canCreateResource(path)) return null;
 		XModelObject fs = targetHolder.target;
 
-		StringTokenizer st = new StringTokenizer(path, "/");
+		StringTokenizer st = new StringTokenizer(path, XModelObjectConstants.SEPARATOR);
 		int c = st.countTokens(), i = 0;
 		while(i < c) {
 			String s = st.nextToken();
 			XModelObject o = fs.getChildByPath(s);
 			if(o == null) {
 				o = fs.getModel().createModelObject("FileFolder", null);
-				o.setAttributeValue("name", s);
+				o.setAttributeValue(XModelObjectConstants.ATTR_NAME, s);
 				DefaultCreateHandler.addCreatedObject(fs, o, getProperties());
 				((FolderImpl)o).save();
 			}
@@ -150,7 +153,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 		String FORBIDDEN_INDICES = "\"\n\t*\\/:<>?|";
 		protected void validateChildName(Properties data) {
 			if(message != null) return;
-			String name = data.getProperty("name");
+			String name = data.getProperty(XModelObjectConstants.ATTR_NAME);
 			if(name == null || name.length() == 0) return;
 			if(name.equals(".")) {
 				message = "Incorrect name.";
@@ -180,7 +183,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 		protected void validateAddFile(XEntityData[] ds, Properties data) {
 			CreateFileHandler.validateNameAndExtension(action, data, null);
 			if(targetHolder.target != null) {
-				String entity = action.getProperty("entity");
+				String entity = action.getProperty(XMetaDataConstants.ENTITY);
 				if(entity == null) entity = getEntityData()[step].getModelEntity().getName();
 				if(targetHolder.addPath == null || targetHolder.addPath.length() == 0) {
 					if(!checkChild(targetHolder.target, entity, data)) return;
@@ -194,7 +197,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 
 	public String getFocusAttribute(int stepId) {
 		if(stepId == 0) {
-			return "name";
+			return XModelObjectConstants.ATTR_NAME;
 		}
 		return super.getFocusAttribute(stepId);
 	}

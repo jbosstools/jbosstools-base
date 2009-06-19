@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.project;
 
 import java.util.*;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelObjectConstants;
 
 public interface IPromptingProvider {
 	static String ERROR = "error";
@@ -25,7 +26,7 @@ public interface IPromptingProvider {
 	static String TYPE = "type";
 	static String PROPERTY = "property";
 	static String MODEL_OBJECT_PATH = "model-path";
-	static String NAME = "name";
+	static String NAME = XModelObjectConstants.ATTR_NAME;
 	static String ATTRIBUTE = "attribute";
 	static String LOCALE = "locale";
 	

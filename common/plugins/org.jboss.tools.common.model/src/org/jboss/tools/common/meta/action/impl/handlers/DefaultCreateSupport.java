@@ -13,7 +13,9 @@ package org.jboss.tools.common.meta.action.impl.handlers;
 import java.util.Properties;
 import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.meta.action.impl.*;
+import org.jboss.tools.common.meta.impl.XMetaDataConstants;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class DefaultCreateSupport extends SpecialWizardSupport {
@@ -23,7 +25,7 @@ public class DefaultCreateSupport extends SpecialWizardSupport {
 	}
 
 	protected String getEntityName() {
-		String n = action.getProperty("entity");
+		String n = action.getProperty(XMetaDataConstants.ENTITY);
 		return (n == null) ? getEntityData()[0].getModelEntity().getName() : n;
 	}
 
@@ -34,7 +36,7 @@ public class DefaultCreateSupport extends SpecialWizardSupport {
 		int limit = c.getMaxCount();
 		if(c != null && limit < Integer.MAX_VALUE && cs.length >= limit) {
 			ServiceDialog d = getTarget().getModel().getService();
-			d.showDialog("Warning", "The limit of " + limit + " children is achieved.", new String[]{OK}, null, ServiceDialog.MESSAGE);
+			d.showDialog(ModelMessages.WARNING, "The limit of " + limit + " children is achieved.", new String[]{OK}, null, ServiceDialog.MESSAGE);
 			setFinished(true);
 		}		
 	}

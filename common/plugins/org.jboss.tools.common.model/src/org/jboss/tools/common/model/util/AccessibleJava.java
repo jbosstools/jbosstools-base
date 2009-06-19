@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.jar.*;
 
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class AccessibleJava implements ISimpleTree {
@@ -104,12 +105,12 @@ public class AccessibleJava implements ISimpleTree {
     private static String[] serviceroots = {"CVS/", "META-INF/", ".svn"};
 
     private void register(String path, Map<String,SortedSet<String>> map) {
-        if(path == null || path.indexOf("$") >= 0 || path.equals("/")) return;
+        if(path == null || path.indexOf("$") >= 0 || path.equals(XModelObjectConstants.SEPARATOR)) return;
         for (int j = 0; j < serviceroots.length; j++)
           if(path.indexOf(serviceroots[j]) >= 0) return;
-        boolean isPackage = path.endsWith("/");
+        boolean isPackage = path.endsWith(XModelObjectConstants.SEPARATOR);
         if(!(isPackage || path.endsWith(extension()))) return;
-        if(path.startsWith("/")) path = path.substring(1);
+        if(path.startsWith(XModelObjectConstants.SEPARATOR)) path = path.substring(1);
         path = path.substring(0, path.length() - ((isPackage) ? 1 : 6)).replace('/', '.');
         register0(path, isPackage, map);
     }
@@ -164,7 +165,7 @@ public class AccessibleJava implements ISimpleTree {
         for (int i = 0; i < folders.length; i++) {
             File[] fs = folders[i].listFiles();
             if(fs != null) for (int j = 0; j < fs.length; j++) {
-                if(fs[j].isDirectory()) register(fs[j].getName() + "/", map);
+                if(fs[j].isDirectory()) register(fs[j].getName() + XModelObjectConstants.SEPARATOR, map);
             }
         }
     }

@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.impl;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
+
 public class PropertyObjectImpl extends RegularObjectImpl {
 	private static final long serialVersionUID = 1L;
 	static int MAX_VISIBLE_VALUE_LENGTH = 25;
@@ -18,14 +20,14 @@ public class PropertyObjectImpl extends RegularObjectImpl {
 
     public String getPathPart() {
         String name = name();
-        if(name == null || !"no".equals(get("ENABLED"))) return super.getPathPart();
+        if(name == null || !XModelObjectConstants.NO.equals(get("ENABLED"))) return super.getPathPart();
         return "#" + name + '=' + get("VALUE");
     }
 
     public String getPresentationString() {
         String name = name();
         if(name == null) return "";
-        if("no".equals(get("ENABLED"))) name = "#" + name;
+        if(XModelObjectConstants.NO.equals(get("ENABLED"))) name = "#" + name;
         String value = get("VALUE");
         if(value == null) value = "";
         if(value.indexOf("\n") >= 0) value = value.substring(0, value.indexOf("\n")) + "...";

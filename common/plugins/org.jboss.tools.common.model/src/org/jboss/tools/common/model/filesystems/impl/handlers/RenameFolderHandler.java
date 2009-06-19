@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultEditHandler;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
 
@@ -25,22 +26,22 @@ public class RenameFolderHandler extends DefaultEditHandler {
 		FolderImpl f = (FolderImpl)object;
 		f.save();
         Properties p = extractProperties(data[0]);
-        String name = p.getProperty("name");
+        String name = p.getProperty(XModelObjectConstants.ATTR_NAME);
         rename0(f, name);
         f.save();
 	}
 	
 	void rename0(FolderImpl f, String name) throws XModelException {
 		IFolder folder =  (IFolder)f.getResource();
-		String n1 = f.get("NAME");
-		f.set("NAME", name);
-		String n2 = f.get("NAME");
+		String n1 = f.get(XModelObjectConstants.XML_ATTR_NAME);
+		f.set(XModelObjectConstants.XML_ATTR_NAME, name);
+		String n2 = f.get(XModelObjectConstants.XML_ATTR_NAME);
 		if(!n2.equals(n1)) {
 			try {
-				folder.move(new Path(folder.getParent().getFullPath() + "/" + name), true, null);
+				folder.move(new Path(folder.getParent().getFullPath() + XModelObjectConstants.SEPARATOR + name), true, null);
 				f.setModified(true);
 			} catch (CoreException e) {
-				f.set("NAME", n1);
+				f.set(XModelObjectConstants.XML_ATTR_NAME, n1);
 				throw new XModelException(e);
 			}
 		}			

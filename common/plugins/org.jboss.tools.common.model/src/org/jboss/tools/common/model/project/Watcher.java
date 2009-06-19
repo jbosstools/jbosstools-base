@@ -166,9 +166,9 @@ public class Watcher implements XModelTreeListener {
 	private void setCorrect(boolean correct) {
 		XModelObject fs = FileSystemsHelper.getFileSystems(model);
 		if(fs == null) return;
-		boolean b = !"yes".equals(fs.get("_hasErrors_"));
+		boolean b = !XModelObjectConstants.YES.equals(fs.get("_hasErrors_"));
 		if(b == correct) return;
-		fs.set("_hasErrors_", (correct) ? "" : "yes");
+		fs.set("_hasErrors_", (correct) ? "" : XModelObjectConstants.YES);
 		fs.fireObjectChanged("_hasErrors_");
 	}
 

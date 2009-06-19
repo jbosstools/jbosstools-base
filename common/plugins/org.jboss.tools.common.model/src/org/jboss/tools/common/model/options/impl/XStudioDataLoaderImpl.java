@@ -83,7 +83,7 @@ public class XStudioDataLoaderImpl implements SharableConstants {
     private void saveProject() {
 		File[] fs = peer.getFilesForScope(PROJECT);
 		boolean isPaletteModified = studio.getChildByPath("Palette").isModified() || studio.getChildByPath("Icons").isModified();
-		boolean isPreferencesModified = studio.getChildByPath("Options").isModified();
+		boolean isPreferencesModified = studio.getChildByPath(OPTIONS).isModified();
     	if(!fs[0].exists() || isPaletteModified) savePalette(fs[0]);
     	if(!fs[1].exists() || isPreferencesModified) savePreferences(fs[1]);
     }
@@ -97,8 +97,8 @@ public class XStudioDataLoaderImpl implements SharableConstants {
 
 	private void savePreferences(File f) {
 		if(handleReadOnly(studio, LIST[1], f) != 0) return;
-		save(studio, PROJECT, f, new String[]{"Options"});
-		studio.getChildByPath("Options").setModified(false);
+		save(studio, PROJECT, f, new String[]{OPTIONS});
+		studio.getChildByPath(OPTIONS).setModified(false);
 	}
 
     private void save(SharableElement q, String scopename, File f, String[] names) {

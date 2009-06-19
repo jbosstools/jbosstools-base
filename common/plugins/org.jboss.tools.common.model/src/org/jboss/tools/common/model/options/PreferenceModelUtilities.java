@@ -16,6 +16,7 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class PreferenceModelUtilities {
+	static final String ENT_OPTION_ROOT = "OptionRoot";
 
 	private static class PreferenceModelHolder {
 		public static XModel preferenceModel;
@@ -44,7 +45,7 @@ public class PreferenceModelUtilities {
 	
 	public static XModel createPreferenceModel(Properties p) {
 		p.putAll(System.getProperties());
-		p.setProperty("rootEntity", "OptionRoot");
+		p.setProperty(XModelObjectConstants.PROP_ROOT_ENTITY, ENT_OPTION_ROOT);
 		return XModelFactory.getModel(p);
 	}
 	

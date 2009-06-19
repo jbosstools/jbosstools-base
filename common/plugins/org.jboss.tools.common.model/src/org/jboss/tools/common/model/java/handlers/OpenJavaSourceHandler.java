@@ -20,6 +20,7 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.ui.*;
 
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.meta.action.impl.*;
 
@@ -68,19 +69,19 @@ public class OpenJavaSourceHandler extends AbstractHandler {
     }
     
     public static void open(XModel model, String type, Properties p) throws XModelException, CoreException {
-		IProject project = (IProject)model.getProperties().get("project");
+		IProject project = (IProject)model.getProperties().get(XModelObjectConstants.PROJECT);
 		IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
 		IJavaElement javaElement = javaProject.findElement(new Path(type));
 		if (javaElement == null) {
 			String message = "Cannot find java source.";
-			if(p != null && "true".equals(p.getProperty("ignoreWarning"))) {
+			if(p != null && XModelObjectConstants.TRUE.equals(p.getProperty("ignoreWarning"))) {
 				p.setProperty("error", message);
 			} else {
 				ServiceDialog d = model.getService();
-				d.showDialog("Warning", message, new String[]{"Close"}, null, ServiceDialog.WARNING);
+				d.showDialog(ModelMessages.WARNING, message, new String[]{"Close"}, null, ServiceDialog.WARNING);
 			}
 		} else {
-			if(p != null && "true".equals(p.getProperty("onlySelectIfOpen"))) {
+			if(p != null && XModelObjectConstants.TRUE.equals(p.getProperty("onlySelectIfOpen"))) {
 				IEditorInput ii = EditorUtility.getEditorInput(javaElement);
 				IWorkbenchPage page = getWorkbenchPage();
 				if(page == null) return;

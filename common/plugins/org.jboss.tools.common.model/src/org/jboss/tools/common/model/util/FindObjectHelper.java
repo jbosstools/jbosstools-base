@@ -50,11 +50,11 @@ public class FindObjectHelper implements SpecialWizard {
     }
 
     public static String makeRef(XModelObject o) {
-        return "" + o.getAttributeValue("element type") + " " + makeRef(o.getPath(), o.getPresentationString());
+        return "" + o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " + makeRef(o.getPath(), o.getPresentationString());
     }
 
     public static String makeRef(XModelObject o, int line) {
-        return "" + o.getAttributeValue("element type") + " " + makeRef(o.getPath() + ":" + line, o.getPresentationString());
+        return "" + o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " + makeRef(o.getPath() + ":" + line, o.getPresentationString());
     }
 
     public static String makeRef(String hidden, String visible) {
@@ -155,7 +155,7 @@ class FileInfo {
     private String jpath = "";
 
     public void setData(String cls, int ln, XModel model) {
-        jpath = "/" + cls.replace('.', '/') + ".java";
+        jpath = XModelObjectConstants.SEPARATOR + cls.replace('.', '/') + ".java";
         line = ln;
         String fn = "" + XModelObjectUtil.getExpandedValue(model.getByPath("Engines/generator"), "directory", null) + "/src" + jpath;
         text = XModelObjectLoaderUtil.readFile(fn);
@@ -164,7 +164,7 @@ class FileInfo {
     public void setData(XModelObject cls, int ln, XModel model) {
         jpath = cls.getPath();
         line = ln;
-        text = cls.getAttributeValue("body");
+        text = cls.getAttributeValue(XModelObjectConstants.ATTR_NAME_BODY);
     }
 
     public String getJPath() {
@@ -326,7 +326,7 @@ class JavacErrorHeadLine {
             String p = "" + XModelObjectUtil.getExpandedValue(g, "directory", null) + "/src/";
             cls = fn.substring(p.length()).replace('/', '.').replace('\\', '.');
         }
-        findJFile(model, "/" + fn.replace('\\', '/') + ".java");
+        findJFile(model, XModelObjectConstants.SEPARATOR + fn.replace('\\', '/') + ".java");
     }
 
     private void findJFile(XModel model, String fn) {
@@ -339,7 +339,7 @@ class JavacErrorHeadLine {
 
     private boolean isOverlapped(XModelObject o) {
         while(o != null) {
-            if("true".equals(o.get("overlapped"))) return true;
+            if(XModelObjectConstants.TRUE.equals(o.get("overlapped"))) return true;
             o = o.getParent();
         }
         return false;

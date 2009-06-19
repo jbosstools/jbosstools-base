@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.action.impl;
 import java.util.Properties;
 import org.jboss.tools.common.meta.action.impl.handlers.PasteHandler;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 
 public class MultistepWizardSupport extends SpecialWizardSupport {
 	protected MultistepWizardStep[] steps = createSteps();
@@ -34,7 +35,7 @@ public class MultistepWizardSupport extends SpecialWizardSupport {
 			execute();
 			setFinished(true);
 		} else if(CANCEL.equals(name)) {
-			getProperties().setProperty(PasteHandler.IS_CANCELLED, "true");
+			getProperties().setProperty(PasteHandler.IS_CANCELLED, XModelObjectConstants.TRUE);
 			setFinished(true);
 		} else if(NEXT.equals(name)) {
 			int next = next();

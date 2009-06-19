@@ -28,15 +28,15 @@ public class TLDToPaletteHelper {
         Properties p = new Properties();
         String parentname = getTldName(tag.getParent());
         String prefix = (parentname.length() == 0) ? "" : parentname + ":";
-        String shortname = tag.getAttributeValue("name");
+        String shortname = tag.getAttributeValue(XModelObjectConstants.ATTR_NAME);
         String name = prefix + shortname;
         String tagname = shortname; ///name;
-		p.setProperty("name", shortname);
+		p.setProperty(XModelObjectConstants.ATTR_NAME, shortname);
         boolean empty = "empty".equals(tag.getAttributeValue("bodycontent"));
         if(!empty) p.setProperty(END_TEXT, "</" + tagname + ">");
         p.setProperty(START_TEXT, getStartText(tag, empty, tagname));
         p.setProperty(DESCRIPTION, getTagDescription(tag, empty, name));
-        if(!empty) p.setProperty(REFORMAT, "yes");
+        if(!empty) p.setProperty(REFORMAT, XModelObjectConstants.YES);
         return model.createModelObject("SharableMacroHTML", p);
     }
 
@@ -45,7 +45,7 @@ public class TLDToPaletteHelper {
         String n = tld.getAttributeValue("shortname");
     	if(n == null) return "";
         if(n.length() == 0) {
-            n = tld.getAttributeValue("name");
+            n = tld.getAttributeValue(XModelObjectConstants.ATTR_NAME);
             int q = n.lastIndexOf('-');
             if(q >= 0) n = n.substring(q + 1);
         }
@@ -62,15 +62,15 @@ public class TLDToPaletteHelper {
         for (int i = 0; i < as.length; i++) {
             if(!TLDUtil.isAttribute(as[i])) continue;
             String required = as[i].getAttributeValue("required");
-            if(!"true".equals(required) && !"yes".equals(required)) continue;
-            sb.append(' ').append(as[i].getAttributeValue("name")).append("=\"");
+            if(!XModelObjectConstants.TRUE.equals(required) && !XModelObjectConstants.YES.equals(required)) continue;
+            sb.append(' ').append(as[i].getAttributeValue(XModelObjectConstants.ATTR_NAME)).append("=\"");
             if(!found) {
                 sb.append('|');
                 found = true;
             }
             sb.append('"');
         }
-        if(empty) sb.append("/");
+        if(empty) sb.append(XModelObjectConstants.SEPARATOR);
         sb.append(">");
         return sb.toString();
     }
@@ -86,13 +86,13 @@ public class TLDToPaletteHelper {
 		 for (int i = 0; i < as.length; i++) {
 			 if(!TLDUtil.isAttribute(as[i])) continue;
 			 if(!isRequired(as[i])) continue;
-			 sb.append("<b>").append(as[i].getAttributeValue("name")).append("</b>");
+			 sb.append("<b>").append(as[i].getAttributeValue(XModelObjectConstants.ATTR_NAME)).append("</b>");
 			 ++k;
 			 if(k < as.length) sb.append(", ");
 		 }
 		 for (int i = 0; i < as.length; i++) {
 			 if(isRequired(as[i])) continue;
-			 sb.append(as[i].getAttributeValue("name"));
+			 sb.append(as[i].getAttributeValue(XModelObjectConstants.ATTR_NAME));
 			 ++k;
 			 if(k < as.length) sb.append(", ");
 		}
@@ -120,14 +120,14 @@ public class TLDToPaletteHelper {
         for (int i = 0; i < as.length; i++) {
             if(!TLDUtil.isAttribute(as[i])) continue;
             if(!isRequired(as[i])) continue;
-            sb.append("<b>").append(as[i].getAttributeValue("name")).append("</b>");
+            sb.append("<b>").append(as[i].getAttributeValue(XModelObjectConstants.ATTR_NAME)).append("</b>");
             ++k;
             if(k < as.length) sb.append(',');
             sb.append("\n    ");
         }
         for (int i = 0; i < as.length; i++) {
             if(isRequired(as[i])) continue;
-            sb.append(as[i].getAttributeValue("name"));
+            sb.append(as[i].getAttributeValue(XModelObjectConstants.ATTR_NAME));
             ++k;
             if(k < as.length) sb.append(',');
             sb.append("\n    ");
@@ -144,7 +144,7 @@ public class TLDToPaletteHelper {
 
     private boolean isRequired(XModelObject attr) {
         String required = attr.getAttributeValue("required");
-        return ("true".equals(required) || "yes".equals(required));
+        return (XModelObjectConstants.TRUE.equals(required) || XModelObjectConstants.YES.equals(required));
     }
 
     public XModelObject createTabByTLD(XModelObject tld, XModel model) {
@@ -157,7 +157,7 @@ public class TLDToPaletteHelper {
 
     private XModelObject createGroupByTLD(XModelObject tld, XModel model, String entity) {
         Properties p = new Properties();
-        p.setProperty("name", capitalize(getTldName(tld)));
+        p.setProperty(XModelObjectConstants.ATTR_NAME, capitalize(getTldName(tld)));
         p.setProperty(DESCRIPTION, TLDUtil.getTagDescription(tld));
         p.setProperty(DEFAULT_PREFIX, getTldName(tld));
         p.setProperty(URIConstants.LIBRARY_URI, "" + tld.getAttributeValue("uri"));

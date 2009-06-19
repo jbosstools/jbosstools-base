@@ -57,7 +57,7 @@ public class DefaultRenameSupport extends SpecialWizardSupport {
     public String getSubtitle() {
     	XModelObject o = getTarget();
     	if(o == null) return "";
-    	String element = o.getAttributeValue("element type");
+    	String element = o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE);
     	if(element == null) return "";
     	return WizardKeys.toDisplayName(element);
     }

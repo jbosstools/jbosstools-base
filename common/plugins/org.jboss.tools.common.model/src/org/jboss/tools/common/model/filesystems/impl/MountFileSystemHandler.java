@@ -16,6 +16,7 @@ import java.io.*;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.util.*;
 
 public class MountFileSystemHandler extends DefaultCreateHandler {
@@ -42,20 +43,20 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
     }
 
     private boolean checkOverlap(XModelObject object, String entity, Properties p) {
-        String location = p.getProperty("location");
+        String location = p.getProperty(XModelObjectConstants.ATTR_NAME_LOCATION);
         if(location == null) return true;
         boolean b = location.indexOf('%') >= 0;
         location = canonize(location, object.getModel());
-        if(location != null && !b) p.setProperty("location", location);
-        if(!"FileSystemFolder".equals(entity)) return true;
-        location += "/";
+        if(location != null && !b) p.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, location);
+        if(!XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER.equals(entity)) return true;
+        location += XModelObjectConstants.SEPARATOR;
         XModelObject[] cs = object.getChildren(entity);
         for (int i = 0; i < cs.length; i++) {
-            String loc = canonize(cs[i].get("location"), cs[i].getModel()) + "/";
+            String loc = canonize(cs[i].get(XModelObjectConstants.ATTR_NAME_LOCATION), cs[i].getModel()) + XModelObjectConstants.SEPARATOR;
             if(!loc.startsWith(location) && !location.startsWith(loc)) continue;
-            String mes = "File system " + p.get("name") + " will share files with file system " + cs[i].getAttributeValue("name");
+            String mes = "File system " + p.get(XModelObjectConstants.ATTR_NAME) + " will share files with file system " + cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
             ServiceDialog d = object.getModel().getService();
-            int q = d.showDialog("Warning", mes, new String[]{"OK", "Cancel"}, null, ServiceDialog.WARNING);
+            int q = d.showDialog(ModelMessages.WARNING, mes, new String[]{ModelMessages.OK, ModelMessages.Cancel}, null, ServiceDialog.WARNING);
             return (q == 0);
         }
         return true;
@@ -71,22 +72,22 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
     }
 
     private void validateName(XModelObject object, Properties p) {
-        String name = p.getProperty("name");
+        String name = p.getProperty(XModelObjectConstants.ATTR_NAME);
         if(name != null && name.length() > 0) return;
-        String location = p.getProperty("location");
+        String location = p.getProperty(XModelObjectConstants.ATTR_NAME_LOCATION);
         name = location.substring(location.lastIndexOf('/') + 1);
         if(name.length() == 0) name = "filesystem";
         name = XModelObjectUtil.createNewChildName(name, object);
-        p.setProperty("name", name);
+        p.setProperty(XModelObjectConstants.ATTR_NAME, name);
     }
 
     private void setRelativeToProject(XModelObject object, Properties p) {
-        boolean isRelative = "true".equals(p.getProperty("set location relative to project"));
+        boolean isRelative = XModelObjectConstants.TRUE.equals(p.getProperty("set location relative to project"));
         if(!isRelative) return;
-        String location = canonize(p.getProperty("location"), object.getModel());
+        String location = canonize(p.getProperty(XModelObjectConstants.ATTR_NAME_LOCATION), object.getModel());
         String project = canonize(XModelConstants.WORKSPACE_REF, object.getModel());
         if(location.equals(project)) {
-            p.setProperty("location", XModelConstants.WORKSPACE_REF);
+            p.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, XModelConstants.WORKSPACE_REF);
             return;
         }
         boolean common = false;
@@ -101,18 +102,18 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
             if(!p1.equals(p2)) break;
             location = location.substring(i1);
             project = project.substring(i2);
-            if(location.startsWith("/")) location = location.substring(1);
-            if(project.startsWith("/")) project = project.substring(1);
+            if(location.startsWith(XModelObjectConstants.SEPARATOR)) location = location.substring(1);
+            if(project.startsWith(XModelObjectConstants.SEPARATOR)) project = project.substring(1);
             common = true;
         }
         if(!common) return;
         String s = XModelConstants.WORKSPACE_REF;
         if(project.length() > 0) {
-            int q = new StringTokenizer(project, "/").countTokens();
+            int q = new StringTokenizer(project, XModelObjectConstants.SEPARATOR).countTokens();
             for (int i = 0; i < q; i++) s += "/..";
         }
-        if(location.length() > 0) s += "/" + location;
-        p.setProperty("location", s);
+        if(location.length() > 0) s += XModelObjectConstants.SEPARATOR + location;
+        p.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, s);
     }
 
 	static SpecialWizard w = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.project.ClassPathUpdateWizard");

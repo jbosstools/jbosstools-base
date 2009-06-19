@@ -11,6 +11,7 @@
 package org.jboss.tools.common.meta.impl.adapters;
 
 import org.jboss.tools.common.meta.constraint.*;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
@@ -20,7 +21,7 @@ public class XAdapterModelPath extends XAdapter {
 
     public String getProperty(XProperty object) {
         String p = XModelObjectLoaderUtil.getResourcePath((XModelObject)object);
-        return (p == null) ? "" + object.get("NAME") : p;
+        return (p == null) ? "" + object.get(XModelObjectConstants.XML_ATTR_NAME) : p;
     }
 
     public void setProperty(XProperty object, String value) {}

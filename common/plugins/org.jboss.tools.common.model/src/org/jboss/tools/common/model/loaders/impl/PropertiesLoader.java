@@ -23,6 +23,7 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
+import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.impl.*;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.util.FileUtil;
@@ -117,7 +118,7 @@ public class PropertiesLoader implements XObjectLoader {
             sb.setLength(0);
             String value = properties.getProperty(visualName);
             Properties p = new Properties();
-            p.setProperty("name", visualName);
+            p.setProperty(XModelObjectConstants.ATTR_NAME, visualName);
 			p.setProperty("dirtyname", dirtyName);
             p.setProperty("value", value);
             
@@ -184,9 +185,9 @@ public class PropertiesLoader implements XObjectLoader {
 				name_value_separator = "=";
 			}
 			appendComments(sb, cs[i].get("COMMENTS"), cs[i].get("SEPARATOR"), lineSeparator);
-			if("no".equals(cs[i].get("ENABLED"))) sb.append('#');
+			if(XModelObjectConstants.NO.equals(cs[i].get("ENABLED"))) sb.append('#');
 			String dirtyname = cs[i].getAttributeValue("dirtyname");
-			String name = EncodedProperties.saveConvert(cs[i].get("NAME"), true); // convertName(cs[i].get("NAME"));
+			String name = EncodedProperties.saveConvert(cs[i].get(XModelObjectConstants.XML_ATTR_NAME), true); // convertName(cs[i].get(XModelObjectConstants.XML_ATTR_NAME));
 			String value = cs[i].get("VALUE");
 			String dirtyvalue = cs[i].getAttributeValue("dirtyvalue");
 			if(value == null || dirtyvalue == null || !value.equals(dirtyvalue.trim())) {
@@ -257,7 +258,12 @@ public class PropertiesLoader implements XObjectLoader {
 		XModelObject c = object.copy(0);
 		XModelObjectLoaderUtil.setTempBody(c, body);
 		load(c);
-		merge(object, c);    	
+		object.fireObjectChanged(XModelTreeEvent.BEFORE_MERGE);
+		try {
+			merge(object, c);
+		} finally {
+			object.fireObjectChanged(XModelTreeEvent.AFTER_MERGE);
+		}
     }
     
     private void merge(XModelObject o1, XModelObject o2) {

@@ -34,7 +34,7 @@ public class DefaultRemoveHandler extends AbstractHandler {
 
     public boolean isEnabled(XModelObject object) {
         if(object == null || !object.isObjectEditable()) return false;
-        if("yes".equals(object.getAttributeValue("issystem"))) return false;
+        if(XModelObjectConstants.YES.equals(object.getAttributeValue("issystem"))) return false;
         if(object.getParent() == null) return false;
         if(isUniqueRequiredChild(object)) return isUniqueRequiredChildSet(object);
         return true;

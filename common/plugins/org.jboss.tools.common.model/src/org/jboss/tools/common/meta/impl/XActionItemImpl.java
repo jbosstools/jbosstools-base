@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.impl;
 import org.w3c.dom.*;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.meta.action.XActionItem;
+import org.jboss.tools.common.model.XModelObjectConstants;
 
 public class XActionItemImpl extends XMetaElementImpl implements XActionItem {
     private XActionItemImpl parent = null;
@@ -27,7 +28,7 @@ public class XActionItemImpl extends XMetaElementImpl implements XActionItem {
     public String getPath() {
         if(parent == null) return null;
         String pp = parent.getPath();
-        return (pp == null) ? getName() : pp + "/" + getName();
+        return (pp == null) ? getName() : pp + XModelObjectConstants.SEPARATOR + getName();
     }
 
 	public String getIconKey() {

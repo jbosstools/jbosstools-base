@@ -18,8 +18,8 @@ public class DiscardFileSignificanceMessage implements SignificanceMessage {
 
 	public String getMessage(XAction action, XModelObject object, XModelObject[] objects) {
 		String d = "Discard changes in";
-		XAttribute e = object.getModelEntity().getAttribute("element type");
-		String type = (e == null || !e.isVisible()) ? "" : object.getAttributeValue("element type");
+		XAttribute e = object.getModelEntity().getAttribute(XModelObjectConstants.ATTR_ELEMENT_TYPE);
+		String type = (e == null || !e.isVisible()) ? "" : object.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE);
 		if(type.length() > 0) type += " ";
 		String what = (objects != null && objects.length > 1) ? objects.length + " selected objects" :
 					  type + "'" + object.getPresentationString() + "'";

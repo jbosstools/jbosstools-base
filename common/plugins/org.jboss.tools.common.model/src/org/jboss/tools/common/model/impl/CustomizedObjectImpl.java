@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.impl;
 
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class CustomizedObjectImpl extends RegularObjectImpl {
@@ -21,7 +22,7 @@ public class CustomizedObjectImpl extends RegularObjectImpl {
 		if(attribute != null) return attribute;
 		XAttribute[] as = getModelEntity().getAttributes();
 		for (int i = 0; i < as.length; i++) {
-			if("true".equals(as[i].getProperty("id"))) {
+			if(XModelObjectConstants.TRUE.equals(as[i].getProperty("id"))) {
 				attribute = as[i].getName();
 				return attribute;
 			}

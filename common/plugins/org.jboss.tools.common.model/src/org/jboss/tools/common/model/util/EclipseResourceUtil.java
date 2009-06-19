@@ -45,11 +45,11 @@ import org.jboss.tools.common.model.project.ModelNature;
 public class EclipseResourceUtil {
 	
 	public static IProject getProject(XModelObject o) {
-		return (o == null) ? null : (IProject)o.getModel().getProperties().get("project");
+		return (o == null) ? null : (IProject)o.getModel().getProperties().get(XModelObjectConstants.PROJECT);
 	}
 	
 	public static boolean isProjectFragment(XModel model) {
-		return ("true".equals(model.getProperties().getProperty("isProjectFragment")));
+		return (XModelObjectConstants.TRUE.equals(model.getProperties().getProperty("isProjectFragment")));
 	}
 
 	public static IResource getResource(XModelObject object) {
@@ -59,19 +59,19 @@ public class EclipseResourceUtil {
 	
 	public static String getJavaClassQualifiedName(XModelObject object) {
 		if(object.getFileType() != XFileObject.FILE) return null;
-		String ext = object.getAttributeValue("extension");
+		String ext = object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION);
 		if(!"java".equals(ext) && !"class".equals(ext)) return null;
-		String q = object.getAttributeValue("name");
+		String q = object.getAttributeValue(XModelObjectConstants.ATTR_NAME);
 		String p = getJavaPackageName(object.getParent());
 		return (p == null) ? q : p + "." + q; 
 	}
 	
 	public static String getJavaPackageName(XModelObject object) {
 		if(object == null || object.getFileType() != XFileObject.FOLDER) return null;
-		String q = object.getAttributeValue("name");
+		String q = object.getAttributeValue(XModelObjectConstants.ATTR_NAME);
 		XModelObject o = object.getParent();
 		while(o != null && o.getFileType() == XFileObject.FOLDER) {
-			q = o.getAttributeValue("name") + "." + q;
+			q = o.getAttributeValue(XModelObjectConstants.ATTR_NAME) + "." + q;
 			o = o.getParent();
 		}
 		return q;		
@@ -105,7 +105,7 @@ public class EclipseResourceUtil {
 			FileSystemsImpl fso = (FileSystemsImpl)FileSystemsHelper.getFileSystems(model);
 			if(fso == null) return null;
 			fso.updateOverlapped();
-			XModelObject[] fs = fso.getChildren("FileSystemFolder");
+			XModelObject[] fs = fso.getChildren(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER);
 			for (int i = 0; i < fs.length; i++) {
 				FileSystemImpl s = (FileSystemImpl)fs[i];
 				XModelObject o = findResourceInFileSystem(s, resource);
@@ -163,16 +163,16 @@ public class EclipseResourceUtil {
 		} else {
 			fsLoc = getRelativeLocation(model, fsLoc);
 		}
-		XModelObject[] cs = fss.getChildren("FileSystemFolder");
+		XModelObject[] cs = fss.getChildren(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER);
 		for (int i = 0; i < cs.length; i++) {
-			String loc = cs[i].getAttributeValue("location");
+			String loc = cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION);
 			if(fsLoc.equals(loc)) return null;
 		}	
-		properties.setProperty("location", fsLoc);
+		properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
 		String name = resource.getName();
 		name = XModelObjectUtil.createNewChildName(name, fss);
-		properties.setProperty("name", name);
-		FileSystemImpl s = (FileSystemImpl)model.createModelObject("FileSystemFolder", properties);
+		properties.setProperty(XModelObjectConstants.ATTR_NAME, name);
+		FileSystemImpl s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
 		boolean b = fss.addChild(s);
 		if(b) {
 			fss.setModified(true);
@@ -201,7 +201,7 @@ public class EclipseResourceUtil {
 	
 	public static boolean hasNature(XModel model, String nature) {
 		if(model == null) return false;
-		IProject p = (IProject)model.getProperties().get("project");
+		IProject p = (IProject)model.getProperties().get(XModelObjectConstants.PROJECT);
 		if(p == null || !p.isOpen()) return false;
 		try {
 			if(p.hasNature(nature)) return true;
@@ -246,7 +246,7 @@ public class EclipseResourceUtil {
 		XModel model = n.getModel();
 		XModelObject object = model.getRoot();
 		if(object == null) return null;
-		if(!"Root".equals(object.getModelEntity().getName())) return null;
+		if(!XModelObjectConstants.ROOT_OBJECT.equals(object.getModelEntity().getName())) return null;
 		return n;
 	}
 
@@ -330,8 +330,8 @@ public class EclipseResourceUtil {
 		if(r == null) return null;
 		properties.setProperty(XModelConstants.WORKSPACE, r.getParent().getLocation().toString());
 		properties.setProperty(IModelNature.ECLIPSE_PROJECT, project.getLocation().toString());
-		properties.put("project", project);
-		properties.put("isProjectFragment", "true");
+		properties.put(XModelObjectConstants.PROJECT, project);
+		properties.put("isProjectFragment", XModelObjectConstants.TRUE);
 		model = XModelFactory.getModel(properties);
 		models.put(project, model);
 		
@@ -345,17 +345,17 @@ public class EclipseResourceUtil {
 		properties = new Properties();
 
 		fsLoc = project.getLocation().toString();
-		properties.setProperty("location", fsLoc);
-		properties.setProperty("name", project.getName());
-		s = (FileSystemImpl)model.createModelObject("FileSystemFolder", properties);
+		properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
+		properties.setProperty(XModelObjectConstants.ATTR_NAME, project.getName());
+		s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
 		fs.addChild(s);
 		if(!isJar(resource)) {
 			IResource webRoot = getFirstWebContentResource(project);
 			if(webRoot != null && webRoot.exists() && webRoot != project) {
 				fsLoc = webRoot.getLocation().toString();
-				properties.setProperty("location", fsLoc);
-				properties.setProperty("name", "WEB-ROOT");
-				s = (FileSystemImpl)model.createModelObject("FileSystemFolder", properties);
+				properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
+				properties.setProperty(XModelObjectConstants.ATTR_NAME, "WEB-ROOT");
+				s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
 				fs.addChild(s);
 			}
 		}
@@ -363,9 +363,9 @@ public class EclipseResourceUtil {
 		if(!isJar(resource) || getObjectByResource(model, resource) == null) {
 			properties = new Properties();
 			fsLoc = (r instanceof IFile) ? r.getParent().getLocation().toString() : r.getLocation().toString();
-			properties.setProperty("location", fsLoc);
-			properties.setProperty("name", r.getName());
-			s = (FileSystemImpl)model.createModelObject("FileSystemFolder", properties);
+			properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
+			properties.setProperty(XModelObjectConstants.ATTR_NAME, r.getName());
+			s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
 			fs.addChild(s);
 		}
 
@@ -379,9 +379,9 @@ public class EclipseResourceUtil {
 			if(!cs[i].isLinked()) continue;
 			properties = new Properties();
 			fsLoc = cs[i].getLocation().toString();
-			properties.setProperty("location", fsLoc);
-			properties.setProperty("name", cs[i].getName());
-			s = (FileSystemImpl)model.createModelObject("FileSystemFolder", properties);
+			properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
+			properties.setProperty(XModelObjectConstants.ATTR_NAME, cs[i].getName());
+			s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
 			fs.addChild(s);
 		}
 		validateJarSystem(fs, resource);
@@ -409,8 +409,8 @@ public class EclipseResourceUtil {
 		String location = resource.getLocation().toString().replace('\\', '/');
 		if(fs.getChildByPath(jsname) == null) {
 			XModelObject q = fs.getModel().createModelObject("FileSystemJar", null);
-			q.setAttributeValue("name", jsname);
-			q.setAttributeValue("location", location);
+			q.setAttributeValue(XModelObjectConstants.ATTR_NAME, jsname);
+			q.setAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION, location);
 			fs.addChild(q);
 		}
 	}
@@ -434,7 +434,7 @@ public class EclipseResourceUtil {
 		}
 		if(o == null) return null;
 		XModelObject p = o;
-		while(p != null && !"true".equals(p.get("overlapped"))) p = p.getParent();
+		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent();
 		if(p == null) {
 			IResource r = (IResource)o.getAdapter(IResource.class);
 			if(r == null || !resource.getLocation().equals(r.getLocation())) {
@@ -447,7 +447,7 @@ public class EclipseResourceUtil {
 	
 	public static boolean isOverlapped(XModelObject object) {
 		XModelObject p = object;
-		while(p != null && !"true".equals(p.get("overlapped"))) p = p.getParent();
+		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent();
 		return (p != null);
 	}
 
@@ -463,7 +463,7 @@ public class EclipseResourceUtil {
 		properties.putAll(System.getProperties());
 
 		properties.setProperty(XModelConstants.WORKSPACE, f.getParent());
-		properties.put("isProjectFragment", "true");
+		properties.put("isProjectFragment", XModelObjectConstants.TRUE);
 		XModel model = XModelFactory.getModel(properties);
 		XModelObject fs = FileSystemsHelper.getFileSystems(model);
 		if(fs == null) {
@@ -472,12 +472,12 @@ public class EclipseResourceUtil {
 		}
 		properties = new Properties();
 		String fsLoc = f.getParent();
-		properties.setProperty("location", fsLoc);
-		properties.setProperty("name", f.getParentFile().getName());
-		FileSystemImpl s = (FileSystemImpl)model.createModelObject("FileSystemFolder", properties);
+		properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
+		properties.setProperty(XModelObjectConstants.ATTR_NAME, f.getParentFile().getName());
+		FileSystemImpl s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
 		fs.addChild(s);
 		String pp = FilePathHelper.toPathPath(f.getName());
-		return model.getByPath("/" + pp);
+		return model.getByPath(XModelObjectConstants.SEPARATOR + pp);
 	}
 
 	public static String[] getJavaProjectSrcLocations(IProject project) {
@@ -551,7 +551,7 @@ public class EclipseResourceUtil {
 				String path = es[i].getPath().toString();
 
 				//First let's check if path is defined within Eclipse work space.
-				if(path.startsWith("/") && path.indexOf("/", 1) > 1) {
+				if(path.startsWith(XModelObjectConstants.SEPARATOR) && path.indexOf(XModelObjectConstants.SEPARATOR, 1) > 1) {
 					IResource findMember = ResourcesPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
 					if(findMember != null) {
 						s = findMember.getLocation().toString();
@@ -562,7 +562,7 @@ public class EclipseResourceUtil {
 				
 				//If search in Eclipse work space has failed, this is a useless attempt, but
 				//let keep it just in case (this is good old code that worked for a long while).
-				if(s == null && path.startsWith("/" + project.getName() + "/")) {
+				if(s == null && path.startsWith(XModelObjectConstants.SEPARATOR + project.getName() + XModelObjectConstants.SEPARATOR)) {
 					IResource findMember = project.findMember(es[i].getPath().removeFirstSegments(1));
 					if(findMember != null) {
 						s = findMember.getLocation().toString();
@@ -605,7 +605,7 @@ public class EclipseResourceUtil {
 			try {
 				String s = null;
 				String path = es[i].getPath().toString();
-				if(path.startsWith("/" + project.getName() + "/")) { //$NON-NLS-1$ //$NON-NLS-2$
+				if(path.startsWith(XModelObjectConstants.SEPARATOR + project.getName() + XModelObjectConstants.SEPARATOR)) { //$NON-NLS-1$ //$NON-NLS-2$
 					s = project.findMember(es[i].getPath().removeFirstSegments(1)).getLocation().toString();
 				} else if(new java.io.File(path).isFile()) {
 					s = path;
@@ -686,7 +686,7 @@ public class EclipseResourceUtil {
 		if(!relative.endsWith(".java")) return null;
 		relative = relative.substring(0, relative.length() - 5);
 		relative = relative.replace('\\', '/');
-		if(relative.startsWith("/")) relative = relative.substring(1);
+		if(relative.startsWith(XModelObjectConstants.SEPARATOR)) relative = relative.substring(1);
 		return relative.replace('/', '.');
 	}
 	
@@ -702,7 +702,7 @@ public class EclipseResourceUtil {
 			IResource r = project.getWorkspace().getRoot().findMember(p);
 			if(r == null || r.getLocation() == null) return false;
 			String output = r.getLocation().toString();
-			String f = output + "/" + className.replace('.', '/') + ".class";
+			String f = output + XModelObjectConstants.SEPARATOR + className.replace('.', '/') + ".class";
 			return new java.io.File(f).isFile();
 		} catch (JavaModelException t) {
 			ModelPlugin.getPluginLog().logError("Error checking class " + className, t);
@@ -816,10 +816,10 @@ public class EclipseResourceUtil {
 
 	public static URL getInstallURL(Bundle bundle) {
 		try {
-			return bundle == null ? null : FileLocator.resolve(bundle.getEntry("/"));
+			return bundle == null ? null : FileLocator.resolve(bundle.getEntry(XModelObjectConstants.SEPARATOR));
 		} catch (IOException e) {
 			//ignore and try to execute it in the other way
-			return bundle.getEntry("/");
+			return bundle.getEntry(XModelObjectConstants.SEPARATOR);
 		}
 	}
 

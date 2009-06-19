@@ -15,6 +15,7 @@ import java.util.Hashtable;
 import java.util.Set;
 import java.util.Vector;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 
 public class MetaValidator {
@@ -37,7 +38,7 @@ public class MetaValidator {
     }
 
     public static final String id(XModelObject object) {
-        return object.getAttributeValue("element type") + " " +
+        return object.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
                object.getModelEntity().getRenderer().getTitle(object);
     }
 
@@ -150,8 +151,8 @@ class EntitiesValidator {
         for (int i = 0; i < es.length; i++) {
             XModelObject[] as = es[i].getChildByPath("Attributes").getChildren();
             Vector<String> v = new Vector<String>();
-            for (int j = 0; j < as.length; j++) v.addElement(as[j].getAttributeValue("name"));
-            entities.put(es[i].getAttributeValue("name"), v);
+            for (int j = 0; j < as.length; j++) v.addElement(as[j].getAttributeValue(XModelObjectConstants.ATTR_NAME));
+            entities.put(es[i].getAttributeValue(XModelObjectConstants.ATTR_NAME), v);
         }
     }
 }
@@ -160,7 +161,7 @@ class ChildrenValidator {
     public void validate(XModelObject object) {
         XModelObject[] cs = object.getChildByPath("Children").getChildren();
         for (int i = 0; i < cs.length; i++) {
-            String c = cs[i].getAttributeValue("name");
+            String c = cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
             if(EntitiesValidator.entities.get(c) == null) {
                 MetaValidator.message("Error in " + MetaValidator.id(object) +
                              ": child " + c + " not found in the entity list.");
@@ -174,10 +175,10 @@ class AttributesValidator {
     public void validate(XModelObject object) {
         XModelObject[] as = object.getChildByPath("Attributes").getChildren();
         for (int i = 0; i < as.length; i++) {
-            String an = as[i].getAttributeValue("name");
+            String an = as[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
             MetaValidator.checkClass(as[i], "loader", "org.jboss.tools.common.meta.impl.adapters.XAdapter", false, null);
             XModelObject ed = as[i].getChildren("MetaAttributeEditor")[0];
-            String en = ed.getAttributeValue("name");
+            String en = ed.getAttributeValue(XModelObjectConstants.ATTR_NAME);
             if("GUI".equals(en)) continue;
             XModelObject mi = ed.getModel().getByPath("MetaModel/Mappings/AttributeEditor/" + en);
             if(mi == null) {

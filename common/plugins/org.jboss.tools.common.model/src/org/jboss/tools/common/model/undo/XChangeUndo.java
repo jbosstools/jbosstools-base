@@ -20,7 +20,7 @@ public class XChangeUndo extends XChangeSetUndo {
 
     protected String createDescription(XModelObject o) {
         return "'" + attr[0][0] + "' of " +
-               o.getAttributeValue("element type") + " " +
+               o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
                o.getModelEntity().getRenderer().getTitle(o);
     }
 

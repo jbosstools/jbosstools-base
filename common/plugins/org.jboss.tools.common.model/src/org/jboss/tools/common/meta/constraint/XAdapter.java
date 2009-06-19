@@ -12,6 +12,7 @@ package org.jboss.tools.common.meta.constraint;
 
 import org.w3c.dom.*;
 import org.jboss.tools.common.meta.impl.*;
+import org.jboss.tools.common.model.XModelObjectConstants;
 
 public class XAdapter extends XMetaElementImpl {
     protected XAttributeConstraint constraint = null;
@@ -55,7 +56,7 @@ public class XAdapter extends XMetaElementImpl {
     public void load(Element element) {
         setName(element.getAttribute(NAME));
         defaultvalue = element.getAttribute(DEFAULT_VALUE);
-        visibility = !"false".equals(element.getAttribute(VISIBLE));
+        visibility = !XModelObjectConstants.FALSE.equals(element.getAttribute(VISIBLE));
     }
 }
 

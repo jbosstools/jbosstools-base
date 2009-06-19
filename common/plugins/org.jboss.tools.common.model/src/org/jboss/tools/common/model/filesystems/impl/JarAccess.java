@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.util.FileUtil;
 
@@ -106,7 +107,7 @@ public class JarAccess {
 			while(en.hasMoreElements()) {
 					ZipEntry entry = (ZipEntry)en.nextElement();
 					String name = entry.getName();
-					if(name != null && !name.endsWith("/") && entry.getSize() > 0) {
+					if(name != null && !name.endsWith(XModelObjectConstants.SEPARATOR) && entry.getSize() > 0) {
 						fileEntries.put(name, Long.valueOf(entry.getSize()));
 					}
 					register(name);
@@ -144,13 +145,13 @@ public class JarAccess {
 		String[] parsed = parse(path);
 		check(parsed[0]);
 		HashSet<String> set = map.get(parsed[0]);
-		if (!"/".equals(parsed[1]))
+		if (!XModelObjectConstants.SEPARATOR.equals(parsed[1]))
 			set.add(parsed[1]);
 	}
 
 	private String[] parse(String path) {
 		String q = path;
-		if (path.endsWith("/"))
+		if (path.endsWith(XModelObjectConstants.SEPARATOR))
 			q = q.substring(0, path.length() - 1);
 		int i = q.lastIndexOf('/');
 		String root = (i < 0) ? "" : path.substring(0, i);
@@ -167,7 +168,7 @@ public class JarAccess {
 		if ("".equals(parsed[1]))
 			return;
 		HashSet<String> set = map.get(parsed[0]);
-		set.add(parsed[1] + "/");
+		set.add(parsed[1] + XModelObjectConstants.SEPARATOR);
 	}
 
 	public String[] getChildren(String path) {
@@ -325,9 +326,9 @@ class LFileObjectJarImpl implements LFileObject {
 		String[] r = access.getChildren(relpath);
 		String rp = getPath();
 		for (int i = 0; i < r.length; i++) {
-			if (r[i].endsWith("/"))
+			if (r[i].endsWith(XModelObjectConstants.SEPARATOR))
 				r[i] = r[i].substring(0, r[i].length() - 1);
-			r[i] = rp + "/" + r[i];
+			r[i] = rp + XModelObjectConstants.SEPARATOR + r[i];
 		}
 		return r;
 	}

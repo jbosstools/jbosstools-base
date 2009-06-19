@@ -62,7 +62,7 @@ public class FileSystemResourceTree implements XFilteredTree {
             while(st.hasMoreTokens()) entities.add(st.nextToken());
         }
         String jro = tc.getProperties().getProperty("java_roots_only");
-        if("true".equals(jro)) {
+        if(XModelObjectConstants.TRUE.equals(jro)) {
         	javaRootsOnly = true;
         }
     }
@@ -115,7 +115,7 @@ public class FileSystemResourceTree implements XFilteredTree {
 
     protected boolean accepts0(XModelObject o) {
         int type = o.getFileType();
-        if(type == XModelObject.FOLDER) return !"true".equals(o.get("overlapped"));
+        if(type == XModelObject.FOLDER) return !XModelObjectConstants.TRUE.equals(o.get("overlapped"));
         if(type != XModelObject.FILE) return false;
         String pathpart = o.getPathPart();
         String pp = pathpart.substring(pathpart.lastIndexOf('.') + 1);
@@ -131,8 +131,8 @@ public class FileSystemResourceTree implements XFilteredTree {
         SortedMap<String,XModelObject> t = new TreeMap<String,XModelObject>();
         for (int i = 0; i < fs.length; i++) {
         	if(javaRootsOnly) {
-        		if("FileSystemFolder".equals(fs[i].getModelEntity().getName()) 
-        			&& !fs[i].getAttributeValue("name").startsWith("src")) {
+        		if(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER.equals(fs[i].getModelEntity().getName()) 
+        			&& !fs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME).startsWith("src")) {
         			continue;
         		}
         	}
@@ -151,7 +151,7 @@ public class FileSystemResourceTree implements XFilteredTree {
 
     private XModelObject[] getChildrenInFileSystems(XModelObject object) {
         String path = getPath(object);
-        if(path.startsWith("/")) path = path.substring(1);
+        if(path.startsWith(XModelObjectConstants.SEPARATOR)) path = path.substring(1);
         XModelObject[] fs = getRoot().getChildren();
         SortedMap<String,XModelObject> t = new TreeMap<String,XModelObject>();
         for (int i = 0; i < fs.length; i++) {

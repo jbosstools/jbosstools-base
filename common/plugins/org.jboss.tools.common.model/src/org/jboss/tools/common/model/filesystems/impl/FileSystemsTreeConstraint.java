@@ -29,12 +29,12 @@ public class FileSystemsTreeConstraint implements XFilteredTreeConstraint {
             return (s == null || s.indexOf("hidden=yes") < 0);
         }
         if(object.getFileType() == XFileObject.FILE) {
-        	String ext = "." + object.getAttributeValue("extension") + ".";
+        	String ext = "." + object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION) + ".";
         	if(excludeExtensions.indexOf(ext) >= 0) return false;
-        	if(".rule-sets".equals(object.getAttributeValue("name"))) return false;        	
+        	if(".rule-sets".equals(object.getAttributeValue(XModelObjectConstants.ATTR_NAME))) return false;        	
         } else if(object.getFileType() == XFileObject.FOLDER) {
 			String[] ns = getHiddenFolderNames();
-			String n = object.get("NAME");
+			String n = object.get(XModelObjectConstants.XML_ATTR_NAME);
 			for (int i = 0; i < ns.length; i++) if(ns[i].equalsIgnoreCase(n)) return false;
         }
         return true;
@@ -42,13 +42,13 @@ public class FileSystemsTreeConstraint implements XFilteredTreeConstraint {
 
     public boolean isHidingAllChildren(XModelObject object) {
         if(object.getFileType() > XFileObject.NONE
-           && "true".equals(object.get("overlapped"))) return true;
+           && XModelObjectConstants.TRUE.equals(object.get("overlapped"))) return true;
 //        String entity = object.getModelEntity().getName();
         return false; ///entity.equals("FilePROPERTIES");
     }
 
     public boolean isHidingSomeChildren(XModelObject object) {
-        if(object.getModelEntity().getName().equals("FileSystems")) return true;
+        if(object.getModelEntity().getName().equals(FileSystemsHelper.FILE_SYSTEMS)) return true;
         if(object.getFileType() < XFileObject.FOLDER) return false;
         return true;
     }

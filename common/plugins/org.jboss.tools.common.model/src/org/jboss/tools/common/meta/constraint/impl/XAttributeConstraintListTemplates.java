@@ -12,6 +12,9 @@ package org.jboss.tools.common.meta.constraint.impl;
 
 import java.io.*;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
+import org.jboss.tools.common.model.plugin.ModelMessages;
+
 public class XAttributeConstraintListTemplates extends XAttributeConstraintList {
 
     public XAttributeConstraintListTemplates() {}
@@ -23,7 +26,7 @@ public class XAttributeConstraintListTemplates extends XAttributeConstraintList 
 
     protected void refresh() {
         values.clear();
-        String tr = System.getProperty("global.ECOM_HOME") + "/" + "Templates";
+        String tr = System.getProperty("global.ECOM_HOME") + XModelObjectConstants.SEPARATOR + "Templates";
         File f = new File(tr);
         File[] fs = f.listFiles();
         if(fs == null) return;
@@ -37,7 +40,7 @@ public class XAttributeConstraintListTemplates extends XAttributeConstraintList 
     }
     
     public String getError(String value) {
-        return (accepts(value)) ? null : getErrorById("CONSTRAINT_RED_HAT_TEMPLATE_NAME");
+        return (accepts(value)) ? null : ModelMessages.CONSTRAINT_RED_HAT_TEMPLATE_NAME;
     }
 
 }

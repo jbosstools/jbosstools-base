@@ -20,7 +20,7 @@ public class BodyLoader implements XObjectLoader {
 
     public void load(XModelObject object) {
         String body = XModelObjectLoaderUtil.getTempBody(object);
-        object.setAttributeValue("body", body);
+        object.setAttributeValue(XModelObjectConstants.ATTR_NAME_BODY, body);
     }
 
     public boolean update(XModelObject object) throws XModelException {
@@ -30,7 +30,7 @@ public class BodyLoader implements XObjectLoader {
 
     public boolean save(XModelObject object) {
         if(!object.isModified()) return true;
-        XModelObjectLoaderUtil.setTempBody(object, object.getAttributeValue("body"));
+        XModelObjectLoaderUtil.setTempBody(object, object.getAttributeValue(XModelObjectConstants.ATTR_NAME_BODY));
         return true;
     }
 }

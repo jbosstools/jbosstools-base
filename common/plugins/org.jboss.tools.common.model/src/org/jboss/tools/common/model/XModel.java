@@ -100,10 +100,10 @@ public interface XModel {
 	
 	/**
 	 * Returns model object by String path. The path contains parts
-	 * separated by "/". The root has empty string path. 
+	 * separated by XModelObjectConstants.SEPARATOR. The root has empty string path. 
 	 * For convenience, to find object in any file system (which is 
 	 * an immediate child of "FileSystems" sub-root), path may be 
-	 * started with "/". 
+	 * started with XModelObjectConstants.SEPARATOR. 
 	 * To get so-called "extra-root" which defines an auxiliary 
 	 * structure not connected to the structure of the main root object, 
 	 * path may be started with "root:".

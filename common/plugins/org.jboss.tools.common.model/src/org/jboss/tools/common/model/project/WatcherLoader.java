@@ -38,7 +38,7 @@ public class WatcherLoader implements XObjectLoader {
     	IProject p = EclipseResourceUtil.getProject(model.getRoot());
     	if(p == null) return false;
     	try {
-    		return "true".equals(p.getSessionProperty(LOCK));
+    		return XModelObjectConstants.TRUE.equals(p.getSessionProperty(LOCK));
     	} catch(CoreException e) {
     		//ignore
     		return false;

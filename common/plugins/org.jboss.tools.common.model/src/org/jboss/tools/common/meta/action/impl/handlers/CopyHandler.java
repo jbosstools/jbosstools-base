@@ -16,7 +16,6 @@ import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 
@@ -26,9 +25,6 @@ public class CopyHandler extends AbstractHandler {
 	
 	static {
 		modelTransfer = (Transfer)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.dnd.ModelTransfer");
-		if(modelTransfer == null) {
-			ModelPlugin.getPluginLog().logError("Model transfer class not found.");
-		}
 	}
 
     public CopyHandler() {}
@@ -36,7 +32,7 @@ public class CopyHandler extends AbstractHandler {
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
         object.getModel().getModelBuffer().clear();
         object.getModel().getModelBuffer().addSource(object);
-        if(p == null || !"true".equals(p.getProperty("isDrag"))) {
+        if(p == null || !XModelObjectConstants.TRUE.equals(p.getProperty("isDrag"))) {
         	setClipboard(object.getModel());
         }
     }
@@ -54,7 +50,7 @@ public class CopyHandler extends AbstractHandler {
         XModelBuffer buffer = object.getModel().getModelBuffer();
         buffer.clear();
         for (int i = 0; i < objects.length; i++) buffer.addSource(objects[i]);
-        if(p == null || !"true".equals(p.getProperty("isDrag"))) {
+        if(p == null || !XModelObjectConstants.TRUE.equals(p.getProperty("isDrag"))) {
         	setClipboard(object.getModel());
         }
     }

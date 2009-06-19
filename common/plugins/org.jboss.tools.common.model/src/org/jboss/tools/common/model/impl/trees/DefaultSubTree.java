@@ -39,7 +39,7 @@ public class DefaultSubTree extends DefaultSiftedTree {
 
     public String getValue(XModelObject object) {
         if(object == root) return "";
-        String sr = root.getPath() + "/";
+        String sr = root.getPath() + XModelObjectConstants.SEPARATOR;
         String so = object.getPath();
         return (so.startsWith(sr)) ? so.substring(sr.length()) : so;
     }

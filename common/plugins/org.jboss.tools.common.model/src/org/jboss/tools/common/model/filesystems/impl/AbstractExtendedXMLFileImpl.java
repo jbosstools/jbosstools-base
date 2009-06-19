@@ -19,6 +19,7 @@ import org.w3c.dom.Element;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.engines.impl.EnginesLoader;
+import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.filesystems.BodySource;
 import org.jboss.tools.common.model.filesystems.impl.AbstractXMLFileImpl;
 import org.jboss.tools.common.model.loaders.*;
@@ -45,7 +46,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 
     public String get(String name) {
         if(name.equals("_hasErrors_")) {
-            return super.get("isIncorrect");
+            return super.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT);
         }
         if (getParent() != null && ns.indexOf("." + name + ".") < 0) {
        		if(loadAttributeSeparately(name)) return super.get(name);
@@ -92,7 +93,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     }
     
     public boolean isObjectEditable() {
-    	return super.isObjectEditable() && (!"yes".equals(get("_hasErrors_")));
+    	return super.isObjectEditable() && (!XModelObjectConstants.YES.equals(get("_hasErrors_")));
     }
     
     protected void loadChildren() {
@@ -122,7 +123,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     	if(!isActive()) return;
     	XModelObject s = getParent();
     	while(s != null && s.getFileType() != XModelObject.SYSTEM) s = s.getParent();
-    	if(s == null || !s.getModelEntity().getName().equals("FileSystemFolder")) {
+    	if(s == null || !s.getModelEntity().getName().equals(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER)) {
     		return;
     	}
     	/*Runnable r = new Runnable() {
@@ -138,7 +139,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     public void set(String name, String value) {
         super.set(name, value);
         if("incorrectBody".equals(name) && value.length() > 0) {
-            set("isIncorrect", "yes");
+            set(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
 //            setErrors(value, hasDTD(), !hasDTD()); //never validate dtd
             int resolution = EntityXMLRegistration.getInstance().resolve(getModelEntity());
             if(EntityXMLRegistration.isSystemId(value)) resolution = EntityXMLRegistration.UNRESOLVED;
@@ -147,7 +148,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     }
 
 	public String getAsText() {
-		return get("body");
+		return get(XModelObjectConstants.ATTR_NAME_BODY);
 	}
 
 	public void edit(String body) throws XModelException {
@@ -155,14 +156,14 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 	}
 	
 	protected boolean isForceLoadOn() {
-		return "true".equals(get("forceLoad"));
+		return XModelObjectConstants.TRUE.equals(get("forceLoad"));
 	}
 
     public void edit(String body, boolean update) throws XModelException {
         if(body == null) return;
         if(!isForceLoadOn() && body.equals(getAsText())) return;
 
-		String entity = getModel().getEntityRecognizer().getEntityName(getAttributeValue("extension"), body);
+		String entity = getModel().getEntityRecognizer().getEntityName(getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION), body);
 		if(!entity.equals(getModelEntity().getName())) {
 			String[] errors = (body.length() == 0) ? null : XMLUtil.getXMLErrors(new java.io.StringReader(body), false);
 			if(errors == null || errors.length == 0) errors = new String[]{"Doctype has been changed. Please save file for the change to take effect in object model.    :0:0"};
@@ -173,7 +174,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 			return;			
 		}
 
-		boolean errors1 = ("yes".equals(get("_hasErrors_")));
+		boolean errors1 = (XModelObjectConstants.YES.equals(get("_hasErrors_")));
 		AbstractExtendedXMLFileImpl f = getUpdatedFile(body, true);
         if(f == null) return;
         f.getChildren();
@@ -187,7 +188,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 			boolean fire = this.loaderError == null && f.loaderError != null;
 			this.loaderError = f.loaderError;
 			super.set("incorrectBody", f.get("incorrectBody"));
-			super.set("isIncorrect", "yes");
+			super.set(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
 			if(f.get("errors") != null) super.set("errors", f.get("errors"));
 
 			if(fire) changeTimeStamp();
@@ -241,7 +242,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 	}
 
     private AbstractExtendedXMLFileImpl getUpdatedFile(String body, boolean fire) {
-        boolean errors1 = ("yes".equals(get("_hasErrors_")));
+        boolean errors1 = (XModelObjectConstants.YES.equals(get("_hasErrors_")));
         loaderError = null;
 //      setErrors(body, hasDTD(), !hasDTD()); //never validate dtd
         int resolution = EntityXMLRegistration.getInstance().resolve(getModelEntity());
@@ -257,8 +258,8 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
             }
         }
         AbstractExtendedXMLFileImpl f = (AbstractExtendedXMLFileImpl)getModel().createModelObject(getModelEntity().getName(), null);
-        f.setAttributeValue("name", getAttributeValue("name"));
-        f.setAttributeValue("extension", getAttributeValue("extension"));
+        f.setAttributeValue(XModelObjectConstants.ATTR_NAME, getAttributeValue(XModelObjectConstants.ATTR_NAME));
+        f.setAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION, getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION));
         if(errors2) {
             f.set("incorrectBody", body);
             f.set("errors", super.get("errors"));
@@ -268,9 +269,12 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     }
     
     protected final void merge(XModelObject update, boolean fire) throws XModelException {
-    	if(!"yes".equals(update.get("isIncorrect"))) {
+    	if(fire) {
+    		fireObjectChanged(XModelTreeEvent.BEFORE_MERGE);
+    	}
+    	if(!XModelObjectConstants.YES.equals(update.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT))) {
     		super.set("incorrectBody", "");
-			super.set("isIncorrect","no");
+			super.set(XModelObjectConstants.ATTR_NAME_IS_INCORRECT,XModelObjectConstants.NO);
 			super.set("errors", "");
 			loaderError = null;
     	}
@@ -323,6 +327,9 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 		}
 		if(fire && doFire) ((XModelImpl)getModel()).fireStructureChanged(this);
 		mergeAttributes(update, fire);
+    	if(fire) {
+    		fireObjectChanged(XModelTreeEvent.AFTER_MERGE);
+    	}
     }
      
 	static String NO_MERGE_ATTRIBUTES = ".name.extension._lateload.isIncorrect.incorrectBody.expand.";

@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.search.impl;
 
 import java.util.*;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.*;
@@ -48,7 +49,7 @@ public class SearchDefaultHandler extends AbstractHandler {
         XModelObject sc = findOrCreateDefaultSearch(object, objects);
         ServiceDialog d = model.getService();
         XEntityData ed = getSearchEntityData(sc);
-        int i = d.showDialog("Search", getDialogTitle(objects), new String[]{"Ok", "Cancel"}, ed, ServiceDialog.QUESTION);
+        int i = d.showDialog("Search", getDialogTitle(objects), new String[]{ModelMessages.OK, ModelMessages.Cancel}, ed, ServiceDialog.QUESTION);
         if(i != 0) return null;
         Properties p = DefaultCreateHandler.extractProperties(ed);
         Enumeration en = p.keys();
@@ -73,7 +74,7 @@ public class SearchDefaultHandler extends AbstractHandler {
             sb.append(objects[i].getPath());
         }
         if(ds == null) {
-            p.setProperty("name", "Default");
+            p.setProperty(XModelObjectConstants.ATTR_NAME, "Default");
             p.setProperty("root", sb.toString());
             ds = XModelObjectLoaderUtil.createValidObject(model, "SearchCommand", p);
             sr.addChild(ds);
@@ -87,7 +88,7 @@ public class SearchDefaultHandler extends AbstractHandler {
             v = match.getChildren(CONSTRAINT_ENTITY)[0];
         } else {
             p.clear();
-            p.setProperty("name", "value constraint");
+            p.setProperty(XModelObjectConstants.ATTR_NAME, "value constraint");
             v = XModelObjectLoaderUtil.createValidObject(model, CONSTRAINT_ENTITY, p);
             match.addChild(v);
             match.setModified(true);
@@ -104,10 +105,10 @@ public class SearchDefaultHandler extends AbstractHandler {
 
     private XEntityData getSearchEntityData(XModelObject sc) {
         XModelObject c = sc.getChildByPath("Match/value constraint");
-        String[][] ds = new String[][]{{"SearchValue", "yes"},
-                                       {"text to find", "yes"},
-                                       {"property name", "no"},
-                                       {"ignore case", "no"}};
+        String[][] ds = new String[][]{{"SearchValue", XModelObjectConstants.YES},
+                                       {"text to find", XModelObjectConstants.YES},
+                                       {"property name", XModelObjectConstants.NO},
+                                       {"ignore case", XModelObjectConstants.NO}};
         XEntityData d = XEntityDataImpl.create(ds);
         XAttributeData[] as = d.getAttributeData();
         for (int i = 0; i < as.length; i++) {

@@ -58,8 +58,8 @@ public class SimpleWebFileLoader implements SerializingLoader {
         loadNamespace(element, object);
 ////        String postfix = (namespace == null) ? "" : ":" + namespace;
         String postfix = "";
-        element.setAttribute("NAME" + postfix, object.getAttributeValue("name"));
-        element.setAttribute("EXTENSION" + postfix, object.getAttributeValue("extension"));
+        element.setAttribute(XModelObjectConstants.XML_ATTR_NAME + postfix, object.getAttributeValue(XModelObjectConstants.ATTR_NAME));
+        element.setAttribute("EXTENSION" + postfix, object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION));
 
         util.load(element, object);
         String loadingError = util.getError();
@@ -71,7 +71,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
 		
 		((AbstractXMLFileImpl)object).setLoaderError(loadingError);
 		if(!((AbstractXMLFileImpl)object).isIncorrect() && loadingError != null) {
-			object.setAttributeValue("isIncorrect", "yes");
+			object.setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
 			object.setAttributeValue("incorrectBody", body);
 			object.set("actualBodyTimeStamp", "" + object.getTimeStamp());
 		}
@@ -83,13 +83,13 @@ public class SimpleWebFileLoader implements SerializingLoader {
         String[] errors = 
 			XMLUtil.getXMLErrors(new StringReader(body), resolution == EntityXMLRegistration.DTD, resolution == EntityXMLRegistration.SCHEMA);
         if(errors != null && errors.length > 0) {
-            object.setAttributeValue("isIncorrect", "yes");
+            object.setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
             object.set("correctBody", "");
             object.setAttributeValue("incorrectBody", body);
 			object.set("actualBodyTimeStamp", "-1");
 //            return;
         } else {
-            object.setAttributeValue("isIncorrect", "no");
+            object.setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.NO);
 			object.set("correctBody", body);
 			object.set("actualBodyTimeStamp", "0");
             object.setAttributeValue("incorrectBody", "");
@@ -156,11 +156,11 @@ public class SimpleWebFileLoader implements SerializingLoader {
 
     public boolean save(XModelObject object) {
         if (!object.isModified()) return true;
-        if("yes".equals(object.get("isIncorrect"))) {
+        if(XModelObjectConstants.YES.equals(object.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT))) {
             XModelObjectLoaderUtil.setTempBody(object, object.get("incorrectBody"));
             return true;
         }
-        String main = object.get("body");
+        String main = object.get(XModelObjectConstants.ATTR_NAME_BODY);
         if(main == null) return false;
 		XModelObjectLoaderUtil.setTempBody(object, main);
         return true;
@@ -199,7 +199,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
             util.saveChildren(element, object);
             util.saveFinalComment(element, object);
 ////        String postfix = (namespace == null) ? "" : ":" + namespace;
-            element.removeAttribute("NAME");
+            element.removeAttribute(XModelObjectConstants.XML_ATTR_NAME);
             element.removeAttribute("EXTENSION");
             return serialize(element, object);
         } catch (IOException e) {
@@ -230,8 +230,8 @@ public class SimpleWebFileLoader implements SerializingLoader {
 			if("UTF-8".equals(encoding)) return null;
 			ServiceDialog d = object.getModel().getService();
 			XEntityData data = XEntityDataImpl.create(new String[][]{
-				{object.getModelEntity().getName(), "yes"},
-				{XModelObjectConstants.ATTR_NAME_ENCODING, "no"}
+				{object.getModelEntity().getName(), XModelObjectConstants.YES},
+				{XModelObjectConstants.ATTR_NAME_ENCODING, XModelObjectConstants.NO}
 			});
 			data.setValue(XModelObjectConstants.ATTR_NAME_ENCODING, "UTF-8");
 			String message = "Encoding " + encoding + " is not supported. Please enter correct value.";

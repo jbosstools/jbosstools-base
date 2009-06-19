@@ -18,7 +18,9 @@ import org.eclipse.ui.actions.DeleteResourceAction;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class DeleteProjectHandler extends AbstractHandler
 {
@@ -29,14 +31,14 @@ public class DeleteProjectHandler extends AbstractHandler
 	 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException 
 	{
-		IProject project = (IProject)object.getModel().getProperties().get("project");
+		IProject project = EclipseResourceUtil.getProject(object);
 		if (project != null)
 		{
 			DeleteResourceAction deleteAction = new DeleteResourceAction(ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell());
 			deleteAction.selectionChanged(new StructuredSelection(project));
 			deleteAction.run();
 			if(!project.exists()) {
-				XActionInvoker.invoke("Registration.UnregisterInServerXML", object.getModel().getByPath("FileSystems"), null);
+				XActionInvoker.invoke("Registration.UnregisterInServerXML", FileSystemsHelper.getFileSystems(object.getModel()), null);
 			}
 		}
 	}

@@ -34,7 +34,7 @@ public class DiscardFileHandler extends AbstractHandler {
 			object.setModified(false);
 			XModelObjectLoaderUtil.updateModifiedOnSave(object);
 		}
-		if(p != null) p.setProperty("done", "true");
+		if(p != null) p.setProperty("done", XModelObjectConstants.TRUE);
 	}
 	
 	public boolean getSignificantFlag(XModelObject object) {

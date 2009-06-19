@@ -16,6 +16,7 @@ import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.XChild;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.XModelConstants;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.options.SharableConstants;
 import org.jboss.tools.common.model.options.SharableElement;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -65,13 +66,13 @@ public class SharableLoaderImpl implements SharableConstants {
         if(en == null) return;
         XModelEntity ent = sharable.getModel().getMetaData().getEntity(en);
         if(ent == null) return;
-        boolean hasName = (ent.getAttribute("name") != null);
+        boolean hasName = (ent.getAttribute(XModelObjectConstants.ATTR_NAME) != null);
         String name = (!hasName) ? element.getNodeName()
-                      : element.getAttribute("NAME");
+                      : element.getAttribute(XModelObjectConstants.XML_ATTR_NAME);
         SharableElement sc = sharable.findSharableChild(name);
         if(sc == null) {
             Properties p = new Properties();
-            if(hasName) p.setProperty("name", name);
+            if(hasName) p.setProperty(XModelObjectConstants.ATTR_NAME, name);
             sc = (SharableElement)sharable.getModel().createModelObject(en, p);
             sc.setScopeExists(PROJECT, false);
             sharable.addChild(sc);

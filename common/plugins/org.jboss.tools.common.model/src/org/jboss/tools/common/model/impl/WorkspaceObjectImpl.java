@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.impl;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.util.XModelObjectUtil;
 
 public class WorkspaceObjectImpl extends RegularObjectImpl {
@@ -18,7 +19,7 @@ public class WorkspaceObjectImpl extends RegularObjectImpl {
 	public WorkspaceObjectImpl() {}
 
     public String getPresentationString() {
-        return XModelObjectUtil.getExpandedValue(this, "name", null);
+        return XModelObjectUtil.getExpandedValue(this, XModelObjectConstants.ATTR_NAME, null);
     }
 
 }

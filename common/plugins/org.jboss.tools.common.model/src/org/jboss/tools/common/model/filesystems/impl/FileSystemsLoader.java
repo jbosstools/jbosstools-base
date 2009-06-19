@@ -91,10 +91,10 @@ public class FileSystemsLoader extends URLRootLoader {
 		
 		XModelObject[] os = object.getChildren();
 		for (int i = 0; i < os.length; i++) {
-			String s = os[i].getAttributeValue("location");
+			String s = os[i].getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION);
 			if(s == null || !s.startsWith(XModelConstants.WORKSPACE_OLD_REF)) continue;
 			s = XModelConstants.WORKSPACE_REF + s.substring(XModelConstants.WORKSPACE_OLD_REF.length());
-			os[i].setAttributeValue("location", s);
+			os[i].setAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION, s);
 //			System.out.println("Migrated " + s);
 		}
 		
@@ -114,7 +114,7 @@ public class FileSystemsLoader extends URLRootLoader {
 	}
 
     public String fileroot(XModelObject object) {
-        return XModelConstants.getWorkspace(object.getModel()) + "/";
+        return XModelConstants.getWorkspace(object.getModel()) + XModelObjectConstants.SEPARATOR;
     }
 
     protected String fileName(XModelObject object) {
@@ -140,7 +140,7 @@ public class FileSystemsLoader extends URLRootLoader {
     private String getEclipseFileName(XModelObject object, boolean load) {
 		String project = object.getModel().getProperties().getProperty(IModelNature.ECLIPSE_PROJECT);
 		if(project == null) return null;
-		String fn = project + "/" + IModelNature.PROJECT_FILE;
+		String fn = project + XModelObjectConstants.SEPARATOR + IModelNature.PROJECT_FILE;
 		if(!load || new File(fn).exists()) return fn;
 		return null;
     }
@@ -158,7 +158,7 @@ public class FileSystemsLoader extends URLRootLoader {
     	if(WatcherLoader.isLocked(object.getModel())) {
     		return;
     	}
-    	IProject project = (IProject)object.getModel().getProperties().get("project");
+    	IProject project = EclipseResourceUtil.getProject(object);
     	if(project == null) return;
     	XModelObject lib = validateLib(object);
     	if(lib == null) {
@@ -201,17 +201,17 @@ public class FileSystemsLoader extends URLRootLoader {
 				fss.remove(o);
 			} else {
 				o = object.getModel().createModelObject("FileSystemJar", null); //$NON-NLS-1$
-				o.setAttributeValue("name", jsname); //$NON-NLS-1$
-				o.setAttributeValue("location", path); //$NON-NLS-1$
-				o.set(IS_ADDED_TO_CLASSPATH, "true"); //$NON-NLS-1$
+				o.setAttributeValue(XModelObjectConstants.ATTR_NAME, jsname); //$NON-NLS-1$
+				o.setAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION, path); //$NON-NLS-1$
+				o.set(IS_ADDED_TO_CLASSPATH, XModelObjectConstants.TRUE); //$NON-NLS-1$
 				object.addChild(o);
 //				object.setModified(true);
 			}			
 		}
 		
 		for (XModelObject o: fss) {
-			String path = XModelObjectUtil.expand(o.getAttributeValue("location"), o.getModel(), null); //$NON-NLS-1$
-			if("true".equals(o.get(FileSystemsLoader.IS_ADDED_TO_CLASSPATH))) { //$NON-NLS-1$
+			String path = XModelObjectUtil.expand(o.getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION), o.getModel(), null); //$NON-NLS-1$
+			if(XModelObjectConstants.TRUE.equals(o.get(FileSystemsLoader.IS_ADDED_TO_CLASSPATH))) { //$NON-NLS-1$
 				o.removeFromParent(); 
 			} else if(!new File(path).exists()) {
 				o.removeFromParent();
@@ -227,9 +227,9 @@ public class FileSystemsLoader extends URLRootLoader {
     		if(wi == null) return null;
     		XModelObject lb = wi.getChildByPath("lib");
     		if(lb == null) return null;
-    		lib = wi.getModel().createModelObject("FileSystemFolder", null);
-    		lib.setAttributeValue("name", "lib");
-    		lib.setAttributeValue("location", wi.getAttributeValue("location") + "/lib");
+    		lib = wi.getModel().createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, null);
+    		lib.setAttributeValue(XModelObjectConstants.ATTR_NAME, "lib");
+    		lib.setAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION, wi.getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION) + "/lib");
     		object.addChild(lib);
     		object.setModified(true);
     	}
@@ -254,10 +254,10 @@ public class FileSystemsLoader extends URLRootLoader {
 			if(path == null) continue;
 			paths.add(path);
 		}
-    	XModelObject[] cs = object.getChildren("FileSystemFolder");
+    	XModelObject[] cs = object.getChildren(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER);
     	for (int i = 0; i < cs.length; i++) {
-    		if(cs[i].getAttributeValue("name").startsWith("src")) {
-    			String loc = cs[i].getAttributeValue("location");
+    		if(cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME).startsWith("src")) {
+    			String loc = cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION);
     			if(!paths.contains(loc)) {
     				object.removeChild(cs[i]);
     			} else {
@@ -268,9 +268,9 @@ public class FileSystemsLoader extends URLRootLoader {
 		for (String path : paths) {
 			String n = getNextSrcName(object);
 			Properties properties = new Properties();
-			properties.setProperty("location", path);
-			properties.setProperty("name", n);
-			FileSystemImpl s = (FileSystemImpl)object.getModel().createModelObject("FileSystemFolder", properties);
+			properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, path);
+			properties.setProperty(XModelObjectConstants.ATTR_NAME, n);
+			FileSystemImpl s = (FileSystemImpl)object.getModel().createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
 			object.addChild(s);
 		}
     }
@@ -346,7 +346,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 		String project = p.getProperty(IModelNature.ECLIPSE_PROJECT);
 		String workspace = p.getProperty(XModelConstants.WORKSPACE);
 		if(project == null) return;
-		String relative = workspace.startsWith(project + "/") ? 
+		String relative = workspace.startsWith(project + XModelObjectConstants.SEPARATOR) ? 
 		    "." + workspace.substring(project.length()) : workspace;
 		element.setAttribute("workspace-home", relative);
 	}
@@ -357,7 +357,7 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 		oldAttributes.put("application-name", "APPLICATION_NAME");
 		oldAttributes.put("workspace-home", "WORKSPACE_HOME");
 		oldAttributes.put("info", "INFO");
-		oldAttributes.put("location", "LOCATION");
+		oldAttributes.put(XModelObjectConstants.ATTR_NAME_LOCATION, "LOCATION");
 		oldAttributes.put("model-path", "MODEL_PATH");
 		oldAttributes.put("root", "ROOT");
 		oldAttributes.put("web-root", "root");

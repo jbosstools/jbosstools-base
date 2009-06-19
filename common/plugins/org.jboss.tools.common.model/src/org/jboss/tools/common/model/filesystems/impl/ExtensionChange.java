@@ -17,7 +17,9 @@ import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
 import org.jboss.tools.common.model.undo.XTransactionUndo;
 import org.jboss.tools.common.model.undo.XUndoManager;
@@ -44,7 +46,7 @@ public class ExtensionChange {
         String body = __body();
         if(body == null) return false;
         if("FileAny".equals(entity)) {
-        	if("FileAnyLong".equals(oldEntity)) return false;
+        	if(XModelObjectConstants.ENT_FILE_ANY_LONG.equals(oldEntity)) return false;
             if(FileUtil.isText(body)) entity = "FileTXT";
             else return false;
         } else if(entity == null) {
@@ -54,12 +56,12 @@ public class ExtensionChange {
         if(file.getModelEntity().getName().equals(entity)) return false;
         XModelObject o = createFileObject(entity, body);
         if(o == null) return false;
-        if(o.getModelEntity().getAttribute("_file") != null &&
-        	file.getModelEntity().getAttribute("_file") != null) {
-        	o.set("_file", file.get("_file"));
+        if(o.getModelEntity().getAttribute(XModelObjectConstants.ATTR_NAME__FILE) != null &&
+        	file.getModelEntity().getAttribute(XModelObjectConstants.ATTR_NAME__FILE) != null) {
+        	o.set(XModelObjectConstants.ATTR_NAME__FILE, file.get(XModelObjectConstants.ATTR_NAME__FILE));
         }
         XUndoManager undo = model.getUndoManager();
-        String d = "Change extension " + file.getParent().getAttributeValue("name");
+        String d = "Change extension " + file.getParent().getAttributeValue(XModelObjectConstants.ATTR_NAME);
         XTransactionUndo u = new XTransactionUndo(d, XTransactionUndo.EDIT);
         undo.addUndoable(u);
         try {
@@ -81,27 +83,27 @@ public class ExtensionChange {
             file.setModified(true);
             loader.save(file);
             return XModelObjectLoaderUtil.getTempBody(file);
-        } else if(file.getModelEntity().getAttribute("_file") != null) {
-            String sfn = file.get("_file");
+        } else if(file.getModelEntity().getAttribute(XModelObjectConstants.ATTR_NAME__FILE) != null) {
+            String sfn = file.get(XModelObjectConstants.ATTR_NAME__FILE);
             if(sfn.length() == 0) return null;
             File sf = new File(sfn);
             return (sf.isFile()) ? FileUtil.readFile(sf) : null;
         } else {
-            return file.getAttributeValue("body");
+            return file.getAttributeValue(XModelObjectConstants.ATTR_NAME_BODY);
         }
     }
 
     private XModelObject createFileObject(String entity, String body) {
         Properties p = new Properties();
-        p.setProperty("name", file.getAttributeValue("name"));
-        p.setProperty("extension", extension);
+        p.setProperty(XModelObjectConstants.ATTR_NAME, file.getAttributeValue(XModelObjectConstants.ATTR_NAME));
+        p.setProperty(XModelObjectConstants.ATTR_NAME_EXTENSION, extension);
         XModelObject c = file.getModel().createModelObject(entity, p);
         XObjectLoader loader = XModelObjectLoaderUtil.getObjectLoader(c);
         if(loader != null) {
             XModelObjectLoaderUtil.setTempBody(c, body);
             loader.load(c);
         } else {
-            c.setAttributeValue("body", body);
+            c.setAttributeValue(XModelObjectConstants.ATTR_NAME_BODY, body);
         }
         return c;
     } 

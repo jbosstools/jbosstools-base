@@ -18,6 +18,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.commands.ICommandImageService;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.osgi.framework.Bundle;
 
@@ -25,7 +26,7 @@ public class ModelImages {
 	private static ModelImages instance;
 	
 	static {
-		instance = new ModelImages(ModelPlugin.getDefault().getBundle().getEntry("/"));
+		instance = new ModelImages(ModelPlugin.getDefault().getBundle().getEntry(XModelObjectConstants.SEPARATOR));
 	}
 
 	public static Image getImage(String key) {
@@ -56,7 +57,7 @@ public class ModelImages {
 			key = key.substring(i + 1);
 			Bundle bundle = Platform.getBundle(plugin);
 			if(bundle != null) {
-				url = bundle.getEntry("/");
+				url = bundle.getEntry(XModelObjectConstants.SEPARATOR);
 			}
 		}
 		try {

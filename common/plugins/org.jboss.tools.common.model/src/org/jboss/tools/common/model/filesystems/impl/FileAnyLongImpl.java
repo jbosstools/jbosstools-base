@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.util.FileUtil;
 
@@ -46,7 +47,7 @@ public class FileAnyLongImpl extends FileAnyImpl {
 	}
 	
 	private File _getFile() {
-		String f = get("_file");
+		String f = get(XModelObjectConstants.ATTR_NAME__FILE);
 		return (f == null) ? null : new File(f);
 	}
 

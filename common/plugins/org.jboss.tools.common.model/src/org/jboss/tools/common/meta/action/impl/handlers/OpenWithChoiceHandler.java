@@ -15,6 +15,7 @@ import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 
@@ -33,35 +34,35 @@ public class OpenWithChoiceHandler extends AbstractHandler {
         if(!OpenWithExternalHandler.checkSave(displayName, object)) return;
         ServiceDialog d = object.getModel().getService();
         String ext = OpenWithHelper.getLogicalExtension(object, action);
-        XAttributeData a1 = HUtil.find(data, 0, "name");
+        XAttributeData a1 = HUtil.find(data, 0, XModelObjectConstants.ATTR_NAME);
         XAttributeData a2 = HUtil.find(data, 0, "default");
         XModelObject o = OpenWithHelper.getEditorObject(object.getModel(), ext);
         String oldname = null;
         if(o != null) {
-            oldname = o.get("NAME");
+            oldname = o.get(XModelObjectConstants.XML_ATTR_NAME);
             a1.setValue(oldname);
-            a2.setValue("yes");
+            a2.setValue(XModelObjectConstants.YES);
         } else {
-            a2.setValue("no");
+            a2.setValue(XModelObjectConstants.NO);
         }
-        int i = d.showDialog("Open With", "Select external program", new String[]{"Ok", "Cancel"}, data[0], ServiceDialog.QUESTION);
+        int i = d.showDialog("Open With", "Select external program", new String[]{ModelMessages.OK, ModelMessages.Cancel}, data[0], ServiceDialog.QUESTION);
         if(i != 0) return;
         DefaultCreateHandler.extractProperties(data[0]);
-        String en = HUtil.getValue(data, 0, "name");
-        boolean def = "yes".equals(HUtil.getValue(data, 0, "default"));
+        String en = HUtil.getValue(data, 0, XModelObjectConstants.ATTR_NAME);
+        boolean def = XModelObjectConstants.YES.equals(HUtil.getValue(data, 0, "default"));
         if(def && !en.equals(oldname)) {
             changeDefaultEditor(object.getModel(), ext, en);
         } else if(!def && en.equals(oldname)) {
             removeDefaultEditor(object.getModel(), ext);
         }
-        XModelObject editor = object.getModel().getByPath(OpenWithHelper.EDITORS + "/" + en);
+        XModelObject editor = object.getModel().getByPath(OpenWithHelper.EDITORS + XModelObjectConstants.SEPARATOR + en);
         String f = OpenWithHelper.getFileName(object);
         OpenWithExternalHandler.start(displayName, f, editor);
     }
 
     protected boolean check(XModelObject object) {
         String[] es = OpenWithHelper.getEditorList(object.getModel());
-        HUtil.hackAttributeConstraintList(data, 0, "name", es);
+        HUtil.hackAttributeConstraintList(data, 0, XModelObjectConstants.ATTR_NAME, es);
         return es.length > 0;
     }
 

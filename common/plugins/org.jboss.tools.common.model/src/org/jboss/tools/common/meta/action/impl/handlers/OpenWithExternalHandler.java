@@ -16,6 +16,7 @@ import java.util.*;
 import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.model.engines.impl.XProcess;
@@ -51,7 +52,7 @@ public class OpenWithExternalHandler extends AbstractHandler {
         ServiceDialog d = object.getModel().getService();
         String mes = DefaultCreateHandler.title(object, true) + " is modified.\n" +
                      "Do you want to save it on disk before launching the external program?";
-        int i = d.showDialog(actionname, mes, new String[]{"Yes", "No", "Cancel"}, null, ServiceDialog.QUESTION);
+        int i = d.showDialog(actionname, mes, new String[]{ModelMessages.Yes, ModelMessages.No, ModelMessages.Cancel}, null, ServiceDialog.QUESTION);
         if(i == 0) {
             ((FolderImpl)object.getParent()).saveChild(object);
             return !object.isModified();
@@ -114,7 +115,7 @@ class OWEProcess extends XProcess {
     protected void buildCommandLine(ArrayList<String> l) {
         String program = o.getAttributeValue("path");
         l.add(program);
-        if("Internet Browser".equals(o.getAttributeValue("name")) && !isUrl) {
+        if("Internet Browser".equals(o.getAttributeValue(XModelObjectConstants.ATTR_NAME)) && !isUrl) {
             try {
                 java.net.URL u = new File(file).toURL();
                 file = u.getProtocol() + "://" + u.getFile();

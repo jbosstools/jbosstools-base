@@ -22,11 +22,11 @@ public class MountFolderHandler extends AbstractHandler {
     public MountFolderHandler() {}
 
     public boolean isEnabled(XModelObject object) {
-        if(object == null || "true".equals(object.get("overlapped"))) return false;
+        if(object == null || XModelObjectConstants.TRUE.equals(object.get("overlapped"))) return false;
         String entity = object.getModelEntity().getName();
         if("FileFolder".equals(entity)) return true;
         if(object.getFileType() == XFileObject.FILE &&
-           "jar".equals(object.getAttributeValue("extension")) &&
+           "jar".equals(object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION)) &&
            isInFileFolderSystem(object)) return true;
         return false;
     }
@@ -39,8 +39,8 @@ public class MountFolderHandler extends AbstractHandler {
         String rpath = XModelObjectLoaderUtil.getResourcePath(object);
         String fspath = path.substring(0, path.length() - rpath.length());
         XModelObject fso = object.getModel().getByPath(fspath);
-        String location = fso.getAttributeValue("location") + rpath;
-        p.setProperty("location", location);
+        String location = fso.getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION) + rpath;
+        p.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, location);
         XModelObject c = h.mount(fso.getParent(), p, entity);
         c.setModified(false);
         FindObjectHelper.findModelObject(c, 0);
@@ -48,7 +48,7 @@ public class MountFolderHandler extends AbstractHandler {
 
     private boolean isInFileFolderSystem(XModelObject o) {
         while(o != null && o.getFileType() != XFileObject.SYSTEM) o = o.getParent();
-        return o != null && o.getModelEntity().getName().equals("FileSystemFolder");
+        return o != null && o.getModelEntity().getName().equals(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER);
     }
 
 }

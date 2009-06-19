@@ -38,7 +38,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
     }
 
     public String getPresentationString() {
-    	IProject p = (IProject)getModel().getProperties().get("project");
+    	IProject p = EclipseResourceUtil.getProject(this);
 		String app = getAttributeValue("application name");
     	if(p != null && !app.equals(p.getName())) {
     		app = app.length() > 0 ? p.getName() + " (" + app + ")" : p.getName();
@@ -118,7 +118,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
         XModelObject[] cs = getChildren();
         String[] paths = new String[cs.length];
         for (int i = 0; i < cs.length; i++) {
-            String path = XModelObjectUtil.getExpandedValue(cs[i], "location", null);
+            String path = XModelObjectUtil.getExpandedValue(cs[i], XModelObjectConstants.ATTR_NAME_LOCATION, null);
             try {
                 File f = new File(path);
                 path = f.getCanonicalPath().replace('\\', '/');
@@ -146,7 +146,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
             String path = (String)it.next();
             if(_overlapped.contains(path)) {
 				XModelObject c = getChildByPath(path);
-				if(c == null || "true".equals(c.get("overlapped"))) {
+				if(c == null || XModelObjectConstants.TRUE.equals(c.get("overlapped"))) {
 					_overlapped.remove(path);
 				}
             } else {
@@ -165,7 +165,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
             overlapped.add(path);
             XModelObject c = getChildByPath(path);
             if(c == null) continue;
-            c.set("overlapped", "true");
+            c.set("overlapped", XModelObjectConstants.TRUE);
             c.set("overlappedSystem", "" + overlappedSystems.get(path));
             c = c.getParent();
             if(c != null) fire.add(c);
@@ -224,7 +224,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 			return (d.length > 0 && checkDelta(d[0]));
 		} else {
 			IProject p = resource.getProject();
-			IProject cp = (IProject)getModel().getProperties().get("project");
+			IProject cp = EclipseResourceUtil.getProject(this);
 			if(cp != null && cp != p && p != null) {
 				return false;
 			} 
@@ -293,14 +293,14 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 	}
 	
 	private boolean isOpenProject() {
-		IProject p = (IProject)getModel().getProperties().get("project");
+		IProject p = EclipseResourceUtil.getProject(this);
 		return p != null && p.isAccessible() && p.isOpen();		
 	}
 	
 	private IContributorResourceAdapter contributorResourceAdapter = null;
 
 	public Object getAdapter(Class adapter) {
-		if(IResource.class == adapter || IProject.class == adapter) return (IProject)getModel().getProperties().get("project");
+		if(IResource.class == adapter || IProject.class == adapter) return EclipseResourceUtil.getProject(this);
 		if(IContributorResourceAdapter.class == adapter) {
 			if(contributorResourceAdapter == null) {
 				contributorResourceAdapter = new ExtendedJavaElementAdapterFactory();

@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.action.impl.handlers;
 import java.util.*;
 import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.AnyElementObjectImpl;
 
@@ -32,11 +33,11 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
 		for (int i = 0; i < as.length; i++) {
 			attributes.add(as[i][0]);
 		}
-		edit = "true".equals(action.getProperty("edit"));
-		initialName = getProperties().getProperty("name");
+		edit = XModelObjectConstants.TRUE.equals(action.getProperty("edit"));
+		initialName = getProperties().getProperty(XModelObjectConstants.ATTR_NAME);
 		initialValue = null;
 		if(initialName != null) {
-			setAttributeValue(0, "name", initialName);
+			setAttributeValue(0, XModelObjectConstants.ATTR_NAME, initialName);
 			for (int i = 0; i < as.length; i++) {
 				if(initialName.equals(as[i][0])) initialValue = as[i][1];
 			}
@@ -57,7 +58,7 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
 	
 	protected void finish() throws XModelException {
 		Properties p = extractStepData(0);
-		String name = p.getProperty("name");
+		String name = p.getProperty(XModelObjectConstants.ATTR_NAME);
 		String value = p.getProperty("value");
 		String as = "";
 		if(!edit) {
@@ -88,7 +89,7 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
     	public void validate(Properties data) {
     		super.validate(data);
     		if(message != null) return;
-    		String name = data.getProperty("name");    		
+    		String name = data.getProperty(XModelObjectConstants.ATTR_NAME);    		
     		if(!edit && attributes.contains(name)) {
     			message = "Attribute " + name + " already exists.";
     		}
@@ -102,7 +103,7 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
     }
 
     public boolean isFieldEditorEnabled(int stepId, String name, Properties values) {
-    	return !edit || !name.equals("name");
+    	return !edit || !name.equals(XModelObjectConstants.ATTR_NAME);
     }
     
 }

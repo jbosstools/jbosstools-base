@@ -88,7 +88,7 @@ public class ModifiersIcon implements ImageComponent {
 
     private boolean isShowingModifiers(XModelObject obj) {
         XModelObject o = obj.getModel().getRoot("Preferences");
-        return (o == null) ? true : "yes".equals(o.getAttributeValue("show modifiers"));
+        return (o == null) ? true : XModelObjectConstants.YES.equals(o.getAttributeValue("show modifiers"));
     }
 
     private Image getModifiersIcon(int access, boolean isStatic, int override) {

@@ -11,15 +11,17 @@
 package org.jboss.tools.common.model.options;
 
 public interface SharableConstants {
-    public String GENERAL = "general";
-    public String PROJECT = "project";
+    public String GENERAL = "general"; //$NON-NLS-1$
+    public String PROJECT = "project"; //$NON-NLS-1$
     public String[] LIST = {GENERAL, PROJECT};
-    public String SCOPE = "SCOPE";
-    public String XSTUDIO = "XStudio";
-    public String GENERAL_FILE = "meta/ProgramSettingsDefault.xml";
+    public String SCOPE = "SCOPE"; //$NON-NLS-1$
+    public String XSTUDIO = "XStudio"; //$NON-NLS-1$
+    public String GENERAL_FILE = "meta/ProgramSettingsDefault.xml"; //$NON-NLS-1$
 //	public String PROJECT_PALETTE_FILE = "../../../config/Palette.xml";
 //	public String PROJECT_PREFERENCES_FILE = "../../../config/Preferences.xml";
-	public String PROJECT_PALETTE_FILE = "Palette.xml";
-	public String PROJECT_PREFERENCES_FILE = "Preferences.xml";
-    public String[][] FILE_LIST = {{GENERAL_FILE}, {PROJECT_PALETTE_FILE, PROJECT_PREFERENCES_FILE}}; 
+	public String PROJECT_PALETTE_FILE = "Palette.xml"; //$NON-NLS-1$
+	public String PROJECT_PREFERENCES_FILE = "Preferences.xml"; //$NON-NLS-1$
+    public String[][] FILE_LIST = {{GENERAL_FILE}, {PROJECT_PALETTE_FILE, PROJECT_PREFERENCES_FILE}};
+    
+    public String OPTIONS = "Options"; //$NON-NLS-1$
 }

@@ -15,6 +15,7 @@ import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.impl.*;
 
 public class FileSystemsTree extends DefaultSiftedTree {
@@ -40,7 +41,7 @@ public class FileSystemsTree extends DefaultSiftedTree {
     }
 
     public XModelObject getRoot() {
-        return model.getByPath("FileSystems");
+        return FileSystemsHelper.getFileSystems(model);
     }
 
     private void load() {
@@ -69,7 +70,7 @@ public class FileSystemsTree extends DefaultSiftedTree {
     }
 
     public boolean hasChildren(XModelObject object) {
-///    	if(object.getFileType() == XModelObject.FILE && "yes".equals(object.get("_hasErrors_"))) return false;
+///    	if(object.getFileType() == XModelObject.FILE && XModelObjectConstants.YES.equals(object.get("_hasErrors_"))) return false;
         for (int i = 0; i < constraints.length; i++)
           if(constraints[i].isHidingAllChildren(object)) return false;
         return super.hasChildren(object);

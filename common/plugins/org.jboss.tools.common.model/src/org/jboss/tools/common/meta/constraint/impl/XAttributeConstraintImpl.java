@@ -12,7 +12,6 @@ package org.jboss.tools.common.meta.constraint.impl;
 
 import org.w3c.dom.*;
 import org.jboss.tools.common.meta.constraint.*;
-import org.jboss.tools.common.model.util.XBundle;
 import org.jboss.tools.common.meta.impl.*;
 
 public class XAttributeConstraintImpl extends XMetaElementImpl implements XAttributeConstraint {
@@ -34,10 +33,6 @@ public class XAttributeConstraintImpl extends XMetaElementImpl implements XAttri
     public String getCorrectedValue(String value) {
     	//return null;
         return value;
-    }
-
-    protected String getErrorById(String id) {
-        return XBundle.getInstance().getMessage("model", id);
     }
 
 }

@@ -124,7 +124,7 @@ public interface XModelObject extends XProperty, XFileObject, IAdaptable {
     
     /**
      * Returns child object by path that contains path parts 
-     * separated by "/".
+     * separated by XModelObjectConstants.SEPARATOR.
      * 
      * @param path
      * @return child model object or null
@@ -154,7 +154,7 @@ public interface XModelObject extends XProperty, XFileObject, IAdaptable {
      * - empty string for the model root;
      * - path part for an immediate child of the model root;
      * - "root:" plus path part for an extra model root;
-     * - parent path plus separator "/" plus path part for any
+     * - parent path plus separator XModelObjectConstants.SEPARATOR plus path part for any
      * other model object.
 
      * @return

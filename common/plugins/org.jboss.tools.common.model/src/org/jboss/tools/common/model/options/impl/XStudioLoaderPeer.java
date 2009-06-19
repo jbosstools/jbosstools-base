@@ -30,7 +30,7 @@ class XStudioLoaderPeer implements SharableConstants {
 
     public void init(XModelObject studio) {
         XModel model = studio.getModel();
-		String r = XModelConstants.getWorkspace(model) + "/";
+		String r = XModelConstants.getWorkspace(model) + XModelObjectConstants.SEPARATOR;
         for (int i = 0; i < LIST.length; i++) {
             String[] fns = FILE_LIST[i];
             File[] fs = new File[fns.length];

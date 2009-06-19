@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.impl;
 import java.util.*;
 import org.w3c.dom.*;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.icons.*;
 import org.jboss.tools.common.meta.*;
@@ -54,7 +55,7 @@ public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
             //uses cached elements
             parents.init(this);
             
-            XModelEntityImpl r = (XModelEntityImpl)getEntity("Root");
+            XModelEntityImpl r = (XModelEntityImpl)getEntity(XModelObjectConstants.ROOT_OBJECT);
             r.validateChildren();
 
             //Resolve XML now, or late resolving may not be thread safe. 

@@ -1,6 +1,7 @@
 package org.jboss.tools.common.model.options.impl;
 
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 
 public class DeleteGroupHandler extends DefaultRemoveHandler {
@@ -11,7 +12,7 @@ public class DeleteGroupHandler extends DefaultRemoveHandler {
     	if(!super.isEnabled(object)) return false;
     	if(!(object instanceof SharableElementImpl)) return false;
     	SharableElementImpl e = (SharableElementImpl)object;
-    	String name = e.getAttributeValue("name");
+    	String name = e.getAttributeValue(XModelObjectConstants.ATTR_NAME);
     	if(!(e.getParent() instanceof SharableElementImpl)) return false;
     	SharableElementImpl p = (SharableElementImpl)e.getParent();
     	return p.canRemoveChild(name);

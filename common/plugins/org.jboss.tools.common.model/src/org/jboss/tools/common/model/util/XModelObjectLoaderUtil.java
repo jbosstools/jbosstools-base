@@ -42,13 +42,16 @@ import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelConstants;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.engines.impl.EnginesLoader;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.impl.XModelImpl;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.util.FileUtil;
 import org.jboss.tools.common.xml.XMLUtilities;
@@ -700,7 +703,7 @@ public class XModelObjectLoaderUtil {
         int i = 0;
         while(i == 0 && f.exists() && !f.canWrite())
           i = o.getModel().getService().showDialog("Question",
-                getReadOnlyMessage(f), new String[]{"Retry", "Discard", "Cancel"}, null,
+                getReadOnlyMessage(f), new String[]{"Retry", "Discard", ModelMessages.Cancel}, null,
                 ServiceDialog.QUESTION);
         return i;
     }
@@ -710,13 +713,13 @@ public class XModelObjectLoaderUtil {
     }
 
     public static String getTempBody(XModelObject o) {
-        String b = o.get("_body_");
-        o.set("_body_", "");
+        String b = o.get(XModelObjectConstants.ATTR_NAME__BODY_);
+        o.set(XModelObjectConstants.ATTR_NAME__BODY_, "");
         return b;
     }
 
     public static void setTempBody(XModelObject o, String body) {
-        o.set("_body_", body);
+        o.set(XModelObjectConstants.ATTR_NAME__BODY_, body);
     }
 
     //////pass correct properties!
@@ -765,11 +768,11 @@ public class XModelObjectLoaderUtil {
         if(t == XFileObject.SYSTEM) return "";
         XModelObject p = object.getParent();
         if(p == null) return null;
-        String n = (t == XFileObject.FOLDER) ? object.get("NAME") :
+        String n = (t == XFileObject.FOLDER) ? object.get(XModelObjectConstants.XML_ATTR_NAME) :
                    (t == XFileObject.FILE) ? FileAnyImpl.toFileName(object) :
                    object.getPathPart();
         String pp = getResourcePath(p);
-        return (pp == null) ? n : pp + "/" + n;
+        return (pp == null) ? n : pp + XModelObjectConstants.SEPARATOR + n;
     }
 
     /*

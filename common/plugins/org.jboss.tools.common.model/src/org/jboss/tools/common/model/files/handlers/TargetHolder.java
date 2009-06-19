@@ -5,6 +5,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
@@ -36,14 +38,14 @@ public class TargetHolder {
 				folder = ModelPlugin.getWorkspace().getRoot().findMember(p);
 				if(folder != null && folder.exists()) {
 					addPath = ap;
-					if(addPath.endsWith("/")) addPath = addPath.substring(0, addPath.length() - 1);
+					if(addPath.endsWith(XModelObjectConstants.SEPARATOR)) addPath = addPath.substring(0, addPath.length() - 1);
 					target = EclipseResourceUtil.createObjectForResource(folder);
 					break;
 				}
 			}
 		} else if(target == null && folder != null && folder.exists()) {
 			target = EclipseResourceUtil.createObjectForResource(folder);
-		} else if(target != null && "FileSystems".equals(target.getModelEntity().getName())) {
+		} else if(target != null && FileSystemsHelper.FILE_SYSTEMS.equals(target.getModelEntity().getName())) {
 			target = EclipseResourceUtil.findFileSystem(folder, target.getModel());
 			if(target == null) target = EclipseResourceUtil.createObjectForResource(folder);
 		}

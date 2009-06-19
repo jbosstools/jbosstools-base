@@ -79,7 +79,7 @@ public class FileAnyImpl extends RegularObjectImpl {
     }
     
     private boolean isObjectEditable0() {
-		if("true".equals(get("overlapped")) && isActive()) return false;
+		if(XModelObjectConstants.TRUE.equals(get("overlapped")) && isActive()) return false;
 		XModelObject p = getParent();
 		if(p == null) return true;
 		if(p instanceof JarFolderImpl) return false;
@@ -88,15 +88,15 @@ public class FileAnyImpl extends RegularObjectImpl {
 	}
 
 	public boolean isAttributeEditable(String name) {
-		if("name".equals(name) || "extension".equals(name)) return false;
-		if("body".equals(name)) {
+		if(XModelObjectConstants.ATTR_NAME.equals(name) || XModelObjectConstants.ATTR_NAME_EXTENSION.equals(name)) return false;
+		if(XModelObjectConstants.ATTR_NAME_BODY.equals(name)) {
 			return isObjectEditable0();
 		}
 		return super.isAttributeEditable(name);
 	}
 
     public String getMainIconName() {
-        if("true".equals(get("overlapped")) && isActive()) {
+        if(XModelObjectConstants.TRUE.equals(get("overlapped")) && isActive()) {
           String oin = get("overlappedSystem");
           XModelObject o = (oin == null || oin.length() == 0) ? null : getModel().getByPath(oin);
           if(o == null) {
@@ -123,7 +123,7 @@ public class FileAnyImpl extends RegularObjectImpl {
     }
 
     public static String toFileName(XProperty p) {
-        String n = p.get("NAME");
+        String n = p.get(XModelObjectConstants.XML_ATTR_NAME);
         if(n == null) return null;
         String s = p.get("EXTENSION");
         return n + ((s == null || s.length() == 0) ? "" : "." + s);
@@ -131,7 +131,7 @@ public class FileAnyImpl extends RegularObjectImpl {
 
     public void setBodySource(BodySource bodysource) {
         this.bodysource = bodysource;
-        super.set("body", "");
+        super.set(XModelObjectConstants.ATTR_NAME_BODY, "");
         changeTimeStamp();
     }
 
@@ -147,19 +147,19 @@ public class FileAnyImpl extends RegularObjectImpl {
     }
 
     public String get(String name) {
-        if(bodysource != null && "body".equals(name)) readBodySource();
+        if(bodysource != null && XModelObjectConstants.ATTR_NAME_BODY.equals(name)) readBodySource();
         return super.get(name);
     }
 
     private void readBodySource() {
         String s = bodysource.get();
         bodysource = null;
-        if(s != null) super.set("body", s);
+        if(s != null) super.set(XModelObjectConstants.ATTR_NAME_BODY, s);
     }
 
     public String setAttributeValue(String name, String value) {
-//        if("extension".equals(name) && isActive()) {
-//            if(!value.equals(getAttributeValue("extension"))) {
+//        if(XModelObjectConstants.ATTR_NAME_EXTENSION.equals(name) && isActive()) {
+//            if(!value.equals(getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION))) {
 //                if(new ExtensionChange().execute(this, value) && getParent() == null) {
 //                    return getAttributeValue(name);
 //                }
@@ -169,15 +169,15 @@ public class FileAnyImpl extends RegularObjectImpl {
     }
     
 	public String getAsText() {
-		return getAttributeValue("body");
+		return getAttributeValue(XModelObjectConstants.ATTR_NAME_BODY);
 	}
 
 	public void edit(String body) throws XModelException {
-		getModel().changeObjectAttribute(this, "body", body);
+		getModel().changeObjectAttribute(this, XModelObjectConstants.ATTR_NAME_BODY, body);
 	}
 	
 	public void set(String name, String value) {
-		if((!"NAME".equals(name) && !"EXTENSION".equals(name)) || !isActive() || !(getParent() instanceof FolderImpl)) {
+		if((!XModelObjectConstants.XML_ATTR_NAME.equals(name) && !"EXTENSION".equals(name)) || !isActive() || !(getParent() instanceof FolderImpl)) {
 			super.set(name, value);
 		} else {
 			rename0(value, name);
@@ -185,11 +185,11 @@ public class FileAnyImpl extends RegularObjectImpl {
 	}
 	
 	public void fileRenamed(String name, String extension) {
-		if(name != null && name.equals(super.get("NAME"))
+		if(name != null && name.equals(super.get(XModelObjectConstants.XML_ATTR_NAME))
 			&& extension != null && extension.equals(super.get("EXTENSION"))) {
 			return;
 		}
-		super.set("NAME", name);
+		super.set(XModelObjectConstants.XML_ATTR_NAME, name);
 		super.set("EXTENSION", extension);
 		fireObjectChanged(null);
 	}
@@ -204,7 +204,7 @@ public class FileAnyImpl extends RegularObjectImpl {
 		if(f2.exists() && !f.exists()) return;
 		if(!n2.equals(n1)) {
 			try {
-				f.move(new Path(f.getParent().getFullPath() + "/" + toFileName(this)), true, null);
+				f.move(new Path(f.getParent().getFullPath() + XModelObjectConstants.SEPARATOR + toFileName(this)), true, null);
 			} catch (OperationCanceledException e) {
 				super.set(attr, n1);
 			} catch (CoreException e) {
@@ -266,7 +266,7 @@ public class FileAnyImpl extends RegularObjectImpl {
 	}
 
 	protected void onAttributeValueEdit(String name, String oldValue, String newValue) throws XModelException {
-		if("body".equals(name) && listener != null) {
+		if(XModelObjectConstants.ATTR_NAME_BODY.equals(name) && listener != null) {
 			listener.bodyChanged(newValue);
 		}
 	}

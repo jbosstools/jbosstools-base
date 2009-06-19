@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.impl.trees;
 
 import java.util.*;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 
 public class FileSystemResourceBundleTree extends FileSystemResourceTree {
 	
@@ -31,7 +32,7 @@ public class FileSystemResourceBundleTree extends FileSystemResourceTree {
 
 	public XModelObject find(String value) {
 		return (value == null || value.length() == 0) ? null : 
-		       model.getByPath("/" + value.replace('.', '/') + ".properties");
+		       model.getByPath(XModelObjectConstants.SEPARATOR + value.replace('.', '/') + ".properties");
 	}
 
 }

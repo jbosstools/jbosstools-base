@@ -24,7 +24,7 @@ public class XMoveUndo extends XUndoableImpl {
         path = object.getPath();
         this.from = from;
         this.to = to;
-        op = object.getAttributeValue("element type") + " " +
+        op = object.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
              object.getModelEntity().getRenderer().getTitle(object);
         resetDescription();
     }

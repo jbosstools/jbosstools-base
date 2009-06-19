@@ -20,6 +20,7 @@ import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 
 public class RefreshProjectHandler extends AbstractHandler
@@ -31,7 +32,7 @@ public class RefreshProjectHandler extends AbstractHandler
 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException 
 	{
-		IProject project = (IProject)object.getModel().getProperties().get("project");
+		IProject project = EclipseResourceUtil.getProject(object);
 		if (project != null)
 		{
 			RefreshAction refreshAction = new RefreshAction(ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell());

@@ -23,9 +23,9 @@ public class XCreateUndo extends XUndoableImpl {
         this.model = parent.getModel();
         parentpath = parent.getPath();
         childpath = child.getPathPart();
-        description = child.getAttributeValue("element type") + " " +
+        description = child.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
                       child.getModelEntity().getRenderer().getTitle(child) + " in " +
-                      parent.getAttributeValue("element type") + " " +
+                      parent.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
                       parent.getModelEntity().getRenderer().getTitle(parent);
         String[] types = child.getModelEntity().getRenderer().getIconNames();
         String iconType = types.length == 0 ? "main" : child.getModelEntity().getRenderer().getIconNames()[0];

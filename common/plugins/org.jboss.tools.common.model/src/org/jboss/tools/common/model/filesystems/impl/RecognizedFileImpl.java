@@ -16,7 +16,7 @@ public class RecognizedFileImpl extends FileAnyImpl {
     public RecognizedFileImpl() {}
 
 ///    public String getPresentationString() {
-///        return (String)properties.get("NAME");
+///        return (String)properties.get(XModelObjectConstants.XML_ATTR_NAME);
 ///    }
 
 }

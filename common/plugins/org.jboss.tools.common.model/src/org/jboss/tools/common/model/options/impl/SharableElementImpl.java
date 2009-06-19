@@ -165,7 +165,7 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
             int c = x.length() - 1;
             return (c < 0) ? "" : x.substring(0, c);
         }
-        return ("NAME".equals(name)) ? name()
+        return (XModelObjectConstants.XML_ATTR_NAME.equals(name)) ? name()
                : scope.getProperty(name);
     }
 
@@ -181,7 +181,7 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
         } else if("sharing".equals(name)) {
             setScopeExists(GENERAL, value.indexOf(GENERAL) >= 0);
             setScopeExists(PROJECT, value.indexOf(PROJECT) >= 0);
-        } else if("NAME".equals(name)) {
+        } else if(XModelObjectConstants.XML_ATTR_NAME.equals(name)) {
             setName(value);
         } else {
             scope.setProperty(name, value);

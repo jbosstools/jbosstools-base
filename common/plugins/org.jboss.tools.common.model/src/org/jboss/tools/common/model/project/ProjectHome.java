@@ -24,6 +24,7 @@ import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.jboss.tools.common.model.XModelConstants;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
 import org.w3c.dom.Element;
@@ -44,8 +45,8 @@ public class ProjectHome {
 
 	public String getLocation(String projectLocation) {
 		String location = projectLocation;
-		File f = new File(location + "/" + IModelNature.PROJECT_TEMP);
-		File ep = new File(location + "/" + IModelNature.PROJECT_FILE);
+		File f = new File(location + XModelObjectConstants.SEPARATOR + IModelNature.PROJECT_TEMP);
+		File ep = new File(location + XModelObjectConstants.SEPARATOR + IModelNature.PROJECT_FILE);
 		if(ep.isFile()) {
 			// to remove .struts file 
 			if(f.isFile()) f.delete();

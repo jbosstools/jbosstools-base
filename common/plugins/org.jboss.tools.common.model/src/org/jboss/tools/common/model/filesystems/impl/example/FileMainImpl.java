@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.filesystems.impl.example;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.*;
 import org.jboss.tools.common.model.filesystems.impl.*;
 import org.jboss.tools.common.model.util.*;
@@ -22,7 +23,7 @@ public class FileMainImpl extends RecognizedFileImpl {
     }
 
     public String get(String name) {
-        if(!("NAME".equals(name) || "EXTENSION".equals(name))
+        if(!(XModelObjectConstants.XML_ATTR_NAME.equals(name) || "EXTENSION".equals(name))
            && getParent() != null) loadChildren();
         return super.get(name);
     }

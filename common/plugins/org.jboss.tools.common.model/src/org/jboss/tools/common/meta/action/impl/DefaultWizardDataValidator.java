@@ -15,6 +15,8 @@ import java.util.*;
 import org.jboss.tools.common.meta.XChild;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
+import org.jboss.tools.common.meta.impl.XMetaDataConstants;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.CreateFileHandler;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
@@ -40,8 +42,8 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 		XEntityData[] ds = support.getEntityData();
 		if(ds.length <= step) return; 
 		if(support.action != null) {
-			if("true".equals(support.action.getProperty("validator.add")) && step == 0) {
-				String entity = support.action.getProperty("entity");
+			if(XModelObjectConstants.TRUE.equals(support.action.getProperty("validator.add")) && step == 0) {
+				String entity = support.action.getProperty(XMetaDataConstants.ENTITY);
 				if(entity == null) entity = ds[step].getModelEntity().getName();
 				if(!checkChild(support.getTarget(), entity, data)) return;
 
@@ -54,8 +56,8 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
                     ((max == 1) ? " child " : " children ") +
                     "with entity " + entity + ".";
 				}
-			} else if("true".equals(support.action.getProperty("validator.edit"))) {
-				String entity = support.action.getProperty("entity");
+			} else if(XModelObjectConstants.TRUE.equals(support.action.getProperty("validator.edit"))) {
+				String entity = support.action.getProperty(XMetaDataConstants.ENTITY);
 				if(entity == null) entity = ds[step].getModelEntity().getName();
 				if(!checkChild(support.getTarget().getParent(), entity, data)) return;
 			}
@@ -71,7 +73,7 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 			if(message != null) return;
 		}
 		if(message != null || support.action == null) return;
-		if("true".equals(support.action.getProperty("validator.addfile")) && step == 0) {
+		if(XModelObjectConstants.TRUE.equals(support.action.getProperty("validator.addfile")) && step == 0) {
 			validateAddFile(ds, data);
 		}
 		String resourceAttr = support.action.getProperty("validator.resource");
@@ -85,7 +87,7 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 	
 	protected void validateAddFile(XEntityData[] ds, Properties data) {
 		CreateFileHandler.validateNameAndExtension(support.action, data, null);
-		String entity = support.action.getProperty("entity");
+		String entity = support.action.getProperty(XMetaDataConstants.ENTITY);
 		if(entity == null) {
 			String ext = null;
 			entity = (ext != null) ? support.getTarget().getModel().getEntityRecognizer().getEntityName(ext, null)
@@ -115,7 +117,7 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 	protected boolean checkChild(XModelObject parent, String entity, Properties data) {
 		XModelObject o = support.getTarget().getModel().createModelObject(entity, data);
 		if(o.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null
-			&& !"true".equals(o.getModelEntity().getProperty("unique"))) return true;
+			&& !XModelObjectConstants.TRUE.equals(o.getModelEntity().getProperty("unique"))) return true;
 		if(o != null && parent == support.getTarget().getParent() && o.getPathPart().equals(support.getTarget().getPathPart())) return true;
 		if(o != null) message = DefaultCreateHandler.getContainsMessage(parent, o);
 		return message == null;

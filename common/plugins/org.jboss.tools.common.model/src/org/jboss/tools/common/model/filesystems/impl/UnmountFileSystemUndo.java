@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.filesystems.impl;
 
 import java.util.*;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.undo.*;
 
 public class UnmountFileSystemUndo extends XUndoableImpl {
@@ -19,7 +20,7 @@ public class UnmountFileSystemUndo extends XUndoableImpl {
     protected String entity;
     protected String pathpart;
     protected Properties p = new Properties();
-    protected String[] pns = {"name", "location", "slave model", "file system"};
+    protected String[] pns = {XModelObjectConstants.ATTR_NAME, XModelObjectConstants.ATTR_NAME_LOCATION, "slave model", "file system"};
 
     public UnmountFileSystemUndo(XModelObject fs) {
         model = fs.getModel();
@@ -37,7 +38,7 @@ public class UnmountFileSystemUndo extends XUndoableImpl {
 
     protected void doUndo() {
         XModelObject o = model.createModelObject(entity, p);
-        model.getByPath("FileSystems").addChild(o);
+        FileSystemsHelper.getFileSystems(model).addChild(o);
 		MountFileSystemHandler.updateClassPath(o);
     }
 

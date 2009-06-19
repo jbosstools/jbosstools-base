@@ -29,6 +29,7 @@ import org.jboss.tools.common.meta.XMapping;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.adapter.IModelObjectAdapter;
 import org.jboss.tools.common.model.adapter.ModelObjectAdapterExtensionPoint;
@@ -279,7 +280,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
         if(getParent() == null) return null;
         String p = parent.getLongPath();
         return (p == null) ? null : (p.length() == 0)
-                           ? getPathPart() : p + "/" + getPathPart();
+                           ? getPathPart() : p + XModelObjectConstants.SEPARATOR + getPathPart();
     }
 
     public String getPath() {
@@ -302,7 +303,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     }
 
     public XModelObject getChildByPath(String path) {
-        int i = path.indexOf("/");
+        int i = path.indexOf(XModelObjectConstants.SEPARATOR);
         String n = (i < 0) ? path : path.substring(0, i);
         String f = (i < 0) ? "" : path.substring(i + 1);
         XModelObject me = getChildByPathPart(n);
@@ -392,8 +393,8 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     }
 
     protected String name() {
-        XAttribute a = getModelEntity().getAttribute("name");
-        return (a != null) ? getAttributeValue("name") : getModelEntity().getName();
+        XAttribute a = getModelEntity().getAttribute(XModelObjectConstants.ATTR_NAME);
+        return (a != null) ? getAttributeValue(XModelObjectConstants.ATTR_NAME) : getModelEntity().getName();
     }
 
     public String getMainIconName() {

@@ -12,6 +12,7 @@ package org.jboss.tools.common.meta.action.impl.handlers;
 
 import java.util.Properties;
 
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.XChild;
@@ -19,21 +20,21 @@ import org.jboss.tools.common.meta.action.XAttributeData;
 import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 import org.jboss.tools.common.meta.constraint.XAttributeConstraint;
+import org.jboss.tools.common.meta.impl.XMetaDataConstants;
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.ActionDeclinedException;
 import org.jboss.tools.common.model.impl.RegularObjectImpl;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.undo.XCreateUndo;
 import org.jboss.tools.common.model.undo.XUndoManager;
 import org.jboss.tools.common.model.util.FindObjectHelper;
-import org.jboss.tools.common.model.util.XBundle;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class DefaultCreateHandler extends AbstractHandler {
-
-    protected static XBundle bundle = XBundle.getInstance();
 
     public DefaultCreateHandler() {}
 
@@ -59,16 +60,12 @@ public class DefaultCreateHandler extends AbstractHandler {
     }
 
     protected String getEntityName() {
-        String n = action.getProperty("entity");
+        String n = action.getProperty(XMetaDataConstants.ENTITY);
         return (n == null) ? data[0].getModelEntity().getName() : n;
     }
 
     protected XModelObject modifyCreatedObject(XModelObject o) {
         return o;
-    }
-
-    protected static String getMessageById(String id) {
-        return bundle.getMessage("model", id);
     }
 
     public static Properties extractProperties(XEntityData es) {
@@ -97,7 +94,7 @@ public class DefaultCreateHandler extends AbstractHandler {
     }
     
 	public static String getReguiredMessage(String attributeName) {
-		return bundle.getMessage("model", "ATTRIBUTE_REQUIRED", new Object[]{attributeName});
+		return NLS.bind(ModelMessages.ATTRIBUTE_REQUIRED, new Object[]{attributeName});
 	}
 
 	public static Properties getProperties(XEntityData es) {
@@ -119,7 +116,7 @@ public class DefaultCreateHandler extends AbstractHandler {
 		String vis = WizardKeys.getAttributeDisplayName(ad, true);
 		if(a.isTrimmable()) pv = (pv == null) ? "" : pv.trim();
 		if((pv == null || pv.length() == 0) && ad.getMandatoryFlag()) {
-  		    return bundle.getMessage("model",	"ATTRIBUTE_REQUIRED", new Object[]{vis});
+  		    return NLS.bind(ModelMessages.ATTRIBUTE_REQUIRED, new Object[]{vis});
 		}
 		XAttributeConstraint c = ad.getAttribute().getConstraint();
 		return getConstraintMessage(vis, pv, c);
@@ -127,8 +124,7 @@ public class DefaultCreateHandler extends AbstractHandler {
     
     public static String getConstraintMessage(String name, String value, XAttributeConstraint c) {
 		if(c == null || c.getError(value) == null) return null;
-		return bundle.getMessage("model", "SET_ATTRIBUTE_FAILURE",
-					 new Object[]{name, value, c.getError(value)});
+		return NLS.bind(ModelMessages.SET_ATTRIBUTE_FAILURE, new Object[]{name, value, c.getError(value)});
     }
 
     public static void validateValue(String name, String value, XAttributeConstraint c) {
@@ -155,16 +151,14 @@ public class DefaultCreateHandler extends AbstractHandler {
 		XModelObject e = parent.getChildByPath(pathpart);
 		if(e != null && e != parent && e != parent.getParent()) {
 			if(child.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) {
-				if(!forceUnique || !"true".equals(child.getModelEntity().getProperty("unique"))) {
+				if(!forceUnique || !XModelObjectConstants.TRUE.equals(child.getModelEntity().getProperty("unique"))) {
 					return null;
 				}
 			}
 			String tp = title(parent, true), tc = title(child, false), te = title(e, false);
 			String mes = (tc.equals(te))
-						 ? bundle.getMessage("model", "CONTAINS_OBJECT_1",
-											 new Object[]{tp, tc})
-						 : bundle.getMessage("model", "CONTAINS_OBJECT_2",
-											 new Object[]{tp, te, "\n", tc});
+						 ? NLS.bind(ModelMessages.CONTAINS_OBJECT_1, new Object[]{tp, tc})
+						 : NLS.bind(ModelMessages.CONTAINS_OBJECT_2, new Object[]{tp, te, "\n", tc});
 			return mes;
 		}
 		return null;
@@ -179,17 +173,17 @@ public class DefaultCreateHandler extends AbstractHandler {
     }
 
     public static void addCreatedObject(XModelObject parent, final XModelObject child, boolean registerundo, final int whereSelect) throws XModelException {
-        if(child == null) throw new XModelException(getMessageById("OBJECT_CREATION_FAILURE"));
+        if(child == null) throw new XModelException(ModelMessages.OBJECT_CREATION_FAILURE);
         String mes = getContainsMessage(parent, child, false);
         if(mes != null) throw new XModelException(mes);
         String ce = child.getModelEntity().getName();
         XChild c = parent.getModelEntity().getChild(ce);
-        if(c == null) throw new XModelException(getMessageById("OBJECT_ADDING_FAILURE"));
+        if(c == null) throw new XModelException(ModelMessages.OBJECT_ADDING_FAILURE);
         int max = c.getMaxCount();
         int cur = parent.getChildren(ce).length;
         if(cur >= max) {
 			ServiceDialog d = parent.getModel().getService();
-			d.showDialog("Warning", "The limit of " + max + " children is achieved.", new String[]{"OK"}, null, ServiceDialog.MESSAGE);
+			d.showDialog(ModelMessages.WARNING, "The limit of " + max + " children is achieved.", new String[]{"OK"}, null, ServiceDialog.MESSAGE);
             mes = title(parent, true) + " can contain only " + max +
                          ((max == 1) ? " child " : " children ") +
                          "with entity " + ce + ".";
@@ -202,14 +196,14 @@ public class DefaultCreateHandler extends AbstractHandler {
 			while(parent.getChildByPath(pp) != null) {
 				child.setAttributeValue(XModelObjectLoaderUtil.ATTR_ID_NAME, "" + k);
 				String ppn = child.getPathPart();
-				if(ppn.equals(pp)) throw new RuntimeException(getMessageById("OBJECT_ADDING_FAILURE"));
+				if(ppn.equals(pp)) throw new RuntimeException(ModelMessages.OBJECT_ADDING_FAILURE);
 				pp = ppn;
 				++k;
 			}
 			b = parent.addChild(child);
 		}
         if(!b) {
-        	throw new XModelException(getMessageById("OBJECT_ADDING_FAILURE"));
+        	throw new XModelException(ModelMessages.OBJECT_ADDING_FAILURE);
         }
         XUndoManager undo = getUndoManager(parent);
         if(registerundo && undo != null) {
@@ -233,7 +227,7 @@ public class DefaultCreateHandler extends AbstractHandler {
     }
 
     public static String title(XModelObject o, boolean capitalize) {
-    	String elementType = o.getAttributeValue("element type");
+    	String elementType = o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE);
     	String objectTitle = o.getModelEntity().getRenderer().getTitle(o);
         String s = elementType + " " + objectTitle;
     	if(objectTitle != null && objectTitle.equalsIgnoreCase(elementType)) {

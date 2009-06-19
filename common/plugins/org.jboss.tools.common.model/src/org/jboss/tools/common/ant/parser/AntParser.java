@@ -13,6 +13,7 @@ package org.jboss.tools.common.ant.parser;
 import java.io.*;
 import org.w3c.dom.*;
 import org.eclipse.ant.core.TargetInfo;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.util.XMLUtil;
 
 
@@ -32,10 +33,10 @@ public class AntParser {
         if(element.hasAttribute("xsi:schemaLocation")) return;
         NodeList es = element.getElementsByTagName("target");
         for (int i = 0; i < es.getLength(); i++)
-          if(!((Element)es.item(i)).hasAttribute("name")) return;
+          if(!((Element)es.item(i)).hasAttribute(XModelObjectConstants.ATTR_NAME)) return;
         targets = new String[es.getLength()];
         for (int i = 0; i < es.getLength(); i++)
-          targets[i] = ((Element)es.item(i)).getAttribute("name");
+          targets[i] = ((Element)es.item(i)).getAttribute(XModelObjectConstants.ATTR_NAME);
     }
 
     public String[] getTargets() {

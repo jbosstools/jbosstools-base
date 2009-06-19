@@ -26,6 +26,7 @@ import org.eclipse.ui.ide.IDE;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
@@ -35,13 +36,13 @@ public class OpenJavaEditorHandler extends AbstractHandler {
 	}
 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException {
-		IProject project = (IProject)object.getModel().getProperties().get("project");
+		IProject project = EclipseResourceUtil.getProject(object);
 		try {
 		IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
 	
 		String className = 
 			EclipseResourceUtil.getJavaClassQualifiedName(object).replace('.', '/') +
-			"." + object.getAttributeValue("extension");
+			"." + object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION);
 		
 		IJavaElement javaElement = javaProject.findElement(new Path(className));
 		if(javaElement != null) {

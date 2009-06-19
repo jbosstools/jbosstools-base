@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.filesystems.impl;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.impl.AbstractXMLFileImpl;
 
 public class FileXMLImpl extends AbstractXMLFileImpl {
@@ -28,16 +29,16 @@ public class FileXMLImpl extends AbstractXMLFileImpl {
 
 	public String get(String name) {
 		if(name.equals("_hasErrors_")) {
-			return super.get("isIncorrect");
+			return super.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT);
 		}
 		if(!markersReset && isActive()) {
-			updateMarkers(super.get("body"));
+			updateMarkers(super.get(XModelObjectConstants.ATTR_NAME_BODY));
 		}
 		return super.get(name);
 	}	
 
 	public void set(String name, String value) {
-		boolean isBody = "body".equals(name) || "_body_".equals(name);
+		boolean isBody = XModelObjectConstants.ATTR_NAME_BODY.equals(name) || XModelObjectConstants.ATTR_NAME__BODY_.equals(name);
 		if(isActive() && isBody && !value.equals(get(name))) {
 			super.set(name, value);
 			updateMarkers(value);

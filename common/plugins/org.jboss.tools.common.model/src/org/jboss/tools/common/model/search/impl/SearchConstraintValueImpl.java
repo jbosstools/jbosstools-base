@@ -49,8 +49,8 @@ public class SearchConstraintValueImpl extends SearchConstraintImpl {
     public void prepare() {
         propertyname = getAttributeValue("property name");
         propertyvalue = getAttributeValue("text to find");
-        not = "true".equals(getAttributeValue("not"));
-        ignorecase = "true".equals(getAttributeValue("ignore case"));
+        not = XModelObjectConstants.TRUE.equals(getAttributeValue("not"));
+        ignorecase = XModelObjectConstants.TRUE.equals(getAttributeValue("ignore case"));
         if(ignorecase) propertyvalue = propertyvalue.toLowerCase();
         String eq = getAttributeValue("equality");
         equality = ("coincides".equals(eq)) ? 0 :

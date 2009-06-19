@@ -17,6 +17,7 @@ import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.FilePathHelper;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.impl.*;
 import org.jboss.tools.common.model.util.*;
 
@@ -25,7 +26,7 @@ public class SelectOverlappedFileSystemHandler extends AbstractHandler {
     public SelectOverlappedFileSystemHandler() {}
 
     public boolean isEnabled(XModelObject o) {
-        return o != null && ("true".equals(o.get("overlapped")));
+        return o != null && (XModelObjectConstants.TRUE.equals(o.get("overlapped")));
     }
 
     public void executeHandler(XModelObject object, java.util.Properties p) throws XModelException {
@@ -39,8 +40,8 @@ public class SelectOverlappedFileSystemHandler extends AbstractHandler {
         	return;
         } 
         Properties fsp = XModelObjectUtil.toProperties(fs);
-        if("yes".equals(fsp.getProperty("hidden", "no"))) {
-            fsp.setProperty("hidden", "no");
+        if(XModelObjectConstants.YES.equals(fsp.getProperty("hidden", XModelObjectConstants.NO))) {
+            fsp.setProperty("hidden", XModelObjectConstants.NO);
             fs.setAttributeValue("info", XModelObjectUtil.toString(fsp));
             fs.setModified(true);
             XModelImpl m = (XModelImpl)object.getModel();
@@ -52,7 +53,7 @@ public class SelectOverlappedFileSystemHandler extends AbstractHandler {
     static XModelObject getOverlappedFileSystem(XModelObject source) {
         String fp = getAbsoluteFileFolderPath(source);
         if(fp == null) return null;
-        XModelObject fs = source.getModel().getByPath("FileSystems");
+        XModelObject fs = FileSystemsHelper.getFileSystems(source.getModel());
         if(fs == null) return null;
         XModelObject[] cs = fs.getChildren();
         for (int i = 0; i < cs.length; i++)
@@ -61,7 +62,7 @@ public class SelectOverlappedFileSystemHandler extends AbstractHandler {
     }
 
     private static String getAbsoluteFileSystemPath(XModelObject fso) {
-        String path = XModelObjectUtil.getExpandedValue(fso, "location", null);
+        String path = XModelObjectUtil.getExpandedValue(fso, XModelObjectConstants.ATTR_NAME_LOCATION, null);
         try {
         	path = new File(path).getCanonicalPath().replace('\\', '/');
             return FilePathHelper.toPathPath(path);

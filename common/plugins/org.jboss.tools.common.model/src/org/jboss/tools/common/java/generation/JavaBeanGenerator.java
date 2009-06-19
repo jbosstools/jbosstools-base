@@ -36,6 +36,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.text.edits.TextEdit;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -63,7 +64,7 @@ public class JavaBeanGenerator {
 	}
 	
 	public IJavaProject getJavaProject() {
-		IProject project = (IProject)context.getModel().getProperties().get("project");
+		IProject project = EclipseResourceUtil.getProject(context);
 		return EclipseResourceUtil.getJavaProject(project);		
 	}
 	
@@ -74,7 +75,7 @@ public class JavaBeanGenerator {
 		if(srcpath == null) return;
 
 		String qclsname = input.getProperty(ATT_CLASS_NAME);		
-		String filepath = srcpath + "/" + qclsname.replace('.', '/') + ".java";
+		String filepath = srcpath + XModelObjectConstants.SEPARATOR + qclsname.replace('.', '/') + ".java";
 		if(new File(filepath).exists()) return;
 
 		int lastDot = qclsname.lastIndexOf('.');
@@ -201,7 +202,7 @@ public class JavaBeanGenerator {
 //		String pkgname = p.getProperty(PARAM_PACKAGENAME);
 		String access = p.getProperty(PARAM_ACCESS);
 		if(access == null) access = ""; else if(access.length() > 0) access += " ";
-		boolean isInterface = "true".equals(p.getProperty(PARAM_INTERFACE));
+		boolean isInterface = XModelObjectConstants.TRUE.equals(p.getProperty(PARAM_INTERFACE));
 		String kind = isInterface ? "interface " : "class ";
 		String shortname = p.getProperty(PARAM_SHORTNAME);
 		String _extends = p.getProperty(PARAM_EXTENDS);

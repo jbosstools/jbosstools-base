@@ -61,7 +61,7 @@ public class EnginesLoader extends URLRootLoader {
     }
 
     public String fileroot(XModelObject object) {
-        return XModelConstants.getWorkspace(object.getModel()) + "/";
+        return XModelConstants.getWorkspace(object.getModel()) + XModelObjectConstants.SEPARATOR;
     }
 
     protected String fileName(XModelObject object) {

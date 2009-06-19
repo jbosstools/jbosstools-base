@@ -45,7 +45,7 @@ public class FileRootLoader implements XObjectLoader {
     }
 
     public String fileroot(XModelObject object) {
-        return XModelConstants.getHome(object.getModel()) + "/";
+        return XModelConstants.getHome(object.getModel()) + XModelObjectConstants.SEPARATOR;
     }
 
     protected String fileName(XModelObject object) {

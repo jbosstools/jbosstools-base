@@ -14,6 +14,7 @@ import org.w3c.dom.*;
 import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.meta.action.XAttributeData;
 import org.jboss.tools.common.meta.impl.*;
+import org.jboss.tools.common.model.XModelObjectConstants;
 
 public class XAttributeDataImpl implements XAttributeData, XMetaDataConstants {
     private String entityname;
@@ -64,9 +65,9 @@ public class XAttributeDataImpl implements XAttributeData, XMetaDataConstants {
         attributename = el.getAttribute("AttributeName"); //$NON-NLS-1$
         entityname = ((Element)el.getParentNode()).getAttribute("EntityName"); //$NON-NLS-1$
         String m = el.getAttribute("Mandatory"); //$NON-NLS-1$
-        mandatory = "yes".equals(m) || "".equals(m);  //$NON-NLS-1$//$NON-NLS-2$
+        mandatory = XModelObjectConstants.YES.equals(m) || "".equals(m);  //$NON-NLS-1$//$NON-NLS-2$
         m = el.getAttribute("Advanced"); //$NON-NLS-1$
-        isAdvanced = "yes".equals(m); //$NON-NLS-1$
+        isAdvanced = XModelObjectConstants.YES.equals(m); //$NON-NLS-1$
     }
     
     public String getAttributeName() {

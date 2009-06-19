@@ -23,6 +23,7 @@ import org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalBrowserH
 import org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler;
 import org.jboss.tools.common.meta.key.KeyLoader;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class HelpUtil {
@@ -77,12 +78,12 @@ public class HelpUtil {
     public static void help(XModel model, String key) {
         ServiceDialog d = model.getService();
         if(!hasHelp(key)) {
-            d.showDialog("Warning", "Help for key " + key + " is not available.", new String[]{"Close"}, null, ServiceDialog.WARNING);
+            d.showDialog(ModelMessages.WARNING, "Help for key " + key + " is not available.", new String[]{"Close"}, null, ServiceDialog.WARNING);
         } else {
             try {
                 HelpUtil.callHelp(model, key);
             } catch (XModelException e) {
-                d.showDialog("Warning", e.getMessage(), new String[]{"Close"}, null, ServiceDialog.WARNING);
+                d.showDialog(ModelMessages.WARNING, e.getMessage(), new String[]{"Close"}, null, ServiceDialog.WARNING);
             }
         }
     }
@@ -110,14 +111,14 @@ public class HelpUtil {
 			URL url = EclipseResourceUtil.getInstallURL(p);
 			if(url == null) continue;
 			String f = url.getFile().replace('\\', '/');
-			if(f.endsWith("/")) f = f.substring(0, f.length() - 1);
-			if(!path.startsWith("/")) path = "/" + path;
+			if(f.endsWith(XModelObjectConstants.SEPARATOR)) f = f.substring(0, f.length() - 1);
+			if(!path.startsWith(XModelObjectConstants.SEPARATOR)) path = XModelObjectConstants.SEPARATOR + path;
 			String zipPath = f + "/doc.zip";
 			if(new File(zipPath).exists()) {
 				 Set set = getZipEntries(zipPath);
-				 if(set.contains(path)) return "/" + PLUGINS[i] + "/" + path;
+				 if(set.contains(path)) return XModelObjectConstants.SEPARATOR + PLUGINS[i] + XModelObjectConstants.SEPARATOR + path;
 			}
-			if(new java.io.File(f + path).isFile()) return "/" + PLUGINS[i] + "/" + path;			
+			if(new java.io.File(f + path).isFile()) return XModelObjectConstants.SEPARATOR + PLUGINS[i] + XModelObjectConstants.SEPARATOR + path;			
 		}
 		return null;
 	}
@@ -134,7 +135,7 @@ public class HelpUtil {
 			Enumeration en = zip.entries();
 			while(en.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry)en.nextElement();
-				set.add("/" + entry.getName());
+				set.add(XModelObjectConstants.SEPARATOR + entry.getName());
 			}
 		} catch (IOException e) {
 			//ignore

@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.actions.CloseResourceAction;
 
@@ -30,7 +31,7 @@ public class CloseProjectHandler extends AbstractHandler
 	 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException 
 	{
-		IProject project = (IProject)object.getModel().getProperties().get("project");
+		IProject project = EclipseResourceUtil.getProject(object);
 		if (project != null)
 		{
 			CloseResourceAction closeAction = new CloseResourceAction(ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell());

@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.*;
 import org.eclipse.jdt.core.*;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemsLoader;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
@@ -129,7 +130,7 @@ public class ClassPathUpdate {
 				if(objectPath.length() == 0) continue;
 				XModelObject srcObject = model.getByPath("FileSystems/" + objectPath);
 				if (srcObject == null) continue;
-				String osPath = XModelObjectUtil.getExpandedValue(srcObject, "location", null);
+				String osPath = XModelObjectUtil.getExpandedValue(srcObject, XModelObjectConstants.ATTR_NAME_LOCATION, null);
 				if (osPath != null && !"".equals(osPath) && !set.contains(osPath)) {
 					srcPaths.add(osPath);
 					set.add(osPath);
@@ -152,7 +153,7 @@ public class ClassPathUpdate {
 		XModelObject classesObject = model.getByPath("FileSystems/classes");
 		String classesPath = "";
 		if (classesObject != null)
-			classesPath = XModelObjectUtil.getExpandedValue(classesObject, "location", null);
+			classesPath = XModelObjectUtil.getExpandedValue(classesObject, XModelObjectConstants.ATTR_NAME_LOCATION, null);
 		else if(classes != null)
 			classesPath = classes.toString();
 
@@ -188,14 +189,14 @@ public class ClassPathUpdate {
 	}
 	
 	private void addLibJars() {
-		XModelObject fss = model.getByPath("FileSystems");
+		XModelObject fss = FileSystemsHelper.getFileSystems(model);
 		XModelObject[] children = fss == null ? new XModelObject[0] : fss.getChildren("FileSystemJar");
 		List<String> srcPaths = new ArrayList<String>();
 		for (int i = 0; i < children.length; i++) {
-			if("true".equals(children[i].get(FileSystemsLoader.IS_ADDED_TO_CLASSPATH))) continue;
-			String osPath = XModelObjectUtil.getExpandedValue(children[i], "location", null);
+			if(XModelObjectConstants.TRUE.equals(children[i].get(FileSystemsLoader.IS_ADDED_TO_CLASSPATH))) continue;
+			String osPath = XModelObjectUtil.getExpandedValue(children[i], XModelObjectConstants.ATTR_NAME_LOCATION, null);
 			if (osPath != null && !"".equals(osPath) && new File(osPath).isFile()) srcPaths.add(osPath);
-			children[i].set(FileSystemsLoader.IS_ADDED_TO_CLASSPATH, "true");
+			children[i].set(FileSystemsLoader.IS_ADDED_TO_CLASSPATH, XModelObjectConstants.TRUE);
 		}
 
 // Leave it to WTP

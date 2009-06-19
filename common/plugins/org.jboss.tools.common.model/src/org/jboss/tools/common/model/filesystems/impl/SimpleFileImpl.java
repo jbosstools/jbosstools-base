@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.filesystems.impl;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.impl.AbstractExtendedXMLFileImpl;
 import org.jboss.tools.common.model.impl.*;
 import org.jboss.tools.common.model.loaders.impl.SerializingLoader;
@@ -28,7 +29,7 @@ public class SimpleFileImpl extends AbstractExtendedXMLFileImpl {
 
     public String get(String name) {
         String v = super.get(name);
-        return (!"body".equals(name)) ? v : getBody();
+        return (!XModelObjectConstants.ATTR_NAME_BODY.equals(name)) ? v : getBody();
     }
     
     public String getBody() {

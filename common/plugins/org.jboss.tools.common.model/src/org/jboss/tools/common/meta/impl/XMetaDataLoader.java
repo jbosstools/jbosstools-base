@@ -16,6 +16,7 @@ import java.util.*;
 import org.w3c.dom.*;
 import org.jboss.tools.common.meta.XMetaElement;
 import org.jboss.tools.common.meta.XModelEntity;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.xml.XMLUtilities;
@@ -92,7 +93,7 @@ public class XMetaDataLoader implements XMetaDataConstants {
     public static boolean getBoolean(Element el, String attName, boolean def){
         String a = el.getAttribute(attName);
         return (a == null || a.length() == 0) ? def :
-               ("true".equalsIgnoreCase(a) || "yes".equalsIgnoreCase(a));
+               (XModelObjectConstants.TRUE.equalsIgnoreCase(a) || XModelObjectConstants.YES.equalsIgnoreCase(a));
     }
 
     public static int getInt(Element el, String attName, int def){
@@ -116,7 +117,7 @@ public class XMetaDataLoader implements XMetaDataConstants {
     }
 
     static void loadEntityGroup(XModelMetaDataImpl factory, Element g) {
-//        String n = g.getAttribute("NAME");
+//        String n = g.getAttribute(XModelObjectConstants.XML_ATTR_NAME);
     	String module = "";
     	Element v = XMLUtilities.getUniqueChild(g, "VERSION");
     	if(v != null && v.hasAttribute("MODULE")) {

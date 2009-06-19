@@ -15,7 +15,7 @@ public class MountFileSystemUndo extends UnmountFileSystemUndo {
 
     public MountFileSystemUndo(XModelObject fs) {
         super(fs);
-        description = "Mount file system " + p.getProperty("location");
+        description = "Mount file system " + p.getProperty(XModelObjectConstants.ATTR_NAME_LOCATION);
     }
 
     protected void doUndo() {

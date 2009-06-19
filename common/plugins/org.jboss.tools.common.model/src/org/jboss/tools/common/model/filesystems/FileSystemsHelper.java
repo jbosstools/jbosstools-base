@@ -20,7 +20,7 @@ public class FileSystemsHelper {
 	}
 
 	public static XModelObject getFileSystem(XModel model, String name) {
-		return model.getByPath(FILE_SYSTEMS + "/" + name);
+		return model.getByPath(FILE_SYSTEMS + XModelObjectConstants.SEPARATOR + name);
 	}
 	
 	public static XModelObject getWebRoot(XModel model) {

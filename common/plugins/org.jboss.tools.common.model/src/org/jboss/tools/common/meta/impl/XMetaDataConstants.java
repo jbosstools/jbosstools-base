@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.impl;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
+
 public interface XMetaDataConstants {
 
     String XMODEL_STRUCTURE = "XModelStructure";
@@ -24,7 +26,7 @@ public interface XMetaDataConstants {
     String XMODEL_ACTION_ITEM_REF  = "XActionItemReference";
     String XMODEL_CHILDREN = "XChildrenEntities";
     String XMODEL_CHILD  = "XChildEntity";
-    String NAME = "name";
+    String NAME = XModelObjectConstants.ATTR_NAME;
     String XML_NAME = "xmlname";
     String DISPLAYNAME="displayName";
     String LOADER = "loader";
@@ -51,6 +53,8 @@ public interface XMetaDataConstants {
     String VISIBLE  = "visibility";
     String MAX_COUNT= "maxCount";
     String ENTITY_NAME= "entityName";
+
+    String ENTITY = "entity";
 
     String ICONS = "ICONS";
     String ICON = "ICON";

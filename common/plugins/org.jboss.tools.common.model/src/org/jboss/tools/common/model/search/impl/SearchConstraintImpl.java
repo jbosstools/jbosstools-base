@@ -31,7 +31,7 @@ public class SearchConstraintImpl extends SharableElementImpl implements SearchC
     }
 
     public void prepare() {
-        not = "true".equals(getAttributeValue("not"));
+        not = XModelObjectConstants.TRUE.equals(getAttributeValue("not"));
         SharableElement[] cs = getSharableChildren();
         constraints = new SearchConstraint[cs.length];
         for (int i = 0; i < cs.length; i++) {

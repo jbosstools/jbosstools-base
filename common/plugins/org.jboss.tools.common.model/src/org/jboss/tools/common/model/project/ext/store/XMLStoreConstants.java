@@ -10,6 +10,8 @@
   ******************************************************************************/
 package org.jboss.tools.common.model.project.ext.store;
 
+import org.jboss.tools.common.model.XModelObjectConstants;
+
 /**
  * @author Viacheslav Kabanovich
  */
@@ -29,7 +31,7 @@ public interface XMLStoreConstants {
 	public String ATTR_VALUE = "value";
 	public String ATTR_PATH = "path";
 	public String ATTR_CLASS = "class";
-	public String ATTR_NAME = "name";
+	public String ATTR_NAME = XModelObjectConstants.ATTR_NAME;
 	public String ATTR_PROJECT = "project";
 	public String ATTR_TYPE = "type";
 	public String ATTR_PARAMS = "params";

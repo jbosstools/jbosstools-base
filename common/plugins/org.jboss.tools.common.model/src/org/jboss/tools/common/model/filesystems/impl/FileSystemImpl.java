@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.model.filesystems.*;
@@ -37,7 +38,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 
     public IProject getProject() {
     	if(project == null) {
-    		project = (IProject)getModel().getProperties().get("project");
+    		project = EclipseResourceUtil.getProject(this);
     	}  	
     	return project;
     }
@@ -46,7 +47,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     	if(getProject() == null || resource != null) return resource;
     	if(!project.isOpen() || project.getLocation() == null) return resource;
     	String prloc = project.getLocation().toString().replace('\\', '/');
-    	String thloc = XModelObjectUtil.getExpandedValue(this, "location", null);
+    	String thloc = XModelObjectUtil.getExpandedValue(this, XModelObjectConstants.ATTR_NAME_LOCATION, null);
     	try {
     		prloc = new File(prloc).getCanonicalPath().replace('\\','/');
     	} catch (IOException e) {
@@ -86,7 +87,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 			return resource = f;			
 		}
 
-    	IFolder f = project.getFolder(new Path("/" + getAttributeValue("name")));
+    	IFolder f = project.getFolder(new Path(XModelObjectConstants.SEPARATOR + getAttributeValue(XModelObjectConstants.ATTR_NAME)));
     	if(!f.exists()) {
     		try {
 				f.createLink(new Path(thloc), IFolder.FORCE, null);
@@ -105,7 +106,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 	}
 
     public String getAbsoluteLocation() {
-		String s = XModelObjectUtil.getExpandedValue(this, "location", null);
+		String s = XModelObjectUtil.getExpandedValue(this, XModelObjectConstants.ATTR_NAME_LOCATION, null);
 		if(s == null || s.length() == 0) return s;
 		try {
 			return new java.io.File(s).getCanonicalPath();
@@ -120,7 +121,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     }
 
     protected String getAbsolutePath() {
-        return "" + get("location");
+        return "" + get(XModelObjectConstants.ATTR_NAME_LOCATION);
     }
 
     public FileSystemPeer getPeer() {
@@ -161,7 +162,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     		if(resourceName != null && resource.isLinked()) return resourceName.replace('#', '/');
     		return resourceName;
     	}
-    	if("true".equals(getModel().getProperties().getProperty("isProjectFragment"))) {
+    	if(XModelObjectConstants.TRUE.equals(getModel().getProperties().getProperty("isProjectFragment"))) {
     		return resourceName;
     	}
     	return p.replace('#', '/') + " (" + resourceName + ")";

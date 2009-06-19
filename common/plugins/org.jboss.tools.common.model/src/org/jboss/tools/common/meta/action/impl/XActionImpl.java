@@ -99,7 +99,7 @@ public class XActionImpl extends XActionItemImpl implements XAction {
         wizard = el.getAttribute("WizardClassName");
         baseaction = (!XMetaDataLoader.hasAttribute(el, "BaseActionName")) ? null :
                        el.getAttribute("BaseActionName");
-        isSave2ModelRequired = "yes".equals(el.getAttribute("SAVE_REQUIRED"));
+        isSave2ModelRequired = XModelObjectConstants.YES.equals(el.getAttribute("SAVE_REQUIRED"));
         hide = el.getAttribute("HIDE");
         Element[] cs = XMetaDataLoader.getChildrenElements(el, "EntityData");
         data = new XEntityDataImpl[cs.length];

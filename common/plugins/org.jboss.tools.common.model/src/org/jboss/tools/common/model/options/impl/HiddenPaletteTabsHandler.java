@@ -47,12 +47,12 @@ public class HiddenPaletteTabsHandler extends AbstractHandler {
     private void collect(XModelObject object, String prefix, Map<String,XModelObject> objects, List<String[]> dataList) {
     	XModelObject[] cs = object.getChildren();
     	for (int i = 0; i < cs.length; i++) {
-    		String path = prefix + "/" + cs[i].getAttributeValue("name");
+    		String path = prefix + XModelObjectConstants.SEPARATOR + cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
     		String hidden = cs[i].getAttributeValue("hidden");
-    		if(hidden == null) hidden = "no";
+    		if(hidden == null) hidden = XModelObjectConstants.NO;
     		dataList.add(new String[]{path, hidden});
     		objects.put(path, cs[i]);
-    		String kind = cs[i].getAttributeValue("element type");
+    		String kind = cs[i].getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE);
     		if("group".equals(kind)) collect(cs[i], path, objects, dataList);
     	}
     }

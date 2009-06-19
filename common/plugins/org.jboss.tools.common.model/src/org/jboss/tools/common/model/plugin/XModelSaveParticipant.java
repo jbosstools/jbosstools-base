@@ -55,7 +55,7 @@ public class XModelSaveParticipant implements ISaveParticipant {
 		XModel[] ms = models.toArray(new XModel[0]);
 		ArrayList<XModelObject> l = new ArrayList<XModelObject>();
 		for (int i = 0; i < ms.length; i++) {
-			IProject p = (IProject)ms[i].getProperties().get("project");
+			IProject p = (IProject)ms[i].getProperties().get(XModelObjectConstants.PROJECT);
 			if(p == null || !p.isOpen()) continue;
 			if(ms[i].getRoot().isModified()) {
 				XModelObject fs = FileSystemsHelper.getFileSystems(ms[i]);

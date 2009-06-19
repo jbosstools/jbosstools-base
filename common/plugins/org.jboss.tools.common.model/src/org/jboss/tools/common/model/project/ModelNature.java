@@ -101,7 +101,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		}
 		p.setProperty(ECLIPSE_PROJECT, project.getLocation().toString());
 		p.setProperty(ECLIPSE_PROJECT_OLD, project.getLocation().toString());
-		p.put("project", project);
+		p.put(XModelObjectConstants.PROJECT, project);
 		p.setProperty("nature", getID());
 
 		model = (XModel)models.get(project);

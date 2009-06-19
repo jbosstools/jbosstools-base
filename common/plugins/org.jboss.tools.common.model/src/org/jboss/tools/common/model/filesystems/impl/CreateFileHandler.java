@@ -18,6 +18,7 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.handlers.*;
+import org.jboss.tools.common.meta.impl.XMetaDataConstants;
 import org.jboss.tools.common.model.util.*;
 
 public class CreateFileHandler extends DefaultCreateHandler {
@@ -28,8 +29,8 @@ public class CreateFileHandler extends DefaultCreateHandler {
         String defaultExtention = getDefaultExtension(prop);
         validateNameAndExtension(action, p, defaultExtention);
         XModelObject parent = getParentFolder(object, p);
-        String ext = p.getProperty("extension");
-        String entity = action.getProperty("entity");
+        String ext = p.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
+        String entity = action.getProperty(XMetaDataConstants.ENTITY);
         if(entity == null) {
             entity = (ext != null) ? object.getModel().getEntityRecognizer().getEntityName(ext, null)
                         : data[0].getModelEntity().getName();
@@ -65,7 +66,7 @@ public class CreateFileHandler extends DefaultCreateHandler {
     }
 
     public static void validateNameAndExtension(XAction action, Properties p, String defaultExtention) {
-        String name = p.getProperty("name");
+        String name = p.getProperty(XModelObjectConstants.ATTR_NAME);
         String ext = defaultExtention;
         String path = null;
         int i = name.lastIndexOf('.');
@@ -83,21 +84,21 @@ public class CreateFileHandler extends DefaultCreateHandler {
             path = name.substring(0, i);
             name = name.substring(i + 1);
         }
-        p.setProperty("name", name);
-        if(ext != null) p.setProperty("extension", ext);
+        p.setProperty(XModelObjectConstants.ATTR_NAME, name);
+        if(ext != null) p.setProperty(XModelObjectConstants.ATTR_NAME_EXTENSION, ext);
         if(path != null) p.setProperty("path", path);
     }
 
     private XModelObject getParentFolder(XModelObject object, Properties p) throws XModelException {
         String path = p.getProperty("path");
         if(path == null || path.length() == 0) return object;
-        StringTokenizer st = new StringTokenizer(path, "/");
+        StringTokenizer st = new StringTokenizer(path, XModelObjectConstants.SEPARATOR);
         while(st.hasMoreTokens()) {
             String pp = st.nextToken();
             XModelObject c = object.getChildByPath(pp);
             if(c == null) {
                 c = object.getModel().createModelObject("FileFolder", null);
-                c.setAttributeValue("name", pp);
+                c.setAttributeValue(XModelObjectConstants.ATTR_NAME, pp);
                 p.put("parentObject", object);
                 p.put("childObject", c);
                 return createFolder(c, st);
@@ -114,7 +115,7 @@ public class CreateFileHandler extends DefaultCreateHandler {
         while(path.hasMoreTokens()) {
             String pp = path.nextToken();
             XModelObject c = object.getModel().createModelObject("FileFolder", null);
-            c.setAttributeValue("name", pp);
+            c.setAttributeValue(XModelObjectConstants.ATTR_NAME, pp);
             object.addChild(c);
             object = c;
         }

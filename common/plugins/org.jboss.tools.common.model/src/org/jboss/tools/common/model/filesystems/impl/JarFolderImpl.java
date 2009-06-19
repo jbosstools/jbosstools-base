@@ -42,14 +42,14 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
 
     protected String getAbsolutePath() {
         String p = (getParent() == null) ? null : ((JarFolderImpl)getParent()).getAbsolutePath();
-        if(p != null && p.length() > 0) p += "/";
+        if(p != null && p.length() > 0) p += XModelObjectConstants.SEPARATOR;
         return (p == null) ? null : p + name();
     }
 
     public BodySource getBodySource(String filename) {
         String path = getAbsolutePath();
         if(path == null) return null;
-        String cpath = (path.length() == 0) ? filename : path + "/" + filename;
+        String cpath = (path.length() == 0) ? filename : path + XModelObjectConstants.SEPARATOR + filename;
         return new JarBodySource(getJarSystem().getJarAccess(), cpath);
     }
 
@@ -63,11 +63,11 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
         String[] cs = jar.getChildren(path);
         Properties p = new Properties();
         for (int i = 0; i < cs.length; i++) {
-            boolean d = cs[i].endsWith("/");
+            boolean d = cs[i].endsWith(XModelObjectConstants.SEPARATOR);
             if(d) cs[i] = cs[i].substring(0, cs[i].length() - 1);
             if(d) {
                 p.clear();
-                p.setProperty("name", cs[i]);
+                p.setProperty(XModelObjectConstants.ATTR_NAME, cs[i]);
                 XModelObject c = getModel().createModelObject("JarFolder", p);
                 addChild(c);
             } else {
@@ -79,14 +79,14 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
     }
 
     private void createFileObject(JarAccess jar, String path, String name) {
-        String cpath = (path.length() == 0) ? name : path + "/" + name;
+        String cpath = (path.length() == 0) ? name : path + XModelObjectConstants.SEPARATOR + name;
         Properties p = new Properties();
         FolderImpl.parseFileName(p, name);
-        String ext = p.getProperty("extension");
+        String ext = p.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
         String body = null;
         String entity = getModel().getEntityRecognizer().getEntityName(ext, body);
         if("FileAny".equals(entity)) {
-            if(jar.getSize(cpath) > 100000) entity = "FileAnyLong";
+            if(jar.getSize(cpath) > 100000) entity = XModelObjectConstants.ENT_FILE_ANY_LONG;
             else if(jar.isTextEntry(cpath, 100)) entity = "FileTXT";
         } else if(entity == null) {
             body = jar.getContent(cpath);

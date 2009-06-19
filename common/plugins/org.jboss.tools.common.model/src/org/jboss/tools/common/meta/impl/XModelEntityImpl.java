@@ -245,7 +245,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     				XAttributeImpl attr = (XAttributeImpl)XMetaDataLoader.loadMetaElement(e, XAttributeImpl.class, false);
     	             if(attr != null) list.add(attr);
     			} else if(XMODEL_ATTRIBUTE_REF.equals(name)) {
-    				String entityName = e.getAttribute("entity");
+    				String entityName = e.getAttribute(XMetaDataConstants.ENTITY);
     				String attrName = e.getAttribute(NAME);
     				String attributes = e.getAttribute("attributes");
     				String[] atributeNames = new String[]{attrName};

@@ -22,13 +22,16 @@ import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 import org.jboss.tools.common.meta.action.impl.SpecialWizardSupport;
 import org.jboss.tools.common.meta.action.impl.XEntityDataImpl;
+import org.jboss.tools.common.meta.impl.XMetaDataConstants;
 import org.jboss.tools.common.meta.impl.XModelMetaDataImpl;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelBuffer;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.ActionDeclinedException;
+import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class PasteHandler extends AbstractHandler {	
@@ -44,9 +47,9 @@ public class PasteHandler extends AbstractHandler {
         data = new XEntityDataImpl[1];
     }
 
-    private static String[] attrs = {"attribute name", "yes",
-                                     "entity name", "yes",
-                                     "parameters", "no"};
+    private static String[] attrs = {"attribute name", XModelObjectConstants.YES,
+                                     "entity name", XModelObjectConstants.YES,
+                                     "parameters", XModelObjectConstants.NO};
 
     public XEntityData[] getEntityData(XModelObject object) {
         return getEntityData(object, 0);
@@ -55,9 +58,9 @@ public class PasteHandler extends AbstractHandler {
     protected XEntityData[] getEntityData(XModelObject object, int bi) {
         if(getBuffer(object).source(bi) == null) return null;
         ArrayList<String[]> a = new ArrayList<String[]>();
-        a.add(new String[]{getEntityName(object, bi), "yes"});
+        a.add(new String[]{getEntityName(object, bi), XModelObjectConstants.YES});
         String an = getAttributeName(getEntityName(object, bi));
-        if(an != null) a.add(new String[]{an, "yes"});
+        if(an != null) a.add(new String[]{an, XModelObjectConstants.YES});
         for (int i = 0; i < attrs.length; i += 2)
           register(object, attrs[i], attrs[i + 1], a, bi);
         String[][] ds = new String[a.size()][];
@@ -73,11 +76,11 @@ public class PasteHandler extends AbstractHandler {
 
     public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object)) return;
-        boolean isDrop = (prop != null) && "true".equals(prop.getProperty("isDrop"));
+        boolean isDrop = (prop != null) && XModelObjectConstants.TRUE.equals(prop.getProperty("isDrop"));
         int bs = object.getModel().getModelBuffer().getSize();
         for (int i = 0; i < bs; i++) {
         	execute(object, i, isDrop, prop);
-        	if(prop != null && "true".equals(prop.getProperty(IS_CANCELLED))) return;
+        	if(prop != null && XModelObjectConstants.TRUE.equals(prop.getProperty(IS_CANCELLED))) return;
         } 
     }
 
@@ -141,7 +144,7 @@ public class PasteHandler extends AbstractHandler {
 		String n = "<" + co.getModelEntity().getXMLSubPath() + ">";
 		message += n + "?";
 		ServiceDialog d = parent.getModel().getService();
-		int q = d.showDialog("Paste", message, new String[]{"OK", "Cancel"}, null, ServiceDialog.QUESTION);
+		int q = d.showDialog("Paste", message, new String[]{ModelMessages.OK, ModelMessages.Cancel}, null, ServiceDialog.QUESTION);
 		if(q != 0) return false;
 		DefaultRemoveHandler.removeFromParent(co);
 		return true;
@@ -149,9 +152,9 @@ public class PasteHandler extends AbstractHandler {
 	private void showUniqueMessae(XModelObject parent, XModelObject source) {
 		ServiceDialog d = parent.getModel().getService();
 		String message = DefaultCreateHandler.title(parent, true) +
-		                 " may have only one " + source.getAttributeValue("element type") + "." +
+		                 " may have only one " + source.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + "." +
 		                 " You cannot add its copy.";
-		d.showDialog("Warning", message, new String[]{SpecialWizardSupport.OK}, null, ServiceDialog.WARNING);
+		d.showDialog(ModelMessages.WARNING, message, new String[]{SpecialWizardSupport.OK}, null, ServiceDialog.WARNING);
 	}
 
 	protected void onChildPasted(XModelObject child) {}
@@ -192,7 +195,7 @@ public class PasteHandler extends AbstractHandler {
     }
 
     protected String getEntityName(XModelObject object, int i) {
-        String entity = action.getProperty("entity");
+        String entity = action.getProperty(XMetaDataConstants.ENTITY);
         if(entity != null) return entity;
         return getBuffer(object).source(i).getModelEntity().getName();
     }
@@ -202,8 +205,8 @@ public class PasteHandler extends AbstractHandler {
     	if(e.getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) return XModelObjectLoaderUtil.ATTR_ID_NAME;
     	XAttribute[] as = e.getAttributes();
     	for (int i = 0; i < as.length; i++) 
-    		if("true".equals(as[i].getProperty("id"))) return as[i].getName();
-		if(e.getAttribute("name") != null) return "name";
+    		if(XModelObjectConstants.TRUE.equals(as[i].getProperty("id"))) return as[i].getName();
+		if(e.getAttribute(XModelObjectConstants.ATTR_NAME) != null) return XModelObjectConstants.ATTR_NAME;
     	return null;
     }
     
@@ -212,8 +215,8 @@ public class PasteHandler extends AbstractHandler {
     	if(e.getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) return true;
     	XAttribute[] as = e.getAttributes();
     	for (int i = 0; i < as.length; i++) 
-    		if("true".equals(as[i].getProperty("id")) &&
-    		   "true".equals(as[i].getProperty("generate"))) return true;
+    		if(XModelObjectConstants.TRUE.equals(as[i].getProperty("id")) &&
+    		   XModelObjectConstants.TRUE.equals(as[i].getProperty("generate"))) return true;
     	return false;
     }
     

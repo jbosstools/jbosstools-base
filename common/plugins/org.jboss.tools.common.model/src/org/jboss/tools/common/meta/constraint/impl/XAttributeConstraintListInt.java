@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.constraint.impl;
 
+import org.jboss.tools.common.model.plugin.ModelMessages;
+
 public class XAttributeConstraintListInt extends XAttributeConstraintAList {
 
     public XAttributeConstraintListInt() {}
@@ -25,7 +27,7 @@ public class XAttributeConstraintListInt extends XAttributeConstraintAList {
     }
 
     public String getError(String value) {
-        return accepts(value) ? null : getErrorById("CONSTRAINT_INTEGER_OR_LIST");
+        return accepts(value) ? null : ModelMessages.CONSTRAINT_INTEGER_OR_LIST;
     }
 
 

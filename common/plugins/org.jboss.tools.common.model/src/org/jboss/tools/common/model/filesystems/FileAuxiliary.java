@@ -46,8 +46,8 @@ public class FileAuxiliary {
         if(!(f instanceof FileAnyAuxiliaryImpl)) {
             if(!create) return null;
             f = folder.getModel().createModelObject(AUX_FILE_ENTITY, null);
-            f.setAttributeValue("name", name);
-            f.setAttributeValue("extension", extension);
+            f.setAttributeValue(XModelObjectConstants.ATTR_NAME, name);
+            f.setAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION, extension);
             folder.addChild(f);
         }
         FileAnyAuxiliaryImpl aux = (FileAnyAuxiliaryImpl)f;
@@ -57,7 +57,7 @@ public class FileAuxiliary {
     }
     
     public String getMainName(XModelObject aux) {
-    	String auxname = aux.getAttributeValue("name");
+    	String auxname = aux.getAttributeValue(XModelObjectConstants.ATTR_NAME);
     	if(replaceExtension) return auxname;
 		int i = auxname.lastIndexOf('.');
 		String s = (i < 0) ? auxname : auxname.substring(0, i);
@@ -66,8 +66,8 @@ public class FileAuxiliary {
     }
     
     public String getAuxiliaryName(XModelObject main) {
-		String name = main.getAttributeValue("name");
-		if(!replaceExtension) name += "." + main.getAttributeValue("extension");
+		String name = main.getAttributeValue(XModelObjectConstants.ATTR_NAME);
+		if(!replaceExtension) name += "." + main.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION);
 		if(addLeadingDot) name = "." + name;
 		return name;
     }

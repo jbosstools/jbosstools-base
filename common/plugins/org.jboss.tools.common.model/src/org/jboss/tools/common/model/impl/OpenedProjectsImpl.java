@@ -27,7 +27,7 @@ public class OpenedProjectsImpl extends OrderedObjectImpl {
         boolean reopen = (c != null);
         if(!reopen) {
             Properties p = new Properties();
-            p.setProperty("name", name);
+            p.setProperty(XModelObjectConstants.ATTR_NAME, name);
             c = getModel().createModelObject("Workspace", p);
             addChild_0(c);
         }
@@ -43,7 +43,7 @@ public class OpenedProjectsImpl extends OrderedObjectImpl {
         XModelObject[] os = children.getObjects();
         if(os.length > MAX_PROJECT_COUNT)
           for (int q = MAX_PROJECT_COUNT; q < os.length; q++) os[q].removeFromParent();
-        set("OPEN", "yes");
+        set("OPEN", XModelObjectConstants.YES);
     }
 
     public XModelObject getChildByFile(String name) {
@@ -52,7 +52,7 @@ public class OpenedProjectsImpl extends OrderedObjectImpl {
         name = name.replace('\\', '/');
         XModelObject[] os = children.getObjects();
         for (int i = 0; i < os.length; i++) {
-        	String p = XModelObjectUtil.getExpandedValue(os[i], "name", null);
+        	String p = XModelObjectUtil.getExpandedValue(os[i], XModelObjectConstants.ATTR_NAME, null);
             p = FilePathHelper.toPathPath(p);
             if(name.equals(p.replace('\\', '/'))) return os[i];
         }

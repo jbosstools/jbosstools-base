@@ -98,7 +98,7 @@ public abstract class AllResourcesTree implements XFilteredTree {
 		IResource resource = (IResource)object.getAdapter(IResource.class);
 		if(resource == null) {
 			XFilteredTree tree = getSubTree(object.getModel());
-			return "/" + ((IProject)object.getModel().getProperties().get("project")).getName() + "/" +  tree.getValue(object);
+			return XModelObjectConstants.SEPARATOR + EclipseResourceUtil.getProject(object).getName() + XModelObjectConstants.SEPARATOR +  tree.getValue(object);
 		}
 		return (resource == null) ? "" : resource.getFullPath().toString();
 	}
@@ -135,7 +135,7 @@ public abstract class AllResourcesTree implements XFilteredTree {
 	protected abstract XFilteredTree createProjectTree();
 	
 	private XFilteredTree getSubTree(XModel model) {
-		return trees.get(((IProject)model.getProperties().get("project")).getName());
+		return trees.get(((IProject)model.getProperties().get(XModelObjectConstants.PROJECT)).getName());
 	}
 
 	public XModelObject find(String value) {
@@ -145,7 +145,7 @@ public abstract class AllResourcesTree implements XFilteredTree {
 			XFilteredTree tree = trees.get(pn);
 			return (tree == null) ? null : tree.getRoot().getModel().getByPath(value.substring(value.indexOf("//") + 1));
 		}
-		if(value.indexOf("/", 1) < 0) return null;
+		if(value.indexOf(XModelObjectConstants.SEPARATOR, 1) < 0) return null;
 		IResource r = ModelPlugin.getWorkspace().getRoot().getFolder(new Path(value));
 		if(r == null || !r.exists()) {
 			//we can have both folders and files in tree

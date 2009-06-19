@@ -20,16 +20,16 @@ public class RenameFileSystemHandler extends DefaultEditHandler {
 	
 	public boolean isEnabled(XModelObject object) {
 		if(!super.isEnabled(object)) return false;
-		String nm = object.getAttributeValue("name");
+		String nm = object.getAttributeValue(XModelObjectConstants.ATTR_NAME);
 		return !"WEB-INF".equals(nm);	
 	}
 	public void executeHandler(XModelObject object, Properties prop) throws XModelException {
 		if(!isEnabled(object) || data == null) return;
 		Properties p = extractProperties(data[0]);
 		setOtherProperties(object, p);
-		String oldName = object.getAttributeValue("name");
+		String oldName = object.getAttributeValue(XModelObjectConstants.ATTR_NAME);
 		edit(object, p);
-		String newName = p.getProperty("name");
+		String newName = p.getProperty(XModelObjectConstants.ATTR_NAME);
 		XModelObject web = object.getModel().getByPath("Web");
 		if(web == null) return;
 		XModelObject[] ms = web.getChildren();

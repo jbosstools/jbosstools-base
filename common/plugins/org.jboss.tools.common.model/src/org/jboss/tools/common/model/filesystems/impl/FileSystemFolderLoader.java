@@ -29,7 +29,7 @@ public class FileSystemFolderLoader implements XObjectLoader {
     }
     
     private boolean isProtectedFileSystem(XModelObject object) {
-    	String name = object.getAttributeValue("name");
+    	String name = object.getAttributeValue(XModelObjectConstants.ATTR_NAME);
     	if("WEB-ROOT".equals(name) || "WEB-INF".equals(name)) return true;
     	return false;
     }

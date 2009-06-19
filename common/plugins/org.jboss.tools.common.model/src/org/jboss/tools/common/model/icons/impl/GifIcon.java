@@ -22,7 +22,7 @@ public class GifIcon implements ImageComponent {
 
     public int getHash(XModelObject obj) {
         String p = obj.getPath();
-        if(p == null) p = obj.getAttributeValue("name");
+        if(p == null) p = obj.getAttributeValue(XModelObjectConstants.ATTR_NAME);
         return (p == null) ? 0 : p.hashCode();
     }  
 

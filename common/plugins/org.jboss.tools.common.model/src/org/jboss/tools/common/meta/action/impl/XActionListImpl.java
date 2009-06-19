@@ -107,7 +107,7 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
                  item.load(ei);
                  list.add(item);
             } else if(XMODEL_ACTION_ITEM_REF.equals(tag)) {
-				String entityName = ei.getAttribute("entity");
+				String entityName = ei.getAttribute(XMetaDataConstants.ENTITY);
 				String attrName = ei.getAttribute(NAME);
 				String path = ei.hasAttribute("path") 
 					? ei.getAttribute("path") 

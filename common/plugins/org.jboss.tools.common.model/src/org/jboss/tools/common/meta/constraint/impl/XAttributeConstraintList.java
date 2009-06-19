@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.constraint.impl;
 
+import org.jboss.tools.common.model.plugin.ModelMessages;
+
 public class XAttributeConstraintList extends XAttributeConstraintAList {
 
     public XAttributeConstraintList() {}
@@ -19,7 +21,7 @@ public class XAttributeConstraintList extends XAttributeConstraintAList {
     }
 
     public String getError(String value) {
-        return accepts(value) ? null : getErrorById("CONSTRAINT_IS_NOT_IN_LIST");
+        return accepts(value) ? null : ModelMessages.CONSTRAINT_IS_NOT_IN_LIST;
     }
 
 }

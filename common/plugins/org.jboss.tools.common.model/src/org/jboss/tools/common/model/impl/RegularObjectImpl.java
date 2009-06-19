@@ -31,7 +31,7 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
     }
 
     public String name() {
-        return get("NAME");
+        return get(XModelObjectConstants.XML_ATTR_NAME);
     }
 
     protected void onSetEntity(String name) {
@@ -139,7 +139,7 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
     }
 
     private static String title(XModelObject o) {
-        return o.getAttributeValue("element type") + " " +
+        return o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
                o.getModelEntity().getRenderer().getTitle(o);
     }
 
