@@ -1,7 +1,8 @@
 Manifest-Version: 1.0
 Eclipse-LazyStart: true
 Bundle-Name: %Bundle-Name.0
-Bundle-ClassPath: xmleditor.jar
+Bundle-ClassPath: xmleditor.jar,
+ .
 Bundle-Activator: org.jboss.tools.common.text.xml.XmlEditorPlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.text.xml; singleton:=true

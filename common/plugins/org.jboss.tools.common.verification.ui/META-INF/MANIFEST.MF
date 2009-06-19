@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Eclipse-LazyStart: true
 Bundle-Name: %pluginName
-Bundle-ClassPath: verificationui.jar
 Bundle-Activator: org.jboss.tools.common.verification.ui.XStudioVerif
  icationPlugin
 Bundle-Vendor: %providerName

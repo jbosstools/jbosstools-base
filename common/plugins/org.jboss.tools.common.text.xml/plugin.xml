@@ -138,7 +138,7 @@
 	  contributesToHeader="false" 
 	  highlightPreferenceKey="redhatTextOccurrenceHighlighting" 
 	  highlightPreferenceValue="true" 
-	  icon="icons/full/obj16/xpl/searchm_obj.gif" 
+	  icon="$nl$/icons/full/obj16/xpl/searchm_obj.gif" 
 	  isGoToNextNavigationTarget="false" 
 	  isGoToNextNavigationTargetKey="isRedHatTextOccurrenceGoToNextNavigationTarget" 
 	  isGoToPreviousNavigationTarget="false" 

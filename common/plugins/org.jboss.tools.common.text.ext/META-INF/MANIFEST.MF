@@ -10,7 +10,6 @@ Export-Package: org.jboss.tools.common.text.ext,
  org.jboss.tools.common.text.ext.util.xpl
 Bundle-Version: 2.0.0
 Bundle-Name: %Bundle-Name.0
-Bundle-ClassPath: texteditorextensions.jar
 Bundle-ManifestVersion: 2
 Bundle-Vendor: %providerName
 Plugin-Class: org.jboss.tools.common.text.ext.ExtensionsPlugin

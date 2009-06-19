@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Eclipse-LazyStart: true
 Bundle-Name: %pluginName
-Bundle-ClassPath: common-gef.jar
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.gef
 Bundle-Localization: plugin
