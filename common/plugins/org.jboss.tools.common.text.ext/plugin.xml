@@ -33,7 +33,7 @@
          		<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
          	</contentType>
          	<contentType id="org.jboss.tools.common.model.ui.xml">
-         		<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
+				<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
          	</contentType>
          </hyperlinkPartitioner>
 
@@ -99,7 +99,7 @@
       		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT"/>
       	</contentType>
          <contentType id="org.jboss.tools.common.model.ui.xml">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" />
+	      	<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT" /> 
          </contentType>
 		</hyperlinkPartitioner>
 
@@ -483,7 +483,7 @@
          			<axis path="/web-app/filter/filter-class/" />
          			<axis path="/web-app/servlet/servlet-class/" />
          			<axis path="/web-app/listener/listener-class/" />
-         			<axis path="/web-app/resource-env-ref/resource-env-ref-type/" />
+         			<axis path="/web-app/resource-env-ref/resource-env-ref-type/" />         			
          			<!-- Web.xml -->
 
          			<!-- TLD Files -->
@@ -636,12 +636,36 @@
          	</contentType>
 		</hyperlinkPartitioner>
 		<!-- End of TLD files hyperlink partitioners -->
+		<!--Maksim Areshkau, partitioner for *.taglib.xml files -->
+		<hyperlinkPartitioner
+        class="org.jboss.tools.common.text.ext.hyperlink.TaglibDefinitionFilesHyperlinkPartitioner"
+        id="org.jboss.tools.common.text.ext.hyperlink.TaglibDefinitionFilesHyperlinkPartitioner">
+          	<contentType id="org.jboss.tools.common.model.ui.xml">
+          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
+         			<axis path="/facelet-taglib/tag/source">
+	                 </axis>       			
+          		</partitionType>
+          	</contentType>
+		</hyperlinkPartitioner>
+		<!--End of partiotioner for *.taglib.xml files -->
 	</extension>
 
 	<extension 
 		point="org.jboss.tools.common.text.ext.hyperlink"
 		id="org.jboss.tools.common.text.ext.hyperlink"
 		name="org.jboss.tools.common.text.ext.hyperlink">
+		
+		
+		<hyperlink
+        class="org.jboss.tools.common.text.ext.hyperlink.xml.FaceletSourceTagHyperlink"
+        id="org.jboss.tools.common.text.ext.hyperlink.xml.FaceletSourceTagHyperlink">
+	     <contenttypeidentifier
+	           id="org.jboss.tools.common.model.ui.xml">
+	           <partitiontype
+                  id="org.jboss.tools.common.text.ext.xml.TAGLIB_XML" >
+	           </partitiontype>
+	     </contenttypeidentifier>
+		</hyperlink>
 
 		<hyperlink 
       		class="org.jboss.tools.common.text.ext.hyperlink.xml.XMLDoctypeHyperlink" 

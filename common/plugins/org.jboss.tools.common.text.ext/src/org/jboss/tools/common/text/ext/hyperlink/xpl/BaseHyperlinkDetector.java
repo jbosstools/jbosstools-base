@@ -23,6 +23,7 @@ import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
+import org.eclipse.wst.sse.ui.internal.StructuredTextViewer;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkBuilder;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkDetector;
@@ -59,7 +60,6 @@ public class BaseHyperlinkDetector implements IHyperlinkDetector{
 	 */
 	public IHyperlink[] getHyperlinks(ITextViewer textViewer, IRegion region, String contentType, String partitionType) {
 	    ArrayList hyperlinks = new ArrayList();
-
 		// determine the current partition
 		if (textViewer != null && textViewer.getDocument() != null) {
 			// query HyperlinkBuilder and get the list of open ons for the

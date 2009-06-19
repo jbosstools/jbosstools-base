@@ -27,11 +27,12 @@ import org.jboss.tools.common.text.ext.util.Utils;
  *
  */
 public class XMLTextHyperlinkPartitioner extends AbstractHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
-	public static final String XML_TEXT_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_TEXT";
+	public static final String XML_TEXT_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_TEXT"; //$NON-NLS-1$
 
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
+	@Override
 	protected IHyperlinkRegion parse(IDocument document, IHyperlinkRegion superRegion) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
@@ -44,7 +45,7 @@ public class XMLTextHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 
 			String axis = getAxis(document, superRegion);
 			String contentType = superRegion.getContentType();
-			String type = XML_TEXT_PARTITION;
+			String type = getPartitionType();
 			int start = Utils.getValueStart(n);
 			int end = Utils.getValueEnd(n);
 			if(start < 0 || end < start) return null;
@@ -73,6 +74,10 @@ public class XMLTextHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 		} finally {
 			smw.dispose();
 		}
+	}
+	
+	protected  String getPartitionType() {
+		return XML_TEXT_PARTITION;
 	}
 
 }

@@ -53,7 +53,7 @@ public abstract class LinkHyperlink extends AbstractHyperlink {
 		}
 	}
 	
-	private String getFilePath(IRegion region) {
+	protected String getFilePath(IRegion region) {
 		try {
 			return getDocument().get(region.getOffset(), region.getLength());
 		} catch (BadLocationException x) {
