@@ -102,7 +102,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		String relPath= getString(bundle, imageKey, null);
 
 		try {
-			ImageDescriptor id = ImageDescriptor.createFromURL(makeIconFileURL("resources/icons/xpl", relPath)); //$NON-NLS-1$
+			ImageDescriptor id = ImageDescriptor.createFromURL(makeIconFileURL("icons/xpl", relPath)); //$NON-NLS-1$
 			if (id != null)
 				setImageDescriptor(id);
 		} catch (MalformedURLException e) {
@@ -111,7 +111,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 	
 		relPath= getString(bundle, disabledImageKey, null);
 		try {
-			ImageDescriptor id= ImageDescriptor.createFromURL(makeIconFileURL("resources/icons/xpl", relPath)); //$NON-NLS-1$
+			ImageDescriptor id= ImageDescriptor.createFromURL(makeIconFileURL("icons/xpl", relPath)); //$NON-NLS-1$
 			if (id != null)
 				setDisabledImageDescriptor(id);
 		} catch (MalformedURLException e) {
