@@ -14,16 +14,16 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.event.*;
 
 public interface XAction extends XActionItem, XActionHandler {
-    public String HIDE_NEVER = "never";
-    public String HIDE_DISABLED = "disabled";
-    public String HIDE_ALWAYS = "always";
+    public String HIDE_NEVER = "never"; //$NON-NLS-1$
+    public String HIDE_DISABLED = "disabled"; //$NON-NLS-1$
+    public String HIDE_ALWAYS = "always"; //$NON-NLS-1$
     
     // standart actions paths
     
-	public static final String CUT = "CopyActions.Cut";  
-	public static final String COPY = "CopyActions.Copy";  
-	public static final String DELETE = "DeleteActions.Delete";  
-	public static final String PASTE = "CopyActions.Paste";  
+	public static final String CUT = "CopyActions.Cut";   //$NON-NLS-1$
+	public static final String COPY = "CopyActions.Copy";   //$NON-NLS-1$
+	public static final String DELETE = "DeleteActions.Delete";   //$NON-NLS-1$
+	public static final String PASTE = "CopyActions.Paste";   //$NON-NLS-1$
 
     public String getWizardClassName();
     public XEntityData[] getEntityData(XModelObject object);

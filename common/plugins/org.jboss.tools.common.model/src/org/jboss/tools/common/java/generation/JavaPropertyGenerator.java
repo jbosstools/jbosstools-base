@@ -25,8 +25,8 @@ public class JavaPropertyGenerator {
 	}
 	
 	public void generate(String name, String javatype, String access, boolean field, boolean getter, boolean setter) throws CoreException {
-		if("default".equals(access)) access = ""; else access += " ";
-		String fa = (getter && setter) ? "private " : access;
+		if("default".equals(access)) access = ""; else access += " "; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String fa = (getter && setter) ? "private " : access; //$NON-NLS-1$
 		ICompilationUnit parentCU = owner.getCompilationUnit();
 		String lineDelimiter = getLineDelimiterUsed(parentCU);
 		ICompilationUnit createdWorkingCopy = (ICompilationUnit) parentCU.getWorkingCopy(null);
@@ -39,7 +39,7 @@ public class JavaPropertyGenerator {
 		if(field && !isInterface && 
 				(createdType.getField(name) == null || !createdType.getField(name).exists())
 				) {
-			String fieldContents = "\t" + fa + javatype + " " + name + ";" + lineDelimiter;
+			String fieldContents = "\t" + fa + javatype + " " + name + ";" + lineDelimiter; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			createdType.createField(fieldContents, null, true, null);
 			synchronized(cu) {
 				cu.reconcile(ICompilationUnit.NO_AST, true, null, null);
@@ -56,15 +56,15 @@ public class JavaPropertyGenerator {
 	}
 	
 	public static void createGetter(ICompilationUnit cu, IType type, String access, String javatype, String name, String lineDelimiter) throws CoreException {
-		String methodName = getAccessorName("get", name);
+		String methodName = getAccessorName("get", name); //$NON-NLS-1$
 		if(findGetter(type, methodName) != null) return;
-		String methodHeader = access + javatype + " " + methodName + "()";
+		String methodHeader = access + javatype + " " + methodName + "()"; //$NON-NLS-1$ //$NON-NLS-2$
 		String stub = null;
 		if(!type.isInterface()) {
-			methodHeader += " {" + lineDelimiter;
-			stub = methodHeader  + "}" + lineDelimiter;
+			methodHeader += " {" + lineDelimiter; //$NON-NLS-1$
+			stub = methodHeader  + "}" + lineDelimiter; //$NON-NLS-1$
 		} else {
-			methodHeader += ";" + lineDelimiter;
+			methodHeader += ";" + lineDelimiter; //$NON-NLS-1$
 			stub = methodHeader;
 		}
 		IMethod m = type.createMethod(stub, null, true, null);
@@ -88,19 +88,19 @@ public class JavaPropertyGenerator {
 	}
 
 	public static void createSetter(ICompilationUnit cu, IType type, String access, String javatype, String name, String lineDelimiter) throws CoreException {
-		String methodName = getAccessorName("set", name);
-		String methodHeader = access + "void " + methodName + "(" + javatype + " " + name + ")";
+		String methodName = getAccessorName("set", name); //$NON-NLS-1$
+		String methodHeader = access + "void " + methodName + "(" + javatype + " " + name + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		String stub = null;
 		if(!type.isInterface()) {
-			methodHeader += " {" + lineDelimiter;
-			stub = methodHeader  + "}" + lineDelimiter;
+			methodHeader += " {" + lineDelimiter; //$NON-NLS-1$
+			stub = methodHeader  + "}" + lineDelimiter; //$NON-NLS-1$
 		} else {
-			methodHeader += ";" + lineDelimiter;
+			methodHeader += ";" + lineDelimiter; //$NON-NLS-1$
 			stub = methodHeader;
 		}
 		IMethod m = type.createMethod(stub, null, true, null);
 		String methodComment = CodeGeneration.getSetterComment(cu, type.getElementName(), m.getElementName(), name, javatype, name, name, lineDelimiter);
-		String methodContent = (type.isInterface()) ? null : CodeGeneration.getSetterMethodBodyContent(cu, cu.getElementName(), m.getElementName(), "this." + name, name, lineDelimiter);
+		String methodContent = (type.isInterface()) ? null : CodeGeneration.getSetterMethodBodyContent(cu, cu.getElementName(), m.getElementName(), "this." + name, name, lineDelimiter); //$NON-NLS-1$
 		editMethod(cu, m, methodHeader, methodComment, methodContent, lineDelimiter);
 	}
 	
@@ -116,10 +116,10 @@ public class JavaPropertyGenerator {
 		}
 		sb.append(methodHeader);
 		if(methodContent != null) {
-			sb.append(methodContent).append("}").append(lineDelimiter);
+			sb.append(methodContent).append("}").append(lineDelimiter); //$NON-NLS-1$
 		}
 		String formattedContent = JavaBeanGenerator.codeFormat2(CodeFormatter.K_CLASS_BODY_DECLARATIONS, sb.toString(), 1, lineDelimiter, cu.getJavaProject());
-		if(formattedContent != null && formattedContent.startsWith("\t")) {
+		if(formattedContent != null && formattedContent.startsWith("\t")) { //$NON-NLS-1$
 			formattedContent = formattedContent.substring(1);
 		}
 		buf.replace(range.getOffset(), range.getLength(), formattedContent);
@@ -132,7 +132,7 @@ public class JavaPropertyGenerator {
 
 	public static String getLineDelimiterUsed(ICompilationUnit cu) {
 		if (cu == null || !cu.exists()) {
-			return System.getProperty("line.separator", "\n");
+			return System.getProperty("line.separator", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		IBuffer buf = null;
 		try {
@@ -141,7 +141,7 @@ public class JavaPropertyGenerator {
 			ModelPlugin.getPluginLog().logError(e);
 		}
 		if (buf == null) {
-			return System.getProperty("line.separator", "\n");
+			return System.getProperty("line.separator", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		int length = buf.getLength();
 		for (int i = 0; i < length; i++) {
@@ -149,15 +149,15 @@ public class JavaPropertyGenerator {
 			if (ch == SWT.CR) {
 				if (i + 1 < length) {
 					if (buf.getChar(i + 1) == SWT.LF) {
-						return "\r\n";
+						return "\r\n"; //$NON-NLS-1$
 					}
 				}
-				return "\r";
+				return "\r"; //$NON-NLS-1$
 			} else if (ch == SWT.LF) {
-				return "\n";
+				return "\n"; //$NON-NLS-1$
 			}
 		}
-		return System.getProperty("line.separator", "\n");
+		return System.getProperty("line.separator", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

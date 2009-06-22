@@ -22,25 +22,25 @@ public abstract class CompoundAdoptManager implements XAdoptManager {
 	protected synchronized final XAdoptManager[] loadManagers(String extensionPoint) {
 		IExtensionPoint p = Platform.getExtensionRegistry().getExtensionPoint(extensionPoint);
 		if(p == null) {
-			ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load extension point " + extensionPoint + ".", null));
+			ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load extension point " + extensionPoint + ".", null)); //$NON-NLS-1$ //$NON-NLS-2$
 			return new XAdoptManager[0];
 		}
 		IConfigurationElement[] es = p.getConfigurationElements();
 		XAdoptManager[] array = new XAdoptManager[es.length];
 		int length = 0;
 		for (int i = 0; i < es.length; i++) {
-			String cls = es[i].getAttribute("class");
+			String cls = es[i].getAttribute("class"); //$NON-NLS-1$
 			if(cls == null || cls.length() == 0) continue;
 			try {
-				XAdoptManager m = (XAdoptManager)es[i].createExecutableExtension("class");
+				XAdoptManager m = (XAdoptManager)es[i].createExecutableExtension("class"); //$NON-NLS-1$
 				if(m != null) {
 					array[length] = m;
 					length++;
 				}
 			} catch (CoreException e) {
-				ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load class " + cls + ".", e));
+				ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load class " + cls + ".", e)); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (ClassCastException e2) {
-				ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load class " + cls + ".", e2));
+				ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load class " + cls + ".", e2)); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		if(length < array.length) {

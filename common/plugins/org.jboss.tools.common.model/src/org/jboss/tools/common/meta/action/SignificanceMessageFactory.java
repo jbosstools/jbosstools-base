@@ -20,7 +20,7 @@ import org.jboss.tools.common.meta.action.impl.handlers.ReplaceSignificanceMessa
 
 public class SignificanceMessageFactory {
   
-  static public final String MESSAGE_CLASS_NAME_PARAMETER = "significanceMessageClass";
+  static public final String MESSAGE_CLASS_NAME_PARAMETER = "significanceMessageClass"; //$NON-NLS-1$
 
   static private SignificanceMessage defaultFactory = new SignificanceMessageImpl();
   static private SignificanceMessage defaultReplaceFactory = new ReplaceSignificanceMessageImpl();
@@ -37,7 +37,7 @@ public class SignificanceMessageFactory {
   public String getMessage(XAction action, XModelObject object, XModelObject[] objects) {
     String ms = action.getProperty(MESSAGE_CLASS_NAME_PARAMETER);
     if(ms == null || ms.length() == 0) return defaultFactory.getMessage(action, object, objects);
-    if("%Replace%".equals(ms)) {
+    if("%Replace%".equals(ms)) { //$NON-NLS-1$
     	return defaultReplaceFactory.getMessage(action, object, objects);
     }
     SignificanceMessage specificMessage = (SignificanceMessage)map.get(ms);

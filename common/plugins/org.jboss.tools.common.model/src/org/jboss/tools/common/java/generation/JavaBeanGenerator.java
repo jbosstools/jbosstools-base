@@ -42,15 +42,15 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class JavaBeanGenerator {
-	public static String PARAM_PACKAGENAME = "packageName";
-	public static String PARAM_SHORTNAME = "shortName";
-	public static String PARAM_ACCESS = "access";
-	public static String PARAM_EXTENDS = "extends";
-	public static String PARAM_IMPLEMENTS = "implements";
-	public static String PARAM_INTERFACE = "interface";
+	public static String PARAM_PACKAGENAME = "packageName"; //$NON-NLS-1$
+	public static String PARAM_SHORTNAME = "shortName"; //$NON-NLS-1$
+	public static String PARAM_ACCESS = "access"; //$NON-NLS-1$
+	public static String PARAM_EXTENDS = "extends"; //$NON-NLS-1$
+	public static String PARAM_IMPLEMENTS = "implements"; //$NON-NLS-1$
+	public static String PARAM_INTERFACE = "interface"; //$NON-NLS-1$
 	
-	public static String ATT_CLASS_NAME = "class name";
-	public static String ATT_ACCESS_MODIFIER = "access modifier";
+	public static String ATT_CLASS_NAME = "class name"; //$NON-NLS-1$
+	public static String ATT_ACCESS_MODIFIER = "access modifier"; //$NON-NLS-1$
 	
 	protected XModelObject context;
 	protected Properties input;
@@ -75,20 +75,20 @@ public class JavaBeanGenerator {
 		if(srcpath == null) return;
 
 		String qclsname = input.getProperty(ATT_CLASS_NAME);		
-		String filepath = srcpath + XModelObjectConstants.SEPARATOR + qclsname.replace('.', '/') + ".java";
+		String filepath = srcpath + XModelObjectConstants.SEPARATOR + qclsname.replace('.', '/') + ".java"; //$NON-NLS-1$
 		if(new File(filepath).exists()) return;
 
 		int lastDot = qclsname.lastIndexOf('.');
 		Properties p = new Properties();
 		p.setProperty(PARAM_SHORTNAME, qclsname.substring(lastDot + 1));
-		p.setProperty(PARAM_PACKAGENAME, (lastDot < 0) ? "" : qclsname.substring(0, lastDot));
+		p.setProperty(PARAM_PACKAGENAME, (lastDot < 0) ? "" : qclsname.substring(0, lastDot)); //$NON-NLS-1$
 //		String pkgname = (lastDot < 0) ? "" : qclsname.substring(0, lastDot);
 		String access = input.getProperty(ATT_ACCESS_MODIFIER);
-		if(access == null || "default".equals(access)) access = "";
+		if(access == null || "default".equals(access)) access = ""; //$NON-NLS-1$ //$NON-NLS-2$
 		p.setProperty(PARAM_ACCESS, access);
-		p.setProperty(PARAM_EXTENDS, input.getProperty("extends"));
-		p.setProperty(PARAM_IMPLEMENTS, input.getProperty("implements").replace(';', ','));
-		p.setProperty(PARAM_INTERFACE, input.getProperty("interface").replace(';', ','));
+		p.setProperty(PARAM_EXTENDS, input.getProperty("extends")); //$NON-NLS-1$
+		p.setProperty(PARAM_IMPLEMENTS, input.getProperty("implements").replace(';', ',')); //$NON-NLS-1$
+		p.setProperty(PARAM_INTERFACE, input.getProperty("interface").replace(';', ',')); //$NON-NLS-1$
 		doGenerateJava(javaproject, filepath, p);
 	}
 	
@@ -118,8 +118,8 @@ public class JavaBeanGenerator {
 
 		String shortname = p.getProperty(PARAM_SHORTNAME);
 
-		String lineDelimiter = System.getProperty("line.separator", "\n");
-		ICompilationUnit parentCU = pack.createCompilationUnit(shortname + ".java", "", false, null); 
+		String lineDelimiter = System.getProperty("line.separator", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		ICompilationUnit parentCU = pack.createCompilationUnit(shortname + ".java", "", false, null);  //$NON-NLS-1$ //$NON-NLS-2$
 		ICompilationUnit createdWorkingCopy = (ICompilationUnit) parentCU.getWorkingCopy(null);
 
 ///		imports= new ImportsStructure(createdWorkingCopy, prefOrder, threshold, false);
@@ -164,9 +164,9 @@ public class JavaBeanGenerator {
 		}
 		StringBuffer sb = new StringBuffer();
 		if(!p.isDefaultPackage()) {
-			sb.append("package ");
+			sb.append("package "); //$NON-NLS-1$
 			sb.append(p.getElementName());
-			sb.append(';'); //$NON-NLS-1$
+			sb.append(';');
 		}
 		for (int i = 0; i < 2; i++) sb.append(lineDelimiter);
 		if(comments != null) {
@@ -201,37 +201,37 @@ public class JavaBeanGenerator {
 		StringBuffer sb = new StringBuffer();
 //		String pkgname = p.getProperty(PARAM_PACKAGENAME);
 		String access = p.getProperty(PARAM_ACCESS);
-		if(access == null) access = ""; else if(access.length() > 0) access += " ";
+		if(access == null) access = ""; else if(access.length() > 0) access += " "; //$NON-NLS-1$ //$NON-NLS-2$
 		boolean isInterface = XModelObjectConstants.TRUE.equals(p.getProperty(PARAM_INTERFACE));
-		String kind = isInterface ? "interface " : "class ";
+		String kind = isInterface ? "interface " : "class "; //$NON-NLS-1$ //$NON-NLS-2$
 		String shortname = p.getProperty(PARAM_SHORTNAME);
 		String _extends = p.getProperty(PARAM_EXTENDS);
-		if(_extends == null) _extends = ""; else if(_extends.length() > 0) _extends = "extends " + _extends + " ";
+		if(_extends == null) _extends = ""; else if(_extends.length() > 0) _extends = "extends " + _extends + " "; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		String _implements = formatImplements(p.getProperty(PARAM_IMPLEMENTS));
 		if(_implements == null) { 
-			_implements = ""; 
+			_implements = "";  //$NON-NLS-1$
 		} else if(_implements.length() > 0) {
 			if(isInterface) {
-				_implements = "extends " + _implements + " ";
+				_implements = "extends " + _implements + " "; //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
-				_implements = "implements " + _implements + " ";
+				_implements = "implements " + _implements + " "; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		} 
-		String header = access + kind + shortname + " " + _extends + _implements + "{" + lineDelimiter;
+		String header = access + kind + shortname + " " + _extends + _implements + "{" + lineDelimiter; //$NON-NLS-1$ //$NON-NLS-2$
 		sb.append(header);
 		if(!isInterface) {
-			sb.append("public " + shortname + "() {" + lineDelimiter + "}" + lineDelimiter); // constructor
+			sb.append("public " + shortname + "() {" + lineDelimiter + "}" + lineDelimiter); // constructor //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
-		sb.append("}" + lineDelimiter);
+		sb.append("}" + lineDelimiter); //$NON-NLS-1$
 		return sb.toString();
 	}
 
 	private String formatImplements(String s) {
 		StringBuffer sb = new StringBuffer();
-		StringTokenizer st = new StringTokenizer(s, ",;");
+		StringTokenizer st = new StringTokenizer(s, ",;"); //$NON-NLS-1$
 		while(st.hasMoreTokens()) {
 			sb.append(st.nextToken());
-			if(st.hasMoreTokens()) sb.append(", ");
+			if(st.hasMoreTokens()) sb.append(", "); //$NON-NLS-1$
 		}
 		return sb.toString();
 	}

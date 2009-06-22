@@ -16,11 +16,11 @@ public class CreateAntFileSupport extends CreateFileSupport {
 
 	protected String modifyBody(String body) {
 		if(body == null || body.length() == 0) {
-			body = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                   "<project basedir=\".\" default=\"build\">\n" +
-                   " <target name=\"build\">\n\n" +
-                   " </target>\n" +
-                   "</project>\n";
+			body = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + //$NON-NLS-1$
+                   "<project basedir=\".\" default=\"build\">\n" + //$NON-NLS-1$
+                   " <target name=\"build\">\n\n" + //$NON-NLS-1$
+                   " </target>\n" + //$NON-NLS-1$
+                   "</project>\n"; //$NON-NLS-1$
 		}
 		return body;
 	}

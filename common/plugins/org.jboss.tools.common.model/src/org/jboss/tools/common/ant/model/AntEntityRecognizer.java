@@ -28,7 +28,7 @@ public class AntEntityRecognizer implements EntityRecognizer {
 
     public String getEntityName(String ext, String body) {
         if(body == null) return null;
-        IContentType cd = Platform.getContentTypeManager().getContentType("org.eclipse.ant.core.antBuildFile");
+        IContentType cd = Platform.getContentTypeManager().getContentType("org.eclipse.ant.core.antBuildFile"); //$NON-NLS-1$
         AntBuildfileContentDescriber d = new AntBuildfileContentDescriber();
         int i = -1;
         try {
@@ -39,7 +39,7 @@ public class AntEntityRecognizer implements EntityRecognizer {
         } catch (IOException e) {
         	ModelPlugin.getPluginLog().logError(e);
         }
-        return i == 2 ? "FileANT" : null;
+        return i == 2 ? "FileANT" : null; //$NON-NLS-1$
         
 //        AntParser p = new AntParser(body);
 //        return (p.getTargets() != null) ? "FileANT" : null;

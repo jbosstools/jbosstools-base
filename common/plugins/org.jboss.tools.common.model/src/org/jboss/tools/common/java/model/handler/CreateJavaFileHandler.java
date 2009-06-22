@@ -27,7 +27,7 @@ public class CreateJavaFileHandler extends AbstractHandler {
 	}
 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException {
-		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard");
+		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizard.newfile.NewClassCreationWizard"); //$NON-NLS-1$
 		wizard.setObject(object);
 		wizard.execute();
 	}

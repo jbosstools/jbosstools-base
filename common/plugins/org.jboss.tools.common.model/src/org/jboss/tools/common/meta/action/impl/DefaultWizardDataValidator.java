@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action.impl;
 
+import java.text.MessageFormat;
 import java.util.*;
 
 import org.jboss.tools.common.meta.XChild;
@@ -42,7 +43,7 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 		XEntityData[] ds = support.getEntityData();
 		if(ds.length <= step) return; 
 		if(support.action != null) {
-			if(XModelObjectConstants.TRUE.equals(support.action.getProperty("validator.add")) && step == 0) {
+			if(XModelObjectConstants.TRUE.equals(support.action.getProperty("validator.add")) && step == 0) { //$NON-NLS-1$
 				String entity = support.action.getProperty(XMetaDataConstants.ENTITY);
 				if(entity == null) entity = ds[step].getModelEntity().getName();
 				if(!checkChild(support.getTarget(), entity, data)) return;
@@ -52,11 +53,17 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 				XChild c = support.getTarget().getModelEntity().getChild(entity);
 				int max = c == null ? 0 : c.getMaxCount();
 				if(c != null && max <= childCount) {
-					message = DefaultCreateHandler.title(parent, true) + " can contain only " + max +
-                    ((max == 1) ? " child " : " children ") +
-                    "with entity " + entity + ".";
+					String parentTitle = DefaultCreateHandler.title(parent, true);
+					// TODO (i18n) this assumes Germanic-type plurals
+					message = ((max == 1) ? 
+							MessageFormat.format(
+											"{0} can contain only {1} child with entity {2}.",
+											parentTitle, max, entity)
+	                    : MessageFormat.format(
+										"{0} can contain only {1} children with entity {2}.",
+										parentTitle, max, entity));
 				}
-			} else if(XModelObjectConstants.TRUE.equals(support.action.getProperty("validator.edit"))) {
+			} else if(XModelObjectConstants.TRUE.equals(support.action.getProperty("validator.edit"))) { //$NON-NLS-1$
 				String entity = support.action.getProperty(XMetaDataConstants.ENTITY);
 				if(entity == null) entity = ds[step].getModelEntity().getName();
 				if(!checkChild(support.getTarget().getParent(), entity, data)) return;
@@ -67,20 +74,20 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 		for (int i = 0; i < as.length; i++) {
 			String n = as[i].getAttribute().getName();
 			String value = data.getProperty(n);
-			if(value == null) value = "";
+			if(value == null) value = ""; //$NON-NLS-1$
 			if(!support.isFieldEditorEnabled(step, n, data)) continue;
 			message = DefaultCreateHandler.validateAttribute(as[i], value);
 			if(message != null) return;
 		}
 		if(message != null || support.action == null) return;
-		if(XModelObjectConstants.TRUE.equals(support.action.getProperty("validator.addfile")) && step == 0) {
+		if(XModelObjectConstants.TRUE.equals(support.action.getProperty("validator.addfile")) && step == 0) { //$NON-NLS-1$
 			validateAddFile(ds, data);
 		}
-		String resourceAttr = support.action.getProperty("validator.resource");
+		String resourceAttr = support.action.getProperty("validator.resource"); //$NON-NLS-1$
 		if(resourceAttr != null) {
 			String value = data.getProperty(resourceAttr);
 			if(value != null && (!new java.io.File(value).exists())) { 
-				message = "Resource " + value + " does not exist.";
+				message = MessageFormat.format("Resource {0} does not exist.", value);
 			}
 		}
 	}

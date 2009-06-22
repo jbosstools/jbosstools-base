@@ -25,13 +25,13 @@ public class AntParser {
     private String[] targets = null;
 
     public AntParser(String body) {
-        if(body == null || body.indexOf("<project") < 0) return;
+        if(body == null || body.indexOf("<project") < 0) return; //$NON-NLS-1$
         Element element = XMLUtil.getElement(new StringReader(body));
         if(element == null) return;
-        if(!"project".equals(element.getNodeName())) return;
-        if(element.hasAttribute("xmlns")) return;
-        if(element.hasAttribute("xsi:schemaLocation")) return;
-        NodeList es = element.getElementsByTagName("target");
+        if(!"project".equals(element.getNodeName())) return; //$NON-NLS-1$
+        if(element.hasAttribute("xmlns")) return; //$NON-NLS-1$
+        if(element.hasAttribute("xsi:schemaLocation")) return; //$NON-NLS-1$
+        NodeList es = element.getElementsByTagName("target"); //$NON-NLS-1$
         for (int i = 0; i < es.getLength(); i++)
           if(!((Element)es.item(i)).hasAttribute(XModelObjectConstants.ATTR_NAME)) return;
         targets = new String[es.getLength()];
