@@ -70,7 +70,7 @@ public class ELResolverFactoryManager {
 			IExtension extension = extensions[i];
 			IConfigurationElement[] elements = extension.getConfigurationElements();
 			for(int j=0; j<elements.length; j++) {
-				IConfigurationElement[] natures = elements[i].getChildren("project-nature"); //$NON-NLS-1$
+				IConfigurationElement[] natures = elements[j].getChildren("project-nature"); //$NON-NLS-1$
 				for (int k = 0; k < natures.length; k++) {
 					String natureId = natures[k].getAttribute("id"); //$NON-NLS-1$
 					try {
@@ -88,7 +88,7 @@ public class ELResolverFactoryManager {
 						Activator.getPluginLog().logError(e);
 					}
 				}
-				IConfigurationElement[] factories = elements[i].getChildren("factory"); //$NON-NLS-1$
+				IConfigurationElement[] factories = elements[j].getChildren("factory"); //$NON-NLS-1$
 				for (int k = 0; k < factories.length; k++) {
 					try {
 						Object factory = factories[k].createExecutableExtension("class"); //$NON-NLS-1$
