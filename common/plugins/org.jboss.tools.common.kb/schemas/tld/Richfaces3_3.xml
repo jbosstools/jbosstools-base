@@ -15257,6 +15257,11 @@
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="enumeration">
+                <param value="body"/>
+                <param value="form"/>
+                <param value="parent"/>
+            </proposal>
         </attribute-type>
         <attribute type="domElementAttachment"/>
         <attribute-type name="trimOverlayedElements" required="false">
