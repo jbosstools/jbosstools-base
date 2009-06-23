@@ -648,6 +648,18 @@
           	</contentType>
 		</hyperlinkPartitioner>
 		<!--End of partiotioner for *.taglib.xml files -->
+		
+		<hyperlinkPartitioner 
+         	id="org.jboss.tools.common.text.ext.hyperlink.xml.PortletHyperlinkPartitioner"
+         	class="org.jboss.tools.common.text.ext.hyperlink.xml.PortletHyperlinkPartitioner">
+        	
+         	<contentType id="org.eclipse.core.runtime.xml">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
+					<axis path="*/portlet/portlet-class/" />
+					<axis path="*/portlet/resource-bundle/" />
+         		</partitionType>
+         	</contentType>
+		</hyperlinkPartitioner>
 	</extension>
 
 	<extension 
@@ -907,6 +919,15 @@
 			<contenttypeidentifier id="org.eclipse.wst.html.core.htmlsource">
 				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_STYLESHEET_REL_LINK" />
 			</contenttypeidentifier>
+		</hyperlink>
+		
+		<hyperlink 
+			class="org.jboss.tools.common.text.ext.hyperlink.xml.PortletHyperlink" 
+	  		id="org.jboss.tools.common.text.ext.hyperlink.xml.PortletHyperlink">
+         	<contenttypeidentifier id="org.eclipse.core.runtime.xml">
+				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.PORTLET_CLASS" />
+				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.PORTLET_RESOURCE" />
+         	</contenttypeidentifier>
 		</hyperlink>
    </extension>
 	
