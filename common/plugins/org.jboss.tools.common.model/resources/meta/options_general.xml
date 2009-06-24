@@ -2304,7 +2304,79 @@
 					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:fileUpload /&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;b>data&lt;/b>, fileName, fileSize, contentType, accept&lt;/code>"
 					ENDTEXT="" ICON="" NAME="fileUpload" REFORMAT="no" SCOPE="project"
 					STARTTEXT="&lt;fileUpload data=&quot;|&quot;/>" large-icon=""
+								model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:graphicImage&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:graphicImage&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>alt, binding, converter, dir, fileName, height, id, ismap, lang, longdesc, onclick, ondblclick, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass, title, url, usemap, value, width&lt;/code>"
+					ENDTEXT="&lt;/graphicImage>" ICON="" NAME="graphicImage" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;graphicImage>" large-icon=""
 					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:convertEntity&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:convertEntity&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;/code>"
+					ENDTEXT="&lt;/convertEntity>" ICON="" NAME="convertEntity" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;convertEntity>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:taskId&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:taskId&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, name, rendered, value&lt;/code>"
+					ENDTEXT="&lt;/taskId>" ICON="" NAME="taskId" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;taskId>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:conversationName&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:conversationName&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, name, value&lt;/code>"
+					ENDTEXT="&lt;/conversationName>" ICON="" NAME="conversationName"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;conversationName>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:conversationId&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:conversationId&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, name, rendered, value&lt;/code>"
+					ENDTEXT="&lt;/conversationId>" ICON="" NAME="conversationId" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;conversationId>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:selection&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:selection&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, dataModel, id, name, rendered, value, var&lt;/code>"
+					ENDTEXT="&lt;/selection>" ICON="" NAME="selection" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;selection>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:transformImageType&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:transformImageType&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, contentType, id, rendered&lt;/code>"
+					ENDTEXT="&lt;/transformImageType>" ICON="" NAME="transformImageType"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;transformImageType>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:remote&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:remote&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, include, rendered, style, styleClass&lt;/code>"
+					ENDTEXT="&lt;/remote>" ICON="" NAME="remote" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;remote>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:defaultAction&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:defaultAction&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, converter, id, rendered, value&lt;/code>"
+					ENDTEXT="&lt;/defaultAction>" ICON="" NAME="defaultAction" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;defaultAction>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:validateFormattedText&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:validateFormattedText&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>&lt;/code>"
+					ENDTEXT="&lt;/validateFormattedText>" ICON="" NAME="validateFormattedText"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;validateFormattedText>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:label&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:label&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>accesskey, binding, converter, dir, escape, for, id, lang, onblur, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, rendered, style, styleClass, tabindex, title, value&lt;/code>"
+					ENDTEXT="&lt;/label>" ICON="" NAME="label" REFORMAT="yes" SCOPE="project"
+					STARTTEXT="&lt;label>" large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:formattedText&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:formattedText&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, converter, id, rendered, value&lt;/code>"
+					ENDTEXT="&lt;/formattedText>" ICON="" NAME="formattedText" REFORMAT="yes"
+					SCOPE="project" STARTTEXT="&lt;formattedText>" large-icon=""
+					model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:transformImageSize&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:transformImageSize&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, factor, height, id, maintainRatio, rendered, width&lt;/code>"
+					ENDTEXT="&lt;/transformImageSize>" ICON="" NAME="transformImageSize"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;transformImageSize>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:conversationPropagation&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:conversationPropagation&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, name, pageflow, type, value&lt;/code>"
+					ENDTEXT="&lt;/conversationPropagation>" ICON="" NAME="conversationPropagation"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;conversationPropagation>"
+					large-icon="" model-entity="SharableMacroHTML" />
+				<MacroHTML
+					DESCRIPTION="&lt;b>Syntax:&lt;/b>&lt;br>&lt;code>&amp;lt;s:transformImageBlur&amp;gt;&lt;/code>&lt;br>&lt;code>&amp;lt;/s:transformImageBlur&amp;gt;&lt;/code>&lt;br>&lt;b>Attributes:&lt;/b>&lt;br>&lt;code>binding, id, radius, rendered&lt;/code>"
+					ENDTEXT="&lt;/transformImageBlur>" ICON="" NAME="transformImageBlur"
+					REFORMAT="yes" SCOPE="project" STARTTEXT="&lt;transformImageBlur>"
+					large-icon="" model-entity="SharableMacroHTML" />
 			</GroupHTML>
 		</PageTabHTML>
 		<PageTabHTML DESCRIPTION="" EDITOR_TYPE="" HIDDEN="no"
