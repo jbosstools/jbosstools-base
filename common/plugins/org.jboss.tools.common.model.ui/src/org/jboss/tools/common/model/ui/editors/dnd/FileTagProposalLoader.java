@@ -83,6 +83,13 @@ public class FileTagProposalLoader implements ITagProposalLoader {
 		"include",
 		new AbsoluteFilePathAttributeValueLoader("src","","")						
 	);
+	
+	static TagProposal S_DECORATE = new TagProposal(
+			DropURI.SEAM_URI,
+			"s",
+			"decorate",
+			new AbsoluteFilePathAttributeValueLoader("template","","")						
+		);
 		
 	static TagProposal[] PAGE_TAG_PROPOSALS = new TagProposal[]{
 		JSP_INCLUDE,
@@ -92,7 +99,8 @@ public class FileTagProposalLoader implements ITagProposalLoader {
 	static TagProposal[] XHTML_PAGE_TAG_PROPOSALS = new TagProposal[]{
 		JSP_INCLUDE,
 		JSP_FORWARD,
-		UI_INCLUDE
+		UI_INCLUDE,
+		S_DECORATE
 	};
 	
 	static {
