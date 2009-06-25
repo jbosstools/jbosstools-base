@@ -81,6 +81,9 @@ public class ELContextImpl implements ELContext {
 	 * @param vars
 	 */
 	public void addVar(Region region, Var var) {
+		if (this.vars.get(region) == null) {
+			this.vars.put(region, new HashSet<Var>());
+		}
 		this.vars.get(region).add(var);
 		allVars.add(var);
 	}
