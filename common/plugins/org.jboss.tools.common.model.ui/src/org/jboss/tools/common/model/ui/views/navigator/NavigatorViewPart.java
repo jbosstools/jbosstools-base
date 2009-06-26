@@ -91,7 +91,7 @@ import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSelectionTarget, IResourceNavigator , IShowInTarget //, ISelectionProvider 
 {
-	public static final String VIEW_ID = "org.jboss.tools.common.model.ui.navigator.NavigatorViewPart";
+	public static final String VIEW_ID = "org.jboss.tools.common.model.ui.navigator.NavigatorViewPart"; //$NON-NLS-1$
 	private TreeViewer viewer;
 	private XModelObjectSelectionProvider selectionProvider = new XModelObjectSelectionProvider();
 	private TreeViewerDragDropProvider dndProvider = new TreeViewerDragDropProvider(); 
@@ -121,7 +121,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	public void createPartControl(Composite parent)	{
 		createViewer(parent);
 		viewer.setInput(getInitialInput());
-		selectionProvider.addHost("viewer", viewer, true);
+		selectionProvider.addHost("viewer", viewer, true); //$NON-NLS-1$
 		getSite().setSelectionProvider(selectionProvider);
 		if (memento != null) {
 			restoreLinkingEnabled();
@@ -154,11 +154,11 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 				Object o = ss.getFirstElement();
 				if(!(o instanceof XModelObject)) return;
 				XModelObject object = (XModelObject)o;
-				if(XActionInvoker.getAction("Open", object) == null) return;
-				XActionInvoker.invoke("Open", object, null);					
+				if(XActionInvoker.getAction("Open", object) == null) return; //$NON-NLS-1$
+				XActionInvoker.invoke("Open", object, null);					 //$NON-NLS-1$
 			}
 		};
-		h.activateHandler("org.eclipse.jdt.ui.edit.text.java.open.editor", new ActionHandler(action));
+		h.activateHandler("org.eclipse.jdt.ui.edit.text.java.open.editor", new ActionHandler(action)); //$NON-NLS-1$
 	}
 	
 	private IAction createActionInstance(String name) {
@@ -167,8 +167,8 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	
 	protected String[] getActionClasses() {
 		String[] actions = new String[]{
-			"org.jboss.tools.struts.ui.internal.action.CreateProjectAction",
-			"org.jboss.tools.struts.ui.internal.action.ImportProjectAction"        			
+			"org.jboss.tools.struts.ui.internal.action.CreateProjectAction", //$NON-NLS-1$
+			"org.jboss.tools.struts.ui.internal.action.ImportProjectAction"        			 //$NON-NLS-1$
 		};
 		return actions;
 	}
@@ -306,7 +306,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 		if(o == null) return;
 		while(o != null && o.getFileType() == XFileObject.NONE) o = o.getParent();
 		if(o == null || o.getFileType() != XFileObject.FILE) return;
-		XActionInvoker.invoke("SaveActions.Save", o, null);		
+		XActionInvoker.invoke("SaveActions.Save", o, null);		 //$NON-NLS-1$
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 	}
 
@@ -365,25 +365,25 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 		
 	public void saveState(IMemento _memento) {
 		XModelObject o = getSelectedModelObject();
-		if(o != null) _memento.putString("selection", getNodePath(o));
+		if(o != null) _memento.putString("selection", getNodePath(o)); //$NON-NLS-1$
 		saveLinkingEnabled(_memento);
 	}
 
 	public void restoreState(IMemento _memento) {
-		String selection = _memento.getString("selection");
+		String selection = _memento.getString("selection"); //$NON-NLS-1$
 		XModelObject o = findModelObject(selection);
 		if(o != null) viewer.setSelection(new StructuredSelection(o));
 		restoreLinkingEnabled(); 
 	}
 	
 	private String getNodePath(XModelObject o) {
-		IProject p = (IProject)o.getModel().getProperties().get("project");
-		return p.getName() + ":" + o.getPath();
+		IProject p = (IProject)o.getModel().getProperties().get("project"); //$NON-NLS-1$
+		return p.getName() + ":" + o.getPath(); //$NON-NLS-1$
 	}
 	
 	private XModelObject findModelObject(String nodepath) {
 		if(nodepath == null || nodepath.length() == 0) return null;
-		int i = nodepath.indexOf(":");
+		int i = nodepath.indexOf(":"); //$NON-NLS-1$
 		IProject p = ModelUIPlugin.getWorkspace().getRoot().getProject(nodepath.substring(0, i));
 		return EclipseResourceUtil.getObjectByPath(p, nodepath.substring(i + 1));
 	}
@@ -530,11 +530,11 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	};
 	
 	private void saveLinkingEnabled(IMemento _memento) {
-		_memento.putInteger("LinkStrutsProjectsToEditor", isLinkingEnabled ? 1 : 0);
+		_memento.putInteger("LinkStrutsProjectsToEditor", isLinkingEnabled ? 1 : 0); //$NON-NLS-1$
 	}
 	
 	private void restoreLinkingEnabled() {
-		Integer val = memento.getInteger("LinkStrutsProjectsToEditor");//IWorkbenchPreferenceConstants.LINK_NAVIGATOR_TO_EDITOR);
+		Integer val = memento.getInteger("LinkStrutsProjectsToEditor");//IWorkbenchPreferenceConstants.LINK_NAVIGATOR_TO_EDITOR); //$NON-NLS-1$
 		if (val != null) {
 			isLinkingEnabled = val.intValue() != 0;
 		}
@@ -588,9 +588,9 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 			if(file == null && obj instanceof XModelObject) {
 				XModelObject o = (XModelObject)obj;
 				Properties p = new Properties();
-				p.setProperty("onlySelectIfOpen", "true");
-				if(XActionInvoker.getAction("Open", o) != null) {
-					XActionInvoker.invoke("Open", o, p);
+				p.setProperty("onlySelectIfOpen", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+				if(XActionInvoker.getAction("Open", o) != null) { //$NON-NLS-1$
+					XActionInvoker.invoke("Open", o, p); //$NON-NLS-1$
 				}
 				return;
 			}
@@ -634,7 +634,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	class ActivationXRunnable implements XRunnable {
 
 		public String getId() {
-			return "Activation";
+			return "Activation"; //$NON-NLS-1$
 		}
 
 		public void run() {

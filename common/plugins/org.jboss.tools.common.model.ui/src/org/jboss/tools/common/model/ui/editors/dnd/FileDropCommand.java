@@ -50,7 +50,7 @@ public class FileDropCommand extends DefaultDropCommand {
 		properties.put(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_VERSION,getDefaultModel().getTagProposal().getLibraryVersion());
 		properties.put(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX,getDefaultModel().getTagProposal().getPrefix());
 		properties.put(PaletteInsertHelper.PROPOPERTY_SELECTION_PROVIDER, getDefaultModel().getDropData().getSelectionProvider());
-		properties.put(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB, "true");
+		properties.put(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB, "true"); //$NON-NLS-1$
 		addCustomProperties(properties);
 		PaletteInsertHelper.insertIntoEditor(
 				getDefaultModel().getDropData().getSourceViewer(),
@@ -63,16 +63,16 @@ public class FileDropCommand extends DefaultDropCommand {
 		String type = data.getMimeType();
 		String mime = data.getMimeData();
 		/*nsITransferable.kFileMime*/
-		if("application/x-moz-file".equals(type) && mime != null) {
-			if(mime.startsWith("file:")) mime = mime.substring(5);
+		if("application/x-moz-file".equals(type) && mime != null) { //$NON-NLS-1$
+			if(mime.startsWith("file:")) mime = mime.substring(5); //$NON-NLS-1$
 			File f = new File(mime);
 			IFile file = EclipseResourceUtil.getFile(f.getAbsolutePath());
 			if(file == null) return;
 			XModelObject o = EclipseResourceUtil.getObjectByResource(file);
 			if(o == null) return;
-			XActionInvoker.invoke("CopyActions.Copy", o, null);
+			XActionInvoker.invoke("CopyActions.Copy", o, null); //$NON-NLS-1$
 			data.setMimeType(ModelTransfer.MODEL);
-			data.setMimeData("");
+			data.setMimeData(""); //$NON-NLS-1$
 			DropCommandFactory.getInstance().getDropCommand(ModelTransfer.MODEL, tagProposalFactory).execute(data);
 		}
 	}
@@ -80,7 +80,7 @@ public class FileDropCommand extends DefaultDropCommand {
 	protected void addCustomProperties(Properties properties) {}
 
 	protected String getReformatBodyProperty() {
-		return "yes";
+		return "yes"; //$NON-NLS-1$
 	}
 
 	protected IDropWizardModel createSpecificModel() {

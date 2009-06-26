@@ -66,7 +66,7 @@ public class XAttributePropertyDescription implements IPropertyDescriptorEx, IXM
 			editor.setValidator(new ICellEditorValidator() {
 				public String isValid(Object value) {
 					if(modelObject == null) return null;
-					String error = ((XModelImpl)modelObject.getModel()).getError(modelObject, attribute.getName(), value == null ? "" : value.toString());
+					String error = ((XModelImpl)modelObject.getModel()).getError(modelObject, attribute.getName(), value == null ? "" : value.toString()); //$NON-NLS-1$
 					return error;
 				}
 				

@@ -21,10 +21,10 @@ import org.eclipse.jface.text.rules.IToken;
  *
  */
 public class CSSTextScanner extends TextScanner {
-	public static final String CSS_CLASS_NAME = "___css_class_name";
-	public static final String CSS_CLASS_NAME_SEPARATOR = "___css_class_name_separator";
-	public static final String CSS_CLASS_BODY = "___css_class_body";
-	public static final String CSS_CLASS_COMMENT = "___css_class_comment";
+	public static final String CSS_CLASS_NAME = "___css_class_name"; //$NON-NLS-1$
+	public static final String CSS_CLASS_NAME_SEPARATOR = "___css_class_name_separator"; //$NON-NLS-1$
+	public static final String CSS_CLASS_BODY = "___css_class_body"; //$NON-NLS-1$
+	public static final String CSS_CLASS_COMMENT = "___css_class_comment"; //$NON-NLS-1$
 	
 	private static final int STATE_START			= 0;
 	private static final int STATE_NAME				= 1;

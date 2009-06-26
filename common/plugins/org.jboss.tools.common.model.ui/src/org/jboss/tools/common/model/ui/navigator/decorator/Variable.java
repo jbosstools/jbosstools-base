@@ -18,10 +18,10 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
  * @author Viacheslav Kabanovich
  */
 public class Variable implements DecoratorConstants {
-	public static Variable NAME = new Variable("name", "default label");
+	public static Variable NAME = new Variable("name", "default label"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	String name;
-	String parameters = "";
+	String parameters = ""; //$NON-NLS-1$
 	String description;
 	ICustomVariable custom;
 	
@@ -48,7 +48,7 @@ public class Variable implements DecoratorConstants {
 		if(description == null || description.length() == 0) {
 			return name;
 		}
-		return name + parameters + " - " + description;
+		return name + parameters + " - " + description; //$NON-NLS-1$
 	}
 	
 	public void load(IConfigurationElement element) {
@@ -66,7 +66,7 @@ public class Variable implements DecoratorConstants {
 			} catch (CoreException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			} catch (ClassCastException e1) {
-				ModelUIPlugin.getPluginLog().logError("Attribute " + ATTR_CLASS + " must be instanceof ICustomVariable", e1);
+				ModelUIPlugin.getPluginLog().logError("Attribute " + ATTR_CLASS + " must be instanceof ICustomVariable", e1); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}

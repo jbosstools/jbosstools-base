@@ -17,8 +17,8 @@ import org.eclipse.swt.widgets.*;
 import org.jboss.tools.common.model.util.*;
 
 public class ConfigRulesProvider extends LabelProvider implements ITreeContentProvider, ILabelProvider, IColorProvider {
-	public Image IMAGE_ENABLED = EclipseResourceUtil.getImage("images/common/check.gif");
-	public Image IMAGE_DISABLED = EclipseResourceUtil.getImage("images/common/uncheck.gif");
+	public Image IMAGE_ENABLED = EclipseResourceUtil.getImage("images/common/check.gif"); //$NON-NLS-1$
+	public Image IMAGE_DISABLED = EclipseResourceUtil.getImage("images/common/uncheck.gif"); //$NON-NLS-1$
 	protected RuleSetWrapper[] ruleSets = new RuleSetWrapper[0];
 	
 	public RuleSetWrapper[] getRuleSets() {

@@ -67,12 +67,12 @@ public class HyperlinkStringButtonFieldEditor extends StringButtonFieldEditor im
 
 			if (this.labelAction!=null) {
 				// hyperlink style
-				style = getSettings().getStyle("Hyperlink.Style");
+				style = getSettings().getStyle("Hyperlink.Style"); //$NON-NLS-1$
 				if (style==SWT.DEFAULT) style = SWT.NONE;
 				bg = parent.getBackground();
 					///getSettings().getColor("Hyperlink.Background");
-				fg = getSettings().getColor("Hyperlink.Foreground");
-				font = getSettings().getFont("Hyperlink.Font");
+				fg = getSettings().getColor("Hyperlink.Foreground"); //$NON-NLS-1$
+				font = getSettings().getFont("Hyperlink.Font"); //$NON-NLS-1$
 				label = new SelectableFormLabel(parent, style);
 				((SelectableFormLabel)label).addSelectionListener(new SelectionListener() {
 					public void widgetSelected(SelectionEvent e) {
@@ -83,11 +83,11 @@ public class HyperlinkStringButtonFieldEditor extends StringButtonFieldEditor im
 				});
 			} else {
 				// label
-				style = getSettings().getStyle("Label.Style");
+				style = getSettings().getStyle("Label.Style"); //$NON-NLS-1$
 				bg = parent.getBackground();
 					///getSettings().getColor("Label.Background");
-				fg = getSettings().getColor("Label.Foreground");
-				font = getSettings().getFont("Label.Font");
+				fg = getSettings().getColor("Label.Foreground"); //$NON-NLS-1$
+				font = getSettings().getFont("Label.Font"); //$NON-NLS-1$
 				label = new Label(parent, style);
 			}
 		
@@ -119,7 +119,7 @@ public class HyperlinkStringButtonFieldEditor extends StringButtonFieldEditor im
 		valueProvider.addValueChangeListener(this);
 		actionProvider = (IActionProvider)propertyEditor.getAdapter(IActionProvider.class);
 		if (actionProvider!=null) {
-			labelAction = actionProvider.getAction("LABEL_ACTION");
+			labelAction = actionProvider.getAction("LABEL_ACTION"); //$NON-NLS-1$
 		}
 		setErrorProvider((IAttributeErrorProvider)propertyEditor.getAdapter(IAttributeErrorProvider.class));
 	}
@@ -193,7 +193,7 @@ public class HyperlinkStringButtonFieldEditor extends StringButtonFieldEditor im
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			Object v = evt.getNewValue();
 			valueProvider.removeValueChangeListener(this);
-			this.setStringValue((v == null) ? "" : v.toString());
+			this.setStringValue((v == null) ? "" : v.toString()); //$NON-NLS-1$
 			valueProvider.addValueChangeListener(this);
 		}
 	}

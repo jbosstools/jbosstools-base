@@ -27,7 +27,7 @@ public class MessageAndCheckboxDialog extends MessageDialog {
 	public static String CHECKED = ServiceDialog.CHECKED;
 	public static String BUTTONS = ServiceDialog.BUTTONS;
 	public static String SEPARATOR = ServiceDialog.SEPARATOR;
-	public static String TITLE = "title";
+	public static String TITLE = "title"; //$NON-NLS-1$
 	public static String RETURN_CODE = ServiceDialog.RETURN_CODE;
 	Button button;
 	Button[] buttons = new Button[0];
@@ -52,10 +52,10 @@ public class MessageAndCheckboxDialog extends MessageDialog {
 
 	public static boolean openConfirm(Shell parent, Properties p) {
 		Assert.isNotNull(p);
-		Assert.isNotNull(p.getProperty(MESSAGE), "Property " + MESSAGE + " is null");
-		Assert.isNotNull(p.getProperty(CHECKBOX_MESSAGE), "Property " + CHECKBOX_MESSAGE + " is null");
-		Assert.isTrue(p.get(CHECKED) instanceof Boolean, "Property " + CHECKED + " must have type Boolean");
-		String title = p.getProperty("title", "Confirmation");
+		Assert.isNotNull(p.getProperty(MESSAGE), "Property " + MESSAGE + " is null"); //$NON-NLS-1$ //$NON-NLS-2$
+		Assert.isNotNull(p.getProperty(CHECKBOX_MESSAGE), "Property " + CHECKBOX_MESSAGE + " is null"); //$NON-NLS-1$ //$NON-NLS-2$
+		Assert.isTrue(p.get(CHECKED) instanceof Boolean, "Property " + CHECKED + " must have type Boolean"); //$NON-NLS-1$ //$NON-NLS-2$
+		String title = p.getProperty("title", "Confirmation"); //$NON-NLS-1$
 		MessageAndCheckboxDialog dialog = new MessageAndCheckboxDialog(parent, title, QUESTION, p);
 		int result = dialog.open();
 		p.put(RETURN_CODE, Integer.valueOf(result));
@@ -63,8 +63,8 @@ public class MessageAndCheckboxDialog extends MessageDialog {
 	}
 	
 	protected Control createCustomArea(Composite parent) {
-		String b1 = properties.getProperty(CHECKBOX_MESSAGE + "_1");
-		if(b1 == null) return button = createCheckBox(parent, "");
+		String b1 = properties.getProperty(CHECKBOX_MESSAGE + "_1"); //$NON-NLS-1$
+		if(b1 == null) return button = createCheckBox(parent, ""); //$NON-NLS-1$
 		return createMultiCheckBox(parent);
 	}
 	
@@ -86,11 +86,11 @@ public class MessageAndCheckboxDialog extends MessageDialog {
 		l.marginWidth = 0;
 		l.marginHeight = 11;
 		c.setLayout(l);
-		button = createCheckBox(c, "");
+		button = createCheckBox(c, ""); //$NON-NLS-1$
 		ArrayList<Button> list = new ArrayList<Button>();
 		int i = 1;
 		while(true) {
-			String suffix = "_" + i;
+			String suffix = "_" + i; //$NON-NLS-1$
 			if(properties.getProperty(CHECKBOX_MESSAGE + suffix) == null) break;
 			if(properties.getProperty(SEPARATOR + suffix) != null) {
 				// actually here we should only call
@@ -128,7 +128,7 @@ public class MessageAndCheckboxDialog extends MessageDialog {
 	protected void buttonPressed(int buttonId) {
 		properties.put(CHECKED, Boolean.valueOf(button.getSelection()));
 		for (int i = 0; i < buttons.length; i++) {
-			properties.put(CHECKED + "_" + (i + 1), Boolean.valueOf(buttons[i].getSelection()));
+			properties.put(CHECKED + "_" + (i + 1), Boolean.valueOf(buttons[i].getSelection())); //$NON-NLS-1$
 		}
 		super.buttonPressed(buttonId);
 	}
@@ -155,7 +155,7 @@ public class MessageAndCheckboxDialog extends MessageDialog {
 		composite.setLayout(l);
 		GridData data = new GridData(GridData.VERTICAL_ALIGN_CENTER | GridData.FILL_HORIZONTAL);
 		composite.setLayoutData(data);
-		Button b = createCheckBox(composite, "_" + lastButton);
+		Button b = createCheckBox(composite, "_" + lastButton); //$NON-NLS-1$
 		b.setLayoutData(new GridData());
 		Button[] bs = new Button[buttons.length + 1];
 		System.arraycopy(buttons, 0, bs, 0, buttons.length);

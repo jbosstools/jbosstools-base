@@ -55,7 +55,7 @@ public class TaglibManagerWrapper {
 	}
 
 	public String getCorePrefix() {
-		return getPrefix("http://java.sun.com/jsf/core");
+		return getPrefix("http://java.sun.com/jsf/core"); //$NON-NLS-1$
 	}
 
 }

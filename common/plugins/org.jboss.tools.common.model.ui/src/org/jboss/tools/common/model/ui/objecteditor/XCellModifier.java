@@ -17,7 +17,7 @@ import org.jboss.tools.common.model.XModelException;
 public class XCellModifier implements ICellModifier {
 
 	public boolean canModify(Object element, String property) {
-		if(!"value".equals(property)) return false;
+		if(!"value".equals(property)) return false; //$NON-NLS-1$
 		XAttributeInfo v = (XAttributeInfo)element;
 		return v != null && v.isEditable();
 	}

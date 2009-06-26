@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.attribute.adapter;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,8 +68,8 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 	public static final String UP_LABEL = "&Up";
 	public static final String DOWN_LABEL = "&Down";
 	
-	private static final String COPY_XACTION_PATH = "CopyActions.Copy"; 
-	private static final String MOVE_XACTION_PATH = "MoveActions.Move";
+	private static final String COPY_XACTION_PATH = "CopyActions.Copy";  //$NON-NLS-1$
+	private static final String MOVE_XACTION_PATH = "MoveActions.Move"; //$NON-NLS-1$
 	
 	private XModelTreeListener modelTreeListener;
 	private XModelTreeListenerSWTASync asyncListener;
@@ -80,7 +81,7 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 		this.table = table;
 		if (tableColumn == null) {
 			if ((shownProperties == null) || (shownProperties.length == 0)) {
-				shownProperties = new String[] {"name"}; // name attribute as default
+				shownProperties = new String[] {"name"}; // name attribute as default //$NON-NLS-1$
 				widths = new int[] {100};
 			}
 			tableColumn = new TableColumn[shownProperties.length];
@@ -209,7 +210,7 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 		if (model!=null) {
 			model.addModelTreeListener(asyncListener);
 		}
-		printActionList("",xmo.getModelEntity().getActionList());//.getAction(actionPath);
+		printActionList("",xmo.getModelEntity().getActionList());//.getAction(actionPath); //$NON-NLS-1$
 	}
 
 	public void setAttributeData(XAttributeData attributeData) {
@@ -335,16 +336,16 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 		String actionListName = actionList.getName();
 		String actionListDisplayName = actionList.getDisplayName();
 		String actionListPath = actionList.getPath();
-		System.out.println(level+"ActionList ["+actionListName+"] ["+actionListDisplayName+"] ["+actionListPath+"]");
+		System.out.println(level+"ActionList ["+actionListName+"] ["+actionListDisplayName+"] ["+actionListPath+"]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		XActionItem[] items = actionList.getActionItems();
 		for (int i=0;i<items.length;++i) {
 			if (items[i] instanceof XActionList) {
-				printActionList(level+"    ", (XActionList)items[i]);				
+				printActionList(level+"    ", (XActionList)items[i]);				 //$NON-NLS-1$
 			} else {
 				String actionItemName = items[i].getName();
 				String actionItemDisplayName = items[i].getDisplayName();
 				String actionItemPath = items[i].getPath();
-				System.out.println(level+"    "+"ActionItem ["+actionItemName+"] ["+actionItemDisplayName+"] ["+actionItemPath+"]");
+				System.out.println(level+"    "+"ActionItem ["+actionItemName+"] ["+actionItemDisplayName+"] ["+actionItemPath+"]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			}
 		}
 	}
@@ -443,7 +444,7 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 		}
 		public void setActionPath(String path) {
 			this.path = path;
-			if ("%SelectIt%".equals(path)) {
+			if ("%SelectIt%".equals(path)) { //$NON-NLS-1$
 				if (xmo != null) {
 					setEnabled(true);
 				} else { 
@@ -459,7 +460,7 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 		}
 		public void setXModelObject(XModelObject xmo) {
 			this.xmo = xmo;
-			if ("%SelectIt%".equals(path)) {
+			if ("%SelectIt%".equals(path)) { //$NON-NLS-1$
 				if (xmo != null) {
 					setEnabled(true);
 				} else { 
@@ -475,7 +476,7 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 		}
 		
 		public void run() {
-			if ("%SelectIt%".equals(this.path)) {
+			if ("%SelectIt%".equals(this.path)) { //$NON-NLS-1$
 				if (selectionChangedListener!=null) {
 					if(this.xmo == null) return;
 					ISelection selection = new StructuredSelection(this.xmo);
@@ -775,7 +776,8 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 		public String getColumnText(Object element, int columnIndex) {
 			XModelObject xmo = ((XModelObject)element);
 			String result = xmo.getAttributeValue(shownProperties[columnIndex]); 
-			return (result!=null)?result:"no attribute called "+shownProperties[columnIndex]+" on entity "+xmo.getModelEntity().getName();
+			return (result!=null)?result:MessageFormat.format("no attribute called {0} on entity {1}",
+					shownProperties[columnIndex], xmo.getModelEntity().getName());
 		}
 
 		/* (non-Javadoc)

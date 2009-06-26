@@ -67,7 +67,7 @@ public class DefaultMultipageEditor extends ObjectMultiPageEditor {
 
 	protected void checkErrorMode() {
 		if(object == null) return;
-		boolean i = "yes".equals(object.get("isIncorrect"));
+		boolean i = "yes".equals(object.get("isIncorrect")); //$NON-NLS-1$ //$NON-NLS-2$
 		if(isErrorMode == i) return;
 		isErrorMode = i;
 /*		
@@ -84,8 +84,8 @@ public class DefaultMultipageEditor extends ObjectMultiPageEditor {
 	}
 	
 	protected void updateSelectionProvider() {
-		if(textEditor != null) selectionProvider.addHost("textEditor", getTextSelectionProvider());
-		if(treeFormPage != null) selectionProvider.addHost("treeEditor", treeFormPage.getSelectionProvider());
+		if(textEditor != null) selectionProvider.addHost("textEditor", getTextSelectionProvider()); //$NON-NLS-1$
+		if(treeFormPage != null) selectionProvider.addHost("treeEditor", treeFormPage.getSelectionProvider()); //$NON-NLS-1$
 		int index = getActivePage();
 		if(index == getSourcePageIndex()) {
 			if(textEditor != null) {

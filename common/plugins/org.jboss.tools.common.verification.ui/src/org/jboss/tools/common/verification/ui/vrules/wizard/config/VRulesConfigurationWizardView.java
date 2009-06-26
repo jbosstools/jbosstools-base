@@ -36,9 +36,9 @@ public class VRulesConfigurationWizardView extends AbstractQueryWizardView {
 	protected DescriptionManager tip = new DescriptionManager();
 
 	public VRulesConfigurationWizardView() {
-		this.setMessage(WizardKeys.getString("VRulesConfigurationWizardView.Message"));
-		this.setTitle(WizardKeys.getString("VRulesConfigurationWizardView.Title"));
-		this.setWindowTitle(WizardKeys.getString("VRulesConfigurationWizardView.WindowTitle"));
+		this.setMessage(WizardKeys.getString("VRulesConfigurationWizardView.Message")); //$NON-NLS-1$
+		this.setTitle(WizardKeys.getString("VRulesConfigurationWizardView.Title")); //$NON-NLS-1$
+		this.setWindowTitle(WizardKeys.getString("VRulesConfigurationWizardView.WindowTitle")); //$NON-NLS-1$
 	}
 
 	public Control createControl(Composite parent) {
@@ -72,7 +72,7 @@ public class VRulesConfigurationWizardView extends AbstractQueryWizardView {
 	public void setObject(Object data) {
 		Properties p = findProperties(data);
 		if(p != null) {
-			String key = p.getProperty("help");
+			String key = p.getProperty("help"); //$NON-NLS-1$
 			setHelpKey(key);
 		}
 //		Object model = ((Properties)data).get("model");

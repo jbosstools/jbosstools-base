@@ -18,13 +18,13 @@ package org.jboss.tools.common.text.ext.hyperlink.xml;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class XMLFilterNameHyperlinkPartitioner extends XMLJumpToHyperlinkPartitioner {
-	public static final String XML_FILTER_NAME_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME";
+	public static final String XML_FILTER_NAME_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME"; //$NON-NLS-1$
 
 	protected String getPartitionType() {
 		return XML_FILTER_NAME_PARTITION;
 	}
 
 	protected String[] getValidAxisEndings() {
-		return new String[] {"/filter-mapping/filter-name/"};
+		return new String[] {"/filter-mapping/filter-name/"}; //$NON-NLS-1$
 	}
 }

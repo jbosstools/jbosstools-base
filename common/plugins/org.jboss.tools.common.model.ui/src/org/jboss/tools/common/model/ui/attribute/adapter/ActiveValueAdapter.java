@@ -29,10 +29,10 @@ public class ActiveValueAdapter extends DefaultValueAdapter implements IActionHe
 	public void setAttribute(XAttribute attribute) {
 		super.setAttribute(attribute);
 		support = (SpecialWizardSupport)attribute.getEditor().getContext();
-		qActionName = "...:" + attribute.getName();
+		qActionName = "...:" + attribute.getName(); //$NON-NLS-1$
 		Properties p = support.getProperties();
 		String comd = (p == null) ? null : p.getProperty(qActionName);
-		if(comd == null) comd = "...";
+		if(comd == null) comd = "..."; //$NON-NLS-1$
 		if(!comd.equals(command)) command = comd;
 	}
 	
@@ -43,7 +43,7 @@ public class ActiveValueAdapter extends DefaultValueAdapter implements IActionHe
 	public String invoke(Control control) {
 		support.fireCommand(qActionName);
 		load();
-		return "" + getValue();
+		return "" + getValue(); //$NON-NLS-1$
 	}
 	
 	public Object getAdapter(Class adapter) {

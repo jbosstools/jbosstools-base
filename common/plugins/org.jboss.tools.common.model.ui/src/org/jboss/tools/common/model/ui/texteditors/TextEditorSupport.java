@@ -110,14 +110,14 @@ public class TextEditorSupport {
 	public boolean canRevertToSaved() {
 		XModelObject o = getModelObject();
 		if(o == null || !o.isActive()) return false;
-		XAction a = o.getModelEntity().getActionList().getAction("DiscardActions.Discard");
+		XAction a = o.getModelEntity().getActionList().getAction("DiscardActions.Discard"); //$NON-NLS-1$
 		return (a != null && a.isEnabled(o));		
 	}
 	
 	public void revertToSaved() {
 		XModelObject o = getModelObject();
 		if(o != null) {
-			XActionInvoker.invoke("DiscardActions.Discard", o, new Properties());
+			XActionInvoker.invoke("DiscardActions.Discard", o, new Properties()); //$NON-NLS-1$
 		}
 	}
 

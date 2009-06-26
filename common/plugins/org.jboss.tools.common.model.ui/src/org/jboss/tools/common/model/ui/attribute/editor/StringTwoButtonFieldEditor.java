@@ -90,7 +90,7 @@ public class StringTwoButtonFieldEditor extends StringButtonFieldEditor implemen
 		if ((this.buttonLabels!=null)&&(buttonLabels.length>1)) {
 			buttonLabel = buttonLabels[0];
 		} else {
-			buttonLabel = JFaceResources.getString("openBrowse");
+			buttonLabel = JFaceResources.getString("openBrowse"); //$NON-NLS-1$
 		}
 		button1.setText(buttonLabel);
 		return button1;
@@ -98,12 +98,12 @@ public class StringTwoButtonFieldEditor extends StringButtonFieldEditor implemen
 	
 	protected Control getChange2Control(Composite parent) {
 		if (button2 == null) {
-			int style = getSettings().getStyle("Button.Style");
+			int style = getSettings().getStyle("Button.Style"); //$NON-NLS-1$
 			if (style==SWT.DEFAULT) style = SWT.NONE;
 			if (style==0) style = SWT.PUSH;
-			Color bg = getSettings().getColor("Button.Background");
-			Color fg = getSettings().getColor("Button.Foreground");
-			Font font = getSettings().getFont("Button.Font");
+			Color bg = getSettings().getColor("Button.Background"); //$NON-NLS-1$
+			Color fg = getSettings().getColor("Button.Foreground"); //$NON-NLS-1$
+			Font font = getSettings().getFont("Button.Font"); //$NON-NLS-1$
 			button2 = new Button(parent, style);
 			button2.setFont(font);
 			button2.setBackground(bg);
@@ -116,7 +116,7 @@ public class StringTwoButtonFieldEditor extends StringButtonFieldEditor implemen
 			if ((this.buttonLabels!=null)&&(buttonLabels.length>1)) {
 				buttonLabel = buttonLabels[1];
 			} else {
-				buttonLabel = JFaceResources.getString("open");
+				buttonLabel = JFaceResources.getString("open"); //$NON-NLS-1$
 			}
 			button2.setText(buttonLabel);
 			button2.setFont(parent.getFont());
@@ -188,7 +188,7 @@ public class StringTwoButtonFieldEditor extends StringButtonFieldEditor implemen
 		
 		// initialize
 		if (this.valueProvider!=null) {
-			getTextField().setText(""+valueProvider.getValue());
+			getTextField().setText(""+valueProvider.getValue()); //$NON-NLS-1$
 		}
 		
 		return composite;
@@ -212,7 +212,7 @@ public class StringTwoButtonFieldEditor extends StringButtonFieldEditor implemen
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			Object v = evt.getNewValue();
 			valueProvider.removeValueChangeListener(this);
-			this.setStringValue((v == null) ? "" : v.toString());
+			this.setStringValue((v == null) ? "" : v.toString()); //$NON-NLS-1$
 			valueProvider.addValueChangeListener(this);
 		}
 	}

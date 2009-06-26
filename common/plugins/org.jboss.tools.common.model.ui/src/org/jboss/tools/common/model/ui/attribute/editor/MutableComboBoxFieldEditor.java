@@ -110,12 +110,12 @@ public class MutableComboBoxFieldEditor extends ComboBoxFieldEditor implements I
 
 	protected Button getChangeControl(Composite parent) {
 		if (changeButton == null) {
-			int style = getSettings().getStyle("Button.Style");
+			int style = getSettings().getStyle("Button.Style"); //$NON-NLS-1$
 			if (style==SWT.DEFAULT) style = SWT.NONE;
 			if (style==0) style = SWT.PUSH;
-			Color bg = getSettings().getColor("Button.Background");
-			Color fg = getSettings().getColor("Button.Foreground");
-			Font font = getSettings().getFont("Button.Font");
+			Color bg = getSettings().getColor("Button.Background"); //$NON-NLS-1$
+			Color fg = getSettings().getColor("Button.Foreground"); //$NON-NLS-1$
+			Font font = getSettings().getFont("Button.Font"); //$NON-NLS-1$
 			changeButton = new Button(parent, style);
 			changeButton.setFont(font);
 			changeButton.setBackground(bg);
@@ -189,10 +189,10 @@ public class MutableComboBoxFieldEditor extends ComboBoxFieldEditor implements I
 	protected String changePressed() {
 		if(change == null) return null;
 		Properties p = new Properties();
-		p.put("shell", changeButton.getShell());
+		p.put("shell", changeButton.getShell()); //$NON-NLS-1$
 		change.setObject(p);
 		int i = change.execute();
 		if(i != 0) return null;
-		return p.getProperty("value");
+		return p.getProperty("value"); //$NON-NLS-1$
 	}
 }

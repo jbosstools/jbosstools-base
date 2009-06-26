@@ -19,7 +19,7 @@ import org.jboss.tools.common.text.ext.hyperlink.xml.XMLLinkHyperlinkPartitioner
  * @author Jeremy
  */
 public class JSPRelativeLinkHyperlinkPartitioner extends XMLLinkHyperlinkPartitioner {
-	public static final String JSP_RELATIVE_LINK_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_RELATIVE_LINK";
+	public static final String JSP_RELATIVE_LINK_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_RELATIVE_LINK"; //$NON-NLS-1$
 
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.text.ext.hyperlink.XMLLinkHyperlinkPartitioner#getPartitionType()
@@ -37,7 +37,7 @@ public class JSPRelativeLinkHyperlinkPartitioner extends XMLLinkHyperlinkPartiti
 
 	protected String getAxis(IDocument document, IHyperlinkRegion superRegion) {
 		if (superRegion.getAxis() == null || superRegion.getAxis().length() == 0) {
-			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/";
+			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/"; //$NON-NLS-1$
 		}
 		return superRegion.getAxis();
 	}

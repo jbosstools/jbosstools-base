@@ -24,12 +24,12 @@ public class VRulesTree extends DefaultSiftedTree {
 	public void dispose() {}
 
 	public XModelObject getRoot() {
-        XModelObject[] prjs = model.getRoot().getChildren("VManager");
+        XModelObject[] prjs = model.getRoot().getChildren("VManager"); //$NON-NLS-1$
         if (prjs.length == 0) return null;
         VManagerModel man = (VManagerModel)prjs[0];
         if (!man.developer && first) {
             // bad luck :)
-            throw new IllegalStateException("Members only");
+            throw new IllegalStateException("Members only"); //$NON-NLS-1$
         }
         first = false;
         return man;

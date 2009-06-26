@@ -80,8 +80,8 @@ public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
 	}
 
 	protected void updateSelectionProvider() {
-		if(propertiesEditor != null) selectionProvider.addHost("guiEditor", propertiesEditor.getSelectionProvider());
-		if(textEditor != null) selectionProvider.addHost("textEditor", getTextSelectionProvider());
+		if(propertiesEditor != null) selectionProvider.addHost("guiEditor", propertiesEditor.getSelectionProvider()); //$NON-NLS-1$
+		if(textEditor != null) selectionProvider.addHost("textEditor", getTextSelectionProvider()); //$NON-NLS-1$
 		int index = getActivePage();
 		if(index == getSourcePageIndex()) {
 			if(textEditor != null) {

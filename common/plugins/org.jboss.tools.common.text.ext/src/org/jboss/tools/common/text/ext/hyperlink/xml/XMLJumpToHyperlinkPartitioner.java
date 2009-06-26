@@ -34,7 +34,7 @@ import org.jboss.tools.common.text.ext.util.Utils;
  * @author Jeremy
  */
 public class XMLJumpToHyperlinkPartitioner extends AbstractHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
-	public static final String XML_JUMP_TO_PARTITION = "org.jboss.tools.common.text.xml.XML_JUMP_TO";
+	public static final String XML_JUMP_TO_PARTITION = "org.jboss.tools.common.text.xml.XML_JUMP_TO"; //$NON-NLS-1$
 
 	protected String getPartitionType() {
 		return XML_JUMP_TO_PARTITION;
@@ -124,7 +124,7 @@ public class XMLJumpToHyperlinkPartitioner extends AbstractHyperlinkPartitioner 
 	
 	private boolean validAxis(Node n, String validAxisEnding) {
 			if (validAxisEnding == null || validAxisEnding.lastIndexOf('/') == -1) return false;
-			StringTokenizer st = new StringTokenizer(validAxisEnding, "/");
+			StringTokenizer st = new StringTokenizer(validAxisEnding, "/"); //$NON-NLS-1$
 			List<String> tokens = new ArrayList<String>();
 			while (st.hasMoreTokens()) {
 				tokens.add(st.nextToken());

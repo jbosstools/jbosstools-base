@@ -55,7 +55,7 @@ public class XMLOccurrencePreferenceConstants implements OccurrencePreferenceCon
 	public static void initializeDefaultValues(IPreferenceStore store) {
 		// set the default values from AbstractDecoratedTextEditor
 
-		PreferenceConverter.setDefault(store, "occurrenceIndicationColor", new RGB(128, 255, 255));
+		PreferenceConverter.setDefault(store, "occurrenceIndicationColor", new RGB(128, 255, 255)); //$NON-NLS-1$
 		store.setDefault(PreferenceKeyGenerator.generateKey(EDITOR_MARK_OCCURRENCES,XMLUIPlugin.ID), false);
 		store.setDefault(PreferenceKeyGenerator.generateKey(EDITOR_STICKY_OCCURRENCES,XMLUIPlugin.ID), true);
 		store.setDefault(PreferenceKeyGenerator.generateKey(EDITOR_OCCURRENCE_PROVIDER,XMLUIPlugin.ID), "org.jboss.tools.common.text.xml.defaultOccurrenceProvider"); //$NON-NLS-1$

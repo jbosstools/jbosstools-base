@@ -153,7 +153,7 @@ public class DropContext {
 		if(event == null) return;
 		if(getFlavor() == null) {
 		    return;
-		} else if (getFlavor().equals("text/html")) {
+		} else if (getFlavor().equals("text/html")) { //$NON-NLS-1$
 		    new VpeTextDropAction().run(event, editor);
 		} else {
 			editor.runDropCommand(getFlavor(), getMimeData());
@@ -165,7 +165,7 @@ public class DropContext {
 		if(o == null) return false;
 		if(o.getFileType() != XModelObject.FILE || isOverAttributeValue) return false;
     	if(TLDUtil.isTaglib(o)) return false;
-    	String extension = o.getAttributeValue("extension");
+    	String extension = o.getAttributeValue("extension"); //$NON-NLS-1$
     	return extension != null && FileTagProposalLoader.isExtensionMapped(extension);
 	}
 	
@@ -197,7 +197,7 @@ public class DropContext {
 			if(!XModelTransferBuffer.getInstance().isEnabled()) return;
 			XModelObject o = PreferenceModelUtilities.getPreferenceModel().getModelBuffer().source();
 			if(dropAsFileObject(o)) {
-				flavor = "application/x-moz-file";
+				flavor = "application/x-moz-file"; //$NON-NLS-1$
 				mimeData = getURL(o);
 				if(mimeData == null) flavor = ModelTransfer.MODEL;
 			} else {
@@ -208,7 +208,7 @@ public class DropContext {
 
 	class HTMLTransferProcessor extends TransferProcessor {
 		public void process(TransferData data) {
-			flavor = "text/html";
+			flavor = "text/html"; //$NON-NLS-1$
 			TransferData currentDataType = null;
 			if(event instanceof DropTargetEvent){
 			    currentDataType = (( DropTargetEvent)event).currentDataType;
@@ -226,7 +226,7 @@ public class DropContext {
 
 	class LocalTransferProcessor extends TransferProcessor {
 		public void process(TransferData data) {
-			flavor = "application/x-moz-file";
+			flavor = "application/x-moz-file"; //$NON-NLS-1$
 			Object ooo = LocalSelectionTransfer.getTransfer().getSelection();
 			if(ooo instanceof StructuredSelection) {
 				ooo = ((StructuredSelection)ooo).getFirstElement();
@@ -250,7 +250,7 @@ public class DropContext {
 				if(!ok) return;
 			}			
 			mimeData = getURL(event);
-			flavor = "application/x-moz-file";
+			flavor = "application/x-moz-file"; //$NON-NLS-1$
 			if(mimeData != null && isOverAttributeValue) {
 				String path = getFile(event).getAbsolutePath();
 				IFile f = EclipseResourceUtil.getFile(path);
@@ -266,7 +266,7 @@ public class DropContext {
 
 	class TextTransferProcessor extends TransferProcessor {
 		public void process(TransferData data) {
-			flavor = "text/html";
+			flavor = "text/html"; //$NON-NLS-1$
 		}
 	}
 

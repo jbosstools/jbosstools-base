@@ -36,7 +36,7 @@ public class LabelFieldEditor extends FieldEditor {
 	 * @param parent
 	 */
 	public LabelFieldEditor(String value, Composite parent) {
-		super("label", value, parent);
+		super("label", value, parent); //$NON-NLS-1$
 	}
 
 	/**

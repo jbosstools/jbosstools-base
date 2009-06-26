@@ -41,14 +41,14 @@ public class XMLDoctypeHyperlink extends XMLXmlNsHyperlink {
 
 			DocumentType node = (DocumentType)n;
 
-			String text = "";
+			String text = ""; //$NON-NLS-1$
 			try {
 				text = getDocument().get(start, end - start); 
 			} catch (BadLocationException x) {
 				ExtensionsPlugin.getPluginLog().logError(x);
 			};
-			String publicId = (node.getPublicId() == null ? "" : node.getPublicId());
-			String systemId = (node.getSystemId() == null ? "" : node.getSystemId());
+			String publicId = (node.getPublicId() == null ? "" : node.getPublicId()); //$NON-NLS-1$
+			String systemId = (node.getSystemId() == null ? "" : node.getSystemId()); //$NON-NLS-1$
 
 			int valueStart = -1;
 			int valueLength = 0;

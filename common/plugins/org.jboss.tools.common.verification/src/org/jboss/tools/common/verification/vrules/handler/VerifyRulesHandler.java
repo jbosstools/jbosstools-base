@@ -32,10 +32,10 @@ public class VerifyRulesHandler extends VerifyHandler {
             if (!rule.isEnabled() || !rule.getRuleSet().isEnabled() || vaction == null) continue;
             VResult[] results = vaction.check(vobject);
             if (results == null || results.length == 0) {
-                object.getModel().getOut().println(rule.getName()+": OK");
+                object.getModel().getOut().println(rule.getName()+": OK"); //$NON-NLS-1$
             } else {
                 for (int j = 0; j < results.length; j++) {
-                    object.getModel().getOut().println(rule.getName()+": "+results[j].getMessage());
+                    object.getModel().getOut().println(rule.getName()+": "+results[j].getMessage()); //$NON-NLS-1$
                 }
             }
             mergeResults(object.getModel(), rule, vobject, results);

@@ -15,9 +15,9 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 
 public interface IPropertyEditor extends IAdaptable {
-	public static final String ERROR = "IPropertyEditor.error";
-	public static final String VALUE = "IPropertyEditor.value";
-	public static final String LIST_CONTENT = "IPropertyEditor.listContent";
+	public static final String ERROR = "IPropertyEditor.error"; //$NON-NLS-1$
+	public static final String VALUE = "IPropertyEditor.value"; //$NON-NLS-1$
+	public static final String LIST_CONTENT = "IPropertyEditor.listContent"; //$NON-NLS-1$
 	
 	// get components
 	public CellEditor getCellEditor(Composite parent);

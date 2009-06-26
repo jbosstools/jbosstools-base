@@ -76,10 +76,10 @@ public class TomcatJVMListAdapter extends DefaultComboBoxValueAdapter implements
 			for (int i = 0; i < jvmType.length; i++) {
 				IVMInstall[] jvmInstall = jvmType[i].getVMInstalls();
 				for (int j = 0; j < jvmInstall.length; j++) {
-					if(jvmInstall[j].getName().equals(text)) return jvmInstall[j].getName() + " - \"" + (jvmInstall[j].getInstallLocation().getPath().length()>50?jvmInstall[j].getInstallLocation().getPath().substring(50)+" ...":jvmInstall[j].getInstallLocation().getPath()) +"\"";	
+					if(jvmInstall[j].getName().equals(text)) return jvmInstall[j].getName() + " - \"" + (jvmInstall[j].getInstallLocation().getPath().length()>50?jvmInstall[j].getInstallLocation().getPath().substring(50)+" ...":jvmInstall[j].getInstallLocation().getPath()) +"\"";	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 			}
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 }

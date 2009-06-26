@@ -133,12 +133,12 @@ public class TagProposalsComposite extends Composite {
 					TagProposal prop = (TagProposal)element;
 					switch (columnIndex) {
 						case TAG_NAME_INDEX:
-							return prop.getPrefix()==TagProposal.EMPTY_PREFIX?prop.getName():prop.getPrefix()+":"+prop.getName();
+							return prop.getPrefix()==TagProposal.EMPTY_PREFIX?prop.getName():prop.getPrefix()+":"+prop.getName(); //$NON-NLS-1$
 							
 						case TAG_URI_INDEX:
 							return prop.getUri();
 					}
-					throw new IllegalArgumentException("Wrong column index for LabelProvider");
+					throw new IllegalArgumentException("Wrong column index for LabelProvider"); //$NON-NLS-1$
 				}
 	
 				public void addListener(ILabelProviderListener listener) {

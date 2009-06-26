@@ -17,13 +17,13 @@ package org.jboss.tools.common.text.ext.hyperlink.xml;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class TLDAttributeNameHyperlinkPartitioner extends XMLJumpToHyperlinkPartitioner {
-	public static final String TLD_ATTRIBUTE_NAME_PARTITION = "org.jboss.tools.common.text.ext.tld.TLD_ATTRIBUTE_NAME";
+	public static final String TLD_ATTRIBUTE_NAME_PARTITION = "org.jboss.tools.common.text.ext.tld.TLD_ATTRIBUTE_NAME"; //$NON-NLS-1$
 
 	protected String getPartitionType() {
 		return TLD_ATTRIBUTE_NAME_PARTITION;
 	}
 
 	protected String[] getValidAxisEndings() {
-		return new String[] {"/tag/variable/name-from-attribute/"};
+		return new String[] {"/tag/variable/name-from-attribute/"}; //$NON-NLS-1$
 	}
 }

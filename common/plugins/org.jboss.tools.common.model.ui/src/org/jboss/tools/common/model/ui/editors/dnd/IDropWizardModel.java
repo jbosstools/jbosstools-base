@@ -22,11 +22,11 @@ public interface IDropWizardModel {
 	 * Constants
 	 */
 	
-	public static final String TAG_PROPOSAL = "tagProposal";
+	public static final String TAG_PROPOSAL = "tagProposal"; //$NON-NLS-1$
 	
-	public static final String ATTRIBUTE_VALUE = "attributeValue";	
+	public static final String ATTRIBUTE_VALUE = "attributeValue";	 //$NON-NLS-1$
 	
-	public static final TagProposal UNDEFINED_TAG_PROPOSAL = new TagProposal("http://www.redhat.com/undefined","","");	
+	public static final TagProposal UNDEFINED_TAG_PROPOSAL = new TagProposal("http://www.redhat.com/undefined","","");	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	/*
 	 * Methods 

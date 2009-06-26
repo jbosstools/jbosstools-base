@@ -49,7 +49,7 @@ public class VTaskImpl implements VTask, Runnable {
 
     public void start() {
         if (thread == null) {
-            thread = new Thread(this, "VTask");
+            thread = new Thread(this, "VTask"); //$NON-NLS-1$
             thread.start();
         } else {
             if(sleeping) {
@@ -158,7 +158,7 @@ public class VTaskImpl implements VTask, Runnable {
     }
     
     private void logListener(VTaskListener listener, Throwable e) { 
-		VerificationPlugin.getPluginLog().logInfo("Exception in listener "+listener+" ignored: "+e, e);
+		VerificationPlugin.getPluginLog().logInfo("Exception in listener "+listener+" ignored: "+e, e); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     private void notifyApplied(VRule rule, VObject object, VResult[] results) {

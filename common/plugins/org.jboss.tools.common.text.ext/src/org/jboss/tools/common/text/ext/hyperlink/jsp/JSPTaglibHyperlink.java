@@ -97,11 +97,11 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
 			if (n instanceof IDOMAttr) n = ((IDOMAttr)n).getOwnerElement();
 			if (!(n instanceof IDOMElement)) return null;
-			if(!"jsp:directive.taglib".equals(n.getNodeName())) return null;
+			if(!"jsp:directive.taglib".equals(n.getNodeName())) return null; //$NON-NLS-1$
 
 			IDOMElement taglib = (IDOMElement)n;
 			
-			String uri = taglib.getAttribute("uri");
+			String uri = taglib.getAttribute("uri"); //$NON-NLS-1$
 			if (uri == null || uri.trim().length() == 0) return null;
 			
 			return uri;
@@ -131,7 +131,7 @@ public class JSPTaglibHyperlink extends AbstractHyperlink {
 			Node n = Utils.findNodeForOffset(xmlDocument, offset);
 			if (n instanceof Attr) n = ((Attr)n).getOwnerElement();
 			if (!(n instanceof IDOMElement)) return null;
-			if (!"jsp:directive.taglib".equals(n.getNodeName())) return null;
+			if (!"jsp:directive.taglib".equals(n.getNodeName())) return null; //$NON-NLS-1$
 
 			IDOMElement taglib = (IDOMElement)n;
 			

@@ -28,20 +28,20 @@ import org.jboss.tools.common.model.ui.forms.InfoLayoutDataFactory;
  * @author glory
  */
 public class FormLayoutDataUtil {
-	private final static String STBFE_CLASS_NAME = "org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor";
-	private final static String SBFEE_CLASS_NAME = "org.jboss.tools.common.model.ui.attribute.editor.StringButtonFieldEditorEx";
+	private final static String STBFE_CLASS_NAME = "org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor"; //$NON-NLS-1$
+	private final static String SBFEE_CLASS_NAME = "org.jboss.tools.common.model.ui.attribute.editor.StringButtonFieldEditorEx"; //$NON-NLS-1$
 
-	private final static String SELECT_IT_ACTION = "%SelectIt%";
-	private final static String INTERNAL_ACTION = "%internal%";
-	private final static String DEFAULT_DELETE_ACTION = "DeleteActions.Delete";
-	private final static String DEFAULT_EDIT_ACTION = "Properties.Properties";
+	private final static String SELECT_IT_ACTION = "%SelectIt%"; //$NON-NLS-1$
+	private final static String INTERNAL_ACTION = "%internal%"; //$NON-NLS-1$
+	private final static String DEFAULT_DELETE_ACTION = "DeleteActions.Delete"; //$NON-NLS-1$
+	private final static String DEFAULT_EDIT_ACTION = "Properties.Properties"; //$NON-NLS-1$
 
 	public static IFormAttributeData[] createGeneralFormAttributeData(String entityName) {
-		return createFormAttributeData(entityName, "general");
+		return createFormAttributeData(entityName, "general"); //$NON-NLS-1$
 	}
 
 	public static IFormAttributeData[] createAdvancedFormAttributeData(String entityName) {
-		return createFormAttributeData(entityName, "advanced");
+		return createFormAttributeData(entityName, "advanced"); //$NON-NLS-1$
 	}
 
 	public static IFormAttributeData[] createFormAttributeData(String entityName, String categoryName) {
@@ -51,14 +51,14 @@ public class FormLayoutDataUtil {
 		XAttribute[] as = entity.getAttributes();
 		for (int i = 0; i < as.length; i++) {
 			if(!as[i].isVisible()) continue;
-			String category = as[i].getProperty("category");
+			String category = as[i].getProperty("category"); //$NON-NLS-1$
 			if(category != null && category.equals(categoryName)) {
 				String editorName = as[i].getEditor().getName();
-				if("AccessibleJava".equals(editorName)) {
+				if("AccessibleJava".equals(editorName)) { //$NON-NLS-1$
 					list.add(new FormAttributeData(as[i].getName(), null, STBFE_CLASS_NAME));
-				} else if("Note".equals(editorName)) {
+				} else if("Note".equals(editorName)) { //$NON-NLS-1$
 					list.add(new FormAttributeData(as[i].getName(), InfoLayoutDataFactory.getInstance()));
-				} else if("TreeChooser".equals(editorName)) {
+				} else if("TreeChooser".equals(editorName)) { //$NON-NLS-1$
 					list.add(new FormAttributeData(as[i].getName(), null, SBFEE_CLASS_NAME));
 				} else {
 					list.add(new FormAttributeData(as[i].getName()));
@@ -88,7 +88,7 @@ public class FormLayoutDataUtil {
 	public static FormData createChildrenFormData(String name, String entityName, String childName, String attributeName, String[] entityNames, String createAction) {
 		return new FormData(
 			name,
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			childName != null ? childName : entityName,
 			new FormAttributeData[]{new FormAttributeData(attributeName, 100, attributeName)},
 			entityNames,

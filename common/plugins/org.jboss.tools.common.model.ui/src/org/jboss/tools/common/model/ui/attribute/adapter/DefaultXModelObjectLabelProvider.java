@@ -26,7 +26,7 @@ public class DefaultXModelObjectLabelProvider extends LabelProvider {
 	}
 
 	public String getText(Object element) {
-		String result = "";
+		String result = ""; //$NON-NLS-1$
 		if (element != null) {
 			if (element instanceof XModelObject) {
 				XModelObject modelObject = (XModelObject)element; 
@@ -36,7 +36,7 @@ public class DefaultXModelObjectLabelProvider extends LabelProvider {
 				} else {
 					result = modelObject.getPresentationString();
 				}
-				if(modelObject.getFileType() == XFileObject.FILE && modelObject.isModified()) result += "*";
+				if(modelObject.getFileType() == XFileObject.FILE && modelObject.isModified()) result += "*"; //$NON-NLS-1$
 			} else {
 				result = element.toString();
 			}

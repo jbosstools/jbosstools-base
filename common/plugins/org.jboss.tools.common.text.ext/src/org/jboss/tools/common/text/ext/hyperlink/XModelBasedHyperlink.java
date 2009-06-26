@@ -48,7 +48,7 @@ public abstract class XModelBasedHyperlink extends AbstractHyperlink {
 		Properties p = getRequestProperties(region);
 		p.put(IPromptingProvider.FILE, documentFile);
 
-		List list = provider.getList(xModel, getRequestMethod(), p.getProperty("prefix"), p);
+		List list = provider.getList(xModel, getRequestMethod(), p.getProperty("prefix"), p); //$NON-NLS-1$
 		if (list != null && list.size() >= 1) {
 			openFileInEditor((String)list.get(0));
 			return;

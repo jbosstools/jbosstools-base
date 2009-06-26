@@ -25,7 +25,7 @@ public class PropertyModel {
 	
 	public void setModelObject(XModelObject object) {
 		this.object = object;
-		object.setObject("propertyModel", this);
+		object.setObject("propertyModel", this); //$NON-NLS-1$
 	}
 	
 	public XModelObject getModelObject() {
@@ -33,7 +33,7 @@ public class PropertyModel {
 	}
 	
 	public String getName() {
-		return object.getAttributeValue("name");
+		return object.getAttributeValue("name"); //$NON-NLS-1$
 	}
 	
 	public boolean hasValue(String locale) {
@@ -42,8 +42,8 @@ public class PropertyModel {
 	
 	public String getValue(String locale) {
 		Object v = values.get(locale);
-		if(v == null) v = values.get("");
-		return (v == null) ? "" : v.toString();
+		if(v == null) v = values.get(""); //$NON-NLS-1$
+		return (v == null) ? "" : v.toString(); //$NON-NLS-1$
 	}
 	
 	public void setValue(String locale, String value) {
@@ -56,13 +56,13 @@ public class PropertyModel {
 	}
 	
 	public void setLocale(String locale) {
-		object.setAttributeValue("value", getValue(locale));
+		object.setAttributeValue("value", getValue(locale)); //$NON-NLS-1$
 	}
 	
 	public void commit() {
 		String locale = bundleModel.getCurrentLocale();
 		String v = getValue(locale);
-		setValue(locale, object.getAttributeValue("value"));
+		setValue(locale, object.getAttributeValue("value")); //$NON-NLS-1$
 		if(!v.equals(getValue(locale))) bundleModel.setModified(true);		
 	}
 

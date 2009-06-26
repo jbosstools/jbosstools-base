@@ -53,7 +53,7 @@ public class EditorActionBarContributorWrapper implements IEditorActionBarContri
 	}
 	
 	IEditorActionBarContributor getContributor(String entity) {
-		if(entity == null) entity = "";
+		if(entity == null) entity = ""; //$NON-NLS-1$
 		IEditorActionBarContributor c = (IEditorActionBarContributor)contributors.get(entity);
 		if(c == null) {
 			if(entity != null) {

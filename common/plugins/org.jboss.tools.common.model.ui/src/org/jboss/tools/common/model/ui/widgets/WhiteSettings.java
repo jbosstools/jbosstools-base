@@ -61,40 +61,40 @@ public class WhiteSettings extends DefaultSettings {
 	protected void initSettings() {
 		super.initSettings();
 		// Text
-		put("Text.Style", SWT.NONE);
-		put("Text.Border", textBorder);
+		put("Text.Style", SWT.NONE); //$NON-NLS-1$
+		put("Text.Border", textBorder); //$NON-NLS-1$
 
 		// Note
-		put("Note.Style", SWT.NONE | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		put("Note.Border", textBorder);
-		put("Note.ValidateStrategy", 1);
+		put("Note.Style", SWT.NONE | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL); //$NON-NLS-1$
+		put("Note.Border", textBorder); //$NON-NLS-1$
+		put("Note.ValidateStrategy", 1); //$NON-NLS-1$
 
 		// Combo
-		put("Combo.Style", SWT.FLAT);
-		put("Combo.Border", comboBorder);
+		put("Combo.Style", SWT.FLAT); //$NON-NLS-1$
+		put("Combo.Border", comboBorder); //$NON-NLS-1$
 
 		// Button
-		put("Button.Style", SWT.FLAT);
+		put("Button.Style", SWT.FLAT); //$NON-NLS-1$
 
 		// CheckBox
-		put("CheckBox.Style", SWT.FLAT | SWT.CHECK | SWT.LEFT);
+		put("CheckBox.Style", SWT.FLAT | SWT.CHECK | SWT.LEFT); //$NON-NLS-1$
 
 		// List
-		put("List.Style", SWT.NONE);
-		put("List.Border", listBorder);
+		put("List.Style", SWT.NONE); //$NON-NLS-1$
+		put("List.Border", listBorder); //$NON-NLS-1$
 
 		// Tree
-		put("Tree.Style", SWT.NONE);
-		put("Tree.Border", listBorder);
+		put("Tree.Style", SWT.NONE); //$NON-NLS-1$
+		put("Tree.Border", listBorder); //$NON-NLS-1$
 
 		// Table
-		put("Table.Style", SWT.NONE);
-		put("Table.Border", listBorder);
+		put("Table.Style", SWT.NONE); //$NON-NLS-1$
+		put("Table.Border", listBorder); //$NON-NLS-1$
 		
 		// Separator
-		put("Separator.Background", separatorColor);
+		put("Separator.Background", separatorColor); //$NON-NLS-1$
 		
-		put("Label.Foreground", hyperlinkColor);
+		put("Label.Foreground", hyperlinkColor); //$NON-NLS-1$
 	}
 
 	public FormToolkit getToolkit(Display display) {

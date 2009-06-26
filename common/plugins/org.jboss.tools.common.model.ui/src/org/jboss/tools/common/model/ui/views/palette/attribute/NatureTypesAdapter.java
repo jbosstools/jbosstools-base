@@ -27,14 +27,14 @@ public class NatureTypesAdapter extends CheckListAdapter {
 	
 	private String[] getNatureTypes() {
 		List<String> editorTypes = new ArrayList<String>();
-		IExtension extensions[] = Platform.getExtensionRegistry().getExtensionPoint("org.jboss.tools.common.model.ui.paletteConstraints").getExtensions();
+		IExtension extensions[] = Platform.getExtensionRegistry().getExtensionPoint("org.jboss.tools.common.model.ui.paletteConstraints").getExtensions(); //$NON-NLS-1$
 		for (int i = 0; i < extensions.length; i++)
 		{
 			IConfigurationElement elements[] = extensions[i].getConfigurationElements(); 
 			for (int j = 0; j < elements.length; j++) 
-				if ("natureType".equals(elements[j].getName()))
+				if ("natureType".equals(elements[j].getName())) //$NON-NLS-1$
 				{
-					String editorType = elements[j].getAttribute("id");
+					String editorType = elements[j].getAttribute("id"); //$NON-NLS-1$
 					if (editorType != null && editorType.length() > 0)
 						editorTypes.add(editorType);
 				}

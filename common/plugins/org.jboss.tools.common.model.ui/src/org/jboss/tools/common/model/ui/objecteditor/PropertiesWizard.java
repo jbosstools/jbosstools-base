@@ -53,9 +53,9 @@ class PropertiesWizardView extends AbstractQueryWizardView {
 		objectEditor.setModelObject((XModelObject)dataObject);
 		Properties p = findProperties(data);
 		if(windowTitle == null) {
-			windowTitle = WizardKeys.getHeader("Properties");
+			windowTitle = WizardKeys.getHeader("Properties"); //$NON-NLS-1$
 		}
-		boolean viewMode = p != null && "true".equals(p.getProperty("viewMode"));
+		boolean viewMode = p != null && "true".equals(p.getProperty("viewMode")); //$NON-NLS-1$ //$NON-NLS-2$
 		objectEditor.setViewMode(viewMode);
 	}
 

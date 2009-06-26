@@ -24,7 +24,7 @@ import org.jboss.tools.common.model.util.extension.ExtensionPointUtil;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class AdapterFactory {
-	public static final String ATTRIBUTE_ADAPTER_EXT_POINT = "org.jboss.tools.common.model.ui.attributeAdapter";
+	public static final String ATTRIBUTE_ADAPTER_EXT_POINT = "org.jboss.tools.common.model.ui.attributeAdapter"; //$NON-NLS-1$
 	private static Map<String,Class> classes = new HashMap<String,Class>();
 
 	public AdapterFactory() {}
@@ -34,7 +34,7 @@ public class AdapterFactory {
 	}
 	
 	public static IModelPropertyEditorAdapter getAdapter(XAttribute attribute, XAttributeData attributeData, XModel model) {
-		Assert.isTrue(model != null, "AdapterFactory.getAdapter(XAttribute, XAttributeData, XModel) model cannot be null!");
+		Assert.isTrue(model != null, "AdapterFactory.getAdapter(XAttribute, XAttributeData, XModel) model cannot be null!"); //$NON-NLS-1$
 		return getAdapter(attribute, null, attributeData, model);		
 	}
 	
@@ -68,7 +68,7 @@ public class AdapterFactory {
 			c = ExtensionPointUtil.findClassByElementId(ATTRIBUTE_ADAPTER_EXT_POINT, id).getClass();			
 		} catch (CoreException e) {
 			if(ModelUIPlugin.getDefault().isDebugging()) {
-				ModelUIPlugin.getPluginLog().logInfo("Default adapter for " + id);
+				ModelUIPlugin.getPluginLog().logInfo("Default adapter for " + id); //$NON-NLS-1$
 			}
 			c = DefaultValueAdapter.class;
 		}

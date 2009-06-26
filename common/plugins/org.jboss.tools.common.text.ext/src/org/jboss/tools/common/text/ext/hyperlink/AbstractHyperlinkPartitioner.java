@@ -121,7 +121,7 @@ public abstract class AbstractHyperlinkPartitioner implements IHyperlinkPartitio
 			Node node = Utils.findNodeForOffset(xmlDocument, superRegion.getOffset());
 			if (node instanceof Attr) {
 				Attr attr = (Attr)node;
-				return Utils.getParentAxisForNode(xmlDocument, attr) + attr.getName() + "/";
+				return Utils.getParentAxisForNode(xmlDocument, attr) + attr.getName() + "/"; //$NON-NLS-1$
 			}
 			return Utils.getParentAxisForNode(xmlDocument, node);
 		} finally {

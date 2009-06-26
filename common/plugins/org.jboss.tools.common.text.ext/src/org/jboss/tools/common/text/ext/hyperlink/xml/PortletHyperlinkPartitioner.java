@@ -22,14 +22,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class PortletHyperlinkPartitioner extends AbstractHyperlinkPartitioner {
-	public static final String PORTLET_CLASS_PARTITION = "org.jboss.tools.common.text.ext.hyperlink.xml.PORTLET_CLASS";
-	public static final String PORTLET_RESOURCE_BUNDLE_PARTITION = "org.jboss.tools.common.text.ext.hyperlink.xml.PORTLET_RESOURCE";
+	public static final String PORTLET_CLASS_PARTITION = "org.jboss.tools.common.text.ext.hyperlink.xml.PORTLET_CLASS"; //$NON-NLS-1$
+	public static final String PORTLET_RESOURCE_BUNDLE_PARTITION = "org.jboss.tools.common.text.ext.hyperlink.xml.PORTLET_RESOURCE"; //$NON-NLS-1$
 
-	static final String textNodeName = "#text";
+	static final String textNodeName = "#text"; //$NON-NLS-1$
 
-	static final String portletNodeName = "portlet";
-	static final String portletClassNodeName = "portlet-class";
-	static final String portletResourceBundleNodeName = "resource-bundle";
+	static final String portletNodeName = "portlet"; //$NON-NLS-1$
+	static final String portletClassNodeName = "portlet-class"; //$NON-NLS-1$
+	static final String portletResourceBundleNodeName = "resource-bundle"; //$NON-NLS-1$
 
 	public static Node getNode(IDocument document, int superOffset) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();

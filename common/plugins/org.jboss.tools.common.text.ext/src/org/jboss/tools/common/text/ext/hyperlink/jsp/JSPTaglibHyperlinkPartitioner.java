@@ -26,7 +26,7 @@ import org.jboss.tools.common.text.ext.util.Utils;
  * @author Jeremy
  */
 public class JSPTaglibHyperlinkPartitioner extends JSPElementAttributeValueHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
-	public static final String JSP_TAGLIB_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_TAGLIB";
+	public static final String JSP_TAGLIB_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_TAGLIB"; //$NON-NLS-1$
 
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
@@ -42,7 +42,7 @@ public class JSPTaglibHyperlinkPartitioner extends JSPElementAttributeValueHyper
 			Node n = Utils.findNodeForOffset(xmlDocument, superRegion.getOffset());
 			if (n instanceof Attr) n = ((Attr)n).getOwnerElement();
 			if (!(n instanceof Element)) return null;
-			if (!"jsp:directive.taglib".equals(n.getNodeName())) return null;
+			if (!"jsp:directive.taglib".equals(n.getNodeName())) return null; //$NON-NLS-1$
 
 			int start = Utils.getValueStart(n);
 			int end = Utils.getValueEnd(n);
@@ -76,7 +76,7 @@ public class JSPTaglibHyperlinkPartitioner extends JSPElementAttributeValueHyper
 			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
 			if (n instanceof Attr) n = ((Attr)n).getOwnerElement();
 			if (!(n instanceof Element)) return false;
-			return ("jsp:directive.taglib".equals(n.getNodeName()));
+			return ("jsp:directive.taglib".equals(n.getNodeName())); //$NON-NLS-1$
 		} finally {
 			smw.dispose();
 		}
@@ -84,7 +84,7 @@ public class JSPTaglibHyperlinkPartitioner extends JSPElementAttributeValueHyper
 
 	protected String getAxis(IDocument document, IHyperlinkRegion superRegion) {
 		if (superRegion.getAxis() == null || superRegion.getAxis().length() == 0) {
-			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/";
+			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/"; //$NON-NLS-1$
 		}
 		return superRegion.getAxis();
 	}

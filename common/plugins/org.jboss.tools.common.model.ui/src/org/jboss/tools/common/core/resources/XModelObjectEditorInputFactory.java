@@ -28,11 +28,11 @@ import org.jboss.tools.common.model.ui.editor.ModelObjectStorageEditorInput;
 
 public class XModelObjectEditorInputFactory implements IElementFactory {
 	private static final String ID_FACTORY = 
-		"org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory";
-	private static final String TAG_PATH = "path";
-	private static final String TAG_PROJECT = "project";
-	private static final String TAG_FILE_LOCATION = "filepath";
-	private static final String TAG_ENTRY = "entry";
+		"org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory"; //$NON-NLS-1$
+	private static final String TAG_PATH = "path"; //$NON-NLS-1$
+	private static final String TAG_PROJECT = "project"; //$NON-NLS-1$
+	private static final String TAG_FILE_LOCATION = "filepath"; //$NON-NLS-1$
+	private static final String TAG_ENTRY = "entry"; //$NON-NLS-1$
 
 	public IAdaptable createElement(IMemento memento) {
 		String projectPath = memento.getString(TAG_PROJECT);
@@ -55,7 +55,7 @@ public class XModelObjectEditorInputFactory implements IElementFactory {
 	private IAdaptable createStorageElement(IMemento memento) {
 		String projectPath = memento.getString(TAG_PROJECT);
 		XModelObject object = null;
-		String missingName = "";
+		String missingName = ""; //$NON-NLS-1$
 		if(projectPath == null) {
 			String fileLocation = memento.getString(TAG_FILE_LOCATION);
 			if(fileLocation != null) {
@@ -76,7 +76,7 @@ public class XModelObjectEditorInputFactory implements IElementFactory {
 			String objectPath = memento.getString(TAG_PATH);
 			IModelNature nature = EclipseResourceUtil.getModelNature(project);
 			if(nature == null) {
-				missingName = "" + objectPath;
+				missingName = "" + objectPath; //$NON-NLS-1$
 			} else {
 				XModel model = nature.getModel();
 				object = model.getByPath(objectPath);

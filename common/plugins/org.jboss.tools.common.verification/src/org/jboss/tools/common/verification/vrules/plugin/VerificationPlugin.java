@@ -16,7 +16,7 @@ import org.jboss.tools.common.model.plugin.IModelPlugin;
 
 public class VerificationPlugin extends BaseUIPlugin implements IModelPlugin {
 	static VerificationPlugin plugin;
-	public static final String PLUGIN_ID = "org.jboss.tools.common.verification";	
+	public static final String PLUGIN_ID = "org.jboss.tools.common.verification"; //$NON-NLS-1$
 	public VerificationPlugin() {		
 		super();
 		plugin = this;

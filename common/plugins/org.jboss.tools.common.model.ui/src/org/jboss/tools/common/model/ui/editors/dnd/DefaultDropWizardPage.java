@@ -63,7 +63,7 @@ public abstract class DefaultDropWizardPage extends WizardPage {
 		try {
 			validate();
 			setPageComplete(true);
-			setMessage("",NONE);				
+			setMessage("",NONE);				 //$NON-NLS-1$
 		} catch (ValidationException e) {
 			validationErrorOccurs(e);
 			setPageComplete(false);

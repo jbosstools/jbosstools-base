@@ -26,8 +26,8 @@ public class LoadBundleBaseNameAttributeValueLoader
 			IAttributeValueLoader {
 
 	public void fillTagAttributes(IDropWizardModel model) {
-		String baseName = "";
-		String fileName = "";
+		String baseName = ""; //$NON-NLS-1$
+		String fileName = ""; //$NON-NLS-1$
 
 		IFile file = DropUtils.getResourceForMimeData(model.getDropData());
 		IJavaElement javaElement = null;
@@ -37,9 +37,9 @@ public class LoadBundleBaseNameAttributeValueLoader
 			s = s.replace('\\','/');
 			int l = s.lastIndexOf('.');
 			if(l >= 0) s = s.substring(0, l);
-			int k = s.indexOf("/JavaSource/");
+			int k = s.indexOf("/JavaSource/"); //$NON-NLS-1$
 			if(k >= 0) {
-				baseName = s.substring(k + "/JavaSource/".length());
+				baseName = s.substring(k + "/JavaSource/".length()); //$NON-NLS-1$
 			} else {
 				baseName = s.substring(s.lastIndexOf('/') + 1);
 			}
@@ -49,7 +49,7 @@ public class LoadBundleBaseNameAttributeValueLoader
 			XModelObject o = EclipseResourceUtil.getObjectByResource(file);
 			if(o != null) {
 				String path = XModelObjectLoaderUtil.getResourcePath(o);
-				if(path.startsWith("/")) path = path.substring(1);
+				if(path.startsWith("/")) path = path.substring(1); //$NON-NLS-1$
 				int i = path.lastIndexOf('.');
 				if(i >= 0) path = path.substring(0,i);
 				baseName = path.replace('/', '.');
@@ -61,7 +61,7 @@ public class LoadBundleBaseNameAttributeValueLoader
 				int i = fileName.lastIndexOf('.');
 				if(i >= 0) fileName = fileName.substring(0,i);
 				if(javaElement != null) {
-					baseName = javaElement.getElementName()+ "." + fileName;
+					baseName = javaElement.getElementName()+ "." + fileName; //$NON-NLS-1$
 				} else {
 					baseName = fileName;
 				}
@@ -69,8 +69,8 @@ public class LoadBundleBaseNameAttributeValueLoader
 		}
 
 		// TODO Eskimo - Think about how reject drop id properties file is not under java source
-		model.setAttributeValue("basename", baseName);
-		model.setAttributeValue("var", fileName.toLowerCase());		
+		model.setAttributeValue("basename", baseName); //$NON-NLS-1$
+		model.setAttributeValue("var", fileName.toLowerCase());		 //$NON-NLS-1$
 	}
 	
 }

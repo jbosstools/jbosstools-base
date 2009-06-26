@@ -29,7 +29,7 @@ public class NCutAction extends NSelectionAction {
 	}
 
 	protected String getActionPath() {
-		return "CopyActions.Cut";
+		return "CopyActions.Cut"; //$NON-NLS-1$
 	}
 	
 	public void run() {

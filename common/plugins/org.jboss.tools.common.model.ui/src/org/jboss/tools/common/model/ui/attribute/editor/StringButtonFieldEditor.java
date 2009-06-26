@@ -60,12 +60,12 @@ public abstract class StringButtonFieldEditor extends StringFieldEditor {
 			checkParent(button, parent);
 			return button;
 		}
-		int style = getSettings().getStyle("Button.Style");
+		int style = getSettings().getStyle("Button.Style"); //$NON-NLS-1$
 		if (style == SWT.DEFAULT) style = SWT.NONE;
 		if (style == 0) style = SWT.PUSH;
 ///		Color bg = getSettings().getColor("Button.Background");
-		Color fg = getSettings().getColor("Button.Foreground");
-		Font font = getSettings().getFont("Button.Font");
+		Color fg = getSettings().getColor("Button.Foreground"); //$NON-NLS-1$
+		Font font = getSettings().getFont("Button.Font"); //$NON-NLS-1$
 		button = new Button(parent, style);
 		button.setFont(font);
 ///		button.setBackground(bg);

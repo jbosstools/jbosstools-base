@@ -233,7 +233,7 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 		col = new TableColumn(swtTable, SWT.NONE);
 		col.setText("Value");
 
-		tableViewer.setColumnProperties(new String[] {"Name","Value"});
+		tableViewer.setColumnProperties(new String[] {"Name","Value"}); //$NON-NLS-1$ //$NON-NLS-2$
 		tableViewer.setUseHashlookup(true);
 		tableViewer.setComparer(new IElementComparer() {
 
@@ -256,14 +256,14 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 	
 				public Object getValue(Object element, String property) {
 					AttributeDescriptorValue attrDescr = (AttributeDescriptorValue)element;
-					context.setProperty("attributeName", attrDescr.getName());
-					String tagName = "" + fWizardModel.getTagProposal().getName();
+					context.setProperty("attributeName", attrDescr.getName()); //$NON-NLS-1$
+					String tagName = "" + fWizardModel.getTagProposal().getName(); //$NON-NLS-1$
 					String prefix = fWizardModel.getTagProposal().getPrefix();
-					if(prefix != null && prefix.length() > 0 && !tagName.startsWith("prefix" + ":")) {
-						tagName = prefix + ":" + tagName;
+					if(prefix != null && prefix.length() > 0 && !tagName.startsWith("prefix" + ":")) { //$NON-NLS-1$ //$NON-NLS-2$
+						tagName = prefix + ":" + tagName; //$NON-NLS-1$
 					}
-					context.setProperty("nodeName", tagName);
-					return attrDescr.getValue()==null?"":attrDescr.getValue();
+					context.setProperty("nodeName", tagName); //$NON-NLS-1$
+					return attrDescr.getValue()==null?"":attrDescr.getValue(); //$NON-NLS-1$
 				}
 	
 				public void modify(Object element, String property, Object value) {
@@ -362,9 +362,9 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 							}
 								
 						case ATTRIBUTE_VALUE_INDEX:
-							return attrDescr.getValue()==null?"":attrDescr.getValue().toString();
+							return attrDescr.getValue()==null?"":attrDescr.getValue().toString(); //$NON-NLS-1$
 					}
-					throw new IllegalArgumentException("Wrong column index for LabelProvider");
+					throw new IllegalArgumentException("Wrong column index for LabelProvider"); //$NON-NLS-1$
 				}
 	
 				public void addListener(ILabelProviderListener listener) {
@@ -387,7 +387,7 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 	private Properties context = new Properties();
 	
 	private ExtendedCellEditorProvider createCellEditorProvider() {
-		return (ExtendedCellEditorProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.jsp.outline.JSPCellEditorProviderImpl");
+		return (ExtendedCellEditorProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.jsp.outline.JSPCellEditorProviderImpl"); //$NON-NLS-1$
 	}
 
 	/**

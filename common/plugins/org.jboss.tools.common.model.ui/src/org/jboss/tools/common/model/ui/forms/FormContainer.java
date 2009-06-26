@@ -63,7 +63,7 @@ public class FormContainer  extends DefaultFormContainer {
 				// Here it is not entity but rather a unique child name
 				child = xmo.getChildByPath(entity);
 				if(child == null) {
-					String message = "Cannot build child form '" + forms[i].getEntityName() + "' for form '" + formData.getEntityName() + "'.";
+					String message = "Cannot build child form '" + forms[i].getEntityName() + "' for form '" + formData.getEntityName() + "'."; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					Exception exc = new FormRuntimeException(message);
 					ModelUIPlugin.getPluginLog().logError(exc);
 				} else {

@@ -137,7 +137,7 @@ public class ContentAssistProcessorDefinition {
 	 * @param e
 	 */
 	private void handleCreateExecutableException(Object[] result, Exception x) {
-		XmlEditorPlugin.getPluginLog().logError("Error in creating extension", x);
+		XmlEditorPlugin.getPluginLog().logError("Error in creating extension", x); //$NON-NLS-1$
 		result[0] = null;
 	}
 	

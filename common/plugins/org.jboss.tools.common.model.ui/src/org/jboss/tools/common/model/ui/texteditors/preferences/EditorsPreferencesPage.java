@@ -23,9 +23,9 @@ import org.jboss.tools.common.text.xml.ui.xpl.BasePreferenceConstants;
 
 public class EditorsPreferencesPage extends XMOBasedPreferencesPage {
 	
-	public static final String EDITOR_PREFERENCES_ID = "org.jboss.tools.common.xstudio.editors";
+	public static final String EDITOR_PREFERENCES_ID = "org.jboss.tools.common.xstudio.editors"; //$NON-NLS-1$
 	
-	static String PATH = "%Options%/Struts Studio/Editors";
+	static String PATH = "%Options%/Struts Studio/Editors"; //$NON-NLS-1$
 
 	public EditorsPreferencesPage() {
 		super(_getPreferenceModel().getByPath(PATH));
@@ -43,9 +43,9 @@ public class EditorsPreferencesPage extends XMOBasedPreferencesPage {
 	// FIXME: Remove Reflection
 	private static void initialize() {
 		if(store != null) return;
-		AbstractUIPlugin plugin = (AbstractUIPlugin)Platform.getPlugin("org.jboss.tools.common.text.xml");
+		AbstractUIPlugin plugin = (AbstractUIPlugin)Platform.getPlugin("org.jboss.tools.common.text.xml"); //$NON-NLS-1$
 		try {
-			Method m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]);
+			Method m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]); //$NON-NLS-1$
 			m.setAccessible(true);
 			m.invoke(plugin, new Object[0]);
 		} catch(NoSuchMethodException e1) {

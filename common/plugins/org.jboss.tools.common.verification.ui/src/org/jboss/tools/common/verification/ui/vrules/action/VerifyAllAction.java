@@ -22,7 +22,7 @@ public class VerifyAllAction extends AbstractModelActionDelegate {
 
 	public void doRun() throws XModelException {
 		Properties p = new Properties();
-		p.put("shell", window.getShell());
+		p.put("shell", window.getShell()); //$NON-NLS-1$
 		XActionInvoker.invoke(getActionPath(), object, p);
 	}
 
@@ -30,15 +30,15 @@ public class VerifyAllAction extends AbstractModelActionDelegate {
 		XModelObject adapter = getAdapter(selection);
 		if(adapter == null) return;
 		object = adapter;
-		object = (object == null) ? null : object.getModel().getByPath("FileSystems");
+		object = (object == null) ? null : object.getModel().getByPath("FileSystems"); //$NON-NLS-1$
 	}
 	
 	protected boolean computeEnabled() {
 		return true;
 	}
 	
-	String path1 = "VerifyActions.StaticActions.VerifyAll";
-	String path2 = "ProcessVerifyActions.StaticActions.VerifyAll";
+	String path1 = "VerifyActions.StaticActions.VerifyAll"; //$NON-NLS-1$
+	String path2 = "ProcessVerifyActions.StaticActions.VerifyAll"; //$NON-NLS-1$
 	
 	protected String getActionPath() {
 		if(object.getModelEntity().getActionList().getAction(path2) != null) return path2;

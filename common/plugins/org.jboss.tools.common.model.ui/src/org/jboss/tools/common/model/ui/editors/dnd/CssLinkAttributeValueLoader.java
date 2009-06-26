@@ -18,8 +18,8 @@ public class CssLinkAttributeValueLoader extends AbsoluteFilePathAttributeValueL
 
 	public void fillTagAttributes(IDropWizardModel model) {
 		super.fillTagAttributes(model);
-		model.setAttributeValue("rel", "stylesheet");
-		model.setAttributeValue("type", "text/css");
+		model.setAttributeValue("rel", "stylesheet"); //$NON-NLS-1$ //$NON-NLS-2$
+		model.setAttributeValue("type", "text/css"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

@@ -52,9 +52,9 @@ public class TemplateContentAssistentProcessor implements IContentAssistProcesso
     public ICompletionProposal[] computeCompletionProposals(IContentAssistSubjectControl contentAssistSubjectControl, int documentOffset) {
         // this method activated on ctrl+space action
         ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
-        proposals.add(new TemplateCompletionProposal("1"));
-        proposals.add(new TemplateCompletionProposal("2"));
-        proposals.add(new TemplateCompletionProposal("3"));
+        proposals.add(new TemplateCompletionProposal("1")); //$NON-NLS-1$
+        proposals.add(new TemplateCompletionProposal("2")); //$NON-NLS-1$
+        proposals.add(new TemplateCompletionProposal("3")); //$NON-NLS-1$
         return proposals.toArray(new TemplateCompletionProposal[proposals.size()]);
     }
 

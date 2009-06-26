@@ -17,6 +17,6 @@ public class DropWizardMessages {
 	public static String Advanced_Tab_Title;
 	public static String Wizard_Window_Title;	
 	static {
-		NLS.initializeMessages("org.jboss.tools.common.model.ui.editors.dnd.DropWizardMessages", DropWizardMessages.class);
+		NLS.initializeMessages("org.jboss.tools.common.model.ui.editors.dnd.DropWizardMessages", DropWizardMessages.class); //$NON-NLS-1$
 	}
 }

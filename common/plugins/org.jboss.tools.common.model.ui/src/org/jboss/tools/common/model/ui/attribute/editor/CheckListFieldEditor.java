@@ -137,7 +137,7 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 		valueProvider.removeValueChangeListener(this);
 		if (IPropertyEditor.VALUE.equals(event.getPropertyName())) {
 			Object v = event.getNewValue();
-			String s = (v == null) ? "" : v.toString();
+			String s = (v == null) ? "" : v.toString(); //$NON-NLS-1$
 			if(!s.equals(stringValue)) {
 				stringValue = s;
 				
@@ -150,7 +150,7 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 						TreeItem[] is = tree.getItems();
 						for (int i = 0; i < is.length; i++) {
 							Object d = is[i].getData();
-							StringTokenizer values = new StringTokenizer(stringValue, ";,");
+							StringTokenizer values = new StringTokenizer(stringValue, ";,"); //$NON-NLS-1$
 							while(values.hasMoreTokens()) {
 								String n = values.nextToken();
 								if(n.equals(d)) {
@@ -174,20 +174,20 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 		if(item == null) return;
 
 		String currentItem = item.getData().toString();
-		StringTokenizer values = new StringTokenizer(valueProvider.getStringValue(true), ";,");
-		String newValue = "";
+		StringTokenizer values = new StringTokenizer(valueProvider.getStringValue(true), ";,"); //$NON-NLS-1$
+		String newValue = ""; //$NON-NLS-1$
 		boolean currentItemExists = false;
 		while (values.hasMoreTokens()) {
 			String value = values.nextToken();
 			if (value.equals(currentItem))
 				currentItemExists = true;
 			else {
-				if(newValue.length() > 0 && !newValue.endsWith(";") && !newValue.endsWith(",")) newValue += ";";
+				if(newValue.length() > 0 && !newValue.endsWith(";") && !newValue.endsWith(",")) newValue += ";"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				newValue += value;
 			}
 		}
 		if (!currentItemExists) {
-			if(newValue.length() > 0 && !newValue.endsWith(";") && !newValue.endsWith(",")) newValue += ";";
+			if(newValue.length() > 0 && !newValue.endsWith(";") && !newValue.endsWith(",")) newValue += ";"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			newValue += currentItem;
 		}
 		valueChanged(newValue);
@@ -203,7 +203,7 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 		}
 
 		public boolean isSelected(Object data) {
-			StringTokenizer values = new StringTokenizer(valueProvider.getStringValue(true), ";,");
+			StringTokenizer values = new StringTokenizer(valueProvider.getStringValue(true), ";,"); //$NON-NLS-1$
 			while (values.hasMoreTokens()) {
 				String n = values.nextToken();
 				if(data != null && data.equals(n)) return true;				

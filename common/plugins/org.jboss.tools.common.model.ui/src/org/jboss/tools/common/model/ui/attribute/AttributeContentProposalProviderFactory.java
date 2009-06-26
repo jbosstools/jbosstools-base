@@ -53,7 +53,7 @@ public class AttributeContentProposalProviderFactory {
 		KeyStroke ks = null;
 		
 		try {
-			ks = KeyStroke.getInstance("Ctrl+Space");
+			ks = KeyStroke.getInstance("Ctrl+Space"); //$NON-NLS-1$
 		} catch (ParseException e) {
 			//Cannot happen, this code is safe.
 			ModelUIPlugin.getPluginLog().logError(e);
@@ -147,7 +147,7 @@ public class AttributeContentProposalProviderFactory {
 		}
 	}
 
-	static String POINT_ID = ModelUIPlugin.PLUGIN_ID + ".attributeContentProposalProviders";
+	static String POINT_ID = ModelUIPlugin.PLUGIN_ID + ".attributeContentProposalProviders"; //$NON-NLS-1$
 
 	public List<IAttributeContentProposalProvider> getContentProposalProviders(XModelObject object, XAttribute attribute) {
 		List<IAttributeContentProposalProvider> result = EMPTY;
@@ -160,7 +160,7 @@ public class AttributeContentProposalProviderFactory {
 			for (int j = 0; j < cs.length; j++) {
 				IAttributeContentProposalProvider provider = null;
 				try {
-					Object o = cs[j].createExecutableExtension("class");
+					Object o = cs[j].createExecutableExtension("class"); //$NON-NLS-1$
 					provider = (IAttributeContentProposalProvider)o;
 				} catch (CoreException e) {
 					ModelUIPlugin.getPluginLog().logError(e);

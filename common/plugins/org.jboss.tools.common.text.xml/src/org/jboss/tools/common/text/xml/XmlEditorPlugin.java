@@ -42,7 +42,7 @@ public class XmlEditorPlugin extends BaseUIPlugin {
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
 	
-	public static final String PLUGIN_ID = "org.jboss.tools.common.text.xml"; 
+	public static final String PLUGIN_ID = "org.jboss.tools.common.text.xml";  //$NON-NLS-1$
 
 	
 	/**
@@ -51,7 +51,7 @@ public class XmlEditorPlugin extends BaseUIPlugin {
 	public XmlEditorPlugin() {
 		plugin = this;
 		try {
-			resourceBundle= ResourceBundle.getBundle("org.jboss.tools.common.text.xml.XmlEditorPluginResources");
+			resourceBundle= ResourceBundle.getBundle("org.jboss.tools.common.text.xml.XmlEditorPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -99,7 +99,7 @@ public class XmlEditorPlugin extends BaseUIPlugin {
 
 			Method m;
 			try {
-				m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]);
+				m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]); //$NON-NLS-1$
 				m.setAccessible(true);
 				m.invoke(JavaPlugin.getDefault(), new Object[0]);
 			} catch (NoSuchMethodException e) {

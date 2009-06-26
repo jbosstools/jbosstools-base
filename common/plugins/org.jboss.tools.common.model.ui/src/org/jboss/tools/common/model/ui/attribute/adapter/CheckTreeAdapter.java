@@ -36,9 +36,9 @@ public class CheckTreeAdapter extends DefaultValueAdapter implements ITreeConten
 	
 	protected ISelectionChangedListener selectionChangedListener;
 	
-	private Image IMAGE_CHECK = EclipseResourceUtil.getImage("images/common/check.gif");
-	private Image IMAGE_UNCHECK = EclipseResourceUtil.getImage("images/common/uncheck.gif");
-	private Image IMAGE_HALFCHECK = EclipseResourceUtil.getImage("images/common/halfcheck.gif");
+	private Image IMAGE_CHECK = EclipseResourceUtil.getImage("images/common/check.gif"); //$NON-NLS-1$
+	private Image IMAGE_UNCHECK = EclipseResourceUtil.getImage("images/common/uncheck.gif"); //$NON-NLS-1$
+	private Image IMAGE_HALFCHECK = EclipseResourceUtil.getImage("images/common/halfcheck.gif"); //$NON-NLS-1$
 	
 	public class CheckTree implements ICheckable {
 		private ArrayList<ICheckStateListener> listeners = new ArrayList<ICheckStateListener>();

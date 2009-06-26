@@ -75,6 +75,7 @@ public class XModelObjectAction extends XModelObjectActionItem {
 			runObject = redirectObject;
 		}
 		if (action.getSignificantFlag(object)) {
+			// i18n: can't construct sentences by concatenation
 			String message = SignificanceMessageFactory.getInstance()
 					.getMessage(action, object, targets)
 					+ "?";
@@ -86,12 +87,12 @@ public class XModelObjectAction extends XModelObjectActionItem {
 				return;
 		}
 		String wizardName = runAction.getWizardClassName();
-		if (wizardName == null || wizardName.equals("")) {
+		if (wizardName == null || wizardName.equals("")) { //$NON-NLS-1$
 			action.getEntityData(object);
 			try {
 				Properties p = prepareProperties();
 				if (p == null) p = new Properties();
-				if (getShell() != null) p.put("shell", getShell());
+				if (getShell() != null) p.put("shell", getShell()); //$NON-NLS-1$
 				if (targets == null) action.executeHandler(object, p);
 				else action.executeHandler(object, targets, p);
 			} catch (ActionDeclinedException e) {
@@ -105,10 +106,10 @@ public class XModelObjectAction extends XModelObjectActionItem {
 			Properties p = prepareProperties();
 			if (p == null)
 				p = new Properties();
-			p.put("action", runAction);
-			p.put("object", runObject);
+			p.put("action", runAction); //$NON-NLS-1$
+			p.put("object", runObject); //$NON-NLS-1$
 			if (getShell() != null)
-				p.put("shell", getShell());
+				p.put("shell", getShell()); //$NON-NLS-1$
 			w.setObject(p);
 			w.execute();
 		}

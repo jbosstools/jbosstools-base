@@ -20,7 +20,7 @@ import org.jboss.tools.common.model.*;
  * @deprecated
  */
 public class VerifyConfigurationHandler extends AbstractHandler {
-    SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.verification.ui.vrules.wizard.config.VRulesConfigurationWizard");
+    SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.verification.ui.vrules.wizard.config.VRulesConfigurationWizard"); //$NON-NLS-1$
 
     public VerifyConfigurationHandler() {}
 

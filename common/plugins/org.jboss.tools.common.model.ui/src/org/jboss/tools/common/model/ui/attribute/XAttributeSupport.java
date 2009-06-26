@@ -76,7 +76,7 @@ public class XAttributeSupport {
 	}
 
 	public XAttributeSupport(XModelObject xmo) {
-		if(xmo==null) throw new IllegalArgumentException("XModelObject cannot be null.");
+		if(xmo==null) throw new IllegalArgumentException("XModelObject cannot be null."); //$NON-NLS-1$
 		init(xmo);
 	}
 
@@ -85,7 +85,7 @@ public class XAttributeSupport {
 	}
 	
 	public XAttributeSupport(XModelObject xmo, XEntityData data, boolean useObject) {
-		if(data==null) throw new IllegalArgumentException("XEntityData cannot be null.");
+		if(data==null) throw new IllegalArgumentException("XEntityData cannot be null."); //$NON-NLS-1$
 		init(xmo, data, useObject);
 	}
 	
@@ -110,7 +110,7 @@ public class XAttributeSupport {
 			PropertyEditor editor = createEditor(adapter, xmo, attribute[i]);
 			adapters.add(adapter);
 			editors.add(editor);
-			if("always".equals(attribute[i].getProperty("greedy"))) {
+			if("always".equals(attribute[i].getProperty("greedy"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				alwaysGreedy.add(attribute[i].getName());
 			}
 		}
@@ -131,14 +131,14 @@ public class XAttributeSupport {
 			PropertyEditor editor = (useObject) ? createEditor(adapter, xmo, attr) : createEditor(adapter, xmo, ads[i]);
 			String labelText = WizardKeys.getAttributeDisplayName(ads[i]);
 			if (labelText!=null) {
-				labelText = labelText + ((ads[i].getMandatoryFlag()) ? "*" : "");
+				labelText = labelText + ((ads[i].getMandatoryFlag()) ? "*" : ""); //$NON-NLS-1$ //$NON-NLS-2$
 				editor.setLabelText(labelText);
 			}
 			adapters.add(adapter);
 			
 			editors.add(editor);
 
-			if("always".equals(attr.getProperty("greedy"))) {
+			if("always".equals(attr.getProperty("greedy"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				alwaysGreedy.add(attr.getName());
 			}
 		}
@@ -225,7 +225,7 @@ public class XAttributeSupport {
 		}
 		Control[] controls = fillComposite(composite, fieldEditor, greedy);
 		if(fieldEditor instanceof StringButtonFieldEditorEx) {
-			((StringButtonFieldEditorEx)fieldEditor).setStringValue("" + editor.getValue());
+			((StringButtonFieldEditorEx)fieldEditor).setStringValue("" + editor.getValue()); //$NON-NLS-1$
 		}
 		return controls;
 	}
@@ -309,7 +309,7 @@ public class XAttributeSupport {
 			}
 			fillComposite(composite, fieldEditor, greedy);
 			if(fieldEditor instanceof StringButtonFieldEditorEx) {
-				((StringButtonFieldEditorEx)fieldEditor).setStringValue("" + editor.getValue());
+				((StringButtonFieldEditorEx)fieldEditor).setStringValue("" + editor.getValue()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -354,7 +354,7 @@ public class XAttributeSupport {
 			}
 			fillComposite(composite, fieldEditor, greedy);
 			if(fieldEditor instanceof StringButtonFieldEditorEx) {
-				((StringButtonFieldEditorEx)fieldEditor).setStringValue("" + editor.getValue());
+				((StringButtonFieldEditorEx)fieldEditor).setStringValue("" + editor.getValue()); //$NON-NLS-1$
 			}
 		}
 		return composite;
@@ -371,15 +371,15 @@ public class XAttributeSupport {
 	}
 
 	public void load() {
-		if(xmo == null) throw new IllegalArgumentException("" +
-			"Init support with XModelObject before saving");		
+		if(xmo == null) throw new IllegalArgumentException("" + //$NON-NLS-1$
+			"Init support with XModelObject before saving");		 //$NON-NLS-1$
 		for (int i = 0; i < editors.size(); i++)
 		((IModelPropertyEditorAdapter)adapters.get(i)).load();
 	}	
 	
 	public void save() {
-		if(xmo == null) throw new IllegalArgumentException("" +			"Init support with XModelObject before saving");
-		if(xmo.getModel()==null) throw new IllegalArgumentException("Cannot store deleted or removed XModel object");
+		if(xmo == null) throw new IllegalArgumentException("" + //$NON-NLS-1$			"Init support with XModelObject before saving"); //$NON-NLS-1$
+		if(xmo.getModel()==null) throw new IllegalArgumentException("Cannot store deleted or removed XModel object"); //$NON-NLS-1$
 		xmo.getModel().saveOptions();	
 	}
 	
@@ -405,7 +405,7 @@ public class XAttributeSupport {
 	
 	public IPropertyEditor getPropertyEditorByName(String attributeName) {
 		IPropertyEditor result = null;
-		if (attributeName != null && !"".equals(attributeName)) {
+		if (attributeName != null && !"".equals(attributeName)) { //$NON-NLS-1$
 			Iterator iterator = editors.iterator();
 			while (iterator.hasNext() && result == null) {
 				IPropertyEditor editor = (IPropertyEditor)iterator.next();
@@ -426,7 +426,7 @@ public class XAttributeSupport {
 	
 	public IModelPropertyEditorAdapter getPropertyEditorAdapterByName(String attributeName)	{
 		IModelPropertyEditorAdapter result = null;		
-		if (attributeName != null && !"".equals(attributeName)) {
+		if (attributeName != null && !"".equals(attributeName)) { //$NON-NLS-1$
 			Iterator iterator = adapters.iterator();
 			while (iterator.hasNext() && result == null) {
 				IModelPropertyEditorAdapter adapter = (IModelPropertyEditorAdapter)iterator.next();

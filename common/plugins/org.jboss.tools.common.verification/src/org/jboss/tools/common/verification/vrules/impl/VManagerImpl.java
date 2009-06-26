@@ -118,7 +118,7 @@ public class VManagerImpl implements VManager {
     public void setMinSignificance(int significance) {
         int oldSignificance = this.significance;
         this.significance = significance;
-        propertyChangeSupport.firePropertyChange("minSignificance", oldSignificance, significance);
+        propertyChangeSupport.firePropertyChange("minSignificance", oldSignificance, significance); //$NON-NLS-1$
     }
     
     public VMessageFormat getMessageFormat() {

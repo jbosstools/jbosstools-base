@@ -18,12 +18,12 @@ import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 public class TableStructuredEditor extends StructuredEditor {
 	
-	public static final String ADD_ACTION = "ADD_ACTION";
-	public static final String REMOVE_ACTION = "REMOVE_ACTION";
-	public static final String EDIT_ACTION = "EDIT_ACTION";
-	public static final String UP_ACTION = "UP_ACTION";
-	public static final String DOWN_ACTION = "DOWN_ACTION";
-	public static final String DOUBLE_CLICK__ACTION = "DOUBLE_CLICK__ACTION";
+	public static final String ADD_ACTION = "ADD_ACTION"; //$NON-NLS-1$
+	public static final String REMOVE_ACTION = "REMOVE_ACTION"; //$NON-NLS-1$
+	public static final String EDIT_ACTION = "EDIT_ACTION"; //$NON-NLS-1$
+	public static final String UP_ACTION = "UP_ACTION"; //$NON-NLS-1$
+	public static final String DOWN_ACTION = "DOWN_ACTION"; //$NON-NLS-1$
+	public static final String DOUBLE_CLICK__ACTION = "DOUBLE_CLICK__ACTION"; //$NON-NLS-1$
 	
 
 	protected DialogCellEditorEx cellEditor;

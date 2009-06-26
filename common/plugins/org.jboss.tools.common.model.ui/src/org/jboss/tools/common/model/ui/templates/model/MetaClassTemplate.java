@@ -69,7 +69,7 @@ public class MetaClassTemplate {
 	}
 	
 	private boolean isOverridingDefaultClass() {
-		if(!"java.lang.Object".equals(superClass.getValue())) return false;
+		if(!"java.lang.Object".equals(superClass.getValue())) return false; //$NON-NLS-1$
 		String pv = (parent == null) ? null : parent.getSuperClass().getValue();
 		return pv == null || pv.length() == 0;
 	}

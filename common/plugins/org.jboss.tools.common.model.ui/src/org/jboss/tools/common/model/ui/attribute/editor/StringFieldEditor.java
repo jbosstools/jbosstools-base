@@ -10,12 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute.editor;
 
-import java.util.ArrayList;
 
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.IContentProposal;
-import org.eclipse.jface.fieldassist.IContentProposalProvider;
-import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -154,12 +149,12 @@ public class StringFieldEditor extends ExtendedFieldEditor {
 		///do not restore this assignment! glory
 		///textControl = textField;
 		if (textField == null) {
-			int style = getSettings().getStyle("Text.Style");
+			int style = getSettings().getStyle("Text.Style"); //$NON-NLS-1$
 			if (style==SWT.DEFAULT) style = SWT.NONE;
 ///			Color bg = getSettings().getColor("Text.Background");
-			Color fg = getSettings().getColor("Text.Foreground");
-			Font font = getSettings().getFont("Text.Font");
-			Border border = getSettings().getBorder("Text.Border");
+			Color fg = getSettings().getColor("Text.Foreground"); //$NON-NLS-1$
+			Font font = getSettings().getFont("Text.Font"); //$NON-NLS-1$
+			Border border = getSettings().getBorder("Text.Border"); //$NON-NLS-1$
 			boolean readOnly = isAlwaysReadOnly();
 			if (border != null) {
 				if(readOnly) style |= SWT.READ_ONLY;

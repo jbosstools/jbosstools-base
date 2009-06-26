@@ -38,8 +38,8 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 	private int style = SKIP_LABEL;
 	private Button checkBox = null;
 	
-	protected String trueValue = "true";
-	protected String falseValue = "false";
+	protected String trueValue = "true"; //$NON-NLS-1$
+	protected String falseValue = "false"; //$NON-NLS-1$
 	
 	protected boolean booleanValue = false;
 
@@ -63,7 +63,7 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 		String text = getLabelText();
 		if (style == SKIP_LABEL) {
 			Label label = new Label(parent,SWT.NONE);
-			label.setText("");
+			label.setText(""); //$NON-NLS-1$
 			numColumns--;
 		}
 		if (style == SEPARATE_LABEL) {
@@ -103,7 +103,7 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 		}
 		int style = 0;
 		if (getSettings() != null) {
-			style = getSettings().getStyle("CheckBox.Style");
+			style = getSettings().getStyle("CheckBox.Style"); //$NON-NLS-1$
 		}
 		if (style == SWT.DEFAULT) {
 			style = SWT.CHECK | SWT.LEFT;
@@ -199,9 +199,9 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 
 	private void initValue(Object value) {
 		if (value instanceof String) {
-			if ("yes".equalsIgnoreCase(value.toString()) || "no".equalsIgnoreCase(value.toString())) {
-				trueValue = "yes";
-				falseValue = "no";
+			if ("yes".equalsIgnoreCase(value.toString()) || "no".equalsIgnoreCase(value.toString())) { //$NON-NLS-1$ //$NON-NLS-2$
+				trueValue = "yes"; //$NON-NLS-1$
+				falseValue = "no"; //$NON-NLS-1$
 			}
 		}
 	}
@@ -209,7 +209,7 @@ public class CheckBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 	private boolean isTrue(Object value) {
 		if (value instanceof Boolean) return ((Boolean)value).booleanValue();
 		if (value instanceof String) {
-			if ("yes".equalsIgnoreCase(value.toString()) || "true".equalsIgnoreCase(value.toString())) return true;
+			if ("yes".equalsIgnoreCase(value.toString()) || "true".equalsIgnoreCase(value.toString())) return true; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return false;
 	}

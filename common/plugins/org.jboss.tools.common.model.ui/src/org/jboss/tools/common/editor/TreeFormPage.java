@@ -177,7 +177,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 		XActionItem[] items = actionList.getActionItems();
 		for (int i=0;i<items.length;++i) {
 			if (items[i] instanceof XActionList) {
-				printActionList(level+"    ", (XActionList)items[i]);				
+				printActionList(level+"    ", (XActionList)items[i]);				 //$NON-NLS-1$
 			} else {
 				String actionItemName = items[i].getName();
 				String actionItemDisplayName = items[i].getDisplayName();
@@ -198,7 +198,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 		if(selection == xmo) return;
 		selection = xmo;
 		 
-		if (xmo!=null && xmo.getModelEntity()!=null) printActionList("", xmo.getModelEntity().getActionList());
+		if (xmo!=null && xmo.getModelEntity()!=null) printActionList("", xmo.getModelEntity().getActionList()); //$NON-NLS-1$
 		IForm form = (xmo == null) ? null : getFormFactory(xmo).getForm();
 
 		// store form into memento
@@ -230,10 +230,10 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 	private IFormFactory getFormFactory(XModelObject selected) {
 		if(selected == null) return null;
 		XModelObjectFormFactory formFactory = null;
-		String formFactoryClassName = selected.getModelEntity().getProperty("formFactory");
+		String formFactoryClassName = selected.getModelEntity().getProperty("formFactory"); //$NON-NLS-1$
 		
 		if(formFactoryClassName != null) {
-			if("%Default%".equals(formFactoryClassName)) {
+			if("%Default%".equals(formFactoryClassName)) { //$NON-NLS-1$
 				return new LayouredFormFactory(selected);
 			}
 			Class cls = ModelFeatureFactory.getInstance().getFeatureClass(formFactoryClassName);
@@ -272,8 +272,8 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 	class XMTL implements XModelTreeListener {
 		public void nodeChanged(XModelTreeEvent event) {
 			XModelObject o = event.getModelObject();
-			String p1 = "" + installedObject.getPath() + "/";
-			String p2 = "" + o.getPath() + "/";
+			String p1 = "" + installedObject.getPath() + "/"; //$NON-NLS-1$ //$NON-NLS-2$
+			String p2 = "" + o.getPath() + "/"; //$NON-NLS-1$ //$NON-NLS-2$
 			if(p2.startsWith(p1)) {
 				update();
 			}
@@ -281,8 +281,8 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
    	 
 		public void structureChanged(XModelTreeEvent event) {
 			XModelObject o = event.getModelObject();
-			String p1 = "" + installedObject.getPath() + "/";
-			String p2 = "" + o.getPath() + "/";
+			String p1 = "" + installedObject.getPath() + "/"; //$NON-NLS-1$ //$NON-NLS-2$
+			String p2 = "" + o.getPath() + "/"; //$NON-NLS-1$ //$NON-NLS-2$
 			if(p2.startsWith(p1)) {
 				update();
 			}
@@ -317,7 +317,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 			f = f.getParent();
 		}
 		if(f == null) f = installedObject;
-		return f.get("errors");
+		return f.get("errors"); //$NON-NLS-1$
 	}
 
 	public IDocumentProvider getDocumentProvider() {
@@ -382,7 +382,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 		this.site = site;
 		this.input = input;
 		if (input instanceof IFileEditorInput) {
-			memento = new MementoDOM(ResourceLayoutManager.getDefault().getLayoutElement(getFile(), "TreeFormPage"));
+			memento = new MementoDOM(ResourceLayoutManager.getDefault().getLayoutElement(getFile(), "TreeFormPage")); //$NON-NLS-1$
 		}
 	}
 
@@ -460,7 +460,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 
 	public void doOperation(int operation) {
 		if (operation>actionMapping.size()) {
-			ModelUIPlugin.getPluginLog().logError(new IllegalArgumentException("Can not find global action with index: "+operation));
+			ModelUIPlugin.getPluginLog().logError(new IllegalArgumentException("Can not find global action with index: "+operation)); //$NON-NLS-1$
 		} else {
 			String globalAction = (String)actionMapping.get(operation);
 			this.doGlobalAction(globalAction);

@@ -61,7 +61,7 @@ public class SelectObjectWizard implements SpecialWizard {
 					ISelection s = p.getSite().getSelectionProvider().getSelection();
 					
 					if(isXModelSelection(s)) {
-						IViewPart vs = page.findView("org.eclipse.ui.views.ContentOutline");
+						IViewPart vs = page.findView("org.eclipse.ui.views.ContentOutline"); //$NON-NLS-1$
 						ISelectionProvider sp = vs == null ? null : vs.getSite().getSelectionProvider();
 						if(sp != null) {
 							sp.setSelection(getSelection(object));
@@ -87,7 +87,7 @@ public class SelectObjectWizard implements SpecialWizard {
 	}
 	
 	String[] views = new String[]{
-		"org.jboss.tools.jst.web.ui.navigator.WebProjectsView"
+		"org.jboss.tools.jst.web.ui.navigator.WebProjectsView" //$NON-NLS-1$
 //		"org.jboss.tools.jsf.ui.navigator.JsfProjectsView",
 //		"org.jboss.tools.struts.ui.navigator.StrutsProjectsView",
 //		"org.jboss.tools.common.model.ui.navigator.NavigatorViewPart"
@@ -123,10 +123,10 @@ public class SelectObjectWizard implements SpecialWizard {
 		// First try to find parent file.
 		XModelObject ofile = o;
 		while(ofile != null && ofile.getFileType() == XModelObject.NONE) ofile = ofile.getParent();
-		if(ofile != null && DnDUtil.getEnabledAction(ofile, null, "Open") != null) return ofile;
+		if(ofile != null && DnDUtil.getEnabledAction(ofile, null, "Open") != null) return ofile; //$NON-NLS-1$
 
 		while(o != null) {
-			if(DnDUtil.getEnabledAction(o, null, "Open") != null) return o;
+			if(DnDUtil.getEnabledAction(o, null, "Open") != null) return o; //$NON-NLS-1$
 			if(o.getFileType() != XFileObject.NONE) return null;
 			o = o.getParent();
 		}
@@ -136,12 +136,12 @@ public class SelectObjectWizard implements SpecialWizard {
 	private IEditorPart openEditor(XModelObject of) {
 		Properties p = new Properties();
 		if(where == FindObjectHelper.IN_NAVIGATOR_AND_IN_EDITOR_IF_OPEN) {
-			p.setProperty("onlySelectIfOpen", "true");
+			p.setProperty("onlySelectIfOpen", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		if(of != null && XActionInvoker.getAction("Open", of) != null) {
-			XActionInvoker.invoke("Open", of, p);
+		if(of != null && XActionInvoker.getAction("Open", of) != null) { //$NON-NLS-1$
+			XActionInvoker.invoke("Open", of, p); //$NON-NLS-1$
 		}
-		return (IEditorPart)p.get("editor");
+		return (IEditorPart)p.get("editor"); //$NON-NLS-1$
 	}
 	
 	private XModelObject getSelection(IViewPart part) {

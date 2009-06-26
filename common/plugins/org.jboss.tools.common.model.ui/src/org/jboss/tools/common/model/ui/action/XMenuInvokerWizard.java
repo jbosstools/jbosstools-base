@@ -23,9 +23,9 @@ public class XMenuInvokerWizard implements SpecialWizard {
 
 	public void setObject(Object object) {
 		Properties p = (Properties)object;
-		this.object = (XModelObject)p.get("object");
-		list = (XActionList)p.get("actionList");
-		control = (Control)p.get("control");
+		this.object = (XModelObject)p.get("object"); //$NON-NLS-1$
+		list = (XActionList)p.get("actionList"); //$NON-NLS-1$
+		control = (Control)p.get("control"); //$NON-NLS-1$
 		if(control == null) {
 			control = ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 		}

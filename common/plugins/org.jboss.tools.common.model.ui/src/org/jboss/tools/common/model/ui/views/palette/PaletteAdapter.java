@@ -65,7 +65,7 @@ public class PaletteAdapter implements IPaletteAdapter {
 	private PaletteDescriptionManager descriptionManager = null;
 	private PaletteResizeManager resizeManager = null;
 	private PaletteDropTargetManager dropManager = null;
-	private QualifiedName persistentTabQualifiedName = new QualifiedName("", "Palette_tab");
+	private QualifiedName persistentTabQualifiedName = new QualifiedName("", "Palette_tab"); //$NON-NLS-1$ //$NON-NLS-2$
 	private String selectedTab = null;
 	private boolean fWindowsFlag;
 	
@@ -74,8 +74,8 @@ public class PaletteAdapter implements IPaletteAdapter {
 	}
 
 	public Control createControl(Composite composite) {
-		String osName = System.getProperty("os.name");
-		fWindowsFlag = osName != null && osName.toUpperCase().indexOf("WINDOWS") != -1;
+		String osName = System.getProperty("os.name"); //$NON-NLS-1$
+		fWindowsFlag = osName != null && osName.toUpperCase().indexOf("WINDOWS") != -1; //$NON-NLS-1$
 
 		try {
 			selectedTab = ModelUIPlugin.getWorkspace().getRoot().getPersistentProperty(persistentTabQualifiedName);
@@ -462,11 +462,11 @@ public class PaletteAdapter implements IPaletteAdapter {
 		}
 
 		private void run(XModelTreeEvent event) {
-			if("transaction_begin".equals(event.getInfo())) {
+			if("transaction_begin".equals(event.getInfo())) { //$NON-NLS-1$
 				isTransaction = true;
 				return;
 			}
-			if("transaction_end".equals(event.getInfo())) {
+			if("transaction_end".equals(event.getInfo())) { //$NON-NLS-1$
 				isTransaction = false;
 				if(isDirty) {
 					isDirty = false;
@@ -478,7 +478,7 @@ public class PaletteAdapter implements IPaletteAdapter {
 			XModel xmodel = model.getXModel();
 			XModelObject exo = event.getModelObject();
 			boolean q = event.kind() == XModelTreeEvent.STRUCTURE_CHANGED && xmodel.getRoot().getPath().equals(exo.getPath());
-			XModelObject xroot = xmodel.getRoot("Palette");
+			XModelObject xroot = xmodel.getRoot("Palette"); //$NON-NLS-1$
 			if (xroot == null || isExist(xroot, event.getModelObject()) || q) {
 				if (event.kind() == XModelTreeEvent.CHILD_ADDED && xroot != null && xroot.getPath().equals(exo.getPath())) {
 					Object info = event.getInfo();
@@ -502,13 +502,13 @@ public class PaletteAdapter implements IPaletteAdapter {
 			if (modelObject.getPath() == null || root.getPath() == null) {
 				return false;
 			}
-			return (modelObject.getPath() + "/").startsWith(root.getPath() + "/");
+			return (modelObject.getPath() + "/").startsWith(root.getPath() + "/"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 	
 	private class PaletteEditAction extends Action {
 		public PaletteEditAction() {
-			super("Palette Editor", model.createImageDescriptor("palette_editor.gif"));
+			super("Palette Editor", model.createImageDescriptor("palette_editor.gif")); //$NON-NLS-2$
 			setToolTipText("Palette Editor");
 		}
 		
@@ -519,7 +519,7 @@ public class PaletteAdapter implements IPaletteAdapter {
 	
 	private class ShowHideTabsAction extends Action {
 		public ShowHideTabsAction() {
-			super("Show/Hide tabs", model.createImageDescriptor("show-hide.gif"));
+			super("Show/Hide tabs", model.createImageDescriptor("show-hide.gif")); //$NON-NLS-2$
 			setToolTipText("Show/Hide");
 		}
 		public void run() {

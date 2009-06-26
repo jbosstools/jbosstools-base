@@ -65,7 +65,7 @@ public class SampleTreeForm extends ExpandableForm implements ISelectionChangedL
 	}
 
 	protected Control  createClientArea(Composite parent, IWidgetSettings settings) {
-		BorderedControl borderedControl = new BorderedControl(parent, SWT.NONE, settings.getBorder("Table.Border"));
+		BorderedControl borderedControl = new BorderedControl(parent, SWT.NONE, settings.getBorder("Table.Border")); //$NON-NLS-1$
 		borderedControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		Control treeControl = tree.createControl(borderedControl, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -84,7 +84,7 @@ public class SampleTreeForm extends ExpandableForm implements ISelectionChangedL
 	public void initialize(Object model) {
 		this.xmo = (XModelObject)model;
 		this.model = xmo.getModel(); 
-		setHeadingText(this.xmo.getAttributeValue("name"));
+		setHeadingText(this.xmo.getAttributeValue("name")); //$NON-NLS-1$
 		for (int i = 0; i < filters.length; i++) tree.addFilter(filters[i]);
 		tree.setCache(new XModelObjectCache(xmo));
 	}

@@ -32,11 +32,11 @@ public class XMLEditorLauncher implements IEditorLauncher {
 		EditorPartWrapperExtension extension = EditorPartWrapperExtension.getInstance();
 		EditorPartFactory factory = extension.getFactory(entity);
 		String id = factory.getEditorId();
-		if(id == null) id = "org.jboss.tools.common.text.xml.internal.ui.xmleditor.XmlEditor";
+		if(id == null) id = "org.jboss.tools.common.text.xml.internal.ui.xmleditor.XmlEditor"; //$NON-NLS-1$
 		new Thread(new LaunchThread(id, input)).start();		
 	}
 
-	static String DEFAULT_ENTITY = "xml";
+	static String DEFAULT_ENTITY = "xml"; //$NON-NLS-1$
 	
 	private String computeEntity(IEditorInput input) {
 		if(!(input instanceof IModelObjectEditorInput)) return DEFAULT_ENTITY; 
@@ -112,7 +112,7 @@ public class XMLEditorLauncher implements IEditorLauncher {
 		String l = resource.getLocation().toFile().getAbsolutePath();
 		if (!location.startsWith(l)) return null;
 		String relative = location.substring(l.length()).replace('\\', '/');
-		StringTokenizer st = new StringTokenizer(relative, "/");
+		StringTokenizer st = new StringTokenizer(relative, "/"); //$NON-NLS-1$
 		
 		while(st.hasMoreTokens()) {
 			String token = st.nextToken();

@@ -27,7 +27,7 @@ public class DefaultForm extends AbstractForm {
 	public DefaultForm() {}
 
 	public Control createControl(Composite parent, IWidgetSettings settings) {
-		composite = new Composite(parent, settings.getStyle("Composite.Style"));
+		composite = new Composite(parent, settings.getStyle("Composite.Style")); //$NON-NLS-1$
 		composite.setLayout(getLayout());
 		composite.setLayoutData(getLayoutData());
 		// create client area

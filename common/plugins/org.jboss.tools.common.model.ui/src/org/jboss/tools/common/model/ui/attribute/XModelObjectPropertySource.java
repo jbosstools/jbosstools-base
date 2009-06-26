@@ -55,7 +55,7 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 		if(a != null && v != null && a.getConstraint() instanceof XAttributeConstraintAList) {
 			v = WizardKeys.getVisualListValue(a, v);
 		}
-		cachedValues.setProperty(n, "" + v);
+		cachedValues.setProperty(n, "" + v); //$NON-NLS-1$
 		return v;
 	}
 
@@ -89,7 +89,7 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 		String n = getAttributeNameById(id);
 		String v = cachedValues.getProperty(n);
 		if(value.equals(v)) return;
-		cachedValues.setProperty(n, "" + value);
+		cachedValues.setProperty(n, "" + value); //$NON-NLS-1$
 		value = fromVisualToModel(n, value.toString());
 		if(modelObject.isActive()) {
 			try {
@@ -121,15 +121,15 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 		XAttribute[] attrs = modelObject.getModelEntity().getAttributes();
 		propertyDescriptors = new ArrayList<IPropertyDescriptor>();
 		for (int i=0;i<attrs.length;++i) {
-			if (attrs[i].isVisible() && !"element type".equals(attrs[i].getName())) {
+			if (attrs[i].isVisible() && !"element type".equals(attrs[i].getName())) { //$NON-NLS-1$
 				//propertyDescriptors.add(new TextPropertyDescriptor(attrs[i].getName(),attrs[i].getName()));
 				propertyDescriptors.add(new XAttributePropertyDescription(this, attrs[i], modelObject));
 			}
 		}
 		XModel model = modelObject.getModel();
-		if(model.getManager("propertySheetUpdate") == null) {
+		if(model.getManager("propertySheetUpdate") == null) { //$NON-NLS-1$
 			model.addModelTreeListener(listener);
-			model.addManager("propertySheetUpdate", listener);
+			model.addManager("propertySheetUpdate", listener); //$NON-NLS-1$
 		}
 	}
 
@@ -142,7 +142,7 @@ public class XModelObjectPropertySource implements IPropertySource, IXModelSuppo
 			if(modelObject == null || modelObject != event.getModelObject()) return;
 			PropertySheet sh = null;
 			try { 
-				sh = (PropertySheet)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.ui.views.PropertySheet");
+				sh = (PropertySheet)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.ui.views.PropertySheet"); //$NON-NLS-1$
 			} catch (NullPointerException exc) {
 				//ignore
 			}

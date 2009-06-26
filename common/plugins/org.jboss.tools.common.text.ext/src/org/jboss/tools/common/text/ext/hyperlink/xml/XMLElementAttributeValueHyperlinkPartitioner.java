@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
  * @author Jeremy
  */
 public class XMLElementAttributeValueHyperlinkPartitioner extends AbstractHyperlinkPartitioner implements IHyperlinkPartitionRecognizer, IExclusiblePartitionerRecognition {
-	public static final String XML_ATTRIBUTE_VALUE_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE";
+	public static final String XML_ATTRIBUTE_VALUE_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE"; //$NON-NLS-1$
 
 	protected String getPartitionType() {
 		return XML_ATTRIBUTE_VALUE_PARTITION;

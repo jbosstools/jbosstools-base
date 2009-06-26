@@ -113,7 +113,7 @@ public class TreeSelectionFieldEditor extends ExtendedFieldEditor implements IFi
 	// getter and setter for style
 	public int getStyle() {
 		if (this.style!=SWT.DEFAULT) return style;
-		return getSettings().getStyle("Table.Style");
+		return getSettings().getStyle("Table.Style"); //$NON-NLS-1$
 	}
 	public void setStyle(int i) {
 		style = i;

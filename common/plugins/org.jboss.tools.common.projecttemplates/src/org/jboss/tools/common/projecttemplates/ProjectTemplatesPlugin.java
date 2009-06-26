@@ -25,7 +25,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 public class ProjectTemplatesPlugin extends AbstractUIPlugin{
-	public static final String PLUGIN_ID = "org.jboss.tools.common.projecttemplates";
+	public static final String PLUGIN_ID = "org.jboss.tools.common.projecttemplates"; //$NON-NLS-1$
 	static ProjectTemplatesPlugin instance;
 	
 	public static ProjectTemplatesPlugin getDefault() {
@@ -49,9 +49,9 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 		Bundle bundle = Platform.getBundle(PLUGIN_ID);
 		URL url = null;
 		try {
-			url = bundle == null ? null : FileLocator.resolve(bundle.getEntry("/"));
+			url = bundle == null ? null : FileLocator.resolve(bundle.getEntry("/")); //$NON-NLS-1$
 		} catch (IOException e) {
-			url = bundle.getEntry("/");
+			url = bundle.getEntry("/"); //$NON-NLS-1$
 		}
 		return (url == null) ? null : url.getPath();
 	}
@@ -65,12 +65,12 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 		FileFilter filter = new FileFilter() {
 			public boolean accept(File pathname) {
 				return pathname != null 
-				&& !"CVS".equals(pathname.getName())
-				&& !".svn".equalsIgnoreCase(pathname.getName());
+				&& !"CVS".equals(pathname.getName()) //$NON-NLS-1$
+				&& !".svn".equalsIgnoreCase(pathname.getName()); //$NON-NLS-1$
 			}
 		};
-		copy(location, install, "templates", filter);
-		copy(location, install, "lib", filter);
+		copy(location, install, "templates", filter); //$NON-NLS-1$
+		copy(location, install, "lib", filter); //$NON-NLS-1$
 	}
 	
 	private void copy(File location, File install, String name, FileFilter filter) {
@@ -83,7 +83,7 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 	
 	public static String getTemplateStateLocation() {
 		String stateLocation = getTemplateStatePath().toString().replace('\\', '/');
-		if(!stateLocation.endsWith("/")) stateLocation += "/";
+		if(!stateLocation.endsWith("/")) stateLocation += "/";  //$NON-NLS-1$ //$NON-NLS-2$
 		return stateLocation;
 	}
 
@@ -93,7 +93,7 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 	}
 
 	static public void log(Exception ex) {
-		getDefault().getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.OK, "No message", ex));
+		getDefault().getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.OK, "No message", ex)); //$NON-NLS-1$
 	}
 	
 }

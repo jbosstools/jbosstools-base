@@ -22,8 +22,8 @@ import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class CheckListAdapter extends DefaultValueAdapter {
-	public Image IMAGE_ENABLED = EclipseResourceUtil.getImage("images/common/check.gif");
-	public Image IMAGE_DISABLED = EclipseResourceUtil.getImage("images/common/uncheck.gif");
+	public Image IMAGE_ENABLED = EclipseResourceUtil.getImage("images/common/check.gif"); //$NON-NLS-1$
+	public Image IMAGE_DISABLED = EclipseResourceUtil.getImage("images/common/uncheck.gif"); //$NON-NLS-1$
 	
 	protected ILabelProvider labelProvider;
 	protected ITreeContentProvider treeContentProvider;

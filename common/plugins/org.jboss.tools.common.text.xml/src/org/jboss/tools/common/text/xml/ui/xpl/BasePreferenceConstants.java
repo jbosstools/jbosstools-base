@@ -89,9 +89,9 @@ public class BasePreferenceConstants {
 		store.setDefault(getItemBoldKey(item), bold);
 	}
 	
-	public final static String EDITOR_TAB_WIDTH = "org.jboss.tools.common.text.xml.ui.tab.width";
+	public final static String EDITOR_TAB_WIDTH = "org.jboss.tools.common.text.xml.ui.tab.width"; //$NON-NLS-1$
 	
-	public final static String EDITOR_REPLACE_TAB_WITH_WHITESPACE = "org.jboss.tools.common.text.xml.ui.tab.replace";
+	public final static String EDITOR_REPLACE_TAB_WITH_WHITESPACE = "org.jboss.tools.common.text.xml.ui.tab.replace"; //$NON-NLS-1$
 
 
 }

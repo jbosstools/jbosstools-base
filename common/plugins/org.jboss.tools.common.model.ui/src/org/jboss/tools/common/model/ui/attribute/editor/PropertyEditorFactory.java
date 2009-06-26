@@ -26,7 +26,7 @@ import org.jboss.tools.common.model.ui.widgets.DefaultSettings;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 public class PropertyEditorFactory {
-	public static final String ATTRIBUTE_EDITOR_EXT_POINT = "org.jboss.tools.common.model.ui.attributeEditor";
+	public static final String ATTRIBUTE_EDITOR_EXT_POINT = "org.jboss.tools.common.model.ui.attributeEditor"; //$NON-NLS-1$
 	
 	private static Map<String,Class<?>> classes = new HashMap<String,Class<?>>();
 	private static IWidgetSettings settings = new DefaultSettings();
@@ -68,12 +68,12 @@ public class PropertyEditorFactory {
 		}
 		String labelText = WizardKeys.getAttributeDisplayName(attribute, true);
 		String editorName = attribute.getEditor().getName();
-		if(!"CheckBox".equals(editorName) && !"ListRadio".equals(editorName)) {
+		if(!"CheckBox".equals(editorName) && !"ListRadio".equals(editorName)) { //$NON-NLS-1$ //$NON-NLS-2$
 			//Note: If later there appear more cases of editors that do not need ':' 
 			//it will be better to add a property to extension point for field editors.
-			labelText += ":";
+			labelText += ":"; //$NON-NLS-1$
 		}
-		if(required) labelText += "*";
+		if(required) labelText += "*"; //$NON-NLS-1$
 		propertyEditor.setLabelText(labelText);
 		
 		propertyEditor.setInput(adapter);
@@ -95,7 +95,7 @@ public class PropertyEditorFactory {
 		} catch (CoreException e) {
 			if(!defaultEditorIds.contains(id)) {
 				defaultEditorIds.add(id);
-				ModelUIPlugin.getPluginLog().logInfo("PropertyEditorFactory: Default editor used for " + id);
+				ModelUIPlugin.getPluginLog().logInfo("PropertyEditorFactory: Default editor used for " + id); //$NON-NLS-1$
 			}		
 		}
 		classes.put(id, c);		

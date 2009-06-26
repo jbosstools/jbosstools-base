@@ -124,11 +124,11 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 	public String getText() {
 		String text = null;
 		ISourceViewer sv = getSourceViewer();
-		if(sv == null) return "";
+		if(sv == null) return ""; //$NON-NLS-1$
 		IDocument d = sv.getDocument();
-		if(d == null) return "";
+		if(d == null) return ""; //$NON-NLS-1$
 		text = d.get();
-		return (text == null) ? "" : text;
+		return (text == null) ? "" : text; //$NON-NLS-1$
 	}
 
 	public boolean isEditable() {
@@ -140,7 +140,7 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 		IModelObjectEditorInput input = (IModelObjectEditorInput)getEditorInput();
 		if(input == null || input.getXModelObject() == null) return true;
 		XModelObject o = input.getXModelObject();
-		return !o.isObjectEditable() && !o.isAttributeEditable("body");
+		return !o.isObjectEditable() && !o.isAttributeEditable("body"); //$NON-NLS-1$
 	}
 
 	public void setModified(boolean set) {
@@ -441,7 +441,7 @@ public class XMLTextEditorComponent extends XMLTextEditor implements ObjectTextE
 class RevertToSavedAction2 extends RevertToSavedAction {
 	XMLTextEditorComponent t;
 	RevertToSavedAction2(XMLTextEditorComponent t) {
-		super(ResourceBundle.getBundle("org.eclipse.ui.texteditor.ConstructedEditorMessages"), "Editor.Revert.", t);
+		super(ResourceBundle.getBundle("org.eclipse.ui.texteditor.ConstructedEditorMessages"), "Editor.Revert.", t); //$NON-NLS-1$ //$NON-NLS-2$
 		this.t = t;
 	}
 	public void update() {
@@ -452,7 +452,7 @@ class RevertToSavedAction2 extends RevertToSavedAction {
 class SaveAction2 extends SaveAction {
 	XMLTextEditorComponent t;
 	SaveAction2(XMLTextEditorComponent t) {
-		super(ResourceBundle.getBundle("org.eclipse.ui.texteditor.ConstructedEditorMessages"), "Editor.Save.", t);
+		super(ResourceBundle.getBundle("org.eclipse.ui.texteditor.ConstructedEditorMessages"), "Editor.Save.", t); //$NON-NLS-1$ //$NON-NLS-2$
 		this.t = t;
 	}
 	public void update() {

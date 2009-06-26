@@ -146,24 +146,24 @@ public class XmlPreferenceConstants extends BasePreferenceConstants {
         store.setDefault(BasePreferenceConstants.EDITOR_TAB_WIDTH, 4);
         store.setDefault(BasePreferenceConstants.EDITOR_REPLACE_TAB_WITH_WHITESPACE, false);
 
-		setDefault(store, "errorIndicationColor", new RGB(255,175,175), new RGB(255, 255, 255), false, false);
+		setDefault(store, "errorIndicationColor", new RGB(255,175,175), new RGB(255, 255, 255), false, false); //$NON-NLS-1$
 		
 		initializeTextEditorValues(store);
 	}
 	
 	static String[] BOOLEAN_PROPERTIES = new String[]{
-		EDITOR_CURRENT_LINE, EDITOR_LINE_NUMBER_RULER, EDITOR_PRINT_MARGIN, "overviewRuler"
+		EDITOR_CURRENT_LINE, EDITOR_LINE_NUMBER_RULER, EDITOR_PRINT_MARGIN, "overviewRuler" //$NON-NLS-1$
 	};
 	static String[] STRING_PROPERTIES = new String[]{
 		EDITOR_CURRENT_LINE_COLOR, EDITOR_LINE_NUMBER_RULER_COLOR, EDITOR_PRINT_MARGIN_COLOR,
-		"errorIndicationColor", "warningIndicationColor", "infoIndicationColor", "taskIndicationColor", "bookmarkIndicationColor"
+		"errorIndicationColor", "warningIndicationColor", "infoIndicationColor", "taskIndicationColor", "bookmarkIndicationColor" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	};
 	static String[] INT_PROPERTIES = new String[]{EDITOR_PRINT_MARGIN_COLUMN};
 	
 	private static void initializeTextEditorValues(final IPreferenceStore store) {
-		Plugin plugin = Platform.getPlugin("org.eclipse.ui.editors");
+		Plugin plugin = Platform.getPlugin("org.eclipse.ui.editors"); //$NON-NLS-1$
 		try {
-			Method m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]);
+			Method m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]); //$NON-NLS-1$
 			m.setAccessible(true);
 			m.invoke(plugin, new Object[0]);
 		} catch (NoSuchMethodException e1) {

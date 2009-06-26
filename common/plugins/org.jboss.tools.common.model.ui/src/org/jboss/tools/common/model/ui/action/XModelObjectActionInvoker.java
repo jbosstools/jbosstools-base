@@ -32,7 +32,7 @@ public class XModelObjectActionInvoker implements SpecialWizard {
 		Properties p = (Properties)os[2];
 		XModelObject[] targets = (os.length < 4) ? null : (XModelObject[])os[3];
 		XModelObjectAction mo = new XModelObjectAction(action, o, targets, new Object[]{p});
-		if(p != null && p.get("shell") != null) mo.setShell((Shell)p.get("shell"));
+		if(p != null && p.get("shell") != null) mo.setShell((Shell)p.get("shell")); //$NON-NLS-1$ //$NON-NLS-2$
 		mo.actionPerformed();
 		return 0;
 	}

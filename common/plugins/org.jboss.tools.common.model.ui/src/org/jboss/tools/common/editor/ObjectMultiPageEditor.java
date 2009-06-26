@@ -11,6 +11,7 @@
 package org.jboss.tools.common.editor;
 
 import java.io.*;
+import java.text.MessageFormat;
 import java.util.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -82,7 +83,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	protected XModelObjectSelectionProvider selectionProvider = new XModelObjectSelectionProvider();
 	protected NatureChecker natureChecker = new NatureChecker();
 
-	private QualifiedName persistentTabQualifiedName = new QualifiedName("", "Selected_tab");
+	private QualifiedName persistentTabQualifiedName = new QualifiedName("", "Selected_tab"); //$NON-NLS-1$ //$NON-NLS-2$
 	int selectedPageIndex = 0;
 	
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
@@ -125,7 +126,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	 * have a supported nature. 
 	 */	
 	protected String getNatureWarningMessageKey() {
-		return "SharableEditors.natureWarning.message";
+		return "SharableEditors.natureWarning.message"; //$NON-NLS-1$
 	}
 
 	private void updateFile() {
@@ -145,7 +146,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	private void loadSelectedTab() {
 		IFile file = getFile();
 		try {
-			if("yes".equals(PreferenceModelUtilities.getPreferenceModel().getByPath("%Options%/Struts Studio/Editors").getAttributeValue("selectSourceTab"))) {
+			if("yes".equals(PreferenceModelUtilities.getPreferenceModel().getByPath("%Options%/Struts Studio/Editors").getAttributeValue("selectSourceTab"))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				selectedPageIndex = getSourcePageIndex();
 			} else if(file == null) {
 				loadSelectedTabForStorage();
@@ -163,7 +164,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	private void loadSelectedTabForStorage() {
 		if(object == null) return;
 		String path = object.getPath();
-		QualifiedName qn = new QualifiedName("", "Selected_tab_" + path);
+		QualifiedName qn = new QualifiedName("", "Selected_tab_" + path); //$NON-NLS-1$ //$NON-NLS-2$
 		IProject p = EclipseResourceUtil.getProject(object);
 		if(p == null || !p.isOpen()) return;
 		try {
@@ -184,7 +185,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				saveSelectedTabForStorage();
 			} else {
 				try {
-					if(file.isAccessible()) file.setPersistentProperty(persistentTabQualifiedName, "" + selectedPageIndex);
+					if(file.isAccessible()) file.setPersistentProperty(persistentTabQualifiedName, "" + selectedPageIndex); //$NON-NLS-1$
 				} catch (CoreException e) {
 					ModelUIPlugin.getPluginLog().logError(e);
 				}		
@@ -196,9 +197,9 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		IProject p = EclipseResourceUtil.getProject(object);
 		if(p == null || !p.isOpen()) return;
 		String path = object.getPath();
-		QualifiedName qn = new QualifiedName("", "Selected_tab_" + path);
+		QualifiedName qn = new QualifiedName("", "Selected_tab_" + path); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
-			p.setPersistentProperty(qn, "" + selectedPageIndex);
+			p.setPersistentProperty(qn, "" + selectedPageIndex); //$NON-NLS-1$
 		} catch (CoreException e) {
 			//ignore
 		}
@@ -315,7 +316,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		treeEditor.addErrorSelectionListener(createErrorSelectionListener());
 		int index = addPage(control);
 		setPageText(index, "Tree");
-		selectionProvider.addHost("treeEditor", treeEditor.getSelectionProvider());
+		selectionProvider.addHost("treeEditor", treeEditor.getSelectionProvider()); //$NON-NLS-1$
 	}
 	
 	protected ObjectTextEditor createTextEditor() {
@@ -377,7 +378,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	void saveX(IProgressMonitor monitor) {
 		if(!(textEditor instanceof AbstractTextEditor)) return;
 		try {
-			Method m = AbstractTextEditor.class.getDeclaredMethod("performSave", new Class[]{boolean.class, IProgressMonitor.class});
+			Method m = AbstractTextEditor.class.getDeclaredMethod("performSave", new Class[]{boolean.class, IProgressMonitor.class}); //$NON-NLS-1$
 			m.setAccessible(true);
 			m.invoke(textEditor, new Object[]{Boolean.TRUE, monitor});
 		} catch (SecurityException e) {
@@ -399,7 +400,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 
 	public void gotoMarker(IMarker marker) {
 		if(marker == null || getModelObject() == null || !marker.exists()) return;
-		String path = marker.getAttribute("path", null);
+		String path = marker.getAttribute("path", null); //$NON-NLS-1$
 		if(path != null) {
 			XModelObject o = getModelObject().getModel().getByPath(path);
 			if(o == null) return;
@@ -410,7 +411,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				postponedTextSelection.clean();
 				if(textEditor != null) textEditor.gotoMarker(marker);
 			} else {
-				String attr = marker.getAttribute("attribute", "");
+				String attr = marker.getAttribute("attribute", ""); //$NON-NLS-1$ //$NON-NLS-2$
 				if(attr == null || attr.length() == 0) {
 					postponedTextSelection.select(o, null);
 				} else {
@@ -463,7 +464,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		XModelObject o = getModelObject();
 		if(o != null && o.isModified() && o.isActive()) {
 			try {
-				XAction action = XActionInvoker.getAction("DiscardActions.Discard", object);
+				XAction action = XActionInvoker.getAction("DiscardActions.Discard", object); //$NON-NLS-1$
 				if(action != null) {
 					// to avoid confirmation
 					action.executeHandler(object, null); 
@@ -552,7 +553,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 
 	protected void checkErrorMode() {
 		if(object == null) return;
-		boolean i = isWrongEntity() || "yes".equals(object.get("isIncorrect"));
+		boolean i = isWrongEntity() || "yes".equals(object.get("isIncorrect")); //$NON-NLS-1$ //$NON-NLS-2$
 		if(isErrorMode == i) return;
 		isErrorMode = i;
 	}
@@ -871,7 +872,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		if(f == null || !f.exists() || !f.isReadOnly()) return true;
 		String title= "Save problems";
 		String msg= " Cannot could not be completed.";
-		IStatus status = new Status(Status.ERROR, ModelUIPlugin.PLUGIN_ID, Status.OK, "File " + f.getLocation().toString() + " is read-only.", new Exception());
+		IStatus status = new Status(Status.ERROR, ModelUIPlugin.PLUGIN_ID, Status.OK, MessageFormat.format("File {0} is read-only.", f.getLocation().toString()), new Exception());
 		ErrorDialog.openError(getSite().getShell(), title, msg, status);
 		return false;
 	}
@@ -881,7 +882,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
   protected TreeFormPage createTreeFormPage() {
 	  treeFormPage = new TreeFormPage();
 	  treeFormPage.setLabel("Tree");
-	  treeFormPage.setTitle("%TreeFormPage%");
+	  treeFormPage.setTitle("%TreeFormPage%"); //$NON-NLS-1$
 	  treeFormPage.addErrorSelectionListener(createErrorSelectionListener());
 	  return treeFormPage;
   }
@@ -890,7 +891,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	  try {
 		  int index = addPage(formPage, getEditorInput());
 		  setPageText(index, formPage.getLabel());
-		  selectionProvider.addHost("treeEditor", formPage.getSelectionProvider());
+		  selectionProvider.addHost("treeEditor", formPage.getSelectionProvider()); //$NON-NLS-1$
 		  //Activate key binding service here
 		  formPage.getEditorSite().getKeyBindingService();
 	  } catch (PartInitException ex) {
@@ -971,7 +972,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				}
 				if(o == null) o = EclipseResourceUtil.createObjectForResource(file);
 				if(o != null) {
-					XActionInvoker.invoke("Open", o, null);
+					XActionInvoker.invoke("Open", o, null); //$NON-NLS-1$
 				}
 			} 
 		}		
@@ -1225,7 +1226,7 @@ class NatureChecker {
 		input = XModelObjectEditorInput.checkInput(input);
 		if(!(input instanceof IModelObjectEditorInput)) return false;
 		XModelObject o = ((IModelObjectEditorInput)input).getXModelObject();
-		IProject project = (IProject)o.getModel().getProperties().get("project");
+		IProject project = (IProject)o.getModel().getProperties().get("project"); //$NON-NLS-1$
 		if(project == null) return false;
 		if(natures != null && natures.length == 0) return true;
 		IModelNature n = EclipseResourceUtil.getModelNature(project);
@@ -1238,7 +1239,7 @@ class NatureChecker {
 	}
 	
 	private void showWarning() throws XModelException {
-		boolean isShowingWarning = "yes".equals(Preference.SHOW_NATURE_WARNING.getValue());
+		boolean isShowingWarning = "yes".equals(Preference.SHOW_NATURE_WARNING.getValue()); //$NON-NLS-1$
 		if(!isShowingWarning) return;
 		ServiceDialog d = PreferenceModelUtilities.getPreferenceModel().getService();
 		Properties p = new Properties();
@@ -1254,7 +1255,7 @@ class NatureChecker {
 		}
 		String message = WizardKeys.getString(warningKey);
 		p.setProperty(ServiceDialog.DIALOG_MESSAGE, message);
-		String box = WizardKeys.getString("SharableEditors.natureWarning.box.message");
+		String box = WizardKeys.getString("SharableEditors.natureWarning.box.message"); //$NON-NLS-1$
 		Option showOption = new Option(box);
 		int k = 0;
 		for (int i = 0; i < options.length; i++) {
@@ -1262,11 +1263,11 @@ class NatureChecker {
 		}
 		
 		if(showOption.register(p, k)) {
-			p.setProperty(ServiceDialog.SEPARATOR + "_" + k, "true");
+			p.setProperty(ServiceDialog.SEPARATOR + "_" + k, "true"); //$NON-NLS-1$ //$NON-NLS-2$
 			++k;
 		}
 
-		p.setProperty("title", "Warning");
+		p.setProperty("title", "Warning"); //$NON-NLS-1$
 		p.put(ServiceDialog.BUTTONS, new String[]{"OK"});
 		d.openConfirm(p);
 		for (int i = 0; i < options.length; i++) {
@@ -1291,21 +1292,21 @@ class Option extends ServiceDialogOption {
 	}
 	
 	public void run() throws XModelException {
-		Preference.SHOW_NATURE_WARNING.setValue("no");
+		Preference.SHOW_NATURE_WARNING.setValue("no"); //$NON-NLS-1$
 	}
 }
 
 class NatureOptionList {
 	//use extension point to avoid hardcode 
 	static String[][] natureOptionDescriptions = new String[][]{
-		{"org.jboss.tools.jsf.jsfnature", 
+		{"org.jboss.tools.jsf.jsfnature",  //$NON-NLS-1$
 		 "JSF",				
-		 "org.jboss.tools.jsf.ui",
-		 "org.jboss.tools.jsf.ui.action.AddJSFNatureActionDelegate"},
-		{"org.jboss.tools.struts.strutsnature", 
+		 "org.jboss.tools.jsf.ui", //$NON-NLS-1$
+		 "org.jboss.tools.jsf.ui.action.AddJSFNatureActionDelegate"}, //$NON-NLS-1$
+		{"org.jboss.tools.struts.strutsnature",  //$NON-NLS-1$
 		 "Struts",
-		 "org.jboss.tools.struts.ui",
-		 "org.jboss.tools.struts.ui.internal.action.AddStrutsNatureActionDelegate"
+		 "org.jboss.tools.struts.ui", //$NON-NLS-1$
+		 "org.jboss.tools.struts.ui.internal.action.AddStrutsNatureActionDelegate" //$NON-NLS-1$
 		},
 	};
 	static Map<String,String[]> natureOptionDescriptionsMap = new HashMap<String,String[]>();
@@ -1333,7 +1334,7 @@ class NatureOption extends ServiceDialogOption {
 	IResource resource = null;
 	
 	public NatureOption(String name, String plugin) {
-		super("Add " + name + " Capabilities now");
+		super(MessageFormat.format("Add {0} Capabilities now", name));
 		this.plugin = plugin;
 	}
 	

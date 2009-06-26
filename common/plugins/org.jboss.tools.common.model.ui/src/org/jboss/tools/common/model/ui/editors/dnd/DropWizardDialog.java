@@ -35,8 +35,8 @@ public class DropWizardDialog extends WizardDialog {
 	}
 	
 	protected int getPreferredWidth() {
-		String os_name = System.getProperty("os.name");
-		if(os_name != null && os_name.indexOf("Windows") >= 0) return DO_WIDTH_VALUE;
+		String os_name = System.getProperty("os.name"); //$NON-NLS-1$
+		if(os_name != null && os_name.indexOf("Windows") >= 0) return DO_WIDTH_VALUE; //$NON-NLS-1$
 		return DO_WIDTH_VALUE_LINUX;
 	}
 }

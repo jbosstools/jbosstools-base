@@ -130,7 +130,7 @@ public class ErrorDialog extends IconAndMessageDialog {
 	}
 	
 	private String createProblemText() {
-		String problem = exception == null ? "" : ProblemReporter.throwableToString(message, exception);
+		String problem = exception == null ? "" : ProblemReporter.throwableToString(message, exception); //$NON-NLS-1$
 		return wrapProblem(problem);
 	}
 	
@@ -139,7 +139,7 @@ public class ErrorDialog extends IconAndMessageDialog {
 //		sb.append(getEnvironment()).append("\n");
 		sb.append("------Type your additional comment here--------\n\n");
 
-		sb.append("-----------------------------------------------\n");
+		sb.append("-----------------------------------------------\n"); //$NON-NLS-1$
 		sb.append(problem);
 		return sb.toString();
 	}
@@ -170,8 +170,8 @@ public class ErrorDialog extends IconAndMessageDialog {
     protected void okPressed() {
     	if(getAwayButton.getSelection()) {
     		try {
-    			ReportPreference.SHOW_ERROR_DIALOG_OPTION.setValue("no");
-    			ReportPreference.SUBMIT_AUTOMATICALLY_OPTION.setValue("yes");
+    			ReportPreference.SHOW_ERROR_DIALOG_OPTION.setValue("no"); //$NON-NLS-1$
+    			ReportPreference.SUBMIT_AUTOMATICALLY_OPTION.setValue("yes"); //$NON-NLS-1$
     		} catch (XModelException e) {
     			ModelPlugin.getPluginLog().logError(e);
     		}
@@ -183,7 +183,7 @@ public class ErrorDialog extends IconAndMessageDialog {
     protected void cancelPressed() {
     	if(getAwayButton.getSelection()) {
     		try {
-    			ReportPreference.SHOW_ERROR_DIALOG_OPTION.setValue("no");
+    			ReportPreference.SHOW_ERROR_DIALOG_OPTION.setValue("no"); //$NON-NLS-1$
     		} catch (XModelException e) {
     			ModelPlugin.getPluginLog().logError(e);
     		}
@@ -194,7 +194,7 @@ public class ErrorDialog extends IconAndMessageDialog {
     private void submit() {
     	String email = ReportPreference.E_MAIL_OPTION.getValue();
     	String other = ReportPreference.OTHER_OPTION.getValue();
-    	String text = "" + getEnvironment() + "\n" + problemText;
+    	String text = "" + getEnvironment() + "\n" + problemText;  //$NON-NLS-1$//$NON-NLS-2$
     	ProblemReportingHelper.buffer.report(text, email, other, false);
     }
 
@@ -219,7 +219,7 @@ public class ErrorDialog extends IconAndMessageDialog {
 	}
 
 	public static int openError(Shell shell, Throwable exception) {
-		ErrorDialog dialog = new ErrorDialog(shell, WizardKeys.getString("ErrorDialog.DefaultWindowTitle"), exception);
+		ErrorDialog dialog = new ErrorDialog(shell, WizardKeys.getString("ErrorDialog.DefaultWindowTitle"), exception); //$NON-NLS-1$
 		return dialog.open();		
 	}
 
@@ -233,7 +233,7 @@ public class ErrorDialog extends IconAndMessageDialog {
 	}
 
 	public static int openError(Shell shell, String message) {
-		ErrorDialog dialog = new ErrorDialog(shell, WizardKeys.getString("ErrorDialog.DefaultWindowTitle"), message, null);
+		ErrorDialog dialog = new ErrorDialog(shell, WizardKeys.getString("ErrorDialog.DefaultWindowTitle"), message, null); //$NON-NLS-1$
 		return dialog.open();		
 	}
 	

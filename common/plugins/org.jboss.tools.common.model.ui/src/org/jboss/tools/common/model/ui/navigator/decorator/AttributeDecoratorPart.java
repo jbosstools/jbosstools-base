@@ -17,7 +17,7 @@ import org.jboss.tools.common.model.XModelObject;
  */
 public class AttributeDecoratorPart implements IDecoratorPart {
 	Variable variable;
-	String parameters = "";
+	String parameters = ""; //$NON-NLS-1$
 	
 	public AttributeDecoratorPart(Variable variable) {
 		this.variable = variable;
@@ -32,7 +32,7 @@ public class AttributeDecoratorPart implements IDecoratorPart {
 			return variable.custom.getLabelPart(object, parameters);
 		}
 		String v = object.getAttributeValue(variable.getName());
-		return v == null ? "{" + variable.getName() + "}" : v; 
+		return v == null ? "{" + variable.getName() + "}" : v;  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

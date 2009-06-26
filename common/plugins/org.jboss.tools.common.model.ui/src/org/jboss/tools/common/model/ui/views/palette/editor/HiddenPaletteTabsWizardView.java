@@ -14,7 +14,7 @@ import org.jboss.tools.common.model.ui.wizards.query.list.AbstractTreeWizardView
 
 public class HiddenPaletteTabsWizardView extends AbstractTreeWizardView {
 	public HiddenPaletteTabsWizardView() {
-		setHelpKey("SharablePalette_HiddenTabs");
+		setHelpKey("SharablePalette_HiddenTabs"); //$NON-NLS-1$
 	}
 
 	protected String[] getActions() {

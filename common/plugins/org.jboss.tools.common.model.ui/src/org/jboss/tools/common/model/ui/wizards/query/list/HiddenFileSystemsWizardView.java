@@ -14,10 +14,10 @@ import org.jboss.tools.common.meta.key.WizardKeys;
 
 public class HiddenFileSystemsWizardView extends AbstractListWizardView {
 	public HiddenFileSystemsWizardView() {
-		setHelpKey("FileSystems_ShowHide");
-		this.setMessage(WizardKeys.getString("HiddenFileSystemsWizardView.Message"));
-		this.setTitle(WizardKeys.getString("HiddenFileSystemsWizardView.Title"));
-		this.setWindowTitle(WizardKeys.getString("HiddenFileSystemsWizardView.WindowTitle"));
+		setHelpKey("FileSystems_ShowHide"); //$NON-NLS-1$
+		this.setMessage(WizardKeys.getString("HiddenFileSystemsWizardView.Message")); //$NON-NLS-1$
+		this.setTitle(WizardKeys.getString("HiddenFileSystemsWizardView.Title")); //$NON-NLS-1$
+		this.setWindowTitle(WizardKeys.getString("HiddenFileSystemsWizardView.WindowTitle")); //$NON-NLS-1$
 	}
 
 	protected String[] getActions() {
@@ -27,13 +27,13 @@ public class HiddenFileSystemsWizardView extends AbstractListWizardView {
 	protected void internalAction(String command) {
 		if("Hide All Jars".equals(command)) {
 			for (int i = 0; i < boxes.length; i++)
-			  if("true".equals(vs[i][2])) {
+			  if("true".equals(vs[i][2])) { //$NON-NLS-1$
 			  	boxes[i].setSelection(false);
 			  	apply(i);
 			  }
 		} else if("Show All Jars".equals(command)) {
 			for (int i = 0; i < boxes.length; i++)
-			  if("true".equals(vs[i][2])) {
+			  if("true".equals(vs[i][2])) { //$NON-NLS-1$
 			  	boxes[i].setSelection(true);
 			  	apply(i);
 		      }

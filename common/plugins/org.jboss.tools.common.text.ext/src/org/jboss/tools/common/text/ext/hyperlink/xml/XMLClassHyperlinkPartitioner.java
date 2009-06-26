@@ -27,7 +27,7 @@ import org.jboss.tools.common.text.ext.util.Utils;
  * @author Jeremy
  */
 public class XMLClassHyperlinkPartitioner extends AbstractHyperlinkPartitioner {
-	public static final String XML_CLASS_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_CLASS";
+	public static final String XML_CLASS_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_CLASS"; //$NON-NLS-1$
 
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)

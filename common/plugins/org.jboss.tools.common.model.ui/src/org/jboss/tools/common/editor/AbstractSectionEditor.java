@@ -114,10 +114,10 @@ public abstract class AbstractSectionEditor extends DefaultEditorPart {
 
 	private void setErroneousObject(XModelObject object) {
 		if(object == null) return;
-		String err = object.get("errors");
+		String err = object.get("errors"); //$NON-NLS-1$
 		if(err == null || err.length() == 0 && isWrongEntity(object.getModelEntity().getName()))
-		   err = "Warning: @ @0:0@" + "This editor is not intended for editing " + object.getAttributeValue("element type") + ". You can use source page, but its coloring may be inadequate.";
-		if(err == null) err = "";
+		   err = "Warning: @ @0:0@" + "This editor is not intended for editing " + object.getAttributeValue("element type") + ". You can use source page, but its coloring may be inadequate."; //$NON-NLS-3$
+		if(err == null) err = ""; //$NON-NLS-1$
 		errorMode.update(err);
 	}
 	
@@ -140,7 +140,7 @@ public abstract class AbstractSectionEditor extends DefaultEditorPart {
 
 	public String getTitle() {
 		String s = super.getTitle();
-		return s == null ? "" : s;
+		return s == null ? "" : s; //$NON-NLS-1$
 	}
 
 	public Image getTitleImage() {

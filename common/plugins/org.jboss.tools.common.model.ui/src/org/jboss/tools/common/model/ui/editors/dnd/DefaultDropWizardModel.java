@@ -59,7 +59,7 @@ public class DefaultDropWizardModel implements IDropWizardModel {
 	 * 
 	 */
 	public void setAttributeValue(String name, Object value) {
-		if(name==null) throw new IllegalArgumentException("Attribute name cannot be null");
+		if(name==null) throw new IllegalArgumentException("Attribute name cannot be null"); //$NON-NLS-1$
 		AttributeDescriptorValue descrValue = null;
 		for (int i = 0; i < fAttributeValues.size(); i++) {
 			AttributeDescriptorValue arrayElement = (AttributeDescriptorValue)fAttributeValues.get(i);
@@ -67,7 +67,7 @@ public class DefaultDropWizardModel implements IDropWizardModel {
 					descrValue = arrayElement;
 			}
 		}
-		if(descrValue==null) throw new IllegalArgumentException("Attribute '" + name + "' not found");
+		if(descrValue==null) throw new IllegalArgumentException("Attribute '" + name + "' not found"); //$NON-NLS-1$ //$NON-NLS-2$
  		descrValue.setValue(value);
 		fireModelChaged(ATTRIBUTE_VALUE,null,descrValue);
 	}	

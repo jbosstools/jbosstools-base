@@ -93,7 +93,7 @@ public class PageDialog extends TitleAreaDialog {
 	
 	private void updateWindowTitle() {
 		if (getShell() == null)	return;
-		if (windowTitle == null) windowTitle = "";
+		if (windowTitle == null) windowTitle = ""; //$NON-NLS-1$
 		getShell().setText(windowTitle);
 	}
 }

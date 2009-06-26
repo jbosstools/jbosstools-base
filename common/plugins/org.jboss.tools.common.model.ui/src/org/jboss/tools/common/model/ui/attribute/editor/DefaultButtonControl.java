@@ -106,7 +106,7 @@ public class DefaultButtonControl implements IButtonControl {
 						createButton(composite, buttonWrapper);
 					} else {
 						if(ModelUIPlugin.getDefault().isDebugging()) {						
-							ModelUIPlugin.getPluginLog().logInfo("No button for action: "+object);
+							ModelUIPlugin.getPluginLog().logInfo("No button for action: "+object); //$NON-NLS-1$
 						} 
 					}
 				}
@@ -134,13 +134,13 @@ public class DefaultButtonControl implements IButtonControl {
 	}
 	
 	protected Control createButton(Composite parent, ButtonWrapper buttonWrapper) {
-		int style = getSettings().getStyle("Button.Style");
+		int style = getSettings().getStyle("Button.Style"); //$NON-NLS-1$
 		if (style == SWT.DEFAULT) style = SWT.PUSH;
 		Control buttonControl = buttonWrapper.createControl(parent, style);
 		// widget settings
-		Color bg = getSettings().getColor("Button.Background");
-		Color fg = getSettings().getColor("Button.Foreground");
-		Font font = getSettings().getFont("Button.Font");
+		Color bg = getSettings().getColor("Button.Background"); //$NON-NLS-1$
+		Color fg = getSettings().getColor("Button.Foreground"); //$NON-NLS-1$
+		Font font = getSettings().getFont("Button.Font"); //$NON-NLS-1$
 		buttonControl.setBackground(bg);
 		buttonControl.setForeground(fg);
 		buttonControl.setFont(font);
@@ -207,7 +207,7 @@ public class DefaultButtonControl implements IButtonControl {
 	
 	protected void doButtonPressed(Button control, String action) {
 		if(ModelUIPlugin.getDefault().isDebugging()) {						
-			ModelUIPlugin.getPluginLog().logInfo("Button pressed: "+action);
+			ModelUIPlugin.getPluginLog().logInfo("Button pressed: "+action); //$NON-NLS-1$
 		}
 		firePropertyChange(new PropertyChangeEvent(control, action, null, Boolean.TRUE));
 	}

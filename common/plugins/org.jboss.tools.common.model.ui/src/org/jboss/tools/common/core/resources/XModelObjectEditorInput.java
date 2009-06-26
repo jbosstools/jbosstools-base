@@ -152,7 +152,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 	
 	private void hackSetFile(IFile f) {
 		try {
-			Field field = FileEditorInput.class.getDeclaredField("file");
+			Field field = FileEditorInput.class.getDeclaredField("file"); //$NON-NLS-1$
 			field.setAccessible(true);
 			field.set(this, f);
 		} catch (NoSuchFieldException e) {
@@ -231,9 +231,9 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 	public static String[] parseJarEntryFile(IStorage storage) {
 		if(storage == null) return null;
 		String s = storage.toString();
-		if(!s.startsWith("JarEntryFile[")) return null;
-		s = s.substring("JarEntryFile[".length());
-		int i = s.indexOf("::");
+		if(!s.startsWith("JarEntryFile[")) return null; //$NON-NLS-1$
+		s = s.substring("JarEntryFile[".length()); //$NON-NLS-1$
+		int i = s.indexOf("::"); //$NON-NLS-1$
 		if(i < 0) return null;
 		String jarFile = s.substring(0, i);
 		String entry = storage.getFullPath().toString();
@@ -245,7 +245,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		if(f == null) return null;
 		IProject p = f.getProject();
 		IModelNature n = EclipseResourceUtil.getModelNature(p);
-		return (n == null) ? null : n.getModel().getByPath("/" + entry);		
+		return (n == null) ? null : n.getModel().getByPath("/" + entry);		 //$NON-NLS-1$
 	}
 	
 	public static IEditorInput createJarEntryEditorInput(String jarFile, final String entry) {
@@ -266,7 +266,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		IFile f = getFile();
 		if(f == null || f.equals(super.getFile())) return;
 		try {
-			Field field = FileEditorInput.class.getDeclaredField("file");
+			Field field = FileEditorInput.class.getDeclaredField("file"); //$NON-NLS-1$
 			field.setAccessible(true);
 			field.set(this, f);
 		} catch (NoSuchFieldException e) {

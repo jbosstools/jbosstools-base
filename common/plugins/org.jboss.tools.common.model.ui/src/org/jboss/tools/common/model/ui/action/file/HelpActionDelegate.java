@@ -14,6 +14,6 @@ import org.jboss.tools.common.model.ui.action.file.ModelResourceActionDelegate;
 
 public class HelpActionDelegate extends ModelResourceActionDelegate {
 	protected String getActionPath() {
-		return "Help";
+		return "Help"; //$NON-NLS-1$
 	}	
 }

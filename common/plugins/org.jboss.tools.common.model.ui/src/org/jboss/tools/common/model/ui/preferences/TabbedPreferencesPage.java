@@ -52,9 +52,9 @@ public class TabbedPreferencesPage extends PreferencePage implements IWorkbenchP
 	private List convertPathArrayToPreferencePageList(String[] path) {
 		
 		XModel model  = getPreferenceModel();
-		if(model==null) throw new IllegalArgumentException("Preference XModel not loaded.");
-		if(path==null) throw new IllegalArgumentException("String array with path's cannot be null");
-		if(path.length==0) throw new IllegalArgumentException("Path array should contains at least one element."); 
+		if(model==null) throw new IllegalArgumentException("Preference XModel not loaded."); //$NON-NLS-1$
+		if(path==null) throw new IllegalArgumentException("String array with path's cannot be null"); //$NON-NLS-1$
+		if(path.length==0) throw new IllegalArgumentException("Path array should contains at least one element.");  //$NON-NLS-1$
 		List<XMOBasedPreferencesPage> pages = new ArrayList<XMOBasedPreferencesPage>();
 		for (int i = 0; i < path.length; i++) {
 			XModelObject o = model.getByPath(path[i]);

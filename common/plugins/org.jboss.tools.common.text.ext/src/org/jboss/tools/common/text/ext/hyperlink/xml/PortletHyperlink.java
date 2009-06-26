@@ -30,8 +30,8 @@ import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
 import org.w3c.dom.Node;
 
 public class PortletHyperlink extends AbstractHyperlink {
-	private static final String PROP_EXTENSION = ".properties";
-	private String hyperlinkText = "";
+	private static final String PROP_EXTENSION = ".properties"; //$NON-NLS-1$
+	private String hyperlinkText = ""; //$NON-NLS-1$
 
 	private String partitionType = null;
 

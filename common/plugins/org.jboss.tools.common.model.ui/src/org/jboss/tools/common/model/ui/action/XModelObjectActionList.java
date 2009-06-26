@@ -77,7 +77,7 @@ public class XModelObjectActionList extends XModelObjectActionItem {
 				a.createMenuItem(menu);
 			} else {
 				XActionList l = (XActionList)is[i];
-				if ("OpenWith".equals(l.getName())) {
+				if ("OpenWith".equals(l.getName())) { //$NON-NLS-1$
 					if (object.getFileType() == XFileObject.FILE && (targets == null || targets.length < 2)) {
 						IResource resource = EclipseResourceUtil.getResource(object);
 						if (resource != null && resource.getType() == IResource.FILE) {

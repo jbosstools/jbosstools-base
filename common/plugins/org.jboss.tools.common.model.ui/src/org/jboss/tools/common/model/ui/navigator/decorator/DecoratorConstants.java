@@ -15,30 +15,30 @@ package org.jboss.tools.common.model.ui.navigator.decorator;
  */
 public interface DecoratorConstants {
 
-	public String ATTR_NAME = "name";
+	public String ATTR_NAME = "name"; //$NON-NLS-1$
 
-	public String ATTR_PARTITION = "partition";
+	public String ATTR_PARTITION = "partition"; //$NON-NLS-1$
 
-	public String ATTR_ENTITIES = "entities";
+	public String ATTR_ENTITIES = "entities"; //$NON-NLS-1$
 
-	public String ATTR_ENTITY = "entity";
+	public String ATTR_ENTITY = "entity"; //$NON-NLS-1$
 
-	public String ATTR_DEFAULT = "defaultValue";
+	public String ATTR_DEFAULT = "defaultValue"; //$NON-NLS-1$
 
-	public String ATTR_DESCRIPTION = "description";
+	public String ATTR_DESCRIPTION = "description"; //$NON-NLS-1$
 	
-	public String ATTR_VALUE = "value";
+	public String ATTR_VALUE = "value"; //$NON-NLS-1$
 	
-	public String ATTR_CLASS = "class";
+	public String ATTR_CLASS = "class"; //$NON-NLS-1$
 
-	public String NODE_VARIABLE = "variable";
+	public String NODE_VARIABLE = "variable"; //$NON-NLS-1$
 	
-	public String NODE_EXAMPLE = "example";
+	public String NODE_EXAMPLE = "example"; //$NON-NLS-1$
 	
-	public String NODE_PUT = "put";
+	public String NODE_PUT = "put"; //$NON-NLS-1$
 	
-	public String RULE_OPENING = "{";
+	public String RULE_OPENING = "{"; //$NON-NLS-1$
 	
-	public String RULE_CLOSING = "}";
+	public String RULE_CLOSING = "}"; //$NON-NLS-1$
 
 }

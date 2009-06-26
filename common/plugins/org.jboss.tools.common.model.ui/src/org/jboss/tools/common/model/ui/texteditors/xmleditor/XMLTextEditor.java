@@ -155,7 +155,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 		getDocumentListenerRegister().unregister();
 		getDocumentListenerRegister().register();
         Object dtid =
-                getSourceViewer().getTextWidget().getData("DropTarget");
+                getSourceViewer().getTextWidget().getData("DropTarget"); //$NON-NLS-1$
             if (dtid != null) {
                 if (dtid instanceof DropTarget) {
                     DropTarget dropTarget = (DropTarget) dtid;
@@ -323,7 +323,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 	 */
 	public Object getAdapter( Class adapter ) {
 		if (adapter == EditorDescriptor.class)
-			return new EditorDescriptor("xml");
+			return new EditorDescriptor("xml"); //$NON-NLS-1$
 		return super.getAdapter( adapter );
 	}
 
@@ -411,7 +411,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
         	NamedNodeMap attributes = jspElement.getAttributes();
         	if(pos==jspElement.getStartOffset()
         			|| pos==jspElement.getEndStartOffset()) {
-    			return lastContext = "text";
+    			return lastContext = "text"; //$NON-NLS-1$
         	}
         	for(int i = 0;i<attributes.getLength();i++ ) {
         		Node attribute = attributes.item(i);
@@ -419,25 +419,25 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
         			AttrImpl jspAttr = (AttrImpl)attribute;
         			ITextRegion valueRegion = jspAttr.getValueRegion();
         			if(valueRegion == null) {
-        				return lastContext = "none";
+        				return lastContext = "none"; //$NON-NLS-1$
         			}
         			int startPos = jspElement.getStartOffset()+ valueRegion.getStart();
         			int endPos = jspElement.getStartOffset() + valueRegion.getTextEnd();
         			if(pos > startPos && pos < endPos) {
-        				return lastContext = "attribute";
+        				return lastContext = "attribute"; //$NON-NLS-1$
         			}
         		}
         	}
-			return lastContext = "none";
+			return lastContext = "none"; //$NON-NLS-1$
         } else if(region instanceof Text) {
-			return lastContext = "text";
+			return lastContext = "text"; //$NON-NLS-1$
         } else if(region instanceof DocumentType) {
-			return lastContext = "none";
+			return lastContext = "none"; //$NON-NLS-1$
         } else if(region == null) {
         	//new place
-			return lastContext = "text";
+			return lastContext = "text"; //$NON-NLS-1$
         }
-		return lastContext = "none";
+		return lastContext = "none"; //$NON-NLS-1$
 	}
 	
 	public void textChanged(TextEvent event) {
@@ -454,8 +454,8 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 		save();
 		XModelObject o = getModelObject();
 		Properties p = new Properties();
-		XActionInvoker.invoke("FileTXT", "DiscardActions.Discard", o, p);
-		if(!"true".equals(p.getProperty("done"))) return;
+		XActionInvoker.invoke("FileTXT", "DiscardActions.Discard", o, p); //$NON-NLS-1$ //$NON-NLS-2$
+		if(!"true".equals(p.getProperty("done"))) return; //$NON-NLS-1$ //$NON-NLS-2$
 		super.doRevertToSaved();
 		if(o.isModified()) o.setModified(false);
 		modified = false;
@@ -507,7 +507,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 				return;
 			}
 			// Drop from VPE to Source is forbidden
-			if(dropContext.getFlavor().equals("text/html")) {
+			if(dropContext.getFlavor().equals("text/html")) { //$NON-NLS-1$
 				if(InnerDragBuffer.object != null) {
 					event.detail = DND.DROP_NONE;
 				}

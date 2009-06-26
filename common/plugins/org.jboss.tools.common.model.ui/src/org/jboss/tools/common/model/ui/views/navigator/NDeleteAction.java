@@ -27,7 +27,7 @@ public class NDeleteAction extends NSelectionAction {
 	}
 
 	protected String getActionPath() {
-		return "DeleteActions.Delete";
+		return "DeleteActions.Delete"; //$NON-NLS-1$
 	}
 
 

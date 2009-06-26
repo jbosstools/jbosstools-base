@@ -30,7 +30,7 @@ public class ActiveFieldEditorEx extends StringButtonFieldEditorEx {
 		if (action!=null) {
 			command = action.getCommand();
 		}
-		if(command != null && !command.equals("...")) {
+		if(command != null && !command.equals("...")) { //$NON-NLS-1$
 			setChangeButtonText(command);
 		}
 		if(action instanceof IActionHelperExtension) {

@@ -47,21 +47,21 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
         if (rule == null) {
             rule = new VRuleImpl();
             rule.setRuleSet(ruleSet);
-            rule.setName(getAttributeValue("name"));
-            rule.setDescription(getAttributeValue("description"));
-            rule.setCategory(getAttributeValue("category"));
-            rule.setEnabled(Boolean.valueOf(getAttributeValue("enabled")).booleanValue());
-            String defaultEnabled = get("default-enabled");
-            if("false".equals(defaultEnabled)) {
+            rule.setName(getAttributeValue("name")); //$NON-NLS-1$
+            rule.setDescription(getAttributeValue("description")); //$NON-NLS-1$
+            rule.setCategory(getAttributeValue("category")); //$NON-NLS-1$
+            rule.setEnabled(Boolean.valueOf(getAttributeValue("enabled")).booleanValue()); //$NON-NLS-1$
+            String defaultEnabled = get("default-enabled"); //$NON-NLS-1$
+            if("false".equals(defaultEnabled)) { //$NON-NLS-1$
             	rule.setDefaultEnabled(false);
             }
             rule.setResults(new VResult[0]);
-            VEntity[] entities = getEntities(getAttributeValue("entities"));
+            VEntity[] entities = getEntities(getAttributeValue("entities")); //$NON-NLS-1$
             rule.setEntities(entities);
-            String act = getAttributeValue("action");
+            String act = getAttributeValue("action"); //$NON-NLS-1$
             rule.setAction(getAction(act));
             try {
-                rule.setSignificance(Integer.parseInt(getAttributeValue("significance")));
+                rule.setSignificance(Integer.parseInt(getAttributeValue("significance"))); //$NON-NLS-1$
             } catch (NumberFormatException e) {
                 rule.setSignificance(10);
             }
@@ -75,9 +75,9 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
             if (sign > 0) {
                 rule.setSignificance(sign);
             }
-            String p = getAttributeValue("properties");
+            String p = getAttributeValue("properties"); //$NON-NLS-1$
             if(p != null && p.length() > 0) {
-            	StringTokenizer st = new StringTokenizer(p, ",");
+            	StringTokenizer st = new StringTokenizer(p, ","); //$NON-NLS-1$
             	Properties properties = new Properties();
             	while(st.hasMoreTokens()) {
             		String t = st.nextToken();
@@ -104,7 +104,7 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
     }
 
     public VEntity[] getEntities(String list) {
-        StringTokenizer tok = new StringTokenizer(list, ",");
+        StringTokenizer tok = new StringTokenizer(list, ","); //$NON-NLS-1$
         int count = tok.countTokens();
         VEntity[] entities = new VEntity[count];
 		VModel model = VModelFactory.getModel(getModel());
@@ -123,8 +123,8 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
     public void set(String name, String value) {
     	super.set(name, value);
     	if (rule != null) {
-    		if ("default-enabled".equals(name)) {
-                if("false".equals(value)) {
+    		if ("default-enabled".equals(name)) { //$NON-NLS-1$
+                if("false".equals(value)) { //$NON-NLS-1$
                 	rule.setDefaultEnabled(false);
                 }
     		}
@@ -134,22 +134,22 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
     public String setAttributeValue(String name, String value) {
         String result = super.setAttributeValue(name, value);
         if (rule != null) {
-            if ("enabled".equals(name)) {
+            if ("enabled".equals(name)) { //$NON-NLS-1$
                 rule.setEnabled(Boolean.valueOf(result).booleanValue());
-            } else if ("name".equals(name)) {
+            } else if ("name".equals(name)) { //$NON-NLS-1$
                 String oldName = rule.getName();
                 rule.setName(result);
         		VModel vmodel = VModelFactory.getModel(getModel());
                 ((VModelImpl)vmodel).updateRuleAction(rule, oldName);
-            } else if ("action".equals(name)) {
+            } else if ("action".equals(name)) { //$NON-NLS-1$
                 rule.setAction(getAction(result));
-            } else if ("significance".equals(name)) {
+            } else if ("significance".equals(name)) { //$NON-NLS-1$
                 try {
                     rule.setSignificance(Integer.parseInt(result));
                 } catch (NumberFormatException e) {
                 	//ignore
                 }
-            } else if ("entities".equals(name)) {
+            } else if ("entities".equals(name)) { //$NON-NLS-1$
                 VEntity[] oldEntities = rule.getEntities();
                 VEntity[] newEntities = getEntities(result);
                 rule.setEntities(newEntities);
@@ -193,7 +193,7 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
     
     public XModelObject[] getChildrenForSave() {
         // Do not save results
-        return getChildren("VResultTemplate");
+        return getChildren("VResultTemplate"); //$NON-NLS-1$
     } 
 
     // TODO: override
@@ -207,21 +207,21 @@ public class VRuleModel extends RegularObjectImpl implements PropertyChangeListe
     }
 
     public boolean isAttributeEditable(String name) {
-        return "enabled".equals(name) || super.isAttributeEditable(name);
+        return "enabled".equals(name) || super.isAttributeEditable(name); //$NON-NLS-1$
     }
 
     public String getPathPart() {
-        return getAttributeValue("name");
+        return getAttributeValue("name"); //$NON-NLS-1$
     }
 
     public String getPresentationString() {
-        return getAttributeValue("name");
+        return getAttributeValue("name"); //$NON-NLS-1$
     }
     
     public void propertyChange(PropertyChangeEvent evt) {
         String name = evt.getPropertyName();
-        String value = "" + evt.getNewValue();
-        if ("enabled".equals(name)) {
+        String value = "" + evt.getNewValue(); //$NON-NLS-1$
+        if ("enabled".equals(name)) { //$NON-NLS-1$
             if (!value.equals(getAttributeValue(name))) {
                 setAttributeValue(name, value);
                 setModified(true);
@@ -261,7 +261,7 @@ class VActionWrapper implements VAction {
             action = (VAction)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
         } catch (ClassCastException th) {
 			if(VerificationPlugin.isDebugEnabled()) { 
-				VerificationPlugin.getPluginLog().logError("Unable to create action \""+classname+"\": " + "VRuleModel:getAction");
+				VerificationPlugin.getPluginLog().logError("Unable to create action \""+classname+"\": " + "VRuleModel:getAction"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
         }
         classname = null;

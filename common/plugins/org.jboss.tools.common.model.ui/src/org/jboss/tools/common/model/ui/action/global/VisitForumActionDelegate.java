@@ -13,7 +13,7 @@ package org.jboss.tools.common.model.ui.action.global;
 public class VisitForumActionDelegate extends AbstractShowUrlActionDelegate {
 
 	protected String getUrl() {
-		return "http://www.jboss.com/index.html?module=bb&op=viewforum&f=258";
+		return "http://www.jboss.com/index.html?module=bb&op=viewforum&f=258"; //$NON-NLS-1$
 	}
 
 }

@@ -37,7 +37,7 @@ public class DefaultStandardStep extends WizardPage implements java.beans.Proper
 	boolean loading = false;
 	
 	public DefaultStandardStep(SpecialWizardSupport support, int id) {
-		super("");
+		super(""); //$NON-NLS-1$
 		this.support = support;
 		this.id = id;
 		validator = support.getValidator(id);

@@ -29,7 +29,7 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
  * @author Viacheslav Kabanovich
  */
 public class DecoratorManager {
-	public static final String EXTENSION_POINT_ID = ModelUIPlugin.PLUGIN_ID + ".labelDecorator";
+	public static final String EXTENSION_POINT_ID = ModelUIPlugin.PLUGIN_ID + ".labelDecorator"; //$NON-NLS-1$
 	
 	private Map<String, XModelObjectDecorator> mapByName = new HashMap<String, XModelObjectDecorator>();
 	private Map<String, XModelObjectDecorator> mapByEntity = new HashMap<String, XModelObjectDecorator>();
@@ -87,7 +87,7 @@ public class DecoratorManager {
 				set.add(d);
 				for (String entity: entities) {
 					mapByEntity.put(entity, d);
-					if(entity.startsWith("File") && entityByPartition.get(partition) == null) {
+					if(entity.startsWith("File") && entityByPartition.get(partition) == null) { //$NON-NLS-1$
 						entityByPartition.put(partition, entity);
 					}
 				}
@@ -100,7 +100,7 @@ public class DecoratorManager {
 		IPreferenceStore p = getPreferences();
 		for (String name: mapByName.keySet()) {
 			XModelObjectDecorator d = mapByName.get(name);
-			String key = ModelUIPlugin.PLUGIN_ID + ".labelDecorator." + name;
+			String key = ModelUIPlugin.PLUGIN_ID + ".labelDecorator." + name; //$NON-NLS-1$
 			String value = p.getString(key);
 			if(value != null && value.length() > 0) {
 				d.setValue(value);
@@ -112,12 +112,12 @@ public class DecoratorManager {
 		IPreferenceStore p = getPreferences();
 		for (String name: mapByName.keySet()) {
 			XModelObjectDecorator d = mapByName.get(name);
-			String key = ModelUIPlugin.PLUGIN_ID + ".labelDecorator." + name;
+			String key = ModelUIPlugin.PLUGIN_ID + ".labelDecorator." + name; //$NON-NLS-1$
 			String value = d.getValue();
-			if(value != null && !value.equals(d.getDefaultValue()) && !value.equals("{name}")) {
+			if(value != null && !value.equals(d.getDefaultValue()) && !value.equals("{name}")) { //$NON-NLS-1$
 				p.setValue(key, value);			
 			} else {
-				p.setValue(key, "");
+				p.setValue(key, ""); //$NON-NLS-1$
 			}
 		}
 		if(p instanceof IPersistentPreferenceStore) {

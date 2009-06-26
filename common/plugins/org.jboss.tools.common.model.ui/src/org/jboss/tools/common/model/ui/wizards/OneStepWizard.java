@@ -26,8 +26,8 @@ public class OneStepWizard implements SpecialWizard {
 
 	public void setObject(Object object) {
 		p = (Properties)object;
-		action = (XAction)p.get("action");
-		modelObject = (XModelObject)p.get("object");
+		action = (XAction)p.get("action"); //$NON-NLS-1$
+		modelObject = (XModelObject)p.get("object"); //$NON-NLS-1$
 	}
 	
 	public int execute() {
@@ -58,9 +58,9 @@ class SpecialWizardSupportOneImpl extends SpecialWizardSupport {
 	
 	public String getHelpKey() {
 		if(action == null) return null;
-    	String key = action.getProperty("key");
+    	String key = action.getProperty("key"); //$NON-NLS-1$
     	if(key != null && key.length() > 0) return key;
-		return target.getModelEntity().getName() + "_" + action.getName().replace(' ', '_');
+		return target.getModelEntity().getName() + "_" + action.getName().replace(' ', '_'); //$NON-NLS-1$
 	}
 
 }

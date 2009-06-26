@@ -25,7 +25,7 @@ public class OutlineMenuInvoker extends TreeViewerMenuInvoker {
 
 	public XActionList getActionList(XModelObject o) {
 		if(o.getFileType() != XModelObject.FILE) return super.getActionList(o);
-		String ent = o.getModelEntity().getName() + "_EditorActionList";
+		String ent = o.getModelEntity().getName() + "_EditorActionList"; //$NON-NLS-1$
 		XModelEntity entity = o.getModel().getMetaData().getEntity(ent); 
 		return (entity != null) ? entity.getActionList() : super.getActionList(o);
 	}
@@ -33,14 +33,14 @@ public class OutlineMenuInvoker extends TreeViewerMenuInvoker {
 	public void mouseDoubleClick(MouseEvent e) {
 		XModelObject o = getModelObjectAt(new Point(e.x, e.y));
 		if (o == null || o.getFileType() != XModelObject.NONE) return;
-		if(XActionInvoker.getAction(o.getModelEntity(), "Open") != null) {
-			XActionInvoker.invoke("Open", o, new Properties());
-		} else if(XActionInvoker.getAction(o.getModelEntity(), "Properties.Properties") != null) {
-			XActionInvoker.invoke("Properties.Properties", o, new Properties());
+		if(XActionInvoker.getAction(o.getModelEntity(), "Open") != null) { //$NON-NLS-1$
+			XActionInvoker.invoke("Open", o, new Properties()); //$NON-NLS-1$
+		} else if(XActionInvoker.getAction(o.getModelEntity(), "Properties.Properties") != null) { //$NON-NLS-1$
+			XActionInvoker.invoke("Properties.Properties", o, new Properties()); //$NON-NLS-1$
 		}
 	}
 	
 	protected void fillRunningProperties(Properties p) {
-		p.setProperty("actionSourceGUIComponentID", "editor");
+		p.setProperty("actionSourceGUIComponentID", "editor"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

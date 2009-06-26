@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.action.global;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -43,14 +44,14 @@ public abstract class AbstractShowUrlActionDelegate implements IWorkbenchWindowA
 
 	public static void runURL(String url) {
 		if(url == null || url.length() == 0) return;
-		if(!url.startsWith("http://")) url = "http://" + url;
+		if(!url.startsWith("http://")) url = "http://" + url; //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			IWorkbenchBrowserSupport browserSupport = ModelUIPlugin.getDefault().getWorkbench().getBrowserSupport();
 			IWebBrowser browser = browserSupport.createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR | IWorkbenchBrowserSupport.AS_EXTERNAL, null, null, null);
 			browser.openURL(new URL(url));
 		} catch (MalformedURLException mue) {
 			ServiceDialog d = PreferenceModelUtilities.getPreferenceModel().getService();
-			d.showDialog("Error", "Incorrect URL: " + mue.getMessage() + ".", new String[]{"OK"}, null, ServiceDialog.ERROR);
+			d.showDialog("Error", MessageFormat.format("Incorrect URL: {0}.", mue.getMessage()), new String[]{"OK"}, null, ServiceDialog.ERROR);
 		} catch (PartInitException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}

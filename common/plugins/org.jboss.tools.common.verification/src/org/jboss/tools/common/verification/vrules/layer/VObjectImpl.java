@@ -36,10 +36,10 @@ public class VObjectImpl implements VObject {
     static VObject[] EMPTY_CHILDREN = new VObject[0];
     
     public VObject[] getChildren() {
-        if("true".equals(modelObject.get("overlapped"))) return EMPTY_CHILDREN;
+        if("true".equals(modelObject.get("overlapped"))) return EMPTY_CHILDREN; //$NON-NLS-1$ //$NON-NLS-2$
         
         //Takes too much time, do not verify in jars
-        if(modelObject.getModelEntity().getName().equals("FileSystemJar")) {
+        if(modelObject.getModelEntity().getName().equals("FileSystemJar")) { //$NON-NLS-1$
         	return EMPTY_CHILDREN;
         }
         

@@ -65,7 +65,7 @@ public class XMLTextEditorStandAlone extends XMLTextEditorComponent implements X
 		super.dispose();
 		if(o != null && o.isModified() && o.isActive()) {
 			try {
-				XAction action = XActionInvoker.getAction("DiscardActions.Discard", o);
+				XAction action = XActionInvoker.getAction("DiscardActions.Discard", o); //$NON-NLS-1$
 				if(action != null) {
 					// to avoid confirmation
 					action.executeHandler(o, null); 

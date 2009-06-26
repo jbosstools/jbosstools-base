@@ -20,7 +20,7 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 
 public class FormLabel extends Label {
-	private String text = "";
+	private String text = ""; //$NON-NLS-1$
 	int marginWidth = 1;
 	int marginHeight = 1;
 	private boolean underlined;
@@ -43,7 +43,7 @@ public class FormLabel extends Label {
 		return text;
 	}
 	public void setText(String text) {
-		this.text = (text != null) ? text : "";
+		this.text = (text != null) ? text : ""; //$NON-NLS-1$
 	}
 
 	protected void checkSubclass () {

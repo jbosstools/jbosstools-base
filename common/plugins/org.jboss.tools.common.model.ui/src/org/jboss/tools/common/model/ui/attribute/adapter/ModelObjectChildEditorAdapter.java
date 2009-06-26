@@ -31,7 +31,7 @@ public class ModelObjectChildEditorAdapter extends DefaultValueAdapter
 		public String getValue();
 	}
 	 
-	protected static final String DEFAULT_DELIMITER = ";";
+	protected static final String DEFAULT_DELIMITER = ";"; //$NON-NLS-1$
 	
 	ILabelProvider labelProvider = new LabelProvider();
 	INewValueProvider newValueProvider = null;

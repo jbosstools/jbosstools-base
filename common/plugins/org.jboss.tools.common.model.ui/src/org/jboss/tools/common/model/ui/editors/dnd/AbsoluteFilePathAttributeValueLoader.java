@@ -61,7 +61,7 @@ public class AbsoluteFilePathAttributeValueLoader implements IAttributeValueLoad
 			// Now it is absolute. 
 			// TODO Eskimo - think what we have to do id dropped file is not from WEB-ROOT folder
 			String v = (input == null) ? null : dropFileToFile(file, input.getFile(), model);
-			if(v == null) v = "/"+filePath.toString();
+			if(v == null) v = "/"+filePath.toString(); //$NON-NLS-1$
 			model.setAttributeValue(fPathAttributeName, v);
 		}
 	}
@@ -81,11 +81,11 @@ public class AbsoluteFilePathAttributeValueLoader implements IAttributeValueLoad
 			if(!DnDUtil.isPasteEnabled(t)) return null;
 			Properties p = new Properties();
 			String tagName = model.getTagProposal().getName();
-			p.setProperty("isDrop", "true");
-			if(tagName != null) p.setProperty("context:tagName", tagName);
+			p.setProperty("isDrop", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+			if(tagName != null) p.setProperty("context:tagName", tagName); //$NON-NLS-1$
 			
 			DnDUtil.paste(t, p);
-			return p.getProperty("start text");
+			return p.getProperty("start text"); //$NON-NLS-1$
 		} catch (XModelException e) {
 			return null;
 		} finally {

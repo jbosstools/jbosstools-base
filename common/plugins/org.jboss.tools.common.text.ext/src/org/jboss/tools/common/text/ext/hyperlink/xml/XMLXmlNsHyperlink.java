@@ -157,7 +157,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 				openFileInEditor(mappedSystemId);
 			} else {
 				String uri = getURI(region);
-				if (uri != null && uri.toLowerCase().startsWith("http:")) {
+				if (uri != null && uri.toLowerCase().startsWith("http:")) { //$NON-NLS-1$
 					URL url = null;
 					url = new URL(uri);
 					IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
@@ -224,8 +224,8 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
     }
 
 	protected IEditorInput createEditorInputAlternate(String fileString) {
-		String jarName = fileString.substring(0,fileString.indexOf("!"));
-		String entryName = fileString.substring(fileString.indexOf("!")+2,fileString.length());
+		String jarName = fileString.substring(0,fileString.indexOf("!")); //$NON-NLS-1$
+		String entryName = fileString.substring(fileString.indexOf("!")+2,fileString.length()); //$NON-NLS-1$
 
 		ZipFile jarFile = null;
 		try {
@@ -256,16 +256,16 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 	protected String getPublicId(IRegion region) {
 		String text = getURI(region);
 		if (text == null) return null;
-		int spacer = text.indexOf(" ");
-		if (spacer == -1) spacer = text.indexOf("\t");
+		int spacer = text.indexOf(" "); //$NON-NLS-1$
+		if (spacer == -1) spacer = text.indexOf("\t"); //$NON-NLS-1$
 		return (spacer == -1 ? text : text.substring(0, spacer));
 	}
 
 	protected String getSystemId(IRegion region) {
 		String text = getURI(region);
 		if (text == null) return null;
-		int spacer = text.indexOf(" ");
-		if (spacer == -1) spacer = text.indexOf("\t");
+		int spacer = text.indexOf(" "); //$NON-NLS-1$
+		if (spacer == -1) spacer = text.indexOf("\t"); //$NON-NLS-1$
 		if (spacer == -1) spacer = 0;
 		
 		return text.substring(spacer).trim();
@@ -323,9 +323,9 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 			if (!(n instanceof IDOMAttr)) return null; 
 			IDOMAttr xmlnsAttr = (IDOMAttr)n;
 			if (xmlnsAttr.getName() == null || 
-					(!xmlnsAttr.getName().equals("xmlns") &&
-					!xmlnsAttr.getName().startsWith("xmlns:") &&
-					!xmlnsAttr.getName().endsWith(":schemaLocation")
+					(!xmlnsAttr.getName().equals("xmlns") && //$NON-NLS-1$
+					!xmlnsAttr.getName().startsWith("xmlns:") && //$NON-NLS-1$
+					!xmlnsAttr.getName().endsWith(":schemaLocation") //$NON-NLS-1$
 					)) return null;
 			
 			String text = xmlnsAttr.getValueRegionText();
@@ -371,7 +371,7 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 	public String getHyperlinkText() {
 		String uri = getURI(fLastRegion);
 		if (uri == null)
-			return  MessageFormat.format(Messages.NotFound, "URI");
+			return  MessageFormat.format(Messages.NotFound, "URI"); //$NON-NLS-1$
 		
 		return MessageFormat.format(Messages.Open, uri);
 	}

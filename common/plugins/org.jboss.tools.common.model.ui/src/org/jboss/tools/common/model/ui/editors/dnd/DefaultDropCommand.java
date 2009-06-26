@@ -62,7 +62,7 @@ public abstract class DefaultDropCommand implements IDropCommand {
 	 */
 	public void initialize() {
 		if(getDefaultModel().getDropData()==null) {
-			throw new IllegalStateException("Wizard model isn't intialized, call setDropDataFirst");
+			throw new IllegalStateException("Wizard model isn't intialized, call setDropDataFirst"); //$NON-NLS-1$
 		}
 		TagProposal[] proposals 
 			= TagProposalsComposite.getTagProposals(
@@ -105,7 +105,7 @@ public abstract class DefaultDropCommand implements IDropCommand {
 	 */
 	public void execute() {
 		if(getDefaultModel().getDropData()==null) {
-			throw new IllegalStateException("Call setDndData() first");
+			throw new IllegalStateException("Call setDndData() first"); //$NON-NLS-1$
 		} else if(getDefaultModel().getTagProposal()!=IDropWizardModel.UNDEFINED_TAG_PROPOSAL) {
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			try {

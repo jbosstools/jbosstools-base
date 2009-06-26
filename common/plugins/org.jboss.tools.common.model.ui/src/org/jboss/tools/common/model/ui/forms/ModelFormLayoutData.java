@@ -18,27 +18,27 @@ import org.jboss.tools.common.meta.impl.XModelMetaDataImpl;
 import org.jboss.tools.common.meta.key.WizardKeys;
 
 public class ModelFormLayoutData implements IFormLayoutData {
-	public static String EMPTY_DESCRIPTION = "";
+	public static String EMPTY_DESCRIPTION = ""; //$NON-NLS-1$
 	
 	public static IFormData TAG_LIST = new FormData(
 		"Tags",
-		"", //"Description
-		new FormAttributeData[]{new FormAttributeData("tag", 100)},
-		new String[]{"AnyElement"},
-		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateTag")
+		"", //"Description //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("tag", 100)}, //$NON-NLS-1$
+		new String[]{"AnyElement"}, //$NON-NLS-1$
+		FormLayoutDataUtil.createDefaultFormActionData("CreateActions.CreateTag") //$NON-NLS-1$
 	);
 
 	private final static IFormData[] FORM_LAYOUT_DEFINITIONS =
 		new IFormData[] {
 			new FormData(
-				"AnyElement",
+				"AnyElement", //$NON-NLS-1$
 				new String[]{null},
 				new IFormData[] {
-					new FormData("org.jboss.tools.common.model.ui.forms.AnyElementForm"),
+					new FormData("org.jboss.tools.common.model.ui.forms.AnyElementForm"), //$NON-NLS-1$
 					new FormData(
 						"Body Content",
-						"", //"Description, description, description",
-						new FormAttributeData[]{new FormAttributeData("text", InfoLayoutDataFactory.getInstance())}
+						"", //"Description, description, description", //$NON-NLS-1$
+						new FormAttributeData[]{new FormAttributeData("text", InfoLayoutDataFactory.getInstance())} //$NON-NLS-1$
 					),
 					TAG_LIST
 				}
@@ -80,7 +80,7 @@ public class ModelFormLayoutData implements IFormLayoutData {
 	 */	
 	public static IFormData createGeneralFormData(XModelEntity entity) {
 		String entityName = entity.getName();
-		XAttribute attr = entity.getAttribute("element type");
+		XAttribute attr = entity.getAttribute("element type"); //$NON-NLS-1$
 		String kind = attr == null ? entity.getXMLSubPath() : attr.getDefaultValue();
 		String label = WizardKeys.toDisplayName(kind);
 		IFormAttributeData[] attrData = FormLayoutDataUtil.createGeneralFormAttributeData(entityName);

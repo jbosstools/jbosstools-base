@@ -36,7 +36,7 @@ public class RadioArrayFieldEditor extends ExtendedFieldEditor implements IField
 	ILabelProvider labelProvider;
 	IListContentProvider listContentProvider;
 
-	private String stringValue = "";
+	private String stringValue = ""; //$NON-NLS-1$
 	private boolean isValid;
 	private Composite panel;
 	private Button[] radioButtons;
@@ -100,7 +100,7 @@ public class RadioArrayFieldEditor extends ExtendedFieldEditor implements IField
 			Color fg = getSettings().getColor("Combo.Foreground");
 			Font font = getSettings().getFont("Combo.Font");
 */			
-			Border border = getSettings().getBorder("Combo.Border");
+			Border border = getSettings().getBorder("Combo.Border"); //$NON-NLS-1$
 			boolean makeGroup = makeGroup();
 			if (border!=null) {
 				BorderedControl borderedControl = new BorderedControl(parent, SWT.NONE, border);
@@ -151,7 +151,7 @@ public class RadioArrayFieldEditor extends ExtendedFieldEditor implements IField
 		Object input = propertyEditor.getInput();
 		if(input instanceof DefaultValueAdapter) {
 			DefaultValueAdapter adapter = (DefaultValueAdapter)input;
-			return "true".equals(adapter.getAttribute().getProperty("border"));
+			return "true".equals(adapter.getAttribute().getProperty("border")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return false;
 	}
@@ -232,7 +232,7 @@ public class RadioArrayFieldEditor extends ExtendedFieldEditor implements IField
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			Object v = evt.getNewValue();
 			valueProvider.removeValueChangeListener(this);
-			this.setStringValue((v == null) ? "" : v.toString());
+			this.setStringValue((v == null) ? "" : v.toString()); //$NON-NLS-1$
 			valueProvider.addValueChangeListener(this);
 		}
 		if (IPropertyEditor.LIST_CONTENT.equals(evt.getPropertyName())) {
@@ -286,11 +286,11 @@ public class RadioArrayFieldEditor extends ExtendedFieldEditor implements IField
 	}
 	
 	private String getSelectedValue() {
-		if(radioButtons == null) return "";
+		if(radioButtons == null) return ""; //$NON-NLS-1$
 		for (int i = 0; i < radioButtons.length; i++) {
 			if(radioButtons[i].getSelection()) return tags[i];
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	private void setSelectedValue(String v) {

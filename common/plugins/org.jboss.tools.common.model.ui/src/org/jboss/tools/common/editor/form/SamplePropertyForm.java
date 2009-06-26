@@ -74,7 +74,7 @@ public class SamplePropertyForm extends ExpandableForm implements PropertyChange
 			composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		}
 
-		String elementType = xmo.getAttributeValue("element type");
+		String elementType = xmo.getAttributeValue("element type"); //$NON-NLS-1$
 		if(elementType != null) {
 			Label label = new Label(composite, SWT.NONE);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -105,7 +105,7 @@ public class SamplePropertyForm extends ExpandableForm implements PropertyChange
 		isGreedy = false;
 		XAttribute[] as = xmo.getModelEntity().getAttributes();
 		for (int i = 0; i < as.length && !isGreedy; i++) {
-			if("always".equals(as[i].getProperty("greedy"))) isGreedy = true;
+			if("always".equals(as[i].getProperty("greedy"))) isGreedy = true; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		updateEnablement();
 		this.support.setAutoStore(Boolean.TRUE.booleanValue());
@@ -118,7 +118,7 @@ public class SamplePropertyForm extends ExpandableForm implements PropertyChange
 		list.add(new String[]{xmo.getModelEntity().getName()});
 		XAttribute[] as = xmo.getModelEntity().getAttributes();
 		for (int i = 0; i < as.length; i++) {
-			if("element type".equals(as[i].getName()) || !as[i].isVisible()) continue;
+			if("element type".equals(as[i].getName()) || !as[i].isVisible()) continue; //$NON-NLS-1$
 			list.add(new String[]{as[i].getName(), "no"});
 		}
 		String[][] ss = list.toArray(new String[0][]);

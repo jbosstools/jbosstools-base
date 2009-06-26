@@ -17,7 +17,6 @@ import java.beans.PropertyChangeSupport;
 import org.jboss.tools.common.model.ui.IListEditor;
 import org.jboss.tools.common.model.ui.IStructuredChangeListener;
 import org.jboss.tools.common.model.ui.IStructuredEditor;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.StructuredChangedEvent;
 import org.jboss.tools.common.model.ui.attribute.IListContentProvider;
 import org.jboss.tools.common.model.ui.attribute.adapter.ITableAdapter;
@@ -133,9 +132,9 @@ public class TableStructuredFieldEditor extends ExtendedFieldEditor
 
 	protected void applyButtonSkin(Control button) {
 		if (button!=null) {
-			Color bg = getSettings().getColor("Button.Background");
-			Color fg = getSettings().getColor("Button.Foreground");
-			Font font = getSettings().getFont("Button.Font");
+			Color bg = getSettings().getColor("Button.Background"); //$NON-NLS-1$
+			Color fg = getSettings().getColor("Button.Foreground"); //$NON-NLS-1$
+			Font font = getSettings().getFont("Button.Font"); //$NON-NLS-1$
 
 			button.setBackground(bg);
 			button.setForeground(fg);
@@ -163,11 +162,11 @@ public class TableStructuredFieldEditor extends ExtendedFieldEditor
 
 	public Control createTableControl(Composite parent) {
 		if (tableField == null) {
-			int style = getSettings().getStyle("Table.Style");
-			Color bg = getSettings().getColor("Table.Background");
-			Color fg = getSettings().getColor("Table.Foreground");
-			Font font = getSettings().getFont("Table.Font");
-			Border border = getSettings().getBorder("Table.Border");
+			int style = getSettings().getStyle("Table.Style"); //$NON-NLS-1$
+			Color bg = getSettings().getColor("Table.Background"); //$NON-NLS-1$
+			Color fg = getSettings().getColor("Table.Foreground"); //$NON-NLS-1$
+			Font font = getSettings().getFont("Table.Font"); //$NON-NLS-1$
+			Border border = getSettings().getBorder("Table.Border"); //$NON-NLS-1$
 			if (style==SWT.DEFAULT) style = SWT.NONE;
 			
 			if (border!=null) {
@@ -283,7 +282,7 @@ public class TableStructuredFieldEditor extends ExtendedFieldEditor
 			// table
 			control = createTableControl(tableButtonsControl);
 			if(tableField.getColumnCount() == 1) {
-				l.setText("" + tableField.getColumn(0).getText());
+				l.setText("" + tableField.getColumn(0).getText()); //$NON-NLS-1$
 			} else {
 				l.dispose();
 			}

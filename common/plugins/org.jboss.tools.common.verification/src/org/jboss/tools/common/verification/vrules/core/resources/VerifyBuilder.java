@@ -23,7 +23,7 @@ import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
 
 public class VerifyBuilder extends IncrementalProjectBuilder
 {
-	public static final String BUILDER_ID = VerificationPlugin.PLUGIN_ID + ".verifybuilder";
+	public static final String BUILDER_ID = VerificationPlugin.PLUGIN_ID + ".verifybuilder"; //$NON-NLS-1$
 	GlobalBuilderImpl builderImpl = null;
 	
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)

@@ -26,8 +26,8 @@ public class ExtendedPropertiesWizard extends AbstractQueryWizard {
 	public static void run(ExtendedProperties attributes) {
 		ExtendedPropertiesWizard wizard = new ExtendedPropertiesWizard();
 		Properties p = new Properties();
-		p.put("extendedProperties", attributes);
-		p.put("model", PreferenceModelUtilities.getPreferenceModel());		
+		p.put("extendedProperties", attributes); //$NON-NLS-1$
+		p.put("model", PreferenceModelUtilities.getPreferenceModel());		 //$NON-NLS-1$
 		wizard.setObject(p);
 		wizard.execute();
 	}
@@ -53,13 +53,13 @@ class ExtendedPropertiesWizardView extends AbstractQueryWizardView {
 	public void setObject(Object data) {
 		super.setObject(data);
 		Properties p = findProperties(data);
-		ExtendedProperties attributes = (ExtendedProperties)p.get("extendedProperties");
+		ExtendedProperties attributes = (ExtendedProperties)p.get("extendedProperties"); //$NON-NLS-1$
 		objectEditor.setExtendedProperties(attributes);
-		boolean viewMode = p != null && "true".equals(p.getProperty("viewMode"));
+		boolean viewMode = p != null && "true".equals(p.getProperty("viewMode")); //$NON-NLS-1$ //$NON-NLS-2$
 		objectEditor.setReadOnly(viewMode);
 		setWindowTitle("Attributes");
 		String nodeName = attributes.getNodeName();
-		setTitle((nodeName != null) ? "<" + nodeName + ">" : "");
+		setTitle((nodeName != null) ? "<" + nodeName + ">" : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public Control createControl(Composite parent) {

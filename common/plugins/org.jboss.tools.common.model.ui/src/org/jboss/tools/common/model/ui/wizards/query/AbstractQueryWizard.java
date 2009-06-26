@@ -21,12 +21,12 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 public class AbstractQueryWizard implements SpecialWizard {
 	
 	public static class Property {
-		public static final String HELP = "help";
-		public static final String MODAL = "modal";
-		public static final String TITLE = "title";
-		public static final String SUBTITLE = "subtitle";
-		public static final String MESSAGE = "message";
-		public static final String BLOCKING = "blocking";
+		public static final String HELP = "help"; //$NON-NLS-1$
+		public static final String MODAL = "modal"; //$NON-NLS-1$
+		public static final String TITLE = "title"; //$NON-NLS-1$
+		public static final String SUBTITLE = "subtitle"; //$NON-NLS-1$
+		public static final String MESSAGE = "message"; //$NON-NLS-1$
+		public static final String BLOCKING = "blocking"; //$NON-NLS-1$
 	}
 	
 	private AbstractQueryWizardView view = null;
@@ -48,13 +48,13 @@ public class AbstractQueryWizard implements SpecialWizard {
 		view.setModel(findModel(object));
 		view.setObject(object);
 		Properties p = findProperties(object);
-		String key = (p == null) ? null : p.getProperty("help");
+		String key = (p == null) ? null : p.getProperty("help"); //$NON-NLS-1$
 		if(key == null) {
 			//put debuggin here
 		} else {
 			String title = p.getProperty(Property.TITLE);
 			if(title == null) title = WizardKeys.getHeader(key);
-			if(title == null) title = WizardKeys.getHeader("Properties"); // NON-NLS-1
+			if(title == null) title = WizardKeys.getHeader("Properties"); // NON-NLS-1 //$NON-NLS-1$
 			if(title == null) title = "Title is not found for key \"" + key + "\"";
 			view.setWindowTitle(title);
 			
@@ -64,7 +64,7 @@ public class AbstractQueryWizard implements SpecialWizard {
 			view.setTitle(subtitle);
 			
 			String message = p.getProperty(Property.MESSAGE);
-			if(message == null) message = WizardKeys.getString(key + ".Message");
+			if(message == null) message = WizardKeys.getString(key + ".Message"); //$NON-NLS-1$
 			if(message != null) view.setMessage(message);
 		}		
 	}
@@ -91,9 +91,9 @@ public class AbstractQueryWizard implements SpecialWizard {
 		}
 		Properties p = findProperties(o);
 		if(p != null) {
-			Object q = p.get("model");
+			Object q = p.get("model"); //$NON-NLS-1$
 			if(q instanceof XModel) return (XModel)q;
-			q = p.get("object");
+			q = p.get("object"); //$NON-NLS-1$
 			if(q instanceof XModelObject) return ((XModelObject)q).getModel();
 		}
 		return null;

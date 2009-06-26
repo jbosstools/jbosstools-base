@@ -77,7 +77,7 @@ public class VEntityImpl implements VEntity {
     	if(modelEntity == null) {
     		modelEntity = meta.getEntity(entityName);
     		if(modelEntity == null) {
-    			VerificationPlugin.getPluginLog().logInfo("VModelImpl:Cannot find entity " + entityName);
+    			VerificationPlugin.getPluginLog().logInfo("VModelImpl:Cannot find entity " + entityName); //$NON-NLS-1$
     		}
     	}
         return modelEntity;

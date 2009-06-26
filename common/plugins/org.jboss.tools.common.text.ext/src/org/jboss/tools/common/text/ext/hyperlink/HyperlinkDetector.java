@@ -36,7 +36,7 @@ public class HyperlinkDetector extends BaseHyperlinkDetector {
 		ArrayList<String> types = new ArrayList<String>();
 		
 			region = (document instanceof IDocumentExtension3 ? 
-					((IDocumentExtension3)document).getDocumentPartitioner("org.eclipse.wst.sse.core.default_structured_text_partitioning").getPartition(offset) : 
+					((IDocumentExtension3)document).getDocumentPartitioner("org.eclipse.wst.sse.core.default_structured_text_partitioning").getPartition(offset) :  //$NON-NLS-1$
 					document.getDocumentPartitioner().getPartition(offset)); 
 
 		if (region != null) {

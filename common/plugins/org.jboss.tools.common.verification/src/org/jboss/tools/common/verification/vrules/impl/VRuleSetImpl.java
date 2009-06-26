@@ -87,7 +87,7 @@ public class VRuleSetImpl implements VRuleSet {
     public void setEnabled(boolean enabled) {
         boolean oldEnabled = this.enabled;
         this.enabled = enabled;
-        propertyChangeSupport.firePropertyChange("enabled", oldEnabled, enabled);
+        propertyChangeSupport.firePropertyChange("enabled", oldEnabled, enabled); //$NON-NLS-1$
     }
 
     public void setDefaultEnabled(boolean b) {
@@ -126,10 +126,10 @@ public class VRuleSetImpl implements VRuleSet {
         if (bundle == null) return null;
         String pattern = null;
         try {
-            pattern = bundle.getString("message."+id);
+            pattern = bundle.getString("message."+id); //$NON-NLS-1$
         } catch (MissingResourceException e) {
-        	VerificationPlugin.getPluginLog().logError("Cannot find message-id " + id);
-        	pattern = "";
+        	VerificationPlugin.getPluginLog().logError("Cannot find message-id " + id); //$NON-NLS-1$
+        	pattern = ""; //$NON-NLS-1$
         }
         if (pattern == null) return null;
         VMessageFormat format = new VMessageFormat(pattern);

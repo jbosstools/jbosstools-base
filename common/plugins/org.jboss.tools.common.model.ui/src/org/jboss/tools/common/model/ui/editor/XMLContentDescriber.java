@@ -40,10 +40,10 @@ public class XMLContentDescriber extends org.eclipse.core.runtime.content.XMLCon
 	}
 	
 	private int describe(String text, IContentDescription description) {
-		String entity = PreferenceModelUtilities.getPreferenceModel().getEntityRecognizer().getEntityName("xml", text);
-		if(entity == null || entity.length() == 0 || entity.equals("FileXML") 
-				|| entity.equals("FileHibConfig3") || entity.equals("FileHibernate3")
-				|| entity.equals("FileANT")
+		String entity = PreferenceModelUtilities.getPreferenceModel().getEntityRecognizer().getEntityName("xml", text); //$NON-NLS-1$
+		if(entity == null || entity.length() == 0 || entity.equals("FileXML")  //$NON-NLS-1$
+				|| entity.equals("FileHibConfig3") || entity.equals("FileHibernate3") //$NON-NLS-1$ //$NON-NLS-2$
+				|| entity.equals("FileANT") //$NON-NLS-1$
 			) {
 			return INDETERMINATE;
 		}
@@ -51,7 +51,7 @@ public class XMLContentDescriber extends org.eclipse.core.runtime.content.XMLCon
 	}
 
     static String read(Reader is) {
-        StringBuffer sb = new StringBuffer("");
+        StringBuffer sb = new StringBuffer(""); //$NON-NLS-1$
         try {
             char[] b = new char[4096];
             while(true) {

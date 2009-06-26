@@ -146,7 +146,7 @@ public class HyperlinkPartitionerDefinition {
 	 * @param e
 	 */
 	private void handleCreateExecutableException(Object[] result, Exception x) {
-		ExtensionsPlugin.getPluginLog().logError("Error in creating extension", x);
+		ExtensionsPlugin.getPluginLog().logError("Error in creating extension", x); //$NON-NLS-1$
 		result[0] = null;
 	}
 
@@ -337,7 +337,7 @@ public class HyperlinkPartitionerDefinition {
             this.fPath = getCorrectPath(path);
 
             if(fPath.indexOf(ALL_TAGS)>-1) {
-    	        StringTokenizer st = new StringTokenizer(fPath, "*" , false);
+    	        StringTokenizer st = new StringTokenizer(fPath, "*" , false); //$NON-NLS-1$
                 fStartDelim = fPath.startsWith(ALL_TAGS);
                 fEndDelim = fPath.endsWith(ALL_TAGS);
                 ArrayList<String> list = new ArrayList<String>();
@@ -354,8 +354,8 @@ public class HyperlinkPartitionerDefinition {
             }
         }
 
-	    private static String ALL_TAGS = "/*/";
-	    private static String DELIM = "/";
+	    private static String ALL_TAGS = "/*/"; //$NON-NLS-1$
+	    private static String DELIM = "/"; //$NON-NLS-1$
 
 	    public boolean containtsPath(String path) {
             path = getCorrectPath(path);

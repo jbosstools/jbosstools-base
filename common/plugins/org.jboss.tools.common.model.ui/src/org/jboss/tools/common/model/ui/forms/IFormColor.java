@@ -11,17 +11,17 @@
 package org.jboss.tools.common.model.ui.forms;
 
 public interface IFormColor {
-	public static final String DEFAULT_BACKGROUND = "_default_background";
-	public static final String DEFAULT_FOREGROUND = "_default_foreground";
-	public static final String DEFAULT_HEADER_BACKGROUND = "_default_header_background";
-	public static final String DEFAULT_HEADER_FOREGROUND = "_default_header_foreground";
-	public static final String BORDER_BACKGOUND = "_border_background";
-	public static final String BORDER_FOREGOUND = "_border_foreground";
-	public static final String SEPARATOR_COMPOSITE_BACKGOUND = "_separator_composite_background";
-	public static final String HYPERLINK_DEFAULT_BACKGOUND = "_hyperlink_default_background";
-	public static final String HYPERLINK_DEFAULT_FOREGOUND = "_hyperlink_default_foreground";
-	public static final String HYPERLINK_ROLLOVER_BACKGOUND = "_hyperlink_rollover_background";
-	public static final String HYPERLINK_ROLLOVER_FOREGOUND = "_hyperlink_rollover_foreground";
-	public static final String HYPERLINK_VISITED_BACKGOUND = "_hyperlink_visited_background";
-	public static final String HYPERLINK_VISITED_FOREGOUND = "_hyperlink_visited_foreground";
+	public static final String DEFAULT_BACKGROUND = "_default_background"; //$NON-NLS-1$
+	public static final String DEFAULT_FOREGROUND = "_default_foreground"; //$NON-NLS-1$
+	public static final String DEFAULT_HEADER_BACKGROUND = "_default_header_background"; //$NON-NLS-1$
+	public static final String DEFAULT_HEADER_FOREGROUND = "_default_header_foreground"; //$NON-NLS-1$
+	public static final String BORDER_BACKGOUND = "_border_background"; //$NON-NLS-1$
+	public static final String BORDER_FOREGOUND = "_border_foreground"; //$NON-NLS-1$
+	public static final String SEPARATOR_COMPOSITE_BACKGOUND = "_separator_composite_background"; //$NON-NLS-1$
+	public static final String HYPERLINK_DEFAULT_BACKGOUND = "_hyperlink_default_background"; //$NON-NLS-1$
+	public static final String HYPERLINK_DEFAULT_FOREGOUND = "_hyperlink_default_foreground"; //$NON-NLS-1$
+	public static final String HYPERLINK_ROLLOVER_BACKGOUND = "_hyperlink_rollover_background"; //$NON-NLS-1$
+	public static final String HYPERLINK_ROLLOVER_FOREGOUND = "_hyperlink_rollover_foreground"; //$NON-NLS-1$
+	public static final String HYPERLINK_VISITED_BACKGOUND = "_hyperlink_visited_background"; //$NON-NLS-1$
+	public static final String HYPERLINK_VISITED_FOREGOUND = "_hyperlink_visited_foreground"; //$NON-NLS-1$
 }

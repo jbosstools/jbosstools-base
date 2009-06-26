@@ -21,9 +21,9 @@ import org.jboss.tools.common.model.markers.XMarkerManager;
 import org.jboss.tools.common.model.ui.ModelUIImages;
 
 public class LabelDecoratorImpl implements ILabelDecorator {
-	public static Image emptyImage = ModelUIImages.getImage("empty_co.gif");
-	public static Image errorImage = ModelUIImages.getImage("error_co.gif");
-	public static Image warningImage = ModelUIImages.getImage("warning_co.gif");
+	public static Image emptyImage = ModelUIImages.getImage("empty_co.gif"); //$NON-NLS-1$
+	public static Image errorImage = ModelUIImages.getImage("error_co.gif"); //$NON-NLS-1$
+	public static Image warningImage = ModelUIImages.getImage("warning_co.gif"); //$NON-NLS-1$
 
 	List<ILabelProviderListener> listeners = new ArrayList<ILabelProviderListener>();
 	static Map<Image,Image> errorImages = new HashMap<Image,Image>();

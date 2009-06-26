@@ -107,7 +107,7 @@ public class DirectoryFieldEditorEx extends StringButtonFieldEditorEx implements
 		if (dirChooserLabelText != null)
 			dialog.setMessage(dirChooserLabelText);
 		if(propertyEditor != null && propertyEditor.getValue() != null && propertyEditor.getValue().toString().trim().length() > 0) {
-			String v = "" + propertyEditor.getValue();
+			String v = "" + propertyEditor.getValue(); //$NON-NLS-1$
 			if(new File(v).isFile()) v = new File(v).getParent(); 
 			dialog.setFilterPath(v);
 		} else if (lastPath != null) {
@@ -162,7 +162,7 @@ public class DirectoryFieldEditorEx extends StringButtonFieldEditorEx implements
 		valueProvider.removeValueChangeListener(this);
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			Object v = evt.getNewValue();
-			this.setStringValue((v == null) ? "" : v.toString());
+			this.setStringValue((v == null) ? "" : v.toString()); //$NON-NLS-1$
 		}
 		valueProvider.addValueChangeListener(this);
 	}

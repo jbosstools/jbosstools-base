@@ -84,7 +84,7 @@ public class SplitFormContainer extends DefaultFormContainer {
 	}
 
 	public Control createControl(Composite parent, IWidgetSettings settings) {
-		Composite main = new Composite(parent, settings.getStyle("Composite.Style"));
+		Composite main = new Composite(parent, settings.getStyle("Composite.Style")); //$NON-NLS-1$
 		settings.setupControl(main);
 		main.setLayout(getLayout());
 		main.setLayoutData(getLayoutData());
@@ -94,7 +94,7 @@ public class SplitFormContainer extends DefaultFormContainer {
 		GridData gd;
 
 		// 1
-		Composite fistFormComposite = new Composite(composite, settings.getStyle("Composite.Style"));
+		Composite fistFormComposite = new Composite(composite, settings.getStyle("Composite.Style")); //$NON-NLS-1$
 		settings.setupControl(fistFormComposite);
 		fistFormComposite.setLayout(getLayout());
 		gd = new GridData(GridData.FILL_BOTH);
@@ -106,7 +106,7 @@ public class SplitFormContainer extends DefaultFormContainer {
 				
 
 		// 2
-		Composite secondFormComposite = new Composite(composite, settings.getStyle("Composite.Style"));
+		Composite secondFormComposite = new Composite(composite, settings.getStyle("Composite.Style")); //$NON-NLS-1$
 		settings.setupControl(secondFormComposite);
 		secondFormComposite.setLayout(getLayout());
 		gd = new GridData(GridData.FILL_BOTH);

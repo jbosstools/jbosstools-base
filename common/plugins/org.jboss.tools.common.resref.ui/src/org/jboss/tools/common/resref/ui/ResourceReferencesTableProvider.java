@@ -19,11 +19,11 @@ import org.jboss.tools.common.model.ui.objecteditor.XTableProvider;
 import org.jboss.tools.common.resref.core.ResourceReference;
 
 public class ResourceReferencesTableProvider implements XTableProvider, XTableImageProvider {
-	static String[] CSS_COLUMNS = new String[]{"Scope", "CSS File Path"};
-	static String[] IMG_COLUMNS = new String[]{"Scope", "Image Folder Path"};
-	static String[] TLD_COLUMNS = new String[]{"Scope", "URI", "Prefix"};
-	static String[] EL_COLUMNS = new String[]{"Scope", "El Expression", "Value"};
-	private final static String[] GLOBAL_EL_COLUMNS = new String[]{"Scope","El Expression", "Value"};
+	static String[] CSS_COLUMNS = new String[]{Messages.ResourceReferencesTableProvider_Scope, Messages.ResourceReferencesTableProvider_CSSFilePath};
+	static String[] IMG_COLUMNS = new String[]{Messages.ResourceReferencesTableProvider_Scope, Messages.ResourceReferencesTableProvider_ImageFolderPath};
+	static String[] TLD_COLUMNS = new String[]{Messages.ResourceReferencesTableProvider_Scope, Messages.ResourceReferencesTableProvider_URI, Messages.ResourceReferencesTableProvider_Prefix};
+	static String[] EL_COLUMNS = new String[]{Messages.ResourceReferencesTableProvider_Scope, Messages.ResourceReferencesTableProvider_ELExpression, Messages.ResourceReferencesTableProvider_Value};
+	private final static String[] GLOBAL_EL_COLUMNS = new String[]{Messages.ResourceReferencesTableProvider_Scope,Messages.ResourceReferencesTableProvider_ELExpression, Messages.ResourceReferencesTableProvider_Value};
 	
 	int[] widths = new int[]{50, 200};
 	List dataList;

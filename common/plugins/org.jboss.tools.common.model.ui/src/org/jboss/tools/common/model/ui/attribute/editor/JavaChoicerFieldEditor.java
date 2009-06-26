@@ -65,12 +65,12 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 	private Composite treeAndText;
 	private XModel model;
 	
-	private JavaElement rootElement = new JavaRootElement("Java");
+	private JavaElement rootElement = new JavaRootElement("Java"); //$NON-NLS-1$
 	AccessibleJava.IContextPackageProvider cpp = null;
 	
-	private static final String ROOT_PATH = "%root%";
-	private static final String EMPTY_PATH = "";
-	private static final Image ROOT_IMAGE = ModelImages.getImage("images/navigationtree/java.gif");
+	private static final String ROOT_PATH = "%root%"; //$NON-NLS-1$
+	private static final String EMPTY_PATH = ""; //$NON-NLS-1$
+	private static final Image ROOT_IMAGE = ModelImages.getImage("images/navigationtree/java.gif"); //$NON-NLS-1$
 	private static final Image PACKAGE_IMAGE = JavaPluginImages.get(JavaPluginImages.IMG_OBJS_PACKAGE);
 	private static final Image CLASS_IMAGE = JavaPluginImages.get(JavaPluginImages.IMG_OBJS_CLASS);
 	
@@ -148,7 +148,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 		Label label;
 		
 		label = new Label(composite, SWT.NONE);
-		label.setText(EditorMessages.getString("JavaChoicerFieldEditor.Tab1.Tree.Label"));
+		label.setText(EditorMessages.getString("JavaChoicerFieldEditor.Tab1.Tree.Label")); //$NON-NLS-1$
 		
 		tree = new TreeViewer(composite,SWT.BORDER | SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
 		gd = new GridData(GridData.FILL_BOTH);
@@ -156,7 +156,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 		tree.getControl().setLayoutData(gd);
 		tree.setContentProvider(new ContentProviderEx());
 		tree.setLabelProvider(new LabelProviderEx());
-		tree.setInput("Java");
+		tree.setInput("Java"); //$NON-NLS-1$
 		if ((this.stringValue!=null)&&(this.stringValue.length()>0)) {
 			ISelection selection = getSelection(this.stringValue);
 			tree.setSelection(selection); 		
@@ -173,7 +173,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 		});
 
 		label = new Label(composite, SWT.NONE);
-		label.setText(EditorMessages.getString("JavaChoicerFieldEditor.Tab1.Text.Label"));
+		label.setText(EditorMessages.getString("JavaChoicerFieldEditor.Tab1.Text.Label")); //$NON-NLS-1$
 
 		text = new Text(composite,SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -186,12 +186,12 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 	}
 	
 	private Object getObject(String path) {
-		StringTokenizer st = new StringTokenizer(path, ".");
+		StringTokenizer st = new StringTokenizer(path, "."); //$NON-NLS-1$
 		JavaElement element = rootElement;
-		String find = "";
+		String find = ""; //$NON-NLS-1$
 		while (st.hasMoreTokens()) {
 			find = st.nextToken();
-			find = (element.getPath().equals(rootElement.getPath()))?find:element.getPath()+"."+find;
+			find = (element.getPath().equals(rootElement.getPath()))?find:element.getPath()+"."+find; //$NON-NLS-1$
 			if (element.getChildByPath(find) == null) {
 				// try find like element startWith()
 				int childCount = element.getChildCount();
@@ -211,7 +211,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 		if(o == null && cpp != null && path != null && path.length() > 0 && path.indexOf('.') < 0) {
 			String pkg = cpp.getContextPackage();
 			if(pkg != null && pkg.length() > 0) {
-				o = getObject(pkg + "." + path);
+				o = getObject(pkg + "." + path); //$NON-NLS-1$
 			}
 		}
 		return new StructuredSelection(new Object[] {o});
@@ -304,8 +304,8 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 	class JavaElement {
 		protected JavaElement parent = null;
 		private boolean isLoaded = false;
-		protected String path = "";
-		protected String name = "";
+		protected String path = ""; //$NON-NLS-1$
+		protected String name = ""; //$NON-NLS-1$
 		protected boolean isPackage = false;
 		private List<JavaElement> children = new ArrayList<JavaElement>();
 
@@ -313,7 +313,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 		}
 
 		public JavaElement(String parentpath, String name) {
-			this.path = (parentpath == null) ? name :  parentpath + "." + name;
+			this.path = (parentpath == null) ? name :  parentpath + "." + name; //$NON-NLS-1$
 			this.name = name;
 		}
 
@@ -358,7 +358,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 			if(ns == null) return;
 			for (int i = 0; i < ns.length; i++) {
 				String s = ns[i];
-				boolean p = s.endsWith(".");
+				boolean p = s.endsWith("."); //$NON-NLS-1$
 				if(p) s = s.substring(0, s.length() - 1);
 				if(!isJavaName(s)) continue;
 				JavaElement c = createChild(s);
@@ -427,7 +427,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 	public void modifyText(ModifyEvent e) {
 		String newValue = ((Text)e.getSource()).getText(); 
 		tree.removeSelectionChangedListener(this);
-		if (newValue.endsWith(" ")) {
+		if (newValue.endsWith(" ")) { //$NON-NLS-1$
 			StructuredSelection selection = (StructuredSelection)tree.getSelection();
 			JavaElement element = (JavaElement)selection.getFirstElement();
 			if (element != null) {
@@ -437,7 +437,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 					valueChanged(EMPTY_PATH);
 				}
 				newValue = stringValue;
-				if(newValue == null) newValue = "";
+				if(newValue == null) newValue = ""; //$NON-NLS-1$
 				text.setText(newValue);
 				text.setSelection(newValue.length());
 			}
@@ -519,7 +519,7 @@ public class JavaChoicerFieldEditor extends ExtendedFieldEditor implements IFiel
 		IModelPropertyEditorAdapter adapter = (IModelPropertyEditorAdapter)propertyEditor.getInput();
 		XAttribute a = adapter.getAttribute();
 		if(a == null) return null;
-		String cls = a.getProperty("contextPackageProvider");
+		String cls = a.getProperty("contextPackageProvider"); //$NON-NLS-1$
 		if(cls == null || cls.length() == 0) return null;
 		try {
 			AccessibleJava.IContextPackageProvider o = (AccessibleJava.IContextPackageProvider)ModelFeatureFactory.getInstance().createFeatureInstance(cls);

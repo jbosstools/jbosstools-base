@@ -18,15 +18,15 @@ package org.jboss.tools.common.text.ext.hyperlink.xml;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class XMLRoleNameHyperlinkPartitioner extends XMLJumpToHyperlinkPartitioner {
-	public static final String XML_ROLE_NAME_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME";
+	public static final String XML_ROLE_NAME_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME"; //$NON-NLS-1$
 
 	protected String getPartitionType() {
 		return XML_ROLE_NAME_PARTITION;
 	}
 
 	protected String[] getValidAxisEndings() {
-		return new String[] {"/servlet/security-role-ref/role-link/", 
-				"/servlet/run-as/role-name/", 
-				"/security-constraint/auth-constraint/role-name/"};
+		return new String[] {"/servlet/security-role-ref/role-link/",  //$NON-NLS-1$
+				"/servlet/run-as/role-name/",  //$NON-NLS-1$
+				"/security-constraint/auth-constraint/role-name/"}; //$NON-NLS-1$
 	}
 }

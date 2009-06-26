@@ -18,7 +18,7 @@ public class NewHTMLFileWizard extends NewFileWizardEx {
 	
 	class NewHTMLFileContext extends NewFileContextEx {
 		protected String getActionPath() {
-			return "CreateActions.CreateFiles.Web.CreateFileHTML";
+			return "CreateActions.CreateFiles.Web.CreateFileHTML"; //$NON-NLS-1$
 		}
 	}
 

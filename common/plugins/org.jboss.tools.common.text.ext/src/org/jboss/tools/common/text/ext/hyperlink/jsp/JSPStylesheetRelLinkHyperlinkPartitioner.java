@@ -31,17 +31,17 @@ import org.jboss.tools.common.text.ext.util.Utils;
  * @author Jeremy
  */
 public class JSPStylesheetRelLinkHyperlinkPartitioner extends AbstractHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
-	public static final String JSP_STYLESHEET_REL_LINK_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_STYLESHEET_REL_LINK";
+	public static final String JSP_STYLESHEET_REL_LINK_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_STYLESHEET_REL_LINK"; //$NON-NLS-1$
 	
-	private static final String LINK_TAGNAME = "link";
-	private static final String REL_ATTRNAME = "rel";
-	private static final String VALID_REL_ATTRVALUE = "stylesheet";
-	private static final String HREF_ATTRNAME = "href";
+	private static final String LINK_TAGNAME = "link"; //$NON-NLS-1$
+	private static final String REL_ATTRNAME = "rel"; //$NON-NLS-1$
+	private static final String VALID_REL_ATTRVALUE = "stylesheet"; //$NON-NLS-1$
+	private static final String HREF_ATTRNAME = "href"; //$NON-NLS-1$
 
-	private static final String IMPORT_DIRECTIVENAME = "@import";
-	private static final String URL_METHODSTART = "url(";
-	private static final String URL_METHODEND = ")";
-	private static final String URL_METHODEND_2 = ";";
+	private static final String IMPORT_DIRECTIVENAME = "@import"; //$NON-NLS-1$
+	private static final String URL_METHODSTART = "url("; //$NON-NLS-1$
+	private static final String URL_METHODEND = ")"; //$NON-NLS-1$
+	private static final String URL_METHODEND_2 = ";"; //$NON-NLS-1$
 	
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
@@ -151,7 +151,7 @@ public class JSPStylesheetRelLinkHyperlinkPartitioner extends AbstractHyperlinkP
 
 	protected String getAxis(IDocument document, IHyperlinkRegion superRegion) {
 		if (superRegion.getAxis() == null || superRegion.getAxis().length() == 0) {
-			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/";
+			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/"; //$NON-NLS-1$
 		}
 		return superRegion.getAxis();
 	}

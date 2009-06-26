@@ -26,10 +26,10 @@ import org.jboss.tools.common.text.ext.util.Utils;
  * @author Jeremy
  */
 public class JSPTagAttributeHyperlinkPartitioner extends JSPElementAttributeValueHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
-	public static final String JSP_TAG_ATTRIBUTE_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_TAG_ATTRIBUTE";
+	public static final String JSP_TAG_ATTRIBUTE_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_TAG_ATTRIBUTE"; //$NON-NLS-1$
 	
-	private static final String JSP_ATTRIBUTE_TAGNAME = "jsp:attribute";
-	private static final String JSP_ELEMENT_TAGNAME = "jsp:element";
+	private static final String JSP_ATTRIBUTE_TAGNAME = "jsp:attribute"; //$NON-NLS-1$
+	private static final String JSP_ELEMENT_TAGNAME = "jsp:element"; //$NON-NLS-1$
 
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
@@ -86,7 +86,7 @@ public class JSPTagAttributeHyperlinkPartitioner extends JSPElementAttributeValu
 
 	protected String getAxis(IDocument document, IHyperlinkRegion superRegion) {
 		if (superRegion.getAxis() == null || superRegion.getAxis().length() == 0) {
-			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/";
+			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/"; //$NON-NLS-1$
 		}
 		return superRegion.getAxis();
 	}

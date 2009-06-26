@@ -43,7 +43,7 @@ public class FilteredTreeContentProvider implements ITreeContentProvider {
 		}
 		if (result == null) {			
 			try	{
-				String classname = model.getMetaData().getMapping("FilteredTrees").getValue(filteredTreeName);
+				String classname = model.getMetaData().getMapping("FilteredTrees").getValue(filteredTreeName); //$NON-NLS-1$
 				result = (XFilteredTree)getClass().getClassLoader().loadClass(classname).newInstance();
 				result.setModel(model);
 			} catch (InstantiationException e) {

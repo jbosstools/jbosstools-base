@@ -25,16 +25,16 @@ public class FileSystemListContentProvider extends DefaultXAttributeListContentP
 	}
 
 	protected void loadTags() {
-		XModelObject fss = model.getByPath("FileSystems");
+		XModelObject fss = model.getByPath("FileSystems"); //$NON-NLS-1$
 		if(fss == null) return;
 		XModelObject[] os = fss.getChildren();
 		XAttributeConstraintAList c = (XAttributeConstraintAList)attribute.getConstraint();
 		loadProperties(c.getValues());
 		List<String> list = new ArrayList<String>(os.length+1);
-		if (emptyChoice) list.add("");
+		if (emptyChoice) list.add(""); //$NON-NLS-1$
 		for (int i = 0; i < os.length; i++) {
 			if (!writeOnly || os[i].isObjectEditable()) {
-				list.add(os[i].get("NAME"));
+				list.add(os[i].get("NAME")); //$NON-NLS-1$
 			}
 		}
 		tags = list.toArray(new String[list.size()]);

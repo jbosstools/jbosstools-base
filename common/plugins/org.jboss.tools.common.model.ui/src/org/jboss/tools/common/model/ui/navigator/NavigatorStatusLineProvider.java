@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.navigator;
 
+import java.text.MessageFormat;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.jboss.tools.common.model.XModelObject;
@@ -23,13 +24,13 @@ public class NavigatorStatusLineProvider {
 			if (o instanceof XModelObject) {
 				return getStatusLineMessage((XModelObject)o);
 			} else {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		}
 		if (selection.size() > 1) {
-			return "" + selection.size() + " items selected";
+			return MessageFormat.format("{0} items selected", selection.size());
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	protected String getStatusLineMessage(XModelObject object) {
@@ -42,15 +43,15 @@ public class NavigatorStatusLineProvider {
 	
 	private String getStatusLineMessageForResource(XModelObject object) {
 		IResource resource = EclipseResourceUtil.getResource(object);
-		String msg = (resource == null) ? "" : resource.getFullPath().makeRelative().toString();
+		String msg = (resource == null) ? "" : resource.getFullPath().makeRelative().toString(); //$NON-NLS-1$
 		if(msg.length() == 0 && object.getFileType() == XModelObject.SYSTEM) {
-			msg = XModelObjectUtil.expand("" + object.get("location"), object.getModel(), null);
+			msg = XModelObjectUtil.expand("" + object.get("location"), object.getModel(), null); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return (msg.length() == 0) ? object.getPathPart() : msg;
 	}
 	
 	private String getStatusLineMessageForFileFragment(XModelObject object) {
-		if(object == null) return "";
+		if(object == null) return ""; //$NON-NLS-1$
 		if(!object.isActive()) return object.getPresentationString();
 		XModelObject f = object.getParent();
 		while(f != null && f.getFileType() == XModelObject.NONE) f = f.getParent();
@@ -64,7 +65,7 @@ public class NavigatorStatusLineProvider {
 		}
 		String relative = sb.toString();
 		String parent = getStatusLineMessageForResource(f);
-		return relative + " - " + parent;
+		return relative + " - " + parent; //$NON-NLS-1$
 	}
 
 }

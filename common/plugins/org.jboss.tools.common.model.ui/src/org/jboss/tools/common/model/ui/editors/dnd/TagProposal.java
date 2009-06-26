@@ -12,8 +12,8 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 
 public class TagProposal {
 	
-	public static final String EMPTY_PREFIX = "";
-	public static final String EMPTY_URI = "";
+	public static final String EMPTY_PREFIX = ""; //$NON-NLS-1$
+	public static final String EMPTY_URI = ""; //$NON-NLS-1$
 	
 	public static final IAttributeValueLoader EMPTY_ATTRIBUTE_VALUE_LOADER = new IAttributeValueLoader() {
 		public void fillTagAttributes(IDropWizardModel model) {
@@ -22,7 +22,7 @@ public class TagProposal {
 	};
 	
 	String uri;
-	String libraryVersion = "";
+	String libraryVersion = ""; //$NON-NLS-1$
 	String prefix;
 	String name;
 	IAttributeValueLoader attributeValueLoader =  EMPTY_ATTRIBUTE_VALUE_LOADER;
@@ -36,7 +36,7 @@ public class TagProposal {
 		String prefix, 
 		String name
 	) {
-		this(uri, "", prefix, name);
+		this(uri, "", prefix, name); //$NON-NLS-1$
 	}
 
 	public TagProposal(
@@ -46,7 +46,7 @@ public class TagProposal {
 			String name
 		) {
 			this.uri = uri;
-			this.libraryVersion = (libraryVersion == null) ? "" : libraryVersion;
+			this.libraryVersion = (libraryVersion == null) ? "" : libraryVersion; //$NON-NLS-1$
 			this.prefix = prefix;
 			this.name = name;
 		}

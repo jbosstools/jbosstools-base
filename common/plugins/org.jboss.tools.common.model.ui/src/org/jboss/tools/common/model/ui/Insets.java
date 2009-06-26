@@ -41,13 +41,13 @@ public class Insets {
 	
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("Insets: ");
+		buffer.append("Insets: "); //$NON-NLS-1$
 		buffer.append(top);
-		buffer.append(", ");
+		buffer.append(", "); //$NON-NLS-1$
 		buffer.append(left);
-		buffer.append(", ");
+		buffer.append(", "); //$NON-NLS-1$
 		buffer.append(bottom);
-		buffer.append(", ");
+		buffer.append(", "); //$NON-NLS-1$
 		buffer.append(right);
 		return buffer.toString();
 	}

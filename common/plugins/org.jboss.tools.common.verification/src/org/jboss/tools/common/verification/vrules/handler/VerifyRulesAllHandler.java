@@ -6,6 +6,8 @@
 
 package org.jboss.tools.common.verification.vrules.handler;
 
+import org.eclipse.osgi.util.NLS;
+import org.jboss.tools.common.verification.Messages;
 import org.jboss.tools.common.verification.vrules.*;
 import org.jboss.tools.common.verification.vrules.layer.VModelFactory;
 import org.jboss.tools.common.model.*;
@@ -62,13 +64,14 @@ public class VerifyRulesAllHandler extends VerifyHandler {
 
     private void executeHandlerGUI(XModelObject object, Properties p) throws XModelException {
 
-		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.verification.ui.vrules.wizard.runtime2.VerifyWizard");
+		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.verification.ui.vrules.wizard.runtime2.VerifyWizard"); //$NON-NLS-1$
         if(p == null) p = new Properties();
-        String title = "Apply Verification Rules";
-        if(!object.getModelEntity().getName().equals("FileSystems"))
-          title += " for " + object.getPresentationString();
-        p.setProperty("title", title);
-        p.setProperty("help", "ApplyVerificationRules");
+        String title = Messages.VerifyRulesAllHandler_ApplyVerificationRules;
+        if(!object.getModelEntity().getName().equals("FileSystems")) //$NON-NLS-1$
+          title = NLS.bind(Messages.VerifyRulesAllHandler_ApplyVerificationRulesForObject, 
+        		  object.getPresentationString());
+        p.setProperty("title", title); //$NON-NLS-1$
+        p.setProperty("help", "ApplyVerificationRules"); //$NON-NLS-1$ //$NON-NLS-2$
         wizard.setObject(new Object[]{object, p});
         wizard.execute();
 /*        

@@ -75,8 +75,8 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 					if(jar != null) return jar.getFullPath();
 				}
 			}
-			String n = p == null ? "" : p.getName();
-			return new Path(n + "/" + object.getPath());
+			String n = p == null ? "" : p.getName(); //$NON-NLS-1$
+			return new Path(n + "/" + object.getPath()); //$NON-NLS-1$
 		}
 
 		public String getName() {

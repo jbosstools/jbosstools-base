@@ -36,7 +36,7 @@ public class VRulesConfigurationAction extends AbstractModelActionDelegate {
 		public VRulesPreferenceDialog() {
 			super(ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell(), 
 			ModelPlugin.getDefault().getWorkbench().getPreferenceManager());
-			setSelectedNodePreference("org.jboss.tools.common.verification.ui");
+			setSelectedNodePreference("org.jboss.tools.common.verification.ui"); //$NON-NLS-1$
 		}
 	}
 	

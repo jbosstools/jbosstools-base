@@ -32,16 +32,16 @@ public class FileChooserAdapter extends DefaultValueAdapter {
 		properties = c.getProperties();
 		if(properties != null) {
 //			description = properties.getProperty("description");
-			String s = properties.getProperty("extensions");
-			StringTokenizer st = new StringTokenizer((s == null) ? "" : s, ";,");
+			String s = properties.getProperty("extensions"); //$NON-NLS-1$
+			StringTokenizer st = new StringTokenizer((s == null) ? "" : s, ";,"); //$NON-NLS-1$ //$NON-NLS-2$
 			extensions = new String[st.countTokens()];
 			for (int i = 0; i < extensions.length; i++) {
-			  extensions[i] = "*." + st.nextToken();
+			  extensions[i] = "*." + st.nextToken(); //$NON-NLS-1$
 //			  if("*".equals(extensions[i])) all = true;
 			}
-			s = properties.getProperty("filenames");
+			s = properties.getProperty("filenames"); //$NON-NLS-1$
 			if (s != null) {
-				st = new StringTokenizer(s, ";,");
+				st = new StringTokenizer(s, ";,"); //$NON-NLS-1$
 				filenames = new String[st.countTokens()];
 				for (int i = 0; i < filenames.length; i++)
 					filenames[i] = st.nextToken();
@@ -62,7 +62,7 @@ public class FileChooserAdapter extends DefaultValueAdapter {
 	public String getFilterPath() {
 		XAttributeConstraintFileFilter c = (XAttributeConstraintFileFilter)attribute.getConstraint();
 		properties = c.getProperties();
-		return properties == null ? null : properties.getProperty("filterFolder");
+		return properties == null ? null : properties.getProperty("filterFolder"); //$NON-NLS-1$
 	}
 	
 	public Object getAdapter(Class adapter) {

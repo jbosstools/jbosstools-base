@@ -15,7 +15,7 @@ import org.eclipse.swt.dnd.*;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class ModelTransfer extends ByteArrayTransfer {
-	public static final String MODEL = "vpe/model";
+	public static final String MODEL = "vpe/model"; //$NON-NLS-1$
 	public static final int MODEL_ID = registerType(MODEL);
 
 	private static ModelTransfer instance = new ModelTransfer();

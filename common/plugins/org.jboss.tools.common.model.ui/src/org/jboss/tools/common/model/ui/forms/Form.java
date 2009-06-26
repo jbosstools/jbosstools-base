@@ -211,7 +211,7 @@ public class Form extends ExpandableForm {
 			this.tableAdapter.setModelObject(xmo);
 
 			this.tableEditor = new TableStructuredEditor(formData.getWidgetSettings());
-			this.tableEditor.setLabelText("");
+			this.tableEditor.setLabelText(""); //$NON-NLS-1$
 			this.tableEditor.setInput(this.tableAdapter); 
 		}
 

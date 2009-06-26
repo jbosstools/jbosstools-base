@@ -39,8 +39,8 @@ import org.jboss.tools.jst.web.tld.URIConstants;
 
 public class PaletteViewPart extends ViewPart implements IPartListener {
 	
-	public static final String VIEW_ID = "org.jboss.tools.common.model.ui.views.palette.PaletteView";
-	public static final String PALETTE_GEF_ID = "org.jboss.tools.vpe.ui.palette";
+	public static final String VIEW_ID = "org.jboss.tools.common.model.ui.views.palette.PaletteView"; //$NON-NLS-1$
+	public static final String PALETTE_GEF_ID = "org.jboss.tools.vpe.ui.palette"; //$NON-NLS-1$
 
 	private IPaletteAdapter paletteAdapter = null; 
 	private Composite root = null;
@@ -68,7 +68,7 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 	private IPaletteAdapter createPaletteAdapter() {
 		try {
 			Bundle b = Platform.getBundle(PALETTE_GEF_ID);
-			Class cls = b == null ? null : b.loadClass("org.jboss.tools.vpe.ui.palette.PaletteAdapter");
+			Class cls = b == null ? null : b.loadClass("org.jboss.tools.vpe.ui.palette.PaletteAdapter"); //$NON-NLS-1$
 			if(cls != null) return (IPaletteAdapter)cls.newInstance();
 		} catch (ClassNotFoundException t) {
 			//ignore
@@ -144,16 +144,16 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 		if(dropIntoEditor(editor, macro)) return;
 		if(dropIntoEditor2(editor, macro)) return;
 
-		String tagname = macro.getAttributeValue("name");
-		String startText = "" + macro.getAttributeValue("start text");
-		String endText = "" + macro.getAttributeValue("end text");
-		String newline = "" + macro.getAttributeValue("new line");
-		String reformat = "" + macro.getAttributeValue("automatically reformat tag body");
+		String tagname = macro.getAttributeValue("name"); //$NON-NLS-1$
+		String startText = "" + macro.getAttributeValue("start text"); //$NON-NLS-1$ //$NON-NLS-2$
+		String endText = "" + macro.getAttributeValue("end text"); //$NON-NLS-1$ //$NON-NLS-2$
+		String newline = "" + macro.getAttributeValue("new line"); //$NON-NLS-1$ //$NON-NLS-2$
+		String reformat = "" + macro.getAttributeValue("automatically reformat tag body"); //$NON-NLS-1$ //$NON-NLS-2$
 		XModelObject parent = macro.getParent();
-		String uri = (parent == null) ? "" : parent.getAttributeValue(URIConstants.LIBRARY_URI);
-		String libraryVersion = (parent == null) ? "" : parent.getAttributeValue(URIConstants.LIBRARY_VERSION);
-		String defaultPrefix = (parent == null) ? "" : parent.getAttributeValue(URIConstants.DEFAULT_PREFIX);
-		String addTaglib = (parent == null) ? "" : parent.getAttributeValue("add taglib");
+		String uri = (parent == null) ? "" : parent.getAttributeValue(URIConstants.LIBRARY_URI); //$NON-NLS-1$
+		String libraryVersion = (parent == null) ? "" : parent.getAttributeValue(URIConstants.LIBRARY_VERSION); //$NON-NLS-1$
+		String defaultPrefix = (parent == null) ? "" : parent.getAttributeValue(URIConstants.DEFAULT_PREFIX); //$NON-NLS-1$
+		String addTaglib = (parent == null) ? "" : parent.getAttributeValue("add taglib"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (editor != null) {
 			Properties properties = new Properties();
 			properties.setProperty(PaletteInsertHelper.PROPOPERTY_TAG_NAME, tagname);
@@ -176,12 +176,12 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 
 	private boolean dropIntoEditor(ITextEditor editor, XModelObject macro) {
 		try {
-			Method m = editor.getClass().getMethod("runDropCommand", new Class[]{String.class, String.class});
+			Method m = editor.getClass().getMethod("runDropCommand", new Class[]{String.class, String.class}); //$NON-NLS-1$
 			if(m == null) return false;
 			m.setAccessible(true);
 			Properties p = new Properties();
-			p.setProperty("isDrag", "true");
-			XActionInvoker.invoke("CopyActions.Copy", macro, p);
+			p.setProperty("isDrag", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+			XActionInvoker.invoke("CopyActions.Copy", macro, p); //$NON-NLS-1$
 			m.invoke(editor, new Object[]{ModelTransfer.MODEL, null});
 			return true;
 		} catch (NoSuchMethodException ne) {
@@ -198,13 +198,13 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 		}
 	}
 	private boolean dropIntoEditor2(ITextEditor editor, XModelObject macro) {
-		SpecialWizard w = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.editors.dnd.DefaultDropCommandRunner");
+		SpecialWizard w = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.editors.dnd.DefaultDropCommandRunner"); //$NON-NLS-1$
 		if(w == null) return false;
 		Properties p = new Properties();
-		p.setProperty("isDrag", "true");
-		XActionInvoker.invoke("CopyActions.Copy", macro, p);
-		p.setProperty("flavor", ModelTransfer.MODEL);
-		p.put("textEditor", editor);
+		p.setProperty("isDrag", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		XActionInvoker.invoke("CopyActions.Copy", macro, p); //$NON-NLS-1$
+		p.setProperty("flavor", ModelTransfer.MODEL); //$NON-NLS-1$
+		p.put("textEditor", editor); //$NON-NLS-1$
 		w.setObject(p);
 		int r = w.execute();
 		return r == 0;
@@ -227,7 +227,7 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 			editor = (ITextEditor)part;
 		} else if (part instanceof MultiPageEditorPart) {
 			try {
-				Method m = MultiPageEditorPart.class.getDeclaredMethod("getActiveEditor", new Class[0]);
+				Method m = MultiPageEditorPart.class.getDeclaredMethod("getActiveEditor", new Class[0]); //$NON-NLS-1$
 				m.setAccessible(true);
 				Object o = m.invoke(part, new Object[0]);
 				if (o instanceof ITextEditor) {

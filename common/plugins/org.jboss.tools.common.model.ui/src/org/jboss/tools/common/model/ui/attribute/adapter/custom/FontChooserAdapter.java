@@ -22,12 +22,12 @@ public class FontChooserAdapter extends DefaultValueAdapter implements IActionHe
 	}
 	
 	public String getCommand() {
-		return "...";
+		return "..."; //$NON-NLS-1$
 	}
 	
 	public String invoke0(Control control) {
 		FontDialog dialog = new FontDialog(control.getShell());
-		String v = "" + getValue();
+		String v = "" + getValue(); //$NON-NLS-1$
 		ColoredFontData data = ColoredFontData.toFontData(v);
 		dialog.setFontList(new FontData[]{data.getFontData()});
 		dialog.setRGB(data.getColor());

@@ -38,7 +38,7 @@ public class TagAttributesWizardPage extends DefaultDropWizardPage implements Pr
 	 *
 	 */
 	public TagAttributesWizardPage() {
-		super("Edit required and preferred attributes","");
+		super("Edit required and preferred attributes",""); //$NON-NLS-2$
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class TagAttributesWizardPage extends DefaultDropWizardPage implements Pr
 	 * @param pageName
 	 */
 	protected TagAttributesWizardPage(String pageName) {
-		super(pageName,"");
+		super(pageName,""); //$NON-NLS-1$
 	}
 
 	private TabItem general = null;
@@ -121,15 +121,15 @@ public class TagAttributesWizardPage extends DefaultDropWizardPage implements Pr
 	protected void updateTitle() {
 		TagProposal tagProposal = (TagProposal)getDropWizardModel().getTagProposal();
 		StringBuffer titleText = new StringBuffer();
-		titleText.append("<");
+		titleText.append("<"); //$NON-NLS-1$
 		if(!TagProposal.EMPTY_PREFIX.equals(tagProposal.getPrefix())) {
 			titleText
 				.append(tagProposal.getPrefix())
-				.append(":");
+				.append(":"); //$NON-NLS-1$
 		}
 		titleText
 			.append(tagProposal.getName())
-			.append("> attributes");			
+			.append("> attributes");			 //$NON-NLS-1$
 		setTitle(titleText.toString());
 	}
 

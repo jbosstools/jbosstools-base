@@ -179,13 +179,13 @@ public class NoteFieldEditor extends ExtendedFieldEditor implements IFieldEditor
 	}
 	public Text createTextControl(Composite parent) {
 		if (textField == null) {
-			int style = getSettings().getStyle("Note.Style");
+			int style = getSettings().getStyle("Note.Style"); //$NON-NLS-1$
 			if (style==SWT.DEFAULT) style = SWT.NONE;
-			Color bg = getSettings().getColor("Note.Background");
-			Color fg = getSettings().getColor("Note.Foreground");
-			Font font = getSettings().getFont("Note.Font");
-			Border border = getSettings().getBorder("Note.Border");
-			this.validateStrategy = getSettings().getInt("Note.ValidateStrategy");
+			Color bg = getSettings().getColor("Note.Background"); //$NON-NLS-1$
+			Color fg = getSettings().getColor("Note.Foreground"); //$NON-NLS-1$
+			Font font = getSettings().getFont("Note.Font"); //$NON-NLS-1$
+			Border border = getSettings().getBorder("Note.Border"); //$NON-NLS-1$
+			this.validateStrategy = getSettings().getInt("Note.ValidateStrategy"); //$NON-NLS-1$
 			if (validateStrategy==SWT.DEFAULT) validateStrategy = VALIDATE_ON_KEY_STROKE;
 			boolean b = isAlwaysReadOnly();
 			if (border != null) {
@@ -200,7 +200,7 @@ public class NoteFieldEditor extends ExtendedFieldEditor implements IFieldEditor
 			textField.getAccessible();
 			if(propertyEditor.getInput() instanceof DefaultValueAdapter) {
 				DefaultValueAdapter a = (DefaultValueAdapter)propertyEditor.getInput();
-				String s = (a.getAttribute() == null) ? null : a.getAttribute().getProperty("font");
+				String s = (a.getAttribute() == null) ? null : a.getAttribute().getProperty("font"); //$NON-NLS-1$
 				if(s != null) {
 					Font oldFont = textField.getFont();
 					FontData data = oldFont.getFontData()[0];
@@ -356,7 +356,7 @@ public class NoteFieldEditor extends ExtendedFieldEditor implements IFieldEditor
 		String newValue = getTextFieldValue();
 		if (!newValue.equals(oldValue)) {
 			fireValueChanged(VALUE, oldValue, newValue);
-			PropertyChangeEvent event = new PropertyChangeEvent(this, "value", oldValue, newValue);
+			PropertyChangeEvent event = new PropertyChangeEvent(this, "value", oldValue, newValue); //$NON-NLS-1$
 			valueChangeListener.valueChange(event);
 			oldValue = newValue;
 		}
@@ -471,7 +471,7 @@ public class NoteFieldEditor extends ExtendedFieldEditor implements IFieldEditor
 			}
 			if(o == null) return false;
 			String entity = o.getModelEntity().getName();
-			if(entity.indexOf("Jar") >= 0) return true;
+			if(entity.indexOf("Jar") >= 0) return true; //$NON-NLS-1$
 		}
 		return false;
 	}

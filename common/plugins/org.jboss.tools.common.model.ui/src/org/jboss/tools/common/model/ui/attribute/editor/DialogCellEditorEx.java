@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute.editor;
 
+import java.text.MessageFormat;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
@@ -90,7 +91,7 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 				DialogCellEditorEx.this.focusLost();
 			}
 		});
-		result.setText("...");
+		result.setText("..."); //$NON-NLS-1$
 		return button = result;
 	}
 	
@@ -125,7 +126,7 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 			}
 			dialog = new PropertyEditorDialog(ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell(),propertyEditor);
 			dialog.create();
-			String title = "Edit " + WizardKeys.getAttributeDisplayName(a.getAttribute(), true);
+			String title = MessageFormat.format("Edit {0}", WizardKeys.getAttributeDisplayName(a.getAttribute(), true));
 			dialog.getShell().setText(title);
 			externalEditing = true;
 			ExtendedFieldEditor fieldEditor = propertyEditor.getFieldEditor(null);
@@ -223,7 +224,7 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 	protected void updateContents(Object value) {
 		if(modifyLock > 0) return;
 		if (text == null) return;		
-		String txt = "";
+		String txt = ""; //$NON-NLS-1$
 		if (value != null) txt = value.toString();
 		setTextEditable(!(txt.indexOf('\n') >= 0 || txt.indexOf('\r') >= 0));
 		if(!editable) {

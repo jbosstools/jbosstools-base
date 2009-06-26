@@ -62,7 +62,7 @@ public abstract class VerifyHandler extends AbstractHandler implements org.jboss
             }
         }
         if (results == null || results.length == 0) {
-            model.getOut().println(rule.getName()+": OK: "+source);
+            model.getOut().println(rule.getName()+": OK: "+source); //$NON-NLS-1$
         } else {
             for (int i = 0; i < results.length; i++) {
                 if (results[i].getSignificance() < sign) continue;
@@ -71,7 +71,7 @@ public abstract class VerifyHandler extends AbstractHandler implements org.jboss
                 //resultModel.setResult(results[i]);
                 //ruleModel.addChild(resultModel);
 
-                model.getOut().println(rule.getName()+": "+results[i].getMessage());
+                model.getOut().println(rule.getName()+": "+results[i].getMessage()); //$NON-NLS-1$
             }
         }
         ((VRuleImpl)rule).setResults((VResult[])list.toArray(new VResult[list.size()]));

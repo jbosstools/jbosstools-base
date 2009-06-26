@@ -20,8 +20,8 @@ public class JSPTagProposalFactory implements ITagProposalFactory {
 	public static Map<String,String> loaderMap = new HashMap<String,String>(); 
 
 	static {
-		loaderMap.put(DropCommandFactory.kFileMime, DropCommandFactory.PACKAGE + "FileTagProposalLoader");		
-		loaderMap.put(DropCommandFactory.kURLMime, DropCommandFactory.PACKAGE + "FileTagProposalLoader");		
+		loaderMap.put(DropCommandFactory.kFileMime, DropCommandFactory.PACKAGE + "FileTagProposalLoader");		 //$NON-NLS-1$
+		loaderMap.put(DropCommandFactory.kURLMime, DropCommandFactory.PACKAGE + "FileTagProposalLoader");		 //$NON-NLS-1$
 	}
 	
 	public static JSPTagProposalFactory getInstance() {

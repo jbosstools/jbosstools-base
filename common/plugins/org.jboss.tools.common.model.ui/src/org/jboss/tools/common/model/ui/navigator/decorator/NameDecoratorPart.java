@@ -22,7 +22,7 @@ public class NameDecoratorPart implements IDecoratorPart {
 	}
 
 	public String getLabelPart(XModelObject object) {
-		return "" + object.getPresentationString(); 
+		return "" + object.getPresentationString();  //$NON-NLS-1$
 	}
 
 }

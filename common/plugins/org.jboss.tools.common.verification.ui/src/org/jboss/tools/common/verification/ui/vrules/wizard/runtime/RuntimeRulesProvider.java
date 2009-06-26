@@ -15,9 +15,9 @@ import org.eclipse.swt.graphics.*;
 import org.jboss.tools.common.model.util.*;
 
 public class RuntimeRulesProvider extends LabelProvider implements ITreeContentProvider, ILabelProvider {
-	public Image IMAGE_0 = EclipseResourceUtil.getImage("images/struts/pro/validator_constant.gif");
-	public Image IMAGE_1 = EclipseResourceUtil.getImage("images/java/attr.gif");
-	public Image IMAGE_2 = EclipseResourceUtil.getImage("images/struts/exception.gif");
+	public Image IMAGE_0 = EclipseResourceUtil.getImage("images/struts/pro/validator_constant.gif"); //$NON-NLS-1$
+	public Image IMAGE_1 = EclipseResourceUtil.getImage("images/java/attr.gif"); //$NON-NLS-1$
+	public Image IMAGE_2 = EclipseResourceUtil.getImage("images/struts/exception.gif"); //$NON-NLS-1$
 	
 	protected RuntimeRuleSetWrapper[] ruleSets = new RuntimeRuleSetWrapper[0];
 

@@ -31,8 +31,8 @@ public class PaletteDescriptionManager extends AbstractHoverInformationControlMa
 		super(new DescriptionControlCreator());
 		setSizeConstraints(60, 30, false, false);
 		fWindowsFlag = true;
-		String osName = System.getProperty("os.name");
-		fWindowsFlag = osName != null && osName.toUpperCase().indexOf("WINDOWS") != -1;
+		String osName = System.getProperty("os.name"); //$NON-NLS-1$
+		fWindowsFlag = osName != null && osName.toUpperCase().indexOf("WINDOWS") != -1; //$NON-NLS-1$
 	}
 	
 	protected void computeInformation() {

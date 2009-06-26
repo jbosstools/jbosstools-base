@@ -52,7 +52,7 @@ public class TreeSelectionEditor extends SelectionEditor {
 	}
 	
 	public String getChangeButtonName() {
-		return JFaceResources.getString("openBrowse");
+		return JFaceResources.getString("openBrowse"); //$NON-NLS-1$
 	}
 
 }

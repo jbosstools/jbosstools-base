@@ -13,7 +13,7 @@ package org.jboss.tools.common.model.ui.action.global;
 public class VisitCompanyActionDelegate extends AbstractShowUrlActionDelegate {
 
 	protected String getUrl() {
-		return "www.redhat.com";
+		return "www.redhat.com"; //$NON-NLS-1$
 	}
 
 }

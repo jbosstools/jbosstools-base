@@ -95,7 +95,7 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 		if(getSourceViewer() == null) return null;
 		if(getSourceViewer().getDocument() == null) return null;
 		text = getSourceViewer().getDocument().get();
-		return (text == null) ? "" : text;
+		return (text == null) ? "" : text; //$NON-NLS-1$
 	}
 
 	public boolean isEditable() {
@@ -227,8 +227,8 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 	
 	public void selectModelObject(XModelObject object) {
 		String text = getText();
-		String name = object.getAttributeValue("name");
-		String nvs = object.getAttributeValue("name-value-separator");
+		String name = object.getAttributeValue("name"); //$NON-NLS-1$
+		String nvs = object.getAttributeValue("name-value-separator"); //$NON-NLS-1$
 		int i = text.indexOf(name + nvs);
 		if(i < 0) return;
 		int j = text.indexOf('\n', i);
@@ -309,10 +309,10 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 			XModelObject[] cs = o.getChildren();
 			String trimmed = txt.trim();
 			for (int i = 0; i < cs.length; i++) {
-				String n = cs[i].getAttributeValue("name");
+				String n = cs[i].getAttributeValue("name"); //$NON-NLS-1$
 				if(!trimmed.startsWith(n)) continue;
-				String sep = cs[i].getAttributeValue("name-value-separator");
-				if(sep == null || sep.length() == 0) sep = "=";
+				String sep = cs[i].getAttributeValue("name-value-separator"); //$NON-NLS-1$
+				if(sep == null || sep.length() == 0) sep = "="; //$NON-NLS-1$
 				int q = trimmed.indexOf('=');
 				if(q < 0) continue;
 				String s = trimmed.substring(n.length(), q).trim();
@@ -331,7 +331,7 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 class RevertToSavedAction3 extends RevertToSavedAction {
 	PropertiesTextEditorComponent t;
 	RevertToSavedAction3(PropertiesTextEditorComponent t) {
-		super(ResourceBundle.getBundle("org.eclipse.ui.texteditor.ConstructedEditorMessages"), "Editor.Revert.", t);
+		super(ResourceBundle.getBundle("org.eclipse.ui.texteditor.ConstructedEditorMessages"), "Editor.Revert.", t); //$NON-NLS-1$ //$NON-NLS-2$
 		this.t = t;
 	}
 	public void update() {
@@ -342,7 +342,7 @@ class RevertToSavedAction3 extends RevertToSavedAction {
 class SaveAction3 extends SaveAction {
 	PropertiesTextEditorComponent t;
 	SaveAction3(PropertiesTextEditorComponent t) {
-		super(ResourceBundle.getBundle("org.eclipse.ui.texteditor.ConstructedEditorMessages"), "Editor.Save.", t);
+		super(ResourceBundle.getBundle("org.eclipse.ui.texteditor.ConstructedEditorMessages"), "Editor.Save.", t); //$NON-NLS-1$ //$NON-NLS-2$
 		this.t = t;
 	}
 	public void update() {

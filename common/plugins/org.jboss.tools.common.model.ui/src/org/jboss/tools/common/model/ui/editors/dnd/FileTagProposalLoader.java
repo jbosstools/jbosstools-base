@@ -22,27 +22,27 @@ public class FileTagProposalLoader implements ITagProposalLoader {
 	static TagProposal[] IMG_TAG_PROPOSALS = new TagProposal[]{
 		new TagProposal(
 			DropURI.JSF_HTML_URI,
-			"h",
-			"graphicImage",
-			new AbsoluteFilePathAttributeValueLoader("value","","")
+			"h", //$NON-NLS-1$
+			"graphicImage", //$NON-NLS-1$
+			new AbsoluteFilePathAttributeValueLoader("value","","") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		),
 		new TagProposal(
 			DropURI.HTML_4_0_URI,
 			TagProposal.EMPTY_PREFIX,
-			"img",
-			new AbsoluteFilePathAttributeValueLoader("src","","")
+			"img", //$NON-NLS-1$
+			new AbsoluteFilePathAttributeValueLoader("src","","") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		),
 		new TagProposal(
 			DropURI.STRUTS_HTML_URI,
-			"html",
-			"img",
-			new AbsoluteFilePathAttributeValueLoader("page","","")
+			"html", //$NON-NLS-1$
+			"img", //$NON-NLS-1$
+			new AbsoluteFilePathAttributeValueLoader("page","","") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		),
 		new TagProposal(
 				DropURI.SEAM_URI,
-				"s",
-				"graphicImage",
-				new AbsoluteFilePathAttributeValueLoader("url","","")
+				"s", //$NON-NLS-1$
+				"graphicImage", //$NON-NLS-1$
+				new AbsoluteFilePathAttributeValueLoader("url","","") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			)
 // yradtsevich: fix of JBIDE-3984: Exclude t:graphicImage option from Insert tag dialog 		
 //		,
@@ -58,37 +58,37 @@ public class FileTagProposalLoader implements ITagProposalLoader {
 		new TagProposal(
 			DropURI.HTML_4_0_URI,
 			TagProposal.EMPTY_PREFIX,
-			"link",
-			new CssLinkAttributeValueLoader("href")
+			"link", //$NON-NLS-1$
+			new CssLinkAttributeValueLoader("href") //$NON-NLS-1$
 		),
 	};
 	
 	static TagProposal JSP_INCLUDE = new TagProposal(
 		DropURI.JSP_URI,
-		"jsp",
-		"include",
-		new AbsoluteFilePathAttributeValueLoader("page","","")						
+		"jsp", //$NON-NLS-1$
+		"include", //$NON-NLS-1$
+		new AbsoluteFilePathAttributeValueLoader("page","","")						 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	);
 	
 	static TagProposal JSP_FORWARD = new TagProposal(
 		DropURI.JSP_URI,
-		"jsp",
-		"forward",
-		new AbsoluteFilePathAttributeValueLoader("page","","")
+		"jsp", //$NON-NLS-1$
+		"forward", //$NON-NLS-1$
+		new AbsoluteFilePathAttributeValueLoader("page","","") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	);
 	
 	static TagProposal UI_INCLUDE = new TagProposal(
 		PaletteTaglibInserter.faceletUri,
-		"ui",
-		"include",
-		new AbsoluteFilePathAttributeValueLoader("src","","")						
+		"ui", //$NON-NLS-1$
+		"include", //$NON-NLS-1$
+		new AbsoluteFilePathAttributeValueLoader("src","","")						 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	);
 	
 	static TagProposal S_DECORATE = new TagProposal(
 			DropURI.SEAM_URI,
-			"s",
-			"decorate",
-			new AbsoluteFilePathAttributeValueLoader("template","","")						
+			"s", //$NON-NLS-1$
+			"decorate", //$NON-NLS-1$
+			new AbsoluteFilePathAttributeValueLoader("template","","")						 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		);
 		
 	static TagProposal[] PAGE_TAG_PROPOSALS = new TagProposal[]{
@@ -105,38 +105,38 @@ public class FileTagProposalLoader implements ITagProposalLoader {
 	
 	static {
 		// There is the question here what store HTML or TLD will been asked about TagDescription    
-		extensionMap.put("jpg", IMG_TAG_PROPOSALS);
+		extensionMap.put("jpg", IMG_TAG_PROPOSALS); //$NON-NLS-1$
 
-		extensionMap.put("jpeg", IMG_TAG_PROPOSALS);
+		extensionMap.put("jpeg", IMG_TAG_PROPOSALS); //$NON-NLS-1$
 
-		extensionMap.put("gif",IMG_TAG_PROPOSALS);
+		extensionMap.put("gif",IMG_TAG_PROPOSALS); //$NON-NLS-1$
 		
-		extensionMap.put("bmp",IMG_TAG_PROPOSALS);
+		extensionMap.put("bmp",IMG_TAG_PROPOSALS); //$NON-NLS-1$
 		
-		extensionMap.put("png",IMG_TAG_PROPOSALS);
+		extensionMap.put("png",IMG_TAG_PROPOSALS); //$NON-NLS-1$
 		
-		extensionMap.put("jsp",PAGE_TAG_PROPOSALS);
-		extensionMap.put("html",PAGE_TAG_PROPOSALS);
-		extensionMap.put("xhtml",XHTML_PAGE_TAG_PROPOSALS);
+		extensionMap.put("jsp",PAGE_TAG_PROPOSALS); //$NON-NLS-1$
+		extensionMap.put("html",PAGE_TAG_PROPOSALS); //$NON-NLS-1$
+		extensionMap.put("xhtml",XHTML_PAGE_TAG_PROPOSALS); //$NON-NLS-1$
 
 		extensionMap.put(
-				"properties",new TagProposal[]{
+				"properties",new TagProposal[]{ //$NON-NLS-1$
 					new TagProposal(
 							DropURI.JSF_CORE_URI,
-							"f",
-							"loadBundle",
+							"f", //$NON-NLS-1$
+							"loadBundle", //$NON-NLS-1$
 							new LoadBundleBaseNameAttributeValueLoader()
 						)
 					}
 				);
-		extensionMap.put("css",CSS_TAG_PROPOSALS);
+		extensionMap.put("css",CSS_TAG_PROPOSALS); //$NON-NLS-1$
 		extensionMap.put(
-			"inc", new TagProposal[]{
+			"inc", new TagProposal[]{ //$NON-NLS-1$
 				new TagProposal(
 					DropURI.JSP_URI,
-					"jsp",
-					"include",
-					new AbsoluteFilePathAttributeValueLoader("page","","")						
+					"jsp", //$NON-NLS-1$
+					"include", //$NON-NLS-1$
+					new AbsoluteFilePathAttributeValueLoader("page","","")						 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				)
 			}
 		);
@@ -149,7 +149,7 @@ public class FileTagProposalLoader implements ITagProposalLoader {
 	
 	public TagProposal[] getTagProposals(Object data) {
 		String fileName = data.toString();
-		String extension = fileName.substring(fileName.lastIndexOf(".")+1);
+		String extension = fileName.substring(fileName.lastIndexOf(".")+1); //$NON-NLS-1$
 		TagProposal[] tagProposals = (TagProposal[])extensionMap.get(extension.toLowerCase());
 		if(tagProposals==null) {
 			tagProposals = new TagProposal[0];

@@ -23,28 +23,28 @@ public class ModelUIImages {
 //	private static String PREFIX_ICON_DISABLED = "d";
 //	private static String PREFIX_ICON_HOVER    = "h";
 	
-	private static String ACTIONS_PATH         = "wizards/";
+	private static String ACTIONS_PATH         = "wizards/"; //$NON-NLS-1$
 	
-	public static String ACT_CREATE_PROJECT    = ACTIONS_PATH + "new_project.gif";
-	public static String ACT_ADOPT_PROJECT     = ACTIONS_PATH + "adopt_project.gif";
-	public static String ACT_IMPORT_PROJECT    = ACTIONS_PATH + "import_project.gif";
+	public static String ACT_CREATE_PROJECT    = ACTIONS_PATH + "new_project.gif"; //$NON-NLS-1$
+	public static String ACT_ADOPT_PROJECT     = ACTIONS_PATH + "adopt_project.gif"; //$NON-NLS-1$
+	public static String ACT_IMPORT_PROJECT    = ACTIONS_PATH + "import_project.gif"; //$NON-NLS-1$
 	
-	public static String WIZARD_NEW_PROJECT    = ACTIONS_PATH + "EclipseCreateNewProject.png";
-	public static String WIZARD_DEFAULT        = ACTIONS_PATH + "EclipseDefault.png";
-	public static String WIZARD_IMPORT_PROJECT = ACTIONS_PATH + "EclipseImport.png";
-	public static String WIZARD_MODULES_CONFIG = ACTIONS_PATH + "EclipseModulesConfiguration.gif";
+	public static String WIZARD_NEW_PROJECT    = ACTIONS_PATH + "EclipseCreateNewProject.png"; //$NON-NLS-1$
+	public static String WIZARD_DEFAULT        = ACTIONS_PATH + "EclipseDefault.png"; //$NON-NLS-1$
+	public static String WIZARD_IMPORT_PROJECT = ACTIONS_PATH + "EclipseImport.png"; //$NON-NLS-1$
+	public static String WIZARD_MODULES_CONFIG = ACTIONS_PATH + "EclipseModulesConfiguration.gif"; //$NON-NLS-1$
 	
 	// JAVA
-	public static String JAVA_CLASS 			= "java/class.gif";
-	public static String JAVA_INTERFACE 		= "java/interface.gif";
-	public static String JAVA_PACKAGE 			= "java/package.gif";
+	public static String JAVA_CLASS 			= "java/class.gif"; //$NON-NLS-1$
+	public static String JAVA_INTERFACE 		= "java/interface.gif"; //$NON-NLS-1$
+	public static String JAVA_PACKAGE 			= "java/package.gif"; //$NON-NLS-1$
 
 	// this blok staye witout changes for compatibility
 	private static ModelUIImages INSTANCE;
 	
 	static {
 		try {
-			INSTANCE = new ModelUIImages(new URL(ModelUIPlugin.getDefault().getBundle().getEntry("/"), "images/xstudio/"));
+			INSTANCE = new ModelUIImages(new URL(ModelUIPlugin.getDefault().getBundle().getEntry("/"), "images/xstudio/")); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (MalformedURLException e) {
 			// do nothing
 			ModelUIPlugin.getPluginLog().logError(e);
@@ -53,14 +53,14 @@ public class ModelUIImages {
 	
 	public static Image getImage(String key) {
 		if(ModelUIPlugin.isDebugEnabled()) {
-			ModelUIPlugin.getPluginLog().logInfo("Create image for key '"+key+"'.");
+			ModelUIPlugin.getPluginLog().logInfo("Create image for key '"+key+"'."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return INSTANCE.createImageDescriptor(key).createImage();
 	}
 
 	public static ImageDescriptor getImageDescriptor(String key) {
 		if(ModelUIPlugin.isDebugEnabled()) {
-			ModelUIPlugin.getPluginLog().logInfo("Create image descriptor for key '"+key+"'.");
+			ModelUIPlugin.getPluginLog().logInfo("Create image descriptor for key '"+key+"'."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return INSTANCE.createImageDescriptor(key);
 	}
@@ -80,12 +80,12 @@ public class ModelUIImages {
 	
 	protected ModelUIImages(URL registryUrl, ModelUIImages parent){
 		if(ModelUIPlugin.isDebugEnabled()) {
-			ModelUIPlugin.getPluginLog().logInfo("Create ModelUIImages class.");
-			ModelUIPlugin.getPluginLog().logInfo("RegistryUrl = " + registryUrl);
-			ModelUIPlugin.getPluginLog().logInfo("parent = " + (parent==null?"null":parent.getClass().getName()));
+			ModelUIPlugin.getPluginLog().logInfo("Create ModelUIImages class."); //$NON-NLS-1$
+			ModelUIPlugin.getPluginLog().logInfo("RegistryUrl = " + registryUrl); //$NON-NLS-1$
+			ModelUIPlugin.getPluginLog().logInfo("parent = " + (parent==null?"null":parent.getClass().getName())); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
-		if(registryUrl == null) throw new IllegalArgumentException("Base url for image registry cannot be null.");
+		if(registryUrl == null) throw new IllegalArgumentException("Base url for image registry cannot be null."); //$NON-NLS-1$
 		baseUrl = registryUrl;
 		parentRegistry = parent;
 	}

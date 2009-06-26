@@ -47,9 +47,15 @@ import org.jboss.tools.common.verification.vrules.VTaskListener;
 import org.jboss.tools.common.verification.vrules.layer.VModelFactory;
 
 public class VerifyWizardView extends AbstractQueryWizardView {
-	static String[] INITIAL_COMMANDS = new String[]{"Run All", "Run Selected", "Close", HELP};
-	static String[] RUNNING_COMMANDS = new String[]{"Pause", "Stop", "Close", HELP};
-	static String[] PAUSE_COMMANDS = new String[]{"Resume", "Stop", "Close", HELP};
+	private static final String COMMAND_RESUME = "Resume"; //$NON-NLS-1$
+	private static final String COMMAND_PAUSE = "Pause"; //$NON-NLS-1$
+	private static final String COMMAND_STOP = "Stop"; //$NON-NLS-1$
+	private static final String COMMAND_RUN_SELECTED = "Run Selected"; //$NON-NLS-1$
+	private static final String COMMAND_RUN_ALL = "Run All"; //$NON-NLS-1$
+	static final String COMMAND_CLOSE = "Close"; //$NON-NLS-1$
+	static String[] INITIAL_COMMANDS = new String[]{COMMAND_RUN_ALL, COMMAND_RUN_SELECTED, COMMAND_CLOSE, HELP};
+	static String[] RUNNING_COMMANDS = new String[]{COMMAND_PAUSE, COMMAND_STOP, COMMAND_CLOSE, HELP};
+	static String[] PAUSE_COMMANDS = new String[]{COMMAND_RESUME, COMMAND_STOP, COMMAND_CLOSE, HELP};
 	protected RuntimeSignificanceView significance = new RuntimeSignificanceView();
 	protected RuntimeRulesProvider provider = new RuntimeRulesProvider();
 	protected TreeViewer treeViewer;
@@ -61,9 +67,9 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 	protected DescriptionManager tip = new DescriptionManager();
 
 	public VerifyWizardView() {
-		this.setMessage(WizardKeys.getString("VerifyWizardView.Message"));
-		this.setTitle(WizardKeys.getString("VerifyWizardView.Title"));
-		this.setWindowTitle(WizardKeys.getString("VerifyWizardView.WindowTitle"));
+		this.setMessage(WizardKeys.getString("VerifyWizardView.Message")); //$NON-NLS-1$
+		this.setTitle(WizardKeys.getString("VerifyWizardView.Title")); //$NON-NLS-1$
+		this.setWindowTitle(WizardKeys.getString("VerifyWizardView.WindowTitle")); //$NON-NLS-1$
 	}
 
 	private VManager getRulesManager() {
@@ -98,7 +104,7 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 	public void setObject(Object data) {
 		Properties p = findProperties(data);
 		if(p != null) {
-			String key = p.getProperty("help");
+			String key = p.getProperty("help"); //$NON-NLS-1$
 			setHelpKey(key);
 		}
 		Object[] os = (Object[])data;
@@ -188,13 +194,13 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 
 	public void action(String command) {
 		stopEditing();
-		if("Run All".equals(command)) {
+		if(COMMAND_RUN_ALL.equals(command)) {
 			clearStatus();
 			if(task != null) task.removeTaskListener(listener);
 			task = getRulesManager().createTask(vobject);
 			task.addTaskListener(listener);
 			task.start();
-		} else if("Run Selected".equals(command)) {
+		} else if(COMMAND_RUN_SELECTED.equals(command)) {
 			clearStatus();
 			VRule[] rs = getSelectedRules();
 			if(rs == null) return;
@@ -202,7 +208,7 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 			task = getRulesManager().createTask(vobject, rs);
 			task.addTaskListener(listener);
 			task.start();
-		} else if("Close".equals(command)) {
+		} else if(COMMAND_CLOSE.equals(command)) {
 			if(task != null) {
 				task.removeTaskListener(listener);
 				task.stop();
@@ -210,11 +216,11 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 			}
 			setCode(0);
 			dispose();
-		} else if("Stop".equals(command)) {
+		} else if(COMMAND_STOP.equals(command)) {
 			if(task != null) task.stop();
-		} else if("Pause".equals(command)) {
+		} else if(COMMAND_PAUSE.equals(command)) {
 			if(task != null) task.pause();
-		} else if("Resume".equals(command)) {
+		} else if(COMMAND_RESUME.equals(command)) {
 			if(task != null) task.start();
 		} else if(HELP.equals(command)) {
 			super.action(command);
@@ -228,7 +234,7 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 		if(o == null) return -1;
 		String s = o.getAttributeValue(VerificationPreferencePage.ATTR_ERRORS_NUMBER_LIMIT);
 		int limit = -1;
-		if(!"unlimited".equals(s) && s != null && s.length() > 0) try {
+		if(!"unlimited".equals(s) && s != null && s.length() > 0) try { //$NON-NLS-1$
 			limit = Integer.parseInt(s);
 		} catch (NumberFormatException e) {
 			XStudioVerificationPlugin.getPluginLog().logError(e);
@@ -244,7 +250,7 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 			new Runnable() {
 				public void run() {
 					ServiceDialog d = model.getService();
-					d.showDialog(VerificationUIMessages.WARNING, NLS.bind(VerificationUIMessages.LIMIT_OF_REPORTED_ERRORS_IS_REACHED, ""+getErrorCountLimit()), new String[]{VerificationUIMessages.OK}, null, ServiceDialog.WARNING);
+					d.showDialog(VerificationUIMessages.WARNING, NLS.bind(VerificationUIMessages.LIMIT_OF_REPORTED_ERRORS_IS_REACHED, ""+getErrorCountLimit()), new String[]{VerificationUIMessages.OK}, null, ServiceDialog.WARNING); //$NON-NLS-1$
 					limitLock = false;
 					task.stop();
 				}

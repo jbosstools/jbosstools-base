@@ -73,13 +73,13 @@ public class ActionButtonControl implements IPropertyFieldEditor {
 	}
 	
 	private Control createButton(Composite parent, ButtonWrapper buttonWrapper) {
-		int style = getSettings().getStyle("Button.Style");
+		int style = getSettings().getStyle("Button.Style"); //$NON-NLS-1$
 		if (style==SWT.DEFAULT) style = SWT.NONE;
 		if (style == 0) style = SWT.PUSH;
 		Control buttonControl = buttonWrapper.createControl(parent, style);
 		// widget settings
-		Color fg = getSettings().getColor("Button.Foreground");
-		Font font = getSettings().getFont("Button.Font");
+		Color fg = getSettings().getColor("Button.Foreground"); //$NON-NLS-1$
+		Font font = getSettings().getFont("Button.Font"); //$NON-NLS-1$
 
 		buttonControl.setForeground(fg);
 		buttonControl.setFont(font);
@@ -121,7 +121,7 @@ public class ActionButtonControl implements IPropertyFieldEditor {
 		public Control createControl(Composite parent, int style) {
 			if (buttonControl==null) {
 				buttonControl = new Button(parent, style);
-				buttonControl.setText(buttonAction.getText()!=null?buttonAction.getText():"%text%");
+				buttonControl.setText(buttonAction.getText()!=null?buttonAction.getText():"%text%"); //$NON-NLS-1$
 				buttonControl.setEnabled(enabled);
 				buttonControl.addSelectionListener(new SelectionListener(){
 					public void widgetSelected(SelectionEvent e) {

@@ -22,7 +22,7 @@ import org.jboss.tools.common.text.ext.hyperlink.xml.XMLTagAttributeValueHyperli
 public abstract class JSPTagAttributeValueHyperlinkPartitioner extends XMLTagAttributeValueHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
 	protected String getAxis(IDocument document, IHyperlinkRegion superRegion) {
 		if (superRegion.getAxis() == null || superRegion.getAxis().length() == 0) {
-			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/";
+			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/"; //$NON-NLS-1$
 		}
 		return superRegion.getAxis();
 	}

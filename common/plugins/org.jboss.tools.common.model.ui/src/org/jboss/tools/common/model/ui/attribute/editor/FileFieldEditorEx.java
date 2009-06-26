@@ -63,7 +63,7 @@ public class FileFieldEditorEx extends DirectoryFieldEditorEx {
 				dialog.setFilterPath(lastPath);
 			} else {
 				FileChooserAdapter adapter = (FileChooserAdapter)propertyEditor.getAdapter(FileChooserAdapter.class);
-				if(adapter != null) {int oo;
+				if(adapter != null) {
 					String filterPath = adapter.getFilterPath();
 					if(filterPath != null && new File(filterPath).exists()) {
 						dialog.setFilterPath(filterPath);

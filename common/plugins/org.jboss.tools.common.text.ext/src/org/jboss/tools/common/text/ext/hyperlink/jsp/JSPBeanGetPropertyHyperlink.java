@@ -33,13 +33,13 @@ import org.w3c.dom.NodeList;
  *
  */
 public class JSPBeanGetPropertyHyperlink extends ClassMethodHyperlink {
-	private static final String USEBEAN_TAGNAME = "jsp:useBean";
-	private static final String ID_ATTRNAME = "id";
-	private static final String NAME_ATTRNAME = "name";
-	private static final String CLASS_ATTRNAME = "class";
-	private static final String TYPE_ATTRNAME = "type";
-	protected static final String GET_METHOD_PREFIX = "get";
-	protected static final String SET_METHOD_PREFIX = "set";
+	private static final String USEBEAN_TAGNAME = "jsp:useBean"; //$NON-NLS-1$
+	private static final String ID_ATTRNAME = "id"; //$NON-NLS-1$
+	private static final String NAME_ATTRNAME = "name"; //$NON-NLS-1$
+	private static final String CLASS_ATTRNAME = "class"; //$NON-NLS-1$
+	private static final String TYPE_ATTRNAME = "type"; //$NON-NLS-1$
+	protected static final String GET_METHOD_PREFIX = "get"; //$NON-NLS-1$
+	protected static final String SET_METHOD_PREFIX = "set"; //$NON-NLS-1$
 
 	protected String getMethodPrefix() {
 		return GET_METHOD_PREFIX;

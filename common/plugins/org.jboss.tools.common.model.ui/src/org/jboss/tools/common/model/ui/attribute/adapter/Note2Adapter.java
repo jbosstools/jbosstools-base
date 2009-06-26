@@ -27,7 +27,7 @@ public class Note2Adapter extends DefaultValueAdapter implements IActionHelper {
 	}
 	
 	public void setValue(Object value) {
-		String s = (value == null) ? "" : value.toString();
+		String s = (value == null) ? "" : value.toString(); //$NON-NLS-1$
 		super.setValue(decode(s));
 	}
 	
@@ -64,17 +64,17 @@ public class Note2Adapter extends DefaultValueAdapter implements IActionHelper {
 	}
 
 	public String getCommand() {
-		return "...";
+		return "..."; //$NON-NLS-1$
 	}
 
 	public String invoke(Control control) {
 		String n = getAttribute().getName();
-		String v = "" + getValue();
+		String v = "" + getValue(); //$NON-NLS-1$
 		Properties p = new Properties();
-		p.put("shell", control.getShell());
+		p.put("shell", control.getShell()); //$NON-NLS-1$
 		XModelObject o = modelObject.copy();
 		o.setAttributeValue(n, v);
-		XActionInvoker.invoke("EditActions.Edit_" + n, o, p);
+		XActionInvoker.invoke("EditActions.Edit_" + n, o, p); //$NON-NLS-1$
 		return o.getAttributeValue(n);
 	}
 

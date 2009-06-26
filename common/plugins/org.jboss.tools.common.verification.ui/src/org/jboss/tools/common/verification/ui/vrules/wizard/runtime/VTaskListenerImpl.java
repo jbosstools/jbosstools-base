@@ -42,7 +42,7 @@ public class VTaskListenerImpl implements VTaskListener {
 		if(results != null) {
 			for (int i = 0; i < results.length; i++) {
 				if(results[i] == null) {
-					XStudioVerificationPlugin.getPluginLog().logInfo("Result in rule " + rule.getName() + " is null.");
+					XStudioVerificationPlugin.getPluginLog().logInfo("Result in rule " + rule.getName() + " is null."); //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
 				if (results[i].getSignificance() <= VHelper.getManager(/*view.model*/).getMinSignificance()) continue;

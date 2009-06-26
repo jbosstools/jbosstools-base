@@ -85,8 +85,8 @@ public class XMLOccurrencesPreferencePage extends FieldEditorPreferencePage
 								XMLOccurrencePreferenceConstants.EDITOR_MARK_OCCURRENCES,
 								fEditorID),
 				Messages
-						.getString("OccurrencesPreferencePage.Mark.occurrences.in.file"),
-				getFieldEditorParent()); //$NON-NLS-1$
+						.getString("OccurrencesPreferencePage.Mark.occurrences.in.file"), //$NON-NLS-1$
+				getFieldEditorParent());
 		addField(mark);
 
 		markNode = new VarBooleanFieldEditor(
@@ -94,8 +94,8 @@ public class XMLOccurrencesPreferencePage extends FieldEditorPreferencePage
 						.generateKey(
 								XMLOccurrencePreferenceConstants.EDITOR_MARK_NODE_OCCURRENCES,
 								fEditorID), Messages
-						.getString("OccurrencesPreferencePage.Mark.Tags"),
-				getFieldEditorParent()); //$NON-NLS-1$
+						.getString("OccurrencesPreferencePage.Mark.Tags"), //$NON-NLS-1$
+				getFieldEditorParent());
 		markNode.offset(getFieldEditorParent(), 10); // offset 10
 		addField(markNode);
 
@@ -105,8 +105,8 @@ public class XMLOccurrencesPreferencePage extends FieldEditorPreferencePage
 								XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_OCCURRENCES,
 								fEditorID),
 				Messages
-						.getString("OccurrencesPreferencePage.Mark.Attribute.Names"),
-				getFieldEditorParent()); //$NON-NLS-1$
+						.getString("OccurrencesPreferencePage.Mark.Attribute.Names"), //$NON-NLS-1$
+				getFieldEditorParent());
 		markAttribute.offset(getFieldEditorParent(), 10); // offset 10
 		addField(markAttribute);
 
@@ -116,8 +116,8 @@ public class XMLOccurrencesPreferencePage extends FieldEditorPreferencePage
 								XMLOccurrencePreferenceConstants.EDITOR_MARK_ATTRIBUTE_VALUE_OCCURRENCES,
 								fEditorID),
 				Messages
-						.getString("OccurrencesPreferencePage.Mark.Attribute.Values"),
-				getFieldEditorParent()); //$NON-NLS-1$
+						.getString("OccurrencesPreferencePage.Mark.Attribute.Values"), //$NON-NLS-1$
+				getFieldEditorParent());
 		markAttributeValue.offset(getFieldEditorParent(), 10); // offset 10
 		addField(markAttributeValue);
 
@@ -126,7 +126,7 @@ public class XMLOccurrencesPreferencePage extends FieldEditorPreferencePage
 						.generateKey(
 								XMLOccurrencePreferenceConstants.EDITOR_MARK_TEXT_OCCURRENCES,
 								fEditorID), Messages
-						.getString("OccurrencesPreferencePage.Mark.Text"),
+						.getString("OccurrencesPreferencePage.Mark.Text"), //$NON-NLS-1$
 				getFieldEditorParent());
 		markText.offset(getFieldEditorParent(), 10); // offset 10
 		addField(markText);
@@ -140,8 +140,8 @@ public class XMLOccurrencesPreferencePage extends FieldEditorPreferencePage
 						.generateKey(
 								XMLOccurrencePreferenceConstants.EDITOR_STICKY_OCCURRENCES,
 								fEditorID), Messages
-						.getString("OccurrencesPreferencePage.Sticky"),
-				getFieldEditorParent()); //$NON-NLS-1$
+						.getString("OccurrencesPreferencePage.Sticky"), //$NON-NLS-1$
+				getFieldEditorParent());
 		sticky.offset(getFieldEditorParent(), 10); // offset 10
 		addField(sticky);
 	}

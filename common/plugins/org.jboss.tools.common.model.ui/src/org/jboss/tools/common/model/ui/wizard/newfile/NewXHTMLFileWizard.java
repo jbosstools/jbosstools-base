@@ -25,7 +25,7 @@ public class NewXHTMLFileWizard extends NewFileWizardEx {
 		protected SpecialWizardSupport createSupport() {
 			CreateFileSupport support = null;
 			try {
-				support = (CreateFileSupport)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.model.handlers.CreateJSPFileSupport");
+				support = (CreateFileSupport)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.model.handlers.CreateJSPFileSupport"); //$NON-NLS-1$
 			} catch (ClassCastException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
@@ -35,7 +35,7 @@ public class NewXHTMLFileWizard extends NewFileWizardEx {
 			return support;
 		}
 		protected String getActionPath() {
-			return "CreateActions.CreateFiles.Web.CreateFileXHTML";
+			return "CreateActions.CreateFiles.Web.CreateFileXHTML"; //$NON-NLS-1$
 		}
 	}
 		

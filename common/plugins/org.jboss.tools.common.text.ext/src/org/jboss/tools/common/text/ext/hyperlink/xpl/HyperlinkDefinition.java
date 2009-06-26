@@ -151,7 +151,7 @@ public class HyperlinkDefinition {
 	 * @param e
 	 */
 	private void handleCreateExecutableException(Object[] result, Exception x) {
-		ExtensionsPlugin.getPluginLog().logError("Error in creating extension", x);
+		ExtensionsPlugin.getPluginLog().logError("Error in creating extension", x); //$NON-NLS-1$
 		result[0] = null;
 	}
 }

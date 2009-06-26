@@ -15,8 +15,8 @@ import org.jboss.tools.common.model.ui.dnd.DnDUtil;
 import org.jboss.tools.common.model.XModelObject;
 
 public class VerifyActionFilter implements IModelObjectActionFilter {
-	static String path1 = "VerifyActions.StaticActions.VerifyAll";
-	static String path2 = "ProcessVerifyActions.StaticActions.VerifyAll";
+	static String path1 = "VerifyActions.StaticActions.VerifyAll"; //$NON-NLS-1$
+	static String path2 = "ProcessVerifyActions.StaticActions.VerifyAll"; //$NON-NLS-1$
 	
 	public boolean isEnabled(XModelObject object, String info) {
 		return (object != null) && (DnDUtil.getEnabledAction(object, null, getActionPath(object)) != null);

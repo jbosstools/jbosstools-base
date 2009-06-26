@@ -30,7 +30,7 @@ import org.w3c.dom.Node;
  *
  */
 public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
-	public static final String XML_ROOT_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_ROOT";
+	public static final String XML_ROOT_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_ROOT"; //$NON-NLS-1$
 
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
@@ -38,7 +38,7 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 	protected IHyperlinkRegion parse(IDocument document, IHyperlinkRegion superRegion) {
 		if (!recognize(document, superRegion)) return null;
 		
-		String axis = computeAxis(document, superRegion.getOffset()) + "/";
+		String axis = computeAxis(document, superRegion.getOffset()) + "/"; //$NON-NLS-1$
 		String contentType = superRegion.getContentType();
 		String type = XML_ROOT_PARTITION;
 		int length = superRegion.getLength();
@@ -49,7 +49,7 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 	}
 
 	public static String computeAxis(IDocument document, int offset) {
-		String axis = "";
+		String axis = ""; //$NON-NLS-1$
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
 			smw.init(document);
@@ -67,14 +67,14 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 					// The node name extraction must be done by taking into account 'jsfc' attribute value
 					if (n instanceof Element) {
 						Element e = (Element)n;
-						String jsfcAttrValue = e.getAttribute("jsfc");
+						String jsfcAttrValue = e.getAttribute("jsfc"); //$NON-NLS-1$
 						if (jsfcAttrValue != null && jsfcAttrValue.trim().length() > 0) {
 							name = jsfcAttrValue;
 						}
 					}
 					
 					String nodeName = extractName(name, trackersMap);
-					axis = "/" + nodeName;
+					axis = "/" + nodeName; //$NON-NLS-1$
 				}
 				Node parent = (n instanceof Attr)? ((Attr)n).getOwnerElement():n.getParentNode();
 				while (parent instanceof Element) {
@@ -84,7 +84,7 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 					// The node name extraction must be done by taking into account 'jsfc' attribute value
 					if (parent instanceof Element) {
 						Element e = (Element)parent;
-						String jsfcAttrValue = e.getAttribute("jsfc");
+						String jsfcAttrValue = e.getAttribute("jsfc"); //$NON-NLS-1$
 						if (jsfcAttrValue != null && jsfcAttrValue.trim().length() > 0) {
 							name = jsfcAttrValue;
 						}
@@ -92,7 +92,7 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 					
 					String nodeName = extractName(name, trackersMap);
 					if (nodeName != null && nodeName.length() > 0) 
-						axis = "/" + nodeName + axis;
+						axis = "/" + nodeName + axis; //$NON-NLS-1$
 					parent = parent.getParentNode();
 				}
 			}
@@ -100,14 +100,14 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			smw.dispose();
 		}
 		
-		if (axis == null || axis.length() == 0) axis = "";
+		if (axis == null || axis.length() == 0) axis = ""; //$NON-NLS-1$
 		return axis;
 	}
 	
 	public static String extractName (String name, Map trackersMap) {
 		if (trackersMap == null || trackersMap.size() == 0) return name;
 		if (name == null) return null;
-		int column = name.indexOf(":");
+		int column = name.indexOf(":"); //$NON-NLS-1$
 		if (column == -1) return name;
 		String prefix = name.substring(0, column);
 		if (prefix == null || prefix.trim().length() == 0) return name;
@@ -115,7 +115,7 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 		String uri = (String)trackersMap.get(prefix);
 		if (uri == null || uri.length() == 0) return name;
 		
-		return "[" + uri + "]" + name.substring(column);
+		return "[" + uri + "]" + name.substring(column); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/**

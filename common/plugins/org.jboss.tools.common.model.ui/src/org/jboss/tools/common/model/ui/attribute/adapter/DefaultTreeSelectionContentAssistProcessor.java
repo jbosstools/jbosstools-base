@@ -64,7 +64,7 @@ public class DefaultTreeSelectionContentAssistProcessor extends JavaPackageCompl
 			int replacementLength = text.length();
 			int cursorPosition = replacementString.length();
 			if(text.startsWith(replacementString)) {
-				replacementString = "";
+				replacementString = ""; //$NON-NLS-1$
 				replacementLength = 0;
 			}
 			CustomCompletionProposal proposal = new CustomCompletionProposal(
@@ -86,7 +86,7 @@ public class DefaultTreeSelectionContentAssistProcessor extends JavaPackageCompl
 		String value = tree.getValue(object);
 		if(value != null && value.startsWith(startText)) {
 			if(value.length() > 0) {
-				if(value.equals(startText) && value.endsWith("/")) {
+				if(value.equals(startText) && value.endsWith("/")) { //$NON-NLS-1$
 					//skip this value 
 				} else {
 					map.put(value, EclipseResourceUtil.getImage(object));

@@ -63,7 +63,7 @@ public class XModelObjectContentOutlineProvider extends ContentOutlinePage {
 	
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		selectionProvider.addHost("tree", getTreeViewer(), true);
+		selectionProvider.addHost("tree", getTreeViewer(), true); //$NON-NLS-1$
 		getSite().setSelectionProvider(selectionProvider);
 		getTreeViewer().setContentProvider(content);
 		getTreeViewer().setInput(cache);

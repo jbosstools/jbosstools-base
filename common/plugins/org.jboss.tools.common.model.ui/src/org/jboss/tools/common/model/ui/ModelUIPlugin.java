@@ -21,14 +21,14 @@ import org.jboss.tools.common.model.plugin.IModelPlugin;
 import org.osgi.framework.BundleContext;
 
 public class ModelUIPlugin extends BaseUIPlugin implements IModelPlugin {
-	public static final String PLUGIN_ID = "org.jboss.tools.common.model.ui"; 
+	public static final String PLUGIN_ID = "org.jboss.tools.common.model.ui";  //$NON-NLS-1$
 	private static ModelUIPlugin INSTANCE;
 	private ResourceBundle resourceBundle;
 
 	public ModelUIPlugin() {
 		INSTANCE = this;
 		try {
-			resourceBundle= ResourceBundle.getBundle(PLUGIN_ID + ".PluginResources");
+			resourceBundle= ResourceBundle.getBundle(PLUGIN_ID + ".PluginResources"); //$NON-NLS-1$
 		} 
 		catch (MissingResourceException x) {
 			resourceBundle = null;
@@ -65,10 +65,10 @@ public class ModelUIPlugin extends BaseUIPlugin implements IModelPlugin {
 	}
 	
 
-    public static final String PROJECT_OVERRIDE = "org.jboss.tools.common.model.ui.templates.projectOverriveTemplates";
+    public static final String PROJECT_OVERRIDE = "org.jboss.tools.common.model.ui.templates.projectOverriveTemplates"; //$NON-NLS-1$
 //    public static final String PROJECT_CAN_OVERRIDE = "org.jboss.tools.common.model.ui.templates.projectCanOverriveTemplates";
-	public static final String ID_PLUGIN= "org.jboss.tools.common.model.ui.templates";
-	public static final String META_TEMPLATES_DTD = "-//Red Hat Inc.//DTD Meta Templates 1.0//EN";
+	public static final String ID_PLUGIN= "org.jboss.tools.common.model.ui.templates"; //$NON-NLS-1$
+	public static final String META_TEMPLATES_DTD = "-//Red Hat Inc.//DTD Meta Templates 1.0//EN"; //$NON-NLS-1$
 
 	public static String getPluginId() {
 		return ModelUIPlugin.ID_PLUGIN;

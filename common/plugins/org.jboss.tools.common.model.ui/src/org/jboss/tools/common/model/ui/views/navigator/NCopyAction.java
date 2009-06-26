@@ -31,7 +31,7 @@ public class NCopyAction extends NSelectionAction {
 	}
 
 	protected String getActionPath() {
-		return "CopyActions.Copy";
+		return "CopyActions.Copy"; //$NON-NLS-1$
 	}
 	
 	public void run() {

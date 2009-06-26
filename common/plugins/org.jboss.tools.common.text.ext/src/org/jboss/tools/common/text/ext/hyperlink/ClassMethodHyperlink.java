@@ -141,7 +141,7 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 	protected IJavaElement searchForClassMethod(IJavaProject javaProject, String className, String methodName) {
 		try {
 //		 Get the search pattern
-	    SearchPattern pattern = SearchPattern.createPattern(className + "." + methodName, IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE);
+	    SearchPattern pattern = SearchPattern.createPattern(className + "." + methodName, IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE); //$NON-NLS-1$
 	    
 	    // Get the search scope
 	    IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] { javaProject });
@@ -197,7 +197,7 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 			return searchForClassMethod(javaProject, className, methodName);
 
 		} catch (CoreException x) {
-			ExtensionsPlugin.getPluginLog().logError("Error while looking for method " + methodName + " of class " + className, x);
+			ExtensionsPlugin.getPluginLog().logError("Error while looking for method " + methodName + " of class " + className, x); //$NON-NLS-1$ //$NON-NLS-2$
 			return null;
 		}
 

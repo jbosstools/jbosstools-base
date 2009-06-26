@@ -82,7 +82,7 @@ public class FilteredTreesCache {
 
 	XFilteredTree createTree(String name, XModel model) {
 		if(model == null || name == null) return null;
-		String classname = model.getMetaData().getMapping("FilteredTrees").getValue(name);
+		String classname = model.getMetaData().getMapping("FilteredTrees").getValue(name); //$NON-NLS-1$
 		XFilteredTree result = null;
 		try {
 			result = (XFilteredTree)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
@@ -96,7 +96,7 @@ public class FilteredTreesCache {
 			IProject p = EclipseResourceUtil.getProject(model.getRoot());
 			IModelNature nature = EclipseResourceUtil.getModelNature(p);
 			if(nature != null) {
-				ModelUIPlugin.getPluginLog().logInfo("Red Hat Project " + p.getName() + " is corrupted.");
+				ModelUIPlugin.getPluginLog().logInfo("Red Hat Project " + p.getName() + " is corrupted."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		} 
 		return result;

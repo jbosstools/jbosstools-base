@@ -15,23 +15,23 @@ package org.jboss.tools.common.model.ui.templates.model;
  */
 public interface MetaTemplateConstants {
     // Extention point id
-    public static final String EXTENSION_POINT = "org.jboss.tools.common.model.ui.metaTemplates";
+    public static final String EXTENSION_POINT = "org.jboss.tools.common.model.ui.metaTemplates"; //$NON-NLS-1$
     // Extention point tags
-    public static final String PREFIX = "%";
-    public static final String INCLUDE = "include";
-    public static final String FILE = "file";
-    public static final String TRANSLATIONS = "translations";
-	public static final String META_TEMPLATE_GROUPS = "meta-template-groups";
-	public static final String META_TEMPLATE_GROUP = "meta-templates";
-	public static final String META_TEMPLATE = "meta-template";
-	public static final String SUPER_CLASS = "super-class";
-	public static final String INTERFACE = "interface";
+    public static final String PREFIX = "%"; //$NON-NLS-1$
+    public static final String INCLUDE = "include"; //$NON-NLS-1$
+    public static final String FILE = "file"; //$NON-NLS-1$
+    public static final String TRANSLATIONS = "translations"; //$NON-NLS-1$
+	public static final String META_TEMPLATE_GROUPS = "meta-template-groups"; //$NON-NLS-1$
+	public static final String META_TEMPLATE_GROUP = "meta-templates"; //$NON-NLS-1$
+	public static final String META_TEMPLATE = "meta-template"; //$NON-NLS-1$
+	public static final String SUPER_CLASS = "super-class"; //$NON-NLS-1$
+	public static final String INTERFACE = "interface"; //$NON-NLS-1$
 	// MetaTemplateGroup
-	public static final String URI = "uri";
+	public static final String URI = "uri"; //$NON-NLS-1$
 	// MetaTemplate
-	public static final String AXIS = "axis"; 
-	public static final String DISPLAY_NAME = "displayName"; 
-	public static final String ENTITY = "xEntity"; 
+	public static final String AXIS = "axis";  //$NON-NLS-1$
+	public static final String DISPLAY_NAME = "displayName";  //$NON-NLS-1$
+	public static final String ENTITY = "xEntity";  //$NON-NLS-1$
 	// TetaTemplateClass
-	public static final String NAME = "name";	
+	public static final String NAME = "name";	 //$NON-NLS-1$
 }

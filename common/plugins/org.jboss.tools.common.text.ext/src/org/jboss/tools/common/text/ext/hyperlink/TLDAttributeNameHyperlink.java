@@ -29,7 +29,7 @@ import org.w3c.dom.NodeList;
  */
 public class TLDAttributeNameHyperlink extends JumpToHyperlink {
 	protected String getDestinationAxis() {
-		return "/taglib/tag/attribute/name/";
+		return "/taglib/tag/attribute/name/"; //$NON-NLS-1$
 	}
 	
 	protected NodeList getRootElementsToSearch (IRegion region) {
@@ -44,7 +44,7 @@ public class TLDAttributeNameHyperlink extends JumpToHyperlink {
 			Element tagElement = null;
 			while(n != null && tagElement == null) {
 				n = n.getParentNode();
-				if (n instanceof Element && validAxis(n, "/taglib/tag/")) {
+				if (n instanceof Element && validAxis(n, "/taglib/tag/")) { //$NON-NLS-1$
 					tagElement = (Element)n;
 				}
 			}
@@ -59,7 +59,7 @@ public class TLDAttributeNameHyperlink extends JumpToHyperlink {
 	
 	private boolean validAxis(Node n, String validAxisEnding) {
 		if (validAxisEnding == null || validAxisEnding.lastIndexOf('/') == -1) return false;
-		StringTokenizer st = new StringTokenizer(validAxisEnding, "/");
+		StringTokenizer st = new StringTokenizer(validAxisEnding, "/"); //$NON-NLS-1$
 		List<String> tokens = new ArrayList<String>();
 		while (st.hasMoreTokens()) {
 			tokens.add(st.nextToken());

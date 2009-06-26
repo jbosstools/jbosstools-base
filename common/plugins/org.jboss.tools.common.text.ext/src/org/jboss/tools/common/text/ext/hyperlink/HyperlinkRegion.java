@@ -48,7 +48,7 @@ public class HyperlinkRegion extends TypedRegion implements IHyperlinkRegion {
 	}
 
 	public String toString() {
-		return "IHyperlinkRegion [" + getOffset() +", " + getLength()+ "]:[[" + getContentType() + "]/[" + getType() + "]" + getAxis();
+		return "IHyperlinkRegion [" + getOffset() +", " + getLength()+ "]:[[" + getContentType() + "]/[" + getType() + "]" + getAxis(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 }

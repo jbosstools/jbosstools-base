@@ -173,7 +173,7 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 	private static URL makeIconFileURL(String prefix, String name) throws MalformedURLException {
 		URL base = null;
 		try {
-			base = FileLocator.resolve(XmlEditorPlugin.getDefault().getBundle().getEntry("/"));
+			base = FileLocator.resolve(XmlEditorPlugin.getDefault().getBundle().getEntry("/")); //$NON-NLS-1$
 		} catch (IOException e) {
 			XmlEditorPlugin.getPluginLog().logError(e);
 			return null;

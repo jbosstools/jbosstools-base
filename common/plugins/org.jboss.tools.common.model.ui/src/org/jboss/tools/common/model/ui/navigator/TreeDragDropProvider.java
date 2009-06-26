@@ -41,7 +41,7 @@ public class TreeDragDropProvider implements IControlDragDropProvider {
 
 	public Properties getDropProperties(int x, int y) {
 		Properties p = new Properties();
-		p.setProperty("actionSourceGUIComponentID", "navigator");
+		p.setProperty("actionSourceGUIComponentID", "navigator"); //$NON-NLS-1$ //$NON-NLS-2$
 		return p;
 	}
 }

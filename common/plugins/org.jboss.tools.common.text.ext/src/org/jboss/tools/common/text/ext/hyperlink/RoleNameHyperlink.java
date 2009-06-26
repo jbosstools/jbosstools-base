@@ -21,7 +21,7 @@ import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
  */
 public class RoleNameHyperlink extends JumpToHyperlink {
 	protected String getDestinationAxis() {
-		return "/web-app/security-role/role-name/";
+		return "/web-app/security-role/role-name/"; //$NON-NLS-1$
 	}
 	
 	/*

@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.Label;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class MessageWizardPage extends WizardPage{
-	String message = "";
-	String title = "";
+	String message = ""; //$NON-NLS-1$
+	String title = ""; //$NON-NLS-1$
 	public MessageWizardPage(String title,String message) {
 		super(message);
 		this.message=message;

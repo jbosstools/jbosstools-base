@@ -32,8 +32,8 @@ public class ControlDragDrop {
 	
 	static {
 		try {
-			if(Platform.getBundle("org.jboss.tools.jst.web") != null) {
-				paletteAdopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.tld.model.handlers.JSPAdopt");
+			if(Platform.getBundle("org.jboss.tools.jst.web") != null) { //$NON-NLS-1$
+				paletteAdopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.tld.model.handlers.JSPAdopt"); //$NON-NLS-1$
 			}
 		} catch (ClassCastException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
@@ -81,7 +81,7 @@ public class ControlDragDrop {
 	}
 	
 	public void enableDrop() {
-		DropTarget old = (DropTarget)getControl().getData("DropTarget");
+		DropTarget old = (DropTarget)getControl().getData("DropTarget"); //$NON-NLS-1$
 		if(old != null) {
 			old.setTransfer(new Transfer[]{ModelTransfer.getInstance(), TextTransfer.getInstance()});
 			old.addDropListener(new DTL());
@@ -111,10 +111,10 @@ public class ControlDragDrop {
 			if (ModelTransfer.getInstance().isSupportedType(event.dataType)) {
 				XModelObject o = getLeadSelection();
 ///				event.data = (o == null) ? new String[0] : new String[]{o.getPresentationString()};
-				event.data = (o == null) ? "" : o.getPresentationString();
+				event.data = (o == null) ? "" : o.getPresentationString(); //$NON-NLS-1$
 			} else if(TextTransfer.getInstance().isSupportedType(event.dataType)) {
 				XModelObject o = getLeadSelection();
-				event.data = (o == null) ? "" : o.getPresentationString();
+				event.data = (o == null) ? "" : o.getPresentationString(); //$NON-NLS-1$
 			}
 		}
 		public void dragFinished(DragSourceEvent event) {
@@ -276,10 +276,10 @@ public class ControlDragDrop {
 				isTextDrop = false;
 				isPaletteDrop = false;
 				Properties p = provider.getDropProperties(event.x, event.y);
-				if(p != null && ("none".equals(p.getProperty("text-context")))) {
+				if(p != null && ("none".equals(p.getProperty("text-context")))) { //$NON-NLS-1$ //$NON-NLS-2$
 					enabled = false;
 				} else if(!enabled && o.isObjectEditable()) {
-					if(p != null && "true".equals(p.getProperty("accepsAsString"))) {
+					if(p != null && "true".equals(p.getProperty("accepsAsString"))) { //$NON-NLS-1$ //$NON-NLS-2$
 						if(isAdoptableMacro(o)) {
 							isPaletteDrop = true;
 						} else {
@@ -318,20 +318,20 @@ public class ControlDragDrop {
 				try {
 					Properties p = provider.getDropProperties(event.x, event.y);
 					if(p == null) p = new Properties();
-					p.setProperty("isDrop", "true");
+					p.setProperty("isDrop", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 					if(isTextDrop) {
 						XModelObject s = o.getModel().getModelBuffer().source();
 						if(s == null) return;
-						p.put("start text", "" + s.getPresentationString());
+						p.put("start text", "" + s.getPresentationString()); //$NON-NLS-1$ //$NON-NLS-2$
 					} else if(isPaletteDrop) {
 						paletteAdopt.adopt(o, o.getModel().getModelBuffer().source(), p);
 					} else if(DnDUtil.isPasteEnabled(o)) {
 						DnDUtil.paste(o, p);
 					}
 					if(provider instanceof IControlDropListener) {
-						p.put("drop.x", Integer.valueOf(event.x));
-						p.put("drop.y", Integer.valueOf(event.y));
-						if(draggedObject != null) p.put("draggedObject", draggedObject);
+						p.put("drop.x", Integer.valueOf(event.x)); //$NON-NLS-1$
+						p.put("drop.y", Integer.valueOf(event.y)); //$NON-NLS-1$
+						if(draggedObject != null) p.put("draggedObject", draggedObject); //$NON-NLS-1$
 						((IControlDropListener)provider).drop(p);
 					}
 				} catch (ActionDeclinedException ade) {

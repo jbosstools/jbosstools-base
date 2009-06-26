@@ -121,7 +121,7 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 			layout.horizontalSpacing = 2;
 			labelComposite.setLayout(layout);
 
-			Color fg = getSettings().getColor("Label.Foreground");
+			Color fg = getSettings().getColor("Label.Foreground"); //$NON-NLS-1$
 ///			Color bg = parent.getBackground();
 				///getSettings().getColor("Label.Background");
 ///			labelComposite.setBackground(bg);
@@ -142,11 +142,11 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 	
 	protected Label createLabelControl(Composite parent) {
 		if (getLabelControl() == null) { // cannot comment this! for details see label.addDisposeListener
-			int style = getSettings().getStyle("Label.Style");
+			int style = getSettings().getStyle("Label.Style"); //$NON-NLS-1$
 ///			Color bg = parent.getBackground();
 				///getSettings().getColor("Label.Background");
-			Color fg = getSettings().getColor("Label.Foreground");
-			Font font = getSettings().getFont("Label.Font");
+			Color fg = getSettings().getColor("Label.Foreground"); //$NON-NLS-1$
+			Font font = getSettings().getFont("Label.Font"); //$NON-NLS-1$
 			if (style==SWT.DEFAULT) style = SWT.NONE;
 			style |= SWT.RIGHT;
 			label = new Label(parent, style);

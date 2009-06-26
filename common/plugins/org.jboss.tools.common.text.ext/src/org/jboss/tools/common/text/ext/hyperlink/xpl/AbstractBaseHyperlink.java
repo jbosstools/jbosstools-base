@@ -143,8 +143,8 @@ public abstract class AbstractBaseHyperlink {
 
 	private static IStatus createStatus(Exception ex) {
 		return new Status(
-				IStatus.ERROR,"org.jboss.tools.common.text.ext",0,
-				ex.getMessage()+"",ex);
+				IStatus.ERROR,"org.jboss.tools.common.text.ext",0, //$NON-NLS-1$
+				ex.getMessage()+"",ex); //$NON-NLS-1$
 	}
 	
 	/**

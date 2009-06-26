@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
  * @author Jeremy
  */
 public class JSPXmlNsHyperlinkPartitioner extends AbstractHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
-	public static final String JSP_XMLNS_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_XMLNS";
+	public static final String JSP_XMLNS_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_XMLNS"; //$NON-NLS-1$
 
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
@@ -42,9 +42,9 @@ public class JSPXmlNsHyperlinkPartitioner extends AbstractHyperlinkPartitioner i
 			Node n = Utils.findNodeForOffset(xmlDocument, superRegion.getOffset());
 			if (!(n instanceof IDOMAttr)) return null; 
 			IDOMAttr xmlnsAttr = (IDOMAttr)n;
-			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return null;
+			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return null; //$NON-NLS-1$
 			Element rootElem = xmlnsAttr.getOwnerElement();
-			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return null;
+			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return null; //$NON-NLS-1$ //$NON-NLS-2$
 			String xmlns = xmlnsAttr.getValueRegionText();
 			String axis = getAxis(document, superRegion);
 			String contentType = superRegion.getContentType();
@@ -73,9 +73,9 @@ public class JSPXmlNsHyperlinkPartitioner extends AbstractHyperlinkPartitioner i
 			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
 			if (!(n instanceof Attr)) return false; 
 			Attr xmlnsAttr = (Attr)n;
-			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return false;
+			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return false; //$NON-NLS-1$
 			Element rootElem = xmlnsAttr.getOwnerElement();
-			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return false;
+			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return false; //$NON-NLS-1$ //$NON-NLS-2$
 			return true;
 		} finally {
 			smw.dispose();
@@ -85,7 +85,7 @@ public class JSPXmlNsHyperlinkPartitioner extends AbstractHyperlinkPartitioner i
 		
 	protected String getAxis(IDocument document, IHyperlinkRegion superRegion) {
 		if (superRegion.getAxis() == null || superRegion.getAxis().length() == 0) {
-			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/";
+			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/"; //$NON-NLS-1$
 		}
 		return superRegion.getAxis();
 	}

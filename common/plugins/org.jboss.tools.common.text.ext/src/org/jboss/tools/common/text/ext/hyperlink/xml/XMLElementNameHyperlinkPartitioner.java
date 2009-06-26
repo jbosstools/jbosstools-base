@@ -25,7 +25,7 @@ import org.w3c.dom.Node;
  * @author Jeremy
  */
 public class XMLElementNameHyperlinkPartitioner extends AbstractHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
-	public static final String XML_ELEMENT_NAME_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_ELEMENT_NAME";
+	public static final String XML_ELEMENT_NAME_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_ELEMENT_NAME"; //$NON-NLS-1$
 
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
@@ -68,7 +68,7 @@ public class XMLElementNameHyperlinkPartitioner extends AbstractHyperlinkPartiti
 			IDOMElement elem = (IDOMElement)n;
 			String tagName = elem.getTagName();
 			int start = elem.getStartOffset();
-			int nameStart = start + (elem.isEndTag() ? "</" : "<").length();
+			int nameStart = start + (elem.isEndTag() ? "</" : "<").length(); //$NON-NLS-1$ //$NON-NLS-2$
 			int nameEnd = nameStart + tagName.length();
 
 			if (nameStart > offset || nameEnd <= offset) return null;
@@ -97,7 +97,7 @@ public class XMLElementNameHyperlinkPartitioner extends AbstractHyperlinkPartiti
 			IDOMElement elem = (IDOMElement)n;
 			String tagName = elem.getTagName();
 			int start = elem.getStartOffset();
-			int nameStart = start + (elem.isEndTag() ? "<" : "</").length();
+			int nameStart = start + (elem.isEndTag() ? "<" : "</").length(); //$NON-NLS-1$ //$NON-NLS-2$
 			int nameEnd = nameStart + tagName.length();
 			return (region.getOffset() > nameStart && region.getOffset() <= nameEnd);
 		} finally {

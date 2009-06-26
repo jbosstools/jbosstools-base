@@ -41,7 +41,7 @@ public class NewClassWizard extends Wizard {
 		super();
 		this.adapter = adapter;
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
-		setWindowTitle(NewWizardMessages.NewClassCreationWizard_title); //$NON-NLS-1$
+		setWindowTitle(NewWizardMessages.NewClassCreationWizard_title);
 		setDefaultPageImageDescriptor(JavaPluginImages.DESC_WIZBAN_NEWCLASS);
 	}
 
@@ -61,7 +61,7 @@ public class NewClassWizard extends Wizard {
     public String getQualifiedClassName() {
     	String c = mainPage.getTypeName();
     	String p = mainPage.getPackageText();
-    	if(p != null && p.length() > 0) c = p + "." + c;
+    	if(p != null && p.length() > 0) c = p + "." + c; //$NON-NLS-1$
     	return c;
     }
     

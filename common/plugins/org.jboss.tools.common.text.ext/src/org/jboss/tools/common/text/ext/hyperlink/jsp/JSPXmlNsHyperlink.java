@@ -79,9 +79,9 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
 			if (!(n instanceof IDOMAttr)) return null; 
 			Attr xmlnsAttr = (Attr)n;
-			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return null;
+			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return null; //$NON-NLS-1$
 			Element rootElem = (Element)xmlnsAttr.getOwnerElement();
-			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return null;
+			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return null; //$NON-NLS-1$ //$NON-NLS-2$
 
 			String uri = xmlnsAttr.getValue();
 			if (uri == null || uri.trim().length() == 0) return null;
@@ -111,9 +111,9 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
 			if (!(n instanceof IDOMAttr)) return null; 
 			Attr xmlnsAttr = (Attr)n;
-			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return null;
+			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return null; //$NON-NLS-1$
 			Element rootElem = (Element)xmlnsAttr.getOwnerElement();
-			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return null;
+			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return null; //$NON-NLS-1$ //$NON-NLS-2$
 
 			String uri = xmlnsAttr.getValue();
 			if (uri == null || uri.trim().length() == 0) return null;
@@ -145,9 +145,9 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 			Node n = Utils.findNodeForOffset(xmlDocument, offset);
 			if (!(n instanceof IDOMAttr)) return null; 
 			IDOMAttr xmlnsAttr = (IDOMAttr)n;
-			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return null;
+			if (xmlnsAttr.getName() == null || !xmlnsAttr.getName().startsWith("xmlns:")) return null; //$NON-NLS-1$
 			Element rootElem = xmlnsAttr.getOwnerElement();
-			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return null;
+			if (!(rootElem.getNodeName().equals("jsp:root") || rootElem.getNodeName().equalsIgnoreCase("html"))) return null; //$NON-NLS-1$ //$NON-NLS-2$
 
 			final int taglibLength = xmlnsAttr.getValueRegionText().length();
 			final int taglibOffset = xmlnsAttr.getValueRegionStartOffset();
@@ -167,7 +167,7 @@ public class JSPXmlNsHyperlink extends AbstractHyperlink {
 	public String getHyperlinkText() {
 		String uri = getUri(fLastRegion);
 		if (uri == null)
-			return  MessageFormat.format(Messages.NotFound, "URI");
+			return  MessageFormat.format(Messages.NotFound, "URI"); //$NON-NLS-1$
 		
 		return MessageFormat.format(Messages.Open, uri);
 	}

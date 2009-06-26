@@ -69,7 +69,7 @@ public abstract class BaseAddReferenceSupport extends SpecialWizardSupport {
 		if(initialPrefix != null) {
 			setAttributeValue(0, "prefix", initialPrefix); //$NON-NLS-1$
 		}
-		if(getTarget().getModelEntity().getAttribute("scope") != null) { 
+		if(getTarget().getModelEntity().getAttribute("scope") != null) {  //$NON-NLS-1$
 			final XAttributeConstraintL scopeAttribute = ((XAttributeConstraintL) getTarget().getModelEntity().getAttribute("scope") //$NON-NLS-1$
 	            .getConstraint());
 			if (scopeAttribute != null) {

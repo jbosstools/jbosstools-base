@@ -34,11 +34,11 @@ public class VRuleSetsLoader extends EnginesLoader {
     }
     
     public void load(XModelObject object) {
-    	if("true".equals(object.getModel().getProperties().getProperty("initialModel"))) return;
+    	if("true".equals(object.getModel().getProperties().getProperty("initialModel"))) return; //$NON-NLS-1$ //$NON-NLS-2$
         super.load(object);
         Set<String> installed = new HashSet<String>();
         
-        Set resources = RuleSetResourceLoader.getResources("org.jboss.tools.common.verification.rules");
+        Set resources = RuleSetResourceLoader.getResources("org.jboss.tools.common.verification.rules"); //$NON-NLS-1$
 
 		ArrayList<URL> l = new ArrayList<URL>();
 		Iterator it = resources.iterator();
@@ -72,7 +72,7 @@ public class VRuleSetsLoader extends EnginesLoader {
                     } else {
                         mergeRules(c, nc[j]);
                     }
-                    c.setAttributeValue("installed", "true");
+                    c.setAttributeValue("installed", "true"); //$NON-NLS-1$ //$NON-NLS-2$
                     installed.add(c.getPathPart());
                 }
             } catch (XModelException e) {
@@ -83,8 +83,8 @@ public class VRuleSetsLoader extends EnginesLoader {
         }
         XModelObject[] ch = object.getChildren();
         for (int i = 0; i < ch.length; i++) {
-            String ins = ch[i].getAttributeValue("installed");
-            if ("true".equals(ins)) {
+            String ins = ch[i].getAttributeValue("installed"); //$NON-NLS-1$
+            if ("true".equals(ins)) { //$NON-NLS-1$
                 if (!installed.contains(ch[i].getPathPart())) {
                     ch[i].removeFromParent();
                 }
@@ -98,11 +98,11 @@ public class VRuleSetsLoader extends EnginesLoader {
         org.jboss.tools.common.meta.XAttribute[] as = object.getModelEntity().getAttributes();
         for (int i = 0; i < as.length; i++) {
             String n = as[i].getName();
-            if ("enabled".equals(n)) {
+            if ("enabled".equals(n)) { //$NON-NLS-1$
             	String nv = update.getAttributeValue(n);
-            	object.set("default-enabled", nv);
+            	object.set("default-enabled", nv); //$NON-NLS-1$
             }
-            if ("enabled".equals(n) || "installed".equals(n)) continue;
+            if ("enabled".equals(n) || "installed".equals(n)) continue; //$NON-NLS-1$ //$NON-NLS-2$
             String ov = object.getAttributeValue(n);
             String nv = update.getAttributeValue(n);
             if (ov.equals(nv)) continue;
@@ -131,7 +131,7 @@ public class VRuleSetsLoader extends EnginesLoader {
 	}
 
     protected String fileName(XModelObject object) {
-        return ".rule-sets.xml";
+        return ".rule-sets.xml"; //$NON-NLS-1$
     }
     
 }

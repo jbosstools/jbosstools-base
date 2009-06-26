@@ -60,8 +60,8 @@ import org.w3c.dom.NodeList;
 public class CSSClassHyperlink extends AbstractHyperlink {
 
 	// Qualifiers for CSSList
-	public static final String QUALIFIER = "CSSListForm";
-	public static final String LOCAL_NAME = "CSSList";
+	public static final String QUALIFIER = "CSSListForm"; //$NON-NLS-1$
+	public static final String LOCAL_NAME = "CSSList"; //$NON-NLS-1$
 
 	/** 
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doHyperlink(org.eclipse.jface.text.IRegion)
@@ -152,7 +152,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 			if (doSearchInProjectCSSList) {
 				String cssList = project.getPersistentProperty(new QualifiedName(QUALIFIER, LOCAL_NAME));
 				if (cssList != null) {
-					StringTokenizer st = new StringTokenizer(cssList, ",");
+					StringTokenizer st = new StringTokenizer(cssList, ","); //$NON-NLS-1$
 					while (st.hasMoreTokens()) {
 						String fileName = st.nextToken().trim();
 						IPath path = new Path(fileName).removeFirstSegments(2);
@@ -200,7 +200,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 					TextScanner.TextToken tToken = (TextScanner.TextToken)token;
 					if (CSSTextScanner.CSS_CLASS_NAME.equals(tToken.getType())) {
 						String name = tToken.getText();
-						if (("." + styleName).equalsIgnoreCase(name)) {
+						if (("." + styleName).equalsIgnoreCase(name)) { //$NON-NLS-1$
 							final int offset = startOffset + scanner.getTokenOffset();
 							final int length = scanner.getTokenLength();
 							return new Region (offset,length);
@@ -232,7 +232,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 					TextScanner.TextToken tToken = (TextScanner.TextToken)token;
 					if (CSSTextScanner.CSS_CLASS_NAME.equals(tToken.getType())) {
 						String name = tToken.getText();
-						if (("." + styleName).equalsIgnoreCase(name)) {
+						if (("." + styleName).equalsIgnoreCase(name)) { //$NON-NLS-1$
 							final int offset = scanner.getTokenOffset();
 							final int length = scanner.getTokenLength();
 							return new Region (offset,length);
@@ -246,7 +246,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 				token = scanner.nextToken();
 			}
 		} catch (CoreException x) {
-			ExtensionsPlugin.getPluginLog().logError("Error while looking for style region ", x);
+			ExtensionsPlugin.getPluginLog().logError("Error while looking for style region ", x); //$NON-NLS-1$
 		} finally {
 			try {
 				if(stream!=null) {
@@ -267,12 +267,12 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 					//String axis = JSPRootHyperlinkPartitioner.computeAxis(getDocument(), element.getStartOffset());
 					//axis  = axis.toLowerCase();
 					
-					if ("link".equals(element.getNodeName())) {
-						Node relAttr = element.getAttributes().getNamedItem("rel");
+					if ("link".equals(element.getNodeName())) { //$NON-NLS-1$
+						Node relAttr = element.getAttributes().getNamedItem("rel"); //$NON-NLS-1$
 						if (relAttr != null) {
 							String val = relAttr.getNodeValue().toLowerCase();
-							if ("stylesheet".equalsIgnoreCase(val) || "\"stylesheet\"".equalsIgnoreCase(val)) {
-								Node hrefAttr = element.getAttributes().getNamedItem("href");
+							if ("stylesheet".equalsIgnoreCase(val) || "\"stylesheet\"".equalsIgnoreCase(val)) { //$NON-NLS-1$ //$NON-NLS-2$
+								Node hrefAttr = element.getAttributes().getNamedItem("href"); //$NON-NLS-1$
 								if (hrefAttr != null) {
 									styleLinks.add(hrefAttr);
 								}
@@ -280,7 +280,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 						}
 					}
 					
-					if ("link".equals(element.getNodeName())) {
+					if ("link".equals(element.getNodeName())) { //$NON-NLS-1$
 //						String value = element.getNodeValue();
 						styleLinks.add(element);
 					}

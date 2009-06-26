@@ -89,19 +89,19 @@ public abstract class AddNatureActionDelegate implements IObjectActionDelegate, 
 	}
 	
 	protected String findWebXML(String root) {
-		if(root == null) return "";
+		if(root == null) return ""; //$NON-NLS-1$
 		File rf = new File(root);
-		if(!rf.isDirectory()) return "";
+		if(!rf.isDirectory()) return ""; //$NON-NLS-1$
 		List<File> folders = new ArrayList<File>();
 		folders.add(rf);
 		return findWebXML(folders);
 	}
 
 	protected String findWebXML(List<File> folders) {
-		if(folders == null || folders.size() == 0) return "";
+		if(folders == null || folders.size() == 0) return ""; //$NON-NLS-1$
 		for (File f: folders) {
 			if(!f.isDirectory()) continue;
-			String s = f.getAbsolutePath().replace('\\', '/') + "/WEB-INF/web.xml";
+			String s = f.getAbsolutePath().replace('\\', '/') + "/WEB-INF/web.xml"; //$NON-NLS-1$
 			if(new File(s).isFile()) return s;
 		}
 		List<File> nextLevelFolders = new ArrayList<File>();

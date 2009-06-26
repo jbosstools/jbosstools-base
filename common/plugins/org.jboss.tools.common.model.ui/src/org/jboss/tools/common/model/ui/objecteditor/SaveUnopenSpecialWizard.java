@@ -35,8 +35,8 @@ public class SaveUnopenSpecialWizard implements SpecialWizard {
 			IEditorPart editor = workbenchPage.findEditor(input);
 			if(editor != null) return 0;
 		}
-		if(object != null && XActionInvoker.getAction("SaveActions.Save", object) != null) {
-			XActionInvoker.invoke("SaveActions.Save", object, null);
+		if(object != null && XActionInvoker.getAction("SaveActions.Save", object) != null) { //$NON-NLS-1$
+			XActionInvoker.invoke("SaveActions.Save", object, null); //$NON-NLS-1$
 		}
 		return 0;
 	}

@@ -39,11 +39,11 @@ import org.w3c.dom.NodeList;
 
 public class PaletteTaglibInserter {
 
-	private static final String JSP_SOURCE_ROOT_ELEMENT = "jsp:root";
-	public static final String JSP_URI = "http://java.sun.com/JSP/Page";
-	public static final String faceletUri = "http://java.sun.com/jsf/facelets";
+	private static final String JSP_SOURCE_ROOT_ELEMENT = "jsp:root"; //$NON-NLS-1$
+	public static final String JSP_URI = "http://java.sun.com/JSP/Page"; //$NON-NLS-1$
+	public static final String faceletUri = "http://java.sun.com/jsf/facelets"; //$NON-NLS-1$
 
-	private static final String TAGLIB_START = "<%@ taglib"; 
+	private static final String TAGLIB_START = "<%@ taglib";  //$NON-NLS-1$
 
 	public Properties inserTaglib(ISourceViewer v, Properties p) {
 		if(!inserTaglibInXml(v, p)) {
@@ -53,7 +53,7 @@ public class PaletteTaglibInserter {
 	}
 
 	private boolean checkProperties(Properties p) {
-		return "true".equalsIgnoreCase(p.getProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB)) &&
+		return "true".equalsIgnoreCase(p.getProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB)) && //$NON-NLS-1$
 				p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI) != null &&
 				p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI).length() > 0 &&
 				!p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI).equals(JSP_URI) &&
@@ -83,7 +83,7 @@ public class PaletteTaglibInserter {
 			String uri_p = p.getProperty(PaletteInsertHelper.PROPOPERTY_TAGLIBRARY_URI);
 			String defaultPrefix_p = p.getProperty(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX);
 			String lineDelimiter = PaletteInsertHelper.getLineDelimiter(d);
-			StringBuffer tg = new StringBuffer(TAGLIB_START).append(" uri=\"").append(uri_p).append("\"").append(" prefix=\"").append(defaultPrefix_p).append("\"%>").append(lineDelimiter);
+			StringBuffer tg = new StringBuffer(TAGLIB_START).append(" uri=\"").append(uri_p).append("\"").append(" prefix=\"").append(defaultPrefix_p).append("\"%>").append(lineDelimiter); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 			if (tl != null && !tl.isEmpty()) {
 				//If taglib already exist check the prefix if changed
@@ -92,7 +92,7 @@ public class PaletteTaglibInserter {
 						p.setProperty(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX, (String)tl.get(uri_p));
 					}
 				} else if(!tl.containsValue(defaultPrefix_p)) {
-					if (checkplace(xmlDocument, d, "jsp:directive.taglib", tg, p, v) == false) {
+					if (checkplace(xmlDocument, d, "jsp:directive.taglib", tg, p, v) == false) { //$NON-NLS-1$
 						d.replace(0, 0, tg.toString());
 						mouveFocusOnPage(p,v, tg.toString().length(), 0);
 						return true;
@@ -102,7 +102,7 @@ public class PaletteTaglibInserter {
 				DocumentImpl docImpl = (DocumentImpl)xmlDocument;
 				// Only for JSP
 				if(docImpl.isJSPType()) {
-					if (checkplace(xmlDocument, d, "jsp:directive.page", tg, p, v) == false) {
+					if (checkplace(xmlDocument, d, "jsp:directive.page", tg, p, v) == false) { //$NON-NLS-1$
 						d.replace(0, 0, tg.toString());
 						mouveFocusOnPage(p,v, tg.toString().length(), 0);
 						return true;
@@ -135,7 +135,7 @@ public class PaletteTaglibInserter {
 		Node text = (Node)region;
 		
 		
-		if("#text".equals(text.getNodeName()))
+		if("#text".equals(text.getNodeName())) //$NON-NLS-1$
 			return text.getParentNode();
 		else
 			return text;
@@ -158,8 +158,8 @@ public class PaletteTaglibInserter {
 			Node a = attrs.item(j);
 			String name = a.getNodeName();
 
-			if (name.startsWith("xmlns:")) {
-				map.put(a.getNodeValue(), name.substring("xmlns:".length()));
+			if (name.startsWith("xmlns:")) { //$NON-NLS-1$
+				map.put(a.getNodeValue(), name.substring("xmlns:".length())); //$NON-NLS-1$
 			}
 		}
 
@@ -193,7 +193,7 @@ public class PaletteTaglibInserter {
 				// for xhtml and jsp:root 
 				if (xmlDocument.getDoctype() != null /* && tagLibListConainsFacelet(tl)*/ ) {
 					String publicId = xmlDocument.getDoctype().getPublicId();
-					if (publicId!=null && publicId.toUpperCase().startsWith("-//W3C//DTD XHTML")) { // && root.getNodeName().equalsIgnoreCase(HTML_SOURCE_ROOT_ELEMENT)) {
+					if (publicId!=null && publicId.toUpperCase().startsWith("-//W3C//DTD XHTML")) { // && root.getNodeName().equalsIgnoreCase(HTML_SOURCE_ROOT_ELEMENT)) { //$NON-NLS-1$
 						checkTL(root, v, p, d);
 						return true;
 					}
@@ -254,8 +254,8 @@ public class PaletteTaglibInserter {
 			Node a = attrs.item(j);
 			String name = a.getNodeName();
 
-			if (name.startsWith("xmlns:")) {
-				map.put(a.getNodeValue(), name.substring("xmlns:".length()));
+			if (name.startsWith("xmlns:")) { //$NON-NLS-1$
+				map.put(a.getNodeValue(), name.substring("xmlns:".length())); //$NON-NLS-1$
 			}
 		}
 		
@@ -264,14 +264,14 @@ public class PaletteTaglibInserter {
 				p.setProperty(PaletteInsertHelper.PROPOPERTY_DEFAULT_PREFIX, (String) map.get(uri_p));
 			}
 		} else if(!map.containsValue(defaultPrefix_p)) {
-			StringBuffer attribute = new StringBuffer("xmlns:").append(defaultPrefix_p).append("=\"").append(uri_p).append("\""); 
+			StringBuffer attribute = new StringBuffer("xmlns:").append(defaultPrefix_p).append("=\"").append(uri_p).append("\"");  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			int so = ((IDOMElement)root).getStartOffset();
 			int seo = ((IDOMElement)root).getStartEndOffset();
 			try {
 				String lineDelimiter = PaletteInsertHelper.getLineDelimiter(d);
 				StringBuffer selectedSource = new StringBuffer().append(d.get(so, seo-so));
-				int xmlns = selectedSource.indexOf("xmlns");
-				attribute = new StringBuffer().append(createEmptyCharArray(xmlns)).append("xmlns:").append(defaultPrefix_p).append("=\"").append(uri_p).append("\"");
+				int xmlns = selectedSource.indexOf("xmlns"); //$NON-NLS-1$
+				attribute = new StringBuffer().append(createEmptyCharArray(xmlns)).append("xmlns:").append(defaultPrefix_p).append("=\"").append(uri_p).append("\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				if (d.getLineOffset(d.getLineOfOffset(so)) != so) {										
 					attribute.insert(0, analyseSubstring(d.get(d.getLineOffset(d.getLineOfOffset(so)), so-d.getLineOffset(d.getLineOfOffset(so)))));
 				}				
@@ -283,7 +283,7 @@ public class PaletteTaglibInserter {
 				selectedSource.insert(selectedSource.length()-1, attribute);
 				d.replace(so, seo-so, selectedSource.toString());
 			} catch (BadLocationException t) {
-				ModelUIPlugin.getPluginLog().logError("", t);
+				ModelUIPlugin.getPluginLog().logError("", t); //$NON-NLS-1$
 			}
 		}
 		return p;
@@ -338,7 +338,7 @@ public class PaletteTaglibInserter {
 		if (xmlDocument.getDoctype() != null) {
 			docType = true;
 			String publicId = xmlDocument.getDoctype().getPublicId();
-			if (publicId!=null && publicId.toUpperCase().startsWith("-//W3C//DTD HTML")) {
+			if (publicId!=null && publicId.toUpperCase().startsWith("-//W3C//DTD HTML")) { //$NON-NLS-1$
 				irdt = (xmlDocument.getDoctype() instanceof IndexedRegion) ?
 						(IndexedRegion)xmlDocument.getDoctype(): null;
 			}
@@ -348,7 +348,7 @@ public class PaletteTaglibInserter {
 			for (int i=0; i < nl.getLength(); i++) {
 				Node n = nl.item(i);
 				//fing the first taglib to insert before
-				if (n.getNodeName().equals(st) && st.equals("jsp:directive.taglib")) {
+				if (n.getNodeName().equals(st) && st.equals("jsp:directive.taglib")) { //$NON-NLS-1$
 					//calculate the space between taglib and left page corner
 					int so = ((ElementImpl)n).getStartOffset();
 					//taglib is at left corner 
@@ -362,7 +362,7 @@ public class PaletteTaglibInserter {
 					}
 					return true;
 				}
-				if ((n.getNodeName().equals(st) && st.equals("jsp:directive.page"))	) {
+				if ((n.getNodeName().equals(st) && st.equals("jsp:directive.page"))	) { //$NON-NLS-1$
 					tg.delete(tg.lastIndexOf(PaletteInsertHelper.getLineDelimiter(d)), tg.length());
 					int so = ((ElementImpl)n).getStartOffset();
 					int eo = ((ElementImpl)n).getEndStartOffset();

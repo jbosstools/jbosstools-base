@@ -47,7 +47,7 @@ public class PaletteDropCommand extends FileDropCommand {
 	String startText;
 	String endText;	
 	String newLine;
-	String reformat = "no";
+	String reformat = "no"; //$NON-NLS-1$
 
 	Properties properties = new Properties();
 	boolean callPaletteWizard = false;
@@ -61,10 +61,10 @@ public class PaletteDropCommand extends FileDropCommand {
 
 	protected void addCustomProperties(Properties runningProperties) {		
 		newLine = properties.getProperty(PaletteInsertHelper.PROPOPERTY_NEW_LINE);
-		if (newLine == null) newLine="true";
+		if (newLine == null) newLine="true"; //$NON-NLS-1$
 		runningProperties.setProperty(PaletteInsertHelper.PROPOPERTY_NEW_LINE, newLine);
 		String addTaglib = properties.getProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB);
-		if(addTaglib == null) addTaglib = "true";
+		if(addTaglib == null) addTaglib = "true"; //$NON-NLS-1$
 		runningProperties.setProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB, addTaglib);
 	}
 	
@@ -93,12 +93,12 @@ public class PaletteDropCommand extends FileDropCommand {
 							int containerOffset = container.getStartOffset();
 							int containerLenght = container.getStartEndOffset()-containerOffset;
 							String containerString = document.get(containerOffset, containerLenght);
-							int slashPosition = containerString.lastIndexOf("/");
+							int slashPosition = containerString.lastIndexOf("/"); //$NON-NLS-1$
 							if(slashPosition >= 0){
 								int deltaOffset =  (containerString.length()-1)-slashPosition;
-								String text = "";
-								for(int i=0; i < deltaOffset;i++) text += " ";
-								text += "></"+container.getNodeName()+">";
+								String text = ""; //$NON-NLS-1$
+								for(int i=0; i < deltaOffset;i++) text += " "; //$NON-NLS-1$
+								text += "></"+container.getNodeName()+">"; //$NON-NLS-1$ //$NON-NLS-2$
 								document.replace(containerOffset+slashPosition, containerString.length()-slashPosition, text);
 							}
 						}catch(BadLocationException ex){
@@ -132,14 +132,14 @@ public class PaletteDropCommand extends FileDropCommand {
 			ISourceViewer viewer = data.getSourceViewer();
 			
 			properties = new Properties();
-			properties.put("viewer", viewer);
-			properties.setProperty("text", viewer.getDocument().get());
-			properties.setProperty("isDrop", "true");
-			properties.setProperty("actionSourceGUIComponentID", "editor");
-			properties.setProperty("accepsAsString", "true");
+			properties.put("viewer", viewer); //$NON-NLS-1$
+			properties.setProperty("text", viewer.getDocument().get()); //$NON-NLS-1$
+			properties.setProperty("isDrop", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+			properties.setProperty("actionSourceGUIComponentID", "editor"); //$NON-NLS-1$ //$NON-NLS-2$
+			properties.setProperty("accepsAsString", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 				
 			if(f != null) {
-				properties.put("file", f);
+				properties.put("file", f); //$NON-NLS-1$
 			}
 			ISelection selection = data.getSelectionProvider().getSelection();
 			
@@ -151,15 +151,15 @@ public class PaletteDropCommand extends FileDropCommand {
 			} else {
 				offset = viewer.getTextWidget().getCaretOffset();
 			}
-			properties.setProperty("pos", "" + offset);
+			properties.setProperty("pos", "" + offset); //$NON-NLS-1$ //$NON-NLS-2$
 			if(selection instanceof IStructuredSelection && !selection.isEmpty()) {
 				Object so = ((IStructuredSelection)selection).getFirstElement();
 				if(so instanceof IDOMElement) {
 					String en = ((IDOMElement)so).getNodeName();
-					properties.setProperty("context:tagName", en);
+					properties.setProperty("context:tagName", en); //$NON-NLS-1$
 					String attrName = data.getAttributeName();
 					if(attrName != null) {
-						properties.setProperty("context:attrName", attrName);
+						properties.setProperty("context:attrName", attrName); //$NON-NLS-1$
 					}
 				}
 			}
@@ -169,9 +169,9 @@ public class PaletteDropCommand extends FileDropCommand {
 				} else {
 					XModelObject s = PreferenceModelUtilities.getPreferenceModel().getModelBuffer().source();
 					if(s != null) {
-						properties.setProperty("start text", "" + getDefaultText(s));
-						properties.setProperty("end text", "");
-						properties.setProperty("new line", "newLine");
+						properties.setProperty("start text", "" + getDefaultText(s)); //$NON-NLS-1$ //$NON-NLS-2$
+						properties.setProperty("end text", ""); //$NON-NLS-1$ //$NON-NLS-2$
+						properties.setProperty("new line", "newLine"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			} catch (CoreException e) {
@@ -183,11 +183,11 @@ public class PaletteDropCommand extends FileDropCommand {
 			String uri = properties.getProperty(URIConstants.LIBRARY_URI);
 			String libraryVersion = properties.getProperty(URIConstants.LIBRARY_VERSION);
 			String defaultPrefix = properties.getProperty(URIConstants.DEFAULT_PREFIX);
-			String tagname = properties.getProperty("tag name");
+			String tagname = properties.getProperty("tag name"); //$NON-NLS-1$
 			
 			callPaletteWizard = PaletteInsertManager.getInstance().getWizardName(properties) != null;
 			
-			boolean isWizardEnabled = (!"FileJAVA".equals(target.getModelEntity().getName()));
+			boolean isWizardEnabled = (!"FileJAVA".equals(target.getModelEntity().getName())); //$NON-NLS-1$
 			if(getDefaultModel() instanceof PaletteDropWizardModel) {
 				((PaletteDropWizardModel)getDefaultModel()).setWizardEnabled(isWizardEnabled);
 			}
@@ -203,14 +203,14 @@ public class PaletteDropCommand extends FileDropCommand {
 
 	private void initialize2() {
 		XModelObject object = PreferenceModelUtilities.getPreferenceModel().getModelBuffer().source();
-		String tagname = object.getAttributeValue("name");
+		String tagname = object.getAttributeValue("name"); //$NON-NLS-1$
 		XModelObject parent = object.getParent();
-		String uri = (parent == null) ? "" : parent.getAttributeValue(URIConstants.LIBRARY_URI);
-		String libraryVersion = (parent == null) ? "" : parent.getAttributeValue(URIConstants.LIBRARY_VERSION);
-		String defaultPrefix = (parent == null) ? "" : parent.getAttributeValue(URIConstants.DEFAULT_PREFIX);
+		String uri = (parent == null) ? "" : parent.getAttributeValue(URIConstants.LIBRARY_URI); //$NON-NLS-1$
+		String libraryVersion = (parent == null) ? "" : parent.getAttributeValue(URIConstants.LIBRARY_VERSION); //$NON-NLS-1$
+		String defaultPrefix = (parent == null) ? "" : parent.getAttributeValue(URIConstants.DEFAULT_PREFIX); //$NON-NLS-1$
 		this.getDefaultModel().setTagProposal(new TagProposal(uri, libraryVersion,defaultPrefix,tagname));
-		startText = object.getAttributeValue("start text");
-		endText = object.getAttributeValue("end text");
+		startText = object.getAttributeValue("start text"); //$NON-NLS-1$
+		endText = object.getAttributeValue("end text"); //$NON-NLS-1$
 	}
 	
 	private void insertInitialValues() {
@@ -240,7 +240,7 @@ public class PaletteDropCommand extends FileDropCommand {
 			char c = header.charAt(i);
 			if(state == NOTHING) {
 				if(Character.isJavaIdentifierStart(c)) {
-					name = "" + c;
+					name = "" + c; //$NON-NLS-1$
 					state = ATT_NAME;
 				}
 			} else if(state == ATT_NAME) {
@@ -259,7 +259,7 @@ public class PaletteDropCommand extends FileDropCommand {
 					quote = '\0';
 				} else if(c == '"' || c == '\'') {
 					quote = c;
-					value = "";
+					value = ""; //$NON-NLS-1$
 				} else if(quote != '\0') {
 					value += c;
 				}
@@ -268,7 +268,7 @@ public class PaletteDropCommand extends FileDropCommand {
 	}	
 
 	protected String generateStartText() {
-		startText = properties.getProperty("start text");
+		startText = properties.getProperty("start text"); //$NON-NLS-1$
 		if(getDefaultModel().getTagProposal()==IDropWizardModel.UNDEFINED_TAG_PROPOSAL
 			|| getDefaultModel().getTagProposal().getUri().length() == 0) {
 			return startText;
@@ -296,8 +296,8 @@ public class PaletteDropCommand extends FileDropCommand {
 	}
 
 	protected String generateEndText() {
-		endText = properties.getProperty("end text");
-		return (endText != null) ? endText : "";
+		endText = properties.getProperty("end text"); //$NON-NLS-1$
+		return (endText != null) ? endText : ""; //$NON-NLS-1$
 	}
 
 	protected String getReformatBodyProperty() {
@@ -321,7 +321,7 @@ public class PaletteDropCommand extends FileDropCommand {
 	}
 	
 	private String getDefaultText(XModelObject o) {
-		if(o == null) return "";
+		if(o == null) return ""; //$NON-NLS-1$
 		if(o.getFileType() != XModelObject.FILE) return o.getPresentationString();
 		IWebProject p = WebProjectFactory.instance.getWebProject(o.getModel());
 		String path = p.getPathInWebRoot(o);

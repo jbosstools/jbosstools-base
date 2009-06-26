@@ -115,13 +115,13 @@ public class VTaskListenerImpl implements VTaskListener {
 	
 	protected int getErrorCountLimit() {
 		if(limit != -2) return limit;
-		String path = "%Options%/Struts Studio/Verification";
-		String attr = "Reported Errors Number Limit";
+		String path = "%Options%/Struts Studio/Verification"; //$NON-NLS-1$
+		String attr = "Reported Errors Number Limit"; //$NON-NLS-1$
 		XModelObject o = PreferenceModelUtilities.getPreferenceModel().getByPath(path);
 		if(o == null) return limit = -1;
 		String s = o.getAttributeValue(attr);
 		limit = -1;
-		if(!"unlimited".equals(s) && s != null && s.length() > 0) try {
+		if(!"unlimited".equals(s) && s != null && s.length() > 0) try { //$NON-NLS-1$
 			limit = Integer.parseInt(s);
 		} catch (NumberFormatException e) {
 			ModelPlugin.getPluginLog().logError(e);

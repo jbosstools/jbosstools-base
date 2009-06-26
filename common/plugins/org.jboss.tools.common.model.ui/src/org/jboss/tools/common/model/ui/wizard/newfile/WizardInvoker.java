@@ -25,9 +25,9 @@ public class WizardInvoker implements SpecialWizard {
 		if(p == null) {
 			return 1;
 		}
-		String pluginId = p.getProperty("plugin");
-		String wizardId = p.getProperty("wizard");
-		XModelObject s = (XModelObject)p.get("object");
+		String pluginId = p.getProperty("plugin"); //$NON-NLS-1$
+		String wizardId = p.getProperty("wizard"); //$NON-NLS-1$
+		XModelObject s = (XModelObject)p.get("object"); //$NON-NLS-1$
 		INewWizard wizard = ExtensionPointUtils.findNewWizardsItem(pluginId, wizardId);
 		
 		if(wizard == null || s == null) {
@@ -38,7 +38,7 @@ public class WizardInvoker implements SpecialWizard {
 		
 		WizardDialog dialog = new WizardDialog(ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
 		dialog.create();
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(dialog.getShell(), "org.eclipse.ui.new_wizard_shortcut_context");
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(dialog.getShell(), "org.eclipse.ui.new_wizard_shortcut_context"); //$NON-NLS-1$
 		dialog.open();  
 
 		return 0;

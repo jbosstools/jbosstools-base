@@ -24,7 +24,7 @@ public class ErrorMode {
 	private ScrolledComposite errors = null;
 	Composite c = null;
 	private ArrayList<Lbl> labels = new ArrayList<Lbl>();
-	String es = "";
+	String es = ""; //$NON-NLS-1$
 	ErrorSelectionListener listener;
 	boolean visible = true;
 	
@@ -59,7 +59,7 @@ public class ErrorMode {
 			if(!errors.isDisposed()) errors.dispose();
 			errors = null;
 			labels.clear();
-			es = "";
+			es = ""; //$NON-NLS-1$
 		}
 		listener = null;
 		c = null;
@@ -87,11 +87,11 @@ public class ErrorMode {
 	}
 
 	public void update(XModelObject o) {
-		update(o.get("errors"));
+		update(o.get("errors")); //$NON-NLS-1$
 	}
 	public void update(String err) {
 		String s = err;
-		if(s == null) s = "";
+		if(s == null) s = ""; //$NON-NLS-1$
 		if(es.equals(s)) return;
 		    createC();
 		    labels.clear();
@@ -120,8 +120,8 @@ public class ErrorMode {
 	}
 	
 	String[] getErrors(String s) {
-		if(s == null) s = "";
-		StringTokenizer st = new StringTokenizer(s, "\n");
+		if(s == null) s = ""; //$NON-NLS-1$
+		StringTokenizer st = new StringTokenizer(s, "\n"); //$NON-NLS-1$
 		String[] rs = new String[st.countTokens()];
 		for (int i = 0; i < rs.length; i++) rs[i] = st.nextToken();
 		return rs;		
@@ -137,8 +137,8 @@ public class ErrorMode {
 
 class Lbl {
 	private L label = null; 
-	private String error = "";
-	private String[] messages = new String[]{"", "", ""};
+	private String error = ""; //$NON-NLS-1$
+	private String[] messages = new String[]{"", "", ""}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	private int line = 1;
 	private int position = 1; 
 	ErrorSelectionListener listener;
@@ -157,7 +157,7 @@ class Lbl {
 			label.addMouseListener(new SL());
 			label.setData(messages);
 		}
-		if(s == null) s = "";
+		if(s == null) s = ""; //$NON-NLS-1$
 		if(!error.equals(s)) parse(s);
 	}
 	
@@ -179,11 +179,11 @@ class Lbl {
 			}
 		} else {
 			messages[0] = "ERROR";
-			messages[1] = "0:0";
+			messages[1] = "0:0"; //$NON-NLS-1$
 			messages[2] = s;
 		}
-		if(messages[1] == null || "0:0".equals(messages[1])) {
-			messages[1] = "";
+		if(messages[1] == null || "0:0".equals(messages[1])) { //$NON-NLS-1$
+			messages[1] = ""; //$NON-NLS-1$
 		}
 	}
 	
@@ -216,7 +216,7 @@ class Lbl {
 class L extends Canvas implements PaintListener, MouseMoveListener {
 	Cursor DEF_CURSOR = new Cursor(null, SWT.CURSOR_ARROW);
 	Cursor HAND_CURSOR = new Cursor(null, SWT.CURSOR_HAND);
-	private String[] messages = new String[]{"", "", ""};
+	private String[] messages = new String[]{"", "", ""}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 	public L(Composite parent, int style) {
 		super (parent, style);

@@ -40,11 +40,11 @@ public class NewFileContext {
 
 	public void init() {
 		XModel model = ModelUtilities.getPreferenceModel();
-		fakeFolder = model.createModelObject("FileFolder", null);
-		XActionList list = model.getMetaData().getEntity("FileFolder").getActionList();
+		fakeFolder = model.createModelObject("FileFolder", null); //$NON-NLS-1$
+		XActionList list = model.getMetaData().getEntity("FileFolder").getActionList(); //$NON-NLS-1$
 		action = list.getAction(getActionPath());
 		support.setActionData(action, action.getEntityData(fakeFolder), fakeFolder, null);
-		helpkey = "FileFolder_" + action.getName();
+		helpkey = "FileFolder_" + action.getName(); //$NON-NLS-1$
 	}
 	
 	protected SpecialWizardSupport createSupport() {
@@ -77,7 +77,7 @@ public class NewFileContext {
 		if(folder != null) {
 			if(folder.getFileType() > XModelObject.FILE) {
 			} else if(folder.getFileType() == XModelObject.NONE)
-			  folder = folder.getModel().getByPath("FileSystems/WEB-INF");
+			  folder = folder.getModel().getByPath("FileSystems/WEB-INF"); //$NON-NLS-1$
 			else if(folder.getFileType() == XModelObject.FILE)
 			  folder = folder.getParent();
 		}
@@ -102,7 +102,7 @@ public class NewFileContext {
 	
 	public void execute() throws XModelException {
 		Properties p = new Properties();
-		if(resource != null) p.put("resource", resource);
+		if(resource != null) p.put("resource", resource); //$NON-NLS-1$
 		action.executeHandler(support.getTarget(), p);
 	}
 	
@@ -122,11 +122,11 @@ public class NewFileContext {
 	
 	public String getWindowTitle() {
 		String title = WizardKeys.getHeader(helpkey);
-		return (title == null) ? "" : title;
+		return (title == null) ? "" : title; //$NON-NLS-1$
 	}
 	public String getTitle() {
 		String title = WizardKeys.getTitle(helpkey);
-		return (title == null) ? "" : title;
+		return (title == null) ? "" : title; //$NON-NLS-1$
 	}
 
 }

@@ -27,7 +27,7 @@ import org.jboss.tools.common.text.ext.util.Utils;
  *
  */
 public class XMLDoctypeHyperlinkPartitioner extends AbstractHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
-	public static final String XML_DOCTYPE_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_DOCTYPE";
+	public static final String XML_DOCTYPE_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_DOCTYPE"; //$NON-NLS-1$
 
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
@@ -68,7 +68,7 @@ public class XMLDoctypeHyperlinkPartitioner extends AbstractHyperlinkPartitioner
 
 			Node node = Utils.findNodeForOffset(xmlDocument, superRegion.getOffset());
 			if (node instanceof DocumentType) {
-				return "/@DOCTYPE/" + node.getNodeName() + "/";
+				return "/@DOCTYPE/" + node.getNodeName() + "/"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return Utils.getParentAxisForNode(xmlDocument, node);
 		} finally {

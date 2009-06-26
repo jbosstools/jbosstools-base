@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute.editor;
 
+import java.text.MessageFormat;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -69,7 +70,7 @@ public class JavaEclipseChoicerEditor extends ValueEditor {
 	}
 	
 	public String getChangeButtonName() {
-		return JFaceResources.getString("openBrowse");
+		return JFaceResources.getString("openBrowse"); //$NON-NLS-1$
 	}
 
 	public boolean callsExternal() {
@@ -86,14 +87,15 @@ public class JavaEclipseChoicerEditor extends ValueEditor {
 				jp = EclipseResourceUtil.getJavaProject(p);
 			}
 		}
-		String title = "Select " + getAttributeName();
+		String title = MessageFormat.format("Select {0}", getAttributeName());
 		if(adapter != null && adapter.getAttribute() != null) {
-			String key = "" + adapter.getAttribute().getModelEntity().getName() + "." + adapter.getAttribute().getName().replace(' ', '_') + ".edit";
+			String key = "" + adapter.getAttribute().getModelEntity().getName() + "." + adapter.getAttribute().getName().replace(' ', '_') + ".edit"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			String t = WizardKeys.getLabelText(key);
 			if(t != null) {
 				title = t;
 			} else {
-				title = "Select " + WizardKeys.getAttributeDisplayName(adapter.getAttribute(), true);
+				title = MessageFormat.format("Select {0}", 
+						WizardKeys.getAttributeDisplayName(adapter.getAttribute(), true));
 			}
 		}
 		

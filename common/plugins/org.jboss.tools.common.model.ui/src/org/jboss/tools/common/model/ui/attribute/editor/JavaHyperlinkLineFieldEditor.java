@@ -90,7 +90,7 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 				if (((DefaultValueAdapter)valueProvider).getModel()!=null) {
 					XModelObject xmo = FileSystemsHelper.getFileSystems(((DefaultValueAdapter)valueProvider).getModel());
 					if (xmo!=null) {
-						IProject project = (IProject)xmo.getModel().getProperties().get("project");
+						IProject project = (IProject)xmo.getModel().getProperties().get("project"); //$NON-NLS-1$
 						if (project!=null) { 
 							this.project = project;
 						}
@@ -118,7 +118,7 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 			if(project != null) {
 				setLabelAction(new OpenJavaEditorAction());
 				setSelectableLabel(Boolean.TRUE.booleanValue());
-				setChangeButtonText(JFaceResources.getString("openBrowse"));
+				setChangeButtonText(JFaceResources.getString("openBrowse")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -213,7 +213,7 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 	public Control createTextControl(Composite parent) {
 		Control control = super.createTextControl(parent);
         Text text = getTextField();
-        text.setData("JavaHyperlinkLineFieldEditor", this);
+        text.setData("JavaHyperlinkLineFieldEditor", this); //$NON-NLS-1$
 
         return control;
 	}
@@ -258,7 +258,7 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 		IModelPropertyEditorAdapter adapter = (IModelPropertyEditorAdapter)propertyEditor.getInput();
 		XAttribute a = adapter.getAttribute();
 		if(a == null) return null;
-		String cls = a.getProperty("contextPackageProvider");
+		String cls = a.getProperty("contextPackageProvider"); //$NON-NLS-1$
 		if(cls == null || cls.length() == 0) return null;
 		try {
 			AccessibleJava.IContextPackageProvider o = (AccessibleJava.IContextPackageProvider)ModelFeatureFactory.getInstance().createFeatureInstance(cls);

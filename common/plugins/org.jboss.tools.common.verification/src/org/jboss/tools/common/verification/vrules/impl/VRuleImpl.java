@@ -83,7 +83,7 @@ public class VRuleImpl implements VRule {
     public void setEnabled(boolean enabled) {
         boolean oldEnabled = this.enabled;
         this.enabled = enabled;
-        propertyChangeSupport.firePropertyChange("enabled", oldEnabled, enabled);
+        propertyChangeSupport.firePropertyChange("enabled", oldEnabled, enabled); //$NON-NLS-1$
     }
     
     public void setDefaultEnabled(boolean b) {

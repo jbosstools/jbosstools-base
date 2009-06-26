@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.ui.attribute.adapter.custom;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.tools.common.model.ui.*;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
@@ -40,7 +41,7 @@ public class EclipseClassChooserAdapter extends DefaultValueAdapter implements I
 			SelectionDialog dialog = JavaUI.createTypeDialog(control.getShell(), context, scope, flags, false, getStringValue(true));
 			dialog.create();
 			if(getAttribute() != null) {
-				String title = "Edit " + WizardKeys.getAttributeDisplayName(getAttribute(), true);
+				String title = MessageFormat.format("Edit {0}", WizardKeys.getAttributeDisplayName(getAttribute(), true));
 				dialog.getShell().setText(title);
 			} else {
 				dialog.getShell().setText("Edit");
@@ -60,7 +61,7 @@ public class EclipseClassChooserAdapter extends DefaultValueAdapter implements I
 	}
 	
 	public String getCommand() {
-		return "...";
+		return "..."; //$NON-NLS-1$
 	}
 
 	public Object getAdapter(Class adapter) {

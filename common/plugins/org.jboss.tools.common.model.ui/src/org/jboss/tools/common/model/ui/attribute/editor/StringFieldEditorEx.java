@@ -85,7 +85,7 @@ public class StringFieldEditorEx extends StringFieldEditor implements IFieldEdit
 		valueProvider.removeValueChangeListener(this);
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			Object v = evt.getNewValue();
-			this.setStringValue((v == null) ? "" : v.toString());
+			this.setStringValue((v == null) ? "" : v.toString()); //$NON-NLS-1$
 		}
 		valueProvider.addValueChangeListener(this);
 	}
@@ -119,7 +119,7 @@ public class StringFieldEditorEx extends StringFieldEditor implements IFieldEdit
 			}
 			if(o == null) return false;
 			String entity = o.getModelEntity().getName();
-			if(entity.indexOf("Jar") >= 0) return true;
+			if(entity.indexOf("Jar") >= 0) return true; //$NON-NLS-1$
 		}
 		return false;
 	}

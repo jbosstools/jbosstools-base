@@ -19,23 +19,23 @@ public class VRuleTipFactory {
 		VResultTemplate[] ts = f.getTemplates();
 		if(ts == null) return null;
 		StringBuffer sb = new StringBuffer();
-		sb.append("<html><body>").append(rule.getDescription()).append("<br>");
+		sb.append("<html><body>").append(rule.getDescription()).append("<br>"); //$NON-NLS-1$ //$NON-NLS-2$
 		for (int i = 0; i < ts.length; i++) {
 			int si = ts[i].getSignificance();
-			sb.append("&nbsp;");
-			if(si <= minignificance) sb.append("<font color=\"#7f7f7f\">");
+			sb.append("&nbsp;"); //$NON-NLS-1$
+			if(si <= minignificance) sb.append("<font color=\"#7f7f7f\">"); //$NON-NLS-1$
 ///			sb.append('@'); //works swing only
-			sb.append(" - "); //for eclipse only
+			sb.append(" - "); //for eclipse only //$NON-NLS-1$
 			sb.append(si).append(' ').append(ts[i].getDescription());
-			if(si <= minignificance) sb.append("</font>");
-			sb.append("<br>");
+			if(si <= minignificance) sb.append("</font>"); //$NON-NLS-1$
+			sb.append("<br>"); //$NON-NLS-1$
 		}
-		sb.append("</body></html>");
+		sb.append("</body></html>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
 	public static String getRuleTip(VRuleSet set) {
-		return ("<html><body>" + set.getDescription() + "</body></html>");
+		return ("<html><body>" + set.getDescription() + "</body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

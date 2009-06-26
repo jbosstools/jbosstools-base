@@ -87,7 +87,7 @@ public class SampleErrorForm extends ExpandableForm {
 	
 	public void initialize(Object model) {
 		String newErrors = (String)model;
-		if (newErrors==null) newErrors = "";
+		if (newErrors==null) newErrors = ""; //$NON-NLS-1$
 		if (newErrors.equals(errorsString)) return;
 		this.errorsString = newErrors;
 		disposeLabels();
@@ -210,7 +210,7 @@ public class SampleErrorForm extends ExpandableForm {
 
 			if(i < errors.length - 1) {
 				a = sb.length();
-				sb.append("\n");
+				sb.append("\n"); //$NON-NLS-1$
 				region = new StyleRange(a, sb.length() - a, WHITE, null);
 				regionList.add(region);
 			}
@@ -230,7 +230,7 @@ public class SampleErrorForm extends ExpandableForm {
 		int position = 0;
 		public StyleRange2(int start, int length, Color fg, Color bg, String location) {
 			super(start, length, fg, bg);
-			int i = location.indexOf(":");
+			int i = location.indexOf(":"); //$NON-NLS-1$
 			line = i < 0 ? 0 : getInt(location.substring(0, i), 0);
 			position = i < 0 ? 0 : getInt(location.substring(i + 1), 0);
 		}
@@ -295,7 +295,7 @@ public class SampleErrorForm extends ExpandableForm {
 			regions = new StyleRange[0];
 			if(styledText != null && !styledText.isDisposed()) {
 				styledText.setStyleRanges(regions);
-				styledText.setText("");
+				styledText.setText(""); //$NON-NLS-1$
 			}
 		}
 	}
@@ -313,8 +313,8 @@ public class SampleErrorForm extends ExpandableForm {
 
 	// error reader from slava
 	private String[] getErrorMessages(String s) {
-		if(s == null) s = "";
-		StringTokenizer st = new StringTokenizer(s, "\n");
+		if(s == null) s = ""; //$NON-NLS-1$
+		StringTokenizer st = new StringTokenizer(s, "\n"); //$NON-NLS-1$
 		String[] rs = new String[st.countTokens()];
 		for (int i = 0; i < rs.length; i++) rs[i] = st.nextToken();
 		return rs;		
@@ -335,11 +335,11 @@ public class SampleErrorForm extends ExpandableForm {
 			result[ERROR_MESSAGE] = s.substring(k + 1);
 		} else {
 			result[ERROR_TYPE] = "ERROR";
-			result[ERROR_LOCATION] = "0:0";
+			result[ERROR_LOCATION] = "0:0"; //$NON-NLS-1$
 			result[ERROR_MESSAGE] = s;
 		}
-		if(result[ERROR_LOCATION] == null || "0:0".equals(result[ERROR_LOCATION])) {
-			result[ERROR_LOCATION] = "";
+		if(result[ERROR_LOCATION] == null || "0:0".equals(result[ERROR_LOCATION])) { //$NON-NLS-1$
+			result[ERROR_LOCATION] = ""; //$NON-NLS-1$
 		}
 		return result;
 	}

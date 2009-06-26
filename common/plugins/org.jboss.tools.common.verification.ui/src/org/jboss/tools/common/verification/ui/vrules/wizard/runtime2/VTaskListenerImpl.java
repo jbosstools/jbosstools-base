@@ -46,7 +46,7 @@ public class VTaskListenerImpl extends org.jboss.tools.common.verification.vrule
 		} catch (InterruptedException e) {
 			//ignore
 		}
-		view.action("Close");
+		view.action(VerifyWizardView.COMMAND_CLOSE);
 		task.removeTaskListener(this);
 	}
 

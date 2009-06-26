@@ -36,7 +36,7 @@ public abstract class AbstractQueryWizardView implements CommandBarListener {
 	protected XModel model;
 
 	protected String windowTitle;
-	private String title = "";
+	private String title = ""; //$NON-NLS-1$
 	private String message;
 	private String errorMessage;
 	private Image titleImage;
@@ -64,11 +64,11 @@ public abstract class AbstractQueryWizardView implements CommandBarListener {
 	public void setObject(Object object) {
 		Properties p = findProperties(object);
 		if(p != null) {
-			String key = p.getProperty("help");
+			String key = p.getProperty("help"); //$NON-NLS-1$
 			setHelpKey(key);
 			windowTitle = WizardKeys.getHeader(key);
 			title = WizardKeys.getTitle(key);
-			if(title == null) title = p.getProperty("title", "");
+			if(title == null) title = p.getProperty("title", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

@@ -42,7 +42,7 @@ public class VResultTemplate {
     public void setId(String id) {
         String old = this.id;
         this.id = id;
-        propertyChangeSupport.firePropertyChange("id", old, id);
+        propertyChangeSupport.firePropertyChange("id", old, id); //$NON-NLS-1$
     }
     
     /** Returns this template name.
@@ -60,7 +60,7 @@ public class VResultTemplate {
     public void setName(String name) {
         String old = this.name;
         this.name = name;
-        propertyChangeSupport.firePropertyChange("name", old, name);
+        propertyChangeSupport.firePropertyChange("name", old, name); //$NON-NLS-1$
     }
     
     /** Returns this template description.
@@ -78,7 +78,7 @@ public class VResultTemplate {
     public void setDescription(String description) {
         String old = this.description;
         this.description = description;
-        propertyChangeSupport.firePropertyChange("description", old, description);
+        propertyChangeSupport.firePropertyChange("description", old, description); //$NON-NLS-1$
     }
     
     /** Returns this template type.
@@ -96,7 +96,7 @@ public class VResultTemplate {
     public void setType(String type) {
         String old = this.type;
         this.type = type;
-        propertyChangeSupport.firePropertyChange("type", old, type);
+        propertyChangeSupport.firePropertyChange("type", old, type); //$NON-NLS-1$
     }
     
     /** Returns this template significance.
@@ -120,7 +120,7 @@ public class VResultTemplate {
         } else {
             this.significance = significance;
         }
-        propertyChangeSupport.firePropertyChange("significance", old, significance);
+        propertyChangeSupport.firePropertyChange("significance", old, significance); //$NON-NLS-1$
     }
     
     /** Returns this template format.
@@ -138,7 +138,7 @@ public class VResultTemplate {
     public void setFormat(VMessageFormat format) {
         VMessageFormat old = this.format;
         this.format = format;
-        propertyChangeSupport.firePropertyChange("format", old, format);
+        propertyChangeSupport.firePropertyChange("format", old, format); //$NON-NLS-1$
     }
     
     /** Creates new VResult object.

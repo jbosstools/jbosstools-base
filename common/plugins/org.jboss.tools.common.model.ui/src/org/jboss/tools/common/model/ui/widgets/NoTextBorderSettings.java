@@ -18,6 +18,6 @@ public class NoTextBorderSettings extends DefaultSettings {
 
 	public NoTextBorderSettings() {
 		super();
-		put("Text.border", (Object)null);
+		put("Text.border", (Object)null); //$NON-NLS-1$
 	}
 }

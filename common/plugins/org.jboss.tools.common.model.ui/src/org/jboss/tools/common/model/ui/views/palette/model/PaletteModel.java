@@ -27,15 +27,15 @@ import org.jboss.tools.common.model.ui.views.palette.editor.*;
 import org.jboss.tools.common.model.ui.util.ModelUtilities;
 
 public class PaletteModel {
-	static String SUB_GROUP_ELEMENT_TYPE = "sub-group";
-	static String GROUP_ELEMENT_TYPE = "group";
+	static String SUB_GROUP_ELEMENT_TYPE = "sub-group"; //$NON-NLS-1$
+	static String GROUP_ELEMENT_TYPE = "group"; //$NON-NLS-1$
 	
 	private static PaletteModel instance = null;
 	private static Object monitor = new Object();
 
 	private PaletteEditor editor = new PaletteEditor();
 
-	private static final URL BASE_URL = ModelUIPlugin.getDefault().getBundle().getEntry("/");
+	private static final URL BASE_URL = ModelUIPlugin.getDefault().getBundle().getEntry("/"); //$NON-NLS-1$
 	private IPaletteNode root = null;
 
 	private PaletteModel() {
@@ -80,12 +80,12 @@ public class PaletteModel {
 	}
 	
 	private void createTab(XModelObject xtab) {
-		if (!"yes".equals(xtab.getAttributeValue("hidden"))) {
-			IPaletteNode tab = addTab(xtab, xtab.getAttributeValue("name"));
+		if (!"yes".equals(xtab.getAttributeValue("hidden"))) { //$NON-NLS-1$ //$NON-NLS-2$
+			IPaletteNode tab = addTab(xtab, xtab.getAttributeValue("name")); //$NON-NLS-1$
 	
 			for (int j = 0; j < xtab.getChildren().length; j++) {
 				XModelObject xelem = xtab.getChildAt(j);
-				if (xelem.getAttributeValue("element type").equals("macro")) {
+				if (xelem.getAttributeValue("element type").equals("macro")) { //$NON-NLS-1$ //$NON-NLS-2$
 					createElem(tab, xelem, true);
 				}
 			}
@@ -103,7 +103,7 @@ public class PaletteModel {
 	}
 
 	public ImageDescriptor createImageDescriptor(String fileName) {
-		String imagePath = "images/xstudio/palette/";
+		String imagePath = "images/xstudio/palette/"; //$NON-NLS-1$
 		try {
 			URL url = new URL(BASE_URL, imagePath + fileName);
 			return ImageDescriptor.createFromURL(url);
@@ -116,7 +116,7 @@ public class PaletteModel {
 	private XModelObject[] findXObjects(XModelObject root, String elementType){
 		ArrayList<XModelObject> v = new ArrayList<XModelObject>();
 		for (int i = 0; i < root.getChildren().length; i++) {
-			if (root.getChildAt(i).getAttributeValue("element type").equals(elementType)) {
+			if (root.getChildAt(i).getAttributeValue("element type").equals(elementType)) { //$NON-NLS-1$
 				v.add(root.getChildAt(i));
 			}
 		}
@@ -124,7 +124,7 @@ public class PaletteModel {
 	}
 
 	private XModelObject getXModelRoot() {
-		return getXModel().getRoot("Palette");
+		return getXModel().getRoot("Palette"); //$NON-NLS-1$
 	}
 
 	public XModel getXModel() {
@@ -138,7 +138,7 @@ public class PaletteModel {
 	
 	public void runShowHideDialog() {
 		XModelObject root = getXModelRoot();
-		XActionInvoker.invoke("HiddenTabs", root, new java.util.Properties());
+		XActionInvoker.invoke("HiddenTabs", root, new java.util.Properties()); //$NON-NLS-1$
 	}
 
 	public void addModelTreeListener(XModelTreeListener listener) {

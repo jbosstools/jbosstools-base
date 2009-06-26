@@ -25,7 +25,7 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 public class XModelObjectEditor {
 	static Color DEFAULT_COLOR = new Color(null, 0, 0, 0);
 	static Color DISABLED_COLOR = new Color(null, 127, 127, 127);
-	static Image EMPTY = EclipseResourceUtil.getImage("images/actions/empty.gif");
+	static Image EMPTY = EclipseResourceUtil.getImage("images/actions/empty.gif"); //$NON-NLS-1$
 	protected XTable xtable = new XTable();
 	protected XModelObject object = null;
 	protected XAttribute[] attributes = new XAttribute[0];
@@ -62,7 +62,7 @@ public class XModelObjectEditor {
 	public Control createControl(Composite parent, int style) {
 		updateTimeStamp = -1;
 		xtable.createControl(parent, style);
-		xtable.getViewer().setColumnProperties(new String[]{"name", "value"});
+		xtable.getViewer().setColumnProperties(new String[]{"name", "value"}); //$NON-NLS-1$ //$NON-NLS-2$
 		xtable.getViewer().setCellModifier(modifier);
 		if(!viewMode) {
 			xtable.getViewer().setCellEditors(new CellEditor[]{null, new XCellEditor(xtable.getTable())});
@@ -127,7 +127,7 @@ public class XModelObjectEditor {
 				return labelText;
 
 			}
-			String v = "" + object.getAttributeValue(attributes[r].getName());
+			String v = "" + object.getAttributeValue(attributes[r].getName()); //$NON-NLS-1$
 			if(attributes[r].getConstraint() instanceof XAttributeConstraintAList) {
 				v = WizardKeys.getVisualListValue(attributes[r], v);
 			}

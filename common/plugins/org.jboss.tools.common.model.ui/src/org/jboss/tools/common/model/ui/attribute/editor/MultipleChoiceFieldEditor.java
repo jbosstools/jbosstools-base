@@ -172,7 +172,7 @@ public class MultipleChoiceFieldEditor extends ExtendedFieldEditor
 			DefaultValueAdapter a = (DefaultValueAdapter)propertyEditor.getInput();
 			a.load();
 			String newValue = (String)valueProvider.getValue();
-			valueProvider.setValue("");
+			valueProvider.setValue(""); //$NON-NLS-1$
 			resetChoices();
 			valueProvider.setValue(newValue);
 		}
@@ -211,8 +211,8 @@ public class MultipleChoiceFieldEditor extends ExtendedFieldEditor
 			ess.add(es[i]);
 		}
 		String value = (String)valueProvider.getValue();
-		if(value == null) value = "";
-		StringTokenizer st = new StringTokenizer(value, ",;");
+		if(value == null) value = ""; //$NON-NLS-1$
+		StringTokenizer st = new StringTokenizer(value, ",;"); //$NON-NLS-1$
 		String[] vs = new String[st.countTokens()];
 		Set<String> vss = new HashSet<String>();
 		for (int i = 0; i < vs.length; i++) {

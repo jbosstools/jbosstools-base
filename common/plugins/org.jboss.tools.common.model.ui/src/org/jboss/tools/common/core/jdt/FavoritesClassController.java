@@ -27,7 +27,7 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class FavoritesClassController {
 
-	private static final String FAVORITES_CLASSES_LIST 	= "JavaFavoritesFieldEditor.classes";
+	private static final String FAVORITES_CLASSES_LIST 	= "JavaFavoritesFieldEditor.classes"; //$NON-NLS-1$
 	private static final Image CLASS_ICON				= JavaPluginImages.get(JavaPluginImages.IMG_OBJS_CLASS);
 
 
@@ -37,7 +37,7 @@ public class FavoritesClassController {
 		if ((classesList==null)||(classesList.length()==0)) {
 			classesList = Messages.FavoritesClassController_defaultClasses;
 		}
-		StringTokenizer st = new StringTokenizer(classesList,",");
+		StringTokenizer st = new StringTokenizer(classesList,","); //$NON-NLS-1$
 		while (st.hasMoreTokens()) {
 			 list.add(st.nextToken());
 		}
@@ -48,7 +48,7 @@ public class FavoritesClassController {
 		StringBuffer buffer = new StringBuffer();
 		Iterator i = list.iterator();
 		while (i.hasNext()) {
-			buffer.append((String)i.next()).append(",");
+			buffer.append((String)i.next()).append(","); //$NON-NLS-1$
 		}
 		return buffer.toString();
 	}

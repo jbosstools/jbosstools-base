@@ -25,19 +25,19 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
  */
 public class Memento implements IMemento {
 	
-	private static final String MEMENTO = "M";
-	private static final String DIVIDER = ":";
-	private static final String LINE = "|";
+	private static final String MEMENTO = "M"; //$NON-NLS-1$
+	private static final String DIVIDER = ":"; //$NON-NLS-1$
+	private static final String LINE = "|"; //$NON-NLS-1$
 	
-	private static final String ARRAY = "A";
-	private static final String FLOAT = "F";
-	private static final String INTEGER = "I";
-	private static final String STRING = "S";
+	private static final String ARRAY = "A"; //$NON-NLS-1$
+	private static final String FLOAT = "F"; //$NON-NLS-1$
+	private static final String INTEGER = "I"; //$NON-NLS-1$
+	private static final String STRING = "S"; //$NON-NLS-1$
 	
 	private String id;
 	private HashMap map = new HashMap();
 	final private String type;
-	private static final String TEXT_DATA = "org.jboss.tools.common.model.ui.forms.Memento.textData.id";
+	private static final String TEXT_DATA = "org.jboss.tools.common.model.ui.forms.Memento.textData.id"; //$NON-NLS-1$
 
 
 	private Memento() {
@@ -45,7 +45,7 @@ public class Memento implements IMemento {
 	}
 	
 	public Memento(String type, String id) {
-		ModelUIPlugin.getPluginLog().logInfo("new Memento("+id+")");
+		ModelUIPlugin.getPluginLog().logInfo("new Memento("+id+")"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.id = id;
 		this.type = type;
 	}
@@ -165,7 +165,7 @@ public class Memento implements IMemento {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return super.toString()+" id="+id;
+		return super.toString()+" id="+id; //$NON-NLS-1$
 	}
 	
 	public String stringify() {

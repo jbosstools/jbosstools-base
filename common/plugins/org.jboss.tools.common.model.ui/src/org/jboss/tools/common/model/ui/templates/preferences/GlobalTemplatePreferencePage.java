@@ -23,7 +23,7 @@ import org.jboss.tools.common.model.ui.templates.configuration.*;
  */
 public class GlobalTemplatePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
    
-	public static final String GLOBAL_TEMPLATES_PREFERENCES_ID = "org.jboss.tools.common.model.ui.templates";
+	public static final String GLOBAL_TEMPLATES_PREFERENCES_ID = "org.jboss.tools.common.model.ui.templates"; //$NON-NLS-1$
 	
 	TemplateComponent templateComponent = new TemplateComponent();
 

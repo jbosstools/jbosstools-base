@@ -26,9 +26,9 @@ public class EditorPartFactory {
 		this.editorClass = editorClass;
 		this.contributorClass = contributorClass;
 		if(!IEditorPart.class.isAssignableFrom(editorClass))
-		  throw new ClassCastException("Class " + editorClass + " must be instance of org.eclipse.ui.IEditorPart");
+		  throw new ClassCastException("Class " + editorClass + " must be instance of org.eclipse.ui.IEditorPart"); //$NON-NLS-1$ //$NON-NLS-2$
 		if(!IEditorActionBarContributor.class.isAssignableFrom(contributorClass))
-		  throw new ClassCastException("Class " + contributorClass.getName() + " must be instance of org.eclipse.ui.IEditorActionBarContributor");
+		  throw new ClassCastException("Class " + contributorClass.getName() + " must be instance of org.eclipse.ui.IEditorActionBarContributor"); //$NON-NLS-1$ //$NON-NLS-2$
 		editorClass.newInstance();
 		contributorClass.newInstance();
 		id = editorClass.getName();

@@ -126,7 +126,7 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 	}
 
 	private IHyperlinkDetector getTextEditorsExtensionsHyperlinkDetector() {
-		Plugin plugin = Platform.getPlugin("org.jboss.tools.common.text.ext");
+		Plugin plugin = Platform.getPlugin("org.jboss.tools.common.text.ext"); //$NON-NLS-1$
 		return (plugin != null && plugin instanceof IAdaptable ? (IHyperlinkDetector)((IAdaptable)plugin).getAdapter(IHyperlinkDetector.class):null);
 	}
 
@@ -136,7 +136,7 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 		//and its subclasses
 		if(!(initial instanceof StructuredTextViewerConfiguration)) return null;
 		try {
-			Method m = findDeclaredMethod(initial.getClass(), "getContentAssistProcessors", new Class[]{ISourceViewer.class, String.class});
+			Method m = findDeclaredMethod(initial.getClass(), "getContentAssistProcessors", new Class[]{ISourceViewer.class, String.class}); //$NON-NLS-1$
 			if(m == null) return null;
 			m.setAccessible(true);
 			return (IContentAssistProcessor[])m.invoke(initial, new Object[]{sourceViewer, partitionType});

@@ -32,8 +32,8 @@ import org.w3c.dom.Text;
  * @author Jeremy
  */
 public class JSPForBeanIdHyperlink extends AbstractHyperlink {
-	private static final String USEBEAN_TAGNAME = "jsp:useBean";
-	private static final String ID_ATTRNAME = "id";
+	private static final String USEBEAN_TAGNAME = "jsp:useBean"; //$NON-NLS-1$
+	private static final String ID_ATTRNAME = "id"; //$NON-NLS-1$
 
 	/** 
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doHyperlink(org.eclipse.jface.text.IRegion)

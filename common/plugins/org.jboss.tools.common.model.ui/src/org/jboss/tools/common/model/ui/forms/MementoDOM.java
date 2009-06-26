@@ -26,9 +26,9 @@ import org.w3c.dom.NodeList;
 public class MementoDOM implements IMemento {
 	
 	private Element element;
-	private static final String ID = "id";
-	private static final String MEMENTO = "Memento";
-	private static final String TYPE = "type";
+	private static final String ID = "id"; //$NON-NLS-1$
+	private static final String MEMENTO = "Memento"; //$NON-NLS-1$
+	private static final String TYPE = "type"; //$NON-NLS-1$
 	private Hashtable hash = new Hashtable();
 	
 	private MementoDOM() {}
@@ -138,14 +138,14 @@ public class MementoDOM implements IMemento {
 	 * @see org.eclipse.ui.IMemento#putFloat(java.lang.String, float)
 	 */
 	public void putFloat(String key, float value) {
-		element.setAttribute(key, ""+value);
+		element.setAttribute(key, ""+value); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IMemento#putInteger(java.lang.String, int)
 	 */
 	public void putInteger(String key, int value) {
-		element.setAttribute(key, ""+value);
+		element.setAttribute(key, ""+value); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

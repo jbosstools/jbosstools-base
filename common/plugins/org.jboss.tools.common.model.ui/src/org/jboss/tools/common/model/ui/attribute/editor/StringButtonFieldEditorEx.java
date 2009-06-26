@@ -12,17 +12,16 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.text.MessageFormat;
 
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
-import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
@@ -91,14 +90,14 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 			Font font;
 			Cursor cursor;
 			if (getLabelAction()!=null) {
-				style = getSettings().getStyle("Hyperlink.Style");
+				style = getSettings().getStyle("Hyperlink.Style"); //$NON-NLS-1$
 ///				bg = parent.getBackground();
 					///getSettings().getColor("Hyperlink.Background");
-				fg = getSettings().getColor("Hyperlink.Foreground");
-				disabled = getSettings().getColor("Hyperlink.Disabled");
-				activeColor = getSettings().getColor("Hyperlink.ActiveColor");
-				font = getSettings().getFont("Hyperlink.Font");
-				cursor = getSettings().getCursor("Hyperlink.ActiveCursor");
+				fg = getSettings().getColor("Hyperlink.Foreground"); //$NON-NLS-1$
+				disabled = getSettings().getColor("Hyperlink.Disabled"); //$NON-NLS-1$
+				activeColor = getSettings().getColor("Hyperlink.ActiveColor"); //$NON-NLS-1$
+				font = getSettings().getFont("Hyperlink.Font"); //$NON-NLS-1$
+				cursor = getSettings().getCursor("Hyperlink.ActiveCursor"); //$NON-NLS-1$
 
 				if (style==SWT.DEFAULT) style = SWT.NONE;
 				SelectableFormLabel selectableLabel = new SelectableFormLabel(parent, style);
@@ -136,12 +135,12 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 				// by default
 				getLabelAction().setEnabled(Boolean.FALSE.booleanValue());
 			} else {
-				style = getSettings().getStyle("Label.Style");
+				style = getSettings().getStyle("Label.Style"); //$NON-NLS-1$
 				if (style==SWT.DEFAULT) style = SWT.NONE;
 ///				bg = parent.getBackground();
 					///getSettings().getColor("Label.Background");
-				fg = getSettings().getColor("Label.Foreground");
-				font = getSettings().getFont("Label.Font");
+				fg = getSettings().getColor("Label.Foreground"); //$NON-NLS-1$
+				font = getSettings().getFont("Label.Font"); //$NON-NLS-1$
 				label = new Label(parent, style);
 
 				label.setFont(font);
@@ -210,14 +209,14 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 			//editorDialog.create();
 			//ExtendedFieldEditor fieldEditor = propertyEditor.getFieldEditor(null);
 			DefaultValueAdapter adapter = (DefaultValueAdapter)propertyEditor.getInput();
-			String title = "Edit " + propertyEditor.getAttributeName();
+			String title = MessageFormat.format("Edit {0}", propertyEditor.getAttributeName());
 			if(adapter != null && adapter.getAttribute() != null) {
-				String key = "" + adapter.getAttribute().getModelEntity().getName() + "." + adapter.getAttribute().getName().replace(' ', '_') + ".edit";
+				String key = "" + adapter.getAttribute().getModelEntity().getName() + "." + adapter.getAttribute().getName().replace(' ', '_') + ".edit"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				String t = WizardKeys.getLabelText(key);
 				if(t != null) {
 					title = t;
 				} else {
-					title = "Edit " + WizardKeys.getAttributeDisplayName(adapter.getAttribute(), true);
+					title = MessageFormat.format("Edit {0}", WizardKeys.getAttributeDisplayName(adapter.getAttribute(), true));
 				}
 			}
 			editorDialog.create();
@@ -234,7 +233,7 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 		} else {
 			java.beans.PropertyChangeEvent event = new java.beans.PropertyChangeEvent(this, BUTTON_SELECTED, Boolean.TRUE, Boolean.FALSE);
 			firePropertyChange(event);
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 
@@ -326,7 +325,7 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 		if (IPropertyEditor.VALUE.equals(evt.getPropertyName())) {
 			Object v = evt.getNewValue();
 			valueProvider.removeValueChangeListener(this);
-			this.setStringValue((v == null) ? "" : v.toString());
+			this.setStringValue((v == null) ? "" : v.toString()); //$NON-NLS-1$
 			valueProvider.addValueChangeListener(this);
 		}
 	}
@@ -379,7 +378,7 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 			}
 			if(o == null) return false;
 			String entity = o.getModelEntity().getName();
-			if(entity.indexOf("Jar") >= 0) return true;
+			if(entity.indexOf("Jar") >= 0) return true; //$NON-NLS-1$
 		}
 		return false;
 	}

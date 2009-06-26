@@ -28,17 +28,17 @@ public class VerifyRuleSetHandler extends VerifyHandler {
 		VModel vmodel = VModelFactory.getModel(object.getModel());
         VObject vobject = vmodel.getObjectByPath(object.getPath());
         VRule[] rules = vobject.getEntity().getRules();
-        object.getModel().getOut().println(ruleSet.getName()+":");
+        object.getModel().getOut().println(ruleSet.getName()+":"); //$NON-NLS-1$
         for (int i = 0; i < rules.length; i++) {
             VRule rule = rules[i];
             VAction vaction = rule.getAction();
             if (!rule.isEnabled() || rule.getRuleSet() != ruleSet || vaction == null) continue;
             VResult[] results = vaction.check(vobject);
             if (results == null || results.length == 0) {
-                object.getModel().getOut().println(rule.getName()+": OK");
+                object.getModel().getOut().println(rule.getName()+": OK"); //$NON-NLS-1$
             } else {
                 for (int j = 0; j < results.length; j++) {
-                    object.getModel().getOut().println(rule.getName()+": "+results[j].getMessage());
+                    object.getModel().getOut().println(rule.getName()+": "+results[j].getMessage()); //$NON-NLS-1$
                 }
             }
             mergeResults(object.getModel(), rule, vobject, results);

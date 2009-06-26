@@ -128,7 +128,7 @@ abstract public class JumpToHyperlink extends AbstractHyperlink {
 				if (!(list.item(i) instanceof IDOMElement))
 					continue;
 				IDOMElement element = (IDOMElement)list.item(i);
-				String currentAxis = XMLRootHyperlinkPartitioner.computeAxis(getDocument(), element.getStartOffset()) + "/";
+				String currentAxis = XMLRootHyperlinkPartitioner.computeAxis(getDocument(), element.getStartOffset()) + "/"; //$NON-NLS-1$
 				currentAxis  = currentAxis.toLowerCase();
 				
 				if (currentAxis.endsWith(requiredAxis)) {

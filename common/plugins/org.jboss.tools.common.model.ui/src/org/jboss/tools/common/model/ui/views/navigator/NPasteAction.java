@@ -25,6 +25,6 @@ public class NPasteAction extends NSelectionAction {
 	}
 
 	protected String getActionPath() {
-		return "CopyActions.Paste";
+		return "CopyActions.Paste"; //$NON-NLS-1$
 	}
 }

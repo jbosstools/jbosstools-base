@@ -60,7 +60,7 @@ class JavaAdapter {
         try {
             javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
         } catch (CoreException e) {
-        	ModelUIPlugin.getPluginLog().logError("Cannot find Java Project Nature.", e);
+        	ModelUIPlugin.getPluginLog().logError("Cannot find Java Project Nature.", e); //$NON-NLS-1$
 			return null;
         }
 		IResource r = EclipseResourceUtil.getJavaSourceRoot(project);
@@ -78,19 +78,19 @@ class JavaAdapter {
 		}
 		packageName = null;
 		String fullClassName = null;
-		if (name == null) name = "";
-		fullClassName = name.replace('.', '/') + ".java";
+		if (name == null) name = ""; //$NON-NLS-1$
+		fullClassName = name.replace('.', '/') + ".java"; //$NON-NLS-1$
 		if (name.lastIndexOf('.') > 0) {
 			className = name.substring(name.lastIndexOf('.') + 1);
 			packageName = name.substring(0,name.lastIndexOf('.'));
 		} else {
 			className = name; 
-			packageName = "";
+			packageName = ""; //$NON-NLS-1$
 		}
         try {
             javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
         } catch (CoreException e) {
-        	ModelUIPlugin.getPluginLog().logError("Cannot find Java Project Nature.", new Exception());
+        	ModelUIPlugin.getPluginLog().logError("Cannot find Java Project Nature.", new Exception()); //$NON-NLS-1$
 			return;
         }
         
@@ -116,7 +116,7 @@ class JavaAdapter {
     }	    
     
     public String getSuperClass() {
-        if (superClass==null || superClass.length()==0) superClass = "java.lang.Object";
+        if (superClass==null || superClass.length()==0) superClass = "java.lang.Object"; //$NON-NLS-1$
         return superClass;
     }
     public void setSuperClass(String superClass) {

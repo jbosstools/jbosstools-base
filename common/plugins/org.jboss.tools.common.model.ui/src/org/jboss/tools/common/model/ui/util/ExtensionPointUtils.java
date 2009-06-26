@@ -23,7 +23,7 @@ public class ExtensionPointUtils {
 	public static INewWizard findNewWizardsItem(String pluginId, String wizardId) {
 		Platform.getBundle(pluginId);
 		try	{
-			return (INewWizard)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.newWizards", wizardId);
+			return (INewWizard)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.newWizards", wizardId); //$NON-NLS-1$
 		} catch (CoreException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}
@@ -33,7 +33,7 @@ public class ExtensionPointUtils {
 	public static IImportWizard findImportWizardsItem(String pluginId, String wizardId) {
 		Platform.getBundle(pluginId);
 		try	{
-			return (IImportWizard)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.importWizards", wizardId);
+			return (IImportWizard)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.importWizards", wizardId); //$NON-NLS-1$
 		} catch (CoreException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}
@@ -44,7 +44,7 @@ public class ExtensionPointUtils {
 	public static IObjectActionDelegate findPopupMenusObjectAction(String pluginId, String actionId) {
 		Platform.getBundle(pluginId);
 		try	{
-			return (IObjectActionDelegate)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.popupMenus", actionId);
+			return (IObjectActionDelegate)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.popupMenus", actionId); //$NON-NLS-1$
 		} catch (CoreException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}

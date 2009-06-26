@@ -29,7 +29,7 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 	protected CheckTreeProvider provider = new CheckTreeProvider();
 	protected TreeItemSelectionManager treeSelectionManager;
 	protected String[][] vs = new String[0][];
-	CheckObject object = new CheckObject(null, new String[]{"", "yes"});
+	CheckObject object = new CheckObject(null, new String[]{"", "yes"}); //$NON-NLS-1$
 	int expandingLevel = 2;
 	
 	public AbstractTreeWizardView() {
@@ -53,8 +53,8 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 	public void setObject(Object data) {
 		super.setObject(data);
 		Properties p = (Properties)data;
-		vs = (String[][])p.get("data");
-		String s = p.getProperty("expandingLevel");
+		vs = (String[][])p.get("data"); //$NON-NLS-1$
+		String s = p.getProperty("expandingLevel"); //$NON-NLS-1$
 		if(s != null && s.length() > 0) try {
 			expandingLevel = Integer.parseInt(s);
 		} catch (NumberFormatException e) {
@@ -64,7 +64,7 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 	}
 	
 	void makeObject() {
-		object = new CheckObject(null, new String[]{"", "no"});
+		object = new CheckObject(null, new String[]{"", "no"}); //$NON-NLS-1$
 		provider.setObject(object);
 		for (int i = 0; i < vs.length; i++) {
 			String path = vs[i][0];
@@ -248,8 +248,8 @@ class CheckObject {
 }
 
 class CheckTreeProvider extends LabelProvider implements ITreeContentProvider, ILabelProvider, IColorProvider {
-	public Image IMAGE_ENABLED = EclipseResourceUtil.getImage("images/common/check.gif");
-	public Image IMAGE_DISABLED = EclipseResourceUtil.getImage("images/common/uncheck.gif");
+	public Image IMAGE_ENABLED = EclipseResourceUtil.getImage("images/common/check.gif"); //$NON-NLS-1$
+	public Image IMAGE_DISABLED = EclipseResourceUtil.getImage("images/common/uncheck.gif"); //$NON-NLS-1$
 	protected CheckObject object = null;
 	
 	public CheckObject getObject() {

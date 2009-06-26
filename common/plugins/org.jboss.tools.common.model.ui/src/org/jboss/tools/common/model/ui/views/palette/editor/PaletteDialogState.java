@@ -61,8 +61,8 @@ public class PaletteDialogState {
 		if(es == null || es.length < 2) {
 			XModel model = PreferenceModelUtilities.getPreferenceModel();
 			es = new Object[2];
-			es[0] = model.getByPath("XStudio");
-			es[1] = model.getByPath("XStudio/Palette"); 
+			es[0] = model.getByPath("XStudio"); //$NON-NLS-1$
+			es[1] = model.getByPath("XStudio/Palette");  //$NON-NLS-1$
 		}
 		dialog.treeViewer.setExpandedElements(es);
 	}
@@ -76,7 +76,7 @@ public class PaletteDialogState {
 	}
 	
 	void loadSelection() {
-		if(selected == null) selected = PreferenceModelUtilities.getPreferenceModel().getByPath("XStudio/Palette"); 
+		if(selected == null) selected = PreferenceModelUtilities.getPreferenceModel().getByPath("XStudio/Palette");  //$NON-NLS-1$
 		dialog.treeViewer.setSelection(new StructuredSelection(selected), true);
 		dialog.objectEditor.setModelObject((XModelObject)selected);
 	}

@@ -35,6 +35,6 @@ public class DefaultXModelObjectForm extends DefaultFormContainer {
 		//this.addForm(childEditorForm);
 		//childEditorForm.setParent(this);
 
-		this.setHeadingText("");
+		this.setHeadingText(""); //$NON-NLS-1$
 	}
 }

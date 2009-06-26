@@ -42,7 +42,7 @@ public class ExpandableForm extends DefaultForm {
 	private boolean collapsable = true;
 	private boolean collapsed = false;
 	private Composite control;
-	private static final String COLLAPSED_ID = "collapsed";
+	private static final String COLLAPSED_ID = "collapsed"; //$NON-NLS-1$
 	
 	protected Section section;
 	
@@ -79,7 +79,7 @@ public class ExpandableForm extends DefaultForm {
 		//section = toolkit.createSection(parent, ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED|ExpandableComposite.TITLE_BAR);
 		// ExpandableComposite.TITLE_BAR option results for the tree flicking in "Hibernate Configuration 3.0 XML Editor"
 		section = toolkit.createSection(parent, ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED|ExpandableComposite.SHORT_TITLE_BAR);
-		section.setText("" + getHeadingText());
+		section.setText("" + getHeadingText()); //$NON-NLS-1$
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | /*GridData.FILL_VERTICAL |*/ GridData.VERTICAL_ALIGN_BEGINNING));
 		toolkit.adapt(section);
 		section.setBackground(parent.getBackground());
@@ -182,7 +182,7 @@ public class ExpandableForm extends DefaultForm {
 	}
 
 	public void store(IMemento memento) {
-		memento.putString(COLLAPSED_ID, ""+isCollapsed());
+		memento.putString(COLLAPSED_ID, ""+isCollapsed()); //$NON-NLS-1$
 	}
 
 }

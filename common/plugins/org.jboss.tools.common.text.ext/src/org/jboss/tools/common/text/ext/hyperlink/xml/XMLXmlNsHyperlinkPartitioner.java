@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
  * @author Jeremy
  */
 public class XMLXmlNsHyperlinkPartitioner extends AbstractHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
-	public static final String XML_XMLNS_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_XMLNS";
+	public static final String XML_XMLNS_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_XMLNS"; //$NON-NLS-1$
 
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
@@ -44,8 +44,8 @@ public class XMLXmlNsHyperlinkPartitioner extends AbstractHyperlinkPartitioner i
 			IDOMAttr xmlnsAttr = (IDOMAttr)n;
 			if (xmlnsAttr.getName() == null || 
 //					(!xmlnsAttr.getName().equals("xmlns") &&
-					(!xmlnsAttr.getName().startsWith("xmlns:") &&
-					!xmlnsAttr.getName().endsWith(":schemaLocation")
+					(!xmlnsAttr.getName().startsWith("xmlns:") && //$NON-NLS-1$
+					!xmlnsAttr.getName().endsWith(":schemaLocation") //$NON-NLS-1$
 					)) return null;
 			String xmlns = xmlnsAttr.getValueRegionText();
 			String axis = getAxis(document, superRegion);
@@ -76,9 +76,9 @@ public class XMLXmlNsHyperlinkPartitioner extends AbstractHyperlinkPartitioner i
 			if (!(n instanceof IDOMAttr)) return false; 
 			IDOMAttr xmlnsAttr = (IDOMAttr)n;
 			if (xmlnsAttr.getName() == null || 
-					(!xmlnsAttr.getName().equals("xmlns") &&
-					!xmlnsAttr.getName().startsWith("xmlns:") &&
-					!xmlnsAttr.getName().endsWith(":schemaLocation")
+					(!xmlnsAttr.getName().equals("xmlns") && //$NON-NLS-1$
+					!xmlnsAttr.getName().startsWith("xmlns:") && //$NON-NLS-1$
+					!xmlnsAttr.getName().endsWith(":schemaLocation") //$NON-NLS-1$
 					)) return false;
 			Element rootElement = xmlnsAttr.getOwnerElement();
 			if(!(rootElement instanceof IDOMElement)) return false;

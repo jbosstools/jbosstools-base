@@ -36,7 +36,7 @@ public class DefaultTreeSelectionContentAssistProvider implements IAttributeCont
 			return false;
 		}
 		String editor = attribute.getEditor().getName();
-		return editor != null && editor.startsWith("Tree");
+		return editor != null && editor.startsWith("Tree"); //$NON-NLS-1$
 	}
 
 	void addAttributeValueProposals(List<IContentProposal> proposalsList, String text, int offset) {
@@ -75,7 +75,7 @@ public class DefaultTreeSelectionContentAssistProvider implements IAttributeCont
 		String value = tree.getValue(object);
 		if(value != null && value.startsWith(startText)) {
 			if(value.length() > 0) {
-				if(value.equals(startText) && value.endsWith("/")) {
+				if(value.equals(startText) && value.endsWith("/")) { //$NON-NLS-1$
 					//skip this value 
 				} else {
 					map.put(value, EclipseResourceUtil.getImage(object));

@@ -168,7 +168,7 @@ public class DefaultEditorPart extends EditorPart implements ITextEditor, ITextO
 
 	public void doOperation(int operation) {
 		if (operation>actionMapping.size()) {
-			ModelUIPlugin.getPluginLog().logError(new IllegalArgumentException("Can not find global action with index: "+operation));
+			ModelUIPlugin.getPluginLog().logError(new IllegalArgumentException("Can not find global action with index: "+operation)); //$NON-NLS-1$
 		} else {
 			String globalAction = (String)actionMapping.get(operation);
 			this.doGlobalAction(globalAction);

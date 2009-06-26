@@ -127,7 +127,7 @@ public class XModelObjectSelectionProvider implements ISelectionProvider, ISelec
 			Object object = iterator.next();
 			if (object instanceof XModelObject) {
 				XModelObject xmo = (XModelObject)object;
-				if ("FileJAVA".equals(xmo.getModelEntity().getName())) {
+				if ("FileJAVA".equals(xmo.getModelEntity().getName())) { //$NON-NLS-1$
 					Object adapter = xmo.getAdapter(ICompilationUnit.class);
 					if(adapter != null) adaptedObjects.add(adapter);
 				} else {

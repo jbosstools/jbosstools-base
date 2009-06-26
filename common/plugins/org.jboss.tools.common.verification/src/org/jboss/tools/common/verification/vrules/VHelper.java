@@ -35,7 +35,7 @@ public class VHelper {
 		if(managerModel == null) {
 			managerModel = mgr;
 		} else if(managerModel != mgr) {
-			VerificationPlugin.getPluginLog().logInfo("Warning: VManager already exists.");
+			VerificationPlugin.getPluginLog().logInfo("Warning: VManager already exists."); //$NON-NLS-1$
 		}
 	}
 

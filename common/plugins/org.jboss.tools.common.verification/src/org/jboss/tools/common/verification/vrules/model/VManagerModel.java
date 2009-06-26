@@ -50,9 +50,9 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
         manager = new VManagerImpl();
         manager.setModel(new VModelImpl(getModel()));
         VHelper.setManager(this);
-        manager.setMessageFormat(new VMessageFormat(getBundle(getAttributeValue("bundle")).getString(getAttributeValue("format id"))));
+        manager.setMessageFormat(new VMessageFormat(getBundle(getAttributeValue("bundle")).getString(getAttributeValue("format id")))); //$NON-NLS-1$ //$NON-NLS-2$
         manager.setRuleSets(getRuleSets());
-    	String s = getAttributeValue("minimum significance");
+    	String s = getAttributeValue("minimum significance"); //$NON-NLS-1$
         try {
         	if(s != null && s.length() > 0) {
         		manager.setMinSignificance(Integer.parseInt(s));
@@ -60,7 +60,7 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
         } catch (NumberFormatException e) {
         	ModelPlugin.getPluginLog().logError(e);
         }
-        developer = "developer".equals(getAttributeValue("mode"));
+        developer = "developer".equals(getAttributeValue("mode")); //$NON-NLS-1$ //$NON-NLS-2$
         manager.addPropertyChangeListener(this);
     }
     
@@ -68,13 +68,13 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
     
     private ResourceBundle getBundle(String baseName) {
         if (baseName == null || baseName.length() == 0) return null;
-        if("null".equals(bundles.get(baseName))) return null;
+        if("null".equals(bundles.get(baseName))) return null; //$NON-NLS-1$
         ResourceBundle bundle = (ResourceBundle)bundles.get(baseName);
         if(bundle != null) {
         	return bundle;
         }
         bundle = ResourceBundle.getBundle(baseName);
-        Object bo = (bundle == null) ? (Object)"null" : bundle;
+        Object bo = (bundle == null) ? (Object)"null" : bundle; //$NON-NLS-1$
         bundles.put(baseName, bo);
         return bundle;
     }
@@ -117,9 +117,9 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
     public String setAttributeValue(String name, String value) {
         String result = super.setAttributeValue(name, value);
         if (manager != null) {
-            if ("mode".equals(name)) {
-                developer = "developer".equals(getAttributeValue("mode"));
-            } else if ("minimum significance".equals(name)) {
+            if ("mode".equals(name)) { //$NON-NLS-1$
+                developer = "developer".equals(getAttributeValue("mode")); //$NON-NLS-1$ //$NON-NLS-2$
+            } else if ("minimum significance".equals(name)) { //$NON-NLS-1$
                 try {
                 	if(result != null && result.length() > 0) {
                 		manager.setMinSignificance(Integer.parseInt(result));
@@ -141,15 +141,15 @@ public class VManagerModel extends RegularObjectImpl implements PropertyChangeLi
     }
 
     public boolean isAttributeEditable(String name) {
-        return "mode".equals(name) || "minimum significance".equals(name) || super.isAttributeEditable(name);
+        return "mode".equals(name) || "minimum significance".equals(name) || super.isAttributeEditable(name); //$NON-NLS-1$ //$NON-NLS-2$
     }
     
     public void propertyChange(PropertyChangeEvent evt) {
         String name = evt.getPropertyName();
-        String value = "" + evt.getNewValue();
-        if ("minSignificance".equals(name)) {
-            if (!value.equals(getAttributeValue("minimum significance"))) {
-                setAttributeValue("minimum significance", value);
+        String value = "" + evt.getNewValue(); //$NON-NLS-1$
+        if ("minSignificance".equals(name)) { //$NON-NLS-1$
+            if (!value.equals(getAttributeValue("minimum significance"))) { //$NON-NLS-1$
+                setAttributeValue("minimum significance", value); //$NON-NLS-1$
                 setModified(true);
             }
         }

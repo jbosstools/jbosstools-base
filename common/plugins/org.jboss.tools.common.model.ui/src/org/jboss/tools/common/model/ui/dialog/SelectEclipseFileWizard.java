@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.dialog;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.List;
 import org.eclipse.core.resources.*;
@@ -39,27 +40,27 @@ public class SelectEclipseFileWizard implements SpecialWizard {
 	}
 
 	public int execute() {
-		String[] extensions = getExtensions(p.getProperty("extension"));
+		String[] extensions = getExtensions(p.getProperty("extension")); //$NON-NLS-1$
 		
 		FSDialog d = new FSDialog(
 			ServiceDialogImpl.getShell(), 
-			(IResource)p.get("root"), 
+			(IResource)p.get("root"),  //$NON-NLS-1$
 			new ArrayList(), 
 			"Select File", 
-			p.getProperty("message"),
+			p.getProperty("message"), //$NON-NLS-1$
 			extensions, 
 			getFilterName(extensions), 
-			p.getProperty("selection"));
+			p.getProperty("selection")); //$NON-NLS-1$
 
 		if(d.open() != FSDialog.OK) return 1;
 		Object result = d.getFirstResult();
-		if(result != null) p.put("result", result);
+		if(result != null) p.put("result", result); //$NON-NLS-1$
 		return 0;
 	}
 	
 	String[] getExtensions(String extension) {
-		if(extension == null || extension.length() == 0 || extension.equals("*")) return null;
-		StringTokenizer st = new StringTokenizer(extension, ",;");
+		if(extension == null || extension.length() == 0 || extension.equals("*")) return null; //$NON-NLS-1$
+		StringTokenizer st = new StringTokenizer(extension, ",;"); //$NON-NLS-1$
 		String[] r = new String[st.countTokens()];
 		for (int i = 0; i < r.length; i++) {
 			r[i] = st.nextToken().trim();
@@ -70,10 +71,10 @@ public class SelectEclipseFileWizard implements SpecialWizard {
 		if(extensions == null) return null;
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < extensions.length; i++) {
-			if(sb.length() > 0) sb.append(", ");
-			sb.append("*.").append(extensions[i]);
+			if(sb.length() > 0) sb.append(", "); //$NON-NLS-1$
+			sb.append("*.").append(extensions[i]); //$NON-NLS-1$
 		}
-		return "Show only " + sb.toString() + " files";
+		return MessageFormat.format("Show only {0} files", sb.toString());
 	}
 
 }
@@ -100,13 +101,13 @@ class FSDialog extends ElementTreeSelectionDialog {
 		return new ISelectionStatusValidator() {
 			public IStatus validate(Object[] os) {
 				if (os.length == 0) {
-					return new Status(IStatus.ERROR, "org.jboss.tools.common.model.ui", 0, "", null); //$NON-NLS-1$
+					return new Status(IStatus.ERROR, "org.jboss.tools.common.model.ui", 0, "", null); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				for (int i = 0; i < os.length; i++) {
 					if (os[i] instanceof IFile) continue;
-					return new Status(IStatus.ERROR, "org.jboss.tools.common.model.ui", 0, "", null); //$NON-NLS-1$
+					return new Status(IStatus.ERROR, "org.jboss.tools.common.model.ui", 0, "", null); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				return new Status(IStatus.OK, "org.jboss.tools.common.model.ui", 0, "", null); //$NON-NLS-1$
+				return new Status(IStatus.OK, "org.jboss.tools.common.model.ui", 0, "", null); //$NON-NLS-1$ //$NON-NLS-2$
 			}			
 		};
 	}

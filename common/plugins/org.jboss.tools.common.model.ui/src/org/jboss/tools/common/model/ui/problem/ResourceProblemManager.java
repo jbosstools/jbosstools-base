@@ -96,8 +96,8 @@ public class ResourceProblemManager extends ProblemManager {
 	}
 	
 	private Problem getProblem(IMarker marker) {
-		String message = marker.getAttribute(IMarker.MESSAGE, "");
-		String location = marker.getAttribute(IMarker.LOCATION, "");
+		String message = marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
+		String location = marker.getAttribute(IMarker.LOCATION, ""); //$NON-NLS-1$
 		int line = marker.getAttribute(IMarker.LINE_NUMBER, -1);
 		int position = marker.getAttribute(IMarker.CHAR_START, -1);
 		String type = IMarker.PROBLEM;

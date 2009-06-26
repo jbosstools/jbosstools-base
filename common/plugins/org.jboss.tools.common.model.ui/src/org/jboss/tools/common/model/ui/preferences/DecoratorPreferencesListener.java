@@ -38,7 +38,7 @@ public class DecoratorPreferencesListener implements IPropertyChangeListener {
 
 	public void propertyChange(PropertyChangeEvent event) {
 		String s = event.getProperty();
-		if(s.startsWith(DecoratorManager.EXTENSION_POINT_ID + ".")) {
+		if(s.startsWith(DecoratorManager.EXTENSION_POINT_ID + ".")) { //$NON-NLS-1$
 			if(viewer != null && viewer.getControl() != null && !viewer.getControl().isDisposed()) {
 				viewer.refresh(true);
 			}

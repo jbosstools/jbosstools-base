@@ -10,7 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute.editor;
 
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -20,8 +19,8 @@ public class CheckBoxCellEditorEx extends ComboBoxCellEditorEx {
 	protected Combo comboBox;
 	protected Composite parent;
 
-	protected String trueValue = "true";
-	protected String falseValue = "false";
+	protected String trueValue = "true"; //$NON-NLS-1$
+	protected String falseValue = "false"; //$NON-NLS-1$
 	
 	public CheckBoxCellEditorEx(Composite parent, String[] items, int style) {
 		super(parent, items, style);
@@ -36,7 +35,7 @@ public class CheckBoxCellEditorEx extends ComboBoxCellEditorEx {
 		
 		if(comboBox != null) {
 			comboBox.setItems(getTags());
-			comboBox.setText("" + value);
+			comboBox.setText("" + value); //$NON-NLS-1$
 		} 
 	}
 	protected Object doGetValue() {
@@ -49,9 +48,9 @@ public class CheckBoxCellEditorEx extends ComboBoxCellEditorEx {
 
 	private void initValue(Object value) {
 		if (value instanceof String) {
-			if ("yes".equalsIgnoreCase(value.toString()) || ("no".equalsIgnoreCase(value.toString()))) {
-				trueValue = "yes";
-				falseValue = "no";
+			if ("yes".equalsIgnoreCase(value.toString()) || ("no".equalsIgnoreCase(value.toString()))) { //$NON-NLS-1$ //$NON-NLS-2$
+				trueValue = "yes"; //$NON-NLS-1$
+				falseValue = "no"; //$NON-NLS-1$
 			}
 		}
 	}

@@ -30,7 +30,7 @@ import org.jboss.tools.common.model.markers.XMarkerManager;
 
 public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdaptable {
 
-	protected Object value = "";
+	protected Object value = ""; //$NON-NLS-1$
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	protected PropertyChangeSupport pcs2 = new PropertyChangeSupport(this);
 	
@@ -213,7 +213,7 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 
 	public String getStringValue(boolean returnNullAsEmptyString) {
 		Object o = getValue();
-		return (o != null) ? o.toString() : (returnNullAsEmptyString) ? "" : null;
+		return (o != null) ? o.toString() : (returnNullAsEmptyString) ? "" : null; //$NON-NLS-1$
 	}
 
 	public void dispose() {

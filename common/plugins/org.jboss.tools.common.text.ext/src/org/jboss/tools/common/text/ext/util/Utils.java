@@ -89,38 +89,38 @@ public class Utils {
 	}
 
 	public static String getParentAxisForNode(Document xmlDocument, Node node) {
-		String axis = "";
+		String axis = ""; //$NON-NLS-1$
 		if (node == null) return null;
 		Node parent = (node instanceof Attr)? ((Attr)node).getOwnerElement():node.getParentNode();
 		while (parent instanceof Element) {
 			String nodeName = parent.getNodeName();
-			axis = "/" + nodeName + axis;
+			axis = "/" + nodeName + axis; //$NON-NLS-1$
 			parent = parent.getParentNode();
 		}
 		if (axis == null || axis.length() == 0) 
 			axis = null;
-		return axis + "/";
+		return axis + "/"; //$NON-NLS-1$
 	}
 	
 	public static String trimFilePath(String name) {
 		if(name == null) return null;
 
-		StringTokenizer st = new StringTokenizer(name.replace('\\', '/'), "/");
-		String result = "";
+		StringTokenizer st = new StringTokenizer(name.replace('\\', '/'), "/"); //$NON-NLS-1$
+		String result = ""; //$NON-NLS-1$
 		while(st.hasMoreTokens()) {
 			String token = st.nextToken();
-			if (!".".equals(token)){
-				result += (result.length() == 0 ? token : "/" + token);
+			if (!".".equals(token)){ //$NON-NLS-1$
+				result += (result.length() == 0 ? token : "/" + token); //$NON-NLS-1$
 			}
 		}
-		if (name.startsWith("/"))
-			result = "/" + result;
+		if (name.startsWith("/")) //$NON-NLS-1$
+			result = "/" + result; //$NON-NLS-1$
 		return result;
 	}
 
 	public static IPath getRelativePath (final IPath base, final IPath path) {
 		// Make web-root path to be relative to project
-		IPath relativePath = new Path("/");
+		IPath relativePath = new Path("/"); //$NON-NLS-1$
 		String last = path.lastSegment();
 		IPath absolutePath = path.removeLastSegments(1);
 

@@ -19,7 +19,7 @@ import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
  */
 public class FilterNameHyperlink extends JumpToHyperlink {
 	protected String getDestinationAxis() {
-		return "/web-app/filter/filter-name/";
+		return "/web-app/filter/filter-name/"; //$NON-NLS-1$
 	}
 	
 	/*

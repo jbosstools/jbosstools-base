@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.verification.ui.vrules.wizard.runtime2;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
@@ -19,6 +20,7 @@ import org.jboss.tools.common.model.ui.wizards.query.*;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 
+import org.jboss.tools.common.verification.ui.Messages;
 import org.jboss.tools.common.verification.ui.vrules.wizard.runtime.VTaskListenerSafeImpl;
 import org.jboss.tools.common.meta.key.*;
 import org.jboss.tools.common.model.*;
@@ -27,6 +29,9 @@ import org.jboss.tools.common.verification.vrules.layer.VModelFactory;
 import org.jboss.tools.common.verification.vrules.layer.VObjectImpl;
 
 public class VerifyWizardView extends AbstractQueryWizardView {
+	static final String COMMAND_CANCEL = "Cancel"; //$NON-NLS-1$
+	static final String COMMAND_RUN = "Run"; //$NON-NLS-1$
+	static final String COMMAND_CLOSE = "Close"; //$NON-NLS-1$
 	protected XModel model;
 	protected VObject vobject;
 	protected VTask task = null;
@@ -35,9 +40,9 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 	ProgressMonitorPart progressMonitorPart;
 
 	public VerifyWizardView() {
-		this.setMessage(WizardKeys.getString("VerifyWizardView.Message"));
-		this.setTitle(WizardKeys.getString("VerifyWizardView.Title"));
-		this.setWindowTitle(WizardKeys.getString("VerifyWizardView.WindowTitle"));
+		this.setMessage(WizardKeys.getString("VerifyWizardView.Message")); //$NON-NLS-1$
+		this.setTitle(WizardKeys.getString("VerifyWizardView.Title")); //$NON-NLS-1$
+		this.setWindowTitle(WizardKeys.getString("VerifyWizardView.WindowTitle")); //$NON-NLS-1$
 	}
 
 	private VManager getRulesManager() {
@@ -54,7 +59,7 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 		public void shellActivated(ShellEvent e) {
 			if(activated) return;
 			activated = true;
-			action("Run");
+			action(COMMAND_RUN);
 		}
 	}
 	
@@ -83,7 +88,7 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 	public void setObject(Object data) {
 		Properties p = findProperties(data);
 		if(p != null) {
-			String key = p.getProperty("help");
+			String key = p.getProperty("help"); //$NON-NLS-1$
 			setHelpKey(key);
 		}
 		Object[] os = (Object[])data;
@@ -104,16 +109,19 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 	
 
 	public void action(String command) {
-		if("Run".equals(command)) {
+		if(COMMAND_RUN.equals(command)) {
 			if(task != null) task.removeTaskListener(listener);
 			taskListener.setModel(model);
 			task = getRulesManager().createTask(vobject);
 			taskListener.setTask(task);
 			task.addTaskListener(listener);
-			progressMonitorPart.beginTask("Verify " + ((VObjectImpl)vobject).getModelObject().getPresentationString(), PROGRESS_TOTAL_SIZE);
+			progressMonitorPart.beginTask(
+					MessageFormat.format(Messages.VerifyWizardView_VerifyTask, 
+							((VObjectImpl)vobject).getModelObject().getPresentationString()), 
+							PROGRESS_TOTAL_SIZE);
 			progressMonitorPart.worked(PROGRESS_INIT_SIZE);
 			task.start();
-		} else if("Cancel".equals(command)) {
+		} else if(COMMAND_CANCEL.equals(command)) {
 			if(task != null) {
 				task.removeTaskListener(listener);
 				task.stop();
@@ -121,7 +129,7 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 			}
 			setCode(0);
 			dispose();
-		} else if("Close".equals(command)) {
+		} else if(COMMAND_CLOSE.equals(command)) {
 			setCode(0);
 			dispose();
 		}		

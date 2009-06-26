@@ -30,7 +30,7 @@ public class ProblemDialog extends IconAndMessageDialog {
 	public ProblemDialog(Shell shell, Problem error) {
 		super(shell);
 		setShellStyle(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		this.title = (error.getTitle()!=null)?error.getTitle():"";
+		this.title = (error.getTitle()!=null)?error.getTitle():""; //$NON-NLS-1$
 		this.message = error.getMessage();
 		if (error.getLine()!=Problem.NONE) this.message = this.message + " at line:" + error.getLine();
 		if (error.getColumn()!=Problem.NONE) this.message = this.message + " column:" + error.getColumn();

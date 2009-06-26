@@ -27,9 +27,9 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 public class BundleLanguagesEditor implements CommandBarListener, SelectionListener {
 	static String CREATE = "Add";
 	static String DELETE = "Delete";
-	public Image IMAGE_DELETE = EclipseResourceUtil.getImage("images/actions/delete.gif");
-	public Image IMAGE_EDIT = EclipseResourceUtil.getImage("images/actions/edit.gif");
-	public Image IMAGE_CREATE = EclipseResourceUtil.getImage("images/actions/new.gif");
+	public Image IMAGE_DELETE = EclipseResourceUtil.getImage("images/actions/delete.gif"); //$NON-NLS-1$
+	public Image IMAGE_EDIT = EclipseResourceUtil.getImage("images/actions/edit.gif"); //$NON-NLS-1$
+	public Image IMAGE_CREATE = EclipseResourceUtil.getImage("images/actions/new.gif"); //$NON-NLS-1$
 	BundleModel bundleModel;
 	protected Composite control;
 	protected ComboModel combomodel = new ComboModel();
@@ -132,13 +132,13 @@ public class BundleLanguagesEditor implements CommandBarListener, SelectionListe
 	
 	private void add() {
 		CountriesHelper.init(bundleModel.getModelObject().getModel());
-		XModelObject o = bundleModel.getModelObject().getModel().createModelObject("BundleList", null);
-		XActionInvoker.invoke("CreateActions.AddBundle", o, null);
+		XModelObject o = bundleModel.getModelObject().getModel().createModelObject("BundleList", null); //$NON-NLS-1$
+		XActionInvoker.invoke("CreateActions.AddBundle", o, null); //$NON-NLS-1$
 		XModelObject[] os = o.getChildren();
 		if(os.length == 0) return;
-		String lg = os[0].getAttributeValue("language");
-		String ct = os[0].getAttributeValue("country");
-		String locale = ((lg + ct).length() == 0) ? "" : lg + "_" + ct;
+		String lg = os[0].getAttributeValue("language"); //$NON-NLS-1$
+		String ct = os[0].getAttributeValue("country"); //$NON-NLS-1$
+		String locale = ((lg + ct).length() == 0) ? "" : lg + "_" + ct; //$NON-NLS-1$ //$NON-NLS-2$
 		bundleModel.addLocale(locale);
 		update();
 		widgetSelected(null);
@@ -159,7 +159,7 @@ public class BundleLanguagesEditor implements CommandBarListener, SelectionListe
 	public void widgetSelected(SelectionEvent e) {
 		if(lock) return;
 		Object o = combomodel.getSelectedItem();
-		String locale = (o == null) ? "" : o.toString();
+		String locale = (o == null) ? "" : o.toString(); //$NON-NLS-1$
 		bundleModel.setCurrentLocale(locale);
 		if(listener != null) listener.update();
 	}
@@ -170,7 +170,7 @@ public class BundleLanguagesEditor implements CommandBarListener, SelectionListe
 	class ComboModel extends DefaultComboModel {
 		public String getPresentation(Object object) {
 			String s = super.getPresentation(object);
-			return (s.length() == 0) ? "default" : s;
+			return (s.length() == 0) ? "default" : s; //$NON-NLS-1$
 		}		
 	}
 	
@@ -205,7 +205,7 @@ class DefaultComboModel {
 	public void setSelectedItem(Object o) {
 		if(combo == null) return;
 		int i = getIndexOf(o);
-		if(i < 0) combo.setText(""); else combo.setText(combo.getItem(i));
+		if(i < 0) combo.setText(""); else combo.setText(combo.getItem(i)); //$NON-NLS-1$
 	}
 	public Object getElementAt(int i) {
 		return (i < 0 || i >= list.size()) ? null : list.get(i);
@@ -219,7 +219,7 @@ class DefaultComboModel {
 	}
 	
 	public String getPresentation(Object object) {
-		return (object == null) ? "" : object.toString();
+		return (object == null) ? "" : object.toString(); //$NON-NLS-1$
 	}
 	
 	public void refresh() {

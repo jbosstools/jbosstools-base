@@ -26,7 +26,7 @@ import org.jboss.tools.common.text.ext.util.Utils;
  * @author Jeremy
  */
 public class JSPForBeanIdHyperlinkPartitioner extends AbstractHyperlinkPartitioner /*implements IHyperlinkPartitionRecognizer */{
-	public static final String JSP_FOR_BEAN_ID_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_FOR_BEAN_ID";
+	public static final String JSP_FOR_BEAN_ID_PARTITION = "org.jboss.tools.common.text.ext.jsp.JSP_FOR_BEAN_ID"; //$NON-NLS-1$
 
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
@@ -58,7 +58,7 @@ public class JSPForBeanIdHyperlinkPartitioner extends AbstractHyperlinkPartition
 
 	protected String getAxis(IDocument document, IHyperlinkRegion superRegion) {
 		if (superRegion.getAxis() == null || superRegion.getAxis().length() == 0) {
-			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/";
+			return JSPRootHyperlinkPartitioner.computeAxis(document, superRegion.getOffset()) + "/"; //$NON-NLS-1$
 		}
 		return superRegion.getAxis();
 	}

@@ -35,7 +35,7 @@ public class PaletteEditor {
 		if(model.getService() == null) {
 			model.setService(new ServiceDialogImpl());		
 		}
-		fireTransactionEvent("transaction_begin");
+		fireTransactionEvent("transaction_begin"); //$NON-NLS-1$
 		try {
 			XUndoManager undo = model.getUndoManager();
 			undo.beginTransaction();
@@ -50,13 +50,13 @@ public class PaletteEditor {
 		} finally {
 			if (dialog!=null) dialog.dispose();
 			dialog = null;
-			fireTransactionEvent("transaction_end");
+			fireTransactionEvent("transaction_end"); //$NON-NLS-1$
 		}
 	}
     
 	private void fireTransactionEvent(String kind) {
 		XModelImpl m = (XModelImpl)ModelUtilities.getPreferenceModel();
-		m.fireStructureChanged(m.getByPath("%Palette%"), 2, kind);
+		m.fireStructureChanged(m.getByPath("%Palette%"), 2, kind); //$NON-NLS-1$
 	}
 	
 }

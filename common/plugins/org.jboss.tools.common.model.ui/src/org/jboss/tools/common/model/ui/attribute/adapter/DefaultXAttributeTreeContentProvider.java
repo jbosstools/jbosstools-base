@@ -86,7 +86,7 @@ public class DefaultXAttributeTreeContentProvider implements ITreeContentProvide
 				//single = false;
 				String filteredTreeName = attributeConstraint.getFilteredTreeName();
 				filteredTree = this.createFilteredTree(filteredTreeName);
-				boolean hideRoot = properties != null && "true".equals(properties.get("hideRoot"));
+				boolean hideRoot = properties != null && "true".equals(properties.get("hideRoot")); //$NON-NLS-1$ //$NON-NLS-2$
 				if(hideRoot) {
 					return getChildren(filteredTree.getRoot());
 				} else {
@@ -112,7 +112,7 @@ public class DefaultXAttributeTreeContentProvider implements ITreeContentProvide
 	}
 
 	protected XFilteredTree createFilteredTree(String filteredTreeName) {
-		String classname = model.getMetaData().getMapping("FilteredTrees").getValue(filteredTreeName);
+		String classname = model.getMetaData().getMapping("FilteredTrees").getValue(filteredTreeName); //$NON-NLS-1$
 		XFilteredTree tree = (XFilteredTree)ModelFeatureFactory.getInstance().createFeatureInstance(classname);
 		if(tree == null) return null;
 		tree.setModel(model);

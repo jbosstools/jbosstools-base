@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.forms;
 
+import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -82,7 +83,7 @@ public class AnyElementForm extends ExpandableForm {
 		composite.setLayout(layout);
 		if(xmo == null) return composite;
 
-		String description = "";
+		String description = ""; //$NON-NLS-1$
 		if(description != null && description.length() > 0) {
 			Label label = new Label(composite, SWT.WRAP);
 			settings.setupControl(label);
@@ -133,7 +134,7 @@ public class AnyElementForm extends ExpandableForm {
 		String heading = "Attributes";
 		this.setHeadingText(heading);
 		if(!(model instanceof XModelObject)) {
-			ModelUIPlugin.getPluginLog().logInfo( "Error to create form " + heading + ". Model object cannot be null.", new Exception());
+			ModelUIPlugin.getPluginLog().logInfo( "Error to create form " + heading + ". Model object cannot be null.", new Exception()); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		this.xmo = (XModelObject)model;
@@ -159,14 +160,14 @@ public class AnyElementForm extends ExpandableForm {
 		if(xmo == null) {
 			tableProvider.attributes = null;
 		} else {
-			String attrs = xmo.getAttributeValue("attributes");
-			StringTokenizer st = new StringTokenizer(attrs, ";");
+			String attrs = xmo.getAttributeValue("attributes"); //$NON-NLS-1$
+			StringTokenizer st = new StringTokenizer(attrs, ";"); //$NON-NLS-1$
 			int length = st.countTokens();
 			String[][] as = new String[length][2];
 			for (int i = 0; i < length; i++) {
 				String t = st.nextToken();
 				int k = t.indexOf('=');
-				String n = k < 0 ? "" : t.substring(0, k);
+				String n = k < 0 ? "" : t.substring(0, k); //$NON-NLS-1$
 				String v = t.substring(k + 1);
 				as[i][0] = n;
 				as[i][1] = v;
@@ -207,14 +208,14 @@ public class AnyElementForm extends ExpandableForm {
 	class CellModifier implements ICellModifier {
 
 		public boolean canModify(Object element, String property) {
-			if(!"value".equals(property)) return false;
+			if(!"value".equals(property)) return false; //$NON-NLS-1$
 			return xmo != null && xmo.isObjectEditable() && getColumn(property) >= 0;
 		}
 
 		public Object getValue(Object element, String property) {
 			int r = ((Integer)element).intValue();
 			int c = getColumn(property);
-			return (c < 0) ? "" : tableProvider.getValueAt(r, c);
+			return (c < 0) ? "" : tableProvider.getValueAt(r, c); //$NON-NLS-1$
 		}
 		
 		int getColumn(String property) {
@@ -230,7 +231,7 @@ public class AnyElementForm extends ExpandableForm {
 			if(c < 0) return;
 			String oldValue = tableProvider.getValueAt(r, c);
 			if(oldValue != null && oldValue.equals(value)) return;
-			tableProvider.attributes[r][c] = "" + value;
+			tableProvider.attributes[r][c] = "" + value; //$NON-NLS-1$
 			try { 
 				commitAttributes();
 			} catch (XModelException e) {
@@ -251,7 +252,7 @@ public class AnyElementForm extends ExpandableForm {
 			sb.append(n).append('=').append(v);
 		}
 		String v = sb.toString();
-		xmo.getModel().editObjectAttribute(xmo, "attributes", v);		
+		xmo.getModel().editObjectAttribute(xmo, "attributes", v);		 //$NON-NLS-1$
 	}
 	
 	class CommandBarListenerImpl implements CommandBarListener {
@@ -282,7 +283,7 @@ public class AnyElementForm extends ExpandableForm {
 	}
 	
 	void add() {
-		XActionInvoker.invoke("CreateActions.CreateAttribute", xmo, new Properties());
+		XActionInvoker.invoke("CreateActions.CreateAttribute", xmo, new Properties()); //$NON-NLS-1$
 	}
 	
 	void edit() {
@@ -291,8 +292,8 @@ public class AnyElementForm extends ExpandableForm {
 		if(i < 0) return;
 		String name = tableProvider.getValueAt(i, 0);
 		Properties p = new Properties();
-		p.setProperty("name", name);
-		XActionInvoker.invoke("AnyElementNew", "EditActions.EditAttribute", xmo, p);
+		p.setProperty("name", name); //$NON-NLS-1$
+		XActionInvoker.invoke("AnyElementNew", "EditActions.EditAttribute", xmo, p); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	void delete() throws XModelException {
@@ -303,9 +304,9 @@ public class AnyElementForm extends ExpandableForm {
 		ServiceDialog d = xmo.getModel().getService();
 		String message = null;
 		if(is.length == 1) {
-			message = "Delete attribute " + name + "?";
+			message = MessageFormat.format("Delete attribute {0}?", name);
 		} else {
-			message = "Delete " + is.length + " attributes?";
+			message = MessageFormat.format("Delete {0} attributes?", is.length);
 		}
 		int q = d.showDialog("Delete", message, new String[]{"OK", "Cancel"}, null, ServiceDialog.QUESTION);
 		if(q != 0) return;
@@ -321,7 +322,7 @@ public class AnyElementForm extends ExpandableForm {
 			sb.append(n).append('=').append(v);
 		}
 		String v = sb.toString();
-		xmo.getModel().editObjectAttribute(xmo, "attributes", v);		
+		xmo.getModel().editObjectAttribute(xmo, "attributes", v);		 //$NON-NLS-1$
 	}
 
 }

@@ -87,7 +87,7 @@ public class TreeViewerModelListenerImpl implements XModelTreeListener {
 //				}
 		} else if(event.kind() == XModelTreeEvent.CHILD_REMOVED) {
 			if(selected != null && !selected.isActive() && 
-			event.getInfo().toString().endsWith("/" + selected.getPathPart())) {
+			event.getInfo().toString().endsWith("/" + selected.getPathPart())) { //$NON-NLS-1$
 				setSelection(event.getModelObject());
 			}
 		}

@@ -97,7 +97,7 @@ public class JavaFavoritesFieldEditor  extends ExtendedFieldEditor implements IF
 		
 		// label
 		classListLabel = new Label(composite, SWT.NONE);
-		classListLabel.setText(EditorMessages.getString("JavaFavoritesChoicerFieldEditor.ClassesList.Label"));
+		classListLabel.setText(EditorMessages.getString("JavaFavoritesChoicerFieldEditor.ClassesList.Label")); //$NON-NLS-1$
 		
 		// list
 		classList = createList(composite);

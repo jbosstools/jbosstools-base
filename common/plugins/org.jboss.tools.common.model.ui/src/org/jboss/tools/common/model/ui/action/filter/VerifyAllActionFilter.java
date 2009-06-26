@@ -14,7 +14,7 @@ import org.jboss.tools.common.model.XModelObject;
 
 public class VerifyAllActionFilter extends VerifyActionFilter {
 	public boolean isEnabled(XModelObject object, String info) {
-		if(object != null) object = object.getModel().getByPath("FileSystems"); 
+		if(object != null) object = object.getModel().getByPath("FileSystems");  //$NON-NLS-1$
 		return super.isEnabled(object, info);
 	}
 

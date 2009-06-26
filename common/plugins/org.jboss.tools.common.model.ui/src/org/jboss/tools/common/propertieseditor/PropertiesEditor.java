@@ -93,9 +93,9 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	IEditorSite site;
 	FPTableHelper pHelper;
 	
-	private QualifiedName filterOpenedId = new QualifiedName("", "filterOpened"); //$NON-NLS-1$
-	private QualifiedName nameFilterId = new QualifiedName("", "nameFilter"); //$NON-NLS-1$
-	private QualifiedName valueFilterId = new QualifiedName("", "valueFilter"); //$NON-NLS-1$
+	private QualifiedName filterOpenedId = new QualifiedName("", "filterOpened"); //$NON-NLS-1$ //$NON-NLS-2$
+	private QualifiedName nameFilterId = new QualifiedName("", "nameFilter"); //$NON-NLS-1$ //$NON-NLS-2$
+	private QualifiedName valueFilterId = new QualifiedName("", "valueFilter"); //$NON-NLS-1$ //$NON-NLS-2$
 	private boolean filterOpened = false;
 	
 	
@@ -194,17 +194,17 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 
 	protected Color getItemColor(int i) {
 		XModelObject o = helper.getModelObject(i);
-		boolean disabled = "no".equals(o.getAttributeValue(ATTR_ENABLED));
+		boolean disabled = "no".equals(o.getAttributeValue(ATTR_ENABLED)); //$NON-NLS-1$
 		return ((disabled) ? GREYED_COLOR : DEFAULT_COLOR);
 	}
 
 	protected String getAddActionPath() {
-		return "CreateActions.CreateProperty";
+		return "CreateActions.CreateProperty"; //$NON-NLS-1$
 	}
 
 	protected void edit() {
 		XModelObject o = helper.getModelObject(xtable.getSelectionIndex());
-		if(o != null) callAction(o, "Properties.Edit");
+		if(o != null) callAction(o, "Properties.Edit"); //$NON-NLS-1$
 	}
 	
 	public class TMenuInvoker extends XMenuInvoker {
@@ -279,11 +279,11 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	void loadPreferences(IFile f) {
 		if(f == null || !f.exists()) return;
 		try {
-			filterOpened = "true".equals(f.getPersistentProperty(filterOpenedId));
+			filterOpened = "true".equals(f.getPersistentProperty(filterOpenedId)); //$NON-NLS-1$
 			pHelper.nameFilter = f.getPersistentProperty(nameFilterId);
 			pHelper.valueFilter = f.getPersistentProperty(valueFilterId);
-			if(pHelper.nameFilter == null) pHelper.nameFilter = "";
-			if(pHelper.valueFilter == null) pHelper.valueFilter = "";
+			if(pHelper.nameFilter == null) pHelper.nameFilter = ""; //$NON-NLS-1$
+			if(pHelper.valueFilter == null) pHelper.valueFilter = ""; //$NON-NLS-1$
 		} catch (CoreException e) {
 			//ignore
 		}
@@ -292,9 +292,9 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	void savePreferences(IFile f) {
 		if(f == null || !f.exists()) return;
 		try {
-			f.setPersistentProperty(filterOpenedId, "" + filterOpened);
+			f.setPersistentProperty(filterOpenedId, "" + filterOpened); //$NON-NLS-1$
 			f.setPersistentProperty(nameFilterId, pHelper.nameFilter);
-			f.setPersistentProperty(valueFilterId, "" + pHelper.valueFilter);
+			f.setPersistentProperty(valueFilterId, "" + pHelper.valueFilter); //$NON-NLS-1$
 		} catch (CoreException e) {
 			//ignore
 		}
@@ -363,7 +363,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 
 	public void doOperation(int operation) {
 		if (operation>actionMapping.size()) {
-			ModelUIPlugin.getPluginLog().logError(new IllegalArgumentException("Can not find global action with index: "+operation));
+			ModelUIPlugin.getPluginLog().logError(new IllegalArgumentException("Can not find global action with index: "+operation)); //$NON-NLS-1$
 		} else {
 			String globalAction = (String)actionMapping.get(operation);
 			doGlobalAction(globalAction);
@@ -464,8 +464,8 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 
 class FPTableHelper extends AbstractTableHelper implements PropertyChangeListener {
 	PropertiesEditor pe;
-	String nameFilter = "";
-	String valueFilter = "";
+	String nameFilter = ""; //$NON-NLS-1$
+	String valueFilter = ""; //$NON-NLS-1$
 
 	XModelObject[] filteredChildren = new XModelObject[0];
 	long ts = -1;
@@ -521,7 +521,7 @@ class FPTableHelper extends AbstractTableHelper implements PropertyChangeListene
 
 
 	public String[] getHeader() {
-		return new String[]{"name", "value"};
+		return new String[]{"name", "value"}; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -529,9 +529,9 @@ class FPTableHelper extends AbstractTableHelper implements PropertyChangeListene
 			DefaultValueAdapter a = (DefaultValueAdapter)evt.getSource();
 			String name = a.getAttribute().getName();
 			if(PropertiesEditor.ATTR_NAME.equals(name)) {
-				nameFilter = "" + evt.getNewValue();
+				nameFilter = "" + evt.getNewValue(); //$NON-NLS-1$
 			} else if(PropertiesEditor.ATTR_VALUE.equals(name)) {
-				valueFilter = "" + evt.getNewValue();
+				valueFilter = "" + evt.getNewValue(); //$NON-NLS-1$
 			}
 			applyFilters();
 			pe.refresh();

@@ -32,10 +32,10 @@ public class LayouredFormFactory extends XModelObjectFormFactory {
 	private void initialize() {
 //		String entityName = getXModelObject().getModelEntity().getName();
 		String formLayoutDataClassName = null;
-		formLayoutDataClassName = getXModelObject().getModelEntity().getProperty("formLayout");
+		formLayoutDataClassName = getXModelObject().getModelEntity().getProperty("formLayout"); //$NON-NLS-1$
 		Class formLayoutDataClass = ModelFeatureFactory.getInstance().getFeatureClass(formLayoutDataClassName);
 		try {
-			formLayoutData = (IFormLayoutData)formLayoutDataClass.getMethod("getInstance", (Class[])null).invoke(null, (Object[])null);
+			formLayoutData = (IFormLayoutData)formLayoutDataClass.getMethod("getInstance", (Class[])null).invoke(null, (Object[])null); //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		} catch (InvocationTargetException e) {
@@ -52,7 +52,7 @@ public class LayouredFormFactory extends XModelObjectFormFactory {
 		String entity = getXModelObject().getModelEntity().getName();
 		IFormData formData = formLayoutData.getFormData(entity);
 		if(formData == null) {
-			String message = "Cannot find form for entity " + entity + ".";
+			String message = "Cannot find form for entity " + entity + "."; //$NON-NLS-1$ //$NON-NLS-2$
 			ModelUIPlugin.getPluginLog().logError(message);
 		} else if(formData.getForms() != null) {
 			form = new FormContainer(formData);

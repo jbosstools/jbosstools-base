@@ -24,7 +24,7 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 public class ExtendedPropertiesEditor {
 	static Color DEFAULT_COLOR = new Color(null, 0, 0, 0);
 	static Color DISABLED_COLOR = new Color(null, 127, 127, 127);
-	static Image EMPTY = EclipseResourceUtil.getImage("images/actions/empty.gif");
+	static Image EMPTY = EclipseResourceUtil.getImage("images/actions/empty.gif"); //$NON-NLS-1$
 	protected XTable xtable = new XTable();
 	protected ExtendedProperties attributes;
 	protected ICellModifier modifier = new CellModifierImpl();
@@ -41,10 +41,10 @@ public class ExtendedPropertiesEditor {
 		stopEditing();		
 		this.attributes = attributes;
 		if(attributes != null) {
-			context.setProperty("nodeName", "" + attributes.getNodeName());
+			context.setProperty("nodeName", "" + attributes.getNodeName()); //$NON-NLS-1$ //$NON-NLS-2$
 			cellEditorProvider = attributes.createCellEditorProvider();
 			if(attributes.getNode() != null) {
-				context.put("node", attributes.getNode());
+				context.put("node", attributes.getNode()); //$NON-NLS-1$
 			}
 		}
 		if(xtable.getTable() == null || xtable.getTable().isDisposed()) return; 
@@ -62,7 +62,7 @@ public class ExtendedPropertiesEditor {
 	
 	public Control createControl(Composite parent, int style) {
 		xtable.createControl(parent, style);
-		xtable.getViewer().setColumnProperties(new String[]{"name", "value"});
+		xtable.getViewer().setColumnProperties(new String[]{"name", "value"}); //$NON-NLS-1$ //$NON-NLS-2$
 		xtable.getViewer().setCellModifier(modifier);
 		if(!readOnly) {
 			CellEditor cellEditor = (cellEditorProvider != null) 
@@ -119,7 +119,7 @@ public class ExtendedPropertiesEditor {
 
 		public String getValueAt(int r, int c) {
 			String name = attributes.getAttributes()[r];
-			return (c == 0) ? name : "" + attributes.getAttributeValue(name);
+			return (c == 0) ? name : "" + attributes.getAttributeValue(name); //$NON-NLS-1$
 		}
 
 		public Object getDataAt(int r) {
@@ -151,7 +151,7 @@ public class ExtendedPropertiesEditor {
 class CellModifierImpl implements ICellModifier {
 
 	public boolean canModify(Object element, String property) {
-		if(!"value".equals(property)) return false;
+		if(!"value".equals(property)) return false; //$NON-NLS-1$
 		AttributeWrapper v = (AttributeWrapper)element;
 		return v != null && v.attributes.isEditableAttribute(v.name);
 	}
@@ -165,7 +165,7 @@ class CellModifierImpl implements ICellModifier {
 		if(v == null || v.value == null) return;
 		String stringValue = v.value;
 		String old = v.attributes.getAttributeValue(v.name);
-		if("".equals(stringValue)) {
+		if("".equals(stringValue)) { //$NON-NLS-1$
 			if(old == null || old.length() == 0) return;
 		} else {
 			if(old != null && old.equals(stringValue)) return;
@@ -195,7 +195,7 @@ class ExtendedTextCellEditor extends TextCellEditor {
 	}
 	protected void doSetValue(Object value) {
 		wrapper = (AttributeWrapper)value;
-		super.doSetValue(wrapper == null ? "" : wrapper.attributes.getAttributeValue(wrapper.name));
+		super.doSetValue(wrapper == null ? "" : wrapper.attributes.getAttributeValue(wrapper.name)); //$NON-NLS-1$
 		setValueValid(true);
 	}
 	

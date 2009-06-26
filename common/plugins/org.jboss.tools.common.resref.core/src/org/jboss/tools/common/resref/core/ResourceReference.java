@@ -18,12 +18,14 @@ public class ResourceReference {
 	public final static int PROJECT_SCOPE = 2;
 	public final static int GLOBAL_SCOPE  = 3;
 
-	public final  static String[] SCOPE_NAMES = new String[]{"Page", "Folder", "Project","Global"};
+	// This array should not be translated: names used in  BaseAddReferenceSupport
+	public final  static String[] SCOPE_NAMES = new String[]{"Page", "Folder", "Project","Global"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	private final static String[] LOCALIZED_SCOPE_NAMES = new String[]{Messages.ResourceReference_Page, Messages.ResourceReference_Folder, Messages.ResourceReference_Project,Messages.ResourceReference_Global};
 
 	protected String location;
 	protected int scope;
 	protected int depth = 0;
-	protected String properties = "";
+	protected String properties = ""; //$NON-NLS-1$
 
 	protected boolean isGlobal = false;
 
@@ -73,6 +75,10 @@ public class ResourceReference {
 		return SCOPE_NAMES[scope];
 	}
 
+	public String getLocalizedScopeName() {
+		return LOCALIZED_SCOPE_NAMES[scope];
+	}
+
 	public void setDepth(int depth) {
 		this.depth = depth;
 	}
@@ -84,7 +90,7 @@ public class ResourceReference {
 	public String getLocationAndProperties() {
 		String v = location;
 		if(properties.length() > 0) {
-			v += "%" + properties;
+			v += "%" + properties; //$NON-NLS-1$
 		}
 		return v;
 	}

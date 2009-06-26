@@ -30,7 +30,7 @@ public class VModelImpl implements VModel {
     public VModelImpl(XModel model) {
         this.model = model;
         meta = model.getMetaData();
-        project = (IProject)model.getProperties().get("project");
+        project = (IProject)model.getProperties().get("project"); //$NON-NLS-1$
         this.entities = new HashMap<String,VEntity>();
     }
     
@@ -67,9 +67,9 @@ public class VModelImpl implements VModel {
     };
     
     public XActionListImpl createGlobalActionList(XModelEntity entity) {
-        XActionList global = (XActionList)model.getMetaData().getGlobalActions().getItem("VerifyActions");
+        XActionList global = (XActionList)model.getMetaData().getGlobalActions().getItem("VerifyActions"); //$NON-NLS-1$
         XActionListImpl entityActions = (XActionListImpl)entity.getActionList();
-        XActionListImpl verifyActions = (XActionListImpl)entityActions.getItem("VerifyActions");
+        XActionListImpl verifyActions = (XActionListImpl)entityActions.getItem("VerifyActions"); //$NON-NLS-1$
         if (verifyActions == null) {
             verifyActions = (XActionListImpl)global.copy(acceptor1);
             entityActions.addActionItem(verifyActions);
@@ -78,7 +78,7 @@ public class VModelImpl implements VModel {
     }
     
     public XActionListImpl getGlobalActionList(XModelEntity entity) {
-        XActionListImpl verifyActions = (XActionListImpl)entity.getActionList().getItem("VerifyActions");
+        XActionListImpl verifyActions = (XActionListImpl)entity.getActionList().getItem("VerifyActions"); //$NON-NLS-1$
         return verifyActions;
     }
     
@@ -124,7 +124,7 @@ public class VModelImpl implements VModel {
         XActionListImpl verifyActions = getGlobalActionList(entity);
         if (verifyActions == null) return null;
         
-        XActionListImpl dynamicList = (XActionListImpl)verifyActions.getItem("DynamicActions");
+        XActionListImpl dynamicList = (XActionListImpl)verifyActions.getItem("DynamicActions"); //$NON-NLS-1$
         XActionListImpl ruleSetList = (XActionListImpl)dynamicList.getItem(ruleSetName);
         return ruleSetList;
     }
@@ -144,7 +144,7 @@ public class VModelImpl implements VModel {
         XActionListImpl ruleSetList = getRuleSetActionList(entity, ruleSetName);
         if (ruleSetList == null) return null;
         
-        XActionListImpl dynamicList2 = (XActionListImpl)ruleSetList.getItem("DynamicActions");
+        XActionListImpl dynamicList2 = (XActionListImpl)ruleSetList.getItem("DynamicActions"); //$NON-NLS-1$
         XActionImpl ruleAction = (XActionImpl)dynamicList2.getItem(ruleName);
         return ruleAction;
     }
@@ -173,7 +173,7 @@ public class VModelImpl implements VModel {
 			// Eclipse does not have type in this case, 
 			// so we return something instead of null 
 			// This is ok while result is only compared to null
-			return EclipseResourceUtil.getValidType(project, "java.lang.Class");
+			return EclipseResourceUtil.getValidType(project, "java.lang.Class"); //$NON-NLS-1$
 		}
 		return null; 
 	}

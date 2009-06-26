@@ -27,8 +27,8 @@ public class NewClassCreationWizard implements SpecialWizard {
 
 	public int execute() {
 		INewWizard wizard = ExtensionPointUtils.findNewWizardsItem(
-			"org.eclipse.jdt.ui",
-			"org.eclipse.jdt.ui.wizards.NewClassCreationWizard"
+			"org.eclipse.jdt.ui", //$NON-NLS-1$
+			"org.eclipse.jdt.ui.wizards.NewClassCreationWizard" //$NON-NLS-1$
 		);
 		if (wizard != null) {
 			wizard.init(
@@ -38,7 +38,7 @@ public class NewClassCreationWizard implements SpecialWizard {
 			WizardDialog dialog = new WizardDialog(ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
 			dialog.open();  
 		} else {
-			ModelUIPlugin.getPluginLog().logError("Unable to create wizard 'org.eclipse.jdt.ui.wizards.NewClassCreationWizard'.", new ClassNotFoundException());
+			ModelUIPlugin.getPluginLog().logError("Unable to create wizard 'org.eclipse.jdt.ui.wizards.NewClassCreationWizard'.", new ClassNotFoundException()); //$NON-NLS-1$
 		}
 		return 0;
 	}

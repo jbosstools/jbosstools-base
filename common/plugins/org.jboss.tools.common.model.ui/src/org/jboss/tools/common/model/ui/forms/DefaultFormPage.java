@@ -35,7 +35,7 @@ import org.jboss.tools.common.model.ui.widgets.WhiteSettings;
 
 public class DefaultFormPage implements IFormPage, PaintListener {
 
-	public static final String IMG_FORM_BANNER = "form_banner.gif";
+	public static final String IMG_FORM_BANNER = "form_banner.gif"; //$NON-NLS-1$
 	
 	private ISelectionProvider selectionProvider;
 
@@ -98,7 +98,7 @@ public class DefaultFormPage implements IFormPage, PaintListener {
 
 	public Control createControl(Composite parent) {
 		settings = new WhiteSettings();
-		titleFont = settings.getFont("Label.Font.Title");
+		titleFont = settings.getFont("Label.Font.Title"); //$NON-NLS-1$
 		Composite composite = new Composite(parent, SWT.NONE);
 		settings.setupControl(composite);
 		composite.addPaintListener(this);
@@ -136,7 +136,7 @@ public class DefaultFormPage implements IFormPage, PaintListener {
 	private int getTitleHeight() {
 		int imageHeight = 0;
 		if (image != null
-			&& SWT.getPlatform().equals("motif") == false) {
+			&& SWT.getPlatform().equals("motif") == false) { //$NON-NLS-1$
 			imageHeight = image.getBounds().height;
 		}
 		int height = getFontHeight() + 2 * HEADER_V_GAP;
@@ -156,8 +156,8 @@ public class DefaultFormPage implements IFormPage, PaintListener {
 		if (image != null) {
 			paintWithImage(form, gc);
 		} else {
-			gc.setBackground(settings.getColor("Composite.Background"));
-			gc.setForeground(settings.getColor("Composite.Foreground"));
+			gc.setBackground(settings.getColor("Composite.Background")); //$NON-NLS-1$
+			gc.setForeground(settings.getColor("Composite.Foreground")); //$NON-NLS-1$
 		}
 		gc.setFont(titleFont);
 		gc.drawText(getTitle(), HEADER_H_GAP, HEADER_V_GAP, true);
@@ -169,10 +169,10 @@ public class DefaultFormPage implements IFormPage, PaintListener {
 			gc.setBackground(headingBackground);
 			gc.fillRectangle(0, 0, bounds.width, getTitleHeight());
 		}
-		if (!SWT.getPlatform().equals("motif")) {
+		if (!SWT.getPlatform().equals("motif")) { //$NON-NLS-1$
 //			gc.drawImage(image, 0, 0);
 		}
-		Color fg = (headingForeground != null) ? headingForeground : settings.getColor("Composite.Foreground");
+		Color fg = (headingForeground != null) ? headingForeground : settings.getColor("Composite.Foreground"); //$NON-NLS-1$
 		FormToolkit t = settings.getToolkit(form.getDisplay());
 		if(t != null && t.getColors().getColor(FormColors.TITLE) != null) {
 			fg = t.getColors().getColor(FormColors.TITLE);

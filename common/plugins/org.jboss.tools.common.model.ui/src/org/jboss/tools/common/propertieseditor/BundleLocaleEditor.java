@@ -39,7 +39,7 @@ public class BundleLocaleEditor extends PropertiesEditor {
 	protected void edit() {
 		XModelObject o = helper.getModelObject(xtable.getSelectionIndex());
 		if(o != null) {
-			callAction(o, "Properties.Edit");
+			callAction(o, "Properties.Edit"); //$NON-NLS-1$
 			updatePropertyModel();
 		} 
 	}

@@ -26,8 +26,8 @@ public class ServiceDialogOption {
 		String message = ServiceDialog.CHECKBOX_MESSAGE;
 		property = ServiceDialog.CHECKED;
 		if(k > 0) {
-			property += "_" + k;
-			message += "_" + k;
+			property += "_" + k; //$NON-NLS-1$
+			message += "_" + k; //$NON-NLS-1$
 		}
 		p.setProperty(message, text);
 		p.put(property, Boolean.FALSE);

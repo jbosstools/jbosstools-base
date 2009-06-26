@@ -56,7 +56,7 @@ public class DefaultDropCommandRunner implements SpecialWizard {
 		if(!(editor instanceof AbstractTextEditor)) return null;
 		AbstractTextEditor ae = (AbstractTextEditor)editor;
 		try {
-			Method m = AbstractTextEditor.class.getDeclaredMethod("getSourceViewer", new Class[0]);
+			Method m = AbstractTextEditor.class.getDeclaredMethod("getSourceViewer", new Class[0]); //$NON-NLS-1$
 			m.setAccessible(true);
 			return (ISourceViewer)m.invoke(ae, new Object[0]);
 		} catch (NoSuchMethodException e1) {
@@ -75,9 +75,9 @@ public class DefaultDropCommandRunner implements SpecialWizard {
 
 	public void setObject(Object object) {
 		Properties p = (Properties)object;
-		flavor = p.getProperty("flavor");
-		data = p.getProperty("data");
-		textEditor = (ITextEditor)p.get("textEditor");		
+		flavor = p.getProperty("flavor"); //$NON-NLS-1$
+		data = p.getProperty("data"); //$NON-NLS-1$
+		textEditor = (ITextEditor)p.get("textEditor");		 //$NON-NLS-1$
 	}
 
 }

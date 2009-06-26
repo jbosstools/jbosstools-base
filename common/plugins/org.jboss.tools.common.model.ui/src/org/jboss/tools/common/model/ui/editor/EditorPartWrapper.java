@@ -49,7 +49,7 @@ import org.jboss.tools.common.text.ext.IEditorWrapper;
 
 public class EditorPartWrapper extends EditorPart implements IReusableEditor, IEditorWrapper {
 	
-	public static final String EDITOR_ID = "org.jboss.tools.common.model.ui.editor.EditorPartWrapper";
+	public static final String EDITOR_ID = "org.jboss.tools.common.model.ui.editor.EditorPartWrapper"; //$NON-NLS-1$
 	
 	IEditorPart editor;	
 	String entity = null;
@@ -66,7 +66,7 @@ public class EditorPartWrapper extends EditorPart implements IReusableEditor, IE
 		if(editor != null) {
 			try {
 				Class editorClass = editor.getClass();
-				Method method = editorClass.getMethod("gotoMarker",new Class[]{IMarker.class});
+				Method method = editorClass.getMethod("gotoMarker",new Class[]{IMarker.class}); //$NON-NLS-1$
 				method.setAccessible(true);
 				method.invoke(editor,new Object[]{marker});
 			} catch(NoSuchMethodException e1) {
@@ -86,7 +86,7 @@ public class EditorPartWrapper extends EditorPart implements IReusableEditor, IE
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		input = XModelObjectEditorInput.checkInput(input);
 		if(input instanceof NullEditorInput) {
-			entity = "";
+			entity = ""; //$NON-NLS-1$
 			editor = new NullEditorPart();
 			editor.init(site, input);
 			setSite(site);
@@ -98,7 +98,7 @@ public class EditorPartWrapper extends EditorPart implements IReusableEditor, IE
 		EditorPartFactory f = extension.getFactory(entity);
 		editor = f.createEditorPart();
 		if(editor != null) {
-				((WorkbenchPart)editor).setInitializationData(f.getConfigurationElement(), "", null);
+				((WorkbenchPart)editor).setInitializationData(f.getConfigurationElement(), "", null); //$NON-NLS-1$
 		}
 		editor.init(site, input);
 		setSite(site);
@@ -151,7 +151,7 @@ public class EditorPartWrapper extends EditorPart implements IReusableEditor, IE
     	}
     }
 	
-	static String DEFAULT_ENTITY = "xml";
+	static String DEFAULT_ENTITY = "xml"; //$NON-NLS-1$
 	
 	private String computeEntity(IEditorInput input) {
 		if(!(input instanceof IModelObjectEditorInput)) return DEFAULT_ENTITY; 

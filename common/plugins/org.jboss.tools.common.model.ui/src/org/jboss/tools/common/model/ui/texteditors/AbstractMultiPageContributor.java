@@ -194,8 +194,8 @@ public abstract class AbstractMultiPageContributor extends MultiPageEditorAction
 	protected void updateStatus() {
 		if (fActiveEditorPart instanceof ITextEditor) {
 			ITextEditor textEditor= (ITextEditor) fActiveEditorPart;
-			fContentAssistProposal.setAction(getAction(textEditor, "ContentAssistProposal"));	
-			fContentAssistTip.setAction(getAction(textEditor, "ContentAssistTip"));
+			fContentAssistProposal.setAction(getAction(textEditor, "ContentAssistProposal"));	 //$NON-NLS-1$
+			fContentAssistTip.setAction(getAction(textEditor, "ContentAssistTip")); //$NON-NLS-1$
 		}		
 		if (fActiveEditorPart instanceof ITextEditorExtension) {
 			ITextEditorExtension extension= (ITextEditorExtension) fActiveEditorPart;

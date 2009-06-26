@@ -30,7 +30,7 @@ public class FormFactory extends XModelObjectFormFactory {
 	private void initialize() {
 //		String entityName = getXModelObject().getModelEntity().getName();
 		String formClassName = null;
-		formClassName = getXModelObject().getModelEntity().getProperty("formClassName");
+		formClassName = getXModelObject().getModelEntity().getProperty("formClassName"); //$NON-NLS-1$
 		formClass = ModelFeatureFactory.getInstance().getFeatureClass(formClassName);
 	}
 

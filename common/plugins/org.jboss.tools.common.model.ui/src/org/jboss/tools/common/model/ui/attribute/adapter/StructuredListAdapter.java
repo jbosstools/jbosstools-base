@@ -37,7 +37,7 @@ public class StructuredListAdapter extends DefaultValueAdapter
 		public Object getValue();
 	}
 	 
-	protected static final String DEFAULT_DELIMITER = ";";
+	protected static final String DEFAULT_DELIMITER = ";"; //$NON-NLS-1$
 	
 	ILabelProvider labelProvider = new LabelProvider();
 	INewValueProvider newValueProvider = null;
@@ -55,13 +55,13 @@ public class StructuredListAdapter extends DefaultValueAdapter
 	}
 	
 	private void setDelimiter(XAttribute attribute) {
-		String s = attribute.getProperty("delimiter");
+		String s = attribute.getProperty("delimiter"); //$NON-NLS-1$
 		if(s != null) {
-			if(s.equals("comma")) s = ",";
+			if(s.equals("comma")) s = ","; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		delimiter = (s == null || s.length() != 1) ? DEFAULT_DELIMITER : s;
-		trim = "true".equals(attribute.getProperty("trim"));
-		String newValueClassName = attribute.getProperty("newValueClassName");
+		trim = "true".equals(attribute.getProperty("trim")); //$NON-NLS-1$ //$NON-NLS-2$
+		String newValueClassName = attribute.getProperty("newValueClassName"); //$NON-NLS-1$
 		if(newValueClassName != null) {
 			try {
 				newValueProvider = (INewValueProvider)ModelFeatureFactory.getInstance().createFeatureInstance(newValueClassName);

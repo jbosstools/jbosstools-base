@@ -83,12 +83,12 @@ class AdjustableChildrenEditor extends XChildrenEditor {
 		XModelObject o = helper.getModelObject(xtable.getSelectionIndex());
 		if(o == null) return;
 		XActionList l = (XActionList)o.getModelEntity().getActionList();
-		if(l.getAction("Edit") != null) {
-			callAction(o, "Edit");
-		} else if(l.getAction("EditActions.Edit") != null) {
-			callAction(o, "EditActions.Edit");
+		if(l.getAction("Edit") != null) { //$NON-NLS-1$
+			callAction(o, "Edit"); //$NON-NLS-1$
+		} else if(l.getAction("EditActions.Edit") != null) { //$NON-NLS-1$
+			callAction(o, "EditActions.Edit"); //$NON-NLS-1$
 		} else {
-			callAction(o, "Properties.Properties");
+			callAction(o, "Properties.Properties"); //$NON-NLS-1$
 		}
 	}
 	
@@ -99,10 +99,10 @@ class AdjustableChildrenEditor extends XChildrenEditor {
 	
 	protected String getAddActionPath() {
 		XModelObject o = helper.getModelObject();
-		XActionList l = (XActionList)o.getModelEntity().getActionList().getItem("CreateActions");
+		XActionList l = (XActionList)o.getModelEntity().getActionList().getItem("CreateActions"); //$NON-NLS-1$
 		XActionItem[] is = l.getActionItems();
 		if(is.length != 1 || !(is[0] instanceof XAction)) return null;
-		return "CreateActions" + "." + is[0].getName();
+		return "CreateActions" + "." + is[0].getName(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }
@@ -117,7 +117,7 @@ class Helper extends AbstractTableHelper {
 		ArrayList<String> l = new ArrayList<String>();
 		for (int i = 0; i < as.length; i++) {
 			if(!as[i].isVisible()) continue;
-			if("element type".equals(as[i].getName())) continue;
+			if("element type".equals(as[i].getName())) continue; //$NON-NLS-1$
 			l.add(as[i].getName());
 			if(l.size() >= 4) break;
 		}

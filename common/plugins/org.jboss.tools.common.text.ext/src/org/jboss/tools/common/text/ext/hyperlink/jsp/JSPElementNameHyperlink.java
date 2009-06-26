@@ -108,8 +108,8 @@ public class JSPElementNameHyperlink extends AbstractHyperlink {
 			// Ignore
 			return null;
 		}
-		if (nodeName.indexOf(":") != -1) {
-			String nodePrefix = nodeName.substring(0, nodeName.indexOf(":"));
+		if (nodeName.indexOf(":") != -1) { //$NON-NLS-1$
+			String nodePrefix = nodeName.substring(0, nodeName.indexOf(":")); //$NON-NLS-1$
 			if (nodePrefix != null && nodePrefix.length() > 0) 		
 				return nodePrefix;
 		}

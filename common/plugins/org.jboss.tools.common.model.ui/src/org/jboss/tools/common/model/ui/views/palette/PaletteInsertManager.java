@@ -31,20 +31,20 @@ public class PaletteInsertManager {
 	HashMap<String,IConfigurationElement> tagWizards = null;
 	
 	public String getWizardName(Properties properties) {
-		String tagname = properties.getProperty("tag name");
+		String tagname = properties.getProperty("tag name"); //$NON-NLS-1$
 		String uri = properties.getProperty(URIConstants.LIBRARY_URI);
 		return getWizardName(tagname, uri);
 	}
 	
 	public Object createWizardInstance(Properties properties) {
-		String tagname = properties.getProperty("tag name");
+		String tagname = properties.getProperty("tag name"); //$NON-NLS-1$
 		if(tagWizards == null) {
 			loadWizards();
 		}
 		if(tagname == null) return null;
 		IConfigurationElement o = tagWizards.get(tagname);
 		try {
-			return o.createExecutableExtension("class");
+			return o.createExecutableExtension("class"); //$NON-NLS-1$
 		} catch(CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 			return null;
@@ -57,18 +57,18 @@ public class PaletteInsertManager {
 		}
 		if(tagname == null) return null;
 		IConfigurationElement o = tagWizards.get(tagname);
-		return o != null ? o.getAttribute("class") : null;
+		return o != null ? o.getAttribute("class") : null; //$NON-NLS-1$
 	}
 	
 	private void loadWizards() {
 		tagWizards = new HashMap<String,IConfigurationElement>();
-		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint("org.jboss.tools.common.model.ui.InsertTagWizard");
+		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint("org.jboss.tools.common.model.ui.InsertTagWizard"); //$NON-NLS-1$
 		IExtension[] es = point.getExtensions();
 		for (int i = 0; i < es.length; i++) {
 			IConfigurationElement[] elements = es[i].getConfigurationElements();
 			for (int j = 0; j < elements.length; j++) {
-				String name = elements[j].getAttribute("name");
-				String className = elements[j].getAttribute("class");
+				String name = elements[j].getAttribute("name"); //$NON-NLS-1$
+				String className = elements[j].getAttribute("class"); //$NON-NLS-1$
 				if(name != null && name.trim().length() > 0 && className != null && className.trim().length() > 0) {
 					tagWizards.put(name.trim(), elements[j]);
 				}

@@ -43,7 +43,7 @@ public class ModelObjectJarEntryEditorInput extends ModelObjectStorageEditorInpu
 			} catch (CoreException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
-			String s = (storage == null) ? "" : storage.toString();
+			String s = (storage == null) ? "" : storage.toString(); //$NON-NLS-1$
 			if(jarEntryFileToString().equals(s)) return true;
 		}
 		return super.equals(o);
@@ -51,7 +51,7 @@ public class ModelObjectJarEntryEditorInput extends ModelObjectStorageEditorInpu
 	
 	//see
 	public String jarEntryFileToString() {
-		return "JarEntryFile[" + jarFile+"::" + jarEntry+"]";
+		return "JarEntryFile[" + jarFile+"::" + jarEntry+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 }

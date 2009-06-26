@@ -27,17 +27,17 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 	
 	static {
         try {
-        	String path = FileLocator.resolve(MetaConfigurationLoader.class.getResource("/dtds/meta-templates.dtd")).toString();
-            XMLEntityResolver.registerPublicEntity("-//Red Hat Inc.//DTD Meta Templates 1.0//EN", path);
+        	String path = FileLocator.resolve(MetaConfigurationLoader.class.getResource("/dtds/meta-templates.dtd")).toString(); //$NON-NLS-1$
+            XMLEntityResolver.registerPublicEntity("-//Red Hat Inc.//DTD Meta Templates 1.0//EN", path); //$NON-NLS-1$
         } catch (IOException e) {
         	ModelUIPlugin.getPluginLog().logError(e);
         }
 	}
     
-	private static final String GLOBAL_FILE_NAME = "/globalTemplates.xml";
-    private static final String PROJECT_FILE_NAME = "/.projectTemplates";
+	private static final String GLOBAL_FILE_NAME = "/globalTemplates.xml"; //$NON-NLS-1$
+    private static final String PROJECT_FILE_NAME = "/.projectTemplates"; //$NON-NLS-1$
 	
-	public static final String PREFERENCE_KEY = "global_templates";
+	public static final String PREFERENCE_KEY = "global_templates"; //$NON-NLS-1$
 	
 	public void loadExtensionConfiguration(MetaConfiguration c) {
 		processExtensions(c);
@@ -111,7 +111,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
     private void processExtensions(MetaConfiguration c) {
     	IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT);
     	if(extensionPoint == null) {
-    		ModelUIPlugin.getPluginLog().logError("Cannot find extension point \"" + EXTENSION_POINT);
+    		ModelUIPlugin.getPluginLog().logError("Cannot find extension point \"" + EXTENSION_POINT); //$NON-NLS-1$
     	}
     	IConfigurationElement[] members = extensionPoint.getConfigurationElements();
     	for (int m = 0; m < members.length; m++) {
@@ -123,7 +123,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
    			} else if (META_TEMPLATE_GROUP.equals(member.getName())) {
    				doMetaTemplate(member, c);
    			} else {
-   				ModelUIPlugin.getPluginLog().logInfo("Error in declaring extension \"" + EXTENSION_POINT+"\" at " + name);
+   				ModelUIPlugin.getPluginLog().logInfo("Error in declaring extension \"" + EXTENSION_POINT+"\" at " + name); //$NON-NLS-1$ //$NON-NLS-2$
     		}
         }
     }
@@ -138,7 +138,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 		String name = element.getDeclaringExtension().getNamespaceIdentifier();
 		Bundle bundle = Platform.getBundle(name);
 		try {
-			url = FileLocator.resolve(bundle.getEntry("/"));
+			url = FileLocator.resolve(bundle.getEntry("/")); //$NON-NLS-1$
 		} catch (IOException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}

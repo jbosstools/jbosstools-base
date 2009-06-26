@@ -219,7 +219,7 @@ public class SliderFieldEditor2 extends ExtendedFieldEditor implements
 		 * Initialize slider presentation
 		 */
 		slider.setSelection(intValue);
-		String weightsString = "" + (intValue /10) + "%";  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String weightsString = "" + (intValue /10) + "%";  //$NON-NLS-1$ //$NON-NLS-2$
 		slider.setToolTipText(weightsString);
 		sliderLabel.setText(weightsString);
 		

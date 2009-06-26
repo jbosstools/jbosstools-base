@@ -95,13 +95,13 @@ public class ReportProblemWizard extends AbstractQueryWizard {
 class ReportProblemWizardView extends AbstractQueryWizardView {	
 	/** LOG_DATE_FORMAT */
 	final private static SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat(
-			"yyyyMMddHHmmss");
+			"yyyyMMddHHmmss"); //$NON-NLS-1$
 	
 	final private static SimpleDateFormat CURENT_DATE_FORMAT = new SimpleDateFormat(
-	"yyyy-MM-dd");
+	"yyyy-MM-dd"); //$NON-NLS-1$
 	
 	final private static SimpleDateFormat SESSION_DATE_FORMAT = new SimpleDateFormat(
-	"yyyy-MM-dd HH:mm");
+	"yyyy-MM-dd HH:mm"); //$NON-NLS-1$
 	
 	final private static long TWENTY_FOUR_HOURS = 86400000;
 
@@ -125,20 +125,20 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	
 	XModelObject exceptionsObject = PreferenceModelUtilities
 			.getPreferenceModel()
-			.createModelObject("ProblemBufferEditor", null);
+			.createModelObject("ProblemBufferEditor", null); //$NON-NLS-1$
 
 	XEntityData sendData = XEntityDataImpl.create(new String[][] {
-			{ "SharableReportProblem" },
-			{ ReportPreference.ATT_ATTACH_REDHAT_LOG, "no" },
+			{ "SharableReportProblem" }, //$NON-NLS-1$
+			{ ReportPreference.ATT_ATTACH_REDHAT_LOG, "no" }, //$NON-NLS-1$
 	// {ReportPreference.ATT_ATTACH_ECLIPSE_LOG, "no"}
 			});
 	XEntityData sendData2 = XEntityDataImpl
-			.create(new String[][] { { "SharableReportProblem" },
+			.create(new String[][] { { "SharableReportProblem" }, //$NON-NLS-1$
 			// {ReportPreference.ATT_ATTACH_ECLIPSE_LOG, "no"}
 			});
 	XEntityData infoData = XEntityDataImpl.create(new String[][] {
-			{ "SharableReportProblem" }, { ReportPreference.ATT_E_MAIL, "no" },
-			{ ReportPreference.ATT_OTHER, "no" } });
+			{ "SharableReportProblem" }, { ReportPreference.ATT_E_MAIL, "no" }, //$NON-NLS-1$ //$NON-NLS-2$
+			{ ReportPreference.ATT_OTHER, "no" } }); //$NON-NLS-1$
 
 	class PixelConverter {
 
@@ -256,21 +256,21 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	};
 	
 	private String getLogByCurentDate(String log){
-		String lastOldSession="";
+		String lastOldSession=""; //$NON-NLS-1$
 		boolean isAccept = false;
 		Date today = new Date();
 
 		StringBuffer sb = new StringBuffer();
-		StringTokenizer st = new StringTokenizer(log, "\n", true);
+		StringTokenizer st = new StringTokenizer(log, "\n", true); //$NON-NLS-1$
 		while (st.hasMoreTokens()) {
 			String t = st.nextToken();
-			if(t.startsWith("!SESSION")){
+			if(t.startsWith("!SESSION")){ //$NON-NLS-1$
 				String dateString = t.substring(9, 25);
 				try{
 					Date date = SESSION_DATE_FORMAT.parse(dateString);
 					long delta = today.getTime()-date.getTime();
 					if(delta < TWENTY_FOUR_HOURS){
-						if(!isAccept) sb.append(lastOldSession+"\n");
+						if(!isAccept) sb.append(lastOldSession+"\n"); //$NON-NLS-1$
 						sb.append(t);
 						isAccept = true;
 					}else{
@@ -297,12 +297,12 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	private byte[] getUserCommentContent() {
 		StringBuffer sb = new StringBuffer();
 
-		sb = sb.append("email : ").append(
-				ReportPreference.E_MAIL_OPTION.getValue()).append("\n");
-		sb = sb.append("description : ").append(problemDescription.getText())
-				.append("\n");
-		sb.append("other : ").append(ReportPreference.OTHER_OPTION.getValue())
-				.append("\n");
+		sb = sb.append("email : ").append( //$NON-NLS-1$
+				ReportPreference.E_MAIL_OPTION.getValue()).append("\n"); //$NON-NLS-1$
+		sb = sb.append("description : ").append(problemDescription.getText()) //$NON-NLS-1$
+				.append("\n"); //$NON-NLS-1$
+		sb.append("other : ").append(ReportPreference.OTHER_OPTION.getValue()) //$NON-NLS-1$
+				.append("\n"); //$NON-NLS-1$
 
 		return sb.toString().getBytes();
 	}
@@ -332,11 +332,11 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		
 		ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(zipFilename));
 		try {
-			addFileToZip(getEclipseLogContent(), "eclipse.log", zout);
-			addFileToZip(getUserCommentContent(), "usercomment.txt", zout);
-			addFileToZip(getEclipsePropertiesContent(), "eclipse.properties", zout);
+			addFileToZip(getEclipseLogContent(), "eclipse.log", zout); //$NON-NLS-1$
+			addFileToZip(getUserCommentContent(), "usercomment.txt", zout); //$NON-NLS-1$
+			addFileToZip(getEclipsePropertiesContent(), "eclipse.properties", zout); //$NON-NLS-1$
 
-			ModelUIPlugin.getDefault().logInfo("Wrote diagnostic info to " + zipFilename);
+			ModelUIPlugin.getDefault().logInfo("Wrote diagnostic info to " + zipFilename); //$NON-NLS-1$
 		} finally {
 			zout.close();
 		}
@@ -369,12 +369,12 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		Date today = new Date();
 
 		currentDate = LOG_DATE_FORMAT.format(today);
-		return "jbosstools-diagnostics-" + currentDate.toString() + ".zip";
+		return "jbosstools-diagnostics-" + currentDate.toString() + ".zip"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	private void createStackTracesControl(Composite parent) {
 		stackTracesCount = ProblemReportingHelper.buffer.getSize();
-		exceptionsObject.setAttributeValue("exceptions",
+		exceptionsObject.setAttributeValue("exceptions", //$NON-NLS-1$
 				formatContent(ProblemReportingHelper.buffer.getContent()));
 		XEntityData data = (stackTracesCount > 0) ? sendData : sendData2;
 		boolean isSeparatorNeeded = false;
@@ -437,7 +437,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 				fileDialog.setFilterPath(fileName.getParent());
 				fileDialog.setFileName(fileName.getName());
 				
-				String[] filterExt = { "*.zip" };
+				String[] filterExt = { "*.zip" }; //$NON-NLS-1$
 				fileDialog.setFilterExtensions(filterExt);
 				String selected = fileDialog.open();
 
@@ -482,7 +482,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		layout.marginWidth = 10;
 		panel.setLayout(layout);
 		Label image = new Label(panel, SWT.NONE);
-		image.setImage(ModelUIImages.getImage("warning.gif"));
+		image.setImage(ModelUIImages.getImage("warning.gif")); //$NON-NLS-1$
 		GridData d = new GridData();
 		d.widthHint = 16;
 		image.setLayoutData(d);
@@ -497,7 +497,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		t2.setText(text, 300);
 		t2.addReferenceListener(new ReferenceListener() {
 			public void referenceSelected(String reference) {
-				XActionInvoker.invoke("EditActions.Edit", exceptionsObject,
+				XActionInvoker.invoke("EditActions.Edit", exceptionsObject, //$NON-NLS-1$
 						null);
 			}
 		});
@@ -508,20 +508,20 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 			sendSupport.store();
 		if (infoSupport != null)
 			infoSupport.store();
-		String text = CommonPlugin.getEnvironment() + "\n"
+		String text = CommonPlugin.getEnvironment() + "\n" //$NON-NLS-1$
 				+ problemDescription.getText();
-		boolean addRedHatLog = "yes"
+		boolean addRedHatLog = "yes" //$NON-NLS-1$
 				.equals(ReportPreference.ATTACH_REDHAT_LOG_OPTION.getValue());
 		if (addRedHatLog && stackTracesCount > 0) {
-			String log = exceptionsObject.getAttributeValue("exceptions");
-			text += "\n----------Red Hat Log-----------\n" + log + "\n";
+			String log = exceptionsObject.getAttributeValue("exceptions"); //$NON-NLS-1$
+			text += "\n----------Red Hat Log-----------\n" + log + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		boolean addEclipseLog = "yes"
+		boolean addEclipseLog = "yes" //$NON-NLS-1$
 				.equals(ReportPreference.ATTACH_ECLIPSE_LOG_OPTION.getValue());
 		if (addEclipseLog) {
 			String eclipseLog = ProblemReportingHelper.buffer
 					.getEclipseLogContent();
-			text += "\n----------Eclipse Log----------\n" + eclipseLog + "\n";
+			text += "\n----------Eclipse Log----------\n" + eclipseLog + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		/*
 		String email = ReportPreference.E_MAIL_OPTION.getValue();
@@ -546,10 +546,10 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 
 	private String formatContent(String content) {
 		StringBuffer sb = new StringBuffer();
-		StringTokenizer st = new StringTokenizer(content, "\n", true);
+		StringTokenizer st = new StringTokenizer(content, "\n", true); //$NON-NLS-1$
 		while (st.hasMoreTokens()) {
 			String t = st.nextToken();
-			if ("\n".equals(t)) {
+			if ("\n".equals(t)) { //$NON-NLS-1$
 				sb.append(t);
 			} else {
 				while (t.length() > LINE_LIMIT) {
@@ -558,7 +558,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 					if (i > 40)
 						t1 = t1.substring(0, i);
 					t = t.substring(t1.length());
-					sb.append(t1).append("\n");
+					sb.append(t1).append("\n"); //$NON-NLS-1$
 				}
 				sb.append(t);
 			}
@@ -575,11 +575,11 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		if (sendSupport != null) {
 			IModelPropertyEditorAdapter a = sendSupport
 					.getPropertyEditorAdapterByName(ReportPreference.ATT_ATTACH_REDHAT_LOG);
-			if (a != null && "yes".equals(a.getValue()))
+			if (a != null && "yes".equals(a.getValue())) //$NON-NLS-1$
 				return false;
 			a = sendSupport
 					.getPropertyEditorAdapterByName(ReportPreference.ATT_ATTACH_ECLIPSE_LOG);
-			if (a != null && "yes".equals(a.getValue()))
+			if (a != null && "yes".equals(a.getValue())) //$NON-NLS-1$
 				return false;
 		}
 		String text = problemDescription.getText();

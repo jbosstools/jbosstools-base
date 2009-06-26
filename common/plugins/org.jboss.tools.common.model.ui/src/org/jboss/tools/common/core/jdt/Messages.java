@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
-	private static final String BUNDLE_NAME = "org.jboss.tools.common.core.jdt.messages";
+	private static final String BUNDLE_NAME = "org.jboss.tools.common.core.jdt.messages"; //$NON-NLS-1$
 
 	public static String FavoritesClassController_defaultClasses;
 

@@ -25,7 +25,7 @@ public class PropertyTextEditorSupport extends TextEditorSupport {
 	
 	protected String loadContent() {
 		XModelObject o = getModelObject();
-		return (o == null ? "" : loader.getBody(o));
+		return (o == null ? "" : loader.getBody(o)); //$NON-NLS-1$
 	}
 
 	public void save() {

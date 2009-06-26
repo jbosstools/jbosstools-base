@@ -93,84 +93,84 @@ public class DefaultSettings implements IWidgetSettings {
 	
 	protected void initSettings() {
 		// Unknow control
-		put("Control.Style", SWT.NONE);
-		put("Control.Background", defaultBackground);
-		put("Control.Foreground", defaultForeground);
-		put("Control.Font", defaultFont);
+		put("Control.Style", SWT.NONE); //$NON-NLS-1$
+		put("Control.Background", defaultBackground); //$NON-NLS-1$
+		put("Control.Foreground", defaultForeground); //$NON-NLS-1$
+		put("Control.Font", defaultFont); //$NON-NLS-1$
 		
 		// Composite
-		put("Composite.Style", SWT.NONE);
-		put("Composite.Background", defaultBackground);
-		put("Composite.Foreground", defaultForeground);
-		put("Composite.Font", defaultFont);
+		put("Composite.Style", SWT.NONE); //$NON-NLS-1$
+		put("Composite.Background", defaultBackground); //$NON-NLS-1$
+		put("Composite.Foreground", defaultForeground); //$NON-NLS-1$
+		put("Composite.Font", defaultFont); //$NON-NLS-1$
 		
 		// Label
-		put("Label.Style", SWT.NONE);
+		put("Label.Style", SWT.NONE); //$NON-NLS-1$
 				// Please, do not put whiteBackground here, it spoils all wizards
-		put("Label.Background", defaultBackground);
-		put("Label.Foreground", defaultForeground);
-		put("Label.Font", defaultFont);
-		put("Label.Font.Title", titleFont);
-		put("Label.Font.Header", headerFont);
+		put("Label.Background", defaultBackground); //$NON-NLS-1$
+		put("Label.Foreground", defaultForeground); //$NON-NLS-1$
+		put("Label.Font", defaultFont); //$NON-NLS-1$
+		put("Label.Font.Title", titleFont); //$NON-NLS-1$
+		put("Label.Font.Header", headerFont); //$NON-NLS-1$
 
 		// Hyperlink
-		put("Hyperlink.Style", SWT.NONE);
-		put("Hyperlink.Background", defaultBackground);
-		put("Hyperlink.Foreground", hyperlinkColor);
-		put("Hyperlink.ActiveColor", activeHyperlinkColor);
-		put("Hyperlink.Font", defaultFont);
-		put("Hyperlink.ActiveCursor", handCursor);
-		put("Hyperlink.Disabled", defaultForeground);
+		put("Hyperlink.Style", SWT.NONE); //$NON-NLS-1$
+		put("Hyperlink.Background", defaultBackground); //$NON-NLS-1$
+		put("Hyperlink.Foreground", hyperlinkColor); //$NON-NLS-1$
+		put("Hyperlink.ActiveColor", activeHyperlinkColor); //$NON-NLS-1$
+		put("Hyperlink.Font", defaultFont); //$NON-NLS-1$
+		put("Hyperlink.ActiveCursor", handCursor); //$NON-NLS-1$
+		put("Hyperlink.Disabled", defaultForeground); //$NON-NLS-1$
 
 		// Text
-		put("Text.Style", SWT.BORDER);
-		put("Text.Background", whiteBackground);
-		put("Text.Foreground", defaultForeground);
-		put("Text.Font", defaultFont);
+		put("Text.Style", SWT.BORDER); //$NON-NLS-1$
+		put("Text.Background", whiteBackground); //$NON-NLS-1$
+		put("Text.Foreground", defaultForeground); //$NON-NLS-1$
+		put("Text.Font", defaultFont); //$NON-NLS-1$
 
 		// Note
-		put("Note.Style", SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		put("Note.Background", whiteBackground);
-		put("Note.Foreground", defaultForeground);
-		put("Note.Font", defaultFont);
-		put("Note.ValidateStrategy", 0);
+		put("Note.Style", SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL); //$NON-NLS-1$
+		put("Note.Background", whiteBackground); //$NON-NLS-1$
+		put("Note.Foreground", defaultForeground); //$NON-NLS-1$
+		put("Note.Font", defaultFont); //$NON-NLS-1$
+		put("Note.ValidateStrategy", 0); //$NON-NLS-1$
 
 		// Combo
-		put("Combo.Style", SWT.BORDER);
-		put("Combo.Background", whiteBackground);
-		put("Combo.Background.Disabled", defaultBackground);
-		put("Combo.Foreground", defaultForeground);
-		put("Combo.Font", defaultFont);
+		put("Combo.Style", SWT.BORDER); //$NON-NLS-1$
+		put("Combo.Background", whiteBackground); //$NON-NLS-1$
+		put("Combo.Background.Disabled", defaultBackground); //$NON-NLS-1$
+		put("Combo.Foreground", defaultForeground); //$NON-NLS-1$
+		put("Combo.Font", defaultFont); //$NON-NLS-1$
 
 		// Button
-		put("Button.Style", SWT.PUSH);
-		put("Button.Background", defaultBackground);
-		put("Button.Foreground", defaultForeground);
-		put("Button.Font", defaultFont);
+		put("Button.Style", SWT.PUSH); //$NON-NLS-1$
+		put("Button.Background", defaultBackground); //$NON-NLS-1$
+		put("Button.Foreground", defaultForeground); //$NON-NLS-1$
+		put("Button.Font", defaultFont); //$NON-NLS-1$
 
 		// CheckBox
-		put("CheckBox.Style", SWT.CHECK);
-		put("CheckBox.Background", defaultBackground);
-		put("CheckBox.Foreground", defaultForeground);
-		put("CheckBox.Font", defaultFont);
+		put("CheckBox.Style", SWT.CHECK); //$NON-NLS-1$
+		put("CheckBox.Background", defaultBackground); //$NON-NLS-1$
+		put("CheckBox.Foreground", defaultForeground); //$NON-NLS-1$
+		put("CheckBox.Font", defaultFont); //$NON-NLS-1$
 
 		// List
-		put("List.Style", SWT.BORDER);
-		put("List.Background", whiteBackground);
-		put("List.Foreground", defaultForeground);
-		put("List.Font", defaultFont);
+		put("List.Style", SWT.BORDER); //$NON-NLS-1$
+		put("List.Background", whiteBackground); //$NON-NLS-1$
+		put("List.Foreground", defaultForeground); //$NON-NLS-1$
+		put("List.Font", defaultFont); //$NON-NLS-1$
 
 		// Tree
-		put("Tree.Style", SWT.BORDER);
-		put("Tree.Background", whiteBackground);
-		put("Tree.Foreground", defaultForeground);
-		put("Tree.Font", defaultFont);
+		put("Tree.Style", SWT.BORDER); //$NON-NLS-1$
+		put("Tree.Background", whiteBackground); //$NON-NLS-1$
+		put("Tree.Foreground", defaultForeground); //$NON-NLS-1$
+		put("Tree.Font", defaultFont); //$NON-NLS-1$
 
 		// Table
-		put("Table.Style", SWT.BORDER);
-		put("Table.Background", whiteBackground);
-		put("Table.Foreground", defaultForeground);
-		put("Table.Font", defaultFont);
+		put("Table.Style", SWT.BORDER); //$NON-NLS-1$
+		put("Table.Background", whiteBackground); //$NON-NLS-1$
+		put("Table.Foreground", defaultForeground); //$NON-NLS-1$
+		put("Table.Font", defaultFont); //$NON-NLS-1$
 	}
 	
 	public DefaultSettings() {
@@ -245,41 +245,41 @@ public class DefaultSettings implements IWidgetSettings {
 			toolkit.adapt((Composite)control);
 		}
 		if (control instanceof CCombo || control instanceof Combo) {
-			control.setBackground(getColor("Combo.Background"));
-			control.setForeground(getColor("Combo.Foreground"));
-			control.setFont(getFont("Combo.Font"));
+			control.setBackground(getColor("Combo.Background")); //$NON-NLS-1$
+			control.setForeground(getColor("Combo.Foreground")); //$NON-NLS-1$
+			control.setFont(getFont("Combo.Font")); //$NON-NLS-1$
 		} else if (control instanceof Label) {
-			control.setBackground(getColor("Label.Background"));
-			control.setForeground(getColor("Label.Foreground"));
-			control.setFont(getFont("Label.Font"));
+			control.setBackground(getColor("Label.Background")); //$NON-NLS-1$
+			control.setForeground(getColor("Label.Foreground")); //$NON-NLS-1$
+			control.setFont(getFont("Label.Font")); //$NON-NLS-1$
 		} else if (control instanceof Text) {
-			control.setBackground(getColor("Text.Background"));
-			control.setForeground(getColor("Text.Foreground"));
-			control.setFont(getFont("Text.Font"));
+			control.setBackground(getColor("Text.Background")); //$NON-NLS-1$
+			control.setForeground(getColor("Text.Foreground")); //$NON-NLS-1$
+			control.setFont(getFont("Text.Font")); //$NON-NLS-1$
 		} else if (control instanceof Button) {
-			control.setBackground(getColor("Button.Background"));
-			control.setForeground(getColor("Button.Foreground"));
-			control.setFont(getFont("Button.Font"));
+			control.setBackground(getColor("Button.Background")); //$NON-NLS-1$
+			control.setForeground(getColor("Button.Foreground")); //$NON-NLS-1$
+			control.setFont(getFont("Button.Font")); //$NON-NLS-1$
 		} else if (control instanceof List) {
-			control.setBackground(getColor("List.Background"));
-			control.setForeground(getColor("List.Foreground"));
-			control.setFont(getFont("List.Font"));
+			control.setBackground(getColor("List.Background")); //$NON-NLS-1$
+			control.setForeground(getColor("List.Foreground")); //$NON-NLS-1$
+			control.setFont(getFont("List.Font")); //$NON-NLS-1$
 		} else if (control instanceof Tree) {
-			control.setBackground(getColor("Tree.Background"));
-			control.setForeground(getColor("Tree.Foreground"));
-			control.setFont(getFont("Tree.Font"));
+			control.setBackground(getColor("Tree.Background")); //$NON-NLS-1$
+			control.setForeground(getColor("Tree.Foreground")); //$NON-NLS-1$
+			control.setFont(getFont("Tree.Font")); //$NON-NLS-1$
 		} else if (control instanceof Table) {
-			control.setBackground(getColor("Table.Background"));
-			control.setForeground(getColor("Table.Foreground"));
-			control.setFont(getFont("Table.Font"));
+			control.setBackground(getColor("Table.Background")); //$NON-NLS-1$
+			control.setForeground(getColor("Table.Foreground")); //$NON-NLS-1$
+			control.setFont(getFont("Table.Font")); //$NON-NLS-1$
 		} else if (control instanceof Composite) {
-			control.setBackground(getColor("Composite.Background"));
-			control.setForeground(getColor("Composite.Foreground"));
-			control.setFont(getFont("Composite.Font"));
+			control.setBackground(getColor("Composite.Background")); //$NON-NLS-1$
+			control.setForeground(getColor("Composite.Foreground")); //$NON-NLS-1$
+			control.setFont(getFont("Composite.Font")); //$NON-NLS-1$
 		} else { // unknow control
-			control.setBackground(getColor("Control.Background"));
-			control.setForeground(getColor("Control.Foreground"));
-			control.setFont(getFont("Control.Font"));
+			control.setBackground(getColor("Control.Background")); //$NON-NLS-1$
+			control.setForeground(getColor("Control.Foreground")); //$NON-NLS-1$
+			control.setFont(getFont("Control.Font")); //$NON-NLS-1$
 		}
 	}
 	

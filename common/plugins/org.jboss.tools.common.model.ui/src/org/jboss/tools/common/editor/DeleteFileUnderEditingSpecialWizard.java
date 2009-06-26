@@ -33,7 +33,7 @@ public class DeleteFileUnderEditingSpecialWizard implements SpecialWizard {
 			XModelObject eo = (XModelObject)editor.getEditorInput().getAdapter(XModelObject.class);
 			if(eo == null) continue;
 			String eop = eo.getPath();
-			if(eop != null && (eop + "/").startsWith(path + "/")) {
+			if(eop != null && (eop + "/").startsWith(path + "/")) { //$NON-NLS-1$ //$NON-NLS-2$
 				if(!editor.isDirty()) {
 					workbenchPage.closeEditor(editor, false);
 				} else {

@@ -17,12 +17,12 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class RemoveModelNatureActionDelegate extends ProjectRootActionDelegate {
 	protected String getActionPath() {
-		return "EclipseActions.RemoveModelNature";
+		return "EclipseActions.RemoveModelNature"; //$NON-NLS-1$
 	}
 	
 	protected void initProperties(Properties p) {
 		String nature = getModelNatureName(); 
-		if(nature != null) p.setProperty("nature", nature);
+		if(nature != null) p.setProperty("nature", nature); //$NON-NLS-1$
 	}
 	
 	protected boolean hasModelNature(IProject project) {

@@ -65,7 +65,7 @@ public class MetaClassTemplateHelper {
 	public void setProjectOverrideTemplates(boolean b) {
 		QualifiedName qn = new QualifiedName(ModelUIPlugin.ID_PLUGIN, ModelUIPlugin.PROJECT_OVERRIDE); 
 		try {
-			ResourcesPlugin.getWorkspace().getRoot().setPersistentProperty(qn, "" + b);
+			ResourcesPlugin.getWorkspace().getRoot().setPersistentProperty(qn, "" + b); //$NON-NLS-1$
 		} catch (CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}

@@ -23,7 +23,7 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 public class NavigatorLabelProvider extends LabelProvider implements IColorProvider {
 	
 	public String getText(Object element) {
-		String result = "";		
+		String result = "";		 //$NON-NLS-1$
 		if (element != null) {
 			if (element instanceof XModelObject) {
 				XModelObject o = (XModelObject)element; 
@@ -32,11 +32,11 @@ public class NavigatorLabelProvider extends LabelProvider implements IColorProvi
 			} else
 				result = element.toString();
 		}			
-		return (result == null) ? "" : result; 
+		return (result == null) ? "" : result;  //$NON-NLS-1$
 	}
 	
 	protected String applyModification(XModelObject o, String text) {
-		if(o.getFileType() == XFileObject.FILE && o.isModified()) text += "*";
+		if(o.getFileType() == XFileObject.FILE && o.isModified()) text += "*"; //$NON-NLS-1$
 		return text;
 	}
 	
@@ -62,11 +62,11 @@ public class NavigatorLabelProvider extends LabelProvider implements IColorProvi
 	}
 
 	private boolean isLink(XModelObject obj) {
-		return "true".equals(obj.get("overlapped"));
+		return "true".equals(obj.get("overlapped")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private boolean hasErrors(XModelObject o) {
-		return o != null && "yes".equals(o.get("_hasErrors_"));
+		return o != null && "yes".equals(o.get("_hasErrors_")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	private boolean hasParentFileErrors(XModelObject o) {

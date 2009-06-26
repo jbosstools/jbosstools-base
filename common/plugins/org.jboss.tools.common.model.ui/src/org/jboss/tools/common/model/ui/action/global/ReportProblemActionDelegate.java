@@ -36,7 +36,7 @@ public class ReportProblemActionDelegate implements IWorkbenchWindowActionDelega
 		
 		ReportProblemWizard wizard = new ReportProblemWizard();
 		Properties p = new Properties();
-		p.setProperty(ReportProblemWizard.Property.HELP, "ReportProblemWizard");		
+		p.setProperty(ReportProblemWizard.Property.HELP, "ReportProblemWizard");		 //$NON-NLS-1$
 		wizard.setObject(p);
 		wizard.execute();
 	}

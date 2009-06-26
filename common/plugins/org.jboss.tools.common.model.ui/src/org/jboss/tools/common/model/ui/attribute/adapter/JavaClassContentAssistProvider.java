@@ -27,7 +27,7 @@ public class JavaClassContentAssistProvider implements
 	XAttribute attribute;
 
 	public IContentProposalProvider getContentProposalProvider() {
-		IProject project = (IProject)object.getModel().getProperties().get("project");
+		IProject project = (IProject)object.getModel().getProperties().get("project"); //$NON-NLS-1$
 		return (project == null) ? null : new TypeContentProposalProvider(project, IJavaSearchConstants.TYPE);
 	}
 
@@ -43,7 +43,7 @@ public class JavaClassContentAssistProvider implements
 	public boolean isRelevant(XModelObject object, XAttribute attribute) {
 		if(object == null || attribute == null) return false;
 		String editorName = attribute.getEditor().getName();
-		return editorName != null && editorName.indexOf("AccessibleJava") >= 0;
+		return editorName != null && editorName.indexOf("AccessibleJava") >= 0; //$NON-NLS-1$
 	}
 
 	public LabelProvider getCustomLabelProbider() {

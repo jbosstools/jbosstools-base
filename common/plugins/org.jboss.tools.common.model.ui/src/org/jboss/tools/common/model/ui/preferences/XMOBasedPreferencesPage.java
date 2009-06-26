@@ -56,7 +56,7 @@ public class XMOBasedPreferencesPage extends PreferencePage implements IPreferen
 	public String getTitle() {
 		String value = support.getTitle();
 		if(object != null) {
-			String s = WizardKeys.getVisualListValue(object.getModelEntity().getAttribute("name"), value);
+			String s = WizardKeys.getVisualListValue(object.getModelEntity().getAttribute("name"), value); //$NON-NLS-1$
 			if(s != null) {
 				return s;
 			}

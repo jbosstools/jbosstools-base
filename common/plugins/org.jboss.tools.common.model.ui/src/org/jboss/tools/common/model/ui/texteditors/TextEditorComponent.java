@@ -100,8 +100,8 @@ public class TextEditorComponent implements ITextListener, ITextEditorExtension 
 	
 	protected String loadContent() {
 		XModelObject o = getModelObject();
-		String content = (o == null? "": o.get("body"));
-		content = (content == null ? "" : content);
+		String content = (o == null? "": o.get("body")); //$NON-NLS-1$ //$NON-NLS-2$
+		content = (content == null ? "" : content); //$NON-NLS-1$
 		return content;
 	}
 	
@@ -189,7 +189,7 @@ public class TextEditorComponent implements ITextListener, ITextEditorExtension 
 	public String getText() {
 		String text = null;
 		if (document != null) text = document.get();
-		return (text == null) ? "" : text;
+		return (text == null) ? "" : text; //$NON-NLS-1$
 	}
 
 	public void textChanged(TextEvent event) {
@@ -274,16 +274,16 @@ public class TextEditorComponent implements ITextListener, ITextEditorExtension 
 				text = isEditorInputReadOnly() ? "Read Only" : "Writable";
 			else if (ITextEditorActionConstants.STATUS_CATEGORY_INPUT_MODE.equals(category))
 				text = (!fOverwriting) ? "Insert" : "Overwrite";			
-			field.setText(text == null ? "" : text);
+			field.setText(text == null ? "" : text); //$NON-NLS-1$
 		}
 	}
 	
 	protected String getCursorPosition() {		
-		if (preview == null) return "";		
+		if (preview == null) return "";		 //$NON-NLS-1$
 		StyledText styledText = preview.getTextWidget();
 		int caret = styledText.getCaretOffset();
 		IDocument document= preview.getDocument();
-		if (document == null) return "";	
+		if (document == null) return "";	 //$NON-NLS-1$
 		try {			
 			int line = document.getLineOfOffset(caret);
 			int lineOffset= document.getLineOffset(line);
@@ -294,10 +294,10 @@ public class TextEditorComponent implements ITextListener, ITextEditorExtension 
 					column += tabWidth - (column % tabWidth);
 				else
 					column++;
-			return "" + (++line) + " : " + (++column); 
+			return "" + (++line) + " : " + (++column);  //$NON-NLS-1$ //$NON-NLS-2$
 			
 		} catch (BadLocationException x) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 	

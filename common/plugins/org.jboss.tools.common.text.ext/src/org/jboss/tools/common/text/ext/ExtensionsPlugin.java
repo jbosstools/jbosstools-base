@@ -29,7 +29,7 @@ public class ExtensionsPlugin extends BaseUIPlugin implements IAdaptable {
 	//The shared instance.
 	private static ExtensionsPlugin plugin;
 	
-	public static final String PLUGIN_ID = "org.jboss.tools.common.text.ext"; 
+	public static final String PLUGIN_ID = "org.jboss.tools.common.text.ext";  //$NON-NLS-1$
 
 	/**
 	 * The constructor.

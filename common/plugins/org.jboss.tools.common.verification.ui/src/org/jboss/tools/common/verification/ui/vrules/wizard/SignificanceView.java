@@ -10,9 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.verification.ui.vrules.wizard;
 
+import java.text.MessageFormat;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
+import org.jboss.tools.common.verification.ui.Messages;
 import org.jboss.tools.common.verification.vrules.VManager;
 
 public abstract class SignificanceView {
@@ -34,7 +36,7 @@ public abstract class SignificanceView {
 		control.setLayoutData(gd);
 		
 		Label label = new Label(control, SWT.NONE);
-		label.setText("Verification Level: ");
+		label.setText(Messages.SignificanceView_VerificationLevelLabel);
 //		Control sc = 
 			createSignificanceControl(control);
 		return control;
@@ -43,7 +45,9 @@ public abstract class SignificanceView {
 	protected abstract Control createSignificanceControl(Composite parent);
 	
 	public String getMinSignificancePresentation(int i) {
-		return (i == 0) ? "any" : (i == 9) ? "only 10" : "greater than " + i;
+		return (i == 0) ? Messages.SignificanceView_Any : 
+			(i == 9) ? Messages.SignificanceView_OnlyTen : 
+				MessageFormat.format(Messages.SignificanceView_GreaterThanN, i);
 	}
 	
 }

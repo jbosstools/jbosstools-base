@@ -21,7 +21,7 @@ import org.jboss.tools.common.model.ui.texteditors.propertyeditor.PropertyEditor
 public class TextActionHelper {
 	
 	public static void addCutAction(ITextEditor editor) {
-		String property = "Editor.Cut.";
+		String property = "Editor.Cut."; //$NON-NLS-1$
 		int operationTarget = ITextOperationTarget.CUT;
 		String contextId = IAbstractTextEditorHelpContextIds.CUT_ACTION;
 		String definitionId = ITextEditorActionDefinitionIds.CUT;
@@ -30,7 +30,7 @@ public class TextActionHelper {
 	}
 	
 	public static void addCopyAction(ITextEditor editor) {
-		String property = "Editor.Copy.";
+		String property = "Editor.Copy."; //$NON-NLS-1$
 		int operationTarget = ITextOperationTarget.COPY;
 		String contextId = IAbstractTextEditorHelpContextIds.COPY_ACTION;
 		String definitionId = ITextEditorActionDefinitionIds.COPY;
@@ -39,7 +39,7 @@ public class TextActionHelper {
 	}
 	
 	public static void addPasteAction(ITextEditor editor) {
-		String property = "Editor.Paste.";
+		String property = "Editor.Paste."; //$NON-NLS-1$
 		int operationTarget = ITextOperationTarget.PASTE;
 		String contextId = IAbstractTextEditorHelpContextIds.PASTE_ACTION;
 		String definitionId = ITextEditorActionDefinitionIds.PASTE;
@@ -48,7 +48,7 @@ public class TextActionHelper {
 	}
 	
 	public static void addDeleteAction(ITextEditor editor) {
-		String property = "Editor.Delete.";
+		String property = "Editor.Delete."; //$NON-NLS-1$
 		int operationTarget = ITextOperationTarget.DELETE;
 		String contextId = IAbstractTextEditorHelpContextIds.DELETE_ACTION;
 		String definitionId = ITextEditorActionDefinitionIds.DELETE;

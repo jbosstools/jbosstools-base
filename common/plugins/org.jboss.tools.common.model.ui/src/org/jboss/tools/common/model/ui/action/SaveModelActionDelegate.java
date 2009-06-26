@@ -90,8 +90,8 @@ public class SaveModelActionDelegate extends AbstractModelActionDelegate {
 			if(this.model != null) {
 				RootImpl r = (RootImpl)this.model.getRoot();
 				r.addModifyListener(monitor);
-				XModelObject fs = model.getByPath("FileSystems");
-				String fsn = (fs == null) ? "" : " " + fs.getPresentationString();
+				XModelObject fs = model.getByPath("FileSystems"); //$NON-NLS-1$
+				String fsn = (fs == null) ? "" : " " + fs.getPresentationString(); //$NON-NLS-1$ //$NON-NLS-2$
 				action.setToolTipText("Save Struts Project" + fsn);
 			} else {
 				action.setToolTipText("Save Struts Project");

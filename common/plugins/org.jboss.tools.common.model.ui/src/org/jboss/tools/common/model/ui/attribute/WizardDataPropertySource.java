@@ -45,8 +45,8 @@ public class WizardDataPropertySource implements IPropertySource, IXModelSupport
 //			String value = properties.get(key).toString();
 //		} 
 		
-		action = (XAction)properties.get("action");
-		object = (XModelObject)properties.get("object");
+		action = (XAction)properties.get("action"); //$NON-NLS-1$
+		object = (XModelObject)properties.get("object"); //$NON-NLS-1$
 		data = action.getEntityData(this.object)[0];
 		attributeData = data.getAttributeData();
 

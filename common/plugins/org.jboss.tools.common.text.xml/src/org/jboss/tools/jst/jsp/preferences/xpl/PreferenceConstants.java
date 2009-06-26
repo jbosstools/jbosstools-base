@@ -60,7 +60,7 @@ public class PreferenceConstants {
 	 * 
 	 * @since 3.0
 	 */	
-    public static String EDITOR_MARK_TEXT_NODE_OCCURRENCES = "markTextNodeOccurrences";
+    public static String EDITOR_MARK_TEXT_NODE_OCCURRENCES = "markTextNodeOccurrences"; //$NON-NLS-1$
 	
 	/**
 	 * A named preference that controls whether attribute occurrences are marked.

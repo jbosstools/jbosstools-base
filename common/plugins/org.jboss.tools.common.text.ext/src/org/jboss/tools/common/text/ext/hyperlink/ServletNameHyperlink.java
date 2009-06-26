@@ -21,7 +21,7 @@ import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
  */
 public class ServletNameHyperlink extends JumpToHyperlink {
 	protected String getDestinationAxis() {
-		return "/web-app/servlet/servlet-name/";
+		return "/web-app/servlet/servlet-name/"; //$NON-NLS-1$
 	}
 	
 	/*

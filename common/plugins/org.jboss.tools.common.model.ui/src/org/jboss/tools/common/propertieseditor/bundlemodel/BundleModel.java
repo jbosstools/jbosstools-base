@@ -33,8 +33,8 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class BundleModel {
 	IFile main;
-	XModelObject object = PreferenceModelUtilities.getPreferenceModel().createModelObject("FilePROPERTIES", null);
-	String currentLocale = "";
+	XModelObject object = PreferenceModelUtilities.getPreferenceModel().createModelObject("FilePROPERTIES", null); //$NON-NLS-1$
+	String currentLocale = ""; //$NON-NLS-1$
 	Set<String> locales = new TreeSet<String>();
 	Set<String> removedLocales = new HashSet<String>();
 	boolean isModified;
@@ -56,7 +56,7 @@ public class BundleModel {
 	
 	public String getName() {
 		String name = main.getName();
-		if(name.endsWith(".properties")) name = name.substring(0, name.length() - ".properties".length());
+		if(name.endsWith(".properties")) name = name.substring(0, name.length() - ".properties".length()); //$NON-NLS-1$ //$NON-NLS-2$
 		return name;
 	}
 	
@@ -70,8 +70,8 @@ public class BundleModel {
 	
 	public IFile getFile(String locale) {
 		if(locale.length() == 0) return main;
-		String name = getName() + "_" + locale + ".properties";
-		return main.getParent().getFile(new Path("/" + name)); 
+		String name = getName() + "_" + locale + ".properties"; //$NON-NLS-1$ //$NON-NLS-2$
+		return main.getParent().getFile(new Path("/" + name));  //$NON-NLS-1$
 	}
 	
 	public String[] getLocales() {
@@ -93,9 +93,9 @@ public class BundleModel {
 	}
 	
 	public PropertyModel createPropertyModel(String name, String value, String locale) {
-		XModelObject o = PreferenceModelUtilities.getPreferenceModel().createModelObject("Property", null);
-		o.setAttributeValue("name", name);
-		o.setAttributeValue("value", value);
+		XModelObject o = PreferenceModelUtilities.getPreferenceModel().createModelObject("Property", null); //$NON-NLS-1$
+		o.setAttributeValue("name", name); //$NON-NLS-1$
+		o.setAttributeValue("value", value); //$NON-NLS-1$
 		object.addChild(o);
 		return getPropertyModel(o, locale);
 	}
@@ -106,11 +106,11 @@ public class BundleModel {
 	
 	public PropertyModel getPropertyModel(XModelObject o, String locale) {
 		if(o == null) return null;
-		PropertyModel pm = (PropertyModel)o.getObject("propertyModel");
+		PropertyModel pm = (PropertyModel)o.getObject("propertyModel"); //$NON-NLS-1$
 		if(pm == null) {
 			pm = new PropertyModel(this);
 			pm.setModelObject(o);
-			if(locale != null) pm.setValue(locale, o.getAttributeValue("value"));
+			if(locale != null) pm.setValue(locale, o.getAttributeValue("value")); //$NON-NLS-1$
 			pm.setLocale(currentLocale);
 		}
 		return pm;
@@ -123,12 +123,12 @@ public class BundleModel {
 	public void load() {
 		locales.clear();
 		removedLocales.clear();
-		locales.add("");
+		locales.add(""); //$NON-NLS-1$
 		String name = getName();
 		String[][] p = loadFile(main);
 		if(p == null) return;
 		for (int i = 0; i < p.length; i++) {
-			createPropertyModel(p[i][0], p[i][1], "");
+			createPropertyModel(p[i][0], p[i][1], ""); //$NON-NLS-1$
 		}
 		IResource[] rs = new IResource[0];
 		try { 
@@ -140,9 +140,9 @@ public class BundleModel {
 			if(!(rs[i] instanceof IFile)) continue;
 			IFile f = (IFile)rs[i];
 			String nm = rs[i].getLocation().lastSegment().toString();
-			if(!nm.startsWith(name) || !nm.endsWith(".properties") || nm.indexOf("_") < 0) continue;
-			nm = nm.substring(0, nm.length() - ".properties".length());
-			String locale = nm.substring(nm.indexOf("_") + 1);
+			if(!nm.startsWith(name) || !nm.endsWith(".properties") || nm.indexOf("_") < 0) continue; //$NON-NLS-1$ //$NON-NLS-2$
+			nm = nm.substring(0, nm.length() - ".properties".length()); //$NON-NLS-1$
+			String locale = nm.substring(nm.indexOf("_") + 1); //$NON-NLS-1$
 			locales.add(locale);
 			p = loadFile(f);
 			if(p == null) continue;
@@ -164,7 +164,7 @@ public class BundleModel {
 		Properties p = new Properties();
 		try {
 			InputStream s = file.getContents();
-			BufferedReader in = new BufferedReader(new InputStreamReader(s, "8859_1"));
+			BufferedReader in = new BufferedReader(new InputStreamReader(s, "8859_1")); //$NON-NLS-1$
 			while (true) {
 				String line = in.readLine();
 				if(line == null) break;
@@ -174,8 +174,8 @@ public class BundleModel {
 				StringBuffer sb = new StringBuffer(line);
 				while (continueLine(line)) {
 					String nextLine = in.readLine();
-					if(nextLine == null) nextLine = "";
-					sb.append("\n");
+					if(nextLine == null) nextLine = ""; //$NON-NLS-1$
+					sb.append("\n"); //$NON-NLS-1$
 					sb.append(line = nextLine);
 				}
 				ByteArrayInputStream is = new ByteArrayInputStream(sb.toString().getBytes());
@@ -262,7 +262,7 @@ public class BundleModel {
 						continue;
 					}
 					String s = os.toString();
-					if(s.startsWith("#")) s = s.substring(s.indexOf('\n') + 1);
+					if(s.startsWith("#")) s = s.substring(s.indexOf('\n') + 1); //$NON-NLS-1$
 					sb.append(s);
 				}
 			}		

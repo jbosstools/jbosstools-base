@@ -19,15 +19,15 @@ import org.jboss.tools.common.model.*;
 public class AddInterfaceSupport extends SpecialWizardSupport {
 	
 	public static String runAdd(XModel model) {
-		return runAdd(model, "CreateActions.AddInterface", "interface");
+		return runAdd(model, "CreateActions.AddInterface", "interface"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static String runAddClass(XModel model) {
-		return runAdd(model, "CreateActions.AddClass", "class");
+		return runAdd(model, "CreateActions.AddClass", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private static String runAdd(XModel model, String action, String property) {
-		String entity = "TemplateClass";
+		String entity = "TemplateClass"; //$NON-NLS-1$
 		Properties p = new Properties();
 		XModelObject o = model.createModelObject(entity, p);
 		XActionInvoker.invoke(action, o, p);
@@ -35,12 +35,12 @@ public class AddInterfaceSupport extends SpecialWizardSupport {
 	}
 
 	public static String runEdit(XModel model, String current) {
-		String entity = "TemplateClass";
+		String entity = "TemplateClass"; //$NON-NLS-1$
 		Properties p = new Properties();
-		if(current != null) p.setProperty("interface", current);
+		if(current != null) p.setProperty("interface", current); //$NON-NLS-1$
 		XModelObject o = model.createModelObject(entity, p);
-		XActionInvoker.invoke("EditActions.EditInterface", o, p);
-		return p.getProperty("interface");
+		XActionInvoker.invoke("EditActions.EditInterface", o, p); //$NON-NLS-1$
+		return p.getProperty("interface"); //$NON-NLS-1$
 		
 	}
 
@@ -48,7 +48,7 @@ public class AddInterfaceSupport extends SpecialWizardSupport {
 
 	public void reset() {
 		property = getEntityData()[0].getAttributeData()[0].getAttribute().getName();
-		if(property == null) property = "interface";
+		if(property == null) property = "interface"; //$NON-NLS-1$
 		String current = getProperties().getProperty(property);
 		if(current != null) setAttributeValue(0, property, current);		
 	}

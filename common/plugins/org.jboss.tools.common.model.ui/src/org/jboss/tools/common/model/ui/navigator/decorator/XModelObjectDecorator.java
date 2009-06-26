@@ -90,7 +90,7 @@ public class XModelObjectDecorator implements DecoratorConstants {
 		value = defaultValue;
 		String s = element.getAttribute(ATTR_ENTITIES);
 		if(s != null) {
-			String[] es = s.split(",");
+			String[] es = s.split(","); //$NON-NLS-1$
 			for (int i = 0; i < es.length; i++) entities.add(es[i]);
 		}
 		IConfigurationElement[] cs = element.getChildren(NODE_VARIABLE);
@@ -119,9 +119,9 @@ public class XModelObjectDecorator implements DecoratorConstants {
 		List<IDecoratorPart> parts = new ArrayList<IDecoratorPart>();
 		String v = value;
 		if(value == null || value.length() == 0) v = defaultValue;
-		if(v == null) v = "";
+		if(v == null) v = ""; //$NON-NLS-1$
 		if(v.indexOf(RULE_OPENING) < 0) {
-			if(v.length() > 0) v = " " + v;
+			if(v.length() > 0) v = " " + v; //$NON-NLS-1$
 			v = Variable.NAME.getRuleText() + v;
 		}
 		StringTokenizer s = new StringTokenizer(v, RULE_OPENING + RULE_CLOSING, true);
@@ -134,7 +134,7 @@ public class XModelObjectDecorator implements DecoratorConstants {
 				inVariable = false;				
 			} else if(inVariable) {
 				String n = t;
-				String p = "";
+				String p = ""; //$NON-NLS-1$
 				int i = t.indexOf('(');
 				int j = t.indexOf(')');
 				if(i >= 0 && j > i) {

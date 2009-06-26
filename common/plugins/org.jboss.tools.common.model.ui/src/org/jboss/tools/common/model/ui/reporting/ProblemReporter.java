@@ -45,11 +45,11 @@ public class ProblemReporter implements IProblemReporter {
 	}
 	
 	private boolean isShowProblemDialogOn() {
-		return "yes".equals(ReportPreference.SHOW_ERROR_DIALOG_OPTION.getValue());
+		return "yes".equals(ReportPreference.SHOW_ERROR_DIALOG_OPTION.getValue()); //$NON-NLS-1$
 	}
 	
 	private boolean isSubmitProblemAutomaticallyOn() {
-		return "yes".equals(ReportPreference.SUBMIT_AUTOMATICALLY_OPTION.getValue());
+		return "yes".equals(ReportPreference.SUBMIT_AUTOMATICALLY_OPTION.getValue()); //$NON-NLS-1$
 	}
 	
 	private int showProblemDialog(IStatus status) {
@@ -65,7 +65,7 @@ public class ProblemReporter implements IProblemReporter {
 			if(message == null) message = t.getMessage();
 			if(message != null) {
 				ps.print(message);
-				ps.print("\n");
+				ps.print("\n"); //$NON-NLS-1$
 			}
 			t.printStackTrace(ps);
 			if((t instanceof SWTError) && (((SWTError)t).throwable != null)) {

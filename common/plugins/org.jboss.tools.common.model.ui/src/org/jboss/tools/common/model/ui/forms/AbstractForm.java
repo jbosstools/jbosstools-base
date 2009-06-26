@@ -27,7 +27,7 @@ public abstract class AbstractForm implements IForm {
 	protected Color headingBackground;
 	protected Color headingForeground;
 	protected Image headingImage;
-	protected String headingText = "%No text%";
+	protected String headingText = "%No text%"; //$NON-NLS-1$
 	private Object layoutData;
 	private Layout layout;
 	private boolean enabled = Boolean.TRUE.booleanValue();

@@ -107,7 +107,7 @@ public class ListSelectionFieldEditor extends ExtendedFieldEditor implements IFi
 		}
 		listViewer.setInput(this);
 		if(valueProvider != null) {
-			String v = ("" + valueProvider.getValue()).toString();
+			String v = ("" + valueProvider.getValue()).toString(); //$NON-NLS-1$
 			listViewer.setSelection(new StructuredSelection(v));
 		}
 		listViewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -233,7 +233,7 @@ public class ListSelectionFieldEditor extends ExtendedFieldEditor implements IFi
 	
 	protected void valueChanged() {
 		setPresentsDefaultValue(false);
-		String oldValue = "";
+		String oldValue = ""; //$NON-NLS-1$
 		String newValue = getSelection();
 		this.valueProvider.removeValueChangeListener(this);
 		java.beans.PropertyChangeEvent event = new java.beans.PropertyChangeEvent(this, IPropertyEditor.VALUE, oldValue, newValue);
@@ -243,8 +243,8 @@ public class ListSelectionFieldEditor extends ExtendedFieldEditor implements IFi
 	
 	String getSelection() {
 		ISelection s = listViewer.getSelection();
-		if(s == null || s.isEmpty()) return "";
-		if(!(s instanceof StructuredSelection)) return "";
+		if(s == null || s.isEmpty()) return ""; //$NON-NLS-1$
+		if(!(s instanceof StructuredSelection)) return ""; //$NON-NLS-1$
 		return ((StructuredSelection)s).getFirstElement().toString();
 	}
 

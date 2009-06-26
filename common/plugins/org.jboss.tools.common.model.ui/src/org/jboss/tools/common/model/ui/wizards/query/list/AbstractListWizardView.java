@@ -49,7 +49,7 @@ public abstract class AbstractListWizardView extends AbstractQueryWizardView {
 	public void setObject(Object data) {
 		super.setObject(data);
 		Properties p = (Properties)data;
-		vs = (String[][])p.get("data");
+		vs = (String[][])p.get("data"); //$NON-NLS-1$
 		boxes = new Button[vs.length];
 	}
 	
@@ -74,7 +74,7 @@ public abstract class AbstractListWizardView extends AbstractQueryWizardView {
 		for (int i = 0; i < vs.length; i++) {
 			boxes[i] = new Button(c, SWT.CHECK);
 			boxes[i].setText(vs[i][0]);
-			boxes[i].setSelection(!"yes".equals(vs[i][1]));
+			boxes[i].setSelection(!"yes".equals(vs[i][1])); //$NON-NLS-1$
 			boxes[i].addSelectionListener(new AL(i));
 		}
 		c.pack();

@@ -24,7 +24,7 @@ public class JavaHyperlinkCueLabelProvider extends LabelProvider {
 	}
 	
 	static Image createClassImage() {
-		return ModelUIImages.getImage("java/wizard.gif");
+		return ModelUIImages.getImage("java/wizard.gif"); //$NON-NLS-1$
 	}
 
 	public static JavaHyperlinkCueLabelProvider INSTANCE = new JavaHyperlinkCueLabelProvider();
@@ -38,7 +38,7 @@ public class JavaHyperlinkCueLabelProvider extends LabelProvider {
 		if(!(element instanceof Text)) return null;
 		Text text = (Text)element;
 		if(text.isDisposed()) return null;
-		JavaClassHolder editor = (JavaClassHolder)text.getData("JavaHyperlinkLineFieldEditor");
+		JavaClassHolder editor = (JavaClassHolder)text.getData("JavaHyperlinkLineFieldEditor"); //$NON-NLS-1$
 	    return (editor == null || editor.classExists() || !editor.canCreateClass()) ? null : CLASS_IMAGE;
 	}
 	

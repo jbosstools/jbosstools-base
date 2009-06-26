@@ -63,7 +63,7 @@ public class DefaultComboBoxValueAdapter extends DefaultValueAdapter {
 			}
 			return this.listContentProvider;
 		}
-		Assert.isTrue(true, "DefaultValueAdapter instance itself cannot provide adapter for "+adapter.getName());
+		Assert.isTrue(true, "DefaultValueAdapter instance itself cannot provide adapter for "+adapter.getName()); //$NON-NLS-1$
 		return null;
 	}
 	

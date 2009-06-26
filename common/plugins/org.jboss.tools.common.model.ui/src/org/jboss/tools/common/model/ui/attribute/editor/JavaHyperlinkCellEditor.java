@@ -48,7 +48,7 @@ public class JavaHyperlinkCellEditor extends DialogCellEditorEx
 				if (((DefaultValueAdapter)valueProvider).getModel()!=null) {
 					XModelObject xmo = FileSystemsHelper.getFileSystems(((DefaultValueAdapter)valueProvider).getModel());
 					if (xmo!=null) {
-						IProject project = (IProject)xmo.getModel().getProperties().get("project");
+						IProject project = (IProject)xmo.getModel().getProperties().get("project"); //$NON-NLS-1$
 						if (project!=null) { 
 							this.project = project;
 						}
@@ -76,10 +76,10 @@ public class JavaHyperlinkCellEditor extends DialogCellEditorEx
 	        IPackageFragmentRoot root = (project == null) ? null : JavaAdapter.getInstance().getPackageFragmentRoot(project);
 	        if (root != null) {
 	    		JavaTypeCompletionProcessor contentAssistentProcessor = new JavaTypeCompletionProcessor(false, false);
-	       		IPackageFragment currentPackage = root.getPackageFragment("");
+	       		IPackageFragment currentPackage = root.getPackageFragment(""); //$NON-NLS-1$
 	       		contentAssistentProcessor.setPackageFragment(currentPackage);
 	            Text text = getTextField();
-	            text.setData("JavaHyperlinkLineFieldEditor", this);
+	            text.setData("JavaHyperlinkLineFieldEditor", this); //$NON-NLS-1$
 	    		ControlContentAssistHelper.createTextContentAssistant(getTextField(), contentAssistentProcessor, JavaHyperlinkCueLabelProvider.INSTANCE);
 	        }
 		}

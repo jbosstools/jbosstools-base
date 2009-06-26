@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Display;
 public class TextAndReferenceComponent extends Canvas implements PaintListener, MouseMoveListener {
 	int defaultWidth = 100;
 	int width;
-	String text = "";
+	String text = ""; //$NON-NLS-1$
 	Line[] lines = new Line[0];
 	int lineHeight = 12;
 	ReferenceListener listener;
@@ -149,7 +149,7 @@ class Context {
 	}
 	
 	boolean isReferenceStart() {
-		boolean b = (c == '<' && text.indexOf("<a>", i) == i && !isReference);
+		boolean b = (c == '<' && text.indexOf("<a>", i) == i && !isReference); //$NON-NLS-1$
 		if(b) {
 			getLastToken();
 			isReference = true; 
@@ -159,7 +159,7 @@ class Context {
 	}
 	
 	boolean isReferenceEnd() {
-		boolean b = (c == '<' && text.indexOf("</a>", i) == i && isReference);
+		boolean b = (c == '<' && text.indexOf("</a>", i) == i && isReference); //$NON-NLS-1$
 		if(b) {
 			getLastToken();
 			isReference = false; 
@@ -169,7 +169,7 @@ class Context {
 	}
 	
 	boolean isBoldStart() {
-		boolean b = (c == '<' && text.indexOf("<b>", i) == i && !isBold);
+		boolean b = (c == '<' && text.indexOf("<b>", i) == i && !isBold); //$NON-NLS-1$
 		if(b) {
 			getLastToken();
 			isBold = true; 
@@ -179,7 +179,7 @@ class Context {
 	}
 	
 	boolean isBoldEnd() {
-		boolean b = (c == '<' && text.indexOf("</b>", i) == i && isBold);
+		boolean b = (c == '<' && text.indexOf("</b>", i) == i && isBold); //$NON-NLS-1$
 		if(b) {
 			getLastToken();
 			isBold = false; 
@@ -287,7 +287,7 @@ class Line {
 }
 
 class Token {
-	String text = "";
+	String text = ""; //$NON-NLS-1$
 	boolean isReference = false;
 	boolean isBreak = false;
 	Rectangle r = new Rectangle(0, 0, 0, 0);

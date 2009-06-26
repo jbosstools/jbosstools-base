@@ -22,7 +22,7 @@ public class DefaultElementGenerator implements IElementGenerator {
 			fDataModel = (IDropWizardModel)object;
 			return;
 		}
-		throw new IllegalArgumentException("Object parametr must be instance of " + this.getClass().getName());
+		throw new IllegalArgumentException("Object parametr must be instance of " + this.getClass().getName()); //$NON-NLS-1$
 	}
 
 	public IDropWizardModel getWizardDataModel() {
@@ -50,55 +50,55 @@ public class DefaultElementGenerator implements IElementGenerator {
 					// for HTML
 					fullName = fullName.toLowerCase();
 				}
-				tagText.append("<" + applayTagPreferences(fullName));			
+				tagText.append("<" + applayTagPreferences(fullName));			 //$NON-NLS-1$
 				AttributeDescriptorValue[] values = getWizardDataModel().getAttributeValueDescriptors();
 				for(int i=0;i<values.length;i++) {
 					Object value = values[i].getValue();
-					if(value != null && !"".equals(value.toString().trim())) {
+					if(value != null && !"".equals(value.toString().trim())) { //$NON-NLS-1$
 						tagText
-							.append(" ")
+							.append(" ") //$NON-NLS-1$
 							.append(applayAttributePreferences(values[i].getName()))
-							.append("=")
-							.append("\"")
+							.append("=") //$NON-NLS-1$
+							.append("\"") //$NON-NLS-1$
 							.append(value.toString())
-							.append("\"");
+							.append("\""); //$NON-NLS-1$
 					}
 				}
 				
 				if(descr.hasClosingTag()) {
 					if(descr.hasBody()) {
 						tagText
-							.append(">")
-							.append("</")
+							.append(">") //$NON-NLS-1$
+							.append("</") //$NON-NLS-1$
 							.append(fullName);
 					} else {
 						tagText
-							.append("/");
+							.append("/"); //$NON-NLS-1$
 					}
 				} 
 				tagText			
-					.append(">");
+					.append(">"); //$NON-NLS-1$
 
 			} else {
 				tagText
-					.append("<");
+					.append("<"); //$NON-NLS-1$
 				
 				if(getWizardDataModel().getTagProposal().getPrefix()!=null 
-						&& !"".equals(getWizardDataModel().getTagProposal().getPrefix().trim())) {
+						&& !"".equals(getWizardDataModel().getTagProposal().getPrefix().trim())) { //$NON-NLS-1$
 					tagText.append(getWizardDataModel().getTagProposal().getPrefix())
-						.append(":");
+						.append(":"); //$NON-NLS-1$
 				}
 				
 				tagText
 					.append(getWizardDataModel().getTagProposal().getName())
-					.append("/>");
+					.append("/>"); //$NON-NLS-1$
 			}
 			return tagText.toString();
 
 	}
 
 	public String generateEndTag() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	protected String applayAttributePreferences(String attribute) {

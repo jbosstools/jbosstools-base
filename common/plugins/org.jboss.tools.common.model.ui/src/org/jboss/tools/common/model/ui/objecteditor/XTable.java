@@ -208,7 +208,7 @@ public class XTable {
 	}
 	
 	public static String toVisualValue(String v) {
-		if(v == null) return "";
+		if(v == null) return ""; //$NON-NLS-1$
 		if(v.indexOf('\n') >= 0) v = v.replace('\n', ' ');
 		if(v.indexOf('\t') >= 0) v = v.replace('\t', ' ');
 		if(v.indexOf('\r') >= 0) v = v.replace('\r', ' ');

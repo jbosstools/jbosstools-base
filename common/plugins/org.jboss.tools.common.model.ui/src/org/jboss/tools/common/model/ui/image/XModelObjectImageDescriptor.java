@@ -33,7 +33,7 @@ public class XModelObjectImageDescriptor extends ImageDescriptor {
 	public Image createImage(boolean returnMissingImageOnError, Device device) {
 		int code = xicon.getIconHash();
 		if (code == 0) return null;
-		String key = "" + code;
+		String key = "" + code; //$NON-NLS-1$
 		Image img = (Image)imageCache.get(key);
 		if (img != null) return img;
 		img = xicon.getEclipseImage();

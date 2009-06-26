@@ -36,7 +36,7 @@ public class NavigatorMenuInvoker extends TreeViewerMenuInvoker {
 		if(eclipseWorkspace == null) {
 			XModel model = PreferenceModelUtilities.getPreferenceModel();
 			if(model != null) {
-				eclipseWorkspace = model.createModelObject("EclipseWorkspace", null);
+				eclipseWorkspace = model.createModelObject("EclipseWorkspace", null); //$NON-NLS-1$
 			}
 		}
 		return eclipseWorkspace;
@@ -45,8 +45,8 @@ public class NavigatorMenuInvoker extends TreeViewerMenuInvoker {
 	public void mouseDoubleClick(MouseEvent e) {
 		XModelObject o = getModelObjectAt(new Point(e.x, e.y));
 		if (o == null) return;
-		if(XActionInvoker.getAction("Open", o) != null) {
-			XActionInvoker.invoke("Open", o, new Properties());
+		if(XActionInvoker.getAction("Open", o) != null) { //$NON-NLS-1$
+			XActionInvoker.invoke("Open", o, new Properties()); //$NON-NLS-1$
 		} else if(o.getFileType() == XModelObject.NONE) {
 	        FindObjectHelper.findModelObject(o, FindObjectHelper.IN_EDITOR_ONLY);
 		}
@@ -61,11 +61,11 @@ public class NavigatorMenuInvoker extends TreeViewerMenuInvoker {
 	}
 	
 	private boolean isOpenOnSingleClick() {
-		return Platform.getPreferencesService().getBoolean("org.eclipse.ui.workbench", "OPEN_ON_SINGLE_CLICK", true, new IScopeContext[]{new InstanceScope()}); 
+		return Platform.getPreferencesService().getBoolean("org.eclipse.ui.workbench", "OPEN_ON_SINGLE_CLICK", true, new IScopeContext[]{new InstanceScope()});  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	protected void fillRunningProperties(Properties p) {
-		p.setProperty("actionSourceGUIComponentID", "navigator");
+		p.setProperty("actionSourceGUIComponentID", "navigator"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 }

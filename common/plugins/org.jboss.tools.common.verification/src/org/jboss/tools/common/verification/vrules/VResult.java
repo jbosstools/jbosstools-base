@@ -12,10 +12,10 @@ package org.jboss.tools.common.verification.vrules;
  */
 public class VResult {
     
-    public static final String TYPE_ERROR  = "error";
-    public static final String TYPE_WARN   = "warning";
-    public static final String TYPE_INFO   = "info";
-    public static final String TYPE_HIDDEN = "hidden";
+    public static final String TYPE_ERROR  = "error"; //$NON-NLS-1$
+    public static final String TYPE_WARN   = "warning"; //$NON-NLS-1$
+    public static final String TYPE_INFO   = "info"; //$NON-NLS-1$
+    public static final String TYPE_HIDDEN = "hidden"; //$NON-NLS-1$
     
     public static final int SIGN_ERROR  = 10;
     public static final int SIGN_WARN   = 5;

@@ -160,7 +160,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 			return searchForClass(javaProject, className);
 
 		} catch (CoreException x) {
-			ExtensionsPlugin.getPluginLog().logError("Error while looking for class " + className, x);
+			ExtensionsPlugin.getPluginLog().logError("Error while looking for class " + className, x); //$NON-NLS-1$
 			return null;
 		}
 	}

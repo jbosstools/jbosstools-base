@@ -40,7 +40,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 	}
 	
 	public int execute() {
-		Shell shell = (Shell)support.getProperties().get("shell");
+		Shell shell = (Shell)support.getProperties().get("shell"); //$NON-NLS-1$
 		if(shell == null) shell = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 
 		if(support.canBeProcessedByStandardWizard()) {
@@ -50,7 +50,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 			dsw.setDefaultPageImageDescriptor(ModelUIImages.getImageDescriptor(ModelUIImages.WIZARD_DEFAULT));
 			WizardDialog wd = new WizardDialog(shell, dsw);
 			wd.create();
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(wd.getShell(), "org.eclipse.ui.new_wizard_shortcut_context");
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(wd.getShell(), "org.eclipse.ui.new_wizard_shortcut_context"); //$NON-NLS-1$
 			int ii = wd.open();
 			return ii;
 		}		
@@ -59,8 +59,8 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		dialog.setWizard(this);
 		dialog.create();
 		progressPart = new ProgressPart(dialog.getShell(), this);
-		support.getProperties().put("dialogShell", dialog.getShell());
-		support.getProperties().put("IRunnableContext", progressPart);
+		support.getProperties().put("dialogShell", dialog.getShell()); //$NON-NLS-1$
+		support.getProperties().put("IRunnableContext", progressPart); //$NON-NLS-1$
 		open();
 		return 0;
 	}
@@ -99,7 +99,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 		try {
 			save();
 			support.action(name);
-			dialog.setMessage("");
+			dialog.setMessage(""); //$NON-NLS-1$
 		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
@@ -144,7 +144,7 @@ public class DefaultSpecialWizard implements SpecialWizard, SpecialWizardControl
 			}
 			step.setSupport(support, i);
 		} catch (ClassCastException e) {
-			ModelUIPlugin.getPluginLog().logError("Cannot load class '" + cls + "'.");
+			ModelUIPlugin.getPluginLog().logError("Cannot load class '" + cls + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return step;
 	}

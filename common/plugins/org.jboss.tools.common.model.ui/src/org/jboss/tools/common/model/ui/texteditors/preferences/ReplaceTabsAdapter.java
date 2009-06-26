@@ -21,15 +21,15 @@ public class ReplaceTabsAdapter extends XAdapter {
 	public ReplaceTabsAdapter() {}
 
 	public String getProperty(XProperty object) {
-		if(EditorsPreferencesPage.store == null) return "false";
-		return "" + EditorsPreferencesPage.store.getBoolean(PROPERTY);
+		if(EditorsPreferencesPage.store == null) return "false"; //$NON-NLS-1$
+		return "" + EditorsPreferencesPage.store.getBoolean(PROPERTY); //$NON-NLS-1$
 	}
 
 	public void setProperty(XProperty object, String value) {
 		XModelObject o = (XModelObject)object;
 		if(!o.isActive()) return;
 		if(EditorsPreferencesPage.store == null) return;
-		EditorsPreferencesPage.store.setValue(PROPERTY, "true".equals(value));		
+		EditorsPreferencesPage.store.setValue(PROPERTY, "true".equals(value));		 //$NON-NLS-1$
 	}
 	
 }

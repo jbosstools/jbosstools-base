@@ -30,17 +30,17 @@ public class VResultTemplateModel extends RegularObjectImpl implements PropertyC
     public VResultTemplate getTemplate(VRule rule) {
         if (template == null) {
             template = new VResultTemplate();
-            template.setId(getAttributeValue("id"));
-            template.setName(getAttributeValue("name"));
-            template.setDescription(getAttributeValue("description"));
-            template.setType(getAttributeValue("type"));
-            String s = getAttributeValue("significance");
+            template.setId(getAttributeValue("id")); //$NON-NLS-1$
+            template.setName(getAttributeValue("name")); //$NON-NLS-1$
+            template.setDescription(getAttributeValue("description")); //$NON-NLS-1$
+            template.setType(getAttributeValue("type")); //$NON-NLS-1$
+            String s = getAttributeValue("significance"); //$NON-NLS-1$
             try {
                 template.setSignificance(Integer.parseInt(s));
             } catch (NumberFormatException e) {
             	//ignore
             }
-            template.setFormat(getFormat(getAttributeValue("message id"), rule));
+            template.setFormat(getFormat(getAttributeValue("message id"), rule)); //$NON-NLS-1$
             template.addPropertyChangeListener(this);
         }
         return template;
@@ -53,21 +53,21 @@ public class VResultTemplateModel extends RegularObjectImpl implements PropertyC
     public String setAttributeValue(String name, String value) {
         String result = super.setAttributeValue(name, value);
         if (template != null) {
-            if ("id".equals(name)) {
+            if ("id".equals(name)) { //$NON-NLS-1$
                 template.setId(result);
-            } else if ("name".equals(name)) {
+            } else if ("name".equals(name)) { //$NON-NLS-1$
                 template.setName(result);
-            } else if ("description".equals(name)) {
+            } else if ("description".equals(name)) { //$NON-NLS-1$
                 template.setDescription(result);
-            } else if ("type".equals(name)) {
+            } else if ("type".equals(name)) { //$NON-NLS-1$
                 template.setType(result);
-            } else if ("significance".equals(name)) {
+            } else if ("significance".equals(name)) { //$NON-NLS-1$
                 try {
                     template.setSignificance(Integer.parseInt(result));
                 } catch (NumberFormatException e) {
                 	//ignore
                 }
-            } else if ("message id".equals(name)) {
+            } else if ("message id".equals(name)) { //$NON-NLS-1$
                 template.setFormat(getFormat(result, ((VRuleModel)getParent()).getRule(null)));
             }
         }
@@ -75,29 +75,29 @@ public class VResultTemplateModel extends RegularObjectImpl implements PropertyC
     }
     
     public String getPathPart() {
-        return getAttributeValue("id");
+        return getAttributeValue("id"); //$NON-NLS-1$
     }
 
     public String getPresentationString() {
-        return getAttributeValue("name");
+        return getAttributeValue("name"); //$NON-NLS-1$
     }
     
     public void propertyChange(PropertyChangeEvent evt) {
         String name = evt.getPropertyName();
-        if ("id".equals(name) || "name".equals(name)
-            || "description".equals(name) || "type".equals(name)
-            || "significance".equals(name)) {
-            String value = "" + evt.getNewValue();
+        if ("id".equals(name) || "name".equals(name) //$NON-NLS-1$ //$NON-NLS-2$
+            || "description".equals(name) || "type".equals(name) //$NON-NLS-1$ //$NON-NLS-2$
+            || "significance".equals(name)) { //$NON-NLS-1$
+            String value = "" + evt.getNewValue(); //$NON-NLS-1$
             if (!value.equals(getAttributeValue(name))) {
                 setAttributeValue(name, value);
                 setModified(true);
             }
-        } else if ("format".equals(name)) {
+        } else if ("format".equals(name)) { //$NON-NLS-1$
             VMessageFormat format = (VMessageFormat)evt.getNewValue();
             if (format != null) {
                 String value = format.getId();
-                if (!value.equals(getAttributeValue("message id"))) {
-                    setAttributeValue("message id", value);
+                if (!value.equals(getAttributeValue("message id"))) { //$NON-NLS-1$
+                    setAttributeValue("message id", value); //$NON-NLS-1$
                     setModified(true);
                 }
             }

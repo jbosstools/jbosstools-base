@@ -21,8 +21,8 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 public class CommandBar {
-	public static final String SEPARATOR = "_SEPARATOR_";
-	public static String FILL = " ";
+	public static final String SEPARATOR = "_SEPARATOR_"; //$NON-NLS-1$
+	public static String FILL = " "; //$NON-NLS-1$
 	CommandBarListener listener = null;
 	Composite control = null;
 	CommandBarLayout layout = new CommandBarLayout();
@@ -162,14 +162,14 @@ public class CommandBar {
 					button = new ToolItem((ToolBar)parent, SWT.PUSH);
 					((ToolItem)button).addSelectionListener(this);
 				} else {
-					int style = (settings == null) ? SWT.PUSH : settings.getStyle("Button.Style");
+					int style = (settings == null) ? SWT.PUSH : settings.getStyle("Button.Style"); //$NON-NLS-1$
 					if (style == SWT.DEFAULT) style = SWT.NONE;
 					if (style == 0) style = SWT.PUSH;
 					button = new Button(parent, style);
 					if(settings != null) {
-						Color bg = settings.getColor("Button.Background");
-						Color fg = settings.getColor("Button.Foreground");
-						Font font = settings.getFont("Button.Font");
+						Color bg = settings.getColor("Button.Background"); //$NON-NLS-1$
+						Color fg = settings.getColor("Button.Foreground"); //$NON-NLS-1$
+						Font font = settings.getFont("Button.Font"); //$NON-NLS-1$
 						((Control)button).setBackground(bg);
 						((Control)button).setForeground(fg);
 						((Control)button).setFont(font);
@@ -221,10 +221,10 @@ public class CommandBar {
 			if(layout.iconsOnly) {
 				if (layout.asToolBar) {
 					((ToolItem)button).setToolTipText(getText(false));
-					((ToolItem)button).setText("");
+					((ToolItem)button).setText(""); //$NON-NLS-1$
 				} else {
 					((Button)button).setToolTipText(getText(false));
-					((Button)button).setText("");
+					((Button)button).setText(""); //$NON-NLS-1$
 				}
 				if(image != null) {
 					if (layout.asToolBar) {

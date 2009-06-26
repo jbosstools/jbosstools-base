@@ -23,7 +23,7 @@ public class DecoratorPart implements IDecoratorPart {
 	}
 	
 	public String getLabelPart(XModelObject object) {
-		return value == null ? "" : value; 
+		return value == null ? "" : value;  //$NON-NLS-1$
 	}
 
 }

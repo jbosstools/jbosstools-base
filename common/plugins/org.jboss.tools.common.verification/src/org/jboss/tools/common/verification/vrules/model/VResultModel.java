@@ -32,28 +32,28 @@ public class VResultModel extends XModelObjectImpl {
     
     public void setResult(VResult result) {
         this.result = result;
-        setAttributeValue("message", result.getMessage());
-        setAttributeValue("significance", ""+result.getSignificance());
-        setAttributeValue("source object", result.getSourceObject().getPath());
-        setAttributeValue("source position", ""+result.getSourcePosition());
-        setAttributeValue("target object", result.getTargetObject().getPath());
-        setAttributeValue("target position", ""+result.getTargetPosition());
-        setAttributeValue("type", result.getType());
+        setAttributeValue("message", result.getMessage()); //$NON-NLS-1$
+        setAttributeValue("significance", ""+result.getSignificance()); //$NON-NLS-1$ //$NON-NLS-2$
+        setAttributeValue("source object", result.getSourceObject().getPath()); //$NON-NLS-1$
+        setAttributeValue("source position", ""+result.getSourcePosition()); //$NON-NLS-1$ //$NON-NLS-2$
+        setAttributeValue("target object", result.getTargetObject().getPath()); //$NON-NLS-1$
+        setAttributeValue("target position", ""+result.getTargetPosition()); //$NON-NLS-1$ //$NON-NLS-2$
+        setAttributeValue("type", result.getType()); //$NON-NLS-1$
     }
     
     public String getPathPart() {
-        return ""+System.identityHashCode(this);
+        return ""+System.identityHashCode(this); //$NON-NLS-1$
     }
 
     public String getPresentationString() {
-        String msg = getAttributeValue("message");
+        String msg = getAttributeValue("message"); //$NON-NLS-1$
         return msg;
     }
 
     public String getMainIconName() {
-        String type = getAttributeValue("type");
+        String type = getAttributeValue("type"); //$NON-NLS-1$
         if (type != null && type.length() > 0) {
-            return "main.vrules.result-"+type;
+            return "main.vrules.result-"+type; //$NON-NLS-1$
         } else {
             return super.getMainIconName();
         }

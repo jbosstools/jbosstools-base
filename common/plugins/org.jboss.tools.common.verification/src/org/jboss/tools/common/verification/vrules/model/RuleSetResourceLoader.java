@@ -27,14 +27,14 @@ public class RuleSetResourceLoader {
 			Bundle bundle = Platform.getBundle(es[i].getNamespaceIdentifier());
 			IConfigurationElement[] elements = es[i].getConfigurationElements();
 			for (int j = 0; j < elements.length; j++) {
-				String path = elements[j].getAttribute("path");
+				String path = elements[j].getAttribute("path"); //$NON-NLS-1$
 				if(path != null) {
 					URL url = bundle.getResource(path);
 					if(url != null) {
 						resources.add(url);
 					} else {
 						if(ModelPlugin.isDebugEnabled()) {
-							VerificationPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found.");
+							VerificationPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found."); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}

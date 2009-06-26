@@ -17,13 +17,13 @@ package org.jboss.tools.common.text.ext.hyperlink.xml;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class XMLServletNameHyperlinkPartitioner extends XMLJumpToHyperlinkPartitioner {
-	public static final String XML_SERVLET_NAME_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME";
+	public static final String XML_SERVLET_NAME_PARTITION = "org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME"; //$NON-NLS-1$
 
 	protected String getPartitionType() {
 		return XML_SERVLET_NAME_PARTITION;
 	}
 
 	protected String[] getValidAxisEndings() {
-		return new String[] {"/filter-mapping/servlet-name/", "/servlet-mapping/servlet-name/"};
+		return new String[] {"/filter-mapping/servlet-name/", "/servlet-mapping/servlet-name/"}; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

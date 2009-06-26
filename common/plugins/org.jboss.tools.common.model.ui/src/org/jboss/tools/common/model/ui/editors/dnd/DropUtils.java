@@ -54,7 +54,7 @@ import org.jboss.tools.jst.web.tld.WebProjectFactory;
  */
 public class DropUtils {
 
-	public static final String HTML40_URI = "";
+	public static final String HTML40_URI = ""; //$NON-NLS-1$
 
 	/**
 	 * Get TLD's content.
@@ -103,7 +103,7 @@ public class DropUtils {
 		JspWtpKbConnector wtpKbConnector;
 		List attributes = null;
 		String tldContent = getTldContent(input, uri);
-		String tldLocation = "";
+		String tldLocation = ""; //$NON-NLS-1$
 		try {
 			wtpKbConnector = (JspWtpKbConnector)KbConnectorFactory.getIntstance().createConnector(KbConnectorType.JSP_WTP_KB_CONNECTOR, document);
 			String version = libraryVersion;
@@ -114,7 +114,7 @@ public class DropUtils {
 			resource.setTldContent(tldContent);
 			wtpKbConnector.registerResource(resource, true);
 
-			TagDescriptor tagInfo = wtpKbConnector.getTagInformation("/"+(tagPrefix==TagProposal.EMPTY_PREFIX?"":tagPrefix+":")+tagName);
+			TagDescriptor tagInfo = wtpKbConnector.getTagInformation("/"+(tagPrefix==TagProposal.EMPTY_PREFIX?"":tagPrefix+":")+tagName); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			if(tagInfo != null) {
 				attributes = tagInfo.getAttributesDescriptors();
 			}
@@ -145,8 +145,8 @@ public class DropUtils {
 			if(libraryVersion==null || libraryVersion.trim().length()<1) {
 				version = TLDVersionHelper.getTldVersion(uri, tagPrefix, document);
 			}
-			wtpKbConnector.registerResource(new KbTldResource(uri, "", tagPrefix, version), true);							
-			tagInfo = wtpKbConnector.getTagInformation("/"+(tagPrefix==TagProposal.EMPTY_PREFIX?"":tagPrefix+":")+tagName);
+			wtpKbConnector.registerResource(new KbTldResource(uri, "", tagPrefix, version), true);							 //$NON-NLS-1$
+			tagInfo = wtpKbConnector.getTagInformation("/"+(tagPrefix==TagProposal.EMPTY_PREFIX?"":tagPrefix+":")+tagName); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} catch (KbException ex) {
 			ModelUIPlugin.getPluginLog().logError(ex);
 		}
@@ -195,7 +195,7 @@ public class DropUtils {
 		// TODO Eskimo - look how it can be done through WTP EMF model for flexible project
 		IModelNature modelNature = EclipseResourceUtil.getModelNature(project);
 		if(modelNature == null) return project;
-		XModelObject o = modelNature.getModel().getByPath("FileSystems/WEB-ROOT");
+		XModelObject o = modelNature.getModel().getByPath("FileSystems/WEB-ROOT"); //$NON-NLS-1$
 		if(o != null) {
 			container = (IContainer)EclipseResourceUtil.getResource(o);
 		}

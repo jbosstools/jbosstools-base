@@ -43,19 +43,19 @@ public class ColoredFontData {
 	
 	public static ColoredFontData toFontData(String text) {
 		if(text == null || text.length() == 0) return DEFAULT;
-		StringTokenizer st = new StringTokenizer(text, ",");
+		StringTokenizer st = new StringTokenizer(text, ","); //$NON-NLS-1$
 		int q = 0;
 		FontData data = new FontData(DEFAULT.getFontData().getName(), DEFAULT.getFontData().getHeight(), DEFAULT.getFontData().getStyle());
 		RGB color = DEFAULT.getColor();
 		while(st.hasMoreTokens()) {
 			String t = st.nextToken();
 			if(q == 0) {
-				if(!"default".equals(t)) data.setName(t); 
-			} else if(t.startsWith("size=")) {
+				if(!"default".equals(t)) data.setName(t);  //$NON-NLS-1$
+			} else if(t.startsWith("size=")) { //$NON-NLS-1$
 				data.setHeight(getInt(t.substring(5), data.getHeight()));
-			} else if(t.startsWith("style=")) {
+			} else if(t.startsWith("style=")) { //$NON-NLS-1$
 				data.setStyle(getInt(t.substring(6), data.getStyle()));
-			} else if(t.startsWith("color=")) {
+			} else if(t.startsWith("color=")) { //$NON-NLS-1$
 				String sc = t.substring(6);
 				int red = color.red, green = color.green, blue = color.blue;
 				int i = sc.indexOf('-');
@@ -90,13 +90,13 @@ public class ColoredFontData {
 	public static String toString(FontData data, RGB rgb) {
 		StringBuffer sb = new StringBuffer();
 		if(data.getName().equals(DEFAULT.getFontData().getName()))
-			sb.append("default");
+			sb.append("default"); //$NON-NLS-1$
 		else
 			sb.append(data.getName());
-		sb.append(",size=" + data.getHeight());
-		sb.append(",style=" + data.getStyle());
+		sb.append(",size=" + data.getHeight()); //$NON-NLS-1$
+		sb.append(",style=" + data.getStyle()); //$NON-NLS-1$
 		if(!DEFAULT.color.equals(rgb)) {
-			sb.append(",color=" + rgb.red + "-" + rgb.green + "-" + rgb.blue);
+			sb.append(",color=" + rgb.red + "-" + rgb.green + "-" + rgb.blue); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} 
 		return sb.toString();
 	}

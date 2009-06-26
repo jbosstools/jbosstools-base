@@ -23,7 +23,7 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.osgi.framework.Bundle;
 
 public class EditorPartWrapperExtension {
-	static String POINT_ID = "org.jboss.tools.common.model.ui.xmlEditor";
+	static String POINT_ID = "org.jboss.tools.common.model.ui.xmlEditor"; //$NON-NLS-1$
 	static EditorPartWrapperExtension instance;
 	Map<String,EditorPartFactory> factories = new HashMap<String,EditorPartFactory>();
 	Map<String,Integer> priorities = new HashMap<String,Integer>();
@@ -47,33 +47,33 @@ public class EditorPartWrapperExtension {
 			IConfigurationElement[] cs = es[i].getConfigurationElements();
 			for (int j = 0; j < cs.length; j++) {
 				Bundle bundle = Platform.getBundle(es[i].getNamespaceIdentifier());
-				String entities = cs[j].getAttribute("entities");
-				String editor = cs[j].getAttribute("class");
-				String priorityString = cs[j].getAttribute("priority");
+				String entities = cs[j].getAttribute("entities"); //$NON-NLS-1$
+				String editor = cs[j].getAttribute("class"); //$NON-NLS-1$
+				String priorityString = cs[j].getAttribute("priority"); //$NON-NLS-1$
 				int priority = 0;
 				try {
 					if(priorityString != null && priorityString.length() > 0) {
 						priority = Integer.parseInt(priorityString);
 					}					
 				} catch (NumberFormatException e) {
-					ModelUIPlugin.getPluginLog().logError("Incorrect priority value " + priorityString + ".");
+					ModelUIPlugin.getPluginLog().logError("Incorrect priority value " + priorityString + "."); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				Class editorClass = null;
 				try {
 					editorClass = bundle.loadClass(editor);
 				} catch (ClassNotFoundException e) {
 					if(ModelUIPlugin.getDefault().isDebugging()) {
-						ModelUIPlugin.getPluginLog().logError("Cannot load editor class " + editor + " from " + es[i].getNamespaceIdentifier(),  e);
+						ModelUIPlugin.getPluginLog().logError("Cannot load editor class " + editor + " from " + es[i].getNamespaceIdentifier(),  e); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					continue;
 				}
-				String contributor = cs[j].getAttribute("contributorClass");
+				String contributor = cs[j].getAttribute("contributorClass"); //$NON-NLS-1$
 				Class contributorClass = null;
 				try {
 					contributorClass = bundle.loadClass(contributor);
 				} catch (ClassNotFoundException e) {
 					if(ModelUIPlugin.getDefault().isDebugging()) {
-						String message = "Cannot load contributor class " + contributor;
+						String message = "Cannot load contributor class " + contributor; //$NON-NLS-1$
 						ModelUIPlugin.getPluginLog().logError( message, e);
 					}
 					contributorClass = EditorActionBarContributor.class;
@@ -87,7 +87,7 @@ public class EditorPartWrapperExtension {
 				} catch (IllegalAccessException e) {
 					ModelUIPlugin.getPluginLog().logError(e);
 				}
-				StringTokenizer st = new StringTokenizer(entities, ",;");
+				StringTokenizer st = new StringTokenizer(entities, ",;"); //$NON-NLS-1$
 				while(st.hasMoreTokens()) {
 					String t = st.nextToken();
 					Integer p = (Integer)priorities.get(t);

@@ -19,7 +19,7 @@ import org.eclipse.jface.action.IAction;
  */
 public class Problem {
 	
-	public static final String ERROR = "Problem.Error";
+	public static final String ERROR = "Problem.Error"; //$NON-NLS-1$
 
 	public static final int NONE = -1;
 
@@ -133,7 +133,7 @@ public class Problem {
 	}
 	
 	public String toString() {
-		return "type=" + type + " location=" + location + " message=" + message + " line=" + line + " column=" + column;
+		return "type=" + type + " location=" + location + " message=" + message + " line=" + line + " column=" + column; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 }

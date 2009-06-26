@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.editor;
 
+import java.text.MessageFormat;
 import java.util.Properties;
 import org.eclipse.ui.*;
 import org.eclipse.ui.ide.IDE;
@@ -34,18 +35,18 @@ public class OpenEditorWizard implements SpecialWizard {
 	public int execute() {
 		try {
 			IEditorPart editor = null;
-			XModelObject object = (XModelObject)p.get("object");
+			XModelObject object = (XModelObject)p.get("object"); //$NON-NLS-1$
 			IWorkbenchPage workbenchPage = getWorkbenchPage();
 			if(workbenchPage == null) return 0;
 			String id = object.getModelEntity().getEditorClassName();
-			if(id != null && (id.length() == 0 || id.equals("DefaultEditor"))) {
+			if(id != null && (id.length() == 0 || id.equals("DefaultEditor"))) { //$NON-NLS-1$
 				id = null;
 			} else {
-				boolean b = "yes".equals(PreferenceModelUtilities.getPreferenceModel().getByPath("%Options%/Struts Studio/Editors").getAttributeValue("useRedHatEditors"));
+				boolean b = "yes".equals(PreferenceModelUtilities.getPreferenceModel().getByPath("%Options%/Struts Studio/Editors").getAttributeValue("useRedHatEditors")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				if(!b) id = null;
 			}
 			IModelObjectEditorInput input = XModelObjectEditorInput.createInstance(object);
-			if(input == null) throw new IllegalStateException("Cannot find resource for object " + object.getPresentationString());
+			if(input == null) throw new IllegalStateException("Cannot find resource for object " + object.getPresentationString()); //$NON-NLS-1$
 			if(input instanceof IFileEditorInput) {
 				IFileEditorInput fei = (IFileEditorInput)input;
 				IFile f = fei.getFile();
@@ -59,13 +60,14 @@ public class OpenEditorWizard implements SpecialWizard {
 				if(f == null || !f.exists()) {
 					ServiceDialog d = object.getModel().getService();
 					Object pathData = f == null ? object.getPath() : f.getFullPath();
-					String message = "The file " + pathData + " was removed externally.";
+					String message = MessageFormat.format(
+							"The file {0} was removed externally.", pathData);
 					d.showDialog("Warning", message, new String[]{"Close"}, null, ServiceDialog.WARNING);
 					object.getModel().update();
 					return 1;
 				}
 			}
-			if("true".equals(p.getProperty("onlySelectIfOpen"))) {
+			if("true".equals(p.getProperty("onlySelectIfOpen"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				editor = workbenchPage.findEditor(input);
 				if(editor != null) workbenchPage.bringToTop(editor);
 			} else if(id == null) {
@@ -77,16 +79,16 @@ public class OpenEditorWizard implements SpecialWizard {
 			} else {
 				editor = workbenchPage.openEditor(input, id);
 			}
-			if(p != null && editor != null) p.put("editor", editor);
-			if(p != null && "true".equals(p.get("toErrorTab")) && (editor instanceof ObjectMultiPageEditor)) {
+			if(p != null && editor != null) p.put("editor", editor); //$NON-NLS-1$
+			if(p != null && "true".equals(p.get("toErrorTab")) && (editor instanceof ObjectMultiPageEditor)) { //$NON-NLS-1$ //$NON-NLS-2$
 				ObjectMultiPageEditor m = (ObjectMultiPageEditor)editor;
 				m.activateErrorTab();
 			}
 		} catch (XModelException e) {
-			p.put("exception", e);
+			p.put("exception", e); //$NON-NLS-1$
 			return 1;
 		} catch (PartInitException e) {
-			p.put("exception", e);
+			p.put("exception", e); //$NON-NLS-1$
 			return 1;
 		}
 		return 0;

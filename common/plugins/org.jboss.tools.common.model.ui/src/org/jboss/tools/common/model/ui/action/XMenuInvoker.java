@@ -64,8 +64,8 @@ public abstract class XMenuInvoker implements MouseListener, KeyListener {
 		if(e.button == 1) { 
 			XModelObject o = getSelectedModelObject();
 			if(o == null) return;
-			if("true".equals(o.get("overlapped"))) {
-				XActionInvoker.invoke("Open", o, new Properties());
+			if("true".equals(o.get("overlapped"))) { //$NON-NLS-1$ //$NON-NLS-2$
+				XActionInvoker.invoke("Open", o, new Properties()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -100,13 +100,13 @@ public abstract class XMenuInvoker implements MouseListener, KeyListener {
 	
 	protected void processKey(KeyEvent e) {
 		if(((e.stateMask & SWT.CTRL) != 0) && e.keyCode == (int)'c') {
-			invoke("CopyActions.Copy");
+			invoke("CopyActions.Copy"); //$NON-NLS-1$
 		} else if(((e.stateMask & SWT.CTRL) != 0) && e.keyCode == (int)'x') {
-			invoke("CopyActions.Cut");
+			invoke("CopyActions.Cut"); //$NON-NLS-1$
 		} else if(((e.stateMask & SWT.CTRL) != 0) && e.keyCode == (int)'v') {
-			invoke("CopyActions.Paste");
+			invoke("CopyActions.Paste"); //$NON-NLS-1$
 		} else if((e.stateMask == 0) && e.character == SWT.DEL) {
-			invoke("DeleteActions.Delete");
+			invoke("DeleteActions.Delete"); //$NON-NLS-1$
 		}
 	}
 

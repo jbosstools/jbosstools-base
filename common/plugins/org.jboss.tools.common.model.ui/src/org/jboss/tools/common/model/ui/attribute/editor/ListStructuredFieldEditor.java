@@ -120,10 +120,10 @@ public class ListStructuredFieldEditor extends ExtendedFieldEditor
 	}
 
 	private void createButtons(Composite parent) {
-		buttons[ADD] = createButton(parent, "ListEditor.add");
-		buttons[REMOVE] = createButton(parent, "ListEditor.remove");
-		buttons[UP] = createButton(parent, "ListEditor.up");
-		buttons[DOWN] = createButton(parent, "ListEditor.down");
+		buttons[ADD] = createButton(parent, "ListEditor.add"); //$NON-NLS-1$
+		buttons[REMOVE] = createButton(parent, "ListEditor.remove"); //$NON-NLS-1$
+		buttons[UP] = createButton(parent, "ListEditor.up"); //$NON-NLS-1$
+		buttons[DOWN] = createButton(parent, "ListEditor.down"); //$NON-NLS-1$
 	}
 
 	private Button createButton(Composite parent, String key) {

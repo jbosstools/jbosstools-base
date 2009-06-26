@@ -95,7 +95,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		String wsRelativePath = structuredModel.getBaseLocation();
 		if (wsRelativePath == null)
 			return null;
-		if (wsRelativePath.startsWith("/")) {
+		if (wsRelativePath.startsWith("/")) { //$NON-NLS-1$
 			while (true) {
 				int i = wsRelativePath.lastIndexOf('/');
 				if (i < 0)
@@ -130,7 +130,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		if (wsRelativePath == null) {
 			return null;
 		}
-		if (wsRelativePath.startsWith("/")) {
+		if (wsRelativePath.startsWith("/")) { //$NON-NLS-1$
 			IPath path = new Path(wsRelativePath);
 			IResource r = ModelPlugin.getWorkspace().getRoot().findMember(
 					path);
@@ -161,7 +161,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		}
 		WorkbenchComponent[] modules = se.getWorkbenchModules();
 		for (int i = 0; i < modules.length; i++) {
-			if (name.startsWith("/")) {
+			if (name.startsWith("/")) { //$NON-NLS-1$
 				member = findFileByAbsolutePath(project, modules[i], name);
 			} else {
 				member = findFileByRelativePath(project, modules[i],
@@ -170,7 +170,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 					// in some cases path having no leading "/" is
 					// nevertheless absolute
 					member = findFileByAbsolutePath(project, modules[i],
-							"/" + name);
+							"/" + name); //$NON-NLS-1$
 				}
 			}
 			if (member != null && (member instanceof IFile)) {
@@ -188,7 +188,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 			return null;
 		
 		ComponentResource[] resources = module.findResourcesBySourcePath(
-				new Path("/"), 0);
+				new Path("/"), 0); //$NON-NLS-1$
 		IPath projectPath = project.getLocation();
 		IFile member = null;
 
@@ -223,7 +223,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 	private IFile findFileByAbsolutePath(IProject project,
 		WorkbenchComponent module, String path) {
 		ComponentResource[] resources = module.findResourcesBySourcePath(
-				new Path("/"), 0);
+				new Path("/"), 0); //$NON-NLS-1$
 
 		IFile member = null;
 
@@ -249,7 +249,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 	}
 	
 	protected IEditorInput createEditorInput(String fileString) {
-		String jarName = fileString.substring(0,fileString.indexOf("!"));
+		String jarName = fileString.substring(0,fileString.indexOf("!")); //$NON-NLS-1$
 
         IFile[] fs = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(new Path(jarName));
         if(fs == null || fs.length == 0) return null;
@@ -262,7 +262,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
         
         IPackageFragmentRoot root = jp.getPackageFragmentRoot(fs[0]);
 
-		String entryName = fileString.substring(fileString.indexOf("!")+2,fileString.length());
+		String entryName = fileString.substring(fileString.indexOf("!")+2,fileString.length()); //$NON-NLS-1$
 		JarEntryFile f = new JarEntryFile(entryName);
 		f.setParent(root);
         JarEntryEditorInput jarEditorInput = new JarEntryEditorInput(f) {

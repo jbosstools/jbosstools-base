@@ -49,7 +49,7 @@ public class XActionWrapper extends Action {
 	public void run() {
 		if (xmo == null || path == null) return;
 		Properties p = new Properties();
-		p.setProperty("actionSourceGUIComponentID", "editor");
+		p.setProperty("actionSourceGUIComponentID", "editor"); //$NON-NLS-1$ //$NON-NLS-2$
 		initRunningProperties(p);
 		XActionInvoker.invoke(path, xmo, null, p);
 	}

@@ -42,8 +42,8 @@ import org.jboss.tools.common.model.ui.actions.IActionProvider;
 
 public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements IAdaptable, ISelectionProvider, ISelectionChangedListener {	
 
-	private static final String STRING_BUTTON_ACTION = "Label.Selected";
-	private static final String STRING_BUTTON_XACTION = "linkAction";
+	private static final String STRING_BUTTON_ACTION = "Label.Selected"; //$NON-NLS-1$
+	private static final String STRING_BUTTON_XACTION = "linkAction"; //$NON-NLS-1$
 
 	protected ILabelProvider labelProvider;
 	protected ITreeContentProvider treeContentProvider;
@@ -100,7 +100,7 @@ public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements 
 			}
 		}
 
-		Assert.isTrue(true, "DefaultTreeSelectionAdapter instance itself cannot provide adapter for "+adapter.getName());
+		Assert.isTrue(true, "DefaultTreeSelectionAdapter instance itself cannot provide adapter for "+adapter.getName()); //$NON-NLS-1$
 		return null;
 	}
 

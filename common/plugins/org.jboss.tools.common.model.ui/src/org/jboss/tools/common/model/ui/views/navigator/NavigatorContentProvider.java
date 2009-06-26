@@ -201,7 +201,7 @@ public class NavigatorContentProvider implements ITreeContentProvider, IResource
 	}
 	
 	protected String getFilteredTreeName() {
-		return "FileSystems";
+		return "FileSystems"; //$NON-NLS-1$
 	}
 	
 	XFilteredTree getFilteredTree(Object object) {
@@ -285,7 +285,7 @@ public class NavigatorContentProvider implements ITreeContentProvider, IResource
 				viewer.remove(o);
 				projects.remove(p.getLocation().toString());
 			} else {
-				String classname = o.getModel().getMetaData().getMapping("FilteredTrees").getValue(getFilteredTreeName(o.getModel()));
+				String classname = o.getModel().getMetaData().getMapping("FilteredTrees").getValue(getFilteredTreeName(o.getModel())); //$NON-NLS-1$
 				XFilteredTree tree = getFilteredTree(o.getModel().getRoot());
 				if(tree != null && !tree.getClass().getName().equals(classname)) {
 					o.getModel().removeModelTreeListener(syncListener);
@@ -299,7 +299,7 @@ public class NavigatorContentProvider implements ITreeContentProvider, IResource
 	
 	class C implements Comparator<Object> {
 		public int compare(Object o1, Object o2) {
-			return (o1 == null ? "" : o1.toString()).compareToIgnoreCase(o2 == null ? "" : o2.toString());
+			return (o1 == null ? "" : o1.toString()).compareToIgnoreCase(o2 == null ? "" : o2.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 	}

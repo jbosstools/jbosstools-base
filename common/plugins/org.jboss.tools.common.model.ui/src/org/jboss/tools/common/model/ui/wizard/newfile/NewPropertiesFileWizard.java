@@ -18,7 +18,7 @@ public class NewPropertiesFileWizard extends NewFileWizardEx {
 	
 	class NewPropertiesFileContext extends NewFileContextEx {
 		protected String getActionPath() {
-			return "CreateActions.CreateFiles.Common.CreateFileProperties";
+			return "CreateActions.CreateFiles.Common.CreateFileProperties"; //$NON-NLS-1$
 		}
 	}
 

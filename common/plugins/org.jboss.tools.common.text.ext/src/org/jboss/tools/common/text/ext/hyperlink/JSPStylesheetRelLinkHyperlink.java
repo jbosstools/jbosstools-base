@@ -27,7 +27,7 @@ import org.jboss.tools.common.text.ext.util.Utils;
  */
 public class JSPStylesheetRelLinkHyperlink extends RelativeLinkHyperlink {
 	
-	private static final String HREF_ATTRNAME = "href";
+	private static final String HREF_ATTRNAME = "href"; //$NON-NLS-1$
 
 	protected IRegion getRegion (int offset) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();

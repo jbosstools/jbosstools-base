@@ -37,8 +37,8 @@ public class SampleChildForm extends ExpandableForm {
 
 
 
-	private static final String FORM_DESCRIPTION = "SampleChildForm.description";
-	private static final String FORM_HEADER = "SampleChildForm.header";
+	private static final String FORM_DESCRIPTION = "SampleChildForm.description"; //$NON-NLS-1$
+	private static final String FORM_HEADER = "SampleChildForm.header"; //$NON-NLS-1$
 
 	public SampleChildForm() {}
 
@@ -97,18 +97,18 @@ public class SampleChildForm extends ExpandableForm {
 		this.tableAdapter = new XChildrenTableStructuredAdapter();
 		//this.tableAdapter.setShownEntities(new String[] {"XXXXX"});
 		this.tableAdapter.getActionMapping().clear();
-		this.tableAdapter.getActionMapping().put(TableStructuredEditor.ADD_ACTION,"CreateActions.CreateFilter");
-		this.tableAdapter.getActionMapping().put(TableStructuredEditor.REMOVE_ACTION,"DeleteActions.Delete");
-		this.tableAdapter.getActionMapping().put(TableStructuredEditor.EDIT_ACTION,"Properties.Properties");
-		this.tableAdapter.getActionMapping().put(TableStructuredEditor.UP_ACTION,"%internal%");
-		this.tableAdapter.getActionMapping().put(TableStructuredEditor.DOWN_ACTION,"%internal%");
-		this.tableAdapter.setShownProperties(new String[] {"name"});
+		this.tableAdapter.getActionMapping().put(TableStructuredEditor.ADD_ACTION,"CreateActions.CreateFilter"); //$NON-NLS-1$
+		this.tableAdapter.getActionMapping().put(TableStructuredEditor.REMOVE_ACTION,"DeleteActions.Delete"); //$NON-NLS-1$
+		this.tableAdapter.getActionMapping().put(TableStructuredEditor.EDIT_ACTION,"Properties.Properties"); //$NON-NLS-1$
+		this.tableAdapter.getActionMapping().put(TableStructuredEditor.UP_ACTION,"%internal%"); //$NON-NLS-1$
+		this.tableAdapter.getActionMapping().put(TableStructuredEditor.DOWN_ACTION,"%internal%"); //$NON-NLS-1$
+		this.tableAdapter.setShownProperties(new String[] {"name"}); //$NON-NLS-1$
 		this.tableAdapter.setColumnLabels(new String[] {"Name"});
 		this.tableAdapter.setWidths(new int[] {100});
 		this.tableAdapter.setModelObject(xmo);
 		
 		this.tableEditor = new TableStructuredEditor(settings);
-		this.tableEditor.setLabelText("");
+		this.tableEditor.setLabelText(""); //$NON-NLS-1$
 		this.tableEditor.setInput(this.tableAdapter); 
 	}
 	

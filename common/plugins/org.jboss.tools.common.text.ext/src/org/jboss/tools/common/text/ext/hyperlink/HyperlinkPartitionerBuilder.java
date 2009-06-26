@@ -25,19 +25,19 @@ import org.jboss.tools.common.text.ext.util.xpl.RegistryReader;
  */
 public class HyperlinkPartitionerBuilder extends RegistryReader {
 
-	public static final String PL_HYPERLINK_PARTITIONER = "hyperlinkPartitioner";
+	public static final String PL_HYPERLINK_PARTITIONER = "hyperlinkPartitioner"; //$NON-NLS-1$
 
 	public static final String PLUGIN_ID = ExtensionsPlugin.PLUGIN_ID;
 
-	public static final String TAG_HYPERLINK_PARTITIONER = "hyperlinkPartitioner";
-	public static final String TAG_CONTENT_TYPE = "contentType";
-	public static final String TAG_PARTITION_TYPE = "partitionType";
-	public static final String TAG_AXIS = "axis";
+	public static final String TAG_HYPERLINK_PARTITIONER = "hyperlinkPartitioner"; //$NON-NLS-1$
+	public static final String TAG_CONTENT_TYPE = "contentType"; //$NON-NLS-1$
+	public static final String TAG_PARTITION_TYPE = "partitionType"; //$NON-NLS-1$
+	public static final String TAG_AXIS = "axis"; //$NON-NLS-1$
 
-	public static final String ATT_ID = "id";
-	public static final String ATT_CLASS = "class";
-	public static final String ATT_PATH = "path";
-	public static final String ATT_IGNORE_CASE = "ignoreCase";
+	public static final String ATT_ID = "id"; //$NON-NLS-1$
+	public static final String ATT_CLASS = "class"; //$NON-NLS-1$
+	public static final String ATT_PATH = "path"; //$NON-NLS-1$
+	public static final String ATT_IGNORE_CASE = "ignoreCase"; //$NON-NLS-1$
 
 	private static HyperlinkPartitionerBuilder fInstance;
 	private ArrayList fPartitionerDefs;
@@ -207,7 +207,7 @@ public class HyperlinkPartitionerBuilder extends RegistryReader {
 
 	protected boolean isIgnoreCase(IConfigurationElement element) {
 		String value = element.getAttribute(ATT_IGNORE_CASE);
-		if("true".equals(value)) {
+		if("true".equals(value)) { //$NON-NLS-1$
 		    return true;
 		}
 		return false;

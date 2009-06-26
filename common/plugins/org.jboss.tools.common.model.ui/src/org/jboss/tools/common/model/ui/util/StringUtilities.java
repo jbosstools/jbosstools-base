@@ -34,12 +34,12 @@ public class StringUtilities {
 		gc.setFont(font);
 
 		if (source == null) {
-			source = "";
+			source = ""; //$NON-NLS-1$
 		}
 		String str;
 		if (gc.stringExtent(source).x > width) {
 			if (sufix == null) {
-				sufix = "";
+				sufix = ""; //$NON-NLS-1$
 			}
 			str = sufix; 
 			for (int i = 0; i < source.length(); i++) {
@@ -61,7 +61,7 @@ public class StringUtilities {
 	}
    
 	public static String dottedString(String source, int width, Drawable drawable, Font font) {
-		return makeShortString(source, width, "...", drawable, font);
+		return makeShortString(source, width, "...", drawable, font); //$NON-NLS-1$
 	}
    
 	public static String dottedString(String source, int width, Control control) {

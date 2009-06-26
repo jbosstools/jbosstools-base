@@ -64,7 +64,7 @@ public class PaletteDialog extends Dialog {
 				// Filter out 'Properties' item which is redundant in this editor.
 				l = (XActionList)l.copy(new Acceptor() {
 			        public boolean accepts(XActionItem item) {
-			        	if(item.getName().startsWith("Propert")) {
+			        	if(item.getName().startsWith("Propert")) { //$NON-NLS-1$
 			        		return false;
 			        	}
 			        	return true;
@@ -111,7 +111,7 @@ public class PaletteDialog extends Dialog {
 		Control c = super.createContents(parent);
 		createEditorComponents((Composite)getDialogArea());
 		control = (Composite)c;
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, ModelUIPlugin.ID_PLUGIN + ".palette_editor");
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, ModelUIPlugin.ID_PLUGIN + ".palette_editor"); //$NON-NLS-1$
 		return c;
 	}
 		
@@ -208,7 +208,7 @@ public class PaletteDialog extends Dialog {
 	
 	protected void buttonPressed(int buttonId) {
 		if(buttonId == IDialogConstants.HELP_ID) {
-			HelpUtil.helpEclipse(PreferenceModelUtilities.getPreferenceModel(), "PaletteEditor");
+			HelpUtil.helpEclipse(PreferenceModelUtilities.getPreferenceModel(), "PaletteEditor"); //$NON-NLS-1$
 		} else {
 			super.buttonPressed(buttonId);
 		}
@@ -243,7 +243,7 @@ public class PaletteDialog extends Dialog {
 		for (int i = 0; i < as.length; i++) {
 			if(!as[i].isVisible()) continue;
 			String n = as[i].getName();
-			if("name".equals(n)) continue;
+			if("name".equals(n)) continue; //$NON-NLS-1$
 			String v = e.getAttributeValue(n, SharableConstants.GENERAL);
 			String cv = e.getAttributeValue(n);
 			if(cv != null && cv.equals(v)) continue;

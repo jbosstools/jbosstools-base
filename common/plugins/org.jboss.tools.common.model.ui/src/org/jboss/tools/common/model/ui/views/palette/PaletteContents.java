@@ -53,14 +53,14 @@ public class PaletteContents {
 		IProject project = file.getProject();
 		List<String> natures = new ArrayList<String>();
 		try {
-			if (project.exists() && project.isOpen() && project.hasNature("org.jboss.tools.struts.strutsnature")) 
-				natures.add("struts");
+			if (project.exists() && project.isOpen() && project.hasNature("org.jboss.tools.struts.strutsnature"))  //$NON-NLS-1$
+				natures.add("struts"); //$NON-NLS-1$
 		} catch (CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
 		try {
-			if (project.exists() && project.isOpen() && project.hasNature("org.jboss.tools.jsf.jsfnature")) 
-				natures.add("jsf");
+			if (project.exists() && project.isOpen() && project.hasNature("org.jboss.tools.jsf.jsfnature"))  //$NON-NLS-1$
+				natures.add("jsf"); //$NON-NLS-1$
 		} catch (CoreException e) { 
 			ModelUIPlugin.getPluginLog().logError(e);
 		}

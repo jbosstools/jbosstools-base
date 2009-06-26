@@ -45,15 +45,15 @@ import org.jboss.tools.jst.web.tld.URIConstants;
  */
 public class PaletteInsertHelper {
 
-	public static final String PROPOPERTY_TAG_NAME   = "tag name";
+	public static final String PROPOPERTY_TAG_NAME   = "tag name"; //$NON-NLS-1$
 	public static final String PROPOPERTY_START_TEXT = TLDToPaletteHelper.START_TEXT;
 	public static final String PROPOPERTY_END_TEXT   = TLDToPaletteHelper.END_TEXT;
-	public static final String PROPOPERTY_NEW_LINE = "new line";
+	public static final String PROPOPERTY_NEW_LINE = "new line"; //$NON-NLS-1$
 	public static final String PROPOPERTY_REFORMAT_BODY  = TLDToPaletteHelper.REFORMAT;
 	public static final String PROPOPERTY_TAGLIBRARY_URI = URIConstants.LIBRARY_URI;
 	public static final String PROPOPERTY_TAGLIBRARY_VERSION = URIConstants.LIBRARY_VERSION;
 	public static final String PROPOPERTY_DEFAULT_PREFIX = URIConstants.DEFAULT_PREFIX;
-	public static final String PROPOPERTY_SELECTION_PROVIDER = "selectionProvider";
+	public static final String PROPOPERTY_SELECTION_PROVIDER = "selectionProvider"; //$NON-NLS-1$
     public static final String PROPOPERTY_ADD_TAGLIB = TLDToPaletteHelper.ADD_TAGLIB;
 
     static PaletteTaglibInserter PaletteTaglibInserter = new PaletteTaglibInserter();
@@ -107,7 +107,7 @@ public class PaletteInsertHelper {
 		IDocument d = v.getDocument();
 		String[] texts = new String[] {startText, endText};
 	
-		if(startText != null && startText.startsWith("<%@ taglib")) {
+		if(startText != null && startText.startsWith("<%@ taglib")) { //$NON-NLS-1$
 			if(PaletteTaglibInserter.inserTaglibInXml(v, p)) {
 				return;
 			}
@@ -151,7 +151,7 @@ public class PaletteInsertHelper {
 		String startText = p.getProperty(PROPOPERTY_START_TEXT);
 		String endText = p.getProperty(PROPOPERTY_END_TEXT);
 		String newline = p.getProperty(PROPOPERTY_NEW_LINE);
-		boolean reformat = "yes".equals(p.getProperty(PROPOPERTY_REFORMAT_BODY));
+		boolean reformat = "yes".equals(p.getProperty(PROPOPERTY_REFORMAT_BODY)); //$NON-NLS-1$
 		ISelectionProvider selProvider = (ISelectionProvider)p.get(PROPOPERTY_SELECTION_PROVIDER);
 
 		if (doc == null || selProvider == null) return;
@@ -163,15 +163,15 @@ public class PaletteInsertHelper {
 		//Changed due to new WTP version 1.5 R 2006.06.28 get selected text from document.
 		String body = null;
 		try {
-			body = length > 0 ? doc.get(offset, length): "";
+			body = length > 0 ? doc.get(offset, length): ""; //$NON-NLS-1$
 		} catch (BadLocationException e1) {
 			ModelUIPlugin.getPluginLog().logError(e1);
 		}
 
-		if (startText == null) startText = "";
-		else startText = prepare(prepare(startText, "\\n", getLineDelimiter(doc)), "\\t", "\t");
-		if (endText == null) endText = "";
-		else endText = prepare(prepare(endText, "\\n", getLineDelimiter(doc)), "\\t", "\t");
+		if (startText == null) startText = ""; //$NON-NLS-1$
+		else startText = prepare(prepare(startText, "\\n", getLineDelimiter(doc)), "\\t", "\t"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if (endText == null) endText = ""; //$NON-NLS-1$
+		else endText = prepare(prepare(endText, "\\n", getLineDelimiter(doc)), "\\t", "\t"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		String text = reformat ? format (doc, offset, length, body, startText, endText, newline) : (startText + body + endText);
 
@@ -196,7 +196,7 @@ public class PaletteInsertHelper {
 			}
 		}
 
-		int pos = text.indexOf("|");
+		int pos = text.indexOf("|"); //$NON-NLS-1$
 		if (pos >= 0) {
 			text = text.substring(0, pos) + text.substring(pos + 1);
 		} else {
@@ -229,7 +229,7 @@ public class PaletteInsertHelper {
 		boolean indentBody = (startText != null && startText.length() > 0 && 
 								endText != null && endText.length() > 0);
 
-		String firstLineIndent = "";
+		String firstLineIndent = ""; //$NON-NLS-1$
         boolean indentFirstLine = false;
         if (length == 0) {
             firstLineIndent = getIndentOfLineOfOffset(d, offset);
@@ -237,7 +237,7 @@ public class PaletteInsertHelper {
             firstLineIndent = getIndentOfFirstLine(d, offset);
             indentFirstLine = true;
         }
-		String lastLineIndent = "";
+		String lastLineIndent = ""; //$NON-NLS-1$
 
 		boolean appendFirstDelimiter = true;
 		try {
@@ -268,11 +268,11 @@ public class PaletteInsertHelper {
 		if (startText != null && startText.length() > 0) {
 			if (appendFirstDelimiter) buffer.append(lineDelimiter);
             if (indentFirstLine) buffer.append(firstLineIndent);
-            StringTokenizer st = new StringTokenizer(startText, "\n", true);
+            StringTokenizer st = new StringTokenizer(startText, "\n", true); //$NON-NLS-1$
             boolean isFirst = true;
             while(st.hasMoreTokens()) {
             	String t = st.nextToken();
-            	if("\n".equals(t)) {
+            	if("\n".equals(t)) { //$NON-NLS-1$
             		buffer.append(t);
             		isFirst = false;
             	} else {
@@ -280,10 +280,10 @@ public class PaletteInsertHelper {
             		buffer.append(t);
             	}
             }
-            if (!"false".equals(newline))
+            if (!"false".equals(newline)) //$NON-NLS-1$
             	buffer.append(lineDelimiter);            
 
-			body = (body == null || body.length() == 0) ? "" : firstLineIndent + body.substring(getIndentOfLine(body, lineDelimiter).length());
+			body = (body == null || body.length() == 0) ? "" : firstLineIndent + body.substring(getIndentOfLine(body, lineDelimiter).length()); //$NON-NLS-1$
 		}
 		int deltaSize = indentBody ? getTabWidth() : 0;
 		boolean appendPreEndLineDelimiter = true;
@@ -338,7 +338,7 @@ public class PaletteInsertHelper {
 	}
 
     private static int getTabWidth() {
-		return Platform.getPreferencesService().getInt("org.eclipse.ui.editors", AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH, 4, new IScopeContext[]{new InstanceScope()}); 
+		return Platform.getPreferencesService().getInt("org.eclipse.ui.editors", AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH, 4, new IScopeContext[]{new InstanceScope()});  //$NON-NLS-1$
 	}
 
     private static boolean useSpaces() {
@@ -406,7 +406,7 @@ public class PaletteInsertHelper {
 	}
 
 	private static String getIndentOfFirstLine(IDocument d, int offset) {
-		String indent = "";
+		String indent = ""; //$NON-NLS-1$
 		if(d == null) return indent;
 		try {
 			int line = d.getLineOfOffset(offset);
@@ -424,7 +424,7 @@ public class PaletteInsertHelper {
 	}
 
     private static String getIndentOfLineOfOffset(IDocument d, int offset) {
-        String indent = "";
+        String indent = ""; //$NON-NLS-1$
         if(d == null) return indent;
         try {
             int line = d.getLineOfOffset(offset);
@@ -518,42 +518,42 @@ public class PaletteInsertHelper {
 		if(text == null || text.length() == 0) return text;
 		if(tagname == null || tagname.length() == 0) return text;
 		while(true) {
-			int i = text.indexOf("%prefix|");
+			int i = text.indexOf("%prefix|"); //$NON-NLS-1$
 			if(i < 0) break;
-			int j = text.indexOf("%", i + 8);
+			int j = text.indexOf("%", i + 8); //$NON-NLS-1$
 			if(j < 0) break;
-			int j1 = text.indexOf("|", i + 8);
-			String uri = "";
-			String defaultPrefix = "";
-			String pr = "";
+			int j1 = text.indexOf("|", i + 8); //$NON-NLS-1$
+			String uri = ""; //$NON-NLS-1$
+			String defaultPrefix = ""; //$NON-NLS-1$
+			String pr = ""; //$NON-NLS-1$
 			uri = text.substring(i + 8, j1);
 			defaultPrefix = text.substring(j1 + 1, j);
 			pr = prefixes.getProperty(uri, defaultPrefix);
 			if(pr.length() > 0) {
-				text = text.substring(0, i) + pr + ":" + text.substring(j + 1);
+				text = text.substring(0, i) + pr + ":" + text.substring(j + 1); //$NON-NLS-1$
 			} else {
 				text = text.substring(0, i) + text.substring(j + 1);
 			}
 		}
 
-		int k = text.toLowerCase().indexOf(":" + tagname.toLowerCase());
+		int k = text.toLowerCase().indexOf(":" + tagname.toLowerCase()); //$NON-NLS-1$
 		if(k >= 0) {
-			int g = text.indexOf("</");
+			int g = text.indexOf("</"); //$NON-NLS-1$
 			if(g >= 0 && g < k) {
 				return text.substring(0, g + 2) + prefix + text.substring(k);
 			}
-			g = text.indexOf("<");
+			g = text.indexOf("<"); //$NON-NLS-1$
 			if(g >= 0 && g < k) {
 				return text.substring(0, g + 1) + prefix + text.substring(k);
 			}
 		}
-		k = text.toLowerCase().indexOf("<" + tagname.toLowerCase());
+		k = text.toLowerCase().indexOf("<" + tagname.toLowerCase()); //$NON-NLS-1$
 		if(k >= 0) {
-			return text.substring(0, k + 1) + prefix + ":" + text.substring(k + 1);
+			return text.substring(0, k + 1) + prefix + ":" + text.substring(k + 1); //$NON-NLS-1$
 		}
-		k = text.toLowerCase().indexOf("</" + tagname.toLowerCase());
+		k = text.toLowerCase().indexOf("</" + tagname.toLowerCase()); //$NON-NLS-1$
 		if(k >= 0) {
-			return text.substring(0, k + 2) + prefix + ":" + text.substring(k + 2);
+			return text.substring(0, k + 2) + prefix + ":" + text.substring(k + 2); //$NON-NLS-1$
 		}
 		return text;
 	}
@@ -562,9 +562,9 @@ public class PaletteInsertHelper {
 		Properties p = new Properties();
 		int i = 0;
 		while(i >= 0 && i < body.length()) {
-			i = body.indexOf("<%@ taglib ", i);
+			i = body.indexOf("<%@ taglib ", i); //$NON-NLS-1$
 			if(i < 0) break;
-			int j = body.indexOf("%>", i);
+			int j = body.indexOf("%>", i); //$NON-NLS-1$
 			if(j < 0) j = body.length();
 			String taglib = body.substring(i, j);
 			getPrefix(p, taglib);
@@ -574,14 +574,14 @@ public class PaletteInsertHelper {
 	}
 
 	static void getPrefix(Properties p, String taglib) {
-		int i = taglib.indexOf("uri=\"");
+		int i = taglib.indexOf("uri=\""); //$NON-NLS-1$
 		if(i < 0) return;
-		int j = taglib.indexOf("\"", i + 5);
+		int j = taglib.indexOf("\"", i + 5); //$NON-NLS-1$
 		if(j < 0) return;
 		String uri = taglib.substring(i + 5, j);
-		i = taglib.indexOf("prefix=\"");
+		i = taglib.indexOf("prefix=\""); //$NON-NLS-1$
 		if(i < 0) return;
-		j = taglib.indexOf("\"", i + 8);
+		j = taglib.indexOf("\"", i + 8); //$NON-NLS-1$
 		if(j < 0) return;
 		String prefix = taglib.substring(i + 8, j);
 		p.setProperty(uri, prefix);

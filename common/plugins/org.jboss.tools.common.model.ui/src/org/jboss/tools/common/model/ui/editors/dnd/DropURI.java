@@ -12,12 +12,12 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 
 public class DropURI {
 	
-	public static final String JSF_HTML_URI = "http://java.sun.com/jsf/html";
-	public static final String JSF_CORE_URI = "http://java.sun.com/jsf/core";
-	public static final String HTML_4_0_URI = "-//w3c//dtd html 4.0 transitional//en";
-	public static final String STRUTS_HTML_URI = "http://struts.apache.org/tags-html";
-	public static final String JSP_URI = "http://java.sun.com/JSP/Page";
-	public static final String SEAM_URI = "http://jboss.com/products/seam/taglib";
+	public static final String JSF_HTML_URI = "http://java.sun.com/jsf/html"; //$NON-NLS-1$
+	public static final String JSF_CORE_URI = "http://java.sun.com/jsf/core"; //$NON-NLS-1$
+	public static final String HTML_4_0_URI = "-//w3c//dtd html 4.0 transitional//en"; //$NON-NLS-1$
+	public static final String STRUTS_HTML_URI = "http://struts.apache.org/tags-html"; //$NON-NLS-1$
+	public static final String JSP_URI = "http://java.sun.com/JSP/Page"; //$NON-NLS-1$
+	public static final String SEAM_URI = "http://jboss.com/products/seam/taglib"; //$NON-NLS-1$
 //	yradtsevich: fix of JBIDE-3984: Exclude t:graphicImage option from Insert tag dialog
 //	public static final String TOMOHAWK_URI = "http://myfaces.apache.org/tomahawk";
 }

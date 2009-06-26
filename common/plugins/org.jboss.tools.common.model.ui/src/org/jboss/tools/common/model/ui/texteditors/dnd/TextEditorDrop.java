@@ -55,18 +55,18 @@ public class TextEditorDrop implements IControlDragDropProvider, IControlDropLis
 
 	public Properties getDropProperties(int x, int y) {
 		Properties p = new Properties();
-		p.setProperty("isDrop", "true");
-		p.setProperty("actionSourceGUIComponentID", "editor");
-		p.setProperty("accepsAsString", "true");
+		p.setProperty("isDrop", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		p.setProperty("actionSourceGUIComponentID", "editor"); //$NON-NLS-1$ //$NON-NLS-2$
+		p.setProperty("accepsAsString", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 		String text = provider.getSourceViewer().getDocument().get();
-		p.setProperty("text", text);
+		p.setProperty("text", text); //$NON-NLS-1$
 		int pos = getPosition(x, y);
-		p.setProperty("pos", "" + pos);
-		p.put("viewer", provider.getSourceViewer());
+		p.setProperty("pos", "" + pos); //$NON-NLS-1$ //$NON-NLS-2$
+		p.put("viewer", provider.getSourceViewer()); //$NON-NLS-1$
 		if(provider instanceof TextEditorDropProvider2) {
 			String context = ((TextEditorDropProvider2)provider).getContext(pos);
 			if(context != null) {
-				p.put("text-context", context);
+				p.put("text-context", context); //$NON-NLS-1$
 			}
 		}
 		return p;
@@ -91,8 +91,8 @@ public class TextEditorDrop implements IControlDragDropProvider, IControlDropLis
 
 	public void drop(Properties p) {
 		ISourceViewer v = provider.getSourceViewer();
-		int x = ((Integer)p.get("drop.x")).intValue();
-		int y = ((Integer)p.get("drop.y")).intValue();
+		int x = ((Integer)p.get("drop.x")).intValue(); //$NON-NLS-1$
+		int y = ((Integer)p.get("drop.y")).intValue(); //$NON-NLS-1$
 		int c = getPosition(x, y);		
 		Point sp = v.getTextWidget().getSelectionRange();
 		if(sp == null || c < sp.x || c >= sp.x + sp.y) {
