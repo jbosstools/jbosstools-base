@@ -23,7 +23,7 @@ public class FileMainImpl extends RecognizedFileImpl {
     }
 
     public String get(String name) {
-        if(!(XModelObjectConstants.XML_ATTR_NAME.equals(name) || "EXTENSION".equals(name))
+        if(!(XModelObjectConstants.XML_ATTR_NAME.equals(name) || "EXTENSION".equals(name)) //$NON-NLS-1$
            && getParent() != null) loadChildren();
         return super.get(name);
     }

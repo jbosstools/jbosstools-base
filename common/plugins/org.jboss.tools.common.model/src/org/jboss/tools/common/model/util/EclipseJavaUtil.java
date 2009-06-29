@@ -51,7 +51,7 @@ public class EclipseJavaUtil {
 		return resolveType(type, typeName);
 	}
 
-	static String NULL = ";;;";
+	static String NULL = ";;;"; //$NON-NLS-1$
 
 	static class Resolved {
 		IType type;
@@ -74,7 +74,7 @@ public class EclipseJavaUtil {
 		if(jp == null) return n;
 		IProject p = jp.getProject();
 		if(p == null || !p.isAccessible()) return n;
-		return p.getName() + ":" + n;
+		return p.getName() + ":" + n; //$NON-NLS-1$
 	}
 	public static String resolveType(IType type, String typeName) {
 		if(type == null) return null;
@@ -86,7 +86,7 @@ public class EclipseJavaUtil {
 			r = new Resolved(type);
 			resolved.put(n, r);
 			if(resolved.size() % 100 == 0) {
-				System.out.println("-->" + resolved.size() + " " + n);
+				System.out.println("-->" + resolved.size() + " " + n); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		if(r.type != type) {
@@ -117,9 +117,9 @@ public class EclipseJavaUtil {
 			String resolvedArray[][] = type.resolveType(typeName);
 //			resolvedArray == null for primitive types
 			if(resolvedArray == null) return typeName;
-			typeName = "";
+			typeName = ""; //$NON-NLS-1$
 			for (int i = 0; i < resolvedArray[0].length; i++) 
-				typeName += (!"".equals(typeName) ? "." : "") + resolvedArray[0][i]; 
+				typeName += (!"".equals(typeName) ? "." : "") + resolvedArray[0][i];  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			return typeName;
 		} catch (JavaModelException e) {
 			ModelPlugin.getPluginLog().logError(e);
@@ -132,7 +132,7 @@ public class EclipseJavaUtil {
 		IType type = javaProject.findType(qualifiedName);
 		if(type != null) return type;
 		int dot = qualifiedName.lastIndexOf('.');
-		String packageName = (dot < 0) ? "" : qualifiedName.substring(0, dot);
+		String packageName = (dot < 0) ? "" : qualifiedName.substring(0, dot); //$NON-NLS-1$
 		String shortName = qualifiedName.substring(dot + 1);
 		IPackageFragmentRoot[] rs = javaProject.getPackageFragmentRoots();
 		for (int i = 0; i < rs.length; i++) {
@@ -149,7 +149,7 @@ public class EclipseJavaUtil {
 	
 	public static boolean isDerivedClass(String type, String superType, IProject project) {
 		if(type == null) return false;
-		if(superType == null || superType.equals("java.lang.Object")) return true;
+		if(superType == null || superType.equals("java.lang.Object")) return true; //$NON-NLS-1$
 		if(type.equals(superType)) return true;
 		IType t = EclipseResourceUtil.getValidType(project, type);
 		try {
@@ -173,10 +173,10 @@ public class EclipseJavaUtil {
 		}
 		if(type.isInterface()) return false;
 		String f = type.getSuperclassName();
-		if(f == null || f.length() == 0 || "java.lang.Object".equals(f)) return false;
+		if(f == null || f.length() == 0 || "java.lang.Object".equals(f)) return false; //$NON-NLS-1$
 		if(f.equals(superType)) return true;
 		f = EclipseJavaUtil.resolveType(type, f);
-		if(f == null || f.length() == 0 || "java.lang.Object".equals(f)) return false;
+		if(f == null || f.length() == 0 || "java.lang.Object".equals(f)) return false; //$NON-NLS-1$
 		if(f.equals(superType)) return true;
 		if(checked.contains(f)) return false;
 		type = EclipseResourceUtil.getValidType(type.getJavaProject().getProject(), f);

@@ -42,21 +42,21 @@ public class OpenJavaSourceHandler extends AbstractHandler {
     }
 
     protected String getAttribute() {
-        return action.getProperty("attribute");
+        return action.getProperty("attribute"); //$NON-NLS-1$
     }
 
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
         String type = getType(object);
-		type = type.replace('.', '/') + ".java";
+		type = type.replace('.', '/') + ".java"; //$NON-NLS-1$
 
-		if(p == null || p.getProperty("property") == null) {
-			String n = action.getProperty("property");
+		if(p == null || p.getProperty("property") == null) { //$NON-NLS-1$
+			String n = action.getProperty("property"); //$NON-NLS-1$
 			if(n != null) {
 				String v = object.getAttributeValue(n);
 				if(v != null) {
 					if(p == null) p = new Properties();
-					p.put("property", v);
+					p.put("property", v); //$NON-NLS-1$
 				}
 			}
 		}
@@ -74,14 +74,14 @@ public class OpenJavaSourceHandler extends AbstractHandler {
 		IJavaElement javaElement = javaProject.findElement(new Path(type));
 		if (javaElement == null) {
 			String message = "Cannot find java source.";
-			if(p != null && XModelObjectConstants.TRUE.equals(p.getProperty("ignoreWarning"))) {
-				p.setProperty("error", message);
+			if(p != null && XModelObjectConstants.TRUE.equals(p.getProperty("ignoreWarning"))) { //$NON-NLS-1$
+				p.setProperty("error", message); //$NON-NLS-1$
 			} else {
 				ServiceDialog d = model.getService();
 				d.showDialog(ModelMessages.WARNING, message, new String[]{"Close"}, null, ServiceDialog.WARNING);
 			}
 		} else {
-			if(p != null && XModelObjectConstants.TRUE.equals(p.getProperty("onlySelectIfOpen"))) {
+			if(p != null && XModelObjectConstants.TRUE.equals(p.getProperty("onlySelectIfOpen"))) { //$NON-NLS-1$
 				IEditorInput ii = EditorUtility.getEditorInput(javaElement);
 				IWorkbenchPage page = getWorkbenchPage();
 				if(page == null) return;
@@ -99,7 +99,7 @@ public class OpenJavaSourceHandler extends AbstractHandler {
     
     private static IJavaElement getElement(IJavaElement javaElement, Properties p) {
     	if(p == null || !(javaElement instanceof IParent)) return null;
-    	String childName = p.getProperty("property");
+    	String childName = p.getProperty("property"); //$NON-NLS-1$
     	if(childName == null) return null;
     	IJavaElement[] cs = null;
     	try {
@@ -111,7 +111,7 @@ public class OpenJavaSourceHandler extends AbstractHandler {
     		if(cs[i] instanceof IType) {
     			IType t = (IType)cs[i];
     			if(childName.length() > 0) {
-    				String getter = "get" + childName.substring(0, 1).toUpperCase() + childName.substring(1);
+    				String getter = "get" + childName.substring(0, 1).toUpperCase() + childName.substring(1); //$NON-NLS-1$
     				IMethod m = t.getMethod(getter, new String[0]);
     				if(m != null && m.exists()) return m;
     			}

@@ -30,7 +30,7 @@ public class SwitchPreference extends Preference {
 	 * @param attributeName
 	 */
 	public SwitchPreference(String attributeName) {
-		super("", attributeName);
+		super("", attributeName); //$NON-NLS-1$
 		// TODO Auto-generated constructor stub
 	}
 
@@ -44,16 +44,16 @@ public class SwitchPreference extends Preference {
 	}
 
 	public String getValue() {
-		if(switchPreference==null) throw new IllegalStateException("switchPreference cannot be null, call setSwitchPreferenceFirst.");
+		if(switchPreference==null) throw new IllegalStateException("switchPreference cannot be null, call setSwitchPreferenceFirst."); //$NON-NLS-1$
 		Preference preference = (Preference)preferencesMap.get(switchPreference.getValue());
-		if(preference==null) throw new IllegalStateException("Preference in't added for switch value '" + switchPreference.getValue() + "'"); 
+		if(preference==null) throw new IllegalStateException("Preference in't added for switch value '" + switchPreference.getValue() + "'");  //$NON-NLS-1$ //$NON-NLS-2$
 		return preference.getValue();
 	}
 
 	public void setValue(String value) throws XModelException {
-		if(switchPreference==null) throw new IllegalStateException("switchPreference cannot be null, call setSwitchPreferenceFirst.");
+		if(switchPreference==null) throw new IllegalStateException("switchPreference cannot be null, call setSwitchPreferenceFirst."); //$NON-NLS-1$
 		Preference preference = (Preference)preferencesMap.get(switchPreference.getValue());
-		if(preference==null) throw new IllegalStateException("Preference in't added for switch value '" + switchPreference.getValue() + "'"); 
+		if(preference==null) throw new IllegalStateException("Preference in't added for switch value '" + switchPreference.getValue() + "'");  //$NON-NLS-1$ //$NON-NLS-2$
 		preference.setValue(value);
 	}
 

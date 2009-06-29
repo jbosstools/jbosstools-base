@@ -19,7 +19,7 @@ import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public abstract class ModelNature extends PlatformObject implements IProjectNature, IModelNature {
-	public static final String NATURE_ID = ModelPlugin.PLUGIN_ID + ".modelnature";
+	public static final String NATURE_ID = ModelPlugin.PLUGIN_ID + ".modelnature"; //$NON-NLS-1$
 	static Map<IProject,XModel> models = new HashMap<IProject,XModel>();
 	static IResourceChangeListener listener = null;
 	protected String workspaceHome = null;
@@ -95,24 +95,24 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 			if(result) {
 				p.put(XModelConstants.AUTOLOAD, auto);
 			} else {
-				p.setProperty(XModelConstants.WORKSPACE, "");
-				p.setProperty(XModelConstants.WORKSPACE_OLD, "");
+				p.setProperty(XModelConstants.WORKSPACE, ""); //$NON-NLS-1$
+				p.setProperty(XModelConstants.WORKSPACE_OLD, ""); //$NON-NLS-1$
 			}
 		}
 		p.setProperty(ECLIPSE_PROJECT, project.getLocation().toString());
 		p.setProperty(ECLIPSE_PROJECT_OLD, project.getLocation().toString());
 		p.put(XModelObjectConstants.PROJECT, project);
-		p.setProperty("nature", getID());
+		p.setProperty("nature", getID()); //$NON-NLS-1$
 
 		model = (XModel)models.get(project);
         if(model != null) {
 			home = p.getProperty(XModelConstants.WORKSPACE);
 			String h = XModelConstants.getWorkspace(model);
 			if(home == null || !home.equals(h)) {
-				ModelPlugin.getPluginLog().logInfo("WARNING:" + " workspace home changed from " + h + " to " + home);
+				ModelPlugin.getPluginLog().logInfo("WARNING:" + " workspace home changed from " + h + " to " + home); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				model.getProperties().setProperty(XModelConstants.WORKSPACE, home);
 				model.getProperties().setProperty(XModelConstants.WORKSPACE_OLD, home);
-				model.getProperties().setProperty("nature", getID());
+				model.getProperties().setProperty("nature", getID()); //$NON-NLS-1$
 				model.load();				
 			}
         	return;
@@ -151,8 +151,8 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		}
 	}
 	
-	static String EXTERNAL_TOOL_BUILDER = "org.eclipse.ui.externaltools.ExternalToolBuilder";
-	static final String LAUNCH_CONFIG_HANDLE = "LaunchConfigHandle";
+	static String EXTERNAL_TOOL_BUILDER = "org.eclipse.ui.externaltools.ExternalToolBuilder"; //$NON-NLS-1$
+	static final String LAUNCH_CONFIG_HANDLE = "LaunchConfigHandle"; //$NON-NLS-1$
 	
 	protected void removeFromBuildSpec(String builderID) throws CoreException {
 		IProjectDescription description = getProject().getDescription();
@@ -183,9 +183,9 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 	
 	private ServiceDialog createServiceDialog() {
 		try {
-			return (ServiceDialog)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl");
+			return (ServiceDialog)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl"); //$NON-NLS-1$
 		} catch (ClassCastException e) {
-			ModelPlugin.getPluginLog().logError("Cannot create service dialog.");
+			ModelPlugin.getPluginLog().logError("Cannot create service dialog."); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -202,10 +202,10 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		if(project == null || !project.isOpen()) return false;
 		String nature = null;
 		try {
-			if(project.hasNature("org.jboss.tools.jsf.jsfnature")) {
-				nature = "org.jboss.tools.jsf.jsfnature";
-			} else if(project.hasNature("org.jboss.tools.struts.strutsnature")) {
-				nature = "org.jboss.tools.struts.strutsnature";
+			if(project.hasNature("org.jboss.tools.jsf.jsfnature")) { //$NON-NLS-1$
+				nature = "org.jboss.tools.jsf.jsfnature"; //$NON-NLS-1$
+			} else if(project.hasNature("org.jboss.tools.struts.strutsnature")) { //$NON-NLS-1$
+				nature = "org.jboss.tools.struts.strutsnature"; //$NON-NLS-1$
 			}
 		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);

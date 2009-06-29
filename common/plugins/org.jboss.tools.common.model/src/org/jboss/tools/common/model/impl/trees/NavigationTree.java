@@ -18,8 +18,8 @@ public class NavigationTree extends DefaultSiftedTree {
     private static final Set<String> escape = new HashSet<String>(2);
 
     static {
-        escape.add("SharableXStudio");
-        escape.add("PrimitiveTypes");
+        escape.add("SharableXStudio"); //$NON-NLS-1$
+        escape.add("PrimitiveTypes"); //$NON-NLS-1$
 //        escape.put("Workspaces", "Workspaces");
     }
 
@@ -33,7 +33,7 @@ public class NavigationTree extends DefaultSiftedTree {
 
     public XModelObject[] getChildren(XModelObject object) {
         if((object == model.getRoot() || object.getParent() == model.getRoot())
-           && !"full".equals(System.getProperty("glory"))) {
+           && !"full".equals(System.getProperty("glory"))) { //$NON-NLS-1$ //$NON-NLS-2$
             XModelObject[] c = object.getChildren();
             ArrayList<XModelObject> v = new ArrayList<XModelObject>(c.length);
             for (int i = 0; i < c.length; i++) {

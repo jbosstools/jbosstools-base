@@ -17,7 +17,7 @@ public class XAttributeConstraintListAdd extends XAttributeConstraintAList {
     public XAttributeConstraintListAdd() {}
 
     public boolean accepts(String value) {
-        StringTokenizer st = new StringTokenizer(value, ",;");
+        StringTokenizer st = new StringTokenizer(value, ",;"); //$NON-NLS-1$
         while(st.hasMoreTokens()) {
             String t = st.nextToken().trim();
             if(!values.contains(t)) return false;

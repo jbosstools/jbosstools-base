@@ -37,9 +37,9 @@ public class ClassPathUpdate {
 	
 	public void setModel(XModel model) {
 		String entity = model.getRoot().getModelEntity().getName();
-		if("RootDummy".equals(entity)) {
-			String pn = (project == null) ? "?" : project.getName();
-			throw new IllegalArgumentException("Struts Project " + pn + " is corrupted.");
+		if("RootDummy".equals(entity)) { //$NON-NLS-1$
+			String pn = (project == null) ? "?" : project.getName(); //$NON-NLS-1$
+			throw new IllegalArgumentException("Struts Project " + pn + " is corrupted."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		this.model = model;
 	}
@@ -116,22 +116,22 @@ public class ClassPathUpdate {
 	}
 	
 	private void createSrcFolders() {
-		XModelObject web = model.getByPath("Web");
+		XModelObject web = model.getByPath("Web"); //$NON-NLS-1$
 		if(web == null) return;
-		XModelObject[] children = model.getByPath("Web").getChildren();
+		XModelObject[] children = model.getByPath("Web").getChildren(); //$NON-NLS-1$
 		List<String> srcPaths = new ArrayList<String>();
 		Set<String> set = new HashSet<String>();
 		for (int i = 0; i < children.length; i++) {
-			String objectPaths = children[i].getAttributeValue("src file system"/*WebModuleConstants.ATTR_SRC_FS*/);
+			String objectPaths = children[i].getAttributeValue("src file system"/*WebModuleConstants.ATTR_SRC_FS*/); //$NON-NLS-1$
 			if(objectPaths == null || objectPaths.length() == 0) continue;
-			StringTokenizer st = new StringTokenizer(objectPaths, ",;");
+			StringTokenizer st = new StringTokenizer(objectPaths, ",;"); //$NON-NLS-1$
 			while(st.hasMoreTokens()) {
 				String objectPath = st.nextToken().trim();
 				if(objectPath.length() == 0) continue;
-				XModelObject srcObject = model.getByPath("FileSystems/" + objectPath);
+				XModelObject srcObject = model.getByPath("FileSystems/" + objectPath); //$NON-NLS-1$
 				if (srcObject == null) continue;
 				String osPath = XModelObjectUtil.getExpandedValue(srcObject, XModelObjectConstants.ATTR_NAME_LOCATION, null);
-				if (osPath != null && !"".equals(osPath) && !set.contains(osPath)) {
+				if (osPath != null && !"".equals(osPath) && !set.contains(osPath)) { //$NON-NLS-1$
 					srcPaths.add(osPath);
 					set.add(osPath);
 				}					 
@@ -150,8 +150,8 @@ public class ClassPathUpdate {
 	}
 	
 	private void createOutputFolder() {
-		XModelObject classesObject = model.getByPath("FileSystems/classes");
-		String classesPath = "";
+		XModelObject classesObject = model.getByPath("FileSystems/classes"); //$NON-NLS-1$
+		String classesPath = ""; //$NON-NLS-1$
 		if (classesObject != null)
 			classesPath = XModelObjectUtil.getExpandedValue(classesObject, XModelObjectConstants.ATTR_NAME_LOCATION, null);
 		else if(classes != null)
@@ -190,12 +190,12 @@ public class ClassPathUpdate {
 	
 	private void addLibJars() {
 		XModelObject fss = FileSystemsHelper.getFileSystems(model);
-		XModelObject[] children = fss == null ? new XModelObject[0] : fss.getChildren("FileSystemJar");
+		XModelObject[] children = fss == null ? new XModelObject[0] : fss.getChildren("FileSystemJar"); //$NON-NLS-1$
 		List<String> srcPaths = new ArrayList<String>();
 		for (int i = 0; i < children.length; i++) {
 			if(XModelObjectConstants.TRUE.equals(children[i].get(FileSystemsLoader.IS_ADDED_TO_CLASSPATH))) continue;
 			String osPath = XModelObjectUtil.getExpandedValue(children[i], XModelObjectConstants.ATTR_NAME_LOCATION, null);
-			if (osPath != null && !"".equals(osPath) && new File(osPath).isFile()) srcPaths.add(osPath);
+			if (osPath != null && !"".equals(osPath) && new File(osPath).isFile()) srcPaths.add(osPath); //$NON-NLS-1$
 			children[i].set(FileSystemsLoader.IS_ADDED_TO_CLASSPATH, XModelObjectConstants.TRUE);
 		}
 
@@ -213,7 +213,7 @@ public class ClassPathUpdate {
 		addServletSupport();
 	}
 	
-	static SpecialWizard addServletSupportWizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.jst.web.project.AddServletSupportWizard");
+	static SpecialWizard addServletSupportWizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.jst.web.project.AddServletSupportWizard"); //$NON-NLS-1$
 	private void addServletSupport() {
 //		if(addServletSupportWizard == null) return;
 //		addServletSupportWizard.setObject(this);

@@ -44,8 +44,8 @@ public class CreateFileHandler extends DefaultCreateHandler {
             addCreatedObject(parent, c, p);
         } else {
             addCreatedObject(parent, c, false, p);
-            XModelObject po = (XModelObject)p.get("parentObject");
-            XModelObject co = (XModelObject)p.get("childObject");
+            XModelObject po = (XModelObject)p.get("parentObject"); //$NON-NLS-1$
+            XModelObject co = (XModelObject)p.get("childObject"); //$NON-NLS-1$
             addCreatedObject(po, co, p);
         }
         if(parent instanceof FolderImpl) {
@@ -55,13 +55,13 @@ public class CreateFileHandler extends DefaultCreateHandler {
         final XModelObject q = c;
         if(q != null) Display.getDefault().asyncExec(new Runnable() {
         	public void run() {        
-				XActionInvoker.invoke("Open", q, new Properties());
+				XActionInvoker.invoke("Open", q, new Properties()); //$NON-NLS-1$
         	}
         });
     }
 
     private String getDefaultExtension(Properties prop) {
-        String ext = (prop == null) ? null : prop.getProperty("defaultExtention");
+        String ext = (prop == null) ? null : prop.getProperty("defaultExtention"); //$NON-NLS-1$
         return (ext == null) ? null : ext;
     }
 
@@ -71,9 +71,9 @@ public class CreateFileHandler extends DefaultCreateHandler {
         String path = null;
         int i = name.lastIndexOf('.');
         if(i > 0) {
-            String es = action.getProperty("extensions");
+            String es = action.getProperty("extensions"); //$NON-NLS-1$
             String xext = name.substring(i + 1);
-            if(es == null || es.length() == 0 || es.indexOf("." + xext + ".") >= 0) {
+            if(es == null || es.length() == 0 || es.indexOf("." + xext + ".") >= 0) { //$NON-NLS-1$ //$NON-NLS-2$
                 ext = xext;
                 name = name.substring(0, i);
             }
@@ -86,23 +86,23 @@ public class CreateFileHandler extends DefaultCreateHandler {
         }
         p.setProperty(XModelObjectConstants.ATTR_NAME, name);
         if(ext != null) p.setProperty(XModelObjectConstants.ATTR_NAME_EXTENSION, ext);
-        if(path != null) p.setProperty("path", path);
+        if(path != null) p.setProperty("path", path); //$NON-NLS-1$
     }
 
     private XModelObject getParentFolder(XModelObject object, Properties p) throws XModelException {
-        String path = p.getProperty("path");
+        String path = p.getProperty("path"); //$NON-NLS-1$
         if(path == null || path.length() == 0) return object;
         StringTokenizer st = new StringTokenizer(path, XModelObjectConstants.SEPARATOR);
         while(st.hasMoreTokens()) {
             String pp = st.nextToken();
             XModelObject c = object.getChildByPath(pp);
             if(c == null) {
-                c = object.getModel().createModelObject("FileFolder", null);
+                c = object.getModel().createModelObject("FileFolder", null); //$NON-NLS-1$
                 c.setAttributeValue(XModelObjectConstants.ATTR_NAME, pp);
-                p.put("parentObject", object);
-                p.put("childObject", c);
+                p.put("parentObject", object); //$NON-NLS-1$
+                p.put("childObject", c); //$NON-NLS-1$
                 return createFolder(c, st);
-            } else if(!"FileFolder".equals(c.getModelEntity().getName())) {
+            } else if(!"FileFolder".equals(c.getModelEntity().getName())) { //$NON-NLS-1$
                 throw new XModelException("Cannot create folder " + pp + " in " + object.getPathPart());
             } else {
                 object = c;
@@ -114,7 +114,7 @@ public class CreateFileHandler extends DefaultCreateHandler {
     private XModelObject createFolder(XModelObject object, StringTokenizer path) throws XModelException {
         while(path.hasMoreTokens()) {
             String pp = path.nextToken();
-            XModelObject c = object.getModel().createModelObject("FileFolder", null);
+            XModelObject c = object.getModel().createModelObject("FileFolder", null); //$NON-NLS-1$
             c.setAttributeValue(XModelObjectConstants.ATTR_NAME, pp);
             object.addChild(c);
             object = c;

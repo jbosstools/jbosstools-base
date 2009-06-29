@@ -47,8 +47,8 @@ public class EntityComparator implements Comparator<XModelObject> {
         if(ignoreCase) {
         	String p1 = s1.getPathPart();
         	String p2 = s2.getPathPart();
-        	p1 = (p1 == null) ? "" : p1.toLowerCase();
-        	p2 = (p2 == null) ? "" : p2.toLowerCase();
+        	p1 = (p1 == null) ? "" : p1.toLowerCase(); //$NON-NLS-1$
+        	p2 = (p2 == null) ? "" : p2.toLowerCase(); //$NON-NLS-1$
         	return p1.compareTo(p2);
         }
         return s1.getPathPart().compareTo(s2.getPathPart());

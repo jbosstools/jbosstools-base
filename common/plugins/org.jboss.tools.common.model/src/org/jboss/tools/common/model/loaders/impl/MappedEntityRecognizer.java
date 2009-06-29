@@ -16,19 +16,20 @@ import org.jboss.tools.common.model.loaders.*;
 public class MappedEntityRecognizer implements EntityRecognizer {
     private Map<String,String> map = new HashMap<String,String>();
 
-    public MappedEntityRecognizer() {
-        map.put("bpf", "FileProcess");
-        map.put("htm", "FileHTML");
-        map.put("flow", "FileFlow");
-        map.put("jspx", "FileJSP");
-        map.put("jspf", "FileJSP");
-        map.put("jsf", "FileHTML");
+	public MappedEntityRecognizer() {
+        map.put("bpf", "FileProcess"); //$NON-NLS-1$ //$NON-NLS-2$
+        map.put("htm", "FileHTML"); //$NON-NLS-1$ //$NON-NLS-2$
+        map.put("flow", "FileFlow"); //$NON-NLS-1$ //$NON-NLS-2$
+        map.put("jspx", "FileJSP"); //$NON-NLS-1$ //$NON-NLS-2$
+        map.put("jspf", "FileJSP"); //$NON-NLS-1$ //$NON-NLS-2$
+        map.put("jsf", "FileHTML"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
+	// NB i18n: there is code that depends on these entity names (in English)
     public String getEntityName(String ext, String body) {
     	if(ext == null) return null;
         String s = (String)map.get(ext.toLowerCase());
-        return (s != null) ? s : "File" + ext.toUpperCase();
+        return (s != null) ? s : "File" + ext.toUpperCase(); //$NON-NLS-1$
     }
 
 }

@@ -15,11 +15,11 @@ import java.util.Properties;
 import org.jboss.tools.common.model.XModelObject;
 
 public interface IFilePathEncoder {
-	public static String PATH_TYPE = "pathType";
-	public static String PATH_ADDITION = "pathAddition";
+	public static String PATH_TYPE = "pathType"; //$NON-NLS-1$
+	public static String PATH_ADDITION = "pathAddition"; //$NON-NLS-1$
 	
-	public static String ABSOLUTE_PATH = "absolute";
-	public static String RELATIVE_PATH = "relative";
+	public static String ABSOLUTE_PATH = "absolute"; //$NON-NLS-1$
+	public static String RELATIVE_PATH = "relative"; //$NON-NLS-1$
 	
 	/**
 	 * Returns path that should be inserted to jsp page.

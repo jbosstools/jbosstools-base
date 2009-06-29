@@ -38,7 +38,7 @@ public class DeleteProjectHandler extends AbstractHandler
 			deleteAction.selectionChanged(new StructuredSelection(project));
 			deleteAction.run();
 			if(!project.exists()) {
-				XActionInvoker.invoke("Registration.UnregisterInServerXML", FileSystemsHelper.getFileSystems(object.getModel()), null);
+				XActionInvoker.invoke("Registration.UnregisterInServerXML", FileSystemsHelper.getFileSystems(object.getModel()), null); //$NON-NLS-1$
 			}
 		}
 	}

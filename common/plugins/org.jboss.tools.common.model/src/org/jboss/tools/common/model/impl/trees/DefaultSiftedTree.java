@@ -41,17 +41,17 @@ public abstract class DefaultSiftedTree implements XFilteredTree {
     }
 
     public boolean isSelectable(XModelObject object) {
-        throw new MethodNotImplementedException("Not implemented");
+        throw new MethodNotImplementedException("Not implemented"); //$NON-NLS-1$
     }
 
     public String getValue(XModelObject object) {
-        throw new MethodNotImplementedException("Not implemented");
+        throw new MethodNotImplementedException("Not implemented"); //$NON-NLS-1$
     }
 
     public void setConstraint(Object object) {}
 
     public XModelObject find(String value) {
-        throw new MethodNotImplementedException("Not implemented");
+        throw new MethodNotImplementedException("Not implemented"); //$NON-NLS-1$
     }
 
     public XModelObject getParent(XModelObject object) {

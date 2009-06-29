@@ -37,7 +37,7 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.osgi.framework.BundleContext;
 
 public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowListener {
-	public static final String PLUGIN_ID = "org.jboss.tools.common.model"; 
+	public static final String PLUGIN_ID = "org.jboss.tools.common.model";  //$NON-NLS-1$
 	private static ModelPlugin plugin;
 	private ResourceBundle resourceBundle;
 	private XModelSaveParticipant save = new XModelSaveParticipant();
@@ -96,15 +96,15 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 	
 	private void cleanTempFiles() {
 		try {
-			File f = File.createTempFile("efs_", ".x");
+			File f = File.createTempFile("efs_", ".x"); //$NON-NLS-1$ //$NON-NLS-2$
 			f = f.getParentFile();
 			File[] fs = f.listFiles();
 			if(fs != null) for (int i = 0; i < fs.length; i++) {
 				String n = fs[i].getName();
-				if(n.startsWith("efs_")) fs[i].delete();
+				if(n.startsWith("efs_")) fs[i].delete(); //$NON-NLS-1$
 			}
 		} catch (IOException e) {
-			getPluginLog().logError("ModelPlugin:cleanTempFiles:" + e.getMessage());
+			getPluginLog().logError("ModelPlugin:cleanTempFiles:" + e.getMessage()); //$NON-NLS-1$
 		}
 	}
 
@@ -138,7 +138,7 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 				byte[] bom= (byte[]) description.getProperty(IContentDescription.BYTE_ORDER_MARK);
 				if (bom != null) {
 					if (bom != IContentDescription.BOM_UTF_8)
-						throw new CoreException(new Status(IStatus.ERROR, ModelPlugin.PLUGIN_ID, IStatus.OK,"wrongByteOrderMark", null));
+						throw new CoreException(new Status(IStatus.ERROR, ModelPlugin.PLUGIN_ID, IStatus.OK,"wrongByteOrderMark", null)); //$NON-NLS-1$
 					return true;
 				}
 			}
@@ -153,7 +153,7 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 			if (skipUTF8BOM) {
 				for (int i= 0; i < 3; i++)
 					if (contentStream.read() == -1) {
-						throw new IOException("notEnoughBytesForBOM");
+						throw new IOException("notEnoughBytesForBOM"); //$NON-NLS-1$
 				}
 			}
 

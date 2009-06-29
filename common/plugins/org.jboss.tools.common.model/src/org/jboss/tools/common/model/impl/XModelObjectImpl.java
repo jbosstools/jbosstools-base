@@ -65,9 +65,9 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     public void changeEntity(String name) {
     	if(entity.getName().equals(name)) return;
     	XModelEntity newEntity = entity.getMetaModel().getEntity(name);
-    	if(newEntity == null) throw new IllegalArgumentException("Entity " + name + " does not exist.");
+    	if(newEntity == null) throw new IllegalArgumentException("Entity " + name + " does not exist."); //$NON-NLS-1$ //$NON-NLS-2$
     	if(entity.getImplementingClass() != newEntity.getImplementingClass()) { 
-			throw new IllegalArgumentException("Cannot convert entity " + entity.getName() + " to " + name + " because they have different implementations.");
+			throw new IllegalArgumentException("Cannot convert entity " + entity.getName() + " to " + name + " because they have different implementations."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     	}
     	Properties p = new Properties();
     	XAttribute[] as = entity.getAttributes();
@@ -82,7 +82,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
 			String n = as[i].getName();
 			String v = p.getProperty(n);
 			if(v == null) v = as[i].getDefaultValue();
-			if(v == null) v = "";
+			if(v == null) v = ""; //$NON-NLS-1$
 			setAttributeValue(n, v);
 		}    	
     }
@@ -164,7 +164,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     }
 
     public String setAttributeValue(String name, String value) {
-        if(getModelEntity().getAttribute(name) == null) return "";
+        if(getModelEntity().getAttribute(name) == null) return ""; //$NON-NLS-1$
         String ov = getAttributeValue(name);
         if(value != null && value.equals(ov)) return ov;
         String path = getPath();
@@ -286,12 +286,12 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     public String getPath() {
         String lp = getLongPath();
         if(lp == null) return null;
-        XMapping m = getModel().getMetaData().getMapping("Roots");
-        String h = "" + lp;
+        XMapping m = getModel().getMetaData().getMapping("Roots"); //$NON-NLS-1$
+        String h = "" + lp; //$NON-NLS-1$
         do {
             int ib = h.lastIndexOf('/');
             String q = h.substring(ib + 1), r = m.getValue(q);
-            if(r != null && h.equals(r)) return "%" + q + "%" + lp.substring(r.length());
+            if(r != null && h.equals(r)) return "%" + q + "%" + lp.substring(r.length()); //$NON-NLS-1$ //$NON-NLS-2$
             if(ib >= 0) h = h.substring(0, ib); else h = null;
         } while(h != null);
         return lp;
@@ -305,11 +305,11 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     public XModelObject getChildByPath(String path) {
         int i = path.indexOf(XModelObjectConstants.SEPARATOR);
         String n = (i < 0) ? path : path.substring(0, i);
-        String f = (i < 0) ? "" : path.substring(i + 1);
+        String f = (i < 0) ? "" : path.substring(i + 1); //$NON-NLS-1$
         XModelObject me = getChildByPathPart(n);
         if(me == null) {
-        	if(n.equals("..")) me = getParent();
-        	else if(n.equals(".")) me = this;
+        	if(n.equals("..")) me = getParent(); //$NON-NLS-1$
+        	else if(n.equals(".")) me = this; //$NON-NLS-1$
         }
         return (me == null || i < 0) ? me : ((XModelObjectImpl)me).getChildByPath(f);
     }
@@ -399,9 +399,9 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
 
     public String getMainIconName() {
         try {
-            return getModelEntity().getRenderer().getIconInfo("main");
+            return getModelEntity().getRenderer().getIconInfo("main"); //$NON-NLS-1$
         } catch (NullPointerException e) {
-            return "main.closedbox";
+            return "main.closedbox"; //$NON-NLS-1$
         }
     }
 
@@ -445,7 +445,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     
 	static ModelObjectAdapterExtensionPoint ep = ModelObjectAdapterExtensionPoint.getInstance();
     
-	private static IModelObjectAdapter propertySource = ep.getAdapter("IPropertySource");
+	private static IModelObjectAdapter propertySource = ep.getAdapter("IPropertySource"); //$NON-NLS-1$
 	
 	public Object getAdapter(Class adapter) {
 		if(XModelObject.class == adapter) return this;
@@ -458,7 +458,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
 		} else if(adapter == IJavaElement.class) {
 			return EclipseResourceUtil.findJavaElement(this);
 		} else if(adapter == IActionFilter.class) {
-			IModelObjectAdapter af = ep.getAdapter("IActionFilter");
+			IModelObjectAdapter af = ep.getAdapter("IActionFilter"); //$NON-NLS-1$
 			if(af != null) af.setModelObject(this);
 			return af;
 		} else if (adapter == IPropertySource.class) {

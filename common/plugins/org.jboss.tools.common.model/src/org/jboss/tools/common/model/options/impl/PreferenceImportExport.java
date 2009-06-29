@@ -18,7 +18,7 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.util.FileUtil;
 
 public class PreferenceImportExport implements Preferences.IPropertyChangeListener {
-	static String MODEL_PREFERENCES = "model_preferences";
+	static String MODEL_PREFERENCES = "model_preferences"; //$NON-NLS-1$
 	static PreferenceImportExport instance;
 	
 	public static PreferenceImportExport getInstance() {

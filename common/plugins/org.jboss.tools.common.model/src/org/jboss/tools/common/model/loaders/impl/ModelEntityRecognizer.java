@@ -33,7 +33,7 @@ public class ModelEntityRecognizer implements EntityRecognizer {
     public String getEntityName(String ext, String body) {
     	if(ext != null) ext = ext.toLowerCase();
         EntityRecognizer[] list = recognizers.get(ext);
-        if(list == null || list.length == 0) return "FileAny";
+        if(list == null || list.length == 0) return "FileAny"; //$NON-NLS-1$
         for (int i = 0; i < list.length; i++) {
             String n = list[i].getEntityName(ext, body);
             if(n != null) return n;
@@ -42,7 +42,7 @@ public class ModelEntityRecognizer implements EntityRecognizer {
     }
 
     private void load() {
-        XMapping m = meta.getMapping("Recognizers");
+        XMapping m = meta.getMapping("Recognizers"); //$NON-NLS-1$
         if(m == null) return;
         HashMap<String,RL> ext_list = new HashMap<String,RL>();
         HashMap<String,EntityRecognizer> cls_recw = new HashMap<String,EntityRecognizer>();
@@ -82,7 +82,7 @@ public class ModelEntityRecognizer implements EntityRecognizer {
         try {
         	return (EntityRecognizer)ModelFeatureFactory.getInstance().createFeatureInstance(clsname);
 		} catch (ClassCastException e) {
-			ModelPlugin.getPluginLog().logError("Entity recognizer " + clsname + " must be instanceof EntityRecognizer", e);
+			ModelPlugin.getPluginLog().logError("Entity recognizer " + clsname + " must be instanceof EntityRecognizer", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return null;
     }

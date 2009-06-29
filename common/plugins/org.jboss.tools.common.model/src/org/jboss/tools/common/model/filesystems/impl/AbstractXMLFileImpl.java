@@ -10,12 +10,12 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.filesystems.impl;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.model.markers.ResourceMarkers;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl;
 import org.jboss.tools.common.model.util.FindObjectHelper;
 import org.jboss.tools.common.model.util.XMLUtil;
@@ -83,7 +83,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 			} catch (NumberFormatException e) {
 				ModelPlugin.getPluginLog().logError(e);
 			}
-			String ep = "ERROR: " + FindObjectHelper.makeRef(getPath() + ":" + ln1, ln + ":" + pos) + " " + er;
+			String ep = MessageFormat.format("ERROR: {0} {1}", FindObjectHelper.makeRef(getPath() + ":" + ln1, ln + ":" + pos), er); //$NON-NLS-2$ //$NON-NLS-3$
 			if(iln < 0) markers.lines.remove(ep);
 			else markers.lines.put(ep, Integer.valueOf(iln));
 			sb.append(ep).append('\n');
@@ -100,7 +100,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
     
 	protected boolean isOverlapped() {
 		XModelObject p = getParent();
-		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$ //$NON-NLS-2$
+		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$
 		return (p != null);
 	}
 

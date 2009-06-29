@@ -21,9 +21,9 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 public class Preference {
 	private String option;
 	private String attributeName;
-	public static final String OPTIONS_PATH = "%Options%";
-	public static String EDITOR_PATH = "%Options%/Struts Studio/Editors";
-	public static final Preference SHOW_NATURE_WARNING = new Preference(EDITOR_PATH, "natureWarning");
+	public static final String OPTIONS_PATH = "%Options%"; //$NON-NLS-1$
+	public static String EDITOR_PATH = "%Options%/Struts Studio/Editors"; //$NON-NLS-1$
+	public static final Preference SHOW_NATURE_WARNING = new Preference(EDITOR_PATH, "natureWarning"); //$NON-NLS-1$
 	
 	protected Preference(String optionPath, String attributeName) {
 		option = optionPath;	
@@ -34,16 +34,16 @@ public class Preference {
 		XModelObject obj = PreferenceModelUtilities.getPreferenceModel().getByPath(option);
 		if(obj == null) {
 			if(ModelPlugin.isDebugEnabled()) {
-				ModelPlugin.getPluginLog().logInfo(option + " does not exist");
+				ModelPlugin.getPluginLog().logInfo(option + " does not exist"); //$NON-NLS-1$
 			}
-			return "";
+			return ""; //$NON-NLS-1$
 		} 
 		XAttribute attribute = obj.getModelEntity().getAttribute(attributeName);
 		if(attribute == null) {
 			if(ModelPlugin.isDebugEnabled()) {
-				ModelPlugin.getPluginLog().logInfo(attributeName + " in " + option + " does not exist");
+				ModelPlugin.getPluginLog().logInfo(attributeName + " in " + option + " does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			return "";
+			return ""; //$NON-NLS-1$
 		} 
 		return obj.getAttributeValue(attributeName);
 	}
@@ -60,7 +60,7 @@ public class Preference {
 		XModelObject obj = PreferenceModelUtilities.getPreferenceModel().getByPath(option);
 		if(obj == null) {
 			if(ModelPlugin.isDebugEnabled()) {
-				ModelPlugin.getPluginLog().logInfo(option + " does not exist");
+				ModelPlugin.getPluginLog().logInfo(option + " does not exist"); //$NON-NLS-1$
 			}
 			return;
 		} 

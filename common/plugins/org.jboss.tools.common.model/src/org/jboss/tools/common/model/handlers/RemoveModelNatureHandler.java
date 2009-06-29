@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.handlers;
 
 import java.io.*;
+import java.text.MessageFormat;
 import java.util.*;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
@@ -36,9 +37,9 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		String nature = getNature(object);
 		if(nature == null) return false;
 		XActionImpl i = (XActionImpl)action;
-		String n = (nature.indexOf("struts") > 0) ? "Struts" :
-		           (nature.indexOf("jsf") > 0) ? "JSF" : "Model"; 
-		i.setDisplayName("Remove " + n + " Capabilities");
+		String n = (nature.indexOf("struts") > 0) ? "Struts" : //$NON-NLS-1$ //$NON-NLS-2$
+		           (nature.indexOf("jsf") > 0) ? "JSF" : "Model";  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		i.setDisplayName(MessageFormat.format("Remove {0} Capabilities", n));
 		return true;
 	}
 	
@@ -50,7 +51,7 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		IProject project = EclipseResourceUtil.getProject(object);
-		String nature = (p == null) ? null : p.getProperty("nature");
+		String nature = (p == null) ? null : p.getProperty("nature"); //$NON-NLS-1$
 		if(nature == null) nature = getNature(object);
 		if (project == null || nature == null) return;
 		
@@ -65,7 +66,7 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		pd.put(ServiceDialog.CHECKED, Boolean.FALSE);
 		if(!dialog.openConfirm(pd)) return;
 
-		SpecialWizard contribution = p == null ? null : (SpecialWizard)p.get("contribution");
+		SpecialWizard contribution = p == null ? null : (SpecialWizard)p.get("contribution"); //$NON-NLS-1$
 		if(contribution != null) {
 			contribution.setObject(object.getModel());
 			contribution.execute();
@@ -89,10 +90,10 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 			String projectLocation = project.getLocation().toString();
 			removeFiles(projectLocation, XModelConstants.getWorkspace(object.getModel()));
 			if(unregisterWTP) {
-				File f = new File(projectLocation + "/.settings");
+				File f = new File(projectLocation + "/.settings"); //$NON-NLS-1$
 				if(f.isDirectory()) FileUtil.remove(f);
 			}
-			clear(object.getModel().getByPath("FileSystems/WEB-INF"));
+			clear(object.getModel().getByPath("FileSystems/WEB-INF")); //$NON-NLS-1$
 			project.refreshLocal(IResource.DEPTH_INFINITE, null);
 		} catch (CoreException e) {
 			throw new XModelException(e);
@@ -137,7 +138,7 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		while (iterator.hasNext()) {
 			IClasspathEntry entry = iterator.next();
 			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-				if(entry.getPath().toString().indexOf(".jst.") >= 0) {
+				if(entry.getPath().toString().indexOf(".jst.") >= 0) { //$NON-NLS-1$
 					iterator.remove();
 					continue;
 				}
@@ -164,12 +165,12 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 	
 	void unregisterFromServer(XModelObject object) {
 		XModelObject fs = FileSystemsHelper.getFileSystems(object.getModel());
-		XAction action = XActionInvoker.getAction("Registration.UnregisterInServerXML", fs);
+		XAction action = XActionInvoker.getAction("Registration.UnregisterInServerXML", fs); //$NON-NLS-1$
 		if(action != null) {
 			Properties runningProperties = new Properties();
-			runningProperties.setProperty("unregisterFromAllServers", XModelObjectConstants.TRUE);
-			runningProperties.setProperty("showResult", XModelObjectConstants.FALSE);
-			XActionInvoker.invoke("Registration.UnregisterInServerXML", fs, runningProperties);
+			runningProperties.setProperty("unregisterFromAllServers", XModelObjectConstants.TRUE); //$NON-NLS-1$
+			runningProperties.setProperty("showResult", XModelObjectConstants.FALSE); //$NON-NLS-1$
+			XActionInvoker.invoke("Registration.UnregisterInServerXML", fs, runningProperties); //$NON-NLS-1$
 		}
 	}
 

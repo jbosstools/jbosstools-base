@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.filesystems.impl;
 
+import java.text.MessageFormat;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.util.*;
@@ -46,8 +47,9 @@ public class UnmountFileSystemHandler extends DefaultRemoveHandler {
     private boolean handleModified(XModelObject object) {
         if(!object.isModified()) return true;
         ServiceDialog d = object.getModel().getService();
-        String mes = "File system " + object.get(XModelObjectConstants.XML_ATTR_NAME) + " was modified.\n" +
-                     "Do you want to save changes?";
+        String mes = MessageFormat.format(
+				"File system {0} was modified.\nDo you want to save changes?",
+				object.get(XModelObjectConstants.XML_ATTR_NAME));
         int i = d.showDialog(action.getDisplayName(), mes, new String[]{ModelMessages.Yes, ModelMessages.No, ModelMessages.Cancel}, null, ServiceDialog.QUESTION);
         if(i == 1) return true;
         if(i != 0) return false;

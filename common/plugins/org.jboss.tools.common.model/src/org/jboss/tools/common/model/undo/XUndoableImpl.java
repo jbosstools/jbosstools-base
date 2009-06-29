@@ -22,7 +22,7 @@ public abstract class XUndoableImpl implements XUndoable {
     protected XUndoableImpl prev = null;
     protected boolean undone = false;
 
-    protected String description = "";
+    protected String description = ""; //$NON-NLS-1$
     protected Image icon = null;
 
     public XUndoableImpl() {}
@@ -70,9 +70,9 @@ public abstract class XUndoableImpl implements XUndoable {
     }
 
     protected String getActionIcon() {
-        return (kind == ADD) ? "images/java/newattribute.gif" :
-               (kind == REMOVE) ? "images/actions/delete.gif" :
-                                  "images/file/redhat_file.gif";
+        return (kind == ADD) ? "images/java/newattribute.gif" : //$NON-NLS-1$
+               (kind == REMOVE) ? "images/actions/delete.gif" : //$NON-NLS-1$
+                                  "images/file/redhat_file.gif"; //$NON-NLS-1$
     }
 
     protected boolean merge(XUndoableImpl u) {

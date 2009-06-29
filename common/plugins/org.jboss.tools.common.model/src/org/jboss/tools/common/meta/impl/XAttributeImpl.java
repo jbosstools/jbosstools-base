@@ -144,8 +144,8 @@ public class XAttributeImpl extends XMetaElementImpl implements XAttribute {
         setDefaultValue(el.getAttribute(DEFAULT_VALUE));
         setXMLName(el.getAttribute(XML_NAME));
         loadAdapter(el);
-        trimmable = !XModelObjectConstants.NO.equals(el.getAttribute("TRIM"));  //$NON-NLS-1$//$NON-NLS-2$
-        copyable = !XModelObjectConstants.NO.equals(el.getAttribute("COPYABLE"));  //$NON-NLS-1$//$NON-NLS-2$
+        trimmable = !XModelObjectConstants.NO.equals(el.getAttribute("TRIM"));  //$NON-NLS-1$
+        copyable = !XModelObjectConstants.NO.equals(el.getAttribute("COPYABLE"));  //$NON-NLS-1$
         loadProperties(el);
     }
 

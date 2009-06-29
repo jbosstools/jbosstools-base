@@ -32,19 +32,19 @@ public class XAttributeEditorImpl extends XMetaElementImpl implements XAttribute
     }
 
     public String getViewerClassName() {
-        if(viewer != null && viewer.startsWith("%")) findViewerName();
+        if(viewer != null && viewer.startsWith("%")) findViewerName(); //$NON-NLS-1$
         return viewer;
     }
 
     private void findViewerName() {
     	if(viewer == null || viewer.length() < 2) return;
         viewer = viewer.substring(1, viewer.length() - 1);
-        viewer = getMetaModel().getMapping("AttributeEditor").getValue(viewer);
+        viewer = getMetaModel().getMapping("AttributeEditor").getValue(viewer); //$NON-NLS-1$
     }
 
 
     protected void setDefaultClassName() {
-        editor = getMetaModel().getMapping("AttributeEditor").getValue(getName());
+        editor = getMetaModel().getMapping("AttributeEditor").getValue(getName()); //$NON-NLS-1$
     }
 
     public void load(Element element) {

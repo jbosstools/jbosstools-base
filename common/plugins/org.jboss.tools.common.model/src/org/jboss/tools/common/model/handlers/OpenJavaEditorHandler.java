@@ -42,7 +42,7 @@ public class OpenJavaEditorHandler extends AbstractHandler {
 	
 		String className = 
 			EclipseResourceUtil.getJavaClassQualifiedName(object).replace('.', '/') +
-			"." + object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION);
+			"." + object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION); //$NON-NLS-1$
 		
 		IJavaElement javaElement = javaProject.findElement(new Path(className));
 		if(javaElement != null) {

@@ -52,7 +52,7 @@ public class SharableContainerImpl extends SharableElementImpl {
         String ov = super.getAttributeValue(attributeName);
         if(ov != null && ov.equals(value)) return value;
         String s = super.setAttributeValue(attributeName, value);
-        if("scope".equals(attributeName) && !ov.equals(s)) {
+        if("scope".equals(attributeName) && !ov.equals(s)) { //$NON-NLS-1$
             ((XModelImpl)getModel()).fireStructureChanged(this);
         }
         return s;

@@ -32,11 +32,11 @@ public class EntityXMLRegistration {
 		Integer i = resolved.get(entity);
 		if(i != null) return i.intValue();
 		
-		XAttribute a = entity.getAttribute("publicId");
+		XAttribute a = entity.getAttribute("publicId"); //$NON-NLS-1$
 		if(a != null) {
 			return resolveDTD(entity, a);
 		}
-		a = entity.getAttribute("xsi:schemaLocation");
+		a = entity.getAttribute("xsi:schemaLocation"); //$NON-NLS-1$
 		if(a != null && isResolvingSchema) {
 			return resolveSchema(entity, a);
 		}
@@ -63,7 +63,7 @@ public class EntityXMLRegistration {
 
 	private int resolveSchema(XModelEntity entity, XAttribute a) {
 		String v = a.getDefaultValue();
-		String[] vs = v.split(" ");
+		String[] vs = v.split(" "); //$NON-NLS-1$
 		if(vs == null || vs.length < 2) {
 			resolved.put(entity, Integer.valueOf(MISSING));
 			return MISSING;
@@ -89,12 +89,12 @@ public class EntityXMLRegistration {
 
     public static boolean isSystemId(String body) {
     	if(body == null) return false;
-        int i = body.indexOf("<!DOCTYPE");
+        int i = body.indexOf("<!DOCTYPE"); //$NON-NLS-1$
         if(i < 0) return false;
-        int j = body.indexOf(">", i);
+        int j = body.indexOf(">", i); //$NON-NLS-1$
         if(j < 0) return false;
         String dt = body.substring(i, j);
-        return (dt.indexOf("SYSTEM") > 0);        
+        return (dt.indexOf("SYSTEM") > 0);         //$NON-NLS-1$
     }
     
 }

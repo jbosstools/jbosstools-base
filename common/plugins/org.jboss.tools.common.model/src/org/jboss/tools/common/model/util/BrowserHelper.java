@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.util;
 
 import java.io.*;
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.engines.impl.XProcess;
@@ -22,13 +23,13 @@ import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.meta.action.impl.handlers.*;
 
 public class BrowserHelper {
-	static String ATTRIBUTE = "Browser Path";
+	static String ATTRIBUTE = "Browser Path"; //$NON-NLS-1$
 	
 
     public BrowserHelper() {}
 
 	public static void startExplorer(XModel model, String url) throws XModelException {
-		XModelObject editor = PreferenceModelUtilities.getPreferenceModel().getByPath("%Options%/Struts Studio/Running");
+		XModelObject editor = PreferenceModelUtilities.getPreferenceModel().getByPath("%Options%/Struts Studio/Running"); //$NON-NLS-1$
 		if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
 		if(validatePath(PreferenceModelUtilities.getPreferenceModel().getService(), editor)) new OWEProcess(editor, url).start();
 	}
@@ -52,16 +53,16 @@ public class BrowserHelper {
 					  return true;
 				  }
 			  } catch (XModelException e) {
-				  ModelPlugin.getPluginLog().logError("BrowserHelper:" + e.getMessage());
+				  ModelPlugin.getPluginLog().logError("BrowserHelper:" + e.getMessage()); //$NON-NLS-1$
 			  }
-			int i = d.showDialog("Run", "Enter valid path for " + o.getPresentationString(),
+			int i = d.showDialog("Run", MessageFormat.format("Enter valid path for {0}", o.getPresentationString()),
 								 new String[]{ModelMessages.OK, ModelMessages.Cancel}, dt[0], ServiceDialog.QUESTION);
 			if(i != 0) return false;
 		}
 	}
 
 	static String[] getEnvironmentPaths() {
-			String jlp = OSHelper.getProperty("PATH", "");
+			String jlp = OSHelper.getProperty("PATH", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			StringTokenizer st = new StringTokenizer(jlp, File.pathSeparator);
 			String[] ps = new String[st.countTokens()];
 			for (int i = 0; i < ps.length; i++) ps[i] = st.nextToken();
@@ -90,7 +91,7 @@ class OWEProcess extends XProcess {
 	}
 
 	protected String getRoot() {
-		return ".";
+		return "."; //$NON-NLS-1$
 	}
 
 	protected void write(String s) {

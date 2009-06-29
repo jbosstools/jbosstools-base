@@ -22,7 +22,7 @@ public class RenameFileHandler extends DefaultEditHandler {
 		// prompt file object to build body if it has not been done yet.
 		((FileAnyImpl)object).getAsText();
 		super.executeHandler(object, prop);
-		XActionInvoker.invoke("SaveActions.Save", object, prop);
+		XActionInvoker.invoke("SaveActions.Save", object, prop); //$NON-NLS-1$
 	}
 	
 }

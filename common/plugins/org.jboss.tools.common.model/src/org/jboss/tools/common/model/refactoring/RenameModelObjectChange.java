@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.refactoring;
 
+import java.text.MessageFormat;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -101,7 +102,7 @@ public class RenameModelObjectChange extends TextFileChange {
 	}
 	
 	public String getName() {
-		return "Edit " + attributeName;
+		return MessageFormat.format("Edit {0}", attributeName);
 	}
 
 }

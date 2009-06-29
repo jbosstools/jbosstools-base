@@ -49,7 +49,7 @@ public class EclipseResourceUtil {
 	}
 	
 	public static boolean isProjectFragment(XModel model) {
-		return (XModelObjectConstants.TRUE.equals(model.getProperties().getProperty("isProjectFragment")));
+		return (XModelObjectConstants.TRUE.equals(model.getProperties().getProperty("isProjectFragment"))); //$NON-NLS-1$
 	}
 
 	public static IResource getResource(XModelObject object) {
@@ -60,10 +60,10 @@ public class EclipseResourceUtil {
 	public static String getJavaClassQualifiedName(XModelObject object) {
 		if(object.getFileType() != XFileObject.FILE) return null;
 		String ext = object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION);
-		if(!"java".equals(ext) && !"class".equals(ext)) return null;
+		if(!"java".equals(ext) && !"class".equals(ext)) return null; //$NON-NLS-1$ //$NON-NLS-2$
 		String q = object.getAttributeValue(XModelObjectConstants.ATTR_NAME);
 		String p = getJavaPackageName(object.getParent());
-		return (p == null) ? q : p + "." + q; 
+		return (p == null) ? q : p + "." + q;  //$NON-NLS-1$
 	}
 	
 	public static String getJavaPackageName(XModelObject object) {
@@ -71,7 +71,7 @@ public class EclipseResourceUtil {
 		String q = object.getAttributeValue(XModelObjectConstants.ATTR_NAME);
 		XModelObject o = object.getParent();
 		while(o != null && o.getFileType() == XFileObject.FOLDER) {
-			q = o.getAttributeValue(XModelObjectConstants.ATTR_NAME) + "." + q;
+			q = o.getAttributeValue(XModelObjectConstants.ATTR_NAME) + "." + q; //$NON-NLS-1$
 			o = o.getParent();
 		}
 		return q;		
@@ -79,7 +79,7 @@ public class EclipseResourceUtil {
 	
 	public static String getIconPath(XModelObject o) {
 		String s = o.getMainIconName();
-		return o.getModelEntity().getMetaModel().getIconList().getIconPath(s, "default.unknown");
+		return o.getModelEntity().getMetaModel().getIconList().getIconPath(s, "default.unknown"); //$NON-NLS-1$
 	}
 
 	public static Image getImage(String path) {
@@ -111,7 +111,7 @@ public class EclipseResourceUtil {
 				XModelObject o = findResourceInFileSystem(s, resource);
 				if(o != null) return o;
 			}
-			fs = fso.getChildren("FileSystemJar");
+			fs = fso.getChildren("FileSystemJar"); //$NON-NLS-1$
 			String location = path == null ? null : path.toString().replace('\\', '/');
 			if(location != null && isJar(location)) { 
 				for (int i = 0; i < fs.length; i++) {
@@ -159,7 +159,7 @@ public class EclipseResourceUtil {
 		Properties properties = new Properties();
 		String fsLoc = resource.getLocation().toString();
 		if(resource == resource.getProject()) {
-			fsLoc = "%" + IModelNature.ECLIPSE_PROJECT + "%";
+			fsLoc = "%" + IModelNature.ECLIPSE_PROJECT + "%"; //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			fsLoc = getRelativeLocation(model, fsLoc);
 		}
@@ -186,11 +186,11 @@ public class EclipseResourceUtil {
 	
 	static {
 		List<String> natures = new ArrayList<String>();
-		if(Platform.getBundle("org.jboss.tools.struts") != null) {
-			natures.add("org.jboss.tools.struts.strutsnature");	
+		if(Platform.getBundle("org.jboss.tools.struts") != null) { //$NON-NLS-1$
+			natures.add("org.jboss.tools.struts.strutsnature");	 //$NON-NLS-1$
 		}
-		if(Platform.getBundle("org.jboss.tools.jsf") != null) {
-			natures.add("org.jboss.tools.jsf.jsfnature");	
+		if(Platform.getBundle("org.jboss.tools.jsf") != null) { //$NON-NLS-1$
+			natures.add("org.jboss.tools.jsf.jsfnature");	 //$NON-NLS-1$
 		}
 		MODEL_NATURES = natures.toArray(new String[0]);
 	}
@@ -229,7 +229,7 @@ public class EclipseResourceUtil {
 					if(n == null) return null;
 					n = testNature(n);
 					if(n == null) {
-						ModelPlugin.getPluginLog().logWarning("Project " + p + " has corrupted nature: " + natures[i]);
+						ModelPlugin.getPluginLog().logWarning("Project " + p + " has corrupted nature: " + natures[i]); //$NON-NLS-1$ //$NON-NLS-2$
 						removeNatureFromProject(p, natures[i]);
 					}
 				    return n;
@@ -261,7 +261,7 @@ public class EclipseResourceUtil {
 				if(n == null) return null;
 				n = testNature(n);
 				if(n == null) {
-					ModelPlugin.getPluginLog().logWarning("Project " + p + " has corrupted nature: " + id);
+					ModelPlugin.getPluginLog().logWarning("Project " + p + " has corrupted nature: " + id); //$NON-NLS-1$ //$NON-NLS-2$
 					removeNatureFromProject(p, id);
 				}
 			    return n;
@@ -331,13 +331,13 @@ public class EclipseResourceUtil {
 		properties.setProperty(XModelConstants.WORKSPACE, r.getParent().getLocation().toString());
 		properties.setProperty(IModelNature.ECLIPSE_PROJECT, project.getLocation().toString());
 		properties.put(XModelObjectConstants.PROJECT, project);
-		properties.put("isProjectFragment", XModelObjectConstants.TRUE);
+		properties.put("isProjectFragment", XModelObjectConstants.TRUE); //$NON-NLS-1$
 		model = XModelFactory.getModel(properties);
 		models.put(project, model);
 		
 		XModelObject fs = FileSystemsHelper.getFileSystems(model);
 		if(fs == null) {
-			ModelPlugin.getPluginLog().logInfo("Cannot create file systems for project " + project);
+			ModelPlugin.getPluginLog().logInfo("Cannot create file systems for project " + project); //$NON-NLS-1$
 			return null;
 		}
 		String fsLoc = null;
@@ -354,7 +354,7 @@ public class EclipseResourceUtil {
 			if(webRoot != null && webRoot.exists() && webRoot != project) {
 				fsLoc = webRoot.getLocation().toString();
 				properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
-				properties.setProperty(XModelObjectConstants.ATTR_NAME, "WEB-ROOT");
+				properties.setProperty(XModelObjectConstants.ATTR_NAME, "WEB-ROOT"); //$NON-NLS-1$
 				s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
 				fs.addChild(s);
 			}
@@ -405,10 +405,10 @@ public class EclipseResourceUtil {
 	
 	private static void validateJarSystem(XModelObject fs, IResource resource) {
 		if(fs == null || !isJar(resource)) return;
-		String jsname = "lib-" + resource.getName().toLowerCase();
+		String jsname = "lib-" + resource.getName().toLowerCase(); //$NON-NLS-1$
 		String location = resource.getLocation().toString().replace('\\', '/');
 		if(fs.getChildByPath(jsname) == null) {
-			XModelObject q = fs.getModel().createModelObject("FileSystemJar", null);
+			XModelObject q = fs.getModel().createModelObject("FileSystemJar", null); //$NON-NLS-1$
 			q.setAttributeValue(XModelObjectConstants.ATTR_NAME, jsname);
 			q.setAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION, location);
 			fs.addChild(q);
@@ -434,7 +434,7 @@ public class EclipseResourceUtil {
 		}
 		if(o == null) return null;
 		XModelObject p = o;
-		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent();
+		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$
 		if(p == null) {
 			IResource r = (IResource)o.getAdapter(IResource.class);
 			if(r == null || !resource.getLocation().equals(r.getLocation())) {
@@ -447,7 +447,7 @@ public class EclipseResourceUtil {
 	
 	public static boolean isOverlapped(XModelObject object) {
 		XModelObject p = object;
-		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent();
+		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$
 		return (p != null);
 	}
 
@@ -463,11 +463,11 @@ public class EclipseResourceUtil {
 		properties.putAll(System.getProperties());
 
 		properties.setProperty(XModelConstants.WORKSPACE, f.getParent());
-		properties.put("isProjectFragment", XModelObjectConstants.TRUE);
+		properties.put("isProjectFragment", XModelObjectConstants.TRUE); //$NON-NLS-1$
 		XModel model = XModelFactory.getModel(properties);
 		XModelObject fs = FileSystemsHelper.getFileSystems(model);
 		if(fs == null) {
-			ModelPlugin.getPluginLog().logInfo("Cannot create file systems for model at " + location);
+			ModelPlugin.getPluginLog().logInfo("Cannot create file systems for model at " + location); //$NON-NLS-1$
 			return null;
 		}
 		properties = new Properties();
@@ -605,7 +605,7 @@ public class EclipseResourceUtil {
 			try {
 				String s = null;
 				String path = es[i].getPath().toString();
-				if(path.startsWith(XModelObjectConstants.SEPARATOR + project.getName() + XModelObjectConstants.SEPARATOR)) { //$NON-NLS-1$ //$NON-NLS-2$
+				if(path.startsWith(XModelObjectConstants.SEPARATOR + project.getName() + XModelObjectConstants.SEPARATOR)) {
 					s = project.findMember(es[i].getPath().removeFirstSegments(1)).getLocation().toString();
 				} else if(new java.io.File(path).isFile()) {
 					s = path;
@@ -637,7 +637,7 @@ public class EclipseResourceUtil {
 			} else {
 				String p = getJavaClassQualifiedName(object);
 				if(p == null) return null;
-				path = new Path(p.replace('.', '/') + ".java");
+				path = new Path(p.replace('.', '/') + ".java"); //$NON-NLS-1$
 			}
 			return javaProject.findElement(path);
 		} catch (CoreException ex) {
@@ -664,9 +664,9 @@ public class EclipseResourceUtil {
 			}
 			return t;
 		} catch (JavaModelException t) {
-			ModelPlugin.getPluginLog().logError("Error while obtaining type " + className, t);
+			ModelPlugin.getPluginLog().logError("Error while obtaining type " + className, t); //$NON-NLS-1$
 		} catch (CoreException t) {
-			ModelPlugin.getPluginLog().logError("Error occured while obtaining Java Problem markers  for " + f.getLocation() , t);
+			ModelPlugin.getPluginLog().logError("Error occured while obtaining Java Problem markers  for " + f.getLocation() , t); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -683,7 +683,7 @@ public class EclipseResourceUtil {
 		if(root == null) return null;
 		if(!root.getLocation().isPrefixOf(resource.getLocation())) return null;
 		String relative = resource.getLocation().toString().substring(root.getLocation().toString().length());
-		if(!relative.endsWith(".java")) return null;
+		if(!relative.endsWith(".java")) return null; //$NON-NLS-1$
 		relative = relative.substring(0, relative.length() - 5);
 		relative = relative.replace('\\', '/');
 		if(relative.startsWith(XModelObjectConstants.SEPARATOR)) relative = relative.substring(1);
@@ -702,10 +702,10 @@ public class EclipseResourceUtil {
 			IResource r = project.getWorkspace().getRoot().findMember(p);
 			if(r == null || r.getLocation() == null) return false;
 			String output = r.getLocation().toString();
-			String f = output + XModelObjectConstants.SEPARATOR + className.replace('.', '/') + ".class";
+			String f = output + XModelObjectConstants.SEPARATOR + className.replace('.', '/') + ".class"; //$NON-NLS-1$
 			return new java.io.File(f).isFile();
 		} catch (JavaModelException t) {
-			ModelPlugin.getPluginLog().logError("Error checking class " + className, t);
+			ModelPlugin.getPluginLog().logError("Error checking class " + className, t); //$NON-NLS-1$
 			return false;
 		}		
 	}
@@ -733,7 +733,7 @@ public class EclipseResourceUtil {
 				} 
 			}
 		} catch(CoreException ce) {
-			ModelPlugin.getPluginLog().logError("Error while locating java source roots for " + project, ce);
+			ModelPlugin.getPluginLog().logError("Error while locating java source roots for " + project, ce); //$NON-NLS-1$
 		}
 		return resources.toArray(new IResource[resources.size()]);
 	}
@@ -797,7 +797,7 @@ public class EclipseResourceUtil {
 	public static void openResource(IResource resource) {
 		XModelObject o = getObjectByResource(resource);
 		if(o == null) o = createObjectForResource(resource);
-		if(o != null) XActionInvoker.invoke("Open", o, null);
+		if(o != null) XActionInvoker.invoke("Open", o, null); //$NON-NLS-1$
 	}
 	
 	public static String getInstallPath(Plugin plugin) {
@@ -927,7 +927,7 @@ public class EclipseResourceUtil {
 	}
 
 	public static String getRelativeLocation(XModel model, String path) {
-		if(path == null || path.startsWith("%")) return path;
+		if(path == null || path.startsWith("%")) return path; //$NON-NLS-1$
 		String workspace = XModelConstants.getWorkspace(model);
 		if(workspace == null) return path;
 		workspace = new File(workspace).getAbsolutePath().replace('\\', '/');
@@ -954,7 +954,7 @@ public class EclipseResourceUtil {
 	public static boolean isJar(String path) {
 		if(path == null) return false;
 		path = path.toLowerCase();
-		return path.endsWith(".jar") || path.endsWith(".zip");
+		return path.endsWith(".jar") || path.endsWith(".zip"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

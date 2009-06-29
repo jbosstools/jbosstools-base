@@ -18,7 +18,7 @@ public class UnmountFolderHandler extends DefaultRedirectHandler {
     public UnmountFolderHandler() {}
 
     public boolean isEnabled(XModelObject object) {
-        return (object != null && XModelObjectConstants.TRUE.equals(object.get("overlapped")));
+        return (object != null && XModelObjectConstants.TRUE.equals(object.get("overlapped"))); //$NON-NLS-1$
     }
 
     protected XModelObject getTrueSource(XModelObject source) {

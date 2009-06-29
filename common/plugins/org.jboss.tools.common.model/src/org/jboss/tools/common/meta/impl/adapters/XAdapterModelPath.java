@@ -21,7 +21,7 @@ public class XAdapterModelPath extends XAdapter {
 
     public String getProperty(XProperty object) {
         String p = XModelObjectLoaderUtil.getResourcePath((XModelObject)object);
-        return (p == null) ? "" + object.get(XModelObjectConstants.XML_ATTR_NAME) : p;
+        return (p == null) ? "" + object.get(XModelObjectConstants.XML_ATTR_NAME) : p; //$NON-NLS-1$
     }
 
     public void setProperty(XProperty object, String value) {}

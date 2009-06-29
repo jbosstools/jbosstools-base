@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.engines.impl;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.util.*;
@@ -32,7 +33,8 @@ public class StopProcessHandler extends AbstractHandler {
         Long[] ls = map.keySet().toArray(new Long[0]);
         for (int i = 0; i < ls.length; i++) {
             s.stopInstance(path, ls[i].longValue());
-            object.getModel().getOut().println("Process executing " + FindObjectHelper.makeRef(object) + " (" + new Date(ls[i].longValue()) + ") stopped.");
+            object.getModel().getOut().println(MessageFormat.format("Process executing {0} ({1}) stopped.",
+					FindObjectHelper.makeRef(object), new Date(ls[i].longValue())));
         }
     }
 

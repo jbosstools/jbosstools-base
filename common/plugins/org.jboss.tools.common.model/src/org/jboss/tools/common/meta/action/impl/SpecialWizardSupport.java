@@ -86,15 +86,15 @@ public abstract class SpecialWizardSupport {
     public String getTitle() {
     	String title = WizardKeys.getHeader(getHelpKey());
     	if(title != null) return title;
-		String n = (action == null) ? "" : "" + action.getDisplayName();
-		if(n.endsWith("...")) n = n.substring(0, n.length() - 3);
+		String n = (action == null) ? "" : "" + action.getDisplayName(); //$NON-NLS-1$ //$NON-NLS-2$
+		if(n.endsWith("...")) n = n.substring(0, n.length() - 3); //$NON-NLS-1$
 		return n;
     }
     
     public String getSubtitle() {
     	String key = getHelpKey();
     	String t = WizardKeys.getTitle(key);
-    	if(t == null && key != null && key.endsWith("_0")) {
+    	if(t == null && key != null && key.endsWith("_0")) { //$NON-NLS-1$
     		String key1 = key.substring(0, key.length() - 2);
     		t = WizardKeys.getTitle(key1);
     	}
@@ -204,9 +204,9 @@ public abstract class SpecialWizardSupport {
 
     public String getHelpKey() {
     	if(action == null) return null;
-    	String key = action.getProperty("key");
+    	String key = action.getProperty("key"); //$NON-NLS-1$
     	if(key != null && key.length() > 0) return key;
-        return target.getModelEntity().getName() + "_" + action.getName() + "_" + stepId;
+        return target.getModelEntity().getName() + "_" + action.getName() + "_" + stepId; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public final XModelObject getTarget() {
@@ -233,7 +233,7 @@ public abstract class SpecialWizardSupport {
 		return defaultValidator;    	
     }
     
-    static String DEFAULT_IMLEMENTING_CLASS = "org.jboss.tools.common.model.ui.wizards.special.SpecialWizardStep";
+    static String DEFAULT_IMLEMENTING_CLASS = "org.jboss.tools.common.model.ui.wizards.special.SpecialWizardStep"; //$NON-NLS-1$
 
     public String getStepImplementingClass(int stepId) {
         return DEFAULT_IMLEMENTING_CLASS;
@@ -260,7 +260,7 @@ public abstract class SpecialWizardSupport {
             String n = ad[i].getAttribute().getName();
             String v = object.getAttributeValue(n);
             if(v != null) ad[i].setValue(v);
-            v = action.getProperty("attribute." + n);
+            v = action.getProperty("attribute." + n); //$NON-NLS-1$
             if(v != null) ad[i].setValue(v);
         }
     }
@@ -334,7 +334,7 @@ public abstract class SpecialWizardSupport {
 	
 	public String getHelpContextId() {
 		if(action == null) return null;
-		String s = action.getProperty("helpId");
+		String s = action.getProperty("helpId"); //$NON-NLS-1$
 		if(s == null || s.length() == 0) return null;
 		int i = s.indexOf('%');
 		if(i < 0) return s;
@@ -342,7 +342,7 @@ public abstract class SpecialWizardSupport {
 		if(j < 0) return s;
 		String vr = s.substring(i + 1, j);
 		String tail = s.substring(j + 1);
-		XMapping map = action.getMetaModel().getMapping("HelpPlugins");
+		XMapping map = action.getMetaModel().getMapping("HelpPlugins"); //$NON-NLS-1$
 		if(map == null) return s;
 		String varValue = map.getValue(vr);
 		if(varValue == null) return s;

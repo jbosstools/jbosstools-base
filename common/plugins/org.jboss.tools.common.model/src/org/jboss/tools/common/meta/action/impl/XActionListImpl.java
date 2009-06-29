@@ -51,7 +51,7 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
         for (int i = 0; i < is.length; i++) {
             XActionItemImpl item = (XActionItemImpl)is[i];
             if(item instanceof XActionListImpl)
-              ((XActionListImpl)item).print(off + "  ");
+              ((XActionListImpl)item).print(off + "  "); //$NON-NLS-1$
         }
     }
 
@@ -64,7 +64,7 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
 
     public XActionItem getItem(String name) {
     	if(name == null) {
-    		System.out.println("XActionListImpl.getItem: name=null");
+    		System.out.println("XActionListImpl.getItem: name=null"); //$NON-NLS-1$
     	}
         for (int i = 0; i < items.length; i++) {
             if(items[i].getName().equals(name)) return items[i];
@@ -74,7 +74,7 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
 
     public XActionItem findItem(String path) {
     	if(path == null || path.length() == 0) return null;
-    	StringTokenizer st = new StringTokenizer(path, "./");
+    	StringTokenizer st = new StringTokenizer(path, "./"); //$NON-NLS-1$
     	XActionItem item = this;
     	while(st.hasMoreTokens() && item != null) {
     		String part = st.nextToken();
@@ -90,7 +90,7 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
 
     public void load(Element el) {
         super.load(el);
-        groupfactor = (short)XMetaDataLoader.getInt(el, "group", 0);
+        groupfactor = (short)XMetaDataLoader.getInt(el, "group", 0); //$NON-NLS-1$
         NodeList ns = el.getChildNodes();
         List<XActionItem> list = new ArrayList<XActionItem>();
         for (int i = 0; i < ns.getLength(); i++) {
@@ -99,8 +99,8 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
             Element ei = (Element)n;
             String tag = ei.getNodeName();
             if(XMODEL_ACTION_ITEM.equals(tag)) {
-            	String kind = ei.getAttribute("kind");
-            	XActionItemImpl item = (kind.equals("list"))
+            	String kind = ei.getAttribute("kind"); //$NON-NLS-1$
+            	XActionItemImpl item = (kind.equals("list")) //$NON-NLS-1$
                  ? (XActionItemImpl) new XActionListImpl()
                  : (XActionItemImpl) new XActionImpl();
                  item.setParent(this);
@@ -109,8 +109,8 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
             } else if(XMODEL_ACTION_ITEM_REF.equals(tag)) {
 				String entityName = ei.getAttribute(XMetaDataConstants.ENTITY);
 				String attrName = ei.getAttribute(NAME);
-				String path = ei.hasAttribute("path") 
-					? ei.getAttribute("path") 
+				String path = ei.hasAttribute("path")  //$NON-NLS-1$
+					? ei.getAttribute("path")  //$NON-NLS-1$
 					: attrName;
 				
 				XModelEntity entity = getMetaModel().getEntity(entityName);

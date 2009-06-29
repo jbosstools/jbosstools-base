@@ -51,11 +51,11 @@ class BeginTransactionUndo extends XUndoableImpl {
     }
 
     protected void doUndo() {
-        mi.fireStructureChanged(object, XModelTreeEvent.STRUCTURE_CHANGED, "transaction_end");
+        mi.fireStructureChanged(object, XModelTreeEvent.STRUCTURE_CHANGED, "transaction_end"); //$NON-NLS-1$
     }
 
     protected void doRedo() {
-        mi.fireStructureChanged(object, XModelTreeEvent.STRUCTURE_CHANGED, "transaction_begin");
+        mi.fireStructureChanged(object, XModelTreeEvent.STRUCTURE_CHANGED, "transaction_begin"); //$NON-NLS-1$
     }
 
     public void fire() {

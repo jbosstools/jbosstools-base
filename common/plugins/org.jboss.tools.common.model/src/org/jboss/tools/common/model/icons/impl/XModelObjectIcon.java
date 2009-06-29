@@ -25,7 +25,7 @@ public class XModelObjectIcon {
         if(components != null || object == null) return;
         components = new Hashtable<String,ImageComponent>();
         XModel model = object.getModel();
-        XMapping mapping = model.getMetaData().getMapping("Icons");
+        XMapping mapping = model.getMetaData().getMapping("Icons"); //$NON-NLS-1$
         if(mapping == null) return;
         String[] keys = mapping.getKeys();
         for (int i = 0; i < keys.length; i++) {
@@ -43,7 +43,7 @@ public class XModelObjectIcon {
 
     public Image getIcon1(String[] types) {
         if(object == null) return null;
-        String code = "" + getIconHash(types);
+        String code = "" + getIconHash(types); //$NON-NLS-1$
         Image ii = cacheEclipse.get(code);
         if(ii != null) return ii;
         Vector<Image> v = new Vector<Image>(3);
@@ -84,7 +84,7 @@ public class XModelObjectIcon {
     
 	public Image getEclipseImage0(String[] types) {
 		if(object == null) return null;
-		String code = "" + getIconHash(types);
+		String code = "" + getIconHash(types); //$NON-NLS-1$
 		Image iie = cacheEclipse.get(code);
 		if(iie != null) return iie;
 		Image ii = getIcon1(types);

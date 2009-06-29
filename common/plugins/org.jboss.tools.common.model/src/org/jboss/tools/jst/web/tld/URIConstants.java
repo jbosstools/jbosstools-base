@@ -11,7 +11,7 @@
 package org.jboss.tools.jst.web.tld;
 
 public interface URIConstants {
-	public String LIBRARY_URI = "library uri";
-	public String LIBRARY_VERSION = "library version";
-	public String DEFAULT_PREFIX = "default prefix";
+	public String LIBRARY_URI = "library uri"; //$NON-NLS-1$
+	public String LIBRARY_VERSION = "library version"; //$NON-NLS-1$
+	public String DEFAULT_PREFIX = "default prefix"; //$NON-NLS-1$
 }

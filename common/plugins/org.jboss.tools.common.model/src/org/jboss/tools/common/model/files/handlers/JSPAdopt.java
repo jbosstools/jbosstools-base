@@ -27,7 +27,7 @@ public class JSPAdopt extends CompoundAdoptManager {
     private static XAdoptManager[] managers = null;
 
     public XAdoptManager[] getManagers() {
-        if(managers == null) managers = loadManagers("org.jboss.tools.common.model.jspAdopt");
+        if(managers == null) managers = loadManagers("org.jboss.tools.common.model.jspAdopt"); //$NON-NLS-1$
         return managers;
     }
 

@@ -20,23 +20,23 @@ public class ReferencedIcons implements ImageComponent {
     public ReferencedIcons() {}
 
     public int getHash(XModelObject obj) {
-        String x = obj.getAttributeValue("icon");
+        String x = obj.getAttributeValue("icon"); //$NON-NLS-1$
         if (x == null || x.trim().length() == 0) return
-          ((XEntityRendererImpl)obj.getModelEntity().getRenderer()).getIconInfo("imageref").hashCode();
+          ((XEntityRendererImpl)obj.getModelEntity().getRenderer()).getIconInfo("imageref").hashCode(); //$NON-NLS-1$
         XModelObject r = obj.getModel().getByPath(x);
-        return (r == null) ? "defaultimage".hashCode() : 718 + x.hashCode() + studioicons.getHash(r);
+        return (r == null) ? "defaultimage".hashCode() : 718 + x.hashCode() + studioicons.getHash(r); //$NON-NLS-1$
     }
 
     public Image getImage(XModelObject obj) {
-        String v = obj.getAttributeValue("icon");
+        String v = obj.getAttributeValue("icon"); //$NON-NLS-1$
         if(v == null || v.trim().length() == 0) {
-            String s = ((XEntityRendererImpl)obj.getModelEntity().getRenderer()).getIconInfo("imageref");
+            String s = ((XEntityRendererImpl)obj.getModelEntity().getRenderer()).getIconInfo("imageref"); //$NON-NLS-1$
             return obj.getModelEntity().getMetaModel().getIconList().getImage(s);
         }
         XModelObject ic = (v == null || v.trim().length() == 0) ? null : obj.getModel().getByPath(v);
         Image res = (ic == null || ic == obj) ? null : new XModelObjectIcon(ic).getEclipseImage();
         if(res != null) return res;
-        return obj.getModelEntity().getMetaModel().getIconList().getImage("default.unknown");
+        return obj.getModelEntity().getMetaModel().getIconList().getImage("default.unknown"); //$NON-NLS-1$
     }
 
 }

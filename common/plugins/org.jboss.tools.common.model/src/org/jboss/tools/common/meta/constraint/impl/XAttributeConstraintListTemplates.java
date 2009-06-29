@@ -26,7 +26,7 @@ public class XAttributeConstraintListTemplates extends XAttributeConstraintList 
 
     protected void refresh() {
         values.clear();
-        String tr = System.getProperty("global.ECOM_HOME") + XModelObjectConstants.SEPARATOR + "Templates";
+        String tr = System.getProperty("global.ECOM_HOME") + XModelObjectConstants.SEPARATOR + "Templates"; //$NON-NLS-1$ //$NON-NLS-2$
         File f = new File(tr);
         File[] fs = f.listFiles();
         if(fs == null) return;

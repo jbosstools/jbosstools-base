@@ -94,20 +94,20 @@ public abstract class AllResourcesTree implements XFilteredTree {
 	}
 
 	public String getValue(XModelObject object) {
-		if(object == root) return "";
+		if(object == root) return ""; //$NON-NLS-1$
 		IResource resource = (IResource)object.getAdapter(IResource.class);
 		if(resource == null) {
 			XFilteredTree tree = getSubTree(object.getModel());
 			return XModelObjectConstants.SEPARATOR + EclipseResourceUtil.getProject(object).getName() + XModelObjectConstants.SEPARATOR +  tree.getValue(object);
 		}
-		return (resource == null) ? "" : resource.getFullPath().toString();
+		return (resource == null) ? "" : resource.getFullPath().toString(); //$NON-NLS-1$
 	}
 
 	public void setConstraint(Object object) {
         Object[] os = (Object[])object;
         XAttribute a = (XAttribute)os[0];
         XAttributeConstraintT tc = (XAttributeConstraintT)a.getConstraint();
-        String nature = tc.getProperties().getProperty("nature");
+        String nature = tc.getProperties().getProperty("nature"); //$NON-NLS-1$
         IProject[] ps = ModelPlugin.getWorkspace().getRoot().getProjects();
         for (int i = 0; i < ps.length; i++) {
         	if(!ps[i].isOpen()) continue;
@@ -115,7 +115,7 @@ public abstract class AllResourcesTree implements XFilteredTree {
         		if(nature != null && !ps[i].hasNature(nature)) continue;
         	} catch (CoreException e) {
         		if(ModelPlugin.isDebugEnabled()){
-        			ModelPlugin.getPluginLog().logInfo("AllResourcesTree:" + e.getMessage());
+        			ModelPlugin.getPluginLog().logInfo("AllResourcesTree:" + e.getMessage()); //$NON-NLS-1$
         		}
         		continue;
         	}
@@ -140,10 +140,10 @@ public abstract class AllResourcesTree implements XFilteredTree {
 
 	public XModelObject find(String value) {
 		if(value == null || value.length() == 0) return root;
-		if(value.indexOf("//") >= 0) {
-			String pn = value.substring(1, value.indexOf("//"));
+		if(value.indexOf("//") >= 0) { //$NON-NLS-1$
+			String pn = value.substring(1, value.indexOf("//")); //$NON-NLS-1$
 			XFilteredTree tree = trees.get(pn);
-			return (tree == null) ? null : tree.getRoot().getModel().getByPath(value.substring(value.indexOf("//") + 1));
+			return (tree == null) ? null : tree.getRoot().getModel().getByPath(value.substring(value.indexOf("//") + 1)); //$NON-NLS-1$
 		}
 		if(value.indexOf(XModelObjectConstants.SEPARATOR, 1) < 0) return null;
 		IResource r = ModelPlugin.getWorkspace().getRoot().getFolder(new Path(value));
@@ -167,9 +167,9 @@ public abstract class AllResourcesTree implements XFilteredTree {
 	}
 
 	public String getPath(XModelObject object) {
-		if(object == root) return "";
+		if(object == root) return ""; //$NON-NLS-1$
 		IResource resource = (IResource)object.getAdapter(IResource.class);
-		return (resource == null) ? "" : resource.getFullPath().toString();
+		return (resource == null) ? "" : resource.getFullPath().toString(); //$NON-NLS-1$
 	}
 
 	public void dispose() {

@@ -25,14 +25,14 @@ public class SearchCommandImpl extends SearchConstraintImpl implements SearchCom
 
     public void prepare() {
         super.prepare();
-        matching = (SearchConstraint)getChildren("SearchMatch")[0];
-        insight = (SearchConstraint)getChildren("SearchRecursion")[0];
+        matching = (SearchConstraint)getChildren("SearchMatch")[0]; //$NON-NLS-1$
+        insight = (SearchConstraint)getChildren("SearchRecursion")[0]; //$NON-NLS-1$
     }
 
     public XModelObject[] execute() {
         prepare();
         ArrayList<XModelObject> list = new ArrayList<XModelObject>();
-        String[] roots = XModelObjectUtil.asStringArray(getAttributeValue("root"));
+        String[] roots = XModelObjectUtil.asStringArray(getAttributeValue("root")); //$NON-NLS-1$
         ArrayList<XModelObject> os = new ArrayList<XModelObject>();
         if(roots.length == 0) {
             os.add(getModel().getRoot());
@@ -50,10 +50,10 @@ public class SearchCommandImpl extends SearchConstraintImpl implements SearchCom
     }
 
     public void validate() {
-        String rootpath = getAttributeValue("root");
-        if(rootpath.length() == 0) throw new IllegalStateException("Attribute 'root' of search command must be set.");
+        String rootpath = getAttributeValue("root"); //$NON-NLS-1$
+        if(rootpath.length() == 0) throw new IllegalStateException("Attribute 'root' of search command must be set."); //$NON-NLS-1$
         XModelObject root = getModel().getByPath(rootpath);
-        if(root == null) throw new IllegalStateException("Root of search command is not found in model.");
+        if(root == null) throw new IllegalStateException("Root of search command is not found in model."); //$NON-NLS-1$
     }
 
     protected void execute(XModelObject o, ArrayList<XModelObject> list) {

@@ -48,12 +48,12 @@ public class AccessibleJava implements ISimpleTree {
     }
 
     private String getJavaLib() {
-        String rt = System.getProperty("java.home") + "/lib/rt.jar";
+        String rt = System.getProperty("java.home") + "/lib/rt.jar"; //$NON-NLS-1$ //$NON-NLS-2$
         return rt;
     }
 
     protected String extension() {
-        return ".class";
+        return ".class"; //$NON-NLS-1$
     }
 
     private void load() {
@@ -75,7 +75,7 @@ public class AccessibleJava implements ISimpleTree {
             try { 
             	addJar(new JarFile(t)); 
             } catch (IOException e) {
-            	ModelPlugin.getPluginLog().logError("addJars:" + e.getClass().getName());
+            	ModelPlugin.getPluginLog().logError("addJars:" + e.getClass().getName()); //$NON-NLS-1$
             }
         }
     }
@@ -98,14 +98,14 @@ public class AccessibleJava implements ISimpleTree {
         try { 
         	jar.close(); 
         } catch (IOException exc) {
-        	ModelPlugin.getPluginLog().logError("AccessibleJava:Cannot close jar.");
+        	ModelPlugin.getPluginLog().logError("AccessibleJava:Cannot close jar."); //$NON-NLS-1$
         }
     }
 
-    private static String[] serviceroots = {"CVS/", "META-INF/", ".svn"};
+    private static String[] serviceroots = {"CVS/", "META-INF/", ".svn"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     private void register(String path, Map<String,SortedSet<String>> map) {
-        if(path == null || path.indexOf("$") >= 0 || path.equals(XModelObjectConstants.SEPARATOR)) return;
+        if(path == null || path.indexOf("$") >= 0 || path.equals(XModelObjectConstants.SEPARATOR)) return; //$NON-NLS-1$
         for (int j = 0; j < serviceroots.length; j++)
           if(path.indexOf(serviceroots[j]) >= 0) return;
         boolean isPackage = path.endsWith(XModelObjectConstants.SEPARATOR);
@@ -128,7 +128,7 @@ public class AccessibleJava implements ISimpleTree {
             parent = path.substring(0, i);
             name = path.substring(i + 1);            
         } else {
-            parent = "%root%";
+            parent = "%root%"; //$NON-NLS-1$
             name = path;
         }
         if(!isJavaName(name)) return;
@@ -137,7 +137,7 @@ public class AccessibleJava implements ISimpleTree {
             list = new TreeSet<String>();
             map.put(parent, list);
         }
-        String pname = name + ".";
+        String pname = name + "."; //$NON-NLS-1$
         if(list.contains(name) || list.contains(pname)) return;
         list.add((isPackage) ? pname : name);
         if(i > 0) register0(parent, true, map);
@@ -193,10 +193,10 @@ public class AccessibleJava implements ISimpleTree {
     private void addJarManifest(JarFile jf) throws IOException {
         Manifest m = jf.getManifest();
         Attributes as = m.getMainAttributes();
-        String classpath = as.getValue("Class-Path");
+        String classpath = as.getValue("Class-Path"); //$NON-NLS-1$
         if(classpath == null) return;
         String r = new File(jf.getName()).getParentFile().getCanonicalPath() + File.separatorChar;
-        StringTokenizer st = new StringTokenizer(classpath, " ");
+        StringTokenizer st = new StringTokenizer(classpath, " "); //$NON-NLS-1$
         StringBuffer sb = new StringBuffer();
         while(st.hasMoreElements()) {
             String t = st.nextToken().trim();

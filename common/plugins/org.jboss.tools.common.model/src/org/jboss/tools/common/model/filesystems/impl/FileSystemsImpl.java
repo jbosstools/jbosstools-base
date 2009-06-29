@@ -39,9 +39,9 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 
     public String getPresentationString() {
     	IProject p = EclipseResourceUtil.getProject(this);
-		String app = getAttributeValue("application name");
+		String app = getAttributeValue("application name"); //$NON-NLS-1$
     	if(p != null && !app.equals(p.getName())) {
-    		app = app.length() > 0 ? p.getName() + " (" + app + ")" : p.getName();
+    		app = app.length() > 0 ? p.getName() + " (" + app + ")" : p.getName(); //$NON-NLS-1$ //$NON-NLS-2$
     	}
         return (app != null && app.length() > 0) ? app : super.getPresentationString();
     }
@@ -83,7 +83,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
         }
 
 		public String getId() {
-			return "Model:update overlapped: " + XModelConstants.getWorkspace(FileSystemsImpl.this.getModel());
+			return "Model:update overlapped: " + XModelConstants.getWorkspace(FileSystemsImpl.this.getModel()); //$NON-NLS-1$
 		}
     }
 
@@ -146,15 +146,15 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
             String path = (String)it.next();
             if(_overlapped.contains(path)) {
 				XModelObject c = getChildByPath(path);
-				if(c == null || XModelObjectConstants.TRUE.equals(c.get("overlapped"))) {
+				if(c == null || XModelObjectConstants.TRUE.equals(c.get("overlapped"))) { //$NON-NLS-1$
 					_overlapped.remove(path);
 				}
             } else {
                 it.remove();
                 XModelObject c = getChildByPath(path);
                 if(c == null) continue;
-                c.set("overlapped", "");
-                c.set("overlappedSystem", "");
+                c.set("overlapped", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                c.set("overlappedSystem", ""); //$NON-NLS-1$ //$NON-NLS-2$
                 c = c.getParent();
                 if(c != null) fire.add(c);
             }
@@ -165,8 +165,8 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
             overlapped.add(path);
             XModelObject c = getChildByPath(path);
             if(c == null) continue;
-            c.set("overlapped", XModelObjectConstants.TRUE);
-            c.set("overlappedSystem", "" + overlappedSystems.get(path));
+            c.set("overlapped", XModelObjectConstants.TRUE); //$NON-NLS-1$
+            c.set("overlappedSystem", "" + overlappedSystems.get(path)); //$NON-NLS-1$ //$NON-NLS-2$
             c = c.getParent();
             if(c != null) fire.add(c);
         }
@@ -181,13 +181,13 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
     }
 
     public String get(String name) {
-        if("APPLICATION_NAME".equals(name) || "application-name".equals(name)) {
+        if("APPLICATION_NAME".equals(name) || "application-name".equals(name)) { //$NON-NLS-1$ //$NON-NLS-2$
             String s = super.get(name);
             if(s == null || s.length() == 0) {
-            	s = "";
+            	s = ""; //$NON-NLS-1$
             	// project name ?
             }
-            return (s == null) ? "" : s;
+            return (s == null) ? "" : s; //$NON-NLS-1$
         } else {
             return super.get(name);
         }
@@ -251,7 +251,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 	}
 
 	class UpdateRunnable implements XJob.XRunnable {
-		String id = "Update File Systems - " + XModelConstants.getWorkspace(getModel());
+		String id = "Update File Systems - " + XModelConstants.getWorkspace(getModel()); //$NON-NLS-1$
 		int request = 0;
 		int usage = 0;
 

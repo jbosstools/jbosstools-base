@@ -16,26 +16,26 @@ import org.jboss.tools.common.model.XModelObjectConstants;
  * @author Viacheslav Kabanovich
  */
 public interface XMLStoreConstants {
-	public String TAG_VALUE_INFO = "value-info";
-	public String TAG_ID = "id";
-	public String TAG_ENTRY = "entry";
+	public String TAG_VALUE_INFO = "value-info"; //$NON-NLS-1$
+	public String TAG_ID = "id"; //$NON-NLS-1$
+	public String TAG_ENTRY = "entry"; //$NON-NLS-1$
 
-	public String CLS_XML = "xml";
-	public String CLS_MODEL_OBJECT = "model-object";
-	public String CLS_FIELD = "field";
-	public String CLS_STRING = "string";
-	public String CLS_TYPE = "type";
-	public String CLS_METHOD = "method";
+	public String CLS_XML = "xml"; //$NON-NLS-1$
+	public String CLS_MODEL_OBJECT = "model-object"; //$NON-NLS-1$
+	public String CLS_FIELD = "field"; //$NON-NLS-1$
+	public String CLS_STRING = "string"; //$NON-NLS-1$
+	public String CLS_TYPE = "type"; //$NON-NLS-1$
+	public String CLS_METHOD = "method"; //$NON-NLS-1$
 	
 
-	public String ATTR_VALUE = "value";
-	public String ATTR_PATH = "path";
-	public String ATTR_CLASS = "class";
+	public String ATTR_VALUE = "value"; //$NON-NLS-1$
+	public String ATTR_PATH = "path"; //$NON-NLS-1$
+	public String ATTR_CLASS = "class"; //$NON-NLS-1$
 	public String ATTR_NAME = XModelObjectConstants.ATTR_NAME;
-	public String ATTR_PROJECT = "project";
-	public String ATTR_TYPE = "type";
-	public String ATTR_PARAMS = "params";
+	public String ATTR_PROJECT = "project"; //$NON-NLS-1$
+	public String ATTR_TYPE = "type"; //$NON-NLS-1$
+	public String ATTR_PARAMS = "params"; //$NON-NLS-1$
 
-	public String KEY_MODEL_OBJECT = "model-object";
+	public String KEY_MODEL_OBJECT = "model-object"; //$NON-NLS-1$
 	
 }

@@ -23,7 +23,7 @@ public class MetaValidatorHandler extends AbstractHandler {
     }
 
     public boolean isEnabled(XModelObject object) {
-        return (object != null && "MetaRoot".equals(object.getModelEntity().getName()));
+        return (object != null && "MetaRoot".equals(object.getModelEntity().getName())); //$NON-NLS-1$
     }
 
 }

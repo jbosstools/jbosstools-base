@@ -24,8 +24,8 @@ public class CutHandler extends AbstractHandler {
 
     private void load(XModelObject object) {
         if(copy != null || object == null) return;
-        copy = object.getModelEntity().getActionList().getAction("CopyActions.Copy");
-        delete = object.getModelEntity().getActionList().getAction("DeleteActions.Delete");
+        copy = object.getModelEntity().getActionList().getAction("CopyActions.Copy"); //$NON-NLS-1$
+        delete = object.getModelEntity().getActionList().getAction("DeleteActions.Delete"); //$NON-NLS-1$
         isDefault = (copy == null || delete == null);
         if(copy == null) copy = new CopyHandler();
         if(delete == null) delete = new DefaultRemoveHandler();

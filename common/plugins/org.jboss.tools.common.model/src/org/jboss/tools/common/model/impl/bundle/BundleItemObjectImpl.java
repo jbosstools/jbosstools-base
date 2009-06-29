@@ -16,7 +16,7 @@ public class BundleItemObjectImpl extends RegularObjectImpl {
 	private static final long serialVersionUID = 1L;
 
 	public String name() {
-		return "" + getAttributeValue("language") + ":" + getAttributeValue("country");
+		return "" + getAttributeValue("language") + ":" + getAttributeValue("country"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 }

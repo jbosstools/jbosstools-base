@@ -13,20 +13,20 @@ package org.jboss.tools.common.model;
 import java.util.*;
 
 public class XModelConstants {
-	public static String HOME = "product.home";
+	public static String HOME = "product.home"; //$NON-NLS-1$
 
-	public static String WORKSPACE = "workspace.home";
-	public static String WORKSPACE_REF = "%" + WORKSPACE + "%";
+	public static String WORKSPACE = "workspace.home"; //$NON-NLS-1$
+	public static String WORKSPACE_REF = "%" + WORKSPACE + "%"; //$NON-NLS-1$ //$NON-NLS-2$
 
-	public static String WORKSPACE_OLD = "redhat.workspace";
-	public static String WORKSPACE_OLD_REF = "%" + WORKSPACE_OLD + "%";
+	public static String WORKSPACE_OLD = "redhat.workspace"; //$NON-NLS-1$
+	public static String WORKSPACE_OLD_REF = "%" + WORKSPACE_OLD + "%"; //$NON-NLS-1$ //$NON-NLS-2$
 
-    public static String MODEL_VERSION = "version";
+    public static String MODEL_VERSION = "version"; //$NON-NLS-1$
     
-    public static String XMODEL_ENTITY_ATTR = "model-entity";
-    public static String XMODEL_ENTITY_ATTR_OLD = "ENTITY";
+    public static String XMODEL_ENTITY_ATTR = "model-entity"; //$NON-NLS-1$
+    public static String XMODEL_ENTITY_ATTR_OLD = "ENTITY"; //$NON-NLS-1$
     
-    public static String AUTOLOAD = "autoload";
+    public static String AUTOLOAD = "autoload"; //$NON-NLS-1$
 
     private XModelConstants() {}
 

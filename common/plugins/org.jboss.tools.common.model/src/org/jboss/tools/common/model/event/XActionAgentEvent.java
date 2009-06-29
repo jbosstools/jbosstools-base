@@ -11,10 +11,10 @@
 package org.jboss.tools.common.model.event;
 
 public class XActionAgentEvent {
-    public static final String BASE = "Base";
-    public static final String DEFAULT = BASE + ".Out";
-    public static final String COMPILATION = BASE + ".Compilation";
-    public static final String SOURCE_VIEW = "Source View";
+    public static final String BASE = "Base"; //$NON-NLS-1$
+    public static final String DEFAULT = BASE + ".Out"; //$NON-NLS-1$
+    public static final String COMPILATION = BASE + ".Compilation"; //$NON-NLS-1$
+    public static final String SOURCE_VIEW = "Source View"; //$NON-NLS-1$
 
     private String id = DEFAULT;
 

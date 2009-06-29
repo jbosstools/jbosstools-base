@@ -15,7 +15,7 @@ public class TargetHolder {
 	XModelObject target;
 	String path;
 	IResource folder;
-	String addPath = "";
+	String addPath = ""; //$NON-NLS-1$
 	
 	public void setAction(XAction action) {
 		this.action = action;
@@ -24,12 +24,12 @@ public class TargetHolder {
 	public void revalidate(String newPath) {
 		if(newPath == path || (newPath != null && newPath.equals(path))) return;
 		path = newPath;
-		addPath = "";
+		addPath = ""; //$NON-NLS-1$
 		folder = (path == null) ? null : ModelPlugin.getWorkspace().getRoot().findMember(path);
 		target = EclipseResourceUtil.getObjectByResource(folder);
 		if(path != null && (folder == null || !folder.exists())) {
 			String p = path.replace('\\', '/');
-			String ap = "";
+			String ap = ""; //$NON-NLS-1$
 			while(true) {
 				int q = p.lastIndexOf('/');
 				if(q < 0) break;
@@ -53,11 +53,11 @@ public class TargetHolder {
 
 	public void saveLastPath() {
 		if(path == null || folder == null) return;
-		QualifiedName n = new QualifiedName("", action.getName() + "_lastPath");
+		QualifiedName n = new QualifiedName("", action.getName() + "_lastPath"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			folder.getProject().setPersistentProperty(n, path);
 		} catch (CoreException e) {
-			ModelPlugin.getPluginLog().logError("CreateFileSuppport:TargetHolder:saveLastPath:" + e.getMessage());
+			ModelPlugin.getPluginLog().logError("CreateFileSuppport:TargetHolder:saveLastPath:" + e.getMessage()); //$NON-NLS-1$
 		}
 	}
 	

@@ -18,15 +18,15 @@ import org.w3c.dom.*;
 
 public class XAttributeConstraintJavaName extends XAttributeConstraintProperties {
 
-    private static final String[] keywords = {"break", "case",
-        "catch", "class", "const", "continue", "default",
-        "else", "extends", XModelObjectConstants.FALSE, "final", "finally", "for", "if",
-        "implements", "import", "instanceof", "interface", "new",
-        "null", "package", "protected", "private", "public", "return",
-        "static", "switch", "synchronized", "throw", "throws", "transient",
-        XModelObjectConstants.TRUE, "try", "void", "volatile", "while"};
+    private static final String[] keywords = {"break", "case", //$NON-NLS-1$ //$NON-NLS-2$
+        "catch", "class", "const", "continue", "default", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        "else", "extends", XModelObjectConstants.FALSE, "final", "finally", "for", "if", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+        "implements", "import", "instanceof", "interface", "new", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        "null", "package", "protected", "private", "public", "return", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+        "static", "switch", "synchronized", "throw", "throws", "transient", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+        XModelObjectConstants.TRUE, "try", "void", "volatile", "while"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     private static final String[] primitives = {
-    	"boolean", "byte", "char", "double", "float", "int", "long", "short"
+    	"boolean", "byte", "char", "double", "float", "int", "long", "short" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
     };
 
     private static final Set<String> keytable = new HashSet<String>();
@@ -42,9 +42,9 @@ public class XAttributeConstraintJavaName extends XAttributeConstraintProperties
 
     public void load(Element element) {
         super.load(element);
-        String k = p.getProperty("keywords");
+        String k = p.getProperty("keywords"); //$NON-NLS-1$
         if(k == null) return;
-        StringTokenizer st = new StringTokenizer(k, ";,");
+        StringTokenizer st = new StringTokenizer(k, ";,"); //$NON-NLS-1$
         custom = new HashSet<String>();
         while(st.hasMoreTokens()) custom.add(st.nextToken());
     }
@@ -55,7 +55,7 @@ public class XAttributeConstraintJavaName extends XAttributeConstraintProperties
         if(value == null) return false;
         if(value.length() == 0) return true;
         if(!Character.isJavaIdentifierStart(value.charAt(0))) return false;
-        if(keytable.contains(value) && !XModelObjectConstants.TRUE.equals(p.getProperty("acceptKeyWord"))) return false;
+        if(keytable.contains(value) && !XModelObjectConstants.TRUE.equals(p.getProperty("acceptKeyWord"))) return false; //$NON-NLS-1$
         if(!allowPrimitiveTypes && primitiveSet.contains(value)) return false;
         if(custom != null && custom.contains(value)) return false;
         for (int i = 1; i < value.length(); i++) {
@@ -75,7 +75,7 @@ public class XAttributeConstraintJavaName extends XAttributeConstraintProperties
 
     public String getCorrectedValue(String value) {
         if(value == null || value.length() == 0) return null;
-        if(XModelObjectConstants.TRUE.equals(getProperties().getProperty("acceptIncorrect"))) return value;
+        if(XModelObjectConstants.TRUE.equals(getProperties().getProperty("acceptIncorrect"))) return value; //$NON-NLS-1$
         StringBuffer sb = new StringBuffer();
         boolean first = true;
         for (int i = 0; i < value.length(); i++) {

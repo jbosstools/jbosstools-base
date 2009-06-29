@@ -14,7 +14,7 @@ import org.eclipse.swt.graphics.Image;
 
 public class XUndoItem {
     private Image[] icons = null;
-    private String description = "";
+    private String description = ""; //$NON-NLS-1$
 
     public XUndoItem(String description) {
         this.description = description;

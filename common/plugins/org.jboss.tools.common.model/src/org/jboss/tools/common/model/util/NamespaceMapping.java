@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
 import org.jboss.tools.common.model.XModelObject;
 
 public class NamespaceMapping {
-	public static String ATTR_NAMESPACE_MAPPING = "namespaceMapping";
+	public static String ATTR_NAMESPACE_MAPPING = "namespaceMapping"; //$NON-NLS-1$
 
 	Map<String, String> defaultToActual = new HashMap<String, String>();
 	Map<String, String> actualToDefault = new HashMap<String, String>();
@@ -74,7 +74,7 @@ public class NamespaceMapping {
 		if(value != null) return value;
 		StringBuffer res = new StringBuffer();
 		if(name.indexOf('|') >= 0) {
-			StringTokenizer st = new StringTokenizer(name, "|");
+			StringTokenizer st = new StringTokenizer(name, "|"); //$NON-NLS-1$
 			int i = 0;
 			while(st.hasMoreTokens()) {
 				String t = st.nextToken();
@@ -84,7 +84,7 @@ public class NamespaceMapping {
 				i++;
 			}
 		} else if(name.indexOf('.') >= 0) {
-			StringTokenizer st = new StringTokenizer(name, ".");
+			StringTokenizer st = new StringTokenizer(name, "."); //$NON-NLS-1$
 			int i = 0;
 			while(st.hasMoreTokens()) {
 				String t = st.nextToken();
@@ -129,11 +129,11 @@ public class NamespaceMapping {
 	public static NamespaceMapping load(String s) {
 		if(s == null || s.length() == 0) return null;
 		NamespaceMapping m = new NamespaceMapping();
-		StringTokenizer st = new StringTokenizer(s, " ");
+		StringTokenizer st = new StringTokenizer(s, " "); //$NON-NLS-1$
 		while(st.hasMoreTokens()) {
 			String d = st.nextToken();
 			String a = st.hasMoreTokens() ? st.nextToken() : d;
-			String u = st.hasMoreTokens() ? st.nextToken() : "http://";
+			String u = st.hasMoreTokens() ? st.nextToken() : "http://"; //$NON-NLS-1$
 			m.addNamespace(d, a, u);
 		}		
 		return m;

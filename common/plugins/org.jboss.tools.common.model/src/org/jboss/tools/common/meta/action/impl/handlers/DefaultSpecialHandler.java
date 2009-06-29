@@ -30,7 +30,7 @@ public class DefaultSpecialHandler extends AbstractHandler {
         try {
             return (SpecialWizardSupport)ModelFeatureFactory.getInstance().createFeatureInstance(id);
         } catch (ClassCastException e) {
-			ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load special wizard support " + id + ".",e));
+			ModelPlugin.getDefault().getLog().log(new Status(Status.ERROR, ModelPlugin.PLUGIN_ID, Status.OK, "Model warning: Cannot load special wizard support " + id + ".",e)); //$NON-NLS-1$ //$NON-NLS-2$
             return null;
         }
     }
@@ -38,8 +38,8 @@ public class DefaultSpecialHandler extends AbstractHandler {
     private void validate() {
         if(validated) return;
         validated = true;
-        wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard");
-        support = createSpecialWizardSupport(action.getProperty("support"));
+        wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizards.special.DefaultSpecialWizard"); //$NON-NLS-1$
+        support = createSpecialWizardSupport(action.getProperty("support")); //$NON-NLS-1$
         if(support != null) support.setAction(action);
     }
 

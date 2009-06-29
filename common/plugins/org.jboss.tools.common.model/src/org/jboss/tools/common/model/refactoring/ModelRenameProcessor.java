@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.refactoring;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jdt.internal.corext.refactoring.tagging.*;
@@ -51,7 +52,7 @@ public abstract class ModelRenameProcessor extends RenameProcessor implements IN
 	}
 	
 	public String getProcessorName() {
-		String message = "Rename " + getCurrentElementName() + " to " + getNewElementName();
+		String message = MessageFormat.format("Rename {0} to {1}", getCurrentElementName(), getNewElementName());
 		return message;
 	}
 	
@@ -98,7 +99,7 @@ public abstract class ModelRenameProcessor extends RenameProcessor implements IN
 			return RefactoringStatus.createFatalErrorStatus("Object is removed from model."); 
 						
 		if (c.getChildByPath(newName) != null)
-			return RefactoringStatus.createFatalErrorStatus("Object " + newName + " already exists."); 
+			return RefactoringStatus.createFatalErrorStatus(MessageFormat.format("Object {0} already exists.", newName)); 
 			
 		return RefactoringStatus.create(Status.OK_STATUS);
 	}

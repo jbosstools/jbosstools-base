@@ -12,7 +12,6 @@ package org.jboss.tools.common.model.icons.impl;
 
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class EngineIcon implements ImageComponent {
 
@@ -25,8 +24,8 @@ public class EngineIcon implements ImageComponent {
 
     public Image getImage(XModelObject obj) {
             boolean b = true;
-            String s = (b) ? "engine.running" : "engine.stopped";
-            return obj.getModelEntity().getMetaModel().getIconList().getImage(s, "default.unknown");
+            String s = (b) ? "engine.running" : "engine.stopped"; //$NON-NLS-1$ //$NON-NLS-2$
+            return obj.getModelEntity().getMetaModel().getIconList().getImage(s, "default.unknown"); //$NON-NLS-1$
     }
 
 }

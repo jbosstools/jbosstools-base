@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action.impl.handlers;
 
+import java.text.MessageFormat;
 import java.util.Properties;
 
 import org.eclipse.osgi.util.NLS;
@@ -47,12 +48,12 @@ public class DefaultCreateHandler extends AbstractHandler {
         c = modifyCreatedObject(c);
         addCreatedObject(object, c, prop);
 		checkPosition(object, c, prop);
-		if(prop != null) prop.put("created", c);
+		if(prop != null) prop.put("created", c); //$NON-NLS-1$
     }
     
     private void checkPosition(XModelObject o, XModelObject c, Properties prop) {
-    	if(prop == null || !(prop.get("insertAfter") instanceof Integer)) return;
-    	int i = ((Integer)prop.get("insertAfter")).intValue();
+    	if(prop == null || !(prop.get("insertAfter") instanceof Integer)) return; //$NON-NLS-1$
+    	int i = ((Integer)prop.get("insertAfter")).intValue(); //$NON-NLS-1$
     	if(i < 0) return;
     	++i;
     	RegularObjectImpl impl = (RegularObjectImpl)o;
@@ -85,7 +86,7 @@ public class DefaultCreateHandler extends AbstractHandler {
 		XAttribute a = ad.getAttribute();
 		String pn = a.getName();
 		String pv = ad.getValue();
-		if(a.isTrimmable()) pv = (pv == null) ? "" : pv.trim();
+		if(a.isTrimmable()) pv = (pv == null) ? "" : pv.trim(); //$NON-NLS-1$
 		if((pv == null || pv.length() == 0) && ad.getMandatoryFlag())
 		  throw new RuntimeException(getReguiredMessage(pn));
 		XAttributeConstraint c = ad.getAttribute().getConstraint();
@@ -104,8 +105,8 @@ public class DefaultCreateHandler extends AbstractHandler {
 			XAttribute a = ads[i].getAttribute();
 			String pn = a.getName();
 			String pv = ads[i].getValue();
-			if(a.isTrimmable()) pv = (pv == null) ? "" : pv.trim();
-			if(pv == null) pv = "";
+			if(a.isTrimmable()) pv = (pv == null) ? "" : pv.trim(); //$NON-NLS-1$
+			if(pv == null) pv = ""; //$NON-NLS-1$
 			p.setProperty(pn, pv);
 		}
 		return p;
@@ -114,7 +115,7 @@ public class DefaultCreateHandler extends AbstractHandler {
     public static String validateAttribute(XAttributeData ad, String pv) {
 		XAttribute a = ad.getAttribute();
 		String vis = WizardKeys.getAttributeDisplayName(ad, true);
-		if(a.isTrimmable()) pv = (pv == null) ? "" : pv.trim();
+		if(a.isTrimmable()) pv = (pv == null) ? "" : pv.trim(); //$NON-NLS-1$
 		if((pv == null || pv.length() == 0) && ad.getMandatoryFlag()) {
   		    return NLS.bind(ModelMessages.ATTRIBUTE_REQUIRED, new Object[]{vis});
 		}
@@ -151,14 +152,14 @@ public class DefaultCreateHandler extends AbstractHandler {
 		XModelObject e = parent.getChildByPath(pathpart);
 		if(e != null && e != parent && e != parent.getParent()) {
 			if(child.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) {
-				if(!forceUnique || !XModelObjectConstants.TRUE.equals(child.getModelEntity().getProperty("unique"))) {
+				if(!forceUnique || !XModelObjectConstants.TRUE.equals(child.getModelEntity().getProperty("unique"))) { //$NON-NLS-1$
 					return null;
 				}
 			}
 			String tp = title(parent, true), tc = title(child, false), te = title(e, false);
 			String mes = (tc.equals(te))
 						 ? NLS.bind(ModelMessages.CONTAINS_OBJECT_1, new Object[]{tp, tc})
-						 : NLS.bind(ModelMessages.CONTAINS_OBJECT_2, new Object[]{tp, te, "\n", tc});
+						 : NLS.bind(ModelMessages.CONTAINS_OBJECT_2, new Object[]{tp, te, "\n", tc}); //$NON-NLS-1$
 			return mes;
 		}
 		return null;
@@ -183,10 +184,11 @@ public class DefaultCreateHandler extends AbstractHandler {
         int cur = parent.getChildren(ce).length;
         if(cur >= max) {
 			ServiceDialog d = parent.getModel().getService();
-			d.showDialog(ModelMessages.WARNING, "The limit of " + max + " children is achieved.", new String[]{"OK"}, null, ServiceDialog.MESSAGE);
-            mes = title(parent, true) + " can contain only " + max +
-                         ((max == 1) ? " child " : " children ") +
-                         "with entity " + ce + ".";
+			d.showDialog(ModelMessages.WARNING, MessageFormat.format("The limit of {0} children is achieved.",
+					max), new String[]{"OK"}, null, ServiceDialog.MESSAGE);
+			// i18n: assumes germanic plurals
+            mes = MessageFormat.format("{0} can contain only {1}{2}with entity {3}.",
+					title(parent, true), max, ((max == 1) ? " child " : " children "), ce);
             throw new ActionDeclinedException(mes);
         }
         boolean b = parent.addChild(child);
@@ -194,7 +196,7 @@ public class DefaultCreateHandler extends AbstractHandler {
 			int k = 1;
 			String pp = child.getPathPart();
 			while(parent.getChildByPath(pp) != null) {
-				child.setAttributeValue(XModelObjectLoaderUtil.ATTR_ID_NAME, "" + k);
+				child.setAttributeValue(XModelObjectLoaderUtil.ATTR_ID_NAME, "" + k); //$NON-NLS-1$
 				String ppn = child.getPathPart();
 				if(ppn.equals(pp)) throw new RuntimeException(ModelMessages.OBJECT_ADDING_FAILURE);
 				pp = ppn;
@@ -229,7 +231,7 @@ public class DefaultCreateHandler extends AbstractHandler {
     public static String title(XModelObject o, boolean capitalize) {
     	String elementType = o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE);
     	String objectTitle = o.getModelEntity().getRenderer().getTitle(o);
-        String s = elementType + " " + objectTitle;
+        String s = elementType + " " + objectTitle; //$NON-NLS-1$
     	if(objectTitle != null && objectTitle.equalsIgnoreCase(elementType)) {
     		s = objectTitle;
     	}
@@ -239,10 +241,10 @@ public class DefaultCreateHandler extends AbstractHandler {
     
     public static int extractWhereSelect(Properties p) {
     	if(p == null) return FindObjectHelper.EVERY_WHERE;
-    	String component = p.getProperty("actionSourceGUIComponentID");
-    	if("navigator".equals(component)) return FindObjectHelper.IN_NAVIGATOR_AND_IN_EDITOR_IF_OPEN;
-    	if("editor".equals(component)) return FindObjectHelper.IN_EDITOR_ONLY;
-    	if("dialog".equals(component)) return FindObjectHelper.IN_NAVIGATOR_ONLY;
+    	String component = p.getProperty("actionSourceGUIComponentID"); //$NON-NLS-1$
+    	if("navigator".equals(component)) return FindObjectHelper.IN_NAVIGATOR_AND_IN_EDITOR_IF_OPEN; //$NON-NLS-1$
+    	if("editor".equals(component)) return FindObjectHelper.IN_EDITOR_ONLY; //$NON-NLS-1$
+    	if("dialog".equals(component)) return FindObjectHelper.IN_NAVIGATOR_ONLY; //$NON-NLS-1$
     	return FindObjectHelper.EVERY_WHERE;
     }
 

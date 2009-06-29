@@ -16,7 +16,7 @@ import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 
 public class SaveAllHandler extends AbstractHandler {
-	SpecialWizard saveEditors = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.objecteditor.SaveEditorsSpecialWizard");
+	SpecialWizard saveEditors = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.objecteditor.SaveEditorsSpecialWizard"); //$NON-NLS-1$
     public SaveAllHandler() {}
 
     public void executeHandler(XModelObject object, Properties p) throws XModelException {

@@ -34,7 +34,7 @@ public class DefaultRemoveHandler extends AbstractHandler {
 
     public boolean isEnabled(XModelObject object) {
         if(object == null || !object.isObjectEditable()) return false;
-        if(XModelObjectConstants.YES.equals(object.getAttributeValue("issystem"))) return false;
+        if(XModelObjectConstants.YES.equals(object.getAttributeValue("issystem"))) return false; //$NON-NLS-1$
         if(object.getParent() == null) return false;
         if(isUniqueRequiredChild(object)) return isUniqueRequiredChildSet(object);
         return true;
@@ -68,7 +68,7 @@ public class DefaultRemoveHandler extends AbstractHandler {
     		if(xml == null || xml.length() == 0) continue;
     		String n = as[i].getName();
     		String dv = as[i].getDefaultValue();
-    		if(dv == null) dv = "";
+    		if(dv == null) dv = ""; //$NON-NLS-1$
     		String v = object.getAttributeValue(n);
     		if(!dv.equals(v)) return true;
     	}
@@ -86,7 +86,7 @@ public class DefaultRemoveHandler extends AbstractHandler {
     		if(xml == null || xml.length() == 0) continue;
     		String n = as[i].getName();
     		String v = as[i].getDefaultValue();
-    		if(v == null) v = "";
+    		if(v == null) v = ""; //$NON-NLS-1$
     		object.getModel().changeObjectAttribute(object, n, v);
     	}
     	XModelObject[] cs = object.getChildren();

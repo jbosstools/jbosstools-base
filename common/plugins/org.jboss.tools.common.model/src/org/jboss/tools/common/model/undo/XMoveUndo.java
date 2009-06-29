@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.undo;
 
+import java.text.MessageFormat;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.impl.*;
 
@@ -24,14 +25,14 @@ public class XMoveUndo extends XUndoableImpl {
         path = object.getPath();
         this.from = from;
         this.to = to;
-        op = object.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
+        op = object.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " + //$NON-NLS-1$
              object.getModelEntity().getRenderer().getTitle(object);
         resetDescription();
     }
 
     private void resetDescription() {
-        description = "" + (from + 1) + "-th child of " +
-                      op + " moved to " + (to + 1) + "-th position";
+        description = MessageFormat.format("{0}-th child of {1} moved to {2}-th position",
+				(from + 1), op, (to + 1));
     }
 
     public void doUndo() {
@@ -51,7 +52,7 @@ public class XMoveUndo extends XUndoableImpl {
     }
 
     protected String getActionIcon() {
-        return "images/actions/undo.gif";
+        return "images/actions/undo.gif"; //$NON-NLS-1$
     }
 
     protected boolean merge(XUndoableImpl u) {

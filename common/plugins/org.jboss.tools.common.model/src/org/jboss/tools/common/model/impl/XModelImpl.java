@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.impl;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -138,7 +139,7 @@ public class XModelImpl implements XModel {
 
     public XModelObject getRoot(String name) {
         if(name == null || name.length() == 0) return getRoot();
-        XMapping m = getMetaData().getMapping("Roots");
+        XMapping m = getMetaData().getMapping("Roots"); //$NON-NLS-1$
         String path = m.getValue(name);
         return (path == null || path.length() == 0) ? null :
             getRoot().getChildByPath(path);
@@ -150,7 +151,7 @@ public class XModelImpl implements XModel {
 
     public XModelObject getByPath(String path) {
         if(path == null || path.length() == 0) return getRoot();
-        if(path.startsWith("root:")) {
+        if(path.startsWith("root:")) { //$NON-NLS-1$
             int i = path.indexOf('/');
             if(i < 0) return extraroots.get(path);
             XModelObject r = extraroots.get(path.substring(0, i));
@@ -158,8 +159,8 @@ public class XModelImpl implements XModel {
         }
         if(path.startsWith(XModelObjectConstants.SEPARATOR)) {
             return getByPathInFileSystem(path.substring(1));
-        } else if(path.startsWith("%")) {
-            int i = path.indexOf("%"), j = path.lastIndexOf("%");
+        } else if(path.startsWith("%")) { //$NON-NLS-1$
+            int i = path.indexOf("%"), j = path.lastIndexOf("%"); //$NON-NLS-1$ //$NON-NLS-2$
             if(i == j) return null;
             String rt = path.substring(i + 1, j);
             XModelObject ro = getRoot(rt);
@@ -184,10 +185,10 @@ public class XModelImpl implements XModel {
         if(o == null) o = model.getByPath(path);
         if(o == null || !path.startsWith(XModelObjectConstants.SEPARATOR)) return o;
         XModelObject p = o;
-        while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent();
+        while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$
         if(p == null) return o;
         path = o.getPath().substring(p.getPath().length());
-        if(p.getModelEntity().getName().equals("FileFolder")) {
+        if(p.getModelEntity().getName().equals("FileFolder")) { //$NON-NLS-1$
         	XModelObject fs = findMountedFileSystem(p);
         	if(fs != null && path.length() > 1) {
         		XModelObject c = fs.getChildByPath(path.substring(1));
@@ -287,9 +288,9 @@ public class XModelImpl implements XModel {
 		if(a == null) return null;
 		if(a.isTrimmable() && value != null) value = value.trim();
 		String ov = object.getAttributeValue(attributeName);
-		ov = (ov == null) ? "" : ov;
-		if(value.length() == 0 && XModelObjectConstants.TRUE.equals(a.getProperty("required"))) {
-			String mes = "Attribute " + a.getName() + " is required.";
+		ov = (ov == null) ? "" : ov; //$NON-NLS-1$
+		if(value.length() == 0 && XModelObjectConstants.TRUE.equals(a.getProperty("required"))) { //$NON-NLS-1$
+			String mes = MessageFormat.format("Attribute {0} is required.", a.getName());
 			return mes;
 		}
 		XAttributeConstraint c = a.getConstraint();
@@ -312,10 +313,10 @@ public class XModelImpl implements XModel {
         if(a == null) return;
         if(a.isTrimmable() && value != null) value = value.trim();
         String ov = object.getAttributeValue(attributeName);
-        ov = (ov == null) ? "" : ov;
+        ov = (ov == null) ? "" : ov; //$NON-NLS-1$
         if(!isDifferent(ov, value)) return;
-        if(value.length() == 0 && XModelObjectConstants.TRUE.equals(a.getProperty("required"))) {
-        	String mes = "Attribute " + a.getName() + " is required.";
+        if(value.length() == 0 && XModelObjectConstants.TRUE.equals(a.getProperty("required"))) { //$NON-NLS-1$
+        	String mes = MessageFormat.format("Attribute {0} is required.", a.getName());
         	service.showDialog("Error",
                     mes, new String[]{"OK"}, null, ServiceDialog.ERROR);
         	return;
@@ -347,7 +348,7 @@ public class XModelImpl implements XModel {
             }
         }
         String nv = object.setAttributeValue(attributeName, value);
-        nv = (nv == null) ? "" : nv;
+        nv = (nv == null) ? "" : nv; //$NON-NLS-1$
         ent.setDependentValues(object, attributeName);
         XChangeUndo cu = new XChangeUndo(object, attributeName, ov);
         undoer.addUndoable(cu);
@@ -413,13 +414,13 @@ public class XModelImpl implements XModel {
         ////ProjectWatcher
     private void loadWatcher() {
     	if(getProperties().get(XModelObjectConstants.PROJECT) == null) return;
-        XObjectLoader l = (XObjectLoader)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.project.WatcherLoader");
+        XObjectLoader l = (XObjectLoader)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.project.WatcherLoader"); //$NON-NLS-1$
         XModelObject fs = getByPath(FileSystemsHelper.FILE_SYSTEMS);
         if(l != null && fs != null) l.load(fs);
     }
 
     public boolean isDummy() {
-        return "RootDummy".equals(getRoot().getModelEntity().getName());
+        return "RootDummy".equals(getRoot().getModelEntity().getName()); //$NON-NLS-1$
     }
 
     private String reduceURLPath(String p) {
@@ -444,9 +445,9 @@ public class XModelImpl implements XModel {
         XModelObjectImpl r = (XModelObjectImpl)getRoot();
         String project = getProjectName();
         if(project == null) {
-            r.setEntityName_0("RootDummy");
+            r.setEntityName_0("RootDummy"); //$NON-NLS-1$
         } else {
-            r.setAttributeValue("project name", project);
+            r.setAttributeValue("project name", project); //$NON-NLS-1$
             r.setEntityName_0(rootEntity);
         }
     }
@@ -458,19 +459,19 @@ public class XModelImpl implements XModel {
 
     public void save() {
         XModelObject r = getRoot();
-        r.set("isSaveOn", XModelObjectConstants.TRUE);
+        r.set("isSaveOn", XModelObjectConstants.TRUE); //$NON-NLS-1$
         XModelObjectLoaderUtil.getObjectLoader(r).save(r);
-        r.set("isSaveOn", "");
+        r.set("isSaveOn", ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void saveOptions() {
-        XModelObject o = getRoot("XStudio");
+        XModelObject o = getRoot("XStudio"); //$NON-NLS-1$
         if(o != null) XModelObjectLoaderUtil.getObjectLoader(o).save(o);
     }
 
     public void setExtraRoot(XModelObject r) {
         String pathpart = r.getPathPart();
-        if(!pathpart.startsWith("root:")) throw new IllegalArgumentException("Not extra root: " + pathpart);
+        if(!pathpart.startsWith("root:")) throw new IllegalArgumentException("Not extra root: " + pathpart); //$NON-NLS-1$ //$NON-NLS-2$
         extraroots.put(pathpart, r);
     }
 

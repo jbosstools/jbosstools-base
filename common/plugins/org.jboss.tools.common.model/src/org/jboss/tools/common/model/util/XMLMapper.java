@@ -46,7 +46,7 @@ public class XMLMapper {
 	
 	int processElement(Element node, int index) {
 		NodeList n = node.getChildNodes();
-		int start = text.indexOf("<" + node.getNodeName(), index);
+		int start = text.indexOf("<" + node.getNodeName(), index); //$NON-NLS-1$
 		
 		NamedNodeMap as = node.getAttributes();
 		if(as != null) for (int i = 0; i < as.getLength(); i++) {
@@ -70,7 +70,7 @@ public class XMLMapper {
 			Node cn = n.item(i);
 			ciindex = process(cn, ciindex);
 		}
-		String token = "</" + node.getNodeName() + ">";
+		String token = "</" + node.getNodeName() + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 		int end = text.indexOf(token, ciindex) + token.length();
 		put(node, start, end);
 		
@@ -85,8 +85,8 @@ public class XMLMapper {
 	}
 
 	int processCDATA(CharacterData node, int index) {
-		int start = text.indexOf("<![CDATA[", index);
-		int end = text.indexOf("]]>", index) + 3;
+		int start = text.indexOf("<![CDATA[", index); //$NON-NLS-1$
+		int end = text.indexOf("]]>", index) + 3; //$NON-NLS-1$
 		put(node, start, end);
 		return end;
 	}
@@ -97,8 +97,8 @@ public class XMLMapper {
 	}
 
 	int processComment(Comment node, int index) {
-		int start = text.indexOf("<!--", index);
-		int end = text.indexOf("-->", index) + 3;
+		int start = text.indexOf("<!--", index); //$NON-NLS-1$
+		int end = text.indexOf("-->", index) + 3; //$NON-NLS-1$
 		put(node, start, end);
 		return end;
 	}

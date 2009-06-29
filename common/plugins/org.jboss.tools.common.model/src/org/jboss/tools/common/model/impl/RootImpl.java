@@ -21,15 +21,15 @@ public class RootImpl extends OrderedObjectImpl {
     }
 
     public String getLongPath() {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
     public String getPath() {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
     public String getPresentationString() {
-        String s = getAttributeValue("project name");
+        String s = getAttributeValue("project name"); //$NON-NLS-1$
         s = (s == null || s.length() == 0) ? super.getPresentationString() : s;
         if(s == null) s = "Workspace";
         return s;

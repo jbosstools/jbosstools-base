@@ -28,7 +28,7 @@ public class OpenedProjectsImpl extends OrderedObjectImpl {
         if(!reopen) {
             Properties p = new Properties();
             p.setProperty(XModelObjectConstants.ATTR_NAME, name);
-            c = getModel().createModelObject("Workspace", p);
+            c = getModel().createModelObject("Workspace", p); //$NON-NLS-1$
             addChild_0(c);
         }
         int i = getIndexOfChild(c);
@@ -43,7 +43,7 @@ public class OpenedProjectsImpl extends OrderedObjectImpl {
         XModelObject[] os = children.getObjects();
         if(os.length > MAX_PROJECT_COUNT)
           for (int q = MAX_PROJECT_COUNT; q < os.length; q++) os[q].removeFromParent();
-        set("OPEN", XModelObjectConstants.YES);
+        set("OPEN", XModelObjectConstants.YES); //$NON-NLS-1$
     }
 
     public XModelObject getChildByFile(String name) {

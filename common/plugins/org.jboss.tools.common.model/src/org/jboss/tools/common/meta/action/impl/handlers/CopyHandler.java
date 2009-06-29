@@ -24,7 +24,7 @@ public class CopyHandler extends AbstractHandler {
 	static Transfer modelTransfer;
 	
 	static {
-		modelTransfer = (Transfer)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.dnd.ModelTransfer");
+		modelTransfer = (Transfer)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.dnd.ModelTransfer"); //$NON-NLS-1$
 	}
 
     public CopyHandler() {}
@@ -32,7 +32,7 @@ public class CopyHandler extends AbstractHandler {
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
         object.getModel().getModelBuffer().clear();
         object.getModel().getModelBuffer().addSource(object);
-        if(p == null || !XModelObjectConstants.TRUE.equals(p.getProperty("isDrag"))) {
+        if(p == null || !XModelObjectConstants.TRUE.equals(p.getProperty("isDrag"))) { //$NON-NLS-1$
         	setClipboard(object.getModel());
         }
     }
@@ -50,7 +50,7 @@ public class CopyHandler extends AbstractHandler {
         XModelBuffer buffer = object.getModel().getModelBuffer();
         buffer.clear();
         for (int i = 0; i < objects.length; i++) buffer.addSource(objects[i]);
-        if(p == null || !XModelObjectConstants.TRUE.equals(p.getProperty("isDrag"))) {
+        if(p == null || !XModelObjectConstants.TRUE.equals(p.getProperty("isDrag"))) { //$NON-NLS-1$
         	setClipboard(object.getModel());
         }
     }
@@ -75,7 +75,7 @@ public class CopyHandler extends AbstractHandler {
             if(resource instanceof IFile) {
             	files.add(resource.getLocation().toOSString());
             }
-            paths.add("" + o.getPath());
+            paths.add("" + o.getPath()); //$NON-NLS-1$
        }
 
        Clipboard c = new Clipboard(Display.getCurrent());

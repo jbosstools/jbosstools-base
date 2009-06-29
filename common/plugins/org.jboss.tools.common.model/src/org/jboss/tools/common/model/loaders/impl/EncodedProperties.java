@@ -18,7 +18,7 @@ public class EncodedProperties extends Properties {
     /**
      * V.K.
      */
-    private String encoding = "8859_1";
+    private String encoding = "8859_1"; //$NON-NLS-1$
 
     /**
      * Creates an empty property list with no default values.
@@ -107,7 +107,7 @@ public class EncodedProperties extends Properties {
     }
 
     private String readStream(InputStream is) {
-        StringBuffer sb = new StringBuffer("");
+        StringBuffer sb = new StringBuffer(""); //$NON-NLS-1$
         try {
             byte[] b = new byte[4096];
             while(true) {
@@ -273,7 +273,7 @@ public class EncodedProperties extends Properties {
 			     break;
 			  default:
                               throw new IllegalArgumentException(
-                                           "Malformed \\uxxxx encoding.");
+                                           "Malformed \\uxxxx encoding."); //$NON-NLS-1$
                         }
                      }
                     out[outLen++] = (char)value;
@@ -357,8 +357,8 @@ public class EncodedProperties extends Properties {
         BufferedWriter awriter;
         awriter = new BufferedWriter(new OutputStreamWriter(out, encoding));
         if (comments != null)
-            writeln(awriter, "#" + comments);
-        writeln(awriter, "#" + new Date().toString());
+            writeln(awriter, "#" + comments); //$NON-NLS-1$
+        writeln(awriter, "#" + new Date().toString()); //$NON-NLS-1$
         for (Enumeration e = keys(); e.hasMoreElements();) {
             String key = (String)e.nextElement();
             String val = (String)get(key);
@@ -368,7 +368,7 @@ public class EncodedProperties extends Properties {
 	     * pass false to flag.
 	     */
             val = saveConvert(val, false);
-            writeln(awriter, key + "=" + val);
+            writeln(awriter, key + "=" + val); //$NON-NLS-1$
         }
         awriter.flush();
     }
@@ -392,7 +392,7 @@ public class EncodedProperties extends Properties {
     };
 
     public static void main(String[] args) {
-    	String ps = "p1:v1 \\\n  hh \\\n gg\n\np2=v2\\u0034\\u0055";
+    	String ps = "p1:v1 \\\n  hh \\\n gg\n\np2=v2\\u0034\\u0055"; //$NON-NLS-1$
     	EncodedProperties p = new EncodedProperties();
     	ByteArrayInputStream s = new ByteArrayInputStream(ps.getBytes());
     	try {

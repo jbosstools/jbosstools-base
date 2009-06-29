@@ -45,12 +45,12 @@ public class ReplaceWithNewHandler extends DefaultCreateHandler {
 	
 	public static XModelObject findExistingChild(XModelObject object, XAction action) {
 		XModelObject child = null;
-		String childEntity = action.getProperty("childEntity");
+		String childEntity = action.getProperty("childEntity"); //$NON-NLS-1$
 		if(childEntity != null) {
 			XModelObject[] os = object.getChildren(childEntity);
 			if(os.length > 0) child = os[0];
 		} else {
-			String childName = action.getProperty("child");
+			String childName = action.getProperty("child"); //$NON-NLS-1$
 			child = object.getChildByPath(childName);
 		}
 		return child;

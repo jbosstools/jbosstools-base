@@ -14,14 +14,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
-import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.impl.*;
@@ -29,15 +25,15 @@ import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.util.FileUtil;
 
 public class PropertiesLoader implements XObjectLoader {
-	static String INTERNAL_SEPARATOR = "@";
-	String defaultLineSeparator = "\r\n";
+	static String INTERNAL_SEPARATOR = "@"; //$NON-NLS-1$
+	String defaultLineSeparator = "\r\n"; //$NON-NLS-1$
 
     public PropertiesLoader() {}
 
     public static String getEncoding(XModelObject object) {
     	if(!object.isActive()) {
-    		String encoding = object.get("_encoding_");
-    		return encoding != null && encoding.length() > 0 ? encoding : "8859_1";
+    		String encoding = object.get("_encoding_"); //$NON-NLS-1$
+    		return encoding != null && encoding.length() > 0 ? encoding : "8859_1"; //$NON-NLS-1$
     	}
     	IResource resource = (IResource)object.getAdapter(IResource.class);
     	if(!(resource instanceof IFile)) return null;
@@ -48,7 +44,7 @@ public class PropertiesLoader implements XObjectLoader {
     public void load(XModelObject object) {
         String encoding = getEncoding(object);
 
-        object.setAttributeValue("encoding", encoding);
+        object.setAttributeValue("encoding", encoding); //$NON-NLS-1$
         String body = XModelObjectLoaderUtil.getTempBody(object);
         EncodedProperties properties = new EncodedProperties();
         properties.setEncoding(encoding);
@@ -66,25 +62,25 @@ public class PropertiesLoader implements XObjectLoader {
         	//ignore
         }
 
-        StringTokenizer st = new StringTokenizer(body, "\n\r", true);
+        StringTokenizer st = new StringTokenizer(body, "\n\r", true); //$NON-NLS-1$
         StringBuilder sb = new StringBuilder();
         StringBuilder lineEnd = new StringBuilder();
         int state = 0;
         XModelObject c = null;
         while(st.hasMoreTokens()) {
             String s = st.nextToken();
-            if(s.equals("\r")) {
+            if(s.equals("\r")) { //$NON-NLS-1$
 				if(state != 2) sb.append(s); else lineEnd.append(s);
             	continue;
             } 
-            if(s.equals("\n")) {
+            if(s.equals("\n")) { //$NON-NLS-1$
                 if(state != 2) sb.append(s); else lineEnd.append(s);
                 if(state == 0) {
                 	state = 1;
                 } else if(state == 2) {
                 	state = 0;
-					c.setAttributeValue("dirtyvalue", sb.toString());
-					c.setAttributeValue("line-end", lineEnd.toString());
+					c.setAttributeValue("dirtyvalue", sb.toString()); //$NON-NLS-1$
+					c.setAttributeValue("line-end", lineEnd.toString()); //$NON-NLS-1$
 					sb.setLength(0);
 					lineEnd.setLength(0);
                 } 
@@ -92,7 +88,7 @@ public class PropertiesLoader implements XObjectLoader {
             }
             lineEnd.setLength(0);
 			if(state == 3) {
-				if(!s.endsWith("\\")) {
+				if(!s.endsWith("\\")) { //$NON-NLS-1$
 					sb.append(s);
 					state = 2;
 				} else {
@@ -119,19 +115,19 @@ public class PropertiesLoader implements XObjectLoader {
             String value = properties.getProperty(visualName);
             Properties p = new Properties();
             p.setProperty(XModelObjectConstants.ATTR_NAME, visualName);
-			p.setProperty("dirtyname", dirtyName);
-            p.setProperty("value", value);
+			p.setProperty("dirtyname", dirtyName); //$NON-NLS-1$
+            p.setProperty("value", value); //$NON-NLS-1$
             
-            p.setProperty("name-value-separator", i == s.length() ? " " : "" + s.charAt(i));
-            p.setProperty("comments", comments);
-            p.setProperty("separator", "#"); //obsolete
-            p.setProperty("line-end", "");
+            p.setProperty("name-value-separator", i == s.length() ? " " : "" + s.charAt(i)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            p.setProperty("comments", comments); //$NON-NLS-1$
+            p.setProperty("separator", "#"); //obsolete //$NON-NLS-1$ //$NON-NLS-2$
+            p.setProperty("line-end", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
-            c = object.getModel().createModelObject("Property", p);
+            c = object.getModel().createModelObject("Property", p); //$NON-NLS-1$
             object.addChild(c);
 
-            String dirtyvalue = (i < s.length()) ? s.substring(i + 1) : "";
-            if(s.endsWith("\\")) {
+            String dirtyvalue = (i < s.length()) ? s.substring(i + 1) : ""; //$NON-NLS-1$
+            if(s.endsWith("\\")) { //$NON-NLS-1$
             	state = 3;
             	sb.append(dirtyvalue.substring(0, dirtyvalue.length() - 1)).append(INTERNAL_SEPARATOR);
             } else {
@@ -140,18 +136,18 @@ public class PropertiesLoader implements XObjectLoader {
             }
         }
         if(state == 1 && sb.length() > 0) {
-        	object.set("conclusion", sb.toString()); 
+        	object.set("conclusion", sb.toString());  //$NON-NLS-1$
         }
         if(state == 2) {
-			c.setAttributeValue("dirtyvalue", sb.toString());
-			c.setAttributeValue("line-end", lineEnd.toString());
+			c.setAttributeValue("dirtyvalue", sb.toString()); //$NON-NLS-1$
+			c.setAttributeValue("line-end", lineEnd.toString()); //$NON-NLS-1$
         }
     }
 
     public boolean update(XModelObject object) throws XModelException {
     	String encoding = getEncoding(object);
         XModelObject c = object.copy(0);
-        if(encoding != null) c.set("_encoding_", encoding);
+        if(encoding != null) c.set("_encoding_", encoding); //$NON-NLS-1$
 		XModelObjectLoaderUtil.setTempBody(c, XModelObjectLoaderUtil.getTempBody(object));
         load(c);
         ////EnginesLoader.merge(object, c, false);
@@ -180,48 +176,48 @@ public class PropertiesLoader implements XObjectLoader {
 		StringBuffer sb = new StringBuffer();
 		XModelObject[] cs = object.getChildren();
 		for (int i = 0; i < cs.length; i++) {
-			String name_value_separator = cs[i].getAttributeValue("name-value-separator");
-			if(name_value_separator == null || name_value_separator.length() != 1 || " \t=:".indexOf(name_value_separator) < 0) {
-				name_value_separator = "=";
+			String name_value_separator = cs[i].getAttributeValue("name-value-separator"); //$NON-NLS-1$
+			if(name_value_separator == null || name_value_separator.length() != 1 || " \t=:".indexOf(name_value_separator) < 0) { //$NON-NLS-1$
+				name_value_separator = "="; //$NON-NLS-1$
 			}
-			appendComments(sb, cs[i].get("COMMENTS"), cs[i].get("SEPARATOR"), lineSeparator);
-			if(XModelObjectConstants.NO.equals(cs[i].get("ENABLED"))) sb.append('#');
-			String dirtyname = cs[i].getAttributeValue("dirtyname");
+			appendComments(sb, cs[i].get("COMMENTS"), cs[i].get("SEPARATOR"), lineSeparator); //$NON-NLS-1$ //$NON-NLS-2$
+			if(XModelObjectConstants.NO.equals(cs[i].get("ENABLED"))) sb.append('#'); //$NON-NLS-1$
+			String dirtyname = cs[i].getAttributeValue("dirtyname"); //$NON-NLS-1$
 			String name = EncodedProperties.saveConvert(cs[i].get(XModelObjectConstants.XML_ATTR_NAME), true); // convertName(cs[i].get(XModelObjectConstants.XML_ATTR_NAME));
-			String value = cs[i].get("VALUE");
-			String dirtyvalue = cs[i].getAttributeValue("dirtyvalue");
+			String value = cs[i].get("VALUE"); //$NON-NLS-1$
+			String dirtyvalue = cs[i].getAttributeValue("dirtyvalue"); //$NON-NLS-1$
 			if(value == null || dirtyvalue == null || !value.equals(dirtyvalue.trim())) {
 				value = EncodedProperties.saveConvert(value, false); // convertValue(value);
 			}
 			String resolved = resolveValue(value, dirtyvalue);
 			//preserve one white space after separator
-			if(dirtyvalue != null && dirtyvalue.startsWith(" ") 
-					&& resolved != null && resolved.length() > 0 && !resolved.startsWith(" ")
-					&& !name_value_separator.endsWith(" ")) {
-				resolved = " " + resolved;
+			if(dirtyvalue != null && dirtyvalue.startsWith(" ")  //$NON-NLS-1$
+					&& resolved != null && resolved.length() > 0 && !resolved.startsWith(" ") //$NON-NLS-1$
+					&& !name_value_separator.endsWith(" ")) { //$NON-NLS-1$
+				resolved = " " + resolved; //$NON-NLS-1$
 			}
 			if(dirtyname != null && name.equals(dirtyname.trim())) name = dirtyname;
 			//preserve one white space before separator
-			if(dirtyname != null && dirtyname.endsWith(" ") 
-					&& name != null && name.length() > 0 && !name.endsWith(" ")
-					&& !name_value_separator.startsWith(" ")) {
-				name = name + " ";
+			if(dirtyname != null && dirtyname.endsWith(" ")  //$NON-NLS-1$
+					&& name != null && name.length() > 0 && !name.endsWith(" ") //$NON-NLS-1$
+					&& !name_value_separator.startsWith(" ")) { //$NON-NLS-1$
+				name = name + " "; //$NON-NLS-1$
 			}
 			sb.append(name);
-			if(!" ".equals(name_value_separator) || resolved.length() > 0) {
+			if(!" ".equals(name_value_separator) || resolved.length() > 0) { //$NON-NLS-1$
 				sb.append(name_value_separator);
 			}
 			sb.append(resolved);
-			String ls = cs[i].get("line-end");
+			String ls = cs[i].get("line-end"); //$NON-NLS-1$
 			if(ls.length() > 0) {
-				if(ls.equals("\\r\\n")) ls = defaultLineSeparator;
+				if(ls.equals("\\r\\n")) ls = defaultLineSeparator; //$NON-NLS-1$
 				sb.append(ls);
 			} else if(i < cs.length - 1) {
 				ls = defaultLineSeparator;
 				sb.append(ls);
 			}
 		}
-		String conclusion = object.get("conclusion");
+		String conclusion = object.get("conclusion"); //$NON-NLS-1$
 		if(conclusion != null) sb.append(conclusion);
 		return sb.toString();    	
     }
@@ -233,17 +229,17 @@ public class PropertiesLoader implements XObjectLoader {
     	StringTokenizer st = new StringTokenizer(dirtyvalue, INTERNAL_SEPARATOR, true);
     	StringBuffer cv = new StringBuffer();
     	StringBuffer dv = new StringBuffer();
-    	String rightWhites = "";
+    	String rightWhites = ""; //$NON-NLS-1$
     	while(st.hasMoreTokens()) {
     		String t = st.nextToken();
     		if(t.equals(INTERNAL_SEPARATOR)) {
     			if(rightWhites.length() > 0) {
     				cv.append(rightWhites);
-    				rightWhites = "";
+    				rightWhites = ""; //$NON-NLS-1$
     			}
-				dv.append("\\");
+				dv.append("\\"); //$NON-NLS-1$
     		} else {
-				if(t.startsWith("#")) cv.append("\\");
+				if(t.startsWith("#")) cv.append("\\"); //$NON-NLS-1$ //$NON-NLS-2$
 				String app = t.trim();
 				int off = t.indexOf(app);
 				rightWhites = t.substring(off + app.length());
@@ -304,12 +300,12 @@ public class PropertiesLoader implements XObjectLoader {
 			((XModelImpl)o1.getModel()).fireStructureChanged(o1);
 		}
 
-		String conclusion1 = o1.get("conclusion");
-		if(conclusion1 == null) conclusion1 = "";
-		String conclusion2 = o2.get("conclusion");
-		if(conclusion2 == null) conclusion2 = "";
+		String conclusion1 = o1.get("conclusion"); //$NON-NLS-1$
+		if(conclusion1 == null) conclusion1 = ""; //$NON-NLS-1$
+		String conclusion2 = o2.get("conclusion"); //$NON-NLS-1$
+		if(conclusion2 == null) conclusion2 = ""; //$NON-NLS-1$
 		if(!conclusion1.equals(conclusion2)) {
-			o1.set("conclusion", conclusion2);
+			o1.set("conclusion", conclusion2); //$NON-NLS-1$
 			mod = true;
 		}
 		if(ch || mod) o1.setModified(true);

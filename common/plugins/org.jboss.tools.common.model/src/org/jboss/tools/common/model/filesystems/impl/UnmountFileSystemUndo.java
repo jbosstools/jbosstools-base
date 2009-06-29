@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.filesystems.impl;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
@@ -31,9 +32,10 @@ public class UnmountFileSystemUndo extends XUndoableImpl {
             p.setProperty(pns[i], fs.getAttributeValue(pns[i]));
         }
         String nm = (p.getProperty(pns[1]) != null) ? p.getProperty(pns[1]) :
-                    "Engines/remote model/ " + p.getProperty(pns[2]) +
-                    ":FileSystems/" + p.getProperty(pns[3]);  
-        description = "Unmount file system " + nm;
+                    MessageFormat.format(
+							"Engines/remote model/ {0}:FileSystems/{1}",
+							p.getProperty(pns[2]), p.getProperty(pns[3]));  
+        description = MessageFormat.format("Unmount file system {0}", nm);
     }
 
     protected void doUndo() {
@@ -43,13 +45,13 @@ public class UnmountFileSystemUndo extends XUndoableImpl {
     }
 
     protected void doRedo() {
-        XModelObject o = model.getByPath("FileSystems/" + pathpart);
+        XModelObject o = model.getByPath("FileSystems/" + pathpart); //$NON-NLS-1$
         if(o != null) o.removeFromParent();
 		MountFileSystemHandler.updateClassPath(o);
     }
 
     protected String getActionIcon() {
-        return "images/actions/delete.gif";
+        return "images/actions/delete.gif"; //$NON-NLS-1$
     }
 
 }

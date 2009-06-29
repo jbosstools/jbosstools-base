@@ -103,11 +103,11 @@ public abstract class XProcess {
     }
 
     protected void appendJava(ArrayList<String> l, Properties p) {
-        l.add(getJavaHome(p) + "/bin/java");
+        l.add(getJavaHome(p) + "/bin/java"); //$NON-NLS-1$
     }
 
     protected String getJavaHome(Properties p) {
-        File f = new File(p.getProperty("java.home"));
+        File f = new File(p.getProperty("java.home")); //$NON-NLS-1$
         return f.getAbsolutePath().replace('\\', '/');
 ////        return f.getParent().replace('\\', '/');
     }

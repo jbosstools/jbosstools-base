@@ -17,7 +17,7 @@ public class WebProjectFactory {
 	public static IWebProjectFactory instance = null;
 	static {
 		try {
-			instance = (IWebProjectFactory)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.tld.WebProjectFactoryImpl");
+			instance = (IWebProjectFactory)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.tld.WebProjectFactoryImpl"); //$NON-NLS-1$
 		} catch (ClassCastException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}

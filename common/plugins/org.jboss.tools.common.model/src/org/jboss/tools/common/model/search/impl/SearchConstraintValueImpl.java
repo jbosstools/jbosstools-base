@@ -23,7 +23,7 @@ public class SearchConstraintValueImpl extends SearchConstraintImpl {
     public SearchConstraintValueImpl() {}
 
     public boolean accepts(XModelObject object) {
-        if("*".equals(propertyname)) {
+        if("*".equals(propertyname)) { //$NON-NLS-1$
             XAttribute[] as = object.getModelEntity().getAttributes();
             for (int i = 0; i < as.length; i++) {
                 if(matches(object, as[i].getName()) ? !not : not) return true;
@@ -47,14 +47,14 @@ public class SearchConstraintValueImpl extends SearchConstraintImpl {
     }
 
     public void prepare() {
-        propertyname = getAttributeValue("property name");
-        propertyvalue = getAttributeValue("text to find");
-        not = XModelObjectConstants.TRUE.equals(getAttributeValue("not"));
-        ignorecase = XModelObjectConstants.TRUE.equals(getAttributeValue("ignore case"));
+        propertyname = getAttributeValue("property name"); //$NON-NLS-1$
+        propertyvalue = getAttributeValue("text to find"); //$NON-NLS-1$
+        not = XModelObjectConstants.TRUE.equals(getAttributeValue("not")); //$NON-NLS-1$
+        ignorecase = XModelObjectConstants.TRUE.equals(getAttributeValue("ignore case")); //$NON-NLS-1$
         if(ignorecase) propertyvalue = propertyvalue.toLowerCase();
-        String eq = getAttributeValue("equality");
-        equality = ("coincides".equals(eq)) ? 0 :
-                   ("contains".equals(eq)) ? 1 : -1;
+        String eq = getAttributeValue("equality"); //$NON-NLS-1$
+        equality = ("coincides".equals(eq)) ? 0 : //$NON-NLS-1$
+                   ("contains".equals(eq)) ? 1 : -1; //$NON-NLS-1$
     }
 
 }

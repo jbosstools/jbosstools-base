@@ -25,7 +25,7 @@ public class FolderPasteHandler extends PasteHandler {
 			XModelObjectLoaderUtil.updateModifiedOnSave(child);
 			return;
 		}
-		XActionInvoker.invoke("SaveActions.Save", child, new Properties());
+		XActionInvoker.invoke("SaveActions.Save", child, new Properties()); //$NON-NLS-1$
 	}
 
 }

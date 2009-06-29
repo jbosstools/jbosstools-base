@@ -19,7 +19,7 @@ public class AccessibleBundles extends AccessibleClasses {
     }
 
     protected String extensions() {
-        return ".properties.";
+        return ".properties."; //$NON-NLS-1$
     }
 
 }

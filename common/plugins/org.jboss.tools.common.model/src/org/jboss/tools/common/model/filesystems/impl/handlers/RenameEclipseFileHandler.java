@@ -32,7 +32,7 @@ public class RenameEclipseFileHandler extends AbstractHandler {
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
     	final IResource file = EclipseResourceUtil.getResource(object);
     	if(file == null) {
-    		XActionInvoker.invoke("EditActions.Rename", object, p);
+    		XActionInvoker.invoke("EditActions.Rename", object, p); //$NON-NLS-1$
     		return;
     	}
     	Display.getDefault().asyncExec(new Runnable() {

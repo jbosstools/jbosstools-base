@@ -29,9 +29,9 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.PositionHolder;
 
 public class ResourceMarkers {
-	public static String TEXT_PROBLEM = "org.jboss.tools.common.model.textproblemmarker";
-	public static String CONSTRAINT_PROBLEM = "org.jboss.tools.common.model.web.ui.constraintsmarker";
-	public static String JST_WEB_PROBLEM = "org.jboss.tools.jst.web.ui.strutsmarker";
+	public static String TEXT_PROBLEM = "org.jboss.tools.common.model.textproblemmarker"; //$NON-NLS-1$
+	public static String CONSTRAINT_PROBLEM = "org.jboss.tools.common.model.web.ui.constraintsmarker"; //$NON-NLS-1$
+	public static String JST_WEB_PROBLEM = "org.jboss.tools.jst.web.ui.strutsmarker"; //$NON-NLS-1$
 	private XModelObject object;
 	
 	String type;
@@ -88,9 +88,9 @@ public class ResourceMarkers {
 				marker = r.createMarker(type);
 				marker.setAttribute(IMarker.MESSAGE, message);
 				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-				marker.setAttribute("path", path);
+				marker.setAttribute("path", path); //$NON-NLS-1$
 				if(attr != null && attr.length() > 0) {
-					marker.setAttribute("attribute", attr);
+					marker.setAttribute("attribute", attr); //$NON-NLS-1$
 				}
 				updateLocation(marker, location, getStart(i), getEnd(i));
 			}
@@ -119,9 +119,9 @@ public class ResourceMarkers {
 		for (int i = 0; i < ms.length; i++) {
 			try {
 				if(!message.equals(ms[i].getAttribute(IMarker.MESSAGE))) continue;
-				if(attr != null && !attr.equals(ms[i].getAttribute("attribute"))) continue;
-				if(!path.equals(ms[i].getAttribute("path"))) {
-					ms[i].setAttribute("path", path);
+				if(attr != null && !attr.equals(ms[i].getAttribute("attribute"))) continue; //$NON-NLS-1$
+				if(!path.equals(ms[i].getAttribute("path"))) { //$NON-NLS-1$
+					ms[i].setAttribute("path", path); //$NON-NLS-1$
 				}
 				return ms[i];
 			} catch (CoreException e) {
@@ -200,7 +200,7 @@ public class ResourceMarkers {
 		if(m == null) return false;
 		String _type = m.getType();
 		if(_type == null) return true;
-		if(_type.startsWith("org.jboss.tools.")) {
+		if(_type.startsWith("org.jboss.tools.")) { //$NON-NLS-1$
 			return _type.equals(type);
 		}
 		return m.isSubtypeOf(IMarker.TEXT) || m.isSubtypeOf(IMarker.PROBLEM);
@@ -242,14 +242,14 @@ public class ResourceMarkers {
 		try {
 			IMarker[] ms = r.findMarkers(ResourceMarkers.JST_WEB_PROBLEM, true, 1);
 			if(ms != null) for (int i = 0; i < ms.length; i++) {
-				String path = ms[i].getAttribute("path", null);
+				String path = ms[i].getAttribute("path", null); //$NON-NLS-1$
 				if(path == null) continue;
 				XModelObject o = file.getModel().getByPath(path);
 				if(o == null) {
 					ms[i].delete();
 					continue;
 				}
-				String attr = ms[i].getAttribute("attribute", null);
+				String attr = ms[i].getAttribute("attribute", null); //$NON-NLS-1$
 				PositionHolder h = PositionHolder.getPosition(o, attr);
 				h.update();
 				ResourceMarkers.updateLocation(ms[i], h.getLine(), h.getStart(), h.getEnd());

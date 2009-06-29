@@ -43,16 +43,16 @@ public class ModelImages {
 	}
 
 	public ImageDescriptor createImageDescriptor(String key) {
-		if(key.startsWith("command:")) {
-			key = key.substring("command:".length());
+		if(key.startsWith("command:")) { //$NON-NLS-1$
+			key = key.substring("command:".length()); //$NON-NLS-1$
 			IWorkbench w = ModelPlugin.getDefault().getWorkbench();
 			ICommandImageService s = (ICommandImageService)w.getService(ICommandImageService.class);
 			return s.getImageDescriptor(key);
 		}
 		URL url = baseUrl;
-		if(key.startsWith("plugin:")) {
-			key = key.substring("plugin:".length());
-			int i = key.indexOf(":");
+		if(key.startsWith("plugin:")) { //$NON-NLS-1$
+			key = key.substring("plugin:".length()); //$NON-NLS-1$
+			int i = key.indexOf(":"); //$NON-NLS-1$
 			String plugin = key.substring(0, i);
 			key = key.substring(i + 1);
 			Bundle bundle = Platform.getBundle(plugin);

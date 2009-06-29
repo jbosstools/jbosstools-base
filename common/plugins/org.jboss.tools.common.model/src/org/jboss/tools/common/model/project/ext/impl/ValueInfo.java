@@ -105,13 +105,13 @@ public class ValueInfo implements IValueInfo {
 	public Element toXML(Element parent, Properties context) {
 		Element element = XMLUtilities.createElement(parent, XMLStoreConstants.TAG_VALUE_INFO);
 		if(value != null) element.setAttribute(XMLStoreConstants.ATTR_VALUE, value);
-		if(valueStartPosition != 0) element.setAttribute(ATTR_START, "" + valueStartPosition);
-		if(valueLength != 0) element.setAttribute(ATTR_LENGTH, "" + valueLength);
+		if(valueStartPosition != 0) element.setAttribute(ATTR_START, "" + valueStartPosition); //$NON-NLS-1$
+		if(valueLength != 0) element.setAttribute(ATTR_LENGTH, "" + valueLength); //$NON-NLS-1$
 		return element;
 	}
 	
-	static String ATTR_START = "start";
-	static String ATTR_LENGTH = "length";
+	static String ATTR_START = "start"; //$NON-NLS-1$
+	static String ATTR_LENGTH = "length"; //$NON-NLS-1$
 
 	public void loadXML(Element element, Properties context) {
 		value = element.getAttribute(XMLStoreConstants.ATTR_VALUE);

@@ -49,7 +49,7 @@ public class FileRootLoader implements XObjectLoader {
     }
 
     protected String fileName(XModelObject object) {
-        return object.getModelEntity().getName().toLowerCase() + ".pex";
+        return object.getModelEntity().getName().toLowerCase() + ".pex"; //$NON-NLS-1$
     }
 
 }

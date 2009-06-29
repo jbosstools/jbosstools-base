@@ -15,13 +15,13 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultEditHandler;
 
 public class RenameFileSystemHandler extends DefaultEditHandler {
-	static String RFS = "root file system"; 
-	static String SFS = "src file system"; 
+	static String RFS = "root file system";  //$NON-NLS-1$
+	static String SFS = "src file system";  //$NON-NLS-1$
 	
 	public boolean isEnabled(XModelObject object) {
 		if(!super.isEnabled(object)) return false;
 		String nm = object.getAttributeValue(XModelObjectConstants.ATTR_NAME);
-		return !"WEB-INF".equals(nm);	
+		return !"WEB-INF".equals(nm);	 //$NON-NLS-1$
 	}
 	public void executeHandler(XModelObject object, Properties prop) throws XModelException {
 		if(!isEnabled(object) || data == null) return;
@@ -30,7 +30,7 @@ public class RenameFileSystemHandler extends DefaultEditHandler {
 		String oldName = object.getAttributeValue(XModelObjectConstants.ATTR_NAME);
 		edit(object, p);
 		String newName = p.getProperty(XModelObjectConstants.ATTR_NAME);
-		XModelObject web = object.getModel().getByPath("Web");
+		XModelObject web = object.getModel().getByPath("Web"); //$NON-NLS-1$
 		if(web == null) return;
 		XModelObject[] ms = web.getChildren();
 		for (int i = 0; i < ms.length; i++) {

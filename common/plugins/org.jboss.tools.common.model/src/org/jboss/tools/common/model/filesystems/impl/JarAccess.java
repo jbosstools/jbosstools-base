@@ -66,11 +66,11 @@ public class JarAccess {
 		loading = true;
 		templocation = null;
 		try {
-			int ind = location.indexOf(":/");
+			int ind = location.indexOf(":/"); //$NON-NLS-1$
 			if (ind != 1 && ind != -1) {
 				int extI = location.lastIndexOf('.');
-				String ext = extI >= 0 ? location.substring(extI) : ".jar";
-				File f = File.createTempFile("efs_", ext);
+				String ext = extI >= 0 ? location.substring(extI) : ".jar"; //$NON-NLS-1$
+				File f = File.createTempFile("efs_", ext); //$NON-NLS-1$
 				f.deleteOnExit();
 				InputStream i = new java.net.URL(location).openConnection().getInputStream();
 				FileOutputStream o = new FileOutputStream(f);
@@ -100,7 +100,7 @@ public class JarAccess {
 		ZipFile jar = getZipFile();
 		map.clear();
 		fileEntries.clear();
-		map.put("", new HashSet<String>());
+		map.put("", new HashSet<String>()); //$NON-NLS-1$
 		try {
 			if(jar == null) return;
 			Enumeration<?> en = jar.entries();
@@ -154,7 +154,7 @@ public class JarAccess {
 		if (path.endsWith(XModelObjectConstants.SEPARATOR))
 			q = q.substring(0, path.length() - 1);
 		int i = q.lastIndexOf('/');
-		String root = (i < 0) ? "" : path.substring(0, i);
+		String root = (i < 0) ? "" : path.substring(0, i); //$NON-NLS-1$
 		String name = (i < 0) ? path : path.substring(i + 1);
 		return new String[] { root, name };
 	}
@@ -165,7 +165,7 @@ public class JarAccess {
 		map.put(path, new HashSet<String>());
 		String[] parsed = parse(path);
 		check(parsed[0]);
-		if ("".equals(parsed[1]))
+		if ("".equals(parsed[1])) //$NON-NLS-1$
 			return;
 		HashSet<String> set = map.get(parsed[0]);
 		set.add(parsed[1] + XModelObjectConstants.SEPARATOR);
@@ -190,7 +190,7 @@ public class JarAccess {
 			jar = getZipFile();
 		} catch (IOException e) {
 			unlockJar();
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		int length = 0;
 		BufferedInputStream bs = null;
@@ -218,7 +218,7 @@ public class JarAccess {
 			return sb.toString();
 		} catch (IOException e) {
 			ModelPlugin.getPluginLog().logError(e);
-			return "";
+			return ""; //$NON-NLS-1$
 		} finally {
 			unlockJar();
 			if(bs!=null) {
@@ -245,7 +245,7 @@ public class JarAccess {
 		if (path == null)
 			return false;
 		int i = path.lastIndexOf('/');
-		String p = (i < 0) ? "" : path.substring(0, i);
+		String p = (i < 0) ? "" : path.substring(0, i); //$NON-NLS-1$
 		String n = path.substring(i + 1);
 		Set<String> set = map.get(p);
 		return set != null && set.contains(n);

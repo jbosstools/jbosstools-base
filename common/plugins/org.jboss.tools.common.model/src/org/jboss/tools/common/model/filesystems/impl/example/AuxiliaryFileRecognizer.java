@@ -16,7 +16,7 @@ public class AuxiliaryFileRecognizer implements EntityRecognizer {
 
     public String getEntityName(String ext, String body) {
         if(body == null) return null;
-        return "efe".equals(ext) ? "FileAnyAuxiliary" : null;
+        return "efe".equals(ext) ? "FileAnyAuxiliary" : null; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

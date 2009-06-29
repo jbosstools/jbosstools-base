@@ -35,7 +35,7 @@ public class OpenWithChoiceHandler extends AbstractHandler {
         ServiceDialog d = object.getModel().getService();
         String ext = OpenWithHelper.getLogicalExtension(object, action);
         XAttributeData a1 = HUtil.find(data, 0, XModelObjectConstants.ATTR_NAME);
-        XAttributeData a2 = HUtil.find(data, 0, "default");
+        XAttributeData a2 = HUtil.find(data, 0, "default"); //$NON-NLS-1$
         XModelObject o = OpenWithHelper.getEditorObject(object.getModel(), ext);
         String oldname = null;
         if(o != null) {
@@ -49,7 +49,7 @@ public class OpenWithChoiceHandler extends AbstractHandler {
         if(i != 0) return;
         DefaultCreateHandler.extractProperties(data[0]);
         String en = HUtil.getValue(data, 0, XModelObjectConstants.ATTR_NAME);
-        boolean def = XModelObjectConstants.YES.equals(HUtil.getValue(data, 0, "default"));
+        boolean def = XModelObjectConstants.YES.equals(HUtil.getValue(data, 0, "default")); //$NON-NLS-1$
         if(def && !en.equals(oldname)) {
             changeDefaultEditor(object.getModel(), ext, en);
         } else if(!def && en.equals(oldname)) {
@@ -69,28 +69,28 @@ public class OpenWithChoiceHandler extends AbstractHandler {
     static void changeDefaultEditor(XModel model, String ext, String editor) throws XModelException {
         XModelObject o = model.getByPath(OpenWithHelper.EDITORS);
         StringBuffer sb = new StringBuffer();
-        String ov = o.getAttributeValue("extensions");
+        String ov = o.getAttributeValue("extensions"); //$NON-NLS-1$
         String[] es = XModelObjectUtil.asStringArray(ov);
         boolean done = false;
         for (int i = 0; i < es.length; i++) {
-            if(!es[i].toLowerCase().startsWith(ext.toLowerCase() + ":")) {
+            if(!es[i].toLowerCase().startsWith(ext.toLowerCase() + ":")) { //$NON-NLS-1$
                 append(sb, es[i]);
             } else {
                 done = true;
-                append(sb, ext + ":" + editor);
+                append(sb, ext + ":" + editor); //$NON-NLS-1$
             }
         }
-        if(!done) append(sb, ext + ":" + editor);
+        if(!done) append(sb, ext + ":" + editor); //$NON-NLS-1$
         applyChange(o, ov, sb.toString());
     }
 
     static void removeDefaultEditor(XModel model, String ext) throws XModelException {
         XModelObject o = model.getByPath(OpenWithHelper.EDITORS);
         StringBuffer sb = new StringBuffer();
-        String ov = o.getAttributeValue("extensions");
+        String ov = o.getAttributeValue("extensions"); //$NON-NLS-1$
         String[] es = XModelObjectUtil.asStringArray(ov);
         for (int i = 0; i < es.length; i++) {
-            if(!es[i].toLowerCase().startsWith(ext.toLowerCase() + ":")) {
+            if(!es[i].toLowerCase().startsWith(ext.toLowerCase() + ":")) { //$NON-NLS-1$
                 append(sb, es[i]);
             }
         }
@@ -104,7 +104,7 @@ public class OpenWithChoiceHandler extends AbstractHandler {
 
     private static void applyChange(XModelObject editors, String ov, String nv) throws XModelException {
         if(nv.equals(ov)) return;
-        editors.getModel().changeObjectAttribute(editors, "extensions", nv);
+        editors.getModel().changeObjectAttribute(editors, "extensions", nv); //$NON-NLS-1$
         editors.getModel().saveOptions();
     }
 

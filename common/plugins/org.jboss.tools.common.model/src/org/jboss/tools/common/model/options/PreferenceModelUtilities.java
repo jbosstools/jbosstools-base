@@ -16,7 +16,7 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class PreferenceModelUtilities {
-	static final String ENT_OPTION_ROOT = "OptionRoot";
+	static final String ENT_OPTION_ROOT = "OptionRoot"; //$NON-NLS-1$
 
 	private static class PreferenceModelHolder {
 		public static XModel preferenceModel;
@@ -34,7 +34,7 @@ public class PreferenceModelUtilities {
 		}
 
 		private static ServiceDialog createServiceDialog() {
-			return (ServiceDialog)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl");
+			return (ServiceDialog)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.common.model.ui.wizards.one.ServiceDialogImpl"); //$NON-NLS-1$
 		}
 		
 	}
@@ -52,7 +52,7 @@ public class PreferenceModelUtilities {
 	public static void initPreferenceValue(XModel initialModel, Preference preference)
 	throws XModelException {
 		String value = preference.getValue(); 
-		if (value == null || "".equals(value))
+		if (value == null || "".equals(value)) //$NON-NLS-1$
 		{
 			XModelObject object = initialModel.getByPath(preference.getModelPath());
 			if (object != null)

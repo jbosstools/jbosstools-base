@@ -25,7 +25,7 @@ public class XChangeSetUndo extends XUndoableImpl {
         for (int i = 0; i < attr.length; i++)
           this.attr[i][2] = object.getAttributeValue(attr[i][0]);
         String[] types = object.getModelEntity().getRenderer().getIconNames();
-        String iconType = types.length == 0 ? "main" : object.getModelEntity().getRenderer().getIconNames()[0];
+        String iconType = types.length == 0 ? "main" : object.getModelEntity().getRenderer().getIconNames()[0]; //$NON-NLS-1$
         icon = new XModelObjectIcon(object).getEclipseImage0(new String[]{iconType});
         description = createDescription(object);
         kind = EDIT;
@@ -60,7 +60,7 @@ public class XChangeSetUndo extends XUndoableImpl {
     }
 
     protected String createDescription(XModelObject o) {
-        return o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
+        return o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " + //$NON-NLS-1$
                o.getModelEntity().getRenderer().getTitle(o);
     }
 

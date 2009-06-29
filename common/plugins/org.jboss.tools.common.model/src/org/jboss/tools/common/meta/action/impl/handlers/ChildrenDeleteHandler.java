@@ -25,7 +25,7 @@ public class ChildrenDeleteHandler extends AbstractHandler {
 	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		if(!isEnabled(object)) return;
 		XModelObject[] cs = object.getChildren();
-		XActionInvoker.invoke("DeleteActions.Delete", cs[0], cs, p);
+		XActionInvoker.invoke("DeleteActions.Delete", cs[0], cs, p); //$NON-NLS-1$
 	}
 
 }

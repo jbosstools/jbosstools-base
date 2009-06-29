@@ -10,7 +10,7 @@ import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class InvokingWizardHandler extends AbstractHandler {
-	SpecialWizard sw = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizard.newfile.WizardInvoker");
+	SpecialWizard sw = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizard.newfile.WizardInvoker"); //$NON-NLS-1$
 	
 	public InvokingWizardHandler() {}
 	
@@ -21,12 +21,12 @@ public class InvokingWizardHandler extends AbstractHandler {
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
     	if(sw == null || object == null) return;
     	if(p == null) p = new Properties();
-		String pluginId = action.getProperty("plugin");
-		String wizardId = action.getProperty("wizard");
+		String pluginId = action.getProperty("plugin"); //$NON-NLS-1$
+		String wizardId = action.getProperty("wizard"); //$NON-NLS-1$
 
-		p.setProperty("plugin", pluginId);
-		p.setProperty("wizard", wizardId);
-		p.put("object", object);
+		p.setProperty("plugin", pluginId); //$NON-NLS-1$
+		p.setProperty("wizard", wizardId); //$NON-NLS-1$
+		p.put("object", object); //$NON-NLS-1$
 
     	sw.setObject(p);
     	int r = sw.execute();
@@ -38,10 +38,10 @@ public class InvokingWizardHandler extends AbstractHandler {
     }
     
     private String getTruePath() {
-    	String path = action.getProperty("action");
+    	String path = action.getProperty("action"); //$NON-NLS-1$
     	if(path != null) return path;
     	path = action.getPath();
-		if(path.endsWith("V")) {
+		if(path.endsWith("V")) { //$NON-NLS-1$
 			path = path.substring(0, path.length() - 1).replace('/', '.');
 		} else {
 			path = null;

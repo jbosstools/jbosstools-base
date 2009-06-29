@@ -26,7 +26,7 @@ public class Paths {
             p1 = result.indexOf('%', iStartPos);
             p2 = (p1 >= 0) ? result.indexOf('%', p1 + 1) : -1;
             if (p1 >= 0 && p2 > (p1 + 1)) {
-                String s = properties.getProperty(result.substring(p1 + 1, p2), "");
+                String s = properties.getProperty(result.substring(p1 + 1, p2), ""); //$NON-NLS-1$
                 result = result.substring(0, p1) + s + result.substring(p2 + 1);
                 iStartPos = p1;
             } else {

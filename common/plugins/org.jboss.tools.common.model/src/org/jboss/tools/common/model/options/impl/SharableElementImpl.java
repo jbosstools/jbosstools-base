@@ -21,8 +21,8 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
 
     private static final Map<String,String> singular = new HashMap<String,String>(3);
     static {
-        singular.put("scope", "scope");
-        singular.put("sharing", "sharing");
+        singular.put("scope", "scope"); //$NON-NLS-1$ //$NON-NLS-2$
+        singular.put("sharing", "sharing"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     static boolean isSingular(String property) {
@@ -35,7 +35,7 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
     protected XScope scope = project_;
     private Map<String,SharableElement> children = new HashMap<String,SharableElement>();
     private SharableComparator comparator = null;
-    protected String name = "";
+    protected String name = ""; //$NON-NLS-1$
 
     public SharableElementImpl() {
         super();
@@ -157,20 +157,20 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
 
     ////////////////// override ////////////////
     public String get(String name) {
-        if("scope".equals(name)) {
+        if("scope".equals(name)) { //$NON-NLS-1$
             return getScope();
-        } else if("sharing".equals(name)) {
-            String x = (general_.exists() ? GENERAL + "," : "")
-                     + (project_.exists() ? PROJECT + "," : "");
+        } else if("sharing".equals(name)) { //$NON-NLS-1$
+            String x = (general_.exists() ? GENERAL + "," : "") //$NON-NLS-1$ //$NON-NLS-2$
+                     + (project_.exists() ? PROJECT + "," : ""); //$NON-NLS-1$ //$NON-NLS-2$
             int c = x.length() - 1;
-            return (c < 0) ? "" : x.substring(0, c);
+            return (c < 0) ? "" : x.substring(0, c); //$NON-NLS-1$
         }
         return (XModelObjectConstants.XML_ATTR_NAME.equals(name)) ? name()
                : scope.getProperty(name);
     }
 
     public void set(String name, String value) {
-        if("scope".equals(name)) {
+        if("scope".equals(name)) { //$NON-NLS-1$
             String ov = get(name);
             if(ov.equals(value)) return;
             String max = XStudioLoaderPeer.getMaxScope(ov, value);
@@ -178,7 +178,7 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
             setScope0(value);
             if(!scope.exists())
               setScopeExists(scope.getName(), true);
-        } else if("sharing".equals(name)) {
+        } else if("sharing".equals(name)) { //$NON-NLS-1$
             setScopeExists(GENERAL, value.indexOf(GENERAL) >= 0);
             setScopeExists(PROJECT, value.indexOf(PROJECT) >= 0);
         } else if(XModelObjectConstants.XML_ATTR_NAME.equals(name)) {
@@ -206,7 +206,7 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
     }
 
     protected String getEntityName() {
-        return "SharableDefault";
+        return "SharableDefault"; //$NON-NLS-1$
     }
 
     public String name() {

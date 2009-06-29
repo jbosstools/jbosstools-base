@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.MessageFormat;
 import org.w3c.dom.*;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.model.*;
@@ -82,7 +83,7 @@ public class XStudioDataLoaderImpl implements SharableConstants {
     
     private void saveProject() {
 		File[] fs = peer.getFilesForScope(PROJECT);
-		boolean isPaletteModified = studio.getChildByPath("Palette").isModified() || studio.getChildByPath("Icons").isModified();
+		boolean isPaletteModified = studio.getChildByPath("Palette").isModified() || studio.getChildByPath("Icons").isModified(); //$NON-NLS-1$ //$NON-NLS-2$
 		boolean isPreferencesModified = studio.getChildByPath(OPTIONS).isModified();
     	if(!fs[0].exists() || isPaletteModified) savePalette(fs[0]);
     	if(!fs[1].exists() || isPreferencesModified) savePreferences(fs[1]);
@@ -91,8 +92,8 @@ public class XStudioDataLoaderImpl implements SharableConstants {
     private void savePalette(File f) {
 		if(handleReadOnly(studio, PROJECT, f) != 0) return;
     	save(studio, PROJECT, f, new String[]{"Palette", "XStudioIcons"});
-		studio.getChildByPath("Palette").setModified(false);
-		studio.getChildByPath("Icons").setModified(false);
+		studio.getChildByPath("Palette").setModified(false); //$NON-NLS-1$
+		studio.getChildByPath("Icons").setModified(false); //$NON-NLS-1$
 	}
 
 	private void savePreferences(File f) {
@@ -106,10 +107,10 @@ public class XStudioDataLoaderImpl implements SharableConstants {
         try {
             if(!f.exists()) f.createNewFile();
         } catch (IOException e1) {
-        	ModelPlugin.getPluginLog().logError("XStudioDataLoaderImpl:save:Cannot create file:" + e1.getMessage());
+        	ModelPlugin.getPluginLog().logError("XStudioDataLoaderImpl:save:Cannot create file:" + e1.getMessage()); //$NON-NLS-1$
             return;
         }
-        Element e = XMLUtil.createDocumentElement("dummyroot");
+        Element e = XMLUtil.createDocumentElement("dummyroot"); //$NON-NLS-1$
         new SharableLoaderImpl().saveSharable(e, q, scopename);
         NodeList x = e.getElementsByTagName(XSTUDIO);
         if(x == null || x.getLength() == 0) return;
@@ -149,14 +150,16 @@ public class XStudioDataLoaderImpl implements SharableConstants {
     }
 
     private String getReadOnlyMessage(File f) {
-        return "File " + f.getAbsolutePath() + " is read-only.\n" +
-               "Please make it writable to allow for saving options.";
+        return MessageFormat
+				.format(
+						"File {0} is read-only.\nPlease make it writable to allow for saving options.",
+						f.getAbsolutePath());
     }
     
     private InputStream readGeneral() {
     	try {
             Bundle b = Platform.getBundle(ModelPlugin.PLUGIN_ID);
-        	URL u = b.getResource("meta/options_general.xml");
+        	URL u = b.getResource("meta/options_general.xml"); //$NON-NLS-1$
             URLConnection c = u.openConnection();
             return c.getInputStream();
     	} catch (IOException e) {

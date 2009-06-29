@@ -17,7 +17,7 @@ import org.jboss.tools.common.model.XModelObjectConstants;
 public class XAdapter extends XMetaElementImpl {
     protected XAttributeConstraint constraint = null;
     protected boolean visibility = true;
-    protected String defaultvalue = "";
+    protected String defaultvalue = ""; //$NON-NLS-1$
 
     public XAdapter() {}
 

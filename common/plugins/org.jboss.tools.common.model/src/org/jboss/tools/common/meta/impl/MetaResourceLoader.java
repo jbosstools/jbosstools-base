@@ -20,17 +20,17 @@ public class MetaResourceLoader {
 	
 	public static Map<String,URL> getMetaResources() {
 		Map<String,URL> resources = new HashMap<String,URL>();
-		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint("org.jboss.tools.common.model.meta");
+		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint("org.jboss.tools.common.model.meta"); //$NON-NLS-1$
 		IExtension[] es = point.getExtensions();
 		for (int i = 0; i < es.length; i++) {
 			Bundle bundle = Platform.getBundle(es[i].getNamespaceIdentifier());
 			IConfigurationElement[] elements = es[i].getConfigurationElements();
 			for (int j = 0; j < elements.length; j++) {
-				String path = elements[j].getAttribute("path");
+				String path = elements[j].getAttribute("path"); //$NON-NLS-1$
 				if(path == null) continue;
 				if(resources.containsKey(path)) {
 					if(ModelPlugin.isDebugEnabled()) {
-						ModelPlugin.getPluginLog().logInfo("Warning: duplicate meta resource " + path + " ignored.");
+						ModelPlugin.getPluginLog().logInfo("Warning: duplicate meta resource " + path + " ignored."); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 				try {
@@ -39,11 +39,11 @@ public class MetaResourceLoader {
 						resources.put(path, url);
 					} else {
 						if(ModelPlugin.isDebugEnabled()) {
-							ModelPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found.");
+							ModelPlugin.getPluginLog().logInfo("Warning: meta resource " + path + " not found."); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				} catch (IllegalStateException e) {
-					ModelPlugin.getPluginLog().logError("MetaResourceLoader warning: meta resource " + path + " not found.");
+					ModelPlugin.getPluginLog().logError("MetaResourceLoader warning: meta resource " + path + " not found."); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}

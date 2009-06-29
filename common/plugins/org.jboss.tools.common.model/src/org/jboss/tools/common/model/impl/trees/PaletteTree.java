@@ -19,14 +19,14 @@ public class PaletteTree extends DefaultSiftedTree {
 	public void dispose() {}
 
 	public XModelObject getRoot() {
-        return model.getRoot("XStudio");
+        return model.getRoot("XStudio"); //$NON-NLS-1$
     }
 
     public XModelObject[] getChildren(XModelObject object) {
         return(object == getRoot()) 
              ? new XModelObject[]{
-                object.getChildByPath("Icons"),
-                object.getChildByPath("Palette")}
+                object.getChildByPath("Icons"), //$NON-NLS-1$
+                object.getChildByPath("Palette")} //$NON-NLS-1$
              : super.getChildren(object);
     }
 

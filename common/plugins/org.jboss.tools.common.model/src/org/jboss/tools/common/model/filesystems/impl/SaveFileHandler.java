@@ -16,7 +16,7 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class SaveFileHandler extends AbstractHandler {
-	static SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.objecteditor.SaveEditorSpecialWizard");
+	static SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.objecteditor.SaveEditorSpecialWizard"); //$NON-NLS-1$
     public SaveFileHandler() {}
 
     public boolean isEnabled(XModelObject object) {

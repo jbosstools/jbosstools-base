@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action.impl.handlers;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.*;
@@ -21,8 +22,8 @@ public class PasteEnterNewNameSupport extends SpecialWizardSupport {
 	public static int run(XModelObject parent, XModelObject source, XModelObject copy, XEntityData data) {
 		PasteEnterNewNameSupport support = new PasteEnterNewNameSupport();
 		Properties p = new Properties();
-		p.put("source", source);
-		p.put("copy", copy);
+		p.put("source", source); //$NON-NLS-1$
+		p.put("copy", copy); //$NON-NLS-1$
 		support.setActionData(null, new XEntityData[]{data}, parent, p);
 		parent.getModel().getService().showDialog(support);
 		return support.getReturnCode();
@@ -33,17 +34,16 @@ public class PasteEnterNewNameSupport extends SpecialWizardSupport {
 	
 	public void reset() {
 		returnCode = -1;
-		source = (XModelObject)getProperties().get("source");
-		copy = (XModelObject)getProperties().get("copy");
+		source = (XModelObject)getProperties().get("source"); //$NON-NLS-1$
+		copy = (XModelObject)getProperties().get("copy"); //$NON-NLS-1$
 	}
 
 	public String getTitle() {
-		return "Paste " + getCapitalizedName(copy) + " to "
-			   + getCapitalizedName(getTarget());
+		return MessageFormat.format("Paste {0} to {1}", getCapitalizedName(copy), getCapitalizedName(getTarget()));
 	}
 	
     public String getSubtitle() {
-    	return "" + getCapitalizedName(copy);
+    	return "" + getCapitalizedName(copy); //$NON-NLS-1$
     }
 
 	static String getCapitalizedName(XModelObject o) {
@@ -55,7 +55,7 @@ public class PasteEnterNewNameSupport extends SpecialWizardSupport {
 
 	public String getMessage(int stepId) {
 		String displayName = WizardKeys.getAttributeDisplayName(getEntityData()[0].getAttributeData()[0].getAttribute(), true);
-		return "Please enter new " + displayName + ".";
+		return MessageFormat.format("Please enter new {0}.", displayName);
 	}
 
 	public String[] getActionNames(int stepId) {

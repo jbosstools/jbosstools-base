@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action.impl.handlers;
 
+import java.text.MessageFormat;
 import java.util.Properties;
 import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.meta.action.impl.*;
@@ -36,7 +37,8 @@ public class DefaultCreateSupport extends SpecialWizardSupport {
 		int limit = c.getMaxCount();
 		if(c != null && limit < Integer.MAX_VALUE && cs.length >= limit) {
 			ServiceDialog d = getTarget().getModel().getService();
-			d.showDialog(ModelMessages.WARNING, "The limit of " + limit + " children is achieved.", new String[]{OK}, null, ServiceDialog.MESSAGE);
+			d.showDialog(ModelMessages.WARNING, MessageFormat.format("The limit of {0} children is achieved.",
+					limit), new String[]{OK}, null, ServiceDialog.MESSAGE);
 			setFinished(true);
 		}		
 	}

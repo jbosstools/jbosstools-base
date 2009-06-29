@@ -22,7 +22,7 @@ public class XEntityRendererImpl extends XMetaElementImpl implements XEntityRend
     public XEntityRendererImpl() {}
 
     public String getProperty(String name) {
-        return "";
+        return ""; //$NON-NLS-1$
     }
     
     public String[] getIconNames() {

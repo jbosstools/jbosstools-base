@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.search.impl;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.plugin.ModelMessages;
@@ -19,7 +20,7 @@ import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.meta.action.impl.handlers.*;
 //TODO check if this class is still needed
 public class SearchDefaultHandler extends AbstractHandler {
-    static String CONSTRAINT_ENTITY = "SearchValue";
+    static String CONSTRAINT_ENTITY = "SearchValue"; //$NON-NLS-1$
     static SpecialWizard wizard = null;
 
     static SpecialWizard wizard() {
@@ -53,7 +54,7 @@ public class SearchDefaultHandler extends AbstractHandler {
         if(i != 0) return null;
         Properties p = DefaultCreateHandler.extractProperties(ed);
         Enumeration en = p.keys();
-        XModelObject vc = sc.getChildByPath("Match/value constraint");
+        XModelObject vc = sc.getChildByPath("Match/value constraint"); //$NON-NLS-1$
         while(en.hasMoreElements()) {
             String n = (String)en.nextElement();
             String v = p.getProperty(n);
@@ -65,30 +66,30 @@ public class SearchDefaultHandler extends AbstractHandler {
 
     private XModelObject findOrCreateDefaultSearch(XModelObject object, XModelObject[] objects) throws XModelException {
         XModel model = object.getModel();
-        XModelObject sr = model.getByPath("XStudio/Search");
-        XModelObject ds = sr.getChildByPath("Default");
+        XModelObject sr = model.getByPath("XStudio/Search"); //$NON-NLS-1$
+        XModelObject ds = sr.getChildByPath("Default"); //$NON-NLS-1$
         Properties p = new Properties();
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < objects.length; i++) {
-            if(i > 0) sb.append(";");
+            if(i > 0) sb.append(";"); //$NON-NLS-1$
             sb.append(objects[i].getPath());
         }
         if(ds == null) {
-            p.setProperty(XModelObjectConstants.ATTR_NAME, "Default");
-            p.setProperty("root", sb.toString());
-            ds = XModelObjectLoaderUtil.createValidObject(model, "SearchCommand", p);
+            p.setProperty(XModelObjectConstants.ATTR_NAME, "Default"); //$NON-NLS-1$
+            p.setProperty("root", sb.toString()); //$NON-NLS-1$
+            ds = XModelObjectLoaderUtil.createValidObject(model, "SearchCommand", p); //$NON-NLS-1$
             sr.addChild(ds);
             sr.setModified(true);
         } else {
-            model.changeObjectAttribute(ds, "root", sb.toString());
+            model.changeObjectAttribute(ds, "root", sb.toString()); //$NON-NLS-1$
         }
-        XModelObject match = ds.getChildByPath("Match");
+        XModelObject match = ds.getChildByPath("Match"); //$NON-NLS-1$
         XModelObject v = null;
         if(match.getChildren(CONSTRAINT_ENTITY).length > 0) {
             v = match.getChildren(CONSTRAINT_ENTITY)[0];
         } else {
             p.clear();
-            p.setProperty(XModelObjectConstants.ATTR_NAME, "value constraint");
+            p.setProperty(XModelObjectConstants.ATTR_NAME, "value constraint"); //$NON-NLS-1$
             v = XModelObjectLoaderUtil.createValidObject(model, CONSTRAINT_ENTITY, p);
             match.addChild(v);
             match.setModified(true);
@@ -97,18 +98,18 @@ public class SearchDefaultHandler extends AbstractHandler {
     }
 
     private String getDialogTitle(XModelObject[] os) {
-        if(os.length == 1) return "Find in path " + os[0].getPath();
+        if(os.length == 1) return MessageFormat.format("Find in path {0}", os[0].getPath());
         StringBuffer sb = new StringBuffer("Find in paths:");
-        for (int i = 0; i < os.length; i++) sb.append("\n").append(os[i].getPath());
+        for (int i = 0; i < os.length; i++) sb.append("\n").append(os[i].getPath()); //$NON-NLS-1$
         return sb.toString();
     }
 
     private XEntityData getSearchEntityData(XModelObject sc) {
-        XModelObject c = sc.getChildByPath("Match/value constraint");
-        String[][] ds = new String[][]{{"SearchValue", XModelObjectConstants.YES},
-                                       {"text to find", XModelObjectConstants.YES},
-                                       {"property name", XModelObjectConstants.NO},
-                                       {"ignore case", XModelObjectConstants.NO}};
+        XModelObject c = sc.getChildByPath("Match/value constraint"); //$NON-NLS-1$
+        String[][] ds = new String[][]{{"SearchValue", XModelObjectConstants.YES}, //$NON-NLS-1$
+                                       {"text to find", XModelObjectConstants.YES}, //$NON-NLS-1$
+                                       {"property name", XModelObjectConstants.NO}, //$NON-NLS-1$
+                                       {"ignore case", XModelObjectConstants.NO}}; //$NON-NLS-1$
         XEntityData d = XEntityDataImpl.create(ds);
         XAttributeData[] as = d.getAttributeData();
         for (int i = 0; i < as.length; i++) {

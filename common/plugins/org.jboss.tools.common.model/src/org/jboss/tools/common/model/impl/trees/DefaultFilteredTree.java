@@ -89,7 +89,7 @@ public abstract class DefaultFilteredTree implements XFilteredTree {
     }
 
     public String getValue(XModelObject object) {
-        return belongs(object) ? object.getPath() : "";
+        return belongs(object) ? object.getPath() : ""; //$NON-NLS-1$
     }
 
     public boolean belongs(XModelObject object) {

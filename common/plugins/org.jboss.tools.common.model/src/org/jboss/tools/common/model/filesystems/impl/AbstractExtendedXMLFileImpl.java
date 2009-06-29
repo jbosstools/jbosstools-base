@@ -42,13 +42,13 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         return true;
     }
 
-    private static String ns = ".NAME.EXTENSION.overlapped.expanded._body_.actualBodyTimeStamp.correctBody.forceLoad.";
+    private static String ns = ".NAME.EXTENSION.overlapped.expanded._body_.actualBodyTimeStamp.correctBody.forceLoad."; //$NON-NLS-1$
 
     public String get(String name) {
-        if(name.equals("_hasErrors_")) {
+        if(name.equals("_hasErrors_")) { //$NON-NLS-1$
             return super.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT);
         }
-        if (getParent() != null && ns.indexOf("." + name + ".") < 0) {
+        if (getParent() != null && ns.indexOf("." + name + ".") < 0) { //$NON-NLS-1$ //$NON-NLS-2$
        		if(loadAttributeSeparately(name)) return super.get(name);
             loadChildren();
             
@@ -93,7 +93,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     }
     
     public boolean isObjectEditable() {
-    	return super.isObjectEditable() && (!XModelObjectConstants.YES.equals(get("_hasErrors_")));
+    	return super.isObjectEditable() && (!XModelObjectConstants.YES.equals(get("_hasErrors_"))); //$NON-NLS-1$
     }
     
     protected void loadChildren() {
@@ -138,7 +138,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 
     public void set(String name, String value) {
         super.set(name, value);
-        if("incorrectBody".equals(name) && value.length() > 0) {
+        if("incorrectBody".equals(name) && value.length() > 0) { //$NON-NLS-1$
             set(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
 //            setErrors(value, hasDTD(), !hasDTD()); //never validate dtd
             int resolution = EntityXMLRegistration.getInstance().resolve(getModelEntity());
@@ -156,7 +156,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 	}
 	
 	protected boolean isForceLoadOn() {
-		return XModelObjectConstants.TRUE.equals(get("forceLoad"));
+		return XModelObjectConstants.TRUE.equals(get("forceLoad")); //$NON-NLS-1$
 	}
 
     public void edit(String body, boolean update) throws XModelException {
@@ -174,7 +174,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 			return;			
 		}
 
-		boolean errors1 = (XModelObjectConstants.YES.equals(get("_hasErrors_")));
+		boolean errors1 = (XModelObjectConstants.YES.equals(get("_hasErrors_"))); //$NON-NLS-1$
 		AbstractExtendedXMLFileImpl f = getUpdatedFile(body, true);
         if(f == null) return;
         f.getChildren();
@@ -187,27 +187,27 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 			getChildren();
 			boolean fire = this.loaderError == null && f.loaderError != null;
 			this.loaderError = f.loaderError;
-			super.set("incorrectBody", f.get("incorrectBody"));
+			super.set("incorrectBody", f.get("incorrectBody")); //$NON-NLS-1$ //$NON-NLS-2$
 			super.set(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
-			if(f.get("errors") != null) super.set("errors", f.get("errors"));
+			if(f.get("errors") != null) super.set("errors", f.get("errors")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			if(fire) changeTimeStamp();
-			if(f.get("actualBodyTimeStamp") != null && !"-1".equals(f.get("actualBodyTimeStamp"))) {
+			if(f.get("actualBodyTimeStamp") != null && !"-1".equals(f.get("actualBodyTimeStamp"))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				mergeAll(f, update);
 			}
 			m.fireStructureChanged(this);
 			if(!isOverlapped) getResourceMarkers().update();
 		} else if(isMergingChanges()) {
-			String oldBody = get("correctBody");
+			String oldBody = get("correctBody"); //$NON-NLS-1$
 			boolean changed = body != null && !body.equals(oldBody);
-			set("correctBody", body);
-			set("actualBodyTimeStamp", "0");
+			set("correctBody", body); //$NON-NLS-1$
+			set("actualBodyTimeStamp", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 			long ots = getTimeStamp();
 			mergeAll(f, update);
 			if(changed && ots == getTimeStamp()) {
 				changeTimeStamp();
 			}
-			set("actualBodyTimeStamp", "" + getTimeStamp());
+			set("actualBodyTimeStamp", "" + getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
 			if(errors1) m.fireStructureChanged(this);
         	if(!isOverlapped) constraintChecker.check();
 		} else {
@@ -221,9 +221,9 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     }
     
     protected void safeChangeTimeStamp() {
-    	boolean b = ("" + getTimeStamp()).equals(get("actualBodyTimeStamp"));
+    	boolean b = ("" + getTimeStamp()).equals(get("actualBodyTimeStamp")); //$NON-NLS-1$ //$NON-NLS-2$
     	changeTimeStamp();
-    	if(b) set("actualBodyTimeStamp", "" + getTimeStamp());
+    	if(b) set("actualBodyTimeStamp", "" + getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
     }
     protected void mergeAll(XModelObject f, boolean update) throws XModelException {
    		merge(f, !update);
@@ -242,15 +242,15 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 	}
 
     private AbstractExtendedXMLFileImpl getUpdatedFile(String body, boolean fire) {
-        boolean errors1 = (XModelObjectConstants.YES.equals(get("_hasErrors_")));
+        boolean errors1 = (XModelObjectConstants.YES.equals(get("_hasErrors_"))); //$NON-NLS-1$
         loaderError = null;
 //      setErrors(body, hasDTD(), !hasDTD()); //never validate dtd
         int resolution = EntityXMLRegistration.getInstance().resolve(getModelEntity());
         if(EntityXMLRegistration.isSystemId(body)) resolution = EntityXMLRegistration.UNRESOLVED;
         setErrors(body, resolution == EntityXMLRegistration.DTD, resolution == EntityXMLRegistration.SCHEMA);
-        boolean errors2 = (get("errors") != null && get("errors").length() > 0);
+        boolean errors2 = (get("errors") != null && get("errors").length() > 0); //$NON-NLS-1$ //$NON-NLS-2$
         if(errors1 && errors2) {
-            super.set("incorrectBody".intern(), body);
+            super.set("incorrectBody".intern(), body); //$NON-NLS-1$
             if(fire) {
             	changeTimeStamp();
                 if(isActive()) ((XModelImpl)getModel()).fireNodeChanged(this, getPath());
@@ -261,8 +261,8 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         f.setAttributeValue(XModelObjectConstants.ATTR_NAME, getAttributeValue(XModelObjectConstants.ATTR_NAME));
         f.setAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION, getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION));
         if(errors2) {
-            f.set("incorrectBody", body);
-            f.set("errors", super.get("errors"));
+            f.set("incorrectBody", body); //$NON-NLS-1$
+            f.set("errors", super.get("errors")); //$NON-NLS-1$ //$NON-NLS-2$
         }
         f.setBodySource(new SFBodySource(body));
         return f;
@@ -273,9 +273,9 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     		fireObjectChanged(XModelTreeEvent.BEFORE_MERGE);
     	}
     	if(!XModelObjectConstants.YES.equals(update.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT))) {
-    		super.set("incorrectBody", "");
+    		super.set("incorrectBody", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			super.set(XModelObjectConstants.ATTR_NAME_IS_INCORRECT,XModelObjectConstants.NO);
-			super.set("errors", "");
+			super.set("errors", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			loaderError = null;
     	}
     	if(update instanceof AbstractExtendedXMLFileImpl) {
@@ -332,12 +332,12 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     	}
     }
      
-	static String NO_MERGE_ATTRIBUTES = ".name.extension._lateload.isIncorrect.incorrectBody.expand.";
+	static String NO_MERGE_ATTRIBUTES = ".name.extension._lateload.isIncorrect.incorrectBody.expand."; //$NON-NLS-1$
     void mergeAttributes(XModelObject update, boolean fire) throws XModelException {
 		XAttribute[] as = update.getModelEntity().getAttributes();
 		for (int i = 0; i < as.length; i++) {
 			String n = as[i].getName();
-			if(NO_MERGE_ATTRIBUTES.indexOf("." + n + ".") >= 0) continue;
+			if(NO_MERGE_ATTRIBUTES.indexOf("." + n + ".") >= 0) continue; //$NON-NLS-1$ //$NON-NLS-2$
 			XModelObjectLoaderUtil.mergeAttributeComment(this, update, as[i], fire);
 			String ov = getAttributeValue(n);
 			String nv = update.getAttributeValue(n);

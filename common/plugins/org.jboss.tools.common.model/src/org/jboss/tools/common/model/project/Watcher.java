@@ -22,16 +22,16 @@ import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class Watcher implements XModelTreeListener {
 	static String[][] CONTRIBUTORS = new String[][]{
-		{"org.jboss.tools.struts.webprj.model.helpers.sync.SyncProjectContext", "org.jboss.tools.struts.strutsnature"},
-		{"org.jboss.tools.jsf.web.JSFWatcherContributor", "org.jboss.tools.jsf.jsfnature"}
+		{"org.jboss.tools.struts.webprj.model.helpers.sync.SyncProjectContext", "org.jboss.tools.struts.strutsnature"}, //$NON-NLS-1$ //$NON-NLS-2$
+		{"org.jboss.tools.jsf.web.JSFWatcherContributor", "org.jboss.tools.jsf.jsfnature"} //$NON-NLS-1$ //$NON-NLS-2$
 	};
 
     public static Watcher getInstance(XModel model) {
-		Watcher instance = (Watcher)model.getManager("Watcher");
+		Watcher instance = (Watcher)model.getManager("Watcher"); //$NON-NLS-1$
         if(instance == null) {
 			instance = new Watcher();
             instance.setModel(model);
-			model.addManager("Watcher", instance);
+			model.addManager("Watcher", instance); //$NON-NLS-1$
             model.addModelTreeListener(instance);
         }
         return instance;
@@ -42,7 +42,7 @@ public class Watcher implements XModelTreeListener {
     private boolean lock = false;
 
 	class WatcherRunnable implements XJob.XRunnable {
-		String id = "Watcher - " + XModelConstants.getWorkspace(model);
+		String id = "Watcher - " + XModelConstants.getWorkspace(model); //$NON-NLS-1$
 
 		public String getId() {
 			return id;
@@ -71,7 +71,7 @@ public class Watcher implements XModelTreeListener {
    	    				c.init(model);
    	    				contributors.put(nature, c);
    	    			} else if(ModelPlugin.isDebugEnabled()) {			
-   						ModelPlugin.getPluginLog().logInfo("Class is not implemented IWatcherContributor interface!");
+   						ModelPlugin.getPluginLog().logInfo("Class is not implemented IWatcherContributor interface!"); //$NON-NLS-1$
   					}
     			}
     		} else {
@@ -127,7 +127,7 @@ public class Watcher implements XModelTreeListener {
                 event.getModelObject() == model.getRoot()) {
             model.removeModelTreeListener(this);
 ///            stopped = true;
-            model.removeManager("Watcher");
+            model.removeManager("Watcher"); //$NON-NLS-1$
             return;
         }
         forceUpdate();
@@ -138,7 +138,7 @@ public class Watcher implements XModelTreeListener {
     }
 
     
-	String error = "initial";
+	String error = "initial"; //$NON-NLS-1$
 	ResourceMarkers markers = null;
 
 	class RM extends ResourceMarkers {
@@ -166,10 +166,10 @@ public class Watcher implements XModelTreeListener {
 	private void setCorrect(boolean correct) {
 		XModelObject fs = FileSystemsHelper.getFileSystems(model);
 		if(fs == null) return;
-		boolean b = !XModelObjectConstants.YES.equals(fs.get("_hasErrors_"));
+		boolean b = !XModelObjectConstants.YES.equals(fs.get("_hasErrors_")); //$NON-NLS-1$
 		if(b == correct) return;
-		fs.set("_hasErrors_", (correct) ? "" : XModelObjectConstants.YES);
-		fs.fireObjectChanged("_hasErrors_");
+		fs.set("_hasErrors_", (correct) ? "" : XModelObjectConstants.YES); //$NON-NLS-1$ //$NON-NLS-2$
+		fs.fireObjectChanged("_hasErrors_"); //$NON-NLS-1$
 	}
 
 }

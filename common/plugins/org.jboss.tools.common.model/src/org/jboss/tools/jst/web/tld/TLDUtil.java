@@ -13,9 +13,9 @@ package org.jboss.tools.jst.web.tld;
 import org.jboss.tools.common.model.*;
 
 public class TLDUtil {
-    static String FILE_ENTITIES = ".FileTLD_PRO.FileTLD_1_2.FileTLD_2_0.FileTLD_2_1.";
-    static String TAG_ENTITIES = ".TLDTag.TLDTag12.TLDTag21.";
-    static String ATTR_ENTITIES = ".TLDAttribute.TLDAttribute12.";
+    static String FILE_ENTITIES = ".FileTLD_PRO.FileTLD_1_2.FileTLD_2_0.FileTLD_2_1."; //$NON-NLS-1$
+    static String TAG_ENTITIES = ".TLDTag.TLDTag12.TLDTag21."; //$NON-NLS-1$
+    static String ATTR_ENTITIES = ".TLDAttribute.TLDAttribute12."; //$NON-NLS-1$
 
     public static boolean isTaglib(XModelObject o) {
         return isOfEntity(o, FILE_ENTITIES);
@@ -30,18 +30,18 @@ public class TLDUtil {
     }
 
     private static boolean isOfEntity(XModelObject o, String entities) {
-        return entities.indexOf("." + o.getModelEntity().getName() + ".") >= 0;
+        return entities.indexOf("." + o.getModelEntity().getName() + ".") >= 0;  //$NON-NLS-1$//$NON-NLS-2$
     }
 
     public static String getTagDescription(XModelObject o) {
-        String attr = (o.getModelEntity().getAttribute("info") != null) ? "info" : "description";
+        String attr = (o.getModelEntity().getAttribute("info") != null) ? "info" : "description"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         String s = o.getAttributeValue(attr);
-        s = (s == null) ? "" : s.trim();
+        s = (s == null) ? "" : s.trim(); //$NON-NLS-1$
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if(c == '<') sb.append("&lt;");
-            else if(c == '>') sb.append("&gt;");
+            if(c == '<') sb.append("&lt;"); //$NON-NLS-1$
+            else if(c == '>') sb.append("&gt;"); //$NON-NLS-1$
             else sb.append(c);
         }
         return sb.toString();

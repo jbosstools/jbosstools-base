@@ -26,7 +26,7 @@ public class SelectOverlappedFileSystemHandler extends AbstractHandler {
     public SelectOverlappedFileSystemHandler() {}
 
     public boolean isEnabled(XModelObject o) {
-        return o != null && (XModelObjectConstants.TRUE.equals(o.get("overlapped")));
+        return o != null && (XModelObjectConstants.TRUE.equals(o.get("overlapped"))); //$NON-NLS-1$
     }
 
     public void executeHandler(XModelObject object, java.util.Properties p) throws XModelException {
@@ -34,15 +34,15 @@ public class SelectOverlappedFileSystemHandler extends AbstractHandler {
         if(object == fs) return;
         if(fs == null) {
         	if(object.isActive() && object.getFileType() == XModelObject.FILE
-        			&& XActionInvoker.getAction("OpenFile", object) != null) {
-       			XActionInvoker.invoke("OpenFile", object, null);
+        			&& XActionInvoker.getAction("OpenFile", object) != null) { //$NON-NLS-1$
+       			XActionInvoker.invoke("OpenFile", object, null); //$NON-NLS-1$
         	}
         	return;
         } 
         Properties fsp = XModelObjectUtil.toProperties(fs);
-        if(XModelObjectConstants.YES.equals(fsp.getProperty("hidden", XModelObjectConstants.NO))) {
-            fsp.setProperty("hidden", XModelObjectConstants.NO);
-            fs.setAttributeValue("info", XModelObjectUtil.toString(fsp));
+        if(XModelObjectConstants.YES.equals(fsp.getProperty("hidden", XModelObjectConstants.NO))) { //$NON-NLS-1$
+            fsp.setProperty("hidden", XModelObjectConstants.NO); //$NON-NLS-1$
+            fs.setAttributeValue("info", XModelObjectUtil.toString(fsp)); //$NON-NLS-1$
             fs.setModified(true);
             XModelImpl m = (XModelImpl)object.getModel();
             m.fireStructureChanged(fs.getParent());

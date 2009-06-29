@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.loaders.impl;
 
 import java.io.*;
+import java.text.MessageFormat;
 
 import org.w3c.dom.*;
 
@@ -57,9 +58,9 @@ public class SimpleWebFileLoader implements SerializingLoader {
         //String namespace = 
         loadNamespace(element, object);
 ////        String postfix = (namespace == null) ? "" : ":" + namespace;
-        String postfix = "";
+        String postfix = ""; //$NON-NLS-1$
         element.setAttribute(XModelObjectConstants.XML_ATTR_NAME + postfix, object.getAttributeValue(XModelObjectConstants.ATTR_NAME));
-        element.setAttribute("EXTENSION" + postfix, object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION));
+        element.setAttribute("EXTENSION" + postfix, object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION)); //$NON-NLS-1$
 
         util.load(element, object);
         String loadingError = util.getError();
@@ -67,13 +68,13 @@ public class SimpleWebFileLoader implements SerializingLoader {
         setEncoding(object, body);
 		loadPublicId(object, doc);
 
-		object.set("actualBodyTimeStamp", "" + object.getTimeStamp());
+		object.set("actualBodyTimeStamp", "" + object.getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		((AbstractXMLFileImpl)object).setLoaderError(loadingError);
 		if(!((AbstractXMLFileImpl)object).isIncorrect() && loadingError != null) {
 			object.setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
-			object.setAttributeValue("incorrectBody", body);
-			object.set("actualBodyTimeStamp", "" + object.getTimeStamp());
+			object.setAttributeValue("incorrectBody", body); //$NON-NLS-1$
+			object.set("actualBodyTimeStamp", "" + object.getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
     }
     
@@ -84,15 +85,15 @@ public class SimpleWebFileLoader implements SerializingLoader {
 			XMLUtil.getXMLErrors(new StringReader(body), resolution == EntityXMLRegistration.DTD, resolution == EntityXMLRegistration.SCHEMA);
         if(errors != null && errors.length > 0) {
             object.setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
-            object.set("correctBody", "");
-            object.setAttributeValue("incorrectBody", body);
-			object.set("actualBodyTimeStamp", "-1");
+            object.set("correctBody", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            object.setAttributeValue("incorrectBody", body); //$NON-NLS-1$
+			object.set("actualBodyTimeStamp", "-1"); //$NON-NLS-1$ //$NON-NLS-2$
 //            return;
         } else {
             object.setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.NO);
-			object.set("correctBody", body);
-			object.set("actualBodyTimeStamp", "0");
-            object.setAttributeValue("incorrectBody", "");
+			object.set("correctBody", body); //$NON-NLS-1$
+			object.set("actualBodyTimeStamp", "0"); //$NON-NLS-1$ //$NON-NLS-2$
+            object.setAttributeValue("incorrectBody", ""); //$NON-NLS-1$ //$NON-NLS-2$
         }
         return XMLUtil.getDocument(new StringReader(body));
     }
@@ -103,28 +104,28 @@ public class SimpleWebFileLoader implements SerializingLoader {
         if(rootName.indexOf(':') > 0) namespace = rootName.substring(0, rootName.indexOf(':'));
         if(namespace != null) {
         	util.setNamespace(namespace);
-        	object.setAttributeValue("namespace", namespace);
+        	object.setAttributeValue("namespace", namespace); //$NON-NLS-1$
         } else {
         	util.setNamespace(null);
-        	object.setAttributeValue("namespace", "");
+        	object.setAttributeValue("namespace", ""); //$NON-NLS-1$ //$NON-NLS-2$
         }
         return namespace;
     }
     
     protected void loadPublicId(XModelObject object, Document doc) {
 		XModelEntity entity = object.getModelEntity();
-		if(entity.getAttribute("publicId") != null) {
+		if(entity.getAttribute("publicId") != null) { //$NON-NLS-1$
 			NodeList nl = doc.getChildNodes();
 			for (int i = 0; i < nl.getLength(); i++) {
 				Node n = nl.item(i);
 				if(n instanceof DocumentType) {
 					DocumentType dt = (DocumentType)n;
 					String s = dt.getSystemId();
-					if(s == null) s = "";
-					object.setAttributeValue("systemId", s);
+					if(s == null) s = ""; //$NON-NLS-1$
+					object.setAttributeValue("systemId", s); //$NON-NLS-1$
 					s = dt.getPublicId();
-					if(s == null) s = "";
-					object.setAttributeValue("publicId", s);
+					if(s == null) s = ""; //$NON-NLS-1$
+					object.setAttributeValue("publicId", s); //$NON-NLS-1$
 				}
 			}
 		}
@@ -132,7 +133,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
     
 	protected void setEncoding(XModelObject object, String body) {
 		String encoding = XModelObjectLoaderUtil.getEncoding(body);
-		if(encoding == null) encoding = "";
+		if(encoding == null) encoding = ""; //$NON-NLS-1$
 		object.setAttributeValue(XModelObjectConstants.ATTR_NAME_ENCODING, encoding);
 	}
     
@@ -157,7 +158,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
     public boolean save(XModelObject object) {
         if (!object.isModified()) return true;
         if(XModelObjectConstants.YES.equals(object.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT))) {
-            XModelObjectLoaderUtil.setTempBody(object, object.get("incorrectBody"));
+            XModelObjectLoaderUtil.setTempBody(object, object.get("incorrectBody")); //$NON-NLS-1$
             return true;
         }
         String main = object.get(XModelObjectConstants.ATTR_NAME_BODY);
@@ -167,19 +168,19 @@ public class SimpleWebFileLoader implements SerializingLoader {
     }
 
     public String serializeObject(XModelObject object) {
-        String systemId = object.getAttributeValue("systemId");
-        String publicId = object.getAttributeValue("publicId");
+        String systemId = object.getAttributeValue("systemId"); //$NON-NLS-1$
+        String publicId = object.getAttributeValue("publicId"); //$NON-NLS-1$
     	String rootName = getRootName(object);
         Element element = createRootElement(rootName, publicId, systemId);
         return serializeToElement(element, object);
     }
     
     protected String getRootName(XModelObject object) {
-    	String namespace = object.getAttributeValue("namespace");
+    	String namespace = object.getAttributeValue("namespace"); //$NON-NLS-1$
     	String rootName = object.getModelEntity().getXMLSubPath();
        	if(namespace != null && namespace.length() > 0) {
        		util.setNamespace(namespace);
-       		rootName = namespace + ":" + rootName;
+       		rootName = namespace + ":" + rootName; //$NON-NLS-1$
        	} else {
        		util.setNamespace(null);
        	}
@@ -200,7 +201,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
             util.saveFinalComment(element, object);
 ////        String postfix = (namespace == null) ? "" : ":" + namespace;
             element.removeAttribute(XModelObjectConstants.XML_ATTR_NAME);
-            element.removeAttribute("EXTENSION");
+            element.removeAttribute("EXTENSION"); //$NON-NLS-1$
             return serialize(element, object);
         } catch (IOException e) {
         	ModelPlugin.getPluginLog().logError(e);
@@ -211,7 +212,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
     }
     
     protected String getDocName() {
-    	return "taglib";///TLD_DOC_QUALIFIEDNAME
+    	return "taglib";///TLD_DOC_QUALIFIEDNAME //$NON-NLS-1$
     }
     
     /**
@@ -227,16 +228,19 @@ public class SimpleWebFileLoader implements SerializingLoader {
 		try {
 			XModelObjectLoaderUtil.serialize(element.getOwnerDocument(), sw, encoding);
 		} catch (UnsupportedEncodingException uee) {
-			if("UTF-8".equals(encoding)) return null;
+			if("UTF-8".equals(encoding)) return null; //$NON-NLS-1$
 			ServiceDialog d = object.getModel().getService();
 			XEntityData data = XEntityDataImpl.create(new String[][]{
 				{object.getModelEntity().getName(), XModelObjectConstants.YES},
 				{XModelObjectConstants.ATTR_NAME_ENCODING, XModelObjectConstants.NO}
 			});
-			data.setValue(XModelObjectConstants.ATTR_NAME_ENCODING, "UTF-8");
-			String message = "Encoding " + encoding + " is not supported. Please enter correct value.";
+			data.setValue(XModelObjectConstants.ATTR_NAME_ENCODING, "UTF-8"); //$NON-NLS-1$
+			String message = MessageFormat
+					.format(
+							"Encoding {0} is not supported. Please enter correct value.",
+							encoding);
 			int q = d.showDialog("Error", message, new String[]{"OK"}, data, ServiceDialog.ERROR);
-			encoding = (q != 0) ? "UTF-8" : data.getValue(XModelObjectConstants.ATTR_NAME_ENCODING);
+			encoding = (q != 0) ? "UTF-8" : data.getValue(XModelObjectConstants.ATTR_NAME_ENCODING); //$NON-NLS-1$
 			object.setAttributeValue(XModelObjectConstants.ATTR_NAME_ENCODING, encoding);
 			return serialize(element, object);
 		}

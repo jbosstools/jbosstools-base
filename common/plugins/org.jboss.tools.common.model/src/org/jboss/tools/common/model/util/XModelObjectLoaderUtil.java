@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -42,7 +43,6 @@ import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelConstants;
 import org.jboss.tools.common.model.XModelException;
-import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.engines.impl.EnginesLoader;
@@ -57,7 +57,7 @@ import org.jboss.tools.common.util.FileUtil;
 import org.jboss.tools.common.xml.XMLUtilities;
 
 public class XModelObjectLoaderUtil {
-	public static String ATTR_ID_NAME = "_id_";
+	public static String ATTR_ID_NAME = "_id_"; //$NON-NLS-1$
     private Hashtable<String,String> singular = null;
     private boolean saveentity = true;
     private String namespace = null;
@@ -90,7 +90,7 @@ public class XModelObjectLoaderUtil {
     }
 
     public void load(Element element, XModelObject o) {
-    	if("AnyElement".equals(o.getModelEntity().getName())) {
+    	if("AnyElement".equals(o.getModelEntity().getName())) { //$NON-NLS-1$
     		loadAnyElement(element, o);
     	} else {
 			loadAttributes(element, o);
@@ -111,7 +111,7 @@ public class XModelObjectLoaderUtil {
     static Map<XModelEntity, Set<String>> allowedChildren = new HashMap<XModelEntity, Set<String>>();
     
     protected Set<String> getAllowedChildren(XModelEntity entity) {
-    	if(entity.getChild("AnyElement") != null) return null;
+    	if(entity.getChild("AnyElement") != null) return null; //$NON-NLS-1$
     	Set<String> x = allowedChildren.get(entity);
     	if(x != null) return x;
     	Set<String> children = new HashSet<String>();
@@ -121,7 +121,7 @@ public class XModelObjectLoaderUtil {
     		if(xml == null) continue;
     		int s = xml.indexOf('|');
     		if(s > 0) {
-    			StringTokenizer st = new StringTokenizer(xml, "|");
+    			StringTokenizer st = new StringTokenizer(xml, "|"); //$NON-NLS-1$
     			while(st.hasMoreTokens()) {
     				String dxml = st.nextToken();
         			int k = dxml.indexOf('.');
@@ -154,7 +154,7 @@ public class XModelObjectLoaderUtil {
     }
 
     protected Set<String> getAllowedAttributes(XModelEntity entity) {
-    	if(entity.getChild("AnyElement") != null) return null;
+    	if(entity.getChild("AnyElement") != null) return null; //$NON-NLS-1$
     	Set<String> attributes = new HashSet<String>();
     	if(saveentity) {
     		attributes.add(XModelConstants.XMODEL_ENTITY_ATTR);
@@ -166,7 +166,7 @@ public class XModelObjectLoaderUtil {
     		if(xml == null) continue;
     		int s = xml.indexOf('|');
     		if(s > 0) {
-    			StringTokenizer st = new StringTokenizer(xml, "|");
+    			StringTokenizer st = new StringTokenizer(xml, "|"); //$NON-NLS-1$
     			while(st.hasMoreTokens()) {
     				String dxml = st.nextToken();
         			int k = dxml.indexOf('.');
@@ -191,7 +191,10 @@ public class XModelObjectLoaderUtil {
        	    		name = namespaceMapping.convertToDefault(name);
        	    	}
     			if(allowed.contains(name)) continue;
-    			error = "Editor model does not support child element " + name + " of " + element.getNodeName() + ":0:0";
+    			error = MessageFormat
+						.format(
+								"Editor model does not support child element {0} of {1}:0:0",
+								name, element.getNodeName());
     			return true;
     		}
     	}
@@ -205,8 +208,11 @@ public class XModelObjectLoaderUtil {
     		if(n.getNodeType() == Node.ATTRIBUTE_NODE) {
     			String name = n.getNodeName();
     			if(allowed.contains(name)) continue;
-    			if(name.startsWith("xmlns")) continue;
-    			error = "Editor model does not support attribute " + name + " of " + element.getNodeName() + ":0:0";;
+    			if(name.startsWith("xmlns")) continue; //$NON-NLS-1$
+    			error = MessageFormat
+						.format(
+								"Editor model does not support attribute {0} of {1}:0:0",
+								name, element.getNodeName());;
     			return true;
     		}
     	}
@@ -235,7 +241,7 @@ public class XModelObjectLoaderUtil {
             }
         }
         String s = getFinalComment(element);
-        if(s != null && s.length() > 0) o.set("#final-comment", s);
+        if(s != null && s.length() > 0) o.set("#final-comment", s); //$NON-NLS-1$
     }
     
     private String applyNamespaceToAttribute(String xmlname) {
@@ -244,8 +250,8 @@ public class XModelObjectLoaderUtil {
     	}
     	if(namespace == null || namespace.length() == 0) return xmlname;
     	if(xmlname.indexOf(':') > 0 || xmlname.indexOf('.') >= 0 || xmlname.indexOf('#') >= 0) return xmlname;
-    	if(xmlname.equals("xmlns")) {
-    		return xmlname + ":" + namespace;
+    	if(xmlname.equals("xmlns")) { //$NON-NLS-1$
+    		return xmlname + ":" + namespace; //$NON-NLS-1$
     	}
     	return xmlname;
     }
@@ -255,7 +261,7 @@ public class XModelObjectLoaderUtil {
     		xmlname = namespaceMapping.convertToActual(xmlname);
     	}
     	if(namespace != null && namespace.length() > 0) {
-    		return namespace + ":" + xmlname;
+    		return namespace + ":" + xmlname; //$NON-NLS-1$
     	}
     	return xmlname;
     }
@@ -266,9 +272,9 @@ public class XModelObjectLoaderUtil {
     }
 
     public String getAttribute(Element element, String xmlname, XAttribute attr) {
-        if (xmlname.equals("CDATA") || xmlname.equals("#text")) {
+        if (xmlname.equals("CDATA") || xmlname.equals("#text")) { //$NON-NLS-1$ //$NON-NLS-2$
             return getCDATA(element, attr == null || attr.isTrimmable());
-        } else if (xmlname.equals("#comment")) {
+        } else if (xmlname.equals("#comment")) { //$NON-NLS-1$
             return getComment(element);
         } else {
        		int ind = xmlname.indexOf('.');
@@ -278,7 +284,7 @@ public class XModelObjectLoaderUtil {
        	    		childName = namespaceMapping.convertToActual(childName);
        	    	}
        			if(namespace != null && namespace.length() > 0 && childName.indexOf(':') < 0) {
-       				childName = namespace + ":" + childName;
+       				childName = namespace + ":" + childName; //$NON-NLS-1$
        			}
        			Element child = XMLUtil.getFirstChild(element, childName);
        			if (child != null) return getAttribute(child, xmlname.substring(ind+1), attr);
@@ -302,7 +308,7 @@ public class XModelObjectLoaderUtil {
             if(n.getNodeType() != Node.ELEMENT_NODE) continue;
             Element e = (Element)n;
             String en = getChildEntity(entity, e);
-            if(en == null && entity.getChild("AnyElement") != null) en = "AnyElement";
+            if(en == null && entity.getChild("AnyElement") != null) en = "AnyElement"; //$NON-NLS-1$ //$NON-NLS-2$
             if(en == null) continue;
             XModelObject co = model.createModelObject(en, null);
             if(co == null) continue;
@@ -312,7 +318,7 @@ public class XModelObjectLoaderUtil {
         			int k = 1;
         			String pp = co.getPathPart();
         			while(o.getChildByPath(pp) != null) {
-        				co.setAttributeValue(ATTR_ID_NAME, "" + k);
+        				co.setAttributeValue(ATTR_ID_NAME, "" + k); //$NON-NLS-1$
         				String ppn = co.getPathPart();
         				if(ppn.equals(pp)) break;
         				pp = ppn;
@@ -323,7 +329,7 @@ public class XModelObjectLoaderUtil {
             		XModelObject q = o.getChildByPath(co.getPathPart());
             		if(q != null) EnginesLoader.merge(q, co, false);
             	} catch (XModelException exc) {
-            		ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:loadChildren:" + exc.getMessage(), exc);
+            		ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:loadChildren:" + exc.getMessage(), exc); //$NON-NLS-1$
             	}
             	continue;
             } 
@@ -353,7 +359,7 @@ public class XModelObjectLoaderUtil {
    	    	if(namespaceMapping != null) { 
    	    		n = namespaceMapping.convertToDefault(n);
    	    	}
-			if(namespace != null && namespace.length() > 0 && n.startsWith(namespace + ":")) {
+			if(namespace != null && namespace.length() > 0 && n.startsWith(namespace + ":")) { //$NON-NLS-1$
 				n = n.substring(namespace.length() + 1);
 			}
 			en = entity.getChildByXML(n);
@@ -402,7 +408,7 @@ public class XModelObjectLoaderUtil {
 	}
 
     public boolean save(Element parent, XModelObject o) {
-		if("AnyElement".equals(o.getModelEntity().getName())) {
+		if("AnyElement".equals(o.getModelEntity().getName())) { //$NON-NLS-1$
 			saveAnyElement(parent, o);
 			return true;
 		} else {
@@ -412,7 +418,7 @@ public class XModelObjectLoaderUtil {
    	    		xmlname = namespaceMapping.convertToActual(xmlname);
    	    	}
 			if(namespace != null && namespace.length() > 0) {
-				xmlname = namespace + ":" + xmlname;
+				xmlname = namespace + ":" + xmlname; //$NON-NLS-1$
 			}
 			Element element = XMLUtil.createElement(parent, xmlname);
 			saveAttributes(element, o);
@@ -457,11 +463,11 @@ public class XModelObjectLoaderUtil {
     }
 
     public void saveAttribute(Element element, String xmlname, String value) {
-        if (xmlname.equals("CDATA")) {
+        if (xmlname.equals("CDATA")) { //$NON-NLS-1$
             setCDATA(element, value);
-        } else if (xmlname.equals("#text")) {
+        } else if (xmlname.equals("#text")) { //$NON-NLS-1$
             setText(element, value);
-        } else if (xmlname.equals("#comment")) {
+        } else if (xmlname.equals("#comment")) { //$NON-NLS-1$
             setComment(element, value);
         } else {
             int ind = xmlname.indexOf('.');
@@ -471,7 +477,7 @@ public class XModelObjectLoaderUtil {
        	    		childName = namespaceMapping.convertToActual(childName);
        	    	}
                 if(namespace != null && namespace.length() > 0 && childName.indexOf(':') < 0) {
-                	childName = namespace + ":" + childName;
+                	childName = namespace + ":" + childName; //$NON-NLS-1$
                 }
                 Element child = XMLUtil.getFirstChild(element, childName);
                 if (child == null) child = XMLUtil.createElement(element, childName);
@@ -490,7 +496,7 @@ public class XModelObjectLoaderUtil {
     }
     
     public void saveFinalComment(Element element, XModelObject o) {
-    	String data = o.get("#final-comment");
+    	String data = o.get("#final-comment"); //$NON-NLS-1$
     	if(data == null || data.length() == 0) return;
         Comment comm = element.getOwnerDocument().createComment(data);
         element.appendChild(comm);    	
@@ -533,7 +539,7 @@ public class XModelObjectLoaderUtil {
 		if(body == null || body.length() == 0) return null; //"UTF-8"
 		String encoding = FileUtil.getEncoding(body);
 		if(encoding == null) return null; //"UTF-8"
-		return FileUtil.validateEncoding(encoding, "UTF-8");
+		return FileUtil.validateEncoding(encoding, "UTF-8"); //$NON-NLS-1$
 	}
 
     public static OutputFormat createOutputFormat(String encoding) {
@@ -542,7 +548,7 @@ public class XModelObjectLoaderUtil {
 
     public static final boolean serialize(Element element, Writer w) throws IOException {
         if(element == null) return false;
-        serialize(element, new XMLSerializer(w, createOutputFormat("UTF-8")));
+        serialize(element, new XMLSerializer(w, createOutputFormat("UTF-8"))); //$NON-NLS-1$
         w.close();
         return true;
     }
@@ -553,7 +559,7 @@ public class XModelObjectLoaderUtil {
 
     public static final boolean serialize(Element element, OutputStream w) throws IOException {
         if(element == null) return false;
-        serialize(element, new XMLSerializer(w, createOutputFormat("UTF-8")));
+        serialize(element, new XMLSerializer(w, createOutputFormat("UTF-8"))); //$NON-NLS-1$
         w.close();
         return true;
     }
@@ -594,8 +600,8 @@ public class XModelObjectLoaderUtil {
         } catch (IOException e2) {
         	e = e2;
         }
-    	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:asString:" + e.getMessage(), e);
-    	return "";
+    	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:asString:" + e.getMessage(), e); //$NON-NLS-1$
+    	return ""; //$NON-NLS-1$
     }
 
     public static final String getCDATA(Element elem) {
@@ -616,7 +622,7 @@ public class XModelObjectLoaderUtil {
     public static final String getFinalComment(Element elem) {
         StringBuffer sb = new StringBuffer();
         NodeList nl = elem.getChildNodes();
-        if(nl == null || nl.getLength() == 0) return "";
+        if(nl == null || nl.getLength() == 0) return ""; //$NON-NLS-1$
         Node node = nl.item(nl.getLength() - 1);
         loadComment(sb, node);
         return sb.toString();
@@ -638,17 +644,17 @@ public class XModelObjectLoaderUtil {
     }
 
     public static final void setCDATA(Element element, String data) {
-        if (data == null) data = "";
+        if (data == null) data = ""; //$NON-NLS-1$
         element.appendChild(element.getOwnerDocument().createCDATASection(data));
     }
 
     public static final void setText(Element element, String data) {
-        if (data == null) data = "";
+        if (data == null) data = ""; //$NON-NLS-1$
         element.appendChild(element.getOwnerDocument().createTextNode(data));
     }
 
     public static final void setComment(Element element, String data) {
-        if (data == null) data = "";
+        if (data == null) data = ""; //$NON-NLS-1$
         Comment comm = element.getOwnerDocument().createComment(data);
         element.getParentNode().insertBefore(comm, element);
     }
@@ -673,7 +679,7 @@ public class XModelObjectLoaderUtil {
         	e = e2;
         }
         if(e != null) {
-        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:save(f,o):" + e.getMessage(), e);
+        	ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:save(f,o):" + e.getMessage(), e); //$NON-NLS-1$
             return false;
         }
         String r = w.toString();
@@ -709,12 +715,12 @@ public class XModelObjectLoaderUtil {
     }
 
     public static String getReadOnlyMessage(File f) {
-        return "Cannot save to read-only file " + f.getAbsolutePath() + ".";
+        return MessageFormat.format("Cannot save to read-only file {0}.", f.getAbsolutePath());
     }
 
     public static String getTempBody(XModelObject o) {
         String b = o.get(XModelObjectConstants.ATTR_NAME__BODY_);
-        o.set(XModelObjectConstants.ATTR_NAME__BODY_, "");
+        o.set(XModelObjectConstants.ATTR_NAME__BODY_, ""); //$NON-NLS-1$
         return b;
     }
 
@@ -729,7 +735,7 @@ public class XModelObjectLoaderUtil {
     }
 
     public static String readFile(String filename) {
-    	if(filename == null) return "";
+    	if(filename == null) return ""; //$NON-NLS-1$
         return readFile(new File(expandString(filename)));
     }
 
@@ -765,7 +771,7 @@ public class XModelObjectLoaderUtil {
 
     public static final String getResourcePath(XModelObject object) {
         int t = object.getFileType();
-        if(t == XFileObject.SYSTEM) return "";
+        if(t == XFileObject.SYSTEM) return ""; //$NON-NLS-1$
         XModelObject p = object.getParent();
         if(p == null) return null;
         String n = (t == XFileObject.FOLDER) ? object.get(XModelObjectConstants.XML_ATTR_NAME) :
@@ -834,7 +840,7 @@ public class XModelObjectLoaderUtil {
 	}
 	
 	protected void loadAnyElement(Element element, XModelObject o) {
-		o.setAttributeValue("tag", element.getTagName());
+		o.setAttributeValue("tag", element.getTagName()); //$NON-NLS-1$
 		StringBuffer sb = new StringBuffer();
 		NamedNodeMap as = element.getAttributes();
 		for (int i = 0; i < as.getLength(); i++) {
@@ -842,28 +848,28 @@ public class XModelObjectLoaderUtil {
 			String nm = n.getNodeName();
 			String v = n.getNodeValue();
 			if(v == null) continue;
-			if(sb.length() > 0) sb.append(";");
-			sb.append(nm).append("=").append(v);
+			if(sb.length() > 0) sb.append(";"); //$NON-NLS-1$
+			sb.append(nm).append("=").append(v); //$NON-NLS-1$
 		}
-		o.setAttributeValue("attributes", sb.toString());
-		String text = getAttribute(element, "#text").trim();
+		o.setAttributeValue("attributes", sb.toString()); //$NON-NLS-1$
+		String text = getAttribute(element, "#text").trim(); //$NON-NLS-1$
 		if(text.length() > 0) {
-			while(text.startsWith("\n") || text.startsWith("\r")) text = text.substring(1);
-			while(text.endsWith("\n") || text.endsWith("\r")) text = text.substring(0, text.length() - 1);
-			o.setAttributeValue("text", text);
+			while(text.startsWith("\n") || text.startsWith("\r")) text = text.substring(1); //$NON-NLS-1$ //$NON-NLS-2$
+			while(text.endsWith("\n") || text.endsWith("\r")) text = text.substring(0, text.length() - 1); //$NON-NLS-1$ //$NON-NLS-2$
+			o.setAttributeValue("text", text); //$NON-NLS-1$
 		}
 		loadChildren(element, o);
 	}
     
 	protected void saveAnyElement(Element parent, XModelObject o) {
-		String xmlname = o.getAttributeValue("tag");
+		String xmlname = o.getAttributeValue("tag"); //$NON-NLS-1$
 		if(xmlname == null || xmlname.trim().length() == 0) return;
 		if(namespace != null && namespace.length() > 0) {
-			xmlname = namespace + ":" + xmlname;
+			xmlname = namespace + ":" + xmlname; //$NON-NLS-1$
 		}
 		Element element = XMLUtil.createElement(parent, xmlname);
-		String attrs = o.getAttributeValue("attributes");
-		StringTokenizer st = new StringTokenizer(attrs, ";");
+		String attrs = o.getAttributeValue("attributes"); //$NON-NLS-1$
+		StringTokenizer st = new StringTokenizer(attrs, ";"); //$NON-NLS-1$
 		while(st.hasMoreTokens()) {
 			String t = st.nextToken();
 			int i = t.indexOf('=');
@@ -872,9 +878,9 @@ public class XModelObjectLoaderUtil {
 			String v = t.substring(i + 1);
 			element.setAttribute(n, v);
 		}
-		String text = o.getAttributeValue("text");
+		String text = o.getAttributeValue("text"); //$NON-NLS-1$
 		if(text != null && text.length() > 0) {
-			saveAttribute(element, "#text", text);
+			saveAttribute(element, "#text", text); //$NON-NLS-1$
 		}
 		XModelObject[] cs = o.getChildren();
 		for (int i = 0; i < cs.length; i++) {
@@ -894,21 +900,21 @@ public class XModelObjectLoaderUtil {
     		xmlname = namespaceMapping.convertToActual(xmlname);
     	}
 		if(namespace != null && namespace.length() > 0 && xmlname.indexOf(':') < 0) {
-			xmlname = namespace + ":" + xmlname;
+			xmlname = namespace + ":" + xmlname; //$NON-NLS-1$
 		}
 		for (int i = 0; i < ns.length; i++) {
 			Element c = XMLUtil.createElement(element, xmlname);
-			saveAttribute(c, "#text", ns[i]);
+			saveAttribute(c, "#text", ns[i]); //$NON-NLS-1$
 		}
 	}
 
 	protected String loadArray(Element element, String xmlname) {
 		Element[] es = XMLUtil.getChildren(element, xmlname);
-		if(es == null || es.length == 0) return "";
+		if(es == null || es.length == 0) return ""; //$NON-NLS-1$
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < es.length; i++) {
-			if(i > 0) sb.append(",");
-			sb.append(getAttribute(es[i], "#text"));
+			if(i > 0) sb.append(","); //$NON-NLS-1$
+			sb.append(getAttribute(es[i], "#text")); //$NON-NLS-1$
 		}
 		return sb.toString();
 	}
@@ -941,14 +947,14 @@ public class XModelObjectLoaderUtil {
 	}
 	
 	private static String getAttributeCommentName(String xmlname) {
-        if(xmlname != null && xmlname.indexOf('.') > 0 && !xmlname.endsWith("#comment")) {
-			return xmlname + ".#comment";
+        if(xmlname != null && xmlname.indexOf('.') > 0 && !xmlname.endsWith("#comment")) { //$NON-NLS-1$
+			return xmlname + ".#comment"; //$NON-NLS-1$
 		}
         return null;		
 	}
 
 	public static void mergeFinalComment(XModelObject destination, XModelObject source, boolean fire) {
-		String commentName = "#final-comment";
+		String commentName = "#final-comment"; //$NON-NLS-1$
 		mergeComment(destination, source, commentName, fire);
 	}
 	
@@ -959,7 +965,7 @@ public class XModelObjectLoaderUtil {
 		String set = null;
 		if(newComment == null || newComment.length() == 0) {
 			if(oldComment != null && oldComment.length() > 0) {
-				set = "";
+				set = ""; //$NON-NLS-1$
 			} 
 		} else {
 			if(oldComment == null || !oldComment.equals(newComment)) {

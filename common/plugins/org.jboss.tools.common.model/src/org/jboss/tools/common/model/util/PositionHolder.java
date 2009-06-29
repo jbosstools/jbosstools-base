@@ -14,10 +14,10 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 
 public class PositionHolder {
-	static String POSITION_HOLDER_ID = "positionHolder";
+	static String POSITION_HOLDER_ID = "positionHolder"; //$NON-NLS-1$
 	
 	public static PositionHolder getPosition(XModelObject object, String attribute) {
-		String id = (attribute == null) ? POSITION_HOLDER_ID : POSITION_HOLDER_ID + "." + attribute;
+		String id = (attribute == null) ? POSITION_HOLDER_ID : POSITION_HOLDER_ID + "." + attribute; //$NON-NLS-1$
 		PositionHolder h = (PositionHolder)object.getObject(id);
 		if(h == null) {
 			h = new PositionHolder(object, attribute);

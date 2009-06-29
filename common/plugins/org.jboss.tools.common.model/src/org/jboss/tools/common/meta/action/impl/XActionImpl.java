@@ -33,7 +33,7 @@ public class XActionImpl extends XActionItemImpl implements XAction {
     public XActionImpl() {}
 
     public String getWizardClassName() {
-        return (wizard = expand(wizard, "Wizards"));
+        return (wizard = expand(wizard, "Wizards")); //$NON-NLS-1$
     }
 
     public XRedirect getRedirect() {
@@ -94,22 +94,22 @@ public class XActionImpl extends XActionItemImpl implements XAction {
 
     public void load(Element el) {
         super.load(el);
-        handlerClassName = el.getAttribute("HandlerClassName");
-        handlername = new ClassHolder2(this, el.getAttribute("HandlerClassName"), "Handlers");
-        wizard = el.getAttribute("WizardClassName");
-        baseaction = (!XMetaDataLoader.hasAttribute(el, "BaseActionName")) ? null :
-                       el.getAttribute("BaseActionName");
-        isSave2ModelRequired = XModelObjectConstants.YES.equals(el.getAttribute("SAVE_REQUIRED"));
-        hide = el.getAttribute("HIDE");
-        Element[] cs = XMetaDataLoader.getChildrenElements(el, "EntityData");
+        handlerClassName = el.getAttribute("HandlerClassName"); //$NON-NLS-1$
+        handlername = new ClassHolder2(this, el.getAttribute("HandlerClassName"), "Handlers"); //$NON-NLS-1$ //$NON-NLS-2$
+        wizard = el.getAttribute("WizardClassName"); //$NON-NLS-1$
+        baseaction = (!XMetaDataLoader.hasAttribute(el, "BaseActionName")) ? null : //$NON-NLS-1$
+                       el.getAttribute("BaseActionName"); //$NON-NLS-1$
+        isSave2ModelRequired = XModelObjectConstants.YES.equals(el.getAttribute("SAVE_REQUIRED")); //$NON-NLS-1$
+        hide = el.getAttribute("HIDE"); //$NON-NLS-1$
+        Element[] cs = XMetaDataLoader.getChildrenElements(el, "EntityData"); //$NON-NLS-1$
         data = new XEntityDataImpl[cs.length];
         for (int i = 0; i < cs.length; i++) {
             data[i] = new XEntityDataImpl();
             ((XEntityDataImpl)data[i]).load(cs[i]);
         }
-        String callbackname = el.getAttribute("CallBackClassName");
+        String callbackname = el.getAttribute("CallBackClassName"); //$NON-NLS-1$
         if(callbackname != null && callbackname.length() > 0) {
-        	ModelPlugin.getPluginLog().logInfo("Warning: callback=" + callbackname);
+        	ModelPlugin.getPluginLog().logInfo("Warning: callback=" + callbackname); //$NON-NLS-1$
         }
     }
 
@@ -140,10 +140,10 @@ public class XActionImpl extends XActionItemImpl implements XAction {
     public static XAction getHelpAction() {
         if(help != null) return help;
         XActionImpl a = new XActionImpl();
-        a.handlername = new ClassHolder2(a, "org.jboss.tools.common.meta.help.HelpHandler", "Handlers");
-        a.setDisplayName("Help");
-        a.setName("Help");
-        a.iconname = "action.empty";
+        a.handlername = new ClassHolder2(a, "org.jboss.tools.common.meta.help.HelpHandler", "Handlers"); //$NON-NLS-1$ //$NON-NLS-2$
+        a.setDisplayName("Help"); //$NON-NLS-1$
+        a.setName("Help"); //$NON-NLS-1$
+        a.iconname = "action.empty"; //$NON-NLS-1$
         a.data = new XEntityDataImpl[0];
         return help = a;
     }
@@ -157,13 +157,13 @@ public class XActionImpl extends XActionItemImpl implements XAction {
     	if(handlerClassName == null || handlerClassName.trim().length() == 0) {
     		return null; //"handler is not set";
     	}
-    	String cn = expand(handlerClassName, "Handlers");
+    	String cn = expand(handlerClassName, "Handlers"); //$NON-NLS-1$
     	if(cn == null) {
-    		return "cannot expand handler name " + handlerClassName;
+    		return "cannot expand handler name " + handlerClassName; //$NON-NLS-1$
     	}
     	Class cls = ModelFeatureFactory.getInstance().getFeatureClass(cn);
     	if(cls == null) {
-    		return "cannot load handler class " + cn;
+    		return "cannot load handler class " + cn; //$NON-NLS-1$
     	}
     	Object h = null;
     	try {
@@ -172,29 +172,29 @@ public class XActionImpl extends XActionItemImpl implements XAction {
     		//just wrong class path in test plugin
     		return null;
     	} catch (InstantiationException e) {
-			return "cannot create handler " + cn;
+			return "cannot create handler " + cn; //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
-			return "cannot create handler " + cn;
+			return "cannot create handler " + cn; //$NON-NLS-1$
 		}
 		if(!(h instanceof XActionHandler)) {
-			return "cannot reduce handler to XActionHandler";
+			return "cannot reduce handler to XActionHandler"; //$NON-NLS-1$
 		}
     	if(h instanceof DefaultSpecialHandler) {
-    		String scn = getProperty("support");
+    		String scn = getProperty("support"); //$NON-NLS-1$
     		Class scls = ModelFeatureFactory.getInstance().getFeatureClass(scn);
         	if(scls == null) {
-        		return "cannot load support class " + scn;
+        		return "cannot load support class " + scn; //$NON-NLS-1$
         	}
         	Object so = null;
         	try {
         		so = scls.newInstance();
         	} catch (IllegalAccessException e) {
-        		return "cannot create support " + scn;
+        		return "cannot create support " + scn; //$NON-NLS-1$
         	} catch (InstantiationException e) {
-        		return "cannot create support " + scn;
+        		return "cannot create support " + scn; //$NON-NLS-1$
 			}
         	if(!(so instanceof SpecialWizardSupport)) {
-        		return "cannot reduce support " + scn + " to SpecialWizardSupport";
+        		return "cannot reduce support " + scn + " to SpecialWizardSupport"; //$NON-NLS-1$ //$NON-NLS-2$
         	}
     	}
     	return null;
@@ -205,13 +205,13 @@ public class XActionImpl extends XActionItemImpl implements XAction {
     	for (int i = 0; i < data.length; i++) {
     		XEntityDataImpl d = (XEntityDataImpl)data[i];
     		if(d.getModelEntity() == null) {
-    			return "cannot find entity " + d.getEntityName();
+    			return "cannot find entity " + d.getEntityName(); //$NON-NLS-1$
     		}
     		XAttributeData[] ad = d.getAttributeData();
     		for (int j = 0; j < ad.length; j++) {
     			XAttributeDataImpl a = (XAttributeDataImpl)ad[j];
     			if(a.getAttribute() == null) {
-    				return "cannot find attribute " + d.getEntityName() + ":" + a.getAttributeName();
+    				return "cannot find attribute " + d.getEntityName() + ":" + a.getAttributeName(); //$NON-NLS-1$ //$NON-NLS-2$
     			}
     		}
     	}

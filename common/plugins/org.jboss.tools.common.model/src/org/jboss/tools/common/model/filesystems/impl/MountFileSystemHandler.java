@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.filesystems.impl;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.io.*;
 
@@ -54,7 +55,9 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
         for (int i = 0; i < cs.length; i++) {
             String loc = canonize(cs[i].get(XModelObjectConstants.ATTR_NAME_LOCATION), cs[i].getModel()) + XModelObjectConstants.SEPARATOR;
             if(!loc.startsWith(location) && !location.startsWith(loc)) continue;
-            String mes = "File system " + p.get(XModelObjectConstants.ATTR_NAME) + " will share files with file system " + cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
+            String mes = MessageFormat.format(
+					"File system {0} will share files with file system {1}",
+					p.get(XModelObjectConstants.ATTR_NAME), cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME));
             ServiceDialog d = object.getModel().getService();
             int q = d.showDialog(ModelMessages.WARNING, mes, new String[]{ModelMessages.OK, ModelMessages.Cancel}, null, ServiceDialog.WARNING);
             return (q == 0);
@@ -76,13 +79,13 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
         if(name != null && name.length() > 0) return;
         String location = p.getProperty(XModelObjectConstants.ATTR_NAME_LOCATION);
         name = location.substring(location.lastIndexOf('/') + 1);
-        if(name.length() == 0) name = "filesystem";
+        if(name.length() == 0) name = "filesystem"; //$NON-NLS-1$
         name = XModelObjectUtil.createNewChildName(name, object);
         p.setProperty(XModelObjectConstants.ATTR_NAME, name);
     }
 
     private void setRelativeToProject(XModelObject object, Properties p) {
-        boolean isRelative = XModelObjectConstants.TRUE.equals(p.getProperty("set location relative to project"));
+        boolean isRelative = XModelObjectConstants.TRUE.equals(p.getProperty("set location relative to project")); //$NON-NLS-1$
         if(!isRelative) return;
         String location = canonize(p.getProperty(XModelObjectConstants.ATTR_NAME_LOCATION), object.getModel());
         String project = canonize(XModelConstants.WORKSPACE_REF, object.getModel());
@@ -110,18 +113,18 @@ public class MountFileSystemHandler extends DefaultCreateHandler {
         String s = XModelConstants.WORKSPACE_REF;
         if(project.length() > 0) {
             int q = new StringTokenizer(project, XModelObjectConstants.SEPARATOR).countTokens();
-            for (int i = 0; i < q; i++) s += "/..";
+            for (int i = 0; i < q; i++) s += "/.."; //$NON-NLS-1$
         }
         if(location.length() > 0) s += XModelObjectConstants.SEPARATOR + location;
         p.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, s);
     }
 
-	static SpecialWizard w = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.project.ClassPathUpdateWizard");
+	static SpecialWizard w = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.project.ClassPathUpdateWizard"); //$NON-NLS-1$
 
     public static void updateClassPath(XModelObject fs) {
-		if(fs.getModelEntity().getName().indexOf("ar") >= 0 && w != null) {
+		if(fs.getModelEntity().getName().indexOf("ar") >= 0 && w != null) { //$NON-NLS-1$
 			Properties p = new Properties();
-			p.put("model", fs.getModel());
+			p.put("model", fs.getModel()); //$NON-NLS-1$
 			w.setObject(p);
 			w.execute();
 		}

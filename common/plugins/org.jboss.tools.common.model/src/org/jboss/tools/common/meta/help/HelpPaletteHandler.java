@@ -20,7 +20,7 @@ public class HelpPaletteHandler extends HelpHandler {
     public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object)) return;
         XModelObject tab = getTabObject(object);
-        String key = (tab == null) ? null : tab.getModelEntity().getName() + "_" + tab.getPathPart().replace(' ', '_');
+        String key = (tab == null) ? null : tab.getModelEntity().getName() + "_" + tab.getPathPart().replace(' ', '_'); //$NON-NLS-1$
         if(key == null || !HelpUtil.hasHelp(key)) {
             super.executeHandler(object, prop);
         } else {
@@ -30,7 +30,7 @@ public class HelpPaletteHandler extends HelpHandler {
 
     private XModelObject getTabObject(XModelObject object) {
         XModelObject tab = object;
-        while(tab != null && !tab.getModelEntity().getName().startsWith("SharablePageTab"))
+        while(tab != null && !tab.getModelEntity().getName().startsWith("SharablePageTab")) //$NON-NLS-1$
           tab = tab.getParent();
         return tab;
     }

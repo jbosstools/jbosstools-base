@@ -18,7 +18,7 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 
 public class DeleteFileHandler extends AbstractHandler {
-	SpecialWizard closeEditor = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.editor.DeleteFileUnderEditingSpecialWizard");
+	SpecialWizard closeEditor = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.editor.DeleteFileUnderEditingSpecialWizard"); //$NON-NLS-1$
 
 	public boolean isEnabled(XModelObject object) {
 		return object != null && object.isActive() && object.getFileType() > XFileObject.NONE

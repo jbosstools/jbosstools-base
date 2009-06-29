@@ -17,7 +17,7 @@ public class PromptingProviderFactory {
 	public static IPromptingProvider WEB;
 	static {
 		try {
-			WEB = (IPromptingProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.project.list.WebPromptingProvider");
+			WEB = (IPromptingProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.project.list.WebPromptingProvider"); //$NON-NLS-1$
 		} catch (ClassCastException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}

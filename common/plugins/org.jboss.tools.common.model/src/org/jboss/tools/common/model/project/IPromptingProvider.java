@@ -15,20 +15,20 @@ import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObjectConstants;
 
 public interface IPromptingProvider {
-	static String ERROR = "error";
+	static String ERROR = "error"; //$NON-NLS-1$
 	static List<Object> EMPTY_LIST = Collections.unmodifiableList(new ArrayList<Object>());
 
-	static String PROPERTY_TYPE = "propertyType";
-	static String FILE = "file";
-	static String KEY = "key";
-	static String MODULE = "module";
-	static String ACTION = "action";
-	static String TYPE = "type";
-	static String PROPERTY = "property";
-	static String MODEL_OBJECT_PATH = "model-path";
+	static String PROPERTY_TYPE = "propertyType"; //$NON-NLS-1$
+	static String FILE = "file"; //$NON-NLS-1$
+	static String KEY = "key"; //$NON-NLS-1$
+	static String MODULE = "module"; //$NON-NLS-1$
+	static String ACTION = "action"; //$NON-NLS-1$
+	static String TYPE = "type"; //$NON-NLS-1$
+	static String PROPERTY = "property"; //$NON-NLS-1$
+	static String MODEL_OBJECT_PATH = "model-path"; //$NON-NLS-1$
 	static String NAME = XModelObjectConstants.ATTR_NAME;
-	static String ATTRIBUTE = "attribute";
-	static String LOCALE = "locale";
+	static String ATTRIBUTE = "attribute"; //$NON-NLS-1$
+	static String LOCALE = "locale"; //$NON-NLS-1$
 	
 	public boolean isSupporting(String id);
 	public List getList(XModel model, String id, String prefix, Properties properties);

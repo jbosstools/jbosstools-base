@@ -20,7 +20,7 @@ public class ExtraRootImpl extends RegularObjectImpl {
     }
 
     public String getPathPart() {
-        return "root:" + super.getPathPart();
+        return "root:" + super.getPathPart(); //$NON-NLS-1$
     }
     public String getLongPath() {
         return getPathPart();

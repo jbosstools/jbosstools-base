@@ -57,7 +57,7 @@ public final class XModelObjectUtil {
         String[][] res = new String[sx.length][];
         for (int i = 0; i < sx.length; i++) {
             int d = sx[i].indexOf(' ');
-            res[i] = (d < 0) ? new String[]{"", sx[i]}
+            res[i] = (d < 0) ? new String[]{"", sx[i]} //$NON-NLS-1$
                      : new String[]{sx[i].substring(0, d), sx[i].substring(d + 1).trim()};
         }
         return res;
@@ -93,11 +93,11 @@ public final class XModelObjectUtil {
                 if(v == null && model != null) {
                     int d = q.lastIndexOf('.');
                     String op = (d < 0) ? q : q.substring(0, d);
-                    String oa = (d < 0) ? "value" : q.substring(d + 1);
+                    String oa = (d < 0) ? "value" : q.substring(d + 1); //$NON-NLS-1$
                     XModelObject o = model.getByPath(op);
                     v = (o == null) ? null : o.getAttributeValue(oa);
                 }
-                v = (v == null) ? "" : expand(v, model, context, found);
+                v = (v == null) ? "" : expand(v, model, context, found); //$NON-NLS-1$
                 found.setProperty(q, v);
             }
             result.append(v);
@@ -106,17 +106,17 @@ public final class XModelObjectUtil {
     }
 
     public static Properties toProperties(XModelObject fs) {
-        return toProperties(fs.getAttributeValue("info"));
+        return toProperties(fs.getAttributeValue("info")); //$NON-NLS-1$
     }
 
     public static Properties toProperties(String s) {
         Properties props = new Properties();
-        StringTokenizer st = new StringTokenizer(s, ",");
+        StringTokenizer st = new StringTokenizer(s, ","); //$NON-NLS-1$
         while (st.hasMoreElements()) {
             String t = st.nextToken();
             int i = t.indexOf('=');
             if (i < 0) {
-                props.setProperty(t, "");
+                props.setProperty(t, ""); //$NON-NLS-1$
             } else {
                 String n = t.substring(0, i).trim();
                 String v = t.substring(i + 1).trim();
@@ -128,10 +128,10 @@ public final class XModelObjectUtil {
 
     public static String toString(Properties props) {
         Iterator it = props.entrySet().iterator();
-        String s = "";
+        String s = ""; //$NON-NLS-1$
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry)it.next();
-            s += (s.length() > 0 ? "," : "") + entry.getKey() + "=" + entry.getValue();
+            s += (s.length() > 0 ? "," : "") + entry.getKey() + "=" + entry.getValue(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         return s;
     }
@@ -140,9 +140,9 @@ public final class XModelObjectUtil {
     	XModelObject f = object;
     	while(f != null && f.getFileType() != XModelObject.FILE) f = f.getParent();
     	if(f == null) return null;
-    	String r = f.getAttributeValue("publicId");
+    	String r = f.getAttributeValue("publicId"); //$NON-NLS-1$
     	if(r != null) return r;
-    	r = f.getAttributeValue("xsi:schemaLocation");
+    	r = f.getAttributeValue("xsi:schemaLocation"); //$NON-NLS-1$
     	return r;
     }
     
@@ -152,8 +152,8 @@ public final class XModelObjectUtil {
     	if(tag == null || tag.length() == 0) tag = attribute.getModelEntity().getName();
     	String attr = attribute.getXMLName();
     	if(attr == null || attr.length() == 0) attr = attribute.getName();
-    	int t = attr.indexOf("#text");
-    	if(t >= 0) attr = attr.substring(0, t) + "text()[1]";
+    	int t = attr.indexOf("#text"); //$NON-NLS-1$
+    	if(t >= 0) attr = attr.substring(0, t) + "text()[1]"; //$NON-NLS-1$
     	String path = tag.replace('.', '/') + '/' + attr.replace('.', '/');
     	while(path.lastIndexOf('/') != path.indexOf('/')) path = path.substring(path.indexOf('/') + 1);
     	if (t<0) path = path.replace('/','@');

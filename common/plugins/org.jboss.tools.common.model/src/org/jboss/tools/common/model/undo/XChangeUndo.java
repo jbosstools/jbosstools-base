@@ -15,12 +15,12 @@ import org.jboss.tools.common.model.*;
 public class XChangeUndo extends XChangeSetUndo {
 
     public XChangeUndo(XModelObject object, String attr, String oldvalue) {
-        super(object, new String[][]{{attr, oldvalue, ""}});
+        super(object, new String[][]{{attr, oldvalue, ""}}); //$NON-NLS-1$
     }
 
     protected String createDescription(XModelObject o) {
-        return "'" + attr[0][0] + "' of " +
-               o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
+        return "'" + attr[0][0] + "' of " + //$NON-NLS-1$ //$NON-NLS-2$
+               o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " + //$NON-NLS-1$
                o.getModelEntity().getRenderer().getTitle(o);
     }
 

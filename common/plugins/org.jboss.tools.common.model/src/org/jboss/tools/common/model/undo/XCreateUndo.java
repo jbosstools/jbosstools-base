@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.undo;
 
+import java.text.MessageFormat;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.icons.impl.XModelObjectIcon;
 
@@ -23,12 +24,11 @@ public class XCreateUndo extends XUndoableImpl {
         this.model = parent.getModel();
         parentpath = parent.getPath();
         childpath = child.getPathPart();
-        description = child.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
-                      child.getModelEntity().getRenderer().getTitle(child) + " in " +
-                      parent.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
-                      parent.getModelEntity().getRenderer().getTitle(parent);
+        description = MessageFormat.format("{0} {1} in {2} {3}", 
+        		child.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE), child.getModelEntity().getRenderer().getTitle(child),
+				parent.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE), parent.getModelEntity().getRenderer().getTitle(parent));
         String[] types = child.getModelEntity().getRenderer().getIconNames();
-        String iconType = types.length == 0 ? "main" : child.getModelEntity().getRenderer().getIconNames()[0];
+        String iconType = types.length == 0 ? "main" : child.getModelEntity().getRenderer().getIconNames()[0]; //$NON-NLS-1$
         icon = new XModelObjectIcon(child).getEclipseImage0(new String[]{iconType});
         kind = ADD;
     }
@@ -53,7 +53,7 @@ public class XCreateUndo extends XUndoableImpl {
     }
 
     protected String getActionIcon() {
-        return "images/java/newattribute.gif";
+        return "images/java/newattribute.gif"; //$NON-NLS-1$
     }
 
 }

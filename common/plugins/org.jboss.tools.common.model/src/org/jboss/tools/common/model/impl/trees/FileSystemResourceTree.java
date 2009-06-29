@@ -49,19 +49,19 @@ public class FileSystemResourceTree implements XFilteredTree {
         Object[] os = (Object[])object;
         XAttribute a = (XAttribute)os[0];
         XAttributeConstraintT tc = (XAttributeConstraintT)a.getConstraint();
-        String ext = tc.getProperties().getProperty("extensions");
+        String ext = tc.getProperties().getProperty("extensions"); //$NON-NLS-1$
         if(ext != null) {
             extensions = new HashSet<String>();
-            StringTokenizer st = new StringTokenizer(ext, ",");
+            StringTokenizer st = new StringTokenizer(ext, ","); //$NON-NLS-1$
             while(st.hasMoreTokens()) extensions.add(st.nextToken());
         }
-        String ent = tc.getProperties().getProperty("entities");
+        String ent = tc.getProperties().getProperty("entities"); //$NON-NLS-1$
         if(ent != null) {
             entities = new HashSet<String>();
-            StringTokenizer st = new StringTokenizer(ent, ",");
+            StringTokenizer st = new StringTokenizer(ent, ","); //$NON-NLS-1$
             while(st.hasMoreTokens()) entities.add(st.nextToken());
         }
-        String jro = tc.getProperties().getProperty("java_roots_only");
+        String jro = tc.getProperties().getProperty("java_roots_only"); //$NON-NLS-1$
         if(XModelObjectConstants.TRUE.equals(jro)) {
         	javaRootsOnly = true;
         }
@@ -92,7 +92,7 @@ public class FileSystemResourceTree implements XFilteredTree {
 
     public String getPath(XModelObject object) {
         String p = object.getPath();
-        if(p == null || !p.startsWith("FileSystems/")) return p;
+        if(p == null || !p.startsWith("FileSystems/")) return p; //$NON-NLS-1$
         return XModelObjectLoaderUtil.getResourcePath(object);
     }
 
@@ -115,7 +115,7 @@ public class FileSystemResourceTree implements XFilteredTree {
 
     protected boolean accepts0(XModelObject o) {
         int type = o.getFileType();
-        if(type == XModelObject.FOLDER) return !XModelObjectConstants.TRUE.equals(o.get("overlapped"));
+        if(type == XModelObject.FOLDER) return !XModelObjectConstants.TRUE.equals(o.get("overlapped")); //$NON-NLS-1$
         if(type != XModelObject.FILE) return false;
         String pathpart = o.getPathPart();
         String pp = pathpart.substring(pathpart.lastIndexOf('.') + 1);
@@ -132,7 +132,7 @@ public class FileSystemResourceTree implements XFilteredTree {
         for (int i = 0; i < fs.length; i++) {
         	if(javaRootsOnly) {
         		if(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER.equals(fs[i].getModelEntity().getName()) 
-        			&& !fs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME).startsWith("src")) {
+        			&& !fs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME).startsWith("src")) { //$NON-NLS-1$
         			continue;
         		}
         	}

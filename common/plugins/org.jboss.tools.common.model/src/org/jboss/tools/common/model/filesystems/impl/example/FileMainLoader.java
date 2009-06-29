@@ -18,8 +18,8 @@ import org.jboss.tools.common.model.filesystems.impl.*;
 
 public class FileMainLoader extends DefaultEntityLoader {
 //    private String MAIN_ENTITY = "XT_Main";
-    private String EXT_ENTITY = "XT_External";
-    private FileAuxiliary aux = new FileAuxiliary("efe", true);
+    private String EXT_ENTITY = "XT_External"; //$NON-NLS-1$
+    private FileAuxiliary aux = new FileAuxiliary("efe", true); //$NON-NLS-1$
 
     public FileMainLoader() {}
 

@@ -45,7 +45,7 @@ public abstract class XMetaElementImpl implements XMetaElement, XMetaDataConstan
 
     public final String expand(String parameter, String mapping) {
         if(parameter == null) return null;
-        if(parameter.startsWith("%")) {
+        if(parameter.startsWith("%")) { //$NON-NLS-1$
             int j = parameter.length() - 1;
             XMapping m = getMetaModel().getMapping(mapping);
             if(m == null) return null;
@@ -59,13 +59,13 @@ public abstract class XMetaElementImpl implements XMetaElement, XMetaDataConstan
 	}
 	
 	protected void loadProperties(Element el) {
-		p = parseProperties(el.getAttribute("PROPERTIES"));
+		p = parseProperties(el.getAttribute("PROPERTIES")); //$NON-NLS-1$
 	}
 
 	protected static Properties parseProperties(String ps) {
 		if(ps == null || ps.length() == 0) return null;
 		Properties p = new Properties();
-		StringTokenizer st = new StringTokenizer(ps, ";,");
+		StringTokenizer st = new StringTokenizer(ps, ";,"); //$NON-NLS-1$
 		while(st.hasMoreElements()) {
 			String t = st.nextToken();
 			int i = t.indexOf('=');

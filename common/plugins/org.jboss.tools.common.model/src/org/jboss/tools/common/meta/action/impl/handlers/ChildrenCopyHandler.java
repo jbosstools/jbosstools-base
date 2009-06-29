@@ -25,7 +25,7 @@ public class ChildrenCopyHandler extends AbstractHandler {
 	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		if(!isEnabled(object)) return;
 		XModelObject[] cs = object.getChildren();
-		XActionInvoker.invoke("CopyActions.Copy", cs[0], cs, p);
+		XActionInvoker.invoke("CopyActions.Copy", cs[0], cs, p); //$NON-NLS-1$
 	}
 
 }

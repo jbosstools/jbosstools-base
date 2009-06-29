@@ -55,7 +55,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     	}
     	try {
     		java.io.File f = new java.io.File(thloc);
-    		if(f.exists() || thloc.indexOf("/..") >= 0) {
+    		if(f.exists() || thloc.indexOf("/..") >= 0) { //$NON-NLS-1$
     			thloc = f.getCanonicalPath().replace('\\', '/');
     		} else {
     			thloc = thloc.replace('\\', '/');
@@ -93,9 +93,9 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 				f.createLink(new Path(thloc), IFolder.FORCE, null);
 				resource = f;
     		} catch (CoreException e) {
-    			ModelPlugin.getPluginLog().logError("Cannot create link: " + e.getMessage());
-    			ModelPlugin.getPluginLog().logError("Project path=" + prloc);
-    			ModelPlugin.getPluginLog().logError("   Link path=" + thloc);
+    			ModelPlugin.getPluginLog().logError("Cannot create link: " + e.getMessage()); //$NON-NLS-1$
+    			ModelPlugin.getPluginLog().logError("Project path=" + prloc); //$NON-NLS-1$
+    			ModelPlugin.getPluginLog().logError("   Link path=" + thloc); //$NON-NLS-1$
     		}    		
     	} else resource = f;
     	return resource;
@@ -121,7 +121,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     }
 
     protected String getAbsolutePath() {
-        return "" + get(XModelObjectConstants.ATTR_NAME_LOCATION);
+        return "" + get(XModelObjectConstants.ATTR_NAME_LOCATION); //$NON-NLS-1$
     }
 
     public FileSystemPeer getPeer() {
@@ -141,20 +141,20 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     }
 
     public String getMainIconName() {
-        String info = getAttributeValue("info");
+        String info = getAttributeValue("info"); //$NON-NLS-1$
         if(info == null || info.length() == 0) return super.getMainIconName();
-        int mr = info.indexOf("Struts-Module=/");
-        if(mr >= 0) return "main.struts.moduleroot";
-        int wc = info.indexOf("Content-Type=Web");
-        if(wc >= 0) return "main.webprj.webroot";
+        int mr = info.indexOf("Struts-Module=/"); //$NON-NLS-1$
+        if(mr >= 0) return "main.struts.moduleroot"; //$NON-NLS-1$
+        int wc = info.indexOf("Content-Type=Web"); //$NON-NLS-1$
+        if(wc >= 0) return "main.webprj.webroot"; //$NON-NLS-1$
         return super.getMainIconName();
     }
 
     public String getPresentationString() {
     	IResource r = getResource();
     	String resourceName = (r == null) ? null : r.getName();
-    	String natureProperty = getModel().getProperties().getProperty("nature");
-		if("org.jboss.tools.jsf.jsfnature".equals(natureProperty)) {
+    	String natureProperty = getModel().getProperties().getProperty("nature"); //$NON-NLS-1$
+		if("org.jboss.tools.jsf.jsfnature".equals(natureProperty)) { //$NON-NLS-1$
 			return resourceName;
 		}
     	String p = super.getPresentationString();
@@ -162,9 +162,9 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     		if(resourceName != null && resource.isLinked()) return resourceName.replace('#', '/');
     		return resourceName;
     	}
-    	if(XModelObjectConstants.TRUE.equals(getModel().getProperties().getProperty("isProjectFragment"))) {
+    	if(XModelObjectConstants.TRUE.equals(getModel().getProperties().getProperty("isProjectFragment"))) { //$NON-NLS-1$
     		return resourceName;
     	}
-    	return p.replace('#', '/') + " (" + resourceName + ")";
+    	return p.replace('#', '/') + " (" + resourceName + ")"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

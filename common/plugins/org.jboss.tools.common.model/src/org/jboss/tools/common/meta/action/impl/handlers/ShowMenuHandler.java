@@ -18,7 +18,7 @@ import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class ShowMenuHandler extends AbstractHandler {
-	SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.action.XMenuInvokerWizard");
+	SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.action.XMenuInvokerWizard"); //$NON-NLS-1$
 	
 	public boolean isEnabled(XModelObject object) {
 		return wizard != null;
@@ -27,14 +27,14 @@ public class ShowMenuHandler extends AbstractHandler {
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
     	XActionList list = getActionList(object);
     	if(list == null) return;
-    	p.put("object", object);
-    	p.put("actionList", list);
+    	p.put("object", object); //$NON-NLS-1$
+    	p.put("actionList", list); //$NON-NLS-1$
     	wizard.setObject(p);
     	wizard.execute();
     }
     
     XActionList getActionList(XModelObject object) {
-    	String listName = action.getProperty("actionList");
+    	String listName = action.getProperty("actionList"); //$NON-NLS-1$
     	if(listName != null) {
     		XActionList l = object.getModelEntity().getActionList();
     		if(!(l instanceof XActionListImpl)) return (XActionList)l.getItem(listName);

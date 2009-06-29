@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.constraint.impl;
 
+import java.text.MessageFormat;
 import java.util.*;
 
 public class XAttributeConstraintQClassName extends XAttributeConstraintImpl {
@@ -22,7 +23,7 @@ public class XAttributeConstraintQClassName extends XAttributeConstraintImpl {
     public boolean accepts(String value) {
         if(value == null) return false;
         if(value.length() == 0) return true;
-        StringTokenizer st = new StringTokenizer(value, ".");
+        StringTokenizer st = new StringTokenizer(value, "."); //$NON-NLS-1$
         ////if(st.countTokens() < 2) return false;
         while(st.hasMoreTokens()) {
             String t = st.nextToken();
@@ -33,19 +34,19 @@ public class XAttributeConstraintQClassName extends XAttributeConstraintImpl {
 
     public String getError(String value) {
         if(accepts(value)) return null;
-        StringTokenizer st = new StringTokenizer(value, ".");
+        StringTokenizer st = new StringTokenizer(value, "."); //$NON-NLS-1$
         ////if(st.countTokens() < 2) return "must be a qualified name of class in a package";
         while(st.hasMoreTokens()) {
             String err = x.getError(st.nextToken());
-            if(err != null) return "contains part that " + err;
+            if(err != null) return MessageFormat.format("contains part that {0}", err);
         }
         return null;
     }
 
     public String getCorrectedValue(String value) {
-        if(value == null) return "";
+        if(value == null) return ""; //$NON-NLS-1$
         StringBuffer sb = new StringBuffer();
-        StringTokenizer st = new StringTokenizer(value, ".");
+        StringTokenizer st = new StringTokenizer(value, "."); //$NON-NLS-1$
         while(st.hasMoreTokens()) {
             String cor = x.getCorrectedValue(st.nextToken());
             if(cor == null) continue;

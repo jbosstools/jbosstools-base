@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.constraint.impl;
 
+import java.text.MessageFormat;
 import org.w3c.dom.*;
 
 public class XAttributeConstraintInt extends XAttributeConstraintProperties {
@@ -22,9 +23,9 @@ public class XAttributeConstraintInt extends XAttributeConstraintProperties {
 
     public void load(Element element) {
         super.load(element);
-        mandatory = getBoolean("mandatory", true);
-        min = getInt("minimum", Integer.MIN_VALUE);
-        max = getInt("maximum", Integer.MAX_VALUE);
+        mandatory = getBoolean("mandatory", true); //$NON-NLS-1$
+        min = getInt("minimum", Integer.MIN_VALUE); //$NON-NLS-1$
+        max = getInt("maximum", Integer.MAX_VALUE); //$NON-NLS-1$
     }
 
     public boolean accepts(String value) {
@@ -45,11 +46,13 @@ public class XAttributeConstraintInt extends XAttributeConstraintProperties {
     	} else if(min == 0 && max == Integer.MAX_VALUE) {
     		return "must be a non-negative integer.";
     	} else if(min > Integer.MIN_VALUE && max == Integer.MAX_VALUE) {
-    		return "must be an integer greater than " + min + ".";
+    		return MessageFormat.format("must be an integer greater than {0}.",
+					min);
     	} else if(min == Integer.MIN_VALUE && max < Integer.MAX_VALUE) {
-    		return "must be an integer less than " + max + ".";
+    		return MessageFormat.format("must be an integer less than {0}.", max);
     	} else {
-    		return "must be an integer from " + min + " to " + max + ".";
+    		return MessageFormat.format("must be an integer from {0} to {1}.",
+					min, max);
     	}
     }
 

@@ -19,7 +19,7 @@ public class SearchTree extends DefaultSiftedTree {
 	public void dispose() {}
 
 	public XModelObject getRoot() {
-        return model.getRoot("Search");
+        return model.getRoot("Search"); //$NON-NLS-1$
     }
 
 }

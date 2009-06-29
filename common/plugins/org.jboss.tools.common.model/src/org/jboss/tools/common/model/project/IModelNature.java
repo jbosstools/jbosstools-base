@@ -13,12 +13,12 @@ package org.jboss.tools.common.model.project;
 import org.jboss.tools.common.model.XModel;
 
 public interface IModelNature {
-	static String PROJECT_FILE_NANE = "org.jboss.tools.jst.web.xml";
-	static String PROJECT_FILE = ".settings/" + PROJECT_FILE_NANE;
-	static String PROJECT_TEMP = "org.jboss.tools.common.model.temp";
+	static String PROJECT_FILE_NANE = "org.jboss.tools.jst.web.xml"; //$NON-NLS-1$
+	static String PROJECT_FILE = ".settings/" + PROJECT_FILE_NANE; //$NON-NLS-1$
+	static String PROJECT_TEMP = "org.jboss.tools.common.model.temp"; //$NON-NLS-1$
 	
-	static String ECLIPSE_PROJECT = "eclipse.project";
-	static String ECLIPSE_PROJECT_OLD = "exadel.eclipse.project";
+	static String ECLIPSE_PROJECT = "eclipse.project"; //$NON-NLS-1$
+	static String ECLIPSE_PROJECT_OLD = "exadel.eclipse.project"; //$NON-NLS-1$
 
 	XModel getModel();
 	String getID();

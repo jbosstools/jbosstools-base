@@ -40,7 +40,7 @@ public class PositionSearcher {
 	public PositionSearcher() {}
 	
 	public void init(String text, XModelObject object, String attribute) {
-		if(attribute != null && attribute.startsWith("&")) {
+		if(attribute != null && attribute.startsWith("&")) { //$NON-NLS-1$
 			selectAttributeName = true;
 			attribute = attribute.substring(1);
 		}
@@ -67,7 +67,7 @@ public class PositionSearcher {
 		XAttribute a = object.getModelEntity().getAttribute(attribute);
 		String xml = (a == null) ? null : a.getXMLName();
 		if(xml == null || xml.length() == 0) return;
-		if(xml.indexOf(".") < 0) {
+		if(xml.indexOf(".") < 0) { //$NON-NLS-1$
 			String s = text.substring(startPosition, endPosition);
 			int i1 = findAttrPosition(s, xml);
 			if(selectAttributeName) {
@@ -84,16 +84,16 @@ public class PositionSearcher {
 			}
 		} else {
 			xml = xml.substring(0, xml.indexOf('.'));
-			int e1 = text.indexOf("</" + object.getModelEntity().getXMLSubPath() + ">", startPosition);
-			String s = e1 < 0 ? "" : text.substring(startPosition, e1);
+			int e1 = text.indexOf("</" + object.getModelEntity().getXMLSubPath() + ">", startPosition); //$NON-NLS-1$ //$NON-NLS-2$
+			String s = e1 < 0 ? "" : text.substring(startPosition, e1); //$NON-NLS-1$
 			if(xml.length() == 0) {
-				int i1 = s.indexOf(">");
+				int i1 = s.indexOf(">"); //$NON-NLS-1$
 				endPosition = startPosition + i1 + 1;
 				startPosition = startPosition + e1;
 			} else if(s.length() > 0) {
-				int i1a = s.indexOf("<" + xml + ">");
-				int i1b = s.indexOf("<" + xml + "/>");
-				int i2 = (i1a < 0) ? -1 : s.indexOf("</", i1a);
+				int i1a = s.indexOf("<" + xml + ">"); //$NON-NLS-1$ //$NON-NLS-2$
+				int i1b = s.indexOf("<" + xml + "/>"); //$NON-NLS-1$ //$NON-NLS-2$
+				int i2 = (i1a < 0) ? -1 : s.indexOf("</", i1a); //$NON-NLS-1$
 				if(i1a >= 0 && i2 >= 0) {
 					endPosition = startPosition + i2;
 					startPosition = startPosition + i1a + 2 + xml.length();
@@ -110,12 +110,12 @@ public class PositionSearcher {
 		if(i < 0) {
 			return -1;
 		}
-		StringTokenizer st = new StringTokenizer(s, "\"", true);
+		StringTokenizer st = new StringTokenizer(s, "\"", true); //$NON-NLS-1$
 		int pos = 0;
 		boolean inValue = false;
 		while(st.hasMoreTokens()) {
 			String t = st.nextToken();
-			if(t.equals("\"")) {
+			if(t.equals("\"")) { //$NON-NLS-1$
 				inValue = !inValue;
 			} else {
 				if(!inValue) {
@@ -148,9 +148,9 @@ public class PositionSearcher {
 		if(attribute != null && attribute.length() > 0) return;
 		String tagname = object.getModelEntity().getXMLSubPath();
 		if(tagname == null || tagname.length() == 0) return;
-		String start = "<" + tagname;
+		String start = "<" + tagname; //$NON-NLS-1$
 		if(text.indexOf(start, startPosition) != startPosition) return;
-		String finish = "</" + tagname + ">";
+		String finish = "</" + tagname + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 		int i = text.indexOf(finish, startPosition);
 		if(i >= 0) endPosition = i + finish.length();
 	}
@@ -167,15 +167,15 @@ public class PositionSearcher {
 		public void selectObject(XModelObject object) {
 			if(object == null) return;
 			String xml = object.getModelEntity().getXMLSubPath();
-			String token = "<" + xml;
+			String token = "<" + xml; //$NON-NLS-1$
 			if(object.getFileType() == XModelObject.FILE) {
 				startPos = nextStartPos(token, startPos + 1);
 				if(startPos >= 0) {
-					endPos = text.indexOf(">", startPos + 1);
-					if(endPos < 0) endPos = text.indexOf("<", startPos + 1);
+					endPos = text.indexOf(">", startPos + 1); //$NON-NLS-1$
+					if(endPos < 0) endPos = text.indexOf("<", startPos + 1); //$NON-NLS-1$
 					if(endPos < 0) endPos = text.length(); else endPos++;
 				}
-			} else if(token.equals("<")) {
+			} else if(token.equals("<")) { //$NON-NLS-1$
 				selectObject(object.getParent());
 			} else {
 				XModelObject parent = object.getParent();
@@ -198,8 +198,8 @@ public class PositionSearcher {
 						}						
 					}
 					if(os[i] == object) {
-						endPos = text.indexOf(">", startPos + 1);
-						if(endPos < 0) endPos = text.indexOf("<", startPos + 1);
+						endPos = text.indexOf(">", startPos + 1); //$NON-NLS-1$
+						if(endPos < 0) endPos = text.indexOf("<", startPos + 1); //$NON-NLS-1$
 						if(endPos < 0) endPos = text.length(); else endPos++;
 						return;
 					}					 
@@ -210,9 +210,9 @@ public class PositionSearcher {
 		int nextStartPos(String token, int b) {
 			int s = text.indexOf(token, b);
 			if(s < 0) return s;
-			int cb = text.indexOf("<!--", b);
+			int cb = text.indexOf("<!--", b); //$NON-NLS-1$
 			if(cb < 0 || cb > s) return s;
-			int ce = text.indexOf("-->", cb);
+			int ce = text.indexOf("-->", cb); //$NON-NLS-1$
 			if(ce < 0) return -1;
 			return nextStartPos(token, ce + 3);
 		}

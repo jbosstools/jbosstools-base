@@ -10,17 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.util;
 
-import java.awt.Point;
 import java.awt.image.*;
 
 import javax.swing.*;
 
-import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class IconUtil {
 	public static final int PALETTE_GROUP_IMAGE_TYPE = 1; 

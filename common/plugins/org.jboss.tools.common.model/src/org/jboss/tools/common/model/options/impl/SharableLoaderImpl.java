@@ -45,7 +45,7 @@ public class SharableLoaderImpl implements SharableConstants {
             String xml = an[i].getXMLName();
             if(xml == null || xml.trim().length() == 0) continue;
             String v = loader.getAttribute(element, xml);
-            if(v != null && "Note2".equals(an[i].getEditor().getName())) {
+            if(v != null && "Note2".equals(an[i].getEditor().getName())) { //$NON-NLS-1$
             	v = XModelObjectLoaderUtil.loadFromXMLAttribute(v);
             }
             if(v != null) sharable.setAttributeValue(an[i].getName(), v);
@@ -92,7 +92,7 @@ public class SharableLoaderImpl implements SharableConstants {
         if(!sharable.scopeExists(scopename)) return;
         XModelEntity entity = sharable.getModelEntity();
         String en = entity.getName();
-        if(en.startsWith("Sharable")) en = en.substring(8);
+        if(en.startsWith("Sharable")) en = en.substring(8); //$NON-NLS-1$
         Element element = parent.getOwnerDocument().createElement(en);
         parent.appendChild(element);
         saveAttributes(element, sharable, scopename);
@@ -109,7 +109,7 @@ public class SharableLoaderImpl implements SharableConstants {
             String xml = as[i].getXMLName();
             if(xml == null || xml.trim().length() == 0) continue;
             String v = sharable.getAttributeValue(as[i].getName(), scopename);
-            if(v != null && "Note2".equals(as[i].getEditor().getName())) {
+            if(v != null && "Note2".equals(as[i].getEditor().getName())) { //$NON-NLS-1$
             	v = XModelObjectLoaderUtil.saveToXMLAttribute(v);
             }            
             loader.saveAttribute(element, xml, v);
@@ -144,7 +144,7 @@ public class SharableLoaderImpl implements SharableConstants {
             if(children[i].isRequired()) {
                 SharableElement c = (SharableElement)sharable.getModel().createModelObject(children[i].getName(), new Properties());
                 if(c == null) {
-                	ModelPlugin.getPluginLog().logInfo("Could not create sharable folder " + children[i].getName());
+                	ModelPlugin.getPluginLog().logInfo("Could not create sharable folder " + children[i].getName()); //$NON-NLS-1$
                 	continue;
                 }
                 c.setScope(PROJECT);

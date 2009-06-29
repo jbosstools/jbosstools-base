@@ -23,8 +23,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.internal.decorators.DecoratorManager;
 import org.eclipse.ui.progress.UIJob;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.osgi.framework.Bundle;
 
 public class XJob extends WorkspaceJob {
 	public static Object FAMILY_XJOB = new Object();

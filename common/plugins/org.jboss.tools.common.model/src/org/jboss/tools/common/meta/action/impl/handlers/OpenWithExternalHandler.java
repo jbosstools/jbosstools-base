@@ -12,6 +12,7 @@ package org.jboss.tools.common.meta.action.impl.handlers;
 
 import java.io.*;
 import java.net.MalformedURLException;
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.meta.key.WizardKeys;
@@ -31,7 +32,7 @@ public class OpenWithExternalHandler extends AbstractHandler {
         if(object == null || object.getFileType() != XFileObject.FILE) return false;
         String s = getEditorName(object);
         boolean b = (s != null);
-        if(!b) s = "?";
+        if(!b) s = "?"; //$NON-NLS-1$
         ((XActionImpl)action).setDisplayName(s);
         return b;
     }
@@ -43,15 +44,17 @@ public class OpenWithExternalHandler extends AbstractHandler {
         String f = getFileName(object);
         String ext = OpenWithHelper.getLogicalExtension(object, action);
         XModelObject editor = OpenWithHelper.getEditorObject(object.getModel(), ext);
-        if(editor == null) throw new RuntimeException("External editor for file extension '" + ext + "' is not set.");
+        if(editor == null) throw new RuntimeException("External editor for file extension '" + ext + "' is not set."); //$NON-NLS-1$ //$NON-NLS-2$
         start(displayName, f, editor);
     }
 
     static boolean checkSave(String actionname, XModelObject object) throws XModelException {
         if(!object.isModified() || !object.isActive() || !(object.getParent() instanceof FolderImpl)) return true;
         ServiceDialog d = object.getModel().getService();
-        String mes = DefaultCreateHandler.title(object, true) + " is modified.\n" +
-                     "Do you want to save it on disk before launching the external program?";
+        String mes = MessageFormat
+				.format(
+						"{0} is modified.\nDo you want to save it on disk before launching the external program?",
+						DefaultCreateHandler.title(object, true));
         int i = d.showDialog(actionname, mes, new String[]{ModelMessages.Yes, ModelMessages.No, ModelMessages.Cancel}, null, ServiceDialog.QUESTION);
         if(i == 0) {
             ((FolderImpl)object.getParent()).saveChild(object);
@@ -66,9 +69,9 @@ public class OpenWithExternalHandler extends AbstractHandler {
     private String getEditorName(XModelObject object) {
         String ext = OpenWithHelper.getLogicalExtension(object, action);
         XModelObject o = object.getModel().getByPath(OpenWithHelper.EDITORS);
-        String[] es = XModelObjectUtil.asStringArray(o.getAttributeValue("extensions"));
+        String[] es = XModelObjectUtil.asStringArray(o.getAttributeValue("extensions")); //$NON-NLS-1$
         for (int i = 0; i < es.length; i++) {
-            if(!es[i].toLowerCase().startsWith(ext.toLowerCase() + ":")) continue;
+            if(!es[i].toLowerCase().startsWith(ext.toLowerCase() + ":")) continue; //$NON-NLS-1$
             return es[i].substring(ext.length() + 1);
         }
         return null;
@@ -77,14 +80,14 @@ public class OpenWithExternalHandler extends AbstractHandler {
     public static void start(String actionname, String filename, XModelObject editor) throws XModelException {
         int i = filename.indexOf('#');
         String fn = (i < 0) ? filename : filename.substring(0, i);
-        if(!new File(fn).isFile()) throw new IllegalArgumentException("Cannot find file " + fn + ".");
+        if(!new File(fn).isFile()) throw new IllegalArgumentException("Cannot find file " + fn + "."); //$NON-NLS-1$ //$NON-NLS-2$
         if(OpenWithHelper.validatePath(actionname, editor)) new OWEProcess(editor, filename).start();
     }
 
     public static void startExplorer(XModel model, String url) throws XModelException {
-        XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser");
+        XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser"); //$NON-NLS-1$
         if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
-        if(OpenWithHelper.validatePath("Open", editor)) new OWEProcess(editor, url, true).start();
+        if(OpenWithHelper.validatePath("Open", editor)) new OWEProcess(editor, url, true).start(); //$NON-NLS-1$
     }
 
 }
@@ -105,7 +108,7 @@ class OWEProcess extends XProcess {
     }
 
     protected String getRoot() {
-        return ".";
+        return "."; //$NON-NLS-1$
     }
 
     protected void write(String s) {
@@ -113,12 +116,12 @@ class OWEProcess extends XProcess {
     }
 
     protected void buildCommandLine(ArrayList<String> l) {
-        String program = o.getAttributeValue("path");
+        String program = o.getAttributeValue("path"); //$NON-NLS-1$
         l.add(program);
-        if("Internet Browser".equals(o.getAttributeValue(XModelObjectConstants.ATTR_NAME)) && !isUrl) {
+        if("Internet Browser".equals(o.getAttributeValue(XModelObjectConstants.ATTR_NAME)) && !isUrl) { //$NON-NLS-1$
             try {
                 java.net.URL u = new File(file).toURL();
-                file = u.getProtocol() + "://" + u.getFile();
+                file = u.getProtocol() + "://" + u.getFile(); //$NON-NLS-1$
             } catch (MalformedURLException e) {
             	ModelPlugin.getPluginLog().logError(e);
             }

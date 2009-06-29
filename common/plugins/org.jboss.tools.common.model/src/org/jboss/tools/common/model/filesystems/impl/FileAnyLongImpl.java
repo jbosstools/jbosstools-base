@@ -25,7 +25,7 @@ public class FileAnyLongImpl extends FileAnyImpl {
 
 	public String getAsText() {
 		File file = _getFile();
-		return (!file.isFile()) ? "" : FileUtil.readFile(file);
+		return (!file.isFile()) ? "" : FileUtil.readFile(file); //$NON-NLS-1$
 	}
 
 	public void edit(String body) {

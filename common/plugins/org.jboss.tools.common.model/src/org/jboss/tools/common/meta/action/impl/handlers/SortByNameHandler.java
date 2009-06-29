@@ -25,7 +25,7 @@ public class SortByNameHandler extends AbstractHandler {
     	if(!isEnabled(object)) return;
     	OrderedObjectImpl ordered = (OrderedObjectImpl)object;
     	NameComparator c = new NameComparator();
-    	c.attribute = action.getProperty("attribute");
+    	c.attribute = action.getProperty("attribute"); //$NON-NLS-1$
     	ordered.sort(c);
     	ordered.setModified(true);
     }
@@ -37,8 +37,8 @@ public class SortByNameHandler extends AbstractHandler {
 			if(attribute == null) return 0;
 			String s1 = o1.getAttributeValue(attribute);
 			String s2 = o2.getAttributeValue(attribute);
-			s1 = (s1 == null) ? "" : s1.toLowerCase();
-			s2 = (s2 == null) ? "" : s2.toLowerCase();
+			s1 = (s1 == null) ? "" : s1.toLowerCase(); //$NON-NLS-1$
+			s2 = (s2 == null) ? "" : s2.toLowerCase(); //$NON-NLS-1$
 			return s1.compareTo(s2);
 		}
     	

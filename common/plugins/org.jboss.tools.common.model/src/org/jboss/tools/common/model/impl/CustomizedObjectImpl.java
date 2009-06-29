@@ -22,25 +22,25 @@ public class CustomizedObjectImpl extends RegularObjectImpl {
 		if(attribute != null) return attribute;
 		XAttribute[] as = getModelEntity().getAttributes();
 		for (int i = 0; i < as.length; i++) {
-			if(XModelObjectConstants.TRUE.equals(as[i].getProperty("id"))) {
+			if(XModelObjectConstants.TRUE.equals(as[i].getProperty("id"))) { //$NON-NLS-1$
 				attribute = as[i].getName();
 				return attribute;
 			}
 		}
-		ModelPlugin.getPluginLog().logInfo("No id attribute set for entity " + getModelEntity().getName());
+		ModelPlugin.getPluginLog().logInfo("No id attribute set for entity " + getModelEntity().getName()); //$NON-NLS-1$
 		attribute = as[0].getName();
 		return attribute;
 	}
 	
 	public String name() {
-		return "" + getAttributeValue(getAttribute());
+		return "" + getAttributeValue(getAttribute()); //$NON-NLS-1$
 	}
 
     protected RegularChildren createChildren() {
-    	String children = getModelEntity().getProperty("children");
+    	String children = getModelEntity().getProperty("children"); //$NON-NLS-1$
     	if(children == null || children.length() == 0) return new RegularChildren();
-    	if(children.equals("%Ordered%")) return new OrderedChildren();
-    	if(children.equals("%EntityOrdered%")) return new OrderedByEntityChildren();
+    	if(children.equals("%Ordered%")) return new OrderedChildren(); //$NON-NLS-1$
+    	if(children.equals("%EntityOrdered%")) return new OrderedByEntityChildren(); //$NON-NLS-1$
     	//
         return new RegularChildren();
     }

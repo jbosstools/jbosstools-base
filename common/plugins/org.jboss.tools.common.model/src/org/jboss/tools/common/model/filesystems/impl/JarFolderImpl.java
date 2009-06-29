@@ -68,7 +68,7 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
             if(d) {
                 p.clear();
                 p.setProperty(XModelObjectConstants.ATTR_NAME, cs[i]);
-                XModelObject c = getModel().createModelObject("JarFolder", p);
+                XModelObject c = getModel().createModelObject("JarFolder", p); //$NON-NLS-1$
                 addChild(c);
             } else {
                 createFileObject(jar, path, cs[i]);
@@ -85,14 +85,14 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
         String ext = p.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
         String body = null;
         String entity = getModel().getEntityRecognizer().getEntityName(ext, body);
-        if("FileAny".equals(entity)) {
+        if("FileAny".equals(entity)) { //$NON-NLS-1$
             if(jar.getSize(cpath) > 100000) entity = XModelObjectConstants.ENT_FILE_ANY_LONG;
-            else if(jar.isTextEntry(cpath, 100)) entity = "FileTXT";
+            else if(jar.isTextEntry(cpath, 100)) entity = "FileTXT"; //$NON-NLS-1$
         } else if(entity == null) {
             body = jar.getContent(cpath);
             entity = getModel().getEntityRecognizer().getEntityName(ext, body);
         }
-        if(entity == null || getModel().getMetaData().getEntity(entity) == null) entity = "FileAny";
+        if(entity == null || getModel().getMetaData().getEntity(entity) == null) entity = "FileAny"; //$NON-NLS-1$
         XModelObject c = getModel().createModelObject(entity, p);
         if(FolderImpl.isLateloadFile2(c)) {
             FileAnyImpl ci = (FileAnyImpl)c;

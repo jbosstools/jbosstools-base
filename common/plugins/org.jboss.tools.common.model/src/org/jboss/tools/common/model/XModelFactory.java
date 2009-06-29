@@ -19,7 +19,7 @@ import org.jboss.tools.common.model.util.*;
  */
 public class XModelFactory {
     
-    static public final String META_PATH = "/meta";
+    static public final String META_PATH = "/meta"; //$NON-NLS-1$
     
 	private static XModel defaultInstance = null;
 	private static Object monitor = new Object();

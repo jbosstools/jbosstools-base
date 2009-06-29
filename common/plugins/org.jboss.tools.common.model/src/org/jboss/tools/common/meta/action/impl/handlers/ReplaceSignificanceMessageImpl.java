@@ -10,16 +10,16 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action.impl.handlers;
 
+import java.text.MessageFormat;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.model.XModelObject;
 
 public class ReplaceSignificanceMessageImpl implements SignificanceMessage {
 
 	public String getMessage(XAction action, XModelObject object, XModelObject[] objects) {
-		String message = "Replace existing element ";
 		XModelObject child = ReplaceWithNewHandler.findExistingChild(object, action);
-		String n = (child == null) ? "<>" : "<" + child.getModelEntity().getXMLSubPath() + ">";
-		message += n;
+		String n = (child == null) ? "<>" : "<" + child.getModelEntity().getXMLSubPath() + ">"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String message = MessageFormat.format("Replace existing element {0}", n);
 		return message;
 	}
 

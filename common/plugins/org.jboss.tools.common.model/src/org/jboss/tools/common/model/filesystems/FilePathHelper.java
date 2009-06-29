@@ -38,12 +38,12 @@ public class FilePathHelper {
 			Bundle b = Platform.getBundle(ModelPlugin.PLUGIN_ID);
 			String path = EclipseResourceUtil.getInstallPath(b);
 			if(path == null) return;
-			String file = path + "/images/default.gif";
+			String file = path + "/images/default.gif"; //$NON-NLS-1$
 			if(!new File(file).isFile()) {
-				ModelPlugin.getPluginLog().logWarning("Cannot find file " + file);
+				ModelPlugin.getPluginLog().logWarning("Cannot find file " + file); //$NON-NLS-1$
 				return;
 			}
-			String file2 = path + "/images/Default.gif";
+			String file2 = path + "/images/Default.gif"; //$NON-NLS-1$
 			if(!new File(file2).isFile()) {
 				isCaseSensitive = true;
 			}

@@ -18,7 +18,7 @@ public class DefaultOpenHandler extends AbstractHandler {
     public DefaultOpenHandler() {}
     
     public boolean isEnabled(XModelObject object) {
-        boolean abs = "abstract".equals(object.getAttributeValue("override"));
+        boolean abs = "abstract".equals(object.getAttributeValue("override")); //$NON-NLS-1$ //$NON-NLS-2$
         return !abs;
     }
 

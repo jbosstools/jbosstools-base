@@ -25,7 +25,7 @@ public class XAttributeConstraintProperties extends XAttributeConstraintImpl {
             Element c = (Element)nl.item(i);
             String vs = c.getAttribute(NAME);
             int n = vs.indexOf('=');
-            String k = (n < 0) ? "" : vs.substring(0, n).trim();
+            String k = (n < 0) ? "" : vs.substring(0, n).trim(); //$NON-NLS-1$
             String v = vs.substring(n + 1).trim();
             p.setProperty(k, v);
         }

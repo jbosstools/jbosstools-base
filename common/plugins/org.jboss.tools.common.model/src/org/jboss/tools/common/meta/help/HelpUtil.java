@@ -11,6 +11,7 @@
 package org.jboss.tools.common.meta.help;
 
 import java.io.*;
+import java.text.MessageFormat;
 import java.util.*;
 import java.net.URL;
 import java.util.zip.*;
@@ -27,11 +28,11 @@ import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class HelpUtil {
-	private static final String HELP_PLUGIN_ID = "org.jboss.tools.struts.doc.ui";
-	private static final String JSF_HELP_PLUGIN_ID = "org.jboss.tools.jsf.doc.ui";
+	private static final String HELP_PLUGIN_ID = "org.jboss.tools.struts.doc.ui"; //$NON-NLS-1$
+	private static final String JSF_HELP_PLUGIN_ID = "org.jboss.tools.jsf.doc.ui"; //$NON-NLS-1$
 
 	static String[] PLUGINS = new String[]{HELP_PLUGIN_ID, JSF_HELP_PLUGIN_ID};
-    static Properties keys = KeyLoader.load("help/keys");
+    static Properties keys = KeyLoader.load("help/keys"); //$NON-NLS-1$
 
     public static boolean hasHelp(String key) {
         String path = (key == null) ? null : keys.getProperty(key);
@@ -42,10 +43,10 @@ public class HelpUtil {
         String u = (key == null) ? null : keys.getProperty(key);
         if(u == null) return;
         //if(u.endsWith("noHelpYet.html")) ModelPlugin.log("Help for key " + key + " is not available.");
-        XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser");
+        XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser"); //$NON-NLS-1$
         if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
-        String f = "" + model.getProperties().getProperty(XModelConstants.HOME) + "/doc/help" + u;
-        OpenWithExternalHandler.start("Help", f, editor);
+        String f = "" + model.getProperties().getProperty(XModelConstants.HOME) + "/doc/help" + u; //$NON-NLS-1$
+        OpenWithExternalHandler.start("Help", f, editor); //$NON-NLS-1$
     }
     
     public static boolean isHelpPluginInstalled() {
@@ -60,30 +61,33 @@ public class HelpUtil {
 	}
 
     public static void callExternalBrowser(XModel model, String url) throws XModelException {
-        XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser");
+        XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser"); //$NON-NLS-1$
         if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
-        OpenWithExternalBrowserHandler.start("Help", url, editor);
+        OpenWithExternalBrowserHandler.start("Help", url, editor); //$NON-NLS-1$
     }
 
     public static String createKey(XModelObject object, XAction action) {
-        return object.getModelEntity().getName() + "_" + action.getName();
+        return object.getModelEntity().getName() + "_" + action.getName(); //$NON-NLS-1$
     }
 
     public static Properties createKey(XModelObject object, XAction action, Properties p) {
         if(p == null) p = new Properties();
-        p.setProperty("help", createKey(object, action));
+        p.setProperty("help", createKey(object, action)); //$NON-NLS-1$
         return p;
     }
 
     public static void help(XModel model, String key) {
         ServiceDialog d = model.getService();
         if(!hasHelp(key)) {
-            d.showDialog(ModelMessages.WARNING, "Help for key " + key + " is not available.", new String[]{"Close"}, null, ServiceDialog.WARNING);
+            d.showDialog(ModelMessages.WARNING, 
+            		MessageFormat.format("Help for key {0} is not available.", key), 
+            		new String[]{"Close"}, null, ServiceDialog.WARNING);
         } else {
             try {
                 HelpUtil.callHelp(model, key);
             } catch (XModelException e) {
-                d.showDialog(ModelMessages.WARNING, e.getMessage(), new String[]{"Close"}, null, ServiceDialog.WARNING);
+                d.showDialog(ModelMessages.WARNING, e.getMessage(), 
+                		new String[]{"Close"}, null, ServiceDialog.WARNING);
             }
         }
     }
@@ -91,15 +95,18 @@ public class HelpUtil {
 	public static void helpEclipse(XModel model, String key) {
 		ServiceDialog d = model.getService();
 		if(!isHelpPluginInstalled()) {
-			d.showDialog("Help", "User Guide is not installed.", new String[]{"Close"}, null, ServiceDialog.MESSAGE);
+			d.showDialog("Help", "User Guide is not installed.", 
+					new String[]{"Close"}, null, ServiceDialog.MESSAGE);
 		} else if(!hasEclipseHelp(key)) {
-			d.showDialog("Help", "Help key " + key + " is not found.", new String[]{"Close"}, null, ServiceDialog.MESSAGE);
+			d.showDialog("Help", MessageFormat.format("Help key {0} is not found.", key), 
+					new String[]{"Close"}, null, ServiceDialog.MESSAGE);
 		} else {
 			String path = getValidPath(keys.getProperty(key));
 			if (path != null) {
 				WorkbenchHelp.displayHelpResource(path);
 			} else {
-				d.showDialog("Help", "Help resource " + keys.getProperty(key) + " is not found.", new String[]{"Close"}, null, ServiceDialog.MESSAGE);
+				d.showDialog("Help", MessageFormat.format("Help resource {0} is not found.",
+						keys.getProperty(key)), new String[]{"Close"}, null, ServiceDialog.MESSAGE);
 			}
 		}
 	}
@@ -113,7 +120,7 @@ public class HelpUtil {
 			String f = url.getFile().replace('\\', '/');
 			if(f.endsWith(XModelObjectConstants.SEPARATOR)) f = f.substring(0, f.length() - 1);
 			if(!path.startsWith(XModelObjectConstants.SEPARATOR)) path = XModelObjectConstants.SEPARATOR + path;
-			String zipPath = f + "/doc.zip";
+			String zipPath = f + "/doc.zip"; //$NON-NLS-1$
 			if(new File(zipPath).exists()) {
 				 Set set = getZipEntries(zipPath);
 				 if(set.contains(path)) return XModelObjectConstants.SEPARATOR + PLUGINS[i] + XModelObjectConstants.SEPARATOR + path;

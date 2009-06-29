@@ -14,7 +14,7 @@ import org.w3c.dom.*;
 import org.jboss.tools.common.meta.constraint.*;
 
 public class XAdapterModelElement extends XAdapter {
-    private String xmlname = "";
+    private String xmlname = ""; //$NON-NLS-1$
 
     public XAdapterModelElement() {}
 

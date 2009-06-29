@@ -10,7 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.impl;
 
-import java.io.IOException;
 import java.util.*;
 
 import org.w3c.dom.Element;
@@ -76,7 +75,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     
     private void addHelpAction() {
     	XActionListImpl list = actions;
-		XActionItem item = actions.getItem("Properties");
+		XActionItem item = actions.getItem("Properties"); //$NON-NLS-1$
 		if(item instanceof XActionListImpl) list = (XActionListImpl)item;
 		list.addActionItem(XActionImpl.getHelpAction());    	
     }
@@ -101,7 +100,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     
     public Class getImplementingClass() {
     	if(resolvedImplementationClassName == UNRESOLVED) {
-    		resolvedImplementationClassName = expand(implementationClassName, "Implementations");
+    		resolvedImplementationClassName = expand(implementationClassName, "Implementations"); //$NON-NLS-1$
     	}
     	if(resolvedImplementationClassName == null) return null;
     	Class cls = ModelFeatureFactory.getInstance().getFeatureClass(resolvedImplementationClassName);
@@ -117,7 +116,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
 
     public XModelObject getObjectImplementation() {
     	if(resolvedImplementationClassName == UNRESOLVED) {
-    		resolvedImplementationClassName = expand(implementationClassName, "Implementations");
+    		resolvedImplementationClassName = expand(implementationClassName, "Implementations"); //$NON-NLS-1$
     	}
     	if(resolvedImplementationClassName == null) return null;
     	XModelObject o = ModelFeatureFactory.getInstance().createXModelObjectInstance(resolvedImplementationClassName);
@@ -141,7 +140,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
 
     public XObjectLoader getObjectLoader() {
     	if(resolvedLoaderClassName == UNRESOLVED) {
-    		resolvedLoaderClassName = expand(loaderClassName, "Loaders");
+    		resolvedLoaderClassName = expand(loaderClassName, "Loaders"); //$NON-NLS-1$
     	}
     	if(resolvedLoaderClassName == null) return null;
     	Object o = ModelFeatureFactory.getInstance().createFeatureInstance(resolvedLoaderClassName);
@@ -149,14 +148,14 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     		return null;
     	}
     	if(!(o instanceof XObjectLoader)) {
-    		ModelPlugin.getPluginLog().logError("Model object loader" + resolvedLoaderClassName + " must implement " + XObjectLoader.class.getName());
+    		ModelPlugin.getPluginLog().logError("Model object loader" + resolvedLoaderClassName + " must implement " + XObjectLoader.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
     		resolvedLoaderClassName = null;
     		return null;
     	}
         return (XObjectLoader)o;
     }
     
-    static String UNRESOLVED = "UNRESOLVED";
+    static String UNRESOLVED = "UNRESOLVED"; //$NON-NLS-1$
 
     public void setLoaderClassName(String className) {
        if(className != null && className.length() > 0) {
@@ -166,7 +165,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     }
 
     public String getEditorClassName() {
-        return (m_EditorClassName = expand(m_EditorClassName, "ObjectEditor"));
+        return (m_EditorClassName = expand(m_EditorClassName, "ObjectEditor")); //$NON-NLS-1$
     }
 
     public void setEditorClassName(String className){
@@ -226,8 +225,8 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
             setAdoptManager(element.getAttribute(ADOPT_MANAGER_CLASS));
         }
         loadDependencies(element);
-        xmlSubPath = element.getAttribute("XMLSUBPATH");
-        Element ei = XMetaDataLoader.getUniqueChild(element, "XActionItem");
+        xmlSubPath = element.getAttribute("XMLSUBPATH"); //$NON-NLS-1$
+        Element ei = XMetaDataLoader.getUniqueChild(element, "XActionItem"); //$NON-NLS-1$
         actions.setElement(ei);
 		loadProperties(element);
     }
@@ -247,7 +246,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     			} else if(XMODEL_ATTRIBUTE_REF.equals(name)) {
     				String entityName = e.getAttribute(XMetaDataConstants.ENTITY);
     				String attrName = e.getAttribute(NAME);
-    				String attributes = e.getAttribute("attributes");
+    				String attributes = e.getAttribute("attributes"); //$NON-NLS-1$
     				String[] atributeNames = new String[]{attrName};
     				if(atributeNames != null && attributes.length() > 0) {
     					atributeNames = XModelObjectUtil.asStringArray(attributes);
@@ -259,11 +258,11 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
         					if(attr != null) {
         						list.add(attr.copy());
         					} else {
-        						ModelPlugin.getPluginLog().logInfo("Cannot find reference to attribute " + attrName + " of entity " + entityName);
+        						ModelPlugin.getPluginLog().logInfo("Cannot find reference to attribute " + attrName + " of entity " + entityName); //$NON-NLS-1$ //$NON-NLS-2$
         					}
     					}
     				} else {
-    					ModelPlugin.getPluginLog().logInfo("Cannot find reference to entity " + entityName);
+    					ModelPlugin.getPluginLog().logInfo("Cannot find reference to entity " + entityName); //$NON-NLS-1$
     				}
     			}
     		}
@@ -272,7 +271,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     }
 
     private void loadDependencies(Element el) {
-        Element c = XMetaDataLoader.getUniqueChild(el, "XDependencies");
+        Element c = XMetaDataLoader.getUniqueChild(el, "XDependencies"); //$NON-NLS-1$
         XDependencies d = (c == null) ? null : (XDependencies)XMetaDataLoader.loadMetaElement(c, null, false);
         if(d != null) dependencies = d;
     }
@@ -282,7 +281,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
         sb.append(getName());
         sb.append('\n');
         for(int i = 0; i < m_Attributes.length;++i)
-          sb.append(" " + m_Attributes[i] + "\n");
+          sb.append(" " + m_Attributes[i] + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
         return sb.toString();
     }
 
@@ -361,7 +360,7 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
                 	if(unfoundEntities == null) unfoundEntities = new HashSet<String>();
                 	if(!unfoundEntities.contains(n)) {
                 		unfoundEntities.add(n);
-                		ModelPlugin.getPluginLog().logInfo("getChildByXML: cannot find child entity " + n);
+                		ModelPlugin.getPluginLog().logInfo("getChildByXML: cannot find child entity " + n); //$NON-NLS-1$
                 	}
                 	continue;
                 }
@@ -398,23 +397,23 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     	if(implementationClassName == null || implementationClassName.length() == 0) {
     		return null;
     	}
-    	String cn = expand(implementationClassName, "Implementations");
+    	String cn = expand(implementationClassName, "Implementations"); //$NON-NLS-1$
     	if(cn == null) {
-    		return "cannot expand implementation " + implementationClassName;
+    		return "cannot expand implementation " + implementationClassName; //$NON-NLS-1$
     	}
     	Class cls = ModelFeatureFactory.getInstance().getFeatureClass(cn);
     	if(cls == null) {
-    		return "cannot load implementation class " + cn;
+    		return "cannot load implementation class " + cn; //$NON-NLS-1$
     	}
     	try {
     		Object h = cls.newInstance();
     		if(!(h instanceof XModelObject)) {
-    			return "cannot reduce implementation to XModelObject";
+    			return "cannot reduce implementation to XModelObject"; //$NON-NLS-1$
     		}
     	} catch (InstantiationException e) {
-    		return "cannot create implementation object";
+    		return "cannot create implementation object"; //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
-			return "cannot create implementation object";
+			return "cannot create implementation object"; //$NON-NLS-1$
 		}
     	return null;
     }
@@ -427,23 +426,23 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
     	if(loaderClassName == null || loaderClassName.length() == 0) {
     		return null;
     	}
-    	String cn = expand(loaderClassName, "Loaders");
+    	String cn = expand(loaderClassName, "Loaders"); //$NON-NLS-1$
     	if(cn == null) {
-    		return "cannot expand loader " + loaderClassName;
+    		return "cannot expand loader " + loaderClassName; //$NON-NLS-1$
     	}
     	Class cls = ModelFeatureFactory.getInstance().getFeatureClass(cn);
     	if(cls == null) {
-    		return "cannot load loader class " + cn;
+    		return "cannot load loader class " + cn; //$NON-NLS-1$
     	}
     	try {
     		Object h = cls.newInstance();
     		if(!(h instanceof XObjectLoader)) {
-    			return "cannot reduce loader to XObjectLoader";
+    			return "cannot reduce loader to XObjectLoader"; //$NON-NLS-1$
     		}
     	} catch (InstantiationException e) {
-    		return "cannot create loader object";
+    		return "cannot create loader object"; //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
-			return "cannot create loader object";
+			return "cannot create loader object"; //$NON-NLS-1$
 		}
     	return null;
     }
@@ -477,7 +476,7 @@ class XAdoptWrapper implements XAdoptManager {
 	    		entity.adopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance(adoptclass);
 	    	}
 	    } catch (ClassCastException e) {
-	    	ModelPlugin.getPluginLog().logError("XModelEntityImpl:setAdoptManager:" + e.getMessage());
+	    	ModelPlugin.getPluginLog().logError("XModelEntityImpl:setAdoptManager:" + e.getMessage()); //$NON-NLS-1$
 	    	entity.adopt = null;
 	    }
 	}

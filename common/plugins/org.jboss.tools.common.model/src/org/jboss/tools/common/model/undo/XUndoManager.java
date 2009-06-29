@@ -70,10 +70,10 @@ public class XUndoManager {
         if(transaction >= 0) return;
         int capacity = 10;
         
-          XModelObject root = model.getRoot("Preferences");
+          XModelObject root = model.getRoot("Preferences"); //$NON-NLS-1$
           
           if(root!=null) {
-        	  String c = root.getAttributeValue("undo capacity");
+        	  String c = root.getAttributeValue("undo capacity"); //$NON-NLS-1$
         	  try {
         		  capacity = Integer.parseInt(c);
         	  } catch (NumberFormatException e) {

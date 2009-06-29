@@ -15,9 +15,9 @@ public class IconsTree extends DefaultFilteredTree {
     public IconsTree() {}
 
     protected void onSetModel() {
-        setRoot(model.getRoot("Icons"));
-        addEntities(new String[]{"SharableIcons"});
-        addEntities(new String[]{"SharableIcon"}, true);
+        setRoot(model.getRoot("Icons")); //$NON-NLS-1$
+        addEntities(new String[]{"SharableIcons"}); //$NON-NLS-1$
+        addEntities(new String[]{"SharableIcon"}, true); //$NON-NLS-1$
     }
 
 }

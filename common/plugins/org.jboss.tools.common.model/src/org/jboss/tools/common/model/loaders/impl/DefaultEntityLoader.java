@@ -49,10 +49,10 @@ public class DefaultEntityLoader implements XObjectLoader {
             object.setModified(true);
             return true;
         } catch (IOException exc) {
-        	ModelPlugin.getPluginLog().logError("DefaultEntityLoader:save(" + object.getPresentationString() + "):" + exc.getMessage());
+        	ModelPlugin.getPluginLog().logError("DefaultEntityLoader:save(" + object.getPresentationString() + "):" + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             return false;
         } catch (XModelException e2) {
-        	ModelPlugin.getPluginLog().logError("DefaultEntityLoader:save(" + object.getPresentationString() + "):" + e2.getMessage());
+        	ModelPlugin.getPluginLog().logError("DefaultEntityLoader:save(" + object.getPresentationString() + "):" + e2.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             return false;
         }
     }

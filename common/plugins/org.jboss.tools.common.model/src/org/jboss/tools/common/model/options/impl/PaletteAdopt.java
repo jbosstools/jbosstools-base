@@ -21,11 +21,11 @@ public class PaletteAdopt extends CompoundAdoptManager {
     private static XAdoptManager[] managers = null;
 
     protected String getExtensionPoint() {
-    	return "org.jboss.tools.common.model.paletteAdopt";
+    	return "org.jboss.tools.common.model.paletteAdopt"; //$NON-NLS-1$
     }
 
     public XAdoptManager[] getManagers() {
-        if(managers == null) managers = loadManagers("org.jboss.tools.common.model.paletteAdopt");
+        if(managers == null) managers = loadManagers("org.jboss.tools.common.model.paletteAdopt"); //$NON-NLS-1$
         return managers;
     }
 

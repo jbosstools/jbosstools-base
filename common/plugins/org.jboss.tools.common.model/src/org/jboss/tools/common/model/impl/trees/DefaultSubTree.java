@@ -38,14 +38,14 @@ public class DefaultSubTree extends DefaultSiftedTree {
     }
 
     public String getValue(XModelObject object) {
-        if(object == root) return "";
+        if(object == root) return ""; //$NON-NLS-1$
         String sr = root.getPath() + XModelObjectConstants.SEPARATOR;
         String so = object.getPath();
         return (so.startsWith(sr)) ? so.substring(sr.length()) : so;
     }
 
     public XModelObject find(String value) {
-        return ("".equals(value)) ? root : root.getChildByPath(value);
+        return ("".equals(value)) ? root : root.getChildByPath(value); //$NON-NLS-1$
     }
 
 

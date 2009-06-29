@@ -16,7 +16,7 @@ public class MainFileRecognizer implements EntityRecognizer {
 
     public String getEntityName(String ext, String body) {
         if(body == null) return null;
-        return "mfe".equals(ext) ? "FileXTMain" : null;
+        return "mfe".equals(ext) ? "FileXTMain" : null; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

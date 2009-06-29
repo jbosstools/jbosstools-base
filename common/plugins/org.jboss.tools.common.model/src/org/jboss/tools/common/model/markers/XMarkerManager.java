@@ -44,7 +44,7 @@ public class XMarkerManager implements IResourceChangeListener {
 		if(ResourcesPlugin.getWorkspace().isTreeLocked()) {
 			XJob.addRunnable(new XRunnable() {
 				public String getId() {
-					return "XMarkerManager";
+					return "XMarkerManager"; //$NON-NLS-1$
 				}
 				public void run() {
 					reload();					
@@ -74,11 +74,11 @@ public class XMarkerManager implements IResourceChangeListener {
 			XModelObject o = EclipseResourceUtil.getObjectByResource(r);
 			if(o == null) o = EclipseResourceUtil.createObjectForResource(r);
 			if(o == null) continue;
-			String path = ms[i].getAttribute("path", null);
+			String path = ms[i].getAttribute("path", null); //$NON-NLS-1$
 			o = (path == null) ? o : o.getModel().getByPath(path);
 			if(o == null) continue;
 			es.add(o);
-			String attr = ms[i].getAttribute("attribute", null);
+			String attr = ms[i].getAttribute("attribute", null); //$NON-NLS-1$
 			if(attr != null && attr.length() > 0) ((XModelObjectImpl)o).addErrorAttributeDirty(attr);
 		}
 		synchronized(objects) {
@@ -145,10 +145,10 @@ public class XMarkerManager implements IResourceChangeListener {
 		if(ms == null) return null;
 		for (int i = 0; i < ms.length; i++) {
 			XModelObject o = object;
-			String path = ms[i].getAttribute("path", null);
+			String path = ms[i].getAttribute("path", null); //$NON-NLS-1$
 			o = (path == null) ? o : o.getModel().getByPath(path);
 			if(o == null) continue;
-			String attr = ms[i].getAttribute("attribute", null);
+			String attr = ms[i].getAttribute("attribute", null); //$NON-NLS-1$
 			if(attr != null && attr.equals(attribute)) {
 				return ms[i].getAttribute(IMarker.MESSAGE, null);
 			}

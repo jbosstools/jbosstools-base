@@ -27,12 +27,12 @@ public interface ServiceDialog {
                           
 	public void showDialog(SpecialWizardSupport support);
 
-	public String DIALOG_MESSAGE = "message";
-	public String CHECKBOX_MESSAGE = "checkboxMessage";
-	public String CHECKED = "checked";
-	public String SEPARATOR = "separator";
-	public String BUTTONS = "buttons";
-	public static String RETURN_CODE = "returnCode";
+	public String DIALOG_MESSAGE = "message"; //$NON-NLS-1$
+	public String CHECKBOX_MESSAGE = "checkboxMessage"; //$NON-NLS-1$
+	public String CHECKED = "checked"; //$NON-NLS-1$
+	public String SEPARATOR = "separator"; //$NON-NLS-1$
+	public String BUTTONS = "buttons"; //$NON-NLS-1$
+	public static String RETURN_CODE = "returnCode"; //$NON-NLS-1$
 	
 	public boolean openConfirm(Properties p);
 	

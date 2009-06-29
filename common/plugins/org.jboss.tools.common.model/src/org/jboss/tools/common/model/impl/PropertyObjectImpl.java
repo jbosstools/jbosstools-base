@@ -20,19 +20,19 @@ public class PropertyObjectImpl extends RegularObjectImpl {
 
     public String getPathPart() {
         String name = name();
-        if(name == null || !XModelObjectConstants.NO.equals(get("ENABLED"))) return super.getPathPart();
-        return "#" + name + '=' + get("VALUE");
+        if(name == null || !XModelObjectConstants.NO.equals(get("ENABLED"))) return super.getPathPart(); //$NON-NLS-1$
+        return "#" + name + '=' + get("VALUE"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public String getPresentationString() {
         String name = name();
-        if(name == null) return "";
-        if(XModelObjectConstants.NO.equals(get("ENABLED"))) name = "#" + name;
-        String value = get("VALUE");
-        if(value == null) value = "";
-        if(value.indexOf("\n") >= 0) value = value.substring(0, value.indexOf("\n")) + "...";
+        if(name == null) return ""; //$NON-NLS-1$
+        if(XModelObjectConstants.NO.equals(get("ENABLED"))) name = "#" + name; //$NON-NLS-1$ //$NON-NLS-2$
+        String value = get("VALUE"); //$NON-NLS-1$
+        if(value == null) value = ""; //$NON-NLS-1$
+        if(value.indexOf("\n") >= 0) value = value.substring(0, value.indexOf("\n")) + "..."; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         if(value.length() > MAX_VISIBLE_VALUE_LENGTH)
-          value = value.substring(0, MAX_VISIBLE_VALUE_LENGTH) + "...";
+          value = value.substring(0, MAX_VISIBLE_VALUE_LENGTH) + "..."; //$NON-NLS-1$
         return name + '=' + value;
     }
 

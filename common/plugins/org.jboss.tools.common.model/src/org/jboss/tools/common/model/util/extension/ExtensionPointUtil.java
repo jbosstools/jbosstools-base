@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.util.extension;
 
+import java.text.MessageFormat;
 import org.eclipse.core.runtime.*;
 import org.jboss.tools.common.model.XModelException;
 
@@ -23,11 +24,15 @@ public class ExtensionPointUtil {
 	public static Object findClassByElementId(IExtensionPoint point, String id) throws CoreException {
 		IConfigurationElement element = getElementById(point, id);
 		if(element == null)
-		  throw new XModelException("Configuration element with id=" + id + " is not found");
-		String className = element.getAttribute("class");
+		  throw new XModelException(MessageFormat.format("Configuration element with id={0} is not found",
+				id));
+		String className = element.getAttribute("class"); //$NON-NLS-1$
 		if(className == null || className.length() == 0)
-		  throw new XModelException("Configuration element with id=" + id + " does not define 'class' attribute");
-		return element.createExecutableExtension("class");
+		  throw new XModelException(MessageFormat
+				.format(
+						"Configuration element with id={0} does not define ''class'' attribute",
+						id));
+		return element.createExecutableExtension("class"); //$NON-NLS-1$
 	}
 	
 	private static IConfigurationElement getElementById(IExtensionPoint point, String id) {
@@ -41,7 +46,7 @@ public class ExtensionPointUtil {
 
 	private static IConfigurationElement getElementById(IConfigurationElement[] elements, String id) {
 		for (int i = 0; i < elements.length; i++) 
-			if(id.equals(elements[i].getAttribute("id"))) return elements[i];
+			if(id.equals(elements[i].getAttribute("id"))) return elements[i]; //$NON-NLS-1$
 		for (int i = 0; i < elements.length; i++) {
 			IConfigurationElement element = getElementById(elements[i].getChildren(), id);
 			if(element != null) return element;

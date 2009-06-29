@@ -14,8 +14,8 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.impl.*;
 
 public class FileAuxiliary {
-    public static String AUX_FILE_ENTITY = "FileAnyAuxiliary";
-    String extension = "";
+    public static String AUX_FILE_ENTITY = "FileAnyAuxiliary"; //$NON-NLS-1$
+    String extension = ""; //$NON-NLS-1$
     boolean replaceExtension = true;
     boolean addLeadingDot = true;
 
@@ -41,7 +41,7 @@ public class FileAuxiliary {
     public FileAnyAuxiliaryImpl getAuxiliaryFile(XModelObject folder, XModelObject main, boolean create) {
         if(folder==null) return null;
     	String name = getAuxiliaryName(main);
-        String p = name + "." + extension;
+        String p = name + "." + extension; //$NON-NLS-1$
         XModelObject f = folder.getChildByPath(p);
         if(!(f instanceof FileAnyAuxiliaryImpl)) {
             if(!create) return null;
@@ -61,14 +61,14 @@ public class FileAuxiliary {
     	if(replaceExtension) return auxname;
 		int i = auxname.lastIndexOf('.');
 		String s = (i < 0) ? auxname : auxname.substring(0, i);
-		if(addLeadingDot && s.startsWith(".")) s = s.substring(1);
+		if(addLeadingDot && s.startsWith(".")) s = s.substring(1); //$NON-NLS-1$
 		return s;
     }
     
     public String getAuxiliaryName(XModelObject main) {
 		String name = main.getAttributeValue(XModelObjectConstants.ATTR_NAME);
-		if(!replaceExtension) name += "." + main.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION);
-		if(addLeadingDot) name = "." + name;
+		if(!replaceExtension) name += "." + main.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION); //$NON-NLS-1$
+		if(addLeadingDot) name = "." + name; //$NON-NLS-1$
 		return name;
     }
     

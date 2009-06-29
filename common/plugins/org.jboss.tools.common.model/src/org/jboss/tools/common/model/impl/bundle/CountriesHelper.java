@@ -34,21 +34,21 @@ public class CountriesHelper {
 			if(countries != null) return;
         	countries = new TreeMap<String,String>();
         }
-        countries.put("", "default");
+        countries.put("", "default"); //$NON-NLS-1$ //$NON-NLS-2$
         languages = new TreeMap<String,String>();
-        languages.put("", "default");
-        loadMap(countries, "meta/countries.txt");
-        loadMap(languages, "meta/languages.txt");
-        loadEntity(model, "ValidationFormset");
-        loadEntity(model, "ValidationFormset11");
+        languages.put("", "default"); //$NON-NLS-1$ //$NON-NLS-2$
+        loadMap(countries, "meta/countries.txt"); //$NON-NLS-1$
+        loadMap(languages, "meta/languages.txt"); //$NON-NLS-1$
+        loadEntity(model, "ValidationFormset"); //$NON-NLS-1$
+        loadEntity(model, "ValidationFormset11"); //$NON-NLS-1$
 //		loadEntity(model, "BundleList");
     }
 
     private static void loadEntity(XModel model, String entityName) {
         XModelEntity entity = model.getMetaData().getEntity(entityName);
         if(entity == null) return;
-        loadAttribute(countries, entity, "country");
-        loadAttribute(languages, entity, "language");
+        loadAttribute(countries, entity, "country"); //$NON-NLS-1$
+        loadAttribute(languages, entity, "language"); //$NON-NLS-1$
     }
 
     private static void loadAttribute(Map<String,String> map, XModelEntity entity, String attr) {
@@ -60,7 +60,7 @@ public class CountriesHelper {
         try {
             URL url = CountriesHelper.class.getClassLoader().getResource(resource);
             String s = FileUtil.readStream(url.openStream());
-            StringTokenizer st = new StringTokenizer(s, "\n");
+            StringTokenizer st = new StringTokenizer(s, "\n"); //$NON-NLS-1$
             while(st.hasMoreTokens()) {
                 String t = st.nextToken();
                 int i = t.indexOf('.'), j = t.lastIndexOf('.');
@@ -69,7 +69,7 @@ public class CountriesHelper {
                 map.put(code, name);
             }
         } catch (IOException e) {
-        	ModelPlugin.getPluginLog().logError("CountiesHelper:loadMap:" + e.getMessage());
+        	ModelPlugin.getPluginLog().logError("CountiesHelper:loadMap:" + e.getMessage()); //$NON-NLS-1$
         }
     }
 

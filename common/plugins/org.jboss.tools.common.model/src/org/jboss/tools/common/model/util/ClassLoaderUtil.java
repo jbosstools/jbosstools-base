@@ -30,26 +30,26 @@ public class ClassLoaderUtil {
     }
     
 	private static String[][] activation = {
-		{"org.jboss.tools.jst.web.ui", "org.jboss.tools.jst.web.ui.WebUiPlugin", "required"},
-		{"org.jboss.tools.jst.web", "org.jboss.tools.jst.web.WebModelPlugin", "required"},
-		{"org.jboss.tools.jsf.ui", "org.jboss.tools.jsf.ui.JsfUiPlugin", "required"},
-		{"org.jboss.tools.struts.ui", "org.jboss.tools.struts.ui.StrutsUIPlugin", "optional"},
-		{"org.jboss.tools.common.verification.ui", "org.jboss.tools.common.verification.ui.XStudioVerificationPlugin", "optional"},
+		{"org.jboss.tools.jst.web.ui", "org.jboss.tools.jst.web.ui.WebUiPlugin", "required"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"org.jboss.tools.jst.web", "org.jboss.tools.jst.web.WebModelPlugin", "required"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"org.jboss.tools.jsf.ui", "org.jboss.tools.jsf.ui.JsfUiPlugin", "required"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"org.jboss.tools.struts.ui", "org.jboss.tools.struts.ui.StrutsUIPlugin", "optional"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"org.jboss.tools.common.verification.ui", "org.jboss.tools.common.verification.ui.XStudioVerificationPlugin", "optional"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	};
 	
 	private static void activate(int from, int to) {
 		for (int i = from; i < activation.length && i < to; i++) {
 			Bundle b = Platform.getBundle(activation[i][0]);
 			if(b == null) {
-				if(activation[i].length >= 2 && "required".equals(activation[i][2])) {
-					ModelPlugin.getPluginLog().logInfo("ClassLoaderUtil:activate: Cannot find required plugin " + activation[i][0]);
+				if(activation[i].length >= 2 && "required".equals(activation[i][2])) { //$NON-NLS-1$
+					ModelPlugin.getPluginLog().logInfo("ClassLoaderUtil:activate: Cannot find required plugin " + activation[i][0]); //$NON-NLS-1$
 				}
 			} else if(b.getState() != Bundle.ACTIVE) {
 				String n = activation[i][1];
 				try {
 					b.loadClass(n);
 				} catch (ClassNotFoundException e) {
-					ModelPlugin.getPluginLog().logError("ClassLoaderUtil:activate: Cannot find class " + n);
+					ModelPlugin.getPluginLog().logError("ClassLoaderUtil:activate: Cannot find class " + n); //$NON-NLS-1$
 				}
 			}
 		}

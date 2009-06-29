@@ -20,7 +20,7 @@ public class FilePathEncoderFactory {
 
 	static {
 		try {
-			jsfEncoder = (IFilePathEncoder)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jsf.model.helpers.pages.FilePathEncoder");
+			jsfEncoder = (IFilePathEncoder)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jsf.model.helpers.pages.FilePathEncoder"); //$NON-NLS-1$
 		} catch (ClassCastException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
@@ -29,7 +29,7 @@ public class FilePathEncoderFactory {
 	public static IFilePathEncoder getEncoder(IProject project) {
 		if(project == null || !project.isOpen()) return null;
 		try {
-			if(project.hasNature("org.jboss.tools.jsf.jsfnature")) return jsfEncoder;
+			if(project.hasNature("org.jboss.tools.jsf.jsfnature")) return jsfEncoder; //$NON-NLS-1$
 		} catch (CoreException e) {
 			//ignore - all checks are done above
 		}

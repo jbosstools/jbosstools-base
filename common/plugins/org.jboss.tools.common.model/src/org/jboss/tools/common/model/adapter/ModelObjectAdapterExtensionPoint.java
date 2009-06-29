@@ -16,7 +16,7 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.osgi.framework.Bundle;
 
 public class ModelObjectAdapterExtensionPoint {
-	static String POINT_ID = "org.jboss.tools.common.model.modelObjectAdapter";
+	static String POINT_ID = "org.jboss.tools.common.model.modelObjectAdapter"; //$NON-NLS-1$
 	static ModelObjectAdapterExtensionPoint instance;
 
 	IExtensionPoint point = null;
@@ -39,17 +39,17 @@ public class ModelObjectAdapterExtensionPoint {
 			IConfigurationElement[] cs = es[i].getConfigurationElements();
 			for (int j = 0; j < cs.length; j++) {
 				Bundle bundle = Platform.getBundle(es[i].getNamespaceIdentifier());
-				String iclassname = cs[j].getAttribute("iclass");
-				String classname = cs[j].getAttribute("class");
+				String iclassname = cs[j].getAttribute("iclass"); //$NON-NLS-1$
+				String classname = cs[j].getAttribute("class"); //$NON-NLS-1$
 				Class cls = null;
 				try {
 					cls = bundle.loadClass(classname);
 				} catch (ClassNotFoundException e) {
-					ModelPlugin.getPluginLog().logError("Cannot load editor class " + classname + " from " + es[i].getNamespaceIdentifier());
+					ModelPlugin.getPluginLog().logError("Cannot load editor class " + classname + " from " + es[i].getNamespaceIdentifier()); //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
 				if(!IModelObjectAdapter.class.isAssignableFrom(cls)) {
-					ModelPlugin.getPluginLog().logInfo("Class " + classname + " must implement IModelObjectAdapter");
+					ModelPlugin.getPluginLog().logInfo("Class " + classname + " must implement IModelObjectAdapter"); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					adapters.put(iclassname, cls);
 				}

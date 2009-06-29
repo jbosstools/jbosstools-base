@@ -20,13 +20,13 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class XStudioIcons implements ImageComponent {
-    private static final String code = "abcdefghijklmnop";
+    private static final String code = "abcdefghijklmnop"; //$NON-NLS-1$
 
     public XStudioIcons() {}
 
     public String getImageString(String filename) {
         byte[] b = getBytes(filename);
-        return (b == null) ? "" : encode(b);
+        return (b == null) ? "" : encode(b); //$NON-NLS-1$
     }
 
     public String encode(byte[] b) {
@@ -79,12 +79,12 @@ public class XStudioIcons implements ImageComponent {
     }
 
     public int getHash(XModelObject obj) {
-        String s = obj.getAttributeValue("image");
-        return (s == null || s.trim().length() == 0) ? "defaultimage".hashCode() : s.hashCode();
+        String s = obj.getAttributeValue("image"); //$NON-NLS-1$
+        return (s == null || s.trim().length() == 0) ? "defaultimage".hashCode() : s.hashCode(); //$NON-NLS-1$
     }
 
     public Image getImage(XModelObject obj) {
-        String s = obj.getAttributeValue("image");
+        String s = obj.getAttributeValue("image"); //$NON-NLS-1$
         byte[] b = decode(s);
         if(b != null) {
         	try { 
@@ -98,7 +98,7 @@ public class XStudioIcons implements ImageComponent {
         		ModelPlugin.getPluginLog().logError(e);
         	}
         }
-   		return obj.getModelEntity().getMetaModel().getIconList().getImage("default.unknown");
+   		return obj.getModelEntity().getMetaModel().getIconList().getImage("default.unknown"); //$NON-NLS-1$
     }
 
 }

@@ -24,9 +24,9 @@ public class CreateIconHandler extends DefaultCreateHandler {
         XEntityData[] es = (XEntityData[])data;
         String entity = es[0].getModelEntity().getName();
         Properties p = extractProperties(es[0]);
-        String fn = p.getProperty("path");
+        String fn = p.getProperty("path"); //$NON-NLS-1$
         String im = new XStudioIcons().getImageString(fn);
-        p.setProperty("image", im);
+        p.setProperty("image", im); //$NON-NLS-1$
         XModelObject icon = object.getModel().createModelObject(entity, p);
         addCreatedObject(object, icon, p);
     }

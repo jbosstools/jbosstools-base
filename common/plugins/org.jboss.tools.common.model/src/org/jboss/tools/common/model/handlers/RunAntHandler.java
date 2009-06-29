@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.handlers;
 
+import java.text.MessageFormat;
 import java.util.Properties;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.*;
@@ -32,7 +33,7 @@ public class RunAntHandler extends AbstractHandler {
 	}
 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException {
-		ILaunchShortcut sc = findLaunchShortcut("org.eclipse.ant.ui.antShortcutWithDialog");
+		ILaunchShortcut sc = findLaunchShortcut("org.eclipse.ant.ui.antShortcutWithDialog"); //$NON-NLS-1$
 		IFile file = (IFile)object.getAdapter(IFile.class);
 		sc.launch(new StructuredSelection(file), ILaunchManager.RUN_MODE);
 	}
@@ -40,7 +41,7 @@ public class RunAntHandler extends AbstractHandler {
 	static IObjectActionDelegate findPopupMenusObjectAction(String pluginId, String actionId) {
 		Platform.getBundle(pluginId);
 		try	{
-			return (IObjectActionDelegate)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.popupMenus", actionId);
+			return (IObjectActionDelegate)ExtensionPointUtil.findClassByElementId("org.eclipse.ui.popupMenus", actionId); //$NON-NLS-1$
 		} catch (IllegalArgumentException ex) {
 			//ignore
 		} catch (CoreException ex) {
@@ -52,18 +53,18 @@ public class RunAntHandler extends AbstractHandler {
 	}
 	
 	static ILaunchShortcut findLaunchShortcut(String shortcutId) throws XModelException {
-		String pointId = "org.eclipse.debug.ui.launchShortcuts";
+		String pointId = "org.eclipse.debug.ui.launchShortcuts"; //$NON-NLS-1$
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(pointId);
-		if(point == null) throw new XModelException("Cannot find extension point " + pointId);
+		if(point == null) throw new XModelException(MessageFormat.format("Cannot find extension point {0}", pointId));
 		IConfigurationElement[] es = point.getConfigurationElements();
 		for (int i = 0; i < es.length; i++) {
-			if(!shortcutId.equals(es[i].getAttribute("id"))) continue;
+			if(!shortcutId.equals(es[i].getAttribute("id"))) continue; //$NON-NLS-1$
 			try {
-				return (ILaunchShortcut)es[i].createExecutableExtension("class");
+				return (ILaunchShortcut)es[i].createExecutableExtension("class"); //$NON-NLS-1$
 			} catch (CoreException e) {
 				throw new XModelException(e);
 			}
 		}
-		throw new XModelException("Cannot find launch shortcut " + shortcutId);
+		throw new XModelException(MessageFormat.format("Cannot find launch shortcut {0}", shortcutId));
 	}
 }

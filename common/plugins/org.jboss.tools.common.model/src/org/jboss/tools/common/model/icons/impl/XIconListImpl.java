@@ -50,7 +50,7 @@ public class XIconListImpl extends XMetaElementImpl implements XIconList, XMetaD
 	}
 
     public void load(Element element) {
-        load("", element);
+        load("", element); //$NON-NLS-1$
     }
 
     protected void load(String prefix, Element element) {
@@ -65,11 +65,11 @@ public class XIconListImpl extends XMetaElementImpl implements XIconList, XMetaD
                 String nm = prefix + c.getAttribute(NAME);
                 String pt = c.getAttribute(ICON_PATH);
                 iconnames.put(nm, pt);
-            } else if(dp.equals("GROUP")) {
+            } else if(dp.equals("GROUP")) { //$NON-NLS-1$
                 String nm = c.getAttribute(NAME);
-                load(prefix + nm + ".", c);
+                load(prefix + nm + ".", c); //$NON-NLS-1$
             } else {
-                load(prefix + dp + ".", c);
+                load(prefix + dp + ".", c); //$NON-NLS-1$
             }
         }
     }

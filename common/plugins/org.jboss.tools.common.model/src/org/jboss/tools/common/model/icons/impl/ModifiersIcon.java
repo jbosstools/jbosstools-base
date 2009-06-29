@@ -24,16 +24,16 @@ public class ModifiersIcon implements ImageComponent {
 
     static {
         XIconList list = XModelMetaDataImpl.getInstance().getIconList();
-        ABS = list.getImage("modifiers.abstract");
-        FIN = list.getImage("modifiers.final");
-        PBC = list.getImage("modifiers.public");
-        PTC = list.getImage("modifiers.protected");
-        PLC = list.getImage("modifiers.package_local");
-        PVC = list.getImage("modifiers.private");
-        PBS = list.getImage("modifiers.public_static");
-        PTS = list.getImage("modifiers.protected_static");
-        PLS = list.getImage("modifiers.package_local_static");
-        PVS = list.getImage("modifiers.private_static");
+        ABS = list.getImage("modifiers.abstract"); //$NON-NLS-1$
+        FIN = list.getImage("modifiers.final"); //$NON-NLS-1$
+        PBC = list.getImage("modifiers.public"); //$NON-NLS-1$
+        PTC = list.getImage("modifiers.protected"); //$NON-NLS-1$
+        PLC = list.getImage("modifiers.package_local"); //$NON-NLS-1$
+        PVC = list.getImage("modifiers.private"); //$NON-NLS-1$
+        PBS = list.getImage("modifiers.public_static"); //$NON-NLS-1$
+        PTS = list.getImage("modifiers.protected_static"); //$NON-NLS-1$
+        PLS = list.getImage("modifiers.package_local_static"); //$NON-NLS-1$
+        PVS = list.getImage("modifiers.private_static"); //$NON-NLS-1$
     }
 
     static Image add(Image front, Image back) {
@@ -70,25 +70,25 @@ public class ModifiersIcon implements ImageComponent {
 
     public int getHash(XModelObject obj) {
         if(!isShowingModifiers(obj)) return 0;
-        String mod = obj.getAttributeValue("modifiers");
+        String mod = obj.getAttributeValue("modifiers"); //$NON-NLS-1$
         return (mod == null) ? 0 : mod.hashCode();
     }
 
     public Image getImage(XModelObject obj) {
         if(!isShowingModifiers(obj)) return null;
-        String mod = obj.getAttributeValue("modifiers");
-        int access = (mod.indexOf("public") >= 0) ? 0 :
-                     (mod.indexOf("protected") >= 0) ? 2 :
-                     (mod.indexOf("private") >= 0) ? 3 : 1;
-        boolean isStatic = (mod.indexOf("static") >= 0);
-        int override = (mod.indexOf("final") >= 0) ? 1 :
-                       (mod.indexOf("abstract") >= 0) ? 2 : 0;
+        String mod = obj.getAttributeValue("modifiers"); //$NON-NLS-1$
+        int access = (mod.indexOf("public") >= 0) ? 0 : //$NON-NLS-1$
+                     (mod.indexOf("protected") >= 0) ? 2 : //$NON-NLS-1$
+                     (mod.indexOf("private") >= 0) ? 3 : 1; //$NON-NLS-1$
+        boolean isStatic = (mod.indexOf("static") >= 0); //$NON-NLS-1$
+        int override = (mod.indexOf("final") >= 0) ? 1 : //$NON-NLS-1$
+                       (mod.indexOf("abstract") >= 0) ? 2 : 0; //$NON-NLS-1$
         return getModifiersIcon(access, isStatic, override);
     }
 
     private boolean isShowingModifiers(XModelObject obj) {
-        XModelObject o = obj.getModel().getRoot("Preferences");
-        return (o == null) ? true : XModelObjectConstants.YES.equals(o.getAttributeValue("show modifiers"));
+        XModelObject o = obj.getModel().getRoot("Preferences"); //$NON-NLS-1$
+        return (o == null) ? true : XModelObjectConstants.YES.equals(o.getAttributeValue("show modifiers")); //$NON-NLS-1$
     }
 
     private Image getModifiersIcon(int access, boolean isStatic, int override) {

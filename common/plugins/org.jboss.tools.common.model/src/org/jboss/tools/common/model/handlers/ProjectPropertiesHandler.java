@@ -33,7 +33,7 @@ public class ProjectPropertiesHandler extends AbstractHandler {
 
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		IMenuManager m = findWorkbenchMenuManager(IWorkbenchActionConstants.M_PROJECT);
-		final IAction action = findAction(m, "org.eclipse.ui.project.properties");
+		final IAction action = findAction(m, "org.eclipse.ui.project.properties"); //$NON-NLS-1$
 		if(action == null) return;
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {

@@ -39,7 +39,7 @@ public class ProjectHome {
 			return getLocation(location);
 		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 
@@ -53,24 +53,24 @@ public class ProjectHome {
 			return getLocationFrom_strutsstudio_File(location, ep);
 		}
 		if(f.isFile()) return getLocationFrom_struts_File(location, f);
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	private String getLocationFrom_strutsstudio_File(String location, File ss) {
 		Element element = XMLUtil.getElement(ss);
-		String path = "";
-		if(element.hasAttribute("workspace-home")) {
-			path = element.getAttribute("workspace-home");
-		} else if(element.hasAttribute("WORKSPACE_HOME")) {
-			path = element.getAttribute("WORKSPACE_HOME");
+		String path = ""; //$NON-NLS-1$
+		if(element.hasAttribute("workspace-home")) { //$NON-NLS-1$
+			path = element.getAttribute("workspace-home"); //$NON-NLS-1$
+		} else if(element.hasAttribute("WORKSPACE_HOME")) { //$NON-NLS-1$
+			path = element.getAttribute("WORKSPACE_HOME"); //$NON-NLS-1$
 		}
-		String q = (path.equals(".")) ? location : (path.startsWith("./")) ? location + path.substring(1) : path;
+		String q = (path.equals(".")) ? location : (path.startsWith("./")) ? location + path.substring(1) : path; //$NON-NLS-1$ //$NON-NLS-2$
 		return q;
 	}
 	
 	private String getLocationFrom_struts_File(String location, File s) {
 		String path = XModelObjectLoaderUtil.getCDATA(XMLUtil.getElement(s));
-		String q = (path.equals(".")) ? location : (path.startsWith("./")) ? location + path.substring(1) : path;
+		String q = (path.equals(".")) ? location : (path.startsWith("./")) ? location + path.substring(1) : path; //$NON-NLS-1$ //$NON-NLS-2$
 		s.delete();
 		return q;
 	}
@@ -97,7 +97,7 @@ public class ProjectHome {
 	//Taken from J2EEUtils and modified
 	public static IPath getWebInfPath(IProject project) {		
 		IVirtualComponent component = ComponentCore.createComponent(project);		
-		IVirtualFolder webInfDir = component.getRootFolder().getFolder(new Path("/WEB-INF"));
+		IVirtualFolder webInfDir = component.getRootFolder().getFolder(new Path("/WEB-INF")); //$NON-NLS-1$
 		IPath modulePath = webInfDir.getWorkspaceRelativePath();
 		return (!webInfDir.exists()) ? null : modulePath;
 	}

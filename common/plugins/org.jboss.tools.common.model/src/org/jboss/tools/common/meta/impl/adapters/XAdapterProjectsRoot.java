@@ -15,7 +15,7 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class XAdapterProjectsRoot extends XAdapterModelElement {
-	static String USE_DEFAULT = "Use Default Path";
+	static String USE_DEFAULT = "Use Default Path"; //$NON-NLS-1$
 
 	public String getProperty(XProperty object) {
 		XModelObject o = (XModelObject)object;

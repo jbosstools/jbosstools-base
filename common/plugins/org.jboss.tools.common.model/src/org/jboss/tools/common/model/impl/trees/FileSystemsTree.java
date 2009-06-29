@@ -45,7 +45,7 @@ public class FileSystemsTree extends DefaultSiftedTree {
     }
 
     private void load() {
-        XMapping m = model.getMetaData().getMapping("FilteredTreeConstraints");
+        XMapping m = model.getMetaData().getMapping("FilteredTreeConstraints"); //$NON-NLS-1$
         if(m == null) return;
         ArrayList<XFilteredTreeConstraint> l = new ArrayList<XFilteredTreeConstraint>();
         String[] ks = m.getKeys();

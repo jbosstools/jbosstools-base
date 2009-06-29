@@ -50,7 +50,7 @@ public class XEntityDataImpl implements XEntityData, XMetaDataConstants {
 
     public void load(Element el) {
         entityname = el.getAttribute("EntityName"); //$NON-NLS-1$
-        mandatory = XModelObjectConstants.YES.equals(el.getAttribute("Mandatory")); //$NON-NLS-1$ //$NON-NLS-2$
+        mandatory = XModelObjectConstants.YES.equals(el.getAttribute("Mandatory")); //$NON-NLS-1$
         Element[] cs = XMetaDataLoader.getChildrenElements(el, "AttributeData"); //$NON-NLS-1$
         attributes = new XAttributeDataImpl[cs.length];
         for (int i = 0; i < cs.length; i++) {
@@ -66,12 +66,12 @@ public class XEntityDataImpl implements XEntityData, XMetaDataConstants {
     public static XEntityDataImpl create(String[][] data) {
         XEntityDataImpl impl = new XEntityDataImpl();
         impl.entityname = data[0][0];
-        impl.mandatory = data[0].length > 1 && XModelObjectConstants.YES.equals(data[0][1]); //$NON-NLS-1$
+        impl.mandatory = data[0].length > 1 && XModelObjectConstants.YES.equals(data[0][1]);
         impl.attributes = new XAttributeDataImpl[data.length - 1];
         for (int i = 0; i < impl.attributes.length; i++) {
             impl.attributes[i] = XAttributeDataImpl.create(impl.entityname,
                             data[i + 1][0],
-                            (data[i + 1].length > 1 && XModelObjectConstants.YES.equals(data[i + 1][1]))); //$NON-NLS-1$
+                            (data[i + 1].length > 1 && XModelObjectConstants.YES.equals(data[i + 1][1])));
         }
         return impl;
     }

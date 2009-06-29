@@ -65,7 +65,7 @@ public class EnginesLoader extends URLRootLoader {
     }
 
     protected String fileName(XModelObject object) {
-        return object.getModelEntity().getName().toLowerCase() + ".rex";
+        return object.getModelEntity().getName().toLowerCase() + ".rex"; //$NON-NLS-1$
     }
 
 	public static void merge(XModelObject object, XModelObject update) throws XModelException {

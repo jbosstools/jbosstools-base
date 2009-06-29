@@ -19,7 +19,7 @@ import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 //TODO check if this class is still needed
 
 public abstract class ViewAgentHandler extends AbstractHandler {
-    static String wizardname = "XXX.XActionSilentAgentWizard";
+    static String wizardname = "XXX.XActionSilentAgentWizard"; //$NON-NLS-1$
     static SpecialWizard wizard = null;
 
     static SpecialWizard wizard() {

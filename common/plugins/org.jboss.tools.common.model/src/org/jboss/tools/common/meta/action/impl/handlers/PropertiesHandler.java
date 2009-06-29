@@ -17,7 +17,7 @@ import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.AbstractHandler;
 
 public class PropertiesHandler extends AbstractHandler {
-    private static String wizardname = "org.jboss.tools.common.model.ui.objecteditor.PropertiesWizard";
+    private static String wizardname = "org.jboss.tools.common.model.ui.objecteditor.PropertiesWizard"; //$NON-NLS-1$
 
     public PropertiesHandler() {}
 
@@ -27,9 +27,9 @@ public class PropertiesHandler extends AbstractHandler {
 
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
-        String viewMode = action.getProperty("viewMode");
+        String viewMode = action.getProperty("viewMode"); //$NON-NLS-1$
         p = HelpUtil.createKey(object, action, p);
-        if(viewMode != null) p.put("viewMode", viewMode);
+        if(viewMode != null) p.put("viewMode", viewMode); //$NON-NLS-1$
 		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard(wizardname);
         wizard.setObject(new Object[]{object, p});
         wizard.execute();

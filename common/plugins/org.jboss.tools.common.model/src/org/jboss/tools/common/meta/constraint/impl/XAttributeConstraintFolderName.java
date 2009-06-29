@@ -10,8 +10,10 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.constraint.impl;
 
+import java.text.MessageFormat;
+
 public class XAttributeConstraintFolderName extends XAttributeConstraintImpl {
-    private static String forbid = "\\/:*\"";
+    private static String forbid = "\\/:*\""; //$NON-NLS-1$
 
     public XAttributeConstraintFolderName() {}
 
@@ -20,8 +22,8 @@ public class XAttributeConstraintFolderName extends XAttributeConstraintImpl {
         int l = value.length();
         for (int i = 0; i < l; i++)
           if(forbid.indexOf(value.charAt(i)) >= 0) return false;
-        if(value.startsWith(".")) {
-            return !value.equals(".") && !value.equals("..");
+        if(value.startsWith(".")) { //$NON-NLS-1$
+            return !value.equals(".") && !value.equals(".."); //$NON-NLS-1$ //$NON-NLS-2$
         }
         return true;
     }
@@ -31,9 +33,9 @@ public class XAttributeConstraintFolderName extends XAttributeConstraintImpl {
         int l = value.length();
         for (int i = 0; i < l; i++) {
             char c = value.charAt(i);
-            if(forbid.indexOf(c) >= 0) return "contains illegal symbol " + c;
+            if(forbid.indexOf(c) >= 0) return MessageFormat.format("contains illegal symbol {0}", c);
         }
-        if(value.equals(".") || value.equals("..")) {
+        if(value.equals(".") || value.equals("..")) { //$NON-NLS-1$ //$NON-NLS-2$
             return "cannot be equal to a path reserved for navigation";
         }
         return null;

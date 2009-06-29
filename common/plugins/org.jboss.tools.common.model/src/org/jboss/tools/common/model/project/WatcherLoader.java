@@ -18,7 +18,7 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.*;
 
 public class WatcherLoader implements XObjectLoader {
-	public static QualifiedName LOCK = new QualifiedName("", "lock-model");
+	public static QualifiedName LOCK = new QualifiedName("", "lock-model"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	public void load(XModelObject object) {
 		if(EclipseResourceUtil.isProjectFragment(object.getModel())) return;

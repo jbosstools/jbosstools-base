@@ -12,14 +12,13 @@ package org.jboss.tools.common.ant.parser;
 
 import java.io.*;
 import org.w3c.dom.*;
-import org.eclipse.ant.core.TargetInfo;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.util.XMLUtil;
 
 
 /**
  * FIXME switch to TargetInfo[] AntRunner.getAvailableTargets() 
- *
+ * @see org.eclipse.ant.core.AntRunner#getAvailableTargets()
  */
 public class AntParser {
     private String[] targets = null;

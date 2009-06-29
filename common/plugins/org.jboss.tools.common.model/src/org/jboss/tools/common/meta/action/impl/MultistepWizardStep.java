@@ -33,7 +33,7 @@ public class MultistepWizardStep {
 	}
 	
 	public String getStepImplementingClass() {
-		return "org.jboss.tools.common.model.ui.wizards.special.SpecialWizardStep";
+		return "org.jboss.tools.common.model.ui.wizards.special.SpecialWizardStep"; //$NON-NLS-1$
 	}
 	
 	public boolean isFieldEditorEnabled(String name, Properties p) {

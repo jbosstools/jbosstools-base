@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action.impl.handlers;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.model.*;
@@ -35,7 +36,7 @@ public class DefaultEditHandler extends DefaultCreateHandler {
                 String n = ad[i].getAttribute().getName();
                 String v = object.getAttributeValue(n);
                 if(v != null) ad[i].setValue(v);
-                v = action.getProperty("attribute." + n);
+                v = action.getProperty("attribute." + n); //$NON-NLS-1$
                 if(v != null) ad[i].setValue(v);
             }
         }
@@ -48,7 +49,7 @@ public class DefaultEditHandler extends DefaultCreateHandler {
             return;
         }
         XUndoManager undo = object.getModel().getUndoManager();
-        XTransactionUndo u = new XTransactionUndo("Edit " + DefaultCreateHandler.title(object, false), XTransactionUndo.EDIT);
+        XTransactionUndo u = new XTransactionUndo(MessageFormat.format("Edit {0}", DefaultCreateHandler.title(object, false)), XTransactionUndo.EDIT);
         undo.addUndoable(u);
         long stamp = object.getTimeStamp();
         try {

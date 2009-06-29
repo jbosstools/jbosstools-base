@@ -1,5 +1,6 @@
 package org.jboss.tools.common.model.files.handlers;
 
+import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -28,11 +29,11 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 		targetHolder.target = getTarget();
 		IResource r = (IResource)getTarget().getAdapter(IResource.class);
 		if(r == null) {
-			setAttributeValue(0, "folder", "");
+			setAttributeValue(0, "folder", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			targetHolder.revalidate(null);
 		} else {
 			targetHolder.revalidate(r.getFullPath().toString());
-			setAttributeValue(0, "folder", "" + targetHolder.path);
+			setAttributeValue(0, "folder", "" + targetHolder.path); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -56,7 +57,9 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 	protected boolean checkResource() {
 		if(targetHolder.addPath.length() == 0) return true;
 		ServiceDialog d = getTarget().getModel().getService();
-		String message = "Folder " + targetHolder.path + " does not exist. Do you want to create it?";
+		String message = MessageFormat.format(
+				"Folder {0} does not exist. Do you want to create it?",
+				targetHolder.path);
 		int q = d.showDialog(ModelMessages.WARNING, message, new String[]{SpecialWizardSupport.OK, SpecialWizardSupport.CANCEL}, null, ServiceDialog.QUESTION);
 		return q == 0;
 	}
@@ -69,7 +72,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 	
 	boolean isCorrectPath(String path) {
 		path = revalidatePath(path);
-		if(path == null || path.equals(XModelObjectConstants.SEPARATOR) || path.indexOf("//") >= 0) return false;
+		if(path == null || path.equals(XModelObjectConstants.SEPARATOR) || path.indexOf("//") >= 0) return false; //$NON-NLS-1$
 		  return true;
 	}
 	
@@ -107,7 +110,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 			String s = st.nextToken();
 			XModelObject o = fs.getChildByPath(s);
 			if(o == null) {
-				o = fs.getModel().createModelObject("FileFolder", null);
+				o = fs.getModel().createModelObject("FileFolder", null); //$NON-NLS-1$
 				o.setAttributeValue(XModelObjectConstants.ATTR_NAME, s);
 				DefaultCreateHandler.addCreatedObject(fs, o, getProperties());
 				((FolderImpl)o).save();
@@ -136,7 +139,7 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 	
 	protected class Validator extends DefaultWizardDataValidator {
 		public void validate(Properties data) {
-			String folder = data.getProperty("folder");
+			String folder = data.getProperty("folder"); //$NON-NLS-1$
 			targetHolder.revalidate(folder);
 			message = null;
 			if(targetHolder.target == null) {
@@ -150,31 +153,35 @@ public class CreateFolderSupport extends SpecialWizardSupport {
 			super.validate(data);
 		}
 		
-		String FORBIDDEN_INDICES = "\"\n\t*\\/:<>?|";
+		String FORBIDDEN_INDICES = "\"\n\t*\\/:<>?|"; //$NON-NLS-1$
 		protected void validateChildName(Properties data) {
 			if(message != null) return;
 			String name = data.getProperty(XModelObjectConstants.ATTR_NAME);
 			if(name == null || name.length() == 0) return;
-			if(name.equals(".")) {
+			if(name.equals(".")) { //$NON-NLS-1$
 				message = "Incorrect name.";
-			} else if(name.endsWith(".") && name.indexOf('.') != name.lastIndexOf('.')) {
+			} else if(name.endsWith(".") && name.indexOf('.') != name.lastIndexOf('.')) { //$NON-NLS-1$
 				message = "Name must not end in a period.";
 			} else {
 				for (int i = 0; i < FORBIDDEN_INDICES.length(); i++) {
 					if(name.indexOf(FORBIDDEN_INDICES.charAt(i)) >= 0) {
-						message = "Name must not contain character " + FORBIDDEN_INDICES.charAt(i) + " .";
+						message = MessageFormat.format(
+								"Name must not contain character {0} .",
+								FORBIDDEN_INDICES.charAt(i));
 						return;
 					}
 				}				
 			}
 		}
 
-		String FORBIDDEN_FOLDER_LETTERS = "\"\n\t*:<>?|";
+		String FORBIDDEN_FOLDER_LETTERS = "\"\n\t*:<>?|"; //$NON-NLS-1$
 		private void validateFolderName() {
 			if(targetHolder.addPath.length() == 0) return;
 			for (int i = 0; i < FORBIDDEN_FOLDER_LETTERS.length(); i++) {
 				if(targetHolder.addPath.indexOf(FORBIDDEN_FOLDER_LETTERS.charAt(i)) >= 0) {
-					message = "Folder name must not contain character " + FORBIDDEN_FOLDER_LETTERS.charAt(i) + " .";
+					message = MessageFormat.format(
+							"Folder name must not contain character {0} .",
+							FORBIDDEN_FOLDER_LETTERS.charAt(i));
 					return;
 				}
 			}				

@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action.impl.handlers;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -41,15 +42,15 @@ public class PasteHandler extends AbstractHandler {
 	 * subsequent objects, wizard should set this context property
 	 * to 'true'.
 	 */	
-	public static String IS_CANCELLED = "isCancelled";
+	public static String IS_CANCELLED = "isCancelled"; //$NON-NLS-1$
 
     public PasteHandler() {
         data = new XEntityDataImpl[1];
     }
 
-    private static String[] attrs = {"attribute name", XModelObjectConstants.YES,
-                                     "entity name", XModelObjectConstants.YES,
-                                     "parameters", XModelObjectConstants.NO};
+    private static String[] attrs = {"attribute name", XModelObjectConstants.YES, //$NON-NLS-1$
+                                     "entity name", XModelObjectConstants.YES, //$NON-NLS-1$
+                                     "parameters", XModelObjectConstants.NO}; //$NON-NLS-1$
 
     public XEntityData[] getEntityData(XModelObject object) {
         return getEntityData(object, 0);
@@ -76,7 +77,7 @@ public class PasteHandler extends AbstractHandler {
 
     public void executeHandler(XModelObject object, Properties prop) throws XModelException {
         if(!isEnabled(object)) return;
-        boolean isDrop = (prop != null) && XModelObjectConstants.TRUE.equals(prop.getProperty("isDrop"));
+        boolean isDrop = (prop != null) && XModelObjectConstants.TRUE.equals(prop.getProperty("isDrop")); //$NON-NLS-1$
         int bs = object.getModel().getModelBuffer().getSize();
         for (int i = 0; i < bs; i++) {
         	execute(object, i, isDrop, prop);
@@ -140,9 +141,8 @@ public class PasteHandler extends AbstractHandler {
 			if(sourceIndex == 0) showUniqueMessae(parent, source);
 			return false;
 		}
-		String message = "Replace existing element ";
-		String n = "<" + co.getModelEntity().getXMLSubPath() + ">";
-		message += n + "?";
+		String n = "<" + co.getModelEntity().getXMLSubPath() + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		String message = MessageFormat.format("Replace existing element {0}?", n);
 		ServiceDialog d = parent.getModel().getService();
 		int q = d.showDialog("Paste", message, new String[]{ModelMessages.OK, ModelMessages.Cancel}, null, ServiceDialog.QUESTION);
 		if(q != 0) return false;
@@ -151,9 +151,9 @@ public class PasteHandler extends AbstractHandler {
 	}
 	private void showUniqueMessae(XModelObject parent, XModelObject source) {
 		ServiceDialog d = parent.getModel().getService();
-		String message = DefaultCreateHandler.title(parent, true) +
-		                 " may have only one " + source.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + "." +
-		                 " You cannot add its copy.";
+		String message = MessageFormat.format(
+				"{0} may have only one {1}. You cannot add its copy.",
+				DefaultCreateHandler.title(parent, true), source.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE));
 		d.showDialog(ModelMessages.WARNING, message, new String[]{SpecialWizardSupport.OK}, null, ServiceDialog.WARNING);
 	}
 
@@ -205,7 +205,7 @@ public class PasteHandler extends AbstractHandler {
     	if(e.getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) return XModelObjectLoaderUtil.ATTR_ID_NAME;
     	XAttribute[] as = e.getAttributes();
     	for (int i = 0; i < as.length; i++) 
-    		if(XModelObjectConstants.TRUE.equals(as[i].getProperty("id"))) return as[i].getName();
+    		if(XModelObjectConstants.TRUE.equals(as[i].getProperty("id"))) return as[i].getName(); //$NON-NLS-1$
 		if(e.getAttribute(XModelObjectConstants.ATTR_NAME) != null) return XModelObjectConstants.ATTR_NAME;
     	return null;
     }
@@ -215,8 +215,8 @@ public class PasteHandler extends AbstractHandler {
     	if(e.getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) return true;
     	XAttribute[] as = e.getAttributes();
     	for (int i = 0; i < as.length; i++) 
-    		if(XModelObjectConstants.TRUE.equals(as[i].getProperty("id")) &&
-    		   XModelObjectConstants.TRUE.equals(as[i].getProperty("generate"))) return true;
+    		if(XModelObjectConstants.TRUE.equals(as[i].getProperty("id")) && //$NON-NLS-1$
+    		   XModelObjectConstants.TRUE.equals(as[i].getProperty("generate"))) return true; //$NON-NLS-1$
     	return false;
     }
     

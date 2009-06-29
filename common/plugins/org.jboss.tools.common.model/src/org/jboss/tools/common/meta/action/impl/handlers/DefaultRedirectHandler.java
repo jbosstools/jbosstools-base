@@ -28,14 +28,14 @@ public class DefaultRedirectHandler extends AbstractHandler implements XRedirect
     }
 
     protected XModelObject getTrueSource(XModelObject source) {
-        String path = action.getProperty("sourcepath");
+        String path = action.getProperty("sourcepath"); //$NON-NLS-1$
         return (path == null) ? null : source.getChildByPath(path);
     }
 
     protected XAction getTrueAction(XModelObject source) {
         XModelObject ts = getTrueSource(source);
         if (ts == null) return null;
-        String apath = action.getProperty("actionpath");
+        String apath = action.getProperty("actionpath"); //$NON-NLS-1$
         if(apath == null) return null;
         StringTokenizer st = new StringTokenizer(apath, XModelObjectConstants.SEPARATOR);
         XActionItem l = ts.getModelEntity().getActionList();

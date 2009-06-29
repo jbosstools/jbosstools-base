@@ -26,7 +26,7 @@ public class RenameProcessorRunner {
 		initialize(refactoring, name, 0);
 		Shell shell = ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 		RenameUserInterfaceStarter starter = new RenameUserInterfaceStarter();
-		RenameRefactoringWizard wizard = new RenameRefactoringWizard(refactoring, "Rename", "", null, "");
+		RenameRefactoringWizard wizard = new RenameRefactoringWizard(refactoring, "Rename", "", null, ""); //$NON-NLS-2$ //$NON-NLS-3$
 		starter.initialize(wizard);
 		try {
 			starter.activate(refactoring, shell, RefactoringSaveHelper.SAVE_ALL);

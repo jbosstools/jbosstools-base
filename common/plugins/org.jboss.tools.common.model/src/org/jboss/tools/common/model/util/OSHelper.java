@@ -34,37 +34,37 @@ public class OSHelper {
     Process p = null;
     java.util.Properties envVars = new java.util.Properties();
     Runtime r = Runtime.getRuntime();
-    String OS = System.getProperty("os.name").toLowerCase();
+    String OS = System.getProperty("os.name").toLowerCase(); //$NON-NLS-1$
     try {
       // Get the Windows 95 environment variables
-      if (OS.indexOf("windows 9") > -1) {
-        p = r.exec( "command.com /c set" );
+      if (OS.indexOf("windows 9") > -1) { //$NON-NLS-1$
+        p = r.exec( "command.com /c set" ); //$NON-NLS-1$
       }
       // Get the Windows NT environment variables
-      else if (OS.indexOf("nt") > -1) {
-        p = r.exec( "cmd.exe /c set" );
+      else if (OS.indexOf("nt") > -1) { //$NON-NLS-1$
+        p = r.exec( "cmd.exe /c set" ); //$NON-NLS-1$
       }
       // Get the Windows 2000 environment variables
-      else if (OS.indexOf("2000") > -1) {
-        p = r.exec( "cmd.exe /c set" );
+      else if (OS.indexOf("2000") > -1) { //$NON-NLS-1$
+        p = r.exec( "cmd.exe /c set" ); //$NON-NLS-1$
       }
       // Get the Windows XP environment variables
-      else if (OS.indexOf("xp") > -1) {
-        p = r.exec( "cmd.exe /c set" );
+      else if (OS.indexOf("xp") > -1) { //$NON-NLS-1$
+        p = r.exec( "cmd.exe /c set" ); //$NON-NLS-1$
       }
       // Get the unix environment variables
-      else if (OS.indexOf("linux") > -1) {
-        p = r.exec( "env" );
+      else if (OS.indexOf("linux") > -1) { //$NON-NLS-1$
+        p = r.exec( "env" ); //$NON-NLS-1$
       }
       // Get the unix environment variables
-      else if (OS.indexOf("unix") > -1) {
-        p = r.exec( "/bin/env" );
+      else if (OS.indexOf("unix") > -1) { //$NON-NLS-1$
+        p = r.exec( "/bin/env" ); //$NON-NLS-1$
       }            // Get the unix environment variables
-      else if (OS.indexOf("sunos") > -1) {
-        p = r.exec( "/bin/env" );
+      else if (OS.indexOf("sunos") > -1) { //$NON-NLS-1$
+        p = r.exec( "/bin/env" ); //$NON-NLS-1$
       } else  {
           if(ModelPlugin.isDebugEnabled()) {
-        	  ModelPlugin.getPluginLog().logInfo("OS not known: " + OS);
+        	  ModelPlugin.getPluginLog().logInfo("OS not known: " + OS); //$NON-NLS-1$
           }
       }
     } catch (java.io.IOException e) {

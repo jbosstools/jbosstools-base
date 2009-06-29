@@ -25,11 +25,11 @@ public class ClassPathUpdateWizard implements SpecialWizard {
 	public void setObject(Object object) {
 		u = new ClassPathUpdate();
 		Properties p = (Properties)object;
-		XModel model = (XModel)p.get("model");
+		XModel model = (XModel)p.get("model"); //$NON-NLS-1$
 		u.setProject((IProject)model.getProperties().get(XModelObjectConstants.PROJECT));
 		u.setModel(model);
-		u.setReplacedSrc((Map)p.get("replacedSrc"));
-		IPath classes = (IPath)p.get("classes");
+		u.setReplacedSrc((Map)p.get("replacedSrc")); //$NON-NLS-1$
+		IPath classes = (IPath)p.get("classes"); //$NON-NLS-1$
 		if(classes != null) u.setClasses(classes);
 	}
 

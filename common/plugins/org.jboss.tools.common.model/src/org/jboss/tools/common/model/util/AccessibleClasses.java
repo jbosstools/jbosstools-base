@@ -74,7 +74,7 @@ public class AccessibleClasses implements ISimpleTree {
         }
     }
 
-    private static String exts = ".class.bo.java.cls.";
+    private static String exts = ".class.bo.java.cls."; //$NON-NLS-1$
 
     protected String extensions() {
         return exts;
@@ -82,8 +82,8 @@ public class AccessibleClasses implements ISimpleTree {
 
     private boolean buildPackage(SortedSet<String> list, String packagename) {
     	String pkg = packagename.toLowerCase();
-        if(pkg.endsWith(".cvs")) return false;
-        if(pkg.endsWith(".svn")) return false;
+        if(pkg.endsWith(".cvs")) return false; //$NON-NLS-1$
+        if(pkg.endsWith(".svn")) return false; //$NON-NLS-1$
         boolean exists = false;
         XModelObject fs = FileSystemsHelper.getFileSystems(model);
         if(fs == null) return false;
@@ -98,8 +98,8 @@ public class AccessibleClasses implements ISimpleTree {
     private boolean getChildren(SortedSet<String> list, String packagename) throws JavaModelException {
     	if(javaProject == null || !javaProject.exists()) return false;
         boolean exists = false;
-        boolean r = "%root%".equals(packagename);
-        String jp = (r) ? "" : packagename;
+        boolean r = "%root%".equals(packagename); //$NON-NLS-1$
+        String jp = (r) ? "" : packagename; //$NON-NLS-1$
     	IPackageFragmentRoot[] rs = javaProject.getPackageFragmentRoots();
     	for (int i = 0; i < rs.length; i++) {
     		IParent pf = (r) ? rs[i] : rs[i].getPackageFragment(packagename);
@@ -121,13 +121,13 @@ public class AccessibleClasses implements ISimpleTree {
             } else {
             	if(isp) {
             		if(n.indexOf('.') >= 0) continue;
-            		n += ".";
+            		n += "."; //$NON-NLS-1$
             	} else {
             		int d = n.lastIndexOf('.');
             		if(d >= 0) {
             			String ext = n.substring(d + 1);
             			n = n.substring(0, d);
-            			if(!extensions().contains("." + ext + ".")) continue;
+            			if(!extensions().contains("." + ext + ".")) continue; //$NON-NLS-1$ //$NON-NLS-2$
             		}
             	}
             	if(accepts(jp, n)) {
@@ -139,18 +139,18 @@ public class AccessibleClasses implements ISimpleTree {
     private void process2(SortedSet<String> list, IJavaElement[] cs, String jp) throws JavaModelException {
         for (int j = 0; j < cs.length; j++) {
         	String n = cs[j].getElementName();
-        	if(!n.startsWith(jp + ".")) continue;
+        	if(!n.startsWith(jp + ".")) continue; //$NON-NLS-1$
         	n = n.substring(jp.length() + 1);
             boolean isp = cs[j] instanceof IPackageFragment;
         	if(isp) {
         		if(n.indexOf('.') >= 0) continue;
-        		n += ".";
+        		n += "."; //$NON-NLS-1$
         	} else {
         		int d = n.lastIndexOf('.');
         		if(d >= 0) {
         			String ext = n.substring(d + 1);
         			n = n.substring(0, d);
-        			if(!extensions().contains("." + ext + ".")) continue;
+        			if(!extensions().contains("." + ext + ".")) continue; //$NON-NLS-1$ //$NON-NLS-2$
         		}
         	}
         	if(accepts(jp, n)) {
@@ -160,7 +160,7 @@ public class AccessibleClasses implements ISimpleTree {
     }
 
     protected boolean accepts(String packagename, String n) {
-        return !n.equalsIgnoreCase("CVS.") && !n.equalsIgnoreCase("svn.");
+        return !n.equalsIgnoreCase("CVS.") && !n.equalsIgnoreCase("svn."); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }
@@ -169,8 +169,8 @@ class ACComparator<T> implements Comparator<T> {
     public int compare(Object o1, Object o2) {
         String s1 = (String)o1;
         String s2 = (String)o2;
-        if(s1.endsWith(".") && !s2.endsWith(".")) return -1;
-        if(s2.endsWith(".") && !s1.endsWith(".")) return 1;
+        if(s1.endsWith(".") && !s2.endsWith(".")) return -1; //$NON-NLS-1$ //$NON-NLS-2$
+        if(s2.endsWith(".") && !s1.endsWith(".")) return 1; //$NON-NLS-1$ //$NON-NLS-2$
         return s1.compareToIgnoreCase(s2);
     }
 

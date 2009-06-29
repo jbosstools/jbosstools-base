@@ -12,6 +12,7 @@ package org.jboss.tools.common.meta.impl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.*;
 import org.w3c.dom.*;
 import org.jboss.tools.common.meta.XMetaElement;
@@ -31,9 +32,9 @@ public class XMetaDataLoader implements XMetaDataConstants {
         try {
             return (XMetaElementImpl)defImpl.newInstance();
         } catch (InstantiationException e) {
-        	ModelPlugin.getPluginLog().logError("Error in getDefaultMetaElementInstance");
+        	ModelPlugin.getPluginLog().logError("Error in getDefaultMetaElementInstance"); //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
-			ModelPlugin.getPluginLog().logError("Error in getDefaultMetaElementInstance");
+			ModelPlugin.getPluginLog().logError("Error in getDefaultMetaElementInstance"); //$NON-NLS-1$
 		}
 		return null;
     }
@@ -47,11 +48,11 @@ public class XMetaDataLoader implements XMetaDataConstants {
         try {
             return (XMetaElementImpl)ClassLoaderUtil.getClassLoader().loadClass(loader).newInstance();
         } catch (InstantiationException e) {
-        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader, e);   
+        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader, e);    //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
-        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader, e);
+        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader, e); //$NON-NLS-1$
 		} catch (ClassNotFoundException e) {
-        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader, e);
+        	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader, e); //$NON-NLS-1$
 		}
 		return null;
     }
@@ -108,7 +109,7 @@ public class XMetaDataLoader implements XMetaDataConstants {
 
     static Element loadDocument(String filename) throws FileNotFoundException {
         Element e = XMLUtil.getElement(filename);
-        if(e == null) throw new FileNotFoundException("Can't load meta model from " + filename);
+        if(e == null) throw new FileNotFoundException(MessageFormat.format("Can''t load meta model from {0}", filename));
         return e;
     }
 
@@ -118,10 +119,10 @@ public class XMetaDataLoader implements XMetaDataConstants {
 
     static void loadEntityGroup(XModelMetaDataImpl factory, Element g) {
 //        String n = g.getAttribute(XModelObjectConstants.XML_ATTR_NAME);
-    	String module = "";
-    	Element v = XMLUtilities.getUniqueChild(g, "VERSION");
-    	if(v != null && v.hasAttribute("MODULE")) {
-    		module = v.getAttribute("MODULE");
+    	String module = ""; //$NON-NLS-1$
+    	Element v = XMLUtilities.getUniqueChild(g, "VERSION"); //$NON-NLS-1$
+    	if(v != null && v.hasAttribute("MODULE")) { //$NON-NLS-1$
+    		module = v.getAttribute("MODULE"); //$NON-NLS-1$
     	}
         loadMappings(factory, g);
         factory.createIconList(getUniqueChild(g, ICONS));
@@ -145,7 +146,7 @@ public class XMetaDataLoader implements XMetaDataConstants {
     }
 
     private static void loadGlobalActions(XModelMetaDataImpl factory, Element group) {
-        Element actions = getUniqueChild(group, "GlobalActions");
+        Element actions = getUniqueChild(group, "GlobalActions"); //$NON-NLS-1$
         if(actions != null) factory.loadGlobalActions(actions);
     }
 

@@ -11,6 +11,7 @@
 package org.jboss.tools.common.meta.action.impl.handlers;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.meta.action.*;
@@ -21,7 +22,7 @@ import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 
 public class OpenWithHelper {
-    static String EDITORS = "%Options%/External Programs";
+    static String EDITORS = "%Options%/External Programs"; //$NON-NLS-1$
 
     static String getFileName(XModelObject object) {
         ArrayList<String> l = new ArrayList<String>();
@@ -50,9 +51,9 @@ public class OpenWithHelper {
 
     static XModelObject getEditorObject(XModel model, String ext) {
         XModelObject o = model.getByPath(EDITORS);
-        String[] es = XModelObjectUtil.asStringArray(o.getAttributeValue("extensions"));
+        String[] es = XModelObjectUtil.asStringArray(o.getAttributeValue("extensions")); //$NON-NLS-1$
         for (int i = 0; i < es.length; i++) {
-            if(!es[i].toLowerCase().startsWith(ext.toLowerCase() + ":")) continue;
+            if(!es[i].toLowerCase().startsWith(ext.toLowerCase() + ":")) continue; //$NON-NLS-1$
             return o.getChildByPath(es[i].substring(ext.length() + 1));
         }
         return null;
@@ -70,9 +71,9 @@ public class OpenWithHelper {
         String[] paths = getEnvironmentPaths();
         XModel model = o.getModel();
         String en = o.getModelEntity().getName();
-        XEntityData[] dt = new XEntityData[]{XEntityDataImpl.create(new String[][]{{en, XModelObjectConstants.YES}, {"path", XModelObjectConstants.YES}})};
-        String path = o.getAttributeValue("path").replace('\\','/');
-        XAttributeData ad = HUtil.find(dt, 0, "path");
+        XEntityData[] dt = new XEntityData[]{XEntityDataImpl.create(new String[][]{{en, XModelObjectConstants.YES}, {"path", XModelObjectConstants.YES}})}; //$NON-NLS-1$
+        String path = o.getAttributeValue("path").replace('\\','/'); //$NON-NLS-1$
+        XAttributeData ad = HUtil.find(dt, 0, "path"); //$NON-NLS-1$
         ad.setValue(path);
         ServiceDialog d = model.getService();
         while(true) {
@@ -80,12 +81,12 @@ public class OpenWithHelper {
             if(b != null && b.length() > 0)
             if(fileExists(b, paths)) {
                 if(!b.equals(path)) {
-                    model.changeObjectAttribute(o, "path", b);
+                    model.changeObjectAttribute(o, "path", b); //$NON-NLS-1$
                     model.saveOptions();
                 }
                 return true;
             }
-            int i = d.showDialog(actionname, "Enter valid path for " + o.getPresentationString(),
+            int i = d.showDialog(actionname, MessageFormat.format("Enter valid path for {0}", o.getPresentationString()),
                                  new String[]{ModelMessages.OK, ModelMessages.Cancel}, dt[0], ServiceDialog.QUESTION);
             if(i != 0) return false;
         }
@@ -102,7 +103,7 @@ public class OpenWithHelper {
     }
 
     static String[] getEnvironmentPaths() {
-        String jlp = OSHelper.getProperty("PATH", "");
+        String jlp = OSHelper.getProperty("PATH", ""); //$NON-NLS-1$ //$NON-NLS-2$
         StringTokenizer st = new StringTokenizer(jlp, File.pathSeparator);
         String[] ps = new String[st.countTokens()];
         for (int i = 0; i < ps.length; i++) ps[i] = st.nextToken();

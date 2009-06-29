@@ -13,7 +13,7 @@ package org.jboss.tools.common.model.filesystems;
 import org.jboss.tools.common.model.*;
 
 public class FileSystemsHelper {
-	public static final String FILE_SYSTEMS = "FileSystems";
+	public static final String FILE_SYSTEMS = "FileSystems"; //$NON-NLS-1$
 	
 	public static XModelObject getFileSystems(XModel model) {
 		return model.getByPath(FILE_SYSTEMS);
@@ -24,11 +24,11 @@ public class FileSystemsHelper {
 	}
 	
 	public static XModelObject getWebRoot(XModel model) {
-		return model.getByPath(FILE_SYSTEMS + "/WEB-ROOT");
+		return model.getByPath(FILE_SYSTEMS + "/WEB-ROOT"); //$NON-NLS-1$
 	}
 
 	public static XModelObject getWebInf(XModel model) {
-		return model.getByPath(FILE_SYSTEMS + "/WEB-INF");
+		return model.getByPath(FILE_SYSTEMS + "/WEB-INF"); //$NON-NLS-1$
 	}
 
 }

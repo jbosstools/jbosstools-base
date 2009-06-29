@@ -47,7 +47,7 @@ public class XModelEntityExtensionImpl extends XMetaElementImpl {
     public void load(Element element) {
         setName(element.getAttribute(NAME));
         children.load(element);
-        Element ei = XMetaDataLoader.getUniqueChild(element, "XActionItem");
+        Element ei = XMetaDataLoader.getUniqueChild(element, "XActionItem"); //$NON-NLS-1$
         actions.setElement(ei);
     }
 

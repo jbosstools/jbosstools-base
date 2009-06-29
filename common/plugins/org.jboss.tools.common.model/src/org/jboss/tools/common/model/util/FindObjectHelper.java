@@ -29,7 +29,7 @@ public class FindObjectHelper implements SpecialWizard {
     private int line = -1;
 
     public static SpecialWizard createSelectWizard() {
-        return SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.select.SelectObjectWizard");
+        return SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.select.SelectObjectWizard"); //$NON-NLS-1$
     }
 
     public static int findModelObject(XModelObject o, int where) {
@@ -50,15 +50,15 @@ public class FindObjectHelper implements SpecialWizard {
     }
 
     public static String makeRef(XModelObject o) {
-        return "" + o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " + makeRef(o.getPath(), o.getPresentationString());
+        return "" + o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " + makeRef(o.getPath(), o.getPresentationString()); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public static String makeRef(XModelObject o, int line) {
-        return "" + o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " + makeRef(o.getPath() + ":" + line, o.getPresentationString());
+        return "" + o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " + makeRef(o.getPath() + ":" + line, o.getPresentationString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     public static String makeRef(String hidden, String visible) {
-        return "@" + hidden + "@" + visible + "@";
+        return "@" + hidden + "@" + visible + "@"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     public FindObjectHelper() {}
@@ -74,10 +74,10 @@ public class FindObjectHelper implements SpecialWizard {
         XModelObject o = findRef();
         if(o == null) o = findJava();
         if(o != null) {
-            o.set("_error_line_", "" + line);
+            o.set("_error_line_", "" + line); //$NON-NLS-1$ //$NON-NLS-2$
             select.setObject(o);
             select.execute();
-            o.set("_error_line_", "");
+            o.set("_error_line_", ""); //$NON-NLS-1$ //$NON-NLS-2$
         }
         return 0;
     }
@@ -85,15 +85,15 @@ public class FindObjectHelper implements SpecialWizard {
     private XModelObject findRef() {
         int i = 0;
         while(i < command.length()) {
-            int i1 = command.indexOf("@", i);
+            int i1 = command.indexOf("@", i); //$NON-NLS-1$
             if(i1 < 0 || i1 > off) return null;
-            int i2 = command.indexOf("@", i1 + 1);
+            int i2 = command.indexOf("@", i1 + 1); //$NON-NLS-1$
             if(i2 < 0) return null;
             String p = command.substring(i1 + 1, i2);
-            int i3 = command.indexOf("@", i2 + 1);
+            int i3 = command.indexOf("@", i2 + 1); //$NON-NLS-1$
             if(i3 < 0) return null;
             if(i3 >= off) {
-                int q = p.indexOf(":");
+                int q = p.indexOf(":"); //$NON-NLS-1$
                 if(q >= 0) {
                     try {
                     	line = Integer.parseInt(p.substring(q + 1));
@@ -134,7 +134,7 @@ public class FindObjectHelper implements SpecialWizard {
         f.setData(q.cls(), q.line() + 1, model);
         XModelObject o = model.getByPath(f.getJPath());
         if(o != null) {
-            return q.getLineStart() + makeRef(o.getPath() + ":" + q.line(), q.toString());
+            return q.getLineStart() + makeRef(o.getPath() + ":" + q.line(), q.toString()); //$NON-NLS-1$
         } else if(q.line() < 0) {
             return st;
         }
@@ -144,20 +144,20 @@ public class FindObjectHelper implements SpecialWizard {
         String path = s.getPath();
         o = (path == null) ? null : model.getByPath(path);
         if(o == null) return st;
-        return q.getLineStart() + makeRef(o.getPath() + ":" + s.getLine(), q.toString());
+        return q.getLineStart() + makeRef(o.getPath() + ":" + s.getLine(), q.toString()); //$NON-NLS-1$
     }
 
 }
 
 class FileInfo {
-    private String text = "";
+    private String text = ""; //$NON-NLS-1$
     private int line;
-    private String jpath = "";
+    private String jpath = ""; //$NON-NLS-1$
 
     public void setData(String cls, int ln, XModel model) {
-        jpath = XModelObjectConstants.SEPARATOR + cls.replace('.', '/') + ".java";
+        jpath = XModelObjectConstants.SEPARATOR + cls.replace('.', '/') + ".java"; //$NON-NLS-1$
         line = ln;
-        String fn = "" + XModelObjectUtil.getExpandedValue(model.getByPath("Engines/generator"), "directory", null) + "/src" + jpath;
+        String fn = "" + XModelObjectUtil.getExpandedValue(model.getByPath("Engines/generator"), "directory", null) + "/src" + jpath; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         text = XModelObjectLoaderUtil.readFile(fn);
     }
 
@@ -200,15 +200,15 @@ class SegmentInfo {
         int off = getOffset(text, line);
         int b = 0, e = 0;
         while(true) {
-            b = text.indexOf("//<!--", e);
+            b = text.indexOf("//<!--", e); //$NON-NLS-1$
             if(b < 0) return;
-            e = text.indexOf("//--", b);
+            e = text.indexOf("//--", b); //$NON-NLS-1$
             if(e < 0) return;
             if(e > off) break;
         }
-        b = text.indexOf("//", b + 2);
+        b = text.indexOf("//", b + 2); //$NON-NLS-1$
         if(b < 0) return;
-        int b2 = text.indexOf("\n", b);
+        int b2 = text.indexOf("\n", b); //$NON-NLS-1$
         if(b2 < 0) return;
         path = text.substring(b + 2, b2);
         int q = path.lastIndexOf('.');
@@ -218,22 +218,22 @@ class SegmentInfo {
     }
 
     private int getOffset(String text, int ln) {
-        StringTokenizer st = new StringTokenizer(text, "\n", true);
+        StringTokenizer st = new StringTokenizer(text, "\n", true); //$NON-NLS-1$
         int r = 0;
         while(ln > 1 && st.hasMoreTokens()) {
             String s = st.nextToken();
-            if("\n".equals(s)) --ln;
+            if("\n".equals(s)) --ln; //$NON-NLS-1$
             r += s.length();
         }
         return r;
     }
 
     private void reduceLine(String text, int b) {
-        StringTokenizer st = new StringTokenizer(text, "\n", true);
+        StringTokenizer st = new StringTokenizer(text, "\n", true); //$NON-NLS-1$
         int r = 0;
         while(r < b && st.hasMoreTokens()) {
             String s = st.nextToken();
-            if("\n".equals(s)) --line;
+            if("\n".equals(s)) --line; //$NON-NLS-1$
             r += s.length();
         }
         --line;
@@ -254,7 +254,7 @@ class SegmentInfo {
 }
 
 class StackTraceLine {
-    public static String PREFIX = "\tat ";
+    public static String PREFIX = "\tat "; //$NON-NLS-1$
     private String beg = null;
     private String cls = null;
     private String mtd = null;
@@ -284,7 +284,7 @@ class StackTraceLine {
     }
 
     public String toString() {
-        return cls + "." + mtd + "(" + (ln + 1) + ")";
+        return cls + "." + mtd + "(" + (ln + 1) + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     public String getLineStart() {
@@ -311,7 +311,7 @@ class JavacErrorHeadLine {
     private XModelObject jf = null;
 
     public JavacErrorHeadLine(XModel model, String command) {
-        int i = command.indexOf(".java:");
+        int i = command.indexOf(".java:"); //$NON-NLS-1$
         if(i < 0) return;
         int j = command.indexOf(':', i + 6);
         try {
@@ -321,12 +321,12 @@ class JavacErrorHeadLine {
         }
         String fn = command.substring(0, i);
         fn = fn.substring(fn.indexOf(']') + 1).trim(); // Cut off ant task prefix.
-        XModelObject g = model.getByPath("Engines/generator");
+        XModelObject g = model.getByPath("Engines/generator"); //$NON-NLS-1$
         if(g != null) {
-            String p = "" + XModelObjectUtil.getExpandedValue(g, "directory", null) + "/src/";
+            String p = "" + XModelObjectUtil.getExpandedValue(g, "directory", null) + "/src/"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             cls = fn.substring(p.length()).replace('/', '.').replace('\\', '.');
         }
-        findJFile(model, XModelObjectConstants.SEPARATOR + fn.replace('\\', '/') + ".java");
+        findJFile(model, XModelObjectConstants.SEPARATOR + fn.replace('\\', '/') + ".java"); //$NON-NLS-1$
     }
 
     private void findJFile(XModel model, String fn) {
@@ -339,7 +339,7 @@ class JavacErrorHeadLine {
 
     private boolean isOverlapped(XModelObject o) {
         while(o != null) {
-            if(XModelObjectConstants.TRUE.equals(o.get("overlapped"))) return true;
+            if(XModelObjectConstants.TRUE.equals(o.get("overlapped"))) return true; //$NON-NLS-1$
             o = o.getParent();
         }
         return false;

@@ -29,7 +29,7 @@ public class WizardKeys {
 			addNew(keys, KeyLoader.load(localeString));
 			if(localeString.length() == 0) break;
 			int i = localeString.indexOf('_');
-			localeString = (i < 0) ? "" : localeString.substring(0, i);
+			localeString = (i < 0) ? "" : localeString.substring(0, i); //$NON-NLS-1$
 		}
 	}
 	
@@ -44,21 +44,21 @@ public class WizardKeys {
 	
 	public static String getHeader(String key) {
 		if(key == null) return null;
-		return keys.getProperty(key + ".WindowTitle");
+		return keys.getProperty(key + ".WindowTitle"); //$NON-NLS-1$
 	}
 
 	public static String getTitle(String key) {
 		if(key == null) return null;
-		return keys.getProperty(key + ".Title");
+		return keys.getProperty(key + ".Title"); //$NON-NLS-1$
 	}
 
 	public static String getMessage(String key) {
 		if(key == null) return null;
-		return keys.getProperty(key + ".Message");
+		return keys.getProperty(key + ".Message"); //$NON-NLS-1$
 	}
 
 	public static String getLabelText(String entity, String attribute) {
-		String key = "" + entity + "." + attribute.replace(' ', '_');
+		String key = "" + entity + "." + attribute.replace(' ', '_'); //$NON-NLS-1$ //$NON-NLS-2$
 		return keys.getProperty(key);
 	}
 
@@ -74,7 +74,7 @@ public class WizardKeys {
 				return null;
 			}
 		}
-		return "@NULL_KEY@";
+		return "@NULL_KEY@"; //$NON-NLS-1$
 		
 		//return (key == null) ? null : common.getProperty(key);
 	}
@@ -96,7 +96,7 @@ public class WizardKeys {
 	public static String getAttributeDisplayName(XAttribute a) {
 		String s = getLabelText(a.getModelEntity().getName(), a.getName());
 		if(s == null) {
-			String labelText = a.getModelEntity().getName() + "_" + a.getName();
+			String labelText = a.getModelEntity().getName() + "_" + a.getName(); //$NON-NLS-1$
 			s = getLabelText(labelText);
 		}
 		if(s == null) {
@@ -109,16 +109,16 @@ public class WizardKeys {
 	private static Set<String> UPPER_CASE_WORDS = new HashSet<String>();
 	
 	static {
-		String[] lcw = new String[]{"the", "web.xml", "for"};
-		String[] ucw = new String[]{"tld", "uri", "jsp", "html", "url", "jsf", "xml", 
-				"id", "jms", "esb", "ftp", "jbr", "fs", "mep"};
+		String[] lcw = new String[]{"the", "web.xml", "for"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String[] ucw = new String[]{"tld", "uri", "jsp", "html", "url", "jsf", "xml",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"id", "jms", "esb", "ftp", "jbr", "fs", "mep"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		for (int i = 0; i < lcw.length; i++) LOWER_CASE_WORDS.add(lcw[i]);
 		for (int i = 0; i < ucw.length; i++) UPPER_CASE_WORDS.add(ucw[i]);
 	}
 	
 	public static String toDisplayName(String n) {
-		if(n == null || n.length() == 0) return "";
-		StringTokenizer st = new StringTokenizer(n, " -", true);
+		if(n == null || n.length() == 0) return ""; //$NON-NLS-1$
+		StringTokenizer st = new StringTokenizer(n, " -", true); //$NON-NLS-1$
 		StringBuffer sb = new StringBuffer();
 		int k = st.countTokens();
 		for (int i = 0; i < k; i++) {
@@ -148,14 +148,14 @@ public class WizardKeys {
 	 */
 	public static String getMenuItemDisplayName(XActionItem item, XModelEntity entity) {
 		if(entity != null) {
-			String key = entity.getName() + "." + item.getName() + ".menu";
+			String key = entity.getName() + "." + item.getName() + ".menu"; //$NON-NLS-1$ //$NON-NLS-2$
 			String s = keys.getProperty(key);
 			if(s != null) return s;
-			key = entity.getModule() + "." + item.getName() + ".menu";
+			key = entity.getModule() + "." + item.getName() + ".menu"; //$NON-NLS-1$ //$NON-NLS-2$
 			s = keys.getProperty(key);
 			if(s != null) return s;
 		}
-		String key = item.getName() + ".menu";
+		String key = item.getName() + ".menu"; //$NON-NLS-1$
 		String s = keys.getProperty(key);
 		if(s != null) return s;
 
@@ -166,10 +166,10 @@ public class WizardKeys {
 		if(attr == null || value == null || value.length() == 0) return value;
 		String keyPart = toKey(value);
 		String module = attr.getModelEntity().getModule();
-		String key1 = module + "." + "lists." + keyPart;
+		String key1 = module + "." + "lists." + keyPart; //$NON-NLS-1$ //$NON-NLS-2$
 		String result = WizardKeys.getString(key1);
 		if(result != null) return result;
-		String key2 = "lists." + keyPart;
+		String key2 = "lists." + keyPart; //$NON-NLS-1$
 		result = WizardKeys.getString(key2);
 		if(result != null) return result;
 		return value;		

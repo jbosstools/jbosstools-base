@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.files.handlers;
 
 import java.io.*;
+import java.text.MessageFormat;
 import java.util.*;
 
 import org.eclipse.core.resources.IResource;
@@ -29,8 +30,8 @@ import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.util.FileUtil;
 
 public class CreateFileSupport extends SpecialWizardSupport {
-	static final String ATTR_TEMPLATE = "template";
-	static final String ATTR_FOLDER = "folder";
+	static final String ATTR_TEMPLATE = "template"; //$NON-NLS-1$
+	static final String ATTR_FOLDER = "folder"; //$NON-NLS-1$
 
 	protected TargetHolder targetHolder = new TargetHolder();
 	TreeMap<String,String> versionEntities = new TreeMap<String,String>();
@@ -59,11 +60,11 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		targetHolder.target = getTarget();
 		IResource r = (IResource)getTarget().getAdapter(IResource.class);
 		if(r == null) {
-			setAttributeValue(0, ATTR_FOLDER, "");
+			setAttributeValue(0, ATTR_FOLDER, ""); //$NON-NLS-1$
 			targetHolder.revalidate(null);
 		} else {
 			targetHolder.revalidate(r.getFullPath().toString());
-			setAttributeValue(0, ATTR_FOLDER, "" + targetHolder.path);
+			setAttributeValue(0, ATTR_FOLDER, "" + targetHolder.path); //$NON-NLS-1$
 		}
 		initVersions();
 	}
@@ -75,11 +76,11 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		useVersions = false;
 		versionEntities.clear();
 		XModelMetaData meta = getTarget().getModel().getMetaData();
-		XMapping m = meta.getMapping("FileVersions");
+		XMapping m = meta.getMapping("FileVersions"); //$NON-NLS-1$
 		if(m == null) return;
-		String entityVersion = action.getProperty("entityVersion");
+		String entityVersion = action.getProperty("entityVersion"); //$NON-NLS-1$
 		if(entityVersion == null || entityVersion.length() == 0) return;
-		if(getAttributeValue(0, "version") == null) return;
+		if(getAttributeValue(0, "version") == null) return; //$NON-NLS-1$
 		useVersions = true;
 		String[] keys = m.getKeys();
 		for (int i = 0; i < keys.length; i++) {
@@ -90,12 +91,12 @@ public class CreateFileSupport extends SpecialWizardSupport {
 			versionEntities.put(version, entity);
 		}
 		if(versionEntities.size() == 0 && action.getProperty(XMetaDataConstants.ENTITY) != null) {
-			versionEntities.put("default", action.getProperty(XMetaDataConstants.ENTITY));
+			versionEntities.put("default", action.getProperty(XMetaDataConstants.ENTITY)); //$NON-NLS-1$
 		}
 		String[] versionList = (String[])versionEntities.keySet().toArray(new String[0]);
-		setValueList(0, "version", versionList);
+		setValueList(0, "version", versionList); //$NON-NLS-1$
 		if(versionList.length > 0) {
-			setAttributeValue(0, "version", versionList[0]);
+			setAttributeValue(0, "version", versionList[0]); //$NON-NLS-1$
 		}
 	}
 	
@@ -131,7 +132,9 @@ public class CreateFileSupport extends SpecialWizardSupport {
 	protected boolean checkResource() {
 		if(targetHolder.addPath.length() == 0) return true;
 		ServiceDialog d = getTarget().getModel().getService();
-		String message = "Folder " + targetHolder.path + " does not exist. Do you want to create it?";
+		String message = MessageFormat.format(
+				"Folder {0} does not exist. Do you want to create it?",
+				targetHolder.path);
 		int q = d.showDialog(ModelMessages.WARNING, message, new String[]{SpecialWizardSupport.OK, SpecialWizardSupport.CANCEL}, null, ServiceDialog.QUESTION);
 		return q == 0;
 	}
@@ -153,7 +156,7 @@ public class CreateFileSupport extends SpecialWizardSupport {
 	
 	boolean isCorrectPath(String path) {
 		path = revalidatePath(path);
-		if(path == null || path.equals(XModelObjectConstants.SEPARATOR) || path.indexOf("//") >= 0) return false;
+		if(path == null || path.equals(XModelObjectConstants.SEPARATOR) || path.indexOf("//") >= 0) return false; //$NON-NLS-1$
 		  return true;
 	}
 	
@@ -167,7 +170,7 @@ public class CreateFileSupport extends SpecialWizardSupport {
 	protected String revalidatePath(String path) {
 		if(path == null || path.length() == 0) return path;
 		if(!path.startsWith(XModelObjectConstants.SEPARATOR)) path = XModelObjectConstants.SEPARATOR + path;
-		String extension = "." + action.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
+		String extension = "." + action.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION); //$NON-NLS-1$
 		if(path.lastIndexOf('.') < 0) {
 			path += extension;
 		} else {
@@ -196,9 +199,10 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		String template = getAttributeValue(0, ATTR_TEMPLATE);
 		if(template != null && template.trim().length() > 0) {
 			templateFile = findTemplate(template.trim());
-			if(templateFile == null || !templateFile.isFile()) throw new IOException("Template " + template + " is not found.");
+			if(templateFile == null || !templateFile.isFile()) throw new IOException(
+					MessageFormat.format("Template {0} is not found.", template));
 		}		
-		return (templateFile == null) ? "" : FileUtil.readFile(templateFile);
+		return (templateFile == null) ? "" : FileUtil.readFile(templateFile); //$NON-NLS-1$
 	}
 	
 	protected String modifyBody(String body) throws IOException {
@@ -220,7 +224,7 @@ public class CreateFileSupport extends SpecialWizardSupport {
 			String s = st.nextToken();
 			XModelObject o = fs.getChildByPath(s);
 			if(o == null) {
-				o = fs.getModel().createModelObject("FileFolder", null);
+				o = fs.getModel().createModelObject("FileFolder", null); //$NON-NLS-1$
 				o.setAttributeValue(XModelObjectConstants.ATTR_NAME, s);
 				DefaultCreateHandler.addCreatedObject(fs, o, FindObjectHelper.IN_NAVIGATOR_ONLY);
 				((FolderImpl)o).save();
@@ -253,22 +257,22 @@ public class CreateFileSupport extends SpecialWizardSupport {
 			//entity could change after saving child.
 			f = f.getModel().getByPath(modelPath);
 		}
-		if(f != null) getProperties().put("created", f);
+		if(f != null) getProperties().put("created", f); //$NON-NLS-1$
 		return f;
 	}
 	
 	protected String getFileEntity(String extension) {
 		if(useVersions) {
-			String version = getAttributeValue(0, "version");
+			String version = getAttributeValue(0, "version"); //$NON-NLS-1$
 			String entity = version == null ? null : (String)versionEntities.get(version);
 			if(entity != null) return entity;
 		}
-		return ("jsp".equals(extension)) ? "FileJSP" :
-			("htm".equals(extension)) ? "FileHTML" :
-			("html".equals(extension)) ? "FileHTML" :
-			("properties".equals(extension)) ? "FilePROPERTIES" :
+		return ("jsp".equals(extension)) ? "FileJSP" : //$NON-NLS-1$ //$NON-NLS-2$
+			("htm".equals(extension)) ? "FileHTML" : //$NON-NLS-1$ //$NON-NLS-2$
+			("html".equals(extension)) ? "FileHTML" : //$NON-NLS-1$ //$NON-NLS-2$
+			("properties".equals(extension)) ? "FilePROPERTIES" : //$NON-NLS-1$ //$NON-NLS-2$
 			(extension.equals(action.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION))) ? action.getProperty(XMetaDataConstants.ENTITY) :
-			"FileAny";
+			"FileAny"; //$NON-NLS-1$
 	}
 
 	protected XModelObject modifyCreatedObject(XModelObject o) {
@@ -318,31 +322,35 @@ public class CreateFileSupport extends SpecialWizardSupport {
 			super.validate(data);
 		}
 		
-		String FORBIDDEN_INDICES = "\"\n\t*\\/:<>?|";
+		String FORBIDDEN_INDICES = "\"\n\t*\\/:<>?|"; //$NON-NLS-1$
 		protected void validateFileName(Properties data) {
 			if(message != null) return;
 			String fileName = data.getProperty(XModelObjectConstants.ATTR_NAME);
 			if(fileName == null || fileName.length() == 0) return;
-			if(fileName.equals(".")) {
+			if(fileName.equals(".")) { //$NON-NLS-1$
 				message = "Incorrect file name.";
-			} else if(fileName.endsWith(".") && fileName.indexOf('.') != fileName.lastIndexOf('.')) {
+			} else if(fileName.endsWith(".") && fileName.indexOf('.') != fileName.lastIndexOf('.')) { //$NON-NLS-1$
 				message = "File name must not end in a period.";
 			} else {
 				for (int i = 0; i < FORBIDDEN_INDICES.length(); i++) {
 					if(fileName.indexOf(FORBIDDEN_INDICES.charAt(i)) >= 0) {
-						message = "File name must not contain character " + FORBIDDEN_INDICES.charAt(i) + " .";
+						message = MessageFormat.format(
+								"File name must not contain character {0} .",
+								FORBIDDEN_INDICES.charAt(i));
 						return;
 					}
 				}				
 			}
 		}
 
-		String FORBIDDEN_FOLDER_LETTERS = "\"\n\t*:<>?|";
+		String FORBIDDEN_FOLDER_LETTERS = "\"\n\t*:<>?|"; //$NON-NLS-1$
 		private void validateFolderName() {
 			if(targetHolder.addPath.length() == 0) return;
 			for (int i = 0; i < FORBIDDEN_FOLDER_LETTERS.length(); i++) {
 				if(targetHolder.addPath.indexOf(FORBIDDEN_FOLDER_LETTERS.charAt(i)) >= 0) {
-					message = "Folder name must not contain character " + FORBIDDEN_FOLDER_LETTERS.charAt(i) + " .";
+					message = MessageFormat.format(
+							"Folder name must not contain character {0} .",
+							FORBIDDEN_FOLDER_LETTERS.charAt(i));
 					return;
 				}
 			}				

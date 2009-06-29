@@ -28,28 +28,28 @@ public class HiddenSystemsHandler extends AbstractHandler {
 
     public void executeHandler(XModelObject object, Properties p) throws XModelException {
         if(!isEnabled(object)) return;
-		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizards.query.list.HiddenFileSystemsWizard");
+		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.wizards.query.list.HiddenFileSystemsWizard"); //$NON-NLS-1$
         XModelObject[] fs = object.getChildren();
         String[][] vs = new String[fs.length][];
         for (int i = 0; i < vs.length; i++) {
             String name = fs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
             Properties fsp = XModelObjectUtil.toProperties(fs[i]);
-            String hidden = "" + fsp.getProperty("hidden", XModelObjectConstants.NO);
-            String jar = "" + "FileSystemJar".equals(fs[i].getModelEntity().getName());
+            String hidden = "" + fsp.getProperty("hidden", XModelObjectConstants.NO); //$NON-NLS-1$ //$NON-NLS-2$
+            String jar = "" + "FileSystemJar".equals(fs[i].getModelEntity().getName()); //$NON-NLS-1$ //$NON-NLS-2$
             vs[i] = new String[]{name, hidden, jar};
         }
         if(p == null) p = new Properties();
-        p.put("data", vs);
-        p.setProperty("help", "FileSystems_ShowHide");
+        p.put("data", vs); //$NON-NLS-1$
+        p.setProperty("help", "FileSystems_ShowHide"); //$NON-NLS-1$ //$NON-NLS-2$
         wizard.setObject(p);
         if(wizard.execute() != 0) return;
         boolean ch = false;
         for (int i = 0; i < vs.length; i++) {
             Properties fsp = XModelObjectUtil.toProperties(fs[i]);
-            String hidden = "" + fsp.getProperty("hidden", XModelObjectConstants.NO);
+            String hidden = "" + fsp.getProperty("hidden", XModelObjectConstants.NO); //$NON-NLS-1$ //$NON-NLS-2$
             if(hidden.equals(vs[i][1])) continue;
-            fsp.setProperty("hidden", vs[i][1]);
-            fs[i].setAttributeValue("info", XModelObjectUtil.toString(fsp));
+            fsp.setProperty("hidden", vs[i][1]); //$NON-NLS-1$
+            fs[i].setAttributeValue("info", XModelObjectUtil.toString(fsp)); //$NON-NLS-1$
             fs[i].setModified(true);
             ch = true;
         }

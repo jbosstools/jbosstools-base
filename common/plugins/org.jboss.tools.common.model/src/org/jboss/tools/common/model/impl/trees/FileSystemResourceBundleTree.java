@@ -18,13 +18,13 @@ public class FileSystemResourceBundleTree extends FileSystemResourceTree {
 	
 	public void setConstraint(Object object) {
 		extensions = new HashSet<String>();
-		extensions.add("properties");
+		extensions.add("properties"); //$NON-NLS-1$
 		javaRootsOnly = true;
 	}
 
 	public String getValue(XModelObject object) {
 		String p = getPath(object);
-		if(p != null && p.endsWith(".properties")) {
+		if(p != null && p.endsWith(".properties")) { //$NON-NLS-1$
 			p = p.substring(1, p.length() - 11).replace('/', '.'); 
 		}
 		return p;
@@ -32,7 +32,7 @@ public class FileSystemResourceBundleTree extends FileSystemResourceTree {
 
 	public XModelObject find(String value) {
 		return (value == null || value.length() == 0) ? null : 
-		       model.getByPath(XModelObjectConstants.SEPARATOR + value.replace('.', '/') + ".properties");
+		       model.getByPath(XModelObjectConstants.SEPARATOR + value.replace('.', '/') + ".properties"); //$NON-NLS-1$
 	}
 
 }

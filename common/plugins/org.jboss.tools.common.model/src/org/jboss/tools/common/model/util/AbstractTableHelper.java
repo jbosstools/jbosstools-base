@@ -49,7 +49,7 @@ public abstract class AbstractTableHelper {
 
     public String getValueAt(int r, int c) {
         XModelObject f = getModelObject(r);
-        return (f == null) ? "" : f.getAttributeValue(getHeader()[c]);
+        return (f == null) ? "" : f.getAttributeValue(getHeader()[c]); //$NON-NLS-1$
     }
 
     public void setValueAt(int r, int c, String value) throws XModelException {

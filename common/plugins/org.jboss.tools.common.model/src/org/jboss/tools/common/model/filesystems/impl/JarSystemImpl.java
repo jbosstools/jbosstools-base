@@ -36,7 +36,7 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
     }
 
     protected String getAbsolutePath() {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
     protected void loadChildren() {

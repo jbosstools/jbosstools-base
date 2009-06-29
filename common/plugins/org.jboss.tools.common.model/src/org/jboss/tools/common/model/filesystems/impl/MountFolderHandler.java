@@ -22,11 +22,11 @@ public class MountFolderHandler extends AbstractHandler {
     public MountFolderHandler() {}
 
     public boolean isEnabled(XModelObject object) {
-        if(object == null || XModelObjectConstants.TRUE.equals(object.get("overlapped"))) return false;
+        if(object == null || XModelObjectConstants.TRUE.equals(object.get("overlapped"))) return false; //$NON-NLS-1$
         String entity = object.getModelEntity().getName();
-        if("FileFolder".equals(entity)) return true;
+        if("FileFolder".equals(entity)) return true; //$NON-NLS-1$
         if(object.getFileType() == XFileObject.FILE &&
-           "jar".equals(object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION)) &&
+           "jar".equals(object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION)) && //$NON-NLS-1$
            isInFileFolderSystem(object)) return true;
         return false;
     }

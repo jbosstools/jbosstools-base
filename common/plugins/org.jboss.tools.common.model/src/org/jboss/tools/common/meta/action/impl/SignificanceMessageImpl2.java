@@ -17,7 +17,7 @@ public class SignificanceMessageImpl2 implements SignificanceMessage {
 
     public String getMessage(XAction action, XModelObject object, XModelObject[] objects) {
         String d = action.getDisplayName();
-        if(d.endsWith("...")) d = d.substring(d.length() - 3);
+        if(d.endsWith("...")) d = d.substring(d.length() - 3); //$NON-NLS-1$
         String p = object.getPresentationString();
         if(p.length() > 0) p = Character.toTitleCase(p.charAt(0)) + p.substring(1);
         String what = (objects != null && objects.length > 1) ? objects.length + " selected objects" : p;

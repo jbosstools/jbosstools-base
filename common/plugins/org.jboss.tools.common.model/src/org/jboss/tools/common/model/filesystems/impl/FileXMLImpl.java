@@ -28,7 +28,7 @@ public class FileXMLImpl extends AbstractXMLFileImpl {
 	}
 
 	public String get(String name) {
-		if(name.equals("_hasErrors_")) {
+		if(name.equals("_hasErrors_")) { //$NON-NLS-1$
 			return super.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT);
 		}
 		if(!markersReset && isActive()) {

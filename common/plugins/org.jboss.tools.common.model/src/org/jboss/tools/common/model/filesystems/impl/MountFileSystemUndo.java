@@ -10,12 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.filesystems.impl;
 
+import java.text.MessageFormat;
 import org.jboss.tools.common.model.*;
 public class MountFileSystemUndo extends UnmountFileSystemUndo {
 
     public MountFileSystemUndo(XModelObject fs) {
         super(fs);
-        description = "Mount file system " + p.getProperty(XModelObjectConstants.ATTR_NAME_LOCATION);
+        description = MessageFormat.format("Mount file system {0}", p.getProperty(XModelObjectConstants.ATTR_NAME_LOCATION));
     }
 
     protected void doUndo() {
@@ -27,7 +28,7 @@ public class MountFileSystemUndo extends UnmountFileSystemUndo {
     }
 
     protected String getActionIcon() {
-        return "images/actions/new.gif";
+        return "images/actions/new.gif"; //$NON-NLS-1$
     }
 
 }

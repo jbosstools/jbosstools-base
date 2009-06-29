@@ -21,7 +21,7 @@ public class LFileObjectImpl implements LFileObject {
         this.root = root;
         this.relpath = relpath;
         aliaspath = relpath.length() == 0 ? alias : alias + '/' + relpath;
-        String fn = (relpath.length() == 0) ? "" + root : "" + root + '/' + relpath;
+        String fn = (relpath.length() == 0) ? "" + root : "" + root + '/' + relpath; //$NON-NLS-1$ //$NON-NLS-2$
         f = new File(fn);
     }
 
@@ -54,7 +54,7 @@ public class LFileObjectImpl implements LFileObject {
     }
 
     public String read() {
-        return f == null ? "" : XModelObjectLoaderUtil.readFile(f);
+        return f == null ? "" : XModelObjectLoaderUtil.readFile(f); //$NON-NLS-1$
     }
 
     public void write(String s) {

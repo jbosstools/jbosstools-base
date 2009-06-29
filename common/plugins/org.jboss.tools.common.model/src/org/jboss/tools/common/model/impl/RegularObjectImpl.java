@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.impl;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.meta.*;
@@ -110,7 +111,7 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
         	if(getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) {
         		int k = 1;
         		while(c != null) {
-        			super.set(XModelObjectLoaderUtil.ATTR_ID_NAME, "" + k);
+        			super.set(XModelObjectLoaderUtil.ATTR_ID_NAME, "" + k); //$NON-NLS-1$
         			npp = getPathPart();
         			c = p.children.change(this, opp, npp);
         			k++;
@@ -132,14 +133,14 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
 
     protected void elementExists(XModelObject o, String name, String value) {
         if(getModel().getService() == null) return;
-        String mes = "Cannot set " + getAttrNameByXMLName(name) + " = " + value +
-                     " for " + title(this) + "\n" +
-                     "because " + title(o) + " exists in the " + title(getParent());
+        String mes = MessageFormat.format(
+				"Cannot set {0} = {1} for {2}\nbecause {3} exists in the {4}",
+				getAttrNameByXMLName(name), value, title(this), title(o), title(getParent()));
         getModel().getService().showDialog("Error", mes, new String[]{"OK"}, null, 1);
     }
 
     private static String title(XModelObject o) {
-        return o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " +
+        return o.getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE) + " " + //$NON-NLS-1$
                o.getModelEntity().getRenderer().getTitle(o);
     }
 

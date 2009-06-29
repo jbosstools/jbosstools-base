@@ -15,7 +15,7 @@ import org.jboss.tools.common.meta.constraint.*;
 
 public class XAttributeConstraintTree extends XAttributeConstraintProperties
                                        implements XAttributeConstraintT {
-    private String filteredTreeName = "";
+    private String filteredTreeName = ""; //$NON-NLS-1$
     
     public XAttributeConstraintTree() {}
 

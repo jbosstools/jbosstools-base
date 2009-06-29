@@ -33,7 +33,7 @@ import org.osgi.framework.Bundle;
  *
  */
 public class ModelFeatureFactory {
-	public static final String POINT = "org.jboss.tools.common.model.classes";
+	public static final String POINT = "org.jboss.tools.common.model.classes"; //$NON-NLS-1$
 	
 	public static ModelFeatureFactory getInstance() {
 		return ModelFeatureFactoryHolder.INSTANCE;
@@ -53,14 +53,14 @@ public class ModelFeatureFactory {
 		for (int i = 0; i < es.length; i++) {
 			IConfigurationElement[] cs = es[i].getConfigurationElements();
 			for (int j = 0; j < cs.length; j++) {
-				String id = cs[j].getAttribute("id");
+				String id = cs[j].getAttribute("id"); //$NON-NLS-1$
 				elements.put(id, cs[j]);
 			}
 		}
 	}
 	
 	private boolean isActive() {
-		Bundle b = Platform.getBundle("org.jboss.tools.common.model");
+		Bundle b = Platform.getBundle("org.jboss.tools.common.model"); //$NON-NLS-1$
 		int state = b == null ? -1 : b.getState() ;
 		return state == Bundle.ACTIVE;
 	}
@@ -71,17 +71,17 @@ public class ModelFeatureFactory {
 		if(c == null) {
 			instanceFailures.add(id);
 			classFailures.add(id);
-			ModelPlugin.getPluginLog().logError(new Exception("Model feature " + id + " is not registered with extension point " + POINT));
+			ModelPlugin.getPluginLog().logError(new Exception("Model feature " + id + " is not registered with extension point " + POINT)); //$NON-NLS-1$ //$NON-NLS-2$
 			return null;
 		}
 		try {
-			return c.createExecutableExtension("class");
+			return c.createExecutableExtension("class"); //$NON-NLS-1$
 		} catch (CoreException e) {
 			instanceFailures.add(id);
-			ModelPlugin.getPluginLog().logError("Cannot create model feature instance " + id + ".", e);
+			ModelPlugin.getPluginLog().logError("Cannot create model feature instance " + id + ".", e); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (InvalidRegistryObjectException e) {
 			instanceFailures.add(id);
-			ModelPlugin.getPluginLog().logError("Cannot create model feature instance " + id + ".", e);
+			ModelPlugin.getPluginLog().logError("Cannot create model feature instance " + id + ".", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return null;
 	}
@@ -92,18 +92,18 @@ public class ModelFeatureFactory {
 		if(c == null) {
 			classFailures.add(id);
 			instanceFailures.add(id);
-			ModelPlugin.getPluginLog().logError(new Exception("Model feature " + id + " is not registered with extension point " + POINT));
+			ModelPlugin.getPluginLog().logError(new Exception("Model feature " + id + " is not registered with extension point " + POINT)); //$NON-NLS-1$ //$NON-NLS-2$
 			return null;
 		}
 		try {
 			String n = c.getNamespaceIdentifier();
 			Bundle b = Platform.getBundle(n);
-			String cls = c.getAttribute("class");
+			String cls = c.getAttribute("class"); //$NON-NLS-1$
 			return b.loadClass(cls);
 		} catch (ClassNotFoundException e) {
 			classFailures.add(id);
 			if(!isActive()) return null;
-			ModelPlugin.getPluginLog().logError("Cannot create model feature class " + c.getAttribute("class") + ".", e);
+			ModelPlugin.getPluginLog().logError("Cannot create model feature class " + c.getAttribute("class") + ".", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return null;
 	}
@@ -115,7 +115,7 @@ public class ModelFeatureFactory {
 			return (XModelObject)o;
 		} catch (ClassCastException e) {
 			instanceFailures.add(id);
-			ModelPlugin.getPluginLog().logError("Model feature " + id + " is not instance of XModelObject", e);
+			ModelPlugin.getPluginLog().logError("Model feature " + id + " is not instance of XModelObject", e); //$NON-NLS-1$ //$NON-NLS-2$
 			return null;
 		}
 	}

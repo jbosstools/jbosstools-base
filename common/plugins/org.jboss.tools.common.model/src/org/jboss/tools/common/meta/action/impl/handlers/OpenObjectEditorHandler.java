@@ -20,7 +20,7 @@ import org.jboss.tools.common.meta.action.impl.AbstractHandler;
  *
  */
 public class OpenObjectEditorHandler extends AbstractHandler {
-    private static String wizardname = "XXX";
+    private static String wizardname = "XXX"; //$NON-NLS-1$
     protected static SpecialWizard wizard = null;
 
     public OpenObjectEditorHandler() {

@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.action.impl.handlers;
 
+import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.*;
@@ -49,9 +50,9 @@ public class DefaultRenameSupport extends SpecialWizardSupport {
 	}
 
 	public String getTitle() {
-		String title = getProperties().getProperty("title");
+		String title = getProperties().getProperty("title"); //$NON-NLS-1$
 		if(title != null) return title;
-		return "Rename " + PasteEnterNewNameSupport.getCapitalizedName(getTarget());
+		return MessageFormat.format("Rename {0}", PasteEnterNewNameSupport.getCapitalizedName(getTarget()));
 	}
 
     public String getSubtitle() {
@@ -64,7 +65,7 @@ public class DefaultRenameSupport extends SpecialWizardSupport {
 
 	public String getMessage(int stepId) {
 		String displayName = WizardKeys.getAttributeDisplayName(getEntityData()[0].getAttributeData()[0].getAttribute(), true);
-		return "Please enter new " + displayName + ".";
+		return MessageFormat.format("Please enter new {0}.", displayName);
 	}
 
 	public String[] getActionNames(int stepId) {

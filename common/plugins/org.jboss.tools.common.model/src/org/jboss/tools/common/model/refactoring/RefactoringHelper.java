@@ -37,7 +37,7 @@ public class RefactoringHelper {
 		if(body == null || replacements.size() == 0) return;
 		ReplaceEdit[] edits = RefactoringHelper.getEdits(replacements, body);
 		if(edits != null && edits.length > 0) {
-			TextFileChange change = new TextFileChange("TextFileChange", f);
+			TextFileChange change = new TextFileChange("TextFileChange", f); //$NON-NLS-1$
 			for (int j = 0; j < edits.length; j++) {
 				TextChangeCompatibility.addTextEdit(change, "Update Reference", edits[j]);
 			}

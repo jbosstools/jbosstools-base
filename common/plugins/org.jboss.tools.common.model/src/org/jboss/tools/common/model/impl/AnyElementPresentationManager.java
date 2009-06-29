@@ -41,7 +41,7 @@ public class AnyElementPresentationManager implements XModelObjectPresentation {
 	}
 
 	public String getValue(XModelObject object) {
-		String tag = object.get("tag");
+		String tag = object.get("tag"); //$NON-NLS-1$
 		if(tag == null) return null;
 		String classname = tags.get(tag);
 		if(classname == null) return null;
@@ -62,12 +62,12 @@ public class AnyElementPresentationManager implements XModelObjectPresentation {
 	}
 
 	private void init() {
-		XMapping m = XModelMetaDataImpl.getInstance().getMapping("AnyElementPresentation");
+		XMapping m = XModelMetaDataImpl.getInstance().getMapping("AnyElementPresentation"); //$NON-NLS-1$
 		if(m == null) return;
 		String[] ks = m.getKeys();
 		for (int i = 0; i < ks.length; i++) {
 			String cn = m.getValue(ks[i]);
-			String[] qs = ks[i].split(",");
+			String[] qs = ks[i].split(","); //$NON-NLS-1$
 			for (int j = 0; j < qs.length; j++) {
 				tags.put(qs[j], cn);
 			}
