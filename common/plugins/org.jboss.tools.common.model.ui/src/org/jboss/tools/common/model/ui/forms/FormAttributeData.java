@@ -20,12 +20,20 @@ import org.jboss.tools.common.meta.key.WizardKeys;
  */
 public class FormAttributeData implements IFormAttributeData {
 
-	private String name;
+	private String name; // (non-translatable)
 	private ILayoutDataFactory layoutDataFactory;
-	private String wraperClassName;
+	private String wraperClassName; // (non-translatable)
 	private int width;
-	private String displayName;
+	private String displayName; // (translatable)
 
+	/**
+	 * 
+	 * @param name (non-translatable)
+	 * @param layoutDataFactory
+	 * @param wraperClassName (non-translatable)
+	 * @param width
+	 * @param displayname (translatable)
+	 */
 	public FormAttributeData(String name, ILayoutDataFactory layoutDataFactory, String wraperClassName, int width, String displayname) {
 		this.name = name;
 		if(layoutDataFactory == null) layoutDataFactory = LayoutDataFactory.getInstance();
@@ -35,26 +43,59 @@ public class FormAttributeData implements IFormAttributeData {
 		this.displayName = displayname;
 	}
 
+	/**
+	 * 
+	 * @param name (non-translatable)
+	 * @param layoutDataFactory
+	 * @param wraperClassName (non-translatable)
+	 * @param width
+	 */
 	public FormAttributeData(String name, ILayoutDataFactory layoutDataFactory, String wraperClassName, int width) {
 		this(name, layoutDataFactory, wraperClassName, width, null);
 	}
 
+	/**
+	 * 
+	 * @param name (non-translatable)
+	 * @param layoutDataFactory
+	 * @param wraperClassName (non-translatable)
+	 */
 	public FormAttributeData(String name, ILayoutDataFactory layoutDataFactory, String wraperClassName) {
 		this(name, layoutDataFactory, wraperClassName, 0);
 	}
 
+	/**
+	 * 
+	 * @param name (non-translatable)
+	 * @param layoutDataFactory
+	 */
 	public FormAttributeData(String name, ILayoutDataFactory layoutDataFactory) {
 		this(name, layoutDataFactory, null, 0);
 	}
-
+	
+	/**
+	 * 
+	 * @param name (non-translatable)
+	 * @param width
+	 */
 	public FormAttributeData(String name, int width) {
 		this(name, LayoutDataFactory.getInstance(), null, width);
 	}
 
+	/**
+	 * 
+	 * @param name (non-translatable)
+	 * @param width
+	 * @param displayName (translatable)
+	 */
 	public FormAttributeData(String name, int width, String displayName) {
 		this(name, LayoutDataFactory.getInstance(), null, width, displayName);
 	}
 
+	/**
+	 * 
+	 * @param name (non-translatable)
+	 */
 	public FormAttributeData(String name) {
 		this(name, LayoutDataFactory.getInstance(), null, 0);
 	}

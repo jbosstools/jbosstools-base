@@ -17,17 +17,28 @@ import org.jboss.tools.common.model.ui.widgets.WhiteSettings;
  */
 public class FormData implements IFormData {
 
-	private String header;
-	private String description;
+	private String header; // (translatable)
+	private String description; // (translatable)
 	private IFormAttributeData[] attributes;
-	private String[] entities;
+	private String[] entities; //  (non-translatable)
 	private IFormActionData[] actions;
 	private IFormData[] forms;
-	private String entityName;
+	private String entityName; //  (non-translatable)
 	private IWidgetSettings widgetSettings;
 
 	private String formClassName;
 
+	/**
+	 * 
+	 * @param header (translatable)
+	 * @param description (translatable)
+	 * @param entityName (non-translatable)
+	 * @param attributes
+	 * @param entities (non-translatable)
+	 * @param actions
+	 * @param forms
+	 * @param widgetSettings
+	 */
 	public FormData(String header, String description, String entityName, IFormAttributeData[] attributes, String[] entities, IFormActionData[] actions, IFormData[] forms, IWidgetSettings widgetSettings) {
 		this.header = header;
 		this.description = description;
@@ -39,30 +50,75 @@ public class FormData implements IFormData {
 		this.widgetSettings = widgetSettings;
 	}
 
+	/**
+	 * 
+	 * @param header (translatable)
+	 * @param description (translatable)
+	 * @param entityName (non-translatable)
+	 * @param attributes
+	 * @param entities (non-translatable)
+	 * @param actions
+	 */
 	public FormData(String header, String description, String entityName, IFormAttributeData[] attributes, String[] entities, IFormActionData[] actions) {
 		this(header, description, entityName, attributes, entities, actions, null, new WhiteSettings());
 	}
 
+	/**
+	 * 
+	 * @param header (translatable)
+	 * @param description (translatable)
+	 * @param attributes
+	 * @param entities (non-translatable)
+	 * @param actions
+	 */
 	public FormData(String header, String description, IFormAttributeData[] attributes, String[] entities, IFormActionData[] actions) {
 		this(header, description, null, attributes, entities, actions, null, new WhiteSettings());
 	}
 
+	/**
+	 * 
+	 * @param entityName (non-translatable)
+	 * @param entities (non-translatable)
+	 * @param forms
+	 */
 	public FormData(String entityName, String[] entities, IFormData[] forms) {
 		this(null, null, entityName, null, entities, null, forms, new WhiteSettings());
 	}
 
+	/**
+	 * 
+	 * @param header (translatable)
+	 * @param description (translatable)
+	 * @param entityName (non-translatable)
+	 * @param attributes
+	 */
 	public FormData(String header, String description, String entityName, IFormAttributeData[] attributes) {
 		this(header, description, entityName, attributes, null, null, null, new WhiteSettings());
 	}
 
+	/**
+	 * 
+	 * @param header (translatable)
+	 * @param description (translatable)
+	 * @param attributes
+	 */
 	public FormData(String header, String description, IFormAttributeData[] attributes) {
 		this(header, description, null, attributes, null, null, null, new WhiteSettings());
 	}
 
+	/**
+	 * 
+	 * @param entityName (non-translatable)
+	 * @param forms
+	 */
 	public FormData(String entityName, IFormData[] forms) {
 		this(null, null, entityName, null, null, null, forms, null);
 	}
 
+	/**
+	 * 
+	 * @param formClassName (non-translatable)
+	 */
 	public FormData(String formClassName) {
 		this.formClassName = formClassName;
 	}

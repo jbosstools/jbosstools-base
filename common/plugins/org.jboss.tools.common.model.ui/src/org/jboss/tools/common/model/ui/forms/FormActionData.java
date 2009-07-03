@@ -17,6 +17,11 @@ public class FormActionData implements IFormActionData {
 	private String label;
 	private String actionPath;
 
+	/**
+	 * 
+	 * @param label (translatable)
+	 * @param actionPath (non-translatable)
+	 */
 	public FormActionData(String label, String actionPath) {
 		this.label = label;
 		this.actionPath = actionPath;
