@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Display;
  */
 public class JobUtils {
 	
-	private static final long MAX_IDLE = 15*60*1000L;
+	private static final long MAX_IDLE = 20*60*1000L;
 	private static final long DEFAULT_DELAY = 500;
 
 	public static void waitForIdle() {

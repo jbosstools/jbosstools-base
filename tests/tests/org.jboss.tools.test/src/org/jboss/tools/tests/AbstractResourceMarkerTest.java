@@ -55,7 +55,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 		IMarker[] markers = resource.findMarkers(type, true, IResource.DEPTH_INFINITE);
 		for (int i = 0; i < markers.length; i++) {
 			String message = markers[i].getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
-			if (message.matches(pattern)) {
+			if (message.matches(pattern) && markers[i].exists()) {
 				result.add(markers[i]);
 			}
 		}
@@ -115,7 +115,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 			int length = markers.length;
 			for(int i=0;i<markers.length;i++){
 //				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));  //$NON-NLS-1$//$NON-NLS-2$
-				if(filter!=null && !filter.accept(markers[i])) {
+				if(markers[i].exists() && (filter==null || filter.accept(markers[i]))) {
 					length--;
 				}
 			}
@@ -137,7 +137,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 
 //			System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));  //$NON-NLS-1$//$NON-NLS-2$
 			for(int i=0;i<markers.length;i++){
-				if(filter==null || filter.accept(markers[i])) {
+				if(markers[i].exists() && (filter==null || filter.accept(markers[i]))) {
 					messages.add(markers[i].getAttribute(IMarker.MESSAGE, "")); //$NON-NLS-1$
 				}
 			}
@@ -158,7 +158,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 
 			for(int i=0;i<markers.length;i++){
 //				System.out.println("Marker line number - "+markers[i].getAttribute(IMarker.LINE_NUMBER, 0)); //$NON-NLS-1$
-				if(filter==null || filter.accept(markers[i])) {
+				if(markers[i].exists() && (filter==null || filter.accept(markers[i]))) {
 					numbers.add(markers[i].getAttribute(IMarker.LINE_NUMBER, 0));
 				}
 			}
