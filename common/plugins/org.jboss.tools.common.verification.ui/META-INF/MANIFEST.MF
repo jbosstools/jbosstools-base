@@ -23,6 +23,11 @@ Require-Bundle: org.eclipse.ui.ide,
  org.eclipse.ui.workbench,
  org.eclipse.jdt.ui,
  org.jboss.tools.common.verification,
- org.jboss.tools.common.model.ui
+ org.jboss.tools.common.model.ui,
+ org.eclipse.core.expressions,
+ org.eclipse.core.commands,
+ org.eclipse.jface,
+ org.eclipse.wst.common.project.facet.core,
+ org.eclipse.wst.validation
 Bundle-Version: 2.0.0
 

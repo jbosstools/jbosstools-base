@@ -47,4 +47,57 @@
 		<xclass id="org.jboss.tools.common.verification.ui.vrules.wizard.config.VRulesConfigurationWizard"
 			class="org.jboss.tools.common.verification.ui.vrules.wizard.config.VRulesConfigurationWizard"/>
     </extension>
+    
+    <extension point="org.eclipse.ui.commands">
+       <command
+            name="%command.name.ExcludeValidation"
+            id="org.jboss.tools.common.verification.ui.actions.ExcludeValidationCommand"
+            defaultHandler="org.jboss.tools.common.verification.ui.actions.ExcludeResourceHandler"/>
+   </extension>
+   <extension point="org.eclipse.ui.commands">
+       <command
+            name="%command.name.IncludeValidation"
+            id="org.jboss.tools.common.verification.ui.actions.IncludeValidationCommand"
+            defaultHandler="org.jboss.tools.common.verification.ui.actions.IncludeResourceHandler"/>
+   </extension>
+    <extension point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+      		namespace="org.jboss.tools.verification.ui"
+            properties="resourceExcluded,resourceIncluded"
+            type="org.eclipse.core.runtime.IAdaptable"
+            class="org.jboss.tools.common.verification.ui.actions.ResourceExcludedExpressionFactoryTester"
+            id="org.jboss.tools.common.verification.ui.actions.ResourceExcludedExpressionFactoryTester">
+      </propertyTester>
+   </extension>
+   <extension point="org.eclipse.ui.menus">
+       <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command
+            commandId="org.jboss.tools.common.verification.ui.actions.ExcludeValidationCommand"
+            label="%command.label.ExcludeValidation">
+            <visibleWhen>
+              <with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<instanceof value="org.eclipse.core.runtime.IAdaptable"/>
+				    	<test property="org.jboss.tools.verification.ui.resourceIncluded" value="true" forcePluginActivation="true"/>
+					</iterate>
+			  </with>     
+            </visibleWhen>
+         </command>
+         <command
+            commandId="org.jboss.tools.common.verification.ui.actions.IncludeValidationCommand"
+            label="%command.label.IncludeValidation">
+            <visibleWhen>
+             <with variable="selection">
+					<count value="1"/>
+					<iterate>
+						<instanceof value="org.eclipse.core.runtime.IAdaptable"/>
+				    	<test property="org.jboss.tools.verification.ui.resourceExcluded" value="true" forcePluginActivation="true"/>
+					</iterate>
+			  </with>  
+            </visibleWhen>
+         </command>
+       </menuContribution>
+   	</extension>
 </plugin>

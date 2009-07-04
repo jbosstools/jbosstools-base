@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.verification.ui;
 
+import org.eclipse.core.runtime.QualifiedName;
 import org.jboss.tools.common.log.BaseUIPlugin;
 import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.model.plugin.IModelPlugin;
@@ -18,6 +19,10 @@ public class XStudioVerificationPlugin extends BaseUIPlugin implements IModelPlu
 
 	// The shared instance
 	private static XStudioVerificationPlugin plugin;
+	
+	public final static String PLUGIN_ID = "org.jboss.tools.common.verification.ui"; //$NON-NLS-1$
+	
+	public static final QualifiedName RESOURCE_EXCLUDED = new QualifiedName(PLUGIN_ID, "resourceExcluded"); //$NON-NLS-1$
 
 	public XStudioVerificationPlugin() {
 	    super();
