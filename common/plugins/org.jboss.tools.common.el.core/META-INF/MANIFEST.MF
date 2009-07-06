@@ -20,3 +20,4 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.common,
  org.jboss.tools.common.model,
  org.jboss.tools.common.resref.core;reprovide=true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

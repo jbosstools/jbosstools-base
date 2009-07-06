@@ -10,3 +10,4 @@ Require-Bundle: org.junit,
  org.jboss.tools.common.model.ui
 Export-Package: org.jboss.tools.common.verification.ui.test,
  org.jboss.tools.common.verification.ui.vrules.preferences.test
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
