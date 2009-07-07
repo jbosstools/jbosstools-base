@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.jboss.tools.test_feature"
+      id="org.jboss.tools.test.feature"
       label="Tools Tests"
       version="2.0.0">
 
