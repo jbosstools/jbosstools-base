@@ -69,7 +69,6 @@ public class ELOperandResolveStatus {
 	 * @return true if EL is resolved.
 	 */
 	public boolean isOK() {
-//		return !getProposals().isEmpty() || isMapOrCollectionOrBundleAmoungTheTokens(); 
 		return !getProposals().isEmpty() || isMapOrCollectionOrBundleAmoungTheTokens(); 
 	}
 
@@ -164,5 +163,4 @@ public class ELOperandResolveStatus {
 	public void clearUnpairedGettersOrSetters() {
 		getUnpairedGettersOrSetters().clear();
 	}
-
 }

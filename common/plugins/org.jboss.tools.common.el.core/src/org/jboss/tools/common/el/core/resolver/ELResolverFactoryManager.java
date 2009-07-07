@@ -10,9 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
@@ -35,7 +33,7 @@ public class ELResolverFactoryManager {
 
 	private static final ELResolverFactoryManager INSTANCE = new ELResolverFactoryManager();
 
-	private Map<String, ELResolver[]> resolvers = new HashMap<String, ELResolver[]>();
+//	private Map<String, ELResolver[]> resolvers = new HashMap<String, ELResolver[]>();
 
 	private ELResolverFactoryManager() {
 	}
@@ -58,10 +56,10 @@ public class ELResolverFactoryManager {
 		if(project==null) {
 			return new ELResolver[0];
 		}
-		ELResolver[] result =  resolvers.get(project.getName());
-		if(result!=null) {
-			return result;
-		}
+//		ELResolver[] result =  resolvers.get(project.getName());
+//		if(result!=null) {
+//			return result;
+//		}
 		Set<ELResolver> resolverSet = new HashSet<ELResolver>();
         IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = registry.getExtensionPoint("org.jboss.tools.common.el.core.elResolver");  //$NON-NLS-1$
@@ -106,8 +104,9 @@ public class ELResolverFactoryManager {
 				}
 			}
 		}
-		result = resolverSet.toArray(new ELResolver[resolverSet.size()]);
-		resolvers.put(project.getName(), result);
-		return result;
+//		result = resolverSet.toArray(new ELResolver[resolverSet.size()]);
+//		resolvers.put(project.getName(), result);
+//		return result;
+		return resolverSet.toArray(new ELResolver[0]);
 	}
 }
