@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.objecteditor;
 
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.*;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.model.XModelObject;
@@ -26,7 +27,14 @@ public class SaveEditorSpecialWizard implements SpecialWizard {
 	}
 	
 	public int execute() {
-		IWorkbenchPage workbenchPage = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		if(Display.getCurrent() == null) {
+			return 1;
+		}
+		IWorkbenchWindow window = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow();
+		if(window == null) {			
+			return 1;
+		}
+		IWorkbenchPage workbenchPage = window.getActivePage();
 		IModelObjectEditorInput input = XModelObjectEditorInput.createInstance(o);
 		if(input == null) return 1;
 		IEditorPart editor = workbenchPage.findEditor(input);
