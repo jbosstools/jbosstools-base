@@ -168,7 +168,9 @@ public class DropUtils {
         // } catch (URISyntaxException e) {
         // ModelUIPlugin.getPluginLog().logError(e);
         // }
-        IFile file = EclipseResourceUtil.getFile(dropData.getMimeData());
+		boolean isWorkspaceFile = dropData.getMimeData() != null && dropData.getMimeData().startsWith("L/");
+        IFile file = isWorkspaceFile ? ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(dropData.getMimeData()).removeFirstSegments(1))
+        			: EclipseResourceUtil.getFile(dropData.getMimeData());
         
         if (file == null || !file.exists()) {
             URL newUrl = null;
