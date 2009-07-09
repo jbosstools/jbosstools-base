@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.views.palette.editor;
 
+import org.jboss.tools.common.model.ui.Messages;
 import org.jboss.tools.common.model.ui.wizards.query.list.AbstractTreeWizardView;
 
 public class HiddenPaletteTabsWizardView extends AbstractTreeWizardView {
@@ -18,13 +19,13 @@ public class HiddenPaletteTabsWizardView extends AbstractTreeWizardView {
 	}
 
 	protected String[] getActions() {
-		return new String[]{"Show All", "Hide All"};
+		return new String[]{Messages.HiddenPaletteTabsWizardView_ShowAll, Messages.HiddenPaletteTabsWizardView_HideAll};
 	}
 
 	protected void internalAction(String command) {
-		if("Hide All".equals(command)) {
+		if(Messages.HiddenPaletteTabsWizardView_HideAll.equals(command)) {
 			disableAll();
-		} else if("Show All".equals(command)) {
+		} else if(Messages.HiddenPaletteTabsWizardView_ShowAll.equals(command)) {
 			enableAll();
 		}
 	}

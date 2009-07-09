@@ -47,12 +47,12 @@ import org.jboss.tools.common.verification.vrules.VTaskListener;
 import org.jboss.tools.common.verification.vrules.layer.VModelFactory;
 
 public class VerifyWizardView extends AbstractQueryWizardView {
-	private static final String COMMAND_RESUME = "Resume"; //$NON-NLS-1$
-	private static final String COMMAND_PAUSE = "Pause"; //$NON-NLS-1$
-	private static final String COMMAND_STOP = "Stop"; //$NON-NLS-1$
-	private static final String COMMAND_RUN_SELECTED = "Run Selected"; //$NON-NLS-1$
-	private static final String COMMAND_RUN_ALL = "Run All"; //$NON-NLS-1$
-	static final String COMMAND_CLOSE = "Close"; //$NON-NLS-1$
+	private static final String COMMAND_RESUME = VerificationUIMessages.VerifyWizardView_Resume;
+	private static final String COMMAND_PAUSE = VerificationUIMessages.VerifyWizardView_Pause;
+	private static final String COMMAND_STOP = VerificationUIMessages.VerifyWizardView_Stop;
+	private static final String COMMAND_RUN_SELECTED = VerificationUIMessages.VerifyWizardView_RunSelected;
+	private static final String COMMAND_RUN_ALL = VerificationUIMessages.VerifyWizardView_RunAll;
+	static final String COMMAND_CLOSE = VerificationUIMessages.VerifyWizardView_Close;
 	static String[] INITIAL_COMMANDS = new String[]{COMMAND_RUN_ALL, COMMAND_RUN_SELECTED, COMMAND_CLOSE, HELP};
 	static String[] RUNNING_COMMANDS = new String[]{COMMAND_PAUSE, COMMAND_STOP, COMMAND_CLOSE, HELP};
 	static String[] PAUSE_COMMANDS = new String[]{COMMAND_RESUME, COMMAND_STOP, COMMAND_CLOSE, HELP};
@@ -178,6 +178,10 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 		}
 	}
 
+	/**
+	 * 
+	 * @param commands (translatable)
+	 */
 	public void changeControl(String[] commands) {
 		commandBar.setCommands(commands);
 		commandBar.setDefaultCommand(commands[0]);

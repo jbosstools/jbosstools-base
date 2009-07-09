@@ -11,6 +11,8 @@
 package org.jboss.tools.common.model.ui.attribute.editor;
 
 import java.util.Properties;
+
+import org.jboss.tools.common.model.ui.Messages;
 import org.jboss.tools.common.model.ui.action.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -22,9 +24,9 @@ import org.jboss.tools.common.meta.action.SpecialWizard;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 public class MutableMultipleChoiceFieldEditor extends MultipleChoiceFieldEditor implements CommandBarListener, IMutableFieldEditor {
-	static String NEW = "New...";
-	static String SELECT_ALL = "Select All";
-	static String DESELECT_ALL = "Deselect All";
+	static String NEW = Messages.MutableMultipleChoiceFieldEditor_New;
+	static String SELECT_ALL = Messages.MutableMultipleChoiceFieldEditor_SelectAll;
+	static String DESELECT_ALL = Messages.MutableMultipleChoiceFieldEditor_DeselectAll;
 
 	CommandBar bar = new CommandBar();
 	String[] commands = {NEW, SELECT_ALL, DESELECT_ALL};
@@ -129,11 +131,11 @@ public class MutableMultipleChoiceFieldEditor extends MultipleChoiceFieldEditor 
 	protected String changePressed() {
 		if(change == null) return null;
 		Properties p = new Properties();
-		p.put("shell", bar.getControl().getShell());
+		p.put("shell", bar.getControl().getShell()); //$NON-NLS-1$
 		change.setObject(p);
 		int i = change.execute();
 		if(i != 0) return null;
-		return p.getProperty("value");
+		return p.getProperty("value"); //$NON-NLS-1$
 	}
 
 	public Control[] getControls(Composite parent) {

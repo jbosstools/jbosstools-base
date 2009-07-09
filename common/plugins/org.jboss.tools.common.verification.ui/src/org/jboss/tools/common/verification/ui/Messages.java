@@ -12,6 +12,9 @@ public class Messages extends NLS {
 	public static String SignificanceView_GreaterThanN;
 	public static String SignificanceView_OnlyTen;
 	public static String SignificanceView_VerificationLevelLabel;
+	public static String VerifyWizardView_Cancel;
+	public static String VerifyWizardView_Close;
+	public static String VerifyWizardView_Run;
 	public static String VerifyWizardView_VerifyTask;
 	static {
 		// initialize resource bundle

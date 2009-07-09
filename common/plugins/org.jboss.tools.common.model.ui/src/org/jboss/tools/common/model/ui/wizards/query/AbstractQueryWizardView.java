@@ -24,10 +24,10 @@ import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.ui.*;
 
 public abstract class AbstractQueryWizardView implements CommandBarListener {
-	public static String CANCEL = "Cancel";
-	public static String CLOSE = "Close";
-	public static String OK = "Ok";	
-	public static String HELP = "Help";	
+	public static String CANCEL = Messages.AbstractQueryWizardView_Cancel;
+	public static String CLOSE = Messages.AbstractQueryWizardView_Close;
+	public static String OK = Messages.AbstractQueryWizardView_OK;	
+	public static String HELP = Messages.AbstractQueryWizardView_Help;	
 	private String helpkey = null;	
 	private Dialog dialog; 
 	private TitleAreaDialog titleDialog = null;

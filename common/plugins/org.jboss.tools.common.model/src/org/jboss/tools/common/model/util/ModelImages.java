@@ -18,6 +18,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.commands.ICommandImageService;
+import org.jboss.tools.common.model.Messages;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.osgi.framework.Bundle;
@@ -68,7 +69,7 @@ public class ModelImages {
 	}
 
 	private URL makeIconFileURL(URL url, String name) throws MalformedURLException {
-		if (name == null) throw new MalformedURLException("Image name cannot be null.");
+		if (name == null) throw new MalformedURLException(Messages.ModelImages_NullImageName);
 		return new URL(url, name);
 	}	
 

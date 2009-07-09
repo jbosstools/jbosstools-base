@@ -30,7 +30,7 @@ public class BrowserHelper {
 
 	public static void startExplorer(XModel model, String url) throws XModelException {
 		XModelObject editor = PreferenceModelUtilities.getPreferenceModel().getByPath("%Options%/Struts Studio/Running"); //$NON-NLS-1$
-		if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
+		if(editor == null) throw new XModelException(ModelMessages.BrowserHelper_InternetBrowserNotSet);
 		if(validatePath(PreferenceModelUtilities.getPreferenceModel().getService(), editor)) new OWEProcess(editor, url).start();
 	}
 	
@@ -55,7 +55,7 @@ public class BrowserHelper {
 			  } catch (XModelException e) {
 				  ModelPlugin.getPluginLog().logError("BrowserHelper:" + e.getMessage()); //$NON-NLS-1$
 			  }
-			int i = d.showDialog("Run", MessageFormat.format("Enter valid path for {0}", o.getPresentationString()),
+			int i = d.showDialog(ModelMessages.BrowserHelper_DialogTitleRun, MessageFormat.format(ModelMessages.BrowserHelper_EnterValidPath, o.getPresentationString()),
 								 new String[]{ModelMessages.OK, ModelMessages.Cancel}, dt[0], ServiceDialog.QUESTION);
 			if(i != 0) return false;
 		}

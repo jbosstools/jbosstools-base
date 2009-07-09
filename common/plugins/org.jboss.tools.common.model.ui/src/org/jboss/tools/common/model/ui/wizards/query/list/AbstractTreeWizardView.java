@@ -29,7 +29,7 @@ public abstract class AbstractTreeWizardView extends AbstractQueryWizardView {
 	protected CheckTreeProvider provider = new CheckTreeProvider();
 	protected TreeItemSelectionManager treeSelectionManager;
 	protected String[][] vs = new String[0][];
-	CheckObject object = new CheckObject(null, new String[]{"", "yes"}); //$NON-NLS-1$
+	CheckObject object = new CheckObject(null, new String[]{"", "yes"}); //$NON-NLS-1$ //$NON-NLS-2$
 	int expandingLevel = 2;
 	
 	public AbstractTreeWizardView() {

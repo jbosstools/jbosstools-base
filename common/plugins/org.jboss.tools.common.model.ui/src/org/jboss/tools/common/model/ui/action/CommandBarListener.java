@@ -13,5 +13,10 @@ package org.jboss.tools.common.model.ui.action;
 import org.jboss.tools.common.model.XModelException;
 
 public interface CommandBarListener {
+	/**
+	 * 
+	 * @param command (translatable)
+	 * @throws XModelException
+	 */
 	public void action(String command) throws XModelException;
 }

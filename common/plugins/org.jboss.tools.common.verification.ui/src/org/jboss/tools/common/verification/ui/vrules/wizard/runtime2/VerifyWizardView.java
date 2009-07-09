@@ -29,9 +29,9 @@ import org.jboss.tools.common.verification.vrules.layer.VModelFactory;
 import org.jboss.tools.common.verification.vrules.layer.VObjectImpl;
 
 public class VerifyWizardView extends AbstractQueryWizardView {
-	static final String COMMAND_CANCEL = "Cancel"; //$NON-NLS-1$
-	static final String COMMAND_RUN = "Run"; //$NON-NLS-1$
-	static final String COMMAND_CLOSE = "Close"; //$NON-NLS-1$
+	static final String COMMAND_CANCEL = Messages.VerifyWizardView_Cancel;
+	static final String COMMAND_RUN = Messages.VerifyWizardView_Run;
+	static final String COMMAND_CLOSE = Messages.VerifyWizardView_Close;
 	protected XModel model;
 	protected VObject vobject;
 	protected VTask task = null;

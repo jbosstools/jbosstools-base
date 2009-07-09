@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.jboss.tools.common.propertieseditor.bundlemodel.*;
+import org.jboss.tools.common.model.ui.Messages;
 import org.jboss.tools.common.model.ui.action.*;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
@@ -25,8 +26,8 @@ import org.jboss.tools.common.model.impl.bundle.CountriesHelper;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class BundleLanguagesEditor implements CommandBarListener, SelectionListener {
-	static String CREATE = "Add";
-	static String DELETE = "Delete";
+	static String CREATE = Messages.BundleLanguagesEditor_Add;
+	static String DELETE = Messages.BundleLanguagesEditor_Delete;
 	public Image IMAGE_DELETE = EclipseResourceUtil.getImage("images/actions/delete.gif"); //$NON-NLS-1$
 	public Image IMAGE_EDIT = EclipseResourceUtil.getImage("images/actions/edit.gif"); //$NON-NLS-1$
 	public Image IMAGE_CREATE = EclipseResourceUtil.getImage("images/actions/new.gif"); //$NON-NLS-1$
@@ -65,7 +66,7 @@ public class BundleLanguagesEditor implements CommandBarListener, SelectionListe
 		Composite control = new Composite(parent, SWT.NONE);
 		control.setLayout(new GridLayout(2, false));
 		Label label = new Label(control, SWT.NONE);
-		label.setText("Language/Country");
+		label.setText(Messages.BundleLanguagesEditor_LanguageCountry);
 		combo = new Combo(control, SWT.DROP_DOWN | SWT.READ_ONLY);
 		combomodel.setCombo(combo);
 		update();

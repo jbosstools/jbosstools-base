@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.ui.wizards.query.list;
 
 import org.jboss.tools.common.meta.key.WizardKeys;
+import org.jboss.tools.common.model.ui.Messages;
 
 public class HiddenFileSystemsWizardView extends AbstractListWizardView {
 	public HiddenFileSystemsWizardView() {
@@ -21,17 +22,17 @@ public class HiddenFileSystemsWizardView extends AbstractListWizardView {
 	}
 
 	protected String[] getActions() {
-		return new String[]{"Hide All Jars", "Show All Jars"};
+		return new String[]{Messages.HiddenFileSystemsWizardView_HideAllJars, Messages.HiddenFileSystemsWizardView_ShowAllJars};
 	}
 
 	protected void internalAction(String command) {
-		if("Hide All Jars".equals(command)) {
+		if(Messages.HiddenFileSystemsWizardView_HideAllJars.equals(command)) {
 			for (int i = 0; i < boxes.length; i++)
 			  if("true".equals(vs[i][2])) { //$NON-NLS-1$
 			  	boxes[i].setSelection(false);
 			  	apply(i);
 			  }
-		} else if("Show All Jars".equals(command)) {
+		} else if(Messages.HiddenFileSystemsWizardView_ShowAllJars.equals(command)) {
 			for (int i = 0; i < boxes.length; i++)
 			  if("true".equals(vs[i][2])) { //$NON-NLS-1$
 			  	boxes[i].setSelection(true);

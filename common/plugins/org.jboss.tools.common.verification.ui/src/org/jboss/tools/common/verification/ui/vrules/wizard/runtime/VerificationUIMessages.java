@@ -22,4 +22,10 @@ public class VerificationUIMessages extends NLS {
 	public static String WARNING;
 	public static String LIMIT_OF_REPORTED_ERRORS_IS_REACHED;
 	public static String OK;
+	public static String VerifyWizardView_Close;
+	public static String VerifyWizardView_Pause;
+	public static String VerifyWizardView_Resume;
+	public static String VerifyWizardView_RunAll;
+	public static String VerifyWizardView_RunSelected;
+	public static String VerifyWizardView_Stop;
 }

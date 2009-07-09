@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.*;
 
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.ui.Messages;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
@@ -74,6 +75,10 @@ public class CommandBar {
 		return control;
 	}
 	
+	/**
+	 * 
+	 * @param commands (translatable)
+	 */
 	public void setCommands(String[] commands) {
 		ButtonDescriptor d = null;
 		for (int i = 0; i < commands.length; i++) {
@@ -85,7 +90,11 @@ public class CommandBar {
 			}
 			d.command = commands[i];
 			// bugfix:Issue # 6167. Try find default button by name
-			if ("OK".equalsIgnoreCase(commands[i]) || "FINISH".equalsIgnoreCase(commands[i]) || "NEXT".equalsIgnoreCase(commands[i])|| "NEXT >>".equalsIgnoreCase(commands[i]) || "Run".equalsIgnoreCase(commands[i])) {
+			if (Messages.CommandBar_OK.equalsIgnoreCase(commands[i]) || 
+					Messages.CommandBar_Finish.equalsIgnoreCase(commands[i]) || 
+					Messages.CommandBar_Next.equalsIgnoreCase(commands[i])|| 
+					Messages.CommandBar_NextArrow.equalsIgnoreCase(commands[i]) || 
+					Messages.CommandBar_Run.equalsIgnoreCase(commands[i])) {
 				this.defaultCommand = commands[i];
 			}	
 		}

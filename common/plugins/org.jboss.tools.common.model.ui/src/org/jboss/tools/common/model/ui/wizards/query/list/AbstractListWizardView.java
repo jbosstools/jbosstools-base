@@ -108,7 +108,7 @@ public abstract class AbstractListWizardView extends AbstractQueryWizardView {
 	}
 	
 	protected void apply(int i) {
-		vs[i][1] = (boxes[i].getSelection()) ? "no" : "yes";
+		vs[i][1] = (boxes[i].getSelection()) ? "no" : "yes"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

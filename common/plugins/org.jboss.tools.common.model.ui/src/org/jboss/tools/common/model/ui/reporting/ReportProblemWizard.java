@@ -189,7 +189,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	 * @see org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView#updateBar()
 	 */
 	public void updateBar() {
-		getCommandBar().setEnabled("Ok", !isMessageEmpty());
+		getCommandBar().setEnabled(OK, !isMessageEmpty());
 	}
 
 	/* (non-Javadoc)
@@ -202,18 +202,15 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView#getCommands()
 	 */
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView#getCommands()
-	 */
 	public String[] getCommands() {
-		return new String[] { "Ok", CANCEL };
+		return new String[] { OK, CANCEL };
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView#action(java.lang.String)
 	 */
 	public void action(String command) {
-		if (command.equals("Ok")) {
+		if (command.equals(OK)) {
 			submitProblems();
 			super.action(OK);
 		} else {

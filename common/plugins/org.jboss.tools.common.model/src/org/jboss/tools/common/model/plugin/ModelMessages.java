@@ -25,6 +25,12 @@ public class ModelMessages extends NLS {
 	public static String IS_A_RESERVED_WORD;
 
 	public static String ATTRIBUTE_REQUIRED;
+	public static String BrowserHelper_DialogTitleRun;
+
+	public static String BrowserHelper_EnterValidPath;
+
+	public static String BrowserHelper_InternetBrowserNotSet;
+
 	public static String OBJECT_CREATION_FAILURE;
 	public static String OBJECT_ADDING_FAILURE;
 	public static String CONTAINS_OBJECT_1;
