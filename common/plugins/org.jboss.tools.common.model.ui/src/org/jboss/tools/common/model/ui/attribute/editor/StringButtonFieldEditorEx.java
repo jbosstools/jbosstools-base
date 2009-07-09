@@ -223,11 +223,12 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 			editorDialog.getShell().setText(title);
 			adapter.setStoreLocked(true);
 			int i = editorDialog.open();
-			adapter.setStoreLocked(false);
 			if (PropertyEditorDialog.OK == i) {
+				adapter.setStoreLocked(false);
 				adapter.store();
 			} else {
 				adapter.load();
+				adapter.setStoreLocked(false);
 			}
 			return valueProvider.getStringValue(false);
 		} else {
