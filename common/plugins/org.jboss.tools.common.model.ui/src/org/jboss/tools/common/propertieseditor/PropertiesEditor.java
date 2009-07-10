@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -32,6 +33,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -96,7 +99,9 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	private QualifiedName filterOpenedId = new QualifiedName("", "filterOpened"); //$NON-NLS-1$ //$NON-NLS-2$
 	private QualifiedName nameFilterId = new QualifiedName("", "nameFilter"); //$NON-NLS-1$ //$NON-NLS-2$
 	private QualifiedName valueFilterId = new QualifiedName("", "valueFilter"); //$NON-NLS-1$ //$NON-NLS-2$
+	private QualifiedName isFilterExpressionId = new QualifiedName("", "isFilterExpression"); //$NON-NLS-1$ //$NON-NLS-2$
 	private boolean filterOpened = false;
+	private boolean isFilterExpression = false;
 	
 	
 	public PropertiesEditor() {
@@ -164,16 +169,28 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		vsupport.fillComposite(vg);
 		vsupport.addPropertyChangeListener(pHelper);
 
-		fake = new Button(g1, SWT.NONE);
-		fake.setText(ADD);
+		fake = new Button(g1, SWT.CHECK);
+		fake.setText(UIMessages.PROPERTIES_EDITOR_EXPRESSION);
 		GridData fd = new GridData();
 		fd.widthHint = convertHorizontalDLUsToPixels(g1, IDialogConstants.BUTTON_WIDTH);
 		fake.setLayoutData(fd);
-		fake.setVisible(false);
+		fake.setSelection(isFilterExpression);
+		fake.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				isFilterExpression = fake.getSelection();
+				pHelper.applyFilters();
+				refresh();				
+			}		
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
+//		fake.setVisible(false);
 
 		statistics = new Label(panel, SWT.NONE);
 		statistics.setVisible(false);
 		GridData d = new GridData(GridData.FILL_HORIZONTAL);
+		d.horizontalSpan = 2;
 		d.heightHint = 1;
 		statistics.setLayoutData(d);
 		
@@ -184,7 +201,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		menu.setViewer(xtable.getViewer()); 
 		xtable.getViewer().getTable().addMouseListener(menu);
 		getControl().addMouseListener(menu);
-
+		
 		return panel;	
 	}
 	
@@ -284,6 +301,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 			pHelper.valueFilter = f.getPersistentProperty(valueFilterId);
 			if(pHelper.nameFilter == null) pHelper.nameFilter = ""; //$NON-NLS-1$
 			if(pHelper.valueFilter == null) pHelper.valueFilter = ""; //$NON-NLS-1$
+			isFilterExpression = "true".equals(f.getPersistentProperty(isFilterExpressionId)); //$NON-NLS-1$
 		} catch (CoreException e) {
 			//ignore
 		}
@@ -295,6 +313,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 			f.setPersistentProperty(filterOpenedId, "" + filterOpened); //$NON-NLS-1$
 			f.setPersistentProperty(nameFilterId, pHelper.nameFilter);
 			f.setPersistentProperty(valueFilterId, "" + pHelper.valueFilter); //$NON-NLS-1$
+			f.setPersistentProperty(isFilterExpressionId, "" + isFilterExpression); //$NON-NLS-1$
 		} catch (CoreException e) {
 			//ignore
 		}
@@ -440,17 +459,24 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	void validateStatistics() {
 		int filtered = pHelper.filteredChildren.length;
 		int total = pHelper.getModelObject().getChildren().length;
-		boolean mod = (filtered != total) != statistics.isVisible();
+		boolean errors = pHelper.compileError.length() > 0;
+		boolean visible = (filtered != total || errors);
+		boolean mod = visible != statistics.isVisible();
 		if(mod) {
-			statistics.setVisible(filtered != total);
+			statistics.setVisible(visible);
 			GridData d = (GridData)statistics.getLayoutData();
-			d.heightHint = (filtered != total) ? SWT.DEFAULT : 1;
-			panel.update();
-			panel.layout();
+			d.heightHint = visible ? SWT.DEFAULT : 1;
 		}
 		if(filtered != total) {
 			statistics.setText(NLS.bind(UIMessages.PROPERTIES_EDITOR_FILTER_MATCHES, filtered, total));
+		} else if(errors) {
+			statistics.setText(pHelper.compileError);
 		}
+		statistics.update();
+		panel.update();
+		panel.layout();
+		panel.getParent().update();
+		panel.getParent().layout();
 	}
 
 	public void dispose() {
@@ -466,6 +492,7 @@ class FPTableHelper extends AbstractTableHelper implements PropertyChangeListene
 	PropertiesEditor pe;
 	String nameFilter = ""; //$NON-NLS-1$
 	String valueFilter = ""; //$NON-NLS-1$
+	String compileError = ""; //$NON-NLS-1$
 
 	XModelObject[] filteredChildren = new XModelObject[0];
 	long ts = -1;
@@ -476,21 +503,54 @@ class FPTableHelper extends AbstractTableHelper implements PropertyChangeListene
 
 	void applyFilters() {
 		ts = object == null ? -1 : object.getTimeStamp();
+		compileError = ""; //$NON-NLS-1$
 		if(object == null) {
 			filteredChildren = new XModelObject[0];
 		} else if(nameFilter.length() == 0 && valueFilter.length() == 0) {
 			filteredChildren = object.getChildren();
+		} else if(pe.fake.getSelection()) {
+			filteredChildren = object.getChildren();
+			Pattern pn = null, pv = null;
+			if(nameFilter.length() > 0) try {
+				pn = Pattern.compile(nameFilter);
+			} catch (Exception e) {
+				compileError = NLS.bind(UIMessages.PROPERTIES_EDITOR_ILLEGAL_NAME_EXPRESSION, e.getMessage());
+				return;
+			}
+			if(valueFilter.length() > 0) try {
+				pv = Pattern.compile(valueFilter);
+			} catch (Exception e) {
+				compileError = NLS.bind(UIMessages.PROPERTIES_EDITOR_ILLEGAL_VALUE_EXPRESSION, e.getMessage());
+				return;
+			}
+			XModelObject[] children = object.getChildren();
+			List<XModelObject> list = new ArrayList<XModelObject>();
+			for (XModelObject c: children) {
+				String n = c.getAttributeValue(PropertiesEditor.ATTR_NAME);
+				String v = c.getAttributeValue(PropertiesEditor.ATTR_VALUE);
+				if(pn != null && !pn.matcher(n).find()) {
+					continue;
+				}
+				if(pv != null && !pv.matcher(v).find()) {
+					continue;
+				}
+				
+				list.add(c);
+			}
+			filteredChildren = list.toArray(new XModelObject[0]);
 		} else {
+			String lowNameFilter = nameFilter.toLowerCase();
+			String lowValueFilter = valueFilter.toLowerCase();
 			XModelObject[] children = object.getChildren();
 			List<XModelObject> list = new ArrayList<XModelObject>();
 			for (XModelObject c: children) {
 				String n = c.getAttributeValue(PropertiesEditor.ATTR_NAME);
 				String v = c.getAttributeValue(PropertiesEditor.ATTR_VALUE);
 				if(nameFilter.length() > 0) {
-					if(n.indexOf(nameFilter) < 0) continue; //TODO improve
+					if(n.toLowerCase().indexOf(lowNameFilter) < 0) continue; //TODO improve
 				}
 				if(valueFilter.length() > 0) {
-					if(v.indexOf(valueFilter) < 0) continue; //TODO improve
+					if(v.toLowerCase().indexOf(lowValueFilter) < 0) continue; //TODO improve
 				}
 				
 				list.add(c);
