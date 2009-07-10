@@ -24,14 +24,14 @@ public class ProblemReportingHelper {
 	 * @param throwable
 	 */
 	public static void reportProblem(String plugin, Throwable throwable) {
-		String message = (throwable == null) ? null : throwable.getMessage();
+		String message = (throwable == null) ? null : throwable.getLocalizedMessage();
 		reportProblem(plugin, message, throwable);
 	}
 
 	/**
 	 * Method for processing a throwable caught in Red Hat code. 
 	 * @param plugin
-	 * @param message
+	 * @param message (translatable)
 	 * @param throwable
 	 */
 	public static void reportProblem(String plugin, String message, Throwable throwable) {
