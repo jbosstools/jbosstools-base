@@ -23,4 +23,7 @@ public class UIMessages extends NLS {
 	public static String CANNOT_DISPLAY_DOCUMENT_CONTENTS;
 	public static String PROPERTIES_EDITOR_FILTER;
 	public static String PROPERTIES_EDITOR_FILTER_MATCHES;
+	public static String PROPERTIES_EDITOR_EXPRESSION;
+	public static String PROPERTIES_EDITOR_ILLEGAL_NAME_EXPRESSION;
+	public static String PROPERTIES_EDITOR_ILLEGAL_VALUE_EXPRESSION;
 }
