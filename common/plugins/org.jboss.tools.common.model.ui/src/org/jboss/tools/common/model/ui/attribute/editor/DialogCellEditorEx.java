@@ -271,7 +271,7 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 		}
 	}
 
-	CPL2 popup = new CPL2();
+	protected CPL2 popup = new CPL2();
 	
 	class CPL2 implements IContentProposalListener2 {
 		boolean isPopupOpened = false;
