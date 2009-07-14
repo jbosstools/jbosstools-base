@@ -16,12 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ICellEditorListener;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.IElementComparer;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -263,6 +265,11 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 						tagName = prefix + ":" + tagName; //$NON-NLS-1$
 					}
 					context.setProperty("nodeName", tagName); //$NON-NLS-1$
+					ISelection s = fWizardModel.getDropData().getSelectionProvider().getSelection();
+					if (s instanceof TextSelection) {
+						int offset = ((TextSelection)s).getOffset();
+						context.put("offset", new Integer(offset));
+					}
 					return attrDescr.getValue()==null?"":attrDescr.getValue(); //$NON-NLS-1$
 				}
 	
