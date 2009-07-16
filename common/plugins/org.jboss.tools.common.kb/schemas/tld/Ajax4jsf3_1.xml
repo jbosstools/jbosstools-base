@@ -1911,6 +1911,7 @@
 			<proposal type="beanProperty" />
 			<proposal type="bundleProperty" />
 			<proposal type="jsfVariables" />
+            <proposal type="bundleName"/>
 		</attribute-type>
 		<attribute type="basename" />
 		<attribute-type name="binding" required="false">

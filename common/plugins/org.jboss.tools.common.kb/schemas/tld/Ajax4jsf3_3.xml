@@ -1851,6 +1851,7 @@ When the delay time is over, the request will be sent to the server or removed i
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="bundleName"/>
         </attribute-type>
         <attribute type="basename"/>
         <attribute-type name="binding" required="false">

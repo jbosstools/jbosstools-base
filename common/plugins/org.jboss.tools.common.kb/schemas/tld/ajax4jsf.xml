@@ -1561,6 +1561,7 @@ a backing bean</description>
             <proposal type="beanProperty"/>
             <proposal type="bundleProperty"/>
             <proposal type="jsfVariables"/>
+            <proposal type="bundleName"/>
         </attribute-type>
         <attribute type="basename"/>
         <attribute-type name="var" required="false">
