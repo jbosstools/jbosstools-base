@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.ui.IEditorInput;
 import org.w3c.dom.Node;
 
+import org.jboss.tools.common.model.ui.editors.dnd.DropUtils.AttributeDescriptorValueProvider;
 import org.jboss.tools.jst.web.tld.VpeTaglibManager;
 
 public class DropData {
@@ -31,6 +32,7 @@ public class DropData {
 	private IDropCommand fDropCommand = null;
 	private Node container = null;
 	private String attributeName = null;
+	private AttributeDescriptorValueProvider valueProvider;
 	
 	/**
 	 * 
@@ -172,4 +174,13 @@ public class DropData {
 	public Node getContainer() {
 		return container;
 	}
+
+	public void setValueProvider(AttributeDescriptorValueProvider valueProvider) {
+		this.valueProvider = valueProvider;	
+	}
+
+	public AttributeDescriptorValueProvider getValueProvider() {
+		return valueProvider;
+	}
+
 }

@@ -43,9 +43,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.jboss.tools.common.kb.AttributeDescriptor;
-import org.jboss.tools.common.kb.AttributeValueDescriptor;
 import org.jboss.tools.common.model.ui.editors.dnd.IDropWizardModel;
+import org.jboss.tools.common.model.ui.editors.dnd.DropUtils.AttributeDescriptorValueProvider;
 import org.jboss.tools.common.model.ui.objecteditor.ExtendedCellEditorProvider;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
@@ -63,16 +62,18 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 	/**
 	 * @author eskimo
 	 */
-	public static class AttributeDescriptorValue extends  AttributeDescriptor {
-		
-		AttributeDescriptor fDescr;
-		
+	public static class AttributeDescriptorValue {
+		String name;
+		boolean isRequired;
+		boolean isPreferable;
 		/**
 		 * 
 		 * @param descriptor
 		 */
-		public AttributeDescriptorValue(AttributeDescriptor descriptor) {
-			fDescr = descriptor;
+		public AttributeDescriptorValue(String name, boolean isRequired, boolean isPreferable) {
+			this.name = name;
+			this.isPreferable = isPreferable;
+			this.isRequired = isRequired;
 		}
 		
 		/**
@@ -99,79 +100,38 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 		/**
 		 * 
 		 */
-		public void addValuDescriptor(AttributeValueDescriptor value) {
-			fDescr.addValuDescriptor(value);
-		}
-
-		/**
-		 * 
-		 */
 		public String getName() {
-			return fDescr.getName();
-		}
-
-		/**
-		 * 
-		 */
-		public AttributeValueDescriptor[] getValueDesriptors() {
-			return fDescr.getValueDesriptors();
+			return name;
 		}
 
 		/**
 		 * 
 		 */
 		public boolean isPreferable() {
-			return fDescr.isPreferable();
+			return isPreferable;
 		}
 
 		/**
 		 * 
 		 */
 		public boolean isRequired() {
-			return fDescr.isRequired();
-		}
-
-		/**
-		 * 
-		 */
-		public void setName(String name) {
-			fDescr.setName(name);
-		}
-
-		/**
-		 * 
-		 */
-		public void setPreferable(boolean desired) {
-			fDescr.setPreferable(desired);
-		}
-
-		/**
-		 * 
-		 */
-		public void setRequired(boolean required) {
-			fDescr.setRequired(required);
+			return isRequired;
 		}
 
 		/**
 		 * 
 		 */
 		public boolean equals(Object obj) {
-			return fDescr.equals(obj);
+			return super.equals(obj);
 		}
 
 		/**
 		 * 
 		 */
 		public int hashCode() {
-			return fDescr.hashCode();
+			return super.hashCode();
 		}
 
-		/**
-		 * 
-		 */
-		public String toString() {
-			return fDescr.toString();
-		}
 	}
 
 	/**
@@ -205,6 +165,10 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 				removeDisposeListener(this);
 			}
 		});
+		AttributeDescriptorValueProvider valueProvider = fWizardModel.getDropData().getValueProvider();
+		if(valueProvider != null) {
+			valueProvider.initContext(context);
+		}
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;

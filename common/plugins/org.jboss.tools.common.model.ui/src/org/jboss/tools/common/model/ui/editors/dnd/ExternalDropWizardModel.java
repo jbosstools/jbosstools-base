@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.jboss.tools.common.model.ui.editors.dnd.DropUtils.AttributeDescriptorValueProvider;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesComposite.AttributeDescriptorValue;
 
 public class ExternalDropWizardModel extends DefaultDropWizardModel implements IDropWizardModel {
@@ -41,14 +42,11 @@ public class ExternalDropWizardModel extends DefaultDropWizardModel implements I
 		if(getTagProposal()!=UNDEFINED_TAG_PROPOSAL) {
 			DropData data = getDropData();
 			TagProposal proposal = getTagProposal();
-			AttributeDescriptorValue[] values =  DropUtils.getJspTagAtttributeValueArray(
-				data.getEditorInput(),
-				data.getSourceViewer().getDocument(),
-				proposal.getUri(),
-				proposal.getLibraryVersion(),
-				proposal.getPrefix(),
-				proposal.getName()
-			);
+			AttributeDescriptorValueProvider valueProvider = data.getValueProvider();
+			if(valueProvider != null) valueProvider.setProposal(proposal);
+			AttributeDescriptorValue[] values = valueProvider == null ? new AttributeDescriptorValue[0]
+			                                  : valueProvider.getValues();
+				
 			fAttributeValues = new ArrayList<AttributeDescriptorValue>(Arrays.asList(sort(values)));
 		} else {
 			fAttributeValues = new ArrayList<AttributeDescriptorValue>();

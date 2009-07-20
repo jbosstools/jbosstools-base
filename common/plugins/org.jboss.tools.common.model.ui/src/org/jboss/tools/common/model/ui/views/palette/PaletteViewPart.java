@@ -198,7 +198,7 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 		}
 	}
 	private boolean dropIntoEditor2(ITextEditor editor, XModelObject macro) {
-		SpecialWizard w = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.common.model.ui.editors.dnd.DefaultDropCommandRunner"); //$NON-NLS-1$
+		SpecialWizard w = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.jst.jsp.outline.DefaultDropCommandRunner"); //$NON-NLS-1$
 		if(w == null) return false;
 		Properties p = new Properties();
 		p.setProperty("isDrag", "true"); //$NON-NLS-1$ //$NON-NLS-2$

@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.editors.dnd;
 
-import org.jboss.tools.common.kb.TagDescriptor;
+import org.jboss.tools.common.model.ui.editors.dnd.DropUtils.AttributeDescriptorValueProvider;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesComposite.AttributeDescriptorValue;
 
 public class DefaultElementGenerator implements IElementGenerator {
@@ -35,18 +35,14 @@ public class DefaultElementGenerator implements IElementGenerator {
 	
 	public String generateStartTag() {
 		TagProposal proposal = getWizardDataModel().getTagProposal();
-		TagDescriptor descr = DropUtils.getJspTagDescriptor(
-				getWizardDataModel().getDropData().getSourceViewer().getDocument(),
-				proposal.getUri(),
-				proposal.getLibraryVersion(),
-				proposal.getPrefix(),
-				proposal.getName()
-			);
+		AttributeDescriptorValueProvider valueProvider = getWizardDataModel().getDropData().getValueProvider();
+		if(valueProvider != null) valueProvider.setProposal(proposal);
+		String tagName = valueProvider == null ? null : valueProvider.getTag();
 			StringBuffer tagText = new StringBuffer();
 			 
-			if(descr!=null) {
-				String fullName = descr.getFullName();
-				if(descr.getPrefix()==null) {
+			if(tagName != null) {
+				String fullName = tagName;
+				if(tagName.indexOf(':') < 0) {
 					// for HTML
 					fullName = fullName.toLowerCase();
 				}
@@ -65,8 +61,8 @@ public class DefaultElementGenerator implements IElementGenerator {
 					}
 				}
 				
-				if(descr.hasClosingTag()) {
-					if(descr.hasBody()) {
+				if(tagName.indexOf(':') > 0) { //TODO html case, old kb had specific method
+					if(valueProvider.canHaveBody()) {
 						tagText
 							.append(">") //$NON-NLS-1$
 							.append("</") //$NON-NLS-1$
