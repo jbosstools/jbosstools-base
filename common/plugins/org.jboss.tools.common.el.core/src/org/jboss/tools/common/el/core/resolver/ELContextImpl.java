@@ -31,7 +31,7 @@ public class ELContextImpl implements ELContext {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.jboss.tools.common.kb.text.PageContext#getElResolvers()
+	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getElResolvers()
 	 */
 	public ELResolver[] getElResolvers() {
 		return elResolvers;
@@ -43,7 +43,7 @@ public class ELContextImpl implements ELContext {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.jboss.tools.common.kb.text.PageContext#getResource()
+	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getResource()
 	 */
 	public IFile getResource() {
 		return resource;
@@ -63,7 +63,6 @@ public class ELContextImpl implements ELContext {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.jboss.tools.common.kb.text.PageContext#getVars(int)
 	 */
 	public Var[] getVars(int offset) {
 		Set<Var> result = new HashSet<Var>();
