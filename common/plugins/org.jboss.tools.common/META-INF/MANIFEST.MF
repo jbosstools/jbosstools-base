@@ -137,7 +137,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.eclipse.wst.common.uriresolver;visibility:=reexport,
  org.eclipse.core.net
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
 Export-Package: org.jboss.tools.common,
