@@ -119,6 +119,34 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		}
 
 	}
+
+	private static final String POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB = "$$POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB$$"; //$NON-NLS-1$
+	public void addContentAssistProcessor(String partitionType, IContentAssistProcessor processor) {
+		if (partitionType == null || processor == null)
+			return;
+
+		Map<String, List<IContentAssistProcessor>> contentTypeProcessors = fProcessorsMap.get(POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB);
+		if (contentTypeProcessors == null) {
+			contentTypeProcessors = new HashMap<String, List<IContentAssistProcessor>>();
+		}
+		
+		List<IContentAssistProcessor> partitionTypeProcessors = contentTypeProcessors.get(partitionType);
+		if (partitionTypeProcessors == null) {
+			partitionTypeProcessors = new ArrayList<IContentAssistProcessor>();
+		}
+
+		if(!containsAnObjectOfTheSameType(partitionTypeProcessors,processor)) {
+			partitionTypeProcessors.add(processor);
+		}
+
+		if (!contentTypeProcessors.containsKey(partitionType)) {
+			contentTypeProcessors.put(partitionType, partitionTypeProcessors);
+		}
+
+		if (!fProcessorsMap.containsKey(POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB)) {
+			fProcessorsMap.put(POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB, contentTypeProcessors);
+		}
+	}
 	
 	boolean containsAnObjectOfTheSameType(Collection collection, Object obj) {
 		if (collection == null || obj == null)
@@ -184,13 +212,17 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		
 		List<ICompletionProposal> ret = new LinkedList<ICompletionProposal>();
 
-		if (fProcessorsMap.get(contentType) == null)
+		List<IContentAssistProcessor> processors = new LinkedList<IContentAssistProcessor>();
+		if (fProcessorsMap.get(contentType) != null) {
+			processors.addAll(fProcessorsMap.get(contentType).get(fPartitionType));
+		}
+		if (fProcessorsMap.get(POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB) != null) {
+			processors.addAll(fProcessorsMap.get(POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB).get(fPartitionType));
+		}
+		if(processors.size() == 0) {
 			return new ICompletionProposal[0];
-
-		if (fProcessorsMap.get(contentType).get(fPartitionType) == null)
-			return new ICompletionProposal[0];
+		}
 		
-		List<IContentAssistProcessor> processors = fProcessorsMap.get(contentType).get(fPartitionType);
 		
 		for (IContentAssistProcessor p : processors) {
 			ICompletionProposal[] proposals = p.computeCompletionProposals(viewer, offset);
@@ -223,12 +255,28 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	 */
 	public ICompletionProposal[] makeUnique(ICompletionProposal[] proposals) {
 		HashSet<String> present = new HashSet<String>();
+		HashSet<String> info = new HashSet<String>();
 		ArrayList<ICompletionProposal> unique= new ArrayList<ICompletionProposal>();
 
 		for (int i = 0; proposals != null && i < proposals.length; i++) {
-
+			String infoUnquoted = proposals[i].getAdditionalProposalInfo();
+			if (infoUnquoted != null) {
+				if (infoUnquoted.startsWith("\""))
+					infoUnquoted = infoUnquoted.substring(1);
+				if (infoUnquoted.endsWith("\""))
+					infoUnquoted = infoUnquoted.substring(0, infoUnquoted.length() - 1);
+				infoUnquoted = infoUnquoted.trim();
+			}
 			if (!present.contains(proposals[i].getDisplayString())) {
 				present.add(proposals[i].getDisplayString());
+				if (infoUnquoted != null && infoUnquoted.length() > 0) {
+					if (!info.contains(infoUnquoted)) {
+						info.add(infoUnquoted);
+					} else {
+						// Do not add proposals with the same info
+						continue;
+					}
+				}
 				unique.add(proposals[i]);
 			}
 		}
