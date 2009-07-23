@@ -29,7 +29,9 @@ public class TextProposal {
 	public static final int R_JSP_ATTRIBUTE_VALUE = 830;
 	public static final int R_XML_ATTRIBUTE_VALUE = 850;
 	public static final int R_XML_ATTRIBUTE_NAME = 910;
-
+	public static final int R_TAG_INSERTION = 500;
+	public static final int R_XML_ATTRIBUTE_VALUE_TEMPLATE = 91;
+	
 	private static final long serialVersionUID = 3257007635692926512L;
 
 	private Object source;
