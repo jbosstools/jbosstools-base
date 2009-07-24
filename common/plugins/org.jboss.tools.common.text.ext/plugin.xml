@@ -643,7 +643,13 @@
           	<contentType id="org.jboss.tools.common.model.ui.xml">
           		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
          			<axis path="/facelet-taglib/tag/source">
-	                 </axis>       			
+	                 </axis> 
+	                <axis path="/facelet-taglib/function/function-class">
+                   	 </axis> 
+                     <axis path="/facelet-taglib/tag/component/handler-class">
+                     </axis> 
+                     <axis path="/facelet-taglib/library-class">
+                     </axis>  			
           		</partitionType>
           	</contentType>
 		</hyperlinkPartitioner>

@@ -11,6 +11,7 @@
 package org.jboss.tools.common.text.ext.hyperlink;
 
 import org.eclipse.jface.text.IDocument;
+import org.jboss.tools.common.text.ext.hyperlink.xml.XMLClassHyperlinkPartitioner;
 import org.jboss.tools.common.text.ext.hyperlink.xml.XMLTextHyperlinkPartitioner;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
@@ -47,7 +48,10 @@ public class TaglibDefinitionFilesHyperlinkPartitioner extends XMLTextHyperlinkP
 	}
 
 	@Override
-	protected  String getPartitionType() {
+	protected  String getPartitionType(String axis) {
+		if(axis!=null && axis.contains("class")) { //$NON-NLS-1$
+			return XMLClassHyperlinkPartitioner.XML_CLASS_PARTITION;
+		}
 		return TAGLIB_XML_PARTITION;
 	}
 }

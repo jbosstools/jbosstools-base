@@ -45,7 +45,7 @@ public class XMLTextHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 
 			String axis = getAxis(document, superRegion);
 			String contentType = superRegion.getContentType();
-			String type = getPartitionType();
+			String type = getPartitionType(axis);
 			int start = Utils.getValueStart(n);
 			int end = Utils.getValueEnd(n);
 			if(start < 0 || end < start) return null;
@@ -76,7 +76,7 @@ public class XMLTextHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 		}
 	}
 	
-	protected  String getPartitionType() {
+	protected  String getPartitionType(String axis) {
 		return XML_TEXT_PARTITION;
 	}
 
