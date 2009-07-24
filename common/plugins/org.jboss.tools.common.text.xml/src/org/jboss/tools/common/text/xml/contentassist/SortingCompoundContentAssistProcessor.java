@@ -217,7 +217,10 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 			processors.addAll(fProcessorsMap.get(contentType).get(fPartitionType));
 		}
 		if (fProcessorsMap.get(POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB) != null) {
-			processors.addAll(fProcessorsMap.get(POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB).get(fPartitionType));
+			List<IContentAssistProcessor> list = fProcessorsMap.get(POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB).get(fPartitionType);
+			if(list != null) {
+				processors.addAll(list);
+			}
 		}
 		if(processors.size() == 0) {
 			return new ICompletionProposal[0];
