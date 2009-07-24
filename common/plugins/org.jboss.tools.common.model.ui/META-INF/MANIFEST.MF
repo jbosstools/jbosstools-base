@@ -85,7 +85,6 @@ Provide-Package: dtds,
  org.jboss.tools.common.propertieseditor.bundlemodel,
  org.jboss.tools.common.propertieseditor.text
 Require-Bundle: org.jboss.tools.common.model;visibility:=reexport,
- org.jboss.tools.common.kb;visibility:=reexport,
  org.jboss.tools.common.text.ext;visibility:=reexport,
  org.jboss.tools.common.text.xml;visibility:=reexport,
  org.jboss.tools.common.gef;visibility:=reexport,
