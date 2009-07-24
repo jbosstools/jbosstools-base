@@ -214,7 +214,10 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 
 		List<IContentAssistProcessor> processors = new LinkedList<IContentAssistProcessor>();
 		if (fProcessorsMap.get(contentType) != null) {
-			processors.addAll(fProcessorsMap.get(contentType).get(fPartitionType));
+			List<IContentAssistProcessor> list = fProcessorsMap.get(contentType).get(fPartitionType);
+			if (list != null) {
+				processors.addAll(list);
+			}
 		}
 		if (fProcessorsMap.get(POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB) != null) {
 			List<IContentAssistProcessor> list = fProcessorsMap.get(POST_INSTALL_CA_PROCESSORS_CONTENTTYPE_STUB).get(fPartitionType);
@@ -268,10 +271,17 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 					infoUnquoted = infoUnquoted.substring(1);
 				if (infoUnquoted.endsWith("\""))
 					infoUnquoted = infoUnquoted.substring(0, infoUnquoted.length() - 1);
-				infoUnquoted = infoUnquoted.trim();
+				infoUnquoted = infoUnquoted.trim().toLowerCase();
 			}
-			if (!present.contains(proposals[i].getDisplayString())) {
-				present.add(proposals[i].getDisplayString());
+			String displayStringUnquoted = proposals[i].getDisplayString().toLowerCase();
+			if (displayStringUnquoted.startsWith("\""))
+				displayStringUnquoted = displayStringUnquoted.substring(1);
+			if (displayStringUnquoted.endsWith("\""))
+				displayStringUnquoted = displayStringUnquoted.substring(0, displayStringUnquoted.length() - 1);
+			displayStringUnquoted = displayStringUnquoted.trim().toLowerCase();
+			
+			if (!present.contains(displayStringUnquoted)) {
+				present.add(displayStringUnquoted);
 				if (infoUnquoted != null && infoUnquoted.length() > 0) {
 					if (!info.contains(infoUnquoted)) {
 						info.add(infoUnquoted);
