@@ -11,6 +11,7 @@
 package org.jboss.tools.common.el.core.parser;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
@@ -105,7 +106,35 @@ public class TokenizerFactory {
 		return t;
 	}
 
+	//Adds to default description set param start and param end to support access to collection and map elements.
+	private static ITokenDescription[] COLLECTIONS_DESCRIPTION_SET = new ITokenDescription[] {
+		ArgEndTokenDescription.INSTANCE,
+		ArgStartTokenDescription.INSTANCE,
+		DotTokenDescription.INSTANCE,
+		EndELTokenDescription.INSTANCE,
+		JavaNameTokenDescription.INSTANCE,
+		OperationTokenDescription.INSTANCE,
+		ParamEndTokenDescription.INSTANCE,
+		ParamStartTokenDescription.INSTANCE,
+		UnaryTokenDescription.INSTANCE,
+		PrimitiveValueTokenDescription.INSTANCE,
+		StartELTokenDescription.INSTANCE,
+		StringTokenDescription.INSTANCE,
+		WhiteSpaceTokenDescription.INSTANCE,			
+	};
+
+	public static Tokenizer createCollectionTokenizer() {
+		Tokenizer t = new Tokenizer();
+		t.setTokenDescriptions(COLLECTIONS_DESCRIPTION_SET);
+		t.setRules(DEFAULT_RULE_SET);
+		return t;
+	}
+
+
 	public static void main(String[] args) {
+		boolean b = Pattern.matches("re(he|ma)*\\sat", "rehemahe at");
+		System.out.println(b);
+		if(true) return;
 		String text = "ioioio#{a(1.2e1i) + b c + d}ioioio#{0}"; //$NON-NLS-1$
 //"#{a[b()['l'].j]}";
 //"#{g11.g12.y13} #{#{  #{a14.b15(x.t.u(uu.ii[9],  j)).b16(m17(v18(i19[2]).u20).)+ a21(c.).b.}";

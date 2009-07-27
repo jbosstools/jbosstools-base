@@ -42,6 +42,29 @@ public class ELParserUtil {
 		return DEFAULT_FACTORY;
 	}
 
+	private static ELParserFactory COLLECTION_FACTORY = new DefaultFactory() {
+		public ELParser newParser() {
+			return new DefaultParser() {
+				protected Tokenizer createTokenizer() {
+					return TokenizerFactory.createCollectionTokenizer();
+				}
+				public void dispose() {
+					super.dispose();
+					release(this);
+				}
+			};
+		}
+	};
+
+	/**
+	 * Extends default factory by ability to parse method invocation without parameters
+	 * to support access to collection and map elements by .iterator().next()
+	 * @return
+	 */
+	public static ELParserFactory getCollectionFactory() {
+		return COLLECTION_FACTORY;
+	}
+
 	private static ELParserFactory JBOSS_FACTORY = new DefaultFactory() {
 		public ELParser newParser() {
 			return new DefaultParser() {
