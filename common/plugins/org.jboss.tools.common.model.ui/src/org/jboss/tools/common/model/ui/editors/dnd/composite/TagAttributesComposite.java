@@ -54,7 +54,7 @@ import org.jboss.tools.common.model.util.ModelFeatureFactory;
  *
  */
 
-public class TagAttributesComposite extends Composite implements PropertyChangeListener, SelectionListener{
+public class TagAttributesComposite extends Composite implements PropertyChangeListener, SelectionListener {
 	private IDropWizardModel fWizardModel; 
 	private TableViewer tableViewer = null;
 	private boolean fFiltered = false;
@@ -376,6 +376,10 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 		if(tableViewer.isCellEditorActive()) return; 
 		if(IDropWizardModel.TAG_PROPOSAL.equals(evt.getPropertyName())) {
 			tableViewer.setInput(new Object());
+			AttributeDescriptorValueProvider valueProvider = fWizardModel.getDropData().getValueProvider();
+			if(valueProvider != null) {
+				valueProvider.initContext(context);
+			}
 		} else {
 			tableViewer.refresh();
 		}
