@@ -31,6 +31,7 @@ public class TextProposal {
 	public static final int R_XML_ATTRIBUTE_NAME = 910;
 	public static final int R_TAG_INSERTION = 500;
 	public static final int R_XML_ATTRIBUTE_VALUE_TEMPLATE = 91;
+	public static final int R_CLOSE_TAG = 1550;
 	
 	private static final long serialVersionUID = 3257007635692926512L;
 
