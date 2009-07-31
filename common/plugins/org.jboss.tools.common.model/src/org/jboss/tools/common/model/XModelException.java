@@ -25,20 +25,20 @@ public class XModelException extends CoreException {
 		super(createStatus(null, null));
 	}
 	
-	public XModelException(String message) {
-		super(createStatus(message, null));
+	public XModelException(String localizedMessage) {
+		super(createStatus(localizedMessage, null));
 	}
 
-	public XModelException(String message, Throwable cause) {
-		super(createStatus(message, cause));
+	public XModelException(String localizedMessage, Throwable cause) {
+		super(createStatus(localizedMessage, cause));
 	}
 
 	public XModelException(Throwable cause) {
 		super(createStatus(null, cause));
 	}
 	
-	static IStatus createStatus(String message, Throwable cause) {
-		return new Status(IStatus.ERROR, ModelPlugin.PLUGIN_ID, message, cause);
+	static IStatus createStatus(String localizedMessage, Throwable cause) {
+		return new Status(IStatus.ERROR, ModelPlugin.PLUGIN_ID, localizedMessage, cause);
 		
 	}
 	

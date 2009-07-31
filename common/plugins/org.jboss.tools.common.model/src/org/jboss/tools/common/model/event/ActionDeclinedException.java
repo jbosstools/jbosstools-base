@@ -15,8 +15,8 @@ import org.jboss.tools.common.model.XModelException;
 public class ActionDeclinedException extends XModelException {
 	private static final long serialVersionUID = 1L;
 
-    public ActionDeclinedException(String message) {
-        super(message);
+    public ActionDeclinedException(String localizedMessage) {
+        super(localizedMessage);
     }
 
 }

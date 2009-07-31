@@ -63,6 +63,11 @@ public class XEntityDataImpl implements XEntityData, XMetaDataConstants {
     	return entityname;
     }
 
+    /**
+     * 
+     * @param data (non-translatable)
+     * @return
+     */
     public static XEntityDataImpl create(String[][] data) {
         XEntityDataImpl impl = new XEntityDataImpl();
         impl.entityname = data[0][0];

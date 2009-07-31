@@ -96,10 +96,21 @@ public class FormLayoutDataUtil {
 		);
 	}
 
+	/**
+	 * 
+	 * @param actionPath (non-translatable)
+	 * @return
+	 */
 	public static IFormActionData[] createDefaultFormActionData(String actionPath) {
 		return createDefaultFormActionData(actionPath, false);
 	}
 
+	/**
+	 * 
+	 * @param actionPath (non-translatable)
+	 * @param defaultEdit
+	 * @return
+	 */
 	public static IFormActionData[] createDefaultFormActionData(String actionPath, boolean defaultEdit) {
 		String editAction = defaultEdit ? DEFAULT_EDIT_ACTION : SELECT_IT_ACTION;
 		return new IFormActionData[] {
