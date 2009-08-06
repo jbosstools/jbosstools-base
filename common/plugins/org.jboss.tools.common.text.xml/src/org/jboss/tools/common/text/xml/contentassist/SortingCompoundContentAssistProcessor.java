@@ -280,7 +280,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 				displayStringUnquoted = displayStringUnquoted.substring(0, displayStringUnquoted.length() - 1);
 			displayStringUnquoted = displayStringUnquoted.trim().toLowerCase();
 			
-			if (!present.contains(displayStringUnquoted)) {
+			if (displayStringUnquoted != null && displayStringUnquoted.length() > 0 && !present.contains(displayStringUnquoted)) {
 				present.add(displayStringUnquoted);
 				if (infoUnquoted != null && infoUnquoted.length() > 0) {
 					if (!info.contains(infoUnquoted)) {
