@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import org.eclipse.core.internal.resources.ICoreConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -29,12 +32,13 @@ import org.eclipse.wst.common.componentcore.internal.ComponentResource;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.jboss.tools.common.el.core.GlobalELReferenceList;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.jboss.tools.common.text.ext.ExtensionsPlugin;
+import org.jboss.tools.common.resref.core.ResourceReference;
 import org.jboss.tools.common.text.ext.hyperlink.xpl.AbstractBaseHyperlink;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
@@ -43,7 +47,12 @@ import org.jboss.tools.common.text.ext.util.Utils;
  * 
  */
 abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements IHyperlink {
+	public static final String DOLLAR_PREFIX = "${"; //$NON-NLS-1$
 
+    private static final String SUFFIX = "}"; //$NON-NLS-1$
+
+    public static final String SHARP_PREFIX = "#{"; //$NON-NLS-1$
+    
 	public static XModel getXModel(IFile file) {
 		if (file == null)
 			return null;
@@ -149,7 +158,9 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 	protected IFile getFileFromProject(String fileName) {
 		IFile documentFile = getFile();
 		if(documentFile == null || !documentFile.isAccessible()) return null;
-
+		
+		fileName = findAndReplaceElVariable(fileName);
+		
 		IProject project = documentFile.getProject();
 		String name = Utils.trimFilePath(fileName);
 		IPath currentPath = documentFile.getLocation()
@@ -180,12 +191,50 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		}
 		return null;
 	}
+	
+	// partly copied from org.jboss.tools.vpe.editor.util.ElService
+	protected String findAndReplaceElVariable(String fileName){
+		final IPath workspacePath = Platform.getLocation();
 
+        final ResourceReference[] gResources = GlobalELReferenceList.getInstance().getAllResources(workspacePath);
+		String result = fileName;
+
+		ResourceReference[] sortedReferences = sortReferencesByScope(gResources);
+
+		for (ResourceReference rf : sortedReferences) {
+			final String dollarEl = DOLLAR_PREFIX + rf.getLocation() + SUFFIX;
+			final String sharpEl = SHARP_PREFIX + rf.getLocation() + SUFFIX;
+
+			if (fileName.contains(dollarEl)) {
+				result = result.replace(dollarEl, rf.getProperties());
+			}
+			if (fileName.contains(sharpEl)) {
+				result = result.replace(sharpEl, rf.getProperties());
+			}
+		}
+		return result;
+	}
+	
+	// copied from org.jboss.tools.vpe.editor.util.ElService
+	private ResourceReference[] sortReferencesByScope(ResourceReference[] references) {
+		ResourceReference[] sortedReferences = references.clone();
+
+        Arrays.sort(sortedReferences, new Comparator<ResourceReference>() {
+			public int compare(ResourceReference r1, ResourceReference r2) {
+				return r1.getScope() - r2.getScope();
+			}
+        });
+
+		return sortedReferences;
+	}
+	
 	private IFile findFileByRelativePath(IProject project,
 			WorkbenchComponent module, IPath basePath, String path) {
 		
 		if (path == null || path.trim().length() == 0)
 			return null;
+		
+		path = findAndReplaceElVariable(path);
 		
 		ComponentResource[] resources = module.findResourcesBySourcePath(
 				new Path("/"), 0); //$NON-NLS-1$
@@ -224,6 +273,8 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		WorkbenchComponent module, String path) {
 		ComponentResource[] resources = module.findResourcesBySourcePath(
 				new Path("/"), 0); //$NON-NLS-1$
+		
+		path = findAndReplaceElVariable(path);
 
 		IFile member = null;
 
