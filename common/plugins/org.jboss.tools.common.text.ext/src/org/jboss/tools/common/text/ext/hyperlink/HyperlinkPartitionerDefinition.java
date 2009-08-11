@@ -356,6 +356,7 @@ public class HyperlinkPartitionerDefinition {
 
 	    private static String ALL_TAGS = "/*/"; //$NON-NLS-1$
 	    private static String DELIM = "/"; //$NON-NLS-1$
+	    private static String TAGLIB = "/["; //$NON-NLS-1$
 
 	    public boolean containtsPath(String path) {
             path = getCorrectPath(path);
@@ -364,10 +365,12 @@ public class HyperlinkPartitionerDefinition {
             }
             if(fDelimitedPathElements!=null) {
                 int lastIndex = -1;
+                int tagLib = -1;
                 for(int i=0; i<fDelimitedPathElements.length; i++) {
                     if(i==0 && !fStartDelim) {
                         if(path.startsWith(fDelimitedPathElements[i])) {
                             lastIndex = 0;
+                            tagLib = 0;
                             continue;
                         } else {
                             return false;
@@ -376,6 +379,8 @@ public class HyperlinkPartitionerDefinition {
                         int currentIndex = path.indexOf(fDelimitedPathElements[i]);
                         if(currentIndex>-1 && currentIndex>lastIndex) {
                             lastIndex = currentIndex;
+                            if(fDelimitedPathElements[i].startsWith(TAGLIB))
+                            	tagLib = lastIndex;
                             continue;
                         } else {
                             return false;
@@ -383,7 +388,9 @@ public class HyperlinkPartitionerDefinition {
                     }
                 }
                 if(fEndDelim || path.endsWith(fDelimitedPathElements[fDelimitedPathElements.length-1])) {
-                    return true;
+                	int lastTaglib = path.lastIndexOf(TAGLIB);
+                	if(lastTaglib <= tagLib)
+                		return true;
                 }
                 return false;
             }
