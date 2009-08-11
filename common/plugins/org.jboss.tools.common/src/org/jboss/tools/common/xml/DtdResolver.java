@@ -98,6 +98,8 @@ public class DtdResolver implements EntityResolver {
 	            resourceType = "DTD"; //$NON-NLS-1$
 	        } else if(systemId.toLowerCase().endsWith(".xsd")) { //$NON-NLS-1$
 	            resourceType = "XSD"; //$NON-NLS-1$
+	        } else if(systemId.toLowerCase().endsWith(".ent")) { //$NON-NLS-1$
+	            resourceType = "ENT"; //$NON-NLS-1$
 	        }
         }
         InputStream is = null;
