@@ -187,6 +187,10 @@ public class XModelImpl implements XModel {
         XModelObject p = o;
         while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$
         if(p == null) return o;
+        String newPath = o.getPath().substring(p.getPath().length());
+        if(path.equals(newPath)) {
+        	return o;
+        }
         path = o.getPath().substring(p.getPath().length());
         if(p.getModelEntity().getName().equals("FileFolder")) { //$NON-NLS-1$
         	XModelObject fs = findMountedFileSystem(p);
