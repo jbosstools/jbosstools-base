@@ -52,10 +52,11 @@ public class ELResolverFactoryManager {
 	 * @return
 	 */
 	public ELResolver[] getResolvers(IResource resource) {
-		IProject project = resource.getProject();
-		if(project==null) {
+		if (resource == null || resource.getProject() == null)
 			return new ELResolver[0];
-		}
+		
+		IProject project = resource.getProject();
+
 //		ELResolver[] result =  resolvers.get(project.getName());
 //		if(result!=null) {
 //			return result;
