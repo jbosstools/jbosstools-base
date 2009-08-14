@@ -12,15 +12,9 @@ Export-Package: com.wutka.dtd,
  org.jboss.tools.common.kb.configuration,
  org.jboss.tools.common.kb.wtp
 Require-Bundle: org.jboss.tools.common,
- org.junit,
- org.eclipse.swt,
  org.eclipse.ui.workbench,
  org.eclipse.jface,
- org.eclipse.core.resources,
- org.eclipse.core.runtime,
- org.eclipse.wst.xml.core,
- org.eclipse.jst.jsp.core,
- org.eclipse.jface.text
+ org.eclipse.core.runtime
 Bundle-Version: 2.0.0
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
