@@ -215,6 +215,24 @@
             </contentType>
 		</hyperlinkPartitioner> 
 		
+		<hyperlinkPartitioner
+			class="org.jboss.tools.common.text.ext.hyperlink.xml.IncludeHyperlinkPartitioner" 
+			id="org.jboss.tools.common.text.ext.hyperlink.xml.IncludeHyperlinkPartitioner">
+			<contentType id="org.eclipse.wst.html.core.htmlsource">
+				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
+         			<axis path="*/[http://java.sun.com/jstl/core]:import/url" />
+         			<axis path="*/[http://java.sun.com/jstl/core]:redirect/url" />
+        		</partitionType>
+			</contentType>
+			<contentType id="org.eclipse.jst.jsp.core.jspsource">
+				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
+         			<axis path="*/[http://java.sun.com/jstl/core]:import/url" />
+         			<axis path="*/[http://java.sun.com/jstl/core]:redirect/url" />
+        		</partitionType>
+			</contentType>
+		</hyperlinkPartitioner>
+		
+		
 		<!-- End of Common XML hyperlink partitioners -->
 		
 		<!-- Common HTML and/or JSP hyperlink partitioners --> 
@@ -933,6 +951,17 @@
          	<contenttypeidentifier id="org.eclipse.core.runtime.xml">
 				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.PORTLET_CLASS" />
 				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.PORTLET_RESOURCE" />
+         	</contenttypeidentifier>
+		</hyperlink>
+		
+		<hyperlink 
+			class="org.jboss.tools.common.text.ext.hyperlink.xml.IncludeHyperlink" 
+	  		id="org.jboss.tools.common.text.ext.hyperlink.xml.IncludeHyperlink">
+         	<contenttypeidentifier id="org.eclipse.wst.html.core.htmlsource">
+				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.INCLUDE_FILE" />
+         	</contenttypeidentifier>
+         	<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
+				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.INCLUDE_FILE" />
          	</contenttypeidentifier>
 		</hyperlink>
    </extension>
