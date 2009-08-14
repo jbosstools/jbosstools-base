@@ -52,7 +52,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	private String fErrorMessage;
 	
 	
-	private static Map<String, Map<String, List<IContentAssistProcessor>>> fProcessorsMap;
+	private Map<String, Map<String, List<IContentAssistProcessor>>> fProcessorsMap;
 	
 	public SortingCompoundContentAssistProcessor(ISourceViewer sourceViewer, String partitionType) {
 		this.fSourceViewer = sourceViewer;
@@ -265,18 +265,23 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		ArrayList<ICompletionProposal> unique= new ArrayList<ICompletionProposal>();
 
 		for (int i = 0; proposals != null && i < proposals.length; i++) {
+			if (proposals[i] == null)
+				continue;
+			
 			String infoUnquoted = proposals[i].getAdditionalProposalInfo();
 			if (infoUnquoted != null) {
-				if (infoUnquoted.startsWith("\""))
+				if (infoUnquoted.startsWith("\"")) //$NON-NLS-1$
 					infoUnquoted = infoUnquoted.substring(1);
-				if (infoUnquoted.endsWith("\""))
+				if (infoUnquoted.endsWith("\"")) //$NON-NLS-1$
 					infoUnquoted = infoUnquoted.substring(0, infoUnquoted.length() - 1);
 				infoUnquoted = infoUnquoted.trim().toLowerCase();
 			}
-			String displayStringUnquoted = proposals[i].getDisplayString().toLowerCase();
-			if (displayStringUnquoted.startsWith("\""))
+			String displayStringUnquoted = (proposals[i].getDisplayString() == null ?
+						"" :  //$NON-NLS-1$
+						proposals[i].getDisplayString().toLowerCase());
+			if (displayStringUnquoted.startsWith("\"")) //$NON-NLS-1$
 				displayStringUnquoted = displayStringUnquoted.substring(1);
-			if (displayStringUnquoted.endsWith("\""))
+			if (displayStringUnquoted.endsWith("\"")) //$NON-NLS-1$
 				displayStringUnquoted = displayStringUnquoted.substring(0, displayStringUnquoted.length() - 1);
 			displayStringUnquoted = displayStringUnquoted.trim().toLowerCase();
 			
