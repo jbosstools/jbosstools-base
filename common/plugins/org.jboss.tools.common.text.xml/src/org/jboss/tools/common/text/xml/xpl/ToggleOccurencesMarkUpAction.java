@@ -100,22 +100,15 @@ public class ToggleOccurencesMarkUpAction extends TextEditorAction implements IP
 		setDescription(getString(bundle, descriptionKey, null));
 
 		String relPath= getString(bundle, imageKey, null);
-
-		try {
-			ImageDescriptor id = ImageDescriptor.createFromURL(makeIconFileURL("icons/xpl", relPath)); //$NON-NLS-1$
-			if (id != null)
-				setImageDescriptor(id);
-		} catch (MalformedURLException e) {
-			//ignore
+		ImageDescriptor id = ImageDescriptor.createFromFile(ToggleOccurencesMarkUpAction.class, relPath); //$NON-NLS-1$
+		if (id != null) {
+			setImageDescriptor(id);
 		}
 	
-		relPath= getString(bundle, disabledImageKey, null);
-		try {
-			ImageDescriptor id= ImageDescriptor.createFromURL(makeIconFileURL("icons/xpl", relPath)); //$NON-NLS-1$
-			if (id != null)
-				setDisabledImageDescriptor(id);
-		} catch (MalformedURLException e) {
-			//ignore
+		relPath = getString(bundle, disabledImageKey, null);
+		id= ImageDescriptor.createFromFile(ToggleOccurencesMarkUpAction.class, relPath); //$NON-NLS-1$
+		if (id != null) {
+			setDisabledImageDescriptor(id);
 		}
 	}
 
