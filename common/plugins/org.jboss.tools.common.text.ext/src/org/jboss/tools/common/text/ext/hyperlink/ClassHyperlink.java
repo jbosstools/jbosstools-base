@@ -33,6 +33,10 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
+import org.eclipse.jdt.internal.core.JarEntryFile;
+import org.eclipse.jdt.internal.core.JarEntryResource;
+import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
+import org.eclipse.jdt.internal.ui.javaeditor.JarEntryEditorInput;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
@@ -132,7 +136,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 		return null;
 	}
 	
-	private IJavaElement searchForClass(String className) {
+	private IJavaElement searchForClass(final String className) {
 		IFile documentFile = getFile();
 		
 		try {	
@@ -142,7 +146,21 @@ public class ClassHyperlink extends AbstractHyperlink {
 				IWorkbenchPage workbenchPage = ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				IEditorPart activeEditorPart = workbenchPage.getActiveEditor();
 				IEditorInput editorInput = activeEditorPart.getEditorInput();
-				if (editorInput instanceof IStorageEditorInput) {
+				//added by Maksim Areshkau, fix for https://jira.jboss.org/jira/browse/JBIDE-4638
+				//in this code we looking for java resource if editor has been opened in resource which packed into jar file
+				if (editorInput instanceof JarEntryEditorInput) {
+					JarEntryEditorInput jarEntryEditorInput = (JarEntryEditorInput) editorInput;
+					JarEntryResource jarEntryFile = (JarEntryResource) jarEntryEditorInput.getStorage();
+					Object parent = jarEntryFile.getParent();
+					while( parent instanceof JarEntryResource) {
+						parent = ((JarEntryResource)parent).getParent();
+					}
+					if( (parent instanceof JarPackageFragmentRoot) &&
+							(((JarPackageFragmentRoot)parent).getParent() instanceof IJavaProject)) {
+						return searchForClass(((IJavaProject) ((JarPackageFragmentRoot)parent).getParent()), className);
+					}
+					
+				} else  if (editorInput instanceof IStorageEditorInput) {
 					IStorageEditorInput moeInput = (IStorageEditorInput)editorInput;
 					IPath p = moeInput.getStorage().getFullPath();
 					String s0 = p.segment(0);
