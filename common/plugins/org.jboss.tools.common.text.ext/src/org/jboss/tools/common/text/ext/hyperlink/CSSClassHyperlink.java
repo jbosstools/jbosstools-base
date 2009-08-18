@@ -116,6 +116,9 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 		try {
 			smw.init(getDocument());
 			IFile documentFile = smw.getFile();
+			if (documentFile == null)
+				return null;
+			
 			IProject project = documentFile.getProject();
 
 			Document xmlDocument = smw.getDocument();
