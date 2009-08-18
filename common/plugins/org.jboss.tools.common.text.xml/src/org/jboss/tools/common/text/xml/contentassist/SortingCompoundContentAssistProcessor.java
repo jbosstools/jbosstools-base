@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +33,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
+import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.contentassist.IRelevanceCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.util.Sorter;
 
@@ -260,49 +260,88 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	 * @return a list of unique completion suggestions.
 	 */
 	public ICompletionProposal[] makeUnique(ICompletionProposal[] proposals) {
-		HashSet<String> present = new HashSet<String>();
-		HashSet<String> info = new HashSet<String>();
-		ArrayList<ICompletionProposal> unique= new ArrayList<ICompletionProposal>();
+		ArrayList<ICompletionProposal> unique = new ArrayList<ICompletionProposal>();
 
 		for (int i = 0; proposals != null && i < proposals.length; i++) {
 			if (proposals[i] == null)
 				continue;
 			
-			String infoUnquoted = proposals[i].getAdditionalProposalInfo();
-			if (infoUnquoted != null) {
-				if (infoUnquoted.startsWith("\"")) //$NON-NLS-1$
-					infoUnquoted = infoUnquoted.substring(1);
-				if (infoUnquoted.endsWith("\"")) //$NON-NLS-1$
-					infoUnquoted = infoUnquoted.substring(0, infoUnquoted.length() - 1);
-				infoUnquoted = infoUnquoted.trim().toLowerCase();
-			}
-			String displayStringUnquoted = (proposals[i].getDisplayString() == null ?
-						"" :  //$NON-NLS-1$
-						proposals[i].getDisplayString().toLowerCase());
-			if (displayStringUnquoted.startsWith("\"")) //$NON-NLS-1$
-				displayStringUnquoted = displayStringUnquoted.substring(1);
-			if (displayStringUnquoted.endsWith("\"")) //$NON-NLS-1$
-				displayStringUnquoted = displayStringUnquoted.substring(0, displayStringUnquoted.length() - 1);
-			displayStringUnquoted = displayStringUnquoted.trim().toLowerCase();
-			
-			if (displayStringUnquoted != null && displayStringUnquoted.length() > 0 && !present.contains(displayStringUnquoted)) {
-				present.add(displayStringUnquoted);
-				if (infoUnquoted != null && infoUnquoted.length() > 0) {
-					if (!info.contains(infoUnquoted)) {
-						info.add(infoUnquoted);
-					} else {
-						// Do not add proposals with the same info
-						continue;
-					}
-				}
+			ICompletionProposal existingProposal = findExistingProposal(unique, proposals[i]);
+			if (existingProposal == null) {
 				unique.add(proposals[i]);
 			}
 		}
-
-		present.clear();
 		return unique.toArray(new ICompletionProposal[unique.size()]);
 	}
 
+	private ICompletionProposal findExistingProposal(List<ICompletionProposal> proposals, ICompletionProposal proposal) {
+		if (proposals == null || proposal == null)
+			return null;
+
+		for (ICompletionProposal existingProposal : proposals) {
+			String exReplString = null;
+			String exDispString = null;
+			String exInfoString = null;
+			
+			if (existingProposal instanceof CustomCompletionProposal) {
+				exReplString = ((CustomCompletionProposal)existingProposal).getReplacementString();
+			}
+			exDispString = unQuote(existingProposal.getDisplayString());
+			exInfoString = unQuote(existingProposal.getAdditionalProposalInfo());
+			exReplString = getReplacementWord(exReplString == null ? exDispString : exReplString);
+						
+			String replString = null;
+			String dispString = null;
+			String infoString = null;
+			
+			if (proposal instanceof CustomCompletionProposal) {
+				replString = ((CustomCompletionProposal)proposal).getReplacementString();
+			}
+			dispString = unQuote(proposal.getDisplayString());
+			infoString = unQuote(proposal.getAdditionalProposalInfo());
+			replString = getReplacementWord(replString == null ? dispString : replString);
+		
+			if (exReplString != null && replString != null && 
+					(exReplString.equals(replString) ||
+					exReplString.startsWith(replString) ||
+					replString.startsWith(exReplString)))
+				return existingProposal;
+		}
+		
+		return null;
+	}
+	
+	private String getReplacementWord(String replacement) {
+		replacement = (replacement == null ? 
+				"" : //$NON-NLS-1$
+					replacement);
+		int index = replacement.indexOf('>');  //$NON-NLS-1$
+		if (index != -1) {
+			replacement = replacement.substring(0, index).trim();
+			if (replacement.endsWith("/")) //$NON-NLS-1$
+				replacement = replacement.substring(0, replacement.length() - 1).trim();
+		}
+		index = replacement.indexOf('=');
+		if (index != -1) {
+			replacement = replacement.substring(0, index).trim();
+		}
+		return replacement;
+	}
+	
+	private String unQuote(String str) {
+		str = (str == null ?
+				"" :  //$NON-NLS-1$
+				str.toLowerCase());
+		if (str.startsWith("\"")) //$NON-NLS-1$
+			str = str.substring(1);
+		if (str.endsWith("\"")) //$NON-NLS-1$
+			str = str.substring(0, str.length() - 1);
+		str = str.trim().toLowerCase();
+		
+		return str;
+	}
+	
+	
 	protected Sorter createSorter() {
 		return new Sorter() {
 			public boolean compare(Object proposal1, Object proposal2) {
