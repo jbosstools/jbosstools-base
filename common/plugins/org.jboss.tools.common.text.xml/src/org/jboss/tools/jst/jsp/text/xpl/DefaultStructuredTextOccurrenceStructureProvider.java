@@ -661,7 +661,7 @@ public class DefaultStructuredTextOccurrenceStructureProvider implements IStruct
 				IDOMAttr xmlAttr = (IDOMAttr)attrs.item(i);
 				String value = xmlAttr.getValueRegionText();
 				if (attrValue.equals(xmlAttr.getValue()))
-					matches.add(new Position(xmlAttr.getValueRegionStartOffset(), value.length()));
+					matches.add(new Position(xmlAttr.getValueRegionStartOffset(), value == null ? 0 : value.length()));
 			}
 		}
 		for (Node child = xmlNode.getFirstChild(); child != null; child = child.getNextSibling()) {
