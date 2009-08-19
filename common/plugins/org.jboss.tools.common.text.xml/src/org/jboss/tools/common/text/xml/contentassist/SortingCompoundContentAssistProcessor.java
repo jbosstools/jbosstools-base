@@ -274,60 +274,63 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		return unique.toArray(new ICompletionProposal[unique.size()]);
 	}
 
-	private ICompletionProposal findExistingProposal(List<ICompletionProposal> proposals, ICompletionProposal proposal) {
+	private ICompletionProposal findExistingProposal(
+			List<ICompletionProposal> proposals, ICompletionProposal proposal) {
 		if (proposals == null || proposal == null)
 			return null;
 
 		for (ICompletionProposal existingProposal : proposals) {
 			String exReplString = null;
 			String exDispString = null;
-			String exInfoString = null;
-			
+
 			if (existingProposal instanceof CustomCompletionProposal) {
-				exReplString = ((CustomCompletionProposal)existingProposal).getReplacementString();
+				exReplString = ((CustomCompletionProposal) existingProposal)
+						.getReplacementString();
 			}
 			exDispString = unQuote(existingProposal.getDisplayString());
-			exInfoString = unQuote(existingProposal.getAdditionalProposalInfo());
-			exReplString = getReplacementWord(exReplString == null ? exDispString : exReplString);
-						
+			exReplString = getReplacementWord(exReplString == null ? exDispString
+					: exReplString);
+
 			String replString = null;
 			String dispString = null;
-			String infoString = null;
-			
+
 			if (proposal instanceof CustomCompletionProposal) {
-				replString = ((CustomCompletionProposal)proposal).getReplacementString();
+				replString = ((CustomCompletionProposal) proposal)
+						.getReplacementString();
 			}
 			dispString = unQuote(proposal.getDisplayString());
-			infoString = unQuote(proposal.getAdditionalProposalInfo());
-			replString = getReplacementWord(replString == null ? dispString : replString);
-		
-			if (exReplString != null && replString != null && 
-					(exReplString.equals(replString) ||
-					exReplString.startsWith(replString) ||
-					replString.startsWith(exReplString)))
+			replString = getReplacementWord(replString == null ? dispString
+					: replString);
+
+			if (exReplString != null && replString != null
+					&& exReplString.equals(replString))
 				return existingProposal;
 		}
-		
+
 		return null;
 	}
-	
+
 	private String getReplacementWord(String replacement) {
-		replacement = (replacement == null ? 
-				"" : //$NON-NLS-1$
-					replacement);
-		int index = replacement.indexOf('>');  //$NON-NLS-1$
+		replacement = (replacement == null ? "" : //$NON-NLS-1$
+				replacement);
+		int index = replacement.indexOf('>'); //$NON-NLS-1$
 		if (index != -1) {
 			replacement = replacement.substring(0, index).trim();
 			if (replacement.endsWith("/")) //$NON-NLS-1$
-				replacement = replacement.substring(0, replacement.length() - 1).trim();
+				replacement = replacement
+						.substring(0, replacement.length() - 1).trim();
 		}
-		index = replacement.indexOf('=');
+		index = replacement.indexOf("="); //$NON-NLS-1$
+		if (index != -1) {
+			replacement = replacement.substring(0, index).trim();
+		}
+		index = replacement.indexOf(" "); //$NON-NLS-1$
 		if (index != -1) {
 			replacement = replacement.substring(0, index).trim();
 		}
 		return replacement;
 	}
-	
+
 	private String unQuote(String str) {
 		str = (str == null ?
 				"" :  //$NON-NLS-1$
