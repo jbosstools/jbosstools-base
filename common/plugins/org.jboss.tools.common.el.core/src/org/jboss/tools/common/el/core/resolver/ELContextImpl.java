@@ -10,10 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.common.el.core.resolver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.Region;
@@ -26,8 +26,8 @@ public class ELContextImpl implements ELContext {
 
 	protected IFile resource;
 	protected ELResolver[] elResolvers;
-	protected Map<Region, Set<Var>> vars = new HashMap<Region, Set<Var>>();
-	protected Set<Var> allVars = new HashSet<Var>();
+	protected Map<Region, List<Var>> vars = new HashMap<Region, List<Var>>();
+	protected List<Var> allVars = new ArrayList<Var>();
 
 	/*
 	 * (non-Javadoc)
@@ -65,7 +65,7 @@ public class ELContextImpl implements ELContext {
 	 * (non-Javadoc)
 	 */
 	public Var[] getVars(int offset) {
-		Set<Var> result = new HashSet<Var>();
+		List<Var> result = new ArrayList<Var>();
 		for (Region region : vars.keySet()) {
 			if(offset>=region.getOffset() && offset<=region.getOffset() + region.getLength()) {
 				result.addAll(vars.get(region));
@@ -81,7 +81,7 @@ public class ELContextImpl implements ELContext {
 	 */
 	public void addVar(Region region, Var var) {
 		if (this.vars.get(region) == null) {
-			this.vars.put(region, new HashSet<Var>());
+			this.vars.put(region, new ArrayList<Var>());
 		}
 		this.vars.get(region).add(var);
 		allVars.add(var);
