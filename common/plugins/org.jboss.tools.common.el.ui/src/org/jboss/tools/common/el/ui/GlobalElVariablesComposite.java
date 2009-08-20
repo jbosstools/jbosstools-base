@@ -13,12 +13,15 @@ package org.jboss.tools.common.el.ui;
 
 import java.util.List;
 
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.el.core.GlobalELReferenceList;
 import org.jboss.tools.common.resref.core.ResourceReference;
 import org.jboss.tools.common.resref.core.ResourceReferenceList;
-import org.jboss.tools.common.resref.ui.AbstractResourceReferencesComposite;
-import org.jboss.tools.common.resref.ui.BaseAddReferenceSupport;
 import org.jboss.tools.common.resref.ui.ResourceReferencesTableProvider;
+import org.jboss.tools.vpe.resref.core.AbstractResourceReferencesComposite;
+import org.jboss.tools.vpe.resref.core.GlobalELReferenceWizardDialog;
+import org.jboss.tools.vpe.resref.core.ReferenceWizardDialog;
 
 
 /**
@@ -29,27 +32,11 @@ import org.jboss.tools.common.resref.ui.ResourceReferencesTableProvider;
 public class GlobalElVariablesComposite extends AbstractResourceReferencesComposite {
 
     /**
-     * @see org.jboss.tools.common.resref.core.AbstractResourceReferencesComposite#createGroupLabel()
-     */
-    @Override
-    protected String createGroupLabel() {
-        return ""; //$NON-NLS-1$
-    }
-
-    /**
      * @see org.jboss.tools.common.resref.core.AbstractResourceReferencesComposite#createTableProvider(java.util.List)
      */
     @Override
     protected ResourceReferencesTableProvider createTableProvider(List dataList) {
         return ResourceReferencesTableProvider.getGlobalELTableProvider(dataList);
-    }
-
-    /**
-     * @see org.jboss.tools.common.resref.core.AbstractResourceReferencesComposite#getEntity()
-     */
-    @Override
-    protected String getEntity() {
-        return "VPEGlobalElReference"; //$NON-NLS-1$
     }
 
     /**
@@ -66,25 +53,41 @@ public class GlobalElVariablesComposite extends AbstractResourceReferencesCompos
         rf.setGlobal(true);
         return rf;
     }
+    
+    protected ReferenceWizardDialog getDialog(ResourceReference resref) {
+        return new GlobalELReferenceWizardDialog(
+				PlatformUI.getWorkbench().getDisplay().getActiveShell(), fileLocation, resref, getReferenceArray());
+    }
 
 	@Override
 	protected void add(int index) {
-		ResourceReference defaultRef = getDefaultResourceReference();
-		
-		boolean ok = BaseAddReferenceSupport.add(file, defaultRef, getReferenceArray(), getEntity());
-		if(!ok) return;
-		dataList.add(defaultRef);
-		update();
-		table.setSelection(dataList.size() - 1);
+		ResourceReference resref = getDefaultResourceReference();
+		int returnCode = -1;
+		ReferenceWizardDialog  d = getDialog(resref);
+		if (null != d) {
+			returnCode = d.open();
+		}
+		if (Dialog.OK == returnCode) {
+			dataList.add(resref);
+			update();
+			table.setSelection(dataList.size() - 1);
+		}
 	}
 
 	@Override
 	protected void edit(int index) {
-		if(index < 0) return;
-		ResourceReference defaultRef = getReferenceArray()[index];
-		boolean ok = BaseAddReferenceSupport.edit(file, defaultRef, getReferenceArray(), getEntity());
-		if(!ok) return;
-		update();
+		if(index < 0) {
+			return;
+		}
+		ResourceReference resref = getReferenceArray()[index];
+		int returnCode = -1;
+		ReferenceWizardDialog  d = getDialog(resref);
+		if (null != d) {
+			returnCode = d.open();
+		}
+		if (Dialog.OK == returnCode) {
+			update();
+		}
 	}
 
 }
