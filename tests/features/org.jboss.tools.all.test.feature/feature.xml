@@ -15,6 +15,7 @@
    <license url="http://www.example.com/license">
       [Enter License Description here.]
    </license>
+
    <plugin
          id="org.jboss.tools.common.kb.test"
          download-size="0"
@@ -156,12 +157,6 @@
 
    <plugin
          id="org.jboss.tools.jsf.vpe.myfaces.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.jboss.ide.eclipse.archives.test"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
