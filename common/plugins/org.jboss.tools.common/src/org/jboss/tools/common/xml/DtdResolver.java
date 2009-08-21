@@ -50,7 +50,6 @@ public class DtdResolver implements EntityResolver {
         		String systemId2 = systemId.substring(i + 1);
         		location = XMLCorePlugin.getDefault().getDefaultXMLCatalog().resolveURI(systemId2);
         	}
-        	
         }
         if((location == null || location.startsWith("http:")) && systemId != null) { //$NON-NLS-1$
         	Bundle b = Platform.getBundle("org.eclipse.jst.standard.schemas"); //$NON-NLS-1$
@@ -73,9 +72,9 @@ public class DtdResolver implements EntityResolver {
         if(location == null) {
         	if(systemId != null && !unfound.contains(systemId)) {
         		unfound.add(systemId);
-            	CommonPlugin.getPluginLog().logError("Cannot find locally: "  //$NON-NLS-1$
-            			+ "Public ID " + publicId //$NON-NLS-1$
-            			+ " System ID " + systemId); //$NON-NLS-1$
+//            	CommonPlugin.getPluginLog().logInfo("Cannot find locally: "  //$NON-NLS-1$
+//            			+ "Public ID " + publicId //$NON-NLS-1$
+//            			+ " System ID " + systemId); //$NON-NLS-1$
         	}
         }
         if(location!=null) {
@@ -88,7 +87,7 @@ public class DtdResolver implements EntityResolver {
 	            	return url.openStream();
 	            }
             } catch(FileNotFoundException e) {
-    			CommonPlugin.getPluginLog().logError("Error in DtdResolver: " + e.getMessage()); //$NON-NLS-1$
+    			CommonPlugin.getPluginLog().logError(e);
             }
         }
 
@@ -110,11 +109,9 @@ public class DtdResolver implements EntityResolver {
             		is = HttpUtil.getInputStreamFromUrlByGetMethod(systemId);
             	}
     		} catch (MalformedURLException e) {
-      			CommonPlugin.getPluginLog().logError( e.getMessage());
-    			// don't handle any exeptions. Bug #ESL-306
+      			CommonPlugin.getPluginLog().logError(e);
             } catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+            	CommonPlugin.getPluginLog().logError(e);
 			}
 		}
         return is;
