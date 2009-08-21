@@ -7,343 +7,401 @@
  *
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
+ ******************************************************************************/
 package org.jboss.tools.common.text.ext.hyperlink;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.wst.css.core.internal.provisional.adapters.IStyleSheetAdapter;
+import org.eclipse.wst.css.core.internal.provisional.document.ICSSDocument;
+import org.eclipse.wst.css.core.internal.provisional.document.ICSSModel;
+import org.eclipse.wst.css.core.internal.provisional.document.ICSSNode;
+import org.eclipse.wst.css.core.internal.provisional.document.ICSSStyleRule;
+import org.eclipse.wst.css.core.internal.provisional.document.ICSSStyleSheet;
+import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
+import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMText;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
-import org.jboss.tools.common.text.ext.util.CSSTextScanner;
 import org.jboss.tools.common.text.ext.util.RegionHolder;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.StructuredSelectionHelper;
-import org.jboss.tools.common.text.ext.util.TextScanner;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-/*
- * Created on 26.01.2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+import org.w3c.dom.css.CSSRule;
+import org.w3c.dom.css.CSSRuleList;
+import org.w3c.dom.css.CSSStyleSheet;
 
 /**
  * @author Jeremy
  */
 public class CSSClassHyperlink extends AbstractHyperlink {
 
-	// Qualifiers for CSSList
-	public static final String QUALIFIER = "CSSListForm"; //$NON-NLS-1$
-	public static final String LOCAL_NAME = "CSSList"; //$NON-NLS-1$
+	public static final String[] STYLE_TAGS = new String[] { "style", "link" }; //$NON-NLS-1$//$NON-NLS-2$
+	public static final String COMPARE_CLASS_REGEX_PREFIX = "[\\.]?"; //$NON-NLS-1$
 
-	/** 
-	 * @see com.ibm.sse.editor.AbstractHyperlink#doHyperlink(org.eclipse.jface.text.IRegion)
+	/**
+	 * 
 	 */
 	protected void doHyperlink(IRegion region) {
-	
-		try {
-			RegionHolder holder = getStyleHolder(getStyleName(region));
-			if (holder != null) {
-				if (holder.file != null) {
-					IWorkbenchPage workbenchPage = ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					IEditorPart part = IDE.openEditor(workbenchPage,holder.file,true);
-					if (part == null) {
-						openFileFailed();
-						return;
-					}
-					StructuredSelectionHelper.setSelectionAndReveal(part, holder.region);
-				} else {
-					StructuredSelectionHelper.setSelectionAndRevealInActiveEditor(holder.region);
-				}
-			} else {
-				openFileFailed();
+
+		IDOMModel model = (IDOMModel) getModelManager()
+				.getExistingModelForRead(getDocument());
+
+		// get name of looked for style
+		String styleName = getStyleName(region);
+
+		// get elements which copntans information about styles (style and link
+		// tags)
+		List<Node> styleElementList = getStyleContainerList(model);
+
+		// sort nodes by position in inverse order - from larger position to
+		// smaller
+		Collections.sort(styleElementList, new Comparator<Node>() {
+
+			public int compare(Node o1, Node o2) {
+				return ((IDOMNode) o2).getStartOffset()
+						- ((IDOMNode) o1).getStartOffset();
 			}
-			
-		} catch (CoreException x) {
-			// could not open editor
-			openFileFailed();
+
+		});
+
+		RegionHolder styleRegion = null;
+		// look for style in each Style element
+		for (Node styleContainer : styleElementList) {
+
+			styleRegion = findStyleRegion(styleContainer, styleName);
+
+			if (styleRegion != null) {
+				showRegion(styleRegion);
+				break;
+			}
+
 		}
+
+		model.releaseFromRead();
 	}
-	
+
+	/**
+	 * 
+	 * @param model
+	 * @return
+	 */
+	private List<Node> getStyleContainerList(IDOMModel model) {
+
+		// get model of current page
+		IDOMDocument document = model.getDocument();
+
+		List<Node> getStyleContainerList = new ArrayList<Node>();
+
+		// get all tags which contains style ( link, style)
+		for (String tagName : STYLE_TAGS) {
+			getStyleContainerList.addAll(getList(document
+					.getElementsByTagName(tagName)));
+
+		}
+
+		return getStyleContainerList;
+	}
+
+	/**
+	 * move nodes from NodeList to List
+	 * 
+	 * @param nodeList
+	 * @return
+	 */
+	List<Node> getList(NodeList nodeList) {
+
+		List<Node> newContainerList = new ArrayList<Node>();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			newContainerList.add(nodeList.item(i));
+		}
+		return newContainerList;
+	}
+
+	/**
+	 * 
+	 * @param stylesContainer
+	 * @param styleName
+	 * @return
+	 */
+	public RegionHolder findStyleRegion(Node stylesContainer, String styleName) {
+
+		// get style sheet
+		CSSStyleSheet sheet = getSheet(stylesContainer);
+
+		if (sheet != null) {
+
+			CSSRuleList ruleList = sheet.getCssRules();
+
+			// for each cssRule
+			for (int i = 0; i < ruleList.getLength(); i++) {
+
+				CSSRule cssRule = ruleList.item(i);
+
+				// if cssRule describe looked for style
+				if (isRuleMatch(cssRule, styleName)) {
+
+					return new RegionHolder(getFile((ICSSNode) cssRule),
+							getRegion(cssRule));
+
+				}
+			}
+
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param stylesContainer
+	 * @return
+	 */
+	private CSSStyleSheet getSheet(Node stylesContainer) {
+
+		IStyleSheetAdapter adapter = (IStyleSheetAdapter) ((INodeNotifier) stylesContainer)
+				.getAdapterFor(IStyleSheetAdapter.class);
+
+		CSSStyleSheet sheet = null;
+
+		if (adapter != null) {
+			sheet = (CSSStyleSheet) ((IStyleSheetAdapter) adapter).getSheet();
+
+			// get ModelProvideAdapter
+//			IModelProvideAdapter modelProvideAdapter = (IModelProvideAdapter) ((INodeNotifier) stylesContainer)
+//					.getAdapterFor(IModelProvideAdapter.class);
+//
+//			try {
+//				/* URLModelProvider */URLModelProviderCSS provider = new /* URLModelProvider */URLModelProviderCSS();
+//				IStructuredModel newModel;
+//
+//				newModel = provider.getModelForRead(
+//						((IDOMNode) stylesContainer).getModel(),
+//						processURL(((Element) stylesContainer)
+//								.getAttribute("href"))); //$NON-NLS-1$
+//
+//				if (newModel == null)
+//					return null;
+//				if (!(newModel instanceof ICSSModel)) {
+//					newModel.releaseFromRead();
+//					return null;
+//				}
+//
+//				// notify adapter
+//				if (modelProvideAdapter != null)
+//					modelProvideAdapter.modelProvided(newModel);
+//				
+//				adapter.s
+//			} catch (UnsupportedEncodingException e) {
+//			} catch (IOException e) {
+//			}
+		}
+
+		return sheet;
+
+	}
+
+	protected String processURL(String href) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param cssRule
+	 * @param styleName
+	 * @return
+	 */
+	private boolean isRuleMatch(CSSRule cssRule, String styleName) {
+
+		// get selector text
+		String selectorText = ((ICSSStyleRule) cssRule).getSelectorText();
+
+		if (selectorText != null) {
+
+			// split selector text by whitespace
+			String[] styles = selectorText.trim().split(" "); //$NON-NLS-1$
+			int searchIndex = Arrays.binarySearch(styles, styleName,
+					new Comparator<String>() {
+
+						public int compare(String o1, String o2) {
+							Matcher matcher = Pattern.compile(
+									COMPARE_CLASS_REGEX_PREFIX + o2)
+									.matcher(o1);
+							return matcher.matches() ? 0 : 1;
+						}
+
+					});
+			if (searchIndex >= 0)
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param node
+	 * @return
+	 */
+	private IFile getFile(ICSSNode node) {
+
+		ICSSDocument sheet = node.getOwnerDocument();
+
+		return AbstractHyperlink.getFile(sheet.getModel());
+	}
+
+	/**
+	 * 
+	 * @param cssRule
+	 * @return
+	 */
+	protected Region getRegion(CSSRule cssRule) {
+
+		int offset = ((IndexedRegion) cssRule).getStartOffset();
+
+		// if css rule is contained in style tag so it is require to take into
+		// account offset of this tag
+		ICSSStyleSheet document = (ICSSStyleSheet) ((ICSSStyleRule) cssRule)
+				.getOwnerDocument();
+
+		ICSSModel model = document.getModel();
+
+		// get style tag
+		Node node = model.getOwnerDOMNode();
+
+		// increase offset
+		if (node instanceof IDOMElement)
+			offset += ((IDOMElement) node).getStartEndOffset();
+
+		return new Region(offset, 0);
+
+	}
+
+	/**
+	 * 
+	 * @param styleRegion
+	 */
+	private void showRegion(RegionHolder styleRegion) {
+
+		IWorkbenchPage workbenchPage = ExtensionsPlugin.getDefault()
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IEditorPart part = null;
+		if (styleRegion.file != null) {
+			try {
+				part = IDE.openEditor(workbenchPage, styleRegion.file, true);
+			} catch (PartInitException e) {
+				e.printStackTrace();
+			}
+			if (part == null) {
+				openFileFailed();
+				return;
+			}
+		}
+		StructuredSelectionHelper.setSelectionAndReveal(part,
+				styleRegion.region);
+	}
+
+	/**
+	 * 
+	 * @param region
+	 * @return
+	 */
 	private String getStyleName(IRegion region) {
 		try {
-			return Utils.trimQuotes(getDocument().get(region.getOffset(), region.getLength()));
-		} catch (BadLocationException x) {
-			//ignore
+			return getDocument().get(region.getOffset(), region.getLength());
+		} catch (BadLocationException e) {
 			return null;
 		}
 	}
-	
+
 	IRegion fLastRegion = null;
-	
-	/** 
+
+	/**
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
 	 */
 	protected IRegion doGetHyperlinkRegion(int offset) {
 		fLastRegion = getRegion(offset);
 		return fLastRegion;
 	}
-	
-	private RegionHolder getStyleHolder (String styleName) {
+
+	/**
+	 * TODO research method
+	 * @param offset
+	 * @return
+	 */
+	protected IRegion getRegion(int offset) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
 			smw.init(getDocument());
-			IFile documentFile = smw.getFile();
-			if (documentFile == null)
+			Document xmlDocument = smw.getDocument();
+			if (xmlDocument == null)
 				return null;
-			
-			IProject project = documentFile.getProject();
 
-			Document xmlDocument = smw.getDocument();
-			if (xmlDocument == null) return null;
-
-			List styleLinks = findStyleLinks(xmlDocument.getChildNodes());
-			
-			if (styleLinks == null || styleLinks.size() == 0) return null;
-			boolean doSearchInProjectCSSList = false;
-			for (int i = styleLinks.size() - 1; i >= 0; i--) {
-				if (styleLinks.get(i) instanceof Attr) {
-					Attr hrefAttr = (Attr)styleLinks.get(i);
-					String fileName = Utils.trimQuotes(hrefAttr.getValue());
-					if (fileName != null && fileName.length() > 0) {
-						IFile file = getFileFromProject(fileName);
-						if (file == null || !file.exists()) doSearchInProjectCSSList = true;
-						IRegion region = findStyleRegion(file, styleName);
-						if (region != null) {
-							return new RegionHolder(file, region);
-						}
-					}
-				} else if (styleLinks.get(i) instanceof IDOMElement) {
-					IDOMElement styleElement = (IDOMElement)styleLinks.get(i);
-					IRegion region = findStyleRegion(styleElement, styleName);
-					
-					if ( region != null) {
-						return new RegionHolder(region);
-					} else {
-						//"Style region not found"
-					}
-				}
-			}
-			
-			if (doSearchInProjectCSSList) {
-				String cssList = project.getPersistentProperty(new QualifiedName(QUALIFIER, LOCAL_NAME));
-				if (cssList != null) {
-					StringTokenizer st = new StringTokenizer(cssList, ","); //$NON-NLS-1$
-					while (st.hasMoreTokens()) {
-						String fileName = st.nextToken().trim();
-						IPath path = new Path(fileName).removeFirstSegments(2);
-						fileName = path.toString();
-						if (fileName != null && fileName.length() > 0) {
-							IFile file = getFileFromProject(fileName);
-							IRegion region = findStyleRegion(file, styleName);
-							if (region != null) {
-								return new RegionHolder(file, region);
-							}
-						}
-					}
-				}
-			}
-			
-			return null;
-		} catch (CoreException x) {
-			//ignore
-			return null;
-		} finally {
-			smw.dispose();
-		}
-	}
-
-	private IRegion findStyleRegion(IDOMElement styleElement, String styleName) {
-		if (styleElement == null || styleName == null || styleName.length() == 0) return null;
-		
-		// get all the XMLText regions and combine them into the string
-		// Then parse that string finding the style class
-		
-		if (!(styleElement.getFirstChild() instanceof IDOMText)) return null;
-		
-		IDOMText styleText = (IDOMText)styleElement.getFirstChild();
-		String text = styleText.getData();
-		if (text == null) return null;
-		
-		int startOffset = styleText.getStartOffset();
-		IRegion region = null;
-		StringReader reader = new StringReader (text);
-		try {
-			CSSTextScanner scanner = new CSSTextScanner(reader);
-			IToken token = scanner.nextToken();
-			while (token != null && !token.isEOF()) {
-				if (token instanceof TextScanner.TextToken) {
-					TextScanner.TextToken tToken = (TextScanner.TextToken)token;
-					if (CSSTextScanner.CSS_CLASS_NAME.equals(tToken.getType())) {
-						String name = tToken.getText();
-						if (("." + styleName).equalsIgnoreCase(name)) { //$NON-NLS-1$
-							final int offset = startOffset + scanner.getTokenOffset();
-							final int length = scanner.getTokenLength();
-							return new Region (offset,length);
-						}
-					} else if (CSSTextScanner.CSS_CLASS_BODY.equals(tToken.getType())) {
-//						String body = tToken.getText();
-					}
-				} 
-				
-				token = scanner.nextToken();
-			}
-		} finally {
-				reader.close();
-		}
-		return null;
-	}
-	
-	private IRegion findStyleRegion(IFile file, String styleName) {
-		if (file == null || !file.exists()) return null;
-		if (styleName == null || styleName.length() == 0) return null;
-		InputStream stream = null;
-		try {
-			stream = file.getContents(true);
-			CSSTextScanner scanner = new CSSTextScanner(stream);
-
-			IToken token = scanner.nextToken();
-			while (token != null && !token.isEOF()) {
-				if (token instanceof TextScanner.TextToken) {
-					TextScanner.TextToken tToken = (TextScanner.TextToken)token;
-					if (CSSTextScanner.CSS_CLASS_NAME.equals(tToken.getType())) {
-						String name = tToken.getText();
-						if (("." + styleName).equalsIgnoreCase(name)) { //$NON-NLS-1$
-							final int offset = scanner.getTokenOffset();
-							final int length = scanner.getTokenLength();
-							return new Region (offset,length);
-						}
-					} else if (CSSTextScanner.CSS_CLASS_BODY.equals(tToken.getType())) {
-//						String body = tToken.getText();
-//						"CSS_CLASS_BODY Token: [" + body + "]"
-					}
-				} 
-				
-				token = scanner.nextToken();
-			}
-		} catch (CoreException x) {
-			ExtensionsPlugin.getPluginLog().logError("Error while looking for style region ", x); //$NON-NLS-1$
-		} finally {
-			try {
-				if(stream!=null) {
-					stream.close();
-				}
-			} catch (IOException x) {
-				//ignore
-			}
-		}
-		return null;
-	}
-	
-	private List<Node> findStyleLinks (NodeList list) {
-		List<Node> styleLinks = new ArrayList<Node>();
-			for (int i = 0; list != null && i < list.getLength(); i++) {
-
-					IDOMNode element = (IDOMNode)list.item(i);
-					//String axis = JSPRootHyperlinkPartitioner.computeAxis(getDocument(), element.getStartOffset());
-					//axis  = axis.toLowerCase();
-					
-					if ("link".equals(element.getNodeName())) { //$NON-NLS-1$
-						Node relAttr = element.getAttributes().getNamedItem("rel"); //$NON-NLS-1$
-						if (relAttr != null) {
-							String val = relAttr.getNodeValue().toLowerCase();
-							if ("stylesheet".equalsIgnoreCase(val) || "\"stylesheet\"".equalsIgnoreCase(val)) { //$NON-NLS-1$ //$NON-NLS-2$
-								Node hrefAttr = element.getAttributes().getNamedItem("href"); //$NON-NLS-1$
-								if (hrefAttr != null) {
-									styleLinks.add(hrefAttr);
-								}
-							}
-						}
-					}
-					
-					if ("link".equals(element.getNodeName())) { //$NON-NLS-1$
-//						String value = element.getNodeValue();
-						styleLinks.add(element);
-					}
-					
-					if (element.hasChildNodes()) {
-						List<Node> add = findStyleLinks(element.getChildNodes());
-						if (add != null) 
-							styleLinks.addAll(add);
-					}
-			}
-			return styleLinks;
-	}
-	
-	protected IRegion getRegion (int offset) {
-		StructuredModelWrapper smw = new StructuredModelWrapper();
-		try {
-			smw.init(getDocument());
-			Document xmlDocument = smw.getDocument();
-			if (xmlDocument == null) return null;
-			
 			Node n = Utils.findNodeForOffset(xmlDocument, offset);
-			
-			if (n == null || !(n instanceof Attr)) return null;
+
+			if (n == null || !(n instanceof Attr))
+				return null;
 			int start = Utils.getValueStart(n);
 			int end = Utils.getValueEnd(n);
-			if (start > offset) return null;
+			if (start > offset)
+				return null;
 
 			String attrText = getDocument().get(start, end - start);
 
 			StringBuffer sb = new StringBuffer(attrText);
-			//find start of bean property
+			// find start of bean property
 			int bStart = offset - start;
-			while (bStart >= 0) { 
-				if (!Character.isJavaIdentifierPart(sb.charAt(bStart)) && 
-						sb.charAt(bStart) != '_' && sb.charAt(bStart) != '-' &&
-						sb.charAt(bStart) != '.') {
+			while (bStart >= 0) {
+				if (!Character.isJavaIdentifierPart(sb.charAt(bStart))
+						&& sb.charAt(bStart) != '_' && sb.charAt(bStart) != '-'
+						&& sb.charAt(bStart) != '.') {
 					bStart++;
 					break;
 				}
-			
-				if (bStart == 0) break;
+
+				if (bStart == 0)
+					break;
 				bStart--;
 			}
 			// find end of bean property
 			int bEnd = offset - start;
-			while (bEnd < sb.length()) { 
-				if (!Character.isJavaIdentifierPart(sb.charAt(bEnd)) && 
-						sb.charAt(bEnd) != '_' && sb.charAt(bEnd) != '-' &&
-						sb.charAt(bEnd) != '.')
+			while (bEnd < sb.length()) {
+				if (!Character.isJavaIdentifierPart(sb.charAt(bEnd))
+						&& sb.charAt(bEnd) != '_' && sb.charAt(bEnd) != '-'
+						&& sb.charAt(bEnd) != '.')
 					break;
 				bEnd++;
 			}
-			
+
 			final int propStart = bStart + start;
 			final int propLength = bEnd - bStart;
-			
-			if (propStart > offset || propStart + propLength < offset) return null;
-			return new Region (propStart,propLength);
+
+			if (propStart > offset || propStart + propLength < offset)
+				return null;
+			return new Region(propStart, propLength);
 		} catch (BadLocationException x) {
-			//ignore
+			// ignore
 			return null;
 		} finally {
 			smw.dispose();
@@ -358,8 +416,8 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 	public String getHyperlinkText() {
 		String styleName = getStyleName(fLastRegion);
 		if (styleName == null)
-			return  MessageFormat.format(Messages.OpenA, Messages.CSSStyle);
-		
+			return MessageFormat.format(Messages.OpenA, Messages.CSSStyle);
+
 		return MessageFormat.format(Messages.OpenCSSStyle, styleName);
 	}
 

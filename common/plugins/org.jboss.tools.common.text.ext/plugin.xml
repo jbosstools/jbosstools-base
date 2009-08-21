@@ -9,6 +9,19 @@
 		point="org.jboss.tools.common.text.ext.hyperlinkPartitioner"
 		id="org.jboss.tools.common.text.ext.hyperlinkPartitioner"
 		name="org.jboss.tools.common.text.ext.hyperlinkPartitioner">
+		
+		<hyperlinkPartitioner 
+         	id="org.jboss.tools.common.text.ext.hyperlink.CSSClassHyperlinkPartitioner"
+         	class="org.jboss.tools.common.text.ext.hyperlink.CSSClassHyperlinkPartitioner">
+         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
+         		</partitionType>
+         	</contentType>
+         	<contentType id="org.eclipse.wst.html.core.htmlsource">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
+         		</partitionType>
+         	</contentType>
+		</hyperlinkPartitioner>
 
 		<!-- Root XML, HTML and JSP hyperlink partitioners -->
 		<hyperlinkPartitioner
@@ -819,10 +832,10 @@
 			class="org.jboss.tools.common.text.ext.hyperlink.CSSClassHyperlink" 
 			id="org.jboss.tools.common.text.ext.hyperlink.CSSClassHyperlink">
 			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_CSS_CLASS" />
+				<partitiontype id="org.jboss.tools.common.text.ext.CSS_CLASS" />
 			</contenttypeidentifier>
    			<contenttypeidentifier id="org.eclipse.wst.html.core.htmlsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_CSS_CLASS" />
+				<partitiontype id="org.jboss.tools.common.text.ext.CSS_CLASS" />
 			</contenttypeidentifier>
 		</hyperlink>
 
