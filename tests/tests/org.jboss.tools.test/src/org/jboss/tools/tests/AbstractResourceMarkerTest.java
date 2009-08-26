@@ -115,7 +115,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 			int length = markers.length;
 			for(int i=0;i<markers.length;i++){
 //				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));  //$NON-NLS-1$//$NON-NLS-2$
-				if(markers[i].exists() && (filter==null || filter.accept(markers[i]))) {
+				if(markers[i].exists() && (filter==null || !filter.accept(markers[i]))) {
 					length--;
 				}
 			}
