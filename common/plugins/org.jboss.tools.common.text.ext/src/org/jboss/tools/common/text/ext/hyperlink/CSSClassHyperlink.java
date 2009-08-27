@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.common.text.ext.hyperlink;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,13 +29,17 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.wst.css.core.internal.provisional.adapters.IModelProvideAdapter;
 import org.eclipse.wst.css.core.internal.provisional.adapters.IStyleSheetAdapter;
 import org.eclipse.wst.css.core.internal.provisional.document.ICSSDocument;
 import org.eclipse.wst.css.core.internal.provisional.document.ICSSModel;
 import org.eclipse.wst.css.core.internal.provisional.document.ICSSNode;
 import org.eclipse.wst.css.core.internal.provisional.document.ICSSStyleRule;
 import org.eclipse.wst.css.core.internal.provisional.document.ICSSStyleSheet;
+import org.eclipse.wst.html.core.internal.htmlcss.LinkElementAdapter;
+import org.eclipse.wst.html.core.internal.htmlcss.URLModelProvider;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
@@ -47,6 +53,7 @@ import org.jboss.tools.common.text.ext.util.StructuredSelectionHelper;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.css.CSSRule;
@@ -59,7 +66,10 @@ import org.w3c.dom.css.CSSStyleSheet;
 public class CSSClassHyperlink extends AbstractHyperlink {
 
 	public static final String[] STYLE_TAGS = new String[] { "style", "link" }; //$NON-NLS-1$//$NON-NLS-2$
+	public static final String LINK_TAG = "link"; //$NON-NLS-1$
+	public static final String HREF_ATTRIBUTE = "href"; //$NON-NLS-1$
 	public static final String COMPARE_CLASS_REGEX_PREFIX = "[\\.]?"; //$NON-NLS-1$
+	public static final String CONTEXT_PATH_EXPRESSION = "^\\s*(\\#|\\$)\\{facesContext.externalContext.requestContextPath\\}"; //$NON-NLS-1$
 
 	/**
 	 * 
@@ -119,7 +129,6 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 		for (String tagName : STYLE_TAGS) {
 			getStyleContainerList.addAll(getList(document
 					.getElementsByTagName(tagName)));
-
 		}
 
 		return getStyleContainerList;
@@ -178,44 +187,28 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 	 * @param stylesContainer
 	 * @return
 	 */
-	private CSSStyleSheet getSheet(Node stylesContainer) {
+	private CSSStyleSheet getSheet(final Node stylesContainer) {
 
-		IStyleSheetAdapter adapter = (IStyleSheetAdapter) ((INodeNotifier) stylesContainer)
+		INodeNotifier notifier = (INodeNotifier) stylesContainer;
+
+		IStyleSheetAdapter adapter = (IStyleSheetAdapter) notifier
 				.getAdapterFor(IStyleSheetAdapter.class);
+
+		if (LINK_TAG.equalsIgnoreCase(stylesContainer.getNodeName())
+				&& !(adapter instanceof ExtendedLinkElementAdapter)) {
+
+			notifier.removeAdapter(adapter);
+			adapter = new ExtendedLinkElementAdapter(
+					(Element) stylesContainer);
+			notifier.addAdapter(adapter);
+
+		}
 
 		CSSStyleSheet sheet = null;
 
 		if (adapter != null) {
-			sheet = (CSSStyleSheet) ((IStyleSheetAdapter) adapter).getSheet();
+			sheet = (CSSStyleSheet) adapter.getSheet();
 
-			// get ModelProvideAdapter
-//			IModelProvideAdapter modelProvideAdapter = (IModelProvideAdapter) ((INodeNotifier) stylesContainer)
-//					.getAdapterFor(IModelProvideAdapter.class);
-//
-//			try {
-//				/* URLModelProvider */URLModelProviderCSS provider = new /* URLModelProvider */URLModelProviderCSS();
-//				IStructuredModel newModel;
-//
-//				newModel = provider.getModelForRead(
-//						((IDOMNode) stylesContainer).getModel(),
-//						processURL(((Element) stylesContainer)
-//								.getAttribute("href"))); //$NON-NLS-1$
-//
-//				if (newModel == null)
-//					return null;
-//				if (!(newModel instanceof ICSSModel)) {
-//					newModel.releaseFromRead();
-//					return null;
-//				}
-//
-//				// notify adapter
-//				if (modelProvideAdapter != null)
-//					modelProvideAdapter.modelProvided(newModel);
-//				
-//				adapter.s
-//			} catch (UnsupportedEncodingException e) {
-//			} catch (IOException e) {
-//			}
 		}
 
 		return sheet;
@@ -347,6 +340,7 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 
 	/**
 	 * TODO research method
+	 * 
 	 * @param offset
 	 * @return
 	 */
@@ -419,6 +413,96 @@ public class CSSClassHyperlink extends AbstractHyperlink {
 			return MessageFormat.format(Messages.OpenA, Messages.CSSStyle);
 
 		return MessageFormat.format(Messages.OpenCSSStyle, styleName);
+	}
+
+	@Override
+	protected String findAndReplaceElVariable(String fileName) {
+		if (fileName != null)
+			fileName = fileName
+					.replaceFirst(
+							"^\\s*(\\#|\\$)\\{facesContext.externalContext.requestContextPath\\}",
+							"");
+		return super.findAndReplaceElVariable(fileName);
+	}
+
+	public class ExtendedLinkElementAdapter extends LinkElementAdapter {
+
+		private Element element;
+
+		public ExtendedLinkElementAdapter(Element element) {
+			this.element = element;
+		}
+
+		@Override
+		public Element getElement() {
+			return element;
+		}
+
+		@Override
+		protected boolean isValidAttribute() {
+			String href = getElement().getAttribute(HREF_ATTRIBUTE);
+			if (href == null || href.length() == 0)
+				return false;
+			return true;
+		}
+
+		/**
+		 */
+		public ICSSModel getModel() {
+			ICSSModel model = super.getModel();
+			if (model == null) {
+				model = retrieveModel();
+				setModel(model);
+			}
+			return model;
+		}
+
+		/**
+		 */
+		private ICSSModel retrieveModel() {
+			if (!isValidAttribute()) {
+				return null;
+			}
+
+			// null,attr check is done in isValidAttribute()
+			Element element = getElement();
+			String href = findAndReplaceElVariable(element
+					.getAttribute(HREF_ATTRIBUTE));
+
+			IDOMModel baseModel = ((IDOMNode) element).getModel();
+			if (baseModel == null)
+				return null;
+			Object id = baseModel.getId();
+			if (!(id instanceof String))
+				return null;
+			// String base = (String)id;
+
+			// get ModelProvideAdapter
+			IModelProvideAdapter adapter = (IModelProvideAdapter) ((INodeNotifier) getElement())
+					.getAdapterFor(IModelProvideAdapter.class);
+
+			URLModelProvider provider = new URLModelProvider();
+			try {
+				IStructuredModel newModel = provider.getModelForRead(baseModel,
+						href);
+				if (newModel == null)
+					return null;
+				if (!(newModel instanceof ICSSModel)) {
+					newModel.releaseFromRead();
+					return null;
+				}
+
+				// notify adapter
+				if (adapter != null)
+					adapter.modelProvided(newModel);
+
+				return (ICSSModel) newModel;
+			} catch (UnsupportedEncodingException e) {
+			} catch (IOException e) {
+			}
+
+			return null;
+		}
 	}
 
 }
