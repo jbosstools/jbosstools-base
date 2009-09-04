@@ -235,12 +235,16 @@
 				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
          			<axis path="*/[http://java.sun.com/jstl/core]:import/url" />
          			<axis path="*/[http://java.sun.com/jstl/core]:redirect/url" />
+         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:import/url" />
+         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:redirect/url" />
         		</partitionType>
 			</contentType>
 			<contentType id="org.eclipse.jst.jsp.core.jspsource">
 				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
          			<axis path="*/[http://java.sun.com/jstl/core]:import/url" />
          			<axis path="*/[http://java.sun.com/jstl/core]:redirect/url" />
+         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:import/url" />
+         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:redirect/url" />
         		</partitionType>
 			</contentType>
 		</hyperlinkPartitioner>
