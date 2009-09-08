@@ -18,6 +18,7 @@ import org.jboss.tools.common.reporting.test.ProblemReportingHelperTest;
 import org.jboss.tools.common.util.test.HttpUtilTest;
 import org.jboss.tools.common.xml.test.SAXValidatorTest;
 import org.jboss.tools.common.xml.test.XMLUtilitiesTest;
+import org.jboss.tools.common.zip.test.ZipAllTests;
 
 public class CommonAllTests extends TestCase {
 	public static final String PLUGIN_ID = "org.jboss.tools.common.test";
@@ -30,6 +31,7 @@ public class CommonAllTests extends TestCase {
 		suite.addTestSuite(SAXValidatorTest.class);
 		suite.addTestSuite(ProblemReportingHelperTest.class);
 		suite.addTestSuite(CommonPluginTest.class);
+		suite.addTestSuite(ZipAllTests.class);
 		return suite;
 	}
 }

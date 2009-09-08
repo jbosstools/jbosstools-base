@@ -145,5 +145,6 @@ Export-Package: org.jboss.tools.common,
  org.jboss.tools.common.reporting,
  org.jboss.tools.common.text,
  org.jboss.tools.common.util,
- org.jboss.tools.common.xml
+ org.jboss.tools.common.xml,
+ org.jboss.tools.common.zip
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
