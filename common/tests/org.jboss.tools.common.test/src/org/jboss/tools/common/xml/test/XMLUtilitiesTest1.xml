@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node1 attribute1="valueOfAttribute1">
+	<child1 first="true"></child1>
+	<child1></child1>
+	<child1></child1>
+	<child1></child1>
+	<child2 first="true"></child2>
+	<child3></child3>
+	<child4></child4>
+	<child5></child5>
+</node1>
