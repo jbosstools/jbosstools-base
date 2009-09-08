@@ -31,7 +31,9 @@ public class CommonAllTests extends TestCase {
 		suite.addTestSuite(SAXValidatorTest.class);
 		suite.addTestSuite(ProblemReportingHelperTest.class);
 		suite.addTestSuite(CommonPluginTest.class);
-		suite.addTestSuite(ZipAllTests.class);
+		suite.addTest(ZipAllTests.suite());
+		suite.addTestSuite(MessagesTest.class);
+		suite.addTestSuite(MethodNotImplementedExceptionTest.class);
 		return suite;
 	}
 }
