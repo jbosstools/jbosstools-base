@@ -11,6 +11,7 @@
 package org.jboss.tools.common.xml;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -22,6 +23,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.serialize.LineSeparator;
 import org.apache.xml.serialize.Method;
@@ -43,6 +46,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class XMLUtilities {
+	
     public static boolean hasAttribute(Element e, String s) {
         return e.getAttributes().getNamedItem(s) != null;
     }
@@ -116,12 +120,31 @@ public class XMLUtilities {
     }
 
 	public static DocumentBuilder createDocumentBuilder() {
-		return createDocumentBuilder(false);
+		return  createDocumentBuilder(false);
 	}
 
-	public static DocumentBuilder createDocumentBuilder(boolean validating) {
-		return SafeDocumentBuilderFactory.createDocumentBuilder(validating);
+	public static DocumentBuilder createDocumentBuilder(boolean validate) {
+		try {
+			DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+			if (validate) {
+				f.setValidating(validate);
+			}
+			// / f.setExpandEntityReferences(false);
+			DocumentBuilder d = f.newDocumentBuilder();
+			if (!validate) {
+				d.setEntityResolver(EMPTY_RESOLVER);
+			}
+			d.setErrorHandler(new ErrorHandlerImpl());
+			return d;
+		} catch (ParserConfigurationException e) {
+			CommonPlugin.getPluginLog().logError(e);
+		}
+		return null;
 	}
+	
+	public static final EntityResolver EMPTY_RESOLVER = createEmptyEntityResolver();
+	
+	
 
     public static Element createDocumentElement(String name) {
 		Document d = createDocumentBuilder().newDocument();
@@ -130,7 +153,19 @@ public class XMLUtilities {
         return de;
     }
 
-    public static Element createDocumentElement(String name, String qName, String publicId, String systemId, String namespaceURI) {
+    public static EntityResolver createEmptyEntityResolver() {
+		return new EntityResolver() {
+			public InputSource resolveEntity(java.lang.String publicId, java.lang.String systemId) throws SAXException, java.io.IOException {
+				if((systemId != null) && systemId.toLowerCase().endsWith(".dtd")) { // this deactivates DTD //$NON-NLS-1$
+					return new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes())); //$NON-NLS-1$
+				} else {
+					return null;
+				}
+			}
+		};
+	}
+
+	public static Element createDocumentElement(String name, String qName, String publicId, String systemId, String namespaceURI) {
         Document d = null;
         try {
             DOMImplementation domImpl = createDocumentBuilder().getDOMImplementation();
