@@ -20,14 +20,7 @@ licenses. For precise licensing details, consult the corresponding
 source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
 Raleigh NC 27606 USA.
 </license>
-
-   <plugin
-         id="org.jboss.tools.common.kb.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
+	<plugin
          id="org.jboss.tools.common.model.test"
          download-size="0"
          install-size="0"
