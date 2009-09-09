@@ -30,8 +30,8 @@ public class ClassLoaderUtil {
     }
     
 	private static String[][] activation = {
-		{"org.jboss.tools.jst.web.ui", "org.jboss.tools.jst.web.ui.WebUiPlugin", "required"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		{"org.jboss.tools.jst.web", "org.jboss.tools.jst.web.WebModelPlugin", "required"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"org.jboss.tools.jst.web.ui", "org.jboss.tools.jst.web.ui.WebUiPlugin", "optional"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"org.jboss.tools.jst.web", "org.jboss.tools.jst.web.WebModelPlugin", "optional"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		{"org.jboss.tools.jsf.ui", "org.jboss.tools.jsf.ui.JsfUiPlugin", "optional"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		{"org.jboss.tools.struts.ui", "org.jboss.tools.struts.ui.StrutsUIPlugin", "optional"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		{"org.jboss.tools.common.verification.ui", "org.jboss.tools.common.verification.ui.XStudioVerificationPlugin", "optional"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
