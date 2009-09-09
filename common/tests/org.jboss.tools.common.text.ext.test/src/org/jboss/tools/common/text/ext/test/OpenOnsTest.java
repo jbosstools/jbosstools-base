@@ -2,7 +2,6 @@ package org.jboss.tools.common.text.ext.test;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -13,26 +12,15 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.ui.IEditorDescriptor;
-import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
-import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.texteditor.DocumentProviderRegistry;
-import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.jboss.tools.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.common.model.ui.editors.multipage.DefaultMultipageEditor;
-import org.jboss.tools.common.model.ui.texteditors.XMLTextEditorStandAlone;
-import org.jboss.tools.common.text.ext.hyperlink.CSSClassHyperlink;
-import org.jboss.tools.common.text.ext.hyperlink.ClassHyperlink;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkDetector;
 import org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.test.util.JobUtils;
-import org.jboss.tools.test.util.ResourcesUtils;
 import org.jboss.tools.test.util.WorkbenchUtils;
 
 public class OpenOnsTest extends TestCase {

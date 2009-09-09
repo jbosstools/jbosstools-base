@@ -10,14 +10,11 @@ Provide-Package: org.jboss.tools.common.el.core,
  org.jboss.tools.common.el.core.parser,
  org.jboss.tools.common.el.core.resolver
 Bundle-Activator: org.jboss.tools.common.el.core.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.core.resources,
- org.eclipse.jdt.core,
- org.eclipse.jface.text,
+Require-Bundle: org.eclipse.jface.text,
  org.eclipse.wst.sse.core,
  org.eclipse.wst.sse.ui,
  org.jboss.tools.common,
  org.jboss.tools.common.model,
- org.jboss.tools.common.resref.core;reprovide=true
+ org.jboss.tools.common.resref.core;reprovide=true,
+ org.eclipse.ui
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

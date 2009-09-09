@@ -13,11 +13,14 @@ package org.jboss.tools.common.xml;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.xml.transform.URIResolver;
+
 import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.parser.XMLEntityResolver;
 import org.apache.xerces.xni.parser.XMLInputSource;
-import org.eclipse.wst.wsdl.validation.internal.resolver.URIResolver;
+
 import org.jboss.tools.common.CommonPlugin;
+
 import org.xml.sax.SAXException;
 
 /**

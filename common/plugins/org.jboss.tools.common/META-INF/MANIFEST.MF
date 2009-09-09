@@ -129,7 +129,6 @@ Provide-Package: org.jboss.tools.common,
  org.w3c.dom.html,
  org.w3c.dom.ls
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.wst.wsdl.validation,
  org.eclipse.wst.xml.core;visibility:=reexport,
  org.eclipse.jface,
  org.eclipse.core.resources,
