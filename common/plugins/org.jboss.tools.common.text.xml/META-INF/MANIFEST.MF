@@ -1,24 +1,20 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
 Bundle-Name: %Bundle-Name.0
 Bundle-ClassPath: xmleditor.jar,
  .
 Bundle-Activator: org.jboss.tools.common.text.xml.XmlEditorPlugin
 Bundle-Vendor: %providerName
-Bundle-SymbolicName: org.jboss.tools.common.text.xml; singleton:=true
+Bundle-SymbolicName: org.jboss.tools.common.text.xml;singleton:=true
 Bundle-Localization: plugin
-Provide-Package: icons.xpl,
- org.jboss.tools.common.text.xml,
+Export-Package: org.jboss.tools.common.text.xml,
  org.jboss.tools.common.text.xml.contentassist,
  org.jboss.tools.common.text.xml.internal.ui.preferencies,
- org.jboss.tools.common.text.xml.internal.ui.xmleditor,
- org.jboss.tools.common.text.xml.kb,
  org.jboss.tools.common.text.xml.ui,
  org.jboss.tools.common.text.xml.ui.xpl,
  org.jboss.tools.common.text.xml.xpl,
- org.jboss.tools.jst.jsp.preferences,
  org.jboss.tools.jst.jsp.preferences.xpl,
- org.jboss.tools.jst.jsp.text,
  org.jboss.tools.jst.jsp.text.xpl
 Require-Bundle: org.jboss.tools.common,
  org.eclipse.core.runtime,

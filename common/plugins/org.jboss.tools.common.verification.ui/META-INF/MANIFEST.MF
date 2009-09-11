@@ -1,12 +1,13 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
 Bundle-Name: %pluginName
 Bundle-Activator: org.jboss.tools.common.verification.ui.XStudioVerif
  icationPlugin
 Bundle-Vendor: %providerName
-Bundle-SymbolicName: org.jboss.tools.common.verification.ui; singleton:=true
+Bundle-SymbolicName: org.jboss.tools.common.verification.ui;singleton:=true
 Bundle-Localization: plugin
-Provide-Package: org.jboss.tools.common.verification.ui.vrules.action,
+Export-Package: org.jboss.tools.common.verification.ui.vrules.action,
  org.jboss.tools.common.verification.ui.vrules.preferences,
  org.jboss.tools.common.verification.ui.vrules.wizard,
  org.jboss.tools.common.verification.ui.vrules.wizard.config,

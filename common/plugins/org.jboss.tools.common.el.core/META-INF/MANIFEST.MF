@@ -1,11 +1,12 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-Name: %Bundle-Name.0
-Bundle-SymbolicName: org.jboss.tools.common.el.core;singleton=true
+Bundle-SymbolicName: org.jboss.tools.common.el.core;singleton:=true
 Bundle-Version: 2.0.0
-Provide-Package: org.jboss.tools.common.el.core,
+Export-Package: org.jboss.tools.common.el.core,
  org.jboss.tools.common.el.core.model,
  org.jboss.tools.common.el.core.parser,
  org.jboss.tools.common.el.core.resolver
@@ -15,6 +16,6 @@ Require-Bundle: org.eclipse.jface.text,
  org.eclipse.wst.sse.ui,
  org.jboss.tools.common,
  org.jboss.tools.common.model,
- org.jboss.tools.common.resref.core;reprovide=true,
+ org.jboss.tools.common.resref.core;visibility:=reexport,
  org.eclipse.ui
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

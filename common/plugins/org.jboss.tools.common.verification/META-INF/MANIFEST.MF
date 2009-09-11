@@ -1,11 +1,12 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
 Bundle-Name: %Bundle-Name.0
 Bundle-Activator: org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin
 Bundle-Vendor: %providerName
-Bundle-SymbolicName: org.jboss.tools.common.verification; singleton:=true
+Bundle-SymbolicName: org.jboss.tools.common.verification;singleton:=true
 Bundle-Localization: plugin
-Provide-Package: org.jboss.tools.common.verification.vrules,
+Export-Package: org.jboss.tools.common.verification.vrules,
  org.jboss.tools.common.verification.vrules.impl,
  org.jboss.tools.common.verification.vrules.layer,
  org.jboss.tools.common.verification.vrules.core.resources

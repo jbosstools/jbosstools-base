@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.jboss.tools.common.text.ext.ExtensionsPlugin
 Export-Package: org.jboss.tools.common.text.ext,
  org.jboss.tools.common.text.ext.hyperlink,

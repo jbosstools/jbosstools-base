@@ -1,13 +1,11 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.el.ui
 Bundle-Version: 1.0.0
-Provide-Package: org.jboss.tools.common.el,
- org.jboss.tools.common.el.global,
- org.jboss.tools.common.el.ui,
- org.jboss.tools.common.el.vpe
+Export-Package: org.jboss.tools.common.el.ui
 Bundle-Activator: org.jboss.tools.common.el.ui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

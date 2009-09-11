@@ -14,6 +14,6 @@ Require-Bundle:
  org.jboss.tools.common.el.core,
  org.jboss.tools.common.test,
  org.jboss.tools.tests
-Provide-Package: org.jboss.tools.common.el.core.test
+Export-Package: org.jboss.tools.common.el.core.test
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

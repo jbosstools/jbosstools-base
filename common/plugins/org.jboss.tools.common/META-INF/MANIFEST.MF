@@ -13,11 +13,13 @@ Bundle-Activator: org.jboss.tools.common.CommonPlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common;singleton:=true
 Bundle-Localization: plugin
-Provide-Package: org.jboss.tools.common,
+Export-Package: org.jboss.tools.common,
+ org.jboss.tools.common.log,
  org.jboss.tools.common.reporting,
+ org.jboss.tools.common.text,
  org.jboss.tools.common.util,
  org.jboss.tools.common.xml,
- org.jboss.tools.common.log,
+ org.jboss.tools.common.zip,
  org.apache.commons.codec,
  org.apache.commons.codec.binary,
  org.apache.commons.codec.digest,
@@ -34,7 +36,6 @@ Provide-Package: org.jboss.tools.common,
  org.apache.commons.httpclient.util,
  org.apache.commons.lang,
  org.apache.commons.lang.builder,
- org.apache.commons.lang.enum,
  org.apache.commons.lang.exception,
  org.apache.commons.lang.math,
  org.apache.commons.lang.time,
@@ -139,11 +140,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-Version: 2.0.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
-Export-Package: org.jboss.tools.common,
- org.jboss.tools.common.log,
- org.jboss.tools.common.reporting,
- org.jboss.tools.common.text,
- org.jboss.tools.common.util,
- org.jboss.tools.common.xml,
- org.jboss.tools.common.zip
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

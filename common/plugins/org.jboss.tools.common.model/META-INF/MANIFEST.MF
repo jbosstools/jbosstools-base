@@ -1,13 +1,14 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
 Bundle-Name: %Bundle-Name.0
 Bundle-ClassPath: model.jar,lib/j2ee.jar,lib/Bundles.jar
 Bundle-Activator: org.jboss.tools.common.model.plugin.ModelPlugin
 Bundle-Vendor: %providerName
 Plugin-Class: org.jboss.tools.common.model.plugin.ModelPlugin
-Bundle-SymbolicName: org.jboss.tools.common.model; singleton:=true
+Bundle-SymbolicName: org.jboss.tools.common.model;singleton=true
 Bundle-Localization: plugin
-Provide-Package: org.jboss.tools.common.ant.model,
+Export-Package: org.jboss.tools.common.ant.model,
  org.jboss.tools.common.ant.model.handlers,
  org.jboss.tools.common.ant.parser,
  org.jboss.tools.common.java.jsp.model,
@@ -38,14 +39,11 @@ Provide-Package: org.jboss.tools.common.ant.model,
  org.jboss.tools.common.model.undo,
  org.jboss.tools.common.model.util,
  org.jboss.tools.common.model.util.extension,
- org.jboss.tools.common.model.wizard,
- org.jboss.tools.common.util.lcspack,
  org.jboss.tools.common.model.project,
  org.jboss.tools.common.model.handlers,
  org.jboss.tools.common.model.java.handlers,
  org.jboss.tools.common.model.markers,
  org.jboss.tools.common.java.generation,
- org.jboss.tools.common.java.model.helpers,
  org.jboss.tools.common.meta.action.impl,
  org.jboss.tools.common.meta.action.impl.handlers,
  org.jboss.tools.common.meta.constraint.impl,
@@ -60,7 +58,6 @@ Provide-Package: org.jboss.tools.common.ant.model,
  org.jboss.tools.common.model.icons.impl,
  org.jboss.tools.common.model.loaders,
  org.jboss.tools.common.model.loaders.impl,
- org.jboss.tools.common.model.ref.impl,
  org.jboss.tools.common.model.search,
  org.jboss.tools.common.model.search.impl,
  org.jboss.tools.jst.web.tld,

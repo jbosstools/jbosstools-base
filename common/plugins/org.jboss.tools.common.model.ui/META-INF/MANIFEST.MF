@@ -1,18 +1,13 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
 Bundle-Name: %pluginName
 Bundle-ClassPath: model_ui.jar
 Bundle-Activator: org.jboss.tools.common.model.ui.ModelUIPlugin
 Bundle-Vendor: %providerName
-Bundle-SymbolicName: org.jboss.tools.common.model.ui; singleton:=true
+Bundle-SymbolicName: org.jboss.tools.common.model.ui;singleton:=true
 Bundle-Localization: plugin
-Provide-Package: dtds,
- org.apache.oro.io,
- org.apache.oro.text,
- org.apache.oro.text.awk,
- org.apache.oro.text.perl,
- org.apache.oro.text.regex,
- org.apache.oro.util,
+Export-Package: dtds,
  org.jboss.tools.common.core.jdt,
  org.jboss.tools.common.core.resources,
  org.jboss.tools.common.editor,
@@ -32,7 +27,6 @@ Provide-Package: dtds,
  org.jboss.tools.common.model.ui.dialogs,
  org.jboss.tools.common.model.ui.dnd,
  org.jboss.tools.common.model.ui.editor,
- org.jboss.tools.common.model.ui.editors,
  org.jboss.tools.common.model.ui.editors.dnd,
  org.jboss.tools.common.model.ui.editors.dnd.composite,
  org.jboss.tools.common.model.ui.editors.dnd.context,
@@ -48,7 +42,6 @@ Provide-Package: dtds,
  org.jboss.tools.common.model.ui.problem,
  org.jboss.tools.common.model.ui.reporting,
  org.jboss.tools.common.model.ui.resources,
- org.jboss.tools.common.model.ui.sample,
  org.jboss.tools.common.model.ui.select,
  org.jboss.tools.common.model.ui.swt.util,
  org.jboss.tools.common.model.ui.templates,
@@ -56,14 +49,12 @@ Provide-Package: dtds,
  org.jboss.tools.common.model.ui.templates.configuration,
  org.jboss.tools.common.model.ui.templates.model,
  org.jboss.tools.common.model.ui.templates.preferences,
- org.jboss.tools.common.model.ui.templates.xml,
  org.jboss.tools.common.model.ui.texteditors,
  org.jboss.tools.common.model.ui.texteditors.dnd,
  org.jboss.tools.common.model.ui.texteditors.preferences,
  org.jboss.tools.common.model.ui.texteditors.propertyeditor,
  org.jboss.tools.common.model.ui.texteditors.xmleditor,
  org.jboss.tools.common.model.ui.util,
- org.jboss.tools.common.model.ui.viewers,
  org.jboss.tools.common.model.ui.viewers.xpl,
  org.jboss.tools.common.model.ui.views.navigator,
  org.jboss.tools.common.model.ui.views.palette,

@@ -1,10 +1,11 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.gef
 Bundle-Localization: plugin
-Provide-Package: org.jboss.tools.common.gef,
+Export-Package: org.jboss.tools.common.gef,
  org.jboss.tools.common.gef.action,
  org.jboss.tools.common.gef.alignment.xpl,
  org.jboss.tools.common.gef.edit,
@@ -12,7 +13,6 @@ Provide-Package: org.jboss.tools.common.gef,
  org.jboss.tools.common.gef.editor.xpl,
  org.jboss.tools.common.gef.figures,
  org.jboss.tools.common.gef.figures.xpl,
- org.jboss.tools.common.gef.messages,
  org.jboss.tools.common.gef.outline.xpl,
  org.jboss.tools.common.gef.xpl
 Require-Bundle: org.jboss.tools.common,

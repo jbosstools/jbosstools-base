@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
-Bundle-SymbolicName: org.jboss.tools.common.meta.ui; singleton:=true
+Bundle-SymbolicName: org.jboss.tools.common.meta.ui;singleton:=true
 Bundle-Version: 2.0.0
 Bundle-ClassPath: meta-model.jar
 Bundle-Vendor: %providerName
@@ -8,23 +9,23 @@ Bundle-Localization: plugin
 Require-Bundle: org.jboss.tools.common.model,
  org.eclipse.jdt.core,
  org.eclipse.ui,
- org.eclipse.ui.ide;optional=true,
- org.eclipse.ui.views;optional=true,
- org.eclipse.ui.editors;optional=true,
- org.eclipse.jface.text;optional=true,
- org.eclipse.ui.workbench.texteditor;optional=true,
+ org.eclipse.ui.ide;resolution:=optional,
+ org.eclipse.ui.views;resolution:=optional,
+ org.eclipse.ui.editors;resolution:=optional,
+ org.eclipse.jface.text;resolution:=optional,
+ org.eclipse.ui.workbench.texteditor;resolution:=optional,
  org.eclipse.ui.ide,
  org.eclipse.jface.text,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.jdt.ui,
  org.eclipse.help,
- org.eclipse.help.base;optional=true,
+ org.eclipse.help.base;resolution:=optional,
  org.eclipse.search,
  org.eclipse.debug.core,
  org.jboss.tools.common.model.ui,
  org.eclipse.wst.web
-Eclipse-LazyStart: true
-Provide-Package: org.jboss.tools.common.meta.ui.editor,
+Bundle-ActivationPolicy: lazy
+Export-Package: org.jboss.tools.common.meta.ui.editor,
  org.jboss.tools.common.meta.ui,
  org.jboss.tools.common.meta.ui.form,
  org.jboss.tools.common.meta.ui.attribute.editor,

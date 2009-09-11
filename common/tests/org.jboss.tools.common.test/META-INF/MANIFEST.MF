@@ -10,8 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.junit,
  org.jboss.tools.common,
  org.jboss.tools.tests
-Provide-Package: org.jboss.tools.common.test.util
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.common.reporting.test,
  org.jboss.tools.common.test,
  org.jboss.tools.common.test.util,
