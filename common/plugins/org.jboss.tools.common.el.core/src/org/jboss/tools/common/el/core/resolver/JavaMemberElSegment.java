@@ -10,33 +10,31 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
-import org.eclipse.core.resources.IResource;
-import org.jboss.tools.common.el.core.model.ELInvocationExpression;
-import org.jboss.tools.common.model.project.ext.ITextSourceReference;
+import org.eclipse.jdt.core.IJavaElement;
 
 /**
- * Describes a segment of EL operand.
+ * Describes a segment of EL operand which is a Java Element. 
  * @author Alexey Kazakov
  */
-public interface ELSegment {
+public interface JavaMemberElSegment extends ELSegment {
 
 	/**
-	 * @return source EL token.
+	 * @return member info object of resolved segment. May return null.
 	 */
-	ELInvocationExpression getToken();
+	TypeInfoCollector.MemberInfo getMemberInfo();
 
 	/**
-	 * @return true if the segment has been resolved.
+	 * @return Java Element which represent this resolve segment. May return null. 
 	 */
-	boolean isResolved();
+	IJavaElement getJavaElement();
 
 	/**
-	 * @return resource of underlying object.
+	 * @return true if an underlying object is field and this field has getter.
 	 */
-	IResource getResource();
+	boolean hasGetter();
 
 	/**
-	 * @return source reference of underlying object.
+	 * @return true if an underlying object is field and this field has setter.
 	 */
-	ITextSourceReference getSourceReference();
+	boolean hasSetter();
 }
