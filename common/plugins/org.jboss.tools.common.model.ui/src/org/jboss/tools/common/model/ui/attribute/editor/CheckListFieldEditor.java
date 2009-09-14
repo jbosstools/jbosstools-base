@@ -12,10 +12,13 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.attribute.adapter.CheckListAdapter;
 import org.jboss.tools.common.model.ui.wizards.query.list.TreeItemSelectionManager;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -42,6 +45,8 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 	
 	private String stringValue;
 	private TreeViewer viewer;
+
+	String separator = ";";
 	
 	public CheckListFieldEditor() {}
 	
@@ -128,6 +133,9 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 			contentProvider = (IContentProvider)propertyEditor.getAdapter(ITreeContentProvider.class);
 			labelProvider = (ILabelProvider)propertyEditor.getAdapter(ILabelProvider.class);
 //			Object input = propertyEditor.getInput();
+			if(propertyEditor.getInput() instanceof CheckListAdapter) {
+				separator = "" + ((CheckListAdapter)propertyEditor.getInput()).getSeparator();
+			}
 		}
 		init();
 	}
@@ -148,15 +156,15 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 						lock++;
 						Tree tree = viewer.getTree();
 						TreeItem[] is = tree.getItems();
+						Set<String> vs = new HashSet<String>();
+						StringTokenizer values = new StringTokenizer(stringValue, ";,"); //$NON-NLS-1$
+						while(values.hasMoreTokens()) {
+							String n = values.nextToken();
+							vs.add(n);
+						}
 						for (int i = 0; i < is.length; i++) {
 							Object d = is[i].getData();
-							StringTokenizer values = new StringTokenizer(stringValue, ";,"); //$NON-NLS-1$
-							while(values.hasMoreTokens()) {
-								String n = values.nextToken();
-								if(n.equals(d)) {
-									is[i].setChecked(true);
-								}
-							}
+							is[i].setChecked(vs.contains(d));
 						}
 						lock--;
 					}
@@ -182,12 +190,12 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 			if (value.equals(currentItem))
 				currentItemExists = true;
 			else {
-				if(newValue.length() > 0 && !newValue.endsWith(";") && !newValue.endsWith(",")) newValue += ";"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				if(newValue.length() > 0 && !newValue.endsWith(";") && !newValue.endsWith(",")) newValue += separator; //$NON-NLS-1$ //$NON-NLS-2$
 				newValue += value;
 			}
 		}
 		if (!currentItemExists) {
-			if(newValue.length() > 0 && !newValue.endsWith(";") && !newValue.endsWith(",")) newValue += ";"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			if(newValue.length() > 0 && !newValue.endsWith(";") && !newValue.endsWith(",")) newValue += separator; //$NON-NLS-1$ //$NON-NLS-2$
 			newValue += currentItem;
 		}
 		valueChanged(newValue);

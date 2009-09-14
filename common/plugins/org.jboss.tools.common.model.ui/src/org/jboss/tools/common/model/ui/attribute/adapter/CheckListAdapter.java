@@ -54,8 +54,9 @@ public class CheckListAdapter extends DefaultValueAdapter {
 	
 	public void checkAll() {
 		StringBuffer sb = new StringBuffer();
+		char separator = getSeparator();
 		for (int i = 0; i < tags.length; i++) {
-			if(i > 0) sb.append(';');
+			if(i > 0) sb.append(separator);
 			sb.append(tags[i]);
 		}
 		setValue(sb.toString());
@@ -137,5 +138,17 @@ public class CheckListAdapter extends DefaultValueAdapter {
 		public boolean hasChildren(Object element) {
 			return false;
 		}
+	}
+
+	public char getSeparator() {
+		XAttribute a = getAttribute();
+		if(a == null && getAttributeData() != null) {
+			a = getAttributeData().getAttribute();
+		}
+		if(a != null) {
+			String s = a.getProperty("separator");
+			if("comma".equals(s)) return ',';
+		}
+		return ';';
 	}
 }

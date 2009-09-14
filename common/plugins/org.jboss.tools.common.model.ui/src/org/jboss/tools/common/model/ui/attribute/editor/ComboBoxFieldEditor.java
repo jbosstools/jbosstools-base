@@ -256,6 +256,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			
 			
 			SimpleContentProposalProvider cpp = new SimpleContentProposalProvider(set.toArray(new String[0]));
+			cpp.setFiltering(true);
 			KeyStroke ks = AttributeContentProposalProviderFactory.getCtrlSpaceKeyStroke();
 			
 			ContentProposalAdapter adapter = new ContentProposalAdapter(
