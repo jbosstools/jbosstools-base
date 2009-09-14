@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.attribute.adapter.CheckListAdapter;
@@ -123,6 +124,7 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 	
 	public void setEnabled(boolean enabled){
 		super.setEnabled(enabled);
+		updateErrorState();
 	}
 	
 	public void setPropertyEditor(IPropertyEditor propertyEditor) {
@@ -133,6 +135,7 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 			contentProvider = (IContentProvider)propertyEditor.getAdapter(ITreeContentProvider.class);
 			labelProvider = (ILabelProvider)propertyEditor.getAdapter(ILabelProvider.class);
 //			Object input = propertyEditor.getInput();
+			setErrorProvider((IAttributeErrorProvider)propertyEditor.getAdapter(IAttributeErrorProvider.class));
 			if(propertyEditor.getInput() instanceof CheckListAdapter) {
 				separator = "" + ((CheckListAdapter)propertyEditor.getInput()).getSeparator();
 			}
@@ -142,6 +145,7 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 
 	int lock = 0;
 	public void propertyChange(PropertyChangeEvent event) {
+		super.propertyChange(event);
 		valueProvider.removeValueChangeListener(this);
 		if (IPropertyEditor.VALUE.equals(event.getPropertyName())) {
 			Object v = event.getNewValue();
@@ -244,4 +248,5 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 
 	public void delete() {
 	}
+
 }
