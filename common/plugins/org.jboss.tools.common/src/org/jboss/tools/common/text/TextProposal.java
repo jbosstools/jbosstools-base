@@ -45,12 +45,31 @@ public class TextProposal {
 	private int relevance = R_NONE;
 	private int position = -1;
 	private boolean autoActivationContentAssistantAfterApplication = false;
-
+	
+	private String type;
+	private String sourceType;
+	
 	private int start = -1;
 	private int end = -1;
 
 	PostProcessing postProcessing;
 
+	public String getType() {
+		return type;
+	}
+	
+	public void setType(String typeName) {
+		this.type = typeName;
+	}
+	
+	public String getSourceType() {
+		return sourceType;
+	}
+	
+	public void setSourceType(String sourceTypeName) {
+		this.sourceType = sourceTypeName;
+	}
+	
 	/**
 	 * 
 	 * @return
@@ -85,7 +104,19 @@ public class TextProposal {
 	 * @return
 	 */
 	public String getLabel() {
-		return label;
+		String l = label != null ? label : getReplacementString() == null ? "" : getReplacementString(); //$NON-NLS-1$
+	
+		StringBuffer dispLabel = new StringBuffer(l);
+		if (type != null) {
+			dispLabel.append(" : ");  //$NON-NLS-1$
+			dispLabel.append(type);
+		}
+		if (sourceType != null) {
+			dispLabel.append(" - ");  //$NON-NLS-1$
+			dispLabel.append(sourceType);
+		}
+		
+		return dispLabel.toString();
 	}
 
 	/**
