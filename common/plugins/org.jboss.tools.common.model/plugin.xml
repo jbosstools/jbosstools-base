@@ -10,6 +10,7 @@
    <extension-point id="paletteAdopt" name="paletteAdopt" schema="schema/paletteAdopt.exsd"/>
    <extension-point id="resourceMapping" name="resourceMapping" schema="schema/resourceMapping.exsd"/>
    <extension-point id="classes" name="Model Classes" schema="schema/classes.exsd"/>
+   <extension-point id="preferences" name="preferences" schema="schema/preferences.exsd"/>
 
    <extension point="org.eclipse.wst.xml.core.catalogContributions">
         <catalogContribution id="default">
@@ -32,8 +33,6 @@
       <meta path="meta/jclassedit.meta">
       </meta>
       <meta path="meta/studio.meta">
-      </meta>
-      <meta path="meta/studio_eclipse_option.meta">
       </meta>
       <meta path="meta/studio_option.meta">
       </meta>
@@ -395,5 +394,11 @@
     <startup
           class="org.jboss.tools.common.model.plugin.ModelPluginStartup">
     </startup>
+ </extension>
+ <extension
+       point="org.jboss.tools.common.model.preferences">
+    <contribution
+          resource="meta/options_general.xml" priority="0">
+    </contribution>
  </extension>
 </plugin>

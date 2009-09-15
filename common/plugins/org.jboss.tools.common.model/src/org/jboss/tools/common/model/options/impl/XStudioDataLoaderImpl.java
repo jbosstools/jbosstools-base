@@ -37,7 +37,13 @@ public class XStudioDataLoaderImpl implements SharableConstants {
         peer.setIsLoadingOn(true);
         studio.setScope(PROJECT);
         new SharableLoaderImpl().loadSystemSharable(studio);
-        load(LIST[0], readGeneral());
+        
+        XStudioContribution[] cs = XStudioContributions.getContributions();
+        for (int i = 0; i < cs.length; i++) {
+        	InputStream s = cs[i].getInputStream();
+        	load(LIST[0], s);
+        }
+        
         boolean e = false;
         for (int i = 1; i < LIST.length; i++) {
         	File[] fs = peer.getFilesForScope(LIST[i]);
