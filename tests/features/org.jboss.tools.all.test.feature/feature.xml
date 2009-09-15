@@ -12,15 +12,17 @@
       [Enter Copyright Description here.]
    </copyright>
 
-    <license>Red Hat, Inc. licenses these features and plugins to you under
+   <license>
+      Red Hat, Inc. licenses these features and plugins to you under
 certain open source licenses (or aggregations of such licenses), which
 in a particular case may include the Eclipse Public License, the GNU
 Lesser General Public License, and/or certain other open source
 licenses. For precise licensing details, consult the corresponding
 source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
 Raleigh NC 27606 USA.
-</license>
-	<plugin
+   </license>
+
+   <plugin
          id="org.jboss.tools.common.model.test"
          download-size="0"
          install-size="0"
@@ -228,5 +230,17 @@ Raleigh NC 27606 USA.
          version="0.0.0"
          fragment="true"
          unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.jst.web.kb.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.jst.css.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
