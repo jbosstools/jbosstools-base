@@ -48,15 +48,15 @@ public class ProjectHome {
 		File f = new File(location + XModelObjectConstants.SEPARATOR + IModelNature.PROJECT_TEMP);
 		File ep = new File(location + XModelObjectConstants.SEPARATOR + IModelNature.PROJECT_FILE);
 		if(ep.isFile()) {
-			// to remove .struts file 
+			// to remove temp file 
 			if(f.isFile()) f.delete();
-			return getLocationFrom_strutsstudio_File(location, ep);
+			return getLocationFrom_project_File(location, ep);
 		}
-		if(f.isFile()) return getLocationFrom_struts_File(location, f);
+		if(f.isFile()) return getLocationFrom_temp_File(location, f);
 		return ""; //$NON-NLS-1$
 	}
 	
-	private String getLocationFrom_strutsstudio_File(String location, File ss) {
+	private String getLocationFrom_project_File(String location, File ss) {
 		Element element = XMLUtil.getElement(ss);
 		String path = ""; //$NON-NLS-1$
 		if(element.hasAttribute("workspace-home")) { //$NON-NLS-1$
@@ -68,7 +68,7 @@ public class ProjectHome {
 		return q;
 	}
 	
-	private String getLocationFrom_struts_File(String location, File s) {
+	private String getLocationFrom_temp_File(String location, File s) {
 		String path = XModelObjectLoaderUtil.getCDATA(XMLUtil.getElement(s));
 		String q = (path.equals(".")) ? location : (path.startsWith("./")) ? location + path.substring(1) : path; //$NON-NLS-1$ //$NON-NLS-2$
 		s.delete();
