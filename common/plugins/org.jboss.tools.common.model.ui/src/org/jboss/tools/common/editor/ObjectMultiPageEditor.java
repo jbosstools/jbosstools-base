@@ -146,7 +146,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	private void loadSelectedTab() {
 		IFile file = getFile();
 		try {
-			if("yes".equals(PreferenceModelUtilities.getPreferenceModel().getByPath("%Options%/Struts Studio/Editors").getAttributeValue("selectSourceTab"))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			if("yes".equals(PreferenceModelUtilities.getPreferenceModel().getByPath(Preference.EDITOR_PATH).getAttributeValue("selectSourceTab"))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				selectedPageIndex = getSourcePageIndex();
 			} else if(file == null) {
 				loadSelectedTabForStorage();
