@@ -22,7 +22,7 @@ public class Preference {
 	private String option;
 	private String attributeName;
 	public static final String OPTIONS_PATH = "%Options%"; //$NON-NLS-1$
-	public static String EDITOR_PATH = "%Options%/Struts Studio/Editors"; //$NON-NLS-1$
+	public static String EDITOR_PATH = "%Options%/Editors"; //$NON-NLS-1$
 	public static final Preference SHOW_NATURE_WARNING = new Preference(EDITOR_PATH, "natureWarning"); //$NON-NLS-1$
 	
 	protected Preference(String optionPath, String attributeName) {

@@ -193,52 +193,6 @@
   <XActionItem kind="list"/>
   <XDependencies/>
  </XModelEntity>
- <XModelEntity ImplementingClass="%Options%" name="SharableEditors">
-  <XChildrenEntities>
-   <XChildEntity maxCount="1" name="SharableStrutsEditor" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableJSFEditor" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableTilesEditor" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableVPEEditor" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableSeamPagesEditor" required="yes"/>
-  </XChildrenEntities>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.xstudio.options.root" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="options" loader="ElementType"
-    name="element type" visibility="false">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute default="Editors" name="name" visibility="false" xmlname="NAME">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute default="yes" name="useRedHatEditors" xmlname="useRedHatEditors">
-    <Constraint loader="List">
-     <value name="yes"/>
-     <value name="no"/>
-    </Constraint>
-    <Editor name="CheckBox"/>
-   </XModelAttribute>
-   <XModelAttribute default="yes" name="natureWarning" xmlname="natureWarning">
-    <Constraint loader="List">
-     <value name="yes"/>
-     <value name="no"/>
-    </Constraint>
-    <Editor name="CheckBox"/>
-   </XModelAttribute>
-   <XModelAttribute default="no" name="selectSourceTab" xmlname="selectSourceTab">
-    <Constraint loader="List">
-     <value name="yes"/>
-     <value name="no"/>
-    </Constraint>
-    <Editor name="CheckBox"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list"/>
-  <XDependencies/>
- </XModelEntity>
  <XModelEntity ImplementingClass="%Options%" name="SharableImportJSFProject">
   <XChildrenEntities/>
   <XEntityRenderer>
@@ -1139,7 +1093,6 @@
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="SharableRunning" required="yes"/>
    <XChildEntity maxCount="1" name="SharableProject" required="yes"/>
-   <XChildEntity maxCount="1" name="SharableEditors" required="yes"/>
    <XChildEntity maxCount="1" name="SharableAutomation" required="yes"/>
    <XChildEntity maxCount="1" name="SharableCodeGeneration" required="yes"/>
    <XChildEntity maxCount="1" name="SharableLinkRecognizer" required="yes"/>
@@ -1373,6 +1326,16 @@
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
+ <XEntityExtension name="SharableEditors">
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="SharableStrutsEditor" required="yes"/>
+   <XChildEntity maxCount="1" name="SharableJSFEditor" required="yes"/>
+   <XChildEntity maxCount="1" name="SharableTilesEditor" required="yes"/>
+   <XChildEntity maxCount="1" name="SharableVPEEditor" required="yes"/>
+   <XChildEntity maxCount="1" name="SharableSeamPagesEditor" required="yes"/>
+  </XChildrenEntities>
+  <XActionItem kind="list"/>
+ </XEntityExtension>
  <XEntityExtension name="SharableOptions">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="SharableJSFStudio" required="yes"/>

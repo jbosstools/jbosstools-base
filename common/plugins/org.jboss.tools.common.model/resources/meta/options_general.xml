@@ -4431,6 +4431,10 @@
 		</Icons>
 	</XStudioIcons>
 	<Options model-entity="SharableOptions" NAME="Options" SCOPE="project">
+		<Editors model-entity="SharableEditors" NAME="Editors" SCOPE="project">
+			<StrutsEditor model-entity="SharableStrutsEditor" NAME="Web Flow Diagram"
+				SCOPE="project" grid_step="16" show_grid="yes" />
+		</Editors>
 		<JSFStudio model-entity="SharableJSFStudio" NAME="JSF Studio"
 			SCOPE="project">
 			<JSFProject model-entity="SharableJSFProject" NAME="Project"
@@ -4517,10 +4521,6 @@
 						text="errors.required={0} is required.\nerrors.minlength={0} can not be less than {1} characters.\nerrors.maxlength={0} can not be greater than {1} characters.\nerrors.invalid={0} is invalid.\n \nerrors.byte={0} must be a byte.\nerrors.short={0} must be a short.\nerrors.integer={0} must be an integer.\nerrors.long={0} must be a long.\nerrors.float={0} must be a float.\nerrors.double={0} must be a double.\n \nerrors.date={0} is not a date.\nerrors.range={0} is not in the range {1} through {2}.\nerrors.creditcard={0} is an invalid credit card number.\nerrors.email={0} is an invalid e-mail address.\n" />
 				</ResourcesInsets>
 			</Automation>
-			<Editors model-entity="SharableEditors" NAME="Editors" SCOPE="project">
-				<StrutsEditor model-entity="SharableStrutsEditor" NAME="Web Flow Diagram"
-					SCOPE="project" grid_step="16" show_grid="yes" />
-			</Editors>
 		</StrutsStudio>
 	</Options>
 </XStudio>

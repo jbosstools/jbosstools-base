@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN" "meta.dtd">
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN"
+                                   "meta.dtd">
 <XModelEntityGroup>
  <VERSION MODULE="Model" VERSION="1.0"/>
  <MAPPINGS>
@@ -22,17 +23,12 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="root" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Root" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute default="Root" name="project name" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute default="Root" name="project name" visibility="false"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem
@@ -51,11 +47,9 @@
   <XModelAttributes>
    <XModelAttribute default="editor options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Editor" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="4" name="tab size" xmlname="TAB_SIZE">
@@ -95,6 +89,46 @@
   <XActionItem kind="list"/>
   <XDependencies/>
  </XModelEntity>
+ <XModelEntity ImplementingClass="%Options%" name="SharableEditors">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.xstudio.options.root" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="options" loader="ElementType"
+    name="element type" visibility="false">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="Editors" name="name" visibility="false" xmlname="NAME">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="yes" name="useRedHatEditors" xmlname="useRedHatEditors">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
+   <XModelAttribute default="yes" name="natureWarning" xmlname="natureWarning">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
+   <XModelAttribute default="no" name="selectSourceTab" xmlname="selectSourceTab">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="CheckBox"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list"/>
+  <XDependencies/>
+ </XModelEntity>
  <XModelEntity ImplementingClass="%Options%" XMLSUBPATH="EDITOR" name="SharableExternalEditor">
   <XChildrenEntities/>
   <XEntityRenderer>
@@ -105,13 +139,9 @@
   <XModelAttributes>
    <XModelAttribute default="editor" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
    <XModelAttribute name="path" xmlname="PATH">
     <Constraint loader="FileFilter">
      <value name="allFiles=false"/>
@@ -156,25 +186,20 @@
   <XModelAttributes>
    <XModelAttribute default="partition" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="External Programs" name="name"
     visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="extensions" xmlname="EXTENSIONS">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="extensions" xmlname="EXTENSIONS"/>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.newpackage" displayName="Create"
     kind="list" name="CreateActions">
-    <XActionItem HandlerClassName="%Create%"
-     ICON="action.empty" PROPERTIES="input=no"
-     WizardClassName="%Default%" displayName="Add New..." kind="action" name="CreateEditor">
+    <XActionItem HandlerClassName="%Create%" ICON="action.empty"
+     PROPERTIES="input=no" WizardClassName="%Default%"
+     displayName="Add New..." kind="action" name="CreateEditor">
      <EntityData EntityName="SharableExternalEditor">
       <AttributeData AttributeName="name"/>
       <AttributeData AttributeName="path"/>
@@ -185,7 +210,9 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Options%" name="SharableOptions">
-  <XChildrenEntities/>
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="SharableEditors" required="yes"/>
+  </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
     <ICON info="main.xstudio.options.root" type="main"/>
@@ -194,11 +221,9 @@
   <XModelAttributes>
    <XModelAttribute default="options" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Options" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -215,11 +240,9 @@
   <XModelAttributes>
    <XModelAttribute default="preferences" loader="ElementType"
     name="element type" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Preferences" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="10" name="undo capacity" xmlname="UNDO_CAPACITY">
@@ -228,10 +251,7 @@
    </XModelAttribute>
    <XModelAttribute
     default="FLOW:*.txt,*.xml;HTML:*.htm,*html;XML:*.xml;XSL:*.xsl;DTD:*.dtd"
-    name="location filters" visibility="false" xmlname="LOCATION_FILTERS">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="location filters" visibility="false" xmlname="LOCATION_FILTERS"/>
    <XModelAttribute default="no" name="show modifiers" xmlname="SHOW_MODIFIERS">
     <Constraint loader="List">
      <value name="no"/>
@@ -262,19 +282,12 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute name="last new version check" visibility="false" xmlname="LAST_NEW_VERSION_CHECK">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="http://localhost:8880/"
-    name="browser prefix" xmlname="BROWSER_PREFIX">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="browser prefix" xmlname="BROWSER_PREFIX"/>
    <XModelAttribute default="http://uddi.microsoft.com/inquire"
-    name="uddi urls" visibility="false" xmlname="UDDI_URLS">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="uddi urls" visibility="false" xmlname="UDDI_URLS"/>
   </XModelAttributes>
   <XActionItem kind="list"/>
   <XDependencies/>
@@ -289,11 +302,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="XStudio settings" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="XStudioSet" name="name" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="project" name="scope" visibility="false">
@@ -310,10 +321,7 @@
     </Constraint>
     <Editor name="ListAdd"/>
    </XModelAttribute>
-   <XModelAttribute name="body" visibility="false" xmlname="BODY">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="body" visibility="false" xmlname="BODY"/>
   </XModelAttributes>
   <XActionItem ICON="main.package" displayName="XStudioSet" group="1"
    kind="list" name="XStudioSetActions"/>
