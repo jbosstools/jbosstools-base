@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.ui.texteditors.preferences;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.eclipse.core.runtime.Platform;
+import org.jboss.tools.common.model.options.Preference;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.preferences.XMOBasedPreferencesPage;
 import org.jboss.tools.common.model.ui.util.ModelUtilities;
@@ -25,7 +26,7 @@ public class EditorsPreferencesPage extends XMOBasedPreferencesPage {
 	
 	public static final String EDITOR_PREFERENCES_ID = "org.jboss.tools.common.xstudio.editors"; //$NON-NLS-1$
 	
-	static String PATH = "%Options%/Struts Studio/Editors"; //$NON-NLS-1$
+	static String PATH = Preference.EDITOR_PATH;
 
 	public EditorsPreferencesPage() {
 		super(_getPreferenceModel().getByPath(PATH));

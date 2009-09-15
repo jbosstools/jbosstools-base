@@ -18,6 +18,7 @@ import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.options.Preference;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
@@ -42,7 +43,7 @@ public class OpenEditorWizard implements SpecialWizard {
 			if(id != null && (id.length() == 0 || id.equals("DefaultEditor"))) { //$NON-NLS-1$
 				id = null;
 			} else {
-				boolean b = "yes".equals(PreferenceModelUtilities.getPreferenceModel().getByPath("%Options%/Struts Studio/Editors").getAttributeValue("useRedHatEditors")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				boolean b = "yes".equals(PreferenceModelUtilities.getPreferenceModel().getByPath(Preference.EDITOR_PATH).getAttributeValue("useRedHatEditors")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				if(!b) id = null;
 			}
 			IModelObjectEditorInput input = XModelObjectEditorInput.createInstance(object);

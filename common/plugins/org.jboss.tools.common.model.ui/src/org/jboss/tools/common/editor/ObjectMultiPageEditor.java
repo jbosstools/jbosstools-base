@@ -491,8 +491,23 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	
 	boolean lock2 = false;
 	
+	boolean waitForMerge = false;
+	int waitingEventsCount = 0;
+	
 	public void nodeChanged(XModelTreeEvent event) {
 		if(lock2) return;
+		if(event.getDetails() == XModelTreeEvent.BEFORE_MERGE && event.getModelObject() == getModelObject()) {
+			waitForMerge = true;
+			waitingEventsCount = 0;
+			return;
+		}
+		if(event.getDetails() == XModelTreeEvent.AFTER_MERGE && event.getModelObject() == getModelObject()) {
+			waitForMerge = false;
+			System.out.println("waitingEventsCount=" + waitingEventsCount);
+			waitingEventsCount = 0;
+		}
+		waitingEventsCount++;
+		if(waitForMerge) return;
 		if(needsUpdate()) {
 			Display.getDefault().syncExec(new U());
 		}
@@ -500,6 +515,8 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	
 	public void structureChanged(XModelTreeEvent event) {
 		if(lock2) return;
+		waitingEventsCount++;
+		if(waitForMerge) return;
 		if(needsUpdate()) {
 			Display.getDefault().syncExec(new U());
 		}
@@ -1238,140 +1255,5 @@ class NatureChecker {
 		return false;
 	}
 	
-	private void showWarning() throws XModelException {
-		boolean isShowingWarning = "yes".equals(Preference.SHOW_NATURE_WARNING.getValue()); //$NON-NLS-1$
-		if(!isShowingWarning) return;
-		ServiceDialog d = PreferenceModelUtilities.getPreferenceModel().getService();
-		Properties p = new Properties();
-		String[] natures = this.natures;
-		if(natures == null) natures = NatureOptionList.getAllNatures();
-		NatureOption[] options = new NatureOption[natures.length];
-		for (int i = 0; i < options.length; i++) {
-			String[] ds = NatureOptionList.getNatureDescription(natures[i]);
-			if(ds == null) continue;
-			options[i] = new NatureOption(ds[1], ds[2]);
-			options[i].setActionClass(ds[3]);
-			options[i].setResource(resource);
-		}
-		String message = WizardKeys.getString(warningKey);
-		p.setProperty(ServiceDialog.DIALOG_MESSAGE, message);
-		String box = WizardKeys.getString("SharableEditors.natureWarning.box.message"); //$NON-NLS-1$
-		Option showOption = new Option(box);
-		int k = 0;
-		for (int i = 0; i < options.length; i++) {
-			if(options[i] != null && options[i].register(p, k)) ++k;
-		}
-		
-		if(showOption.register(p, k)) {
-			p.setProperty(ServiceDialog.SEPARATOR + "_" + k, "true"); //$NON-NLS-1$ //$NON-NLS-2$
-			++k;
-		}
-
-		p.setProperty("title", "Warning"); //$NON-NLS-1$
-		p.put(ServiceDialog.BUTTONS, new String[]{"OK"});
-		d.openConfirm(p);
-		for (int i = 0; i < options.length; i++) {
-			if(options[i] != null && options[i].isSelected(p)) {
-				options[i].run();
-				if(input instanceof IFileEditorInput) {
-					input = XModelObjectEditorInput.checkInput(new FileEditorInput(((IFileEditorInput)input).getFile()));
-				}
-			}
-		}
-		if(showOption.isSelected(p)) {
-			showOption.run();
-		}
-	}
-	
 }
-
-class Option extends ServiceDialogOption {
-	
-	public Option(String text) {
-		super(text);
-	}
-	
-	public void run() throws XModelException {
-		Preference.SHOW_NATURE_WARNING.setValue("no"); //$NON-NLS-1$
-	}
-}
-
-class NatureOptionList {
-	//use extension point to avoid hardcode 
-	static String[][] natureOptionDescriptions = new String[][]{
-		{"org.jboss.tools.jsf.jsfnature",  //$NON-NLS-1$
-		 "JSF",				
-		 "org.jboss.tools.jsf.ui", //$NON-NLS-1$
-		 "org.jboss.tools.jsf.ui.action.AddJSFNatureActionDelegate"}, //$NON-NLS-1$
-		{"org.jboss.tools.struts.strutsnature",  //$NON-NLS-1$
-		 "Struts",
-		 "org.jboss.tools.struts.ui", //$NON-NLS-1$
-		 "org.jboss.tools.struts.ui.internal.action.AddStrutsNatureActionDelegate" //$NON-NLS-1$
-		},
-	};
-	static Map<String,String[]> natureOptionDescriptionsMap = new HashMap<String,String[]>();
-	
-	static {
-		for (int i = 0; i < natureOptionDescriptions.length; i++) {
-			natureOptionDescriptionsMap.put(natureOptionDescriptions[i][0], natureOptionDescriptions[i]);
-		}
-	}
-	
-	public static String[] getAllNatures() {
-		String[] ns = new String[natureOptionDescriptions.length];
-		for (int i = 0; i < ns.length; i++) ns[i] = natureOptionDescriptions[i][0];
-		return ns;
-	}
-	
-	public static String[] getNatureDescription(String nature) {
-		return (String[])natureOptionDescriptionsMap.get(nature);
-	}
-}
-
-class NatureOption extends ServiceDialogOption {
-	String plugin;
-	String actionClass;
-	IResource resource = null;
-	
-	public NatureOption(String name, String plugin) {
-		super(MessageFormat.format("Add {0} Capabilities now", name));
-		this.plugin = plugin;
-	}
-	
-	public void setActionClass(String actionClass) {
-		this.actionClass = actionClass;
-	}
-	
-	public void setResource(IResource resource) {
-		this.resource = resource;
-	}
-	
-	public boolean register(Properties p, int k) {
-		if(Platform.getBundle(plugin) == null) {
-			property = null;
-			return false;
-		}
-		return super.register(p, k);
-	}
-
-	public void run() throws XModelException {
-		Bundle bundle = Platform.getBundle(plugin);
-		if(bundle == null) return;
-		IActionDelegate delegate = null;
-		try {
-			delegate = (IActionDelegate)bundle.loadClass(actionClass).newInstance();
-		} catch (ClassNotFoundException e) {
-			//ignore
-		} catch (InstantiationException e) {
-			//ignore
-		} catch (IllegalAccessException e) {
-			//ignore
-		}
-		if(delegate == null) return;
-		delegate.selectionChanged(null, new StructuredSelection(resource));
-		delegate.run(null);
-	}
-
-}
-
 
