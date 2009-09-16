@@ -17,7 +17,7 @@ package org.jboss.tools.common;
 public class MethodNotImplementedException extends RuntimeException {
 
 	public MethodNotImplementedException() {
-		super("Method is not implemented yet"); //$NON-NLS-1$
+		super(Messages.MethodNotImplementedException_MethodIsNotImplementedYet); //$NON-NLS-1$
 	}
 
 	public MethodNotImplementedException(String message, Throwable cause) {
