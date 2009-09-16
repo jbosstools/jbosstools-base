@@ -26,6 +26,7 @@ import org.eclipse.wst.sse.ui.internal.contentassist.ContentAssistUtils;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.jboss.tools.common.el.core.Activator;
 import org.jboss.tools.common.el.core.model.ELExpression;
+import org.jboss.tools.common.el.core.parser.ELParserFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -158,9 +159,32 @@ public class ElVarSearcher {
 	 * @return All var/value that can be used in this position and null if can't find anyone.
 	 */
 	public List<Var> findAllVars(IFile file, int offset) {
+		return findAllVars(file, offset, engine.getParserFactory());
+	}
+
+	/**
+	 * @param context
+	 * @param offset
+	 * @param resolver
+	 * @return All var/value that can be used in this position and null if can't find anyone.
+	 */
+	public static List<Var> findAllVars(ELContext context, int offset, ELResolver resolver) {
+		Node node = getNode(context.getResource(), offset);
+		if(node!=null) {
+			return findAllVars(node, resolver.getParserFactory());
+		}
+		return null;
+	}
+
+	/**
+	 * @param node
+	 * @param factory
+	 * @return All var/value that can be used in this position and null if can't find anyone.
+	 */
+	public static List<Var> findAllVars(IFile file, int offset, ELParserFactory factory) {
 		Node node = getNode(file, offset);
 		if(node!=null) {
-			return findAllVars(node);
+			return findAllVars(node, factory);
 		}
 		return null;
 	}
@@ -170,11 +194,19 @@ public class ElVarSearcher {
 	 * @return All var/value that can be used in node and null if can't find anyone.
 	 */
 	public List<Var> findAllVars(Node node) {
+		return findAllVars(node, engine.getParserFactory());
+	}
+
+	/**
+	 * @param node
+	 * @param factory
+	 * @return All var/value that can be used in node and null if can't find anyone.
+	 */
+	public static List<Var> findAllVars(Node node, ELParserFactory factory) {
 		ArrayList<Var> vars = null;
-//		Node parentNode = node.getParentNode();
 		Node parentNode = node;
 		while(parentNode!=null) {
-			Var var = findVar(parentNode);
+			Var var = findVar(parentNode, factory);
 			if(var!=null) {
 				if(vars == null) {
 					vars = new ArrayList<Var>();
@@ -205,6 +237,17 @@ public class ElVarSearcher {
 	 * @return found var/value or null
 	 */
 	public Var findVar(Node node) {
+		return findVar(node, engine.getParserFactory());
+	}
+
+	/**
+	 * Finds var/value attribute in node
+	 * @param node
+	 * @param vars
+	 * @param factory
+	 * @return found var/value or null
+	 */
+	public static Var findVar(Node node, ELParserFactory factory) {
 		if(node!=null && Node.ELEMENT_NODE == node.getNodeType()) {
 			Element element = (Element)node;
 			String var = element.getAttribute(VAR_ATTRIBUTE_NAME);
@@ -223,7 +266,7 @@ public class ElVarSearcher {
 					String value = element.getAttribute(VALUE_ATTRIBUTE_NAME);
 					if(value!=null) {
 						value = value.trim();
-						Var newVar = new Var(engine.getParserFactory(), var, value, declOffset, declLength);
+						Var newVar = new Var(factory, var, value, declOffset, declLength);
 						if(newVar.getElToken()!=null) {
 							return newVar;
 						}

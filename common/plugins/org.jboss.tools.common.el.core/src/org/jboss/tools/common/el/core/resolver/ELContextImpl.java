@@ -15,43 +15,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.Region;
 
 /**
  * EL context
  * @author Alexey Kazakov
  */
-public class ELContextImpl implements ELContext {
+public class ELContextImpl extends SimpleELContext {
 
-	protected IFile resource;
-	protected ELResolver[] elResolvers;
 	protected Map<Region, List<Var>> vars = new HashMap<Region, List<Var>>();
 	protected List<Var> allVars = new ArrayList<Var>();
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getElResolvers()
-	 */
-	public ELResolver[] getElResolvers() {
-		return elResolvers;
-	}
-
-	public void setElResolvers(ELResolver[] elResolvers) {
-		this.elResolvers = elResolvers;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getResource()
-	 */
-	public IFile getResource() {
-		return resource;
-	}
-
-	public void setResource(IFile resource) {
-		this.resource = resource;
-	}
 
 	/*
 	 * (non-Javadoc)

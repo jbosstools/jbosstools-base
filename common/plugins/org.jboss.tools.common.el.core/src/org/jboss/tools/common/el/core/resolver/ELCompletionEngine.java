@@ -15,12 +15,9 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.BadLocationException;
 import org.jboss.tools.common.el.core.model.ELExpression;
-import org.jboss.tools.common.el.core.parser.ELParserFactory;
 
-public interface ELCompletionEngine {
+public interface ELCompletionEngine extends ELResolver {
 
 	public ELResolution resolveELOperand(IFile file, ELExpression operand,  
 			boolean returnEqualedVariablesOnly, List<Var> vars, ElVarSearcher varSearcher) throws BadLocationException, StringIndexOutOfBoundsException;
-
-	public ELParserFactory getParserFactory();
 }

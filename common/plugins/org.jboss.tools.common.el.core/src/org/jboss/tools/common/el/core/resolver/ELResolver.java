@@ -13,11 +13,11 @@ package org.jboss.tools.common.el.core.resolver;
 import java.util.List;
 
 import org.jboss.tools.common.el.core.model.ELExpression;
+import org.jboss.tools.common.el.core.parser.ELParserFactory;
 import org.jboss.tools.common.text.TextProposal;
 
 /**
  * Represents EL Resolver.
- * TODO replace old ELResolver interface with this one.
  * @author Alexey Kazakov
  */
 public interface ELResolver {
@@ -36,4 +36,9 @@ public interface ELResolver {
 	 * @return
 	 */
 	ELResolution resolve(ELContext context, ELExpression operand);
+
+	/**
+	 * @return EL parser factory
+	 */
+	ELParserFactory getParserFactory();
 }
