@@ -58,5 +58,10 @@ public interface ELResolution {
 	/**
 	 * @return true if there is any unresolved segment.
 	 */
-	boolean hasUnresolvedSegment();
+	boolean isResolved();
+
+	/**
+	 * @return last segment. May return null.
+	 */
+	ELSegment getLastSegment();
 }

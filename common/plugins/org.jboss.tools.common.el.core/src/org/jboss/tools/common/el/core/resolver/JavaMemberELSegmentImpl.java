@@ -10,18 +10,22 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jdt.core.IJavaElement;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
 
 /**
  * @author Alexey Kazakov
  */
-public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMemberElSegment {
+public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMemberELSegment {
 
 	protected IJavaElement element;
 	protected MemberInfo memberInfo;
 	protected boolean hasSetter;
 	protected boolean hasGetter;
+	protected Map<String, TypeInfoCollector.MethodInfo> unpairedGettersOrSetters;
 
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.JavaMemberElSegment#getJavaElement()
@@ -55,6 +59,9 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 	 * @return the element
 	 */
 	public IJavaElement getElement() {
+		if(element==null && memberInfo!=null) {
+			element = memberInfo.getJavaElement();
+		}
 		return element;
 	}
 
@@ -98,5 +105,25 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 	 */
 	public void setMemberInfo(MemberInfo memberInfo) {
 		this.memberInfo = memberInfo;
+	}
+
+	/**
+	 * @return Map of unpaired getters and setters (getters/setters without proper setters/getters).
+	 * of all properties used in EL.
+	 * Key - name of property.
+	 * Value - MethodInfo of existed getter/setter.
+	 */
+	public Map<String, TypeInfoCollector.MethodInfo> getUnpairedGettersOrSetters() {
+		if (unpairedGettersOrSetters == null) {
+			unpairedGettersOrSetters = new HashMap<String, TypeInfoCollector.MethodInfo>();
+		}
+		return unpairedGettersOrSetters;
+	}
+
+	/**
+	 * Clear Map of unpaired getters and setters.
+	 */
+	public void clearUnpairedGettersOrSetters() {
+		getUnpairedGettersOrSetters().clear();
 	}
 }

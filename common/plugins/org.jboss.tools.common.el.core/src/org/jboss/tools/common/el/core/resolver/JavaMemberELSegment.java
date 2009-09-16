@@ -10,30 +10,31 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
-import java.util.List;
-
-import org.jboss.tools.common.el.core.model.ELExpression;
-import org.jboss.tools.common.text.TextProposal;
+import org.eclipse.jdt.core.IJavaElement;
 
 /**
- * Represents EL Resolver.
- * TODO replace old ELResolver interface with this one.
+ * Describes a segment of EL operand which is a Java Element. 
  * @author Alexey Kazakov
  */
-public interface ELResolver {
+public interface JavaMemberELSegment extends ELSegment {
 
 	/**
-	 * @param context
-	 * @param el
-	 * @return proposal list
+	 * @return member info object of resolved segment. May return null.
 	 */
-	List<TextProposal> getProposals(ELContext context, String el);
+	TypeInfoCollector.MemberInfo getMemberInfo();
 
 	/**
-	 * Resolves EL operand.
-	 * @param context
-	 * @param operand
-	 * @return
+	 * @return Java Element which represent this resolve segment. May return null. 
 	 */
-	ELResolution resolve(ELContext context, ELExpression operand);
+	IJavaElement getJavaElement();
+
+	/**
+	 * @return true if an underlying object is field and this field has getter.
+	 */
+	boolean hasGetter();
+
+	/**
+	 * @return true if an underlying object is field and this field has setter.
+	 */
+	boolean hasSetter();
 }

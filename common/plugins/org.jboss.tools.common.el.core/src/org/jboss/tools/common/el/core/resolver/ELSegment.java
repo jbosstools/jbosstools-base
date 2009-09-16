@@ -10,8 +10,10 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IResource;
-import org.jboss.tools.common.el.core.model.ELInvocationExpression;
+import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.model.project.ext.ITextSourceReference;
 
 /**
@@ -23,7 +25,7 @@ public interface ELSegment {
 	/**
 	 * @return source EL token.
 	 */
-	ELInvocationExpression getToken();
+	LexicalToken getToken();
 
 	/**
 	 * @return true if the segment has been resolved.
@@ -39,4 +41,9 @@ public interface ELSegment {
 	 * @return source reference of underlying object.
 	 */
 	ITextSourceReference getSourceReference();
+
+	/**
+	 * @return underlying variables.
+	 */
+	List<IVariable> getVariables();
 }

@@ -19,7 +19,7 @@ import org.jboss.tools.common.el.core.parser.ELParserFactory;
 
 public interface ELCompletionEngine {
 
-	public ELOperandResolveStatus resolveELOperand(IFile file, ELExpression operand,  
+	public ELResolution resolveELOperand(IFile file, ELExpression operand,  
 			boolean returnEqualedVariablesOnly, List<Var> vars, ElVarSearcher varSearcher) throws BadLocationException, StringIndexOutOfBoundsException;
 
 	public ELParserFactory getParserFactory();

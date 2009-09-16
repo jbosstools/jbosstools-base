@@ -10,8 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IResource;
-import org.jboss.tools.common.el.core.model.ELInvocationExpression;
+import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.model.project.ext.ITextSourceReference;
 
 /**
@@ -21,8 +24,9 @@ public class ELSegmentImpl implements ELSegment {
 
 	protected IResource resource;
 	protected ITextSourceReference sourceReference;
-	protected ELInvocationExpression token;
+	protected LexicalToken token;
 	protected boolean resolved = false;
+	protected List<IVariable> variables = new ArrayList<IVariable>();
 
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.ELSegment#getResource()
@@ -41,7 +45,7 @@ public class ELSegmentImpl implements ELSegment {
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.ELSegment#getToken()
 	 */
-	public ELInvocationExpression getToken() {
+	public LexicalToken getToken() {
 		return token;
 	}
 
@@ -69,7 +73,7 @@ public class ELSegmentImpl implements ELSegment {
 	/**
 	 * @param token the token to set
 	 */
-	public void setToken(ELInvocationExpression token) {
+	public void setToken(LexicalToken token) {
 		this.token = token;
 	}
 
@@ -78,5 +82,19 @@ public class ELSegmentImpl implements ELSegment {
 	 */
 	public void setResolved(boolean resolved) {
 		this.resolved = resolved;
+	}
+
+	/**
+	 * @return the variables
+	 */
+	public List<IVariable> getVariables() {
+		return variables;
+	}
+
+	/**
+	 * @param variable the variables to set
+	 */
+	public void setVariables(List<IVariable> variables) {
+		this.variables = variables;
 	}
 }

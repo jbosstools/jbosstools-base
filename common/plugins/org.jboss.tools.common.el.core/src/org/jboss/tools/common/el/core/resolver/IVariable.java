@@ -10,30 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
-import java.util.List;
-
-import org.jboss.tools.common.el.core.model.ELExpression;
-import org.jboss.tools.common.text.TextProposal;
-
 /**
- * Represents EL Resolver.
- * TODO replace old ELResolver interface with this one.
  * @author Alexey Kazakov
  */
-public interface ELResolver2 {
+public interface IVariable {
 
 	/**
-	 * @param context
-	 * @param el
-	 * @return proposal list
+	 * @return name of the variable
 	 */
-	List<TextProposal> getProposals(ELContext context, String el);
-
-	/**
-	 * Resolves EL operand.
-	 * @param context
-	 * @param operand
-	 * @return
-	 */
-	ELResolution resolve(ELContext context, ELExpression operand);
+	String getName();
 }
