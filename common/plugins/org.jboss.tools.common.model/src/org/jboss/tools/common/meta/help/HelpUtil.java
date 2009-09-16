@@ -39,16 +39,6 @@ public class HelpUtil {
         return path != null && path.length() > 0;
     }
 
-    public static void callHelp(XModel model, String key) throws XModelException {
-        String u = (key == null) ? null : keys.getProperty(key);
-        if(u == null) return;
-        //if(u.endsWith("noHelpYet.html")) ModelPlugin.log("Help for key " + key + " is not available.");
-        XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser"); //$NON-NLS-1$
-        if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
-        String f = "" + model.getProperties().getProperty(XModelConstants.HOME) + "/doc/help" + u; //$NON-NLS-1$
-        OpenWithExternalHandler.start("Help", f, editor); //$NON-NLS-1$
-    }
-    
     public static boolean isHelpPluginInstalled() {
     	for (int i = 0; i < PLUGINS.length; i++)
     	  if(Platform.getBundle(PLUGINS[i]) != null) return true;
@@ -76,22 +66,6 @@ public class HelpUtil {
         return p;
     }
 
-    public static void help(XModel model, String key) {
-        ServiceDialog d = model.getService();
-        if(!hasHelp(key)) {
-            d.showDialog(ModelMessages.WARNING, 
-            		MessageFormat.format("Help for key {0} is not available.", key), 
-            		new String[]{"Close"}, null, ServiceDialog.WARNING);
-        } else {
-            try {
-                HelpUtil.callHelp(model, key);
-            } catch (XModelException e) {
-                d.showDialog(ModelMessages.WARNING, e.getMessage(), 
-                		new String[]{"Close"}, null, ServiceDialog.WARNING);
-            }
-        }
-    }
-    
 	public static void helpEclipse(XModel model, String key) {
 		ServiceDialog d = model.getService();
 		if(!isHelpPluginInstalled()) {

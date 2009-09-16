@@ -27,6 +27,7 @@ import org.jboss.tools.common.meta.action.impl.XActionImpl;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.project.IModelNature;
+import org.jboss.tools.common.model.project.ModelNatureExtension;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.util.FileUtil;
 
@@ -37,16 +38,24 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		String nature = getNature(object);
 		if(nature == null) return false;
 		XActionImpl i = (XActionImpl)action;
-		String n = (nature.indexOf("struts") > 0) ? "Struts" : //$NON-NLS-1$ //$NON-NLS-2$
-		           (nature.indexOf("jsf") > 0) ? "JSF" : "Model";  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		i.setDisplayName(MessageFormat.format("Remove {0} Capabilities", n));
+		i.setDisplayName(MessageFormat.format("Remove {0} Capabilities", nature));
 		return true;
 	}
 	
 	private String getNature(XModelObject object) {
 		IProject p = EclipseResourceUtil.getProject(object);
-		IModelNature n = EclipseResourceUtil.getModelNature(p);
-		return n == null ? null : n.getID();		
+		ModelNatureExtension[] es = ModelNatureExtension.getInstances();
+		for (ModelNatureExtension ext: es) {
+			String name = ext.getName();
+			if(p != null && p.isAccessible()) try {
+				if(p.hasNature(name)) {
+					return ext.getDisplayName();
+				}
+			} catch (CoreException e) {
+				
+			}
+		}
+		return null;		
 	}
 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException {

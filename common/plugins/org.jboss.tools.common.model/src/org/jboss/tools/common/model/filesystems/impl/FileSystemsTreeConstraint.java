@@ -19,7 +19,7 @@ public class FileSystemsTreeConstraint implements XFilteredTreeConstraint {
 
     public void update(XModel model) {}
     
-    String excludeExtensions = ".project.struts.classpath."; //$NON-NLS-1$
+    String excludeExtensions = ".project.classpath."; //$NON-NLS-1$
 
     public boolean accepts(XModelObject object) {
         String entity = object.getModelEntity().getName();

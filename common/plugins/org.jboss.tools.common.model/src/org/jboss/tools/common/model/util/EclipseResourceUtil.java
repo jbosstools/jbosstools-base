@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jdt.core.*;
 import org.eclipse.jdt.ui.PreferenceConstants;
@@ -41,6 +40,7 @@ import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.project.ModelNature;
+import org.jboss.tools.common.model.project.ModelNatureExtension;
 
 public class EclipseResourceUtil {
 	
@@ -185,14 +185,11 @@ public class EclipseResourceUtil {
 	private static String[] MODEL_NATURES = new String[0];
 	
 	static {
-		List<String> natures = new ArrayList<String>();
-		if(Platform.getBundle("org.jboss.tools.struts") != null) { //$NON-NLS-1$
-			natures.add("org.jboss.tools.struts.strutsnature");	 //$NON-NLS-1$
+		ModelNatureExtension[] es = ModelNatureExtension.getInstances();
+		MODEL_NATURES = new String[es.length];
+		for (int i = 0; i < es.length; i++) {
+			MODEL_NATURES[i] = es[i].getName();
 		}
-		if(Platform.getBundle("org.jboss.tools.jsf") != null) { //$NON-NLS-1$
-			natures.add("org.jboss.tools.jsf.jsfnature");	 //$NON-NLS-1$
-		}
-		MODEL_NATURES = natures.toArray(new String[0]);
 	}
 	
 	public static String[] getModelNatureNames() {
@@ -275,7 +272,7 @@ public class EclipseResourceUtil {
 	static Map<IProject,XModel> models = new HashMap<IProject,XModel>();
 	
 	/**
-	 * If project has no struts nature, the method creates new instance of model 
+	 * If project has no model nature, the method creates new instance of model 
 	 * populates it with a filesystems corresponding to the project root
 	 * and links, and returns model object for the resource. 
 	 * The model created is not complete project, so it has property 

@@ -21,11 +21,6 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class Watcher implements XModelTreeListener {
-	static String[][] CONTRIBUTORS = new String[][]{
-		{"org.jboss.tools.struts.webprj.model.helpers.sync.SyncProjectContext", "org.jboss.tools.struts.strutsnature"}, //$NON-NLS-1$ //$NON-NLS-2$
-		{"org.jboss.tools.jsf.web.JSFWatcherContributor", "org.jboss.tools.jsf.jsfnature"} //$NON-NLS-1$ //$NON-NLS-2$
-	};
-
     public static Watcher getInstance(XModel model) {
 		Watcher instance = (Watcher)model.getManager("Watcher"); //$NON-NLS-1$
         if(instance == null) {
@@ -59,13 +54,15 @@ public class Watcher implements XModelTreeListener {
     
     void updateContributors() {
     	if(model == null) return;
-    	for (int i = 0; i < CONTRIBUTORS.length; i++) {
-    		String nature = CONTRIBUTORS[i][1];
+    	ModelNatureExtension[] es = ModelNatureExtension.getInstances();
+    	for (int i = 0; i < es.length; i++) {
+    		String nature = es[i].getName();
     		if(EclipseResourceUtil.hasNature(model, nature)) {
     			if(contributors.containsKey(nature)) {
     				continue;
     			} else {
-   	    			Object watcher = ModelFeatureFactory.getInstance().createFeatureInstance(CONTRIBUTORS[i][0]);
+    				String contributorName = es[i].getWatcherContributor();
+   	    			Object watcher = ModelFeatureFactory.getInstance().createFeatureInstance(contributorName);
    	    			if(watcher instanceof IWatcherContributor) {
    	    				IWatcherContributor c = (IWatcherContributor)watcher;
    	    				c.init(model);

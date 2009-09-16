@@ -11,6 +11,7 @@
    <extension-point id="resourceMapping" name="resourceMapping" schema="schema/resourceMapping.exsd"/>
    <extension-point id="classes" name="Model Classes" schema="schema/classes.exsd"/>
    <extension-point id="preferences" name="preferences" schema="schema/preferences.exsd"/>
+   <extension-point id="modelnatures" name="Model Natures" schema="schema/modelnatures.exsd"/>
 
    <extension point="org.eclipse.wst.xml.core.catalogContributions">
         <catalogContribution id="default">

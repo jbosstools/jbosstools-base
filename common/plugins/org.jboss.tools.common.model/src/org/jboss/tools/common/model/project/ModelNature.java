@@ -201,11 +201,13 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 	public static boolean checkModelNature(IProject project) {
 		if(project == null || !project.isOpen()) return false;
 		String nature = null;
+		ModelNatureExtension[] es = ModelNatureExtension.getInstances();
 		try {
-			if(project.hasNature("org.jboss.tools.jsf.jsfnature")) { //$NON-NLS-1$
-				nature = "org.jboss.tools.jsf.jsfnature"; //$NON-NLS-1$
-			} else if(project.hasNature("org.jboss.tools.struts.strutsnature")) { //$NON-NLS-1$
-				nature = "org.jboss.tools.struts.strutsnature"; //$NON-NLS-1$
+			for (ModelNatureExtension ext: es) {
+				if(project.hasNature(ext.getName())) {
+					nature = ext.getName();
+					break;
+				}
 			}
 		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);

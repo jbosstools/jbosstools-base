@@ -39,7 +39,7 @@ public class ClassPathUpdate {
 		String entity = model.getRoot().getModelEntity().getName();
 		if("RootDummy".equals(entity)) { //$NON-NLS-1$
 			String pn = (project == null) ? "?" : project.getName(); //$NON-NLS-1$
-			throw new IllegalArgumentException("Struts Project " + pn + " is corrupted."); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new IllegalArgumentException("Project " + pn + " is corrupted."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		this.model = model;
 	}

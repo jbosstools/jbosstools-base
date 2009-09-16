@@ -12,26 +12,22 @@ package org.jboss.tools.jst.web.tld;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.ModelFeatureFactory;
+import org.jboss.tools.common.model.project.ModelNatureExtension;
 
 public class FilePathEncoderFactory {
-	static IFilePathEncoder jsfEncoder = null;
-
-	static {
-		try {
-			jsfEncoder = (IFilePathEncoder)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jsf.model.helpers.pages.FilePathEncoder"); //$NON-NLS-1$
-		} catch (ClassCastException e) {
-			ModelPlugin.getPluginLog().logError(e);
-		}
-	}
 
 	public static IFilePathEncoder getEncoder(IProject project) {
 		if(project == null || !project.isOpen()) return null;
-		try {
-			if(project.hasNature("org.jboss.tools.jsf.jsfnature")) return jsfEncoder; //$NON-NLS-1$
-		} catch (CoreException e) {
-			//ignore - all checks are done above
+		ModelNatureExtension[] es = ModelNatureExtension.getInstances();
+		for (int i = 0; i < es.length; i++) {
+			try {
+				if(project.hasNature(es[i].getName())) {
+					IFilePathEncoder encoder = es[i].getPathEncoder();
+					if(encoder != null) return encoder;
+				}
+			} catch (CoreException e) {
+				//ignore - all checks are done above
+			}
 		}
 		return null;
 	}
