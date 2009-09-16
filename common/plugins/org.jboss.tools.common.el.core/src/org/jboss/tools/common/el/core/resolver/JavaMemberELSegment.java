@@ -37,4 +37,4 @@ public interface JavaMemberELSegment extends ELSegment {
 	 * @return true if an underlying object is field and this field has setter.
 	 */
 	boolean hasSetter();
-}
+} 
