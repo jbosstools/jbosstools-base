@@ -2,8 +2,6 @@
 <XStudio model-entity="SharableXStudio" NAME="XStudio" SCOPE="project">
 	<Options model-entity="SharableOptions" NAME="Options" SCOPE="project">
 		<Editors model-entity="SharableEditors" NAME="Editors" SCOPE="project">
-			<StrutsEditor model-entity="SharableStrutsEditor" NAME="Web Flow Diagram"
-				SCOPE="project" grid_step="16" show_grid="yes" />
 		</Editors>
 	</Options>
 </XStudio>
