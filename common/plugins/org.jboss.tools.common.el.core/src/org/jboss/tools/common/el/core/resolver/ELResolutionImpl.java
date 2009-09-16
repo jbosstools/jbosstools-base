@@ -33,9 +33,9 @@ public class ELResolutionImpl implements ELResolution {
 	protected boolean mapOrCollectionOrBundleAmoungTheTokens;
 
 	/* (non-Javadoc)
-	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#findSegmentByJavaElement(org.eclipse.jdt.core.IJavaElement)
+	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#findSegmentsByJavaElement(org.eclipse.jdt.core.IJavaElement)
 	 */
-	public ELSegment findSegmentByJavaElement(IJavaElement element) {
+	public List<ELSegment> findSegmentsByJavaElement(IJavaElement element) {
 		// TODO
 		return null;
 	}

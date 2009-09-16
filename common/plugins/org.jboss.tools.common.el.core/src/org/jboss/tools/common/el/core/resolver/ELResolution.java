@@ -37,11 +37,11 @@ public interface ELResolution {
 	ELContext getContext();
 
 	/**
-	 * Finds the segment which is resolved to given java element.
+	 * Finds the segments which are resolved to given java element.
 	 * @param element
 	 * @return
 	 */
-	ELSegment findSegmentByJavaElement(IJavaElement element);
+	List<ELSegment> findSegmentsByJavaElement(IJavaElement element);
 
 	/**
 	 * Finds the segment which is located at given offset.
