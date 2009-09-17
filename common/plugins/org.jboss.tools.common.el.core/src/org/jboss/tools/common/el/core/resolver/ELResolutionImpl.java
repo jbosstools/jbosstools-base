@@ -36,15 +36,22 @@ public class ELResolutionImpl implements ELResolution {
 	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#findSegmentsByJavaElement(org.eclipse.jdt.core.IJavaElement)
 	 */
 	public List<ELSegment> findSegmentsByJavaElement(IJavaElement element) {
-		// TODO
-		return null;
+		ArrayList<ELSegment> list = new ArrayList<ELSegment>();
+		for(ELSegment segment : segments){
+			if(segment instanceof JavaMemberELSegment && ((JavaMemberELSegment)segment).getJavaElement().equals(element))
+				list.add(segment);
+		}
+		return list;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#findSegmentByOffset(int)
 	 */
-	public ELSegment findSegmentByOffset(int offcet) {
-		// TODO
+	public ELSegment findSegmentByOffset(int offset) {
+		for(ELSegment segment : segments){
+			if(segment.getSourceReference() != null && segment.getSourceReference().getStartPosition() == offset)
+				return segment;
+		}
 		return null;
 	}
 
