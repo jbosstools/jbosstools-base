@@ -552,7 +552,8 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	}
 
 	public void update0() {
-		setContentDescription(getEditorInput().getName());
+//		setContentDescription(getEditorInput().getName());
+		setPartName(getEditorInput().getName());
 		checkErrorMode();
 		if(isErrorMode) {
 			setErrorMode();
@@ -1014,7 +1015,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	}
 	
 	void updateTitle() {
-		setPartName(getEditorInput().getName());
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				setPartName(getEditorInput().getName());
+			}
+		});
 	}
 	
 	class PostMultiPageEditorSite extends MultiPageEditorSite {
