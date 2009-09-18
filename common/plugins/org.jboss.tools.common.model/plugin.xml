@@ -82,8 +82,6 @@
 	<extension point="org.jboss.tools.common.model.classes">
 		<xclass id="org.jboss.tools.common.ant.model.AntEntityRecognizer"
 			class="org.jboss.tools.common.ant.model.AntEntityRecognizer"/>
-		<xclass id="org.jboss.tools.common.java.jsp.model.FileJSPImpl"
-			class="org.jboss.tools.common.java.jsp.model.FileJSPImpl"/>
 		<xclass id="org.jboss.tools.common.java.model.handler.CreateJavaFileHandler"
 			class="org.jboss.tools.common.java.model.handler.CreateJavaFileHandler"/>
 		<xclass id="org.jboss.tools.common.meta.action.impl.handlers.ChildrenCopyHandler"

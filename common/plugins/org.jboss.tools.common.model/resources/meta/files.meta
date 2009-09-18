@@ -183,7 +183,7 @@
  <XModelEntity
   AdoptManagerClass="org.jboss.tools.common.model.files.handlers.JSPAdopt"
   ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.BodyLoader"
-  ImplementingClass="org.jboss.tools.common.java.jsp.model.FileJSPImpl"
+  ImplementingClass="org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl"
   ObjectEditorClass="%JSP%" name="FileJSP">
   <XChildrenEntities/>
   <XEntityRenderer>
