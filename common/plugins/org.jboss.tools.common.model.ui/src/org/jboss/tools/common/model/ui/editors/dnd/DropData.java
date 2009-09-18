@@ -20,7 +20,6 @@ import org.eclipse.ui.IEditorInput;
 import org.w3c.dom.Node;
 
 import org.jboss.tools.common.model.ui.editors.dnd.DropUtils.AttributeDescriptorValueProvider;
-import org.jboss.tools.jst.web.tld.VpeTaglibManager;
 
 public class DropData {
 	

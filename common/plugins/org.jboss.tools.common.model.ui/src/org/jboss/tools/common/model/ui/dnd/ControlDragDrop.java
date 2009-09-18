@@ -17,6 +17,7 @@ import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.*;
+import org.jboss.tools.common.model.options.impl.PaletteAdopt;
 import org.jboss.tools.common.model.ui.navigator.TreeViewerDragDropProvider;
 
 import org.jboss.tools.common.meta.XAdoptManager;
@@ -31,12 +32,9 @@ public class ControlDragDrop {
 	static XAdoptManager paletteAdopt;
 	
 	static {
-		try {
-			if(Platform.getBundle("org.jboss.tools.jst.web") != null) { //$NON-NLS-1$
-				paletteAdopt = (XAdoptManager)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.tld.model.handlers.JSPAdopt"); //$NON-NLS-1$
-			}
-		} catch (ClassCastException e) {
-			ModelUIPlugin.getPluginLog().logError(e);
+		XAdoptManager[] ms = new PaletteAdopt().getManagers();
+		if(ms != null && ms.length > 0) {
+			paletteAdopt = ms[0];			
 		}
 	}
 	

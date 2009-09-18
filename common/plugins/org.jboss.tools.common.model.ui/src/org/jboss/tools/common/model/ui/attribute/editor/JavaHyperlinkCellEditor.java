@@ -14,14 +14,11 @@ import org.eclipse.core.resources.IProject;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
-import org.eclipse.jdt.core.*;
-import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
 import org.eclipse.swt.widgets.*;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.util.XModelObjectUtil;
-import org.jboss.tools.common.model.ui.templates.ControlContentAssistHelper;
 
 public class JavaHyperlinkCellEditor extends DialogCellEditorEx 
 		implements JavaHyperlinkCueLabelProvider.JavaClassHolder {
@@ -73,15 +70,6 @@ public class JavaHyperlinkCellEditor extends DialogCellEditorEx
 //				setChangeButtonText(JFaceResources.getString("openBrowse"));
 			}
 
-	        IPackageFragmentRoot root = (project == null) ? null : JavaAdapter.getInstance().getPackageFragmentRoot(project);
-	        if (root != null) {
-	    		JavaTypeCompletionProcessor contentAssistentProcessor = new JavaTypeCompletionProcessor(false, false);
-	       		IPackageFragment currentPackage = root.getPackageFragment(""); //$NON-NLS-1$
-	       		contentAssistentProcessor.setPackageFragment(currentPackage);
-	            Text text = getTextField();
-	            text.setData("JavaHyperlinkLineFieldEditor", this); //$NON-NLS-1$
-	    		ControlContentAssistHelper.createTextContentAssistant(getTextField(), contentAssistentProcessor, JavaHyperlinkCueLabelProvider.INSTANCE);
-	        }
 		}
 	}
 
