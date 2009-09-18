@@ -375,8 +375,6 @@
 			class="org.jboss.tools.common.model.ui.dnd.ModelTransfer"/>
 		<xclass id="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"
 			class="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"/>
-		<xclass id="org.jboss.tools.common.model.ui.editors.dnd.DefaultDropCommandRunner"
-			class="org.jboss.tools.common.model.ui.editors.dnd.DefaultDropCommandRunner"/>
 		<xclass id="org.jboss.tools.common.model.ui.editors.dnd.DropWizardMessages"
 			class="org.jboss.tools.common.model.ui.editors.dnd.DropWizardMessages"/>
 		<xclass id="org.jboss.tools.common.model.ui.forms.AnyElementForm"
@@ -451,6 +449,11 @@
 			class="org.jboss.tools.common.model.ui.templates.preferences.AddInterfaceSupport"/>
 		<xclass id="org.jboss.tools.common.model.ui.wizard.newfile.WizardInvoker"
 			class="org.jboss.tools.common.model.ui.wizard.newfile.WizardInvoker"/>
+
+		<xclass id="org.jboss.tools.common.model.ui.editors.dnd.UnknownDropCommand"
+			class="org.jboss.tools.common.model.ui.editors.dnd.UnknownDropCommand"/>
+		<xclass id="org.jboss.tools.common.model.ui.editors.dnd.PlainTextDropCommand"
+			class="org.jboss.tools.common.model.ui.editors.dnd.PlainTextDropCommand"/>
 
    </extension>
    <extension

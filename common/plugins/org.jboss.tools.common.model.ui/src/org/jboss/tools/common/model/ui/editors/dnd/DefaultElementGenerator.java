@@ -34,7 +34,7 @@ public class DefaultElementGenerator implements IElementGenerator {
 	}
 	
 	public String generateStartTag() {
-		TagProposal proposal = getWizardDataModel().getTagProposal();
+		ITagProposal proposal = getWizardDataModel().getTagProposal();
 		AttributeDescriptorValueProvider valueProvider = getWizardDataModel().getDropData().getValueProvider();
 		if(valueProvider != null) valueProvider.setProposal(proposal);
 		String tagName = valueProvider == null ? null : valueProvider.getTag();

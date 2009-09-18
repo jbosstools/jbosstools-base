@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 import java.util.HashMap;
 
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
+import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 /**
  * The Class DropCommandFactory.
@@ -49,30 +50,35 @@ public class DropCommandFactory {
 	
 	/** The PACKAGE. */
 	static String PACKAGE = "org.jboss.tools.common.model.ui.editors.dnd."; //$NON-NLS-1$
+	
+	static String UNKNOWN_DROP_COMMAND = "org.jboss.tools.common.model.ui.editors.dnd.UnknownDropCommand"; //$NON-NLS-1$
+	static String TEXT_DROP_COMMAND = "org.jboss.tools.common.model.ui.editors.dnd.PlainTextDropCommand"; //$NON-NLS-1$
+	static String FILE_DROP_COMMAND = "org.jboss.tools.jst.jsp.jspeditor.dnd.FileDropCommand"; //$NON-NLS-1$
+	static String PALETTE_DROP_COMMAND = "org.jboss.tools.jst.jsp.jspeditor.dnd.PaletteDropCommand"; //$NON-NLS-1$
 
 	static {
 		fMimeCommandMap.put(
 			////nsITransferable.kFileMime
-				kFileMime, PACKAGE + "FileDropCommand"	 //$NON-NLS-1$
+				kFileMime, FILE_DROP_COMMAND
 		);
 		fMimeCommandMap.put(
 			////nsITransferable.kURLMime
-				kURLMime, PACKAGE + "FileDropCommand"	 //$NON-NLS-1$
+				kURLMime, FILE_DROP_COMMAND
 		);
 		fMimeCommandMap.put(
-			ModelTransfer.MODEL, PACKAGE + "PaletteDropCommand" //$NON-NLS-1$
+			ModelTransfer.MODEL, PALETTE_DROP_COMMAND
 		);
 		fMimeCommandMap.put(
-			"text/plain", PACKAGE + "PlainTextDropCommand"	 //$NON-NLS-1$ //$NON-NLS-2$
+			"text/plain", TEXT_DROP_COMMAND
 		);
 		fMimeCommandMap.put(
 			////nsITransferable.kUnicodeMime
-			kUnicodeMime, PACKAGE + "PlainTextDropCommand"	 //$NON-NLS-1$
+			kUnicodeMime, TEXT_DROP_COMMAND
 		);
-		fMimeCommandMap.put(kHtmlText,PACKAGE + "PlainTextDropCommand"); //$NON-NLS-1$
+		fMimeCommandMap.put(kHtmlText, TEXT_DROP_COMMAND);
 		
 		fMimeCommandMap.put(
-			UNKNOWN_MIME_TYPE, PACKAGE + "UnknownDropCommand" //$NON-NLS-1$
+			UNKNOWN_MIME_TYPE, UNKNOWN_DROP_COMMAND
 		);
 	}
 		
@@ -95,17 +101,13 @@ public class DropCommandFactory {
      */
     public IDropCommand getDropCommand(String mimeType, ITagProposalFactory tagProposalFactory) {
     	IDropCommand fInstance = UNKNOWN_MIME_COMMAND;
-		try {
-			String fClassName = (String)fMimeCommandMap.get(mimeType);
-			Class newClass = this.getClass().getClassLoader().loadClass(fClassName);
-			fInstance = (IDropCommand)newClass.newInstance();
+		String fClassName = (String)fMimeCommandMap.get(mimeType);
+		fInstance = (IDropCommand)ModelFeatureFactory.getInstance().createFeatureInstance(fClassName);
+		if(fInstance == null) {
+			fInstance = new UnknownDropCommand();
+		}
+		if(fInstance != null) {
 			fInstance.setTagProposalFactory(tagProposalFactory);
-		} catch (ClassNotFoundException e) {
-			//ignore
-		} catch (InstantiationException e) {
-			//ignore
-		} catch (IllegalAccessException e) {
-			//ignore
 		}
 		return fInstance;
     }

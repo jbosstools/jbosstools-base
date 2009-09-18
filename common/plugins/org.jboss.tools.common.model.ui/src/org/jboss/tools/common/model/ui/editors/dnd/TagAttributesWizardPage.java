@@ -119,10 +119,10 @@ public class TagAttributesWizardPage extends DefaultDropWizardPage implements Pr
 	 *
 	 */
 	protected void updateTitle() {
-		TagProposal tagProposal = (TagProposal)getDropWizardModel().getTagProposal();
+		ITagProposal tagProposal = getDropWizardModel().getTagProposal();
 		StringBuffer titleText = new StringBuffer();
 		titleText.append("<"); //$NON-NLS-1$
-		if(!TagProposal.EMPTY_PREFIX.equals(tagProposal.getPrefix())) {
+		if(!ITagProposal.EMPTY_PREFIX.equals(tagProposal.getPrefix())) {
 			titleText
 				.append(tagProposal.getPrefix())
 				.append(":"); //$NON-NLS-1$

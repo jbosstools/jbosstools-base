@@ -20,7 +20,7 @@ import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesCompos
 
 public class DefaultDropWizardModel implements IDropWizardModel {
 
-	TagProposal fSelectedTagProp = UNDEFINED_TAG_PROPOSAL;
+	ITagProposal fSelectedTagProp = UNDEFINED_TAG_PROPOSAL;
 	DropData fDropData;
 	List<AttributeDescriptorValue> fAttributeValues = new ArrayList<AttributeDescriptorValue>();
 	boolean promptForTagAttributes = true;
@@ -31,15 +31,15 @@ public class DefaultDropWizardModel implements IDropWizardModel {
 		this.tagProposalFactory = tagProposalFactory;
 	}
 
-	public TagProposal getTagProposal() {
+	public ITagProposal getTagProposal() {
 		return fSelectedTagProp;
 	}
 
 	/**
 	 * @see org.jboss.tools.vpe.editor.dnd.IDnDWizardDataModel#setTagProposal(org.jboss.tools.vpe.editor.dnd.TagProposal)
 	 */
-	public void setTagProposal(TagProposal selection) {
-		TagProposal oldValue = fSelectedTagProp;
+	public void setTagProposal(ITagProposal selection) {
+		ITagProposal oldValue = fSelectedTagProp;
 		fSelectedTagProp = selection;
 		doLoadTagAttributeDescriptors();
 		doLoadDefaultAttributeValues();		
@@ -174,9 +174,10 @@ public class DefaultDropWizardModel implements IDropWizardModel {
 					return true;
 				}
 			}
+			if(values.length > 5) return true;
 			return isPromptForTagAttributesRequired();
 		} else if(getTagProposal()==UNDEFINED_TAG_PROPOSAL){
-			TagProposal[] proposals 
+			ITagProposal[] proposals 
 				= TagProposalsComposite.getTagProposals(
 					getDropData().getMimeType(),
 					getDropData().getMimeData(),

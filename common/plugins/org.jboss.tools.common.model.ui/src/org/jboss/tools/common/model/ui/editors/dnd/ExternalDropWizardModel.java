@@ -41,7 +41,7 @@ public class ExternalDropWizardModel extends DefaultDropWizardModel implements I
 	protected void doLoadTagAttributeDescriptors() {
 		if(getTagProposal()!=UNDEFINED_TAG_PROPOSAL) {
 			DropData data = getDropData();
-			TagProposal proposal = getTagProposal();
+			ITagProposal proposal = getTagProposal();
 			AttributeDescriptorValueProvider valueProvider = data.getValueProvider();
 			if(valueProvider != null) valueProvider.setProposal(proposal);
 			AttributeDescriptorValue[] values = valueProvider == null ? new AttributeDescriptorValue[0]

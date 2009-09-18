@@ -12,6 +12,8 @@ package org.jboss.tools.common.model.ui.editors.dnd.context;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -35,7 +37,6 @@ import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
 import org.jboss.tools.common.model.ui.dnd.VpeDnDEvent;
 import org.jboss.tools.common.model.ui.dnd.VpeTextDropAction;
 import org.jboss.tools.common.model.ui.editors.dnd.DropUtils;
-import org.jboss.tools.common.model.ui.editors.dnd.FileTagProposalLoader;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.jst.web.tld.TLDUtil;
 
@@ -160,13 +161,19 @@ public class DropContext {
 		}
 		event = null;
 	}
+
+	//see FileTagProposalLoader
+	public static Set<String> mappedExtensions = new HashSet<String>();
+	public static boolean isExtensionMapped(String extension) {
+		return extension != null && mappedExtensions.contains(extension.toLowerCase());
+	}
 	
 	private boolean dropAsFileObject(XModelObject o) {
 		if(o == null) return false;
 		if(o.getFileType() != XModelObject.FILE || isOverAttributeValue) return false;
     	if(TLDUtil.isTaglib(o)) return false;
     	String extension = o.getAttributeValue("extension"); //$NON-NLS-1$
-    	return extension != null && FileTagProposalLoader.isExtensionMapped(extension);
+    	return extension != null && isExtensionMapped(extension);
 	}
 	
 	class TransferHolder {

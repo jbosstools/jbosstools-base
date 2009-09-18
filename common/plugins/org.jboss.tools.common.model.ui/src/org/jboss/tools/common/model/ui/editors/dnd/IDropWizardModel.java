@@ -25,16 +25,35 @@ public interface IDropWizardModel {
 	public static final String TAG_PROPOSAL = "tagProposal"; //$NON-NLS-1$
 	
 	public static final String ATTRIBUTE_VALUE = "attributeValue";	 //$NON-NLS-1$
-	
-	public static final TagProposal UNDEFINED_TAG_PROPOSAL = new TagProposal("http://www.redhat.com/undefined","","");	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+	public static final ITagProposal UNDEFINED_TAG_PROPOSAL = new ITagProposal() {
+		public IAttributeValueLoader getAttributesValueLoader() {
+			return EMPTY_ATTRIBUTE_VALUE_LOADER;
+		}
+		public String getDetails() {
+			return "http://www.redhat.com/undefined";
+		}
+		public String getDisplayString() {
+			return EMPTY_PREFIX;
+		}
+
+		public String getName() {
+			return EMPTY_PREFIX;
+		}
+
+		public String getPrefix() {
+			return EMPTY_PREFIX;
+		}
+		
+	};
 
 	/*
 	 * Methods 
 	 */
 	
-	public TagProposal getTagProposal();
+	public ITagProposal getTagProposal();
 
-	public void setTagProposal(TagProposal selection);
+	public void setTagProposal(ITagProposal selection);
 
 	public void setAttributeValue(AttributeDescriptorValue name, Object value);
 	

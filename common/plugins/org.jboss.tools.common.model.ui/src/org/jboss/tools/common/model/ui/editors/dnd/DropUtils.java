@@ -20,17 +20,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IFileEditorInput;
-import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesComposite;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.jboss.tools.jst.web.tld.ITaglibMapping;
 import org.jboss.tools.jst.web.tld.IWebProject;
 import org.jboss.tools.jst.web.tld.WebProjectFactory;
 
@@ -43,37 +37,9 @@ public class DropUtils {
 
 	public static final String HTML40_URI = ""; //$NON-NLS-1$
 
-	/**
-	 * Get TLD's content.
-	 * @param input
-	 * @param uri
-	 * @return
-	 */
-	public static String getTldContent(IEditorInput input, String uri) {
-		String tldContent = null;
-		XModel xModel = null;
-		if(input instanceof IModelObjectEditorInput) {
-			xModel = ((IModelObjectEditorInput)input).getXModelObject().getModel();
-		} else if(input instanceof IFileEditorInput) {
-			IFile f = ((IFileEditorInput)input).getFile();
-			XModelObject o = EclipseResourceUtil.getObjectByResource(f);
-			if(o != null) xModel = o.getModel();
-		}
-		if(xModel != null) {
-			ITaglibMapping mapping = WebProjectFactory.instance.getWebProject(xModel).getTaglibMapping();
-			XModelObject xmo = mapping.getTaglibObject(uri);
-			if(xmo != null) {
-//				tldLocation = EclipseResourceUtil.getResource(xmo).getFullPath().toString();
-				FileAnyImpl fai = (FileAnyImpl)xmo;
-				tldContent = fai.getAsText();
-			}
-		}
-		return tldContent;
-	}
-
 	public static interface AttributeDescriptorValueProvider {
 		public void initContext(Properties context);
-		public void setProposal(TagProposal proposal);
+		public void setProposal(ITagProposal proposal);
 		public String getTag();
 		public boolean canHaveBody();
 		public TagAttributesComposite.AttributeDescriptorValue[] getValues();

@@ -12,8 +12,8 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 
 public class NullProposalLoader implements ITagProposalLoader {
 
-	public TagProposal[] getTagProposals(Object data) {
-		return new TagProposal[0];
+	public ITagProposal[] getTagProposals(Object data) {
+		return new ITagProposal[0];
 	}
 
 	public boolean isTagProposalExists(Object data) {

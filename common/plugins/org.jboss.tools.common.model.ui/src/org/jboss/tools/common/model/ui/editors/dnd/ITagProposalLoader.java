@@ -11,6 +11,6 @@
 package org.jboss.tools.common.model.ui.editors.dnd;
 
 public interface ITagProposalLoader {
-	public TagProposal[] getTagProposals(Object data);
+	public ITagProposal[] getTagProposals(Object data);
 	public boolean isTagProposalExists(Object data);	
 }

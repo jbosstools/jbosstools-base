@@ -46,7 +46,7 @@ public class DropWizard extends Wizard implements PropertyChangeListener, IDropW
 		super.addPages();		
 		page1 = new TagProposalsWizardPage();
 		page2 = new TagAttributesWizardPage();
-		TagProposal[] proposals = 
+		ITagProposal[] proposals = 
 			TagProposalsComposite.getTagProposals(getMimeType(),getMimeData(), fDropCommand.getTagProposalFactory());
 		
 		if(TagProposalsComposite.areThereTagProposals(

@@ -225,7 +225,7 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 					context.setProperty("attributeName", attrDescr.getName()); //$NON-NLS-1$
 					String tagName = "" + fWizardModel.getTagProposal().getName(); //$NON-NLS-1$
 					String prefix = fWizardModel.getTagProposal().getPrefix();
-					if(prefix != null && prefix.length() > 0 && !tagName.startsWith("prefix" + ":")) { //$NON-NLS-1$ //$NON-NLS-2$
+					if(prefix != null && prefix.length() > 0 && !tagName.startsWith(prefix + ":")) { //$NON-NLS-1$ //$NON-NLS-2$
 						tagName = prefix + ":" + tagName; //$NON-NLS-1$
 					}
 					context.setProperty("nodeName", tagName); //$NON-NLS-1$

@@ -64,7 +64,7 @@ public abstract class DefaultDropCommand implements IDropCommand {
 		if(getDefaultModel().getDropData()==null) {
 			throw new IllegalStateException("Wizard model isn't intialized, call setDropDataFirst"); //$NON-NLS-1$
 		}
-		TagProposal[] proposals 
+		ITagProposal[] proposals 
 			= TagProposalsComposite.getTagProposals(
 				getDefaultModel().getDropData().getMimeType(),
 				getDefaultModel().getDropData().getMimeData(),

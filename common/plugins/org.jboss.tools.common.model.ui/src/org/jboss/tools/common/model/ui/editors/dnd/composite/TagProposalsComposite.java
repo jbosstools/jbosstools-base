@@ -27,22 +27,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jboss.tools.common.model.ui.editors.dnd.IDropWizardModel;
+import org.jboss.tools.common.model.ui.editors.dnd.ITagProposal;
 import org.jboss.tools.common.model.ui.editors.dnd.ITagProposalFactory;
-import org.jboss.tools.common.model.ui.editors.dnd.TagProposal;
 
 public class TagProposalsComposite extends Composite {
 	
-	private TagProposal selection = IDropWizardModel.UNDEFINED_TAG_PROPOSAL;
+	private ITagProposal selection = IDropWizardModel.UNDEFINED_TAG_PROPOSAL;
 	CheckboxTableViewer tableTreeViewer;
-	TagProposal[] fTagProposals;
+	ITagProposal[] fTagProposals;
 	IDropWizardModel fModel; 	
-	
-//	public interface ITagProposalSelectionListener {
-//		public void tagProposalSelected(TagProposal pproposal);
-//	}
-	
-//	private ITagProposalSelectionListener listener = null;
-//	private String fMimeType; 
 	
 	public TagProposalsComposite(Composite parent, int styles,IDropWizardModel model) {
 		super(parent,styles);
@@ -90,7 +83,7 @@ public class TagProposalsComposite extends Composite {
 		tableTreeViewer.addCheckStateListener(
 			new ICheckStateListener() {
 				public void checkStateChanged(CheckStateChangedEvent event) {
-					TagProposal proposal = (TagProposal) event.getElement();
+					ITagProposal proposal = (ITagProposal)event.getElement();
 					if (event.getChecked()) {
 						if(selection!=IDropWizardModel.UNDEFINED_TAG_PROPOSAL) {
 							tableTreeViewer.setChecked(selection, false);								
@@ -130,13 +123,13 @@ public class TagProposalsComposite extends Composite {
 				}
 	
 				public String getColumnText(Object element, int columnIndex) {
-					TagProposal prop = (TagProposal)element;
+					ITagProposal prop = (ITagProposal)element;
 					switch (columnIndex) {
 						case TAG_NAME_INDEX:
-							return prop.getPrefix()==TagProposal.EMPTY_PREFIX?prop.getName():prop.getPrefix()+":"+prop.getName(); //$NON-NLS-1$
+							return prop.getDisplayString();
 							
 						case TAG_URI_INDEX:
-							return prop.getUri();
+							return prop.getDetails();
 					}
 					throw new IllegalArgumentException("Wrong column index for LabelProvider"); //$NON-NLS-1$
 				}
@@ -162,7 +155,7 @@ public class TagProposalsComposite extends Composite {
 ///		listener = l;
 ///	}
 	
-	public TagProposal[] getTagProposals() {
+	public ITagProposal[] getTagProposals() {
 		return fTagProposals;
 	}
 	
@@ -174,7 +167,7 @@ public class TagProposalsComposite extends Composite {
 		return tagProposalFactory.getProposalLoader(mimeType).getTagProposals(dropData).length>0;		
 	}
 	
-	public static TagProposal[] getTagProposals(String mimeType,String dropData, ITagProposalFactory tagProposalFactory) {
+	public static ITagProposal[] getTagProposals(String mimeType,String dropData, ITagProposalFactory tagProposalFactory) {
 		return tagProposalFactory.getProposalLoader(mimeType).getTagProposals(dropData);		
 	}
 	
