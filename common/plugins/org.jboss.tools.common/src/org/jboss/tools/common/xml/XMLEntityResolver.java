@@ -79,14 +79,16 @@ public class XMLEntityResolver implements EntityResolver {
     public InputSource resolveEntity(String publicId, String systemId) 
     	throws SAXException, java.io.IOException {
 		InputSource source = null;
-
+		boolean ok = false;
     	if (publicId != null) {
 			String url = publicEntities.getProperty(publicId);
 			if (url != null) {
 				source = new InputSource(url);
 				source.setPublicId(publicId);
+				ok = true;
 			}
-    	} else if (systemId != null) {
+    	}
+    	if (!ok && systemId != null) {
 			String url = systemEntities.getProperty(systemId);
 			if (url != null) {
 				source = new InputSource(url);
