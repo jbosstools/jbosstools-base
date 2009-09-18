@@ -11,7 +11,6 @@ Bundle-Localization: plugin
 Export-Package: org.jboss.tools.common.ant.model,
  org.jboss.tools.common.ant.model.handlers,
  org.jboss.tools.common.ant.parser,
- org.jboss.tools.common.java.jsp.model,
  org.jboss.tools.common.java.model.handler,
  org.jboss.tools.common.meta,
  org.jboss.tools.common.meta.action,

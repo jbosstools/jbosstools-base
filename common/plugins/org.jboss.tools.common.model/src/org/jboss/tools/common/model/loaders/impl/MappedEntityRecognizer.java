@@ -11,18 +11,25 @@
 package org.jboss.tools.common.model.loaders.impl;
 
 import java.util.*;
+
+import org.jboss.tools.common.meta.XMapping;
+import org.jboss.tools.common.meta.impl.XModelMetaDataImpl;
 import org.jboss.tools.common.model.loaders.*;
 
 public class MappedEntityRecognizer implements EntityRecognizer {
+	static String MAPPED_ENTITIES = "MappedEntities"; //$NON-NLS-1$
     private Map<String,String> map = new HashMap<String,String>();
 
 	public MappedEntityRecognizer() {
-        map.put("bpf", "FileProcess"); //$NON-NLS-1$ //$NON-NLS-2$
-        map.put("htm", "FileHTML"); //$NON-NLS-1$ //$NON-NLS-2$
-        map.put("flow", "FileFlow"); //$NON-NLS-1$ //$NON-NLS-2$
-        map.put("jspx", "FileJSP"); //$NON-NLS-1$ //$NON-NLS-2$
-        map.put("jspf", "FileJSP"); //$NON-NLS-1$ //$NON-NLS-2$
-        map.put("jsf", "FileHTML"); //$NON-NLS-1$ //$NON-NLS-2$
+		XMapping m = XModelMetaDataImpl.getInstance().getMapping(MAPPED_ENTITIES);
+		if(m != null) {
+			String[] ks = m.getKeys();
+			for (int i = 0; i < ks.length; i++) {
+				String extension = ks[i];
+				String entity = m.getValue(extension);
+				map.put(extension, entity);
+			}
+		}
     }
 
 	// NB i18n: there is code that depends on these entity names (in English)

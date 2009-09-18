@@ -91,20 +91,12 @@
   </MAPPING>
   <MAPPING name="ObjectEditor">
    <PAIR name="DEFAULT" value="DefaultEditor"/>
-   <PAIR name="Flow" value="DefaultEditor"/>
-   <PAIR name="HTML" value="org.jboss.tools.jst.jsp.jspeditor.HTMLTextEditor"/>
    <PAIR name="JAVA" value="DefaultEditor"/>
-   <PAIR name="JSP" value="org.jboss.tools.jst.jsp.jspeditor.JSPTextEditor"/>
    <PAIR name="PROPERTIES" value="DefaultEditor"/>
    <PAIR name="REFERENCE" value="DefaultEditor"/>
    <PAIR name="XML" value="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"/>
-   <PAIR name="XSL" value="org.jboss.tools.common.model.ui.texteditors.xmleditor.XMLTextEditor"/>
   </MAPPING>
-  <MAPPING name="Recognizers">
-   <PAIR name="jsp$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
-   <PAIR name="jspf$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
-   <PAIR name="jspx$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
-  </MAPPING>
+  <MAPPING name="Recognizers"/>
   <MAPPING name="Roots">
    <PAIR name="Editor" value="XStudio/Options/Editor"/>
    <PAIR name="Icons" value="XStudio/Icons"/>
@@ -139,16 +131,12 @@
     <GROUP name="file">
      <ICON name="ant_file" path="images/file/new_ant_file.gif"/>
      <ICON name="folder" path="images/file/new_folder.gif"/>
-     <ICON name="html_file" path="images/file/new_html_file.gif"/>
      <ICON name="jar_file" path="images/file/new_jar_file.gif"/>
      <ICON name="java_file" path="images/file/new_java_file.gif"/>
-     <ICON name="jsp_file" path="images/file/new_jsp_file.gif"/>
      <ICON name="new_property" path="images/navigationtree/new_property.gif"/>
      <ICON name="properties" path="images/file/new_properties_file.gif"/>
      <ICON name="unknow_file" path="images/file/new_unknow_file.gif"/>
-     <ICON name="xhtml_file" path="images/file/new_html_file.gif"/>
      <ICON name="xml_file" path="images/file/new_xml_file.gif"/>
-     <ICON name="xsl_file" path="images/file/new_xsl_file.gif"/>
     </GROUP>
     <GROUP name="state">
      <ICON name="base" path="images/flow/create_base.gif"/>
@@ -205,21 +193,15 @@
     <ICON name="closed_folder" path="images/file/closed_folder.gif"/>
     <ICON name="folder" path="images/file/closed_folder.gif"/>
     <ICON name="gif_file" path="images/file/gif_file.gif"/>
-    <ICON name="html_file" path="images/file/html_file.gif"/>
     <ICON name="jar_file" path="images/file/jar_file.gif"/>
     <ICON name="java_file" path="images/file/java_file.gif"/>
-    <ICON name="jsp" path="images/file/jsp_file.gif"/>
-    <ICON name="jsp_file" path="images/file/jsp_file.gif"/>
     <ICON name="openned_folder" path="images/file/openned_folder.gif"/>
     <ICON name="redhat_folder" path="images/file/redhat_folder.gif"/>
     <ICON name="root" path="images/file/storage_folder.gif"/>
     <ICON name="system_folder" path="images/file/system_folder.gif"/>
     <ICON name="to_top_folder" path="images/file/to_top_folder.gif"/>
     <ICON name="unknow_file" path="images/file/unknow_file.gif"/>
-    <ICON name="xhtml_file" path="images/file/html_file.gif"/>
     <ICON name="xml_file" path="images/file/xml_file.gif"/>
-    <ICON name="xsl" path="images/file/xsl_file.gif"/>
-    <ICON name="xsl_file" path="images/file/xsl_file.gif"/>
    </GROUP>
    <GROUP name="methods">
     <ICON name="java" path="images/java/method.gif"/>

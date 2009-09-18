@@ -13,14 +13,9 @@
   <MAPPING name="Recognizers">
    <PAIR name="class$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
    <PAIR name="gif$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
-   <PAIR name="htm$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
-   <PAIR name="html$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
    <PAIR name="java$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
-   <PAIR name="jsf$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
    <PAIR name="properties$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
    <PAIR name="txt$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
-   <PAIR name="xhtml$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
-   <PAIR name="xsl$5" value="org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer"/>
   </MAPPING>
  </MAPPINGS>
  <ICONS/>

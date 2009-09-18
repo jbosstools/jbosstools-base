@@ -90,187 +90,6 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity
-  AdoptManagerClass="org.jboss.tools.common.model.files.handlers.JSPAdopt"
-  ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.BodyLoader"
-  ImplementingClass="org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl"
-  ObjectEditorClass="%HTML%" name="FileHTML">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.file.html_file" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="html" loader="ElementType"
-    name="element type" visibility="false">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME"/>
-   <XModelAttribute TRIM="no" name="body" visibility="false"/>
-   <XModelAttribute default="html" name="extension" xmlname="EXTENSION">
-    <Constraint loader="List">
-     <value name="html"/>
-     <value name="htm"/>
-    </Constraint>
-    <Editor name="List"/>
-   </XModelAttribute>
-   <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list">
-   <XActionItem HandlerClassName="%Open%" ICON="main.file.html_file"
-    displayName="Open" kind="action" name="Open"/>
-   <XActionItem displayName="Open With" group="1" kind="list" name="OpenWith">
-    <XActionItem HIDE="always"
-     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler"
-     ICON="main.file.java_file" displayName="Open External Editor"
-     kind="action" name="OpenWithSelected"/>
-    <XActionItem HIDE="always"
-     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithChoiceHandler"
-     ICON="main.file.java_file" displayName="Choose Program..."
-     kind="action" name="OpenWithChoice">
-     <EntityData EntityName="OpenWithHelper">
-      <AttributeData AttributeName="name"/>
-      <AttributeData AttributeName="default"/>
-     </EntityData>
-    </XActionItem>
-   </XActionItem>
-   <XActionItem kind="list" name="EditActions">
-    <XActionItem HIDE="always" HandlerClassName="%RenameFile%"
-     ICON="action.empty" PROPERTIES="validator.edit=true"
-     WizardClassName="%Default%" displayName="Rename..." kind="action" name="Rename">
-     <EntityData EntityName="FileHTML">
-      <AttributeData AttributeName="name"/>
-     </EntityData>
-    </XActionItem>
-    <XActionItem
-     HandlerClassName="org.jboss.tools.common.model.filesystems.impl.handlers.RenameEclipseFileHandler"
-     ICON="action.empty" displayName="Rename..." kind="action" name="RenameEclipse"/>
-   </XActionItem>
-   <XActionItem kind="list" name="CreateActions"/>
-   <XActionItem kind="list" name="SaveActions">
-    <XActionItem HIDE="always" HandlerClassName="%SaveFile%"
-     ICON="action.save" displayName="Save" kind="action" name="Save"/>
-   </XActionItem>
-   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
-    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
-     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
-    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
-     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
-    <XActionItem BaseActionName="Paste" HIDE="always"
-     HandlerClassName="%Paste%" ICON="action.paste" displayName="Paste"
-     kind="action" name="Paste"/>
-   </XActionItem>
-   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
-    <XActionItem BaseActionName="Delete" HandlerClassName="%DeleteFile%"
-     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
-   </XActionItem>
-   <XActionItem ICON="action.empty" kind="list" name="Properties">
-    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
-     displayName="Properties..." kind="action" name="Properties"/>
-   </XActionItem>
-   <XActionItem kind="list" name="DiscardActions">
-    <XActionItem HIDE="always"
-     HandlerClassName="org.jboss.tools.common.model.filesystems.impl.DiscardFileHandler"
-     ICON="action.delete"
-     PROPERTIES="significanceMessageClass=org.jboss.tools.common.model.filesystems.impl.DiscardFileSignificanceMessage"
-     displayName="Discard Changes" kind="action" name="Discard"/>
-   </XActionItem>
-  </XActionItem>
-  <XDependencies/>
- </XModelEntity>
- <XModelEntity
-  AdoptManagerClass="org.jboss.tools.common.model.files.handlers.JSPAdopt"
-  ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.BodyLoader"
-  ImplementingClass="org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl"
-  ObjectEditorClass="%JSP%" name="FileJSP">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.file.jsp_file" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="jsp file" loader="ElementType"
-    name="element type" visibility="false">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute COPYABLE="no" loader="ModelPath" name="model path" visibility="false">
-    <Editor name="Uneditable" viewer="%View%"/>
-   </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME"/>
-   <XModelAttribute TRIM="no" name="body" visibility="false"/>
-   <XModelAttribute default="jsp" name="extension" xmlname="EXTENSION">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list">
-   <XActionItem HandlerClassName="%Open%" ICON="main.file.jsp_file"
-    displayName="Open" kind="action" name="Open"/>
-   <XActionItem displayName="Open With" group="1" kind="list" name="OpenWith">
-    <XActionItem HIDE="always"
-     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler"
-     ICON="main.file.java_file" displayName="Open External Editor"
-     kind="action" name="OpenWithSelected"/>
-    <XActionItem HIDE="always"
-     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithChoiceHandler"
-     ICON="main.file.java_file" displayName="Choose Program..."
-     kind="action" name="OpenWithChoice">
-     <EntityData EntityName="OpenWithHelper">
-      <AttributeData AttributeName="name"/>
-      <AttributeData AttributeName="default"/>
-     </EntityData>
-    </XActionItem>
-   </XActionItem>
-   <XActionItem kind="list" name="EditActions">
-    <XActionItem HIDE="always" HandlerClassName="%RenameFile%"
-     ICON="action.empty" PROPERTIES="validator.edit=true"
-     WizardClassName="%Default%" displayName="Rename..." kind="action" name="Rename">
-     <EntityData EntityName="FileJSP">
-      <AttributeData AttributeName="name"/>
-     </EntityData>
-    </XActionItem>
-    <XActionItem
-     HandlerClassName="org.jboss.tools.common.model.filesystems.impl.handlers.RenameEclipseFileHandler"
-     ICON="action.empty" displayName="Rename..." kind="action" name="RenameEclipse"/>
-   </XActionItem>
-   <XActionItem kind="list" name="CreateActions"/>
-   <XActionItem kind="list" name="SaveActions">
-    <XActionItem HIDE="always" HandlerClassName="%SaveFile%"
-     ICON="action.save" displayName="Save" kind="action" name="Save"/>
-   </XActionItem>
-   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
-    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
-     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
-    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
-     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
-    <XActionItem BaseActionName="Paste" HIDE="always"
-     HandlerClassName="%Paste%" ICON="action.paste" displayName="Paste"
-     kind="action" name="Paste"/>
-   </XActionItem>
-   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
-    <XActionItem BaseActionName="Delete" HandlerClassName="%DeleteFile%"
-     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
-   </XActionItem>
-   <XActionItem ICON="action.empty" kind="list" name="Properties">
-    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
-     displayName="Properties..." kind="action" name="Properties"/>
-   </XActionItem>
-   <XActionItem kind="list" name="DiscardActions">
-    <XActionItem HIDE="always"
-     HandlerClassName="org.jboss.tools.common.model.filesystems.impl.DiscardFileHandler"
-     ICON="action.delete"
-     PROPERTIES="significanceMessageClass=org.jboss.tools.common.model.filesystems.impl.DiscardFileSignificanceMessage"
-     displayName="Discard Changes" kind="action" name="Discard"/>
-   </XActionItem>
-  </XActionItem>
-  <XDependencies/>
- </XModelEntity>
- <XModelEntity
   ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.PropertiesLoader"
   ImplementingClass="org.jboss.tools.common.model.filesystems.impl.FilePropertiesImpl"
   ObjectEditorClass="org.jboss.tools.common.propertieseditor.PropertiesCompoundEditor" name="FilePROPERTIES">
@@ -445,161 +264,6 @@
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
- <XModelEntity
-  AdoptManagerClass="org.jboss.tools.common.model.files.handlers.JSPAdopt"
-  ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.BodyLoader"
-  ImplementingClass="org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl"
-  ObjectEditorClass="%HTML%" name="FileXHTML">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.file.xhtml_file" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="html" loader="ElementType"
-    name="element type" visibility="false">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME"/>
-   <XModelAttribute TRIM="no" name="body" visibility="false"/>
-   <XModelAttribute default="xhtml" name="extension" xmlname="EXTENSION">
-    <Constraint loader="List">
-     <value name="html"/>
-     <value name="htm"/>
-    </Constraint>
-    <Editor name="List"/>
-   </XModelAttribute>
-   <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list">
-   <XActionItem HandlerClassName="%Open%" ICON="main.file.html_file"
-    displayName="Open" kind="action" name="Open"/>
-   <XActionItem displayName="Open With" group="1" kind="list" name="OpenWith">
-    <XActionItem HIDE="always"
-     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler"
-     ICON="main.file.java_file" displayName="Open External Editor"
-     kind="action" name="OpenWithSelected"/>
-    <XActionItem HIDE="always"
-     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithChoiceHandler"
-     ICON="main.file.java_file" displayName="Choose Program..."
-     kind="action" name="OpenWithChoice">
-     <EntityData EntityName="OpenWithHelper">
-      <AttributeData AttributeName="name"/>
-      <AttributeData AttributeName="default"/>
-     </EntityData>
-    </XActionItem>
-   </XActionItem>
-   <XActionItem kind="list" name="EditActions">
-    <XActionItem HIDE="always" HandlerClassName="%RenameFile%"
-     ICON="action.empty" PROPERTIES="validator.edit=true"
-     WizardClassName="%Default%" displayName="Rename..." kind="action" name="Rename">
-     <EntityData EntityName="FileHTML">
-      <AttributeData AttributeName="name"/>
-     </EntityData>
-    </XActionItem>
-    <XActionItem
-     HandlerClassName="org.jboss.tools.common.model.filesystems.impl.handlers.RenameEclipseFileHandler"
-     ICON="action.empty" displayName="Rename..." kind="action" name="RenameEclipse"/>
-   </XActionItem>
-   <XActionItem kind="list" name="CreateActions"/>
-   <XActionItem kind="list" name="SaveActions">
-    <XActionItem HIDE="always" HandlerClassName="%SaveFile%"
-     ICON="action.save" displayName="Save" kind="action" name="Save"/>
-   </XActionItem>
-   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
-    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
-     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
-    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
-     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
-    <XActionItem BaseActionName="Paste" HIDE="always"
-     HandlerClassName="%Paste%" ICON="action.paste" displayName="Paste"
-     kind="action" name="Paste"/>
-   </XActionItem>
-   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
-    <XActionItem BaseActionName="Delete" HandlerClassName="%DeleteFile%"
-     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
-   </XActionItem>
-   <XActionItem ICON="action.empty" kind="list" name="Properties">
-    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
-     displayName="Properties..." kind="action" name="Properties"/>
-   </XActionItem>
-   <XActionItem kind="list" name="DiscardActions">
-    <XActionItem HIDE="always"
-     HandlerClassName="org.jboss.tools.common.model.filesystems.impl.DiscardFileHandler"
-     ICON="action.delete"
-     PROPERTIES="significanceMessageClass=org.jboss.tools.common.model.filesystems.impl.DiscardFileSignificanceMessage"
-     displayName="Discard Changes" kind="action" name="Discard"/>
-   </XActionItem>
-  </XActionItem>
-  <XDependencies/>
- </XModelEntity>
- <XModelEntity
-  ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.BodyLoader"
-  ImplementingClass="org.jboss.tools.common.model.filesystems.impl.FileXMLImpl"
-  ObjectEditorClass="%XML%" name="FileXSL">
-  <XChildrenEntities/>
-  <XEntityRenderer>
-   <ICONS>
-    <ICON info="main.file.xsl_file" type="main"/>
-   </ICONS>
-  </XEntityRenderer>
-  <XModelAttributes>
-   <XModelAttribute default="folder" loader="ElementType"
-    name="element type" visibility="false">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute name="name" xmlname="NAME"/>
-   <XModelAttribute TRIM="no" name="body" visibility="false"/>
-   <XModelAttribute default="xsl" name="extension" xmlname="EXTENSION">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-   <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Editor name="Uneditable"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list">
-   <XActionItem HandlerClassName="%Open%" ICON="main.file.xsl_file"
-    displayName="Open" kind="action" name="Open"/>
-   <XActionItem kind="list" name="EditActions">
-    <XActionItem HandlerClassName="%RenameFile%" ICON="action.empty"
-     PROPERTIES="validator.edit=true" WizardClassName="%Default%"
-     displayName="Rename..." kind="action" name="Rename">
-     <EntityData EntityName="FileXSL">
-      <AttributeData AttributeName="name"/>
-     </EntityData>
-    </XActionItem>
-   </XActionItem>
-   <XActionItem kind="list" name="SaveActions">
-    <XActionItem HIDE="always" HandlerClassName="%SaveFile%"
-     ICON="action.save" displayName="Save" kind="action" name="Save"/>
-   </XActionItem>
-   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
-    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
-     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
-    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
-     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
-   </XActionItem>
-   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
-    <XActionItem BaseActionName="Delete" HandlerClassName="%DeleteFile%"
-     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
-   </XActionItem>
-   <XActionItem ICON="action.empty" kind="list" name="Properties">
-    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
-     displayName="Properties..." kind="action" name="Properties"/>
-   </XActionItem>
-   <XActionItem kind="list" name="DiscardActions">
-    <XActionItem HIDE="always"
-     HandlerClassName="org.jboss.tools.common.model.filesystems.impl.DiscardFileHandler"
-     ICON="action.delete"
-     PROPERTIES="significanceMessageClass=org.jboss.tools.common.model.filesystems.impl.DiscardFileSignificanceMessage"
-     displayName="Discard Changes" kind="action" name="Discard"/>
-   </XActionItem>
-  </XActionItem>
-  <XDependencies/>
- </XModelEntity>
  <XModelEntity name="NewFileWizard">
   <XChildrenEntities/>
   <XEntityRenderer/>
@@ -623,18 +287,6 @@
    <XModelAttribute name="version">
     <Constraint loader="ListString"/>
     <Editor name="DropDown"/>
-   </XModelAttribute>
-  </XModelAttributes>
-  <XActionItem kind="list"/>
-  <XDependencies/>
- </XModelEntity>
- <XModelEntity name="NewJSPFileWizardTaglibs">
-  <XChildrenEntities/>
-  <XEntityRenderer/>
-  <XModelAttributes>
-   <XModelAttribute name="taglibs">
-    <Constraint loader="ListAdd"/>
-    <Editor name="ListAdd"/>
    </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list"/>
@@ -714,12 +366,8 @@
  <XEntityExtension name="FileFolder">
   <XChildrenEntities>
    <XChildEntity name="FileTXT"/>
-   <XChildEntity name="FileJSP"/>
-   <XChildEntity name="FileXSL"/>
-   <XChildEntity name="FileHTML"/>
    <XChildEntity name="FilePROPERTIES"/>
    <XChildEntity name="FileGIF"/>
-   <XChildEntity name="FileXHTML"/>
   </XChildrenEntities>
   <XActionItem kind="list">
    <XActionItem ICON="action.empty" displayName="New" group="1"
@@ -743,12 +391,8 @@
  <XEntityExtension name="FileSystemFolder">
   <XChildrenEntities>
    <XChildEntity name="FileTXT"/>
-   <XChildEntity name="FileJSP"/>
-   <XChildEntity name="FileHTML"/>
-   <XChildEntity name="FileXSL"/>
    <XChildEntity name="FilePROPERTIES"/>
    <XChildEntity name="FileGIF"/>
-   <XChildEntity name="FileXHTML"/>
   </XChildrenEntities>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
@@ -761,12 +405,8 @@
  <XEntityExtension name="FileSystemJar">
   <XChildrenEntities>
    <XChildEntity name="FileTXT"/>
-   <XChildEntity name="FileJSP"/>
-   <XChildEntity name="FileHTML"/>
-   <XChildEntity name="FileXSL"/>
    <XChildEntity name="FilePROPERTIES"/>
    <XChildEntity name="FileGIF"/>
-   <XChildEntity name="FileXHTML"/>
   </XChildrenEntities>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
@@ -779,12 +419,8 @@
  <XEntityExtension name="JarFolder">
   <XChildrenEntities>
    <XChildEntity name="FileTXT"/>
-   <XChildEntity name="FileJSP"/>
-   <XChildEntity name="FileXSL"/>
-   <XChildEntity name="FileHTML"/>
    <XChildEntity name="FilePROPERTIES"/>
    <XChildEntity name="FileGIF"/>
-   <XChildEntity name="FileXHTML"/>
   </XChildrenEntities>
   <XActionItem kind="list"/>
  </XEntityExtension>
