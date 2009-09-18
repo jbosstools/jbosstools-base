@@ -25,6 +25,7 @@ import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.meta.impl.XMetaDataConstants;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.impl.*;
+import org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer;
 import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.util.FileUtil;
@@ -267,12 +268,19 @@ public class CreateFileSupport extends SpecialWizardSupport {
 			String entity = version == null ? null : (String)versionEntities.get(version);
 			if(entity != null) return entity;
 		}
-		return ("jsp".equals(extension)) ? "FileJSP" : //$NON-NLS-1$ //$NON-NLS-2$
-			("htm".equals(extension)) ? "FileHTML" : //$NON-NLS-1$ //$NON-NLS-2$
-			("html".equals(extension)) ? "FileHTML" : //$NON-NLS-1$ //$NON-NLS-2$
-			("properties".equals(extension)) ? "FilePROPERTIES" : //$NON-NLS-1$ //$NON-NLS-2$
-			(extension.equals(action.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION))) ? action.getProperty(XMetaDataConstants.ENTITY) :
-			"FileAny"; //$NON-NLS-1$
+		
+		String entity = null;
+		if(extension.equals(action.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION))) {
+			entity = action.getProperty(XMetaDataConstants.ENTITY);
+		}
+		if(entity == null) {
+			entity = new MappedEntityRecognizer().getEntityName(extension, null);
+		}
+		if(entity != null && getTarget().getModel().getMetaData().getEntity(entity) != null) {
+			return entity;
+		}
+		
+		return "FileAny"; //$NON-NLS-1$
 	}
 
 	protected XModelObject modifyCreatedObject(XModelObject o) {

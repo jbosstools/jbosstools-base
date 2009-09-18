@@ -6,7 +6,6 @@
    <extension-point id="modelObjectAdapter" name="modelObjectAdapter" schema="schema/modelObjectAdapter.exsd"/>
    <extension-point id="meta" name="meta" schema="schema/meta.exsd"/>
    <extension-point id="keys" name="keys" schema="schema/keys.exsd"/>
-   <extension-point id="jspAdopt" name="jspAdopt" schema="schema/jspAdopt.exsd"/>
    <extension-point id="paletteAdopt" name="paletteAdopt" schema="schema/paletteAdopt.exsd"/>
    <extension-point id="resourceMapping" name="resourceMapping" schema="schema/resourceMapping.exsd"/>
    <extension-point id="classes" name="Model Classes" schema="schema/classes.exsd"/>
@@ -130,8 +129,6 @@
 			class="org.jboss.tools.common.model.engines.impl.EnginesLoader"/>
 		<xclass id="org.jboss.tools.common.model.engines.impl.StopProcessHandler"
 			class="org.jboss.tools.common.model.engines.impl.StopProcessHandler"/>
-		<xclass id="org.jboss.tools.common.model.files.handlers.JSPAdopt"
-			class="org.jboss.tools.common.model.files.handlers.JSPAdopt"/>
 		<xclass id="org.jboss.tools.common.model.files.handlers.InvokingWizardHandler"
 			class="org.jboss.tools.common.model.files.handlers.InvokingWizardHandler"/>
 		<xclass id="org.jboss.tools.common.model.filesystems.impl.CreateFileHandler"
