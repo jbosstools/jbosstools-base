@@ -12,6 +12,7 @@ package org.jboss.tools.common.el.core.resolver;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -121,8 +122,10 @@ public class ElVarSearcher {
 			try {
 				model = mm.getModelForRead(file);
 			} catch (IOException e) {
+				Activator.getDefault().logError(e);
 				return null;
 			} catch (CoreException e) {
+				Activator.getDefault().logError(e);
 				return null;
 			}
 		}
@@ -151,7 +154,7 @@ public class ElVarSearcher {
 		if(node!=null) {
 			return findAllVars(node);
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	/**
@@ -173,7 +176,7 @@ public class ElVarSearcher {
 		if(node!=null) {
 			return findAllVars(node, resolver.getParserFactory());
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	/**
@@ -186,7 +189,7 @@ public class ElVarSearcher {
 		if(node!=null) {
 			return findAllVars(node, factory);
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	/**
@@ -324,5 +327,4 @@ public class ElVarSearcher {
 		}
 		return null;
 	}
-
 }
