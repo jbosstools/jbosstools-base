@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.jst.web.tld.URIConstants;
 
 public class PaletteInsertManager {
 	static PaletteInsertManager instance = new PaletteInsertManager();
@@ -32,8 +31,7 @@ public class PaletteInsertManager {
 	
 	public String getWizardName(Properties properties) {
 		String tagname = properties.getProperty("tag name"); //$NON-NLS-1$
-		String uri = properties.getProperty(URIConstants.LIBRARY_URI);
-		return getWizardName(tagname, uri);
+		return getWizardName(tagname);
 	}
 	
 	public Object createWizardInstance(Properties properties) {
@@ -51,7 +49,7 @@ public class PaletteInsertManager {
 		}
 	}
 	
-	private String getWizardName(String tagname, String uri) {
+	private String getWizardName(String tagname) {
 		if(tagWizards == null) {
 			loadWizards();
 		}
