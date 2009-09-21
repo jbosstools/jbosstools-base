@@ -385,7 +385,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 		}
 	
 		public void insert(Properties p) {
-			PaletteInsertHelper.insertIntoEditor(getSourceViewer(), p);
+			PaletteInsertHelper.getInstance().insertIntoEditor(getSourceViewer(), p);
 		}
 
 		public String getContext(int pos) {

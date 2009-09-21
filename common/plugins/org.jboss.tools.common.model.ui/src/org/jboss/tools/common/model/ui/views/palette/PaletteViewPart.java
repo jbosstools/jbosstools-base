@@ -166,7 +166,9 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 			properties.setProperty(PaletteInsertHelper.PROPOPERTY_REFORMAT_BODY, reformat);
 			properties.setProperty(PaletteInsertHelper.PROPOPERTY_NEW_LINE, newline);
 			properties.setProperty(PaletteInsertHelper.PROPOPERTY_ADD_TAGLIB, addTaglib);
-			PaletteInsertHelper.insertIntoEditor(
+			
+			//TODO WARNING we cannot have here correct insert helper instance!
+			PaletteInsertHelper.getInstance().insertIntoEditor(
 					editor,
 					properties
 			);

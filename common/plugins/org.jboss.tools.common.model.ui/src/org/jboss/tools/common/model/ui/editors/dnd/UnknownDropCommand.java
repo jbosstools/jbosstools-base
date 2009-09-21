@@ -28,7 +28,7 @@ public class UnknownDropCommand extends DefaultDropCommand {
 		fElementGenerator.setDataModel(getDefaultModel());
 		Properties properties = new Properties();
 		properties.put(PaletteInsertHelper.PROPOPERTY_START_TEXT,fElementGenerator.generateStartTag());
-		PaletteInsertHelper.insertIntoEditor(
+		PaletteInsertHelper.getInstance().insertIntoEditor(
 				getDefaultModel().getDropData().getSourceViewer(),
 				properties
 		);

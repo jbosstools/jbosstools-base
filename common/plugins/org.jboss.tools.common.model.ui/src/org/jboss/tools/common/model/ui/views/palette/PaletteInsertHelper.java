@@ -58,7 +58,15 @@ public class PaletteInsertHelper {
 
     static PaletteTaglibInserter PaletteTaglibInserter = new PaletteTaglibInserter();
 
-	public static void insertIntoEditor(ITextEditor editor, Properties p) {
+    static PaletteInsertHelper instance = new PaletteInsertHelper();
+
+    public static PaletteInsertHelper getInstance() {
+    	return instance;
+    }    
+    
+    public PaletteInsertHelper() {}
+
+	public void insertIntoEditor(ITextEditor editor, Properties p) {
 		if(editor == null) return;
 		if(!isEditable(editor)) {
 			ServiceDialog d = PreferenceModelUtilities.getPreferenceModel().getService();
@@ -92,7 +100,7 @@ public class PaletteInsertHelper {
 		return true;
 	}
 
-	public static void insertIntoEditor(final ISourceViewer v, Properties p) {
+	public void insertIntoEditor(final ISourceViewer v, Properties p) {
 		String tagname = p.getProperty(PROPOPERTY_TAG_NAME);
 		String startText = p.getProperty(PROPOPERTY_START_TEXT);
 		String endText = p.getProperty(PROPOPERTY_END_TEXT);
@@ -147,7 +155,7 @@ public class PaletteInsertHelper {
 		}
 	}
 
-	private static void insertIntoEditorInternal(IDocument doc, Properties p) {
+	protected void insertIntoEditorInternal(IDocument doc, Properties p) {
 		String startText = p.getProperty(PROPOPERTY_START_TEXT);
 		String endText = p.getProperty(PROPOPERTY_END_TEXT);
 		String newline = p.getProperty(PROPOPERTY_NEW_LINE);

@@ -27,7 +27,7 @@ public class PlainTextDropCommand extends DefaultDropCommand {
 		if(data == null) return;
 		Properties properties = new Properties();
 		properties.put(PaletteInsertHelper.PROPOPERTY_START_TEXT, data);
-		PaletteInsertHelper.insertIntoEditor(
+		PaletteInsertHelper.getInstance().insertIntoEditor(
 				getDefaultModel().getDropData().getSourceViewer(),
 				properties
 		);

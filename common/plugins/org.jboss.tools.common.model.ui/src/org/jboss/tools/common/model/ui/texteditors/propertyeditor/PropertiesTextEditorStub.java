@@ -59,7 +59,7 @@ public class PropertiesTextEditorStub extends PropertiesFileEditor implements ID
 		}
 	
 		public void insert(Properties p) {
-			PaletteInsertHelper.insertIntoEditor(getSourceViewer(), p);
+			PaletteInsertHelper.getInstance().insertIntoEditor(getSourceViewer(), p);
 		}
 
 	}
