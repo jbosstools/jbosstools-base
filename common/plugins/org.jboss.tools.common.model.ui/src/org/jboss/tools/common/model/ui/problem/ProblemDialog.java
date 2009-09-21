@@ -76,12 +76,6 @@ public class ProblemDialog extends IconAndMessageDialog {
 		super.buttonPressed(buttonId);
 	}
 	
-/*
-	public static int open(Shell shell, String message) {
-		JspPreviewErrorDialog dialog = new JspPreviewErrorDialog(shell, JspPreviewMessages.getString(DEFAULT_TITLE), message);
-		return dialog.open();		
-	}
-*/
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.window.Window#open()
 	 */
