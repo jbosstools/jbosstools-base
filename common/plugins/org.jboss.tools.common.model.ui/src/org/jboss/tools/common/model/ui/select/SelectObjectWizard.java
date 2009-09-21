@@ -88,9 +88,6 @@ public class SelectObjectWizard implements SpecialWizard {
 	
 	String[] views = new String[]{
 		"org.jboss.tools.jst.web.ui.navigator.WebProjectsView" //$NON-NLS-1$
-//		"org.jboss.tools.jsf.ui.navigator.JsfProjectsView",
-//		"org.jboss.tools.struts.ui.navigator.StrutsProjectsView",
-//		"org.jboss.tools.common.model.ui.navigator.NavigatorViewPart"
 	};
 
 	private XModelObject selectInNavigator() {

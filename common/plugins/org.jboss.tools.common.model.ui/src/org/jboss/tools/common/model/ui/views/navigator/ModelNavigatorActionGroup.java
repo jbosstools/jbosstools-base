@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.views.navigator;
 
-import org.jboss.tools.common.model.ui.action.StrutsContributionManager;
+import org.jboss.tools.common.model.ui.action.ModelContributionManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 //import org.eclipse.jface.util.IPropertyChangeListener;
@@ -28,7 +28,7 @@ import org.eclipse.ui.dialogs.PropertyDialogAction;
 import org.eclipse.ui.ide.IDEActionFactory;
 import org.eclipse.ui.views.navigator.*;
 
-public class StrutsNavigatorActionGroup extends ResourceNavigatorActionGroup {
+public class ModelNavigatorActionGroup extends ResourceNavigatorActionGroup {
 
 	protected AddBookmarkAction addBookmarkAction;
 	protected AddTaskAction addTaskAction;	
@@ -41,13 +41,13 @@ public class StrutsNavigatorActionGroup extends ResourceNavigatorActionGroup {
 	protected WorkingSetFilterActionGroup workingSetGroup;
 	protected WorkspaceActionGroup workspaceGroup;
 	
-	protected StrutsContributionManager struts;
-	protected boolean activateStrutsContribution = false;
+	protected ModelContributionManager mcm;
+	protected boolean activateModelContribution = false;
 
 	/**
 	 * Constructs the main action group.
 	 */
-	public StrutsNavigatorActionGroup(IResourceNavigator navigator) {
+	public ModelNavigatorActionGroup(IResourceNavigator navigator) {
 		super(navigator);
 		makeSubGroups();
 	}
@@ -58,8 +58,8 @@ public class StrutsNavigatorActionGroup extends ResourceNavigatorActionGroup {
 	protected void makeActions() {
 		Shell shell = navigator.getSite().getShell();
 		
-		if(activateStrutsContribution) {
-			struts = new StrutsContributionManager(shell);
+		if(activateModelContribution) {
+			mcm = new ModelContributionManager(shell);
 		}
 		
 		addBookmarkAction = new AddBookmarkAction(shell);
@@ -94,7 +94,7 @@ public class StrutsNavigatorActionGroup extends ResourceNavigatorActionGroup {
 		openGroup.setContext(context);
 		refactorGroup.setContext(context);
 		workspaceGroup.setContext(context);
-		if(struts != null) struts.setContext(context);
+		if(mcm != null) mcm.setContext(context);
 	}
 	
 	/**
@@ -134,8 +134,8 @@ public class StrutsNavigatorActionGroup extends ResourceNavigatorActionGroup {
 		openGroup.updateActionBars();
 		refactorGroup.updateActionBars();
 		workspaceGroup.updateActionBars();
-		if(struts != null) struts.markDirty();
-		if(struts != null) struts.update(true);
+		if(mcm != null) mcm.markDirty();
+		if(mcm != null) mcm.update(true);
 	} 
 	
 	/**
@@ -161,7 +161,7 @@ public class StrutsNavigatorActionGroup extends ResourceNavigatorActionGroup {
 		openGroup.dispose();
 		refactorGroup.dispose();
 		workspaceGroup.dispose();
-		if(struts != null) struts.dispose();
+		if(mcm != null) mcm.dispose();
 		super.dispose();
 	}
 	

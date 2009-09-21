@@ -18,12 +18,12 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.actions.ActionContext;
 import org.jboss.tools.common.model.XModelObject;
 
-public class StrutsContributionManager extends MenuManager {
+public class ModelContributionManager extends MenuManager {
 	ActionContext context;
 	Shell shell;
 	
-	public StrutsContributionManager(Shell shell) {
-		super("JBoss Tools Struts");
+	public ModelContributionManager(Shell shell) {
+		super("JBoss Tools");
 		this.shell = shell;
 	}
 	

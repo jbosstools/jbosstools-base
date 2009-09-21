@@ -104,7 +104,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	private NavigatorStatusLineProvider statusLineProvider = new NavigatorStatusLineProvider();
 	private ActivationListener fActivationListener= new ActivationListener();
 	
-	boolean useStrutsMenu = true;
+	boolean useModelMenu = true;
 	
 	public NavigatorViewPart() {
 		selectionProvider.addSelectionChangedListener(new SL());
@@ -167,8 +167,6 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	
 	protected String[] getActionClasses() {
 		String[] actions = new String[]{
-			"org.jboss.tools.struts.ui.internal.action.CreateProjectAction", //$NON-NLS-1$
-			"org.jboss.tools.struts.ui.internal.action.ImportProjectAction"        			 //$NON-NLS-1$
 		};
 		return actions;
 	}
@@ -246,7 +244,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 //@S_CHECK@
   		TreeViewerMenuInvoker listener = createMenuInvoker();
 		listener.setViewer(viewer);
-		if(useStrutsMenu) {
+		if(useModelMenu) {
 			viewer.getTree().addMouseListener(listener);
 		}
 	}
@@ -453,7 +451,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	}
 	
 	protected void makeActions() {
-		setActionGroup(new StrutsNavigatorActionGroup(this));
+		setActionGroup(new ModelNavigatorActionGroup(this));
 	}
 	
 	ResourceNavigatorActionGroup actionGroup;
@@ -486,7 +484,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 				fillContextMenu(manager);
 			}
 		});
-		if(!useStrutsMenu) {
+		if(!useModelMenu) {
 			TreeViewer treeViewer = getViewer();
 			Menu menu = menuMgr.createContextMenu(treeViewer.getTree());
 			treeViewer.getTree().setMenu(menu);
@@ -530,11 +528,11 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	};
 	
 	private void saveLinkingEnabled(IMemento _memento) {
-		_memento.putInteger("LinkStrutsProjectsToEditor", isLinkingEnabled ? 1 : 0); //$NON-NLS-1$
+		_memento.putInteger("LinkModelProjectsToEditor", isLinkingEnabled ? 1 : 0); //$NON-NLS-1$
 	}
 	
 	private void restoreLinkingEnabled() {
-		Integer val = memento.getInteger("LinkStrutsProjectsToEditor");//IWorkbenchPreferenceConstants.LINK_NAVIGATOR_TO_EDITOR); //$NON-NLS-1$
+		Integer val = memento.getInteger("LinkModelProjectsToEditor");//IWorkbenchPreferenceConstants.LINK_NAVIGATOR_TO_EDITOR); //$NON-NLS-1$
 		if (val != null) {
 			isLinkingEnabled = val.intValue() != 0;
 		}
