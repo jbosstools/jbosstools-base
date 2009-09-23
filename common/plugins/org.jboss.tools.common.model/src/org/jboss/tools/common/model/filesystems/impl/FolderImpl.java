@@ -62,8 +62,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     protected boolean loaded = false;
 	protected IContainer resource = null;
 	protected String pathForResource = null;
-	protected Map<String, File> linked = new HashMap<String, File>();
-	protected Map<String, IResource> linkedResources = new HashMap<String, IResource>();
+	LinkedResources linked = new LinkedResources();
+//	protected Map<String, File> linked = new HashMap<String, File>();
+//	protected Map<String, IResource> linkedResources = new HashMap<String, IResource>();
 
     public FolderImpl() {}
 
@@ -111,8 +112,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     protected String getAbsolutePath() {
     	FolderImpl parent = (FolderImpl)getParent();
         String p = (parent == null) ? null : parent.getAbsolutePath();
-        if(parent.linked.containsKey(getPathPart())) {
-        	return parent.linked.get(getPathPart()).getAbsolutePath();
+        if(parent.linked.containsFile(getPathPart())) {
+        	return parent.linked.getFileByFileName(getPathPart()).getAbsolutePath();
         }
         return (p == null) ? null : p + XModelObjectConstants.SEPARATOR + name();
     }
@@ -157,10 +158,12 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         for (int i = 0; i < rs.length; i++) {
         	if(!rs[i].isAccessible()) continue;
         	if(!rs[i].isLinked()) continue;
+        	if(rs[i].getLocation() == null) {
+//        		System.out.println("no location at link " + rs[i]);
+        		continue;
+        	}
         	File f = rs[i].getLocation().toFile();
-            String pp = FilePathHelper.toPathPath(f.getName());
-        	linked.put(pp, f);
-        	linkedResources.put(pp, rs[i]);
+        	linked.registerResource(rs[i]);
         	_loadChild(peer, f);
         }
         
@@ -187,8 +190,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             p.setProperty(XModelObjectConstants.ATTR_NAME, f.getName());
             XModelObject c = getModel().createModelObject("FileFolder", p); //$NON-NLS-1$
             String pp = FilePathHelper.toPathPath(f.getName());
-            if(linked.containsKey(pp)) {
-            	c.setObject("file", linked.get(pp)); //$NON-NLS-1$
+            if(linked.containsFile(pp)) {
+            	c.setObject("file", linked.getFileByFileName(pp)); //$NON-NLS-1$
             }
             addChild(c);
         } else {
@@ -246,7 +249,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
                 c.set(XModelObjectConstants.ATTR_NAME__FILE, f.getAbsolutePath());
             }
         }
-        if(linked.containsValue(f)) {
+        if(linked.filesByFileName.containsValue(f)) {
         	c.setObject("file", f); //$NON-NLS-1$
         }
         addChild(c);
@@ -259,7 +262,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         if(updateLock > 0) return true;
         updateLock++;
         Map<String,File> mf = new HashMap<String,File>();
-        linked.clear();
+        linked.clearFiles();
         XModelObject fileSystem = getFileSystem();
         if(fileSystem == null) return false;
 		FileSystemsImpl fsi = (FileSystemsImpl)fileSystem.getParent();
@@ -302,8 +305,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 						File f = rs[i].getLocation().toFile();
 						String p = FilePathHelper.toPathPath(f.getName());
 						mf.put(p, f);
-						linked.put(p, f);
-						linkedResources.put(p, rs[i]);
+						linked.registerResource(rs[i]);
 					}
 				}			
 			}
@@ -371,8 +373,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     protected File getChildIOFile(XModelObject o) {
         String s = FileAnyImpl.toFileName(o);
         File f = (File)o.getObject("file"); //for links //$NON-NLS-1$
-        if(f == null && linked.containsKey(o.getPathPart())) {
-        	f = linked.get(o.getPathPart());
+        if(f == null && linked.containsFile(o.getPathPart())) {
+        	f = linked.getFileByFileName(o.getPathPart());
         }
         if(f == null) {
         	f = new File(getFile(), s);
@@ -383,8 +385,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     protected File getChildIOFile(String filename) {
         File f = null;
 		String p = FilePathHelper.toPathPath(filename);
-        if(linked.containsKey(p)) {
-        	f = linked.get(p);
+        if(linked.containsFile(p)) {
+        	f = linked.getFileByFileName(p);
         }
         if(f == null) {
         	f = new File(getFile(), filename);
@@ -615,8 +617,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             p.setProperty(XModelObjectConstants.ATTR_NAME, f.getName());
             c = getModel().createModelObject("FileFolder", p); //$NON-NLS-1$
 			String pp = FilePathHelper.toPathPath(f.getName());
-            if(linked.containsKey(pp)) {
-            	c.setObject("file", linked.get(pp)); //$NON-NLS-1$
+            if(linked.containsFile(pp)) {
+            	c.setObject("file", linked.getFileByFileName(pp)); //$NON-NLS-1$
             }
         } else {
         	Properties ep = getEntityProperties(f);
@@ -724,7 +726,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         if (q || loaded) return q;
         if(getParent() instanceof FolderImpl) {
         	FolderImpl p = (FolderImpl)getParent();
-        	if(p.linked.containsKey(getPathPart())) return true;
+        	if(p.linked.containsFile(getPathPart())) return true;
         }
         File[] fs = getFiles();
         q = (fs != null && fs.length > 0);
@@ -764,7 +766,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             if(cs[i] instanceof FolderLoader) {
                 b &= ((FolderLoader)cs[i]).save();
             } else {
-            	File d = linked.get(cs[i].getPathPart());
+            	File d = linked.getFileByFileName(cs[i].getPathPart());
             	if(d == null) {
                     d = new File(f, FileAnyImpl.toFileName(cs[i]));
             	}
@@ -809,7 +811,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         updateLock++;
         boolean b = false;
         try {
-        	File d = linked.get(c.getPathPart());
+        	File d = linked.getFileByFileName(c.getPathPart());
         	if(d == null) {
                 d = new File(folder, FileAnyImpl.toFileName(c));
         	}
@@ -923,6 +925,10 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
 
     public XModelObject getChildByPathPart(String pathpart) {
+    	if(linked.filesByLinkName.containsKey(pathpart)) {
+    		File f = linked.getFileByResourceName(pathpart);
+    		pathpart = f.getName();
+    	}
     	pathpart = FilePathHelper.toPathPath(pathpart);
         return super.getChildByPathPart(pathpart);
     }
@@ -972,8 +978,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
 
     public IContainer getChildContainer(String name) {
-		if(linked.containsKey(name)) {
-			IResource r = linkedResources.get(name);
+		if(linked.containsFile(name)) {
+			IResource r = linked.getResourceByFileName(name);
 			return r instanceof IContainer ? (IContainer)r : null;
 		}
     	IContainer c = getResource();
@@ -981,8 +987,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
     
 	public IFile getChildFile(String name) {
-		if(linked.containsKey(name)) {
-			IResource r = linkedResources.get(name);
+		if(linked.containsFile(name)) {
+			IResource r = linked.getResourceByFileName(name);
 			return r instanceof IFile ? (IFile)r : null;
 		}
     	IContainer c = getResource();
@@ -1059,6 +1065,48 @@ class FileBodySource implements BodySource {
 		return b;
     }
 
+}
+
+class LinkedResources {
+	protected Map<String, File> filesByLinkName = new HashMap<String, File>();
+	protected Map<String, File> filesByFileName = new HashMap<String, File>();
+	protected Map<String, IResource> resourcesByLinkName = new HashMap<String, IResource>();
+	protected Map<String, IResource> resourcesByFileName = new HashMap<String, IResource>();
+
+	public boolean containsFile(String name) {
+		if(filesByFileName.containsKey(name)) return true;
+		return false;
+	}
+
+	public File getFileByResourceName(String name) {
+		return filesByLinkName.get(name);
+	}
+
+	public File getFileByFileName(String name) {
+		return filesByFileName.get(name);
+	}
+
+	public IResource getResourceByResourceName(String name) {
+		return resourcesByLinkName.get(name);
+	}
+
+	public IResource getResourceByFileName(String name) {
+		return resourcesByFileName.get(name);
+	}
+
+	public void registerResource(IResource r) {
+    	File f = r.getLocation().toFile();
+        String pp = FilePathHelper.toPathPath(f.getName());
+        filesByFileName.put(pp, f);
+        filesByLinkName.put(r.getName(), f);
+        resourcesByFileName.put(pp, r);
+        resourcesByLinkName.put(r.getName(), r);
+	}
+
+	public void clearFiles() {
+		filesByFileName.clear();
+		filesByLinkName.clear();
+	}
 }
 
 class EclipseFileBodySource implements BodySource {

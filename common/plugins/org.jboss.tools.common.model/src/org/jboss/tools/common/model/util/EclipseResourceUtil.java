@@ -374,6 +374,14 @@ public class EclipseResourceUtil {
 		}
 		if(cs != null) for (int i = 0; i < cs.length; i++) {
 			if(!cs[i].isLinked()) continue;
+			if(!cs[i].isAccessible()) continue;
+        	if(cs[i].getLocation() == null) {
+//        		System.out.println("no location at link " + cs[i]);
+        		continue;
+        	}
+        	if(cs[i].getLocation().toFile() == null || !cs[i].getLocation().toFile().isDirectory()) {
+        		continue;
+        	}
 			properties = new Properties();
 			fsLoc = cs[i].getLocation().toString();
 			properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
@@ -418,9 +426,9 @@ public class EclipseResourceUtil {
 		}
 		IResource sr = s.getResource();
 		if(sr == null) return null;
-		if(!sr.getLocation().isPrefixOf(resource.getLocation())) return null;
-		String path = resource.getLocation().toString();
-		String rootpath = sr.getLocation().toString();
+		if(!sr.getFullPath().isPrefixOf(resource.getFullPath())) return null;
+		String path = resource.getFullPath().toString();
+		String rootpath = sr.getFullPath().toString();
 		String relpath = path.substring(rootpath.length()).replace('\\', '/');
 		if(relpath.length() == 0) return s;
 
@@ -434,7 +442,7 @@ public class EclipseResourceUtil {
 		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$
 		if(p == null) {
 			IResource r = (IResource)o.getAdapter(IResource.class);
-			if(r == null || !resource.getLocation().equals(r.getLocation())) {
+			if(r == null || !resource.getFullPath().equals(r.getFullPath())) {
 				//failure, more detailed file system is needed.
 				return null;
 			}
