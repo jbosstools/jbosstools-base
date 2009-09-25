@@ -10,19 +10,6 @@
 		id="org.jboss.tools.common.text.ext.hyperlinkPartitioner"
 		name="org.jboss.tools.common.text.ext.hyperlinkPartitioner">
 		
-		<hyperlinkPartitioner 
-         	id="org.jboss.tools.common.text.ext.hyperlink.CSSClassHyperlinkPartitioner"
-         	class="org.jboss.tools.common.text.ext.hyperlink.CSSClassHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         		</partitionType>
-         	</contentType>
-         	<contentType id="org.eclipse.wst.html.core.htmlsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         		</partitionType>
-         	</contentType>
-		</hyperlinkPartitioner>
-
 		<!-- Root XML, HTML and JSP hyperlink partitioners -->
 		<hyperlinkPartitioner
         	class="org.jboss.tools.common.text.ext.hyperlink.xml.XMLRootHyperlinkPartitioner" 
@@ -50,17 +37,6 @@
          	</contentType>
          </hyperlinkPartitioner>
 
-		<hyperlinkPartitioner
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPRootHyperlinkPartitioner" 
-			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPRootHyperlinkPartitioner">
-			<contentType id="org.eclipse.jst.jsp.core.jspsource">
-				<partitionType id="org.eclipse.jst.jsp.JSP_DIRECTIVE" />
-				<partitionType id="org.eclipse.wst.html.HTML_DEFAULT" />
-			</contentType>
-         	<contentType id="org.eclipse.wst.html.core.htmlsource">
-         		<partitionType id="org.eclipse.wst.html.HTML_DEFAULT" />
-         	</contentType>
-		</hyperlinkPartitioner>
 		<!-- End of Root XML, HTML and JSP hyperlink partitioners -->
 		
 		<!-- Common XML hyperlink partitioners --> 
@@ -252,176 +228,6 @@
 		
 		<!-- End of Common XML hyperlink partitioners -->
 		
-		<!-- Common HTML and/or JSP hyperlink partitioners --> 
-		<hyperlinkPartitioner 
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPTaglibHyperlinkPartitioner" 
-			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPTaglibHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.jsp.JSP_ROOT"/>
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/jsp:directive.taglib/uri" />
-         			<axis path="*/jsp:directive.taglib/prefix" />
-         		</partitionType>
-         	</contentType>
-		</hyperlinkPartitioner>
-
-		<hyperlinkPartitioner 
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPTagAttributeHyperlinkPartitioner" 
-         	id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPTagAttributeHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/jsp:attribute/name/"/>
-         		</partitionType>
-         	</contentType>
-		</hyperlinkPartitioner>
-
-		<hyperlinkPartitioner 
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPTextHyperlinkPartitioner" 
-			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPTextHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.jsp.JSP_ROOT">
-         			<axis path="*/title/" ignoreCase="true"/>
-         			<axis path="*/h1/" ignoreCase="true"/>
-         		</partitionType>
-         	</contentType>
-		</hyperlinkPartitioner>
-
-		<hyperlinkPartitioner 
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPElementHyperlinkPartitioner" 
-			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPElementHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.jsp.JSP_ROOT" />
-         	</contentType>
-         	<contentType id="org.eclipse.wst.html.core.htmlsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.jsp.JSP_ROOT" />
-         	</contentType>
-		</hyperlinkPartitioner>
-
-		<hyperlinkPartitioner
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPElementNameHyperlinkPartitioner" 
-			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPElementNameHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT"/>
-         	</contentType>
-         	<contentType id="org.eclipse.wst.html.core.htmlsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT"/>
-         	</contentType>
-		</hyperlinkPartitioner>
-         
-		<hyperlinkPartitioner
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPElementAttributeValueHyperlinkPartitioner" 
-			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPElementAttributeValueHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
-         	</contentType>
-         	<contentType id="org.eclipse.wst.html.core.htmlsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
-         	</contentType>
-		</hyperlinkPartitioner> 
-
-		<hyperlinkPartitioner
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPXmlNsHyperlinkPartitioner" 
-			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPXmlNsHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE"/>
-         	</contentType>
-         	<contentType id="org.eclipse.wst.html.core.htmlsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE"/>
-         	</contentType>
-		</hyperlinkPartitioner> 
-
-		<hyperlinkPartitioner
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPBeanGetPropertyHyperlinkPartitioner" 
-         	id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPBeanGetPropertyHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/jsp:getProperty/property/" />
-         		</partitionType>
-         	</contentType>
-		</hyperlinkPartitioner> 
-
-		<hyperlinkPartitioner
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPBeanSetPropertyHyperlinkPartitioner" 
-         	id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPBeanSetPropertyHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/jsp:setProperty/property/" />
-         		</partitionType>
-         	</contentType>
-		</hyperlinkPartitioner> 
-
-		<hyperlinkPartitioner 
-         	id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPForBeanIdHyperlinkPartitioner"
-         	class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPForBeanIdHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/jsp:setProperty/name/" />
-         			<axis path="*/jsp:getProperty/name/" />
-         		</partitionType>
-         	</contentType>
-		</hyperlinkPartitioner>
-
-		<hyperlinkPartitioner
-         	id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPClassHyperlinkPartitioner"
-         	class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPClassHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/jsp:directive.page/import/" />
-         			<axis path="*/jsp:useBean/class/" />
-         			<axis path="*/jsp:useBean/type/" />
-         		</partitionType>
-         	</contentType>
-		</hyperlinkPartitioner>
-		
-		<hyperlinkPartitioner
-         	id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPStylesheetRelLinkHyperlinkPartitioner"
-         	class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPStylesheetRelLinkHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/link/*" ignoreCase="true"/>
-         		</partitionType>
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT">
-         			<axis path="*/link/*" ignoreCase="true"/>
-         		</partitionType>
-         		<partitionType id="com.ibm.sse.STYLE">
-         			<!--axis path="*/style/" /-->
-         		</partitionType>
-         	</contentType>
-         	<contentType id="org.eclipse.wst.html.core.htmlsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/link/*" ignoreCase="true"/>
-         		</partitionType>
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT">
-         			<axis path="*/link/*" ignoreCase="true"/>
-         		</partitionType>
-         		<partitionType id="com.ibm.sse.STYLE">
-         			<!--axis path="*/style/" /-->
-         		</partitionType>
-         	</contentType>
-		</hyperlinkPartitioner>
-
-		<hyperlinkPartitioner
-         	id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPLinkHyperlinkPartitioner"
-         	class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPLinkHyperlinkPartitioner">
-         	<contentType id="org.eclipse.jst.jsp.core.jspsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/a/href/" ignoreCase="true"/>
-         			<axis path="*/jsp:directive.include/file/" />
-         			<axis path="*/jsp:directive.page/errorPage/" />
-         			<axis path="*/jsp:include/page/" />
-         			<axis path="*/jsp:forward/page/" />
-         			<axis path="*/jsp:plugin/iepluginurl/" />
-         			<axis path="*/jsp:plugin/nspluginurl/" />
-         		</partitionType>
-         	</contentType>
-         	<contentType id="org.eclipse.wst.html.core.htmlsource">
-         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/a/href/" ignoreCase="true"/>
-         		</partitionType>
-         	</contentType>
-		</hyperlinkPartitioner>
-		<!-- End of Common HTML and/or JSP hyperlink partitioners -->
-
 		<!-- Web.xml and/or TLD files hyperlink partitioners -->
 		<hyperlinkPartitioner 
          	id="org.jboss.tools.common.text.ext.hyperlink.xml.XMLClassHyperlinkPartitioner"
@@ -671,25 +477,6 @@
          	</contentType>
 		</hyperlinkPartitioner>
 		<!-- End of TLD files hyperlink partitioners -->
-		<!--Maksim Areshkau, partitioner for *.taglib.xml files -->
-		<hyperlinkPartitioner
-        class="org.jboss.tools.common.text.ext.hyperlink.TaglibDefinitionFilesHyperlinkPartitioner"
-        id="org.jboss.tools.common.text.ext.hyperlink.TaglibDefinitionFilesHyperlinkPartitioner">
-          	<contentType id="org.jboss.tools.common.model.ui.xml">
-          		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_TEXT">
-         			<axis path="/facelet-taglib/tag/source">
-	                 </axis> 
-	                <axis path="/facelet-taglib/function/function-class">
-                   	 </axis> 
-                     <axis path="/facelet-taglib/tag/component/handler-class">
-                     </axis> 
-                     <axis path="/facelet-taglib/library-class">
-                     </axis>  			
-          		</partitionType>
-          	</contentType>
-		</hyperlinkPartitioner>
-		<!--End of partiotioner for *.taglib.xml files -->
-		
 		<hyperlinkPartitioner 
          	id="org.jboss.tools.common.text.ext.hyperlink.xml.PortletHyperlinkPartitioner"
          	class="org.jboss.tools.common.text.ext.hyperlink.xml.PortletHyperlinkPartitioner">
@@ -748,61 +535,6 @@
 		</hyperlink>
 
 
-<!-- JSP -->
-<!-- add an open on action for jsp bean partitions -->
-		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPElementNameHyperlink" 
-			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPElementNameHyperlink">
-			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT_NAME" />
-			</contenttypeidentifier>
-		</hyperlink>
-
-		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPTaglibHyperlink" 
-			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPTaglibHyperlink">
-			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_TAGLIB" />
-			</contenttypeidentifier>
-		</hyperlink>
-
-		<hyperlink 
-      		class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPXmlNsHyperlink" 
-      		id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPXmlNsHyperlink">
-			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_XMLNS" />
-			</contenttypeidentifier>
-			<contenttypeidentifier id="org.eclipse.wst.html.core.htmlsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_XMLNS" />
-			</contenttypeidentifier>
-		</hyperlink>
-
-		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPForBeanIdHyperlink" 
-			id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPForBeanIdHyperlink">
-			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_FOR_BEAN_ID" />
-			</contenttypeidentifier>
-		</hyperlink>
-
-		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPBeanGetPropertyHyperlink" 
-      		id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPBeanGetPropertyHyperlink">
-			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
-            	<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_BEAN_GET_PROPERTY" />
-			</contenttypeidentifier>
-		</hyperlink>
-
-		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPBeanSetPropertyHyperlink" 
-      		id="org.jboss.tools.common.text.ext.hyperlink.jsp.JSPBeanSetPropertyHyperlink">
-			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_BEAN_SET_PROPERTY" />
-			</contenttypeidentifier>
-		</hyperlink>
-
-<!-- JSP -->
-
 		<hyperlink 
 			class="org.jboss.tools.common.text.ext.hyperlink.ClassHyperlink" 
 			id="org.jboss.tools.common.text.ext.hyperlink.ClassHyperlink">
@@ -833,17 +565,6 @@
 		</hyperlink>
 
 		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.CSSClassHyperlink" 
-			id="org.jboss.tools.common.text.ext.hyperlink.CSSClassHyperlink">
-			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.CSS_CLASS" />
-			</contenttypeidentifier>
-   			<contenttypeidentifier id="org.eclipse.wst.html.core.htmlsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.CSS_CLASS" />
-			</contenttypeidentifier>
-		</hyperlink>
-
-		<hyperlink 
 			class="org.jboss.tools.common.text.ext.hyperlink.xml.XMLXmlNsHyperlink" 
       		id="org.jboss.tools.common.text.ext.hyperlink.xml.XMLXmlNsHyperlink">
 			<contenttypeidentifier id="org.eclipse.jst.jsf.facesconfig.facesConfigFile">
@@ -869,99 +590,6 @@
 			</contenttypeidentifier>
 		</hyperlink>
 
-	<!-- Web.inf File -->
- 
-		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.FilterNameHyperlink" 
-      		id="org.jboss.tools.common.text.ext.hyperlink.FilterNameHyperlink">
-			<contenttypeidentifier id="org.eclipse.wst.xml.core.xmlsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME" />
-			</contenttypeidentifier>
-			<contenttypeidentifier id="org.eclipse.core.runtime.xml">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME" />
-			</contenttypeidentifier>
-        	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME" />
-        	</contenttypeidentifier>
-        	<contenttypeidentifier id="org.eclipse.jst.jee.ee5webDD">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME" />
-      	</contenttypeidentifier>
-			<contenttypeidentifier id="org.jboss.tools.common.model.ui.xml">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_FILTER_NAME" />
-			</contenttypeidentifier>
-		</hyperlink>
-
-		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.RoleNameHyperlink" 
-      		id="org.jboss.tools.common.text.ext.hyperlink.RoleNameHyperlink">
-			<contenttypeidentifier id="org.eclipse.wst.xml.core.xmlsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME" />
-			</contenttypeidentifier>
-			<contenttypeidentifier id="org.eclipse.core.runtime.xml">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME" />
-			</contenttypeidentifier>
-        	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME" />
-        	</contenttypeidentifier>
-        	<contenttypeidentifier id="org.eclipse.jst.jee.ee5webDD">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME" />
-      	</contenttypeidentifier>
-			<contenttypeidentifier id="org.jboss.tools.common.model.ui.xml">
-				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_ROLE_NAME" />
-			</contenttypeidentifier>
-		</hyperlink>
-
-		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.ServletNameHyperlink" 
-      		id="org.jboss.tools.common.text.ext.hyperlink.ServletNameHyperlink">
-			<contenttypeidentifier id="org.eclipse.wst.xml.core.xmlsource">
-            	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME" />
-			</contenttypeidentifier>
-			<contenttypeidentifier id="org.eclipse.core.runtime.xml">
-            	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME" />
-			</contenttypeidentifier>
-        	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
-            	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME" />
-        	</contenttypeidentifier>
-        	<contenttypeidentifier id="org.eclipse.jst.jee.ee5webDD">
-            	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME" />
-      	</contenttypeidentifier>
-			<contenttypeidentifier id="org.jboss.tools.common.model.ui.xml">
-            	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_SERVLET_NAME" />
-			</contenttypeidentifier>
-		</hyperlink>
-	<!-- Web.inf File -->
-
-	<!-- TLD Files -->
-		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.TLDAttributeNameHyperlink" 
-      		id="org.jboss.tools.common.text.ext.hyperlink.TLDAttributeNameHyperlink">
-			<contenttypeidentifier id="org.eclipse.wst.xml.core.xmlsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.tld.TLD_ATTRIBUTE_NAME" />
-			</contenttypeidentifier>
-			<contenttypeidentifier id="org.eclipse.jst.jsp.core.tldsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.tld.TLD_ATTRIBUTE_NAME" />
-			</contenttypeidentifier>
-			<contenttypeidentifier id="org.eclipse.core.runtime.xml">
-				<partitiontype id="org.jboss.tools.common.text.ext.tld.TLD_ATTRIBUTE_NAME" />
-			</contenttypeidentifier>
-			<contenttypeidentifier id="org.jboss.tools.common.model.ui.xml">
-				<partitiontype id="org.jboss.tools.common.text.ext.tld.TLD_ATTRIBUTE_NAME" />
-			</contenttypeidentifier>
-		</hyperlink>
-	<!-- TLD Files -->
-
-		<hyperlink 
-			class="org.jboss.tools.common.text.ext.hyperlink.JSPStylesheetRelLinkHyperlink" 
-      		id="org.jboss.tools.common.text.ext.hyperlink.JSPStylesheetRelLinkHyperlink">
-			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_STYLESHEET_REL_LINK" />
-			</contenttypeidentifier>
-			<contenttypeidentifier id="org.eclipse.wst.html.core.htmlsource">
-				<partitiontype id="org.jboss.tools.common.text.ext.jsp.JSP_STYLESHEET_REL_LINK" />
-			</contenttypeidentifier>
-		</hyperlink>
-		
 		<hyperlink 
 			class="org.jboss.tools.common.text.ext.hyperlink.xml.PortletHyperlink" 
 	  		id="org.jboss.tools.common.text.ext.hyperlink.xml.PortletHyperlink">

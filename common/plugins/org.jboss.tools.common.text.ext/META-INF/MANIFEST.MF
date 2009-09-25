@@ -3,7 +3,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.jboss.tools.common.text.ext.ExtensionsPlugin
 Export-Package: org.jboss.tools.common.text.ext,
  org.jboss.tools.common.text.ext.hyperlink,
- org.jboss.tools.common.text.ext.hyperlink.jsp,
  org.jboss.tools.common.text.ext.hyperlink.xml,
  org.jboss.tools.common.text.ext.hyperlink.xpl,
  org.jboss.tools.common.text.ext.util,
