@@ -18,6 +18,7 @@ import java.util.Properties;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.model.XModelObject;
@@ -25,8 +26,6 @@ import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesComposite;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.jboss.tools.jst.web.tld.IWebProject;
-import org.jboss.tools.jst.web.tld.WebProjectFactory;
 
 /**
  * 
@@ -94,8 +93,10 @@ public class DropUtils {
 			container = (IContainer)EclipseResourceUtil.getResource(o);
 		}
 		if(container == null) {
-			IWebProject p = WebProjectFactory.instance.getWebProject(modelNature.getModel());
-			container = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(new Path(p.getWebRootLocation()));
+			IResource r = EclipseResourceUtil.getFirstWebContentResource(project);
+			if(r instanceof IContainer) {
+				container = (IContainer)r;
+			}
 		}
 		return container;
 	}
