@@ -35,7 +35,6 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
 import org.jboss.tools.common.model.ui.editor.EditorPartWrapper;
-import org.jboss.tools.jst.web.tld.URIConstants;
 
 public class PaletteViewPart extends ViewPart implements IPartListener {
 	
@@ -144,6 +143,8 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 		if(dropIntoEditor(editor, macro)) return;
 		if(dropIntoEditor2(editor, macro)) return;
 
+		//TODO implement a service
+/**
 		String tagname = macro.getAttributeValue("name"); //$NON-NLS-1$
 		String startText = "" + macro.getAttributeValue("start text"); //$NON-NLS-1$ //$NON-NLS-2$
 		String endText = "" + macro.getAttributeValue("end text"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -174,6 +175,7 @@ public class PaletteViewPart extends ViewPart implements IPartListener {
 			);
 			page.activate(part);
 		}
+*/
 	}
 
 	private boolean dropIntoEditor(ITextEditor editor, XModelObject macro) {

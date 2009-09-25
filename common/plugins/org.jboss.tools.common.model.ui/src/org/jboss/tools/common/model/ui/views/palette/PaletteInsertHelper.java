@@ -34,11 +34,10 @@ import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
-import org.jboss.tools.jst.web.tld.TLDToPaletteHelper;
-import org.jboss.tools.jst.web.tld.URIConstants;
 
 /**
  * @author Jeremy
@@ -46,15 +45,11 @@ import org.jboss.tools.jst.web.tld.URIConstants;
 public class PaletteInsertHelper {
 
 	public static final String PROPOPERTY_TAG_NAME   = "tag name"; //$NON-NLS-1$
-	public static final String PROPOPERTY_START_TEXT = TLDToPaletteHelper.START_TEXT;
-	public static final String PROPOPERTY_END_TEXT   = TLDToPaletteHelper.END_TEXT;
+	public static final String PROPOPERTY_START_TEXT = XModelObjectConstants.START_TEXT;
+	public static final String PROPOPERTY_END_TEXT   = XModelObjectConstants.END_TEXT;
 	public static final String PROPOPERTY_NEW_LINE = "new line"; //$NON-NLS-1$
-	public static final String PROPOPERTY_REFORMAT_BODY  = TLDToPaletteHelper.REFORMAT;
-	public static final String PROPOPERTY_TAGLIBRARY_URI = URIConstants.LIBRARY_URI;
-	public static final String PROPOPERTY_TAGLIBRARY_VERSION = URIConstants.LIBRARY_VERSION;
-	public static final String PROPOPERTY_DEFAULT_PREFIX = URIConstants.DEFAULT_PREFIX;
+	public static final String PROPOPERTY_REFORMAT_BODY  = XModelObjectConstants.REFORMAT;
 	public static final String PROPOPERTY_SELECTION_PROVIDER = "selectionProvider"; //$NON-NLS-1$
-    public static final String PROPOPERTY_ADD_TAGLIB = TLDToPaletteHelper.ADD_TAGLIB;
 
     static PaletteInsertHelper instance = new PaletteInsertHelper();
 
