@@ -6,9 +6,6 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.ModelFeatureFactory;
-import org.jboss.tools.jst.web.tld.IFilePathEncoder;
 
 public class ModelNatureExtension {
 	public static String EXTENSION_POINT = "org.jboss.tools.common.model.modelnatures"; //$NON-NLS-1$
@@ -17,7 +14,6 @@ public class ModelNatureExtension {
 	String displayName;
 	String pathEncoder;
 	String watcherContributor;
-	IFilePathEncoder pathEncoderInstance;
 
 	public ModelNatureExtension() {}
 
@@ -29,25 +25,8 @@ public class ModelNatureExtension {
 		return displayName;
 	}
 
-	public IFilePathEncoder getPathEncoder () {
-		if(pathEncoderInstance != null) {
-			return pathEncoderInstance;
-		}
-		if(pathEncoder == null) {
-			return null;
-		}
-		if(pathEncoder.length() == 0) {
-			pathEncoder = null;
-			return null;
-		}
-		try {
-			pathEncoderInstance = (IFilePathEncoder)ModelFeatureFactory.getInstance().createFeatureInstance(pathEncoder);
-		} catch (ClassCastException e) {
-			ModelPlugin.getPluginLog().logError(e);
-		} finally {
-			pathEncoder = null;
-		}
-		return pathEncoderInstance;
+	public String getPathEncoder () {
+		return pathEncoder;
 	}
 
 	public String getWatcherContributor() {
