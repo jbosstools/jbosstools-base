@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.jboss.tools.common.util.FileUtil;
+import org.jboss.tools.common.zip.UnzipOperation;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
@@ -45,32 +46,26 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 		copyProjectTemplates();
 	}
 
-	public static String getInstallPath() {
-		Bundle bundle = Platform.getBundle(PLUGIN_ID);
-		URL url = null;
-		try {
-			url = bundle == null ? null : FileLocator.resolve(bundle.getEntry("/")); //$NON-NLS-1$
-		} catch (IOException e) {
-			url = bundle.getEntry("/"); //$NON-NLS-1$
-		}
-		return (url == null) ? null : url.getPath();
-	}
-	
 
-	void copyProjectTemplates() {
-		Bundle b = Platform.getBundle(PLUGIN_ID);
-		File location = Platform.getStateLocation(b).toFile();
-		File install = new File(getInstallPath());
-		if(!install.isDirectory()) return;
-		FileFilter filter = new FileFilter() {
-			public boolean accept(File pathname) {
-				return pathname != null 
-				&& !"CVS".equals(pathname.getName()) //$NON-NLS-1$
-				&& !".svn".equalsIgnoreCase(pathname.getName()); //$NON-NLS-1$
-			}
-		};
-		copy(location, install, "templates", filter); //$NON-NLS-1$
-		copy(location, install, "lib", filter); //$NON-NLS-1$
+	void copyProjectTemplates() throws IOException {
+		Bundle bundle = Platform.getBundle(PLUGIN_ID);
+		File location = Platform.getStateLocation(bundle).toFile();
+		File install = FileLocator.getBundleFile(bundle);  
+		if(install.isDirectory()) {
+			FileFilter filter = new FileFilter() {
+				public boolean accept(File pathname) {
+					return pathname != null 
+					&& !"CVS".equals(pathname.getName()) //$NON-NLS-1$
+					&& !".svn".equalsIgnoreCase(pathname.getName()); //$NON-NLS-1$
+				}
+			};
+			copy(location, install, "templates", filter); //$NON-NLS-1$
+			copy(location, install, "lib", filter); //$NON-NLS-1$
+		} else {
+			UnzipOperation unzip = new UnzipOperation(install);
+			unzip.execute(location, "templates");
+			unzip.execute(location, "lib");
+		}
 	}
 	
 	private void copy(File location, File install, String name, FileFilter filter) {
@@ -95,5 +90,4 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 	static public void log(Exception ex) {
 		getDefault().getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.OK, "No message", ex)); //$NON-NLS-1$
 	}
-	
 }
