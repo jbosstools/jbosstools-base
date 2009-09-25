@@ -38,7 +38,6 @@ import org.jboss.tools.common.model.ui.dnd.VpeDnDEvent;
 import org.jboss.tools.common.model.ui.dnd.VpeTextDropAction;
 import org.jboss.tools.common.model.ui.editors.dnd.DropUtils;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.jboss.tools.jst.web.tld.TLDUtil;
 
 /**
  * @author glory
@@ -171,11 +170,21 @@ public class DropContext {
 	private boolean dropAsFileObject(XModelObject o) {
 		if(o == null) return false;
 		if(o.getFileType() != XModelObject.FILE || isOverAttributeValue) return false;
-    	if(TLDUtil.isTaglib(o)) return false;
+    	if(isTaglib(o)) return false;
     	String extension = o.getAttributeValue("extension"); //$NON-NLS-1$
     	return extension != null && isExtensionMapped(extension);
 	}
-	
+
+	//TODO do not reference tld here
+	//TLDUtil.isTaglib(o)
+    static String FILE_ENTITIES = ".FileTLD_PRO.FileTLD_1_2.FileTLD_2_0.FileTLD_2_1."; //$NON-NLS-1$
+    public static boolean isTaglib(XModelObject o) {
+        return isOfEntity(o, FILE_ENTITIES);
+    }
+    private static boolean isOfEntity(XModelObject o, String entities) {
+        return entities.indexOf("." + o.getModelEntity().getName() + ".") >= 0;  //$NON-NLS-1$//$NON-NLS-2$
+    }
+
 	class TransferHolder {
 		Transfer transfer;
 		TransferProcessor processor;
