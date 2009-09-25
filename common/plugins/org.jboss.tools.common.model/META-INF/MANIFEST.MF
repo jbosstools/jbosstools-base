@@ -59,7 +59,6 @@ Export-Package: org.jboss.tools.common.ant.model,
  org.jboss.tools.common.model.loaders.impl,
  org.jboss.tools.common.model.search,
  org.jboss.tools.common.model.search.impl,
- org.jboss.tools.jst.web.tld,
  images,
  org.jboss.tools.common.model.refactoring
 Require-Bundle: org.jboss.tools.common;visibility:=reexport,
