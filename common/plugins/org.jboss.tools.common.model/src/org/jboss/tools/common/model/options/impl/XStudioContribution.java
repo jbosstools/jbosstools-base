@@ -33,11 +33,17 @@ public class XStudioContribution {
     	try {
             Bundle b = Platform.getBundle(loader);
         	URL u = b.getResource(resource);
+        	if(u == null) {
+        		ModelPlugin.getPluginLog().logWarning("Cannot find resource " + resource + " in plugin " + b); //$NON-NLS-1$ //$NON-NLS-2$
+        		return null;
+        	}
             URLConnection c = u.openConnection();
             return c.getInputStream();
     	} catch (IOException e) {
-    		e.printStackTrace();
     		ModelPlugin.getPluginLog().logError(e);
+    		return null;
+    	} catch (NoClassDefFoundError e2) {
+    		ModelPlugin.getPluginLog().logError(e2);
     		return null;
     	}
 	}
