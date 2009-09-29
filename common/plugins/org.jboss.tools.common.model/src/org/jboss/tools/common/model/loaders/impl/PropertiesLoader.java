@@ -311,7 +311,7 @@ public class PropertiesLoader implements XObjectLoader {
 		if(ch || mod) o1.setModified(true);
     }
     
-	private static int getSeparatorIndex(String s) {
+	public static int getSeparatorIndex(String s) {
 		String tr = s.trim();
 		if(tr.length() == 0 || tr.charAt(0) == '#' || tr.charAt(0) == '!') return -1;
 		boolean n = false;
