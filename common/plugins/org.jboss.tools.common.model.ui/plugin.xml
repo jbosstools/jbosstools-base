@@ -10,6 +10,7 @@
    <extension-point id="InsertTagWizard" name="%ExtensionName_InsertTagWizard" schema="schema/InsertTagWizard.exsd"/>
    <extension-point id="labelDecorator" name="%ExtensionName_labelDecorator" schema="schema/labelDecorator.exsd"/>
    <extension-point id="attributeContentProposalProviders" name="%ExtensionName_attributeContentProposalProviders" schema="schema/attributeContentProposalProviders.exsd"/>
+   <extension-point id="propertiesFileContentAssist" name="Properties File Content Assist" schema="schema/propertiesFileContentAssist.exsd"/>
 
    <extension point="org.eclipse.ui.elementFactories">
       <factory class="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory" id="org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory">

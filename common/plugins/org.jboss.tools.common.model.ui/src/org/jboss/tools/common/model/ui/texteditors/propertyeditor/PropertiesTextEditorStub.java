@@ -18,7 +18,12 @@ import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
 import org.eclipse.core.resources.IResource;
 import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDrop;
 import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDropProvider;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
+import org.eclipse.jdt.internal.ui.propertiesfileeditor.IPropertiesFilePartitions;
 import org.eclipse.jdt.internal.ui.propertiesfileeditor.PropertiesFileEditor;
+import org.eclipse.jdt.internal.ui.propertiesfileeditor.PropertiesFileSourceViewerConfiguration;
+import org.eclipse.jdt.ui.text.JavaTextTools;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -91,5 +96,12 @@ public class PropertiesTextEditorStub extends PropertiesFileEditor implements ID
 			return super.isSynchronized(element);
 		}
 		
+	}
+
+	protected void initializeEditor() {
+		super.initializeEditor();
+		IPreferenceStore store= JavaPlugin.getDefault().getCombinedPreferenceStore();
+		JavaTextTools textTools= JavaPlugin.getDefault().getJavaTextTools();
+		setSourceViewerConfiguration(new PropertiesSourceViewerConfiguration(textTools.getColorManager(), store, this, IPropertiesFilePartitions.PROPERTIES_FILE_PARTITIONING));
 	}
 }
