@@ -206,14 +206,11 @@ public class ElVarSearcher {
 	 * @return All var/value that can be used in node and null if can't find anyone.
 	 */
 	public static List<Var> findAllVars(Node node, ELParserFactory factory) {
-		ArrayList<Var> vars = null;
+		ArrayList<Var> vars = new ArrayList<Var>();
 		Node parentNode = node;
 		while(parentNode!=null) {
 			Var var = findVar(parentNode, factory);
 			if(var!=null) {
-				if(vars == null) {
-					vars = new ArrayList<Var>();
-				}
 				vars.add(0, var);
 			}
 			parentNode = parentNode.getParentNode();
