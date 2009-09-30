@@ -23,25 +23,11 @@ import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
-import org.eclipse.wst.sse.ui.internal.StructuredTextViewer;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkBuilder;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkDetector;
 
 public class BaseHyperlinkDetector implements IHyperlinkDetector{
-    private static HyperlinkDetector fInstance;
-
-    /**
-	 * returns singleton instance of HyperlinkDetector
-	 * 
-	 * @return HyperlinkDetector
-	 */
-	public synchronized static HyperlinkDetector getInstance() {
-		if (fInstance == null) {
-			fInstance = new HyperlinkDetector();
-		}
-		return fInstance;
-	}
 
 	public IHyperlink[] getHyperlinks(ITextViewer textViewer, IRegion region) {
 	    IHyperlink[] hyperlinks = null;

@@ -20,8 +20,18 @@ import org.jboss.tools.common.text.ext.hyperlink.xpl.BaseHyperlinkDetector;
 import org.jboss.tools.common.text.ext.util.AxisUtil;
 
 public class HyperlinkDetector extends BaseHyperlinkDetector {
+    
+	private static HyperlinkDetector fInstance;
 
-
+    /**
+	 * returns singleton instance of HyperlinkDetector
+	 * 
+	 * @return HyperlinkDetector
+	 */
+	public static HyperlinkDetector getInstance() {
+		return HyperlinkDetectorHolder.INSTANCE;
+	}
+	
 	/**
 	 * Returns the partition types located at offset in the document
 	 * 
@@ -73,4 +83,7 @@ public class HyperlinkDetector extends BaseHyperlinkDetector {
 		return types.toArray(new String[types.size()]);
 	}
 
+	static class HyperlinkDetectorHolder {
+		static HyperlinkDetector INSTANCE = new HyperlinkDetector();	
+	}
 }
