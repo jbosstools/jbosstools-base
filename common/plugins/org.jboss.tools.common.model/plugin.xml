@@ -127,8 +127,6 @@
 			class="org.jboss.tools.common.meta.help.HelpHandler"/>
 		<xclass id="org.jboss.tools.common.model.engines.impl.EnginesLoader"
 			class="org.jboss.tools.common.model.engines.impl.EnginesLoader"/>
-		<xclass id="org.jboss.tools.common.model.engines.impl.StopProcessHandler"
-			class="org.jboss.tools.common.model.engines.impl.StopProcessHandler"/>
 		<xclass id="org.jboss.tools.common.model.files.handlers.InvokingWizardHandler"
 			class="org.jboss.tools.common.model.files.handlers.InvokingWizardHandler"/>
 		<xclass id="org.jboss.tools.common.model.filesystems.impl.CreateFileHandler"

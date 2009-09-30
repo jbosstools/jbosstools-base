@@ -89,9 +89,6 @@
     <XActionItem
      HandlerClassName="org.jboss.tools.common.model.handlers.RunAntHandler"
      ICON="action.start" displayName="Run Ant..." kind="action" name="Run"/>
-    <XActionItem HIDE="disabled"
-     HandlerClassName="org.jboss.tools.common.model.engines.impl.StopProcessHandler"
-     ICON="action.stop" displayName="Stop" kind="action" name="Stop"/>
    </XActionItem>
    <XActionItem ICON="action.empty" kind="list" name="Properties">
     <XActionItem HandlerClassName="%Properties%" ICON="action.empty"

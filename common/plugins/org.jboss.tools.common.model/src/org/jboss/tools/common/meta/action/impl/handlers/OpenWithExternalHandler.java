@@ -84,12 +84,6 @@ public class OpenWithExternalHandler extends AbstractHandler {
         if(OpenWithHelper.validatePath(actionname, editor)) new OWEProcess(editor, filename).start();
     }
 
-    public static void startExplorer(XModel model, String url) throws XModelException {
-        XModelObject editor = model.getByPath("%Options%/External Programs/Internet Browser"); //$NON-NLS-1$
-        if(editor == null) throw new XModelException("External Program 'Internet Browser' is not set in Options.");
-        if(OpenWithHelper.validatePath("Open", editor)) new OWEProcess(editor, url, true).start(); //$NON-NLS-1$
-    }
-
 }
 
 class OWEProcess extends XProcess {

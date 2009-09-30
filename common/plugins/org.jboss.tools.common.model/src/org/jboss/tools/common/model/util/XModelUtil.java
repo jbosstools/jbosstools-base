@@ -14,31 +14,11 @@ import java.util.Properties;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
-import org.jboss.tools.common.model.impl.*;
 
 public class XModelUtil {
-	private static final String DEFAULT_MODEL_VERSION = "5.0"; //$NON-NLS-1$
-	
 	private static final String PROPERTIES_ACTION = "Properties/Properties"; //$NON-NLS-1$
 	private static final String EDIT_ACTION = "Edit"; //$NON-NLS-1$
 
-    public static void addModifyListener(XModel model, Object listener) {
-        RootImpl impl = (RootImpl)model.getRoot();
-        impl.addModifyListener(listener);
-    }
-
-    public static void addHistoryListener(XModel model, Object listener) {
-        model.getUndoManager().addListener(listener);
-    }
-
-	public static String getModelVersion(XModel model) {
-    	XModelObject fss = FileSystemsHelper.getFileSystems(model);
-    	if(fss == null) return DEFAULT_MODEL_VERSION;
-		String modelVersionStr = fss.getAttributeValue(XModelConstants.MODEL_VERSION);
-		return (modelVersionStr == null || "".equals(modelVersionStr)) ? DEFAULT_MODEL_VERSION : modelVersionStr; //$NON-NLS-1$
-	}
-	
 	public static void openProperyDialog(XModelObject object){
 		XActionInvoker.invoke(PROPERTIES_ACTION, object, new Properties());
 	}
