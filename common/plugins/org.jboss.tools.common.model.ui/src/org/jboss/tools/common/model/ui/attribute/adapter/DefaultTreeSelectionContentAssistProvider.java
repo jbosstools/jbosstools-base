@@ -66,7 +66,7 @@ public class DefaultTreeSelectionContentAssistProvider implements IAttributeCont
 //				replacementString = "";
 			}
 			
-			IContentProposal proposal = AttributeContentProposalProviderFactory.makeContentProposal(replacementString, replacementString);
+			IContentProposal proposal = AttributeContentProposalProviderFactory.makeContentProposal(replacementString, replacementString, null);
 				 
 			proposalsList.add(proposal);
 		}

@@ -180,14 +180,14 @@ public class AttributeContentProposalProviderFactory {
 		return result;
 	}
 
-	public static IContentProposal makeContentProposal(final String proposal, final String label) {
+	public static IContentProposal makeContentProposal(final String proposal, final String label, final String description) {
 		return new IContentProposal() {
 			public String getContent() {
 				return proposal;
 			}
 
 			public String getDescription() {
-				return null;
+				return description;
 			}
 
 			public String getLabel() {
