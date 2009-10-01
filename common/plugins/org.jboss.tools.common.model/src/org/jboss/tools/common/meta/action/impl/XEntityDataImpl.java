@@ -55,6 +55,7 @@ public class XEntityDataImpl implements XEntityData, XMetaDataConstants {
         attributes = new XAttributeDataImpl[cs.length];
         for (int i = 0; i < cs.length; i++) {
             attributes[i] = new XAttributeDataImpl();
+            attributes[i].setEntityData(this);
             attributes[i].load(cs[i]);
         }
     }
@@ -77,6 +78,7 @@ public class XEntityDataImpl implements XEntityData, XMetaDataConstants {
             impl.attributes[i] = XAttributeDataImpl.create(impl.entityname,
                             data[i + 1][0],
                             (data[i + 1].length > 1 && XModelObjectConstants.YES.equals(data[i + 1][1])));
+            impl.attributes[i].setEntityData(impl);
         }
         return impl;
     }

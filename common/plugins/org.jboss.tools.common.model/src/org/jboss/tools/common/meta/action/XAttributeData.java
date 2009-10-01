@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.action;
 import org.jboss.tools.common.meta.XAttribute;
 
 public interface XAttributeData {
+	public XEntityData getEntityData();
     public boolean getMandatoryFlag();
     public String getValue();
     public void setValue(String value);

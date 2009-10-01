@@ -13,6 +13,7 @@ package org.jboss.tools.common.meta.action.impl;
 import org.w3c.dom.*;
 import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.meta.action.XAttributeData;
+import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.meta.impl.*;
 import org.jboss.tools.common.model.XModelObjectConstants;
 
@@ -24,8 +25,17 @@ public class XAttributeDataImpl implements XAttributeData, XMetaDataConstants {
     private boolean isAdvanced;
     private String value = null;
     private boolean references = false;
+    private XEntityDataImpl entityData;
 
     public XAttributeDataImpl() {}
+
+    public XEntityData getEntityData() {
+    	return entityData;
+    }
+
+    public void setEntityData(XEntityDataImpl entityData) {
+    	this.entityData = entityData;
+    }
 
     public boolean getMandatoryFlag() {
         return mandatory && !isAdvanced;
