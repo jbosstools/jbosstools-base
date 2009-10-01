@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute.adapter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -38,7 +41,7 @@ public class PropertiesContentAssistProvider implements
 	public boolean isRelevant(XModelObject object, XAttribute attribute) {
 		if(object == null || attribute == null) return false;
 		if("Property".equals(attribute.getModelEntity().getName())) return true;
-		if("HibConfig3Property".equals(attribute.getModelEntity().getName())) return true;
+		if(getContributedEntities().contains(attribute.getModelEntity().getName())) return true;
 		return false;
 	}
 
@@ -75,13 +78,32 @@ public class PropertiesContentAssistProvider implements
 	}
 
 	static String EXTENSION_POINT = "org.jboss.tools.common.model.ui.propertiesFileContentAssist";
+
+	static Set<String> entities = null;
 	
+	public static Set<String> getContributedEntities() {
+		if(entities == null) {
+			entities = new HashSet<String>();
+			IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT);
+			if(point != null) {
+				IConfigurationElement[] cs = point.getConfigurationElements();
+				for (IConfigurationElement c: cs) {
+					String entity = c.getAttribute("entity");
+					if(entity != null) {
+						entities.add(entity);
+					}
+				}
+			}
+		}
+		return entities;
+	}
+
 	private PropertiesContentProposalProvider createProcessorByFileName(String fileName, String entity) {
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT);
 		if(point == null) return null;
 		IConfigurationElement[] cs = point.getConfigurationElements();
 		for (IConfigurationElement c: cs) {
-			if(fileName.equals(c.getAttribute("fileName"))) {
+			if(fileName.equals(c.getAttribute("fileName")) || entity.equals(c.getAttribute("entity"))) {
 				try {
 					PropertiesContentProposalProvider p = (PropertiesContentProposalProvider)c.createExecutableExtension("attributeProcessor");
 					p.object = object;
