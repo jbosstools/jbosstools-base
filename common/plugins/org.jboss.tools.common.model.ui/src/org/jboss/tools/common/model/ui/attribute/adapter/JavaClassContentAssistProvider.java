@@ -26,6 +26,7 @@ import org.eclipse.pde.internal.ui.editor.contentassist.TypeContentProposal;
 import org.eclipse.pde.internal.ui.editor.contentassist.TypePackageCompletionProcessor;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.attribute.IAttributeContentProposalProvider;
 import org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkCueLabelProvider;
@@ -44,7 +45,7 @@ public class JavaClassContentAssistProvider implements
 		return ContentProposalAdapter.PROPOSAL_REPLACE;
 	}
 
-	public void init(XModelObject object, XAttribute attribute) {
+	public void init(XModelObject object, XEntityData data, XAttribute attribute) {
 		this.object = object;
 		this.attribute = attribute;
 	}

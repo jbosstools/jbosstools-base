@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.ui.attribute;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.model.XModelObject;
 
 /**
@@ -22,7 +23,7 @@ public interface IAttributeContentProposalProvider {
 
 	public boolean isRelevant(XModelObject object, XAttribute attribute);
 
-	public void init(XModelObject object, XAttribute attribute);
+	public void init(XModelObject object, XEntityData data, XAttribute attribute);
 
 	public IContentProposalProvider getContentProposalProvider();
 

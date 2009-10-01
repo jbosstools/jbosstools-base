@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
@@ -68,18 +69,22 @@ public class AttributeContentProposalProviderFactory {
 
 	public static void registerContentAssist(DefaultValueAdapter valueAdapter, Control control, IContentProposalListener2 listener) {
 		XModelObject object = valueAdapter.getModelObject();
+		XEntityData data = null;
+		if(valueAdapter.getAttributeData() != null) {
+			data = valueAdapter.getAttributeData().getEntityData();
+		}
 		XAttribute attr = valueAdapter.getAttribute();
 		if (attr == null && valueAdapter.getAttributeData() != null) {
 			attr = valueAdapter.getAttributeData().getAttribute();
 		}
-		registerContentAssist(object, attr, control, listener);
+		registerContentAssist(object, data, attr, control, listener);
 	}
 
-	public static void registerContentAssist(XModelObject object, XAttribute attr, Control control) {
-		registerContentAssist(object, attr, control, null);
+	public static void registerContentAssist(XModelObject object, XEntityData data, XAttribute attr, Control control) {
+		registerContentAssist(object, data, attr, control, null);
 	}
 
-	public static void registerContentAssist(XModelObject object, XAttribute attr, Control control, IContentProposalListener2 listener) {
+	public static void registerContentAssist(XModelObject object, XEntityData data, XAttribute attr, Control control, IContentProposalListener2 listener) {
 		IControlContentAdapter controlAdapter = control instanceof Text 
 			? new TextContentAdapter()
 			: control instanceof Combo
@@ -93,7 +98,7 @@ public class AttributeContentProposalProviderFactory {
 				.getContentProposalProviders(object, attr);
 		boolean added = false;
 		for (IAttributeContentProposalProvider p : ps) {
-			p.init(object, attr);
+			p.init(object, data, attr);
 			IContentProposalProvider cpp = p.getContentProposalProvider();
 			if (cpp == null)
 				continue;

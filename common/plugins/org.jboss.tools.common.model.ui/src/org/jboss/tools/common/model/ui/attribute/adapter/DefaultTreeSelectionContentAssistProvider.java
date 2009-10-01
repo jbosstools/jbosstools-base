@@ -17,6 +17,7 @@ import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
 import org.jboss.tools.common.model.ui.attribute.IAttributeContentProposalProvider;
@@ -97,7 +98,7 @@ public class DefaultTreeSelectionContentAssistProvider implements IAttributeCont
 		return ContentProposalAdapter.PROPOSAL_REPLACE;
 	}
 
-	public void init(XModelObject object, XAttribute attribute) {
+	public void init(XModelObject object, XEntityData data, XAttribute attribute) {
 		this.object = object;
 		this.attribute = attribute;
 		treeProvider = new DefaultXAttributeTreeContentProvider(attribute, object.getModel(), object);

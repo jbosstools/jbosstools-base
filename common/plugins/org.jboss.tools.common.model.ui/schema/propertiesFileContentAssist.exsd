@@ -66,6 +66,16 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="attributeProcessor" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java"/>
+               </appInfo>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
