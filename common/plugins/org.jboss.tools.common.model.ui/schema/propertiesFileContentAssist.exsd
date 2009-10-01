@@ -59,13 +59,6 @@
                </appInfo>
             </annotation>
          </attribute>
-         <attribute name="fileName" type="string">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
          <attribute name="attributeProcessor" type="string">
             <annotation>
                <documentation>
@@ -74,6 +67,20 @@
                <appInfo>
                   <meta.attribute kind="java"/>
                </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="fileName" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="entity" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

@@ -10,7 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute.adapter;
 
-import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.action.XEntityData;
@@ -21,15 +20,11 @@ import org.jboss.tools.common.model.XModelObject;
  * @author Viacheslav Kabanovich
  *
  */
-public class PropertiesContentProposalProvider implements IContentProposalProvider {
+public abstract class PropertiesContentProposalProvider implements IContentProposalProvider {
 	protected XModelObject object;
 	protected XEntityData data;
 	protected XAttribute attribute;	
 
 	public PropertiesContentProposalProvider() {}
-
-	public IContentProposal[] getProposals(String contents, int position) {
-		return null;
-	}
 
 }

@@ -23,7 +23,6 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.attribute.IAttributeContentProposalProvider;
-import org.jboss.tools.common.model.ui.texteditors.propertyeditor.AbstractPropertiesContentAssistProcessor;
 
 public class PropertiesContentAssistProvider implements
 		IAttributeContentProposalProvider {
@@ -32,12 +31,14 @@ public class PropertiesContentAssistProvider implements
 	XAttribute attribute;
 
 	String fileName = null;
+	String entity = null;
 
 	public PropertiesContentAssistProvider() {}
 
 	public boolean isRelevant(XModelObject object, XAttribute attribute) {
 		if(object == null || attribute == null) return false;
 		if("Property".equals(attribute.getModelEntity().getName())) return true;
+		if("HibConfig3Property".equals(attribute.getModelEntity().getName())) return true;
 		return false;
 	}
 
@@ -45,6 +46,7 @@ public class PropertiesContentAssistProvider implements
 		this.object = object;
 		this.data = data;
 		this.attribute = attribute;
+		entity = attribute.getModelEntity().getName();
 		fileName = null;
 
 		XModelObject f = object;
@@ -56,7 +58,7 @@ public class PropertiesContentAssistProvider implements
 
 	public IContentProposalProvider getContentProposalProvider() {
 		if(fileName == null) return null;
-		PropertiesContentProposalProvider provider = createProcessorByFileName(fileName);
+		PropertiesContentProposalProvider provider = createProcessorByFileName(fileName, entity);
 		return provider;
 	}
 
@@ -74,7 +76,7 @@ public class PropertiesContentAssistProvider implements
 
 	static String EXTENSION_POINT = "org.jboss.tools.common.model.ui.propertiesFileContentAssist";
 	
-	private PropertiesContentProposalProvider createProcessorByFileName(String fileName) {
+	private PropertiesContentProposalProvider createProcessorByFileName(String fileName, String entity) {
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT);
 		if(point == null) return null;
 		IConfigurationElement[] cs = point.getConfigurationElements();
