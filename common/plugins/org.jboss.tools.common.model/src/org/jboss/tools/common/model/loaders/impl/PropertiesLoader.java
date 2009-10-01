@@ -25,6 +25,7 @@ import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.util.FileUtil;
 
 public class PropertiesLoader implements XObjectLoader {
+	public static String ENT_PROPERTY = "Property"; //$NON-NLS-1$
 	static String INTERNAL_SEPARATOR = "@"; //$NON-NLS-1$
 	String defaultLineSeparator = "\r\n"; //$NON-NLS-1$
 
@@ -123,7 +124,7 @@ public class PropertiesLoader implements XObjectLoader {
             p.setProperty("separator", "#"); //obsolete //$NON-NLS-1$ //$NON-NLS-2$
             p.setProperty("line-end", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
-            c = object.getModel().createModelObject("Property", p); //$NON-NLS-1$
+            c = object.getModel().createModelObject(ENT_PROPERTY, p);
             object.addChild(c);
 
             String dirtyvalue = (i < s.length()) ? s.substring(i + 1) : ""; //$NON-NLS-1$
