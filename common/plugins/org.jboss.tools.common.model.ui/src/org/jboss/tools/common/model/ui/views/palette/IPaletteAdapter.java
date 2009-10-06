@@ -14,8 +14,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public interface IPaletteAdapter {
-	void setPaletteViewPart(PaletteViewPart viewPart);
-	Control createControl(Composite composite);
+	public void setPaletteViewPart(IPalettePageAdapter viewPart);
+	public Control createControl(Composite composite);
+	public void initActionBars();
 	void setEnabled(boolean enabled);
 	void dispose();
 	void setPaletteContents(PaletteContents contents);

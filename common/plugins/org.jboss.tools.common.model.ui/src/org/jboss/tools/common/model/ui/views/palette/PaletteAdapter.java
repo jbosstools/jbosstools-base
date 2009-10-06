@@ -58,7 +58,7 @@ import org.jboss.tools.common.model.ui.util.StringUtilities;
 
 public class PaletteAdapter implements IPaletteAdapter {
 	private static final int TEXT_MARGIN = 4;
-	private PaletteViewPart viewPart = null;
+	private IPalettePageAdapter viewPart = null;
 	private PaletteModel model = null; 
 	private ScrolledComposite pane = null;
 	private PaletteModelListener modelListener = null;
@@ -69,8 +69,29 @@ public class PaletteAdapter implements IPaletteAdapter {
 	private String selectedTab = null;
 	private boolean fWindowsFlag;
 	
-	public void setPaletteViewPart(PaletteViewPart viewPart) {
+	public void setPaletteViewPart(IPalettePageAdapter viewPart) {
 		this.viewPart = viewPart;
+	}
+
+	public void initActionBars() {
+		IActionBars bars = viewPart.getActionBars();
+		if(bars != null) {
+			IMenuManager menuManager = bars.getMenuManager();
+
+			bars.getToolBarManager().add(new PaletteEditAction());
+			bars.getToolBarManager().add(new ShowHideTabsAction());
+			if (selectedTab != null) {
+				ActionContributionItem item = (ActionContributionItem)menuManager.find(selectedTab); 
+				if (item != null) {
+					item.getAction().run();
+				} 
+			} else {
+				IContributionItem[] actions = menuManager.getItems();
+				if (actions.length > 0 && (actions[0] instanceof ActionContributionItem)) {
+					((ActionContributionItem)actions[0]).getAction().run();
+				}
+			}
+		}
 	}
 
 	public Control createControl(Composite composite) {
@@ -94,31 +115,16 @@ public class PaletteAdapter implements IPaletteAdapter {
 		model = PaletteModel.getInstance();
 		createPaletteTabs();
 
-		IActionBars bars = viewPart.getViewSite().getActionBars();
-		IMenuManager menuManager = bars.getMenuManager();
-
-		bars.getToolBarManager().add(new PaletteEditAction());
-		bars.getToolBarManager().add(new ShowHideTabsAction());
+//		initActionBars();
 
 		modelListener = new PaletteModelListener();
 		model.addModelTreeListener(modelListener);
 
-		if (selectedTab != null) {
-			ActionContributionItem item = (ActionContributionItem)menuManager.find(selectedTab); 
-			if (item != null) {
-				item.getAction().run();
-			} 
-		} else {
-			IContributionItem[] actions = menuManager.getItems();
-			if (actions.length > 0 && (actions[0] instanceof ActionContributionItem)) {
-				((ActionContributionItem)actions[0]).getAction().run();
-			}
-		}
 		return pane;
 	}
 	
 	private void createPaletteTabs() {
-		IActionBars bars = viewPart.getViewSite().getActionBars();
+		IActionBars bars = viewPart.getActionBars();
 		IMenuManager menuManager = bars.getMenuManager();
 		IPaletteNode root = model.getRoot();
 		IPaletteNode[] nodes = root.getChildren();
@@ -193,7 +199,7 @@ public class PaletteAdapter implements IPaletteAdapter {
 	private void reload(XModelObject xtab) {
 		model.reload();
 
-		IActionBars bars = viewPart.getViewSite().getActionBars();
+		IActionBars bars = viewPart.getActionBars();
 		IMenuManager menuManager = bars.getMenuManager();
 		
 		String oldTitle = null;
@@ -252,14 +258,14 @@ public class PaletteAdapter implements IPaletteAdapter {
 			oldTabs[i].dispose();
 		}
 		
-		setEnabled(viewPart.idEnabled());
+		setEnabled(viewPart.isEnabled());
 	}
 
 	public void dispose() {
 		dropManager.dispose();
 		descriptionManager.dispose();
 		model.removeModelTreeListener(modelListener);
-		viewPart.getViewSite().getActionBars().getToolBarManager().removeAll();
+		viewPart.getActionBars().getToolBarManager().removeAll();
 		try {
 			if (selectedTab != null) { 
 				ModelUIPlugin.getWorkspace().getRoot().setPersistentProperty(persistentTabQualifiedName, selectedTab);
