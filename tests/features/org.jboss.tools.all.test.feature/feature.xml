@@ -243,4 +243,39 @@ Raleigh NC 27606 USA.
          install-size="0"
          version="0.0.0"/>
 
+   <plugin
+         id="org.jboss.tools.jsf.ui.bot.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.jst.ui.bot.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.seam.ui.bot.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.vpe.ui.bot.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.jst.ui.firstrun.bot.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
