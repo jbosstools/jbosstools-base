@@ -63,8 +63,8 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 			copy(location, install, "lib", filter); //$NON-NLS-1$
 		} else {
 			UnzipOperation unzip = new UnzipOperation(install);
-			unzip.execute(location, "templates");
-			unzip.execute(location, "lib");
+			unzip.execute(location.getAbsolutePath(), "templates");
+			unzip.execute(location.getAbsolutePath(), "lib");
 		}
 	}
 	
