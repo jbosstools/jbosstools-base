@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-Name: %Bundle-Name.0
-Bundle-SymbolicName: org.jboss.tools.common.el.ui
+Bundle-SymbolicName: org.jboss.tools.common.el.ui;singleton:=true
 Bundle-Version: 1.0.0
 Export-Package: org.jboss.tools.common.el.ui
 Bundle-Activator: org.jboss.tools.common.el.ui.Activator
@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.common.el.core;bundle-version="2.0.0",
  org.jboss.tools.common.resref.ui;bundle-version="1.0.0",
  org.eclipse.core.resources;bundle-version="3.4.0",
- org.jboss.tools.common.model.ui;bundle-version="2.0.0"
+ org.jboss.tools.common.model.ui;bundle-version="2.0.0",
+ org.eclipse.ltk.core.refactoring;bundle-version="3.5.0"
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.jboss.tools.vpe.resref.core

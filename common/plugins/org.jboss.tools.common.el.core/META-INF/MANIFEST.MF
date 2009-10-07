@@ -9,6 +9,7 @@ Bundle-Version: 2.0.0
 Export-Package: org.jboss.tools.common.el.core,
  org.jboss.tools.common.el.core.model,
  org.jboss.tools.common.el.core.parser,
+ org.jboss.tools.common.el.core.refactoring,
  org.jboss.tools.common.el.core.resolver,
  org.jboss.tools.common.el.internal.core.parser,
  org.jboss.tools.common.el.internal.core.parser.token
@@ -19,5 +20,6 @@ Require-Bundle: org.eclipse.jface.text,
  org.jboss.tools.common,
  org.jboss.tools.common.model,
  org.jboss.tools.common.resref.core;visibility:=reexport,
- org.eclipse.ui
+ org.eclipse.ui,
+ org.eclipse.jdt.ui;bundle-version="3.5.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
