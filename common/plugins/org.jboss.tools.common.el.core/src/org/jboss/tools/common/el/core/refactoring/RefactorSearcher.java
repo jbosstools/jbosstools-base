@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.internal.ui.text.FastJavaPartitionScanner;
 import org.eclipse.jdt.ui.text.IJavaPartitions;
@@ -60,7 +59,6 @@ import org.jboss.tools.common.el.core.resolver.ElVarSearcher;
 import org.jboss.tools.common.el.core.resolver.JavaMemberELSegment;
 import org.jboss.tools.common.el.core.resolver.SimpleELContext;
 import org.jboss.tools.common.el.core.resolver.Var;
-import org.jboss.tools.common.model.util.EclipseJavaUtil;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.util.FileUtil;
 import org.w3c.dom.Node;
@@ -282,8 +280,8 @@ public abstract class RefactorSearcher {
 				for(ELInvocationExpression ie : instance.getExpression().getInvocations()){
 					ELInvocationExpression expression = findComponentReference(ie);
 					if(expression != null){
-						ELInvocationExpression left = expression.getLeft();
-						checkMatch(file, left, offset+getOffset(left), offset+getOffset(expression), getLength(expression));
+						//ELInvocationExpression left = expression.getLeft();
+						checkMatch(file, expression, getOffset(expression), offset+getOffset(expression), getLength(expression));
 					}
 				}
 			}
@@ -424,7 +422,7 @@ public abstract class RefactorSearcher {
 		return false;
 	}
 
-	private void resolve(IFile file, ELExpression operand, int leftOffset,
+	private void resolve(IFile file, ELExpression operand, int localOffset,
 			int offset, int length) {
 		ELResolver[] resolvers = ELResolverFactoryManager.getInstance()
 				.getResolvers(file);
@@ -438,28 +436,23 @@ public abstract class RefactorSearcher {
 			context.setResource(file);
 			context.setElResolvers(resolvers);
 
-			List<Var> vars = ElVarSearcher.findAllVars(context, leftOffset,
+			List<Var> vars = ElVarSearcher.findAllVars(context, localOffset,
 					resolver);
 
 			context.setVars(vars);
 
 			ELResolution resolution = resolver.resolve(context, operand);
 
-			ELSegment segment = resolution.findSegmentByOffset(leftOffset);
+			ELSegment segment = resolution.findSegmentByOffset(localOffset);
 
 			if (segment != null && segment instanceof JavaMemberELSegment
 					&& segment.isResolved()) {
 				JavaMemberELSegment javaSegment = (JavaMemberELSegment) segment;
 				IJavaElement segmentJavaElement = javaSegment.getJavaElement();
-				if (javaElement instanceof IType
-						&& segmentJavaElement instanceof IType) {
-					if (EclipseJavaUtil.isDerivedClass(
-							((IType) javaElement).getFullyQualifiedName(),
-							((IType) segmentJavaElement).getFullyQualifiedName(),
-							file.getProject()))
-						match(file, offset, length, true);
-				} else if (javaElement.equals(segmentJavaElement))
+				if (javaElement.equals(segmentJavaElement)){
 					match(file, offset, length, true);
+					return;
+				}
 			}
 		}
 		match(file, offset, length, false);

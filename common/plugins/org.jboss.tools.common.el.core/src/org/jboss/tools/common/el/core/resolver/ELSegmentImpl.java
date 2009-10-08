@@ -39,6 +39,16 @@ public class ELSegmentImpl implements ELSegment {
 	 * @see org.jboss.tools.common.el.core.resolver.ELSegment#getSourceReference()
 	 */
 	public ITextSourceReference getSourceReference() {
+		if(sourceReference==null) {
+			sourceReference = new ITextSourceReference() {
+				public int getStartPosition() {
+					return token.getStart();
+				}
+				public int getLength() {
+					return token.getLength();
+				}
+			};
+		}
 		return sourceReference;
 	}
 
