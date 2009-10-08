@@ -90,9 +90,9 @@ public class RenameMethodParticipant extends RenameParticipant{
 			rootChange = new CompositeChange("");
 			method = (IMethod)element;
 			
-			oldName = SeamRenameMethodSearcher.getPropertyName(method.getElementName());
+			oldName = method.getElementName();
 			
-			newName = SeamRenameMethodSearcher.getPropertyName(getArguments().getNewName());
+			newName = getArguments().getNewName();
 			searcher = new SeamRenameMethodSearcher((IFile)method.getResource(), oldName);
 			added = false;
 			return true;
@@ -160,20 +160,20 @@ public class RenameMethodParticipant extends RenameParticipant{
 			return null;
 		}
 		
-		protected ELInvocationExpression findComponentReference(ELInvocationExpression invocationExpression){
-			ELInvocationExpression invExp = invocationExpression;
-			while(invExp != null){
-				if(invExp instanceof ELMethodInvocation || invExp instanceof ELPropertyInvocation){
-					if(invExp.getMemberName() != null && invExp.getMemberName().equals(propertyName))
-						return invExp;
-					else
-						invExp = invExp.getLeft();
-				}else{
-					invExp = invExp.getLeft();
-				}
-			}
-			return null;
-		}
+//		protected ELInvocationExpression findComponentReference(ELInvocationExpression invocationExpression){
+//			ELInvocationExpression invExp = invocationExpression;
+//			while(invExp != null){
+//				if(invExp instanceof ELMethodInvocation || invExp instanceof ELPropertyInvocation){
+//					if(invExp.getMemberName() != null && invExp.getMemberName().equals(propertyName))
+//						return invExp;
+//					else
+//						invExp = invExp.getLeft();
+//				}else{
+//					invExp = invExp.getLeft();
+//				}
+//			}
+//			return null;
+//		}
 
 		@Override
 		protected void match(IFile file, int offset, int length) {

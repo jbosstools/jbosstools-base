@@ -56,7 +56,6 @@ import org.jboss.tools.common.el.core.resolver.ELResolver;
 import org.jboss.tools.common.el.core.resolver.ELResolverFactoryManager;
 import org.jboss.tools.common.el.core.resolver.ELSegment;
 import org.jboss.tools.common.el.core.resolver.ElVarSearcher;
-import org.jboss.tools.common.el.core.resolver.JavaMemberELSegment;
 import org.jboss.tools.common.el.core.resolver.SimpleELContext;
 import org.jboss.tools.common.el.core.resolver.Var;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -282,7 +281,7 @@ public abstract class RefactorSearcher {
 				for(ELInvocationExpression ie : instance.getExpression().getInvocations()){
 					ELInvocationExpression expression = findComponentReference(ie);
 					if(expression != null){
-						checkMatch(file, expression, getOffset(expression), offset+getOffset(expression), getLength(expression));
+						checkMatch(file, expression, offset+getOffset(expression), getLength(expression));
 					}
 				}
 			}
@@ -353,47 +352,20 @@ public abstract class RefactorSearcher {
 			offset += token.length();
 		}
 	}
-
 	
 	protected ELInvocationExpression findComponentReference(ELInvocationExpression invocationExpression){
-		ELInvocationExpression invExp = invocationExpression;
-		while(invExp != null){
-			if(invExp instanceof ELPropertyInvocation){
-				if(((ELPropertyInvocation)invExp).getQualifiedName() != null && ((ELPropertyInvocation)invExp).getQualifiedName().equals(propertyName))
-					return invExp;
-				else
-					invExp = invExp.getLeft();
-				
-			}else{
-				invExp = invExp.getLeft();
-			}
-		}
-		return null;
+		return invocationExpression;
 	}
 	
 	protected abstract boolean isFileCorrect(IFile file);
 	
 	protected abstract void match(IFile file, int offset, int length);
 	
-	private void checkMatch(IFile file, ELExpression operand, int localOffset, int offset, int length){
+	private void checkMatch(IFile file, ELExpression operand, int offset, int length){
 		if(javaElement != null && operand != null)
-			resolve(file, operand, localOffset, offset, length);
+			resolve(file, operand, offset-getOffset((ELInvocationExpression)operand));
 		else
 			match(file, offset, length);
-	}
-	
-	public static String getPropertyName(String methodName){
-		if(methodName.startsWith(GET) || methodName.startsWith(SET)){
-			String name = methodName.substring(3);
-			return name.substring(0, 1).toLowerCase()+name.substring(1);
-		}
-		
-		if(methodName.startsWith(IS)){
-			String name = methodName.substring(2);
-			return name.substring(0, 1).toLowerCase()+name.substring(1);
-		}
-		
-		return methodName;
 	}
 	
 	// TODO: move to util class
@@ -423,8 +395,7 @@ public abstract class RefactorSearcher {
 		return false;
 	}
 
-	private void resolve(IFile file, ELExpression operand, int localOffset,
-			int offset, int length) {
+	private void resolve(IFile file, ELExpression operand, int offset) {
 		ELResolver[] resolvers = ELResolverFactoryManager.getInstance()
 				.getResolvers(file);
 
@@ -437,24 +408,28 @@ public abstract class RefactorSearcher {
 			context.setResource(file);
 			context.setElResolvers(resolvers);
 
-			List<Var> vars = ElVarSearcher.findAllVars(context, localOffset,
+			List<Var> vars = ElVarSearcher.findAllVars(context, offset,
 					resolver);
 
 			context.setVars(vars);
 
 			ELResolution resolution = resolver.resolve(context, operand);
 
-			ELSegment segment = resolution.findSegmentByOffset(localOffset);
-
-			if (segment != null && segment instanceof JavaMemberELSegment
-					&& segment.isResolved()) {
-				JavaMemberELSegment javaSegment = (JavaMemberELSegment) segment;
-				IJavaElement segmentJavaElement = javaSegment.getJavaElement();
-				if (javaElement.equals(segmentJavaElement)){
-					match(file, offset, length);
-					return;
-				}
+			List<ELSegment> segments = resolution.findSegmentsByJavaElement(javaElement);
+			
+			for(ELSegment segment : segments){
+				match(file, offset+segment.getSourceReference().getStartPosition(), segment.getSourceReference().getLength());
 			}
+
+//			if (segment != null && segment instanceof JavaMemberELSegment
+//					&& segment.isResolved()) {
+//				JavaMemberELSegment javaSegment = (JavaMemberELSegment) segment;
+//				IJavaElement segmentJavaElement = javaSegment.getJavaElement();
+//				if (javaElement.equals(segmentJavaElement)){
+//					match(file, offset, length);
+//					return;
+//				}
+//			}
 		}
 	}
 }

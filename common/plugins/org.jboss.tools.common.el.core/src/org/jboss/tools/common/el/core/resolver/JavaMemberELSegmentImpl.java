@@ -31,6 +31,9 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 	 * @see org.jboss.tools.common.el.core.resolver.JavaMemberElSegment#getJavaElement()
 	 */
 	public IJavaElement getJavaElement() {
+		if(element==null && memberInfo!=null) {
+			element = memberInfo.getJavaElement();
+		}
 		return element;
 	}
 
@@ -53,16 +56,6 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 	 */
 	public boolean hasSetter() {
 		return hasSetter;
-	}
-
-	/**
-	 * @return the element
-	 */
-	public IJavaElement getElement() {
-		if(element==null && memberInfo!=null) {
-			element = memberInfo.getJavaElement();
-		}
-		return element;
 	}
 
 	/**

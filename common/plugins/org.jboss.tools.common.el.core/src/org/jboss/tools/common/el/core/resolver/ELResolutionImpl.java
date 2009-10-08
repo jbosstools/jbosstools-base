@@ -38,7 +38,7 @@ public class ELResolutionImpl implements ELResolution {
 	public List<ELSegment> findSegmentsByJavaElement(IJavaElement element) {
 		ArrayList<ELSegment> list = new ArrayList<ELSegment>();
 		for(ELSegment segment : segments){
-			if(segment instanceof JavaMemberELSegment && ((JavaMemberELSegment)segment).getJavaElement().equals(element))
+			if(segment instanceof JavaMemberELSegment && ((JavaMemberELSegment)segment).getJavaElement() != null && ((JavaMemberELSegment)segment).getJavaElement().equals(element))
 				list.add(segment);
 		}
 		return list;
