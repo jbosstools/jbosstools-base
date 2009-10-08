@@ -273,6 +273,8 @@ public abstract class RefactorSearcher {
 	// looking for component references in EL
 	private void scanString(IFile file, String string, int offset) {
 		int startEl = string.indexOf("#{"); //$NON-NLS-1$
+		if(startEl<0)
+			startEl = string.indexOf("${"); //$NON-NLS-1$
 		if(startEl>-1) {
 			ELParser parser = ELParserUtil.getJbossFactory().createParser();
 			ELModel model = parser.parse(string);
@@ -280,7 +282,6 @@ public abstract class RefactorSearcher {
 				for(ELInvocationExpression ie : instance.getExpression().getInvocations()){
 					ELInvocationExpression expression = findComponentReference(ie);
 					if(expression != null){
-						//ELInvocationExpression left = expression.getLeft();
 						checkMatch(file, expression, getOffset(expression), offset+getOffset(expression), getLength(expression));
 					}
 				}
@@ -344,7 +345,7 @@ public abstract class RefactorSearcher {
 					key = false;
 				
 				if(key && token.startsWith(propertyName)){
-					match(file, offset, token.length(), true);
+					match(file, offset, token.length());
 				}
 			}
 			
@@ -372,13 +373,13 @@ public abstract class RefactorSearcher {
 	
 	protected abstract boolean isFileCorrect(IFile file);
 	
-	protected abstract void match(IFile file, int offset, int length, boolean resolved);
+	protected abstract void match(IFile file, int offset, int length);
 	
-	private void checkMatch(IFile file, ELExpression operand, int leftOffset, int offset, int length){
+	private void checkMatch(IFile file, ELExpression operand, int localOffset, int offset, int length){
 		if(javaElement != null && operand != null)
-			resolve(file, operand, leftOffset, offset, length);
+			resolve(file, operand, localOffset, offset, length);
 		else
-			match(file, offset, length, true);
+			match(file, offset, length);
 	}
 	
 	public static String getPropertyName(String methodName){
@@ -450,11 +451,10 @@ public abstract class RefactorSearcher {
 				JavaMemberELSegment javaSegment = (JavaMemberELSegment) segment;
 				IJavaElement segmentJavaElement = javaSegment.getJavaElement();
 				if (javaElement.equals(segmentJavaElement)){
-					match(file, offset, length, true);
+					match(file, offset, length);
 					return;
 				}
 			}
 		}
-		match(file, offset, length, false);
 	}
 }
