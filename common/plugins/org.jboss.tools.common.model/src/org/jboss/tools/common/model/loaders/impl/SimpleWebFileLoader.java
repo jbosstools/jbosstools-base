@@ -47,7 +47,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
     }
 
     public void load(XModelObject object) {
-        String body = XModelObjectLoaderUtil.getTempBody(object);
+         String body = XModelObjectLoaderUtil.getTempBody(object);
         Document doc = loadDocument(object, body);
         if(doc == null) {
         	XModelObjectLoaderUtil.addRequiredChildren(object);
@@ -82,7 +82,7 @@ public class SimpleWebFileLoader implements SerializingLoader {
         int resolution = EntityXMLRegistration.getInstance().resolve(object.getModelEntity());
         if(EntityXMLRegistration.isSystemId(body)) resolution = EntityXMLRegistration.UNRESOLVED;
         String[] errors = 
-			XMLUtil.getXMLErrors(new StringReader(body), resolution == EntityXMLRegistration.DTD, resolution == EntityXMLRegistration.SCHEMA);
+			XMLUtil.getXMLErrors(new StringReader(body), resolution == EntityXMLRegistration.DTD && isCheckingDTD(), resolution == EntityXMLRegistration.SCHEMA);
         if(errors != null && errors.length > 0) {
             object.setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
             object.set("correctBody", ""); //$NON-NLS-1$ //$NON-NLS-2$

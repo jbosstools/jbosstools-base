@@ -210,7 +210,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         	boolean isText = XModelObjectLoaderUtil.isTextFile(f, 100);
             if(f.length() > 100000 || !isText) entity = XModelObjectConstants.ENT_FILE_ANY_LONG;
             else if(isText) entity = "FileTXT"; //$NON-NLS-1$
-        } else if(entity == null) {
+        } else /*if(entity == null)*/ {
             body = getBodySource(f).get();
             entity = getModel().getEntityRecognizer().getEntityName(ext, body);
         }
