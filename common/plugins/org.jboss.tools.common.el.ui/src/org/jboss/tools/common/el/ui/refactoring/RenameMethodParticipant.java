@@ -40,7 +40,7 @@ public class RenameMethodParticipant extends RenameParticipant{
 	private IMethod method;
 	private String oldName;
 	private String newName;
-	private SeamRenameMethodSearcher searcher;
+	private RenameMethodSearcher searcher;
 	private RefactoringStatus status;
 	private CompositeChange rootChange;
 	private TextFileChange lastChange;
@@ -93,7 +93,7 @@ public class RenameMethodParticipant extends RenameParticipant{
 			oldName = method.getElementName();
 			
 			newName = getArguments().getNewName();
-			searcher = new SeamRenameMethodSearcher((IFile)method.getResource(), oldName);
+			searcher = new RenameMethodSearcher((IFile)method.getResource(), oldName);
 			added = false;
 			return true;
 		}
@@ -130,8 +130,8 @@ public class RenameMethodParticipant extends RenameParticipant{
 		}
 	}
 	
-	class SeamRenameMethodSearcher extends RefactorSearcher{
-		public SeamRenameMethodSearcher(IFile file, String name){
+	class RenameMethodSearcher extends RefactorSearcher{
+		public RenameMethodSearcher(IFile file, String name){
 			super(file, name, method);
 		}
 
