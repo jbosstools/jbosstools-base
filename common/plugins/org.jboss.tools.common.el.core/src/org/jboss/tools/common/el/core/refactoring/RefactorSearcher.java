@@ -288,7 +288,7 @@ public abstract class RefactorSearcher {
 		}
 	}
 	
-	private int getOffset(ELInvocationExpression expression){
+	protected int getOffset(ELInvocationExpression expression){
 		if(expression instanceof ELPropertyInvocation){
 			ELPropertyInvocation pi = (ELPropertyInvocation)expression;
 			
@@ -361,7 +361,7 @@ public abstract class RefactorSearcher {
 	
 	protected abstract void match(IFile file, int offset, int length);
 	
-	private void checkMatch(IFile file, ELExpression operand, int offset, int length){
+	protected void checkMatch(IFile file, ELExpression operand, int offset, int length){
 		if(javaElement != null && operand != null)
 			resolve(file, operand, offset-getOffset((ELInvocationExpression)operand));
 		else
@@ -395,7 +395,7 @@ public abstract class RefactorSearcher {
 		return false;
 	}
 
-	private void resolve(IFile file, ELExpression operand, int offset) {
+	protected void resolve(IFile file, ELExpression operand, int offset) {
 		ELResolver[] resolvers = ELResolverFactoryManager.getInstance()
 				.getResolvers(file);
 
@@ -420,16 +420,6 @@ public abstract class RefactorSearcher {
 			for(ELSegment segment : segments){
 				match(file, offset+segment.getSourceReference().getStartPosition(), segment.getSourceReference().getLength());
 			}
-
-//			if (segment != null && segment instanceof JavaMemberELSegment
-//					&& segment.isResolved()) {
-//				JavaMemberELSegment javaSegment = (JavaMemberELSegment) segment;
-//				IJavaElement segmentJavaElement = javaSegment.getJavaElement();
-//				if (javaElement.equals(segmentJavaElement)){
-//					match(file, offset, length);
-//					return;
-//				}
-//			}
 		}
 	}
 }

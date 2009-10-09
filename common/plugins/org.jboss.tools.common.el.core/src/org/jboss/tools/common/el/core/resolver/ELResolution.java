@@ -37,6 +37,13 @@ public interface ELResolution {
 	ELContext getContext();
 
 	/**
+	 * Finds the segments which are resolved to given variable.
+	 * @param element
+	 * @return
+	 */
+	List<ELSegment> findSegmentsByVariable(IVariable variable);
+
+	/**
 	 * Finds the segments which are resolved to given java element.
 	 * @param element
 	 * @return

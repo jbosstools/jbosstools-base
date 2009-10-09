@@ -31,6 +31,22 @@ public class ELResolutionImpl implements ELResolution {
 	protected Set<TextProposal> proposals = new HashSet<TextProposal>();
 	protected ELInvocationExpression lastResolvedToken;
 	protected boolean mapOrCollectionOrBundleAmoungTheTokens;
+	
+	/* (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#findSegmentsByJavaElement(org.eclipse.jdt.core.IJavaElement)
+	 */
+	public List<ELSegment> findSegmentsByVariable(IVariable variable) {
+		ArrayList<ELSegment> list = new ArrayList<ELSegment>();
+		for(ELSegment segment : segments){
+			for(IVariable var : segment.getVariables()){
+				if(var.getName().equals(variable.getName())){
+					list.add(segment);
+				}
+			}
+		}
+		return list;
+	}
+
 
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#findSegmentsByJavaElement(org.eclipse.jdt.core.IJavaElement)
