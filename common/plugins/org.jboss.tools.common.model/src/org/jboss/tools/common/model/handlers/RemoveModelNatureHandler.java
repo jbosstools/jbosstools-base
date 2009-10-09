@@ -32,6 +32,7 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.util.FileUtil;
 
 public class RemoveModelNatureHandler extends AbstractHandler {
+	public static String PARAM_CONTRIBUTION = "contribution"; //$NON-NLS-1$
 	
 	public boolean isEnabled(XModelObject object) {
 		if(object == null) return false;
@@ -49,7 +50,7 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 			String name = ext.getName();
 			if(p != null && p.isAccessible()) try {
 				if(p.hasNature(name)) {
-					return ext.getDisplayName();
+					return ext.getName();
 				}
 			} catch (CoreException e) {
 				
@@ -75,7 +76,7 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 		pd.put(ServiceDialog.CHECKED, Boolean.FALSE);
 		if(!dialog.openConfirm(pd)) return;
 
-		SpecialWizard contribution = p == null ? null : (SpecialWizard)p.get("contribution"); //$NON-NLS-1$
+		SpecialWizard contribution = p == null ? null : (SpecialWizard)p.get(PARAM_CONTRIBUTION);
 		if(contribution != null) {
 			contribution.setObject(object.getModel());
 			contribution.execute();
