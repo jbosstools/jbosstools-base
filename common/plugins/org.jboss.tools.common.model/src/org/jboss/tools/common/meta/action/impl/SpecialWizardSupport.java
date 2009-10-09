@@ -86,6 +86,8 @@ public abstract class SpecialWizardSupport {
     public String getTitle() {
     	String title = WizardKeys.getHeader(getHelpKey());
     	if(title != null) return title;
+    	title = WizardKeys.getHeader(action, getEntityData()[0].getModelEntity()); // no step id
+    	if(title != null) return title;
 		String n = (action == null) ? "" : "" + action.getDisplayName(); //$NON-NLS-1$ //$NON-NLS-2$
 		if(n.endsWith("...")) n = n.substring(0, n.length() - 3); //$NON-NLS-1$
 		return n;
@@ -97,6 +99,9 @@ public abstract class SpecialWizardSupport {
     	if(t == null && key != null && key.endsWith("_0")) { //$NON-NLS-1$
     		String key1 = key.substring(0, key.length() - 2);
     		t = WizardKeys.getTitle(key1);
+    	}
+    	if(t == null) {
+    		t = WizardKeys.getTitle(action, getEntityData()[0].getModelEntity()); // no step id
     	}
 		return t;
     }

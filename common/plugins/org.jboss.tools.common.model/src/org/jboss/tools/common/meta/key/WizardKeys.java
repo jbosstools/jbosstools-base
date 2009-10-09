@@ -147,20 +147,51 @@ public class WizardKeys {
 	 * @return
 	 */
 	public static String getMenuItemDisplayName(XActionItem item, XModelEntity entity) {
+		String s = getDisplayValue(item, entity, ".", ".menu"); //$NON-NLS-1$ //$NON-NLS-2$
+		if(s != null) return s;
+		return item.getDisplayName();
+	}
+
+	public static String getHeader(XActionItem item, XModelEntity entity) {
+		String s = getDisplayValue(item, entity, "_", ".WindowTitle"); //$NON-NLS-1$ //$NON-NLS-2$
+		if(s != null) return s;
+		return item.getDisplayName();
+	}
+
+	public static String getTitle(XActionItem item, XModelEntity entity) {
+		String s = getDisplayValue(item, entity, "_", ".Title"); //$NON-NLS-1$ //$NON-NLS-2$
+		if(s != null) return s;
+		return item.getDisplayName();
+	}
+
+	/**
+	 * Display value for action item generated for meta declaration of action item.
+	 * Several keys are checked in resources, the first found key is used.
+	 * 1) Entity specific: %Entity name% %separator% %Item name% %prefix%
+	 * 2) Module specific: %Module name% %separator% %Item name% %prefix%
+	 * 3) Global:          %Item name% %prefix%
+	 * If no key is found, null is returned.
+	 * 
+	 * @param item
+	 * @param entity
+	 * @return
+	 */
+	public static String getDisplayValue(XActionItem item, XModelEntity entity, String separator, String suffix) {
 		if(entity != null) {
-			String key = entity.getName() + "." + item.getName() + ".menu"; //$NON-NLS-1$ //$NON-NLS-2$
+			String key = entity.getName() + separator + item.getName() + suffix;
 			String s = keys.getProperty(key);
 			if(s != null) return s;
-			key = entity.getModule() + "." + item.getName() + ".menu"; //$NON-NLS-1$ //$NON-NLS-2$
+			key = entity.getModule() + "." + item.getName() + suffix; //$NON-NLS-1$
 			s = keys.getProperty(key);
 			if(s != null) return s;
 		}
-		String key = item.getName() + ".menu"; //$NON-NLS-1$
+		String key = item.getName() + suffix;
 		String s = keys.getProperty(key);
 		if(s != null) return s;
 
-		return item.getDisplayName();
+		return null;
 	}
+
 
 	public static String getVisualListValue(XAttribute attr, String value) {
 		if(attr == null || value == null || value.length() == 0) return value;
