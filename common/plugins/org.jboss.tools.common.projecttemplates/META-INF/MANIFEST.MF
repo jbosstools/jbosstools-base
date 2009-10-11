@@ -1,6 +1,5 @@
 Manifest-Version: 1.0
 Bundle-Name: %pluginName
-Bundle-ClassPath: projtempl.jar
 Bundle-Activator: org.jboss.tools.common.projecttemplates.ProjectTemplatesPlugin
 Bundle-ManifestVersion: 2
 Bundle-Vendor: %providerName
