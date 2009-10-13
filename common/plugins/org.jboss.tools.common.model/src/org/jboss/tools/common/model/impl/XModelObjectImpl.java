@@ -311,7 +311,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
         	if(n.equals("..")) me = getParent(); //$NON-NLS-1$
         	else if(n.equals(".")) me = this; //$NON-NLS-1$
         }
-        return (me == null || i < 0) ? me : ((XModelObjectImpl)me).getChildByPath(f);
+        return (me == null || i < 0) ? me : me.getChildByPath(f);
     }
 
     public XModelObject getChildByPathPart(String pathpart) {
