@@ -111,6 +111,9 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 			return isPreferable;
 		}
 
+		public void setPreferable(boolean b) {
+			isPreferable = b;
+		}
 		/**
 		 * 
 		 */
@@ -416,4 +419,5 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 
 	public void widgetDefaultSelected(SelectionEvent e) {
 	}
+
 }

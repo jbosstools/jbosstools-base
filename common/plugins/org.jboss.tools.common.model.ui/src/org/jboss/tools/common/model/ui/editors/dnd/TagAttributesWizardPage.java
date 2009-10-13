@@ -139,7 +139,7 @@ public class TagAttributesWizardPage extends DefaultDropWizardPage implements Pr
 	protected boolean showAdvansedTab() {
 		AttributeDescriptorValue[] values = getDropWizardModel().getAttributeValueDescriptors();
 		for(int i=0;i<values.length;i++) {
-			if(values[i].isRequired() || values[i].isRequired()) {
+			if(values[i].isPreferable() || values[i].isRequired()) {
 				return true;
 			}
 		}

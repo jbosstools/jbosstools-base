@@ -21,9 +21,9 @@ import org.jboss.tools.common.model.util.*;
  * 
  * @author eskimo
   */
-public class LoadBundleBaseNameAttributeValueLoader
-		implements
-			IAttributeValueLoader {
+public class LoadBundleBaseNameAttributeValueLoader implements IAttributeValueLoader {
+	static String ATTR_BASENAME = "basename"; //$NON-NLS-1$
+	static String ATTR_VAR = "var"; //$NON-NLS-1$
 
 	public void fillTagAttributes(IDropWizardModel model) {
 		String baseName = ""; //$NON-NLS-1$
@@ -69,8 +69,12 @@ public class LoadBundleBaseNameAttributeValueLoader
 		}
 
 		// TODO Eskimo - Think about how reject drop id properties file is not under java source
-		model.setAttributeValue("basename", baseName); //$NON-NLS-1$
-		model.setAttributeValue("var", fileName.toLowerCase());		 //$NON-NLS-1$
+		model.setAttributeValue(ATTR_BASENAME, baseName);
+		model.setAttributeValue(ATTR_VAR, fileName.toLowerCase());
+		if(model instanceof DefaultDropWizardModel) {
+			((DefaultDropWizardModel)model).setPreferable(ATTR_BASENAME);
+			((DefaultDropWizardModel)model).setPreferable(ATTR_VAR);
+		}
 	}
 	
 }

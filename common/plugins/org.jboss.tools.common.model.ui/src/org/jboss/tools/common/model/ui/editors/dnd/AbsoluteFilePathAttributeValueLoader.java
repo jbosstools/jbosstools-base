@@ -63,6 +63,9 @@ public class AbsoluteFilePathAttributeValueLoader implements IAttributeValueLoad
 			String v = (input == null) ? null : dropFileToFile(file, input.getFile(), model);
 			if(v == null) v = "/"+filePath.toString(); //$NON-NLS-1$
 			model.setAttributeValue(fPathAttributeName, v);
+			if(model instanceof DefaultDropWizardModel) {
+				((DefaultDropWizardModel)model).setPreferable(fPathAttributeName);
+			}
 		}
 	}
 	
