@@ -503,7 +503,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		}
 		if(event.getDetails() == XModelTreeEvent.AFTER_MERGE && event.getModelObject() == getModelObject()) {
 			waitForMerge = false;
-			System.out.println("waitingEventsCount=" + waitingEventsCount);
+//			System.out.println("waitingEventsCount=" + waitingEventsCount);
 			waitingEventsCount = 0;
 		}
 		waitingEventsCount++;
