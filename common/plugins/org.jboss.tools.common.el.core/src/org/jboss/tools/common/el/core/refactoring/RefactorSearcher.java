@@ -107,6 +107,8 @@ public abstract class RefactorSearcher {
 			if(!containsInSearchScope(project))
 				continue;
 			
+			updateEnvironment(project);
+			
 			IJavaProject javaProject = EclipseResourceUtil.getJavaProject(project);
 			
 			// searching java, xml and property files in source folders
@@ -126,6 +128,10 @@ public abstract class RefactorSearcher {
 			else
 				scan(project);
 		}
+	}
+	
+	protected void updateEnvironment(IProject project){
+		
 	}
 	
 	protected abstract IProject[] getProjects();
