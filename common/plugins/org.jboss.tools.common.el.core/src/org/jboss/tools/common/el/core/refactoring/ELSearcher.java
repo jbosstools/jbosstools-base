@@ -13,10 +13,19 @@ package org.jboss.tools.common.el.core.refactoring;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 
+/**
+ * 
+ * @author Daniel
+ * 
+ * This interface is used for transmit information about seam project structure from seam plugins through org.jboss.tools.common.el.core.elSearcher extension point
+ */
 public interface ELSearcher {
+	// inits seam project structure 
 	public void init(IProject project);
 	
+	// returns all linked seam projects
 	public IProject[] getLinkedProjects();
 	
+	// returns view folder (like WEB_CONTENT, EAR_CONTENT) for each seam project
 	public IContainer getViewFolder(IProject project);
 }
