@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <extension
+        point="org.eclipse.jdt.ui.queryParticipants">
+     <queryParticipant
+           class="org.jboss.tools.common.el.ui.refactoring.ELReferencesQueryParticipant"
+           id="org.jboss.tools.common.el.ui.refactoring.ELReferencesQueryParticipant"
+           name="jsf-SearchELReferencesParticipant"
+           nature="org.jboss.tools.jsf.jsfnature">
+     </queryParticipant>
+  </extension>
+
+
+</plugin>
