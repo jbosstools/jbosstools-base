@@ -39,7 +39,7 @@ public class ELResolutionImpl implements ELResolution {
 		ArrayList<ELSegment> list = new ArrayList<ELSegment>();
 		for(ELSegment segment : segments){
 			for(IVariable var : segment.getVariables()){
-				if(var.equals(variable)){
+				if(var.getName().equals(variable.getName())){
 					list.add(segment);
 				}
 			}
