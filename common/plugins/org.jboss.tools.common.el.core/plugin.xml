@@ -2,6 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="elResolver" name="EL Resolver" schema="schema/elResolver.exsd"/>
-   <extension-point id="elSearcher" name="EL Search" schema="schema/elSearcher.exsd"/>
+   <extension-point id="elProjectSet" name="EL Project Set" schema="schema/elProjectSet.exsd"/>
 
 </plugin>

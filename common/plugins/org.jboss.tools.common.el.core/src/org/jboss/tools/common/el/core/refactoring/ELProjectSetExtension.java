@@ -9,39 +9,39 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.el.core.Activator;
 
-public class ELSearcherExtension {
-	public static String EXTENSION_POINT = "org.jboss.tools.common.el.core.elSearcher"; //$NON-NLS-1$
+public class ELProjectSetExtension {
+	public static String EXTENSION_POINT = "org.jboss.tools.common.el.core.elProjectSet"; //$NON-NLS-1$
 
 	String id;
-	ELSearcher searcher;
+	ProjectsSet searcher;
 
-	public ELSearcherExtension() {}
+	public ELProjectSetExtension() {}
 
 	public String getId() {
 		return id;
 	}
 
-	public ELSearcher getELSearcher() {
+	public ProjectsSet getProjectSet() {
 		return searcher;
 	}
 
-	static ELSearcherExtension[] INSTANCES;
+	static ELProjectSetExtension[] INSTANCES;
 
-	public static ELSearcherExtension[] getInstances() {
+	public static ELProjectSetExtension[] getInstances() {
 		if(INSTANCES != null) return INSTANCES;
-		List<ELSearcherExtension> list = new ArrayList<ELSearcherExtension>();
+		List<ELProjectSetExtension> list = new ArrayList<ELProjectSetExtension>();
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT);
 		IConfigurationElement[] es = point.getConfigurationElements();
 		for (IConfigurationElement e: es) {
-			ELSearcherExtension n = new ELSearcherExtension();
+			ELProjectSetExtension n = new ELProjectSetExtension();
 			n.id = e.getAttribute("id"); //$NON-NLS-1$
 			try{
-				n.searcher = (ELSearcher)e.createExecutableExtension("searcher-class"); //$NON-NLS-1$
+				n.searcher = (ProjectsSet)e.createExecutableExtension("projectset-class"); //$NON-NLS-1$
 			}catch(CoreException ex){
 				Activator.getDefault().logError(ex);
 			}
 			list.add(n);
 		}
-		return INSTANCES = list.toArray(new ELSearcherExtension[0]);
+		return INSTANCES = list.toArray(new ELProjectSetExtension[0]);
 	}
 }

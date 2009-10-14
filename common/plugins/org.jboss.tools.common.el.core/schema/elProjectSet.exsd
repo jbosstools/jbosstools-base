@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="el-search" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="project-set" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,7 +47,7 @@
       </complexType>
    </element>
 
-   <element name="el-search">
+   <element name="project-set">
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -59,13 +59,13 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="searcher-class" type="string" use="required">
+         <attribute name="projectset-class" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.jboss.tools.common.el.core.refactoring.ELSearcher"/>
+                  <meta.attribute kind="java" basedOn=":org.jboss.tools.common.el.core.refactoring.ProjectsSet"/>
                </appinfo>
             </annotation>
          </attribute>

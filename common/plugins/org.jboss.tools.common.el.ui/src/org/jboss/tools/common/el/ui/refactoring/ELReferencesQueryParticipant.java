@@ -28,13 +28,13 @@ import org.eclipse.jdt.ui.search.QuerySpecification;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.search.ui.text.Match;
 import org.eclipse.ui.PartInitException;
-import org.jboss.tools.common.el.core.refactoring.ELSearcher;
-import org.jboss.tools.common.el.core.refactoring.ELSearcherExtension;
+import org.jboss.tools.common.el.core.refactoring.ELProjectSetExtension;
+import org.jboss.tools.common.el.core.refactoring.ProjectsSet;
 import org.jboss.tools.common.el.core.refactoring.RefactorSearcher;
 import org.jboss.tools.common.model.project.ProjectHome;
 
 public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPresentation{
-	private ELSearch search;
+	private ELSearcher searcher;
 	JavaSearchResultPage searchPage = null;
 	
 	public int estimateTicks(QuerySpecification specification) {
@@ -55,10 +55,10 @@ public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPr
 				IFile file = (IFile)qs.getElement().getResource();
 				String name = qs.getElement().getElementName();
 				
-				search = new ELSearch(requestor, qs.getElement(), file, name);
-				search.setSearchScope(qs.getScope());
+				searcher = new ELSearcher(requestor, qs.getElement(), file, name);
+				searcher.setSearchScope(qs.getScope());
 				
-				search.findELReferences();
+				searcher.findELReferences();
 			}
 		}
 	}
@@ -71,18 +71,18 @@ public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPr
 			int currentLength, boolean activate) throws PartInitException {
 	}
 	
-	class ELSearch extends RefactorSearcher{
+	class ELSearcher extends RefactorSearcher{
 		ISearchRequestor requestor;
-		ELSearcher searcher=null;
+		ProjectsSet projectSet=null;
 		
-		public ELSearch(ISearchRequestor requestor, IJavaElement element, IFile file, String name){
+		public ELSearcher(ISearchRequestor requestor, IJavaElement element, IFile file, String name){
 			super(file, name, element);
 			this.requestor = requestor;
-			ELSearcherExtension[] extensions = 	ELSearcherExtension.getInstances();
+			ELProjectSetExtension[] extensions = 	ELProjectSetExtension.getInstances();
 			if(extensions.length > 0){
-				searcher = extensions[0].getELSearcher();
-				if(searcher != null)
-					searcher.init(file.getProject());
+				projectSet = extensions[0].getProjectSet();
+				if(projectSet != null)
+					projectSet.init(file.getProject());
 			}
 			
 		}
@@ -105,15 +105,15 @@ public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPr
 		}
 		
 		protected IProject[] getProjects(){
-			if(searcher != null){
-				return searcher.getLinkedProjects();
+			if(projectSet != null){
+				return projectSet.getLinkedProjects();
 			}
 			return new IProject[]{baseFile.getProject()};
 		}
 		
 		protected IContainer getViewFolder(IProject project){
-			if(searcher != null){
-				return searcher.getViewFolder(project);
+			if(projectSet != null){
+				return projectSet.getViewFolder(project);
 			}
 			
 			IPath path = ProjectHome.getFirstWebContentPath(baseFile.getProject()).removeFirstSegments(1);
