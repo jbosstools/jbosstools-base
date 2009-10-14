@@ -143,8 +143,8 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 	 * @param style
 	 * @param wizardModel
 	 */
-	public TagAttributesComposite(Composite parent, int style, IDropWizardModel wizardModel) {
-		this(parent, style, wizardModel, false); 
+	public TagAttributesComposite(Composite parent, int style, IDropWizardModel wizardModel, Properties context) {
+		this(parent, style, wizardModel, false, context); 
 	}	
 	
 	/**
@@ -153,8 +153,9 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 	 * @param style
 	 * @param wizardModel
 	 */
-	public TagAttributesComposite(Composite parent, int style, IDropWizardModel wizardModel,boolean filtered) {
-		super(parent, style); 
+	public TagAttributesComposite(Composite parent, int style, IDropWizardModel wizardModel,boolean filtered, final Properties context) {
+		super(parent, style);
+		this.context = context;
 		fFiltered = filtered;
 		fWizardModel = wizardModel;
 		fWizardModel.addPropertyChangeListener(this);
@@ -163,7 +164,6 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 				fWizardModel.removePropertyChangeListener(TagAttributesComposite.this);
 				if (context != null) {
 					context.clear();
-					context = null;
 				}
 				removeDisposeListener(this);
 			}
@@ -358,8 +358,8 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 		tableViewer.setInput(new Object());
 	}
 
-	private Properties context = new Properties();
-	
+	private Properties context;
+
 	private ExtendedCellEditorProvider createCellEditorProvider() {
 		return (ExtendedCellEditorProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.jsp.outline.JSPCellEditorProviderImpl"); //$NON-NLS-1$
 	}

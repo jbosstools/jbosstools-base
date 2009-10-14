@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Properties;
 
 import org.eclipse.compare.Splitter;
 import org.eclipse.swt.SWT;
@@ -32,6 +33,7 @@ import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesCompos
  *
  */
 public class TagAttributesWizardPage extends DefaultDropWizardPage implements PropertyChangeListener {
+	protected Properties context = new Properties();
 
 	/**
 	 * 
@@ -75,13 +77,14 @@ public class TagAttributesWizardPage extends DefaultDropWizardPage implements Pr
 		tabs.setLayoutData(data);
 		general = new TabItem(tabs,SWT.NONE);
 		general.setText(DropWizardMessages.General_Tab_Title);		
-		final TagAttributesComposite generalTabContent = new TagAttributesComposite(tabs,SWT.NONE,getSpecificWizard().getWizardModel(),true);
+		final TagAttributesComposite generalTabContent = new TagAttributesComposite(tabs,SWT.NONE,getSpecificWizard().getWizardModel(),true, context);
 		general.setControl(generalTabContent);
 		TabItem advanced = new TabItem(tabs,SWT.NONE);
 		advanced.setText(DropWizardMessages.Advanced_Tab_Title);		
-		final TagAttributesComposite advancedTabContent = new TagAttributesComposite(tabs,SWT.NONE,getSpecificWizard().getWizardModel());
+		final TagAttributesComposite advancedTabContent = new TagAttributesComposite(tabs,SWT.NONE,getSpecificWizard().getWizardModel(), context);
 		advanced.setControl(advancedTabContent);
-		advancedTabContentOnly = new TagAttributesComposite(composite,SWT.NONE,getSpecificWizard().getWizardModel());
+
+		advancedTabContentOnly = new TagAttributesComposite(composite,SWT.NONE,getSpecificWizard().getWizardModel(), context);
 		
 		composite.setVisible(tabs,showAdvansedTab());
 		composite.setVisible(advancedTabContentOnly,!showAdvansedTab());
