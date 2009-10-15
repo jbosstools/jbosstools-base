@@ -71,4 +71,9 @@ public interface ELResolution {
 	 * @return last segment. May return null.
 	 */
 	ELSegment getLastSegment();
+
+	/**
+	 * @return the number of resolved segments
+	 */
+	int getNumberOfResolvedSegments();
 }

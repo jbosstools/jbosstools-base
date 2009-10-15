@@ -207,4 +207,20 @@ public class ELResolutionImpl implements ELResolution {
 		}
 		return null;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#getNumberOfResolvedSegments()
+	 */
+	public int getNumberOfResolvedSegments() {
+		int i = 0;
+		for (ELSegment segment : segments) {
+			if(segment.isResolved()) {
+				i++;
+			} else {
+				break;
+			}
+		}
+		return i;
+	}
 }

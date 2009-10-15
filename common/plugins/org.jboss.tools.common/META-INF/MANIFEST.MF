@@ -13,14 +13,7 @@ Bundle-Activator: org.jboss.tools.common.CommonPlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common;singleton:=true
 Bundle-Localization: plugin
-Export-Package: org.jboss.tools.common,
- org.jboss.tools.common.log,
- org.jboss.tools.common.reporting,
- org.jboss.tools.common.text,
- org.jboss.tools.common.util,
- org.jboss.tools.common.xml,
- org.jboss.tools.common.zip,
- org.apache.commons.codec,
+Export-Package: org.apache.commons.codec,
  org.apache.commons.codec.binary,
  org.apache.commons.codec.digest,
  org.apache.commons.codec.language,
@@ -127,6 +120,14 @@ Export-Package: org.jboss.tools.common,
  org.apache.xml.resolver.readers,
  org.apache.xml.resolver.tools,
  org.apache.xml.serialize,
+ org.jboss.tools.common,
+ org.jboss.tools.common.log,
+ org.jboss.tools.common.preferences,
+ org.jboss.tools.common.reporting,
+ org.jboss.tools.common.text,
+ org.jboss.tools.common.util,
+ org.jboss.tools.common.xml,
+ org.jboss.tools.common.zip,
  org.w3c.dom.html,
  org.w3c.dom.ls
 Require-Bundle: org.eclipse.core.runtime,
@@ -136,7 +137,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.wst.common.uriresolver;visibility:=reexport,
- org.eclipse.core.net
+ org.eclipse.core.net,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.ui
 Bundle-Version: 2.0.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
