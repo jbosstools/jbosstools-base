@@ -10,6 +10,23 @@
            nature="org.jboss.tools.jsf.jsfnature">
      </queryParticipant>
   </extension>
-
+<extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+         <renameParticipant
+            class="org.jboss.tools.common.el.ui.refactoring.RenameMethodParticipant"
+            id="org.jboss.tools.common.el.ui.refactoring.RenameMethodParticipant"
+            name="seam-RenameMethodParticipant">
+         <enablement>
+            <with
+                  variable="element">
+               <or>
+                  <instanceof
+                        value="org.eclipse.jdt.core.IMethod">
+                  </instanceof>
+               </or>
+            </with>
+         </enablement>
+      </renameParticipant>
+    </extension>
 
 </plugin>

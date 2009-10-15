@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.IMethod;
@@ -30,17 +31,17 @@ import org.eclipse.ltk.internal.core.refactoring.Messages;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
-import org.jboss.tools.common.el.core.model.ELInvocationExpression;
-import org.jboss.tools.common.el.core.model.ELMethodInvocation;
-import org.jboss.tools.common.el.core.model.ELPropertyInvocation;
+import org.jboss.tools.common.el.core.refactoring.ELProjectSetExtension;
+import org.jboss.tools.common.el.core.refactoring.ProjectsSet;
 import org.jboss.tools.common.el.core.refactoring.RefactorSearcher;
 import org.jboss.tools.common.el.ui.ElUiCoreMessages;
+import org.jboss.tools.common.model.project.ProjectHome;
 
 public class RenameMethodParticipant extends RenameParticipant{
 	private IMethod method;
 	private String oldName;
 	private String newName;
-	private RenameMethodSearcher searcher;
+	private SeamRenameMethodSearcher searcher;
 	private RefactoringStatus status;
 	private CompositeChange rootChange;
 	private TextFileChange lastChange;
@@ -64,9 +65,6 @@ public class RenameMethodParticipant extends RenameParticipant{
 		}
 		
 		searcher.findELReferences();
-		
-		// TODO: find good phrase and externalize it
-		//status.addWarning("Some cases may not be found.");
 		
 		return status;
 	}
@@ -93,7 +91,7 @@ public class RenameMethodParticipant extends RenameParticipant{
 			oldName = method.getElementName();
 			
 			newName = getArguments().getNewName();
-			searcher = new RenameMethodSearcher((IFile)method.getResource(), oldName);
+			searcher = new SeamRenameMethodSearcher((IFile)method.getResource(), oldName);
 			added = false;
 			return true;
 		}
@@ -120,7 +118,6 @@ public class RenameMethodParticipant extends RenameParticipant{
 	}
 	
 	private void change(IFile file, int offset, int length, String text){
-		//System.out.println("change file - "+file.getFullPath()+" offset - "+offset+" len - "+length+" text <"+text+">");
 		String key = file.getFullPath().toString()+" "+offset;
 		if(!keys.contains(key)){
 			TextFileChange change = getChange(file);
@@ -130,9 +127,16 @@ public class RenameMethodParticipant extends RenameParticipant{
 		}
 	}
 	
-	class RenameMethodSearcher extends RefactorSearcher{
-		public RenameMethodSearcher(IFile file, String name){
+	class SeamRenameMethodSearcher extends RefactorSearcher{
+		ProjectsSet projectSet=null;
+		public SeamRenameMethodSearcher(IFile file, String name){
 			super(file, name, method);
+			ELProjectSetExtension[] extensions = 	ELProjectSetExtension.getInstances();
+			if(extensions.length > 0){
+				projectSet = extensions[0].getProjectSet();
+				if(projectSet != null)
+					projectSet.init(file.getProject());
+			}
 		}
 
 		@Override
@@ -149,35 +153,27 @@ public class RenameMethodParticipant extends RenameParticipant{
 			}
 			return true;
 		}
-		
-		protected IProject[] getProjects(){
-			IProject[] projects = new IProject[1];
-			projects[0] = baseFile.getProject();
-			return projects;
-		}
-		
-		protected IContainer getViewFolder(IProject project){
-			return null;
-		}
-		
-//		protected ELInvocationExpression findComponentReference(ELInvocationExpression invocationExpression){
-//			ELInvocationExpression invExp = invocationExpression;
-//			while(invExp != null){
-//				if(invExp instanceof ELMethodInvocation || invExp instanceof ELPropertyInvocation){
-//					if(invExp.getMemberName() != null && invExp.getMemberName().equals(propertyName))
-//						return invExp;
-//					else
-//						invExp = invExp.getLeft();
-//				}else{
-//					invExp = invExp.getLeft();
-//				}
-//			}
-//			return null;
-//		}
 
 		@Override
 		protected void match(IFile file, int offset, int length) {
 			change(file, offset, length, newName);
+		}
+
+		protected IProject[] getProjects(){
+			if(projectSet != null){
+				return projectSet.getLinkedProjects();
+			}
+			return new IProject[]{baseFile.getProject()};
+		}
+		
+		protected IContainer getViewFolder(IProject project){
+			if(projectSet != null){
+				return projectSet.getViewFolder(project);
+			}
+			
+			IPath path = ProjectHome.getFirstWebContentPath(baseFile.getProject()).removeFirstSegments(1);
+			
+			return baseFile.getProject().getFolder(path);
 		}
 	}
 
