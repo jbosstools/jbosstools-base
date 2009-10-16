@@ -85,7 +85,7 @@ public class RenameMethodParticipant extends RenameParticipant{
 		if(element instanceof IMethod){
 			status = new RefactoringStatus();
 			
-			rootChange = new CompositeChange("");
+			rootChange = new CompositeChange(ElUiCoreMessages.RENAME_METHOD_PARTICIPANT_UPDATE_METHOD_REFERENCES);
 			method = (IMethod)element;
 			
 			oldName = method.getElementName();
