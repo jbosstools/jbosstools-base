@@ -90,7 +90,7 @@ public class RenameMethodParticipant extends RenameParticipant{
 			
 			oldName = method.getElementName();
 			
-			newName = getArguments().getNewName();
+			newName = RefactorSearcher.getPropertyName(method, getArguments().getNewName());
 			searcher = new SeamRenameMethodSearcher((IFile)method.getResource(), oldName);
 			added = false;
 			return true;

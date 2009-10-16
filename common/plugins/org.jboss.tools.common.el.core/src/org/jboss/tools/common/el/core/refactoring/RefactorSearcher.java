@@ -379,7 +379,7 @@ public abstract class RefactorSearcher {
 	}
 	
 	// TODO: move to util class
-	public boolean isGetter(IMethod method) {
+	public static boolean isGetter(IMethod method) {
 		String name = method.getElementName();
 		int numberOfParameters = method.getNumberOfParameters();
 		
@@ -387,11 +387,29 @@ public abstract class RefactorSearcher {
 	}
 
 	// TODO: move to util class
-	public boolean isSetter(IMethod method) {
+	public static boolean isSetter(IMethod method) {
 		String name = method.getElementName();
 		int numberOfParameters = method.getNumberOfParameters();
 
 		return ((name.startsWith(SET) && !name.equals(SET)) && numberOfParameters == 1);
+	}
+	
+	// TODO: move to util class
+	public static String getPropertyName(IMethod method, String methodName){
+		if (isGetter(method) || isSetter(method)) {
+			StringBuffer name = new StringBuffer(methodName);
+			if(methodName.startsWith("i")) { //$NON-NLS-1$
+				name.delete(0, 2);
+			} else {
+				name.delete(0, 3);
+			}
+			if(name.length()<2 || Character.isLowerCase(name.charAt(1))) {
+				name.setCharAt(0, Character.toLowerCase(name.charAt(0)));
+			}
+			String propertyName = name.toString();
+			return propertyName;
+		}
+		return methodName;
 	}
 	
 	private boolean containsInSearchScope(IProject project){
