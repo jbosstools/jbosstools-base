@@ -298,11 +298,13 @@ public abstract class RefactorSearcher {
 		if(expression instanceof ELPropertyInvocation){
 			ELPropertyInvocation pi = (ELPropertyInvocation)expression;
 			
-			return pi.getName().getStart();
+			if(pi.getName() != null)
+				return pi.getName().getStart();
 		}else if(expression instanceof ELMethodInvocation){
 			ELMethodInvocation mi = (ELMethodInvocation)expression;
 			
-			return mi.getName().getStart();
+			if(mi.getName() != null)
+				return mi.getName().getStart();
 		}
 		return 0;
 	}
@@ -311,11 +313,13 @@ public abstract class RefactorSearcher {
 		if(expression instanceof ELPropertyInvocation){
 			ELPropertyInvocation pi = (ELPropertyInvocation)expression;
 			
-			return pi.getName().getLength();
+			if(pi.getName() != null)
+				return pi.getName().getLength();
 		}else if(expression instanceof ELMethodInvocation){
 			ELMethodInvocation mi = (ELMethodInvocation)expression;
 			
-			return mi.getName().getLength();
+			if(mi.getName() != null)
+				return mi.getName().getLength();
 		}
 		return 0;
 	}
