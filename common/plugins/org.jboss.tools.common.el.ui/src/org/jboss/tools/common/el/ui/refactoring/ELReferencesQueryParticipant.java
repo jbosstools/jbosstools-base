@@ -116,9 +116,12 @@ public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPr
 				return projectSet.getViewFolder(project);
 			}
 			
-			IPath path = ProjectHome.getFirstWebContentPath(baseFile.getProject()).removeFirstSegments(1);
+			IPath path = ProjectHome.getFirstWebContentPath(baseFile.getProject());
 			
-			return baseFile.getProject().getFolder(path);
+			if(path != null)
+				return project.getFolder(path.removeFirstSegments(1));
+			
+			return null;
 		}
 	}
 }
