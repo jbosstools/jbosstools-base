@@ -61,7 +61,9 @@ public class DefaultDropWizardModel implements IDropWizardModel {
 	public void setAttributeValue(String name, Object value) {
 		if(name==null) throw new IllegalArgumentException("Attribute name cannot be null"); //$NON-NLS-1$
 		AttributeDescriptorValue descrValue = findDescriptor(name);
-		if(descrValue==null) throw new IllegalArgumentException("Attribute '" + name + "' not found"); //$NON-NLS-1$ //$NON-NLS-2$
+		if(descrValue==null) {
+			throw new IllegalArgumentException("Attribute '" + name + "' not found"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
  		descrValue.setValue(value);
 		fireModelChaged(ATTRIBUTE_VALUE,null,descrValue);
 	}
@@ -190,7 +192,7 @@ public class DefaultDropWizardModel implements IDropWizardModel {
 			ITagProposal[] proposals 
 				= TagProposalsComposite.getTagProposals(
 					getDropData().getMimeType(),
-					getDropData().getMimeData(),
+					getDropData(),
 					tagProposalFactory
 				);
 			if(proposals.length>1) {

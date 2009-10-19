@@ -67,7 +67,7 @@ public abstract class DefaultDropCommand implements IDropCommand {
 		ITagProposal[] proposals 
 			= TagProposalsComposite.getTagProposals(
 				getDefaultModel().getDropData().getMimeType(),
-				getDefaultModel().getDropData().getMimeData(),
+				getDefaultModel().getDropData(),
 				tagProposalFactory
 			);
 		if(proposals.length==1) {

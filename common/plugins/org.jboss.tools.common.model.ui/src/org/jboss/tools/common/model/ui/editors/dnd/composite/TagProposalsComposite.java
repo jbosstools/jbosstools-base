@@ -26,6 +26,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.jboss.tools.common.model.ui.editors.dnd.DropData;
 import org.jboss.tools.common.model.ui.editors.dnd.IDropWizardModel;
 import org.jboss.tools.common.model.ui.editors.dnd.ITagProposal;
 import org.jboss.tools.common.model.ui.editors.dnd.ITagProposalFactory;
@@ -44,7 +45,7 @@ public class TagProposalsComposite extends Composite {
 			model.getTagProposalFactory().getProposalLoader(
 					fModel.getDropData().getMimeType()
 				).getTagProposals(
-					fModel.getDropData().getMimeData()
+					fModel.getDropData()
 				);
 		
 		GridLayout layout = new GridLayout();
@@ -163,11 +164,11 @@ public class TagProposalsComposite extends Composite {
 		return getTagProposals().length>0;
 	}
 	
-	public static boolean areThereTagProposals(String mimeType,String dropData, ITagProposalFactory tagProposalFactory) {
+	public static boolean areThereTagProposals(String mimeType,DropData dropData, ITagProposalFactory tagProposalFactory) {
 		return tagProposalFactory.getProposalLoader(mimeType).getTagProposals(dropData).length>0;		
 	}
 	
-	public static ITagProposal[] getTagProposals(String mimeType,String dropData, ITagProposalFactory tagProposalFactory) {
+	public static ITagProposal[] getTagProposals(String mimeType,DropData dropData, ITagProposalFactory tagProposalFactory) {
 		return tagProposalFactory.getProposalLoader(mimeType).getTagProposals(dropData);		
 	}
 	
