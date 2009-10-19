@@ -78,6 +78,7 @@ import org.jboss.tools.common.model.impl.trees.FileSystemsTree;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.action.ModelContributionManager;
 import org.jboss.tools.common.model.ui.dnd.ControlDragDrop;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.model.ui.navigator.NavigatorLabelProvider;
@@ -242,7 +243,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 			}
 		});
 //@S_CHECK@
-  		TreeViewerMenuInvoker listener = createMenuInvoker();
+  		listener = createMenuInvoker();
 		listener.setViewer(viewer);
 		if(useModelMenu) {
 			viewer.getTree().addMouseListener(listener);
@@ -474,22 +475,22 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	
 	// MenuManager
 	
-	MenuManager menuMgr;
+	ModelContributionManager menuMgr;
+	TreeViewerMenuInvoker listener;
 	
 	protected void initContextMenu() {
-		menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		menuMgr = new ModelContributionManager(getSite().getShell());
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenu(manager);
 			}
 		});
-		if(!useModelMenu) {
-			TreeViewer treeViewer = getViewer();
-			Menu menu = menuMgr.createContextMenu(treeViewer.getTree());
-			treeViewer.getTree().setMenu(menu);
-			getSite().registerContextMenu(menuMgr, treeViewer);
-		}
+		TreeViewer treeViewer = getViewer();
+		Menu menu = menuMgr.createContextMenu(treeViewer.getTree());
+		treeViewer.getTree().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, treeViewer);
+		listener.setStandardInvoker(menuMgr);
 
 	}
 	
@@ -500,10 +501,12 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	}
 
 	protected void fillContextMenu(IMenuManager menu) {
-		IStructuredSelection selection =
-			(IStructuredSelection) getViewer().getSelection();
-		getActionGroup().setContext(new ActionContext(selection));
-		getActionGroup().fillContextMenu(menu);
+//		IStructuredSelection selection =
+//			(IStructuredSelection) getViewer().getSelection();
+//		if(menu instanceof ModelContributionManager) {
+//			((ModelContributionManager)menu).setSelection(selection);
+//		}
+		menu.update(true);
 	}
 	
 	// linking

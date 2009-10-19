@@ -12,8 +12,8 @@ package org.jboss.tools.common.model.ui.action;
 
 import java.util.*;
 
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.DnDUtil;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
@@ -27,6 +27,14 @@ public abstract class XMenuInvoker implements MouseListener, KeyListener {
 	protected Viewer viewer;
 	protected boolean onKeyRelease = false;
 
+	ModelContributionManager standardInvoker;
+
+	public XMenuInvoker() {}
+
+	public void setStandardInvoker(ModelContributionManager standardInvoker) {
+		this.standardInvoker = standardInvoker;
+	}
+
 	public void setViewer(Viewer viewer) {
 		this.viewer = viewer;
 	}
@@ -39,6 +47,23 @@ public abstract class XMenuInvoker implements MouseListener, KeyListener {
 	}
 
 	public void mouseDown(MouseEvent e) {
+		if(standardInvoker != null) {
+			XModelObject eo = getModelObjectAt(new Point(e.x, e.y));
+			XModelObject o = getSelectedModelObject();
+			if(o == null && eo == null) return;
+			XModelObject[] os = getSelectedModelObjects();
+			if(eo != null && (o == null || os == null || os.length < 2)) {
+				o = eo;
+				os = null;
+			} else if(isIncluded(eo, os)) {
+				o = eo;
+			}
+			if(os != null && os.length > 0) {
+				standardInvoker.setSelection(new StructuredSelection(os));
+			} else if(o != null) {
+				standardInvoker.setSelection(new StructuredSelection(o));
+			}
+		}
 	}
 
 	public void mouseUp(MouseEvent e) {
@@ -46,7 +71,7 @@ public abstract class XMenuInvoker implements MouseListener, KeyListener {
 	}
 	
 	protected void handleMouseUp(MouseEvent e) {
-		if(e.button == 3) { 
+		if(e.button == 3 && standardInvoker == null) { 
 			XModelObject eo = getModelObjectAt(new Point(e.x, e.y));
 			XModelObject o = getSelectedModelObject();
 			if(o == null && eo == null) return;

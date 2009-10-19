@@ -16,10 +16,12 @@ import org.eclipse.jface.action.*;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.actions.ActionContext;
+import org.jboss.tools.common.meta.action.XActionList;
 import org.jboss.tools.common.model.XModelObject;
 
 public class ModelContributionManager extends MenuManager {
 	ActionContext context;
+	ISelection selection;
 	Shell shell;
 	
 	public ModelContributionManager(Shell shell) {
@@ -29,6 +31,10 @@ public class ModelContributionManager extends MenuManager {
 	
 	public void setContext(ActionContext context) {
 		this.context = context;
+	}
+
+	public void setSelection(ISelection s) {
+		selection = s;
 	}
 	
 	protected void update(boolean force, boolean recursive) {
@@ -41,16 +47,20 @@ public class ModelContributionManager extends MenuManager {
 				if(os.length == 0) return;
 				XModelObject o = os[0];
 				if(os.length == 1) os = null;
-				XModelObjectActionList l = new XModelObjectActionList(o.getModelEntity().getActionList(), o, os, new Object[]{o});
+				XModelObjectActionList l = new XModelObjectActionList(getActionList(o), o, os, new Object[]{o});
 				l.setShell(shell);
 				l.createMenu(menu);
 				l.removeLastSeparator(menu);
 			}
 		}
 	}
-	
+
+	public XActionList getActionList(XModelObject o) {
+		return o.getModelEntity().getActionList();
+	}
+
 	public XModelObject[] getSelectedModelObjects() {
-		ISelection s = context.getSelection();
+		ISelection s = context != null ? context.getSelection() : selection;
 		if(s.isEmpty() || !(s instanceof StructuredSelection)) return new XModelObject[0];
 		StructuredSelection ss = (StructuredSelection)s;
 		Iterator it = ss.iterator();

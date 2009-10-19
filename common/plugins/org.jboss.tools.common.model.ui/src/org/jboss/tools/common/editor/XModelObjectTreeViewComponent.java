@@ -11,12 +11,18 @@
 package org.jboss.tools.common.editor;
 
 import java.util.*;
+
+import org.jboss.tools.common.meta.XModelEntity;
+import org.jboss.tools.common.meta.action.XActionList;
 import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.action.ModelContributionManager;
 import org.jboss.tools.common.model.ui.dnd.ControlDragDrop;
 import org.jboss.tools.common.model.ui.navigator.*;
 import org.jboss.tools.common.model.ui.outline.*;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.*;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 import org.jboss.tools.common.model.*;
@@ -38,7 +44,7 @@ public class XModelObjectTreeViewComponent {
 	}
 
 	public void setMenuInvoker(TreeViewerMenuInvoker menu) {
-		this.menu = menu;
+//		this.menu = menu;
 	}
 
 	protected XModelObjectTreeViewComponent(TreeViewerModelListenerImpl listener) {
@@ -79,8 +85,11 @@ public class XModelObjectTreeViewComponent {
 		treeViewer.setLabelProvider(label = LabelDecoratorImpl.decorateLabelProvider(new NavigatorLabelProvider()));
 		treeViewer.setContentProvider(content);
 		treeViewer.setInput(cache == null ? null : cache);
+
+		initContextMenu();
 		menu.setViewer(treeViewer);
 		treeViewer.getTree().addMouseListener(menu);
+
 		listener.setViewer(treeViewer);
 		dnd.setProvider(dndProvider);
 		dndProvider.setTree(treeViewer.getTree());
@@ -99,6 +108,44 @@ public class XModelObjectTreeViewComponent {
 		selectionProvider.setTreeViewer(getViewer());
 		return treeViewer.getTree();
 	}
+
+	protected void initContextMenu() {
+		final ModelContributionManager menuMgr = new ModelContributionManager(null) {
+			public XActionList getActionList(XModelObject o) {
+				if(o.getFileType() != XModelObject.FILE) return super.getActionList(o);
+				String ent = o.getModelEntity().getName() + "_EditorActionList"; //$NON-NLS-1$
+				XModelEntity entity = o.getModel().getMetaData().getEntity(ent); 
+				return (entity != null) ? entity.getActionList() : super.getActionList(o);
+			}
+		};
+		menu.setStandardInvoker(menuMgr);
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenu(manager);
+			}
+		});
+		final TreeViewer treeViewer = getViewer();
+		Menu menu = menuMgr.createContextMenu(treeViewer.getTree());
+		treeViewer.getTree().setMenu(menu);
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().getActiveEditor().getSite()
+				.registerContextMenu(menuMgr, treeViewer);
+			}
+		});
+
+	}
+	protected void fillContextMenu(IMenuManager menu) {
+		IStructuredSelection selection =
+			(IStructuredSelection) getViewer().getSelection();
+		if(menu instanceof ModelContributionManager) {
+			((ModelContributionManager)menu).setSelection(selection);
+		}
+		menu.update(true);
+	}
+	
 	public Control createControl(Composite parent) {
 		return createControl(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 	}
@@ -119,7 +166,7 @@ public class XModelObjectTreeViewComponent {
 		listener = null;
 		if (selectionProvider!=null) selectionProvider.dispose();
 		selectionProvider = null;
-		menu = null;
+//		menu = null;
 		if(label != null) {
 			label.dispose();
 			label = null;
