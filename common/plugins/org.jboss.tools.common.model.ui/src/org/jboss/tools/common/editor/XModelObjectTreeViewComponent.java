@@ -127,14 +127,14 @@ public class XModelObjectTreeViewComponent {
 		});
 		final TreeViewer treeViewer = getViewer();
 		Menu menu = menuMgr.createContextMenu(treeViewer.getTree());
-		treeViewer.getTree().setMenu(menu);
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().getActiveEditor().getSite()
-				.registerContextMenu(menuMgr, treeViewer);
-			}
-		});
+		treeViewer.getTree().setMenu(menu);	
+//		Display.getDefault().asyncExec(new Runnable() {
+//			public void run() {
+//				ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow()
+//				.getActivePage().getActiveEditor().getSite()
+//				.registerContextMenu(menuMgr, treeViewer);
+//			}
+//		});
 
 	}
 	protected void fillContextMenu(IMenuManager menu) {
