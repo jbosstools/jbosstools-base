@@ -164,7 +164,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         if(!isForceLoadOn() && body.equals(getAsText())) return;
 
 		String entity = getModel().getEntityRecognizer().getEntityName(getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION), body);
-		if(!entity.equals(getModelEntity().getName())) {
+		if(entity == null || !entity.equals(getModelEntity().getName())) {
 			String[] errors = (body.length() == 0) ? null : XMLUtil.getXMLErrors(new java.io.StringReader(body), false);
 			if(errors == null || errors.length == 0) errors = new String[]{"Doctype has been changed. Please save file for the change to take effect in object model.    :0:0"};
 			setErrors(body, errors);
