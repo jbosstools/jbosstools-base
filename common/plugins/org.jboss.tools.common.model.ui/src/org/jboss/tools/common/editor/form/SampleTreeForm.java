@@ -27,6 +27,7 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import org.jboss.tools.common.meta.action.XAction;
@@ -45,8 +46,8 @@ public class SampleTreeForm extends ExpandableForm implements ISelectionChangedL
 	private XFilteredTreeConstraint[] filters = new XFilteredTreeConstraint[0];
 	private SelectionNotifier notifier;
 
-	public SampleTreeForm() {
-		tree = new XModelObjectTreeViewComponent();
+	public SampleTreeForm(IEditorPart part) {
+		tree = new XModelObjectTreeViewComponent(part);
 		headingText = "Tree Form";
 		setCollapsable(Boolean.FALSE.booleanValue());
 		createActionMapping();

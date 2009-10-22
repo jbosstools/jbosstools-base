@@ -32,7 +32,7 @@ public class TreeGuiEditor extends AbstractSectionEditor {
 		control = sash;
 		control.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		component = new XModelObjectTreeViewComponent();
+		component = new XModelObjectTreeViewComponent(this);
 		component.setModelObject(object);
 		component.setCache(new XModelObjectCache(object));
 		for (int i = 0; i < filters.length; i++) component.addFilter(filters[i]);

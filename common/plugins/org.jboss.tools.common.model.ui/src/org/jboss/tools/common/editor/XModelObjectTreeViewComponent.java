@@ -25,6 +25,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
+import org.eclipse.ui.IEditorPart;
 import org.jboss.tools.common.model.*;
 
 public class XModelObjectTreeViewComponent {
@@ -38,16 +39,18 @@ public class XModelObjectTreeViewComponent {
 	private TreeDragDropProvider dndProvider = new TreeDragDropProvider(); 
 	private ControlDragDrop dnd = new ControlDragDrop();
 	TreeViewer treeViewer = null;
+	IEditorPart part;
 
-	public XModelObjectTreeViewComponent() {
-		this(new TreeViewerModelListenerImpl());
+	public XModelObjectTreeViewComponent(IEditorPart part) {
+		this(part, new TreeViewerModelListenerImpl());
 	}
 
 	public void setMenuInvoker(TreeViewerMenuInvoker menu) {
 //		this.menu = menu;
 	}
 
-	protected XModelObjectTreeViewComponent(TreeViewerModelListenerImpl listener) {
+	protected XModelObjectTreeViewComponent(IEditorPart part, TreeViewerModelListenerImpl listener) {
+		this.part = part;
 		this.listener = listener;
 		syncListener = new XModelTreeListenerSWTASync(listener);
 	}
@@ -127,16 +130,10 @@ public class XModelObjectTreeViewComponent {
 		});
 		final TreeViewer treeViewer = getViewer();
 		Menu menu = menuMgr.createContextMenu(treeViewer.getTree());
-		treeViewer.getTree().setMenu(menu);	
-//		Display.getDefault().asyncExec(new Runnable() {
-//			public void run() {
-//				ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow()
-//				.getActivePage().getActiveEditor().getSite()
-//				.registerContextMenu(menuMgr, treeViewer);
-//			}
-//		});
-
+		treeViewer.getTree().setMenu(menu);
+		part.getSite().registerContextMenu(menuMgr, treeViewer);
 	}
+
 	protected void fillContextMenu(IMenuManager menu) {
 		IStructuredSelection selection =
 			(IStructuredSelection) getViewer().getSelection();
@@ -171,6 +168,7 @@ public class XModelObjectTreeViewComponent {
 			label.dispose();
 			label = null;
 		}
+		part = null;
 	}
 	
 //	private void connect() {

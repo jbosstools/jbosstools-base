@@ -107,7 +107,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 		errorForm.setVisible(Boolean.FALSE.booleanValue());
 		errorForm.setLayout(layout); 
 		
-		treeForm = new SampleTreeForm();
+		treeForm = new SampleTreeForm(this);
 		treeForm.setSelectionNotifier(selectionNotifier);
 		rightFormContainer = new RightFormContainer();
 		rightFormContainer.setSelectionChangedListener(selectionNotifier);
