@@ -4,6 +4,8 @@
 # and is archived (for example) in https://pi4soa.svn.sourceforge.net/svnroot/pi4soa/trunk/releng/hudson/run.sh
 # Build runs under ${WORKSPACE} == .../jbosstools-cbi-*/workspace
 
+echo "[`date +%Y/%m/%d\ %H:%M`] Hudson job ${JOBNAME} build #${BUILD_NUMBER} (${BUILD_ID}) started." 
+
 ##############################################################################################
 
 # BEGIN CONFIGURATION
@@ -16,8 +18,6 @@ cvsProjectBaseDir=${WORKSPACE} # hudson.qa.jboss.com
 # DONE CONFIGURATION
 
 ##############################################################################################
-
-echo "[`date +%Y/%m/%d\ %H:%M`] Hudson job ${JOBNAME} build #${BUILD_NUMBER} (${BUILD_ID}) started." 
 
 uname -a
 if [[ -f $HUDSON_CONFIG_DIR/scripts/common/common_bash.sh ]]; then
@@ -187,10 +187,6 @@ ln -s ${cvsProjectBaseDir}/org.eclipse.dash.common.releng ${writableBuildRoot}/
 # symlink 3rdPartyJars (reuse existing content)
 ln -s ${thirdPartyJarsDir} ${writableBuildRoot}/
 thirdPartyJarsDir="${writableBuildRoot}/3rdPartyJars"
-
-# symlink downloads (reuse existing content)
-ln -s ${downloadsDir} ${writableBuildRoot}/
-downloadsDir="${writableBuildRoot}/downloads"
 
 # clean up any *-SNAPSHOT.zip files in ${downloadsDir}
 find ${downloadsDir} -maxdepth 1 -type f -name "*-SNAPSHOT.zip" -exec rm -f {} \;
