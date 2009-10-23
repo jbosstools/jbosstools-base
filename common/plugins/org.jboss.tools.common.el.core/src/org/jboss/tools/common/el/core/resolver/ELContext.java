@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 
 /**
@@ -35,4 +37,22 @@ public interface ELContext {
 	 * @return
 	 */
 	ELResolver[] getElResolvers();
+
+	/**
+	 * Sets the var list
+	 * @param vars
+	 */
+	void setVars(List<Var> vars);
+
+	/**
+	 * Sets the resolvers
+	 * @param resolvers
+	 */
+	void setElResolvers(ELResolver[] resolvers);
+
+	/**
+	 * Sets the source file
+	 * @param file
+	 */
+	void setResource(IFile file);
 }

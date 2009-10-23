@@ -21,7 +21,11 @@ import org.eclipse.swt.widgets.Control;
  */
 public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 
-	protected abstract SeverityConfigurationBlock getConfigurationBlock();
+	protected SeverityConfigurationBlock fConfigurationBlock;
+
+	protected SeverityConfigurationBlock getConfigurationBlock() {
+		return fConfigurationBlock;
+	}
 
 	@Override
 	protected Control createPreferenceContent(Composite composite) {

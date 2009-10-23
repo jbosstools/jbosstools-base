@@ -38,7 +38,7 @@ public class PreferencePageTest extends TestCase {
 	 * opens preference dialog with page loaded by a provided prefPageId
 	 * and verifies that it is an instance of provided class
 	 */
-	public void doDefaultTest(String id, Class<?extends PreferencePage> instanceOf) {
+	public void doDefaultTest(String id, Class instanceOf) {
 		PreferenceDialog prefDialog = 
 			WorkbenchUtils.createPreferenceDialog(
 					id);
@@ -48,7 +48,7 @@ public class PreferencePageTest extends TestCase {
 			prefDialog.open();
 			
 			Object selectedPage = prefDialog.getSelectedPage();
-			assertTrue("Selected page is not an instance of SeamPreferencePage", instanceOf.isInstance(selectedPage)); //$NON-NLS-1$
+			assertTrue("Selected page is not an instance of PreferencePage", instanceOf.isInstance(selectedPage)); //$NON-NLS-1$
 		} finally {
 			prefDialog.close();
 		}
