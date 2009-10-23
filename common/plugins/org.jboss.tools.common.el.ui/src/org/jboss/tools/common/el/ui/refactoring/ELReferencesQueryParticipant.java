@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.internal.ui.search.JavaSearchResultPage;
 import org.eclipse.jdt.ui.search.ElementQuerySpecification;
 import org.eclipse.jdt.ui.search.IMatchPresentation;
@@ -51,7 +52,7 @@ public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPr
 		
 		if(querySpecification instanceof ElementQuerySpecification){
 			ElementQuerySpecification qs = (ElementQuerySpecification)querySpecification;
-			if(qs.getElement() instanceof IMethod){
+			if(qs.getElement() instanceof IMethod || qs.getElement() instanceof IType){
 				IFile file = (IFile)qs.getElement().getResource();
 				String name = qs.getElement().getElementName();
 				
@@ -100,6 +101,7 @@ public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPr
 
 		@Override
 		protected void match(IFile file, int offset, int length) {
+			//System.out.println("match - "+file.getFullPath()+" offset - "+offset+" len - "+length);
 			Match match = new Match(file, offset, length);
 			requestor.reportMatch(match);
 		}
