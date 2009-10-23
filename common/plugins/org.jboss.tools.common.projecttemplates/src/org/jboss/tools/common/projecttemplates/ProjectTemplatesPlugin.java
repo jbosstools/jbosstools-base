@@ -50,7 +50,8 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 	void copyProjectTemplates() throws IOException {
 		Bundle bundle = Platform.getBundle(PLUGIN_ID);
 		File location = Platform.getStateLocation(bundle).toFile();
-		File install = FileLocator.getBundleFile(bundle);  
+		File install = FileLocator.getBundleFile(bundle);
+		JarVersionObserver jarVersionObserver = new JarVersionObserver(location);
 		if(install.isDirectory()) {
 			FileFilter filter = new FileFilter() {
 				public boolean accept(File pathname) {
@@ -59,6 +60,7 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 					&& !".svn".equalsIgnoreCase(pathname.getName()); //$NON-NLS-1$
 				}
 			};
+			
 			copy(location, install, "templates", filter); //$NON-NLS-1$
 			copy(location, install, "lib", filter); //$NON-NLS-1$
 		} else {
@@ -66,6 +68,7 @@ public class ProjectTemplatesPlugin extends AbstractUIPlugin{
 			unzip.execute(location, "templates.*"); //$NON-NLS-1$
 			unzip.execute(location, "lib.*"); //$NON-NLS-1$
 		}
+		jarVersionObserver.execute();
 	}
 	
 	private void copy(File location, File install, String name, FileFilter filter) {
