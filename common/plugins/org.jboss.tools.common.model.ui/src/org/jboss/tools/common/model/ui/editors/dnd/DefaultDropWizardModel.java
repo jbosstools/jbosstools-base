@@ -186,7 +186,13 @@ public class DefaultDropWizardModel implements IDropWizardModel {
 					return true;
 				}
 			}
-			if(values.length > 5) return true;
+			/*
+			 * https://jira.jboss.org/jira/browse/JBIDE-4982
+			 * The meaning of showing the dialog 
+			 * when there are more than 5 value descriptors is unclear.
+			 * So it was commented.
+			 */
+//			if(values.length > 5) return true;
 			return isPromptForTagAttributesRequired();
 		} else if(getTagProposal()==UNDEFINED_TAG_PROPOSAL){
 			ITagProposal[] proposals 
