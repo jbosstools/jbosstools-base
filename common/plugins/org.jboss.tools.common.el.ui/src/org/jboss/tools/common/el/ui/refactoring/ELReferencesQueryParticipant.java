@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.internal.ui.search.JavaSearchResultPage;
 import org.eclipse.jdt.ui.search.ElementQuerySpecification;
 import org.eclipse.jdt.ui.search.IMatchPresentation;
 import org.eclipse.jdt.ui.search.IQueryParticipant;
@@ -36,7 +35,6 @@ import org.jboss.tools.common.model.project.ProjectHome;
 
 public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPresentation{
 	private ELSearcher searcher;
-	JavaSearchResultPage searchPage = null;
 	
 	public int estimateTicks(QuerySpecification specification) {
 		return 10;
@@ -101,7 +99,6 @@ public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPr
 
 		@Override
 		protected void match(IFile file, int offset, int length) {
-			//System.out.println("match - "+file.getFullPath()+" offset - "+offset+" len - "+length);
 			Match match = new Match(file, offset, length);
 			requestor.reportMatch(match);
 		}
