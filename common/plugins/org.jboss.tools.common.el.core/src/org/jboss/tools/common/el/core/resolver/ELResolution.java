@@ -76,4 +76,11 @@ public interface ELResolution {
 	 * @return the number of resolved segments
 	 */
 	int getNumberOfResolvedSegments();
+
+	/**
+	 * @return the resolved value of this EL as String.
+	 * In case of message bundle properties it will be an value from properties file.
+	 * If the value is not available for this EL then source EL String will be returned.
+	 */
+	String getValue();
 }

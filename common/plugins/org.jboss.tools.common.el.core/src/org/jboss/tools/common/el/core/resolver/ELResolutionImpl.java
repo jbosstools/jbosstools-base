@@ -31,7 +31,12 @@ public class ELResolutionImpl implements ELResolution {
 	protected Set<TextProposal> proposals = new HashSet<TextProposal>();
 	protected ELInvocationExpression lastResolvedToken;
 	protected boolean mapOrCollectionOrBundleAmoungTheTokens;
-	
+	protected String value;
+
+	public ELResolutionImpl(ELExpression operand) {
+		setSourceOperand(operand);
+	}
+
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#findSegmentsByJavaElement(org.eclipse.jdt.core.IJavaElement)
 	 */
@@ -169,20 +174,6 @@ public class ELResolutionImpl implements ELResolution {
 	}
 
 	/**
-	 * @return the operand
-	 */
-	public ELExpression getOperand() {
-		return operand;
-	}
-
-	/**
-	 * @param operand the operand to set
-	 */
-	public void setOperand(ELExpression operand) {
-		this.operand = operand;
-	}
-
-	/**
 	 * @return the mapOrCollectionOrBundleAmoungTheTokens
 	 */
 	public boolean isMapOrCollectionOrBundleAmoungTheTokens() {
@@ -222,5 +213,23 @@ public class ELResolutionImpl implements ELResolution {
 			}
 		}
 		return i;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#getValue()
+	 */
+	public String getValue() {
+		if(value==null) {
+			value = operand.toString();
+		}
+		return value;
+	}
+
+	/**
+	 * @param value
+	 */
+	public void setValue(String value) {
+		this.value = value;
 	}
 }
