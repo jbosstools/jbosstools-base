@@ -59,7 +59,7 @@ public class ModelNavigatorActionGroup extends ResourceNavigatorActionGroup {
 		Shell shell = navigator.getSite().getShell();
 		
 		if(activateModelContribution) {
-			mcm = new ModelContributionManager(shell);
+			mcm = new ModelContributionManager(shell, null);
 		}
 		
 		addBookmarkAction = new AddBookmarkAction(shell);

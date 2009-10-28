@@ -23,10 +23,13 @@ public class ModelContributionManager extends MenuManager {
 	ActionContext context;
 	ISelection selection;
 	Shell shell;
+
+	XMenuInvoker invoker;
 	
-	public ModelContributionManager(Shell shell) {
+	public ModelContributionManager(Shell shell, XMenuInvoker invoker) {
 		super("JBoss Tools");
 		this.shell = shell;
+		this.invoker = invoker;
 	}
 	
 	public void setContext(ActionContext context) {
@@ -56,6 +59,7 @@ public class ModelContributionManager extends MenuManager {
 	}
 
 	public XActionList getActionList(XModelObject o) {
+		if(invoker != null) return invoker.getActionList(o);
 		return o.getModelEntity().getActionList();
 	}
 
@@ -67,7 +71,7 @@ public class ModelContributionManager extends MenuManager {
 		ArrayList<XModelObject> l = new ArrayList<XModelObject>();
 		while(it.hasNext()) {
 			IAdaptable a = (IAdaptable)it.next();
-			XModelObject o = (XModelObject)a.getAdapter(XModelObject.class);
+			XModelObject o = a instanceof XModelObject ? (XModelObject)a : (XModelObject)a.getAdapter(XModelObject.class);
 			if(o != null) l.add(o);
 		}
 		return l.toArray(new XModelObject[0]); 

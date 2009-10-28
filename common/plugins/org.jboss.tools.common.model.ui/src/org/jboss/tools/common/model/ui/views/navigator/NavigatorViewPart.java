@@ -479,7 +479,7 @@ public class NavigatorViewPart extends ViewPart implements ISaveablePart, ISetSe
 	TreeViewerMenuInvoker listener;
 	
 	protected void initContextMenu() {
-		menuMgr = new ModelContributionManager(getSite().getShell());
+		menuMgr = new ModelContributionManager(getSite().getShell(), listener);
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {

@@ -113,7 +113,7 @@ public class XModelObjectTreeViewComponent {
 	}
 
 	protected void initContextMenu() {
-		final ModelContributionManager menuMgr = new ModelContributionManager(null) {
+		final ModelContributionManager menuMgr = new ModelContributionManager(null, menu) {
 			public XActionList getActionList(XModelObject o) {
 				if(o.getFileType() != XModelObject.FILE) return super.getActionList(o);
 				String ent = o.getModelEntity().getName() + "_EditorActionList"; //$NON-NLS-1$
