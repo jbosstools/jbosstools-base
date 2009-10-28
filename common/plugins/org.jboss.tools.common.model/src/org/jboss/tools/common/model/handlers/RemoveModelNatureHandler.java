@@ -36,13 +36,29 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 	
 	public boolean isEnabled(XModelObject object) {
 		if(object == null) return false;
-		String nature = getNature(object);
+		String nature = getNatureDisplayName(object);
 		if(nature == null) return false;
 		XActionImpl i = (XActionImpl)action;
 		i.setDisplayName(MessageFormat.format("Remove {0} Capabilities", nature));
 		return true;
 	}
 	
+	private String getNatureDisplayName(XModelObject object) {
+		IProject p = EclipseResourceUtil.getProject(object);
+		ModelNatureExtension[] es = ModelNatureExtension.getInstances();
+		for (ModelNatureExtension ext: es) {
+			String name = ext.getName();
+			if(p != null && p.isAccessible()) try {
+				if(p.hasNature(name)) {
+					return ext.getDisplayName();
+				}
+			} catch (CoreException e) {
+				
+			}
+		}
+		return null;		
+	}
+
 	private String getNature(XModelObject object) {
 		IProject p = EclipseResourceUtil.getProject(object);
 		ModelNatureExtension[] es = ModelNatureExtension.getInstances();
@@ -69,7 +85,8 @@ public class RemoveModelNatureHandler extends AbstractHandler {
 
 		ServiceDialog dialog = object.getModel().getService();
 		Properties pd = new Properties();
-		String message = SignificanceMessageFactory.getInstance().getMessage(action, object, null) + "?";
+		String message = MessageFormat.format("Remove {0} Capabilities from project {1}?", getNatureDisplayName(object), project.getName());
+			//SignificanceMessageFactory.getInstance().getMessage(action, object, null) + "?";
 		pd.setProperty(ServiceDialog.DIALOG_MESSAGE, message);
 		String checkBoxMessage = "Remove Dynamic Web Project Capabilities";
 		pd.setProperty(ServiceDialog.CHECKBOX_MESSAGE, checkBoxMessage);
