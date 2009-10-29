@@ -13,6 +13,7 @@ package org.jboss.tools.test.util;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -93,6 +94,26 @@ public class WorkbenchUtils {
 		IEditorPart part = null;
 		try {
 			part = IDE.openEditor(getWorkbenchActivePage(),ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(inputFile)));
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+		return part;
+	}
+	
+	public static IEditorPart openEditor(String inputFile, String editorId) {
+		IEditorPart part = null;
+		try {
+			part = IDE.openEditor(getWorkbenchActivePage(),ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(inputFile)),editorId);
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+		return part;
+	}
+	
+	public static IEditorPart openEditor(IFile inputFile, String editorId) {
+		IEditorPart part = null;
+		try {
+			part = IDE.openEditor(getWorkbenchActivePage(),inputFile,editorId);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
