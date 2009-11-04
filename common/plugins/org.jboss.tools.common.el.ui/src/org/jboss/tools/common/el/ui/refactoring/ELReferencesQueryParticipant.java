@@ -25,15 +25,13 @@ import org.eclipse.jdt.ui.search.IMatchPresentation;
 import org.eclipse.jdt.ui.search.IQueryParticipant;
 import org.eclipse.jdt.ui.search.ISearchRequestor;
 import org.eclipse.jdt.ui.search.QuerySpecification;
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.search.ui.text.Match;
-import org.eclipse.ui.PartInitException;
 import org.jboss.tools.common.el.core.refactoring.ELProjectSetExtension;
 import org.jboss.tools.common.el.core.refactoring.ProjectsSet;
 import org.jboss.tools.common.el.core.refactoring.RefactorSearcher;
 import org.jboss.tools.common.model.project.ProjectHome;
 
-public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPresentation{
+public class ELReferencesQueryParticipant implements IQueryParticipant{
 	private ELSearcher searcher;
 	
 	public int estimateTicks(QuerySpecification specification) {
@@ -41,7 +39,7 @@ public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPr
 	}
 
 	public IMatchPresentation getUIParticipant() {
-		return this;
+		return null;
 	}
 
 	public void search(ISearchRequestor requestor,
@@ -60,14 +58,6 @@ public class ELReferencesQueryParticipant implements IQueryParticipant, IMatchPr
 				searcher.findELReferences();
 			}
 		}
-	}
-	
-	public ILabelProvider createLabelProvider() {
-		return null;
-	}
-
-	public void showMatch(Match match, int currentOffset,
-			int currentLength, boolean activate) throws PartInitException {
 	}
 	
 	class ELSearcher extends RefactorSearcher{
