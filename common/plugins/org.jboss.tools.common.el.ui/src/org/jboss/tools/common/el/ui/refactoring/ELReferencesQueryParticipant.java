@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.ui.search.ElementQuerySpecification;
 import org.eclipse.jdt.ui.search.IMatchPresentation;
 import org.eclipse.jdt.ui.search.IQueryParticipant;
@@ -47,6 +48,9 @@ public class ELReferencesQueryParticipant implements IQueryParticipant{
 			throws CoreException {
 		
 		if(querySpecification instanceof ElementQuerySpecification){
+			if (!isSearchForReferences(querySpecification.getLimitTo()))
+				return;
+			
 			ElementQuerySpecification qs = (ElementQuerySpecification)querySpecification;
 			if(qs.getElement() instanceof IMethod || qs.getElement() instanceof IType){
 				IFile file = (IFile)qs.getElement().getResource();
@@ -59,6 +63,15 @@ public class ELReferencesQueryParticipant implements IQueryParticipant{
 			}
 		}
 	}
+	
+	public boolean isSearchForReferences(int limitTo) {
+    	int maskedLimitTo = limitTo & ~(IJavaSearchConstants.IGNORE_DECLARING_TYPE+IJavaSearchConstants.IGNORE_RETURN_TYPE);
+    	if (maskedLimitTo == IJavaSearchConstants.REFERENCES || maskedLimitTo == IJavaSearchConstants.ALL_OCCURRENCES) {
+    		return true;
+    	}
+    
+    	return false;
+    }
 	
 	class ELSearcher extends RefactorSearcher{
 		ISearchRequestor requestor;
