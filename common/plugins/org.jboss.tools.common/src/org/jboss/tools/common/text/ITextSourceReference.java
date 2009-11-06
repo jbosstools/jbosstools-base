@@ -8,7 +8,7 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.jboss.tools.common.model.project.ext;
+package org.jboss.tools.common.text;
 
 /**
  * An interface of seam tools model object that has text source.

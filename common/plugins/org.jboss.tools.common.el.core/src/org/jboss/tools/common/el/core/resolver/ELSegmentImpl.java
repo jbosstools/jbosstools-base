@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
-import org.jboss.tools.common.model.project.ext.ITextSourceReference;
+import org.jboss.tools.common.text.ITextSourceReference;
 
 /**
  * @author Alexey Kazakov
