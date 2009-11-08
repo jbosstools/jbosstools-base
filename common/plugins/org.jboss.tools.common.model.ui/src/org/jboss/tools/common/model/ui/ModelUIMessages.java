@@ -50,6 +50,28 @@ public final class ModelUIMessages extends NLS {
 	public static String Editor_Delete_description;
 	public static String MainPreferencePage_Description;
 	public static String Form_CANNOT_LOAD_ATTRIBUTE;
+	
+	public static String AbstractQueryWizardView_Cancel;
+	public static String AbstractQueryWizardView_Close;
+	public static String AbstractQueryWizardView_Help;
+	public static String AbstractQueryWizardView_OK;
+	public static String BundleLanguagesEditor_Add;
+	public static String BundleLanguagesEditor_Delete;
+	public static String BundleLanguagesEditor_LanguageCountry;
+	public static String CommandBar_Finish;
+	public static String CommandBar_Next;
+	public static String CommandBar_NextArrow;
+	public static String CommandBar_OK;
+	public static String CommandBar_Run;
+	public static String HiddenFileSystemsWizardView_HideAllJars;
+	public static String HiddenFileSystemsWizardView_ShowAllJars;
+	public static String HiddenPaletteTabsWizardView_HideAll;
+	public static String HiddenPaletteTabsWizardView_ShowAll;
+	public static String MutableMultipleChoiceFieldEditor_DeselectAll;
+	public static String MutableMultipleChoiceFieldEditor_New;
+	public static String MutableMultipleChoiceFieldEditor_SelectAll;
+
+	
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, ModelUIMessages.class);

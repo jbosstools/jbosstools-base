@@ -10,24 +10,30 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.propertieseditor;
 
-import java.util.*;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-import org.jboss.tools.common.propertieseditor.bundlemodel.*;
-import org.jboss.tools.common.model.ui.Messages;
-import org.jboss.tools.common.model.ui.action.*;
+import java.util.ArrayList;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.bundle.CountriesHelper;
+import org.jboss.tools.common.model.ui.ModelUIMessages;
+import org.jboss.tools.common.model.ui.action.CommandBar;
+import org.jboss.tools.common.model.ui.action.CommandBarLayout;
+import org.jboss.tools.common.model.ui.action.CommandBarListener;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.jboss.tools.common.propertieseditor.bundlemodel.BundleModel;
 
 public class BundleLanguagesEditor implements CommandBarListener, SelectionListener {
-	static String CREATE = Messages.BundleLanguagesEditor_Add;
-	static String DELETE = Messages.BundleLanguagesEditor_Delete;
+	static String CREATE = ModelUIMessages.BundleLanguagesEditor_Add;
+	static String DELETE = ModelUIMessages.BundleLanguagesEditor_Delete;
 	public Image IMAGE_DELETE = EclipseResourceUtil.getImage("images/actions/delete.gif"); //$NON-NLS-1$
 	public Image IMAGE_EDIT = EclipseResourceUtil.getImage("images/actions/edit.gif"); //$NON-NLS-1$
 	public Image IMAGE_CREATE = EclipseResourceUtil.getImage("images/actions/new.gif"); //$NON-NLS-1$
@@ -66,7 +72,7 @@ public class BundleLanguagesEditor implements CommandBarListener, SelectionListe
 		Composite control = new Composite(parent, SWT.NONE);
 		control.setLayout(new GridLayout(2, false));
 		Label label = new Label(control, SWT.NONE);
-		label.setText(Messages.BundleLanguagesEditor_LanguageCountry);
+		label.setText(ModelUIMessages.BundleLanguagesEditor_LanguageCountry);
 		combo = new Combo(control, SWT.DROP_DOWN | SWT.READ_ONLY);
 		combomodel.setCombo(combo);
 		update();

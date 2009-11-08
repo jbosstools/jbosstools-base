@@ -10,14 +10,22 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.action;
 
-import java.util.*;
-import org.eclipse.swt.*;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.graphics.*;
+import java.util.ArrayList;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.Widget;
 import org.jboss.tools.common.model.XModelException;
-import org.jboss.tools.common.model.ui.Messages;
+import org.jboss.tools.common.model.ui.ModelUIMessages;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
@@ -90,11 +98,11 @@ public class CommandBar {
 			}
 			d.command = commands[i];
 			// bugfix:Issue # 6167. Try find default button by name
-			if (Messages.CommandBar_OK.equalsIgnoreCase(commands[i]) || 
-					Messages.CommandBar_Finish.equalsIgnoreCase(commands[i]) || 
-					Messages.CommandBar_Next.equalsIgnoreCase(commands[i])|| 
-					Messages.CommandBar_NextArrow.equalsIgnoreCase(commands[i]) || 
-					Messages.CommandBar_Run.equalsIgnoreCase(commands[i])) {
+			if (ModelUIMessages.CommandBar_OK.equalsIgnoreCase(commands[i]) || 
+					ModelUIMessages.CommandBar_Finish.equalsIgnoreCase(commands[i]) || 
+					ModelUIMessages.CommandBar_Next.equalsIgnoreCase(commands[i])|| 
+					ModelUIMessages.CommandBar_NextArrow.equalsIgnoreCase(commands[i]) || 
+					ModelUIMessages.CommandBar_Run.equalsIgnoreCase(commands[i])) {
 				this.defaultCommand = commands[i];
 			}	
 		}

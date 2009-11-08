@@ -11,7 +11,7 @@
 package org.jboss.tools.common.model.ui.wizards.query.list;
 
 import org.jboss.tools.common.meta.key.WizardKeys;
-import org.jboss.tools.common.model.ui.Messages;
+import org.jboss.tools.common.model.ui.ModelUIMessages;
 
 public class HiddenFileSystemsWizardView extends AbstractListWizardView {
 	public HiddenFileSystemsWizardView() {
@@ -22,17 +22,17 @@ public class HiddenFileSystemsWizardView extends AbstractListWizardView {
 	}
 
 	protected String[] getActions() {
-		return new String[]{Messages.HiddenFileSystemsWizardView_HideAllJars, Messages.HiddenFileSystemsWizardView_ShowAllJars};
+		return new String[]{ModelUIMessages.HiddenFileSystemsWizardView_HideAllJars, ModelUIMessages.HiddenFileSystemsWizardView_ShowAllJars};
 	}
 
 	protected void internalAction(String command) {
-		if(Messages.HiddenFileSystemsWizardView_HideAllJars.equals(command)) {
+		if(ModelUIMessages.HiddenFileSystemsWizardView_HideAllJars.equals(command)) {
 			for (int i = 0; i < boxes.length; i++)
 			  if("true".equals(vs[i][2])) { //$NON-NLS-1$
 			  	boxes[i].setSelection(false);
 			  	apply(i);
 			  }
-		} else if(Messages.HiddenFileSystemsWizardView_ShowAllJars.equals(command)) {
+		} else if(ModelUIMessages.HiddenFileSystemsWizardView_ShowAllJars.equals(command)) {
 			for (int i = 0; i < boxes.length; i++)
 			  if("true".equals(vs[i][2])) { //$NON-NLS-1$
 			  	boxes[i].setSelection(true);

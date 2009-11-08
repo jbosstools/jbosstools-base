@@ -12,8 +12,6 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 
 import java.util.Properties;
 
-import org.jboss.tools.common.model.ui.Messages;
-import org.jboss.tools.common.model.ui.action.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -21,12 +19,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.jboss.tools.common.meta.action.SpecialWizard;
+import org.jboss.tools.common.model.ui.ModelUIMessages;
+import org.jboss.tools.common.model.ui.action.CommandBar;
+import org.jboss.tools.common.model.ui.action.CommandBarListener;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 public class MutableMultipleChoiceFieldEditor extends MultipleChoiceFieldEditor implements CommandBarListener, IMutableFieldEditor {
-	static String NEW = Messages.MutableMultipleChoiceFieldEditor_New;
-	static String SELECT_ALL = Messages.MutableMultipleChoiceFieldEditor_SelectAll;
-	static String DESELECT_ALL = Messages.MutableMultipleChoiceFieldEditor_DeselectAll;
+	static String NEW = ModelUIMessages.MutableMultipleChoiceFieldEditor_New;
+	static String SELECT_ALL = ModelUIMessages.MutableMultipleChoiceFieldEditor_SelectAll;
+	static String DESELECT_ALL = ModelUIMessages.MutableMultipleChoiceFieldEditor_DeselectAll;
 
 	CommandBar bar = new CommandBar();
 	String[] commands = {NEW, SELECT_ALL, DESELECT_ALL};
