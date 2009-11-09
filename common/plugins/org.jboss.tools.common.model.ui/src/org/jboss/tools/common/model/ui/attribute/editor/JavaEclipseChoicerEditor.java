@@ -54,7 +54,7 @@ public class JavaEclipseChoicerEditor extends ValueEditor {
 	}
 
 	public boolean isGreedyEditor() {
-		return true;
+		return false;
 	}
 
 	protected CellEditor createCellEditor(Composite parent) {
