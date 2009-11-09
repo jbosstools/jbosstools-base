@@ -184,6 +184,24 @@ public final class FileUtil {
         }
         return sb.toString();
     }
+    
+    public static String readStream(IFile file) throws CoreException {
+		String content = null;
+		InputStream in = null;
+		try {
+			in = file.getContents();
+			content = FileUtil.readStream(in);
+		} finally {
+			if(in!=null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					CommonPlugin.getPluginLog().logError(e);
+				}
+			}
+		}
+		return content;
+    }
 
     public static boolean writeFile(File f, String value) {
     	return writeFileWithEncodingCheck(f, value, null);
