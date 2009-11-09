@@ -192,7 +192,7 @@ public abstract class RefactorSearcher {
 			try {
 				content = FileUtil.readStream(file);
 			} catch (CoreException e) {
-				ELCorePlugin.getDefault().logError("Error occured during reading content of {0} file", e);  //$NON-NLS-1$
+				ELCorePlugin.getDefault().logError(e);
 			}
 			if(content!=null) {
 				String ext = file.getFileExtension();			
