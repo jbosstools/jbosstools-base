@@ -43,6 +43,7 @@ import java.util.zip.ZipFile;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.common.CommonPlugin;
 
 public final class FileUtil {
@@ -201,6 +202,22 @@ public final class FileUtil {
 			}
 		}
 		return content;
+    }
+
+    public static void copyContent(IFile from, IFile to, boolean force, boolean keepHistory, IProgressMonitor monitor) throws CoreException {
+		InputStream is = null;
+		try {
+			is = from.getContents();
+			to.setContents(is, force, keepHistory, monitor);
+		} finally {
+			if(is!=null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					CommonPlugin.getPluginLog().logError(e);
+				}
+			}
+		}
     }
 
     public static boolean writeFile(File f, String value) {
