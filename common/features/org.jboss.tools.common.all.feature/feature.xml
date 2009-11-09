@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.jboss.tools.common.all.feature"
+      label="%featureName"
+      version="1.0.0.qualifier"
+      provider-name="%featureProvider">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      JBoss, Home of Professional Open Source
+Copyright 2006-2009, JBoss by Red Hat, and individual contributors as indicated
+by the @authors tag. See the copyright.txt in the distribution
+for a full listing of individual contributors.
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://download.jboss.org/jbosstools/updates/stable"/>
+   </url>
+
+   <includes
+         id="org.jboss.tools.common.core.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.jboss.tools.common.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.jboss.tools.common.text.ext.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.jboss.tools.common.ui.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.jboss.tools.common.verification.feature"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.common.el.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.common.el.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.common.meta.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.common.resref.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.common.resref.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+
+</feature>
