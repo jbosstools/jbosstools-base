@@ -12,7 +12,6 @@ package org.jboss.tools.common.model.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +63,6 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.project.ModelNature;
 import org.jboss.tools.common.model.project.ModelNatureExtension;
-import org.jboss.tools.common.util.FileUtil;
 import org.osgi.framework.Bundle;
 
 public class EclipseResourceUtil {
@@ -985,24 +983,5 @@ public class EclipseResourceUtil {
 		if(path == null) return false;
 		path = path.toLowerCase();
 		return path.endsWith(".jar") || path.endsWith(".zip"); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	public static String getFileContent(IFile file) {
-		InputStream is = null;
-		try {
-			is = file.getContents();
-			return FileUtil.readStream(is);
-		} catch (CoreException e) {
-			ModelPlugin.getPluginLog().logError(e);
-			return null;
-		} finally {
-			if(is!=null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
-		}
 	}
 }
