@@ -162,8 +162,9 @@ public class BundleModel {
 		ArrayList<String> keys = new ArrayList<String>();
 		ArrayList<String> values = new ArrayList<String>();
 		Properties p = new Properties();
+		InputStream s = null;
 		try {
-			InputStream s = file.getContents();
+			s = file.getContents();
 			BufferedReader in = new BufferedReader(new InputStreamReader(s, "8859_1")); //$NON-NLS-1$
 			while (true) {
 				String line = in.readLine();
@@ -198,6 +199,14 @@ public class BundleModel {
 			ModelUIPlugin.getPluginLog().logError(e);
 		} catch (IOException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
+		} finally {
+			if(s!=null) {
+				try {
+					s.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
 		}
 		String[][] r = new String[keys.size()][2];
 		for (int i = 0; i < r.length; i++) {

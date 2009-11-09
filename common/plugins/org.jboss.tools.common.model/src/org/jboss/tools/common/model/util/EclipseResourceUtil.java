@@ -12,35 +12,60 @@ package org.jboss.tools.common.model.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
-import org.eclipse.core.resources.*;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.jdt.core.*;
+import org.eclipse.jdt.core.IClasspathContainer;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaModelMarker;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.osgi.framework.Bundle;
-
 import org.jboss.tools.common.meta.action.XActionInvoker;
-import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelConstants;
+import org.jboss.tools.common.model.XModelFactory;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.FilePathHelper;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
-import org.jboss.tools.common.model.filesystems.impl.*;
-import org.jboss.tools.common.model.icons.impl.*;
+import org.jboss.tools.common.model.filesystems.impl.FileSystemImpl;
+import org.jboss.tools.common.model.filesystems.impl.FileSystemsImpl;
+import org.jboss.tools.common.model.filesystems.impl.JarSystemImpl;
+import org.jboss.tools.common.model.icons.impl.XModelObjectIcon;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.project.ModelNature;
 import org.jboss.tools.common.model.project.ModelNatureExtension;
+import org.jboss.tools.common.util.FileUtil;
+import org.osgi.framework.Bundle;
 
 public class EclipseResourceUtil {
 	
@@ -962,4 +987,22 @@ public class EclipseResourceUtil {
 		return path.endsWith(".jar") || path.endsWith(".zip"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	public static String getFileContent(IFile file) {
+		InputStream is = null;
+		try {
+			is = file.getContents();
+			return FileUtil.readStream(is);
+		} catch (CoreException e) {
+			ModelPlugin.getPluginLog().logError(e);
+			return null;
+		} finally {
+			if(is!=null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
+		}
+	}
 }
