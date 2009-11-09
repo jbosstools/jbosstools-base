@@ -1,4 +1,8 @@
 !*** Generated with org.eclipse.dash.common.releng/tools/scripts/buildAllHelper.xml#dir2svnmap task
+feature@org.jboss.tools.common.all.feature=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/features/org.jboss.tools.common.all.feature
+feature@org.jboss.tools.common.all.sdk.feature=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/features/org.jboss.tools.common.all.sdk.feature
+feature@org.jboss.tools.common.all.tests.feature=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/features/org.jboss.tools.common.all.tests.feature
+
 feature@org.jboss.tools.common.core.feature=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/features/org.jboss.tools.common.core.feature
 feature@org.jboss.tools.common.feature=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/features/org.jboss.tools.common.feature
 feature@org.jboss.tools.common.text.ext.feature=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/features/org.jboss.tools.common.text.ext.feature
