@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.common.el.core.Activator;
+import org.jboss.tools.common.el.core.ELCorePlugin;
 
 /**
  * This factory is used to get EL Resources for particular resource
@@ -77,13 +77,13 @@ public class ELResolverFactoryManager {
 							if(resolver instanceof ELResolver) {
 								resolverSet.add((ELResolver)resolver);
 							} else {
-								Activator.getPluginLog().logError(resolver.getClass().getName() + " must be instance of org.jboss.tools.common.el.core.resolver.ELResolver"); //$NON-NLS-1$
+								ELCorePlugin.getPluginLog().logError(resolver.getClass().getName() + " must be instance of org.jboss.tools.common.el.core.resolver.ELResolver"); //$NON-NLS-1$
 							}
 						}
 					} catch (InvalidRegistryObjectException e) {
-						Activator.getPluginLog().logError(e);
+						ELCorePlugin.getPluginLog().logError(e);
 					} catch (CoreException e) {
-						Activator.getPluginLog().logError(e);
+						ELCorePlugin.getPluginLog().logError(e);
 					}
 				}
 				IConfigurationElement[] factories = elements[j].getChildren("factory"); //$NON-NLS-1$
@@ -96,10 +96,10 @@ public class ELResolverFactoryManager {
 								resolverSet.add(resolver);
 							}
 						} else {
-							Activator.getPluginLog().logError(factory.getClass().getName() + " must be instance of org.jboss.tools.common.el.core.resolver.ELResolverFactory"); //$NON-NLS-1$
+							ELCorePlugin.getPluginLog().logError(factory.getClass().getName() + " must be instance of org.jboss.tools.common.el.core.resolver.ELResolverFactory"); //$NON-NLS-1$
 						}
 					} catch (CoreException e) {
-						Activator.getPluginLog().logError(e);
+						ELCorePlugin.getPluginLog().logError(e);
 					}
 				}
 			}

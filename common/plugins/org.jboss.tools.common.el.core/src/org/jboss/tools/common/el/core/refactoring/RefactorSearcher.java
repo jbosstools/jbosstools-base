@@ -11,6 +11,7 @@
 package org.jboss.tools.common.el.core.refactoring;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -41,7 +42,7 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.regions.DOMRegionContext;
-import org.jboss.tools.common.el.core.Activator;
+import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.model.ELInstance;
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
@@ -147,7 +148,7 @@ public abstract class RefactorSearcher {
 					scanForJava((IFile) resource);
 			}
 		}catch(CoreException ex){
-			Activator.getDefault().logError(ex);
+			ELCorePlugin.getDefault().logError(ex);
 		}
 	}
 
@@ -160,46 +161,48 @@ public abstract class RefactorSearcher {
 					scan((IFile) resource);
 			}
 		}catch(CoreException ex){
-			Activator.getDefault().logError(ex);
+			ELCorePlugin.getDefault().logError(ex);
 		}
 	}
 	
 	private void scanForJava(IFile file){
-		String ext = file.getFileExtension();
-		
-		if(!isFileCorrect(file))
-			return;
-		
-		String content = null;
-		try {
-			content = FileUtil.readStream(file.getContents());
-		} catch (CoreException e) {
-			Activator.getDefault().logError(e);
-			return;
+		if(isFileCorrect(file)) {
+			String content = null;
+			try {
+				content = FileUtil.readStream(file);
+			} catch (CoreException e) {
+				ELCorePlugin.getDefault().logError(e);
+			}
+			if(content!= null) { 
+				String ext = file.getFileExtension();
+				if(JAVA_EXT.equalsIgnoreCase(ext)){
+					scanJava(file, content);
+				} else if(XML_EXT.equalsIgnoreCase(ext)) {
+					scanDOM(file, content);
+				} else if(PROPERTIES_EXT.equalsIgnoreCase(ext)) {
+					scanProperties(file, content);
+				}
+			}
 		}
-		if(JAVA_EXT.equalsIgnoreCase(ext)){
-			scanJava(file, content);
-		}else if(XML_EXT.equalsIgnoreCase(ext))
-			scanDOM(file, content);
-		else if(PROPERTIES_EXT.equalsIgnoreCase(ext))
-			scanProperties(file, content);
 	}
 
 	private void scan(IFile file){
-		String ext = file.getFileExtension();
-		
-		if(!isFileCorrect(file))
-			return;
-		
-		String content = null;
-		try {
-			content = FileUtil.readStream(file.getContents());
-		} catch (CoreException e) {
-			Activator.getDefault().logError(e);
-			return;
+		if(isFileCorrect(file)) {
+			String content = null;
+			try {
+				content = FileUtil.readStream(file);
+			} catch (CoreException e) {
+				ELCorePlugin.getDefault().logError("Error occured during reading content of {0} file", e);  //$NON-NLS-1$
+			}
+			if(content!=null) {
+				String ext = file.getFileExtension();			
+				if(XML_EXT.equalsIgnoreCase(ext) 
+					|| XHTML_EXT.equalsIgnoreCase(ext) 
+					|| JSP_EXT.equalsIgnoreCase(ext)) {
+					scanDOM(file, content);
+				}
+			}
 		}
-		if(XML_EXT.equalsIgnoreCase(ext) || XHTML_EXT.equalsIgnoreCase(ext) || JSP_EXT.equalsIgnoreCase(ext))
-			scanDOM(file, content);
 	}
 	
 	private void scanJava(IFile file, String content){
@@ -220,30 +223,29 @@ public abstract class RefactorSearcher {
 				token = scaner.nextToken();
 			}
 		} catch (BadLocationException e) {
-			Activator.getDefault().logError(e);
+			ELCorePlugin.getDefault().logError(e);
 		}
 	}
 	
 	private void scanDOM(IFile file, String content){
 		IModelManager manager = StructuredModelManager.getModelManager();
-		if(manager == null) {
-			return;
-		}
-		IStructuredModel model = null;		
-		try {
-			model = manager.getModelForRead(file);
-			if (model instanceof IDOMModel) {
-				IDOMModel domModel = (IDOMModel) model;
-				IDOMDocument document = domModel.getDocument();
-				scanChildNodes(file, document);
-			}
-		} catch (CoreException e) {
-			Activator.getDefault().logError(e);
-        } catch (IOException e) {
-        	Activator.getDefault().logError(e);
-		} finally {
-			if (model != null) {
-				model.releaseFromRead();
+		if(manager != null) {
+			IStructuredModel model = null;		
+			try {
+				model = manager.getModelForRead(file);
+				if (model instanceof IDOMModel) {
+					IDOMModel domModel = (IDOMModel) model;
+					IDOMDocument document = domModel.getDocument();
+					scanChildNodes(file, document);
+				}
+			} catch (CoreException e) {
+				ELCorePlugin.getDefault().logError(e);
+	        } catch (IOException e) {
+	        	ELCorePlugin.getDefault().logError(e);
+			} finally {
+				if (model != null) {
+					model.releaseFromRead();
+				}
 			}
 		}
 	}

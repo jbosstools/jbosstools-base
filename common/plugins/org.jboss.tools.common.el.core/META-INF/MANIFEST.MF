@@ -13,7 +13,7 @@ Export-Package: org.jboss.tools.common.el.core,
  org.jboss.tools.common.el.core.resolver,
  org.jboss.tools.common.el.internal.core.parser,
  org.jboss.tools.common.el.internal.core.parser.token
-Bundle-Activator: org.jboss.tools.common.el.core.Activator
+Bundle-Activator: org.jboss.tools.common.el.core.ELCorePlugin
 Require-Bundle: org.eclipse.jface.text,
  org.eclipse.wst.sse.core,
  org.eclipse.wst.sse.ui,

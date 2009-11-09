@@ -33,7 +33,7 @@ import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
-import org.jboss.tools.common.el.core.Activator;
+import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.model.util.EclipseJavaUtil;
 
 /**
@@ -312,7 +312,7 @@ public class TypeInfoCollector {
 						fMemberType = getSourceType().getJavaProject().findType(getType().getQualifiedName());
 					}
 				} catch (JavaModelException e) {
-					Activator.getPluginLog().logError(e);
+					ELCorePlugin.getPluginLog().logError(e);
 				}
 			}
 			return fMemberType;
@@ -391,7 +391,7 @@ public class TypeInfoCollector {
 					superType.initializeParameters(this);
 				}
 			} catch (JavaModelException e) {
-				Activator.getPluginLog().logError(e);
+				ELCorePlugin.getPluginLog().logError(e);
 			}
 		}
 
@@ -504,7 +504,7 @@ public class TypeInfoCollector {
 					IType declType = getSourceType().getJavaProject().findType(getDeclaringTypeQualifiedName());
 					fJavaElement = (declType == null ? null : declType.getField(getName()));
 				} catch (JavaModelException e) {
-					Activator.getPluginLog().logError(e);
+					ELCorePlugin.getPluginLog().logError(e);
 				}
 			}
 			return fJavaElement;
@@ -678,7 +678,7 @@ public class TypeInfoCollector {
 						}
 					}
 				} catch (JavaModelException e) {
-					Activator.getPluginLog().logError(e);
+					ELCorePlugin.getPluginLog().logError(e);
 				}
 			}
 			return fJavaElement;
@@ -759,7 +759,7 @@ public class TypeInfoCollector {
 				addInfoForDataModelVariable();
 			}
 		} catch (JavaModelException e) {
-			Activator.getPluginLog().logError(e);
+			ELCorePlugin.getPluginLog().logError(e);
 		}
 	}
 
@@ -962,7 +962,7 @@ public class TypeInfoCollector {
 					methods.add(info);
 				}
 			} catch (JavaModelException e) {
-				Activator.getPluginLog().logError(e);
+				ELCorePlugin.getPluginLog().logError(e);
 			}
 		}
 		return methods;
@@ -1081,7 +1081,7 @@ public class TypeInfoCollector {
 					properties.add(info);					
 				}
 			} catch (JavaModelException e) {
-				Activator.getPluginLog().logError(e);
+				ELCorePlugin.getPluginLog().logError(e);
 			}
 		}
 
@@ -1212,7 +1212,7 @@ public class TypeInfoCollector {
 				result = new MethodInfo(method, declaringType, declaringType, dataModel);
 			}
 		} catch (JavaModelException e) {
-			Activator.getPluginLog().logError(e);
+			ELCorePlugin.getPluginLog().logError(e);
 		}
 		if(result != null && cache!=null) {
 			cache.put(member, result);

@@ -25,7 +25,7 @@ import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.ui.internal.contentassist.ContentAssistUtils;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
-import org.jboss.tools.common.el.core.Activator;
+import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.parser.ELParserFactory;
 import org.w3c.dom.Element;
@@ -122,10 +122,10 @@ public class ElVarSearcher {
 			try {
 				model = mm.getModelForRead(file);
 			} catch (IOException e) {
-				Activator.getDefault().logError(e);
+				ELCorePlugin.getDefault().logError(e);
 				return null;
 			} catch (CoreException e) {
-				Activator.getDefault().logError(e);
+				ELCorePlugin.getDefault().logError(e);
 				return null;
 			}
 		}
@@ -303,9 +303,9 @@ public class ElVarSearcher {
 										engine.resolveELOperand(file, var.getElToken(), true, parentVars, this);
 										resolvedToken = parentVar.getResolvedElToken();
 									} catch (StringIndexOutOfBoundsException e) {
-										Activator.getPluginLog().logError(e);
+										ELCorePlugin.getPluginLog().logError(e);
 									} catch (BadLocationException e) {
-										Activator.getPluginLog().logError(e);
+										ELCorePlugin.getPluginLog().logError(e);
 									}
 								}
 								if(resolvedToken!=null) {
