@@ -17,6 +17,6 @@ Export-Package: org.jboss.tools.common.reporting.test,
  org.jboss.tools.common.util,
  org.jboss.tools.common.util.test,
  org.jboss.tools.common.xml.test
-Bundle-ClassPath: common-tests.jar
+Bundle-ClassPath: .
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
