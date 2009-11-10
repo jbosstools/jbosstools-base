@@ -37,6 +37,10 @@ parallelCompilation=true
 generateFeatureVersionSuffix=true
 individualSourceBundles=true
 
+# do not sign or pack jars
+#skipPack=true
+skipSign=true
+
 domainNamespace=*
 projNamespace=org.jboss.tools.common
 projRelengName=org.jboss.tools.common.releng
