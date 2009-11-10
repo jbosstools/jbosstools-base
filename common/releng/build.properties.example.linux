@@ -15,6 +15,7 @@ testFeatureToBuildID=org.jboss.tools.common.all.tests.feature
 build.steps=buildUpdate,buildTests,generateDigests,test,publish,cleanup
 
 # Re-use local sources?
+# if building from local sources, don't forget to include this plugins in /common dir: org.jboss.tools.tests
 localSourceCheckoutDir=/home/nboldt/eclipse/workspace-jboss/jbosstools-trunk/common
 relengBuilderDir=/home/nboldt/eclipse/workspace-jboss/jbosstools-trunk/common/releng
 relengBaseBuilderDir=/home/nboldt/eclipse/workspace-jboss/org.eclipse.releng.basebuilder
