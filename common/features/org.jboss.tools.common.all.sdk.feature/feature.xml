@@ -32,8 +32,4 @@ for a full listing of individual contributors.
          id="org.jboss.tools.common.all.source.feature"
          version="0.0.0"/>
 
-   <includes
-         id="org.jboss.tools.common.all.tests.feature"
-         version="0.0.0"/>
-
 </feature>
