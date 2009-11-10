@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.eclipse.team.svn.core.svnnature">
+
+  <!-- !*** Generated with org.eclipse.dash.common.releng/tools/scripts/buildAllHelper.xml#dir2svnmap task -->
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/features/org.jboss.tools.common.all.feature,org.jboss.tools.common.all.feature"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/features/org.jboss.tools.common.all.sdk.feature,org.jboss.tools.common.all.sdk.feature"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/features/org.jboss.tools.common.all.tests.feature,org.jboss.tools.common.all.tests.feature"/>
+
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/features/org.jboss.tools.common.core.feature,org.jboss.tools.common.core.feature"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/features/org.jboss.tools.common.feature,org.jboss.tools.common.feature"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/features/org.jboss.tools.common.text.ext.feature,org.jboss.tools.common.text.ext.feature"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/features/org.jboss.tools.common.ui.feature,org.jboss.tools.common.ui.feature"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/features/org.jboss.tools.common.verification.feature,org.jboss.tools.common.verification.feature"/>
+
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common,org.jboss.tools.common"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.el.core,org.jboss.tools.common.el.core"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.el.ui,org.jboss.tools.common.el.ui"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.gef,org.jboss.tools.common.gef"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.meta.ui,org.jboss.tools.common.meta.ui"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.model,org.jboss.tools.common.model"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.model.ui,org.jboss.tools.common.model.ui"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.projecttemplates,org.jboss.tools.common.projecttemplates"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.resref.core,org.jboss.tools.common.resref.core"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.resref.ui,org.jboss.tools.common.resref.ui"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.text.ext,org.jboss.tools.common.text.ext"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.text.xml,org.jboss.tools.common.text.xml"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.verification,org.jboss.tools.common.verification"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/plugins/org.jboss.tools.common.verification.ui,org.jboss.tools.common.verification.ui"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/tests/org.jboss.tools.common.el.core.test,org.jboss.tools.common.el.core.test"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/tests/org.jboss.tools.common.model.test,org.jboss.tools.common.model.test"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/tests/org.jboss.tools.common.model.ui.test,org.jboss.tools.common.model.ui.test"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/tests/org.jboss.tools.common.test,org.jboss.tools.common.test"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/tests/org.jboss.tools.common.text.ext.test,org.jboss.tools.common.text.ext.test"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/tests/org.jboss.tools.common.verification.test,org.jboss.tools.common.verification.test"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/common/tests/org.jboss.tools.common.verification.ui.test,org.jboss.tools.common.verification.ui.test"/>
+
+</provider>
+</psf>

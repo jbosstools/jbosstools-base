@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.eclipse.team.cvs.core.cvsnature">
+
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,org.eclipse.test,org.eclipse.test,v20080313"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,org.eclipse.ant.optional.junit,org.eclipse.ant.optional.junit,v20070202"/>
+
+</provider>
+</psf>

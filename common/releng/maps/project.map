@@ -30,4 +30,3 @@ plugin@org.jboss.tools.common.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstoo
 plugin@org.jboss.tools.common.text.ext.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/tests/org.jboss.tools.common.text.ext.test
 plugin@org.jboss.tools.common.verification.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/tests/org.jboss.tools.common.verification.test
 plugin@org.jboss.tools.common.verification.ui.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/tests/org.jboss.tools.common.verification.ui.test
-
