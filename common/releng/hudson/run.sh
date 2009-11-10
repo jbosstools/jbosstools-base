@@ -29,16 +29,18 @@ elif [[ -f /opt/apache-ant-1.7.1/bin/ant ]]; then
         export ANT_HOME=/opt/apache-ant-1.7.1
 fi
 
+# 32-bit - values defined in ~/config_repository/resources/common.variables
 export JAVA14
+export JAVA15
+export JAVA16
 
+# override for 64-bit slaves - must search for the 64-bit JVMs because common_bash.sh fails to load them from ~/config_repository/resources/common.variables
+# workaround for https://jira.jboss.org/jira/browse/JBQA-2751
 if [[ ${uname/x86_64/} != $uname ]]; then
-	# 64-bit - must search for the 64-bit JVMs because common_bash.sh fails to load them from ~/config_repository/resources/common.variables
-	export JAVA15=$(find /qa/tools/opt/x86_64 -maxdepth 2 -name "jdk1.5.*" -type d -not -name "*beta*"| sort | tail -1)
-	export JAVA16=$(find /qa/tools/opt/x86_64 -maxdepth 2 -name "jdk1.6.*" -type d -not -name "*beta*"| sort | tail -1)
-else
-	# 32-bit - values defined in ~/config_repository/resources/common.variables
-	export JAVA15
-	export JAVA16
+	d=$(find /qa/tools/opt/x86_64 -maxdepth 2 -name "jdk1.5.*" -type d -not -name "*beta*"| sort | tail -1)
+	if [[ $d ]]; then export JAVA15=$d; fi
+	d=$(find /qa/tools/opt/x86_64 -maxdepth 2 -name "jdk1.6.*" -type d -not -name "*beta*"| sort | tail -1)
+	if [[ $d ]]; then export JAVA16=$d; fi
 fi
 
 # cache of downloaded requirements and other binaries
