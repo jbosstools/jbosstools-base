@@ -19,7 +19,7 @@ cvsProjectBaseDir=${WORKSPACE} # hudson.qa.jboss.com
 
 ##############################################################################################
 
-uname -a
+uname=$(uname -a); echo $uname
 if [[ -f $HUDSON_CONFIG_DIR/scripts/common/common_bash.sh ]]; then
 	. $HUDSON_CONFIG_DIR/scripts/common/common_bash.sh
 	setant 171
@@ -30,8 +30,16 @@ elif [[ -f /opt/apache-ant-1.7.1/bin/ant ]]; then
 fi
 
 export JAVA14
-export JAVA15
-export JAVA16
+
+if [[ ${uname/x86_64/} != $uname ]]; then
+	# 64-bit - must search for the 64-bit JVMs because common_bash.sh fails to load them from ~/config_repository/resources/common.variables
+	export JAVA15=$(find /qa/tools/opt/x86_64 -maxdepth 2 -name "jdk1.5.*" -type d -not -name "*beta*"| sort | tail -1)
+	export JAVA16=$(find /qa/tools/opt/x86_64 -maxdepth 2 -name "jdk1.6.*" -type d -not -name "*beta*"| sort | tail -1)
+else
+	# 32-bit - values defined in ~/config_repository/resources/common.variables
+	export JAVA15
+	export JAVA16
+fi
 
 # cache of downloaded requirements and other binaries
 downloadsDir="${WORKSPACE}/downloads"; if [[ ! -d $downloadsDir ]]; then mkdir -p $downloadsDir; fi 
