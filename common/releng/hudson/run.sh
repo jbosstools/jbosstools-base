@@ -211,4 +211,5 @@ cd ${writableBuildRoot}/org.eclipse.dash.common.releng/tools/scripts
 # remove file so workspace navigation is one click simpler
 rm -f ${writableBuildRoot}/.cvspass
 
+echo ""; echo $uname; echo ""
 echo "[`date +%Y/%m/%d\ %H:%M`] Hudson job ${JOBNAME} build #${BUILD_NUMBER} (${BUILD_ID}) done." 
