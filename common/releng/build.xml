@@ -9,7 +9,7 @@
 		-->
 
 		<!-- load properties and set timestamp for the build -->
-		<property file="build.properties.example.linux" />
+		<property file="build.properties" />
 		<tstamp>
 			<format property="buildTimestamp" pattern="yyyyMMddHHmm" />
 		</tstamp>

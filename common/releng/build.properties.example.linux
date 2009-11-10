@@ -7,14 +7,12 @@ projectid=jbosstools.common
 zipPrefix=Common
 incubation=
 buildType=N
-version=2.0.0
+version=1.0.0
 
-mainFeatureToBuildID=org.jboss.tools.common.feature
-#mainFeatureToBuildID=org.jboss.tools.common.sdk.feature
-#testFeatureToBuildID=org.jboss.tools.common.tests.feature
+mainFeatureToBuildID=org.jboss.tools.common.all.sdk.feature
+testFeatureToBuildID=org.jboss.tools.common.all.tests.feature
 
-#build.steps=buildUpdate,buildTests,generateDigests,test,publish,cleanup
-build.steps=buildUpdate,publish,cleanup
+build.steps=buildUpdate,buildTests,generateDigests,test,publish,cleanup
 
 # Re-use local sources?
 localSourceCheckoutDir=/home/nboldt/eclipse/workspace-jboss/jbosstools-trunk/common
@@ -34,8 +32,8 @@ http://repository.jboss.org/eclipse/galileo/dtp_1.7.1.zip,\
 http://repository.jboss.org/eclipse/galileo/eclipse-SDK-3.5.1-linux-gtk.tar.gz
 
 # use precompiled binaries from latest build as input to this build
-#repositoryURLs=http://download.eclipse.org/releases/galileo/,http://download.jboss.org/jbosstools/updates/nightly/trunk/
-#pluginIDsToInstall=
+repositoryURLs=http://download.eclipse.org/releases/galileo/,http://download.jboss.org/jbosstools/updates/nightly/trunk/
+pluginIDsToInstall=org.jboss.tools.vpe.resref+org.jboss.tools.jst.web.ui+org.eclipse.core.net
 
 flattenDependencies=true
 parallelCompilation=true
@@ -43,7 +41,7 @@ generateFeatureVersionSuffix=true
 individualSourceBundles=true
 
 domainNamespace=*
-projNamespace=org.jboss.tools.jmx
-projRelengName=org.jboss.tools.jmx.releng
+projNamespace=org.jboss.tools.common
+projRelengName=org.jboss.tools.common.releng
 
 ## END PROJECT BUILD PROPERTIES ##
