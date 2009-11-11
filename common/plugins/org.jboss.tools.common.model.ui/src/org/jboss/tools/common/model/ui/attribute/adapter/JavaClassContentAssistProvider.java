@@ -28,17 +28,21 @@ import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.attribute.IAttributeContentProposalProvider;
+import org.jboss.tools.common.model.ui.attribute.IValueFilter;
 import org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkCueLabelProvider;
+import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class JavaClassContentAssistProvider implements
 		IAttributeContentProposalProvider {
 	XModelObject object;
 	XAttribute attribute;
+	IValueFilter valueFilter = null;
 
 	public IContentProposalProvider getContentProposalProvider() {
 		IProject project = (IProject)object.getModel().getProperties().get("project"); //$NON-NLS-1$
-		return (project == null) ? null : new TypeContentProposalProvider(project, IJavaSearchConstants.TYPE);
+		return (project == null) ? null : new TypeContentProposalProvider(project, IJavaSearchConstants.TYPE, valueFilter);
 	}
 
 	public int getProposalAcceptanceStyle() {
@@ -48,6 +52,23 @@ public class JavaClassContentAssistProvider implements
 	public void init(XModelObject object, XEntityData data, XAttribute attribute) {
 		this.object = object;
 		this.attribute = attribute;
+		createValueFilter();
+	}
+
+	void createValueFilter() {
+		if(attribute == null) return;
+		String cls = attribute.getProperty("valueFilter");
+		if(cls == null || cls.length() == 0) return;
+		try {
+			valueFilter = (IValueFilter)ModelFeatureFactory.getInstance().createFeatureInstance(cls);
+		} catch (ClassCastException exc) {
+			ModelUIPlugin.getPluginLog().logError(exc);
+		}
+		if(valueFilter != null) {
+			if(!valueFilter.init(object, attribute)) {
+				valueFilter = null;
+			}
+		}
 	}
 
 	public boolean isRelevant(XModelObject object, XAttribute attribute) {
@@ -77,13 +98,17 @@ class TypeContentProposalProvider extends TypePackageCompletionProcessor impleme
 	private String fInitialContent;
 	private Comparator fComparator;
 
+	IValueFilter valueFilter;
+
 	/**
 	 * 
 	 */
-	public TypeContentProposalProvider(IProject project, int scope) {
+	public TypeContentProposalProvider(IProject project, int scope, IValueFilter valueFilter) {
 		fProject = project;
 		fTypeScope = scope;
 		fComparator = new TypeComparator();
+		
+		this.valueFilter = valueFilter;
 
 		reset();
 	}
@@ -139,7 +164,10 @@ class TypeContentProposalProvider extends TypePackageCompletionProcessor impleme
 			// characters in the field causing new characters to be appended to
 			// the initial field contents
 			currentContentProposals = filterContentProposals(contents);
+			
 		}
+
+		currentContentProposals = filterContentProposalsByValueFilter(currentContentProposals);
 
 		return convertResultsToSortedProposals(currentContentProposals);
 	}
@@ -211,6 +239,7 @@ class TypeContentProposalProvider extends TypePackageCompletionProcessor impleme
 	 */
 	private ArrayList filterContentProposals(String currentContent) {
 		String lowerCaseCurrentContent = currentContent.toLowerCase();
+
 		ListIterator iterator = fInitialContentProposals.listIterator();
 		// Maintain a list of filtered search results
 		ArrayList filteredContentProposals = new ArrayList();
@@ -232,6 +261,24 @@ class TypeContentProposalProvider extends TypePackageCompletionProcessor impleme
 			if (compareString.startsWith(lowerCaseCurrentContent, 0)) {
 				filteredContentProposals.add(proposal);
 			}
+		}
+
+		return filteredContentProposals;
+	}
+
+	private ArrayList filterContentProposalsByValueFilter(ArrayList filteredContentProposals) {
+		if(valueFilter != null && filteredContentProposals != null && filteredContentProposals.size() < 200) {
+			ArrayList filteredContentProposals2 = new ArrayList();
+			ListIterator iterator = filteredContentProposals.listIterator();
+			while (iterator.hasNext()) {
+				Object object = iterator.next();
+				IContentProposal proposal = (IContentProposal) object;
+				String value = proposal.getContent();
+				if(valueFilter.accept(value)) {
+					filteredContentProposals2.add(proposal);
+				}				
+			}
+			filteredContentProposals = filteredContentProposals2;
 		}
 		return filteredContentProposals;
 	}

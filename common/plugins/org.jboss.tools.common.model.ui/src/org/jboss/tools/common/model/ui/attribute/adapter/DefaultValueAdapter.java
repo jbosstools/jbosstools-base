@@ -18,7 +18,10 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.attribute.IValueFilter;
 import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
+import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.action.XAttributeData;
@@ -50,6 +53,9 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 	protected String invalidValue = null;
 	protected String lastCorrectValue = null;
 	protected String currentError = null;
+
+	boolean valueFilterChecked = false;
+	IValueFilter valueFilter = null;
 
 	public DefaultValueAdapter() {}
 
@@ -157,6 +163,27 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 		}
 		if(adapter == IAttributeErrorProvider.class) {
 			return this;
+		}
+		if(adapter == IValueFilter.class) {
+			if(valueFilterChecked) return valueFilter;
+			valueFilterChecked = true;
+			if(valueFilter == null) {
+				XAttribute a = (attribute != null) ? attribute : attributeData != null ? attributeData.getAttribute() : null;
+				if(a == null) return null;
+				String cls = a.getProperty("valueFilter");
+				if(cls == null || cls.length() == 0) return null;
+				try {
+					valueFilter = (IValueFilter)ModelFeatureFactory.getInstance().createFeatureInstance(cls);
+				} catch (ClassCastException exc) {
+					ModelUIPlugin.getPluginLog().logError(exc);
+				}
+				if(valueFilter != null) {
+					if(!valueFilter.init(getModelObject(), a)) {
+						valueFilter = null;
+					}
+				}
+				return valueFilter;
+			}
 		}
 		return null;
 	}

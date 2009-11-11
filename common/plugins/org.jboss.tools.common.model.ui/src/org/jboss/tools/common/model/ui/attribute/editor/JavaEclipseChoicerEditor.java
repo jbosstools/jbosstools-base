@@ -12,12 +12,16 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 
 import java.text.MessageFormat;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog;
+import org.eclipse.jdt.ui.dialogs.ITypeInfoFilterExtension;
+import org.eclipse.jdt.ui.dialogs.ITypeInfoRequestor;
+import org.eclipse.jdt.ui.dialogs.TypeSelectionExtension;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
@@ -29,6 +33,7 @@ import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.attribute.IValueFilter;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -38,7 +43,7 @@ public class JavaEclipseChoicerEditor extends ValueEditor {
 	protected JavaHyperlinkCellEditor cellEditor;
 	//protected JavaChoicerFieldEditor fieldEditor;
 	protected JavaHyperlinkLineFieldEditor fieldEditor;
-	
+
 	public JavaEclipseChoicerEditor() {}
 
 	public JavaEclipseChoicerEditor(IWidgetSettings settings) {
@@ -105,7 +110,7 @@ public class JavaEclipseChoicerEditor extends ValueEditor {
 			ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow(),
 			jp == null ? SearchEngine.createWorkspaceScope() 
 					   : SearchEngine.createJavaSearchScope(new IJavaElement[]{jp}), 
-			IJavaSearchConstants.TYPE);
+			IJavaSearchConstants.TYPE, createTypeSelectionExtension());
 	dialog.setTitle(title);
 	IValueProvider valueProvider = (IValueProvider)adapter.getAdapter(IValueProvider.class);
 	String v = valueProvider.getStringValue(true);
@@ -120,4 +125,36 @@ public class JavaEclipseChoicerEditor extends ValueEditor {
 	return null;
 	}
 	
+	TypeSelectionExtension createTypeSelectionExtension() {
+		final ITypeInfoFilterExtension filter = createFilterExtension();
+		if(filter == null) return null;
+		return new TypeSelectionExtension() {
+			public ITypeInfoFilterExtension getFilterExtension() {
+				return filter;
+			}
+		};
+	}
+	
+	ITypeInfoFilterExtension createFilterExtension() {
+		if(getInput() instanceof IAdaptable) {
+			IValueFilter filter = (IValueFilter)((IAdaptable)getInput()).getAdapter(IValueFilter.class);
+			if(filter != null) {
+				return new FilterExtension(filter);
+			}
+		}		
+		return null;
+	}
+	
+	class FilterExtension implements ITypeInfoFilterExtension {
+		IValueFilter filter;
+		public FilterExtension(IValueFilter filter) {
+			this.filter = filter;
+		}
+		public boolean select(ITypeInfoRequestor typeInfoRequestor) {
+			String pkg = typeInfoRequestor.getPackageName();
+			String cls = typeInfoRequestor.getTypeName();
+			String q = pkg == null || pkg.length() == 0 ? cls : pkg + "." + cls;
+			return filter.accept(q);
+		}		
+	}
 }
