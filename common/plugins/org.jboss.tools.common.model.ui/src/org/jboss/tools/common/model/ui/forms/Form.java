@@ -57,6 +57,14 @@ public class Form extends ExpandableForm {
 	
 	private Form() {}
 
+	protected XAttributeSupport getSupport() {
+		return support;
+	}
+
+	protected XModelObject getModelObject() {
+		return xmo;
+	}
+
 	public void dispose() {
 		super.dispose();
 		if (support!=null) support.dispose();

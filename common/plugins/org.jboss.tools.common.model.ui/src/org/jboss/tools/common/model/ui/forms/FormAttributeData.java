@@ -122,4 +122,8 @@ public class FormAttributeData implements IFormAttributeData {
     public int getWidth() {
         return width;
     }
+
+    public void setWrapperClassName(String c) {
+    	wraperClassName = c;
+    }
 }
