@@ -14,11 +14,9 @@ testFeatureToBuildID=org.jboss.tools.common.all.tests.feature
 
 build.steps=buildUpdate,buildTests,generateDigests,test,publish,cleanup
 
-# JBoss Hudson Variables defined in /home/hudson/config_repository/resources/common.variables
-JAVA_HOME=${JAVA_HOME_PARENT}
-JAVA14_HOME=${JAVA_HOME_PARENT}
-JAVA50_HOME=${JAVA_HOME_PARENT}
-JAVA60_HOME=${JAVA_HOME_PARENT}
+JAVA14_HOME=${JAVA_HOME}
+JAVA50_HOME=${JAVA_HOME}
+JAVA60_HOME=${JAVA_HOME}
 
 dependencyURLs=\
 http://repository.jboss.org/eclipse/galileo/GEF-runtime-3.5.1.zip,\
