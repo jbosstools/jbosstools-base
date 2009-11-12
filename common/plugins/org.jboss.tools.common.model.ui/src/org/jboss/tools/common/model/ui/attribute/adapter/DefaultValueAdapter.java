@@ -129,7 +129,10 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 	public void fireValueChange(Object oldValue, Object newValue) {
 		if(pcs != null) pcs.firePropertyChange(IPropertyEditor.VALUE, oldValue, newValue);
 	}
-	
+
+	public void fireEvent(String propertyName, Object oldValue, Object newValue) {
+		if(pcs != null) pcs.firePropertyChange(propertyName, oldValue, newValue);
+	}
 
 	// IValueProvider
 	public void addValueChangeListener(PropertyChangeListener l) {

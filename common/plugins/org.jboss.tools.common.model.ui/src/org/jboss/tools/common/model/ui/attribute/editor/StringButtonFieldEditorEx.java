@@ -201,6 +201,9 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 
 	protected String changePressed() {
 		if (propertyEditor!=null) {
+			if(propertyEditor.getInput() instanceof DefaultValueAdapter) {
+				((DefaultValueAdapter)propertyEditor.getInput()).fireEvent(BUTTON_SELECTED, "false", "true");
+			}
 			if(((PropertyEditor)propertyEditor).callsExternal()) {
 				Object result = ((PropertyEditor)propertyEditor).callExternal(getShell());
 				return result != null ? result.toString() : null;
