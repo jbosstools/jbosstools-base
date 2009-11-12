@@ -29,9 +29,6 @@ elif [[ -f /opt/apache-ant-1.7.1/bin/ant ]]; then
         export ANT_HOME=/opt/apache-ant-1.7.1
 fi
 
-# collect Hudson's version of Java as defined globally for a given node 
-MY_JAVA_HOME=${JAVA_HOME}
-
 # cache of downloaded requirements and other binaries
 downloadsDir="${WORKSPACE}/downloads"; if [[ ! -d $downloadsDir ]]; then mkdir -p $downloadsDir; fi 
 
@@ -195,7 +192,7 @@ cd ${writableBuildRoot}/org.eclipse.dash.common.releng/tools/scripts
 ./start.sh -projectid ${projectid} -version ${version} -buildType ${buildType} -buildTimestamp ${buildTimestamp} \
   -writableBuildRoot ${writableBuildRoot} -thirdPartyJarsDir ${thirdPartyJarsDir} -downloadsDir ${downloadsDir} -buildDir ${buildDir} \
   ${projRelengName} ${projRelengRoot} ${projRelengPath} ${projRelengBranch} \
-  -thirdPartyDownloadLicenseAcceptance -javaHome ${JAVA16} ${EXTRAFLAGS} 2>&1
+  -thirdPartyDownloadLicenseAcceptance -javaHome ${JAVA_HOME} ${EXTRAFLAGS} 2>&1
 
 # remove file so workspace navigation is one click simpler
 rm -f ${writableBuildRoot}/.cvspass
