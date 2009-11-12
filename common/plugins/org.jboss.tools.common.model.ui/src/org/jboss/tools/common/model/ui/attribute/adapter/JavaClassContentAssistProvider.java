@@ -267,7 +267,7 @@ class TypeContentProposalProvider extends TypePackageCompletionProcessor impleme
 	}
 
 	private ArrayList filterContentProposalsByValueFilter(ArrayList filteredContentProposals) {
-		if(valueFilter != null && filteredContentProposals != null && filteredContentProposals.size() < 200) {
+		if(valueFilter != null && filteredContentProposals != null /*&& filteredContentProposals.size() < 200*/) {
 			ArrayList filteredContentProposals2 = new ArrayList();
 			ListIterator iterator = filteredContentProposals.listIterator();
 			while (iterator.hasNext()) {
