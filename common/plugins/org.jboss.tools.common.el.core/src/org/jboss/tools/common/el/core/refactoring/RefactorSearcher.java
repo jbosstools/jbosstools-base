@@ -74,7 +74,6 @@ public abstract class RefactorSearcher {
 	private static final String GET = "get"; //$NON-NLS-1$
 	private static final String SET = "set"; //$NON-NLS-1$
 	private static final String IS = "is"; //$NON-NLS-1$
-
 	
 	protected static final String SEAM_PROPERTIES_FILE = "seam.properties"; //$NON-NLS-1$
 	
@@ -82,6 +81,73 @@ public abstract class RefactorSearcher {
 	protected String propertyName;
 	protected IJavaElement javaElement;
 	protected IJavaSearchScope searchScope;
+	
+	// performance measure 
+	private int totalSize = 0;
+	private int filesNumber = 0;
+	private long startTime = 0;
+	private long stopTime = 0;
+	private long startMem = 0;
+	private long stopMem = 0;
+	
+	private boolean log = false;
+	
+	private void clearHistory(){
+		totalSize = 0;
+		filesNumber = 0;
+		startTime = 0;
+		stopTime = 0;
+		startMem = 0;
+		stopMem = 0;
+	}
+	
+	private void startStatistics(){
+		clearHistory();
+		startTime = System.currentTimeMillis();
+		startMem = Runtime.getRuntime().freeMemory();
+	}
+	
+	private void stopStatistic(){
+		stopTime = System.currentTimeMillis();
+		stopMem = Runtime.getRuntime().freeMemory();
+		printELSearchStatistics();
+	}
+	
+	private void collectStatistic(int fileSize){
+		filesNumber++;
+		totalSize += fileSize;
+	}
+	
+	private void printELSearchStatistics(){
+		if(log){
+			System.out.println("EL Search"); //$NON-NLS-1$
+			System.out.println("Total files number: "+getFilesNumber()); //$NON-NLS-1$
+			System.out.println("Total files size: "+getTotlalFilesSize()+" Mb"); //$NON-NLS-1$ $NON-NLS-2$
+			System.out.println("Memory usage size: "+getTotlalMemorySize()+" Mb"); //$NON-NLS-1$ $NON-NLS-2$
+			System.out.println("Free Memory size: "+getRestMemorySize()+" Mb"); //$NON-NLS-1$ $NON-NLS-2$
+			System.out.println("Total time: "+getTotalTime()+" sec"); //$NON-NLS-1$ $NON-NLS-2$
+		}
+	}
+	
+	private double getTotlalFilesSize(){
+		return (double)totalSize/(1024*1025);
+	}
+
+	private double getTotlalMemorySize(){
+		return (double)(startMem-stopMem)/(1024*1025);
+	}
+
+	private double getRestMemorySize(){
+		return (double)stopMem/(1024*1025);
+	}
+	
+	private int getFilesNumber(){
+		return filesNumber;
+	}
+	
+	private double getTotalTime(){
+		return (double)(stopTime - startTime)/1000;
+	}
 	
 	public RefactorSearcher(IFile baseFile, String propertyName){
 		this.baseFile = baseFile;
@@ -100,6 +166,8 @@ public abstract class RefactorSearcher {
 	public void findELReferences(){
 		if(baseFile == null)
 			return;
+		
+		startStatistics();
 		
 		IProject[] projects = getProjects();
 		for (IProject project : projects) {
@@ -129,6 +197,7 @@ public abstract class RefactorSearcher {
 			else
 				scan(project);
 		}
+		stopStatistic();
 	}
 	
 	protected void updateEnvironment(IProject project){
@@ -170,6 +239,7 @@ public abstract class RefactorSearcher {
 			String content = null;
 			try {
 				content = FileUtil.readStream(file);
+				collectStatistic(content.length());
 			} catch (CoreException e) {
 				ELCorePlugin.getDefault().logError(e);
 			}
@@ -191,6 +261,7 @@ public abstract class RefactorSearcher {
 			String content = null;
 			try {
 				content = FileUtil.readStream(file);
+				collectStatistic(content.length());
 			} catch (CoreException e) {
 				ELCorePlugin.getDefault().logError(e);
 			}
