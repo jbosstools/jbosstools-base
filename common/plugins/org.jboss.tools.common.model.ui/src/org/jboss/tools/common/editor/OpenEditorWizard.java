@@ -40,6 +40,9 @@ public class OpenEditorWizard implements SpecialWizard {
 			IWorkbenchPage workbenchPage = getWorkbenchPage();
 			if(workbenchPage == null) return 0;
 			String id = object.getModelEntity().getEditorClassName();
+			if("FileXML".equals(object.getModelEntity().getName())) {
+				id = null;
+			}
 			if(id != null && (id.length() == 0 || id.equals("DefaultEditor"))) { //$NON-NLS-1$
 				id = null;
 			} else {
@@ -73,7 +76,15 @@ public class OpenEditorWizard implements SpecialWizard {
 				if(editor != null) workbenchPage.bringToTop(editor);
 			} else if(id == null) {
 				if(input instanceof IFileEditorInput) {
-					editor = IDE.openEditor(workbenchPage, ((IFileEditorInput)input).getFile(), true);
+					IFile f = ((IFileEditorInput)input).getFile();
+					IDE.setDefaultEditor(f, null);
+					IEditorDescriptor d = IDE.getEditorDescriptor(f);
+					if(d != null) id = d.getId();
+					if(id != null) {
+						editor = IDE.openEditor(workbenchPage, f, id, true);
+					} else {
+						editor = IDE.openEditor(workbenchPage, f, true);
+					}
 				} else {
 					editor = workbenchPage.openEditor(input, id);
 				}
