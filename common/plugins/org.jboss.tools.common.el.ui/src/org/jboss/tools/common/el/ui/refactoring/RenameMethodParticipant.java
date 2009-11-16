@@ -34,7 +34,7 @@ import org.eclipse.text.edits.TextEdit;
 import org.jboss.tools.common.el.core.refactoring.ELProjectSetExtension;
 import org.jboss.tools.common.el.core.refactoring.ProjectsSet;
 import org.jboss.tools.common.el.core.refactoring.RefactorSearcher;
-import org.jboss.tools.common.el.ui.ElUiCoreMessages;
+import org.jboss.tools.common.el.ui.ElUIMessages;
 import org.jboss.tools.common.model.project.ProjectHome;
 
 public class RenameMethodParticipant extends RenameParticipant{
@@ -58,9 +58,9 @@ public class RenameMethodParticipant extends RenameParticipant{
 		
 		if(method != null && !added){
 			if(searcher.isGetter(method))
-				status.addWarning(ElUiCoreMessages.RENAME_METHOD_PARTICIPANT_GETTER_WARNING);
+				status.addWarning(ElUIMessages.RENAME_METHOD_PARTICIPANT_GETTER_WARNING);
 			else if(searcher.isSetter(method))
-				status.addWarning(ElUiCoreMessages.RENAME_METHOD_PARTICIPANT_SETTER_WARNING);
+				status.addWarning(ElUIMessages.RENAME_METHOD_PARTICIPANT_SETTER_WARNING);
 			added = true;
 		}
 		
@@ -85,7 +85,7 @@ public class RenameMethodParticipant extends RenameParticipant{
 		if(element instanceof IMethod){
 			status = new RefactoringStatus();
 			
-			rootChange = new CompositeChange(ElUiCoreMessages.RENAME_METHOD_PARTICIPANT_UPDATE_METHOD_REFERENCES);
+			rootChange = new CompositeChange(ElUIMessages.RENAME_METHOD_PARTICIPANT_UPDATE_METHOD_REFERENCES);
 			method = (IMethod)element;
 			
 			oldName = method.getElementName();
@@ -142,13 +142,13 @@ public class RenameMethodParticipant extends RenameParticipant{
 		@Override
 		protected boolean isFileCorrect(IFile file) {
 			if(!file.isSynchronized(IResource.DEPTH_ZERO)){
-				status.addFatalError(Messages.format(ElUiCoreMessages.RENAME_METHOD_PARTICIPANT_OUT_OF_SYNC_FILE, file.getFullPath().toString()));
+				status.addFatalError(Messages.format(ElUIMessages.RENAME_METHOD_PARTICIPANT_OUT_OF_SYNC_FILE, file.getFullPath().toString()));
 				return false;
 			}else if(file.isPhantom()){
-				status.addFatalError(Messages.format(ElUiCoreMessages.RENAME_METHOD_PARTICIPANT_ERROR_PHANTOM_FILE, file.getFullPath().toString()));
+				status.addFatalError(Messages.format(ElUIMessages.RENAME_METHOD_PARTICIPANT_ERROR_PHANTOM_FILE, file.getFullPath().toString()));
 				return false;
 			}else if(file.isReadOnly()){
-				status.addFatalError(Messages.format(ElUiCoreMessages.RENAME_METHOD_PARTICIPANT_ERROR_READ_ONLY_FILE, file.getFullPath().toString()));
+				status.addFatalError(Messages.format(ElUIMessages.RENAME_METHOD_PARTICIPANT_ERROR_READ_ONLY_FILE, file.getFullPath().toString()));
 				return false;
 			}
 			return true;
