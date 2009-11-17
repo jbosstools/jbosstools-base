@@ -15,6 +15,7 @@ import org.w3c.dom.*;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.impl.*;
+import org.jboss.tools.common.model.XModelObjectConstants;
 
 public class XActionListImpl extends XActionItemImpl implements XActionList {
     private XActionItem[] items;
@@ -109,15 +110,18 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
             } else if(XMODEL_ACTION_ITEM_REF.equals(tag)) {
 				String entityName = ei.getAttribute(XMetaDataConstants.ENTITY);
 				String attrName = ei.getAttribute(NAME);
+				String defaultPath = (getPath() == null) ? attrName : getPath() + XModelObjectConstants.SEPARATOR + attrName;
 				String path = ei.hasAttribute("path")  //$NON-NLS-1$
 					? ei.getAttribute("path")  //$NON-NLS-1$
-					: attrName;
+					:  defaultPath;
 				
 				XModelEntity entity = getMetaModel().getEntity(entityName);
 				if(entity != null) {
 					XActionItem item = ((XActionListImpl)entity.getActionList()).findItem(path);
 					if(item != null) {
 						list.add(item.copy(Acceptor.DEFAULT));
+					} else {
+//						System.out.println("Cannot find path " + path);
 					}
 				}
             }
