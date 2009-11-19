@@ -131,7 +131,16 @@ public class PropertyEditorDialog extends Dialog {
 	    protected void setWizard(IWizard newWizard) {
 	    }
 	    public Layout createLayout(int mw, int mh, int minW, int minH) {
-	    	return new PageContainerFillLayout(mw, mh, minW, minH);
+	    	return new PageContainerFillLayout(mw, mh, minW, minH) {
+	    	    public Point computeSize(Composite composite, int wHint, int hHint,
+	    				boolean force) {
+	    	    	Point p = super.computeSize(composite, wHint, hHint, force);
+	    	    	if(p.y > 400) p.y = 400;
+	    	    	return p;
+	    	    }
+	    		
+	    	};
+	    
 	    }
 		
 	}
