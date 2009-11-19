@@ -86,6 +86,11 @@ public class OpenEditorWizard implements SpecialWizard {
 						editor = IDE.openEditor(workbenchPage, f, true);
 					}
 				} else {
+					if(id == null) {
+						IEditorDescriptor d = IDE.getEditorDescriptor(input.getName());
+						if(d != null) id = d.getId();
+						if(id == null) id = "org.eclipse.ui.DefaultTextEditor";
+					}
 					editor = workbenchPage.openEditor(input, id);
 				}
 			} else {
