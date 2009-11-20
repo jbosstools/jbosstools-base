@@ -283,6 +283,7 @@ public class NavigatorContentProvider implements ITreeContentProvider, IResource
 			if(nature == null) {
 				o.getModel().removeModelTreeListener(syncListener);
 				viewer.remove(o);
+				if(p!=null && p.exists() && p.getLocation()!=null)
 				projects.remove(p.getLocation().toString());
 			} else {
 				String classname = o.getModel().getMetaData().getMapping("FilteredTrees").getValue(getFilteredTreeName(o.getModel())); //$NON-NLS-1$
