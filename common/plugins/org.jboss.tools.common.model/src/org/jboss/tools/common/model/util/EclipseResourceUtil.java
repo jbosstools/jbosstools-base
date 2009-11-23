@@ -15,9 +15,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -56,6 +58,7 @@ import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemImpl;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemsImpl;
+import org.jboss.tools.common.model.filesystems.impl.FileSystemsLoader;
 import org.jboss.tools.common.model.filesystems.impl.JarSystemImpl;
 import org.jboss.tools.common.model.icons.impl.XModelObjectIcon;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
@@ -63,6 +66,7 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.project.ModelNature;
 import org.jboss.tools.common.model.project.ModelNatureExtension;
+import org.jboss.tools.common.model.project.WatcherLoader;
 import org.osgi.framework.Bundle;
 
 public class EclipseResourceUtil {
@@ -369,16 +373,22 @@ public class EclipseResourceUtil {
 		properties.setProperty(XModelObjectConstants.ATTR_NAME, project.getName());
 		s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
 		fs.addChild(s);
-		if(!isJar(resource)) {
-			IResource webRoot = getFirstWebContentResource(project);
-			if(webRoot != null && webRoot.exists() && webRoot != project) {
-				fsLoc = webRoot.getLocation().toString();
-				properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
-				properties.setProperty(XModelObjectConstants.ATTR_NAME, "WEB-ROOT"); //$NON-NLS-1$
-				s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
-				fs.addChild(s);
-			}
+
+		Set<IResource> resources = new HashSet<IResource>();
+
+		IResource webRoot = getFirstWebContentResource(project);
+		if(webRoot != null && webRoot.exists() && webRoot != project) {
+			resources.add(webRoot);
+			fsLoc = webRoot.getLocation().toString();
+			properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
+			properties.setProperty(XModelObjectConstants.ATTR_NAME, "WEB-ROOT"); //$NON-NLS-1$
+			s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
+			fs.addChild(s);
 		}
+
+		updateSrcs(project, fs, resources);
+
+		updateLibs(project, fs);
 
 		if(!isJar(resource) || getObjectByResource(model, resource) == null) {
 			properties = new Properties();
@@ -398,6 +408,7 @@ public class EclipseResourceUtil {
 		if(cs != null) for (int i = 0; i < cs.length; i++) {
 			if(!cs[i].isLinked()) continue;
 			if(!cs[i].isAccessible()) continue;
+			if(resources.contains(cs[i])) continue;
         	if(cs[i].getLocation() == null) {
 //        		System.out.println("no location at link " + cs[i]);
         		continue;
@@ -442,7 +453,123 @@ public class EclipseResourceUtil {
 			fs.addChild(q);
 		}
 	}
-	
+
+    private static void updateSrcs(IProject p, XModelObject object, Set<IResource> resources) {
+    	if(p == null || !p.isAccessible()) return;
+		String[] srcs = EclipseResourceUtil.getJavaProjectSrcLocations(p);
+		Set<String> paths = new HashSet<String>();
+		for (int i = 0; i < srcs.length; i++) {
+			String path = EclipseResourceUtil.getRelativeLocation(object.getModel(), srcs[i]);
+			if(path == null) continue;
+			paths.add(path);
+		}
+    	XModelObject[] cs = object.getChildren(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER);
+    	for (int i = 0; i < cs.length; i++) {
+    		if(cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME).startsWith("src")) { //$NON-NLS-1$
+    			String loc = cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION);
+    			if(!paths.contains(loc)) {
+    				object.removeChild(cs[i]);
+    			} else {
+    				paths.remove(loc);
+    				IResource r = (IResource)object.getAdapter(IResource.class);
+    				if(r != null) resources.add(r);
+    			}
+    		}
+    	}
+		for (String path : paths) {
+			String n = getNextSrcName(object);
+			Properties properties = new Properties();
+			properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, path);
+			properties.setProperty(XModelObjectConstants.ATTR_NAME, n);
+			FileSystemImpl s = (FileSystemImpl)object.getModel().createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
+			object.addChild(s);
+			IResource r = (IResource)s.getAdapter(IResource.class);
+			if(r != null) resources.add(r);
+		}
+    }
+
+    private static String getNextSrcName(XModelObject object) {
+    	if(object.getChildByPath("src") == null) return "src"; //$NON-NLS-1$ //$NON-NLS-2$
+    	int i = 1;
+    	while(true) {
+    		String s = "src-" + i; //$NON-NLS-1$
+    		if(object.getChildByPath(s) == null) return s;
+    		i++;
+    	}
+    }
+
+    static String[] SYSTEM_JARS = {"rt.jar", "jsse.jar", "jce.jar", "charsets.jar"};
+    public static Set<String> SYSTEM_JAR_SET = new HashSet<String>();
+	static {
+		for (int i = 0; i < SYSTEM_JARS.length; i++) SYSTEM_JAR_SET.add(SYSTEM_JARS[i]);
+	}
+
+    private static void updateLibs(IProject project, XModelObject object) {
+    	List<String> paths = new ArrayList<String>();
+    	XModelObject[] ss = object.getChildren();
+    	for (int i = 0; i < ss.length; i++) {
+    		if(ss[i].getModelEntity().getName().equals("FileSystemJar")) {
+    			paths.add(ss[i].getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION));
+    		}
+    	}
+		List<String> newPaths = null;
+		try {
+			newPaths = EclipseResourceUtil.getClassPath(project.getProject());
+			List<String> jre = EclipseResourceUtil.getJREClassPath(project.getProject());
+			if(jre != null) newPaths.removeAll(jre);
+		} catch (CoreException e) {
+			//TODO
+			ModelPlugin.getDefault().logError(e);
+		} catch (IOException e) {
+			ModelPlugin.getDefault().logError(e);
+		}
+		if(paths == null && newPaths == null) return;
+		if((newPaths == null || paths == null) || (paths.size() != newPaths.size())) {
+			paths = newPaths;
+		} else { 
+			boolean b = false;
+			for (int i = 0; i < paths.size() && !b; i++) {
+				if(!paths.get(i).equals(newPaths.get(i))) b = true;
+			}
+			if(!b) return;
+			paths = newPaths;
+		}
+		if(paths == null && newPaths == null) return;
+		XModelObject[] fs = object.getChildren("FileSystemJar"); //$NON-NLS-1$
+		Set<XModelObject> fss = new HashSet<XModelObject>();
+		for (int i = 0; i < fs.length; i++) fss.add(fs[i]);
+		
+		for (int i = 0; i < paths.size(); i++) {
+			String path = paths.get(i);
+			if(!EclipseResourceUtil.isJar(path)) continue;
+			String fileName = new File(path).getName();
+			if(SYSTEM_JAR_SET.contains(fileName)) continue;
+			String jsname = "lib-" + fileName; //$NON-NLS-1$
+			XModelObject o = object.getChildByPath(jsname); 
+			if(o != null) {
+				fss.remove(o);
+			} else {
+				o = object.getModel().createModelObject("FileSystemJar", null); //$NON-NLS-1$
+				o.setAttributeValue(XModelObjectConstants.ATTR_NAME, jsname); 
+				o.setAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION, path); 
+				o.set(FileSystemsLoader.IS_ADDED_TO_CLASSPATH, XModelObjectConstants.TRUE); 
+				object.addChild(o);
+//				object.setModified(true);
+			}			
+		}
+		
+		for (XModelObject o: fss) {
+			String path = XModelObjectUtil.expand(o.getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION), o.getModel(), null); 
+			if(XModelObjectConstants.TRUE.equals(o.get(FileSystemsLoader.IS_ADDED_TO_CLASSPATH))) { 
+				o.removeFromParent(); 
+			} else if(!new File(path).exists()) {
+				o.removeFromParent();
+			}			
+		}
+		
+    }
+    
+
 	public static XModelObject findResourceInFileSystem(FileSystemImpl s, IResource resource) {
 		if(resource == null || resource.getLocation() == null) {
 			return null;

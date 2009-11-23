@@ -147,13 +147,6 @@ public class FileSystemsLoader extends URLRootLoader {
     
     List<String> paths = null;
     
-	static String[] SYSTEM_JARS = {"rt.jar", "jsse.jar", "jce.jar", "charsets.jar"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-	static Set<String> SYSTEM_JAR_SET = new HashSet<String>();
-	
-	static {
-		for (int i = 0; i < SYSTEM_JARS.length; i++) SYSTEM_JAR_SET.add(SYSTEM_JARS[i]);
-	}
-	
     private void updateLibs(XModelObject object) {
     	if(WatcherLoader.isLocked(object.getModel())) {
     		return;
@@ -194,7 +187,7 @@ public class FileSystemsLoader extends URLRootLoader {
 			String path = paths.get(i);
 			if(!EclipseResourceUtil.isJar(path)) continue;
 			String fileName = new File(path).getName();
-			if(SYSTEM_JAR_SET.contains(fileName)) continue;
+			if(EclipseResourceUtil.SYSTEM_JAR_SET.contains(fileName)) continue;
 			String jsname = "lib-" + fileName; //$NON-NLS-1$
 			XModelObject o = object.getChildByPath(jsname); 
 			if(o != null) {
@@ -244,7 +237,7 @@ public class FileSystemsLoader extends URLRootLoader {
     	_updateSrcs(object);
     }
 
-    private void _updateSrcs(XModelObject object) {
+    private static void _updateSrcs(XModelObject object) {
     	IProject p = EclipseResourceUtil.getProject(object);
     	if(p == null || !p.isAccessible()) return;
 		String[] srcs = EclipseResourceUtil.getJavaProjectSrcLocations(p);
@@ -275,7 +268,7 @@ public class FileSystemsLoader extends URLRootLoader {
 		}
     }
 
-    private String getNextSrcName(XModelObject object) {
+    private static String getNextSrcName(XModelObject object) {
     	if(object.getChildByPath("src") == null) return "src"; //$NON-NLS-1$ //$NON-NLS-2$
     	int i = 1;
     	while(true) {

@@ -79,5 +79,15 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
         return true;
     }
 
+    public String getPresentationString() {
+    	String location = getLocation();
+    	if(location != null) {
+    		location = location.replace('\\', '/');
+    		int i = location.lastIndexOf('/');
+    		if(i >= 0) location = location.substring(i + 1);
+    		return location;
+    	}
+    	return super.getPresentationString();
+    }
 }
 

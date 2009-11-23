@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.project;
 
 import java.util.*;
+
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
 import org.jboss.tools.common.model.*;
@@ -216,16 +217,32 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 		return checkModelNature(project, nature);
 	}
 
+	static Map<IProject, Set<String>> checked = new HashMap<IProject, Set<String>>();
+	
 	public static boolean checkModelNature(IProject project, String nature) {
-		if(project == null || !project.isOpen()) return false;
+		if(project == null || !project.isOpen()) {
+			if(project != null && checked.containsKey(project)) {
+				checked.remove(project);
+			}
+			return false;
+		}
 		if(nature == null) return false;
+		Set<String> ns = checked.get(project);
+		if(ns == null) {
+			ns = new HashSet<String>();
+			checked.put(project, ns);
+		} else if(ns.contains(nature)) {
+			return true;
+		}
 		String home = new ProjectHome().getLocation(project);
 		if(home != null && home.length() > 0) {
+			ns.add(nature);
 			return true;
 		}
 		if(!project.isSynchronized(1)) {
 			return false;
 		}
+		ns.add(nature);
 		return true;
 	}
 

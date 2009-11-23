@@ -193,6 +193,12 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
         }
     }
 
+    public void forceUpdate() {
+    	if(currentUpdate != null) {
+    		currentUpdate.run();
+    	}
+    }
+
 	public void resourceChanged(IResourceChangeEvent event) {
 		if(!isActive() || event == null || event.getDelta() == null) return;
 		if(!checkDelta(event.getDelta())) return;
@@ -208,7 +214,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 //			synchronized (this) {
 				currentUpdate = new UpdateRunnable();
 //			}			
-			XJob.addRunnable(currentUpdate);
+			XJob.addRunnableWithPriority(currentUpdate);
 		} else {
 //			synchronized (this) {
 				if(currentUpdate != null) currentUpdate.request++;
@@ -260,6 +266,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 		}
 
 		public void run() {
+			if(this != currentUpdate) return;
 			if(!isActive()) {
 				ModelPlugin.getWorkspace().removeResourceChangeListener(FileSystemsImpl.this);
 			} else {
