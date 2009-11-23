@@ -36,29 +36,41 @@ public class XMarkerManager implements IResourceChangeListener {
 	private Set<XModelObject> warningObjects = new HashSet<XModelObject>();
 	
 	private XMarkerManager() {
-		reload();
+		reload(null);
 		ModelPlugin.getWorkspace().addResourceChangeListener(this);
 	}
 
 	public void resourceChanged(IResourceChangeEvent event) {
+		IProject project = null;
+		Object o = event.getSource();
+		if(o instanceof IWorkspace) {
+			IResourceDelta d = event.getDelta();
+			IResourceDelta[] cs = d.getAffectedChildren();
+			for (int i = 0; i < cs.length && project == null; i++) {
+				project = cs[i].getResource().getProject();
+			}
+		}
+		final IProject p = project;
 		if(ResourcesPlugin.getWorkspace().isTreeLocked()) {
 			XJob.addRunnable(new XRunnable() {
 				public String getId() {
 					return "XMarkerManager"; //$NON-NLS-1$
 				}
 				public void run() {
-					reload();					
+					reload(p);					
 				}
 			});
 		} else {
-			reload();
+			reload(p);
 		}
 	}
 	
-	public void reload() {
+	public void reload(IProject project) {
 		IMarker[] ms = new IMarker[0];
 		try {
-			ms = ModelPlugin.getWorkspace().getRoot().findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			ms = (project == null || !project.isAccessible()) 
+				? ModelPlugin.getWorkspace().getRoot().findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE)
+				: project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
@@ -79,7 +91,9 @@ public class XMarkerManager implements IResourceChangeListener {
 			if(o == null) continue;
 			es.add(o);
 			String attr = ms[i].getAttribute("attribute", null); //$NON-NLS-1$
-			if(attr != null && attr.length() > 0) ((XModelObjectImpl)o).addErrorAttributeDirty(attr);
+			if(attr != null && attr.length() > 0) {
+				((XModelObjectImpl)o).addErrorAttributeDirty(attr);
+			}
 		}
 		synchronized(objects) {
 			Iterator<XModelObject> it = objects.iterator();
@@ -93,6 +107,8 @@ public class XMarkerManager implements IResourceChangeListener {
 				} else if(es.contains(o)) {
 					if(severity > o.getErrorState()) {
 						o.setErrorState(severity);
+					} else {
+						((XModelObjectImpl)o).commitErrorAttributes();
 					}
 					es.remove(o);
 				}
@@ -102,7 +118,9 @@ public class XMarkerManager implements IResourceChangeListener {
 				XModelObject o = (XModelObject)it.next();
 				if(severity > o.getErrorState()) {
 					o.setErrorState(severity);
-				}
+				} else {
+					((XModelObjectImpl)o).commitErrorAttributes();
+				}					
 				if(!objects.contains(o)) {
 					objects.add(o);
 				}
