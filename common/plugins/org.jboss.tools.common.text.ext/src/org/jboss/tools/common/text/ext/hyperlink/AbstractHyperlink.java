@@ -46,6 +46,7 @@ import org.jboss.tools.common.text.ext.util.Utils;
 /**
  * 
  */
+@SuppressWarnings("restriction")
 abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements IHyperlink {
 	public static final String DOLLAR_PREFIX = "${"; //$NON-NLS-1$
 
