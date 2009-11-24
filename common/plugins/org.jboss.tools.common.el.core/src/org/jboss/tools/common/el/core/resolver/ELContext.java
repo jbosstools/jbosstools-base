@@ -27,10 +27,16 @@ public interface ELContext {
 
 	/**
 	 * Returns "var" attributes
-	 * @param offset
 	 * @return
 	 */
 	Var[] getVars();
+
+	/**
+	 * Returns "var" attributes which are available in particular offset.
+	 * @param offset
+	 * @return
+	 */
+	Var[] getVars(int offset);
 
 	/**
 	 * Returns EL Resolvers which are declared for this resource
