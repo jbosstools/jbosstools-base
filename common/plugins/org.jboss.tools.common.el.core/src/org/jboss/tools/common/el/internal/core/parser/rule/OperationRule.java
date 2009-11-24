@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.parser.rule;
 
-import org.jboss.tools.common.el.core.Messages;
+import org.jboss.tools.common.el.core.ElCoreMessages;
 import org.jboss.tools.common.el.core.parser.IRule;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
@@ -73,13 +73,13 @@ public class OperationRule implements IRule, BasicStates {
 
 	public String getProblem(int state, Tokenizer tokenizer) {
 		if(ParamUtil.isMethodParamContext(tokenizer.getContext())) {
-			return Messages.OperationRule_ExpectingRParen;
+			return ElCoreMessages.OperationRule_ExpectingRParen;
 		} else if(ParamUtil.isComplexExpressionContext(tokenizer.getContext())) {
-			return Messages.OperationRule_ExpectingRParen;
+			return ElCoreMessages.OperationRule_ExpectingRParen;
 		} else if(ParamUtil.isArgContext(tokenizer.getContext())) {
-			return Messages.OperationRule_ExpectingRBracket;
+			return ElCoreMessages.OperationRule_ExpectingRBracket;
 		}
-		return Messages.OperationRule_ExpectingRBrace;
+		return ElCoreMessages.OperationRule_ExpectingRBrace;
 	}
 
 }

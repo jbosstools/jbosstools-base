@@ -19,12 +19,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.text.FastJavaPartitionScanner;
 import org.eclipse.jdt.ui.text.IJavaPartitions;
@@ -38,6 +36,7 @@ import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.internal.services.IWorkbenchLocationService;
@@ -61,10 +60,11 @@ import org.jboss.tools.common.el.core.model.ELModel;
 import org.jboss.tools.common.el.core.model.ELPropertyInvocation;
 import org.jboss.tools.common.el.core.parser.ELParser;
 import org.jboss.tools.common.el.core.parser.ELParserUtil;
-import org.jboss.tools.common.el.ui.ElUiPlugin;
+import org.jboss.tools.common.el.core.refactoring.RenameELVariableProcessor;
+import org.jboss.tools.common.el.core.refactoring.RenameELVariableRefactoring;
 import org.jboss.tools.common.el.ui.ElUIMessages;
+import org.jboss.tools.common.el.ui.ElUiPlugin;
 import org.jboss.tools.common.model.ui.editor.EditorPartWrapper;
-import org.jboss.tools.common.model.util.EclipseJavaUtil;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.propertieseditor.PropertiesCompoundEditor;
 import org.jboss.tools.common.util.FileUtil;
@@ -76,7 +76,7 @@ import org.w3c.dom.NodeList;
  * @author Daniel Azarov
  */
 public class ELRefactorContributionFactory extends AbstractContributionFactory {
-	private static final String ANNOTATION_NAME = "org.jboss.seam.annotations.Name"; //$NON-NLS-1$
+	//private static final String ANNOTATION_NAME = "org.jboss.seam.annotations.Name"; //$NON-NLS-1$
 	private static final String JAVA_EXT = "java"; //$NON-NLS-1$
 	private static final String XML_EXT = "xml"; //$NON-NLS-1$
 	private static final String XHTML_EXT = "xhtml"; //$NON-NLS-1$
@@ -168,7 +168,7 @@ public class ELRefactorContributionFactory extends AbstractContributionFactory {
 					status = checkContextVariableInProperties(editorFile, fileContent, selection);
 
 				if(status){
-					mm.add(new RenameSeamContextVariableAction());
+					mm.add(new RenameELVariableAction());
 
 					if(!separatorIsAdded)
 						additions.addContributionItem(new Separator(), null);
@@ -210,7 +210,7 @@ public class ELRefactorContributionFactory extends AbstractContributionFactory {
 			ELModel model = parser.parse(string);
 			for (ELInstance instance : model.getInstances()) {
 				for(ELInvocationExpression ie : instance.getExpression().getInvocations()){
-					ELPropertyInvocation pi = findSeamContextVariable(ie);
+					ELPropertyInvocation pi = findELVariable(ie);
 					if(pi != null){
 						if(offset+pi.getStartPosition() == selection.getOffset() && pi.getLength() == selection.getLength())
 							return true;
@@ -221,7 +221,7 @@ public class ELRefactorContributionFactory extends AbstractContributionFactory {
 		return false;
 	}
 	
-	private ELPropertyInvocation findSeamContextVariable(ELInvocationExpression invocationExpression){
+	private ELPropertyInvocation findELVariable(ELInvocationExpression invocationExpression){
 		ELInvocationExpression invExp = invocationExpression;
 		while(invExp != null){
 			if(invExp instanceof ELPropertyInvocation){
@@ -305,36 +305,6 @@ public class ELRefactorContributionFactory extends AbstractContributionFactory {
 		return scanString(file, content, 0, selection);
 	}
 	
-	private IAnnotation getNameAnnotation(IFile file){
-		try{
-			ICompilationUnit unit = getCompilationUnit(file);
-			for(IType type : unit.getAllTypes()){
-				for(IAnnotation annotation : type.getAnnotations()){
-					if(EclipseJavaUtil.resolveType(type, annotation.getElementName()).equals(ANNOTATION_NAME))
-						return annotation;
-					}
-			}
-		}catch(CoreException ex){
-			ElUiPlugin.getDefault().logError(ex);
-		}
-		return null;
-	}
-	
-	private ICompilationUnit getCompilationUnit(IFile file) throws CoreException {
-		IProject project = file.getProject();
-		IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
-		for (IResource resource : EclipseResourceUtil.getJavaSourceRoots(project)) {
-			if(resource.getFullPath().isPrefixOf(file.getFullPath())) {
-				IPath path = file.getFullPath().removeFirstSegments(resource.getFullPath().segmentCount());
-				IJavaElement element = javaProject.findElement(path);
-				if(element instanceof ICompilationUnit) {
-					return (ICompilationUnit)element;
-				}
-			}
-		}
-		return null;
-	}
-	
 	private String getPropertyName(IMethod method){
 		String name = method.getElementName();
 		
@@ -358,29 +328,29 @@ public class ELRefactorContributionFactory extends AbstractContributionFactory {
 		}
 	}
 	
-	public static void invokeRenameSeamContextVariableWizard(String oldName, Shell activeShell) {
-//		saveAndBuild();
-//		
-//		RenameSeamContextVariableProcessor processor = new RenameSeamContextVariableProcessor(editorFile, selectedText);
-//		RenameComponentRefactoring refactoring = new RenameComponentRefactoring(processor);
-//		RenameSeamContextVariableWizard wizard = new RenameSeamContextVariableWizard(refactoring, editorFile);
+	public static void invokeRenameELVariableWizard(String oldName, Shell activeShell) {
+		saveAndBuild();
+		
+		RenameELVariableProcessor processor = new RenameELVariableProcessor(editorFile, selectedText);
+		RenameELVariableRefactoring refactoring = new RenameELVariableRefactoring(processor);
+		//RenameELVariableWizard wizard = new RenameELVariableWizard(refactoring, editorFile);
 //		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
 //		try {
-//			String titleForFailedChecks = ElUIMessages.SEAM_COMPONENT_RENAME_HANDLER_ERROR;
+//			String titleForFailedChecks = ElUIMessages.EL_REFACTOR_RENAME_HANDLER_ERROR;
 //			op.run(activeShell, titleForFailedChecks);
 //		} catch (final InterruptedException irex) {
 //			// operation was canceled
 //		}
 	}
 	
-	class RenameSeamContextVariableAction extends Action{
-		public RenameSeamContextVariableAction(){
+	class RenameELVariableAction extends Action{
+		public RenameELVariableAction(){
 			super(ElUIMessages.REFACTOR_CONTRIBUTOR_RENAME_EL_VARIABLE);
 		}
 		public void run(){
 			saveAndBuild();
 			
-			invokeRenameSeamContextVariableWizard(selectedText, shell);
+			invokeRenameELVariableWizard(selectedText, shell);
 		}
 	}
 	

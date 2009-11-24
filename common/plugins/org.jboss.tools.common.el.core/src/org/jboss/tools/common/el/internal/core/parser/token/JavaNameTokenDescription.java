@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.parser.token;
 
-import org.jboss.tools.common.el.core.Messages;
+import org.jboss.tools.common.el.core.ElCoreMessages;
 import org.jboss.tools.common.el.core.parser.ITokenDescription;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 
@@ -27,7 +27,7 @@ public class JavaNameTokenDescription implements ITokenDescription {
 	public static ConstantTokenDescription INSTANCEOF_INSTANCE = InstanceofTokenDescription.INSTANCE;
 
 	public String getName() {
-		return Messages.JavaNameTokenDescription_Name;
+		return ElCoreMessages.JavaNameTokenDescription_Name;
 	}
 
 	public int getType() {

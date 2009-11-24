@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.parser.token;
 
-import org.jboss.tools.common.el.core.Messages;
+import org.jboss.tools.common.el.core.ElCoreMessages;
 import org.jboss.tools.common.el.core.parser.ITokenDescription;
 import org.jboss.tools.common.el.core.parser.SyntaxError;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
@@ -30,7 +30,7 @@ public class PrimitiveValueTokenDescription implements ITokenDescription {
 		"null", "true", "false",   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 	};
 	public String getName() {
-		return Messages.PrimitiveValueTokenDescription_Name;
+		return ElCoreMessages.PrimitiveValueTokenDescription_Name;
 	}
 
 	public int getType() {
@@ -141,7 +141,7 @@ public class PrimitiveValueTokenDescription implements ITokenDescription {
 			&& tokenizer.getLastToken().getType() == ArgStartTokenDescription.ARG_START
 			&& dotCount < 1) {
 			SyntaxError error = new SyntaxError(dotOffset, BasicStates.STATE_EXPECTING_ARG);
-			error.setProblem(Messages.PrimitiveValueTokenDescription_ArgMustResolveToIntegerOrString);
+			error.setProblem(ElCoreMessages.PrimitiveValueTokenDescription_ArgMustResolveToIntegerOrString);
 			tokenizer.addSyntaxError(error);
 		}
 		tokenizer.addToken(getType(), offset, i);

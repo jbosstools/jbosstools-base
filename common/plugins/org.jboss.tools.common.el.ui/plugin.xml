@@ -33,5 +33,14 @@
          </enablement>
       </renameParticipant>
     </extension>
+    
+    <!-- Refactorng -->
+	<!--extension
+		point="org.eclipse.ui.menus">
+    <menuContribution
+          class="org.jboss.tools.common.el.ui.refactoring.ELRefactorContributionFactory"
+          locationURI="popup:org.eclipse.ui.popup.any?after=save">
+    </menuContribution>
+	</extension--> 
 
 </plugin>

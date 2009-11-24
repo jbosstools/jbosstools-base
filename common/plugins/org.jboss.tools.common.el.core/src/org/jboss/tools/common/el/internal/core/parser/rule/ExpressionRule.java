@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.parser.rule;
 
-import org.jboss.tools.common.el.core.Messages;
+import org.jboss.tools.common.el.core.ElCoreMessages;
 import org.jboss.tools.common.el.core.parser.IRule;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
@@ -128,15 +128,15 @@ public class ExpressionRule implements IRule, BasicStates {
 
 	public String getProblem(int state, Tokenizer tokenizer) {
 		if(state == STATE_EXPECTING_NAME) {
-			return Messages.ExpressionRule_ExpectingJavaName;
+			return ElCoreMessages.ExpressionRule_ExpectingJavaName;
 		} else {
 			if(OperationTokenDescription.INSTANCE.isStart(tokenizer, tokenizer.getCurrentIndex())) {
-				return Messages.ExpressionRule_CannotStartWithBinaryOp;
+				return ElCoreMessages.ExpressionRule_CannotStartWithBinaryOp;
 			}
 			if(JavaNameTokenDescription.INSTANCEOF_INSTANCE.isStart(tokenizer, tokenizer.getCurrentIndex())) {
-				return Messages.ExpressionRule_CannotStartWithInstanceof;
+				return ElCoreMessages.ExpressionRule_CannotStartWithInstanceof;
 			}
-			return Messages.ExpressionRule_ExpectingExpression;
+			return ElCoreMessages.ExpressionRule_ExpectingExpression;
 		}
 	}
 

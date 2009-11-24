@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.parser.rule;
 
-import org.jboss.tools.common.el.core.Messages;
+import org.jboss.tools.common.el.core.ElCoreMessages;
 import org.jboss.tools.common.el.core.parser.IRule;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
@@ -99,18 +99,18 @@ public class CallRule implements IRule, BasicStates {
 
 	public String getProblem(int state, Tokenizer tokenizer) {
 		if(ParamUtil.isMethodParamContext(tokenizer.getContext())) {
-			return Messages.CallRule_ExpectingCommaOrRParen;
+			return ElCoreMessages.CallRule_ExpectingCommaOrRParen;
 		} else if(ParamUtil.isComplexExpressionContext(tokenizer.getContext())) {
-			return Messages.CallRule_ExpectingRParen;
+			return ElCoreMessages.CallRule_ExpectingRParen;
 		} else if(ParamUtil.isArgContext(tokenizer.getContext())) {
-			return Messages.CallRule_ExpectingRBracket;
+			return ElCoreMessages.CallRule_ExpectingRBracket;
 		}
 		if(state == STATE_EXPECTING_CALL_AFTER_METHOD) {
 			if(ParamStartTokenDescription.INSTANCE.isStart(tokenizer, tokenizer.getCurrentIndex())) {
-				return Messages.CallRule_UnexpectedLParen;
+				return ElCoreMessages.CallRule_UnexpectedLParen;
 			}
 		}
-		return Messages.CallRule_ExpectingRBrace;
+		return ElCoreMessages.CallRule_ExpectingRBrace;
 	}
 
 }
