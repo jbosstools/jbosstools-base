@@ -10,4 +10,6 @@ Require-Bundle: org.eclipse.osgi,
 Export-Package: org.jboss.tools.common.ui.widget.editor,
  org.jboss.tools.common.ui.widget.field
 Bundle-Vendor: %Bundle-Vendor.0
+Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: .
