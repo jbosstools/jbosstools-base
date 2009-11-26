@@ -35,6 +35,12 @@ Raleigh NC 27606 USA.
          version="0.0.0"/>
 
    <plugin
+         id="org.jboss.tools.common.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
          id="org.jboss.tools.common.model.ui"
          download-size="0"
          install-size="0"

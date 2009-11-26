@@ -10,6 +10,7 @@ feature@org.jboss.tools.common.ui.feature=SVN,,http://anonsvn.jboss.org/repos,,j
 feature@org.jboss.tools.common.verification.feature=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/features/org.jboss.tools.common.verification.feature
 
 plugin@org.jboss.tools.common=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/plugins/org.jboss.tools.common
+plugin@org.jboss.tools.common.ui=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/plugins/org.jboss.tools.common.ui
 plugin@org.jboss.tools.common.el.core=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/plugins/org.jboss.tools.common.el.core
 plugin@org.jboss.tools.common.el.ui=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/plugins/org.jboss.tools.common.el.ui
 plugin@org.jboss.tools.common.gef=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/plugins/org.jboss.tools.common.gef
