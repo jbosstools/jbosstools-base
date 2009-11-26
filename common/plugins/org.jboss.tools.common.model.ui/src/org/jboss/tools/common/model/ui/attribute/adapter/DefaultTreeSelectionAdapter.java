@@ -20,9 +20,12 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.ModelUIMessages;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -32,6 +35,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.widgets.Shell;
 
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.action.XAction;
@@ -173,7 +177,7 @@ public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements 
 		
 		public void setXModelObject(XModelObject xmo) {
 			if (xmo != null && xaction != null) {
-				this.setEnabled(xaction.isEnabled(xmo));
+//				this.setEnabled(xaction.isEnabled(xmo));
 				this.setEnabled(Boolean.TRUE.booleanValue());
 			} else {
 				this.setEnabled(Boolean.FALSE.booleanValue());
@@ -181,8 +185,13 @@ public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements 
 		}
 		
 		public void run() {
-			if (xaction!=null) {
-				XActionInvoker.invoke(xaction.getPath(), modelObject, new Properties());
+			if (xaction != null) {
+				if(xaction.isEnabled(getModelObject())) {
+					XActionInvoker.invoke(xaction.getPath(), modelObject, new Properties());
+				} else {
+					Shell shell = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
+					MessageDialog.openWarning(shell, "Warning", "Resource does not exist.");
+				}
 			}
 		}
 	}
@@ -208,6 +217,13 @@ public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements 
 			
 		}
 		public void update(ISelection selection) {
+//			if(actions != null) {
+//				for (IAction a: actions.values()) {
+//					if(a instanceof XActionWrapper) {
+//						((XActionWrapper)a).setXModelObject(getModelObject());
+//					}
+//				}
+//			}
 			//not implemented
 		}
 	}
@@ -228,8 +244,11 @@ public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements 
 				XAction xAction = XActionInvoker.getAction(linkActionName, modelObject);
 				if (xAction!=null) {
 					XActionWrapper linkAction = new XActionWrapper(xAction);
-					XModelObject object = (XModelObject)getObjectByPath(this.getStringValue(Boolean.TRUE.booleanValue()));
-					linkAction.setXModelObject(object);
+//Let it always be enabled, or we need 
+//good update not only depending on value but on workspace resources.
+//					XModelObject object = (XModelObject)getObjectByPath(this.getStringValue(Boolean.TRUE.booleanValue()));
+//					linkAction.setXModelObject(object);
+				linkAction.setEnabled(true);
 					getActionProvider().putAction(STRING_BUTTON_ACTION, linkAction);
 				}
 			}
