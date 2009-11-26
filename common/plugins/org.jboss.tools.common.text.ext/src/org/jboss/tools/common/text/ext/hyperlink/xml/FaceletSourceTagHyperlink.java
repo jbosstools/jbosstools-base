@@ -19,10 +19,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.core.JarEntryDirectory;
 import org.eclipse.jdt.internal.core.JarEntryFile;
+import org.eclipse.jdt.internal.core.JarEntryResource;
 import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 import org.eclipse.jdt.internal.ui.javaeditor.JarEntryEditorInput;
 import org.eclipse.jface.text.IRegion;
@@ -46,17 +49,52 @@ public class FaceletSourceTagHyperlink extends LinkHyperlink{
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		IEditorPart editorPart = page.getActiveEditor();
 		// if we open taglib definition in jar file
-		if( editorPart.getEditorInput() instanceof JarEntryEditorInput) {
+		JarEntryFile current = null;
+		try {
+			if(editorPart.getEditorInput() instanceof IStorageEditorInput && 
+					((IStorageEditorInput)editorPart.getEditorInput()).getStorage() instanceof JarEntryFile) {
+				current = (JarEntryFile)((IStorageEditorInput)editorPart.getEditorInput()).getStorage();
+			}
+		} catch (CoreException e) {
+			ExtensionsPlugin.getDefault().logError(e);
+		}
+		if(current != null) {
 			String fileToOpenName =getFilePath(region);
 			if(fileToOpenName!=null) {
-				JarEntryEditorInput currentEditorInput =  (JarEntryEditorInput) editorPart.getEditorInput();
 				//remove whitespaces and first '/'
 				fileToOpenName = fileToOpenName.trim();
 				if(fileToOpenName.indexOf('/')==0) {
 					fileToOpenName=fileToOpenName.substring(1);
 				}
+				int ii = fileToOpenName.lastIndexOf('/');
+				String folder = ii < 0 ? "" : fileToOpenName.substring(0, ii);
+				fileToOpenName = fileToOpenName.substring(ii + 1);
 				JarEntryFile fileToOpen =  new JarEntryFile(fileToOpenName);
-				fileToOpen.setParent(((JarEntryFile)currentEditorInput.getStorage()).getPackageFragmentRoot());
+				
+				if(folder.length() > 0) {
+					if(folder.startsWith("META-INF")) {
+						JarEntryResource r = null;
+						while (folder.length() >= 0) {
+							int iii = folder.indexOf('/');
+							String name = iii < 0 ? folder : folder.substring(
+									0, iii);
+							folder = iii < 0 ? "" : folder.substring(iii + 1);
+							fileToOpenName = fileToOpenName
+									.substring(fileToOpenName.indexOf('/') + 1);
+							JarEntryResource r1 = new JarEntryDirectory(name);
+							r1.setParent(r != null ? r : current
+									.getPackageFragmentRoot());
+							r = r1;
+						}
+						fileToOpen.setParent(r);
+					} else {
+						IPackageFragment pf = current.getPackageFragmentRoot().getPackageFragment(folder.replace('/', '.'));
+						fileToOpen.setParent(pf);
+					}
+				} else {
+					fileToOpen.setParent(current.getPackageFragmentRoot());
+				}
+
 				JarEntryEditorInput  editorInputToOpenEditor= new JarEntryEditorInput(fileToOpen);
 				IEditorPart openedEditor = openFileInEditor(editorInputToOpenEditor, 
 						fileToOpen.getName());
