@@ -79,10 +79,10 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 		if(!(o instanceof JarSystemImpl)) return null;
 		String file = ((JarSystemImpl)o).getLocation();
 
-		IFile[] fs = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(new File(file).toURI());
-		if(fs == null || fs.length == 0) return null;
+//		IFile[] fs = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(new File(file).toURI());
+//		if(fs == null || fs.length == 0) return null;
 		
-        IProject p = fs[0].getProject();        
+        IProject p = EclipseResourceUtil.getProject(o);     
         IJavaProject jp = EclipseResourceUtil.getJavaProject(p);        
         if(jp == null) return null;
         
