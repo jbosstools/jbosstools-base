@@ -11,14 +11,18 @@
 package org.jboss.tools.common.model.ui.editor;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.internal.core.JarEntryDirectory;
 import org.eclipse.jdt.internal.core.JarEntryFile;
 import org.eclipse.jdt.internal.core.JarEntryResource;
+import org.eclipse.jdt.internal.core.PackageFragment;
 import org.jboss.tools.common.core.resources.XModelObjectEditorInput;
 import org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory;
 import org.eclipse.ui.*;
@@ -45,6 +49,7 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 		XModelObject o = object;
 		JarEntryFile f = null;
 		JarEntryResource current = null;
+		String packageName = "";
 		while(o != null && o.getFileType() != XModelObject.SYSTEM) {
 			String part = o.getFileType() == XModelObject.FILE ? FileAnyImpl.toFileName(o) :
 				o.getFileType() == XModelObject.FOLDER ? o.getAttributeValue(XModelObjectConstants.ATTR_NAME) : null;
@@ -58,6 +63,11 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 					current = f;
 				} else {
 					if(f == null) return null;
+					if(packageName.length() > 0) {
+						packageName = part + "." + packageName;
+					} else {
+						packageName = part;
+					}
 					JarEntryDirectory d = new JarEntryDirectory(part);
 					current.setParent(d);
 					current = d;
@@ -68,13 +78,7 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 		}
 		if(!(o instanceof JarSystemImpl)) return null;
 		String file = ((JarSystemImpl)o).getLocation();
-		
-		try {
-			file = new File(file).getCanonicalPath();
-		} catch (IOException e) {
-			
-		}
-		
+
 		IFile[] fs = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(new File(file).toURI());
 		if(fs == null || fs.length == 0) return null;
 		
@@ -84,7 +88,18 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
         
         IPackageFragmentRoot root = jp.getPackageFragmentRoot(file);
         if(root == null) return null;
-		current.setParent(root);
+
+		try {
+			file = new File(file).getCanonicalPath();
+		} catch (IOException e) {
+			
+		}
+		if(current != null && !"META-INF".equalsIgnoreCase(current.getName()) && packageName.length() > 0) {
+			IPackageFragment pf = root.getPackageFragment(packageName);
+			f.setParent(pf);
+		} else {		
+			current.setParent(root);
+		}
 		
 		return f;
 	}

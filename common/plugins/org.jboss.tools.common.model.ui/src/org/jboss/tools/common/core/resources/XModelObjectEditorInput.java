@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.core.resources;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -19,12 +20,17 @@ import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.internal.core.JarEntryFile;
+import org.eclipse.jdt.internal.core.JarEntryResource;
+import org.eclipse.jdt.internal.ui.javaeditor.JarEntryEditorInput;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.*;
 import org.eclipse.ui.editors.text.ILocationProvider;
 import org.eclipse.ui.internal.part.NullEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.impl.*;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.util.*;
@@ -210,6 +216,31 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 	}
 	
 	private static IEditorInput convertStorageEditorInput(IStorageEditorInput input) {
+		if(input instanceof JarEntryEditorInput) {
+			JarEntryEditorInput j = (JarEntryEditorInput)input;
+			JarEntryFile file = (JarEntryFile)j.getStorage();
+			String jarFile = file.getPackageFragmentRoot().getPath().toString();
+			String entry = file.getName();
+			JarEntryResource r = file;
+			while(r != null && r.getParent() instanceof JarEntryResource) {
+				r = (JarEntryResource)r.getParent();
+				entry = r.getName() + "/" + entry;
+			}
+			if(r != null && r.getParent() instanceof IPackageFragment) {
+				IPackageFragment pf = (IPackageFragment)r.getParent();
+				while(pf != null) {
+					String p = pf.getElementName();
+					entry = p + "/" + entry;
+					if(pf.getParent() instanceof IPackageFragment) {
+						pf = (IPackageFragment)pf.getParent();
+					} else {
+						pf = null;
+					}
+				}
+			}
+			IEditorInput result = createJarEntryEditorInput(jarFile, entry);
+			if(result != null) return result;
+		}
 		String[] entryInfo = parseJarEntryFileInput(input);
 		if(entryInfo == null) return input;
 		String jarFile = entryInfo[0];
@@ -245,6 +276,18 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		if(f == null) return null;
 		IProject p = f.getProject();
 		IModelNature n = EclipseResourceUtil.getModelNature(p);
+		if(n == null) return null;
+		XModelObject[] fs = FileSystemsHelper.getFileSystems(n.getModel()).getChildren();
+		for (XModelObject s: fs) {
+			if(s instanceof JarSystemImpl) {
+				JarSystemImpl j = (JarSystemImpl)s;
+				String loc = j.getLocation();
+				if(new File(loc).equals(new File(jarFile))) {
+					XModelObject result = s.getChildByPath(entry);
+					if(result != null) return result;
+				}
+			}
+		}
 		return (n == null) ? null : n.getModel().getByPath("/" + entry);		 //$NON-NLS-1$
 	}
 	
