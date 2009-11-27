@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.markers;
 
 import java.util.*;
+
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 
@@ -32,8 +33,8 @@ public class XMarkerManager implements IResourceChangeListener {
 		return instance;
 	}
 	
-	private Set<XModelObject> errorObjects = new HashSet<XModelObject>();
-	private Set<XModelObject> warningObjects = new HashSet<XModelObject>();
+	private Map<IProject, Set<XModelObject>> errorObjects = new HashMap<IProject, Set<XModelObject>>();
+	private Map<IProject, Set<XModelObject>> warningObjects = new HashMap<IProject, Set<XModelObject>>();
 	
 	private XMarkerManager() {
 		reload(null);
@@ -43,6 +44,11 @@ public class XMarkerManager implements IResourceChangeListener {
 	public void resourceChanged(IResourceChangeEvent event) {
 		IProject project = null;
 		Object o = event.getSource();
+		if(event.getType() == IResourceChangeEvent.PRE_DELETE && event.getResource() instanceof IProject) {
+			errorObjects.remove((IProject)event.getResource());
+			warningObjects.remove((IProject)event.getResource());
+			return;
+		}
 		if(o instanceof IWorkspace) {
 			IResourceDelta d = event.getDelta();
 			IResourceDelta[] cs = d.getAffectedChildren();
@@ -74,8 +80,18 @@ public class XMarkerManager implements IResourceChangeListener {
 		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
-		reload(ms, errorObjects, IMarker.SEVERITY_ERROR);
-		reload(ms, warningObjects, IMarker.SEVERITY_WARNING);
+		Set<XModelObject> os = errorObjects.get(project);
+		if(os == null) {
+			os = new HashSet<XModelObject>();
+			errorObjects.put(project, os);
+		}
+		reload(ms, os, IMarker.SEVERITY_ERROR);
+		os = warningObjects.get(project);
+		if(os == null) {
+			os = new HashSet<XModelObject>();
+			warningObjects.put(project, os);
+		}
+		reload(ms, os, IMarker.SEVERITY_WARNING);
 	}
 	
 	void reload(IMarker[] ms, Set<XModelObject> objects, int severity) {
