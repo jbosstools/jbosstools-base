@@ -333,14 +333,14 @@ public class ELRefactorContributionFactory extends AbstractContributionFactory {
 		
 		RenameELVariableProcessor processor = new RenameELVariableProcessor(editorFile, selectedText);
 		RenameELVariableRefactoring refactoring = new RenameELVariableRefactoring(processor);
-		//RenameELVariableWizard wizard = new RenameELVariableWizard(refactoring, editorFile);
-//		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
-//		try {
-//			String titleForFailedChecks = ElUIMessages.EL_REFACTOR_RENAME_HANDLER_ERROR;
-//			op.run(activeShell, titleForFailedChecks);
-//		} catch (final InterruptedException irex) {
-//			// operation was canceled
-//		}
+		RenameELVariableWizard wizard = new RenameELVariableWizard(refactoring, editorFile);
+		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
+		try {
+			String titleForFailedChecks = ElUIMessages.EL_REFACTOR_RENAME_HANDLER_ERROR;
+			op.run(activeShell, titleForFailedChecks);
+		} catch (final InterruptedException irex) {
+			// operation was canceled
+		}
 	}
 	
 	class RenameELVariableAction extends Action{

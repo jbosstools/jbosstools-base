@@ -29,6 +29,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.ElCoreMessages;
+import org.jboss.tools.common.model.project.ProjectHome;
 import org.jboss.tools.common.text.ITextSourceReference;
 import org.jboss.tools.common.util.FileUtil;
 
@@ -58,6 +59,10 @@ public abstract class ELRenameProcessor extends RenameProcessor {
 	private String oldName;
 	
 	private ELSearcher searcher = null;
+	
+	public ELRenameProcessor(IFile file, String oldName){
+		searcher = new ELSearcher(file, oldName);
+	}
 	
 	
 	protected RefactorSearcher getSearcher(){
@@ -107,8 +112,8 @@ public abstract class ELRenameProcessor extends RenameProcessor {
 		else
 			flag = location.getStartPosition() == 0 && location.getLength() == 0;
 		
-		if(flag)
-			status.addFatalError(Messages.format(ElCoreMessages.EL_RENAME_PROCESSOR_LOCATION_NOT_FOUND, file.getFullPath().toString()));
+//		if(flag)
+//			status.addFatalError(Messages.format(ElCoreMessages.EL_RENAME_PROCESSOR_LOCATION_NOT_FOUND, file.getFullPath().toString()));
 		return flag;
 	}
 	
@@ -239,29 +244,32 @@ public abstract class ELRenameProcessor extends RenameProcessor {
 			return true;
 		}
 		
-		
 		ArrayList<String> keys = new ArrayList<String>();
 		
 		@Override
 		protected IProject[] getProjects() {
-			// TODO Auto-generated method stub
-			return null;
+			return new IProject[]{baseFile.getProject()};
 		}
+		
 		@Override
 		protected IContainer getViewFolder(IProject project) {
-			// TODO Auto-generated method stub
+			IPath path = ProjectHome.getFirstWebContentPath(baseFile.getProject());
+			
+			if(path != null)
+				return project.getFolder(path.removeFirstSegments(1));
+			
 			return null;
 		}
+		
 		@Override
 		protected void match(IFile file, int offset, int length) {
-			// TODO Auto-generated method stub
-			
+			change(file, offset, length, newName);
 		}
 
 
 		@Override
 		protected boolean isFileCorrect(IFile file) {
-			return isFileCorrect(file);
+			return ELRenameProcessor.this.isFileCorrect(file);
 		}
 	
 	}

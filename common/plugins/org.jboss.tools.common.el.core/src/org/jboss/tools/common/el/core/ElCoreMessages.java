@@ -23,12 +23,11 @@ public class ElCoreMessages extends NLS {
 	public static String StringTokenDescription_Name;
 	public static String WhiteSpaceTokenDescription_Name;
 	
-	public static String EL_RENAME_PROCESSOR_LOCATION_NOT_FOUND;
 	public static String EL_RENAME_PROCESSOR_OUT_OF_SYNC_FILE;
 	public static String EL_RENAME_PROCESSOR_ERROR_PHANTOM_FILE;
 	public static String EL_RENAME_PROCESSOR_ERROR_READ_ONLY_FILE;
 	public static String RENAME_EL_VARIABLE_PROCESSOR_TITLE;
-	public static String RENAME_EL_VARIABLE_PROCESSOR_CAN_NOT_FIND_CONTEXT_VARIABLE;
+	public static String RENAME_EL_VARIABLE_PROCESSOR_CAN_NOT_FIND_EL_VARIABLE;
 	
 	static {
 		// initialize resource bundle

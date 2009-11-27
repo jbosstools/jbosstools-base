@@ -20,4 +20,5 @@ public class ElUIMessages {
 	public static String REFACTOR_CONTRIBUTOR_MAIN_MENU;
 	public static String REFACTOR_CONTRIBUTOR_RENAME_EL_VARIABLE;
 	public static String EL_REFACTOR_RENAME_HANDLER_ERROR;
+	public static String RENAME_EL_VARIABLE_WIZARD_EL_VARIABLE_NAME;
 }

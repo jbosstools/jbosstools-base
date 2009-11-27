@@ -34,7 +34,7 @@ public class RenameELVariableProcessor extends ELRenameProcessor {
 	 * @param file where refactor was called
 	 */
 	public RenameELVariableProcessor(IFile file, String oldName) {
-		super();
+		super(file, oldName);
 		this.file = file;
 		setOldName(oldName);
 	}
@@ -51,7 +51,7 @@ public class RenameELVariableProcessor extends ELRenameProcessor {
 		
 		rootChange = new CompositeChange(ElCoreMessages.RENAME_EL_VARIABLE_PROCESSOR_TITLE);
 		
-		//renameELContextVariable(pm, file);
+		renameELVariable(pm, file);
 		
 		return status;
 	}
@@ -69,7 +69,7 @@ public class RenameELVariableProcessor extends ELRenameProcessor {
 		status = checkELContextVariable();
 		
 		if(!status)
-			result.addFatalError(Messages.format(ElCoreMessages.RENAME_EL_VARIABLE_PROCESSOR_CAN_NOT_FIND_CONTEXT_VARIABLE, getOldName()));
+			result.addFatalError(Messages.format(ElCoreMessages.RENAME_EL_VARIABLE_PROCESSOR_CAN_NOT_FIND_EL_VARIABLE, getOldName()));
 		return result;
 	}
 	
@@ -86,7 +86,7 @@ public class RenameELVariableProcessor extends ELRenameProcessor {
 	
 	
 	private boolean checkELContextVariable(){
-		boolean status = false;
+		boolean status = true;
 		
 		IProject[] projects = getSearcher().getProjects();
 		for (IProject project : projects) {
@@ -139,5 +139,9 @@ public class RenameELVariableProcessor extends ELRenameProcessor {
 	public RefactoringParticipant[] loadParticipants(RefactoringStatus status,
 			SharableParticipants sharedParticipants) throws CoreException {
 		return EMPTY_REF_PARTICIPANT;
+	}
+	
+	private void renameELVariable(IProgressMonitor pm, IFile file){
+		getSearcher().findELReferences();
 	}
 }

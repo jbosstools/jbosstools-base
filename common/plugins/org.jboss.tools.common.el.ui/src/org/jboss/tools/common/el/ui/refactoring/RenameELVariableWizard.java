@@ -12,32 +12,31 @@ package org.jboss.tools.common.el.ui.refactoring;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Map;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.ltk.ui.refactoring.UserInputWizardPage;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.common.el.core.refactoring.RenameELVariableProcessor;
-import org.jboss.tools.common.model.ui.attribute.editor.IFieldEditor;
+import org.jboss.tools.common.el.ui.ElUIMessages;
+import org.jboss.tools.common.ui.widget.editor.CompositeEditor;
+import org.jboss.tools.common.ui.widget.editor.IFieldEditor;
 
 /**
  * @author Daniel Azarov
  */
 public class RenameELVariableWizard extends RefactoringWizard {
 
-	private String componentName;
+	private String variableName;
 	private IFieldEditor editor;
 
-	public RenameELVariableWizard(Refactoring refactoring) {
+	public RenameELVariableWizard(Refactoring refactoring, IFile editorFile) {
 		super(refactoring, WIZARD_BASED_USER_INTERFACE);
 	}
 
@@ -57,6 +56,7 @@ public class RenameELVariableWizard extends RefactoringWizard {
 		public RenameELVariableWizardPage(RenameELVariableProcessor processor){
 			super("");
 			this.processor = processor;
+			variableName = processor.getOldName();
 		}
 
 		public void createControl(Composite parent) {
@@ -66,15 +66,15 @@ public class RenameELVariableWizard extends RefactoringWizard {
 	        container.setLayout(layout);
 	        layout.numColumns = 2;
 	        
-//	        String defaultName = component.getName();
-//	        editor = IFieldEditorFactory.INSTANCE.createTextEditor(componentName, SeamUIMessages.SEAM_WIZARD_FACTORY_SEAM_COMPONENT_NAME, defaultName);
-//	        editor.doFillIntoGrid(container);
-//	        
-//	        ((CompositeEditor)editor).addPropertyChangeListener(new PropertyChangeListener(){
-//	        	public void propertyChange(PropertyChangeEvent evt){
-//	        		validatePage();
-//	        	}
-//	        });
+	        String defaultName = variableName;
+	        editor = FieldEditorFactory.createTextEditor(variableName, ElUIMessages.RENAME_EL_VARIABLE_WIZARD_EL_VARIABLE_NAME, defaultName);
+	        editor.doFillIntoGrid(container);
+	        
+	        ((CompositeEditor)editor).addPropertyChangeListener(new PropertyChangeListener(){
+	        	public void propertyChange(PropertyChangeEvent evt){
+	        		validatePage();
+	        	}
+	        });
 	        setControl(container);
 	        setPageComplete(false);
 		}
