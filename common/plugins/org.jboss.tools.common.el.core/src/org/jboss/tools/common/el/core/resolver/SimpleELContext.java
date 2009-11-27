@@ -56,14 +56,6 @@ public class SimpleELContext implements ELContext {
 		return vars.toArray(new Var[vars.size()]);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getVars(int)
-	 */
-	public Var[] getVars(int i) {
-		return getVars();
-	}
-	
 	/**
 	 * @param vars
 	 */

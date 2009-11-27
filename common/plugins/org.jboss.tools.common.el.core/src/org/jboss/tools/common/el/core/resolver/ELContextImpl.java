@@ -34,19 +34,6 @@ public class ELContextImpl extends SimpleELContext {
 		return allVars.toArray(new Var[allVars.size()]);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	public Var[] getVars(int offset) {
-		List<Var> result = new ArrayList<Var>();
-		for (Region region : vars.keySet()) {
-			if(offset>=region.getOffset() && offset<=region.getOffset() + region.getLength()) {
-				result.addAll(vars.get(region));
-			}
-		}
-		return result.toArray(new Var[result.size()]);
-	}
-
 	/**
 	 * Adds new Var to the context
 	 * @param region
