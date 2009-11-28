@@ -12,6 +12,7 @@ package org.jboss.tools.common.el.core.resolver;
 
 import java.util.List;
 
+import org.eclipse.jface.text.Region;
 import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.model.ELInstance;
 import org.jboss.tools.common.el.core.model.ELModel;
@@ -31,6 +32,7 @@ public class Var {
 	int declOffset;
 	int declLength;
 	ELParserFactory factory;
+	Region region;
 
 	/**
 	 * Constructor
@@ -143,5 +145,19 @@ public class Var {
 				compare.getValue() == null);
 		}
 		return false;
+	}
+
+	/**
+	 * @return the region
+	 */
+	public Region getRegion() {
+		return region;
+	}
+
+	/**
+	 * @param region the region to set
+	 */
+	public void setRegion(Region region) {
+		this.region = region;
 	}
 }

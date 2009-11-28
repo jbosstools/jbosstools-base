@@ -13,6 +13,7 @@ package org.jboss.tools.common.el.core.resolver;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.jboss.tools.common.el.core.ELReference;
 
 /**
  * @author Alexey Kazakov
@@ -26,10 +27,19 @@ public interface ELContext {
 	IFile getResource();
 
 	/**
-	 * Returns "var" attributes
+	 * Returns "var" attributes which are available in particular offset or the all "var"s if offset == -1 
+	 * 
+	 * @param offset
 	 * @return
 	 */
-	Var[] getVars();
+	Var[] getVars(int offset);
+
+	/**
+	 * Returns all EL references of the file of this context.
+	 * 
+	 * @return
+	 */
+	ELReference[] getELReferences();
 
 	/**
 	 * Returns EL Resolvers which are declared for this resource

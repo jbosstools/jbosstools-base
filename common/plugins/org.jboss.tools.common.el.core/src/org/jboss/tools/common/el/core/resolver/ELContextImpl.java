@@ -11,11 +11,10 @@
 package org.jboss.tools.common.el.core.resolver;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.text.Region;
+import org.jboss.tools.common.el.core.ELReference;
 
 /**
  * EL context
@@ -23,8 +22,9 @@ import org.eclipse.jface.text.Region;
  */
 public class ELContextImpl extends SimpleELContext {
 
-	protected Map<Region, List<Var>> vars = new HashMap<Region, List<Var>>();
 	protected List<Var> allVars = new ArrayList<Var>();
+	protected ELReference[] elReferences;
+	protected List<ELReference> elReferenceSet;
 
 	/*
 	 * (non-Javadoc)
@@ -40,10 +40,63 @@ public class ELContextImpl extends SimpleELContext {
 	 * @param vars
 	 */
 	public void addVar(Region region, Var var) {
-		if (this.vars.get(region) == null) {
-			this.vars.put(region, new ArrayList<Var>());
-		}
-		this.vars.get(region).add(var);
+		var.setRegion(region);
 		allVars.add(var);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getVars(int)
+	 */
+	public Var[] getVars(int offset) {
+		if(offset<0) {
+			return getVars();
+		}
+		List<Var> result = new ArrayList<Var>();
+		for (Var var : allVars) {
+			Region region = var.getRegion();
+			if(offset>=region.getOffset() && offset<=region.getOffset() + region.getLength()) {
+				result.add(var);
+			}
+		}
+		return result.toArray(new Var[result.size()]);
+	}
+
+	/**
+	 * @return the allVars
+	 */
+	public List<Var> getAllVars() {
+		return allVars;
+	}
+
+	/**
+	 * @param allVars the allVars to set
+	 */
+	public void setAllVars(List<Var> allVars) {
+		this.allVars = allVars;
+	}
+
+	private static final ELReference[] EMPTY_ARRAY = new ELReference[0];
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.jst.web.kb.IXmlContext#getELReferences()
+	 */
+	public ELReference[] getELReferences() {
+		if(elReferences==null) {
+			if(elReferenceSet==null || elReferenceSet.isEmpty()) {
+				return EMPTY_ARRAY;
+			}
+			elReferences = elReferenceSet.toArray(new ELReference[0]);
+		}
+		return elReferences;
+	}
+
+	public void addELReference(ELReference reference) {
+		if(elReferenceSet==null) {
+			elReferenceSet = new ArrayList<ELReference>();
+		}
+		elReferenceSet.add(reference);
+		elReferences = null;
 	}
 }

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.jboss.tools.common.el.core.ELReference;
 
 /**
  * @author Alexey Kazakov
@@ -69,5 +70,14 @@ public class SimpleELContext implements ELContext {
 	 */
 	public void addVar(Var var) {
 		vars.add(var);
+	}
+
+	public ELReference[] getELReferences() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Var[] getVars(int offset) {
+		return getVars();
 	}
 }

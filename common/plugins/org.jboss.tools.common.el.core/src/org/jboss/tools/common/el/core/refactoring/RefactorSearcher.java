@@ -447,7 +447,7 @@ public abstract class RefactorSearcher {
 
 			context.setVars(vars);
 
-			ELResolution resolution = resolver.resolve(context, operand);
+			ELResolution resolution = resolver.resolve(context, operand, offset);
 
 			List<ELSegment> segments = resolution.findSegmentsByJavaElement(javaElement);
 			

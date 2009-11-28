@@ -27,7 +27,7 @@ public interface ELResolver {
 	 * @param el
 	 * @return proposal list
 	 */
-	List<TextProposal> getProposals(ELContext context, String el);
+	List<TextProposal> getProposals(ELContext context, String el, int offset);
 
 	/**
 	 * Resolves EL operand.
@@ -35,7 +35,7 @@ public interface ELResolver {
 	 * @param operand
 	 * @return
 	 */
-	ELResolution resolve(ELContext context, ELExpression operand);
+	ELResolution resolve(ELContext context, ELExpression operand, int offset);
 
 	/**
 	 * @return EL parser factory
