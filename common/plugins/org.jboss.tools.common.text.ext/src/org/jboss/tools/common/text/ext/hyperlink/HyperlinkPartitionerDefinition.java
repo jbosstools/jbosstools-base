@@ -389,7 +389,7 @@ public class HyperlinkPartitionerDefinition {
                 }
                 if(fEndDelim || path.endsWith(fDelimitedPathElements[fDelimitedPathElements.length-1])) {
                 	int lastTaglib = path.lastIndexOf(TAGLIB);
-                	if(lastTaglib <= tagLib)
+                	if(tagLib == -1 || lastTaglib <= tagLib)
                 		return true;
                 }
                 return false;
