@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IFile;
@@ -18,6 +20,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.ide.IDE;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
@@ -38,19 +44,29 @@ public abstract class LinkHyperlink extends AbstractHyperlink {
 	 */
 	protected void doHyperlink(IRegion region) {
 	
-		try {
 			String fileName = getFilePath(region);
 			IFile fileToOpen = getFileFromProject(fileName);
 			if (fileToOpen != null && fileToOpen.exists()) {
 				IWorkbenchPage workbenchPage = ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
-				IDE.openEditor(workbenchPage,fileToOpen,true);
-			} else {
+				try {
+					IDE.openEditor(workbenchPage,fileToOpen,true);
+				} catch (CoreException x) {
+					// could not open editor
+					openFileFailed();
+				}
+				return;
+			} 
+			try {
+				URL url = new URL(fileName);
+				IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
+				IWebBrowser browser = browserSupport.createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR, null, null, null);
+				browser.openURL(url);
+
+			} catch (MalformedURLException e) {
+				openFileFailed();
+			} catch (PartInitException e) {
 				openFileFailed();
 			}
-		} catch (CoreException x) {
-			// could not open editor
-			openFileFailed();
-		}
 	}
 	
 	protected String getFilePath(IRegion region) {
