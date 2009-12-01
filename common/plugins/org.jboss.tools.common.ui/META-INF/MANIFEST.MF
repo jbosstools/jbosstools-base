@@ -6,9 +6,17 @@ Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.osgi,
  org.jboss.tools.common,
  org.eclipse.ui,
- org.eclipse.core.runtime
-Export-Package: org.jboss.tools.common.ui.widget.editor,
- org.jboss.tools.common.ui.widget.field
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.ui,
+ org.eclipse.core.resources,
+ org.eclipse.ui.ide,
+ org.eclipse.jst.j2ee.ui
+Export-Package: org.jboss.tools.common.ui,
+ org.jboss.tools.common.ui.preferences,
+ org.jboss.tools.common.ui.widget.editor,
+ org.jboss.tools.common.ui.widget.field,
+ org.jboss.tools.common.ui.wizard
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

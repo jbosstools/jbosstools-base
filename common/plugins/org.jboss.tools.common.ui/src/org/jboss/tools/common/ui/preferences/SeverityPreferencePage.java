@@ -9,7 +9,7 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 
-package org.jboss.tools.common.model.ui.preferences;
+package org.jboss.tools.common.ui.preferences;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.internal.ui.preferences.PropertyAndPreferencePage;

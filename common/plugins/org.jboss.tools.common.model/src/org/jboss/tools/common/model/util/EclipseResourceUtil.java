@@ -25,7 +25,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -47,6 +46,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelConstants;
@@ -66,10 +66,9 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.project.ModelNature;
 import org.jboss.tools.common.model.project.ModelNatureExtension;
-import org.jboss.tools.common.model.project.WatcherLoader;
 import org.osgi.framework.Bundle;
 
-public class EclipseResourceUtil {
+public class EclipseResourceUtil extends EclipseUtil {
 	
 	public static IProject getProject(XModelObject o) {
 		return (o == null) ? null : (IProject)o.getModel().getProperties().get(XModelObjectConstants.PROJECT);
@@ -646,30 +645,6 @@ public class EclipseResourceUtil {
 		return result.toArray(new String[0]);
 	}
 	
-	public static IJavaProject getJavaProject(IProject project) {
-		try {
-			if(project == null || !project.isOpen()) return null;
-			if(!project.hasNature(JavaCore.NATURE_ID)) return null;
-			return JavaCore.create(project);
-		} catch (CoreException e) {
-			ModelPlugin.getPluginLog().logError(e);
-			return null;		
-		}
-	}
-
-	public static String getJavaProjectOutputLocation(IProject project) {
-		IJavaProject javaProject = getJavaProject(project);
-		if(javaProject == null) return null;
-		try {
-			IPath p = javaProject.getOutputLocation();
-			IResource r = project.getWorkspace().getRoot().findMember(p);
-			return (r == null || r.getLocation() == null) ? null : r.getLocation().toString();
-		} catch (CoreException e) {
-			ModelPlugin.getPluginLog().logError(e);
-			return null;
-		}
-	}
-	
 	/**
 	 * Returns list of canonical paths to resources included in class path.
 	 * @throws IOException 
@@ -912,43 +887,6 @@ public class EclipseResourceUtil {
 		return null;
 	}
 
-	public static void addNatureToProject(IProject project, String natureId) throws CoreException {
-		IProject proj = project.getProject();
-		IProjectDescription description = proj.getDescription();
-		String[] prevNatures = description.getNatureIds();
-		if (findIndex(prevNatures, natureId) != -1) return; 		
-		description.setNatureIds(append(prevNatures, natureId));
-		proj.setDescription(description, null);
-	}
-	
-	private static int findIndex(String[] os, String s) {
-		for (int i = 0; i < os.length; i++) 
-			if(os[i].equals(s)) return i;
-		return -1;
-	}
-	private static String[] append(String[] os, String s) {
-		String[] ns = new String[os.length + 1];
-		System.arraycopy(os, 0, ns, 0, os.length);
-		ns[os.length] = s;
-		return ns;
-	}
-	private static String[] remove(String[] os, int index) {
-		String[] ns = new String[os.length - 1];
-		System.arraycopy(os, 0, ns, 0, index);
-		System.arraycopy(os, index + 1, ns, index, os.length - (index + 1));
-		return ns;
-	}
-
-	public static void removeNatureFromProject(IProject project, String natureId) throws CoreException {
-		IProject proj = project.getProject();
-		IProjectDescription description = proj.getDescription();
-		String[] prevNatures = description.getNatureIds();
-		int natureIndex = findIndex(prevNatures, natureId);
-		if(natureIndex == -1) return; 				
-		description.setNatureIds(remove(prevNatures, natureIndex));
-		proj.setDescription(description, null);
-	}
-	
 	public static void openResource(IResource resource) {
 		XModelObject o = getObjectByResource(resource);
 		if(o == null) o = createObjectForResource(resource);
