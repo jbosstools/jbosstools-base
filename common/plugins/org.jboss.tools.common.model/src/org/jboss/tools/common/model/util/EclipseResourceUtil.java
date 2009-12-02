@@ -848,26 +848,6 @@ public class EclipseResourceUtil extends EclipseUtil {
 		return false;
 	}
 	
-	public static IResource[] getJavaSourceRoots(IProject project) {
-		IJavaProject javaProject = getJavaProject(project);
-		if(javaProject == null) return null;
-		List<IResource> resources = new ArrayList<IResource>();
-		try {
-			IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
-			for (int i = 0; i < es.length; i++) {
-				if(es[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-					IResource findMember = ModelPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
-					if(findMember != null && findMember.exists()) {
-						resources.add(findMember);
-					}
-				} 
-			}
-		} catch(CoreException ce) {
-			ModelPlugin.getPluginLog().logError("Error while locating java source roots for " + project, ce); //$NON-NLS-1$
-		}
-		return resources.toArray(new IResource[resources.size()]);
-	}
-	                        
 	public static IResource getJavaSourceRoot(IProject project) {
 		IJavaProject javaProject = getJavaProject(project);
 		if(javaProject == null) return null;

@@ -96,7 +96,8 @@ public class ProjectHome {
 
 	//Taken from J2EEUtils and modified
 	public static IPath getWebInfPath(IProject project) {		
-		IVirtualComponent component = ComponentCore.createComponent(project);		
+		IVirtualComponent component = ComponentCore.createComponent(project);	
+		if(component == null || component.getRootFolder() == null) return null;
 		IVirtualFolder webInfDir = component.getRootFolder().getFolder(new Path("/WEB-INF")); //$NON-NLS-1$
 		IPath modulePath = webInfDir.getWorkspaceRelativePath();
 		return (!webInfDir.exists()) ? null : modulePath;
