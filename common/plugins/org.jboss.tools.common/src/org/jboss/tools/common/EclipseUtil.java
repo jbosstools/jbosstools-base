@@ -10,16 +10,25 @@
  ******************************************************************************/ 
 package org.jboss.tools.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
 
 /**
- * @author Alexey Kazakov
+ * @author Alexey Kazakov, Viacheslav Kabanovich
  */
 public class EclipseUtil {
 
@@ -45,6 +54,49 @@ public class EclipseUtil {
 			CommonPlugin.getPluginLog().logError(e);
 			return null;
 		}
+	}
+
+	public static IResource[] getJavaSourceRoots(IProject project) {
+		IJavaProject javaProject = getJavaProject(project);
+		if(javaProject == null) return null;
+		List<IResource> resources = new ArrayList<IResource>();
+		try {
+			IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
+			for (int i = 0; i < es.length; i++) {
+				if(es[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+					IResource findMember = ResourcesPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
+					if(findMember != null && findMember.exists()) {
+						resources.add(findMember);
+					}
+				} 
+			}
+		} catch(CoreException ce) {
+			CommonPlugin.getPluginLog().logError("Error while locating java source roots for " + project, ce); //$NON-NLS-1$
+		}
+		return resources.toArray(new IResource[resources.size()]);
+	}
+	                        
+	public static ICompilationUnit getCompilationUnit(IFile f) throws CoreException {
+		IProject project = f.getProject();
+		IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
+		IResource[] rs = getJavaSourceRoots(project);
+		for (int i = 0; i < rs.length; i++) {
+			if(rs[i].getFullPath().isPrefixOf(f.getFullPath())) {
+				IPath path = f.getFullPath().removeFirstSegments(rs[i].getFullPath().segmentCount());
+				IJavaElement e = javaProject.findElement(path);
+				if(e == null && path.lastSegment().equals("package-info.java")) {
+					//strange but sometimes only this works
+					IJavaElement ep = javaProject.findElement(path.removeLastSegments(1));
+					if(ep instanceof IPackageFragment) {
+						e = ((IPackageFragment)ep).getCompilationUnit("package-info.java");
+					}
+				}
+				if(e instanceof ICompilationUnit) {
+					return (ICompilationUnit)e;
+				}
+			}
+		}
+		return null;
 	}
 
 	public static void addNatureToProject(IProject project, String natureId) throws CoreException {
