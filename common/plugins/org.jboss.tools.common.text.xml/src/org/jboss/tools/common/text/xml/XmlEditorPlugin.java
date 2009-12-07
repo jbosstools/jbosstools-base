@@ -19,8 +19,6 @@ import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.ui.text.JavaTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -171,5 +169,14 @@ public class XmlEditorPlugin extends BaseUIPlugin {
 	 */
 	public static IPluginLog getPluginLog() {
 		return getDefault();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.log.BaseUIPlugin#getId()
+	 */
+	@Override
+	public String getId() {
+		return PLUGIN_ID;
 	}
 }

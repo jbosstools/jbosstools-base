@@ -11,12 +11,10 @@
 package org.jboss.tools.common.text.ext;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.jboss.tools.common.log.BaseUIPlugin;
 import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkDetector;
-import org.osgi.framework.BundleContext;
 
 
 /**
@@ -53,7 +51,6 @@ public class ExtensionsPlugin extends BaseUIPlugin implements IAdaptable {
 		return null;
 	}
 
-	
 	/**
 	 * @return IPluginLog object
 	 */
@@ -61,4 +58,12 @@ public class ExtensionsPlugin extends BaseUIPlugin implements IAdaptable {
 		return getDefault();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.log.BaseUIPlugin#getId()
+	 */
+	@Override
+	public String getId() {
+		return PLUGIN_ID;
+	}
 }
