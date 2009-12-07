@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.internal.ui.text.FastJavaPartitionScanner;
 import org.eclipse.jdt.ui.text.IJavaPartitions;
@@ -416,6 +417,15 @@ public abstract class RefactorSearcher {
 			return propertyName;
 		}
 		return methodName;
+	}
+	
+	public static String getPropertyName(IType method, String className){
+		StringBuffer name = new StringBuffer(className);
+		if(name.length()<2 || Character.isLowerCase(name.charAt(1))) {
+			name.setCharAt(0, Character.toLowerCase(name.charAt(0)));
+		}
+		String propertyName = name.toString();
+		return propertyName;
 	}
 	
 	private boolean containsInSearchScope(IProject project){

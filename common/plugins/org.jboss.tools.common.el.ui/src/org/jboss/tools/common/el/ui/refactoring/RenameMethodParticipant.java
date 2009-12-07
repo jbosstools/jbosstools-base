@@ -20,7 +20,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -38,7 +40,7 @@ import org.jboss.tools.common.el.ui.ElUIMessages;
 import org.jboss.tools.common.model.project.ProjectHome;
 
 public class RenameMethodParticipant extends RenameParticipant{
-	private IMethod method;
+	private IJavaElement element;
 	private String oldName;
 	private String newName;
 	private SeamRenameMethodSearcher searcher;
@@ -55,13 +57,15 @@ public class RenameMethodParticipant extends RenameParticipant{
 			CheckConditionsContext context) throws OperationCanceledException {
 		if(searcher == null)
 			return status;
-		
-		if(method != null && !added){
-			if(searcher.isGetter(method))
-				status.addWarning(ElUIMessages.RENAME_METHOD_PARTICIPANT_GETTER_WARNING);
-			else if(searcher.isSetter(method))
-				status.addWarning(ElUIMessages.RENAME_METHOD_PARTICIPANT_SETTER_WARNING);
-			added = true;
+		if(element instanceof IMethod){
+			IMethod method = (IMethod)element;
+			if(method != null && !added){
+				if(searcher.isGetter(method))
+					status.addWarning(ElUIMessages.RENAME_METHOD_PARTICIPANT_GETTER_WARNING);
+				else if(searcher.isSetter(method))
+					status.addWarning(ElUIMessages.RENAME_METHOD_PARTICIPANT_SETTER_WARNING);
+				added = true;
+			}
 		}
 		
 		searcher.findELReferences();
@@ -83,15 +87,65 @@ public class RenameMethodParticipant extends RenameParticipant{
 	@Override
 	protected boolean initialize(Object element) {
 		if(element instanceof IMethod){
+			IMethod method = (IMethod)element;
 			status = new RefactoringStatus();
 			
 			rootChange = new CompositeChange(ElUIMessages.RENAME_METHOD_PARTICIPANT_UPDATE_METHOD_REFERENCES);
-			method = (IMethod)element;
+			
+			this.element = method;
 			
 			oldName = method.getElementName();
 			
 			newName = RefactorSearcher.getPropertyName(method, getArguments().getNewName());
 			searcher = new SeamRenameMethodSearcher((IFile)method.getResource(), oldName);
+			added = false;
+			return true;
+		}else if(element instanceof IType){
+			IType type = (IType)element;
+			status = new RefactoringStatus();
+			
+			rootChange = new CompositeChange(ElUIMessages.RENAME_METHOD_PARTICIPANT_UPDATE_METHOD_REFERENCES);
+			
+			this.element = type;
+			
+			oldName = type.getElementName();
+			
+			newName = RefactorSearcher.getPropertyName(type, getArguments().getNewName());
+			searcher = new SeamRenameMethodSearcher((IFile)type.getResource(), oldName);
+			added = false;
+			return true;
+		}
+		return false;
+	}
+	
+	// for test only
+	public boolean initialize(Object element, String newName) {
+		if(element instanceof IMethod){
+			IMethod method = (IMethod)element;
+			status = new RefactoringStatus();
+			
+			rootChange = new CompositeChange(ElUIMessages.RENAME_METHOD_PARTICIPANT_UPDATE_METHOD_REFERENCES);
+			
+			this.element = method;
+			
+			oldName = method.getElementName();
+			
+			this.newName = newName;
+			searcher = new SeamRenameMethodSearcher((IFile)method.getResource(), oldName);
+			added = false;
+			return true;
+		}else if(element instanceof IType){
+			IType type = (IType)element;
+			status = new RefactoringStatus();
+			
+			rootChange = new CompositeChange(ElUIMessages.RENAME_METHOD_PARTICIPANT_UPDATE_METHOD_REFERENCES);
+			
+			this.element = type;
+			
+			oldName = type.getElementName();
+			
+			this.newName = newName;
+			searcher = new SeamRenameMethodSearcher((IFile)type.getResource(), oldName);
 			added = false;
 			return true;
 		}
@@ -130,7 +184,7 @@ public class RenameMethodParticipant extends RenameParticipant{
 	class SeamRenameMethodSearcher extends RefactorSearcher{
 		ProjectsSet projectSet=null;
 		public SeamRenameMethodSearcher(IFile file, String name){
-			super(file, name, method);
+			super(file, name, element);
 			ELProjectSetExtension[] extensions = 	ELProjectSetExtension.getInstances();
 			if(extensions.length > 0){
 				projectSet = extensions[0].getProjectSet();
