@@ -15,19 +15,12 @@
          <renameParticipant
             class="org.jboss.tools.common.el.ui.refactoring.RenameMethodParticipant"
             id="org.jboss.tools.common.el.ui.refactoring.RenameMethodParticipant"
-            name="seam-RenameMethodParticipant">
+            name="el-RenameMethodParticipant">
          <enablement>
-            <with
-                  variable="element">
+            <with variable="element">
                <or>
-                  <instanceof
-                        value="org.eclipse.jdt.core.IMethod">
-                  </instanceof>
-               </or>
-               <or>
-                  <instanceof
-                        value="org.eclipse.jdt.core.IType">
-                  </instanceof>
+                  <instanceof value="org.eclipse.jdt.core.IMethod"/>
+                  <instanceof value="org.eclipse.jdt.core.IType"/>
                </or>
             </with>
          </enablement>
