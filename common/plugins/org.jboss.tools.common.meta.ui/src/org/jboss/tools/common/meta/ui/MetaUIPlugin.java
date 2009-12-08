@@ -34,13 +34,4 @@ public class MetaUIPlugin extends BaseUIPlugin {
 	public static MetaUIPlugin getDefault() {
 		return plugin;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.jboss.tools.common.log.BaseUIPlugin#getId()
-	 */
-	@Override
-	public String getId() {
-		return "org.jboss.tools.common.meta.ui";
-	}
 }

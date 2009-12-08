@@ -29,7 +29,7 @@ import org.jboss.tools.common.Messages;
  * 
  * @author Sergey Vasilyev
  */
-public abstract class BaseUIPlugin extends AbstractUIPlugin implements
+public class BaseUIPlugin extends AbstractUIPlugin implements
 		IPluginLog {
 
 	// A Map to save a descriptor for each image
@@ -164,7 +164,7 @@ public abstract class BaseUIPlugin extends AbstractUIPlugin implements
 	 */
 	private ImageDescriptor createImageDescriptor(String imageFilePath) {
 		ImageDescriptor imageDescriptor = AbstractUIPlugin
-				.imageDescriptorFromPlugin(getId(), imageFilePath);
+				.imageDescriptorFromPlugin(getBundle().getSymbolicName(), imageFilePath); //$NON-NLS-1$
 		if (imageDescriptor != null) {
 			getImageDescriptorRegistry().put(imageFilePath, imageDescriptor);
 		} else {
@@ -173,11 +173,4 @@ public abstract class BaseUIPlugin extends AbstractUIPlugin implements
 
 		return imageDescriptor;
 	}
-
-	/**
-	 * Returns ID of the plug-in.
-	 * 
-	 * @return
-	 */
-	public abstract String getId();
 }
