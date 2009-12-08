@@ -194,6 +194,18 @@ public class ElVarSearcher {
 
 	/**
 	 * @param node
+	 * @return All var/value that can be used in this position and null if can't find anyone.
+	 */
+	public static List<Var> findAllVars(ITextViewer viewer, int offset, ELParserFactory factory) {
+		Node node = getNode(viewer, offset);
+		if(node!=null) {
+			return findAllVars(node, factory);
+		}
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @param node
 	 * @return All var/value that can be used in node and null if can't find anyone.
 	 */
 	public List<Var> findAllVars(Node node) {

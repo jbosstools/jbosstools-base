@@ -7,6 +7,7 @@ Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.el.core;singleton:=true
 Bundle-Version: 2.0.0
 Export-Package: org.jboss.tools.common.el.core,
+ org.jboss.tools.common.el.core.ca,
  org.jboss.tools.common.el.core.model,
  org.jboss.tools.common.el.core.parser,
  org.jboss.tools.common.el.core.refactoring,
