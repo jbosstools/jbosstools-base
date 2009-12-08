@@ -64,12 +64,12 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 //	private IAction buttonAction;
 
 	public StringButtonFieldEditorEx() {
-		this.setChangeButtonText(JFaceResources.getString("openBrowse")); //$NON-NLS-1$
+		this.setChangeButtonText(EditorMessages.getString("StringButtonFieldEditorEx_Browse")); //$NON-NLS-1$
 	}
 	
 	public StringButtonFieldEditorEx(IWidgetSettings settings) {
 		super(settings);
-		this.setChangeButtonText(JFaceResources.getString("openBrowse")); //$NON-NLS-1$
+		this.setChangeButtonText(EditorMessages.getString("StringButtonFieldEditorEx_Browse")); //$NON-NLS-1$
 	}
 
 	public Label getLabelControl() {
