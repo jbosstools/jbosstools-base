@@ -748,7 +748,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 //				token.getType() == ELOperandToken.EL_METHOD_TOKEN) 
 			{
 			// return filtered methods + properties 
-			Set<TypeInfoCollector.MemberPresentation> proposalsToFilter = new TreeSet<TypeInfoCollector.MemberPresentation>(TypeInfoCollector.MEMBER_PRESENTATION_COMPARATOR); 
+			Set<TypeInfoCollector.MemberPresentation> proposalsToFilter = new TreeSet<TypeInfoCollector.MemberPresentation>(TypeInfoCollector.MEMBER_PRESENTATION_COMPARATOR);
 			for (TypeInfoCollector.MemberInfo mbr : members) {
 				if(isSingularMember(mbr)) {
 					filterSingularMember(mbr, proposalsToFilter);
@@ -761,7 +761,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				}
 				proposalsToFilter.addAll(infos.getMethodPresentations());
 				proposalsToFilter.addAll(infos.getPropertyPresentations(segment.getUnpairedGettersOrSetters()));
-				segment.setMemberInfo(mbr);
+//				segment.setMemberInfo(mbr);
 			}
 			for (TypeInfoCollector.MemberPresentation proposal : proposalsToFilter) {
 				// We do expect nothing but name for method tokens (No round brackets)

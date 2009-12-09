@@ -107,4 +107,12 @@ public class ELSegmentImpl implements ELSegment {
 	public void setVariables(List<IVariable> variables) {
 		this.variables = variables;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return token!=null?token.getText() + "(" + resolved + ")": super.toString(); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

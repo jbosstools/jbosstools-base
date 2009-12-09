@@ -43,9 +43,11 @@ public class ELResolutionImpl implements ELResolution {
 	public List<ELSegment> findSegmentsByVariable(IVariable variable) {
 		ArrayList<ELSegment> list = new ArrayList<ELSegment>();
 		for(ELSegment segment : segments){
-			for(IVariable var : segment.getVariables()){
-				if(var.getName().equals(variable.getName())){
-					list.add(segment);
+			if(segment.isResolved()) {
+				for(IVariable var : segment.getVariables()){
+					if(var.getName().equals(variable.getName())){
+						list.add(segment);
+					}
 				}
 			}
 		}
@@ -59,8 +61,12 @@ public class ELResolutionImpl implements ELResolution {
 	public List<ELSegment> findSegmentsByJavaElement(IJavaElement element) {
 		ArrayList<ELSegment> list = new ArrayList<ELSegment>();
 		for(ELSegment segment : segments){
-			if(segment instanceof JavaMemberELSegment && ((JavaMemberELSegment)segment).getJavaElement() != null && ((JavaMemberELSegment)segment).getJavaElement().equals(element))
-				list.add(segment);
+			if(segment.isResolved() && segment instanceof JavaMemberELSegment) {
+				 JavaMemberELSegment javaSegment = (JavaMemberELSegment)segment;
+				 if(javaSegment.getJavaElement() != null && javaSegment.getJavaElement().equals(element)) {
+					 list.add(segment);
+				 }
+			}
 		}
 		return list;
 	}
@@ -231,5 +237,21 @@ public class ELResolutionImpl implements ELResolution {
 	 */
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		if(segments!=null) {
+			StringBuffer result = new StringBuffer("["); //$NON-NLS-1$
+			for (ELSegment segment : segments) {
+				result.append(segment.toString()).append(';');
+			}
+			result.append(']');
+			return result.toString();
+		}
+		return super.toString();
 	}
 }
