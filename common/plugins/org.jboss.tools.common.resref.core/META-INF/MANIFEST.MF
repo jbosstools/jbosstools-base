@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.jboss.tools.common.resref.core.ResourceReferencePlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.tools.common.model;bundle-version="2.0.0"
+ org.jboss.tools.common.model;bundle-version="[2.0.0,3.0.0)"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.common.resref.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
