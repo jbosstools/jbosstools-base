@@ -14,6 +14,10 @@ package org.jboss.tools.common.model.project.ext.impl;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.IMemberValuePair;
+import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MemberValuePair;
@@ -21,6 +25,7 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.ext.IValueInfo;
 import org.jboss.tools.common.model.project.ext.store.XMLStoreConstants;
 import org.jboss.tools.common.xml.XMLUtilities;
@@ -67,6 +72,31 @@ public class ValueInfo implements IValueInfo {
 			return null;			
 		}
 		return null;		
+	}
+
+	public static ValueInfo getValueInfo(IAnnotation annotation, String name) {
+		if(name == null) name = "value"; //$NON-NLS-1$
+		ValueInfo result = new ValueInfo();
+		ISourceRange r = null;
+		IMemberValuePair[] ps = null;
+		try {
+			r = annotation.getSourceRange();
+			ps = annotation.getMemberValuePairs();
+		} catch (CoreException e) {
+			ModelPlugin.getDefault().logError(e);
+		}
+		if(r != null) {
+			result.valueStartPosition = r.getOffset();
+			result.valueLength = r.getLength();
+		}
+		if(ps != null) for (IMemberValuePair p: ps) {
+			if(name.equals(p.getMemberName())) {
+				Object v = p.getValue();
+				if(v != null) result.value = v.toString();
+				break;
+			}
+		}
+		return result;
 	}
 	
 	public ValueInfo() {
