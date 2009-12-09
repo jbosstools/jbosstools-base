@@ -50,12 +50,12 @@ public class ELReferencesRenameTest extends ELRefactoringTest {
 
 
 		TestChangeStructure structure = new TestChangeStructure(jsfProject, "/WebContent/pages/hello.jsp");
-		TestTextChange change = new TestTextChange(349, 4, "user");
+		TestTextChange change = new TestTextChange(348, 4, "user");
 		structure.addTextChange(change);
 		list.add(structure);
 
 		structure = new TestChangeStructure(jsfProject, "/WebContent/pages/inputUserName.jsp");
-		change = new TestTextChange(495, 4, "user");
+		change = new TestTextChange(494, 4, "user");
 		structure.addTextChange(change);
 		list.add(structure);
 		
