@@ -6,7 +6,7 @@ Bundle-ClassPath: model.jar,lib/j2ee.jar,lib/Bundles.jar
 Bundle-Activator: org.jboss.tools.common.model.plugin.ModelPlugin
 Bundle-Vendor: %providerName
 Plugin-Class: org.jboss.tools.common.model.plugin.ModelPlugin
-Bundle-SymbolicName: org.jboss.tools.common.model;singleton=true
+Bundle-SymbolicName: org.jboss.tools.common.model;singleton:=true
 Bundle-Localization: plugin
 Export-Package: org.jboss.tools.common.ant.model,
  org.jboss.tools.common.ant.model.handlers,
