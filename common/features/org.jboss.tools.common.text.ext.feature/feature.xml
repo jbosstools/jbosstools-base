@@ -28,7 +28,7 @@ Raleigh NC 27606 USA.
    </url>
 
    <requires>
-      <import feature="org.jboss.tools.common.core.feature" version="2.0.0"/>
+      <import feature="org.jboss.tools.common.core.feature" version="2.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
