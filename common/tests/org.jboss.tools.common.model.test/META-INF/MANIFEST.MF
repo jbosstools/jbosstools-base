@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.model.test;singleton:=true
 Bundle-Version: 2.0.0
-Bundle-ClassPath: common-model-tests.jar
 Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.common.model.test
 Require-Bundle: 
