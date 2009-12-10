@@ -33,6 +33,10 @@ public class SimpleELContext implements ELContext {
 		return elResolvers;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELContext#setElResolvers(org.jboss.tools.common.el.core.resolver.ELResolver[])
+	 */
 	public void setElResolvers(ELResolver[] elResolvers) {
 		this.elResolvers = elResolvers;
 	}
@@ -45,6 +49,10 @@ public class SimpleELContext implements ELContext {
 		return resource;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELContext#setResource(org.eclipse.core.resources.IFile)
+	 */
 	public void setResource(IFile resource) {
 		this.resource = resource;
 	}
@@ -57,8 +65,9 @@ public class SimpleELContext implements ELContext {
 		return vars.toArray(new Var[vars.size()]);
 	}
 
-	/**
-	 * @param vars
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELContext#setVars(java.util.List)
 	 */
 	public void setVars(List<Var> vars) {
 		this.vars = vars;
@@ -72,11 +81,18 @@ public class SimpleELContext implements ELContext {
 		vars.add(var);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getELReferences()
+	 */
 	public ELReference[] getELReferences() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getVars(int)
+	 */
 	public Var[] getVars(int offset) {
 		return getVars();
 	}
