@@ -10,7 +10,6 @@ Export-Package: org.jboss.tools.common.el.core,
  org.jboss.tools.common.el.core.ca,
  org.jboss.tools.common.el.core.model,
  org.jboss.tools.common.el.core.parser,
- org.jboss.tools.common.el.core.refactoring,
  org.jboss.tools.common.el.core.resolver,
  org.jboss.tools.common.el.internal.core.parser,
  org.jboss.tools.common.el.internal.core.parser.token

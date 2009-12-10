@@ -6,8 +6,7 @@ Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.el.ui;singleton:=true
 Bundle-Version: 1.0.0
 Export-Package: org.jboss.tools.common.el.ui,
- org.jboss.tools.common.el.ui.ca,
- org.jboss.tools.common.el.ui.refactoring
+ org.jboss.tools.common.el.ui.ca
 Bundle-Activator: org.jboss.tools.common.el.ui.ElUiPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

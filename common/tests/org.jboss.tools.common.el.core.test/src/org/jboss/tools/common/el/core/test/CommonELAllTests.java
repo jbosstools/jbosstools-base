@@ -10,7 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.test;
 
-import org.jboss.tools.common.el.core.test.refactoring.ELReferencesRenameTest;
 import org.jboss.tools.test.util.ProjectImportTestSetup;
 
 import junit.framework.Test;
@@ -27,10 +26,6 @@ public class CommonELAllTests {
 		suite.setName("All tests for " + PLUGIN_ID);
 		suite.addTestSuite(ELParserTest.class);
 		suite.addTestSuite(ELModelTest.class);
-		suite.addTest(new ProjectImportTestSetup(new TestSuite(ELReferencesRenameTest.class),
-				"org.jboss.tools.common.el.core.test",
-				new String[]{"projects/testJSFProject",},
-				new String[]{"testJSFProject"}));
 		return suite;
 	}
 }
