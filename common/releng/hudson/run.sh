@@ -56,6 +56,12 @@ if [[ ! -d $cvsProjectBaseDir/org.eclipse.releng.basebuilder ]]; then
 		cd $downloadsDir; wget --no-clobber http://repository.jboss.org/eclipse/galileo/org.eclipse.releng.basebuilder_${basebuilderBranch}.zip
 	fi
 	cd $cvsProjectBaseDir; unzip -qq -d org.eclipse.releng.basebuilder $downloadsDir/org.eclipse.releng.basebuilder_${basebuilderBranch}.zip
+	# fix extra nested folder
+	if [[ -d $cvsProjectBaseDir/org.eclipse.releng.basebuilder/org.eclipse.releng.basebuilder ]]; then
+		mv $cvsProjectBaseDir/org.eclipse.releng.basebuilder $cvsProjectBaseDir/org.eclipse.releng.basebuilder_
+		mv $cvsProjectBaseDir/org.eclipse.releng.basebuilder_/org.eclipse.releng.basebuilder $cvsProjectBaseDir/
+		rm -fr $cvsProjectBaseDir/org.eclipse.releng.basebuilder_/
+	fi
 	
 	# reuse cached copy if available	
 	if [[ -f $thirdPartyJarsDir/org.eclipse.pde.build.svn-1.0.1RC2.zip ]]; then 
