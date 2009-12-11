@@ -85,8 +85,14 @@ public class ELParserImpl {
 		}
 		ELInstanceImpl instance = new ELInstanceImpl();
 		instance.setFirstToken(current);
-		setNextToken();
-		ELExpressionImpl expression = readExpression();
+		ELExpressionImpl expression = null;
+//		setNextToken();
+		if(lookUpNextToken(current) != null) {
+			setNextToken();
+			expression = readExpression();
+		} else {
+			current = current.getNextToken();
+		}
 		if(expression == null) {
 			//create fake invocation expression
 			expression = new ELPropertyInvocationImpl();
