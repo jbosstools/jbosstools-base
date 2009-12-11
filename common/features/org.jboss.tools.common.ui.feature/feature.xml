@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.common.ui.feature"
       label="%featureName"
-      version="2.0.0"
+      version="2.0.0.qualifier"
       provider-name="%providerName">
 
    <description url="http://www.jboss.org/tools">
@@ -13,19 +13,19 @@
       %copyright
    </copyright>
 
-   <license>Red Hat, Inc. licenses these features and plugins to you under
+   <license>
+      Red Hat, Inc. licenses these features and plugins to you under
 certain open source licenses (or aggregations of such licenses), which
 in a particular case may include the Eclipse Public License, the GNU
 Lesser General Public License, and/or certain other open source
 licenses. For precise licensing details, consult the corresponding
 source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
 Raleigh NC 27606 USA.
-</license>
-
+   </license>
 
    <requires>
-      <import feature="org.jboss.tools.common.core.feature" version="2.0.0"/>
-      <import feature="org.jboss.tools.common.text.ext.feature" version="2.0.0"/>
+      <import feature="org.jboss.tools.common.core.feature" version="2.0.0" match="greaterOrEqual"/>
+      <import feature="org.jboss.tools.common.text.ext.feature" version="2.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
