@@ -60,6 +60,9 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		XModelObject fs = EclipseResourceUtil.getObjectByResource(file);
 		if (fs != null)
 			return fs.getModel();
+		fs = EclipseResourceUtil.createObjectForResource(file);
+		if (fs != null)
+			return fs.getModel();
 		IProject project = file.getProject();
 		IModelNature nature = EclipseResourceUtil.getModelNature(project);
 		return (nature == null) ? null : nature.getModel();
