@@ -24,6 +24,7 @@ plugin@org.jboss.tools.common.text.ext=SVN,,http://anonsvn.jboss.org/repos,,jbos
 plugin@org.jboss.tools.common.text.xml=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/plugins/org.jboss.tools.common.text.xml
 plugin@org.jboss.tools.common.verification=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/plugins/org.jboss.tools.common.verification
 plugin@org.jboss.tools.common.verification.ui=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/plugins/org.jboss.tools.common.verification.ui
+
 plugin@org.jboss.tools.common.el.core.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/tests/org.jboss.tools.common.el.core.test
 plugin@org.jboss.tools.common.model.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/tests/org.jboss.tools.common.model.test
 plugin@org.jboss.tools.common.model.ui.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/common/tests/org.jboss.tools.common.model.ui.test
