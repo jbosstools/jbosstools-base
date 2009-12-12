@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.resref.ui
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.jboss.tools.common.resref.ui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.tools.common.model.ui;bundle-version="[2.0.0,3.0.0)",
- org.jboss.tools.common.resref.core;bundle-version="[1.0.0,2.0.0)"
+ org.jboss.tools.common.model.ui,
+ org.jboss.tools.common.resref.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.jboss.tools.common.resref.ui

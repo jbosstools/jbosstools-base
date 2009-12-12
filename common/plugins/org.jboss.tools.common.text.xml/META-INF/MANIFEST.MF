@@ -2,8 +2,6 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-ActivationPolicy: lazy
 Bundle-Name: %Bundle-Name.0
-Bundle-ClassPath: xmleditor.jar,
- .
 Bundle-Activator: org.jboss.tools.common.text.xml.XmlEditorPlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.text.xml;singleton:=true
@@ -27,5 +25,5 @@ Require-Bundle: org.jboss.tools.common,
  org.eclipse.wst.sse.ui,
  org.eclipse.wst.sse.core,
  org.eclipse.core.resources
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

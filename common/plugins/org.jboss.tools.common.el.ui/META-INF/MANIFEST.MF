@@ -4,14 +4,14 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.el.ui;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.qualifier
 Export-Package: org.jboss.tools.common.el.ui,
  org.jboss.tools.common.el.ui.ca
 Bundle-Activator: org.jboss.tools.common.el.ui.ElUiPlugin
 Require-Bundle: org.eclipse.ui,
- org.jboss.tools.common.el.core;bundle-version="[2.0.0,3.0.0)",
- org.jboss.tools.common.resref.ui;bundle-version="[1.0.0,3.0.0)",
- org.jboss.tools.common.model.ui;bundle-version="[2.0.0,3.0.0)",
+ org.jboss.tools.common.el.core,
+ org.jboss.tools.common.resref.ui,
+ org.jboss.tools.common.model.ui,
  org.eclipse.jdt.ui;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.ui.ide;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.jface.text;bundle-version="[3.5.0,4.0.0)",

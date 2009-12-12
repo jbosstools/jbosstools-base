@@ -32,6 +32,21 @@
       <import plugin="org.eclipse.debug.core" version="3.2.0"  match="greaterOrEqual"/>
    </requires>
 
+	<!-- add to allow buildTests and tests to run via an Athena build; remove for uberbuilder -->
+   <plugin
+         id="org.eclipse.ant.optional.junit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+	<!-- add to allow buildTests and tests to run via an Athena build; remove for uberbuilder -->
+
    <plugin
          id="org.jboss.tools.tests"
          download-size="0"

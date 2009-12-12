@@ -5,7 +5,7 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.el.core;singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.0.qualifier
 Export-Package: org.jboss.tools.common.el.core,
  org.jboss.tools.common.el.core.ca,
  org.jboss.tools.common.el.core.model,

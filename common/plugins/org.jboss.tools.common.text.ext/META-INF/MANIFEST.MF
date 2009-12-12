@@ -7,7 +7,7 @@ Export-Package: org.jboss.tools.common.text.ext,
  org.jboss.tools.common.text.ext.hyperlink.xpl,
  org.jboss.tools.common.text.ext.util,
  org.jboss.tools.common.text.ext.util.xpl
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.0.qualifier
 Bundle-Name: %Bundle-Name.0
 Bundle-ManifestVersion: 2
 Bundle-Vendor: %providerName
@@ -25,7 +25,7 @@ Require-Bundle: org.jboss.tools.common.model,
  org.eclipse.jst.jsp.core;visibility:=reexport,
  org.eclipse.wst.common.modulecore;visibility:=reexport,
  org.eclipse.pde.ui,
- org.jboss.tools.common.el.core;bundle-version="[2.0.0,3.0.0)",
+ org.jboss.tools.common.el.core,
  org.eclipse.emf.ecore;bundle-version="[2.5.0,3.0.0)",
  org.eclipse.wst.css.core,
  org.eclipse.wst.html.core
