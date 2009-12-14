@@ -12,13 +12,14 @@ package org.jboss.tools.common.model.project.ext;
 
 import java.util.Properties;
 
+import org.jboss.tools.common.text.INodeReference;
 import org.jboss.tools.common.text.ITextSourceReference;
 import org.w3c.dom.Element;
 
 /**
  * @author Viacheslav Kabanovich
  */
-public interface IValueInfo extends ITextSourceReference {
+public interface IValueInfo extends ITextSourceReference, INodeReference {
 	
 	/**
 	 * Returns string value
