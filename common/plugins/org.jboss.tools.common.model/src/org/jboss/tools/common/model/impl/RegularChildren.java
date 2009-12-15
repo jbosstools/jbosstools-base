@@ -99,7 +99,9 @@ public class RegularChildren {
 	public Map<String, XModelObject> getObjectsMap() {
 		Map<String, XModelObject> result = new HashMap<String, XModelObject>();
 		if (objects != null) {
-			result.putAll(objects.getMap());
+			synchronized(objects) {
+				result.putAll(objects.getMap());
+			}
 		}
 		return result;
 	}
@@ -246,7 +248,9 @@ class SMap {
 	}
 
 	public void put(String key, XModelObject value) {
-		entries.put(key, value);
+		synchronized(entries) {
+			entries.put(key, value);
+		}
 		if(cache != null) {
 			synchronized(this) {
 				cache = null;
@@ -264,7 +268,9 @@ class SMap {
 	}
 
 	private XModelObject[] values() {
-		return entries.values().toArray(RegularChildren.EMPTY);
+		synchronized(entries) {
+			return entries.values().toArray(RegularChildren.EMPTY);
+		}
 	}
 
 	/**
@@ -291,7 +297,9 @@ class SMap {
 	}
 
 	public void remove(String key) {
-		entries.remove(key);
+		synchronized(entries) {
+			entries.remove(key);
+		}
 		if(cache != null) {
 			synchronized(this) {
 				cache = null;
@@ -306,9 +314,11 @@ class SMap {
 	 */
 	public int getChildrenCount(String entity) {
 		int k = 0;
-		for (XModelObject r : entries.values()) {
-			String e = r.getModelEntity().getName();
-			if (entity.equals(e)) ++k;
+		synchronized(entries) {
+			for (XModelObject r : entries.values()) {
+				String e = r.getModelEntity().getName();
+				if (entity.equals(e)) ++k;
+			}
 		}
 		return k;
 	}
