@@ -18,7 +18,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public class SeverityPreferencesMessages extends NLS {
 
-	private static final String BUNDLE_NAME = "org.jboss.tools.common.model.ui.preferences.SeverityPreferencesMessages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.jboss.tools.common.ui.preferences.SeverityPreferencesMessages"; //$NON-NLS-1$
 
 	public static String ValidatorConfigurationBlock_needsbuild_title;
 	public static String ValidatorConfigurationBlock_needsfullbuild_message;
