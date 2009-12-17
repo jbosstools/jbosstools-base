@@ -133,7 +133,7 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 					}
 				});
 				// by default
-				getLabelAction().setEnabled(Boolean.FALSE.booleanValue());
+//				getLabelAction().setEnabled(Boolean.FALSE.booleanValue());
 			} else {
 				style = getSettings().getStyle("Label.Style"); //$NON-NLS-1$
 				if (style==SWT.DEFAULT) style = SWT.NONE;
@@ -289,7 +289,7 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 			String value = valueProvider.getStringValue(Boolean.TRUE.booleanValue());
 			getTextField().setText(value);
 			if (getLabelAction()!=null) {
-				getLabelAction().setEnabled((value!=null && value.length()>0));
+				getLabelAction().setEnabled((value!=null/* && value.length()>0*/));
 			}
 		}
 
