@@ -16,7 +16,7 @@ import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
-public class ModelEntityRecognizer implements EntityRecognizer {
+public class ModelEntityRecognizer implements EntityRecognizerExtension {
     private XModelMetaData meta = null;
     private HashMap<String,EntityRecognizer[]> recognizers = new HashMap<String,EntityRecognizer[]>();
 
@@ -29,6 +29,22 @@ public class ModelEntityRecognizer implements EntityRecognizer {
         this.meta = meta;
         load();
     }
+
+	public String getEntityName(String fileName, String ext, String body) {
+    	if(ext != null) ext = ext.toLowerCase();
+        EntityRecognizer[] list = recognizers.get(ext);
+        if(list == null || list.length == 0) return "FileAny"; //$NON-NLS-1$
+        for (EntityRecognizer r: list) {
+            String n = null;
+            if(r instanceof EntityRecognizerExtension) {
+            	n = ((EntityRecognizerExtension)r).getEntityName(fileName, ext, body);
+            } else {
+            	n = r.getEntityName(ext, body);
+            }
+            if(n != null) return n;
+        }
+        return null;
+	}
 
     public String getEntityName(String ext, String body) {
     	if(ext != null) ext = ext.toLowerCase();
@@ -142,20 +158,33 @@ public class ModelEntityRecognizer implements EntityRecognizer {
         }
     }
     
-    private class EntityRecognizerWrapper implements EntityRecognizer {
+    private class EntityRecognizerWrapper implements EntityRecognizerExtension {
     	String clsname;
     	EntityRecognizer resolved;
     	
     	public EntityRecognizerWrapper(String clsname) {
     		this.clsname = clsname;
     	}
-
-		public String getEntityName(String ext, String body) {
+    	
+    	boolean checkResolved() {
 			if(resolved == null && clsname != null) {
 				resolved = find(clsname);
 				clsname = null;
 			}
-			return (resolved != null) ? resolved.getEntityName(ext, body) : null;
+			return resolved != null;
+    	}
+
+		public String getEntityName(String ext, String body) {
+			return checkResolved() ? resolved.getEntityName(ext, body) : null;
+		}
+
+		public String getEntityName(String fileName, String ext, String body) {
+			if(!checkResolved()) return null;
+			if(resolved instanceof EntityRecognizerExtension) {
+				return ((EntityRecognizerExtension)resolved).getEntityName(fileName, ext, body);
+			} else {
+				return resolved.getEntityName(ext, body);
+			}
 		}
     }
 

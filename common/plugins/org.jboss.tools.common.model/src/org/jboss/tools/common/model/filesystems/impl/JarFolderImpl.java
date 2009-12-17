@@ -84,13 +84,13 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
         FolderImpl.parseFileName(p, name);
         String ext = p.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
         String body = null;
-        String entity = getModel().getEntityRecognizer().getEntityName(ext, body);
+        String entity = getModel().getEntityRecognizer().getEntityName(name, ext, body);
         if("FileAny".equals(entity)) { //$NON-NLS-1$
             if(jar.getSize(cpath) > 100000) entity = XModelObjectConstants.ENT_FILE_ANY_LONG;
             else if(jar.isTextEntry(cpath, 100)) entity = "FileTXT"; //$NON-NLS-1$
         } else /*if(entity == null)*/ {
             body = jar.getContent(cpath);
-            entity = getModel().getEntityRecognizer().getEntityName(ext, body);
+            entity = getModel().getEntityRecognizer().getEntityName(name, ext, body);
         }
         if(entity == null || getModel().getMetaData().getEntity(entity) == null) entity = "FileAny"; //$NON-NLS-1$
         XModelObject c = getModel().createModelObject(entity, p);

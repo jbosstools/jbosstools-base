@@ -48,6 +48,7 @@ import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemImpl;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemPeer;
 import org.jboss.tools.common.model.loaders.EntityRecognizer;
+import org.jboss.tools.common.model.loaders.EntityRecognizerExtension;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
 import org.jboss.tools.common.model.loaders.impl.ModelEntityRecognizer;
 import org.jboss.tools.common.model.plugin.ModelMessages;
@@ -120,7 +121,7 @@ public class XModelImpl implements XModel {
         return buffer;
     }
 
-    public EntityRecognizer getEntityRecognizer() {
+    public EntityRecognizerExtension getEntityRecognizer() {
         return recognizer;
     }
 

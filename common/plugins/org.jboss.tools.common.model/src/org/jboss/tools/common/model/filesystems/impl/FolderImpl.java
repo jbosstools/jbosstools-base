@@ -205,14 +205,14 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         parseFileName(p, f.getName());
         String ext = p.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
         String body = null;
-        String entity = getModel().getEntityRecognizer().getEntityName(ext, body);
+        String entity = getModel().getEntityRecognizer().getEntityName(f.getName(), ext, body);
         if("FileAny".equals(entity)) { //$NON-NLS-1$
         	boolean isText = XModelObjectLoaderUtil.isTextFile(f, 100);
             if(f.length() > 100000 || !isText) entity = XModelObjectConstants.ENT_FILE_ANY_LONG;
             else if(isText) entity = "FileTXT"; //$NON-NLS-1$
         } else /*if(entity == null)*/ {
             body = getBodySource(f).get();
-            entity = getModel().getEntityRecognizer().getEntityName(ext, body);
+            entity = getModel().getEntityRecognizer().getEntityName(f.getName(), ext, body);
         }
         if(entity == null || getModel().getMetaData().getEntity(entity) == null) entity = "FileAny"; //$NON-NLS-1$
         p.setProperty(XMetaDataConstants.ENTITY, entity);
@@ -707,6 +707,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
 
     private static int question(XModelObject o) {
+    	if(Display.getCurrent() == null) {
+    		//TODO we cannot display dialog. What should we do?
+    	}
         return o.getModel().getService().showDialog("Update",
                MessageFormat
 					.format(

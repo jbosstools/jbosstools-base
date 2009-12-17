@@ -79,6 +79,13 @@ public class EclipseJavaUtil {
 	public static String resolveType(IType type, String typeName) {
 		if(type == null) return null;
 		if(type.isBinary() || typeName == null) return typeName;
+		int i = typeName.indexOf("<");
+		if(i >= 0) {
+			int j = typeName.lastIndexOf(">");
+			if(j >= i) {
+//				typeName = typeName.substring(0, i);
+			}
+		}
 		
 		String n = getKey(type);
 		Resolved r = resolved.get(n);
@@ -123,6 +130,8 @@ public class EclipseJavaUtil {
 			return typeName;
 		} catch (JavaModelException e) {
 			ModelPlugin.getPluginLog().logError(e);
+		} catch (IllegalArgumentException ee) {
+			System.out.println("Illegal " + typeName);
 		}
 		return null;
 	}
