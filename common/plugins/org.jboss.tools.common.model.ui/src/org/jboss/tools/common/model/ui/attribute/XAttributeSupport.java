@@ -28,7 +28,6 @@ import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAda
 import org.jboss.tools.common.model.ui.attribute.editor.ExtendedFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
-import org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.NoteEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.NoteFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor;
@@ -42,7 +41,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.ui.actions.ActionFactory;
-
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.action.XAttributeData;
 import org.jboss.tools.common.meta.action.XEntityData;
@@ -51,7 +49,6 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.widgets.DefaultSettings;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
-import org.jboss.tools.common.model.ui.wizards.OneStepWizard;
 
 /**
  * @author eskimo
