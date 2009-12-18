@@ -41,6 +41,8 @@ import org.eclipse.ui.part.MultiPageEditorActionBarContributor;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.part.MultiPageEditorSite;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.IDocumentProviderExtension;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
@@ -811,6 +813,25 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			IFile file = ((IFileEditorInput)input).getFile();
 			if(file.isSynchronized(IResource.DEPTH_ZERO)) return;
 			f.updateChildFile(o, file.getLocation().toFile());
+			if(textEditor instanceof ITextEditor) {
+				IDocumentProvider provider = ((ITextEditor)textEditor).getDocumentProvider();
+				if(provider instanceof IDocumentProviderExtension) {
+					IDocumentProviderExtension extension= (IDocumentProviderExtension) provider;
+					try {
+						extension.synchronize(input);
+					} catch (CoreException e) {
+						ModelUIPlugin.getDefault().logError(e);
+					}
+				}
+			} else {
+				try {
+					file.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+				} catch (CoreException e) {
+					ModelUIPlugin.getDefault().logError(e);
+				}
+			}
+			f.setModified(false);
+			firePropertyChange(ITextEditor.PROP_DIRTY);
 		}
 	}
 	
