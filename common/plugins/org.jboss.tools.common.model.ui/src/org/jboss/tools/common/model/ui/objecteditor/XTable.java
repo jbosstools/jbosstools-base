@@ -88,7 +88,7 @@ public class XTable {
 		for (int i = 0; i < k; i++) {
 			TableColumn c = new TableColumn(table, SWT.NONE);
 			c.setText(provider.getColumnName(i));
-			layoutData = new ColumnWeightData(widths[i], Boolean.TRUE.booleanValue());
+			layoutData = new ColumnWeightData(widths[i], true);
 			layout.addColumnData(layoutData);
 		}
 		table.setHeaderVisible(isHeaderVisible);

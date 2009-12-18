@@ -107,7 +107,7 @@ public abstract class ResourceReferenceList {
 	    String s = null;
 	    /*
 	     * https://jira.jboss.org/jira/browse/JBIDE-3211
-	     * Storing project preferences to project scope in .settings
+	     * Reading preferences from project scope from .settings
 	     */
 	    IScopeContext projectScope = new ProjectScope(resource.getProject());
 	    IEclipsePreferences root = projectScope
@@ -123,30 +123,30 @@ public abstract class ResourceReferenceList {
 		    s = node.get(getPropertyName().getLocalName(), ""); //$NON-NLS-1$
 		}
 	    }
-	    if (s == null || s.length() == 0) {
-		    /*
-		     * Old preferences format property value.
-		     */
-		    String old = null;
-		    try {
-			old = resource.getPersistentProperty(getPropertyName());
-		    } catch (CoreException e) {
+		if (s == null || s.length() == 0) {
 			/*
-			 * Ignore, there is no properties for this resource.
+			 * Old preferences format property value.
 			 */
-		    }
-		if (old == null || old.length() == 0) {
-		    return new String[0];
+			String old = null;
+			try {
+				old = resource.getPersistentProperty(getPropertyName());
+			} catch (CoreException e) {
+				/*
+				 * Ignore, there is no properties for this resource.
+				 */
+			}
+			if (old == null || old.length() == 0) {
+				return new String[0];
+			} else {
+				/*
+				 * If there is property stored in the old preferences format
+				 * return this value.
+				 */
+				return decodeResourceString(old);
+			}
 		} else {
-		    /*
-		     * If there is property stored in the old preferences format
-		     * return this value.
-		     */
-		    return decodeResourceString(old);
+			return decodeResourceString(s);
 		}
-	    } else {
-		return decodeResourceString(s);
-	    }
 	}
 	
 	//Fix for JBIDE-2979
@@ -193,8 +193,8 @@ public abstract class ResourceReferenceList {
 
 	private boolean setDeclaredResources(IResource resource, ResourceReference[] entries, int scope, int depth) {
 	    /*
-	     * https://jira.jboss.org/jira/browse/JBIDE-3211 Reading project
-	     * Reading preferences from project scope from .settings
+	     * https://jira.jboss.org/jira/browse/JBIDE-3211
+	     * Storing project preferences to project scope in .settings
 	     */
 	    IScopeContext projectScope = new ProjectScope(resource.getProject());
 	    IEclipsePreferences root = projectScope
@@ -256,47 +256,47 @@ public abstract class ResourceReferenceList {
 	TreeMap allExternalResources = null;
 	
 	private TreeMap getAllExternalResources() {
-	    if (allExternalResources == null) {
-		allExternalResources = new TreeMap();
-		/*
-		 * Property value
-		 */
-		String s = null;
-		
-		/*
-		 * https://jira.jboss.org/jira/browse/JBIDE-3211 Reading project
-		 * Reading global preferences from instance scope.
-		 */
-		IScopeContext instanceContext = new InstanceScope();
-		Preferences root = instanceContext.getNode(ModelPlugin.PLUGIN_ID);
-		if (null != root) {
-		    Preferences node = root.node(ResourceReferencePlugin.PLUGIN_ID);
-		    s = node.get(getPropertyName().getLocalName(), ""); //$NON-NLS-1$
-		}
-		/*
-		 * If there is property stored in the old preferences format
-		 * and there are no other properties old value will be returned
-		 */
-		if (s != null && s.length() > 0) {
-		    parseExternalResources(s);
-		} else {
-		    /*
-		     * Old preferences format property value.
-		     */
-		    String old = null;
-		    try {
-			old = ModelPlugin.getWorkspace().getRoot().getPersistentProperty(getPropertyName());
-		    } catch (CoreException e) {
+		if (allExternalResources == null) {
+			allExternalResources = new TreeMap();
 			/*
-			 * Ignore, there is no properties for this resource.
+			 * Property value
 			 */
-		    }
-		    if (old != null && old.length() > 0) {
-			parseExternalResources(old);
-		    }
+			String s = null;
+			/*
+			 * https://jira.jboss.org/jira/browse/JBIDE-3211 
+			 * Reading global preferences from instance scope.
+			 */
+			IScopeContext instanceContext = new InstanceScope();
+			Preferences root = instanceContext.getNode(ModelPlugin.PLUGIN_ID);
+			if (null != root) {
+				Preferences node = root.node(ResourceReferencePlugin.PLUGIN_ID);
+				s = node.get(getPropertyName().getLocalName(), ""); //$NON-NLS-1$
+			}
+			/*
+			 * If there is property stored in the old preferences format and
+			 * there are no other properties old value will be returned
+			 */
+			if (s != null && s.length() > 0) {
+				parseExternalResources(s);
+			} else {
+				/*
+				 * Old preferences format property value.
+				 */
+				String old = null;
+				try {
+					old = ModelPlugin.getWorkspace().getRoot()
+							.getPersistentProperty(getPropertyName());
+				} catch (CoreException e) {
+					/*
+					 * Ignore, there is no properties for this resource.
+					 */
+				}
+				if (old != null && old.length() > 0) {
+					parseExternalResources(old);
+				}
+			}
 		}
-	    }
-	    return allExternalResources;
+		return allExternalResources;
 	}
 	
 	private void parseExternalResources(String s) {
@@ -313,34 +313,34 @@ public abstract class ResourceReferenceList {
 	}
 
 	private void setAllExternalResources() {
-	    StringBuffer sb = new StringBuffer();
-	    Iterator it = allExternalResources.keySet().iterator();
-	    while (it.hasNext()) {
-		String path = it.next().toString();
-		String list = (String) allExternalResources.get(path);
-		if (path != null && list != null && new File(path).exists()) {
-		    if (sb.length() > 0)
-			sb.append('#');
-		    sb.append(path).append('=').append(list);
+		StringBuffer sb = new StringBuffer();
+		Iterator it = allExternalResources.keySet().iterator();
+		while (it.hasNext()) {
+			String path = it.next().toString();
+			String list = (String) allExternalResources.get(path);
+			if (path != null && list != null && new File(path).exists()) {
+				if (sb.length() > 0)
+					sb.append('#');
+				sb.append(path).append('=').append(list);
+			}
 		}
-	    }
-	    /*
-	     * https://jira.jboss.org/jira/browse/JBIDE-3211 Reading project
-	     * Storing global preferences to instance scope to
-	     * ${workspace}\.metadata\.plugins\org.eclipse.core.runtime\
-	     * .settings\org.jboss.tools.common.model.prefs
-	     */
-	    IScopeContext instanceContext = new InstanceScope();
-	    Preferences root = instanceContext.getNode(ModelPlugin.PLUGIN_ID);
-	    if (null != root) {
-		Preferences node = root.node(ResourceReferencePlugin.PLUGIN_ID);
-		node.put(getPropertyName().getLocalName(), sb.toString());
-		try {
-		    root.flush();
-		} catch (BackingStoreException e) {
-		    ResourceReferencePlugin.getPluginLog().logError(e);
+		/*
+		 * https://jira.jboss.org/jira/browse/JBIDE-3211 
+		 * Storing global preferences to instance scope to
+		 * ${workspace}\.metadata\.plugins\org.eclipse.core.runtime\
+		 * .settings\org.jboss.tools.common.model.prefs
+		 */
+		IScopeContext instanceContext = new InstanceScope();
+		Preferences root = instanceContext.getNode(ModelPlugin.PLUGIN_ID);
+		if (null != root) {
+			Preferences node = root.node(ResourceReferencePlugin.PLUGIN_ID);
+			node.put(getPropertyName().getLocalName(), sb.toString());
+			try {
+				root.flush();
+			} catch (BackingStoreException e) {
+				ResourceReferencePlugin.getPluginLog().logError(e);
+			}
 		}
-	    }
 	}
 
 	public ResourceReference[] getAllResources(IPath path) {
@@ -393,12 +393,16 @@ public abstract class ResourceReferenceList {
 		int checkScope = path.equals(Platform.getLocation()) ? ResourceReference.GLOBAL_SCOPE : ResourceReference.FILE_SCOPE;
 
 		b = setDeclaredResources(path, entries, checkScope, 0);
-		if(b) changed = path;
+		if(b) {
+			changed = path;
+		}
 		IPath parent = path.removeLastSegments(1);
 		int depth = 0;
 		while(parent != null && parent.segmentCount() > 1) {
 			b = setDeclaredResources(parent, entries, ResourceReference.FOLDER_SCOPE, depth);
-			if(b) changed = parent;
+			if(b) {
+				changed = parent;
+			}
 			parent = parent.removeLastSegments(1);
 			depth++;
 		}
