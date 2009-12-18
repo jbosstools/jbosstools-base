@@ -29,6 +29,8 @@ import org.jboss.tools.common.model.ui.attribute.editor.ExtendedFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.NoteEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.NoteFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.PropertyEditorFactory;
 import org.jboss.tools.common.model.ui.attribute.editor.StringButtonFieldEditorEx;
@@ -49,6 +51,7 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.widgets.DefaultSettings;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
+import org.jboss.tools.common.model.ui.wizards.OneStepWizard;
 
 /**
  * @author eskimo
@@ -256,6 +259,9 @@ public class XAttributeSupport {
 				if(greedy) {
 					int h = control.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
 					if(h > 300) gd.heightHint = 300;
+					if (fieldEditor instanceof NoteFieldEditor) {
+						gd.heightHint = 100;
+					}
 				}
 				control.setLayoutData(gd);
 			} else if (controls.length==1) {
@@ -278,6 +284,7 @@ public class XAttributeSupport {
 			composite.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		
 		int greedyCount = 0;
+		sortEditors();
 		for (int i = 0; i < editors.size(); i++) {
 			PropertyEditor editor = (PropertyEditor)editors.get(i);
 			if(editor.isGreedyEditor()) ++greedyCount;
@@ -287,7 +294,7 @@ public class XAttributeSupport {
 			//editor.setLabelText(support.getAttributeMessage(id, ads[i].getAttribute().getName()));
 			ExtendedFieldEditor fieldEditor = null;
 			boolean greedy = editor.isGreedyEditor();
-			if(!greedy || keepGreedy(editor.getAttributeName(), i, greedyCount)) { 
+			if(!greedy || keepGreedy(editor.getAttributeName(), i, greedyCount) || editor instanceof NoteEditor) { 
 				fieldEditor = editor.getFieldEditor(composite);
 			} else {
 				StringButtonFieldEditorEx sb;
@@ -313,50 +320,64 @@ public class XAttributeSupport {
 			}
 		}
 	}
+	
+	private void sortEditors(){
+		PropertyEditor editor = null;
+		for (int i = 0; i < editors.size(); i++) {
+			editor = editors.get(i);
+			if ("description".equalsIgnoreCase(editor.getAttributeName())) {
+				editors.remove(editor);
+				editors.add(editor);
+				return;
+			}
+		}
+	}
 
 	public Composite createControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 
-		composite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+//		composite.setBackgroundMode(SWT.INHERIT_DEFAULT);
 //		composite.setBackground(parent.getBackground());
 		
-		composite.setLayout(getLayout());    
-		int greedyCount = 0;
-		for (int i = 0; i < editors.size(); i++) {
-			PropertyEditor editor = (PropertyEditor)editors.get(i);
-			if(editor.isGreedyEditor()) ++greedyCount;
-		}   
-
-		for (int i = 0; i < editors.size(); i++) {
-			PropertyEditor editor = (PropertyEditor)editors.get(i);
-			//editor.setLabelText(support.getAttributeMessage(id, ads[i].getAttribute().getName()));
-			ExtendedFieldEditor fieldEditor = null;
-			boolean greedy = editor.isGreedyEditor();
-			if(!greedy || keepGreedy(editor.getAttributeName(), i, greedyCount)) { 
-				fieldEditor = editor.getFieldEditor(composite);
-			} else {
-				StringButtonFieldEditorEx sb = null;       
-
-				sb = new StringButtonFieldEditorEx(settings);
-
-				sb.setLabelText(editor.getLabelText());
-				String changeButtonName = editor.getChangeButtonName();
-				if(changeButtonName != null) {
-					sb.setChangeButtonText(changeButtonName);
-				}
-				sb.setPropertyEditor(editor);
-				fieldEditor = sb;
-				greedy = false;
-			}
-			registerFieldEditor(editor.getAttributeName(), fieldEditor);
-			if (!enabled) {
-				fieldEditor.setEnabled(enabled);
-			}
-			fillComposite(composite, fieldEditor, greedy);
-			if(fieldEditor instanceof StringButtonFieldEditorEx) {
-				((StringButtonFieldEditorEx)fieldEditor).setStringValue("" + editor.getValue()); //$NON-NLS-1$
-			}
-		}
+		composite.setLayout(getLayout());
+		fillComposite(composite);
+//		int greedyCount = 0;
+//		sortEditors();
+//		for (int i = 0; i < editors.size(); i++) {
+//			PropertyEditor editor = (PropertyEditor)editors.get(i);
+//			if(editor.isGreedyEditor()) ++greedyCount;
+//		}   
+//
+//		for (int i = 0; i < editors.size(); i++) {
+//			PropertyEditor editor = (PropertyEditor)editors.get(i);
+//			//editor.setLabelText(support.getAttributeMessage(id, ads[i].getAttribute().getName()));
+//			ExtendedFieldEditor fieldEditor = null;
+//			boolean greedy = editor.isGreedyEditor();
+//			if(!greedy || keepGreedy(editor.getAttributeName(), i, greedyCount) || editor instanceof NoteEditor) { 
+//				fieldEditor = editor.getFieldEditor(composite);
+//			} else {
+//				StringButtonFieldEditorEx sb = null;       
+//
+//				sb = new StringButtonFieldEditorEx(settings);
+//
+//				sb.setLabelText(editor.getLabelText());
+//				String changeButtonName = editor.getChangeButtonName();
+//				if(changeButtonName != null) {
+//					sb.setChangeButtonText(changeButtonName);
+//				}
+//				sb.setPropertyEditor(editor);
+//				fieldEditor = sb;
+//				greedy = false;
+//			}
+//			registerFieldEditor(editor.getAttributeName(), fieldEditor);
+//			if (!enabled) {
+//				fieldEditor.setEnabled(enabled);
+//			}
+//			fillComposite(composite, fieldEditor, greedy);
+//			if(fieldEditor instanceof StringButtonFieldEditorEx) {
+//				((StringButtonFieldEditorEx)fieldEditor).setStringValue("" + editor.getValue()); //$NON-NLS-1$
+//			}
+//		}
 		return composite;
 	}
 	
