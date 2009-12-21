@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.jdt.ui,
  org.eclipse.core.resources,
  org.eclipse.ui.ide,
- org.eclipse.jst.j2ee.ui
+ org.eclipse.jst.j2ee.ui,
+ org.eclipse.ui.forms
 Export-Package: org.jboss.tools.common.ui,
  org.jboss.tools.common.ui.preferences,
  org.jboss.tools.common.ui.widget.editor,

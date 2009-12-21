@@ -15,8 +15,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.dialogs.StatusInfo;
 import org.eclipse.jdt.internal.ui.preferences.OptionsConfigurationBlock;
+import org.eclipse.jdt.internal.ui.preferences.ScrolledPageContent;
 import org.eclipse.jdt.internal.ui.wizards.IStatusChangeListener;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -25,6 +27,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.jboss.tools.common.preferences.SeverityPreferences;
 
@@ -57,12 +61,67 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 	protected static final String ENABLED = JavaCore.ENABLED;
 	protected static final String DISABLED = JavaCore.DISABLED;
 
-	protected abstract Composite createStyleTabContent(Composite folder);
+	protected String[] errorWarningIgnore = new String[] {ERROR, WARNING, IGNORE};
+	protected String[] enableDisableValues= new String[] {ENABLED, DISABLED};
+
+	protected String[] errorWarningIgnoreLabels = new String[] {
+		SeverityPreferencesMessages.VALIDATOR_CONFIGURATION_BLOCK_ERROR,  
+		SeverityPreferencesMessages.VALIDATOR_CONFIGURATION_BLOCK_WARNING, 
+		SeverityPreferencesMessages.VALIDATOR_CONFIGURATION_BLOCK_IGNORE
+	};
 
 	public SeverityConfigurationBlock(IStatusChangeListener context,
 			IProject project, Key[] allKeys,
 			IWorkbenchPreferenceContainer container) {
 		super(context, project, allKeys, container);
+	}
+
+	protected abstract String getCommonDescription();
+
+	protected abstract SectionDescription[] getAllSections();
+
+	protected abstract IDialogSettings getDialogSettings();
+
+	protected Composite createStyleTabContent(Composite folder) {
+		int nColumns = 3;
+
+		final ScrolledPageContent sc1 = new ScrolledPageContent(folder);
+
+		Composite composite = sc1.getBody();
+		GridLayout layout= new GridLayout(nColumns, false);
+		layout.marginHeight= 0;
+		layout.marginWidth= 0;
+		composite.setLayout(layout);
+
+		Label description= new Label(composite, SWT.LEFT | SWT.WRAP);
+		description.setFont(description.getFont());
+		description.setText(getCommonDescription()); 
+		description.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false, nColumns - 1, 1));
+
+		int defaultIndent = 0;
+
+		SectionDescription[] sections = getAllSections();
+		for (int i = 0; i < sections.length; i++) {
+			SectionDescription section = sections[i];
+			String label = section.label; 
+			ExpandableComposite excomposite = createStyleSection(composite, label, nColumns);
+
+			Composite inner = new Composite(excomposite, SWT.NONE);
+			inner.setFont(composite.getFont());
+			inner.setLayout(new GridLayout(nColumns, false));
+			excomposite.setClient(inner);
+
+			for (int j = 0; j < section.options.length; j++) {
+				OptionDescription option = section.options[j];
+				label = option.label;
+				addComboBox(inner, label, option.key, errorWarningIgnore, errorWarningIgnoreLabels, defaultIndent);
+			}
+		}
+
+		IDialogSettings section = getDialogSettings();
+		restoreSectionExpansionStates(section);
+
+		return sc1;
 	}
 
 	@Override
