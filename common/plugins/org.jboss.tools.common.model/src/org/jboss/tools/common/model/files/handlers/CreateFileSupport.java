@@ -31,6 +31,9 @@ import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.util.FileUtil;
 
 public class CreateFileSupport extends SpecialWizardSupport {
+	public static String INITIAL_FOLDER_PROPERTY = "initialFolder"; //$NON-NLS-1$
+	public static String INITIAL_FILE_PROPERTY = "initialFile"; //$NON-NLS-1$
+	
 	static final String ATTR_TEMPLATE = "template"; //$NON-NLS-1$
 	static final String ATTR_FOLDER = "folder"; //$NON-NLS-1$
 
@@ -66,6 +69,14 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		} else {
 			targetHolder.revalidate(r.getFullPath().toString());
 			setAttributeValue(0, ATTR_FOLDER, "" + targetHolder.path); //$NON-NLS-1$
+		}
+		String initialFolder = p.getProperty(INITIAL_FOLDER_PROPERTY);
+		if(initialFolder != null && initialFolder.length() > 0) {
+			setAttributeValue(0, ATTR_FOLDER, initialFolder);
+		}
+		String initialFile = p.getProperty(INITIAL_FILE_PROPERTY);
+		if(initialFile != null && initialFile.length() > 0) {
+			setAttributeValue(0, XModelObjectConstants.ATTR_NAME, initialFile);
 		}
 		initVersions();
 	}
