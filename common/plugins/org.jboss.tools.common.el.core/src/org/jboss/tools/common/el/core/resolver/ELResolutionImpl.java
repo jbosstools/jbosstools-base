@@ -76,7 +76,9 @@ public class ELResolutionImpl implements ELResolution {
 	 */
 	public ELSegment findSegmentByOffset(int offset) {
 		for(ELSegment segment : segments){
-			if(segment.getSourceReference() != null && segment.getSourceReference().getStartPosition() == offset)
+			if(segment.getSourceReference() != null && 
+					segment.getSourceReference().getStartPosition() <= offset &&
+					segment.getSourceReference().getStartPosition()+segment.getSourceReference().getLength() >= offset)
 				return segment;
 		}
 		return null;
