@@ -382,7 +382,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		String elStartChar = "#"; //$NON-NLS-1$
 		String documentContent = ref.getELModel().getSource();
 		// Is '}'-bracket exists? If not - add the 
-		if(getELEndPosition(offset + proposalPrefix.length(), documentContent) == -1) {
+		if(getELEndPosition(offset - ref.getStartPosition(), documentContent) == -1) {
 			proposalSufix = "}"; //$NON-NLS-1$
 		}
 
