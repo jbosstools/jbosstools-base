@@ -575,11 +575,21 @@ public class EclipseResourceUtil extends EclipseUtil {
 		}
 		IResource sr = s.getResource();
 		if(sr == null) return null;
-		if(!sr.getFullPath().isPrefixOf(resource.getFullPath())) return null;
-		String path = resource.getFullPath().toString();
-		String rootpath = sr.getFullPath().toString();
-		String relpath = path.substring(rootpath.length()).replace('\\', '/');
-		if(relpath.length() == 0) return s;
+		String relpath = null;
+		if(sr.getFullPath().isPrefixOf(resource.getFullPath())) {
+			String path = resource.getFullPath().toString();
+			String rootpath = sr.getFullPath().toString();
+			relpath = path.substring(rootpath.length()).replace('\\', '/');
+			if(relpath.length() == 0) return s;
+		} else if(sr.getLocation() != null && resource.getLocation() != null 
+			&& sr.getLocation().isPrefixOf(resource.getLocation())) {
+			String path = resource.getLocation().toString();
+			String rootpath = sr.getLocation().toString();
+			relpath = path.substring(rootpath.length()).replace('\\', '/');
+			if(relpath.length() == 0) return s;
+		}
+		
+		if(relpath == null) return null;
 
 		XModelObject o = s.getChildByPath(relpath.substring(1));
 		if(o == null && resource.exists()) {
@@ -591,7 +601,9 @@ public class EclipseResourceUtil extends EclipseUtil {
 		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$
 		if(p == null) {
 			IResource r = (IResource)o.getAdapter(IResource.class);
-			if(r == null || !resource.getFullPath().equals(r.getFullPath())) {
+			if(r == null || (!resource.getFullPath().equals(r.getFullPath())  
+				&& (resource.getLocation() == null || r.getLocation() == null || !resource.getLocation().equals(r.getLocation()))
+				)) {
 				//failure, more detailed file system is needed.
 				return null;
 			}
