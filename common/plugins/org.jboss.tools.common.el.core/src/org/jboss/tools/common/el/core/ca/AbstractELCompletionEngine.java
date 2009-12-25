@@ -77,7 +77,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		ELReference ref = context.getELReference(offset);
 		if(ref!=null) {
 			for (ELExpression expresion : ref.getEl()) {
-				if(ref.getStartPosition() + expresion.getStartPosition()<=offset && (ref.getStartPosition() + expresion.getEndPosition()>offset)) {
+				if(ref.getStartPosition() + expresion.getStartPosition()<=offset && (ref.getStartPosition() + expresion.getEndPosition()>=offset)) {
 					ELInvocationExpression ie = ELUtil.findExpression(expresion.getModel(), offset - ref.getStartPosition());
 					String el = "#{"; //$NON-NLS-1$
 					if(ie!=null) {
