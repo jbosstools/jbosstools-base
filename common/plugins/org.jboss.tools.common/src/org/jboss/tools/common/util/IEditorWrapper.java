@@ -8,7 +8,7 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.common.text.ext;
+package org.jboss.tools.common.util;
 
 import org.eclipse.ui.IEditorPart;
 

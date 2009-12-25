@@ -19,8 +19,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
-import org.jboss.tools.common.text.ext.IEditorWrapper;
 import org.jboss.tools.common.text.ext.IMultiPageEditor;
+import org.jboss.tools.common.util.IEditorWrapper;
 
 /**
  * @author Jeremy

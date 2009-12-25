@@ -47,6 +47,7 @@ public abstract class ELReference implements ITextSourceReference {
 	private IMarker[] markerArray;
 	private boolean needToInitMarkers = false;
 	private List<SyntaxError> syntaxErrors;
+	private String source;
 
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.seam.core.ISeamTextSourceReference#getLength()
@@ -111,19 +112,20 @@ public abstract class ELReference implements ITextSourceReference {
 		this.path = path;
 	}
 
+	public String getSourceText() {
+		if(source==null) {
+			source = getELModel().getSource();
+		}
+		return source;
+	}
+
 	/**
 	 * @return the el
 	 */
 	public ELExpression[] getEl() {
 		if(el==null) {
 			Set<ELExpression> exps = new HashSet<ELExpression>();
-			String content = null;
-			try {
-				content = FileUtil.readStream(getResource());
-			} catch (CoreException e) {
-				ELCorePlugin.getDefault().logError(e);
-			}
-			String elText = content.substring(startPosition, startPosition + length);
+			String elText = FileUtil.getContentFromEditorOrFile(resource);
 			int startEl = elText.indexOf("#{"); //$NON-NLS-1$
 			if(startEl>-1) {
 				ELParser parser = ELParserUtil.getJbossFactory().createParser();
@@ -305,5 +307,13 @@ public abstract class ELReference implements ITextSourceReference {
 	@Override
 	public int hashCode() {
 		return path.hashCode() + startPosition;
+	}
+
+	public ELModel getELModel() {
+		ELExpression[] exprs = getEl();
+		if(exprs.length>0) {
+			return exprs[0].getModel();
+		}
+		return null;
 	}
 }

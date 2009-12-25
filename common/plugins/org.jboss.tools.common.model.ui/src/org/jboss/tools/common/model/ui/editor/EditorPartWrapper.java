@@ -45,7 +45,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.text.ext.IEditorWrapper;
+import org.jboss.tools.common.util.IEditorWrapper;
 
 public class EditorPartWrapper extends EditorPart implements IReusableEditor, IEditorWrapper {
 	

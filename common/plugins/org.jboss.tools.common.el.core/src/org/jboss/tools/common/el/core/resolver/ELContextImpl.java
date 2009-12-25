@@ -30,6 +30,7 @@ public class ELContextImpl extends SimpleELContext {
 	 * (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getVars()
 	 */
+	@Override
 	public Var[] getVars() {
 		return allVars.toArray(new Var[allVars.size()]);
 	}
@@ -48,6 +49,7 @@ public class ELContextImpl extends SimpleELContext {
 	 * (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getVars(int)
 	 */
+	@Override
 	public Var[] getVars(int offset) {
 		if(offset<0) {
 			return getVars();
@@ -82,6 +84,7 @@ public class ELContextImpl extends SimpleELContext {
 	 * (non-Javadoc)
 	 * @see org.jboss.tools.jst.web.kb.IXmlContext#getELReferences()
 	 */
+	@Override
 	public ELReference[] getELReferences() {
 		if(elReferences==null) {
 			if(elReferenceSet==null || elReferenceSet.isEmpty()) {
@@ -98,5 +101,19 @@ public class ELContextImpl extends SimpleELContext {
 		}
 		elReferenceSet.add(reference);
 		elReferences = null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.SimpleELContext#getELReference(int)
+	 */
+	@Override
+	public ELReference getELReference(int offset) {
+		ELReference[] refs = getELReferences();
+		for (int i = 0; i < refs.length; i++) {
+			if(refs[i].getStartPosition()<=offset && (refs[i].getStartPosition() + refs[i].getLength()>offset)) {
+				return refs[i];
+			}
+		}
+		return null;
 	}
 }

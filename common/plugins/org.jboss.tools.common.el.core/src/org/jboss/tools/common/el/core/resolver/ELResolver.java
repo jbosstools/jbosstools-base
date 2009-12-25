@@ -30,6 +30,12 @@ public interface ELResolver {
 	List<TextProposal> getProposals(ELContext context, String el, int offset);
 
 	/**
+	 * @param context
+	 * @return proposal list
+	 */
+	List<TextProposal> getProposals(ELContext context, int offset);
+
+	/**
 	 * Resolves EL operand.
 	 * @param context
 	 * @param operand

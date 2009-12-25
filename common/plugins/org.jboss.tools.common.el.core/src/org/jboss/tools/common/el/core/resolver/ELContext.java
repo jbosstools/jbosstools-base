@@ -42,6 +42,13 @@ public interface ELContext {
 	ELReference[] getELReferences();
 
 	/**
+	 * Returns the EL reference by the offset.
+	 * 
+	 * @return
+	 */
+	ELReference getELReference(int offset);
+
+	/**
 	 * Returns EL Resolvers which are declared for this resource
 	 * @return
 	 */

@@ -96,4 +96,12 @@ public class SimpleELContext implements ELContext {
 	public Var[] getVars(int offset) {
 		return getVars();
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getELReference(int)
+	 */
+	public ELReference getELReference(int offset) {
+		return null;
+	}
 }

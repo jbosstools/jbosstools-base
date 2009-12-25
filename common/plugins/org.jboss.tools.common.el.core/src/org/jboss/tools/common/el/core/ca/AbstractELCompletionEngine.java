@@ -11,6 +11,7 @@
 package org.jboss.tools.common.el.core.ca;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.el.core.ELCorePlugin;
+import org.jboss.tools.common.el.core.ELReference;
 import org.jboss.tools.common.el.core.model.ELArgumentInvocation;
 import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.model.ELInstance;
@@ -67,6 +69,26 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 	protected abstract void log(Exception e);
 
 	private static ELParserFactory defaultFactory = ELParserUtil.getJbossFactory();
+
+	/* (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELResolver#getProposals(org.jboss.tools.common.el.core.resolver.ELContext, int)
+	 */
+	public List<TextProposal> getProposals(ELContext context, int offset) {
+		ELReference ref = context.getELReference(offset);
+		if(ref!=null) {
+			for (ELExpression expresion : ref.getEl()) {
+				if(ref.getStartPosition() + expresion.getStartPosition()<=offset && (ref.getStartPosition() + expresion.getEndPosition()>offset)) {
+					ELInvocationExpression ie = ELUtil.findExpression(expresion.getModel(), offset - ref.getStartPosition());
+					String el = "#{"; //$NON-NLS-1$
+					if(ie!=null) {
+						el = el + ref.getSourceText().substring(ie.getStartPosition(), offset - ref.getStartPosition());
+					}
+					return getProposals(context, el, offset);
+				}
+			}
+		}
+		return Collections.emptyList();
+	}
 
 	/*
 	 * (non-Javadoc)
