@@ -56,6 +56,9 @@ public class EclipseUIUtil {
 	 * @return
 	 */
 	public static boolean isOpenInActiveEditor(IFile file) {
+		if(file == null)
+			return false;
+		
 		ITextEditor editor = EclipseUIUtil.getActiveEditor();
 		if (editor != null) {
 			IEditorInput editorInput = editor.getEditorInput();
