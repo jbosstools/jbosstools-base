@@ -958,7 +958,8 @@ public class TypeInfoCollector {
 				if (((info.getSourceType()!=null && info.getSourceType().isInterface()) || info.isPublic())
 						&& !info.isConstructor() 
 						&& !info.isStatic() && !info.isJavaLangObject()
-						&& !info.isGetter() && !info.isSetter()) {
+//						&& !info.isGetter() && !info.isSetter() // Fix for JBIDE-3378
+					) {
 					methods.add(info);
 				}
 			} catch (JavaModelException e) {
