@@ -42,7 +42,7 @@ public class EclipseUIUtil {
 				if (editor instanceof ITextEditor) {
 					return (ITextEditor) editor;
 				} else {
-					return (ITextEditor) editor.getAdapter(ITextEditor.class);
+					return  editor == null ? null : (ITextEditor)editor.getAdapter(ITextEditor.class);
 				}
 			}
 		}
