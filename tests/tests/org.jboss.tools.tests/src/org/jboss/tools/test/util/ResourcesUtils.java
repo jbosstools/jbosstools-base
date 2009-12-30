@@ -237,8 +237,10 @@ public class ResourcesUtils {
 
 		} catch (InvocationTargetException ite) {
 //			TePlugin.getDefault().logError(ite.getCause());
+			ite.printStackTrace();
 		} catch (InterruptedException ie) {
 //			VPETestPlugin.getDefault().logError(ie);
+			ie.printStackTrace();
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
