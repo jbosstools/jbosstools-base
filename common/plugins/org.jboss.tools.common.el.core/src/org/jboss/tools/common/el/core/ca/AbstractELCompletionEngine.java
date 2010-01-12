@@ -129,7 +129,8 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		ELResolutionImpl resolution = null;
 		try {
 			resolution = resolveELOperand(context.getResource(), operand, true, vars, new ElVarSearcher(context.getResource(), this));
-			resolution.setContext(context);
+			if(resolution != null)
+				resolution.setContext(context);
 		} catch (StringIndexOutOfBoundsException e) {
 			log(e);
 		} catch (BadLocationException e) {
