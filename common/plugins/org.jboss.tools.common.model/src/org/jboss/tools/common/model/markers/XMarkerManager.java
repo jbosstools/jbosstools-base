@@ -51,9 +51,11 @@ public class XMarkerManager implements IResourceChangeListener {
 		}
 		if(o instanceof IWorkspace) {
 			IResourceDelta d = event.getDelta();
-			IResourceDelta[] cs = d.getAffectedChildren();
-			for (int i = 0; i < cs.length && project == null; i++) {
-				project = cs[i].getResource().getProject();
+			if(d != null) {
+				IResourceDelta[] cs = d.getAffectedChildren();
+				for (int i = 0; i < cs.length && project == null; i++) {
+					project = cs[i].getResource().getProject();
+				}
 			}
 		}
 		final IProject p = project;

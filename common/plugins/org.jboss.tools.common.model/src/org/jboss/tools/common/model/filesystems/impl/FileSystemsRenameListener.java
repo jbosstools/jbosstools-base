@@ -52,7 +52,7 @@ public class FileSystemsRenameListener {
 	}
 	
 	private String[] processDelta(IResourceDelta delta) {
-		if(delta == null) return null;
+		if(delta == null) return new String[0];
 		String[] r = extractRename(delta);
 		if(r != null) return r;
 		IResourceDelta[] cs = delta.getAffectedChildren();
