@@ -7,7 +7,7 @@
  * 
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
- ******************************************************************************/ 
+ ******************************************************************************/
 
 package org.jboss.tools.test.util;
 
@@ -16,30 +16,43 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * @author eskimo
- *
+ * 
  */
 public class JobUtils {
-	
-	private static final long MAX_IDLE = 20*60*1000L;
+
+	private static final long MAX_IDLE = 20 * 60 * 1000L;
 	private static final long DEFAULT_DELAY = 500;
 
 	public static void waitForIdle() {
 		waitForIdle(DEFAULT_DELAY);
 	}
-	
+
 	public static void waitForIdle(long delay) {
 		long start = System.currentTimeMillis();
-		// Job.getJobManager().isIdle() is more efficient than EditorTestHelper.allJobsQuiet()
+		// Job.getJobManager().isIdle() is more efficient than
+		// EditorTestHelper.allJobsQuiet()
 		// EditorTestHelper.allJobsQuiet() isn't thread-safe
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=198241 is fixed 
-		//while (!EditorTestHelper.allJobsQuiet()) {
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=198241 is fixed
+		// while (!EditorTestHelper.allJobsQuiet()) {
 		while (!Job.getJobManager().isIdle()) {
 			delay(delay);
-			if ( (System.currentTimeMillis()-start) > MAX_IDLE ) 
-				throw new RuntimeException("A long running task detected"); //$NON-NLS-1$
+			if ((System.currentTimeMillis() - start) > MAX_IDLE) {
+				Job[] jobs = Job.getJobManager().find(null);
+				if (jobs != null) {
+					StringBuffer str = new StringBuffer();
+					for (Job job : jobs) {
+						if (job.getThread() != null) {
+							str.append("\n").append(job.getName()).append(" (")
+									.append(job.getClass()).append(")");
+						}
+					}
+					throw new RuntimeException(
+							"Long running tasks detected:" + str.toString()); //$NON-NLS-1$
+				}
+			}
 		}
 	}
-	
+
 	public static void delay(long waitTimeMillis) {
 		Display display = Display.getCurrent();
 		if (display != null) {
