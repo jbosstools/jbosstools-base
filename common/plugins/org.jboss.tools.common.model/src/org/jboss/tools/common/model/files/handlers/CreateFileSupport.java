@@ -40,6 +40,10 @@ public class CreateFileSupport extends SpecialWizardSupport {
 	protected TargetHolder targetHolder = new TargetHolder();
 	TreeMap<String,String> versionEntities = new TreeMap<String,String>();
 	boolean useVersions = false;
+
+	public static interface DefaultVersionResolver {
+		public String resolve(String[] versionList, XModelObject context);
+	}
 	
 	public void reset() {
 		targetHolder.setAction(action);
@@ -108,7 +112,16 @@ public class CreateFileSupport extends SpecialWizardSupport {
 		String[] versionList = (String[])versionEntities.keySet().toArray(new String[0]);
 		setValueList(0, "version", versionList); //$NON-NLS-1$
 		if(versionList.length > 0) {
-			setAttributeValue(0, "version", versionList[0]); //$NON-NLS-1$
+			String defaultVersion = versionList[versionList.length - 1];
+			String defaultVersionResolver = action.getProperty("defaultVersionResolver"); //$NON-NLS-1$
+			if(defaultVersionResolver != null) {
+				DefaultVersionResolver resolver = (DefaultVersionResolver)ModelFeatureFactory.getInstance().createFeatureInstance(defaultVersionResolver);
+				if(resolver != null) {
+					String d = resolver.resolve(versionList, getTarget());
+					if(d != null) defaultVersion = d;
+				}
+			}
+			setAttributeValue(0, "version", defaultVersion); //$NON-NLS-1$
 		}
 	}
 	
