@@ -36,6 +36,7 @@ import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.jdt.internal.core.JarEntryFile;
 import org.eclipse.jdt.internal.core.JarEntryResource;
 import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
+import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jdt.internal.ui.javaeditor.JarEntryEditorInput;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.BadLocationException;
@@ -154,6 +155,9 @@ public class ClassHyperlink extends AbstractHyperlink {
 					Object parent = jarEntryFile.getParent();
 					while( parent instanceof JarEntryResource) {
 						parent = ((JarEntryResource)parent).getParent();
+					}
+					while (parent instanceof PackageFragment) {
+						parent = ((PackageFragment)parent).getParent();
 					}
 					if( (parent instanceof JarPackageFragmentRoot) &&
 							(((JarPackageFragmentRoot)parent).getParent() instanceof IJavaProject)) {
