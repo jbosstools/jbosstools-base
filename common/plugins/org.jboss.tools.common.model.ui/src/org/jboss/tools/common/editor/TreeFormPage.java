@@ -488,6 +488,9 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 	}
 
 	public void doGlobalAction(String action) {
+		if(errorForm != null && errorForm.isVisible() && errorForm.doGlobalAction(action)) {
+			return;
+		}
 		if(treeForm.doGlobalAction(action)) {
 			return;
 		}

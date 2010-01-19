@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.ui.actions.ActionFactory;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.forms.ExpandableForm;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
@@ -375,5 +376,17 @@ public class SampleErrorForm extends ExpandableForm {
 			superControl.layout();
 			contentComposite.layout();
 		}
+	}
+
+	public boolean doGlobalAction(String actionId) {
+		if(styledText == null || styledText.isDisposed() || !styledText.isFocusControl()) {
+			return false;
+		}
+		if(styledText != null && !styledText.isDisposed()) {
+			if (ActionFactory.COPY.getId().equals(actionId)) {
+				styledText.copy();
+			}
+		}
+		return true;
 	}
 }
