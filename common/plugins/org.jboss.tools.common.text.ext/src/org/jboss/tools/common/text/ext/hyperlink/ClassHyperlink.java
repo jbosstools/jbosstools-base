@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -152,21 +153,20 @@ public class ClassHyperlink extends AbstractHyperlink {
 				if (editorInput instanceof JarEntryEditorInput) {
 					JarEntryEditorInput jarEntryEditorInput = (JarEntryEditorInput) editorInput;
 					JarEntryResource jarEntryFile = (JarEntryResource) jarEntryEditorInput.getStorage();
-					Object parent = jarEntryFile.getParent();
-					while( parent instanceof JarEntryResource) {
-						parent = ((JarEntryResource)parent).getParent();
+					IJavaProject parentProject = getProjectForJarResource(jarEntryFile);
+					if (parentProject != null) {
+						return searchForClass(parentProject, className);
 					}
-					while (parent instanceof PackageFragment) {
-						parent = ((PackageFragment)parent).getParent();
-					}
-					if( (parent instanceof JarPackageFragmentRoot) &&
-							(((JarPackageFragmentRoot)parent).getParent() instanceof IJavaProject)) {
-						return searchForClass(((IJavaProject) ((JarPackageFragmentRoot)parent).getParent()), className);
-					}
-					
 				} else  if (editorInput instanceof IStorageEditorInput) {
 					IStorageEditorInput moeInput = (IStorageEditorInput)editorInput;
-					IPath p = moeInput.getStorage().getFullPath();
+					IStorage storage = moeInput.getStorage();
+					if (storage instanceof JarEntryFile) {
+						IJavaProject parentProject = getProjectForJarResource((JarEntryFile)storage);
+						if (parentProject != null) {
+							return searchForClass(parentProject, className);
+						}
+					}
+					IPath p = storage.getFullPath();
 					String s0 = p.segment(0);
 					project = ResourcesPlugin.getWorkspace().getRoot().getProject(s0); 
 				}
@@ -187,6 +187,21 @@ public class ClassHyperlink extends AbstractHyperlink {
 		}
 	}
 
+	private IJavaProject getProjectForJarResource(JarEntryResource jarResource){
+		Object parent = jarResource.getParent();
+		while( parent instanceof JarEntryResource) {
+			parent = ((JarEntryResource)parent).getParent();
+		}
+		while (parent instanceof PackageFragment) {
+			parent = ((PackageFragment)parent).getParent();
+		}
+		if( (parent instanceof JarPackageFragmentRoot) &&
+				(((JarPackageFragmentRoot)parent).getParent() instanceof IJavaProject)) {
+			return (IJavaProject)((JarPackageFragmentRoot)parent).getParent();
+		}
+		return null;
+	}
+	
 	IRegion fLastRegion = null;
 	/*
 	 * (non-Javadoc)
