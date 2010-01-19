@@ -24,6 +24,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.jboss.tools.common.editor.form.RightFormContainer;
+import org.jboss.tools.common.meta.XModelEntity;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIMessages;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
@@ -200,6 +202,11 @@ public class Form extends ExpandableForm {
 			this.tableAdapter.setShownEntities(entities/*new String[]{entities[0]}*/);
 			this.tableAdapter.getActionMapping().clear();
 
+			XModelEntity childEntity = null;
+			if(entities != null) for (int i = 0; i < entities.length && childEntity == null; i++) {
+				childEntity = xmo.getModel().getMetaData().getEntity(entities[i]);
+			}
+
 			for(int i=0; i<actions.length; i++) {
 				this.tableAdapter.getActionMapping().put(actions[i].getActionLabel(), actions[i].getActionPath());
 			}
@@ -209,7 +216,11 @@ public class Form extends ExpandableForm {
 			int[] widths = new int[attributes.length];
 			for(int i=0; i<attributes.length; i++) {
 				shownProperties[i] = attributes[i].getName();
-				columnLabels[i] = attributes[i].getDisplayName();
+				String label = null;
+				if(childEntity != null && childEntity.getAttribute(attributes[i].getName()) != null) {
+					label = WizardKeys.getAttributeDisplayName(childEntity.getAttribute(attributes[i].getName()), true);
+				}
+				columnLabels[i] = label != null ? label : attributes[i].getDisplayName();
 				widths[i] = attributes[i].getWidth();
 			}
 
