@@ -17,7 +17,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IBuffer;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -54,6 +57,7 @@ import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.wizards.NewClassWizard;
 import org.jboss.tools.common.model.ui.wizards.NewTypeWizardAdapter;
 import org.jboss.tools.common.model.util.AccessibleJava;
+import org.jboss.tools.common.model.util.EclipseJavaUtil;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.model.util.XModelObjectUtil;
@@ -164,6 +168,64 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 					JavaHyperlinkLineFieldEditor.this.valueProvider.setValue(newValue);
 					if(wizard.getContainer() != null) {
 						wizard.performFinish();
+					}
+					try {
+						IType type = EclipseJavaUtil.findType(javaAdapter.getJavaProject(), newValue);
+						String name = type.getElementName();
+						String sc = type.getSuperclassTypeSignature();
+						if(sc != null) {
+							sc = EclipseJavaUtil.resolveTypeAsString(type, sc);
+						}
+						//TODO use interface and register for specific cases. This is new ESB action case.
+						if(type != null && "org.jboss.soa.esb.actions.AbstractActionPipelineProcessor".equals(sc)) {
+							ICompilationUnit w = type.getCompilationUnit().getWorkingCopy(new NullProgressMonitor());
+							IBuffer b = w.getBuffer();
+							String s = b.getContents();
+							String lineDelimiter = "\r\n";
+							
+							String IMPORT = "import org.jboss.soa.esb.actions.AbstractActionPipelineProcessor;";
+							int i1 = s.indexOf(IMPORT);
+							if(i1 >= 0) {
+								String content = "";
+								String[] imports = {
+										"import org.jboss.soa.esb.actions.ActionProcessingException;",
+										"import org.jboss.soa.esb.helpers.ConfigTree;",
+										"import org.jboss.soa.esb.message.Message;"
+								};
+								for (String is: imports) {
+									if(s.indexOf(is) < 0) {
+										content += lineDelimiter + is;
+									}
+								}
+								if(content.length() > 0) {
+									b.replace(i1 + IMPORT.length(), 0, content);
+								}
+							}
+							
+							s = b.getContents();
+							
+							int i = s.indexOf('{');
+							int j = s.lastIndexOf('}');
+							if(i > 0 && j > i) {
+								String tab = "\t";
+								String content = lineDelimiter 
+									+ tab + "protected ConfigTree _config;" + lineDelimiter
+									+ lineDelimiter
+									+ tab + "public " + name + "(ConfigTree config) {" + lineDelimiter
+									+ tab + tab + "_config = config;"+ lineDelimiter
+									+ tab + "}" + lineDelimiter
+									+ lineDelimiter
+									+ tab + "@Override" + lineDelimiter
+									+ tab + "public Message process(Message message) throws ActionProcessingException {" + lineDelimiter
+									+ tab + tab + "//ADD CUSTOM ACTION CODE HERE" + lineDelimiter
+									+ tab + tab + "return message;" + lineDelimiter
+									+ tab + "}" + lineDelimiter;
+								b.replace(i + 1, j - i - 1, content);
+								w.commitWorkingCopy(true, new NullProgressMonitor());
+							}
+						}
+					} catch (CoreException e) {
+						e.printStackTrace();
 					}
 				}
 				dialog.close();
