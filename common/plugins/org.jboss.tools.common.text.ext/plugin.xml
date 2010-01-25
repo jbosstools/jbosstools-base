@@ -253,6 +253,10 @@
          			<axis path="/taglib/tag/variable/variable-class/" />
          			<axis path="/taglib/tag/attribute/type/" />
          			<!-- TLD Files -->
+
+         			<!-- Facelet taglib files -->
+         			<axis path="/facelet-taglib/tag/attribute/type/" />
+         			<!-- Facelet taglib files -->
          		</partitionType>
          	</contentType>
          	<contentType id="org.eclipse.jst.jsp.core.tldsource">
@@ -290,6 +294,10 @@
          			<axis path="/taglib/tag/variable/variable-class/" />
          			<axis path="/taglib/tag/attribute/type/" />
          			<!-- TLD Files -->
+
+         			<!-- Facelet taglib files -->
+         			<axis path="/facelet-taglib/tag/attribute/type/" />
+         			<!-- Facelet taglib files -->
          		</partitionType>
          	</contentType>
         	<contentType id="org.eclipse.jst.j2ee.webDD">
@@ -337,6 +345,10 @@
          			<axis path="/taglib/tag/variable/variable-class/" />
          			<axis path="/taglib/tag/attribute/type/" />
          			<!-- TLD Files -->
+
+         			<!-- Facelet taglib files -->
+         			<axis path="/facelet-taglib/tag/attribute/type/" />
+         			<!-- Facelet taglib files -->
          		</partitionType>
          	</contentType>
 		</hyperlinkPartitioner>

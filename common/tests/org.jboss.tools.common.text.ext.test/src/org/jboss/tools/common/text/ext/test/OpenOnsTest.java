@@ -16,6 +16,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.EditorPart;
 import org.jboss.tools.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.common.model.ui.editors.multipage.DefaultMultipageEditor;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkDetector;
@@ -520,6 +521,31 @@ public class OpenOnsTest extends TestCase {
 		
 		ITextSelection selection = (ITextSelection)viewer.getSelectionProvider().getSelection();
 		assertEquals("<name>", selection.getText());
+	}
+	
+	public static final String FACELET_TAGLIB_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/WEB-INF/faceletTaglibOpenOnTests.taglib.xml";
+
+	public void testFaceletTaglibTypeOpenOn() throws CoreException, BadLocationException {
+		IEditorPart editor = WorkbenchUtils.openEditor(FACELET_TAGLIB_TEST_FILE);
+		editor = ((EditorPartWrapper)editor).getEditor();
+		JobUtils.waitForIdle();
+		DefaultMultipageEditor faceletEditor = (DefaultMultipageEditor) editor;
+		faceletEditor.selectPageByName("Source");
+		ISourceViewer viewer = faceletEditor.getSourceEditor().getTextViewer();
+
+		// find a region that matches <type>java.lang.String</type>
+		IRegion reg = new FindReplaceDocumentAdapter(faceletEditor.getSourceEditor().getTextViewer().getDocument()).find(0,
+				"java.lang.String", true, true, false, false);
+
+		IHyperlink[] links = HyperlinkDetector.getInstance().detectHyperlinks(viewer, reg, false);
+		assertNotNull(links);
+		assertTrue(links.length != 0);
+
+		links[0].open();
+		JobUtils.waitForIdle();
+		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		assertTrue("java.lang.String declaration should be opened",
+					editor.getTitle().startsWith("String."));
 	}
 	
 	public static final String XHTML_STYLE_CLASS_NAME_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/xhtmlStyleClassHiperlinkTests.xhtml";
