@@ -67,7 +67,7 @@ public class NewTypeWizardAdapter {
 	// Interface for us
 
 	public NewTypeWizardAdapter(IProject project) {
-		try {
+		if(project != null) try {
 			this.javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
 		} catch (CoreException e) {
 			ModelUIPlugin.getPluginLog().logError(e);

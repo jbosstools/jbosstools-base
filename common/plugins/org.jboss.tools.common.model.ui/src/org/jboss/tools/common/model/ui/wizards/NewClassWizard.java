@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.internal.ui.*;
 import org.eclipse.jdt.internal.ui.actions.*;
 import org.eclipse.jdt.internal.ui.wizards.*;
@@ -30,19 +31,22 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class NewClassWizard extends Wizard {
 
-	private NewTypeWizardAdapter adapter = null;
-	private NewClassWizardPageEx mainPage;
+	protected NewTypeWizardAdapter adapter = null;
+	protected NewClassWizardPageEx mainPage;
 	
 	public NewClassWizard() {
-		this(null);
-	}
-
-	public NewClassWizard(NewTypeWizardAdapter adapter) {
-		super();
-		this.adapter = adapter;
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		setWindowTitle(NewWizardMessages.NewClassCreationWizard_title);
 		setDefaultPageImageDescriptor(JavaPluginImages.DESC_WIZBAN_NEWCLASS);
+	}
+
+	public void setAdapter(NewTypeWizardAdapter adapter) {
+		this.adapter = adapter;
+	}
+
+	public NewClassWizard(NewTypeWizardAdapter adapter) {
+		this();
+		setAdapter(adapter);
 	}
 
 	public void addPages() {
@@ -64,7 +68,7 @@ public class NewClassWizard extends Wizard {
     	if(p != null && p.length() > 0) c = p + "." + c; //$NON-NLS-1$
     	return c;
     }
-    
+   
 	protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
 	    mainPage.createType(monitor); // use the full progress monitor
 	}
