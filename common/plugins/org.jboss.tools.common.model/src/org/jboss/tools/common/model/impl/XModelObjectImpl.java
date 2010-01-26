@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.swt.graphics.Image;
@@ -451,6 +452,8 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
 		if(XModelObject.class == adapter) return this;
 		else if(adapter == IResource.class) {
 			return null;
+		} else if(adapter == IProject.class) {
+			return EclipseResourceUtil.getProject(this);
 		} else if(adapter == IFile.class) {
 			XModelObject f = getResourceAncestor();
 			Object o = (f == null) ? null : f.getAdapter(IResource.class);
