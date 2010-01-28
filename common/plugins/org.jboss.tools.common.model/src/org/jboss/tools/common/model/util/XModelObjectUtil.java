@@ -11,8 +11,12 @@
 package org.jboss.tools.common.model.util;
 
 import java.util.*;
+
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.XChild;
+import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.*;
+
 import javax.naming.*;
 
 public final class XModelObjectUtil {
@@ -161,5 +165,38 @@ public final class XModelObjectUtil {
     }
 
 
+    private static Map<String, String> versionedChildEntities = new HashMap<String, String>();
+
+    /**
+     * Returns child entity name of parent entity which is equal to entityRoot or differs from it
+     * by digital suffix.
+     * @param parent
+     * @param entityRoot
+     * @return
+     */
+	public static String getVersionedChildEntity(XModelEntity parent, String entityRoot) {
+		String key = parent.getName() + ":" + entityRoot; //$NON-NLS-1$
+		if(versionedChildEntities.containsKey(key)) {
+			return versionedChildEntities.get(key);
+		}
+		XChild[] cs = parent.getChildren();
+		for (int i = 0; i < cs.length; i++) {
+			String n = cs[i].getName();
+			if(n.equals(entityRoot)) {
+				versionedChildEntities.put(key, n);
+				return n;
+			}
+			if(!n.startsWith(entityRoot)) continue;
+			String suff = n.substring(entityRoot.length());
+			if(Character.isDigit(suff.charAt(0))) {
+				versionedChildEntities.put(key, n);
+				return n;
+			}
+		}
+		String result = "Unknown_Child_" + entityRoot + "_in_" + parent.getName(); //$NON-NLS-1$ //$NON-NLS-2$
+		versionedChildEntities.put(key, result);
+		return result;
+	}    
+    
 }
 
