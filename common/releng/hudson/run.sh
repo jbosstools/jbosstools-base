@@ -31,7 +31,7 @@ fi
 
 # check for required platform stuff
 missingRequirements=""
-for f in cvs svn javac; do 
+for f in cvs svn javac wget; do 
 	check=$(whereis $f); 
 	if [[ $check == "$f:" ]]; then 
 		missingRequirements="$missingRequirements $f"
