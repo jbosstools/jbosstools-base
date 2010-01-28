@@ -29,6 +29,35 @@ elif [[ -f /opt/apache-ant-1.7.1/bin/ant ]]; then
         export ANT_HOME=/opt/apache-ant-1.7.1
 fi
 
+# check for required platform stuff
+missingRequirements=""
+for f in cvs svn javac; do 
+	check=$(whereis $f); 
+	if [[ $check == "$f:" ]]; then 
+		missingRequirements="$missingRequirements $f"
+	else
+		echo "Found $check" 
+	fi
+done
+if [[ $missingRequirements ]]; then
+	echo "ERROR: You must install the following tools for this build to proceed:"
+	echo " $missingRequirements"
+	exit 1;
+fi
+missingRequirements=""
+for f in vncserver Xvfb Xvnc; do 
+	check=$(whereis $f); 
+	if [[ $check == "$f:" ]]; then 
+		missingRequirements="$missingRequirements $f"
+	else
+		echo "Found $check" 
+	fi
+done
+if [[ $missingRequirements ]]; then
+	echo "WARNING: You may require 1 or more of the following tools for this build to proceed:"
+	echo " $missingRequirements"
+fi
+	
 # cache of downloaded requirements and other binaries
 downloadsDir="${WORKSPACE}/downloads"; if [[ ! -d $downloadsDir ]]; then mkdir -p $downloadsDir; fi 
 
