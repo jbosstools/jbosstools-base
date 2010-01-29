@@ -31,21 +31,7 @@ fi
 
 # check for required platform stuff
 missingRequirements=""
-for f in cvs svn javac wget; do 
-	check=$(whereis $f); 
-	if [[ $check == "$f:" ]]; then 
-		missingRequirements="$missingRequirements $f"
-	else
-		echo "Found $check" 
-	fi
-done
-if [[ $missingRequirements ]]; then
-	echo "ERROR: You must install the following tools for this build to proceed:"
-	echo " $missingRequirements"
-	exit 1;
-fi
-missingRequirements=""
-for f in vncserver Xvfb Xvnc; do 
+for f in cvs svn javac wget vncserver Xvfb Xvnc; do 
 	check=$(whereis $f); 
 	if [[ $check == "$f:" ]]; then 
 		missingRequirements="$missingRequirements $f"
