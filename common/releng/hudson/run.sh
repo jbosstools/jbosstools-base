@@ -201,6 +201,10 @@ relengCommonBuilderDir="${writableBuildRoot}/org.eclipse.dash.common.releng"
 ln -s ${cvsProjectBaseDir}/org.eclipse.releng.basebuilder ${writableBuildRoot}/
 ln -s ${cvsProjectBaseDir}/org.eclipse.dash.common.releng ${writableBuildRoot}/
 
+if [[ ${RELENGBUILDERDIR} ]]; then
+	relengBuilderDir="-relengBuilderDir ${RELENGBUILDERDIR}"
+fi
+
 # symlink 3rdPartyJars (reuse existing content)
 ln -s ${thirdPartyJarsDir} ${writableBuildRoot}/
 thirdPartyJarsDir="${writableBuildRoot}/3rdPartyJars"
@@ -212,7 +216,7 @@ find ${downloadsDir} -maxdepth 1 -type f -name "*-SNAPSHOT.zip" -exec rm -f {} \
 cd ${writableBuildRoot}/org.eclipse.dash.common.releng/tools/scripts
 ./start.sh -projectid ${projectid} -version ${version} -buildType ${buildType} -buildTimestamp ${buildTimestamp} \
   -writableBuildRoot ${writableBuildRoot} -thirdPartyJarsDir ${thirdPartyJarsDir} -downloadsDir ${downloadsDir} -buildDir ${buildDir} \
-  ${projRelengName} ${projRelengRoot} ${projRelengPath} ${projRelengBranch} \
+  ${projRelengName} ${projRelengRoot} ${projRelengPath} ${projRelengBranch} ${relengBuilderDir} \
   -thirdPartyDownloadLicenseAcceptance -javaHome ${JAVA_HOME} ${EXTRAFLAGS} 2>&1
 
 # remove file so workspace navigation is one click simpler
