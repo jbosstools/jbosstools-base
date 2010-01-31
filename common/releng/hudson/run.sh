@@ -155,18 +155,25 @@ fi
 if [[ $PROJRELENGBRANCH ]]; then
 	projRelengBranch="$PROJRELENGBRANCH"
 else
-	projRelengBranch="";
+	projRelengBranch=""
 fi
 
 # optional override
 if [[ $PROJRELENGNAME ]]; then
 	projRelengName="$PROJRELENGNAME"
 else
-	projRelengName="";
+	projRelengName=""
+fi
+
+# optional override
+if [[ ${RELENGBUILDERDIR} ]]; then
+	relengBuilderDir="${RELENGBUILDERDIR}"
+else
+	relengBuilderDir=""
 fi
 
 if [[ $haderror -gt 0 ]]; then
-	exit 1;
+	exit 1
 fi
 
 # pass in additional flags like -buildAlias=1.0.0RC2 using the $EXTRAFLAGS Hudson parameter
@@ -200,10 +207,6 @@ relengCommonBuilderDir="${writableBuildRoot}/org.eclipse.dash.common.releng"
 # symlink basebuilder and common.releng; alternatively, if you omit this, they'll be checked out in start.sh
 ln -s ${cvsProjectBaseDir}/org.eclipse.releng.basebuilder ${writableBuildRoot}/
 ln -s ${cvsProjectBaseDir}/org.eclipse.dash.common.releng ${writableBuildRoot}/
-
-if [[ ${RELENGBUILDERDIR} ]]; then
-	relengBuilderDir="-relengBuilderDir ${RELENGBUILDERDIR}"
-fi
 
 # symlink 3rdPartyJars (reuse existing content)
 ln -s ${thirdPartyJarsDir} ${writableBuildRoot}/
