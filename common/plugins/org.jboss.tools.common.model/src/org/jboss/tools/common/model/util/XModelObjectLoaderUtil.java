@@ -325,7 +325,9 @@ public class XModelObjectLoaderUtil {
         				++k;
         			}
         			o.addChild(co);
-        		} else if(o.isActive()) try {
+        		} else if(o.isActive()
+        				|| (entity.getChild(en) != null
+        						&& entity.getChild(en).isRequired())) try {
             		XModelObject q = o.getChildByPath(co.getPathPart());
             		if(q != null) EnginesLoader.merge(q, co, false);
             	} catch (XModelException exc) {
