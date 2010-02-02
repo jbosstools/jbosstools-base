@@ -34,7 +34,7 @@ public class DeleteProjectHandler extends AbstractHandler
 		IProject project = EclipseResourceUtil.getProject(object);
 		if (project != null)
 		{
-			DeleteResourceAction deleteAction = new DeleteResourceAction(ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell());
+			DeleteResourceAction deleteAction = new DeleteResourceAction(ModelPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow());
 			deleteAction.selectionChanged(new StructuredSelection(project));
 			deleteAction.run();
 			if(!project.exists()) {

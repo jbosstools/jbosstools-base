@@ -16,7 +16,7 @@ import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
-public class ModelEntityRecognizer implements EntityRecognizerExtension {
+public class ModelEntityRecognizer implements EntityRecognizer {
     private XModelMetaData meta = null;
     private HashMap<String,EntityRecognizer[]> recognizers = new HashMap<String,EntityRecognizer[]>();
 
@@ -30,32 +30,17 @@ public class ModelEntityRecognizer implements EntityRecognizerExtension {
         load();
     }
 
-	public String getEntityName(String fileName, String ext, String body) {
+	public String getEntityName(EntityRecognizerContext context) {
+		String ext = context.getExtension();
     	if(ext != null) ext = ext.toLowerCase();
         EntityRecognizer[] list = recognizers.get(ext);
         if(list == null || list.length == 0) return "FileAny"; //$NON-NLS-1$
         for (EntityRecognizer r: list) {
-            String n = null;
-            if(r instanceof EntityRecognizerExtension) {
-            	n = ((EntityRecognizerExtension)r).getEntityName(fileName, ext, body);
-            } else {
-            	n = r.getEntityName(ext, body);
-            }
+            String n = r.getEntityName(context);
             if(n != null) return n;
         }
         return null;
 	}
-
-    public String getEntityName(String ext, String body) {
-    	if(ext != null) ext = ext.toLowerCase();
-        EntityRecognizer[] list = recognizers.get(ext);
-        if(list == null || list.length == 0) return "FileAny"; //$NON-NLS-1$
-        for (int i = 0; i < list.length; i++) {
-            String n = list[i].getEntityName(ext, body);
-            if(n != null) return n;
-        }
-        return null;
-    }
 
     private void load() {
         XMapping m = meta.getMapping("Recognizers"); //$NON-NLS-1$
@@ -158,7 +143,7 @@ public class ModelEntityRecognizer implements EntityRecognizerExtension {
         }
     }
     
-    private class EntityRecognizerWrapper implements EntityRecognizerExtension {
+    private class EntityRecognizerWrapper implements EntityRecognizer {
     	String clsname;
     	EntityRecognizer resolved;
     	
@@ -174,17 +159,9 @@ public class ModelEntityRecognizer implements EntityRecognizerExtension {
 			return resolved != null;
     	}
 
-		public String getEntityName(String ext, String body) {
-			return checkResolved() ? resolved.getEntityName(ext, body) : null;
-		}
-
-		public String getEntityName(String fileName, String ext, String body) {
+		public String getEntityName(EntityRecognizerContext context) {
 			if(!checkResolved()) return null;
-			if(resolved instanceof EntityRecognizerExtension) {
-				return ((EntityRecognizerExtension)resolved).getEntityName(fileName, ext, body);
-			} else {
-				return resolved.getEntityName(ext, body);
-			}
+			return resolved.getEntityName(context);
 		}
     }
 

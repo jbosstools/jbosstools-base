@@ -20,6 +20,7 @@ import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelObjectConstants;
+import org.jboss.tools.common.model.loaders.EntityRecognizerContext;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
 import org.jboss.tools.common.model.undo.XTransactionUndo;
 import org.jboss.tools.common.model.undo.XUndoManager;
@@ -41,7 +42,7 @@ public class ExtensionChange {
 
     private boolean execute() {
         XModel model = file.getModel();
-        String entity = model.getEntityRecognizer().getEntityName(extension, null);
+        String entity = model.getEntityRecognizer().getEntityName(new EntityRecognizerContext(extension));
         String oldEntity = file.getModelEntity().getName();
         String body = __body();
         if(body == null) return false;
@@ -50,7 +51,7 @@ public class ExtensionChange {
             if(FileUtil.isText(body)) entity = "FileTXT";
             else return false;
         } else if(entity == null) {
-            entity = model.getEntityRecognizer().getEntityName(extension, body);
+            entity = model.getEntityRecognizer().getEntityName(new EntityRecognizerContext(extension, body));
         }
         if(entity == null || model.getMetaData().getEntity(entity) == null) entity = "FileAny";
         if(file.getModelEntity().getName().equals(entity)) return false;

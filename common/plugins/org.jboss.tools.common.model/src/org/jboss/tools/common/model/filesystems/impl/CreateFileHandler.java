@@ -19,6 +19,7 @@ import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.handlers.*;
 import org.jboss.tools.common.meta.impl.XMetaDataConstants;
+import org.jboss.tools.common.model.loaders.EntityRecognizerContext;
 import org.jboss.tools.common.model.util.*;
 
 public class CreateFileHandler extends DefaultCreateHandler {
@@ -32,7 +33,7 @@ public class CreateFileHandler extends DefaultCreateHandler {
         String ext = p.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
         String entity = action.getProperty(XMetaDataConstants.ENTITY);
         if(entity == null) {
-            entity = (ext != null) ? object.getModel().getEntityRecognizer().getEntityName(ext, null)
+            entity = (ext != null) ? object.getModel().getEntityRecognizer().getEntityName(new EntityRecognizerContext(ext))
                         : data[0].getModelEntity().getName();
             if(entity == null || object.getModel().getMetaData().getEntity(entity) == null)
               entity = data[0].getModelEntity().getName();

@@ -21,6 +21,6 @@ public interface EntityRecognizer {
 	 * @param body
 	 * @return
 	 */
-    public String getEntityName(String ext, String body);
+    public String getEntityName(EntityRecognizerContext context);
 }
 

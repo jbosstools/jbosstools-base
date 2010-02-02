@@ -14,7 +14,11 @@ import org.jboss.tools.common.model.loaders.*;
 
 public class AuxiliaryFileRecognizer implements EntityRecognizer {
 
-    public String getEntityName(String ext, String body) {
+    public String getEntityName(EntityRecognizerContext context) {
+    	return getEntityName(context.getExtension(), context.getBody());
+    }
+
+    String getEntityName(String ext, String body) {
         if(body == null) return null;
         return "efe".equals(ext) ? "FileAnyAuxiliary" : null; //$NON-NLS-1$ //$NON-NLS-2$
     }

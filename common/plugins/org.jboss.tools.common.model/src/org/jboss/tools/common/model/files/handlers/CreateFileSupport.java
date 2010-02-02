@@ -25,6 +25,7 @@ import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.meta.impl.XMetaDataConstants;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.impl.*;
+import org.jboss.tools.common.model.loaders.EntityRecognizerContext;
 import org.jboss.tools.common.model.loaders.impl.MappedEntityRecognizer;
 import org.jboss.tools.common.model.plugin.ModelMessages;
 import org.jboss.tools.common.model.util.*;
@@ -298,7 +299,7 @@ public class CreateFileSupport extends SpecialWizardSupport {
 			entity = action.getProperty(XMetaDataConstants.ENTITY);
 		}
 		if(entity == null) {
-			entity = new MappedEntityRecognizer().getEntityName(extension, null);
+			entity = new MappedEntityRecognizer().getEntityName(new EntityRecognizerContext(extension));
 		}
 		if(entity != null && getTarget().getModel().getMetaData().getEntity(entity) != null) {
 			return entity;

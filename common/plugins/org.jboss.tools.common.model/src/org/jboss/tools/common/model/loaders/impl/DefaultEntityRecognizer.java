@@ -20,7 +20,8 @@ public class DefaultEntityRecognizer implements EntityRecognizer {
 
     public DefaultEntityRecognizer() {}
 
-    public String getEntityName(String ext, String body) {
+    public String getEntityName(EntityRecognizerContext context) {
+    	String body = context.getBody();
         if(body == null) return null;
         Element e = XMLUtil.getElement(new StringReader(body));
         if(e == null) return null;

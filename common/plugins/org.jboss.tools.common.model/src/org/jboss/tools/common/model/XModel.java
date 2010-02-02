@@ -16,7 +16,6 @@ import org.jboss.tools.common.meta.XModelMetaData;
 import org.jboss.tools.common.model.event.*;
 import org.jboss.tools.common.model.undo.XUndoManager;
 import org.jboss.tools.common.model.loaders.EntityRecognizer;
-import org.jboss.tools.common.model.loaders.EntityRecognizerExtension;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemPeer;
 
 /**
@@ -180,7 +179,7 @@ public interface XModel {
 	 * Returns a singleton used to resolve entity of a file object.
 	 * @return
 	 */
-	public EntityRecognizerExtension getEntityRecognizer();
+	public EntityRecognizer getEntityRecognizer();
 	
 	/**
 	 * Returns registry keeping time stamps of loaded file objects.

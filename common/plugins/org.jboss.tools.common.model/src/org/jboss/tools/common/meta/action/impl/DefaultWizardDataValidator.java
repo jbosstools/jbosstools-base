@@ -20,6 +20,7 @@ import org.jboss.tools.common.meta.impl.XMetaDataConstants;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.CreateFileHandler;
+import org.jboss.tools.common.model.loaders.EntityRecognizerContext;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class DefaultWizardDataValidator implements WizardDataValidator {
@@ -97,7 +98,7 @@ public class DefaultWizardDataValidator implements WizardDataValidator {
 		String entity = support.action.getProperty(XMetaDataConstants.ENTITY);
 		if(entity == null) {
 			String ext = null;
-			entity = (ext != null) ? support.getTarget().getModel().getEntityRecognizer().getEntityName(ext, null)
+			entity = (ext != null) ? support.getTarget().getModel().getEntityRecognizer().getEntityName(new EntityRecognizerContext(ext))
 						: ds[step].getModelEntity().getName();
 			if(entity == null || support.getTarget().getModel().getMetaData().getEntity(entity) == null)
 			  entity = ds[step].getModelEntity().getName();

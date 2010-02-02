@@ -24,8 +24,12 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 public class AntEntityRecognizer implements EntityRecognizer {
 	private static final QualifiedName[] SUPPORTED_OPTIONS = new QualifiedName[] {IContentDescription.CHARSET, IContentDescription.BYTE_ORDER_MARK};
     public AntEntityRecognizer() {}
+   
+    public String getEntityName(EntityRecognizerContext context) {
+    	return getEntityName(context.getExtension(), context.getBody());
+    }
 
-    public String getEntityName(String ext, String body) {
+    String getEntityName(String ext, String body) {
         if(body == null) return null;
         IContentType cd = Platform.getContentTypeManager().getContentType("org.eclipse.ant.core.antBuildFile"); //$NON-NLS-1$
         AntBuildfileContentDescriber d = new AntBuildfileContentDescriber();

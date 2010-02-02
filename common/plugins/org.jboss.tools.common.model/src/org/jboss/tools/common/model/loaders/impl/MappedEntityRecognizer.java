@@ -32,8 +32,12 @@ public class MappedEntityRecognizer implements EntityRecognizer {
 		}
     }
 
+    public String getEntityName(EntityRecognizerContext context) {
+    	return getEntityName(context.getExtension(), context.getBody());
+    }
+
 	// NB i18n: there is code that depends on these entity names (in English)
-    public String getEntityName(String ext, String body) {
+    String getEntityName(String ext, String body) {
     	if(ext == null) return null;
         String s = (String)map.get(ext.toLowerCase());
         return (s != null) ? s : "File" + ext.toUpperCase(); //$NON-NLS-1$
