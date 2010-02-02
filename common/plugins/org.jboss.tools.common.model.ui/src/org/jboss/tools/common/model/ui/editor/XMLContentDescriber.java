@@ -17,6 +17,7 @@ import java.io.Reader;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.ITextContentDescriber;
 import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.model.loaders.EntityRecognizerContext;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.util.FileUtil;
 
@@ -40,7 +41,7 @@ public class XMLContentDescriber extends org.eclipse.core.runtime.content.XMLCon
 	}
 	
 	private int describe(String text, IContentDescription description) {
-		String entity = PreferenceModelUtilities.getPreferenceModel().getEntityRecognizer().getEntityName("xml", text); //$NON-NLS-1$
+		String entity = PreferenceModelUtilities.getPreferenceModel().getEntityRecognizer().getEntityName(new EntityRecognizerContext("xml", text)); //$NON-NLS-1$
 		if(entity == null || entity.length() == 0 || entity.equals("FileXML")  //$NON-NLS-1$
 				|| entity.equals("FileHibConfig3") || entity.equals("FileHibernate3") //$NON-NLS-1$ //$NON-NLS-2$
 				|| entity.equals("FileANT") //$NON-NLS-1$
