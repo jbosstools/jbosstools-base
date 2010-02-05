@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.jboss.tools.jst.web.kb.validation.IValidator;
 import org.jboss.tools.test.util.JUnitUtils;
 
 /**
@@ -25,6 +26,8 @@ import org.jboss.tools.test.util.JUnitUtils;
  *
  */
 public class AbstractResourceMarkerTest extends TestCase {
+
+	public static final String MARKER_TYPE = "org.eclipse.wst.validation.problemmarker";
 
 	/**
 	 * 
@@ -39,7 +42,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 		super(name);
 	}
 
-	protected int findMarkerLine(IResource resource, String type, String pattern)
+	public static int findMarkerLine(IResource resource, String type, String pattern)
 			throws CoreException {
 		int number = -1;
 		IMarker[] markers = findMarkers(resource, type, pattern);
@@ -50,7 +53,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 		return number;
 	}
 
-	protected IMarker[] findMarkers(IResource resource, String type, String pattern) throws CoreException {
+	public static IMarker[] findMarkers(IResource resource, String type, String pattern) throws CoreException {
 		List<IMarker> result = new ArrayList<IMarker>();
 		IMarker[] markers = resource.findMarkers(type, true, IResource.DEPTH_INFINITE);
 		for (int i = 0; i < markers.length; i++) {
@@ -62,12 +65,11 @@ public class AbstractResourceMarkerTest extends TestCase {
 		return result.toArray(new IMarker[0]);
 	}
 
-	protected void assertMarkerIsCreated(IResource resource, MarkerData markerData) throws CoreException {
+	public static void assertMarkerIsCreated(IResource resource, MarkerData markerData) throws CoreException {
 		assertMarkerIsCreated(resource, markerData.type, markerData.pattern, markerData.line);
-
 	}
 
-	protected void assertMarkerIsCreated(IResource resource, String type, String pattern, int expectedLine) 
+	public static void assertMarkerIsCreated(IResource resource, String type, String pattern, int expectedLine) 
 		throws CoreException {
 
 		int line = findMarkerLine(
@@ -80,26 +82,26 @@ public class AbstractResourceMarkerTest extends TestCase {
 				expectedLine,line);
 	}
 
-	protected void assertMarkerIsNotCreated(IResource resource, String type, String pattern) throws CoreException {
+	public static void assertMarkerIsNotCreated(IResource resource, String type, String pattern) throws CoreException {
 		IMarker[] markers = findMarkers(resource, type, pattern);
 
 		assertFalse("Marker  matches the '" + pattern + "' pattern was found", markers.length>0); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	protected void assertMarkerIsNotCreated(IResource resource, String type, String pattern, int expectedLine) throws CoreException {
+	public static void assertMarkerIsNotCreated(IResource resource, String type, String pattern, int expectedLine) throws CoreException {
 		int line = findMarkerLine(resource, type, pattern);
 
 		assertFalse("Marker  matches the '" + pattern + "' pattern was found", line != -1); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	protected void assertMarkerIsCreated(IResource resource, String type, String pattern) throws CoreException {
+	public static void assertMarkerIsCreated(IResource resource, String type, String pattern) throws CoreException {
 		IMarker[] markers = findMarkers(resource, type, pattern);
 
 		assertTrue("Marker  matches the '" + pattern + "' pattern wasn't found",  //$NON-NLS-1$ //$NON-NLS-2$
 			markers.length>0);
 	}
 
-	protected void assertMarkersIsCreated(IResource resource, MarkerData[] markersData) throws CoreException {
+	public static void assertMarkersIsCreated(IResource resource, MarkerData[] markersData) throws CoreException {
 		for (MarkerData markerData : markersData) {
 			assertMarkerIsCreated(resource, markerData);
 		}
@@ -166,6 +168,26 @@ public class AbstractResourceMarkerTest extends TestCase {
 			JUnitUtils.fail("Can't get problem markers.", ex); //$NON-NLS-1$
 		}
 		return numbers.toArray(new Integer[0]);
+	}
+
+	public static int getMarkersNumberByGroupName(IResource resource, String messageGroup) {
+		try{
+			IMarker[] markers = resource.findMarkers(MARKER_TYPE, true, IResource.DEPTH_INFINITE);
+//			for(int i=0;i<markers.length;i++){
+//				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));
+//			}
+			int length = markers.length;
+			for (int i = 0; i < markers.length; i++) {
+				String groupName = markers[i].getAttribute("groupName", null);
+				if(groupName==null || (!groupName.equals(messageGroup) && !groupName.equals(IValidator.MARKED_RESOURCE_MESSAGE_GROUP))) {
+					length--;
+				}
+			}
+			return length;
+		}catch(CoreException ex){
+			JUnitUtils.fail("Can'r get problem markers", ex);
+		}
+		return -1;
 	}
 
 	/**
