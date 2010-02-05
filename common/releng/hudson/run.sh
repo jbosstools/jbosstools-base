@@ -32,11 +32,17 @@ fi
 # check for required platform stuff
 missingRequirements=""
 for f in cvs svn javac wget vncserver Xvfb Xvnc; do 
-	check=$(whereis $f); 
-	if [[ $check == "$f:" ]]; then 
-		missingRequirements="$missingRequirements $f"
+	check=$(${f} 2>&1); 
+	check2=$(whereis $f); 
+	if [[ ${check%%command not found} != ${check} ]]; then # not found
+		if [[ $check2 == "$f:" ]]; then # not found
+			missingRequirements="$missingRequirements $f"
+		else
+			echo "Found $check"
+		fi
 	else
-		echo "Found $check" 
+			echo "Found $f on in PATH="
+			echo ${PATH};
 	fi
 done
 if [[ $missingRequirements ]]; then
