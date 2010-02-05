@@ -20,10 +20,6 @@ for a full listing of individual contributors.
       %license
    </license>
 
-   <url>
-      <update label="%updateSiteName" url="http://download.jboss.org/jbosstools/updates/stable/"/>
-   </url>
-
    <includes
          id="org.jboss.tools.common.all.feature"
          version="0.0.0"/>
