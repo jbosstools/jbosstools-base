@@ -81,7 +81,9 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 					ln1 = "" + (iln - 1); //$NON-NLS-1$
 				}
 			} catch (NumberFormatException e) {
-				ModelPlugin.getPluginLog().logError(e);
+//				ignore, some errors found by entity resolver do not have coordinates
+//				        but use similar format to mention io exception.  
+//				ModelPlugin.getPluginLog().logError(e);
 			}
 			String ep = MessageFormat.format("ERROR: {0} {1}", FindObjectHelper.makeRef(getPath() + ":" + ln1, ln + ":" + pos), er); //$NON-NLS-2$ //$NON-NLS-3$
 			if(iln < 0) markers.lines.remove(ep);
