@@ -45,12 +45,22 @@ public class AbstractResourceMarkerTest extends TestCase {
 	public static int findMarkerLine(IResource resource, String type, String pattern)
 			throws CoreException {
 		int number = -1;
+		List<Integer> lines = findMarkerLines(resource, type, pattern);
+		if(!lines.isEmpty()) {
+			number = lines.get(0);
+		}
+		return number;
+	}
+
+	public static List<Integer> findMarkerLines(IResource resource, String type,
+			String pattern) throws CoreException {
+		List<Integer> numbers = new ArrayList<Integer>();
 		IMarker[] markers = findMarkers(resource, type, pattern);
 		for (int i = 0; i < markers.length; i++) {
-			number = markers[i].getAttribute(IMarker.LINE_NUMBER, -1);
+			numbers.add(markers[i].getAttribute(IMarker.LINE_NUMBER, -1));
 		}
 
-		return number;
+		return numbers;
 	}
 
 	public static IMarker[] findMarkers(IResource resource, String type, String pattern) throws CoreException {
@@ -69,17 +79,44 @@ public class AbstractResourceMarkerTest extends TestCase {
 		assertMarkerIsCreated(resource, markerData.type, markerData.pattern, markerData.line);
 	}
 
-	public static void assertMarkerIsCreated(IResource resource, String type, String pattern, int expectedLine) 
+	public static void assertMarkerIsCreated(IResource resource, String type, String pattern, int... expectedLines) 
 		throws CoreException {
 
-		int line = findMarkerLine(
+		List<Integer> lines = findMarkerLines(
 				resource, type, pattern);
 
-		assertTrue("Marker  matches the '" + pattern + "' pattern wasn't found",  //$NON-NLS-1$ //$NON-NLS-2$
-				line != -1);
+		assertFalse("Marker  matches the '" + pattern + "' pattern wasn't found",  //$NON-NLS-1$ //$NON-NLS-2$
+				lines.isEmpty());
 
-		assertEquals("Marker matches the '" + pattern + "' pattern was found at wrong line",  //$NON-NLS-1$//$NON-NLS-2$
-				expectedLine,line);
+		assertEquals("Wrong number of found marker matches the '" + pattern + "' pattern",  //$NON-NLS-1$//$NON-NLS-2$
+				expectedLines.length, lines.size());
+
+		StringBuffer expectedString = new StringBuffer();
+		StringBuffer realString = new StringBuffer();
+		int i = 1;
+		for (int line : lines) {
+			realString.append(line);
+			if(lines.size()>i++) {
+				realString.append(", ");
+			}
+		}
+		for (int expected : expectedLines) {
+			expectedString.append(expected);
+			if(expectedLines.length>i++) {
+				expectedString.append(", ");
+			}
+		}
+		for (int line : lines) {
+			boolean found = false;
+			for (int expected : expectedLines) {
+				if(line==expected) {
+					found = true;
+					break;
+				}
+			}
+			assertTrue("Marker matches the '" + pattern + "' pattern was found at wrong lines. Expected: " + expectedString + " but were: " + realString,  //$NON-NLS-1$//$NON-NLS-2$
+					found);
+		}
 	}
 
 	public static void assertMarkerIsNotCreated(IResource resource, String type, String pattern) throws CoreException {
