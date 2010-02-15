@@ -18,7 +18,6 @@ import java.io.LineNumberReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -188,7 +187,7 @@ public class ResourcesUtils {
 	//	importProjectIntoWorkspace(bean);
 	//}
 
-	private static final long IMPORT_DELAY = 50;
+	private static final long IMPORT_DELAY = 1000;
 	
 	/**
 	 * Import project into workspace.
@@ -232,9 +231,9 @@ public class ResourcesUtils {
 					.getActiveWorkbenchWindow().getShell());
 			// run import
 			importOp.run(null);
-			JobUtils.waitForIdle(IMPORT_DELAY);
 			ResourcesUtils.setBuildAutomatically(state);
-
+			
+			JobUtils.waitForIdle(IMPORT_DELAY);
 		} catch (InvocationTargetException ite) {
 //			TePlugin.getDefault().logError(ite.getCause());
 			ite.printStackTrace();
