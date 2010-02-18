@@ -23,9 +23,9 @@ Raleigh NC 27606 USA.
 </license>
 
 
-   <url>
+   <!-- <url>
       <update label="%updateSiteName" url="http://download.jboss.org/jbosstools/updates/stable/galileo/"/>
-   </url>
+   </url> -->
 
    <includes
          id="org.eclipse.wst.common_core.feature"
