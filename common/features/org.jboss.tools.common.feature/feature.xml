@@ -22,10 +22,11 @@ source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
 Raleigh NC 27606 USA.
 </license>
 
-
+	<!--
    <url>
       <update label="%updateSiteName" url="http://download.jboss.org/jbosstools/updates/stable/galileo/"/>
    </url>
+	-->
 
    <includes
          id="org.eclipse.wst.common_core.feature"
