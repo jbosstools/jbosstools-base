@@ -226,7 +226,12 @@ public class PropertiesLoader implements XObjectLoader {
     String resolveValue(String value, String dirtyvalue) {
     	if(dirtyvalue == null) return value;
     	if(dirtyvalue.trim().equals(value)) return dirtyvalue;
-    	if(dirtyvalue.indexOf(INTERNAL_SEPARATOR) < 0) return value;
+    	if(dirtyvalue.indexOf(INTERNAL_SEPARATOR) < 0) {
+        	if(value.equals(convertDirtyValue(dirtyvalue))) {
+        		return dirtyvalue;
+        	}
+    		return value;
+    	}
     	StringTokenizer st = new StringTokenizer(dirtyvalue, INTERNAL_SEPARATOR, true);
     	StringBuffer cv = new StringBuffer();
     	StringBuffer dv = new StringBuffer();
@@ -248,7 +253,24 @@ public class PropertiesLoader implements XObjectLoader {
 				dv.append(t);
     		}
     	}
-    	return value.equals(cv.toString()) ? dv.toString() : value;
+    	if(value.equals(cv.toString())) {
+    		return dv.toString();
+    	}
+    	if(value.equals(convertDirtyValue(cv.toString()))) {
+    		return dv.toString();
+    	}
+    	return value;
+    }
+
+    String convertDirtyValue(String dirtyvalue) {
+    	ByteArrayInputStream sr = new ByteArrayInputStream(("a=" + dirtyvalue).getBytes());
+    	Properties p = new Properties();
+    	try {
+    		p.load(sr);
+    	} catch (IOException e) {
+    		//ignore
+    	}
+    	return p.getProperty("a");
     }
     
     public void edit(XModelObject object, String body) {
