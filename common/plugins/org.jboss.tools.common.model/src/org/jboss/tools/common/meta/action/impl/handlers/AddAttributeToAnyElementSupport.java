@@ -19,6 +19,7 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.AnyElementObjectImpl;
 
 public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
+	static String ATTRIBUTES = "attributes"; //$NON-NLS-1$
 	Set<String> attributes = new HashSet<String>();
 	boolean edit = false;
 	String initialName = null;
@@ -30,7 +31,7 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
 
 	public void reset() {
 		attributes.clear();
-		String[][] as = ((AnyElementObjectImpl)getTarget()).getAttributes();
+		String[][] as = getAttributes();
 		for (int i = 0; i < as.length; i++) {
 			attributes.add(as[i][0]);
 		}
@@ -63,11 +64,11 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
 		String value = p.getProperty("value"); //$NON-NLS-1$
 		String as = ""; //$NON-NLS-1$
 		if(!edit) {
-			as = getTarget().getAttributeValue("attributes"); //$NON-NLS-1$
+			as = getTarget().getAttributeValue(ATTRIBUTES);
 			if(as.length() > 0) as += AnyElementObjectImpl.SEPARATOR;
 			as += name + "=" + value; //$NON-NLS-1$
 		} else {
-			String[][] attrs = ((AnyElementObjectImpl)getTarget()).getAttributes();
+			String[][] attrs = getAttributes();
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < attrs.length; i++) {
 				if(sb.length() > 0) sb.append(AnyElementObjectImpl.SEPARATOR);
@@ -76,7 +77,7 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
 			}
 			as = sb.toString();
 		}
-		getTarget().getModel().editObjectAttribute(getTarget(), "attributes", as); //$NON-NLS-1$
+		getTarget().getModel().editObjectAttribute(getTarget(), ATTRIBUTES, as);
 	}
 
     protected DefaultWizardDataValidator validator = new Validator();
@@ -106,5 +107,14 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
     public boolean isFieldEditorEnabled(int stepId, String name, Properties values) {
     	return !edit || !name.equals(XModelObjectConstants.ATTR_NAME);
     }
-    
+
+	public String[][] getAttributes() {
+		XModelObject o = getTarget();
+		if(!(o instanceof AnyElementObjectImpl)) {
+			o = o.getModel().createModelObject("AnyElement", null); //$NON-NLS-1$
+			o.setAttributeValue(ATTRIBUTES, getTarget().getAttributeValue(ATTRIBUTES));
+		}
+		
+		return ((AnyElementObjectImpl)o).getAttributes();
+	}
 }
