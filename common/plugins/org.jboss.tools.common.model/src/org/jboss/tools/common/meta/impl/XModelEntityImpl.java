@@ -257,11 +257,11 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
         					XAttributeImpl attr = (XAttributeImpl)entity.getAttribute(atributeNames[k]);
         					if(attr != null) {
         						list.add(attr.copy());
-        					} else {
+        					} else if(ModelPlugin.isDebugEnabled()) {
         						ModelPlugin.getPluginLog().logInfo("Cannot find reference to attribute " + attrName + " of entity " + entityName); //$NON-NLS-1$ //$NON-NLS-2$
         					}
     					}
-    				} else {
+    				} else if(ModelPlugin.isDebugEnabled()) {
     					ModelPlugin.getPluginLog().logInfo("Cannot find reference to entity " + entityName); //$NON-NLS-1$
     				}
     			}
