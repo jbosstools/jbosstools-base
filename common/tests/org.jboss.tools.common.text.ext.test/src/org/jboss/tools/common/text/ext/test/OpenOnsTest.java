@@ -544,8 +544,9 @@ public class OpenOnsTest extends TestCase {
 		links[0].open();
 		JobUtils.waitForIdle();
 		editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		assertTrue("java.lang.String declaration should be opened",
-					editor.getTitle().startsWith("String."));
+		String title = editor.getTitle();
+		assertTrue("java.lang.String declaration should be opened, but \'" + title + "\' is actially openned in active editor", 
+					title.startsWith("String."));
 	}
 	
 	public static final String XHTML_STYLE_CLASS_NAME_TEST_FILE = OPENON_TEST_PROJECT + "/WebContent/xhtmlStyleClassHiperlinkTests.xhtml";
