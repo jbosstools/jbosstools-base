@@ -15,7 +15,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagProposalsComposite;
@@ -80,18 +81,33 @@ public abstract class DefaultDropCommand implements IDropCommand {
 	 * @param data
 	 */
 	public void execute(DropData data) {
-		getDefaultModel().setDropData(data);
-		initialize();
-		if(getDefaultModel().isWizardRequired()) {
-			WizardDialog dialog = new DropWizardDialog(
-				Display.getCurrent().getActiveShell(),
-				createDropWizard()
-			);
-			dialog.open();
-		} else {
-			execute();
+		/*
+		 * Fixes https://jira.jboss.org/jira/browse/JBIDE-5874
+		 * Checks it the Dialog Shell was already opened.
+		 * If so do not create one more instance.
+		 */
+		Shell[] existedShells = PlatformUI.getWorkbench().getDisplay().getShells();
+		boolean dialogWasAlreadyOpened = false;
+		for (Shell sh : existedShells) {
+			if (DropWizardMessages.Wizard_Window_Title
+					.equalsIgnoreCase(sh.getText())) {
+				dialogWasAlreadyOpened = true;
+			}
 		}
-		getDefaultModel().setDropData(null);
+		if (!dialogWasAlreadyOpened) {
+			getDefaultModel().setDropData(data);
+			initialize();
+			if(getDefaultModel().isWizardRequired()) {
+				WizardDialog dialog = new DropWizardDialog(
+						PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+						createDropWizard()
+				);
+				dialog.open();
+			} else {
+				execute();
+			}
+			getDefaultModel().setDropData(null);
+		}
 	}
 	
 	protected IDropWizard createDropWizard() {
