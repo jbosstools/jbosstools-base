@@ -44,6 +44,7 @@ public class TypeInfoCollector {
 	IType fType;
 	MemberInfo fMember;
 	TypeInfo fTypeInfo;
+	boolean fIncludeStaticMethods;
 	List<MethodInfo> fMethods;
 	List<FieldInfo> fFields;
 	
@@ -326,15 +327,11 @@ public class TypeInfoCollector {
 			this.isDataModel = isDataModel;
 		}
 
-		public TypeInfoCollector getTypeCollector() {
-			return getTypeCollector(false);
-		}
-
-		public TypeInfoCollector getTypeCollector(boolean varIsUsed) {
+		public TypeInfoCollector getTypeCollector(boolean varIsUsed, boolean includeStaticMethods) {
 			// The rev. 7651 results in a deadlock, typeInfo is not stored anymore 
 			// The rev. 7623 results in a deadlock, so, it's rolled back
 			// >>> Fix for JBIDE-2090 
-			return new TypeInfoCollector(this, varIsUsed);
+			return new TypeInfoCollector(this, varIsUsed, includeStaticMethods);
 			// <<< Fix for JBIDE-2090 
 		}
 
@@ -685,13 +682,10 @@ public class TypeInfoCollector {
 		}
 	}
 
-	public TypeInfoCollector(MemberInfo member) {
-		this(member, false);
-	}
-
-	public TypeInfoCollector(MemberInfo member, boolean varIsUsed) {
+	public TypeInfoCollector(MemberInfo member, boolean varIsUsed, boolean includeStaticMethods) {
 		this.fMember = member;
 		this.fType = member.getMemberType();
+		this.fIncludeStaticMethods = includeStaticMethods;
 		collectInfo(varIsUsed);
 	}
 
@@ -957,7 +951,8 @@ public class TypeInfoCollector {
 			try {
 				if (((info.getSourceType()!=null && info.getSourceType().isInterface()) || info.isPublic())
 						&& !info.isConstructor() 
-						&& !info.isStatic() && !info.isJavaLangObject()
+						&& (fIncludeStaticMethods || !info.isStatic()) 		// Fix for JBIDE-5961: JSF EL Code complition doesn't recognize static methods.
+						&& !info.isJavaLangObject()
 //						&& !info.isGetter() && !info.isSetter() // Fix for JBIDE-3378
 					) {
 					methods.add(info);
