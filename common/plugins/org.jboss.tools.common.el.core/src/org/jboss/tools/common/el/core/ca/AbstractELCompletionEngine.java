@@ -580,6 +580,8 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 	abstract protected TypeInfoCollector.MemberInfo getMemberInfoByVariable(V var, boolean onlyEqualNames);
 
+	abstract protected boolean isStaticMethodsCollectingEnabled();
+	
 	protected boolean isSingularAttribute(V var) {
 		return false;
 	}
@@ -600,7 +602,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			List<TypeInfoCollector.MemberInfo> newMembers = new ArrayList<TypeInfoCollector.MemberInfo>();
 			for (TypeInfoCollector.MemberInfo mbr : members) {
 				if (mbr.getMemberType() == null) continue;
-				TypeInfoCollector infos = mbr.getTypeCollector(varIsUsed);
+				TypeInfoCollector infos = mbr.getTypeCollector(varIsUsed, isStaticMethodsCollectingEnabled());
 				if (TypeInfoCollector.isNotParameterizedCollection(mbr) || TypeInfoCollector.isResourceBundle(mbr.getMemberType())) {
 					resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
 				}
@@ -628,7 +630,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			List<TypeInfoCollector.MemberInfo> newMembers = new ArrayList<TypeInfoCollector.MemberInfo>();
 			for (TypeInfoCollector.MemberInfo mbr : members) {
 				if (mbr.getMemberType() == null) continue;
-				TypeInfoCollector infos = mbr.getTypeCollector();
+				TypeInfoCollector infos = mbr.getTypeCollector(false, isStaticMethodsCollectingEnabled());
 				if (TypeInfoCollector.isNotParameterizedCollection(mbr) || TypeInfoCollector.isResourceBundle(mbr.getMemberType())) {
 					resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
 				}
@@ -672,7 +674,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if (mbr.getMemberType() == null) {
 					continue;
 				}
-				TypeInfoCollector infos = mbr.getTypeCollector(varIsUsed);
+				TypeInfoCollector infos = mbr.getTypeCollector(varIsUsed, isStaticMethodsCollectingEnabled());
 				if (TypeInfoCollector.isNotParameterizedCollection(mbr) || TypeInfoCollector.isResourceBundle(mbr.getMemberType())) {
 					resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
 				}
@@ -778,7 +780,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					continue;
 				}
 				if (mbr.getMemberType() == null) continue;
-				TypeInfoCollector infos = mbr.getTypeCollector();
+				TypeInfoCollector infos = mbr.getTypeCollector(false, isStaticMethodsCollectingEnabled());
 				if (TypeInfoCollector.isNotParameterizedCollection(mbr) || TypeInfoCollector.isResourceBundle(mbr.getMemberType())) {
 					resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
 				}
