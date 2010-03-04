@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 
+import org.jboss.tools.common.model.ui.ModelUIImages;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagProposalsComposite;
 
 /**
@@ -31,6 +32,8 @@ public class DropWizard extends Wizard implements PropertyChangeListener, IDropW
 	 */
 	public DropWizard() {
 		setWindowTitle(DropWizardMessages.Wizard_Window_Title);
+		setDefaultPageImageDescriptor(ModelUIImages
+				.getImageDescriptor(ModelUIImages.WIZARD_DEFAULT));
 	}
 	
 	public void setCommand(IDropCommand command) {
