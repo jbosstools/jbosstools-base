@@ -251,6 +251,9 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				: operand;
 
 		ELResolutionImpl resolution = resolveELOperand(file, newOperand, returnEqualedVariablesOnly, prefixWasChanged);
+		if(resolution==null) {
+			return null;
+		}
 
 		if(prefixWasChanged) {
 			resolution.setSourceOperand(operand);
@@ -296,10 +299,16 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				var.resolveValue("#{" + var.getElToken().getText() + suffix + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 
 				ELResolutionImpl oldElResolution = resolveELOperand(file, operand, returnEqualedVariablesOnly, false);
-				resolution.getProposals().addAll(oldElResolution.getProposals());
+				if(oldElResolution!=null) {
+					resolution.getProposals().addAll(oldElResolution.getProposals());
+				}
 			} else {
 				resolution = resolveELOperand(file, operand, returnEqualedVariablesOnly, false);
 			}
+		}
+
+		if(resolution==null) {
+			return null;
 		}
 
 		// JBIDE-512, JBIDE-2541 related changes ===>>>
