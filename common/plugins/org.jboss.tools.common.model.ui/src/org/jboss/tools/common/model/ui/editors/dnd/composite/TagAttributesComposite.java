@@ -187,7 +187,7 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
     
 		TableLayout tableLayout = new TableLayout();
 	    tableViewer =
-		new TableViewer(swtTable);
+		new TagAttributesTableViewer(swtTable);
 
 	    swtTable.setLayout(tableLayout);
 	    swtTable.setLayoutData(data);

@@ -42,6 +42,7 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEditor {
 	protected Text text;
 	protected String textValue = null;
+	protected String startValue = null;
 	private Button button;
 	private static final int defaultStyle = SWT.NONE;
 	private boolean skipDeactivate = Boolean.FALSE.booleanValue();
@@ -181,6 +182,7 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 			}
 			public void keyReleased(KeyEvent e) {
 				if (e.character == '\u001b') { // Escape
+					text.setText(startValue);
 					fireCancelEditor();
 				}
 			}
@@ -295,11 +297,15 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 	public void activate() {
 		super.activate();
 		skipDeactivate = false;
+		if (text != null) {
+			startValue = text.getText();
+		}
 	}
 
 	public void deactivate() {
 		if (!this.skipDeactivate) {
 			skipDeactivate = true;
+			startValue = null;
 			super.deactivate();
 		}
 	}
