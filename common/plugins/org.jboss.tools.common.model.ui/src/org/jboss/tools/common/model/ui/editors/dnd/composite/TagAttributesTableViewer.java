@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2007-2010 Exadel, Inc. and Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+
 package org.jboss.tools.common.model.ui.editors.dnd.composite;
 
 import org.eclipse.jface.viewers.CellEditor;
@@ -17,6 +28,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+
+/**
+ * 
+ * @author yzhishko
+ *
+ */
 
 public class TagAttributesTableViewer extends TableViewer {
 	private boolean isHandle = true;
