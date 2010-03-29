@@ -18,7 +18,6 @@ import junit.framework.TestCase;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.jboss.tools.jst.web.kb.validation.IValidator;
 import org.jboss.tools.test.util.JUnitUtils;
 
 /**
@@ -216,7 +215,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 			int length = markers.length;
 			for (int i = 0; i < markers.length; i++) {
 				String groupName = markers[i].getAttribute("groupName", null);
-				if(groupName==null || (!groupName.equals(messageGroup) && !groupName.equals(IValidator.MARKED_RESOURCE_MESSAGE_GROUP))) {
+				if(groupName==null || (!groupName.equals(messageGroup) && !groupName.equals("markedKbResource"))) {
 					length--;
 				}
 			}
