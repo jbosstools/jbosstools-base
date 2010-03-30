@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-ActivationPolicy: lazy
 Bundle-Name: %pluginName
+Bundle-ClassPath: .
 Bundle-Activator: org.jboss.tools.common.model.ui.ModelUIPlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.model.ui;singleton:=true
