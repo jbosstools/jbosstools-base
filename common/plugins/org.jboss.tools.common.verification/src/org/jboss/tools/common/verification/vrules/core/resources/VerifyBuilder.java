@@ -17,27 +17,27 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import org.jboss.tools.common.model.project.IModelNature;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.verification.vrules.plugin.VerificationPlugin;
 
+//This builder is obsolete. It's functionality is moved to WTP's Validation framework.
+//The builder is preserved for backward compatibility.
 public class VerifyBuilder extends IncrementalProjectBuilder
 {
 	public static final String BUILDER_ID = VerificationPlugin.PLUGIN_ID + ".verifybuilder"; //$NON-NLS-1$
-	GlobalBuilderImpl builderImpl = null;
+//	GlobalBuilderImpl builderImpl = null;
 	
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
 		throws CoreException
 	{
-		IProject currentProject = getProject();
-		IModelNature n = EclipseResourceUtil.getModelNature(currentProject);
-		if (n != null) {
-			if(builderImpl == null) {
-				builderImpl = new GlobalBuilderImpl();
-				builderImpl.setModel(n.getModel());
-			}
-			builderImpl.execute(null);
-		}
+//		IProject currentProject = getProject();
+//		IModelNature n = EclipseResourceUtil.getModelNature(currentProject);
+//		if (n != null) {
+//			if(builderImpl == null) {
+//				builderImpl = new GlobalBuilderImpl();
+//				builderImpl.setModel(n.getModel());
+//			}
+//			builderImpl.execute(null);
+//		}
 		
 		return null;
 	}
