@@ -56,4 +56,32 @@
 		<xclass id="org.jboss.tools.common.verification.vrules.model.VRulesTree"
 			class="org.jboss.tools.common.verification.vrules.model.VRulesTree"/>
    </extension>
+
+
+   <extension
+        point="org.eclipse.wst.validation.validator"
+		id="CommonVerification"
+		name="Project Verification">
+		<validator>
+			<projectNature id="org.eclipse.jdt.core.javanature" />
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.xml"/>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.tld"/>
+			<markerId
+               markerIdValue="org.jboss.tools.jst.web.ui.strutsmarker">
+         	</markerId>
+			<helper 
+				class="org.eclipse.wst.validation.internal.operations.WorkbenchContext">
+			</helper>
+			<run
+         		class="org.jboss.tools.common.verification.vrules.core.resources.CommonValidator"
+         		incremental="true"
+         		fullBuild="true"
+         	/>
+		</validator>
+	</extension>
+
 </plugin>
