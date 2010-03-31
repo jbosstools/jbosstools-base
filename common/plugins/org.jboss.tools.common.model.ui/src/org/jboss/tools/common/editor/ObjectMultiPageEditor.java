@@ -23,12 +23,10 @@ import org.jboss.tools.common.core.resources.XModelObjectEditorInput;
 import org.jboss.tools.common.model.util.XModelTreeListenerSWTSync;
 import org.jboss.tools.common.model.ui.outline.XModelObjectContentOutlineProvider;
 import org.jboss.tools.common.model.ui.select.XModelObjectSelectionProvider;
-import org.jboss.tools.common.model.ui.wizards.one.ServiceDialogOption;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.*;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.*;
@@ -36,7 +34,6 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.IGotoMarker;
-import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorActionBarContributor;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.part.MultiPageEditorSite;
@@ -46,11 +43,8 @@ import org.eclipse.ui.texteditor.IDocumentProviderExtension;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
-import org.osgi.framework.Bundle;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionInvoker;
-import org.jboss.tools.common.meta.key.WizardKeys;
-import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
@@ -99,7 +93,15 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	protected void setInput(IEditorInput input) {
 		super.setInput(XModelObjectEditorInput.checkInput(input));
 		updateFile();
-		firePropertyChange(IEditorPart.PROP_INPUT);
+		if(Display.getCurrent() == null) {
+			Display.getDefault().asyncExec(new Runnable(){
+				public void run() {
+					firePropertyChange(IEditorPart.PROP_INPUT);
+				}
+			});
+		} else {
+			firePropertyChange(IEditorPart.PROP_INPUT);
+		}
 	}
 	
     protected IEditorSite createSite(IEditorPart editor) {
@@ -421,11 +423,10 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				}
 			}
 		} else {
-			int offset = marker.getAttribute(IMarker.CHAR_START, -1);
-			int length = marker.getAttribute(IMarker.CHAR_END, -1);	
-			if (offset > -1 && length > -1) {
-				postponedTextSelection.clean();
-				if(textEditor != null) textEditor.gotoMarker(marker);
+			postponedTextSelection.clean();
+			if(textEditor != null) {
+				switchToPage(getSourcePageIndex());
+				textEditor.gotoMarker(marker);
 			}
 		}
 	}
@@ -1121,7 +1122,7 @@ class ResourceChangeListener implements IResourceChangeListener {
 	}
 
 	public void resourceChanged(IResourceChangeEvent event) {
-		IEditorInput ei = editorPart.getEditorInput();
+		final IEditorInput ei = editorPart.getEditorInput();
 
 		if(ei instanceof IModelObjectEditorInput) {
 			XModelObject o = ((IModelObjectEditorInput)ei).getXModelObject();
@@ -1146,27 +1147,39 @@ class ResourceChangeListener implements IResourceChangeListener {
 		if(p instanceof FolderImpl) {
 			((FolderImpl)p).update();
 		}
-		XModelObject o = EclipseResourceUtil.getObjectByResource(f);
+		final XModelObject o = EclipseResourceUtil.getObjectByResource(f);
 		if(f != null && f.exists() && o != null) {
 			if(editorPart instanceof ObjectMultiPageEditor) {
-				ObjectMultiPageEditor e = (ObjectMultiPageEditor)editorPart;
+				final ObjectMultiPageEditor e = (ObjectMultiPageEditor)editorPart;
 				if(ei instanceof XModelObjectEditorInput) {
-					IEditorInput e2 = XModelObjectEditorInput.createInstance(o);
-					e.setInput(e2);
-					e.updateTitle();
-					if(e.textEditor instanceof AbstractTextEditor) {
-						((AbstractTextEditor)e.textEditor).setInput(e2);
-						((XModelObjectEditorInput)ei).synchronize();
-						if(((XModelObjectEditorInput)ei).getXModelObject() != o) {
-							closeEditor();
-							return;
-						}
+					final IEditorInput e2 = XModelObjectEditorInput.createInstance(o);
+					if(Display.getCurrent() == null) {
+						Display.getDefault().asyncExec(new Runnable() {
+							public void run() {
+								apply(e, o, ei, e2);
+							}
+						});
+					} else {
+						apply(e, o, ei, e2);
 					}
 				}
 			}
 		}
 		if(f == null || f.exists()) return;
 		closeEditor();
+	}
+
+	void apply(ObjectMultiPageEditor e, XModelObject o, IEditorInput ei, IEditorInput e2) {
+		e.setInput(e2);
+		e.updateTitle();
+		if(e.textEditor instanceof AbstractTextEditor) {
+			((AbstractTextEditor)e.textEditor).setInput(e2);
+			((XModelObjectEditorInput)ei).synchronize();
+			if(((XModelObjectEditorInput)ei).getXModelObject() != o) {
+				closeEditor();
+				return;
+			}
+		}
 	}
 	
 	private void closeEditor() {
