@@ -29,6 +29,13 @@ public interface JavaMemberELSegment extends ELSegment {
 	IJavaElement getJavaElement();
 
 	/**
+	 * Returns the array of Java Elements collected for the segment
+	 * 
+	 * @return The Array of collected Java Elements
+	 */
+	IJavaElement[] getAllJavaElements();
+	
+	/**
 	 * @return true if an underlying object is field and this field has getter.
 	 */
 	boolean hasGetter();

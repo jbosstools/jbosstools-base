@@ -12,8 +12,10 @@ package org.jboss.tools.common.el.core.ca;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -61,7 +63,6 @@ import org.jboss.tools.common.el.internal.core.parser.token.JavaNameTokenDescrip
 import org.jboss.tools.common.text.TextProposal;
 
 public abstract class AbstractELCompletionEngine<V extends IVariable> implements ELResolver, ELCompletionEngine {
-
 	public AbstractELCompletionEngine() {}
 
 	public abstract Image getELProposalImage();
@@ -797,13 +798,16 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				proposalsToFilter.addAll(infos.getPropertyPresentations(segment.getUnpairedGettersOrSetters()));
 //				segment.setMemberInfo(mbr);
 			}
+			
 			for (TypeInfoCollector.MemberPresentation proposal : proposalsToFilter) {
 				// We do expect nothing but name for method tokens (No round brackets)
 				String filter = expr.getMemberName();
 				if(filter == null) filter = ""; //$NON-NLS-1$
+				String presentationString = proposal.getPresentation();
+
 				if(returnEqualedVariablesOnly) {
 					// This is used for validation.
-					if (proposal.getPresentation().equals(filter)) {
+					if (presentationString.equals(filter)) {
 						TextProposal kbProposal = new TextProposal();
 						kbProposal.setReplacementString(proposal.getPresentation());
 
@@ -812,6 +816,14 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						kbProposals.add(kbProposal);
 
 						segment.setMemberInfo(proposal.getMember());
+						if (proposal.getAllMembers() != null && !proposal.getAllMembers().isEmpty()) {
+							for (MemberInfo mi : proposal.getAllMembers()) {
+								IJavaElement je = mi.getJavaElement();
+								if (je != null) {
+									segment.addJavaElement(je);
+								}
+							}
+						}
 						if(segment.getUnpairedGettersOrSetters()!=null) {
 							TypeInfoCollector.MethodInfo unpirMethod = segment.getUnpairedGettersOrSetters().get(filter);
 							segment.clearUnpairedGettersOrSetters();
@@ -821,7 +833,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						}
 						break;
 					}
-				} else if (proposal.getPresentation().startsWith(filter)) {
+				} else if (presentationString.startsWith(filter)) {
 					// JBIDE-512, JBIDE-2541 related changes ===>>>
 
 					// This is used for CA.
@@ -899,6 +911,16 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						kbProposals.add(kbProposal);
 
 						segment.setMemberInfo(proposal.getMember());
+						
+						if (proposal.getAllMembers() != null && !proposal.getAllMembers().isEmpty()) {
+							for (MemberInfo mi : proposal.getAllMembers()) {
+								IJavaElement je = mi.getJavaElement();
+								if (je != null) {
+									segment.addJavaElement(je);
+								}
+							}
+						}
+						
 						if(segment.getUnpairedGettersOrSetters()!=null) {
 							TypeInfoCollector.MethodInfo unpirMethod = segment.getUnpairedGettersOrSetters().get(filter);
 							segment.clearUnpairedGettersOrSetters();

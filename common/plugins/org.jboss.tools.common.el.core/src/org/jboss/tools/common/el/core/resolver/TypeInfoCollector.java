@@ -971,11 +971,13 @@ public class TypeInfoCollector {
 	public static class MemberPresentation {
 		private String presentation;
 		private MemberInfo member;
+		private Set<MemberInfo> allMembers = new HashSet<MemberInfo>(); 
 
 		public MemberPresentation(String presentation, MemberInfo member) {
 			super();
 			this.presentation = presentation;
 			this.member = member;
+			addMember(member);
 		}
 
 		public String getPresentation() {
@@ -1002,6 +1004,28 @@ public class TypeInfoCollector {
 		@Override
 		public String toString() {
 			return presentation;
+		}
+		
+		/**
+		 * Adds a pair member to the member info
+		 * In case of a property there may be up to 2 members added: getter and setter
+		 * In case of a method there will be a single member added (the method itself)
+		 * 
+		 * @param pair
+		 */
+		public void addMember(MemberInfo pair) {
+			this.allMembers.add(pair);
+		}
+
+		/**
+		 * Returns all the members collected
+		 * In case of a property there may be up to 2 members returned: getter and setter
+		 * In case of a method there will be a single member returned (the method itself)
+		 * 
+		 * @return
+		 */
+		public Set<MemberInfo> getAllMembers() {
+			return allMembers;
 		}
 	}
 
@@ -1138,6 +1162,7 @@ public class TypeInfoCollector {
 	 */
 	public Set<MemberPresentation> getPropertyPresentations(Map<String, MethodInfo> unpairedGettersOrSetters) {
 		Set<MemberPresentation> properties = new TreeSet<MemberPresentation>(MEMBER_PRESENTATION_COMPARATOR); 
+		HashMap<String, MemberPresentation> presentations = new HashMap<String, MemberPresentation>(); 
 		List<MemberInfo> props = getProperties(); 
 		HashMap<String, MethodInfo> getters = new HashMap<String, MethodInfo>();
 		HashMap<String, MethodInfo> setters = new HashMap<String, MethodInfo>();
@@ -1159,6 +1184,10 @@ public class TypeInfoCollector {
 					MemberPresentation pr = new MemberPresentation(propertyName, m);
 					if(!properties.contains(pr)) {
 						properties.add(pr);
+						presentations.put(pr.getPresentation(), pr);
+					} else {
+						MemberPresentation existingPresentation = presentations.get(pr.getPresentation());
+						existingPresentation.addMember(m);
 					}
 					if(unpairedGettersOrSetters!=null) {
 						MethodInfo previousGetter = getters.get(propertyName);
@@ -1176,7 +1205,9 @@ public class TypeInfoCollector {
 					}
 				}
 			} else {
-				properties.add(new MemberPresentation(info.getName(), info));
+				MemberPresentation pr = new MemberPresentation(info.getName(), info);
+				properties.add(pr);
+				presentations.put(pr.getPresentation(), pr);
 			}
 		}	
 		return properties;
