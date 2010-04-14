@@ -12,20 +12,16 @@ package org.jboss.tools.common.el.core.ca;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
-import org.eclipse.jdt.internal.ui.text.java.ProposalInfo;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.graphics.Image;
@@ -320,10 +316,12 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if(v.getName().startsWith(prefix)) {
 					ELResolution r = resolveEL(file, v.getElToken(), true, vars, varSearcher);
 					ELSegment lastSegment = r.getLastSegment();
-					MemberInfo memberInfo = null;
+					JavaMemberELSegment jmSegment = null;
+					
 					if(lastSegment instanceof JavaMemberELSegment) {
-						memberInfo = ((JavaMemberELSegment)lastSegment).getMemberInfo();
+						jmSegment = ((JavaMemberELSegment)lastSegment);
 					}
+  					MemberInfo memberInfo = jmSegment == null ? null : jmSegment.getMemberInfo();
 
 					String sourceTypeName = memberInfo == null ? null : memberInfo.getDeclaringTypeQualifiedName();
 					if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) {
@@ -334,18 +332,21 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						typeName = Signature.getSimpleName(typeName);
 					}
 
-					IJavaElement element = memberInfo == null ? null : memberInfo.getJavaElement();
-					String attachedJavaDoc = (element instanceof IMember)?(new ProposalInfo((IMember)element)).getInfo(null):null;
-
 					String varNameProposal = v.getName().substring(prefix.length());
-					TextProposal proposal = new TextProposal();
+					ELTextProposal proposal = new ELTextProposal();
 					proposal.setLabel(v.getName());
 					proposal.setReplacementString(varNameProposal);
 					proposal.setLabel(v.getName());
 					proposal.setImage(getELProposalImage());
 					proposal.setType(typeName);
 					proposal.setSourceType(sourceTypeName);
-					proposal.setContextInfo(attachedJavaDoc);
+					if (jmSegment != null) {
+						IJavaElement[] javaElements = jmSegment.getAllJavaElements();
+						for (int jeIndex = 0; javaElements != null && jeIndex < javaElements.length; jeIndex++) {
+							proposal.addJavaElement(javaElements[jeIndex]);
+						}
+					}
+					
 					resolution.getProposals().add(proposal);
 				}
 			}
@@ -452,16 +453,17 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						typeName = Signature.getSimpleName(typeName);
 
 					IJavaElement element = member == null ? null : member.getJavaElement();
-					String attachedJavaDoc = (element instanceof IMember)?(new ProposalInfo((IMember)element)).getInfo(null):null;
 
-					TextProposal proposal = new TextProposal();
+					ELTextProposal proposal = new ELTextProposal();
 					proposal.setLabel(varName);
 					proposal.setReplacementString(varName.substring(operand.getLength()));
 					setImage(proposal, var);
 					proposal.setType(typeName);
 					proposal.setSourceType(sourceTypeName);
-					proposal.setContextInfo(attachedJavaDoc);
-
+					if (element != null) {
+						proposal.addJavaElement(element);
+					}
+					
 					proposals.add(proposal);
 					// <<<=== JBIDE-512, JBIDE-2541 related changes
 				}
@@ -492,6 +494,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if(isSingularAttribute(var)) {
 					bijectedAttribute = getMemberInfoByVariable(var, true);
 				}
+
 				MemberInfo member = getMemberInfoByVariable(var, true);
 				String sourceTypeName = member == null ? null : member.getDeclaringTypeQualifiedName();
 				if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) 
@@ -499,27 +502,33 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				String typeName = member == null ? null : member.getType().getName();
 				if (typeName != null && typeName.indexOf('.') != -1) 
 					typeName = Signature.getSimpleName(typeName);
+					
 				IJavaElement element = member == null ? null : member.getJavaElement();
-				String attachedJavaDoc = (element instanceof IMember)?(new ProposalInfo((IMember)element)).getInfo(null):null;
-				
+
 				String varName = var.getName();
 				if(operand.getLength()<=varName.length()) {
-					TextProposal proposal = new TextProposal();
+					ELTextProposal proposal = new ELTextProposal();
 					proposal.setReplacementString(varName.substring(operand.getLength()));
 					proposal.setLabel(varName);
 					setImage(proposal, var);
 					proposal.setType(typeName);
 					proposal.setSourceType(sourceTypeName);
-					proposal.setContextInfo(attachedJavaDoc);
+					if (element != null) {
+						proposal.addJavaElement(element);
+					}
+
 					proposals.add(proposal);
 				} else if(returnEqualedVariablesOnly) {
-					TextProposal proposal = new TextProposal();
+					ELTextProposal proposal = new ELTextProposal();
 					proposal.setReplacementString(varName);
 					proposal.setLabel(varName);
 					setImage(proposal, var);
 					proposal.setType(typeName);
 					proposal.setSourceType(sourceTypeName);
-					proposal.setContextInfo(attachedJavaDoc);
+					if (element != null) {
+						proposal.addJavaElement(element);
+					}
+
 					proposals.add(proposal);
 				}
 				segment.setMemberInfo(bijectedAttribute!=null?bijectedAttribute:member);
@@ -717,16 +726,19 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						String typeName = member == null ? null : member.getType().getName();
 						if (typeName != null && typeName.indexOf('.') != -1) 
 							typeName = Signature.getSimpleName(typeName);
-						IJavaElement element = member == null ? null : member.getJavaElement();
-						String attachedJavaDoc = (element instanceof IMember)?(new ProposalInfo((IMember)element)).getInfo(null):null;
 
-						TextProposal proposal = new TextProposal();
+						ELTextProposal proposal = new ELTextProposal();
 						proposal.setReplacementString(presentationString);
 						proposal.setLabel(presentationString);
 						proposal.setImage(getELProposalImage());
 						proposal.setType(typeName);
 						proposal.setSourceType(sourceTypeName);
-						proposal.setContextInfo(attachedJavaDoc);
+						for (MemberInfo mi : presentation.getAllMembers()) {
+							IJavaElement element = mi.getJavaElement();
+							if (element != null) {
+								proposal.addJavaElement(element);
+							}
+						}
 
 						kbProposals.add(proposal);
 					}
@@ -759,17 +771,20 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						String typeName = member == null ? null : member.getType().getName();
 						if (typeName != null && typeName.indexOf('.') != -1) 
 							typeName = Signature.getSimpleName(typeName);
-						IJavaElement element = member == null ? null : member.getJavaElement();
-						String attachedJavaDoc = (element instanceof IMember)?(new ProposalInfo((IMember)element)).getInfo(null):null;
 
-						TextProposal proposal = new TextProposal();
+						ELTextProposal proposal = new ELTextProposal();
 						proposal.setReplacementString(presentationString);
 						proposal.setLabel(presentationString);
 						proposal.setImage(getELProposalImage());
 						proposal.setType(typeName);
 						proposal.setSourceType(sourceTypeName);
-						proposal.setContextInfo(attachedJavaDoc);
-
+						for (MemberInfo mi : presentation.getAllMembers()) {
+							IJavaElement element = mi.getJavaElement();
+							if (element != null) {
+								proposal.addJavaElement(element);
+							}
+						}
+						
 						kbProposals.add(proposal);
 					}
 				}
@@ -844,16 +859,19 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					String typeName = member == null ? null : member.getType().getName();
 					if (typeName != null && typeName.indexOf('.') != -1) 
 						typeName = Signature.getSimpleName(typeName);
-					IJavaElement element = member == null ? null : member.getJavaElement();
-					String attachedJavaDoc = (element instanceof IMember)?(new ProposalInfo((IMember)element)).getInfo(null):null;
 
-					TextProposal kbProposal = new TextProposal();
+					ELTextProposal kbProposal = new ELTextProposal();
 					kbProposal.setReplacementString(proposal.getPresentation().substring(filter.length()));
 					kbProposal.setLabel(proposal.getPresentation());
 					kbProposal.setImage(getELProposalImage());
 					kbProposal.setType(typeName);
 					kbProposal.setSourceType(sourceTypeName);
-					kbProposal.setContextInfo(attachedJavaDoc);
+					for (MemberInfo mi : proposal.getAllMembers()) {
+						IJavaElement element = mi.getJavaElement();
+						if (element != null) {
+							kbProposal.addJavaElement(element);
+						}
+					}
 
 					kbProposals.add(kbProposal);
 					// <<<=== JBIDE-512, JBIDE-2541 related changes
@@ -941,10 +959,8 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					String typeName = member == null ? null : member.getType().getName();
 					if (typeName != null && typeName.indexOf('.') != -1) 
 						typeName = Signature.getSimpleName(typeName);
-					IJavaElement element = member == null ? null : member.getJavaElement();
-					String attachedJavaDoc = (element instanceof IMember)?(new ProposalInfo((IMember)element)).getInfo(null):null;
 
-					TextProposal kbProposal = new TextProposal();
+					ELTextProposal kbProposal = new ELTextProposal();
 
 					String replacementString = proposal.getPresentation().substring(filter.length());
 					if (bSurroundWithQuotes) {
@@ -955,7 +971,12 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					kbProposal.setImage(getELProposalImage());
 					kbProposal.setType(typeName);
 					kbProposal.setSourceType(sourceTypeName);
-					kbProposal.setContextInfo(attachedJavaDoc);
+					for (MemberInfo mi : proposal.getAllMembers()) {
+						IJavaElement element = mi.getJavaElement();
+						if (element != null) {
+							kbProposal.addJavaElement(element);
+						}
+					}
 
 					kbProposals.add(kbProposal);
 					// <<<=== JBIDE-512, JBIDE-2541 related changes
