@@ -34,8 +34,9 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * @author eskimo(dgolovin@exadel.com)
- * @version   $Revision:$
+ * @version $Revision:$
  */
+
 public class SAXValidator {
 	
 	protected static final String FATAL_ERROR_PROCESSING_FEATURE_ID 	= "http://apache.org/xml/features/continue-after-fatal-error"; //$NON-NLS-1$

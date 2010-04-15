@@ -65,8 +65,7 @@ public class XMLUtilities {
     }
 
     public static Element getUniqueChild(Element parent, String name){
-        Element[] e = getChildren(parent, name);
-        return (e.length == 0) ? null : e[0];
+        return getFirstChild(parent, name);
     }
 
     public static Element getFirstChild(Element parent, String name) {
@@ -105,18 +104,20 @@ public class XMLUtilities {
 
     public static Element createElement(Element parent, String path) {
         int i = path.indexOf('.');
+        Element element = null;
         if(i < 0) {
-            Element element = parent.getOwnerDocument().createElement(path);
+            element = parent.getOwnerDocument().createElement(path);
             parent.appendChild(element);
-            return element;
+        } else {
+	        String p = path.substring(0, i), c = path.substring(i + 1);
+	        Element pe = getUniqueChild(parent, p);
+	        if(pe == null) {
+	            pe = parent.getOwnerDocument().createElement(p);
+	            parent.appendChild(pe);
+	        }
+	        element = createElement(pe, c);
         }
-        String p = path.substring(0, i), c = path.substring(i + 1);
-        Element pe = getUniqueChild(parent, p);
-        if(pe == null) {
-            pe = parent.getOwnerDocument().createElement(p);
-            parent.appendChild(pe);
-        }
-        return createElement(pe, c);
+        return element;
     }
 
 	public static DocumentBuilder createDocumentBuilder() {
@@ -126,9 +127,7 @@ public class XMLUtilities {
 	public static DocumentBuilder createDocumentBuilder(boolean validate) {
 		try {
 			DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-			if (validate) {
-				f.setValidating(validate);
-			}
+			f.setValidating(validate);
 			// / f.setExpandEntityReferences(false);
 			DocumentBuilder d = f.newDocumentBuilder();
 			if (!validate) {
