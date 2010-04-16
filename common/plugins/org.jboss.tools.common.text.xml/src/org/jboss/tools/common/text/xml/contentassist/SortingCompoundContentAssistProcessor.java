@@ -36,6 +36,7 @@ import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.contentassist.IRelevanceCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.util.Sorter;
+import org.jboss.tools.common.text.xml.XmlEditorPlugin;
 
 /**
  * Reads the plugin.xml file for the processors defined using the 
@@ -208,6 +209,8 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
 		fErrorMessage = null;
 
+		ICompletionProposal[] resultArray = new ICompletionProposal[0];
+		try {
 		String contentType = getContentType(fSourceViewer);
 		if (contentType == null)
 			return new ICompletionProposal[0];
@@ -245,11 +248,14 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 				}
 			}
 		}
-		ICompletionProposal[] resultArray = ret.toArray(new ICompletionProposal[ret.size()]);
+		resultArray = ret.toArray(new ICompletionProposal[ret.size()]);
 		Object[] sorted = createSorter().sort(resultArray);
 		System.arraycopy(sorted, 0, resultArray, 0, sorted.length);
 		resultArray = makeUnique(resultArray);
 
+		} catch (Exception e) {
+			XmlEditorPlugin.getPluginLog().logError("An error occured while computing the completion proposals", e);
+		}
 		return resultArray;
 	}
 
