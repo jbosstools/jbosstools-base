@@ -30,7 +30,10 @@ public class XMLContentDescriber extends org.eclipse.core.runtime.content.XMLCon
 		super.describe(contents, description);
 		contents.reset();
 		String text = FileUtil.readStream(contents);
-		return describe(text, description);
+		if(!"".equals(text.trim())) {
+			return describe(text, description);
+		}
+		return INDETERMINATE;
 	}
 	
 	public int describe(Reader contents, IContentDescription description) throws IOException {

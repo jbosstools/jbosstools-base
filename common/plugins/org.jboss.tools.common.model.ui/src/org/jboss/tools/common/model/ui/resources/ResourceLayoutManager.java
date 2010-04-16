@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.common.model.ui.ModelUIMessages;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.xml.SafeDocumentBuilderFactory;
+import org.jboss.tools.common.xml.XMLUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -275,7 +275,7 @@ public class ResourceLayoutManager {
 	}
 	
 	static class DocumentBuilderHolder {
-		static private DocumentBuilder INSTANCE = SafeDocumentBuilderFactory.createDocumentBuilder(false);
+		static private DocumentBuilder INSTANCE = XMLUtilities.createDocumentBuilder();
 		
 		public static DocumentBuilder getInstance() {
 			return INSTANCE;
