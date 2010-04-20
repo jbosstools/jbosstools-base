@@ -376,7 +376,7 @@ public class HyperlinkPartitionerDefinition {
                             return false;
                         }
                     } else {
-                        int currentIndex = path.indexOf(fDelimitedPathElements[i]);
+                        int currentIndex = path.lastIndexOf(fDelimitedPathElements[i]);
                         if(currentIndex>-1 && currentIndex>lastIndex) {
                             lastIndex = currentIndex;
                             if(fDelimitedPathElements[i].startsWith(TAGLIB))
