@@ -24,6 +24,9 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import org.apache.xerces.xni.XMLResourceIdentifier;
+import org.apache.xerces.xni.XNIException;
+import org.apache.xerces.xni.parser.XMLInputSource;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
@@ -257,8 +260,20 @@ class Parser implements ContentHandler {
         SAXValidator.setFeature(parserInstance, VALIDATION_DYNAMIC_FEATURE_ID, false);
         SAXValidator.setFeature(parserInstance, FATAL_ERROR_PROCESSING_FEATURE_ID, false);
 
+        class EmptyHandler implements org.apache.xerces.xni.parser.XMLEntityResolver {
+
+			public XMLInputSource resolveEntity(XMLResourceIdentifier id)
+					throws XNIException, IOException {
+				return new XMLInputSource(id.getPublicId(), id.getBaseSystemId(), id.getBaseSystemId(), new StringReader(""), null);
+			}
+        	
+        }
         try {
-            parserInstance.setProperty(ENTITY_RESOLVER_PROPERTY_ID, new XMLEntityResolverImpl());
+        	if(MetaLibLoader.validateMetaXML) {
+        		parserInstance.setProperty(ENTITY_RESOLVER_PROPERTY_ID, new XMLEntityResolverImpl());
+        	} else {
+        		parserInstance.setProperty(ENTITY_RESOLVER_PROPERTY_ID, new EmptyHandler());
+        	}
         } catch (SAXException e1) {
         	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1); //$NON-NLS-1$
         }
