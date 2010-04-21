@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.Properties;
 
 import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.common.meta.action.XAttributeData;
@@ -51,9 +52,11 @@ public class DefaultStandardStep extends WizardPage implements java.beans.Proper
 		attributes = null;
 	}
 
-	public void setWizard(DefaultStandardWizard wizard) {
+	public void setWizard(IWizard wizard) {
 		super.setWizard(wizard);
-		this.wizard = wizard;
+		if(wizard instanceof DefaultStandardWizard) {
+			this.wizard = (DefaultStandardWizard)wizard;
+		}
 	}
 
 	public void createControl(Composite parent) {
