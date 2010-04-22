@@ -11,7 +11,9 @@
 package org.jboss.tools.common.el.core.resolver;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.jdt.core.IJavaElement;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
@@ -22,6 +24,7 @@ import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
 public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMemberELSegment {
 
 	protected IJavaElement element;
+	protected Set<IJavaElement> allElements;
 	protected MemberInfo memberInfo;
 	protected boolean hasSetter;
 	protected boolean hasGetter;
@@ -65,6 +68,29 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 		this.element = element;
 	}
 
+	/**
+	 * Adds a Java Element for the Segment
+	 * 
+	 * @param element
+	 */
+	public void addJavaElement(IJavaElement element) {
+		if (this.allElements == null) {
+			this.allElements = new HashSet<IJavaElement>();
+		}
+		this.allElements.add(element);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.JavaMemberELSegment#getAllJavaElements()
+	 */
+	public IJavaElement[] getAllJavaElements() {
+		if (this.allElements == null || this.allElements.size() == 0) {
+			return new IJavaElement[0];
+		}
+		return (IJavaElement[])this.allElements.toArray(new IJavaElement[this.allElements.size()]);
+	}
+	
 	/**
 	 * @return the hasSetter
 	 */
