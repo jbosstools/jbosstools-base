@@ -32,7 +32,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
+import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.contentassist.IRelevanceCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.util.Sorter;
@@ -46,6 +46,7 @@ import org.eclipse.wst.sse.ui.internal.util.Sorter;
  *
  */
 
+@SuppressWarnings("restriction")
 public class SortingCompoundContentAssistProcessor implements  IContentAssistProcessor {
 	private ISourceViewer fSourceViewer;
 	private String fPartitionType;
@@ -148,6 +149,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	boolean containsAnObjectOfTheSameType(Collection collection, Object obj) {
 		if (collection == null || obj == null)
 			return false;
@@ -229,7 +231,6 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 			return new ICompletionProposal[0];
 		}
 		
-		
 		for (IContentAssistProcessor p : processors) {
 			ICompletionProposal[] proposals = p.computeCompletionProposals(viewer, offset);
 			if (proposals != null && proposals.length > 0) {
@@ -244,12 +245,11 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 				}
 			}
 		}
-		
 		ICompletionProposal[] resultArray = ret.toArray(new ICompletionProposal[ret.size()]);
 		Object[] sorted = createSorter().sort(resultArray);
 		System.arraycopy(sorted, 0, resultArray, 0, sorted.length);
 		resultArray = makeUnique(resultArray);
-		
+
 		return resultArray;
 	}
 
@@ -260,36 +260,15 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	 * @return a list of unique completion suggestions.
 	 */
 	public ICompletionProposal[] makeUnique(ICompletionProposal[] proposals) {
-		ArrayList<ICompletionProposal> unique = new ArrayList<ICompletionProposal>();
-
-		for (int i = 0; proposals != null && i < proposals.length; i++) {
-			if (proposals[i] == null)
-				continue;
-			
-			ICompletionProposal existingProposal = findExistingProposal(unique, proposals[i]);
-			if (existingProposal == null) {
-				unique.add(proposals[i]);
-			}
-		}
-		return unique.toArray(new ICompletionProposal[unique.size()]);
-	}
-
-	private ICompletionProposal findExistingProposal(
-			List<ICompletionProposal> proposals, ICompletionProposal proposal) {
-		if (proposals == null || proposal == null)
+		if (proposals == null)
 			return null;
-
-		for (ICompletionProposal existingProposal : proposals) {
-			String exReplString = null;
-			String exDispString = null;
-
-			if (existingProposal instanceof CustomCompletionProposal) {
-				exReplString = ((CustomCompletionProposal) existingProposal)
-						.getReplacementString();
-			}
-			exDispString = unQuote(existingProposal.getDisplayString());
-			exReplString = getReplacementWord(exReplString == null ? exDispString
-					: exReplString);
+		
+		Map <String, ICompletionProposal> existingProposals = new HashMap<String, ICompletionProposal>(proposals.length);
+		ArrayList<ICompletionProposal> unique = new ArrayList<ICompletionProposal>(proposals.length);
+		
+		for (ICompletionProposal proposal : proposals) {
+			if (proposal == null)
+				continue;
 
 			String replString = null;
 			String dispString = null;
@@ -301,19 +280,20 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 			dispString = unQuote(proposal.getDisplayString());
 			replString = getReplacementWord(replString == null ? dispString
 					: replString);
-
-			if (exReplString != null && replString != null
-					&& exReplString.equals(replString))
-				return existingProposal;
+			
+			ICompletionProposal existingProposal = existingProposals.get(replString);
+			if (existingProposal == null) {
+				existingProposals.put(replString, proposal);
+				unique.add(proposal);
+			}
 		}
-
-		return null;
+		return unique.toArray(new ICompletionProposal[unique.size()]);
 	}
 
 	private String getReplacementWord(String replacement) {
 		replacement = (replacement == null ? "" : //$NON-NLS-1$
 				replacement);
-		int index = replacement.indexOf('>'); //$NON-NLS-1$
+		int index = replacement.indexOf('>');
 		if (index != -1) {
 			replacement = replacement.substring(0, index).trim();
 			if (replacement.endsWith("/")) //$NON-NLS-1$
@@ -422,6 +402,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	 * @return the auto activation characters for completion proposal or <code>null</code>
 	 *		if no auto activation is desired
 	 */
+	@SuppressWarnings("unchecked")
 	public char[] getCompletionProposalAutoActivationCharacters() {
 		String contentType = getContentType(fSourceViewer);
 		if (contentType == null)
@@ -480,7 +461,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 
 		char[] chars = new char[ret.size()];
 		int i = 0;
-		for (Iterator it = ret.iterator(); it.hasNext(); i++) {
+		for (Iterator<Character> it = ret.iterator(); it.hasNext(); i++) {
 			Character ch = (Character) it.next();
 			chars[i] = ch.charValue();
 		}
@@ -508,14 +489,14 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	public IContextInformationValidator getContextInformationValidator() {
 		boolean hasValidator = false;
 		boolean hasPresenter = false;
-		boolean hasExtension = false;
+//		boolean hasExtension = false;
 
 
 		String contentType = getContentType(fSourceViewer);
 		if (contentType == null)
 			return null;
 		
-		List<Character> ret = new LinkedList<Character>();
+//		List<Character> ret = new LinkedList<Character>();
 
 		if (fProcessorsMap.get(contentType) == null)
 			return null;
@@ -618,7 +599,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	}
 
 	private static class SortingCompoundContentAssistValidator implements IContextInformationValidator {
-		List fValidators = new ArrayList();
+		List<IContextInformationValidator> fValidators = new ArrayList<IContextInformationValidator>();
 		IContextInformationValidator fValidator;
 
 		void add(IContextInformationValidator validator) {
@@ -636,7 +617,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 			if (fValidator != null)
 				fValidator.install(realInfo, viewer, documentPosition);
 			else {
-				for (Iterator it = fValidators.iterator(); it.hasNext();) {
+				for (Iterator<IContextInformationValidator> it = fValidators.iterator(); it.hasNext();) {
 					IContextInformationValidator v = (IContextInformationValidator) it.next();
 					v.install(realInfo, viewer, documentPosition);
 				}
@@ -671,7 +652,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 			if (fValidator != null)
 				isValid = fValidator.isContextInformationValid(documentPosition);
 			else {
-				for (Iterator it = fValidators.iterator(); it.hasNext();) {
+				for (Iterator<IContextInformationValidator> it = fValidators.iterator(); it.hasNext();) {
 					IContextInformationValidator v = (IContextInformationValidator) it.next();
 					isValid |= v.isContextInformationValid(documentPosition);
 				}
@@ -688,7 +669,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 			if (fValidator instanceof IContextInformationPresenter)
 				presentationUpdated = ((IContextInformationPresenter) fValidator).updatePresentation(offset, presentation);
 			else {
-				for (Iterator it = fValidators.iterator(); it.hasNext();) {
+				for (Iterator<IContextInformationValidator> it = fValidators.iterator(); it.hasNext();) {
 					IContextInformationValidator v = (IContextInformationValidator) it.next();
 					if (v instanceof IContextInformationPresenter)
 						presentationUpdated |= ((IContextInformationPresenter) v).updatePresentation(offset, presentation);
