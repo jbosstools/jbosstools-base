@@ -230,7 +230,19 @@ public abstract class AbstractMultiPageContributor extends MultiPageEditorAction
 	};
 	
 	Map<IAction, ActionHandler> used = new HashMap<IAction, ActionHandler>();
-	Map<String, IHandlerActivation> registered = new HashMap<String, IHandlerActivation>();
+	Map<String, Deactivator> registered = new HashMap<String, Deactivator>();
+	
+	class Deactivator {
+		IHandlerService service;
+		IHandlerActivation handler;
+		Deactivator(IHandlerService service, IHandlerActivation handler) {
+			this.service = service;
+			this.handler = handler;
+		}
+		void deactivate() {
+			service.deactivateHandler(handler);
+		}
+	}
 
 	public void registerKeyBindings(IHandlerService handler, String[] actions, ITextEditor editor) {
 		for (int i = 0; i < actions.length; i++) {
@@ -250,10 +262,10 @@ public abstract class AbstractMultiPageContributor extends MultiPageEditorAction
 			used.put(action, h);
 		}
 		String id = action.getId();
-		IHandlerActivation c = registered.get(id);
-		if(c != null) handler.deactivateHandler(c);
+		Deactivator c = registered.remove(command);
+		if(c != null) c.deactivate();
 		IHandlerActivation a = handler.activateHandler(command, h);
-		if(a != null) registered.put(id, a);
+		if(a != null) registered.put(command, new Deactivator(handler, a));
 	}
 
 	public void dispose() {
