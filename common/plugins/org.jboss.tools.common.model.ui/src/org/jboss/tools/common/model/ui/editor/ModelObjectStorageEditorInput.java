@@ -183,7 +183,7 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 			}
 			String[] entryInfo = XModelObjectEditorInput.parseJarEntryFileInput((IStorageEditorInput)o);
 			if(entryInfo == null) return false;
-			XModelObject mo = XModelObjectEditorInput.getJarEntryObject(entryInfo[0], entryInfo[1]);
+			XModelObject mo = XModelObjectEditorInput.getJarEntryObject(null, entryInfo[0], entryInfo[1]);
 			return mo != null && mo.equals(object);
 		}
 		return false;

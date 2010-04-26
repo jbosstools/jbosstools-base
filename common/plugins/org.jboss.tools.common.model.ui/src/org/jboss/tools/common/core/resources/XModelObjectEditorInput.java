@@ -12,23 +12,23 @@ package org.jboss.tools.common.core.resources;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IJarEntryResource;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.internal.core.JarEntryFile;
-import org.eclipse.jdt.internal.core.JarEntryResource;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.internal.ui.javaeditor.JarEntryEditorInput;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.*;
 import org.eclipse.ui.editors.text.ILocationProvider;
 import org.eclipse.ui.internal.part.NullEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
+import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.impl.*;
@@ -217,35 +217,48 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 	
 	private static IEditorInput convertStorageEditorInput(IStorageEditorInput input) {
 		if(input instanceof JarEntryEditorInput) {
+			IProject project = null;
 			JarEntryEditorInput j = (JarEntryEditorInput)input;
-			JarEntryFile file = (JarEntryFile)j.getStorage();
-			String jarFile = file.getPackageFragmentRoot().getPath().toString();
-			String entry = file.getName();
-			JarEntryResource r = file;
-			while(r != null && r.getParent() instanceof JarEntryResource) {
-				r = (JarEntryResource)r.getParent();
-				entry = r.getName() + "/" + entry;
-			}
-			if(r != null && r.getParent() instanceof IPackageFragment) {
-				IPackageFragment pf = (IPackageFragment)r.getParent();
-				while(pf != null) {
-					String p = pf.getElementName();
-					entry = p + "/" + entry;
-					if(pf.getParent() instanceof IPackageFragment) {
-						pf = (IPackageFragment)pf.getParent();
-					} else {
-						pf = null;
+			if(j.getStorage() instanceof IJarEntryResource) {
+				IJarEntryResource file = (IJarEntryResource)j.getStorage();
+				String jarFile = file.getPackageFragmentRoot().getPath().toString();
+				if(file.getPackageFragmentRoot().getResource() != null) {
+					jarFile = file.getPackageFragmentRoot().getResource().getLocation().toString();
+				}
+				String entry = file.getName();
+				IJarEntryResource r = file;
+				while(r != null && r.getParent() instanceof IJarEntryResource) {
+					r = (IJarEntryResource)r.getParent();
+					entry = r.getName() + "/" + entry;
+				}
+				if(r != null && r.getParent() instanceof IPackageFragment) {
+					IPackageFragment pf = (IPackageFragment)r.getParent();
+					IJavaProject jp = pf.getJavaProject();
+					if(jp != null) project = jp.getProject();
+					while(pf != null) {
+						String p = pf.getElementName();
+						entry = p + "/" + entry;
+						if(pf.getParent() instanceof IPackageFragment) {
+							pf = (IPackageFragment)pf.getParent();
+						} else {
+							pf = null;
+						}
+					}
+				} else if(r != null && r.getPackageFragmentRoot() != null) {
+					IPackageFragmentRoot root = r.getPackageFragmentRoot();
+					if(root.getJavaProject() != null) {
+						project = root.getJavaProject().getProject();
 					}
 				}
+				IEditorInput result = createJarEntryEditorInput(project, jarFile, entry);
+				if(result != null) return result;
 			}
-			IEditorInput result = createJarEntryEditorInput(jarFile, entry);
-			if(result != null) return result;
 		}
 		String[] entryInfo = parseJarEntryFileInput(input);
 		if(entryInfo == null) return input;
 		String jarFile = entryInfo[0];
 		String entry = entryInfo[1];
-		IEditorInput result = createJarEntryEditorInput(jarFile, entry);
+		IEditorInput result = createJarEntryEditorInput(null, jarFile, entry);
 		return (result == null || result instanceof NullEditorInput) ? input : result;
 	}
 
@@ -271,19 +284,37 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		return new String[]{jarFile, entry};
 	}
 	
-	public static XModelObject getJarEntryObject(String jarFile, String entry) {
-		IFile f = EclipseResourceUtil.getFile(jarFile);
-		if(f == null) return null;
-		IProject p = f.getProject();
+	public static XModelObject getJarEntryObject(IProject p, String jarFile, String entry) {
+		if(p == null) {
+			IFile f = EclipseResourceUtil.getFile(jarFile);
+			if(f == null) return null;
+			p = f.getProject();
+		}
+		if(p == null) return null;
 		IModelNature n = EclipseResourceUtil.getModelNature(p);
-		if(n == null) return null;
-		XModelObject[] fs = FileSystemsHelper.getFileSystems(n.getModel()).getChildren();
+		XModel model = null;
+		if(n != null) {
+			model = n.getModel();
+		} else {
+			XModelObject o = EclipseResourceUtil.createObjectForResource(p);
+			if(o != null) model = o.getModel();
+		}
+		if(model == null) return null;
+		XModelObject[] fs = FileSystemsHelper.getFileSystems(model).getChildren();
 		for (XModelObject s: fs) {
 			if(s instanceof JarSystemImpl) {
 				JarSystemImpl j = (JarSystemImpl)s;
 				String loc = j.getLocation();
 				if(new File(loc).equals(new File(jarFile))) {
 					XModelObject result = s.getChildByPath(entry);
+					if(result == null && entry != null) {
+						int q = entry.indexOf('/');
+						int d = entry.indexOf('.');
+						if(q > d && d >= 0) {
+							String entry1 = entry.substring(0, q).replace('.', '/') + entry.substring(q);
+							result = s.getChildByPath(entry1);
+						}
+					}
 					if(result != null) return result;
 				}
 			}
@@ -291,8 +322,8 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		return (n == null) ? null : n.getModel().getByPath("/" + entry);		 //$NON-NLS-1$
 	}
 	
-	public static IEditorInput createJarEntryEditorInput(String jarFile, final String entry) {
-		XModelObject o = getJarEntryObject(jarFile, entry);
+	public static IEditorInput createJarEntryEditorInput(IProject project, String jarFile, final String entry) {
+		XModelObject o = getJarEntryObject(project, jarFile, entry);
 		if(o != null) return new ModelObjectJarEntryEditorInput(o, jarFile, entry);
 		return XModelObjectEditorInputFactory.createNullEditorInput(entry);
 	}
