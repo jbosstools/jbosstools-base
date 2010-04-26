@@ -13,6 +13,7 @@ package org.jboss.tools.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -106,6 +107,23 @@ public class EclipseUtil {
 		if (findIndex(prevNatures, natureId) != -1) return; 		
 		description.setNatureIds(append(prevNatures, natureId));
 		proj.setDescription(description, null);
+	}
+
+	public static void addBuilderToProject(IProject project, String builderId) throws CoreException {
+	    IProjectDescription desc = project.getDescription();
+	    ICommand[] existing = desc.getBuildSpec();
+	    for (ICommand command : existing) {
+			if(builderId.equals(command.getBuilderName())) {
+				return;
+			}
+		}
+	    ICommand[] cmds = new ICommand[existing.length + 1];
+	    ICommand newcmd = project.getDescription().newCommand();
+	    newcmd.setBuilderName(builderId);
+	    cmds[0] = newcmd;
+	    System.arraycopy(existing, 0, cmds, 1, existing.length );
+	    desc.setBuildSpec(cmds);
+	    project.setDescription(desc, null);
 	}
 
 	public static void removeNatureFromProject(IProject project, String natureId) throws CoreException {
