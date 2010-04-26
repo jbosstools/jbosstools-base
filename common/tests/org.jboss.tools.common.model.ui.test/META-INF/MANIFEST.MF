@@ -7,6 +7,8 @@ Require-Bundle: org.junit;visibility:=reexport,
  org.eclipse.jface,
  org.jboss.tools.tests,
  org.eclipse.ui,
+ org.eclipse.jdt.ui,
+ org.eclipse.ui.ide,
  org.jboss.tools.common,
  org.jboss.tools.common.model.ui,
  org.jboss.tools.common.test
