@@ -11,7 +11,9 @@ Require-Bundle: org.junit;visibility:=reexport,
  org.jboss.tools.common.model.ui,
  org.jboss.tools.jst.web,
  org.jboss.tools.jst.web.ui,
- org.jboss.tools.common.test
+ org.jboss.tools.common.test,
+ org.eclipse.jdt.ui,
+ org.eclipse.ui.ide
 Export-Package: org.jboss.tools.common.model.ui.test
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
