@@ -21,7 +21,7 @@ import junit.framework.TestCase;
  * @author eskimo
  *
  */
-public class ZipArchiveTest extends ZipBaseTest {
+public class ZipArchiveTest extends AbstractZipTestCase {
 
 	/**
 	 * Test method for {@link org.jboss.tools.common.zip.ZipArchive#ZipArchive(java.lang.String)}.

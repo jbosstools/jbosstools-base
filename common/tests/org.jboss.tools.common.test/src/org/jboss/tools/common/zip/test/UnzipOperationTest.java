@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.zip.UnzipOperation;
 
-public class UnzipOperationTest extends ZipBaseTest {
+public class UnzipOperationTest extends AbstractZipTestCase {
 
 	private static final String ORG_PACKAGE_FILTER = "org.*";
 

@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.common.all.feature"
       label="%featureName"
-      version="1.0.0.qualifier"
+      version="3.1.0.qualifier"
       provider-name="%featureProvider">
 
    <description>

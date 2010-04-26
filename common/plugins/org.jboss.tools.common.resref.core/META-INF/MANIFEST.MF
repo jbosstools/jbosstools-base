@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.resref.core
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 3.1.0.qualifier
 Bundle-Activator: org.jboss.tools.common.resref.core.ResourceReferencePlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

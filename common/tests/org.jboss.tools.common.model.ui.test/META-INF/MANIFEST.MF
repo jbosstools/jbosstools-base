@@ -2,17 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.model.ui.test;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 3.1.0.qualifier
 Require-Bundle: org.junit;visibility:=reexport,
  org.eclipse.jface,
  org.jboss.tools.tests,
  org.eclipse.ui,
  org.jboss.tools.common,
  org.jboss.tools.common.model.ui,
- org.jboss.tools.jst.web,
- org.jboss.tools.jst.web.ui,
  org.jboss.tools.common.test
 Export-Package: org.jboss.tools.common.model.ui.test
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: .

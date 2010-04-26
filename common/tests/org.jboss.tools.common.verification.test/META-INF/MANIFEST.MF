@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.verification.test;singleton:=true
-Bundle-Version: 2.0.0
-Bundle-ClassPath: common-verification-tests.jar
+Bundle-Version: 3.1.0.qualifier
+Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.common.verification.test
 Require-Bundle: 
