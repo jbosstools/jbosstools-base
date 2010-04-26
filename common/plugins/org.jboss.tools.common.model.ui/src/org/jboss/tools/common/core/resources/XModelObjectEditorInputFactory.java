@@ -68,9 +68,10 @@ public class XModelObjectEditorInputFactory implements IElementFactory {
 				}
 			}
 		} else if(memento.getString(TAG_ENTRY) != null) {
+			IProject project = (IProject)ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(projectPath));
 			String fileLocation = memento.getString(TAG_FILE_LOCATION);
 			String entry = memento.getString(TAG_ENTRY);
-			return XModelObjectEditorInput.createJarEntryEditorInput(fileLocation, entry);
+			return XModelObjectEditorInput.createJarEntryEditorInput(project, fileLocation, entry);
 		} else {
 			IProject project = (IProject)ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(projectPath));
 			String objectPath = memento.getString(TAG_PATH);
