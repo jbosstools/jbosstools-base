@@ -17,7 +17,7 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.propertieseditor.PropertiesCompoundEditor;
-import org.jboss.tools.common.test.util.TestProjectProvider;
+import org.jboss.tools.test.util.TestProjectProvider;
 
 import junit.framework.TestCase;
 
