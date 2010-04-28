@@ -118,6 +118,29 @@ public class AbstractResourceMarkerTest extends TestCase {
 		}
 	}
 
+	public static void assertMarkerIsCreatedForGivenPosition(
+			IResource resource, String type, String pattern, int lineNumber,
+			int startPosition, int endPosition) throws CoreException {
+
+		IMarker[] markers = findMarkers(resource, type, pattern);
+		StringBuffer sb = new StringBuffer("[");
+		for (int i = 0; i < markers.length; i++) {
+			int line = markers[i].getAttribute(IMarker.LINE_NUMBER, -1);
+			int start = markers[i].getAttribute(IMarker.CHAR_START, -1);
+			int end = markers[i].getAttribute(IMarker.CHAR_END, -1);
+			if(lineNumber==line && start == startPosition && end == endPosition) {
+				return;
+			}
+			if(i>0) {
+				sb.append("; ");
+			}
+			sb.append("line number - ").append(line).append(", start - ").append(start).append(", end - ").append(end);
+		}
+		sb.append("]");
+
+		fail("Marker  matches the '" + pattern + "' pattern wasn't found for line - " + lineNumber + ", start - " + startPosition + ", end - " + endPosition + ". Found markers for given patern: " + sb.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
 	public static void assertMarkerIsNotCreated(IResource resource, String type, String pattern) throws CoreException {
 		IMarker[] markers = findMarkers(resource, type, pattern);
 
