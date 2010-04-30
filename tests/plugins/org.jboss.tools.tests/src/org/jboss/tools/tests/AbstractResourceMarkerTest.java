@@ -99,6 +99,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 				realString.append(", ");
 			}
 		}
+		i = 1;
 		for (int expected : expectedLines) {
 			expectedString.append(expected);
 			if(expectedLines.length>i++) {
