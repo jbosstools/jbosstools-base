@@ -149,9 +149,9 @@ public class AbstractResourceMarkerTest extends TestCase {
 	}
 
 	public static void assertMarkerIsNotCreated(IResource resource, String type, String pattern, int expectedLine) throws CoreException {
-		int line = findMarkerLine(resource, type, pattern);
+		List<Integer> lines = findMarkerLines(resource, type, pattern);
 
-		assertFalse("Marker  matches the '" + pattern + "' pattern was found", line != -1); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse("Marker  matches the '" + pattern + "' pattern was found", lines.contains(expectedLine)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static void assertMarkerIsCreated(IResource resource, String type, String pattern) throws CoreException {
