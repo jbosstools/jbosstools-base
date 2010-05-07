@@ -91,6 +91,9 @@ public class XMLRecognizerContext extends EntityRecognizerContext {
 		}
 		Reader xml = new StringReader(docTypeString + "<root></root>"); //$NON-NLS-1$
 		DocumentBuilder db = SafeDocumentBuilderFactory.createDocumentBuilder(false);
+		if (db == null) 
+			return NULL_INFO;
+	
 		try {
 			db.setErrorHandler(new ErrorHandler() {
 				public void warning(SAXParseException exception)
