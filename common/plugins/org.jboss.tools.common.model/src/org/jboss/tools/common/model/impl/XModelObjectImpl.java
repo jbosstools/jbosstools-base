@@ -40,6 +40,7 @@ import org.jboss.tools.common.model.util.EclipseResourceUtil;
 public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     private static final long serialVersionUID = 3860648580262144825L;
 //    protected static final String ENTITY = XModelConstants.XMODEL_ENTITY_ATTR;
+    public static final String DUPLICATE = "__duplicate";
     private XModel model = null;
     private XModelEntity entity = null;
     private XModelObjectImpl parent = null;
@@ -134,6 +135,21 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     public void set(String name, String value) {
         if(value != null && value.length() < 100) value = value.intern();
         properties.put(name.intern(), value);
+    }
+
+    private Boolean hasIdAttr = null;
+    
+    public boolean hasIdAttr() {
+    	if(hasIdAttr != null) return hasIdAttr.booleanValue();
+    	hasIdAttr = Boolean.FALSE;
+    	for (int i =  0; i < getModelEntity().getAttributes().length; i++) {
+    		if("true".equals(getModelEntity().getAttributes()[i].getProperty("id"))) {
+    			hasIdAttr = Boolean.TRUE;
+    			break;
+    		}
+    	}
+    	
+    	return hasIdAttr.booleanValue();
     }
 
     protected String get_0(String name) {
@@ -300,7 +316,16 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
 
     public String getPathPart() {
         String p = name();
-        return (p == null || p.indexOf('/') < 0) ? p : p.replace('/', '#');
+        p = ((p == null || p.indexOf('/') < 0) ? p : p.replace('/', '#'));
+        return applyDuplicate(p);
+    }
+   
+    protected final String applyDuplicate(String pathpart) {
+        String duplicate = get(DUPLICATE);
+        return (duplicate == null || duplicate.length() == 0) 
+        	? pathpart 
+        	: pathpart + DUPLICATE + duplicate;
+    	
     }
 
     public XModelObject getChildByPath(String path) {
@@ -360,6 +385,10 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
         String entity = (transform) ? getEntityForCopy() : getModelEntity().getName();
         XModelObject c = getModel().createModelObject(entity, p);
         if(c != null) c.setModified(true);
+        String d = get(DUPLICATE);
+        if(d != null && d.length() > 0) {
+        	c.set(DUPLICATE, d);
+        }
         return c;
     }
 

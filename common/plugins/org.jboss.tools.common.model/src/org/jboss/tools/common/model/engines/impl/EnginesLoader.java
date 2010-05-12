@@ -86,11 +86,18 @@ public class EnginesLoader extends URLRootLoader {
             		c = cs[i].copy();
                     object.addChild(c);
             	} else {
-            		boolean has_id = c.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null;
+            		boolean has_id = c.getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null
+            			|| ((XModelObjectImpl)c).hasIdAttr();
             		if(has_id) {
             			c.removeFromParent();
             			EnginesLoader.merge(c, cs[i], false);
-            			object.addChild(c);
+            			if(!object.addChild(c)) {
+            				c.set(XModelObjectImpl.DUPLICATE, "1234");
+            				object.addChild(c);
+            			}
+            			if(c.get(XModelObjectImpl.DUPLICATE) != null) {
+            				c.set(XModelObjectImpl.DUPLICATE, "");
+            			}
             		} else {
             			EnginesLoader.merge(c, cs[i], fire);
             		}

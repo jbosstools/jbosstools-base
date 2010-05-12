@@ -117,6 +117,18 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
         			k++;
         		}
         		return;
+        	} else if(hasIdAttr()) {
+        		int k = 1;
+        		while(c != null) {
+        			super.set(XModelObjectImpl.DUPLICATE, "" + k); //$NON-NLS-1$
+        			npp = getPathPart();
+        			if(k == 1 && npp.indexOf(XModelObjectImpl.DUPLICATE) < 0) {
+        				elementExists(c, name, value);
+        				return;
+        			}
+        			c = p.children.change(this, opp, npp);
+        			k++;
+        		}
         	} else {
         		if(ov == null) properties.remove(name); else super.set(name, ov);
         		elementExists(c, name, value);
