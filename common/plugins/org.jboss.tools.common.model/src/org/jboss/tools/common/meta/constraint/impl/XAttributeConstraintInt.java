@@ -14,7 +14,7 @@ import java.text.MessageFormat;
 import org.w3c.dom.*;
 
 public class XAttributeConstraintInt extends XAttributeConstraintProperties {
-    protected boolean mandatory = true;
+    protected boolean mandatory = false;
     protected int min = Integer.MIN_VALUE;
     protected int max = Integer.MAX_VALUE;
     public XAttributeConstraintInt() {
@@ -23,7 +23,7 @@ public class XAttributeConstraintInt extends XAttributeConstraintProperties {
 
     public void load(Element element) {
         super.load(element);
-        mandatory = getBoolean("mandatory", true); //$NON-NLS-1$
+        mandatory = getBoolean("mandatory", false); //$NON-NLS-1$
         min = getInt("minimum", Integer.MIN_VALUE); //$NON-NLS-1$
         max = getInt("maximum", Integer.MAX_VALUE); //$NON-NLS-1$
     }

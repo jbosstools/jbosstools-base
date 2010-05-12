@@ -30,7 +30,7 @@ import org.jboss.tools.common.model.util.PositionHolder;
 
 public class ResourceMarkers {
 	public static String TEXT_PROBLEM = "org.jboss.tools.common.model.textproblemmarker"; //$NON-NLS-1$
-	public static String CONSTRAINT_PROBLEM = "org.jboss.tools.common.model.web.ui.constraintsmarker"; //$NON-NLS-1$
+	public static String CONSTRAINT_PROBLEM = "org.jboss.tools.jst.web.ui.constraintsmarker"; //$NON-NLS-1$
 	public static String JST_WEB_PROBLEM = "org.jboss.tools.jst.web.ui.strutsmarker"; //$NON-NLS-1$
 	private XModelObject object;
 	

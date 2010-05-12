@@ -223,9 +223,13 @@ public class XModelObjectLoaderUtil {
         XModelEntity entity = o.getModelEntity();
         XAttribute[] as = entity.getAttributes();
         for (int i = 0; i < as.length; i++) {
+            String n = as[i].getName();
+            if("attributes".equals(n) && "true".equals(as[i].getProperty("any"))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            	loadAnyAtributes(element, o);
+            	continue;
+            }
             String xmlname = as[i].getXMLName();
             if (xmlname == null || xmlname.length() == 0) continue;
-            String n = as[i].getName();
             String value = getAttribute(element, xmlname, as[i]);
             if (value != null) o.setAttributeValue(n, value);
             String commentName = getAttributeCommentName(xmlname);
@@ -332,6 +336,17 @@ public class XModelObjectLoaderUtil {
             		if(q != null) EnginesLoader.merge(q, co, false);
             	} catch (XModelException exc) {
             		ModelPlugin.getPluginLog().logError("XModelObjectLoaderUtil:loadChildren:" + exc.getMessage(), exc); //$NON-NLS-1$
+        		} else {
+        			int k = 1;
+        			String pp = co.getPathPart();
+        			while(o.getChildByPath(pp) != null) {
+        				co.set(XModelObjectImpl.DUPLICATE, "" + k); //$NON-NLS-1$
+        				String ppn = co.getPathPart();
+        				if(ppn.equals(pp)) break;
+        				pp = ppn;
+        				++k;
+        			}
+        			o.addChild(co);
             	}
             	continue;
             } 
@@ -443,9 +458,13 @@ public class XModelObjectLoaderUtil {
         }
         for (int i = 0; i < as.length; i++) {
             if (as[i].isFake()) continue;
+            String n = as[i].getName();
+            if("attributes".equals(n) && "true".equals(as[i].getProperty("any"))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            	saveAnyAtributes(element, o);
+            	continue;
+            }
             String xmlname = as[i].getXMLName();
             if (xmlname == null || xmlname.length() == 0) continue;
-            String n = as[i].getName();
             String v = o.getAttributeValue(n);
             if (isSaveable(entity, n, v, as[i].getDefaultValue())) {
                 saveAttribute(element, xmlname, v);
@@ -843,17 +862,7 @@ public class XModelObjectLoaderUtil {
 	
 	protected void loadAnyElement(Element element, XModelObject o) {
 		o.setAttributeValue("tag", element.getTagName()); //$NON-NLS-1$
-		StringBuffer sb = new StringBuffer();
-		NamedNodeMap as = element.getAttributes();
-		for (int i = 0; i < as.getLength(); i++) {
-			Node n = as.item(i);
-			String nm = n.getNodeName();
-			String v = n.getNodeValue();
-			if(v == null) continue;
-			if(sb.length() > 0) sb.append(";"); //$NON-NLS-1$
-			sb.append(nm).append("=").append(v); //$NON-NLS-1$
-		}
-		o.setAttributeValue("attributes", sb.toString()); //$NON-NLS-1$
+		loadAnyAtributes(element, o);
 		String text = getAttribute(element, "#text").trim(); //$NON-NLS-1$
 		if(text.length() > 0) {
 			while(text.startsWith("\n") || text.startsWith("\r")) text = text.substring(1); //$NON-NLS-1$ //$NON-NLS-2$
@@ -861,6 +870,27 @@ public class XModelObjectLoaderUtil {
 			o.setAttributeValue("text", text); //$NON-NLS-1$
 		}
 		loadChildren(element, o);
+	}
+
+	public static void loadAnyAtributes(Element element, XModelObject o) {
+		HashSet<String> attrs = new HashSet<String>();
+		XAttribute[] oas = o.getModelEntity().getAttributes();
+		for (XAttribute a: oas) {
+			String xml = a.getXMLName();
+			if(xml != null && xml.length() > 0) attrs.add(xml);
+		}
+		StringBuffer sb = new StringBuffer();
+		NamedNodeMap as = element.getAttributes();
+		for (int i = 0; i < as.getLength(); i++) {
+			Node n = as.item(i);
+			String nm = n.getNodeName();
+			if(attrs.contains(nm)) continue;
+			String v = n.getNodeValue();
+			if(v == null) continue;
+			if(sb.length() > 0) sb.append(";"); //$NON-NLS-1$
+			sb.append(nm).append("=").append(v); //$NON-NLS-1$
+		}
+		o.setAttributeValue("attributes", sb.toString()); //$NON-NLS-1$
 	}
     
 	protected void saveAnyElement(Element parent, XModelObject o) {
@@ -870,6 +900,18 @@ public class XModelObjectLoaderUtil {
 			xmlname = namespace + ":" + xmlname; //$NON-NLS-1$
 		}
 		Element element = XMLUtil.createElement(parent, xmlname);
+		saveAnyAtributes(element, o);
+		String text = o.getAttributeValue("text"); //$NON-NLS-1$
+		if(text != null && text.length() > 0) {
+			saveAttribute(element, "#text", text); //$NON-NLS-1$
+		}
+		XModelObject[] cs = o.getChildren();
+		for (int i = 0; i < cs.length; i++) {
+			saveAnyElement(element, cs[i]);
+		}
+	}
+
+	public static void saveAnyAtributes(Element element, XModelObject o) {
 		String attrs = o.getAttributeValue("attributes"); //$NON-NLS-1$
 		StringTokenizer st = new StringTokenizer(attrs, ";"); //$NON-NLS-1$
 		while(st.hasMoreTokens()) {
@@ -879,14 +921,6 @@ public class XModelObjectLoaderUtil {
 			String n = t.substring(0, i);
 			String v = t.substring(i + 1);
 			element.setAttribute(n, v);
-		}
-		String text = o.getAttributeValue("text"); //$NON-NLS-1$
-		if(text != null && text.length() > 0) {
-			saveAttribute(element, "#text", text); //$NON-NLS-1$
-		}
-		XModelObject[] cs = o.getChildren();
-		for (int i = 0; i < cs.length; i++) {
-			saveAnyElement(element, cs[i]);
 		}
 	}
 
@@ -941,6 +975,9 @@ public class XModelObjectLoaderUtil {
 			}
 		}
 		mergeFinalComment(destination, source, fire);
+		
+		String d = destination.get(XModelObjectImpl.DUPLICATE);
+		if(d != null && d.length() > 0) destination.set(XModelObjectImpl.DUPLICATE, "");
 	}
 	
 	public static void mergeAttributeComment(XModelObject destination, XModelObject source, XAttribute attr, boolean fire) {
