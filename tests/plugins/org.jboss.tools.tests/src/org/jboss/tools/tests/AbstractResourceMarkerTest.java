@@ -65,9 +65,10 @@ public class AbstractResourceMarkerTest extends TestCase {
 	public static IMarker[] findMarkers(IResource resource, String type, String pattern) throws CoreException {
 		List<IMarker> result = new ArrayList<IMarker>();
 		IMarker[] markers = resource.findMarkers(type, true, IResource.DEPTH_INFINITE);
+		System.out.println("");
 		for (int i = 0; i < markers.length; i++) {
 			String message = markers[i].getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
-			if (message.matches(pattern) && markers[i].exists()) {
+			if ((message.matches(pattern)||message.equals(pattern)) && markers[i].exists()) {
 				result.add(markers[i]);
 			}
 		}
