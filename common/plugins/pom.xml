@@ -1,0 +1,32 @@
+<project
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+	  <relativePath>../../parent-pom.xml</relativePath>
+	  <groupId>org.jboss.tools</groupId>
+	  <artifactId>org.jboss.tools.parent.pom</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools</groupId>
+	<artifactId>common.plugins</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>org.jboss.tools.common</module>
+		<module>org.jboss.tools.common.el.core</module>
+		<module>org.jboss.tools.common.el.ui</module>
+		<module>org.jboss.tools.common.gef</module>
+		<module>org.jboss.tools.common.meta.ui</module>
+		<module>org.jboss.tools.common.model</module>
+		<module>org.jboss.tools.common.model.ui</module>
+		<module>org.jboss.tools.common.projecttemplates</module>
+		<module>org.jboss.tools.common.resref.core</module>
+		<module>org.jboss.tools.common.resref.ui</module>
+		<module>org.jboss.tools.common.text.ext</module>
+		<module>org.jboss.tools.common.text.xml</module>
+		<module>org.jboss.tools.common.ui</module>
+		<module>org.jboss.tools.common.verification</module>
+		<module>org.jboss.tools.common.verification.ui</module>
+	</modules>
+</project>
+	

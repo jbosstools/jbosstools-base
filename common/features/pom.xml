@@ -1,0 +1,24 @@
+<project
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+	  <relativePath>../../parent-pom.xml</relativePath>
+	  <groupId>org.jboss.tools</groupId>
+	  <artifactId>org.jboss.tools.parent.pom</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools</groupId>
+	<artifactId>common.features</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>org.jboss.tools.common.all.feature</module>
+		<module>org.jboss.tools.common.all.tests.feature</module>
+		<module>org.jboss.tools.common.core.feature</module>
+		<module>org.jboss.tools.common.feature</module>
+		<module>org.jboss.tools.common.text.ext.feature</module>
+		<module>org.jboss.tools.common.ui.feature</module>
+		<module>org.jboss.tools.common.verification.feature</module>
+	</modules>
+</project>
+	
