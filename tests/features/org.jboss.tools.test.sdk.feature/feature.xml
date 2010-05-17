@@ -142,7 +142,7 @@ Raleigh NC 27606 USA.
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>
+         unpack="true"/>
 
    <plugin
          id="org.jboss.tools.jst.jsp.test"
@@ -194,10 +194,18 @@ Raleigh NC 27606 USA.
          unpack="false"/>
 
    <plugin
+         id="org.jboss.tools.ws.ui.bot.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="true"/>
+
+   <plugin
          id="org.jboss.tools.jmx.core.test"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="true"/>
 
    <plugin
          id="org.jboss.tools.jbpm.convert.test"
