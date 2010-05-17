@@ -11,12 +11,22 @@
 package org.jboss.tools.common.meta.constraint.impl;
 
 import org.w3c.dom.*;
+import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.constraint.*;
 import org.jboss.tools.common.meta.impl.*;
 
 public class XAttributeConstraintImpl extends XMetaElementImpl implements XAttributeConstraint {
+	/**
+	 * It happens that some data useful for constraint, e.g. that attribute is required,
+	 * is contained at the attribute object.
+	 */
+	protected XAttribute attribute;
     
     public XAttributeConstraintImpl() {}
+
+    public void setAttribute(XAttribute attribute) {
+    	this.attribute = attribute;
+    }
 
     public boolean accepts(String value){
         return true;

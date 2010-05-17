@@ -23,7 +23,7 @@ public class XAttributeImpl extends XMetaElementImpl implements XAttribute {
     protected XAttributeEditor m_Editor;
     protected String m_DefValue;
     protected boolean m_Visible;
-    protected ConstraintHolder constraint = new ConstraintHolder();
+    protected ConstraintHolder constraint = new ConstraintHolder(this);
     protected boolean m_Required;
     protected boolean m_Editable;
     protected boolean trimmable;
@@ -256,11 +256,14 @@ class AdapterHolder {
 }
 
 class ConstraintHolder {
+	XAttributeImpl attribute;
 	private XAttributeConstraint constraint;
 	private String loader;
 	private Element element;
 	
-	public ConstraintHolder() {}
+	public ConstraintHolder(XAttributeImpl attribute) {
+		this.attribute = attribute;
+	}
 
 	public void init(String loader, Element element) {
 		this.loader = loader;
@@ -291,6 +294,9 @@ class ConstraintHolder {
         }
 		if(constraint == null) constraint = new XAttributeConstraintImpl();
 		
+		if(constraint instanceof XAttributeConstraintImpl) {
+			((XAttributeConstraintImpl)constraint).setAttribute(attribute);
+		}
 		if(element != null) 
 			((XAttributeConstraintImpl)constraint).load(element);
 		loader = null;
