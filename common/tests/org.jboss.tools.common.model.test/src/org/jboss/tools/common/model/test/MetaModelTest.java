@@ -184,8 +184,11 @@ public class MetaModelTest extends TestCase {
 	
 	/**
 	 * Check that extensions reference existing entities.
+	 * This test make sense only in client plug-ins. It should be moved to jst,jsf and 
+	 * others plug-ins which are using model plug-in. 
+	 *
 	 */
-	public void testEntityExtensionsFixMe() {
+	public void fixmeTestEntityExtensions() {
 		XModelMetaDataImpl meta = (XModelMetaDataImpl)XModelMetaDataImpl.getInstance();
 		XExtensions s = meta.getExtensions();
 		//TODO - should be tested through public interface
