@@ -561,7 +561,6 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				left = (ELInvocationExpression)left.getParent();
 				if (left != expr) { // inside expression
 					segment = new JavaMemberELSegmentImpl();
-					segment.setResolved(true);
 					if(left instanceof ELArgumentInvocation) {
 						String s = "#{" + left.getLeft().toString() + collectionAdditionForCollectionDataModel + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 						ELParser p = getParserFactory().createParser();
@@ -575,6 +574,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						members = resolveSegment(left, members, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
 					}
 					if(!members.isEmpty()) {
+						segment.setResolved(true);
 						segment.setMemberInfo(members.get(0));	// TODO: This is a buggy way to select a member to setup in a segment
 					}
 					resolution.addSegment(segment);
