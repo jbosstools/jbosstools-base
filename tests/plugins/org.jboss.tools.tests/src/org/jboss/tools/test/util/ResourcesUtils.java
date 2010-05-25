@@ -195,7 +195,7 @@ public class ResourcesUtils {
 	 * @param path the path
 	 * @param projectName the project name
 	 */
-	static public IProject importProjectIntoWorkspace(String path, String projectName) throws IOException {
+	static public IProject importProjectIntoWorkspace(String path, String projectName) {
 	
 		IProject project = null;
 	
@@ -219,16 +219,10 @@ public class ResourcesUtils {
 			unimportedFiles.add(".svn"); //$NON-NLS-1$
 
 			importProvider.setUnimportedFiles(unimportedFiles);
-			
-			File file = new File(path);
-			
-			if(!file.isDirectory()) {
-				throw new IOException("Cannot import test project from " + file);
-			}
 
 			// create import operation
 			ImportOperation importOp = new ImportOperation(project
-					.getFullPath(), file, importProvider, overwrite);
+					.getFullPath(), new File(path), importProvider, overwrite);
 
 			// import files just to project folder ( without old structure )
 			importOp.setCreateContainerStructure(false);
