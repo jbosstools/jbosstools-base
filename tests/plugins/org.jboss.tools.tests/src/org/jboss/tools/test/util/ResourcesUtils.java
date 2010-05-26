@@ -17,7 +17,11 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -34,7 +38,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
+import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
+import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
 import org.jboss.tools.tests.ImportProvider;
 import org.osgi.framework.Bundle;
 
@@ -54,7 +60,8 @@ public class ResourcesUtils {
 		String tplPrjLcStr;
 			tplPrjLcStr = FileLocator.resolve(bundle.getEntry(templLocation))
 				.getFile();
-			IProject importedPrj = importProjectIntoWorkspace(tplPrjLcStr, new Path(tplPrjLcStr).lastSegment());
+			String protocol = FileLocator.resolve(bundle.getEntry(templLocation)).getProtocol();
+			IProject importedPrj = importProjectIntoWorkspace(tplPrjLcStr, new Path(tplPrjLcStr).lastSegment(),protocol);
 		return importedPrj;
 	}
 
@@ -189,15 +196,20 @@ public class ResourcesUtils {
 
 	private static final long IMPORT_DELAY = 1000;
 	
+	static public IProject importProjectIntoWorkspace(String path, String projectName) { 
+		return importProjectIntoWorkspace(path, projectName,"file");
+	}
+	
 	/**
 	 * Import project into workspace.
 	 * 
 	 * @param path the path
 	 * @param projectName the project name
+	 * @param protocol 
 	 */
-	static public IProject importProjectIntoWorkspace(String path, String projectName) {
+	static public IProject importProjectIntoWorkspace(String path, String projectName, String protocol) {
 	
-		IProject project = null;
+	IProject project = null;
 	
 		try {
 			 boolean state = ResourcesUtils.setBuildAutomatically(false);
@@ -211,19 +223,33 @@ public class ResourcesUtils {
 					return ALL;
 				}
 			};
-
-			ImportProvider importProvider = new ImportProvider();
-
-			// need to remove from imported project "svn" files
-			List<String> unimportedFiles = new ArrayList<String>();
-			unimportedFiles.add(".svn"); //$NON-NLS-1$
-
-			importProvider.setUnimportedFiles(unimportedFiles);
-
-			// create import operation
-			ImportOperation importOp = new ImportOperation(project
-					.getFullPath(), new File(path), importProvider, overwrite);
-
+			if(Debug.DEBUG_IMPORT_OPERATION) {
+				System.out.println("[ResourceUtils]:Target Import Location: " + project.getFullPath());
+				System.out.println("[ResourceUtils]:Full path to source: " + path);
+				System.out.println("[ResourceUtils]:Protocol: " + protocol);				
+			}
+			ImportOperation importOp = null;
+			if("jar".equals(protocol)) {
+				String pathToZip = path.substring(0,path.indexOf("!"));
+				String zipEntryName = path.substring(path.indexOf("!") + 2, path.length());
+				pathToZip = pathToZip.substring("file:".length());
+				// create import operation
+				if(Debug.DEBUG_IMPORT_OPERATION) {
+					System.out.println("[ResourceUtils]:pathToZip: " + pathToZip);
+					System.out.println("[ResourceUtils]:zipEntryName: " + zipEntryName);
+				}
+				ZipFile zipFile = new ZipFile(pathToZip);
+				ZipFileStructureProvider zipStrProvider = new ZipFileStructureProvider(zipFile);
+				ZipEntry source = getZipEntry(zipStrProvider,zipEntryName);
+				importOp = new ImportOperation(project
+						.getFullPath(), source, zipStrProvider , overwrite);
+				importOp.setFilesToImport(zipStrProvider.getChildren(source));
+			} else {
+				// create import operation
+				importOp = new ImportOperation(project
+						.getFullPath(), new File(path), FileSystemStructureProvider.INSTANCE, overwrite);
+			}
+			
 			// import files just to project folder ( without old structure )
 			importOp.setCreateContainerStructure(false);
 
@@ -243,7 +269,28 @@ public class ResourcesUtils {
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 		return project;
+	}
+
+	private static ZipEntry getZipEntry(
+			ZipFileStructureProvider zipStrProvider, String zipEntryName) {
+		String[] entries = zipEntryName.split("/");
+		ZipEntry parent = zipStrProvider.getRoot();
+		for (String string : entries) {
+			List children = zipStrProvider.getChildren(parent);
+			for (Object object : children) {
+				ZipEntry current = (ZipEntry)object;
+				String name = parent== zipStrProvider.getRoot()? string + "/": parent.getName() + string + "/";
+				if(name.equals(current.getName())) {
+					parent = current;
+					break;
+				}
+			}
+			
+		}
+		return parent;
 	}
 }
