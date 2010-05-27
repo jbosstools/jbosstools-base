@@ -9,6 +9,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -58,7 +59,10 @@ public class ClassPathTest extends TestCase {
 		IJavaProject jp = JavaCore.create(project2);
 		IClasspathEntry[] es = jp.getRawClasspath();
 		
-		String location = getLocation("projects/c.jar");
+		TestProjectProvider provider3 = new TestProjectProvider(BUNDLE_NAME, null, "Test3", true); 
+		provider3.getProject();
+		
+		String location = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path("/Test3/lib/c.jar")).getLocation().toFile().getAbsolutePath();
 		assertTrue("Cannot find file " + location, new File(location).isFile());
 		
 		IPath path = new Path(location);
@@ -79,7 +83,7 @@ public class ClassPathTest extends TestCase {
 		String[] testNames = {
 			"/Test2/lib/b.jar",	//1. jar from this project
 			"/Test1/lib/a.jar", //2. jar from another project
-			"/projects/c.jar"   //3. external jar
+			"/Test3/lib/c.jar"   //3. external jar
 		};
 		for (int i = 0; i < testNames.length; i++) {
 			assertTrue("Cannot find classpath entry " + testNames[i], contains(list, testNames[i]));
