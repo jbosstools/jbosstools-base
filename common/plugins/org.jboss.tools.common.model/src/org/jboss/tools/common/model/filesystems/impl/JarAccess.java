@@ -18,13 +18,16 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.eclipse.core.resources.IProject;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.util.FileUtil;
 
 public class JarAccess {
@@ -274,6 +277,56 @@ public class JarAccess {
 		return templocation;
 	}
 
+	JarSystemImpl main = null;
+	Set<JarSystemImpl> slaves = new HashSet<JarSystemImpl>();
+
+	public JarSystemImpl getMain() {
+		IProject p = EclipseResourceUtil.getProject(main);
+		if(p == null || !p.isAccessible() || main.getParent() == null) {
+			main = null;
+			synchronized(slaves) {
+				Iterator<JarSystemImpl> it = slaves.iterator();
+				while(it.hasNext()) {
+					JarSystemImpl s = it.next();
+					p = EclipseResourceUtil.getProject(s);
+					if(p == null || !p.isAccessible() || s.getParent() == null) {
+						it.remove();
+					} else if(main == null) {
+						main = s;
+						it.remove();
+					}					
+				}			
+			}
+            if(main != null) main.jarUpdated();
+            JarSystemImpl[] ss = getSlaves();
+            for (JarSystemImpl s: ss) s.jarUpdated();
+		}
+		return main;
+	}
+
+	public void setMain(JarSystemImpl main) {
+		this.main = main;
+	}
+
+	public JarSystemImpl[] getSlaves() {
+		synchronized(slaves) {
+			return slaves.toArray(new JarSystemImpl[slaves.size()]);
+		}
+	}
+
+	public void addSlave(JarSystemImpl s) {
+		if(main == null) {
+			main = s;
+		} else {
+			synchronized(slaves) {
+				slaves.add(s);
+			}
+		}
+	}
+
+	public boolean isSlave(JarSystemImpl s) {
+		return slaves.contains(s);
+	}
 }
 
 class LFileObjectJarImpl implements LFileObject {
