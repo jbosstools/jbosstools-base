@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<description>To install these features, point Eclipse at this site.</description>
+	<!-- JBoss Tools common Nightly Build Update Site -->
+	<category-def label="JBoss Tools common Nightly Build Update Site" name="JBoss Tools common Nightly Build Update Site">
+		<description>JBoss Tools common Nightly Build Update Site: contains all features in this build.</description>
+	</category-def>
+	<feature url="features/org.jboss.tools.common.all.feature_0.0.0.jar" id="org.jboss.tools.common.all.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.core.feature_0.0.0.jar" id="org.jboss.tools.common.core.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.feature_0.0.0.jar" id="org.jboss.tools.common.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.text.ext.feature_0.0.0.jar" id="org.jboss.tools.common.text.ext.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.ui.feature_0.0.0.jar" id="org.jboss.tools.common.ui.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.verification.feature_0.0.0.jar" id="org.jboss.tools.common.verification.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+
+</site>
