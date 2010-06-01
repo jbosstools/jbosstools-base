@@ -57,14 +57,24 @@ public class ResourcesUtils {
 			IOException, CoreException, 
 			InvocationTargetException, InterruptedException  {
 		
+		return importProject(bundle, templLocation, new Path(templLocation).lastSegment(), monitor);
+	}
+
+	public static IProject importProject( 
+			Bundle bundle, String templLocation, String projectName, 
+			IProgressMonitor monitor) 
+		throws 
+			IOException, CoreException, 
+			InvocationTargetException, InterruptedException  {
+		
 		String tplPrjLcStr;
 			tplPrjLcStr = FileLocator.resolve(bundle.getEntry(templLocation))
 				.getFile();
 			String protocol = FileLocator.resolve(bundle.getEntry(templLocation)).getProtocol();
-			IProject importedPrj = importProjectIntoWorkspace(tplPrjLcStr, new Path(tplPrjLcStr).lastSegment(),protocol);
+			IProject importedPrj = importProjectIntoWorkspace(tplPrjLcStr, projectName, protocol);
 		return importedPrj;
 	}
-
+	
 	public static IProject importProject( 
 			Bundle bundle, String templLocation) throws IOException, CoreException, InvocationTargetException, InterruptedException {
 		return importProject(bundle, templLocation, new NullProgressMonitor());
