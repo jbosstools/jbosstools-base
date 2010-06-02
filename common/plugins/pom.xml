@@ -19,6 +19,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.common.meta.ui</module>
 		<module>org.jboss.tools.common.model</module>
 		<module>org.jboss.tools.common.model.ui</module>
+		<module>org.jboss.tools.common.model.ui.capabilities</module>
 		<module>org.jboss.tools.common.projecttemplates</module>
 		<module>org.jboss.tools.common.resref.core</module>
 		<module>org.jboss.tools.common.resref.ui</module>
