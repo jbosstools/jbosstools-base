@@ -457,43 +457,6 @@
 			class="org.jboss.tools.common.model.ui.editors.dnd.PlainTextDropCommand"/>
 
    </extension>
-   <extension
-         point="org.eclipse.ui.activities">
-      <category
-            description="%CategoryDescription_experimental"
-            id="org.jboss.tools.common.model.ui.experimental"
-            name="%CategoryName_experimental"/>
-      <categoryActivityBinding
-            activityId="org.jboss.tools.common.model.ui.templates"
-            categoryId="org.jboss.tools.common.model.ui.experimental"/>
-      <activity
-            id="org.jboss.tools.common.model.ui.templates"
-            name="%ActivityName_templates"/>
-      <activityPatternBinding
-            activityId="org.jboss.tools.common.model.ui.templates"
-            pattern="org\.jboss\.tools\.common\.model\.ui/.*templates"/>
-      <activityPatternBinding
-            activityId="org.jboss.tools.common.model.ui.templates"
-            pattern="org\.jboss\.tools\.jsf\.ui/.*jsfimplementations"/>
-      <activityPatternBinding
-            activityId="org.jboss.tools.common.model.ui.templates"
-            pattern="org\.jboss\.tools\.jsf\.ui/.*capabilities"/>
-      <activityPatternBinding
-            activityId="org.jboss.tools.common.model.ui.templates"
-            pattern="ExadelTemplatesPropertiesPage"/>
-      <activityPatternBinding
-            activityId="org.jboss.tools.common.model.ui.templates"
-            pattern="org\.jboss\.tools\.struts\.ui/.*environments"/>
-      <activityPatternBinding
-            activityId="org.jboss.tools.common.model.ui.templates"
-            pattern="org\.jboss\.tools\.jst\.web\.ui/.*libsets"/>
-      <activityPatternBinding
-            activityId="org.jboss.tools.common.model.ui.templates"
-            pattern="org\.jboss\.tools\.common\.model\.ui/ExadelTemplatesPropertiesPage"/>
-                  <activityPatternBinding
-            activityId="org.jboss.tools.common.model.ui.templates"
-            pattern="org\.jboss\.tools\.jst\.web\.ui/.*SaveProjectAsTemplateActionDelegate"/>
-   </extension>
 
  <extension
        point="org.jboss.tools.common.model.ui.attributeContentProposalProviders">
