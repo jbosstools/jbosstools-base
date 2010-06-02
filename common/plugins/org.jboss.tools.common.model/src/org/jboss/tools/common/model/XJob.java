@@ -118,9 +118,15 @@ public class XJob extends WorkspaceJob {
 				ids.add(runnable.getId());
 				list.add(runnable);
 			}
-			if (getState() == Job.NONE) {
+			if (getState() == Job.NONE || !isRunning()) {
 				schedule(1000);
 			}
+		}
+	}
+
+	private boolean isRunning() {
+		synchronized(this) {
+			return running;
 		}
 	}
 
@@ -132,19 +138,27 @@ public class XJob extends WorkspaceJob {
 				ids.add(runnable.getId());
 				list.add(0, runnable);
 			}
-			if (getState() == Job.NONE) {
+			if (getState() == Job.NONE || !isRunning()) {
 				schedule(0);
 			}
 		}
 	}
+	
+	boolean running = false;
 
 	@Override
 	public IStatus runInWorkspace(IProgressMonitor monitor)
 			throws CoreException {
+		synchronized(this) {
+			running = true;
+		}
 		while(true) {
 			XRunnable r = null;
 			synchronized (this) {
-				if(list.size() == 0) break;
+				if(list.size() == 0) {
+					running = false;
+					break;
+				}
 				r = list.remove(0);
 			}
 			// monitor.subTask(r.getId()) is irrelevant for system jobs 
@@ -154,13 +168,13 @@ public class XJob extends WorkspaceJob {
 			//Bundle b = Platform.getBundle("org.jboss.tools.common.model");
 			//state = b==null ? -1 : b.getState();
 			//if(state == Bundle.ACTIVE) {
+			synchronized (this) {
+				ids.remove(r.getId());
+			}
 			if (!isSuspended()) {
 				r.run();
 			}
 			//}
-			synchronized (this) {
-				ids.remove(r.getId());
-			}
 		}
 		return Status.OK_STATUS;
 	}
