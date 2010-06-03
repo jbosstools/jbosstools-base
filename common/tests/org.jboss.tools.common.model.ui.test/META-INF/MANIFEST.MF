@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.model.ui.test;singleton:=true
 Bundle-Version: 3.1.0.qualifier
-Require-Bundle: org.junit;visibility:=reexport,
+Require-Bundle: org.junit;bundle-version="3.8.2";visibility:=reexport,
  org.eclipse.jface,
  org.jboss.tools.tests,
  org.eclipse.ui,
