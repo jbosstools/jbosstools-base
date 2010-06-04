@@ -200,7 +200,14 @@ public class JarAccess {
 		String encoding = null;
 		boolean first = true;
 		try {
-			InputStream is = jar.getInputStream(jar.getEntry(path));
+			ZipEntry entry = jar.getEntry(path);
+			if(entry == null) {
+				String error = "JarAccess: cannot obtain entry for path '" + path + "' from jar '" + location + "'.";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+				ModelPlugin.getDefault().logError(error);
+				return ""; //$NON-NLS-1$
+			}
+			
+			InputStream is = jar.getInputStream(entry);
 			bs = new BufferedInputStream(is);
 			while ((length = bs.available()) > 0) {
 				if (length > size)
