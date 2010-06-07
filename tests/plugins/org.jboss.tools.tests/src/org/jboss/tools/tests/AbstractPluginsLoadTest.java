@@ -37,9 +37,9 @@ import org.xml.sax.SAXException;
  * @author eskimo
  *
  */
-public class AbstractPluginsLoadTest extends TestCase {
+public class AbstractPluginsLoadTest extends AbstractRuntimeTest {
 
-	public static final String BUNDLE_GROUP_PROVIDER_NAME = "Update Manager Configurator";
+
 	private static final String PLUGIN_TAG_NAME = "plugin";
 	private static final String ID_ATTRIBUTE_NAME = "id"; 
 
@@ -80,43 +80,7 @@ public class AbstractPluginsLoadTest extends TestCase {
 		}
 	}
 
-	/**
-	 * @param featureId
-	 */
-	private Bundle getFirstBundleFor(String featureId) {
-		IBundleGroupProvider[] providers = Platform.getBundleGroupProviders();
-		System.out.println(providers.length);
-		for (IBundleGroupProvider iBundleGroupProvider : providers) {
-			System.out.println(iBundleGroupProvider.getName());
-			IBundleGroup[] bundleGroups = iBundleGroupProvider.getBundleGroups();
-			if(BUNDLE_GROUP_PROVIDER_NAME.equals(iBundleGroupProvider.getName())) {
-				for (IBundleGroup iBundleGroup : bundleGroups) {
-					if(iBundleGroup.getIdentifier().equals(featureId)) {
-						Bundle[] bundles = iBundleGroup.getBundles();
-						for (Bundle bundle : bundles) {
-							return bundle;
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
-	
-	private boolean isPluginResolved(String pluginId) {
-		Bundle bundle = Platform.getBundle(pluginId);
-		assertNotNull(pluginId + " failed to load.", bundle); //$NON-NLS-1$
-		try {
-			// this line is needed to to force plug-in loading and to change it state to ACTIVE 
-			bundle.loadClass("fake class"); //$NON-NLS-1$
-		} catch (ClassNotFoundException e) {
-			// It happens always because loaded class doesn't not exist
-		}
-		return ((bundle.getState() & Bundle.RESOLVED) > 0)
-				|| ((bundle.getState() & Bundle.ACTIVE) > 0);
-	}
-
-	private void assertPluginsResolved(Bundle[] bundles) {
+	public void assertPluginsResolved(Bundle[] bundles) {
 		for (Bundle bundle : bundles) {
 			assertTrue("Plugin '" + bundle.getSymbolicName() + "' is not resolved", //$NON-NLS-1$ //$NON-NLS-2$
 					isPluginResolved(bundle.getSymbolicName()));
@@ -124,15 +88,7 @@ public class AbstractPluginsLoadTest extends TestCase {
 		}
 	}
 	
-//	public void testAsComp() throws IOException {
-//		testBundlesAreLoadedFor("org.jboss.ide.eclipse.as.feature");
-//	}
-//	
-//	public void testJdtComp() throws IOException {
-//		testBundlesAreLoadedFor("org.eclipse.jdt");
-//	}
-//	
-//	public void testRichfacesComp() throws IOException {
-//		testBundlesAreLoadedFor("org.jboss.tools.richfaces.feature");
-//	}
+	public void assertPluginResolved(Bundle bundle) {
+		assertPluginsResolved(new Bundle[] {bundle});
+	}
 }
