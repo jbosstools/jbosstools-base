@@ -62,6 +62,10 @@ public final class CommonUIMessages extends NLS {
 
 	public static String TEXT_FIELD_EDITOR_PARENT_CONTROL_SHOULD_BE_COMPOSITE;
 
+	public static String BUTTON_ADD;
+
+	public static String BUTTON_REMOVE;
+
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, CommonUIMessages.class);
 	}
