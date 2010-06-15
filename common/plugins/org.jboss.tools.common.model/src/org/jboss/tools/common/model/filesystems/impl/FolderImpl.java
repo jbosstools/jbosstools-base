@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -40,7 +41,6 @@ import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.BodySource;
 import org.jboss.tools.common.model.filesystems.FileAuxiliary;
 import org.jboss.tools.common.model.filesystems.FilePathHelper;
@@ -66,6 +66,30 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 	LinkedResources linked = new LinkedResources();
 //	protected Map<String, File> linked = new HashMap<String, File>();
 //	protected Map<String, IResource> linkedResources = new HashMap<String, IResource>();
+
+	public static File toFile(IResource resource) {
+		if(resource == null) return null;
+		File f = null;
+		IPath path = resource.getLocation();
+		if(path == null || true) {
+			URI uri = resource.getLocationURI();
+			if(uri != null) {
+				String scheme = uri.getScheme();
+				if("file".equals(scheme)) try { //$NON-NLS-1$
+					f = new File(uri);
+				} catch (IllegalArgumentException e) {
+					ModelPlugin.getDefault().logError(e); //TODO remove and ignore after testing
+				}
+				if(f != null && !f.exists()) {
+					f = null;
+				}
+			}
+		} else {
+			f = path.toFile();
+		}
+		
+		return f;
+	}
 
     public FolderImpl() {}
 
@@ -159,11 +183,11 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         for (int i = 0; i < rs.length; i++) {
         	if(!rs[i].isAccessible()) continue;
         	if(!rs[i].isLinked()) continue;
-        	if(rs[i].getLocation() == null) {
+        	File f = toFile(rs[i]);
+        	if(f == null) {
 //        		System.out.println("no location at link " + rs[i]);
         		continue;
         	}
-        	File f = rs[i].getLocation().toFile();
         	linked.registerResource(rs[i]);
         	_loadChild(peer, f);
         }
@@ -285,8 +309,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 				}
 			}
         } catch (ResourceException re) {
-			IPath p = resource.getLocation();
-			if(p != null && p.toFile().exists()) {
+			File f = toFile(resource);
+			if(f != null && f.exists()) {
 				ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()", re); //$NON-NLS-1$
 			} else {
 				//ignore we cannot prevent this when project is removed externally
@@ -303,10 +327,12 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 				IResource[] rs = resource.members();
 				for (int i = 0; i < rs.length; i++) {
 					if(rs[i].isLinked()) {
-						File f = rs[i].getLocation().toFile();
-						String p = FilePathHelper.toPathPath(f.getName());
-						mf.put(p, f);
-						linked.registerResource(rs[i]);
+						File f = toFile(rs[i]);
+						if(f != null) {
+							String p = FilePathHelper.toPathPath(f.getName());
+							mf.put(p, f);
+							linked.registerResource(rs[i]);
+						}
 					}
 				}			
 			}
@@ -1099,7 +1125,7 @@ class LinkedResources {
 	}
 
 	public void registerResource(IResource r) {
-    	File f = r.getLocation().toFile();
+    	File f = FolderImpl.toFile(r);
         String pp = FilePathHelper.toPathPath(f.getName());
         filesByFileName.put(pp, f);
         filesByLinkName.put(r.getName(), f);
