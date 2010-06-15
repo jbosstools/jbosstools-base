@@ -10,12 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.filesystems.impl;
 
+import java.util.Set;
+
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.util.*;
 
 public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.common.model.filesystems.FileSystem {
     private static final long serialVersionUID = 7958999759019059243L;
-    protected JarAccess jar = new JarAccess();
+    protected JarAccess jar = null;
 
     public JarSystemImpl() {}
 
@@ -28,6 +30,9 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
     }
 
     protected JarAccess getJarAccess() {
+    	if(jar == null) {
+    		jar = JarAccessFactory.getJarAccess(getLocation(), this);
+    	}
         return jar;
     }
 
@@ -38,13 +43,30 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
     protected String getAbsolutePath() {
         return ""; //$NON-NLS-1$
     }
+    
+    boolean loaded2 = false;
 
     protected void loadChildren() {
-        if(jar.isLoaded()) return;
+//        if(jar.isLoaded()) return;
+
+        if(this != getJarAccess().getMain()) return;
+        if(loaded2) return;
+        loaded2 = true;
+
 		synchronized (this) {
 			jar.setLocation(getLocation());
 			super.loadChildren();
 		}
+    }
+
+    public XModelObject[] getChildren() {
+    	JarSystemImpl main = getJarAccess().getMain();
+    	return (main == this || main == null) ? super.getChildren() : main.getChildren();
+    }
+
+    public XModelObject getChildByPathPart(String pathpart) {
+    	JarSystemImpl main = getJarAccess().getMain();
+    	return (main == this || main == null) ? super.getChildByPathPart(pathpart) : main.getChildByPathPart(pathpart);
     }
 
     public String getPathPart() {
@@ -56,27 +78,42 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
     }
 
     public String getTempLocation() {
-		if(!jar.isLoaded()) loadChildren();
+    	JarSystemImpl main = getJarAccess().getMain();
+    	if(main != this && main != null) {
+    		main.getChildren();
+    	} else if(!jar.isLoaded()) {
+    		loadChildren();
+    	}
         String s = jar.getTempLocation();
         return (s == null) ? get(XModelObjectConstants.ATTR_NAME_LOCATION) : s;
     }
 
     public LFileObject getFileObject(String relpath) {
-        return jar.getFileObject(name(), relpath);
+        return getJarAccess().getFileObject(name(), relpath);
     }
 
     public boolean update() {
+    	if(getJarAccess().getMain() != this) return true;
+
         if(jar.isModified()) {
             if(jar.isLoaded()) {
                 XModelObject[] cs = getChildren();
                 for (int i = 0; i < cs.length; i++) removeChild_0(cs[i]);
                 jar.invalidate();
             }
-            loaded = false;
-            fire = true;
-            fireStructureChanged(3, null);
+            jarUpdated();
+
+            JarSystemImpl[] ss = getJarAccess().getSlaves();
+            for (JarSystemImpl s: ss) s.jarUpdated();
         }
         return true;
+    }
+
+    public void jarUpdated() {
+        loaded = false;
+        loaded2 = false;
+        fire = true;
+        fireStructureChanged(3, null);
     }
 
     public String getPresentationString() {
@@ -90,4 +127,3 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
     	return super.getPresentationString();
     }
 }
-
