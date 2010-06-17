@@ -303,4 +303,9 @@ public class ResourcesUtils {
 		}
 		return parent;
 	}
+
+	public static IProject importProject(String bundleName, String projectPath,
+			String name, Object object) throws IOException, CoreException, InvocationTargetException, InterruptedException {
+		return importProject(Platform.getBundle(bundleName), projectPath, name, null);
+	}
 }

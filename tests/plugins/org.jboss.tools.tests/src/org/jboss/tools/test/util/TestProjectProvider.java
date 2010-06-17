@@ -58,7 +58,7 @@ public class TestProjectProvider {
 			if( null == projectPath ) {
 				project = ResourcesUtils.importProject(bundleName, "projects" + Path.SEPARATOR + name, null);
 			} else {
-				project = ResourcesUtils.importProject(bundleName, projectPath, null);
+				project = ResourcesUtils.importProject(bundleName, projectPath, name, null);
 			}
 		} catch (IOException e) {
 			throw new CoreException(new Status(Status.ERROR,bundleName,e.getMessage(),e));
