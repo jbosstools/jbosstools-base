@@ -65,12 +65,16 @@ public class XAttributeConstraintJavaName extends XAttributeConstraintProperties
     }
 
     public String getError(String value) {
-        return (value.length() == 0) ? ModelMessages.CONSTRAINT_NONEMPTY :
+        return (value.length() == 0) ? (isRequired() ? ModelMessages.CONSTRAINT_NONEMPTY : null) :
                accepts(value) ? null :
                (keytable.contains(value)) ? ModelMessages.CONSTRAINT_NO_JAVA_KEYWORD :
                (!allowPrimitiveTypes && primitiveSet.contains(value)) ? ModelMessages.CONSTRAINT_NO_JAVA_KEYWORD :
                (custom != null && custom.contains(value)) ? ModelMessages.IS_A_RESERVED_WORD :
                 ModelMessages.CONSTRAINT_JAVA_NAME;
+    }
+
+    boolean isRequired() {
+    	return attribute != null && "always".equals(attribute.getProperty("save")); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public String getCorrectedValue(String value) {
@@ -91,4 +95,3 @@ public class XAttributeConstraintJavaName extends XAttributeConstraintProperties
 
 
 }
-
