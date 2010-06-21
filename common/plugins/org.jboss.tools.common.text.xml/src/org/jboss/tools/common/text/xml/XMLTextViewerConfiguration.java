@@ -13,6 +13,7 @@ package org.jboss.tools.common.text.xml;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -25,8 +26,6 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
-import org.jboss.tools.common.text.xml.contentassist.ContentAssistProcessorBuilder;
-import org.jboss.tools.common.text.xml.contentassist.ContentAssistProcessorDefinition;
 import org.jboss.tools.common.text.xml.contentassist.SortingCompoundContentAssistProcessor;
 
 /**
@@ -46,48 +45,16 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 
 	protected IContentAssistProcessor[] getContentAssistProcessors(ISourceViewer sourceViewer, String partitionType) {
 		
-		SortingCompoundContentAssistProcessor sortingCompoundProcessor = new SortingCompoundContentAssistProcessor(sourceViewer, partitionType);
+		IContentAssistProcessor[] superProcessors = super.getContentAssistProcessors(
+				sourceViewer, partitionType);
 		List<IContentAssistProcessor> processors = new ArrayList<IContentAssistProcessor>();
-		
-//		if (sortingCompoundProcessor.size() > 0) {
+
+		SortingCompoundContentAssistProcessor sortingCompoundProcessor = new SortingCompoundContentAssistProcessor(sourceViewer, partitionType);
 		if (sortingCompoundProcessor.supportsPartitionType(partitionType)) {
 			processors.add(sortingCompoundProcessor);
 		}
-/*		
-		// if we have our own processors we need 
-		// to define them in plugin.xml file of their
-		// plugins using extention point 
-		// "org.jboss.tools.common.text.xml.contentAssistProcessor"
-		
-		ContentAssistProcessorDefinition[] defs = ContentAssistProcessorBuilder.getInstance().getContentAssistProcessorDefinitions(partitionType);
-
-		if(defs==null) return null;
-
-		for(int i=0; i<defs.length; i++) {
-		    IContentAssistProcessor processor = defs[i].createContentAssistProcessor();
-		    if(!processors.contains(processor)) {
-			    processors.add(processor);			        
-		    }
-		}
-*/
-		IContentAssistProcessor[] in = getInitialProcessors(sourceViewer, partitionType);
-		if(in != null && in.length > 0) {
-
-			//we do not need super processors - make initial processors responsible for that 
-			for(int i=0; i<in.length; i++) {
-			    if(!processors.contains(in[i])) {
-				    processors.add(in[i]);			        
-			    }
-			}
-		} else {
-			IContentAssistProcessor[] ps = super.getContentAssistProcessors(sourceViewer, partitionType);
-			for(int i=0; ps != null && i<ps.length; i++) {
-			    if(!processors.contains(ps[i])) {
-				    processors.add(ps[i]);			        
-			    }
-			}
-		}
-		return (IContentAssistProcessor[])processors.toArray(new IContentAssistProcessor[0]);
+		processors.addAll(Arrays.asList(superProcessors));
+		return processors.toArray(new IContentAssistProcessor[0]);
 	}
 
 	/*
@@ -100,7 +67,7 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 		if (sourceViewer == null || !fPreferenceStore.getBoolean(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_HYPERLINKS_ENABLED))
 			return null;
 
-		List allDetectors = new ArrayList(0);
+		List<IHyperlinkDetector> allDetectors = new ArrayList<IHyperlinkDetector>(0);
 
 		IHyperlinkDetector extHyperlinkDetector = getTextEditorsExtensionsHyperlinkDetector(); 
 
@@ -151,6 +118,7 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private Method findDeclaredMethod(Class cls, String name, Class[] paramTypes) {
 		Method[] ms = cls.getDeclaredMethods();
 		if (ms != null) for (int i = 0; i < ms.length; i++) {
