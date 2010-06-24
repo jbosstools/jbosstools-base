@@ -384,6 +384,17 @@ public class EclipseResourceUtil extends EclipseUtil {
 			s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
 			fs.addChild(s);
 		}
+		if(webRoot != null && webRoot.exists()) {
+			IResource webInf = ((IContainer)webRoot).getFolder(new Path("WEB-INF")); //$NON-NLS-1$
+			if(webInf != null && webInf.exists()) {
+				resources.add(webInf);
+				fsLoc = webInf.getLocation().toString();
+				properties.setProperty(XModelObjectConstants.ATTR_NAME_LOCATION, fsLoc);
+				properties.setProperty(XModelObjectConstants.ATTR_NAME, "WEB-INF"); //$NON-NLS-1$
+				s = (FileSystemImpl)model.createModelObject(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER, properties);
+				fs.addChild(s);
+			}
+		}
 
 		updateSrcs(project, fs, resources);
 
