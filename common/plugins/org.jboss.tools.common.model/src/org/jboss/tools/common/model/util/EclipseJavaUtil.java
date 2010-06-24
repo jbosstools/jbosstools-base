@@ -10,10 +10,27 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.*;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ITypeHierarchy;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class EclipseJavaUtil {
@@ -190,5 +207,18 @@ public class EclipseJavaUtil {
 		if(checked.contains(f)) return false;
 		type = EclipseResourceUtil.getValidType(type.getJavaProject().getProject(), f);
 		return isDerivedClass(type, superType, checked);
+	}
+
+	public static List<IType> getSupperTypes(IType type) throws JavaModelException {
+		ITypeHierarchy typeHierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
+		IType[] superTypes = typeHierarchy == null ? null : typeHierarchy.getAllSupertypes(type);
+		if(superTypes == null) {
+			return Collections.emptyList();
+		}
+		List<IType> suppers = new ArrayList<IType>();
+		for (int i = 0; i < superTypes.length; i++) {
+			suppers.add(superTypes[i]);
+		}
+		return suppers;
 	}
 }
