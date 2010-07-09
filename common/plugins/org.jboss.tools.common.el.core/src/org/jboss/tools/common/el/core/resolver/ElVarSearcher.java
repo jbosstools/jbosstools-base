@@ -261,9 +261,9 @@ public class ElVarSearcher {
 	 */
 	public static Var findVar(Node node, ELParserFactory factory) {
 		if(node!=null && Node.ELEMENT_NODE == node.getNodeType()) {
-			Element element = (Element)node;
-			String var = element.getAttribute(VAR_ATTRIBUTE_NAME);
-			if(var!=null) {
+			Element element = (Element)node;			
+			if(element.hasAttribute(VAR_ATTRIBUTE_NAME)) {
+				String var = element.getAttribute(VAR_ATTRIBUTE_NAME);
 				int declOffset = 0;
 				int declLength = 0;
 				Node varAttr = element.getAttributeNode(VAR_ATTRIBUTE_NAME); 
@@ -274,9 +274,9 @@ public class ElVarSearcher {
 					declLength = varNameEnd - varNameStart;
 				}
 				var = var.trim();
-				if(!"".equals(var)) { //$NON-NLS-1$
-					String value = element.getAttribute(VALUE_ATTRIBUTE_NAME);
-					if(value!=null) {
+				if(!"".equals(var)) { //$NON-NLS-1$					
+					if(element.hasAttribute(VALUE_ATTRIBUTE_NAME)) {
+						String value = element.getAttribute(VALUE_ATTRIBUTE_NAME);
 						value = value.trim();
 						Var newVar = new Var(factory, var, value, declOffset, declLength);
 						if(newVar.getElToken()!=null) {
