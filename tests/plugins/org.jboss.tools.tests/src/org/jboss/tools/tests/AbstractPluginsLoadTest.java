@@ -91,4 +91,18 @@ public class AbstractPluginsLoadTest extends AbstractRuntimeTest {
 	public void assertPluginResolved(Bundle bundle) {
 		assertPluginsResolved(new Bundle[] {bundle});
 	}
+	
+	public void assertPluginsResolved(String[] ids) {
+		for (String id : ids) {
+			Bundle bundle = Platform.getBundle(id);
+			assertNotNull(MessageFormat.format("Could not get bundle {0} instance",id), bundle);
+			assertTrue(MessageFormat.format("Plugin '{0}' is not resolved",bundle.getSymbolicName()), //$NON-NLS-1$ //$NON-NLS-2$
+					isPluginResolved(bundle.getSymbolicName()));
+			System.out.println(MessageFormat.format("{0} was resolved and activated",bundle.getSymbolicName()));
+		}
+	}
+	
+	public void assertPluginResolved(String id) {
+		assertPluginsResolved(new String[] {id});
+	}
 }
