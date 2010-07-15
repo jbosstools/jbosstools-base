@@ -51,6 +51,14 @@ public interface ELResolution {
 	List<ELSegment> findSegmentsByJavaElement(IJavaElement element);
 
 	/**
+	 * Finds the segments which are resolved to given baseName and propertyName.
+	 * @param baseName
+	 * @param propertyName
+	 * @return
+	 */
+	List<ELSegment> findSegmentsByMessageProperty(String baseName, String propertyName);
+
+	/**
 	 * Finds the segment which is located at given offset.
 	 * @param offcet relative source EL operand.
 	 * @return

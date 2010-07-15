@@ -70,6 +70,20 @@ public class ELResolutionImpl implements ELResolution {
 		}
 		return list;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#findSegmentsByMessageProperty(String, String)
+	 */
+	public List<ELSegment> findSegmentsByMessageProperty(String baseName, String propertyName) {
+		ArrayList<ELSegment> list = new ArrayList<ELSegment>();
+		for(ELSegment segment : segments){
+			if(segment instanceof MessagePropertyELSegment){
+				if(((MessagePropertyELSegment)segment).getBaseName().equals(baseName) && segment.getToken().getText().equals(propertyName))
+					 list.add(segment);
+			}
+		}
+		return list;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#findSegmentByOffset(int)
