@@ -100,9 +100,13 @@ public class EncodedProperties extends Properties {
                 }
                 valueStart++;
             }
+        try {
             String key = loadConvert(lr.lineBuf, 0, keyLen, convtBuf);
             String value = loadConvert(lr.lineBuf, valueStart, limit - valueStart, convtBuf);
 	    put(key, value);
+        } catch (IllegalArgumentException e) {
+        	//TODO create object for error marker
+        }
 	}
     }
 
@@ -272,6 +276,7 @@ public class EncodedProperties extends Properties {
 			     value = (value << 4) + 10 + aChar - 'A';
 			     break;
 			  default:
+				  //TODO create object for error marker
                               throw new IllegalArgumentException(
                                            "Malformed \\uxxxx encoding."); //$NON-NLS-1$
                         }
