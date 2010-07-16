@@ -27,6 +27,7 @@ public class ElCoreMessages extends NLS {
 	public static String EL_RENAME_PROCESSOR_ERROR_PHANTOM_FILE;
 	public static String EL_RENAME_PROCESSOR_ERROR_READ_ONLY_FILE;
 	public static String RENAME_EL_VARIABLE_PROCESSOR_TITLE;
+	public static String RENAME_MESSAGE_PROPERTY_PROCESSOR_TITLE;
 	public static String RENAME_EL_VARIABLE_PROCESSOR_CAN_NOT_FIND_EL_VARIABLE;
 	
 	static {

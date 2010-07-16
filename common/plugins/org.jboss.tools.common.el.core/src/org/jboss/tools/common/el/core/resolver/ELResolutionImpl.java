@@ -77,7 +77,7 @@ public class ELResolutionImpl implements ELResolution {
 	public List<ELSegment> findSegmentsByMessageProperty(String baseName, String propertyName) {
 		ArrayList<ELSegment> list = new ArrayList<ELSegment>();
 		for(ELSegment segment : segments){
-			if(segment instanceof MessagePropertyELSegment){
+			if(segment instanceof MessagePropertyELSegment && ((MessagePropertyELSegment)segment).getBaseName() != null){
 				if(((MessagePropertyELSegment)segment).getBaseName().equals(baseName) && segment.getToken().getText().equals(propertyName))
 					 list.add(segment);
 			}
