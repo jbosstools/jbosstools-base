@@ -269,6 +269,8 @@ public class PropertiesLoader implements XObjectLoader {
     		p.load(sr);
     	} catch (IOException e) {
     		//ignore
+    	} catch (IllegalArgumentException e1) {
+    		return null;
     	}
     	return p.getProperty("a");
     }
