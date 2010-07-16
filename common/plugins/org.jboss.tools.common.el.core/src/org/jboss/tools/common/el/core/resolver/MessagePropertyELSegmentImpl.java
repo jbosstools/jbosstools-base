@@ -24,7 +24,6 @@ public class MessagePropertyELSegmentImpl extends ELSegmentImpl implements
 	private int propertyStart=0, propertyLength=0;
 	private String baseName=null;
 
-	@Override
 	public IResource getMessageBundleResource() {
 		return messageBundleResource;
 	}
@@ -33,12 +32,10 @@ public class MessagePropertyELSegmentImpl extends ELSegmentImpl implements
 		messageBundleResource = resource;
 	}
 
-	@Override
 	public boolean isProperty() {
 		return messagePropertySourceReference != null;
 	}
 
-	@Override
 	public ITextSourceReference getMessagePropertySourceReference() {
 		if(messagePropertySourceReference==null) {
 			messagePropertySourceReference = new ITextSourceReference() {
