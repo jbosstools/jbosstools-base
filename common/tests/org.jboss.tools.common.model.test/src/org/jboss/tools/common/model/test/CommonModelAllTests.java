@@ -30,6 +30,7 @@ public class CommonModelAllTests {
 		suite.addTestSuite(AntParserTest.class);
 		suite.addTestSuite(DeveloperExceptionTest.class);
 		suite.addTestSuite(XModelTransferBufferTest.class);
+		suite.addTestSuite(PropertiesLoaderTest.class);
 		return suite;
 	}
 }
