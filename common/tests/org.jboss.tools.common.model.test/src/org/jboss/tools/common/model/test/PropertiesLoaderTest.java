@@ -45,10 +45,6 @@ public class PropertiesLoaderTest extends TestCase {
 		assertNotNull(a);
 		assertEquals(a.getAttributeValue("value"), "valueA");
 		XModelObject b = p.getChildByPath("b");
-		System.out.println(b);
-		if(b != null) {
-			System.out.println(b.getAttributeValue("value"));
-		}
 		assertNull(b);
 		XModelObject c = p.getChildByPath("c");
 		assertNotNull(c);
