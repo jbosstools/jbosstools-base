@@ -29,6 +29,7 @@ public class ElCoreMessages extends NLS {
 	public static String RENAME_EL_VARIABLE_PROCESSOR_TITLE;
 	public static String RENAME_MESSAGE_PROPERTY_PROCESSOR_TITLE;
 	public static String RENAME_EL_VARIABLE_PROCESSOR_CAN_NOT_FIND_EL_VARIABLE;
+	public static String RENAME_MESSAGE_PROPERTY_PROCESSOR_CAN_NOT_FIND_MESSAGE_PROPERTY;
 	
 	static {
 		// initialize resource bundle
