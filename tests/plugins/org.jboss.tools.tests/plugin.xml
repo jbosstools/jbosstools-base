@@ -2,10 +2,14 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="product"
+            application="org.eclipse.ui.ide.workbench"
             name="Test Product to Control Tests Execution">
+		<property name="aboutText" value="This is test application"/> 
+		<property name="appName" value="JBoss Tools Test Application"/> 
+            
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini">
