@@ -145,7 +145,8 @@ public class TypeInfoCollector {
 				fTypeOfArrayElement = type.getTypeOfArrayElement();
 			}
 			for (int i = 0; i < fParameters.length; i++) {
-				fParameters[i].initializeParameters(parameters);
+				if (type != fParameters[i])
+					fParameters[i].initializeParameters(parameters);
 			}
 		}
 
