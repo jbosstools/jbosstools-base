@@ -301,7 +301,7 @@
       </editor>
    </extension>
    
-   <extension point="org.eclipse.core.runtime.contentTypes"> 
+   <extension point="org.eclipse.core.contenttype.contentTypes"> 
       <content-type id="xml" 
        name="%ContentType_JBossToolsXML"
        base-type="org.eclipse.core.runtime.xml"
