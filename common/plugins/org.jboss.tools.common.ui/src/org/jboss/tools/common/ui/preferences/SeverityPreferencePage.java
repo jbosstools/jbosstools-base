@@ -60,12 +60,10 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 		severityConfigurationBlock.setLayoutData(gd);
 
 		checkBox.addSelectionListener(new SelectionListener() {
-			@Override
 			public void widgetSelected(SelectionEvent e) {
 				enableMainPreferenceContent(checkBox.getSelection());
 				getPreferenceStore().setValue(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME, checkBox.getSelection());
 			}
-			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
