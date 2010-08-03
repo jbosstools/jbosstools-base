@@ -13,13 +13,26 @@ package org.jboss.tools.common.ui.preferences;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.internal.ui.preferences.PropertyAndPreferencePage;
+import org.eclipse.jface.dialogs.ControlEnableState;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.jboss.tools.common.preferences.SeverityPreferences;
 
 /**
  * @author Viacheslav Kabanovich
  */
 public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
+
+	private ControlEnableState mainBlockEnableState;
+	private Button checkBox;
+	protected Control severityConfigurationBlock;
 
 	protected SeverityConfigurationBlock fConfigurationBlock;
 
@@ -29,7 +42,49 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 
 	@Override
 	protected Control createPreferenceContent(Composite composite) {
-		return getConfigurationBlock().createContents(composite);
+		Composite root = new Composite(composite, SWT.NONE);
+
+		GridData gd = new GridData(GridData.FILL, GridData.FILL, true, true);
+
+		GridLayout gridLayout = new GridLayout(1, false);
+		root.setLayout(gridLayout);
+		root.setLayoutData(gd);
+
+		checkBox = new Button(root, SWT.CHECK);
+		checkBox.setFont(JFaceResources.getDialogFont());
+		checkBox.setText(SeverityPreferencesMessages.ENABLE_VALIDATION);
+		checkBox.setSelection(getPreferenceStore().getBoolean(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME));
+
+		severityConfigurationBlock = getConfigurationBlock().createContents(root);
+		gridLayout = new GridLayout(1, false);
+		severityConfigurationBlock.setLayoutData(gd);
+
+		checkBox.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				enableMainPreferenceContent(checkBox.getSelection());
+				getPreferenceStore().setValue(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME, checkBox.getSelection());
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		enableMainPreferenceContent(checkBox.getSelection());
+
+		return root;
+	}
+
+	protected void enableMainPreferenceContent(boolean enable) {
+		if (enable) {
+			if (mainBlockEnableState != null) {
+				mainBlockEnableState.restore();
+				mainBlockEnableState= null;
+			}
+		} else {
+			if (mainBlockEnableState == null) {
+				mainBlockEnableState= ControlEnableState.disable(severityConfigurationBlock);
+			}
+		}
 	}
 
 	@Override
@@ -64,6 +119,8 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 	 */
 	@Override
 	protected void performDefaults() {
+		checkBox.setSelection(true);
+		enableMainPreferenceContent(true);
 		super.performDefaults();
 		if (getConfigurationBlock() != null) {
 			getConfigurationBlock().performDefaults();
@@ -77,7 +134,8 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 	public boolean performOk() {
 		if (getConfigurationBlock() != null && !getConfigurationBlock().performOk()) {
 			return false;
-		}	
+		}
+		updateEnableBlock();
 		return super.performOk();
 	}
 
@@ -88,6 +146,15 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 	public void performApply() {
 		if (getConfigurationBlock() != null) {
 			getConfigurationBlock().performApply();
+		}
+		updateEnableBlock();
+	}
+
+	private void updateEnableBlock() {
+		boolean oldValue = getPreferenceStore().getBoolean(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME);
+		boolean newValue = checkBox.getSelection();
+		if(oldValue != newValue) {
+			getPreferenceStore().setValue(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME, newValue);
 		}
 	}
 }
