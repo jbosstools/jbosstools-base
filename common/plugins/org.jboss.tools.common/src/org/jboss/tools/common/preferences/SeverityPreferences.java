@@ -44,6 +44,8 @@ import org.eclipse.jdt.core.JavaCore;
  */
 public abstract class SeverityPreferences {
 
+	public static String ENABLE_BLOCK_PREFERENCE_NAME = "enableBlock";
+
 	public static final String ERROR = "error"; //$NON-NLS-1$
 	public static final String WARNING = "warning"; //$NON-NLS-1$
 	public static final String IGNORE = "ignore"; //$NON-NLS-1$
@@ -76,6 +78,24 @@ public abstract class SeverityPreferences {
 		}
 		String value = p.get(key, null);
 		return value != null ? value : getInstancePreference(key);
+	}
+
+	public boolean isEnabled(IProject project) {
+		IEclipsePreferences p = getProjectPreferences(project);
+		if(p == null) {
+			return false;
+		}
+		String value = p.get(ENABLE_BLOCK_PREFERENCE_NAME, null);
+		if(value!=null) {
+			return p.getBoolean(ENABLE_BLOCK_PREFERENCE_NAME, false);
+		}
+		p = getInstancePreferences();
+		value = p == null ? null : p.get(ENABLE_BLOCK_PREFERENCE_NAME, null);
+		if(value!=null) {
+			return p.getBoolean(ENABLE_BLOCK_PREFERENCE_NAME, false);
+		}
+		p = getDefaultPreferences();
+		return p.getBoolean(ENABLE_BLOCK_PREFERENCE_NAME, false);
 	}
 
 	public String getInstancePreference(String key) {
