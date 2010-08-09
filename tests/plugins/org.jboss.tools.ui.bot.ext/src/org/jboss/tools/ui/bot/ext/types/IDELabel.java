@@ -515,4 +515,20 @@ public class IDELabel {
      public static final String GUVNOR_URL_TEMPLATE = "Guvnor URL template: ";
      
    }
+   
+   public static class JsfProjectTree {
+
+     public static final String WEB_CONTENT = "WebContent";
+     public static final String PAGES = "pages";
+     
+   }
+   
+   public static class VisualPageEditor{
+     
+     public static final String SOURCE_TAB_LABEL = "Source";
+     public static final String VISUAL_SOURCE_TAB_LABEL = "Visual/Source";
+     public static final String PREVIEW_TAB_LABEL = "Preview";
+
+   }
+   
  }
