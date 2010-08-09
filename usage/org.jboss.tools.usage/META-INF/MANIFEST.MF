@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JBoss Tools Google Analytics
+Bundle-SymbolicName: org.jboss.tools.usage;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: org.jboss.tools.usage,
+ org.jboss.tools.usage.jgoogleanalytics
+Require-Bundle: org.eclipse.ui;bundle-version="[3.5.0,4.0.0)",
+ org.eclipse.osgi;bundle-version="3.5.2",
+ org.eclipse.core.runtime;bundle-version="[3.5.0,4.0.0)"
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.jboss.tools.usage.internal.JBossToolsUsageActivator

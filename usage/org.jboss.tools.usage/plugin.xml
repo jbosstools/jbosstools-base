@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.jboss.tools.usage.internal.UsageReportDispatcher">
+      </startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.jboss.tools.usage.preferences.UsageReportPreferencePage"
+            id="org.jboss.tools.usage.analytics.preferences.UsageAnalyticsPreferencePage"
+            name="JBoss Usage Analytics Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.jboss.tools.usage.preferences.UsageReportPreferenceInitializer">
+      </initializer>
+   </extension>
+</plugin>
