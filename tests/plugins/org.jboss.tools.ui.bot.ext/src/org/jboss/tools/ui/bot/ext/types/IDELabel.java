@@ -139,6 +139,7 @@ public class IDELabel {
 	  public static final String PROPERTIES_FOR = "Properties for";
 	  public static final String COPY_FILE_FROM_GUVNOR_TO_PACKAGE_EXPLORER = "File Operation";
 	  public static final String INSERT_TAG = "Insert Tag";
+	  public static final String SHOW_HIDE_DRAWERS = "Show/Hide Drawers";
 	}
 
 	public class EntityGroup {
@@ -530,5 +531,12 @@ public class IDELabel {
      public static final String PREVIEW_TAB_LABEL = "Preview";
 
    }
-   
+
+   public static class JBossToolsPalette{
+     
+     public static final String IMPORT_TOOL_ITEM = "Import";
+     public static final String PALETTE_EDITOR_TOOL_ITEM = "Palette Editor";
+     public static final String SHOW_HIDE_TOOL_ITEM = "Show/Hide";
+
+   }
  }
