@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -30,9 +31,10 @@ import org.eclipse.jface.text.contentassist.IContextInformationPresenter;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.sse.core.StructuredModelManager;
+import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.contentassist.IRelevanceCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.util.Sorter;
@@ -44,7 +46,7 @@ import org.jboss.tools.common.text.xml.XmlEditorPlugin;
  * 	"org.jboss.tools.common.text.xml.contentAssistProcessor"
  * 
  * @author jeremy
- *
+ * @deprecated
  */
 
 @SuppressWarnings("restriction")
@@ -53,6 +55,8 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	private String fPartitionType;
 	private String fErrorMessage;
 	
+	static private Map <CompletionProposalInvocationContext, SortingCompoundContentAssistProcessor> fContextMap = 
+		new HashMap<CompletionProposalInvocationContext, SortingCompoundContentAssistProcessor>();
 	
 	private Map<String, Map<String, List<IContentAssistProcessor>>> fProcessorsMap;
 	
@@ -60,6 +64,31 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		this.fSourceViewer = sourceViewer;
 		this.fPartitionType = partitionType;
 		init();
+	}
+	
+	public static class SortingCompletionProposalInvocationContext extends CompletionProposalInvocationContext {
+		SortingCompoundContentAssistProcessor fSortingProcessor;
+		
+		public SortingCompletionProposalInvocationContext(SortingCompoundContentAssistProcessor sortingProcessor, ITextViewer viewer,
+				int invocationOffset) {
+			super(viewer, invocationOffset);
+			this.fSortingProcessor = sortingProcessor;
+		}
+		
+	}
+	
+	/**
+	 * <p>Creates the context that is passed to the completion proposal
+	 * computers.</p>
+	 * 
+	 * <p>Extenders may override this method</p>
+	 *
+	 * @param viewer the viewer that content assist is invoked on
+	 * @param offset the content assist offset
+	 * @return the context to be passed to the computers
+	 */
+	protected CompletionProposalInvocationContext createContext(ITextViewer viewer, int offset) {
+		return new SortingCompletionProposalInvocationContext(this, viewer, offset);
 	}
 	
 	public boolean supportsPartitionType(String partitionType) {
@@ -259,13 +288,25 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		return resultArray;
 	}
 
+	public static List<ICompletionProposal> doFilterAndSortProposals(List proposals,
+						IProgressMonitor monitor, CompletionProposalInvocationContext context) {
+		if (proposals == null)
+			return null;
+		ICompletionProposal[] resultArray = (ICompletionProposal[])proposals.toArray(new ICompletionProposal[proposals.size()]);
+		Object[] sorted = createSorter().sort(resultArray);
+		System.arraycopy(sorted, 0, resultArray, 0, sorted.length);
+		resultArray = makeUnique(resultArray);
+		return Arrays.asList(resultArray);
+	}
+						
+	
 	/**
 	 * Removes duplicates of completion strings
 	 *
 	 * @param suggestions a list of suggestions ({@link String}).
 	 * @return a list of unique completion suggestions.
 	 */
-	public ICompletionProposal[] makeUnique(ICompletionProposal[] proposals) {
+	public static ICompletionProposal[] makeUnique(ICompletionProposal[] proposals) {
 		if (proposals == null)
 			return null;
 		
@@ -296,7 +337,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		return unique.toArray(new ICompletionProposal[unique.size()]);
 	}
 
-	private String getReplacementWord(String replacement) {
+	private static String getReplacementWord(String replacement) {
 		replacement = (replacement == null ? "" : //$NON-NLS-1$
 				replacement);
 		int index = replacement.indexOf('>');
@@ -317,7 +358,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 		return replacement;
 	}
 
-	private String unQuote(String str) {
+	private static String unQuote(String str) {
 		str = (str == null ?
 				"" :  //$NON-NLS-1$
 				str.toLowerCase());
@@ -331,7 +372,7 @@ public class SortingCompoundContentAssistProcessor implements  IContentAssistPro
 	}
 	
 	
-	protected Sorter createSorter() {
+	protected static Sorter createSorter() {
 		return new Sorter() {
 			public boolean compare(Object proposal1, Object proposal2) {
 

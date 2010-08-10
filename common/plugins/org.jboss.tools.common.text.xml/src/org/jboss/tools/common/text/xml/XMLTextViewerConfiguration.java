@@ -13,10 +13,10 @@ package org.jboss.tools.common.text.xml;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
@@ -25,12 +25,15 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
+import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
-import org.jboss.tools.common.text.xml.contentassist.SortingCompoundContentAssistProcessor;
+import org.eclipse.wst.xml.ui.internal.contentassist.XMLStructuredContentAssistProcessor;
+import org.jboss.tools.common.text.xml.contentassist.ProposalSorter;
 
 /**
  * @author Igels
  */
+@SuppressWarnings("restriction")
 public class XMLTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 	
 	SourceViewerConfiguration initial = null;
@@ -45,15 +48,30 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 
 	protected IContentAssistProcessor[] getContentAssistProcessors(ISourceViewer sourceViewer, String partitionType) {
 		
-		IContentAssistProcessor[] superProcessors = super.getContentAssistProcessors(
-				sourceViewer, partitionType);
+//		IContentAssistProcessor[] superProcessors = super.getContentAssistProcessors(
+//				sourceViewer, partitionType);
+		
+		IContentAssistProcessor superProcessor = new XMLStructuredContentAssistProcessor(
+				this.getContentAssistant(), partitionType, sourceViewer) {
+
+					@SuppressWarnings({ "rawtypes", "unchecked" })
+					@Override
+					protected List filterAndSortProposals(List proposals,
+							IProgressMonitor monitor,
+							CompletionProposalInvocationContext context) {
+						return ProposalSorter.filterAndSortProposals(proposals, monitor, context);
+					}
+
+		};
+		
 		List<IContentAssistProcessor> processors = new ArrayList<IContentAssistProcessor>();
 
-		SortingCompoundContentAssistProcessor sortingCompoundProcessor = new SortingCompoundContentAssistProcessor(sourceViewer, partitionType);
-		if (sortingCompoundProcessor.supportsPartitionType(partitionType)) {
-			processors.add(sortingCompoundProcessor);
-		}
-		processors.addAll(Arrays.asList(superProcessors));
+//		SortingCompoundContentAssistProcessor sortingCompoundProcessor = new SortingCompoundContentAssistProcessor(sourceViewer, partitionType);
+//		if (sortingCompoundProcessor.supportsPartitionType(partitionType)) {
+//			processors.add(sortingCompoundProcessor);
+//		}
+//		processors.addAll(Arrays.asList(superProcessors));
+		processors.add(superProcessor);
 		return processors.toArray(new IContentAssistProcessor[0]);
 	}
 
@@ -92,11 +110,15 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 		return total.toArray(new IHyperlinkDetector[0]);
 	}
 
+	@SuppressWarnings("deprecation")
 	private IHyperlinkDetector getTextEditorsExtensionsHyperlinkDetector() {
 		Plugin plugin = Platform.getPlugin("org.jboss.tools.common.text.ext"); //$NON-NLS-1$
 		return (plugin != null && plugin instanceof IAdaptable ? (IHyperlinkDetector)((IAdaptable)plugin).getAdapter(IHyperlinkDetector.class):null);
 	}
-
+	
+	/**
+	 * @deprecated
+	 */
 	IContentAssistProcessor[] getInitialProcessors(ISourceViewer sourceViewer, String partitionType) {
 		if(initial == null) return null;
 		//method getContentAssistProcessors() is declared in StructuredTextViewerConfiguration
@@ -118,6 +140,9 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 		return null;
 	}
 
+	/**
+	 * @deprecated
+	 */
 	@SuppressWarnings("rawtypes")
 	private Method findDeclaredMethod(Class cls, String name, Class[] paramTypes) {
 		Method[] ms = cls.getDeclaredMethods();
