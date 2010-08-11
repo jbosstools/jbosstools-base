@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.jboss.tools.runtime.JBossRuntimeStartup">
+      </startup>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.jboss.tools.runtime.preferences.JBossRuntimePreferencesInitializer"/>
+   </extension>
+
+   <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           category="org.jboss.tools.common.model.ui.MainPreferencePage"
+           class="org.jboss.tools.runtime.preferences.RuntimePreferencePage"
+           id="org.jboss.tools.runtime.preferences.RuntimePreferencePage"
+           name="%JBoss_Runtimes"/>
+   </extension>
+    
+   <!--
+   <extension
+         point="org.eclipse.wst.server.core.runtimeLocators">
+      <runtimeLocator
+            class="org.jboss.tools.runtime.JBossRuntimeLocator"
+            id="org.jboss.ide.eclipse.as.ui.wizards.jboss.runtimeLocator"
+            typeIds="org.jboss.ide.eclipse.as.*">
+      </runtimeLocator>
+   </extension>
+   -->
+   
+</plugin>
