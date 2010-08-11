@@ -43,7 +43,7 @@ public class JBossToolsUsageRequestsTest {
 		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
 		String url = "http://www.google-analytics.com/__utm.gif?" 
 			+"utmwv=4.7.2"
-			+"&utmn=338321265"
+			+"&utmn=338321288"
 			+"&utmhn=jboss.org"
 			+"&utmcs=UTF-8"
 			+"&utmsr=1920x1080"
@@ -56,7 +56,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmr=0"
 			+"&utmp=%2Ftools%2Fusage//testUrl0_0"
 			+"&utmac=UA-17645367-1"
-			+"&utmcc=__utma%3D156030507.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&utmcc=__utma%3D156032507.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
