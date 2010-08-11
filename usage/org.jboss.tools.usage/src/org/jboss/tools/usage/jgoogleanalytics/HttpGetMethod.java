@@ -24,11 +24,13 @@ public class HttpGetMethod {
 
 	private ILoggingAdapter loggingAdapter = null;
 
-	private CookieManager cookieHandler = new CookieManager();
+	private CookieManager cookieHandler;
 	private String userAgent;
 
 	public HttpGetMethod(String userAgent) {
 		this.userAgent = userAgent;
+		this.cookieHandler = new CookieManager();
+		cookieHandler.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
 	}
 
 	public void setLoggingAdapter(ILoggingAdapter loggingAdapter) {
@@ -37,7 +39,7 @@ public class HttpGetMethod {
 
 	public void request(String urlString) {
 
-		CookieHandler originalCookieHandler = setupCookieHandler();
+		CookieHandler currentCookieHandler = setCookieHandler(cookieHandler);
 		try {
 			HttpURLConnection urlConnection = createURLConnection(urlString, userAgent);
 			urlConnection.connect();
@@ -50,19 +52,27 @@ public class HttpGetMethod {
 		} catch (Exception e) {
 			logError(e.getMessage());
 		} finally {
-			CookieHandler.setDefault(originalCookieHandler);
+			setCookieHandler(currentCookieHandler);
 		}
 	}
 
-	private CookieHandler setupCookieHandler() {
-		CookieHandler old = CookieHandler.getDefault();
-		cookieHandler.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-		CookieHandler.setDefault(cookieHandler);
-		return old;
-	}
-
+	/**
+	 * Returns the return code from the given {@link HttpURLConnection}.
+	 * Provided to be called by test cases so that they can retrieve the return code.
+	 * 
+	 * @param urlConnection
+	 *            to get the response code from
+	 * @return the return code the HttpUrlConnection received
+	 * @throws IOException
+	 */
 	protected int getResponseCode(HttpURLConnection urlConnection) throws IOException {
 		return urlConnection.getResponseCode();
+	}
+
+	private CookieHandler setCookieHandler(CookieHandler cookieHandler) {
+		CookieHandler currentCookieHandler = CookieHandler.getDefault();
+		CookieHandler.setDefault(cookieHandler);
+		return currentCookieHandler;
 	}
 
 	protected HttpURLConnection createURLConnection(String urlString, String userAgent) throws IOException {

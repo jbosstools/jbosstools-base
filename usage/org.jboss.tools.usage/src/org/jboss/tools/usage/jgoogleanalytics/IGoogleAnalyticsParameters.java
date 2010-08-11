@@ -43,7 +43,8 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_PAGE_TITLE = "utmdt";
 	public static final String PARAM_GAQ = "gaq";
 	
-	public static final String VALUE_TRACKING_CODE_VERSION = "4.3";
+	
+	public static final String VALUE_TRACKING_CODE_VERSION = "4.7.2";
 	public static final String VALUE_NO_REFERRAL = "-";
 	public static final char PLUS_SIGN = '+';
 	public static final String PARAM_COOKIES_REFERRAL_TYPE = "__utmz";

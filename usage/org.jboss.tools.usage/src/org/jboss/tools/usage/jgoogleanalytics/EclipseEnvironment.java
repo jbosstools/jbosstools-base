@@ -143,7 +143,7 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		// , browserLanguage
 		// , buildId
 		// , eclipseVersion);
-		return "EclipseEnvironment/.0.2";
+		return "EclipseEnvironment/3.0.1";
 	}
 
 	private String getEclipseVersion() {

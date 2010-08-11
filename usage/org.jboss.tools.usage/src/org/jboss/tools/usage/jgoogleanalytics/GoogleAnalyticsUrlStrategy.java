@@ -21,7 +21,7 @@ import org.jboss.tools.usage.util.EncodingUtils;
  * @version : 0.2
  */
 
-public class GoogleAnalyticsURLStrategy implements IURLBuildingStrategy {
+public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 	private static final String TRACKING_URL = "http://www.google-analytics.com/__utm.gif";
 
@@ -33,38 +33,81 @@ public class GoogleAnalyticsURLStrategy implements IURLBuildingStrategy {
 
 	private IGoogleAnalyticsParameters googleParameters;
 
-	public GoogleAnalyticsURLStrategy(IGoogleAnalyticsParameters googleAnalyticsParameters) {
+	protected GoogleAnalyticsUrlStrategy(IGoogleAnalyticsParameters googleAnalyticsParameters) {
 		this.googleParameters = googleAnalyticsParameters;
 	}
 
 	public String build(FocusPoint focusPoint) throws UnsupportedEncodingException {
-
 		/*
 		 * Google Analytics for Android:
 		 * 
-		 * String str = ""; 
-		 * if (paramEvent.action != null) 
-		 * 	str = paramEvent.action; 
-		 * if (!(str.startsWith("/"))) 
-		 * 	str = "/" + str; 
-		 * str = encode(str); 
-		 * Locale localLocale = Locale.getDefault(); 
-		 * StringBuilder localStringBuilder = new StringBuilder();
-		 * localStringBuilder.append("/__utm.gif");
-		 * localStringBuilder.append("?utmwv=4.3");
-		 * localStringBuilder.append("&utmn=").append(paramEvent.randomVal);
-		 * localStringBuilder.append("&utmcs=UTF-8");
-		 * localStringBuilder.append(String.format("&utmsr=%dx%d", new Object[] { 
-		 * 		Integer.valueOf(paramEvent.screenWidth)
-		 * 		, Integer.valueOf(paramEvent.screenHeight) }));
-		 * localStringBuilder.append(String.format("&utmul=%s-%s", new Object[] { 
-		 * 		localLocale.getLanguage()
-		 * 		, localLocale.getCountry() }));
-		 * localStringBuilder.append("&utmp=").append(str);
-		 * localStringBuilder.append("&utmac=").append(paramEvent.accountId);
-		 * localStringBuilder.append("&utmcc=").append(
-		 * 		getEscapedCookieString(paramEvent, paramString)); 
-		 * return localStringBuilder.toString();
+		String str = ""; 
+		if (paramEvent.action != null) 
+			str = paramEvent.action; 
+		if (!(str.startsWith("/"))) 
+			str = "/" + str; 
+		str = encode(str); 
+		Locale localLocale = Locale.getDefault(); 
+		StringBuilder localStringBuilder = new StringBuilder();
+		localStringBuilder.append("/__utm.gif");
+		localStringBuilder.append("?utmwv=4.3");
+		localStringBuilder.append("&utmn=").append(paramEvent.randomVal);
+		localStringBuilder.append("&utmcs=UTF-8");
+		localStringBuilder.append(String.format("&utmsr=%dx%d", new Object[] { 
+			Integer.valueOf(paramEvent.screenWidth)
+			, Integer.valueOf(paramEvent.screenHeight) }));
+		localStringBuilder.append(String.format("&utmul=%s-%s", new Object[] { 
+			localLocale.getLanguage()
+			, localLocale.getCountry() }));
+		localStringBuilder.append("&utmp=").append(str);
+		localStringBuilder.append("&utmac=").append(paramEvent.accountId);
+		localStringBuilder.append("&utmcc=").append(
+		  		getEscapedCookieString(paramEvent, paramString)); 
+		return localStringBuilder.toString();
+		 
+		*
+		* getEscapedCookieString:
+		* 
+		StringBuilder localStringBuilder = new StringBuilder();
+		localStringBuilder.append("__utma=");
+		localStringBuilder.append("999").append(".");
+		localStringBuilder.append(paramEvent.userId).append(".");
+		localStringBuilder.append(paramEvent.timestampFirst).append(".");
+		localStringBuilder.append(paramEvent.timestampPrevious).append(".");
+		localStringBuilder.append(paramEvent.timestampCurrent).append(".");
+		localStringBuilder.append(paramEvent.visits);
+		if (paramString != null)
+		{
+		localStringBuilder.append("+__utmz=");
+		localStringBuilder.append("999").append(".");
+		localStringBuilder.append(paramEvent.timestampFirst).append(".");
+		localStringBuilder.append("1.1.");
+		localStringBuilder.append(paramString);
+		}
+		return encode(localStringBuilder.toString());
+
+		 */
+
+		/*
+		 * our working tracking code
+		 * 
+		http://www.google-analytics.com/__utm.gif?utmwv=4.7.2
+		&utmn=338321265
+		&utmhn=jboss.org
+		&utmcs=UTF-8
+		&utmsr=1920x1080
+		&utmsc=24-bit
+		&utmul=en-us
+		&utmje=1
+		&utmfl=10.1%20r53
+		&utmdt=-%20JBoss%20Community
+		&utmhid=1087431432
+		&utmr=0
+		&utmp=%2Ftools%2Fusage.html
+		&utmac=UA-17645367-1
+		&utmcc=__utma%3D156030500.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B
+		&gaq=1
+		 *
 		 */
 
 		StringBuilder builder = new StringBuilder(TRACKING_URL)
@@ -72,6 +115,7 @@ public class GoogleAnalyticsURLStrategy implements IURLBuildingStrategy {
 		appendParameter(IGoogleAnalyticsParameters.PARAM_TRACKING_CODE_VERSION,
 				IGoogleAnalyticsParameters.VALUE_TRACKING_CODE_VERSION, builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_UNIQUE_TRACKING_NUMBER, getRandomNumber(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_HID, getRandomNumber(), builder);
 		// appendParameter(IGoogleAnalyticsParameters.PARAM_HID,
 		// getRandomNumber(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_LANGUAGE_ENCODING, ENCODING_UTF8, builder);
@@ -92,7 +136,8 @@ public class GoogleAnalyticsURLStrategy implements IURLBuildingStrategy {
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getContentURI(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, googleParameters.getAccountName(), builder);
 		appendCookies(focusPoint, builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_GAQ, "1", false, builder);
+		// appendParameter(IGoogleAnalyticsParameters.PARAM_GAQ, "1", false,
+		// builder);
 
 		// StringBuilder builder = new StringBuilder()
 		// .append(TRACKING_URL)

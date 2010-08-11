@@ -41,7 +41,7 @@ public class JGoogleAnalyticsTracker implements IUsageTracker {
 	 */
 	public JGoogleAnalyticsTracker(IGoogleAnalyticsParameters googleParameters) {
 		this.httpRequest = new HttpGetMethod(googleParameters.getUserAgent());
-		this.urlBuildingStrategy = new GoogleAnalyticsURLStrategy(googleParameters);
+		this.urlBuildingStrategy = new GoogleAnalyticsUrlStrategy(googleParameters);
 	}
 
 	/**
