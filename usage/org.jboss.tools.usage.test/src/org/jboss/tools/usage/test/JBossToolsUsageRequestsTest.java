@@ -29,7 +29,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmdt=-%20JBoss%20Community"
 			+"&utmhid=1087431432"
 			+"&utmr=0"
-			+"&utmp=%2Ftools%2Fusage//testUrl0"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0"
 			+"&utmac=UA-17645367-1"
 			+"&utmcc=__utma%3D156030507.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
@@ -54,7 +54,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmdt=-%20JBoss%20Community"
 			+"&utmhid=1087431432"
 			+"&utmr=0"
-			+"&utmp=%2Ftools%2Fusage//testUrl0_0"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_0"
 			+"&utmac=UA-17645367-1"
 			+"&utmcc=__utma%3D156032507.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
@@ -79,7 +79,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmdt=-%20JBoss%20Community"
 			+"&utmhid=1087431432"
 			+"&utmr=0"
-			+"&utmp=%2Ftools%2Fusage/testUrl0_1"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_1"
 			+"&utmac=UA-17645367-1"
 			+"&__utma%3D156030508.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
@@ -104,7 +104,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmdt=-%20JBoss%20Community"
 			+"&utmhid=1087431432"
 			+"&utmr=0"
-			+"&utmp=%2Ftools%2Fusage/testUrl0_2"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_2"
 			+"&utmac=UA-17645367-1"
 			+"&utmcc=__utma%3D156030509.1285760712.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
@@ -129,7 +129,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmdt=-%20JBoss%20Community"
 			+"&utmhid=1087431432"
 			+"&utmr=0"
-			+"&utmp=%2Ftools%2Fusage/testUrl0_3"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_3"
 			+"&utmac=UA-17645367-1"
 			+"&utmcc=__utma%3D156030501.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
@@ -154,7 +154,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmdt=-%20JBoss%20Community"
 			+"&utmhid=1087431432"
 			+"&utmr=0"
-			+"&utmp=%2Ftools%2Fusage/testUrl0_4"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_4"
 			+"&utmac=UA-17645367-1"
 			+"&__utma%3D156030502.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
@@ -179,7 +179,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmdt=-%20JBoss%20Community"
 			+"&utmhid=1087431432"
 			+"&utmr=0"
-			+"&utmp=%2Ftools%2Fusage/testUrl0_5"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_5"
 			+"&utmac=UA-17645367-1"
 			+"&__utma%3D156030503.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
@@ -204,7 +204,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmdt=-%20JBoss%20Community"
 			+"&utmhid=1087431432"
 			+"&utmr=0"
-			+"&utmp=%2Ftools%2Fusage//testUrl0_6"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_6"
 			+"&utmac=UA-17645367-1"
 			+"&utmcc=__utma%3D156030507.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
@@ -229,7 +229,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmdt=-%20JBoss%20Community"
 			+"&utmhid=1087431432"
 			+"&utmr=0"
-			+"&utmp=%2Ftools%2Fusage//testUrl0_7"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_7"
 			+"&utmac=UA-17645367-1"
 			+"&utmcc=__utma%3D156030507.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
