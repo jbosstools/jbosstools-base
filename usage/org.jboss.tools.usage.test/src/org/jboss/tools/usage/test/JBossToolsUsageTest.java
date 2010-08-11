@@ -26,7 +26,7 @@ public class JBossToolsUsageTest {
 					.setChild(new FocusPoint("usage")
 							.setChild(new FocusPoint("action")
 									.setChild(new FocusPoint("wsstartup")
-											.setChild(new FocusPoint("test"))))));
+											.setChild(new FocusPoint("testversion472"))))));
 
 	private static final String GANALYTICS_TRACKINGCODE = "UA-17645367-1";
 

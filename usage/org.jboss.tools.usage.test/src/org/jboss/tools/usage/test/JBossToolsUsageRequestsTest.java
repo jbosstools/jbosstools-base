@@ -13,96 +13,300 @@ public class JBossToolsUsageRequestsTest {
 	private static final String GOOGLE_ANALYTICS_TRACKING_URL = "http://www.google-analytics.com/__utm.gif";
 
 	@Test
-	public void testUrl1() throws IOException {
-		String userAgent = "com.jboss.jbds.product/3.5.0 (gtk; U; linux x86; en_US) v20090525 Eclipse/3.5.0.v20090525";
+	public void testUrl0() throws IOException {
+		String userAgent = "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) Firefox/10.0.0";
 		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
-		String url = GOOGLE_ANALYTICS_TRACKING_URL
-		+ "?" 
-		+"utmwv=1"
-		+ "&utmn=2016784548"
-		+ "&utmcs=UTF-8"
-		+ "&utmsc=24-bit"
-		+ "&utmsr=1920x1080"
-		+ "&utmul=en_US"
-		+ "&utmcr=1"
-		+ "&utmdt=jboss.org-tools-usage-action-wsstartup-test-"
-		+ "&utmhn=localhost"
-		+ "&utmr=org.jboss.tools.usage.tests"
-		+ "&utmp=/jboss.org/tools/usage/action/wsstartup/testUrl1"
-		+ "&utmac=UA-17645367-1"
-		+ "&utmcc=__utma%3D'2131379572.1097452543.1280502756059.1280502756059.1280502756059.2%3B%2B__utmb%3D649997112%3B%2B__utmc%3D2002669685%3B%2B__utmz%3D1137436918.1280502756059";
-
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=338321265"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmje=1"
+			+"&utmfl=10.1%20r53"
+			+"&utmdt=-%20JBoss%20Community"
+			+"&utmhid=1087431432"
+			+"&utmr=0"
+			+"&utmp=%2Ftools%2Fusage//testUrl0"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc=__utma%3D156030507.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+		
+	@Test
+	public void testUrl0_0() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=338321265"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmje=1"
+			+"&utmfl=10.1%20r53"
+			+"&utmdt=-%20JBoss%20Community"
+			+"&utmhid=1087431432"
+			+"&utmr=0"
+			+"&utmp=%2Ftools%2Fusage//testUrl0_0"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc=__utma%3D156030507.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
 	@Test
-	public void testUrl1_Session2() throws IOException {
-		String userAgent = "com.jboss.jbds.product/3.0.1 (gtk; U; linux x86; en_US) v20090525 Eclipse/3.5.0.v20090525";
+	public void testUrl0_1() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) v201006010437R-H98-GA";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=3383212651"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmje=1"
+			+"&utmfl=10.1%20r53"
+			+"&utmdt=-%20JBoss%20Community"
+			+"&utmhid=1087431432"
+			+"&utmr=0"
+			+"&utmp=%2Ftools%2Fusage/testUrl0_1"
+			+"&utmac=UA-17645367-1"
+			+"&__utma%3D156030508.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testUrl0_2() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) Eclipse/3.5.0";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=3383212652"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmje=1"
+			+"&utmfl=10.1%20r53"
+			+"&utmdt=-%20JBoss%20Community"
+			+"&utmhid=1087431432"
+			+"&utmr=0"
+			+"&utmp=%2Ftools%2Fusage/testUrl0_2"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc=__utma%3D156030509.1285760712.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testUrl0_3() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US;) Eclipse/3.5.0";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=3383212651"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmje=1"
+			+"&utmfl=10.1%20r53"
+			+"&utmdt=-%20JBoss%20Community"
+			+"&utmhid=1087431432"
+			+"&utmr=0"
+			+"&utmp=%2Ftools%2Fusage/testUrl0_3"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc=__utma%3D156030501.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+	
+	@Test
+	public void testUrl0_4() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=3383212651"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmje=1"
+			+"&utmfl=10.1%20r53"
+			+"&utmdt=-%20JBoss%20Community"
+			+"&utmhid=1087431432"
+			+"&utmr=0"
+			+"&utmp=%2Ftools%2Fusage/testUrl0_4"
+			+"&utmac=UA-17645367-1"
+			+"&__utma%3D156030502.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testUrl0_5() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Linux x86_64)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=33832126513"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmje=1"
+			+"&utmfl=10.1%20r53"
+			+"&utmdt=-%20JBoss%20Community"
+			+"&utmhid=1087431432"
+			+"&utmr=0"
+			+"&utmp=%2Ftools%2Fusage/testUrl0_5"
+			+"&utmac=UA-17645367-1"
+			+"&__utma%3D156030503.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+	
+	@Test
+	public void testUrl0_6() throws IOException {
+		String userAgent = "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) com.jboss.jbds.product/3.0.1";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=338321265"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmje=1"
+			+"&utmfl=10.1%20r53"
+			+"&utmdt=-%20JBoss%20Community"
+			+"&utmhid=1087431432"
+			+"&utmr=0"
+			+"&utmp=%2Ftools%2Fusage//testUrl0_6"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc=__utma%3D156030507.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testUrl0_7() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=338321268"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmje=1"
+			+"&utmfl=10.1%20r53"
+			+"&utmdt=-%20JBoss%20Community"
+			+"&utmhid=1087431432"
+			+"&utmr=0"
+			+"&utmp=%2Ftools%2Fusage//testUrl0_7"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc=__utma%3D156030507.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testUrl1() throws IOException {
+		String userAgent = "JBossToolsUsageRequestsTest/1.0.0";
 		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
 		String url = GOOGLE_ANALYTICS_TRACKING_URL
-		+ "?" 
-		+"utmwv=1"
-		+ "&utmn=2016784548"
-		+ "&utmcs=UTF-8"
-		+ "&utmsc=24-bit"
-		+ "&utmsr=1920x1080"
-		+ "&utmul=en_US"
-		+ "&utmcr=1"
-		+ "&utmdt=jboss.org-tools-usage-action-wsstartup-test-"
-		+ "&utmhn=localhost"
-		+ "&utmr=org.jboss.tools.usage.tests"
-		+ "&utmp=/jboss.org/tools/usage/action/wsstartup/testUrl1_Session2"
-		+ "&utmac=UA-17645367-1"
-		+ "&utmcc=__utma%3D'2131379572.1097452543.1280502756059.1280502756059.1280502756059.2%3B%2B__utmb%3D649997112%3B%2B__utmc%3D2002669685%3B%2B__utmz%3D1137436918.1280502756059";
-
+		+"?"
+		+"utmwv=4.7.2"
+		+"utmn=338321266"
+		+"utmhn=jboss.org"
+		+"utmcs=UTF-8"
+		+"utmsr=1920x1080"
+		+"utmsc=24-bit"
+		+"utmul=en-us"
+		+"utmje=1"
+		+"utmfl=10.1%20r53"
+		+"utmdt=-%20JBoss%20Community"
+		+"utmhid=1087431432"
+		+"utmr=0"
+		+"utmp=%2Ftools%2Fusage/testUrl1"
+		+"utmac=UA-17645367-1"
+		+"utmcc=__utma%3D156030500.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+		+"gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
 	@Test
 	public void testUrl2() throws IOException {
-		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; linux x86; en_US) v20090525 Eclipse/3.5.0.v20090525";
+		String userAgent = "JBossToolsUsageRequestsTest/1.0.0";
 		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
 		String url = GOOGLE_ANALYTICS_TRACKING_URL
-		+ "?" 
-		+"utmwv=1"
-		+ "&utmn=2016784548"
-		+ "&utmcs=UTF-8"
-		+ "&utmsc=24-bit"
-		+ "&utmsr=1920x1080"
-		+ "&utmul=en_US"
-		+ "&utmcr=1"
-		+ "&utmdt=jboss.org-tools-usage-action-wsstartup-test-"
-		+ "&utmhn=localhost"
-		+ "&utmr=org.jboss.tools.usage.tests"
-		+ "&utmp=/jboss.org/tools/usage/action/wsstartup/testUrl2"
-		+ "&utmac=UA-17645367-1"
-		+ "&utmcc=__utma%3D'2131379572.1097452543.1280502756059.1280502756059.1280502756059.2%3B%2B__utmb%3D649997112%3B%2B__utmc%3D2002669685%3B%2B__utmz%3D1137436918.1280502756059";
+		+"?"
+		+"utmwv=4.7.2"
+		+"utmn=338321267"
+		+"utmhn=jboss.org"
+		+"utmcs=UTF-8"
+		+"utmsr=1920x1080"
+		+"utmsc=24-bit"
+		+"utmul=en-us"
+		+"utmdt=-%20JBoss%20Community"
+		+"utmhid=1087431432"
+		+"utmr=0"
+		+"utmp=%2Ftools%2Fusage/testUrl2"
+		+"utmac=UA-17645367-1"
+		+"utmcc=__utma%3D156030500.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+		+"gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
 	@Test
 	public void testUrl3() throws IOException {
-		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; linux x86; en_US) v20090525 Eclipse/3.5.0";
+		String userAgent = "JBossToolsUsageRequestsTest/1.0.0";
 		TestHttpGetMethod method = new TestHttpGetMethod(userAgent);
 		String url = GOOGLE_ANALYTICS_TRACKING_URL
-		+ "?" 
-		+"utmwv=1"
-		+ "&utmn=2016784548"
-		+ "&utmcs=UTF-8"
-		+ "&utmsc=24-bit"
-		+ "&utmsr=1920x1080"
-		+ "&utmul=en_US"
-		+ "&utmcr=1"
-		+ "&utmdt=jboss.org-tools-usage-action-wsstartup-test-"
-		+ "&utmhn=localhost"
-		+ "&utmr=org.jboss.tools.usage.tests"
-		+ "&utmp=/jboss.org/tools/usage/action/wsstartup/testUrl3"
-		+ "&utmac=UA-17645367-1"
-		+ "&utmcc=__utma%3D'2131379572.1097452543.1280502756059.1280502756059.1280502756059.2%3B%2B__utmb%3D649997112%3B%2B__utmc%3D2002669685%3B%2B__utmz%3D1137436918.1280502756059";
-
+		+"?"
+		+"utmwv=4.7.2"
+		+"utmn=338321268"
+		+"utmhn=jboss.org"
+		+"utmcs=UTF-8"
+		+"utmsr=1920x1080"
+		+"utmsc=24-bit"
+		+"utmul=en-us"
+		+"utmdt=-%20JBoss%20Community"
+		+"utmhid=1087431432"
+		+"utmr=0"
+		+"utmp=%2Ftools%2Fusage/testUrl3"
+		+"utmac=UA-17645367-1"
+		+"utmcc=__utma%3D156030500.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+		+"gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
@@ -110,7 +314,6 @@ public class JBossToolsUsageRequestsTest {
 	protected class TestHttpGetMethod extends HttpGetMethod {
 
 		private HttpURLConnection urlConnection;
-
 
 		public TestHttpGetMethod(String userAgent) {
 			super(userAgent);
@@ -124,8 +327,7 @@ public class JBossToolsUsageRequestsTest {
 		}
 
 		public int getResponseCode() throws IOException {
-			return super.getResponseCode(urlConnection);
+			return urlConnection.getResponseCode();
 		}
 	}
-	
 }
