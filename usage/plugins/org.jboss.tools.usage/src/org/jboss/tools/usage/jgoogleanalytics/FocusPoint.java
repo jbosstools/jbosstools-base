@@ -65,8 +65,8 @@ public class FocusPoint {
 	private void appendContentTitle(StringBuilder builder, FocusPoint focusPoint) {
 		FocusPoint childFocusPoint = focusPoint.getChild();
 		builder.append(focusPoint.getName());
-		builder.append(TITLE_SEPARATOR);
 		if (childFocusPoint != null) {
+			builder.append(TITLE_SEPARATOR);
 			appendContentTitle(builder, childFocusPoint);
 		}
 	}
