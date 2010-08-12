@@ -10,6 +10,7 @@ public class FocusPointTest extends TestCase {
 	private static final String root = "root";
 	private static final String child1 = "child1";
 	private static final String URI_SEPARATOR_ENCODED = EncodingUtils.checkedEncodeUtf8(FocusPoint.URI_SEPARATOR);
+	private static final String TITLE_SEPARATOR_ENCODED = EncodingUtils.checkedEncodeUtf8(FocusPoint.TITLE_SEPARATOR);
 	
 	public void testGetContentURI_Simple() throws Exception {
 		FocusPoint focusPoint = new FocusPoint(root);
@@ -31,4 +32,12 @@ public class FocusPointTest extends TestCase {
 		assertNotNull(contentTitle);
 		assertEquals(root, contentTitle);
 	}
+
+	public void testGetContentTitle_OneLevel() throws Exception {
+		FocusPoint focusPoint = new FocusPoint(root).setChild(new FocusPoint(child1));
+		String contentTitle = focusPoint.getContentTitle();
+		assertNotNull(contentTitle);
+		assertEquals(root + TITLE_SEPARATOR_ENCODED + child1, contentTitle);
+	}
+
 }
