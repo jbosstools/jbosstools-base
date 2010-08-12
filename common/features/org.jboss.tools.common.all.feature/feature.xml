@@ -20,10 +20,6 @@ for a full listing of individual contributors.
       %license
    </license>
 
-   <!-- <url>
-      <update label="%updateSiteName" url="http://download.jboss.org/jbosstools/updates/stable/galileo/"/>
-   </url> -->
-
    <includes
          id="org.jboss.tools.common.core.feature"
          version="0.0.0"/>
@@ -43,10 +39,6 @@ for a full listing of individual contributors.
    <includes
          id="org.jboss.tools.common.verification.feature"
          version="0.0.0"/>
-
-  <includes
-  	id="org.jboss.tools.ui.bot.feature" 
-  	version="0.0.0"/>
 
    <plugin
          id="org.jboss.tools.common.el.core"
@@ -77,6 +69,5 @@ for a full listing of individual contributors.
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
 
 </feature>
