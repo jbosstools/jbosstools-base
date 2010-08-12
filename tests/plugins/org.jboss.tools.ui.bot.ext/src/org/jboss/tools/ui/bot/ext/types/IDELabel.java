@@ -140,6 +140,11 @@ public class IDELabel {
 	  public static final String COPY_FILE_FROM_GUVNOR_TO_PACKAGE_EXPLORER = "File Operation";
 	  public static final String INSERT_TAG = "Insert Tag";
 	  public static final String SHOW_HIDE_DRAWERS = "Show/Hide Drawers";
+	  public static final String PALETTE_EDITOR = "Palette Editor";
+	  public static final String CREATE_GROUP = "Create Group";
+	  public static final String ADD_PALETTE_GROUP = "Add Palette Group";
+	  public static final String ADD_PALETTE_MACRO = "Add Palette Macro";
+	  public static final String CONFIRMATION = "Confirmation";
 	}
 
 	public class EntityGroup {
@@ -539,4 +544,36 @@ public class IDELabel {
      public static final String SHOW_HIDE_TOOL_ITEM = "Show/Hide";
 
    }
+   
+   public static class PaletteEditor{
+     
+     public static final String XSTUDIO_NODE = "XStudio";
+     public static final String PALETTE_NODE = "Palette";
+     public static final String NEW_MENU_ITEM = "New";
+     public static final String CREATE_GROUP_MENU_ITEM = "Create Group...";
+     public static final String CREATE_MACRO_MENU_ITEM = "Create Macro...";
+     public static final String DELETE_MENU_ITEM = "Delete";
+
+   }
+   
+   public static class CreateGroupDialog{
+     
+     public static final String NAME = "Name*";
+
+   }
+   
+   public static class AddPaletteGroupDialog{
+     
+     public static final String NAME = "Name*";
+
+   }
+
+   public static class AddPaletteMacroDialog{
+     
+     public static final String NAME = "Name*";
+     public static final String START_TEXT = "Start Text";
+     public static final String END_TEXT = "End Text";
+
+   }
+   
  }
