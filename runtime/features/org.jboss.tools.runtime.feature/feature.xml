@@ -425,15 +425,10 @@ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 END OF TERMS AND CONDITIONS
    </license>
 
-
    <!-- url element commented out because of 
         https://jira.jboss.org/jira/browse/JBDS-1187 Configuration plugin errors in feature.xml file -->
    <!--url-->
-   	  <!-- A password is required for this site. See the Customer Support Portal (CSP) or contact your rep for more information -->
-	  <!-- <update label="%updateSiteName" url="https://devstudio.jboss.com/updates/3.0/"/> -->
-	  <!-- You can also get *unsupported* community-tested updates to JBDS from the JBoss Tools site. 
-	  	   These updates generally become part of JBDS in the same way that Fedora content eventually becomes RHEL. --> 
-      <!-- <discovery label="%JBossToolsUpdatesSiteName" url="http://download.jboss.org/jbosstools/updates/stable/galileo/"/> -->
+	  <!-- <update label="%updateSiteName" url="http://download.jboss.org/jbosstools/updates/stable/helios/"/> -->
    <!-- url -->
 
    <plugin
