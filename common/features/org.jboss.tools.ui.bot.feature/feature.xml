@@ -27,12 +27,7 @@ Raleigh NC 27606 USA.
       <update label="%updateSiteName" url="http://download.jboss.org/jbosstools/updates/stable/galileo/"/>
    </url> -->
 
-   <includes
-         id="org.jboss.tools.ui.bot.ext"
-         version="0.0.0"/>
-
-   <includes
-         id="org.jboss.tools.ui.bot.ext.test"
-         version="0.0.0"/>
+	<plugin id="org.jboss.tools.ui.bot.ext" download-size="0" install-size="0" version="0.0.0"/>
+	<plugin id="org.jboss.tools.ui.bot.ext.test" download-size="0" install-size="0" version="0.0.0"/>
 
 </feature>
