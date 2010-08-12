@@ -21,13 +21,19 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Decorations;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
@@ -277,6 +283,191 @@ public class ContextMenuHelper {
 	      }
 	    });
 	  }
+    /**
+     * Returns tree menu which contains menuLabel
+     * @param tree
+     * @param menuLabel
+     * @return
+     */
+    public static Menu getTreeMenuViaReflections (final Tree tree, final String menuLabel){
+      // Menu has to be already created
+      return UIThreadRunnable.syncExec(new WidgetResult<Menu>() {
+        public Menu run() {
+          Menu result = null;
+          Composite parent = tree.getParent();
+          while (!(parent instanceof Decorations)){
+            parent = parent.getParent();
+          }
+          try {
+            Menu[] menus = ReflectionsHelper.getPrivateFieldValue(Decorations.class,
+              "menus", 
+              parent,
+              Menu[].class);
+            if (menus != null){
+              MenuItem topMenuItem = null;
+              int index = menus.length - 1;
+              while (topMenuItem == null && index >= 0){
+                if (menus[index] != null){
+                  MenuItem[] menuItems = menus[index].getItems();
+                  int menuItemIndex = 0;
+                  while (topMenuItem == null && menuItemIndex < menuItems.length){
+                    if (menuItems[menuItemIndex].getText().equals(menuLabel)){
+                      topMenuItem = menuItems[menuItemIndex];
+                    }
+                    menuItemIndex++;
+                  }
+                }
+                index--;
+              }
+              if (topMenuItem != null){
+                result = topMenuItem.getParent();
+              }
+            }
+            else{
+              throw new WidgetNotFoundException("Unable to find MenuItem with label " + menuLabel);
+            }
+          } catch (SecurityException se) {
+            throw new WidgetNotFoundException("Unable to find MenuItem with label " + menuLabel,se);
+          } catch (NoSuchFieldException nsfe) {
+            throw new WidgetNotFoundException("Unable to find MenuItem with label " + menuLabel,nsfe);
+          } catch (IllegalArgumentException iae) {
+            throw new WidgetNotFoundException("Unable to find MenuItem with label " + menuLabel,iae);
+          } catch (IllegalAccessException iace) {
+            throw new WidgetNotFoundException("Unable to find MenuItem with label " + menuLabel,iace);
+          }
+          return result;
+        }});
+    }
+    /**
+     * Simulate Right Click on treeItem
+     * @param tree
+     * @param treeItem
+     */
+    public static void treeRightClick(final Tree tree , final TreeItem treeItem) {
+      Rectangle cellBounds = UIThreadRunnable.syncExec(new Result<Rectangle>() {
+        public Rectangle run() {
+          return treeItem.getBounds();
+        }
+      });
+      clickXY(cellBounds.x + (cellBounds.width / 2), cellBounds.y + (cellBounds.height / 2), tree , treeItem);
+    }
+    /**
+     * Simulate Right Click on treeItem on specified position
+     * @param x
+     * @param y
+     * @param tree
+     * @param treeItem
+     */
+    protected static void clickXY(int x, int y,final Tree tree , final TreeItem treeItem) {
+      notifyTree(SWT.MouseEnter,tree,treeItem);
+      notifyTree(SWT.MouseMove,tree,treeItem);
+      notifyTree(SWT.Activate,tree,treeItem);
+      notifyTree(SWT.FocusIn,tree,treeItem);
+      notifyTree(SWT.MouseDown, createMouseEvent(x, y, 3, SWT.BUTTON3, 1, tree, treeItem),tree);
+      notifyTree(SWT.MouseUp,createMouseEvent(x, y, 3, SWT.BUTTON3, 1, tree, treeItem),tree);
+      notifyTree(SWT.Selection, createEvent(tree,treeItem),tree);
+      notifyTree(SWT.MouseHover,tree,treeItem);
+      notifyTree(SWT.MouseMove,tree,treeItem);
+      notifyTree(SWT.MouseExit,tree,treeItem);
+      notifyTree(SWT.Deactivate,tree,treeItem);
+      notifyTree(SWT.FocusOut,tree,treeItem);
+    }
+    /**
+     * Notify tree with Event of specified eventType
+     * @param eventType
+     * @param tree
+     * @param treeItem
+     */
+    private static void notifyTree(int eventType , Tree tree , TreeItem treeItem) {
+      Event event = new Event();
+      event.time = (int) System.currentTimeMillis();
+      event.widget = tree;
+      event.display = tree.getDisplay();
+      event.item = treeItem;
 
+      notify(eventType, event, tree);
+    }
+    /**
+     * Notify tree with Event of specified eventType
+     * @param eventType
+     * @param event
+     * @param tree
+     */
+    private static void notifyTree(int eventType , Event event , Tree tree) {
+      notify(eventType, event, tree);
+    }
+    /**
+     * Sends a non-blocking notification of the specified type to the widget.
+     * 
+     * @param eventType the type of event.
+     * @param createEvent the event to be sent to the {@link #widget}.
+     * @param widget the widget to send the event to.
+     */
+    protected static void notify(final int eventType, final Event createEvent, final Widget widget) {
+      createEvent.type = eventType;
+      widget.getDisplay().asyncExec(new Runnable() {
+        public void run() {
+          if ((widget == null) || widget.isDisposed()) {
+            return;
+          }
+          widget.notifyListeners(eventType, createEvent);
+        }
+      });
 
+      widget.getDisplay().syncExec(new Runnable() {
+        public void run() {
+          // do nothing, just wait for sync.
+        }
+      });
+    }
+    /**
+     * Create a mouse event
+     * 
+     * @param x the x co-ordinate of the mouse event.
+     * @param y the y co-ordinate of the mouse event.
+     * @param button the mouse button that was clicked.
+     * @param stateMask the state of the keyboard modifier keys.
+     * @param count the number of times the mouse was clicked.
+     * @return an event that encapsulates {@link #widget} and {@link #display}
+     * @since 1.2
+     */
+    protected static Event createMouseEvent(int x, int y, int button, int stateMask, int count, Tree tree , TreeItem treeItem) {
+      Event event = new Event();
+      event.time = (int) System.currentTimeMillis();
+      event.widget = tree;
+      event.display = tree.getDisplay();
+      event.x = x;
+      event.y = y;
+      event.button = button;
+      event.stateMask = stateMask;
+      event.count = count;
+      event.item = treeItem;
+      return event;
+    }
+    /**
+     * Create default Event for tree and treeItem
+     * @param tree
+     * @param treeItem
+     * @return
+     */
+    protected static Event createEvent(Tree tree, TreeItem treeItem) {
+      Event event = new Event();
+      event.time = (int) System.currentTimeMillis();
+      event.widget = tree;
+      event.display = tree.getDisplay();
+      event.item = treeItem;
+      return event;
+    }
+    /**
+     * Hide menu and all his parent menus
+     * @param menu
+     */
+    public static void hideMenuRecursively(final Menu menu){
+      menu.getDisplay().syncExec(new Runnable() {
+        public void run() {
+          ContextMenuHelper.hide(menu);
+          menu.setVisible(false);
+        }
+      });
+    }
 } 
