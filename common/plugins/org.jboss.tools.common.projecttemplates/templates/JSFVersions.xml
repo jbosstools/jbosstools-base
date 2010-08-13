@@ -17,4 +17,10 @@
   <refLib type="servlet" location="../servlet" />
   <projectTempl location="./jsf-1.2-facelets" />
  </version>
+ <version displayName="JSF 2.0" servlet-version="2.5">
+  <lib type="core" location="../lib/jsf-1.2"/>
+  <lib type="common" location="../lib/ApacheCommon2.3" />
+  <refLib type="servlet" location="../servlet" />
+  <projectTempl location="./jsf-2.0" />
+ </version>
 </versions>
