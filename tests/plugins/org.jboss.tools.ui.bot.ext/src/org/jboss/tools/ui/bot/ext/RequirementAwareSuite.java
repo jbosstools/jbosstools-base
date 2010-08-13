@@ -1,19 +1,29 @@
 package org.jboss.tools.ui.bot.ext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Vector;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.TestConfiguration;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
+import org.junit.Test;
+import org.junit.experimental.categories.Categories.CategoryFilter;
+import org.junit.experimental.categories.Categories.ExcludeCategory;
+import org.junit.experimental.categories.Categories.IncludeCategory;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
+import org.junit.runner.manipulation.Filter;
+import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -34,6 +44,70 @@ public class RequirementAwareSuite extends Suite {
 	// we have one global instance of cleanup listener
 	final static DoAfterAllTestsRunListener cleanUp = new DoAfterAllTestsRunListener();
 
+	final Filter categoryFilter;
+	
+	public static class CategoryFilter extends Filter {
+		public static CategoryFilter include(Class<?> categoryType) {
+			return new CategoryFilter(categoryType, null);
+		}
+
+		private final Class<?> fIncluded;
+		private final Class<?> fExcluded;
+
+		public CategoryFilter(Class<?> includedCategory,
+				Class<?> excludedCategory) {
+			fIncluded= includedCategory;
+			fExcluded= excludedCategory;
+		}
+
+		@Override
+		public String describe() {
+			return "category " + fIncluded;
+		}
+
+		@Override
+		public boolean shouldRun(Description description) {
+			if (hasCorrectCategoryAnnotation(description))
+				return true;
+			for (Description each : description.getChildren())
+				if (shouldRun(each))
+					return true;
+			return false;
+		}
+
+		private boolean hasCorrectCategoryAnnotation(Description description) {
+			List<Class<?>> categories= categories(description);
+			if (categories.isEmpty())
+				return fIncluded == null;
+			for (Class<?> each : categories)
+				if (fExcluded != null && fExcluded.isAssignableFrom(each))
+					return false;
+			for (Class<?> each : categories)
+				if (fIncluded == null || fIncluded.isAssignableFrom(each))
+					return true;
+			return false;
+		}
+
+		private List<Class<?>> categories(Description description) {
+			ArrayList<Class<?>> categories= new ArrayList<Class<?>>();
+			categories.addAll(Arrays.asList(directCategories(description)));
+			//categories.addAll(Arrays.asList(directCategories(parentDescription(description))));
+			return categories;
+		}
+
+		private Description parentDescription(Description description) {
+			// TODO: how heavy are we cringing?
+			return Description.createSuiteDescription(description.getTestClass());
+		}
+
+		private Class<?>[] directCategories(Description description) {
+			Category annotation= description.getAnnotation(Category.class);
+			if (annotation == null)
+				return new Class<?>[0];
+			return annotation.value();
+		}
+	}	
+	
 	class ReqAwareClassRunner extends BlockJUnit4ClassRunner {
 		private final TestConfiguration config;
 		private final List<RequirementBase> requirements;
@@ -44,8 +118,27 @@ public class RequirementAwareSuite extends Suite {
 			super(klass);
 			this.requirements = requirements;
 			this.config = config;
+			
+			try {
+				filter(categoryFilter);
+			} catch (NoTestsRemainException e) {
+				// TODO Auto-generated catch block
+				throw new InitializationError(e);
+			}
+			
 		}
 
+		@Override
+		protected List<FrameworkMethod> computeTestMethods() {
+			List<FrameworkMethod> testMethods = getTestClass().getAnnotatedMethods(Test.class);
+			List<FrameworkMethod> filteredMethods = new Vector<FrameworkMethod>(); 
+			for (FrameworkMethod method : testMethods) {
+				method.getAnnotation(Category.class);
+			}
+			return testMethods;
+			
+		}
+		
 		@Override
 		public void run(RunNotifier notifier) {
 			// planned test counter must know about all tests (methods) within a
@@ -210,6 +303,7 @@ public class RequirementAwareSuite extends Suite {
 	public RequirementAwareSuite(Class<?> klass) throws Throwable {
 		super(klass, Collections.<Runner> emptyList());
 		log.info("Loading test configurations");
+				
 		for (Entry<Object, Object> entry : TestConfigurator.multiProperties
 				.entrySet()) {
 			try {
@@ -223,6 +317,16 @@ public class RequirementAwareSuite extends Suite {
 				log.error("Error loading test configuration", ex);
 			}
 		}
+		
+		try {
+			categoryFilter = new CategoryFilter(getIncludedCategory(klass),
+					getExcludedCategory(klass)); 
+			filter(categoryFilter);
+			
+		} catch (NoTestsRemainException e) {
+			throw new InitializationError(e);
+		}
+		
 	}
 
 	@Override
@@ -245,4 +349,15 @@ public class RequirementAwareSuite extends Suite {
 		}
 
 	}
+	
+	private Class<?> getIncludedCategory(Class<?> klass) {
+		IncludeCategory annotation= klass.getAnnotation(IncludeCategory.class);
+		return annotation == null ? null : annotation.value();
+	}
+
+	private Class<?> getExcludedCategory(Class<?> klass) {
+		ExcludeCategory annotation= klass.getAnnotation(ExcludeCategory.class);
+		return annotation == null ? null : annotation.value();
+	}
+	
 }
