@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
@@ -26,6 +25,10 @@ public class GoogleAnalyticsUrlStrategyTest {
 
 	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 	private static final String HOSTNAME = "jboss.org";
+
+//	private static final String COOKIE_DELIMITER = EncodingUtils.checkedEncodeUtf8(String
+//			.valueOf(IGoogleAnalyticsParameters.PLUS_SIGN));
+	
 	private GoogleAnalyticsUrlStrategy urlStrategy;
 
 	@Before
@@ -50,37 +53,62 @@ public class GoogleAnalyticsUrlStrategyTest {
 				+ "&utmr=0"
 				+ "&utmp=%2Ftesting%2Fstrategy"
 				+ "&utmac=UA-17645367-1"
-				+ "&__utma%3D156030503.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+				+ "&utmcc=__utma%3D156030503.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 				+ "&gaq=1";
-		// assertEquals(expectedUrl, builtUrl);
-		assertEqualParameterValues(IGoogleAnalyticsParameters.PARAM_TRACKING_CODE_VERSION, url, targetUrl);
-		assertEqualParameterValues(IGoogleAnalyticsParameters.PARAM_HOST_NAME, url, targetUrl);
-		assertEqualParameterValues(IGoogleAnalyticsParameters.PARAM_LANGUAGE_ENCODING, url, targetUrl);
-		assertEqualParameterValues(IGoogleAnalyticsParameters.PARAM_SCREEN_RESOLUTION, url, targetUrl);
-		assertEqualParameterValues(IGoogleAnalyticsParameters.PARAM_SCREEN_COLOR_DEPTH, url, targetUrl);
-		assertEqualParameterValues(IGoogleAnalyticsParameters.PARAM_PAGE_TITLE, url, targetUrl);
-		assertEqualParameterValues(IGoogleAnalyticsParameters.PARAM_REFERRAL, url, targetUrl);
-		assertEqualParameterValues(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, url, targetUrl);
-		assertEqualParameterValues(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, url, targetUrl);
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_TRACKING_CODE_VERSION, url, targetUrl));
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_HOST_NAME, url, targetUrl));
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_LANGUAGE_ENCODING, url, targetUrl));
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_SCREEN_RESOLUTION, url, targetUrl));
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_SCREEN_COLOR_DEPTH, url, targetUrl));
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_PAGE_TITLE, url, targetUrl));
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_REFERRAL, url, targetUrl));
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, url, targetUrl));
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, url, targetUrl));
+
+		assertTrue(hasCookieValue("__utma", url));
+		assertTrue(hasCookieValue("__utmz", url));
+		assertTrue(hasCookieValue("utmcsr", url));
+		assertTrue(hasCookieValue("utmccn", url));
+		assertTrue(hasCookieValue("utmcmd", url));
+
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_GAQ, url, targetUrl));
 	}
 
-	private void assertEqualParameterValues(String paramName, String url, String targetUrl) {
-		String targetValue = getParameterValue(paramName, targetUrl,IGoogleAnalyticsParameters.AMPERSAND);
-		String value = getParameterValue(paramName, url,IGoogleAnalyticsParameters.AMPERSAND);
-		assertEquals("parameter '" + paramName + "' did not match", targetValue, value);
+	private boolean areEqualParameterValues(String paramName, String url, String targetUrl) {
+		return areEqualParameterValues(paramName, url, targetUrl, String.valueOf(IGoogleAnalyticsParameters.AMPERSAND));
 	}
 
-	private String getParameterValue(String parameterName, String url, char... delimiters) {
+	private boolean areEqualParameterValues(String paramName, String url, String targetUrl, String delimiters) {
+		String targetValue = getParameterValue(paramName, targetUrl, delimiters);
+		String value = getParameterValue(paramName, url, delimiters);
+		return targetValue != null && targetValue.equals(value);
+	}
+
+	private boolean hasCookieValue(String cookieName, String url) {
+		String cookieValues = getParameterValue(IGoogleAnalyticsParameters.PARAM_COOKIES, url,
+				String.valueOf(IGoogleAnalyticsParameters.AMPERSAND));
+		return cookieValues != null && cookieValues.indexOf(cookieName) >= 0;
+	}
+	
+//	private void assertEqualCookieParameterValues(String paramName, String url, String targetUrl) {
+//		String targetCookieValues = getParameterValue(IGoogleAnalyticsParameters.PARAM_COOKIES, targetUrl,
+//				IGoogleAnalyticsParameters.AMPERSAND);
+//		String cookieValues = getParameterValue(IGoogleAnalyticsParameters.PARAM_COOKIES, url,
+//				IGoogleAnalyticsParameters.AMPERSAND);
+//		assertEqualParameterValues(paramName, cookieValues, targetCookieValues, COOKIE_DELIMITER.toCharArray());
+//	}
+
+	private String getParameterValue(String parameterName, String url, String delimiters) {
 		String value = null;
 		int parameterNameStart = url.indexOf(parameterName);
-		if (parameterNameStart > 0) {
-			for (char delimiter : delimiters) {
-				int valueEnd = url.indexOf(delimiter, parameterNameStart + parameterName.length());
-				if (valueEnd > 0) {
-					value = url.substring(parameterNameStart + parameterName.length() + 1, valueEnd);
-					break;
+		if (parameterNameStart >= 0) {
+			int valueStart = parameterNameStart + parameterName.length() + 1;
+				int valueEnd = url.indexOf(delimiters, parameterNameStart + parameterName.length());
+				if (valueEnd < 0) {
+					value = url.substring(valueStart);
+				} else {
+					value = url.substring(valueStart, valueEnd);
 				}
-			}
 		}
 		return value;
 	}

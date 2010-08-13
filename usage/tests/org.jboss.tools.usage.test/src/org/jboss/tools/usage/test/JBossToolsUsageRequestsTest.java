@@ -79,7 +79,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmr=0"
 			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_1"
 			+"&utmac=UA-17645367-1"
-			+"&__utma%3D156030508.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&utmcc=__utma%3D156030508.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
@@ -154,7 +154,7 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmr=0"
 			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_4"
 			+"&utmac=UA-17645367-1"
-			+"&__utma%3D156030502.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&utmcc=__utma%3D156030502.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 			+"&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
