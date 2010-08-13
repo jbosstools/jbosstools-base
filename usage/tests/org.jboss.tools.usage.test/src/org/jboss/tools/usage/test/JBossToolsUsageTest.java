@@ -14,21 +14,21 @@ import org.jboss.tools.usage.IUsageTracker;
 import org.jboss.tools.usage.jgoogleanalytics.EclipseEnvironment;
 import org.jboss.tools.usage.jgoogleanalytics.FocusPoint;
 import org.jboss.tools.usage.jgoogleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.jgoogleanalytics.JGoogleAnalyticsTracker;
+import org.jboss.tools.usage.jgoogleanalytics.Tracker;
 import org.jboss.tools.usage.jgoogleanalytics.PluginLogger;
 import org.jboss.tools.usage.test.internal.JBossToolsUsageTestActivator;
 import org.junit.Test;
 
 public class JBossToolsUsageTest {
 
+	private static final String HOST_NAME = "jboss.org";
+	
 	private FocusPoint focusPoint = new FocusPoint("jboss.org")
 			.setChild(new FocusPoint("tools")
 					.setChild(new FocusPoint("usage")
-							.setChild(new FocusPoint("action")
-									.setChild(new FocusPoint("wsstartup")
-											.setChild(new FocusPoint("testversion472"))))));
+							.setChild(new FocusPoint("instance"))));
 
-	private static final String GANALYTICS_TRACKINGCODE = "UA-17645367-1";
+	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 
 	@Test
 	public void testTrackAsynchronously() throws Exception {
@@ -45,10 +45,9 @@ public class JBossToolsUsageTest {
 
 	private IUsageTracker getGoogleAnalyticsTracker() {
 		IGoogleAnalyticsParameters eclipseSettings = new EclipseEnvironment(
-				GANALYTICS_TRACKINGCODE, JBossToolsUsageTestActivator.PLUGIN_ID);
-		JGoogleAnalyticsTracker tracker = new JGoogleAnalyticsTracker(eclipseSettings);
-		tracker.setLoggingAdapter(new PluginLogger(JBossToolsUsageTestActivator
-				.getDefault()));
+				GANALYTICS_ACCOUNTNAME, HOST_NAME, JBossToolsUsageTestActivator.PLUGIN_ID);
+		Tracker tracker = new Tracker(eclipseSettings);
+		tracker.setLoggingAdapter(new PluginLogger(JBossToolsUsageTestActivator.getDefault()));
 		return tracker;
 	}
 }
