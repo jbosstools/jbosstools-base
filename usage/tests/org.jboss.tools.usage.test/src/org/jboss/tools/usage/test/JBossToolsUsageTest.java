@@ -10,44 +10,45 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
-import org.jboss.tools.usage.IUsageTracker;
-import org.jboss.tools.usage.jgoogleanalytics.EclipseEnvironment;
-import org.jboss.tools.usage.jgoogleanalytics.FocusPoint;
-import org.jboss.tools.usage.jgoogleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.jgoogleanalytics.Tracker;
-import org.jboss.tools.usage.jgoogleanalytics.PluginLogger;
+import org.eclipse.core.runtime.Platform;
+import org.jboss.tools.usage.ITracker;
+import org.jboss.tools.usage.googleanalytics.FocusPoint;
+import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
+import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
+import org.jboss.tools.usage.googleanalytics.Tracker;
+import org.jboss.tools.usage.internal.PluginLogger;
 import org.jboss.tools.usage.test.internal.JBossToolsUsageTestActivator;
 import org.junit.Test;
 
 public class JBossToolsUsageTest {
 
 	private static final String HOST_NAME = "jboss.org";
-	
+	private static final String LOCALE_US = "en_US";
+
 	private FocusPoint focusPoint = new FocusPoint("jboss.org")
 			.setChild(new FocusPoint("tools")
 					.setChild(new FocusPoint("usage")
-							.setChild(new FocusPoint("instance"))));
+							.setChild(new FocusPoint("test"))));
 
 	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 
 	@Test
 	public void testTrackAsynchronously() throws Exception {
-		IUsageTracker tracker = getGoogleAnalyticsTracker();
+		ITracker tracker = getGoogleAnalyticsTracker();
 		tracker.trackAsynchronously(focusPoint);
 		Thread.sleep(3000);
 	}
 
 	@Test
 	public void testTrackSynchronously() throws Exception {
-		IUsageTracker tracker = getGoogleAnalyticsTracker();
+		ITracker tracker = getGoogleAnalyticsTracker();
 		tracker.trackSynchronously(focusPoint);
 	}
 
-	private IUsageTracker getGoogleAnalyticsTracker() {
-		IGoogleAnalyticsParameters eclipseSettings = new EclipseEnvironment(
-				GANALYTICS_ACCOUNTNAME, HOST_NAME, JBossToolsUsageTestActivator.PLUGIN_ID);
-		Tracker tracker = new Tracker(eclipseSettings);
-		tracker.setLoggingAdapter(new PluginLogger(JBossToolsUsageTestActivator.getDefault()));
-		return tracker;
+	private ITracker getGoogleAnalyticsTracker() {
+		IGoogleAnalyticsParameters eclipseSettings = new EclipseEnvironmentFake(
+				GANALYTICS_ACCOUNTNAME, HOST_NAME, JBossToolsUsageTestActivator.PLUGIN_ID, Platform.OS_LINUX, LOCALE_US);
+		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageTestActivator.getDefault());
+		return new Tracker(eclipseSettings, loggingAdapter);
 	}
 }

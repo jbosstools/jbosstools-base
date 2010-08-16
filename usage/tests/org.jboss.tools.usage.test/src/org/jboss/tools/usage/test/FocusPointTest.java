@@ -1,6 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.usage.test;
 
-import org.jboss.tools.usage.jgoogleanalytics.FocusPoint;
+import org.jboss.tools.usage.googleanalytics.FocusPoint;
 import org.jboss.tools.usage.util.EncodingUtils;
 
 import junit.framework.TestCase;
@@ -8,8 +18,11 @@ import junit.framework.TestCase;
 public class FocusPointTest extends TestCase {
 
 	private static final String root = "root";
+	
 	private static final String child1 = "child1";
+	
 	private static final String URI_SEPARATOR_ENCODED = EncodingUtils.checkedEncodeUtf8(FocusPoint.URI_SEPARATOR);
+	
 	private static final String TITLE_SEPARATOR_ENCODED = EncodingUtils.checkedEncodeUtf8(FocusPoint.TITLE_SEPARATOR);
 	
 	public void testGetContentURI_Simple() throws Exception {
@@ -39,5 +52,4 @@ public class FocusPointTest extends TestCase {
 		assertNotNull(contentTitle);
 		assertEquals(root + TITLE_SEPARATOR_ENCODED + child1, contentTitle);
 	}
-
 }

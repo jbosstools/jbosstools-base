@@ -14,10 +14,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
 
-import org.jboss.tools.usage.jgoogleanalytics.EclipseEnvironment;
-import org.jboss.tools.usage.jgoogleanalytics.FocusPoint;
-import org.jboss.tools.usage.jgoogleanalytics.GoogleAnalyticsUrlStrategy;
-import org.jboss.tools.usage.jgoogleanalytics.IGoogleAnalyticsParameters;
+import org.eclipse.core.runtime.Platform;
+import org.jboss.tools.usage.googleanalytics.FocusPoint;
+import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
+import org.jboss.tools.usage.internal.GoogleAnalyticsUrlStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,6 +25,8 @@ public class GoogleAnalyticsUrlStrategyTest {
 
 	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 	private static final String HOSTNAME = "jboss.org";
+	private static final String REFERRAL = "0";
+	private static final String LOCALE_US = "en_US";
 
 //	private static final String COOKIE_DELIMITER = EncodingUtils.checkedEncodeUtf8(String
 //			.valueOf(IGoogleAnalyticsParameters.PLUS_SIGN));
@@ -37,7 +39,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 	}
 
 	@Test
-	public void testUrlIsBuiltCorrectly() throws UnsupportedEncodingException {
+	public void testUrlIsCorrect() throws UnsupportedEncodingException {
 		FocusPoint focusPoint = new FocusPoint("testing").setChild(new FocusPoint("strategy"));
 		String url = urlStrategy.build(focusPoint);
 		String targetUrl = "http://www.google-analytics.com/__utm.gif?"
@@ -114,31 +116,29 @@ public class GoogleAnalyticsUrlStrategyTest {
 	}
 
 	private class EclipseEnvironmentGAUrlStrategy extends GoogleAnalyticsUrlStrategy {
+
 		private EclipseEnvironmentGAUrlStrategy() {
-			super(new EclipseEnvironmentFake());
+			super(new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, Platform.OS_LINUX, LOCALE_US) {
+
+				@Override
+				public String getScreenColorDepth() {
+					return "24-bit";
+				}
+
+				@Override
+				public String getScreenResolution() {
+					return "1920x1080";
+				}
+
+				@Override
+				public String getBrowserLanguage() {
+					return "en_us";
+				}
+
+				@Override
+				public String getUserId() {
+					return String.valueOf(System.currentTimeMillis());
+				}});
 		}
-	}
-
-	private class EclipseEnvironmentFake extends EclipseEnvironment {
-
-		public EclipseEnvironmentFake() {
-			super(GANALYTICS_ACCOUNTNAME, HOSTNAME, "0");
-		}
-
-		@Override
-		protected void initScreenSettings() {
-			// do not access swt/display
-		}
-
-		@Override
-		public String getScreenResolution() {
-			return 1920 + SCREERESOLUTION_DELIMITER + 1080;
-		}
-
-		@Override
-		public String getScreenColorDepth() {
-			return 24 + SCREENCOLORDEPTH_POSTFIX;
-		}
-
 	}
 }
