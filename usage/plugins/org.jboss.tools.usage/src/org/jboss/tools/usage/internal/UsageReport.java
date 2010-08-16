@@ -15,12 +15,11 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
-import org.jboss.tools.usage.IUsageTracker;
-import org.jboss.tools.usage.jgoogleanalytics.EclipseEnvironment;
-import org.jboss.tools.usage.jgoogleanalytics.FocusPoint;
-import org.jboss.tools.usage.jgoogleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.jgoogleanalytics.JGoogleAnalyticsTracker;
-import org.jboss.tools.usage.jgoogleanalytics.PluginLogger;
+import org.jboss.tools.usage.ITracker;
+import org.jboss.tools.usage.googleanalytics.FocusPoint;
+import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
+import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
+import org.jboss.tools.usage.googleanalytics.Tracker;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
@@ -28,6 +27,8 @@ import org.osgi.service.prefs.BackingStoreException;
 public class UsageReport {
 
 	private static final String GANALYTICS_TRACKINGCODE = "UA-17645367-1";
+
+	private static final String HOST_NAME = "jboss.org";
 
 	private FocusPoint focusPoint = new FocusPoint("jboss.org")
 			.setChild(new FocusPoint("tools").setChild(new FocusPoint("usage").setChild(new FocusPoint("action")
@@ -61,16 +62,17 @@ public class UsageReport {
 		preferences.putBoolean(IUsageReportPreferenceConstants.USAGEREPORT_ENABLED, enabled);
 	}
 
-	private void report(IUsageTracker tracker) {
+	private void report(ITracker tracker) {
 		tracker.trackAsynchronously(focusPoint);
 	}
 
-	private IUsageTracker getAnalyticsTracker() {
+	private ITracker getAnalyticsTracker() {
 		IGoogleAnalyticsParameters eclipseSettings = new EclipseEnvironment(
 				GANALYTICS_TRACKINGCODE
+				, HOST_NAME
 				, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL);
-		JGoogleAnalyticsTracker tracker = new JGoogleAnalyticsTracker(eclipseSettings);
-		tracker.setLoggingAdapter(new PluginLogger(JBossToolsUsageActivator.getDefault()));
+		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageActivator.getDefault());
+		Tracker tracker = new Tracker(eclipseSettings, loggingAdapter);
 		return tracker;
 	}
 

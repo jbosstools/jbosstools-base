@@ -2,9 +2,9 @@ package org.jboss.tools.usage;
 
 import java.io.UnsupportedEncodingException;
 
-import org.jboss.tools.usage.jgoogleanalytics.FocusPoint;
+import org.jboss.tools.usage.googleanalytics.FocusPoint;
 
-public interface IUsageTracker {
+public interface ITracker {
 
 	/**
 	 * Track the focusPoint in the application synchronously. <br/>
