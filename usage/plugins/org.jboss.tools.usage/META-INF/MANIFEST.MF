@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JBoss Tools Google Analytics
+Bundle-Name: JBoss Tools Usage Reporting
 Bundle-SymbolicName: org.jboss.tools.usage;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
