@@ -15,7 +15,9 @@ import org.jboss.tools.usage.ITracker;
 import org.jboss.tools.usage.googleanalytics.FocusPoint;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
+import org.jboss.tools.usage.googleanalytics.IURLBuildingStrategy;
 import org.jboss.tools.usage.googleanalytics.Tracker;
+import org.jboss.tools.usage.internal.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.internal.PluginLogger;
 import org.jboss.tools.usage.test.internal.JBossToolsUsageTestActivator;
 import org.junit.Test;
@@ -49,6 +51,7 @@ public class JBossToolsUsageTest {
 		IGoogleAnalyticsParameters eclipseSettings = new EclipseEnvironmentFake(
 				GANALYTICS_ACCOUNTNAME, HOST_NAME, JBossToolsUsageTestActivator.PLUGIN_ID, Platform.OS_LINUX, LOCALE_US);
 		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageTestActivator.getDefault());
-		return new Tracker(eclipseSettings, loggingAdapter);
+		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(eclipseSettings);
+		return new Tracker(urlStrategy, eclipseSettings.getUserAgent(), loggingAdapter);
 	}
 }

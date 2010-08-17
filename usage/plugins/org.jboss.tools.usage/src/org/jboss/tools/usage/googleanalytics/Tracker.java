@@ -30,10 +30,10 @@ public class Tracker implements ITracker {
 	private HttpGetMethod httpRequest;
 	private ILoggingAdapter loggingAdapter;
 
-	public Tracker(IGoogleAnalyticsParameters googleParameters, ILoggingAdapter loggingAdapter) {
-		this.httpRequest = new HttpGetMethod(googleParameters.getUserAgent(), loggingAdapter);
+	public Tracker(IURLBuildingStrategy urlBuildingStrategy, String userAgent, ILoggingAdapter loggingAdapter) {
+		this.httpRequest = new HttpGetMethod(userAgent, loggingAdapter);
 		this.loggingAdapter = loggingAdapter;
-		this.urlBuildingStrategy = new GoogleAnalyticsUrlStrategy(googleParameters);
+		this.urlBuildingStrategy = urlBuildingStrategy;
 	}
 
 	public void trackSynchronously(FocusPoint focusPoint) throws UnsupportedEncodingException {

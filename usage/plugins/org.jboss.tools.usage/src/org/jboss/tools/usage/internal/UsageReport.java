@@ -19,6 +19,7 @@ import org.jboss.tools.usage.ITracker;
 import org.jboss.tools.usage.googleanalytics.FocusPoint;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
+import org.jboss.tools.usage.googleanalytics.IURLBuildingStrategy;
 import org.jboss.tools.usage.googleanalytics.Tracker;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.util.StatusUtils;
@@ -26,7 +27,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 public class UsageReport {
 
-	private static final String GANALYTICS_TRACKINGCODE = "UA-17645367-1";
+	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 
 	private static final String HOST_NAME = "jboss.org";
 
@@ -68,12 +69,12 @@ public class UsageReport {
 
 	private ITracker getAnalyticsTracker() {
 		IGoogleAnalyticsParameters eclipseSettings = new EclipseEnvironment(
-				GANALYTICS_TRACKINGCODE
+				GANALYTICS_ACCOUNTNAME
 				, HOST_NAME
 				, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL);
 		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageActivator.getDefault());
-		Tracker tracker = new Tracker(eclipseSettings, loggingAdapter);
-		return tracker;
+		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(eclipseSettings);
+		return new Tracker(urlStrategy, eclipseSettings.getUserAgent(), loggingAdapter);
 	}
 
 	private boolean isAskUser() {

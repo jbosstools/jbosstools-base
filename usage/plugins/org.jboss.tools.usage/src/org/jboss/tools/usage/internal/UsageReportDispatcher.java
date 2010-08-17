@@ -12,7 +12,6 @@ package org.jboss.tools.usage.internal;
 import org.eclipse.ui.IStartup;
 
 /**
- * 
  * @author Andre Dieitsheim
  */
 public class UsageReportDispatcher implements IStartup {
