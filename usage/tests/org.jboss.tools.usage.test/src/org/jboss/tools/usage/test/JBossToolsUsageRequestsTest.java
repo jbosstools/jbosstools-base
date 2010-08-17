@@ -1,3 +1,12 @@
+ /*******************************************************************************
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.usage.test;
 
 import static org.junit.Assert.assertEquals;
@@ -8,6 +17,7 @@ import java.net.HttpURLConnection;
 import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
 import org.jboss.tools.usage.internal.HttpGetMethod;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class JBossToolsUsageRequestsTest {
@@ -19,6 +29,7 @@ public class JBossToolsUsageRequestsTest {
 		this.loggingAdapter = new SystemOutLogger();
 	}
 	
+	@Ignore
 	@Test
 	public void testUrl0() throws IOException {
 		String userAgent = "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) Firefox/10.0.0";
@@ -44,6 +55,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 		
+	@Ignore
 	@Test
 	public void testUrl0_0() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US)";
@@ -69,6 +81,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Ignore
 	@Test
 	public void testUrl0_1() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) v201006010437R-H98-GA";
@@ -94,6 +107,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Ignore
 	@Test
 	public void testUrl0_2() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) Eclipse/3.5.0";
@@ -119,6 +133,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Ignore
 	@Test
 	public void testUrl0_3() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US;) Eclipse/3.5.0";
@@ -143,7 +158,8 @@ public class JBossToolsUsageRequestsTest {
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
-	
+
+	@Ignore
 	@Test
 	public void testUrl0_4() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1";
@@ -169,6 +185,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Ignore
 	@Test
 	public void testUrl0_5() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Linux x86_64)";
@@ -194,6 +211,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Ignore
 	@Test
 	public void testUrl0_6() throws IOException {
 		String userAgent = "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) com.jboss.jbds.product/3.0.1";
@@ -219,6 +237,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Ignore
 	@Test
 	public void testUrl0_7() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US)";
@@ -244,6 +263,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Ignore
 	@Test
 	public void testUrl0_7_1() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-us)";
@@ -267,8 +287,8 @@ public class JBossToolsUsageRequestsTest {
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
-
 	
+	@Ignore
 	@Test
 	public void testUrl0_7_2() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US)";
@@ -292,6 +312,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 	
+	@Ignore
 	@Test
 	public void testUrl0_7_3() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US)";
@@ -315,6 +336,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 	
+	@Ignore
 	@Test
 	public void testUrl0_7_3_mac() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Macintosh; U; Intel Mac OS X 10.5; fr)";
@@ -338,6 +360,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 	
+	@Ignore
 	@Test
 	public void testUrl0_7_3_win() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
@@ -385,6 +408,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 	
+	@Ignore
 	@Test
 	public void testUrl8() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
@@ -409,7 +433,7 @@ public class JBossToolsUsageRequestsTest {
 	}
 	
 	@Test
-	public void testUrl0_7_3_win_1() throws IOException {
+	public void testUrl0_7_3_win_referral() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
 		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
 		String url = "http://www.google-analytics.com/__utm.gif?" 
@@ -420,12 +444,143 @@ public class JBossToolsUsageRequestsTest {
 			+"&utmsr=1920x1080"
 			+"&utmsc=24-bit"
 			+"&utmul=en-us"
-			+"&utmdt=tools-usage-test_0_7_3_win_1"
+			+"&utmdt=tools-usage-test_0_7_3_win_referral"
 			+"&utmhid=1087431432"
 			+"&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
-			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_7_3_win_1"
+			+"&utm_content=test1%7Ctest2%7Ctest3"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_7_3_win_referral"
 			+"&utmac=UA-17645367-1"
 			+"&utmcc=__utma%3D133663892.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+	
+	@Test
+	public void testUrl0_7_3_win_adcontent() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=378334444"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmdt=tools-usage-test_0_7_3_win_adcontent"
+			+"&utmhid=1087431432"
+			+"&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
+			+"&utm_content=test1%7Ctest2%7Ctest3%7test4"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_7_3_win_adcontent"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc=__utma%3D455663892.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testUrl0_7_3_win_keyword() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=378334354"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmdt=tools-usage-test_0_7_3_win_keyword"
+			+"&utmhid=1087431432"
+			+"&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
+			+"&term=test1%7Ctest2%7Ctest3%7test4"
+			+"&utm_term=test1a%7Ctest2a%7Ctest3a%7test4a"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_7_3_win_keyword"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc=__utma%3D887463892.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+	
+	@Test
+	public void testUrl0_7_3_win_utmz() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=351334444"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmdt=tools-usage-test_0_7_3_win__utmz"
+			+"&utmhid=1087431432"
+			+"&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
+			+"&utm_content=test1%7Ctest2%7Ctest3"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_7_3_win__utmz"
+			+"&utmac=UA-17645367-1"
+			+"&utmz=test1%7Ctest2%7Ctest3"
+			+"&utmcc=__utma%3D133663892.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testUrl0_7_3_win_utmctr() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=351334444"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmdt=tools-usage-test_0_7_3_win__utmctr"
+			+"&utmhid=1087431432"
+			+"&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
+			+"&utm_content=test1%7Ctest2%7Ctest3"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_7_3_win_utctr"
+			+"&utmac=UA-17645367-1"
+			+"&utmz=test1%7Ctest2%7Ctest3"
+			+"&utmcc=__utma%3D133663892.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3D%7Cutmctr%3Dtest1%7Ctest2%7Ctest3%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testUrl0_7_3_win_utmctr_lengthtest() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=351334444"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmdt=tools-usage-test_0_7_3_win__utmctr"
+			+"&utmhid=1087431432"
+			+"&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
+			+"&utm_content=test1%7Ctest2%7Ctest3"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_7_3_win_utctr"
+			+"&utmac=UA-17645367-1"
+			+"&utmz=test1%7Ctest2%7Ctest3"
+			+"&utmcc="
+				+"__utma%3D133663892.1285760711.1281430767.1281430767.1281430767.1%3B%2B"
+				+"__utmz%3D156030500.1281430767.1.1."
+					+"utmcsr%3D(direct)%7C"
+					+"utmccn%3D(direct)%7C"
+					+"utmcmd%3D(none)%3D%7C"
+					+"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%3B"
 			+"&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
