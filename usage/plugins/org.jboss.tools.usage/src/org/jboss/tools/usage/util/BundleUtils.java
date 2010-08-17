@@ -20,17 +20,41 @@ import org.osgi.framework.BundleContext;
 
 public class BundleUtils {
 
-	public static List<Bundle> getBundles(String symbolicNameRegex, BundleContext bundleContext) {
+	/**
+	 * Returns the bundles among the available ones that match the given filter.
+	 * 
+	 * @param filter
+	 *            the filter to match the available bundles against
+	 * @param bundleContext
+	 *            the bundle context
+	 * @return the bundles that match the given filter
+	 */
+	public static List<Bundle> getBundles(IBundleEntryFilter filter, BundleContext bundleContext) {
 		List<Bundle> bundleList = new ArrayList<Bundle>();
-		BundleSymbolicNameFilter symbolicNameFilter = new BundleSymbolicNameFilter(symbolicNameRegex);
 		for (Bundle bundle : bundleContext.getBundles()) {
-			if (symbolicNameFilter.matches(bundle)) {
+			if (filter.matches(bundle)) {
 				bundleList.add(bundle);
 			}
 		}
 		return bundleList;
 	}
 
+	/**
+	 * Returns the bundles that have a symbolic name that match the given regex.
+	 * 
+	 * @param bundleSymbolicNameRegex
+	 *            the symbolic name regex to match.
+	 * @param bundleContext
+	 *            the bundle context
+	 * @return the bundles
+	 */
+	public static List<Bundle> getBundles(String bundleSymbolicNameRegex, BundleContext bundleContext) {
+		return getBundles(new BundleSymbolicNameFilter(bundleSymbolicNameRegex), bundleContext);
+	}
+
+	/**
+	 * A filter that matches bundles against a given symbolic name regex.
+	 */
 	public static class BundleSymbolicNameFilter implements IBundleEntryFilter {
 
 		private Pattern pattern;
@@ -48,7 +72,51 @@ public class BundleUtils {
 
 	}
 
+	/**
+	 * A filter that applies several given filters
+	 */
+	public static class CompositeFilter implements IBundleEntryFilter {
+
+		private IBundleEntryFilter filters[];
+
+		/**
+		 * Instantiates a new composite filter that applies several given
+		 * filters.
+		 * 
+		 * @param filters
+		 *            the filters
+		 */
+		public CompositeFilter(IBundleEntryFilter[] filters) {
+			this.filters = filters;
+		}
+
+		/**
+		 * Applies the filters this composite filter has. All filters have to
+		 * match so that the filter says the given bundle matches.
+		 */
+		@Override
+		public boolean matches(Bundle bundle) {
+			for (IBundleEntryFilter filter : filters) {
+				if (!filter.matches(bundle)) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+
+	/**
+	 * The Interface IBundleEntryFilter.
+	 */
 	public static interface IBundleEntryFilter {
+
+		/**
+		 * Matches.
+		 * 
+		 * @param bundle
+		 *            the bundle
+		 * @return true, if successful
+		 */
 		public boolean matches(Bundle bundle);
 	}
 }

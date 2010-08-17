@@ -18,10 +18,10 @@ import org.jboss.tools.usage.internal.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.internal.HttpGetMethod;
 
 /**
- * Reports (tracks) data to google analytics
+ * Reports (tracks) usage
  * 
  * @author Andre Dietisheim
- * @see <a
+ * @see based on <a
  *      href="http://jgoogleAnalytics.googlecode.com">http://jgoogleAnalytics.googlecode.com</a>
  */
 public class Tracker implements ITracker {
