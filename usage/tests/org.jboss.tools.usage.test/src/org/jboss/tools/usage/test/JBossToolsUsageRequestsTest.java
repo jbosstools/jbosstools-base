@@ -408,6 +408,29 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 	
+	@Test
+	public void testUrl0_7_3_win_1() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=351334444"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmdt=tools-usage-test_0_7_3_win_1"
+			+"&utmhid=1087431432"
+			+"&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl0_7_3_win_1"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc=__utma%3D133663892.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
 	protected class TestHttpGetMethod extends HttpGetMethod {
 
 		private HttpURLConnection urlConnection;
