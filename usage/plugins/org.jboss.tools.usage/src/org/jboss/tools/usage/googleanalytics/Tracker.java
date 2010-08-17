@@ -14,7 +14,6 @@ import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
 import org.jboss.tools.usage.ITracker;
-import org.jboss.tools.usage.internal.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.internal.HttpGetMethod;
 
 /**

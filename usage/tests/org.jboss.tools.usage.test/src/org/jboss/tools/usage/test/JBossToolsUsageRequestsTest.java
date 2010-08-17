@@ -576,8 +576,8 @@ public class JBossToolsUsageRequestsTest {
 				+"__utmz%3D156030500.1281430767.1.1."
 					+"utmcsr%3D(direct)%7C"
 					+"utmccn%3D(direct)%7C"
-					+"utmcmd%3D(none)%3D%7C"
-					+"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%3B"
+					+"utmcmd%3D(none)%7C"
+					+"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
 			+"&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());

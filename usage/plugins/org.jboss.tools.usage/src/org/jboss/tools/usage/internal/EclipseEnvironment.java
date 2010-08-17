@@ -20,8 +20,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
+import org.jboss.tools.usage.util.BundleUtils;
 import org.jboss.tools.usage.util.PreferencesUtil;
 import org.jboss.tools.usage.util.StatusUtils;
+import org.jboss.tools.usage.util.BundleUtils.IBundleEntryFilter;
 import org.osgi.framework.Bundle;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -200,6 +202,28 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		StringBuilder builder = new StringBuilder();
 		builder.append(Math.abs(random.nextLong()));
 		builder.append(System.currentTimeMillis());
+		return builder.toString();
+	}
+
+	@Override
+	public String getKeyword() {
+		JBossBundleGroups jbossBundleGroups = new JBossBundleGroups();
+		IBundleEntryFilter jbossToolsFilter = new BundleUtils.BundleSymbolicNameFilter("org\\.jboss\\.tools.+");
+		IBundleEntryFilter compositeFilter = new BundleUtils.CompositeFilter(
+				jbossToolsFilter
+				, jbossBundleGroups );
+		BundleUtils.getBundles(compositeFilter, JBossToolsUsageActivator.getDefault().getBundle().getBundleContext());
+		
+		return bundleGroupsToKeywordString(jbossBundleGroups);
+	}
+	
+	private String bundleGroupsToKeywordString(JBossBundleGroups jbossBundleGroups) {
+		char delimiter = '-';
+		StringBuilder builder = new StringBuilder();
+		for (String bundleGroupId : jbossBundleGroups.getBundleGroupIds()) {
+			builder.append(bundleGroupId)
+			.append(delimiter);
+		}
 		return builder.toString();
 	}
 }

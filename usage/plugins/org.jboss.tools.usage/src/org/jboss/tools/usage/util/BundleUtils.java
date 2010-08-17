@@ -86,7 +86,7 @@ public class BundleUtils {
 		 * @param filters
 		 *            the filters
 		 */
-		public CompositeFilter(IBundleEntryFilter[] filters) {
+		public CompositeFilter(IBundleEntryFilter... filters) {
 			this.filters = filters;
 		}
 

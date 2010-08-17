@@ -127,14 +127,13 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getContentURI(), builder);
 
 		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, googleParameters.getAccountName(), builder);
-		appendCookies(focusPoint, builder);
-		builder.append(IGoogleAnalyticsParameters.AMPERSAND);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(focusPoint, builder), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_GAQ, "1", false, builder);
 
 		return builder.toString();
 	}
 
-	private void appendCookies(FocusPoint focusPoint, StringBuilder builder) {
+	private String getCookies(FocusPoint focusPoint, StringBuilder builder) {
 
 		long timeStamp = System.currentTimeMillis();
 		StringBuilder stringBuilder = new StringBuilder();
@@ -158,13 +157,11 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 				.append(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCCN).append(IGoogleAnalyticsParameters.EQUALS_SIGN)
 				.append("(direct)").append(IGoogleAnalyticsParameters.PIPE)
 				.append(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCMD).append(IGoogleAnalyticsParameters.EQUALS_SIGN)
-				.append("(none)")
-				.append(IGoogleAnalyticsParameters.SEMICOLON);
+				.append("(none)");
+		appendCookieKeyword(builder);
+		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
 
-		String encodedString = EncodingUtils.checkedEncodeUtf8(stringBuilder.toString());
-
-		builder.append(IGoogleAnalyticsParameters.PARAM_COOKIES).append(IGoogleAnalyticsParameters.EQUALS_SIGN).append(
-				encodedString);
+		return EncodingUtils.checkedEncodeUtf8(stringBuilder.toString());
 
 		// builder.append(IGoogleAnalyticsParameters.PARAM_COOKIE_VALUES)
 		// .append(IGoogleAnalyticsParameters.EQUALS_SIGN)
@@ -196,6 +193,21 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		// .append("utmccn%3D(direct)%7C")
 		// .append("utmcmd%3D(none)%3B");
 
+	}
+
+	/**
+	 * Appends the keyword to the cookies.
+	 *
+	 * @param builder the builder to append to
+	 */
+	private void appendCookieKeyword(StringBuilder builder) {
+		String keyword = googleParameters.getKeyword();
+		if (keyword != null && keyword.length() > 0) {
+			builder.append(IGoogleAnalyticsParameters.PIPE)
+					.append(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD)
+					.append(IGoogleAnalyticsParameters.EQUALS_SIGN)
+					.append(keyword);
+		}
 	}
 
 	private String getRandomNumber() {
