@@ -534,6 +534,9 @@ public class IDELabel {
      public static final String SOURCE_TAB_LABEL = "Source";
      public static final String VISUAL_SOURCE_TAB_LABEL = "Visual/Source";
      public static final String PREVIEW_TAB_LABEL = "Preview";
+     public static final String BOLD_TOOLBAR_BUTTON_LABEL = "Bold";
+     public static final String ITALIC_TOOLBAR_BUTTON_LABEL = "Italic";
+     public static final String UNDERLINE_TOOLBAR_BUTTON_LABEL = "Underline";
 
    }
 
