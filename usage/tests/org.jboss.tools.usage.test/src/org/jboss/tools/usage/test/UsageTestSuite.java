@@ -17,7 +17,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses( {
 		FocusPointTest.class,
 		GoogleAnalyticsUrlStrategyTest.class,
-		JBossToolsUsageRequestsTest.class,
 		JBossToolsUsageTest.class,
 		EclipseEnvironmenTest.class })
 public class UsageTestSuite {

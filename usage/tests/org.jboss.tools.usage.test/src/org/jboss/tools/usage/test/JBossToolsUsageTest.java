@@ -19,7 +19,6 @@ import org.jboss.tools.usage.googleanalytics.IURLBuildingStrategy;
 import org.jboss.tools.usage.googleanalytics.Tracker;
 import org.jboss.tools.usage.internal.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.internal.PluginLogger;
-import org.jboss.tools.usage.test.internal.JBossToolsUsageTestActivator;
 import org.junit.Test;
 
 public class JBossToolsUsageTest {

@@ -200,8 +200,8 @@ public class JBossBundleGroups implements IBundleEntryFilter {
 	private Set<String> jbossBundleGroups = new HashSet<String>();
 
 	/**
-	 * Collects the bundles it gets and collects the bundle groups they belong
-	 * to. Always return <tt>true</tt> (does match) while collecting
+	 * Collects the bundle groups the bundles it gets belong
+	 * to. Always returns <tt>true</tt> (does match) while collecting
 	 */
 	@Override
 	public boolean matches(Bundle bundle) {

@@ -1,4 +1,4 @@
-package org.jboss.tools.usage.test.internal;
+package org.jboss.tools.usage.test;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
