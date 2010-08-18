@@ -11,9 +11,6 @@
 package org.jboss.tools.usage.internal;
 
 import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -37,20 +34,21 @@ public class HttpGetMethod {
 
 	private ILoggingAdapter loggingAdapter = null;
 
-	private CookieManager cookieHandler;
+//	private CookieHandler cookieHandler;
 	
 	private String userAgent;
 
 	public HttpGetMethod(String userAgent, ILoggingAdapter loggingAdapter) {
 		this.userAgent = userAgent;
 		this.loggingAdapter = loggingAdapter;
-		this.cookieHandler = new CookieManager();
-		cookieHandler.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+//		this.cookieHandler = new CookieHandler();
+//		this.cookieHandler = CookieHandler.getDefault();
+//		cookieHandler.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
 	}
 
 	public void request(String urlString) {
 
-		CookieHandler currentCookieHandler = setCookieHandler(cookieHandler);
+//		CookieHandler currentCookieHandler = setCookieHandler(cookieHandler);
 		try {
 			HttpURLConnection urlConnection = createURLConnection(urlString, userAgent);
 			urlConnection.connect();
@@ -63,7 +61,7 @@ public class HttpGetMethod {
 		} catch (Exception e) {
 			loggingAdapter.logError(e.getMessage());
 		} finally {
-			setCookieHandler(currentCookieHandler);
+//			setCookieHandler(currentCookieHandler);
 		}
 	}
 
@@ -79,11 +77,11 @@ public class HttpGetMethod {
 		return urlConnection.getResponseCode();
 	}
 
-	private CookieHandler setCookieHandler(CookieHandler cookieHandler) {
-		CookieHandler currentCookieHandler = CookieHandler.getDefault();
-		CookieHandler.setDefault(cookieHandler);
-		return currentCookieHandler;
-	}
+//	private CookieHandler setCookieHandler(CookieHandler cookieHandler) {
+//		CookieHandler currentCookieHandler = CookieHandler.getDefault();
+//		CookieHandler.setDefault(cookieHandler);
+//		return currentCookieHandler;
+//	}
 
 	/**
 	 * Creates a new url connection.
