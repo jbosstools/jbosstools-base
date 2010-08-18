@@ -127,17 +127,16 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getContentURI(), builder);
 
 		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, googleParameters.getAccountName(), builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(focusPoint, builder), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(focusPoint), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_GAQ, "1", false, builder);
 
 		return builder.toString();
 	}
 
-	private String getCookies(FocusPoint focusPoint, StringBuilder builder) {
-
-		long timeStamp = System.currentTimeMillis();
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(IGoogleAnalyticsParameters.PARAM_COOKIES_FIRST_VISIT)
+	private String getCookies(FocusPoint focusPoint) {
+ 		long timeStamp = System.currentTimeMillis();
+		StringBuilder builder = new StringBuilder();
+		builder.append(IGoogleAnalyticsParameters.PARAM_COOKIES_FIRST_VISIT)
 				.append(IGoogleAnalyticsParameters.EQUALS_SIGN)
 				.append("999.")
 				.append(googleParameters.getUserId()).append(IGoogleAnalyticsParameters.DOT)
@@ -161,7 +160,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		appendCookieKeyword(builder);
 		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
 
-		return EncodingUtils.checkedEncodeUtf8(stringBuilder.toString());
+		return EncodingUtils.checkedEncodeUtf8(builder.toString());
 
 		// builder.append(IGoogleAnalyticsParameters.PARAM_COOKIE_VALUES)
 		// .append(IGoogleAnalyticsParameters.EQUALS_SIGN)
