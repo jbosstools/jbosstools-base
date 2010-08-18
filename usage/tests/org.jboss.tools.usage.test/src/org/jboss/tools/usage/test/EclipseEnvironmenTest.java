@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -128,6 +128,7 @@ public class EclipseEnvironmenTest {
 			this.symbolicName = symbolicName;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Enumeration findEntries(String path, String filePattern, boolean recurse) {
 			throw new UnsupportedOperationException();
@@ -148,16 +149,19 @@ public class EclipseEnvironmenTest {
 			throw new UnsupportedOperationException();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Enumeration getEntryPaths(String path) {
 			throw new UnsupportedOperationException();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Dictionary getHeaders() {
 			throw new UnsupportedOperationException();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Dictionary getHeaders(String locale) {
 			throw new UnsupportedOperationException();
@@ -183,6 +187,7 @@ public class EclipseEnvironmenTest {
 			throw new UnsupportedOperationException();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Enumeration getResources(String name) throws IOException {
 			throw new UnsupportedOperationException();
@@ -193,6 +198,7 @@ public class EclipseEnvironmenTest {
 			throw new UnsupportedOperationException();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Map getSignerCertificates(int signersType) {
 			throw new UnsupportedOperationException();
@@ -220,6 +226,7 @@ public class EclipseEnvironmenTest {
 
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Class loadClass(String name) throws ClassNotFoundException {
 			throw new UnsupportedOperationException();
