@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 
 
 /**
@@ -26,16 +25,14 @@ public class BundleUtils {
 
 	/**
 	 * Returns the bundles among the available ones that match the given filter.
-	 * 
-	 * @param filter
-	 *            the filter to match the available bundles against
-	 * @param bundleContext
-	 *            the bundle context
+	 *
+	 * @param filter the filter to match the available bundles against
+	 * @param bundles the bundles
 	 * @return the bundles that match the given filter
 	 */
-	public static List<Bundle> getBundles(IBundleEntryFilter filter, BundleContext bundleContext) {
+	public static List<Bundle> getBundles(IBundleEntryFilter filter, Bundle[] bundles) {
 		List<Bundle> bundleList = new ArrayList<Bundle>();
-		for (Bundle bundle : bundleContext.getBundles()) {
+		for (Bundle bundle : bundles) {
 			if (filter.matches(bundle)) {
 				bundleList.add(bundle);
 			}
@@ -45,15 +42,13 @@ public class BundleUtils {
 
 	/**
 	 * Returns the bundles that have a symbolic name that match the given regex.
-	 * 
-	 * @param bundleSymbolicNameRegex
-	 *            the symbolic name regex to match.
-	 * @param bundleContext
-	 *            the bundle context
+	 *
+	 * @param bundleSymbolicNameRegex the symbolic name regex to match.
+	 * @param bundles the bundles
 	 * @return the bundles
 	 */
-	public static List<Bundle> getBundles(String bundleSymbolicNameRegex, BundleContext bundleContext) {
-		return getBundles(new BundleSymbolicNameFilter(bundleSymbolicNameRegex), bundleContext);
+	public static List<Bundle> getBundles(String bundleSymbolicNameRegex, Bundle[] bundles) {
+		return getBundles(new BundleSymbolicNameFilter(bundleSymbolicNameRegex), bundles);
 	}
 
 	/**

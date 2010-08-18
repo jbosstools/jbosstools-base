@@ -33,6 +33,10 @@ import org.osgi.service.prefs.Preferences;
  */
 public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implements IGoogleAnalyticsParameters {
 
+	private static final char BUNDLE_GROUP_DELIMITER = '-';
+
+	private static final String JBOSS_TOOLS_BUNDLES_PREFIX = "org\\.jboss\\.tools.+";
+
 	private static final String ECLIPSE_RUNTIME_BULDEID = "org.eclipse.core.runtime";
 
 	private String screenResolution;
@@ -211,17 +215,21 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 	@Override
 	public String getKeyword() {
 		JBossBundleGroups jbossBundleGroups = new JBossBundleGroups();
-		IBundleEntryFilter jbossToolsFilter = new BundleUtils.BundleSymbolicNameFilter("org\\.jboss\\.tools.+");
+		IBundleEntryFilter jbossToolsFilter = new BundleUtils.BundleSymbolicNameFilter(JBOSS_TOOLS_BUNDLES_PREFIX);
 		IBundleEntryFilter compositeFilter = new BundleUtils.CompositeFilter(
 				jbossToolsFilter
 				, jbossBundleGroups );
-		BundleUtils.getBundles(compositeFilter, JBossToolsUsageActivator.getDefault().getBundle().getBundleContext());
+		BundleUtils.getBundles(compositeFilter, getBundles());
 		
 		return bundleGroupsToKeywordString(jbossBundleGroups);
 	}
+
+	protected Bundle[] getBundles() {
+		return JBossToolsUsageActivator.getDefault().getBundle().getBundleContext().getBundles();
+	}
 	
 	private String bundleGroupsToKeywordString(JBossBundleGroups jbossBundleGroups) {
-		char delimiter = '-';
+		char delimiter = BUNDLE_GROUP_DELIMITER;
 		StringBuilder builder = new StringBuilder();
 		for (String bundleGroupId : jbossBundleGroups.getBundleGroupIds()) {
 			builder.append(bundleGroupId)

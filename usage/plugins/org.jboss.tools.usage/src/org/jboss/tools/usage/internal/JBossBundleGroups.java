@@ -22,7 +22,7 @@ import org.osgi.framework.Bundle;
  */
 public class JBossBundleGroups implements IBundleEntryFilter {
 
-	enum BundleGroup {
+	public enum BundleGroup {
 		ARCHIVES("org.jboss.ide.eclipse.archives.core",
 				"org.jboss.ide.eclipse.archives.jdt.integration",
 				"org.jboss.ide.eclipse.archives.ui"
