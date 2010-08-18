@@ -12,6 +12,9 @@ package org.jboss.tools.usage.test;
 
 import org.jboss.tools.usage.internal.EclipseEnvironment;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class EclipseEnvironmentFake extends EclipseEnvironment {
 
 	private String locale;

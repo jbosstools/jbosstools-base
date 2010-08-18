@@ -19,6 +19,10 @@ import org.junit.runners.Suite;
 		GoogleAnalyticsUrlStrategyTest.class,
 		JBossToolsUsageTest.class,
 		EclipseEnvironmenTest.class })
+
+/**
+ * @author Andre Dietisheim
+ */
 public class UsageTestSuite {
 
 }

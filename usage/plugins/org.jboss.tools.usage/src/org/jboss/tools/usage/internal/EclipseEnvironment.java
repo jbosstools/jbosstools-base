@@ -28,6 +28,9 @@ import org.osgi.framework.Bundle;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implements IGoogleAnalyticsParameters {
 
 	private static final String ECLIPSE_RUNTIME_BULDEID = "org.eclipse.core.runtime";

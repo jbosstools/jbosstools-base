@@ -4,6 +4,9 @@ import java.io.UnsupportedEncodingException;
 
 import org.jboss.tools.usage.googleanalytics.FocusPoint;
 
+/**
+ * @author Andre Dietisheim
+ */
 public interface ITracker {
 
 	/**

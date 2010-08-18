@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.usage.googleanalytics;
 
+/**
+ * @author Andre Dietisheim
+ */
 public interface ILoggingAdapter {
 
   public void logError(String errorMessage);

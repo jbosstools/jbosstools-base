@@ -15,6 +15,9 @@ import org.jboss.tools.usage.util.EncodingUtils;
 
 import junit.framework.TestCase;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class FocusPointTest extends TestCase {
 
 	private static final String root = "root";

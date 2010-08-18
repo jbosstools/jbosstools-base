@@ -18,7 +18,6 @@ import java.io.UnsupportedEncodingException;
  * @author Andre Dietisheim
  * 
  */
-
 public interface IURLBuildingStrategy {
 
 	public String build(FocusPoint focusPoint) throws UnsupportedEncodingException;

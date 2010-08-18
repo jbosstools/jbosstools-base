@@ -21,6 +21,9 @@ import org.jboss.tools.usage.internal.GoogleAnalyticsUrlStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class GoogleAnalyticsUrlStrategyTest {
 
 	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";

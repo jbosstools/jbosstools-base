@@ -12,7 +12,9 @@ package org.jboss.tools.usage.internal;
 
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 
-
+/**
+ * @author Andre Dietisheim
+ */
 public abstract class AbstractGoogleAnalyticsParameters implements IGoogleAnalyticsParameters {
 
 	private String accountName;

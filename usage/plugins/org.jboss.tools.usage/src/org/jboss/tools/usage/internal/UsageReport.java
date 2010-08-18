@@ -25,6 +25,9 @@ import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class UsageReport {
 
 	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";

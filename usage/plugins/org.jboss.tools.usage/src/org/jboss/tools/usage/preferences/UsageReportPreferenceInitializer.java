@@ -17,6 +17,9 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class UsageReportPreferenceInitializer extends
 		AbstractPreferenceInitializer {
 

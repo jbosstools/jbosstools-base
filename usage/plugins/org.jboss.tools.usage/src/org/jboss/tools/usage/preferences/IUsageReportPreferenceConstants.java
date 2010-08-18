@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.usage.preferences;
 
+/**
+ * @author Andre Dietisheim
+ */
 public interface IUsageReportPreferenceConstants {
 
 	/**

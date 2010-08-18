@@ -21,6 +21,9 @@ import org.jboss.tools.usage.internal.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.internal.PluginLogger;
 import org.junit.Test;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class JBossToolsUsageTest {
 
 	private static final String HOST_NAME = "jboss.org";

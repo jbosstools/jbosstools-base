@@ -15,6 +15,9 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class PluginLogger implements ILoggingAdapter {
 
 	private Plugin plugin;

@@ -3,6 +3,9 @@ package org.jboss.tools.usage.test;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class JBossToolsUsageTestActivator extends Plugin {
 
 	public static final String PLUGIN_ID = "org.jboss.tools.usage.tests"; //$NON-NLS-1$

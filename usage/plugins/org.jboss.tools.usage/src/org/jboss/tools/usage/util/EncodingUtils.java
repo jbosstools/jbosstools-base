@@ -13,6 +13,9 @@ package org.jboss.tools.usage.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class EncodingUtils {
 
 	private static final String ENCODING_UTF8 = "UTF-8";

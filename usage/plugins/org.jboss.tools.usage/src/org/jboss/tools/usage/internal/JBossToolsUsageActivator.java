@@ -14,6 +14,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class JBossToolsUsageActivator extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "org.jboss.tools.usage"; //$NON-NLS-1$

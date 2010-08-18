@@ -21,6 +21,9 @@ import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.usage.internal.EclipseEnvironment;
 import org.junit.Test;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class EclipseEnvironmenTest {
 
 	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";

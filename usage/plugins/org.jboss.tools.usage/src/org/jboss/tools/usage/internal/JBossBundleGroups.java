@@ -17,6 +17,9 @@ import java.util.Set;
 import org.jboss.tools.usage.util.BundleUtils.IBundleEntryFilter;
 import org.osgi.framework.Bundle;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class JBossBundleGroups implements IBundleEntryFilter {
 
 	enum BundleGroup {

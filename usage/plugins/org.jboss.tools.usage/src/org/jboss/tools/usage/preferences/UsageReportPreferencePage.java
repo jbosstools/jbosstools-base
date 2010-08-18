@@ -23,6 +23,9 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.StatusUtils;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class UsageReportPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private IPersistentPreferenceStore preferences;

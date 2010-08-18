@@ -18,6 +18,10 @@ import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
+
+/**
+ * @author Andre Dietisheim
+ */
 public class BundleUtils {
 
 	/**

@@ -14,6 +14,7 @@ package org.jboss.tools.usage.googleanalytics;
  * An interface that provides methods for all parameters that google analytics
  * needs to know about.
  * 
+ * @author Andre Dietisheim
  * @see <a
  *      href="http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters">GIF Request Parameters</a>
  */

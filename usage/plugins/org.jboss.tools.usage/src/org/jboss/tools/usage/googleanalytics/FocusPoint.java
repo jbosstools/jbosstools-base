@@ -16,7 +16,6 @@ import org.jboss.tools.usage.util.EncodingUtils;
  * Focus point of the application. It can represent data points like application
  * load, application module load, user actions, error events etc.
  */
-
 public class FocusPoint {
 
 	private String name;

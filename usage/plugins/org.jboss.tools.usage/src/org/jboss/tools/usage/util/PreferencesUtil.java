@@ -14,6 +14,9 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class PreferencesUtil {
 
 	/**

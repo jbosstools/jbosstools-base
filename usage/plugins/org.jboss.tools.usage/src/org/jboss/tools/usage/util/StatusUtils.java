@@ -15,6 +15,9 @@ import java.text.MessageFormat;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class StatusUtils {
 
 	private StatusUtils() {
