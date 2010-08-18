@@ -41,7 +41,7 @@ public class UsageReport {
 	public void report() {
 
 		Display.getDefault().asyncExec(new Runnable() {
-			@Override
+
 			public void run() {
 				UsageReportEnablementDialog dialog = new UsageReportEnablementDialog("Report usage",
 						"Please allow Red Hat Inc. to report this installation anynomously for statistical matters.",

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %BundleName
 Bundle-SymbolicName: org.jboss.tools.usage;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.jboss.tools.usage,
  org.jboss.tools.usage.googleanalytics,
  org.jboss.tools.usage.internal;x-friends:="org.jboss.tools.usage.test",
@@ -12,6 +12,6 @@ Export-Package: org.jboss.tools.usage,
 Require-Bundle: org.eclipse.osgi;bundle-version="3.5.0",
  org.eclipse.core.runtime;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.ui;bundle-version="3.5.0"
-Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.jboss.tools.usage.internal.JBossToolsUsageActivator
 Bundle-Vendor: %BundleVendor
+Bundle-ActivationPolicy: lazy

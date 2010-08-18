@@ -129,141 +129,115 @@ public class EclipseEnvironmenTest {
 		}
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public Enumeration findEntries(String path, String filePattern, boolean recurse) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public BundleContext getBundleContext() {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public long getBundleId() {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public URL getEntry(String path) {
 			throw new UnsupportedOperationException();
 		}
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public Enumeration getEntryPaths(String path) {
 			throw new UnsupportedOperationException();
 		}
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public Dictionary getHeaders() {
 			throw new UnsupportedOperationException();
 		}
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public Dictionary getHeaders(String locale) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public long getLastModified() {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public String getLocation() {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public ServiceReference[] getRegisteredServices() {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public URL getResource(String name) {
 			throw new UnsupportedOperationException();
 		}
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public Enumeration getResources(String name) throws IOException {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public ServiceReference[] getServicesInUse() {
 			throw new UnsupportedOperationException();
 		}
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public Map getSignerCertificates(int signersType) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public int getState() {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public String getSymbolicName() {
 			return this.symbolicName;
 		}
 
-		@Override
 		public Version getVersion() {
 			throw new UnsupportedOperationException();
 
 		}
 
-		@Override
 		public boolean hasPermission(Object permission) {
 			throw new UnsupportedOperationException();
 
 		}
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public Class loadClass(String name) throws ClassNotFoundException {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public void start() throws BundleException {
 			throw new UnsupportedOperationException();
 
 		}
 
-		@Override
 		public void start(int options) throws BundleException {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public void stop() throws BundleException {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public void stop(int options) throws BundleException {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public void uninstall() throws BundleException {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public void update() throws BundleException {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
 		public void update(InputStream input) throws BundleException {
 			throw new UnsupportedOperationException();
 		}

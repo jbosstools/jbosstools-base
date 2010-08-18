@@ -27,17 +27,14 @@ public abstract class AbstractGoogleAnalyticsParameters implements IGoogleAnalyt
 		this.referral = referral;
 	}
 
-	@Override
 	public String getAccountName() {
 		return accountName;
 	}
 	
-	@Override
 	public String getHostname() {
 		return hostName;
 	}
 
-	@Override
 	public String getReferral() {
 		return referral;
 	}

@@ -51,7 +51,6 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		initScreenSettings();
 	}
 
-	@Override
 	public String getBrowserLanguage() {
 		String nl = getNL();
 		if (nl == null) {
@@ -77,7 +76,7 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 	protected void initScreenSettings() {
 		final Display display = getDisplay();
 		display.syncExec(new Runnable() {
-			@Override
+
 			public void run() {
 				screenColorDepth = display.getDepth() + SCREENCOLORDEPTH_POSTFIX;
 
@@ -87,12 +86,10 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		});
 	}
 
-	@Override
 	public String getScreenResolution() {
 		return screenResolution;
 	}
 
-	@Override
 	public String getScreenColorDepth() {
 		return screenColorDepth;
 	}
@@ -109,7 +106,6 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		return display;
 	}
 
-	@Override
 	public String getUserAgent() {
 
 		String productId = getApplicationName();
@@ -182,7 +178,6 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		}
 	}
 
-	@Override
 	public String getUserId() {
 		Preferences preferences = PreferencesUtil.getConfigurationPreferences();
 		String userId = createIdentifier();
@@ -212,7 +207,6 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		return builder.toString();
 	}
 
-	@Override
 	public String getKeyword() {
 		JBossBundleGroups jbossBundleGroups = new JBossBundleGroups();
 		IBundleEntryFilter jbossToolsFilter = new BundleUtils.BundleSymbolicNameFilter(JBOSS_TOOLS_BUNDLES_PREFIX);

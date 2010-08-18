@@ -206,7 +206,6 @@ public class JBossBundleGroups implements IBundleEntryFilter {
 	 * Collects the bundle groups the bundles it gets belong
 	 * to. Always returns <tt>true</tt> (does match) while collecting
 	 */
-	@Override
 	public boolean matches(Bundle bundle) {
 		String bundleName = bundle.getSymbolicName();
 		for (BundleGroup bundleGroup : BundleGroup.values()) {

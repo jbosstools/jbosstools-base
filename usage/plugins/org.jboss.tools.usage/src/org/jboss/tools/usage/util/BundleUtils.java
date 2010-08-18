@@ -62,7 +62,6 @@ public class BundleUtils {
 			this.pattern = Pattern.compile(symbolicNameRegex);
 		}
 
-		@Override
 		public boolean matches(Bundle bundle) {
 			Assert.isTrue(bundle != null);
 
@@ -93,7 +92,6 @@ public class BundleUtils {
 		 * Applies the filters this composite filter has. All filters have to
 		 * match so that the filter says the given bundle matches.
 		 */
-		@Override
 		public boolean matches(Bundle bundle) {
 			for (IBundleEntryFilter filter : filters) {
 				if (!filter.matches(bundle)) {
