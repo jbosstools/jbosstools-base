@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 
 import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
-import org.jboss.tools.usage.internal.HttpGetMethod;
+import org.jboss.tools.usage.reporting.HttpGetMethod;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

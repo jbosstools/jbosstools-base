@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.usage.googleanalytics.FocusPoint;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.internal.GoogleAnalyticsUrlStrategy;
+import org.jboss.tools.usage.reporting.GoogleAnalyticsUrlStrategy;
 import org.junit.Before;
 import org.junit.Test;
 

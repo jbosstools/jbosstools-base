@@ -14,18 +14,19 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.reporting.JBossToolsUsageActivator;
 
-/**
- * @author Andre Dietisheim
- */
-public class PreferencesUtil {
-
-	public static IEclipsePreferences getConfigurationPreferences() {
-		return new ConfigurationScope().getNode(JBossToolsUsageActivator.PLUGIN_ID);
+public class PreferencesUtils {
+		
+	private PreferencesUtils() {
+		// inhibit instantiation
 	}
 
-	public static IPersistentPreferenceStore createConfigurationPreferencesStore() {
+	public static IEclipsePreferences getPreferences() {
+		return new ConfigurationScope().getNode(JBossToolsUsageActivator.PLUGIN_ID);
+	}
+	
+	public static IPersistentPreferenceStore getStore() {
 		return new ScopedPreferenceStore(new ConfigurationScope(), JBossToolsUsageActivator.PLUGIN_ID);
 	}
 }

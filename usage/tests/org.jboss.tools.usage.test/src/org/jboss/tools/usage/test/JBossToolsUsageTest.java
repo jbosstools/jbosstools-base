@@ -17,8 +17,8 @@ import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
 import org.jboss.tools.usage.googleanalytics.IURLBuildingStrategy;
 import org.jboss.tools.usage.googleanalytics.Tracker;
-import org.jboss.tools.usage.internal.GoogleAnalyticsUrlStrategy;
-import org.jboss.tools.usage.internal.PluginLogger;
+import org.jboss.tools.usage.reporting.GoogleAnalyticsUrlStrategy;
+import org.jboss.tools.usage.reporting.PluginLogger;
 import org.junit.Test;
 
 /**

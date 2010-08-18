@@ -14,9 +14,11 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.usage.preferences.messages"; //$NON-NLS-1$
+
+	public static String UsageReportPreferencePage_Description;
 	public static String UsageReportPreferencePage_AllowReporting;
-	
 	public static String UsageReportPreferencePage_Error_Saving;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

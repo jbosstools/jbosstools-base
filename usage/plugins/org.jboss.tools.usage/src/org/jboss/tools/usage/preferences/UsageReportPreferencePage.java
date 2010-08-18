@@ -15,8 +15,8 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.util.PreferencesUtil;
+import org.jboss.tools.usage.reporting.JBossToolsUsageActivator;
+import org.jboss.tools.usage.reporting.UsageReportPreferences;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -27,7 +27,6 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 
 	public UsageReportPreferencePage() {
 		super(GRID);
-		setPreferenceStore(PreferencesUtil.createConfigurationPreferencesStore());
 	}
 
 	public void createFieldEditors() {
@@ -38,12 +37,14 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 	}
 
 	public void init(IWorkbench workbench) {
+		setPreferenceStore(UsageReportPreferences.createPreferenceStore());
+		setDescription(Messages.UsageReportPreferencePage_Description);
 	}
 
 	@Override
 	public boolean performOk() {
 		try {
-			PreferencesUtil.getConfigurationPreferences().flush();
+			UsageReportPreferences.flush();
 		} catch (BackingStoreException e) {
 			IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
 					Messages.UsageReportPreferencePage_Error_Saving, e);

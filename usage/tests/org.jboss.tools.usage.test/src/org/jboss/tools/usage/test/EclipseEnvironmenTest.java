@@ -23,8 +23,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.usage.internal.EclipseEnvironment;
-import org.jboss.tools.usage.internal.JBossBundleGroups;
+import org.jboss.tools.usage.reporting.EclipseEnvironment;
+import org.jboss.tools.usage.reporting.JBossBundleGroups;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

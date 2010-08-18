@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
 import org.jboss.tools.usage.ITracker;
-import org.jboss.tools.usage.internal.HttpGetMethod;
+import org.jboss.tools.usage.reporting.HttpGetMethod;
 
 /**
  * Reports (tracks) usage

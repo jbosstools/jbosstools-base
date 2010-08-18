@@ -11,9 +11,7 @@
 package org.jboss.tools.usage.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.util.PreferencesUtils;
 
 /**
  * @author Andre Dietisheim
@@ -22,7 +20,8 @@ public class UsageReportPreferenceInitializer extends
 		AbstractPreferenceInitializer {
 
 	public void initializeDefaultPreferences() {
-		IEclipsePreferences preferences = new ConfigurationScope().getNode(JBossToolsUsageActivator.PLUGIN_ID);
-		preferences.putBoolean(IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID, IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE);
+		PreferencesUtils.getStore().setDefault(
+				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID,
+				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE);
 	}
 }

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
-import org.jboss.tools.usage.internal.EclipseEnvironment;
+import org.jboss.tools.usage.reporting.EclipseEnvironment;
 
 /**
  * @author Andre Dietisheim

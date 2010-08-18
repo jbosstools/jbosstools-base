@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="org.jboss.tools.usage.internal.UsageReportDispatcher">
+            class="org.jboss.tools.usage.reporting.UsageReportDispatcher">
       </startup>
    </extension>
    <extension
