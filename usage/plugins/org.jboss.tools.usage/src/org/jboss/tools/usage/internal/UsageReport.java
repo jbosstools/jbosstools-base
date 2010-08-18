@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.usage.internal;
 
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
@@ -22,6 +21,7 @@ import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
 import org.jboss.tools.usage.googleanalytics.IURLBuildingStrategy;
 import org.jboss.tools.usage.googleanalytics.Tracker;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
+import org.jboss.tools.usage.util.PreferencesUtil;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -30,23 +30,24 @@ import org.osgi.service.prefs.BackingStoreException;
  */
 public class UsageReport {
 
-	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
+	private static final String GANALYTICS_ACCOUNTNAME = Messages.UsageReport_GoogleAnalyticsAccount;
 
-	private static final String HOST_NAME = "jboss.org";
+	private static final String HOST_NAME = Messages.UsageReport_HostName;
 
-	private FocusPoint focusPoint = new FocusPoint("jboss.org")
-			.setChild(new FocusPoint("tools").setChild(new FocusPoint("usage").setChild(new FocusPoint("action")
-					.setChild(new FocusPoint("wsstartup")))));
+	private FocusPoint focusPoint = new FocusPoint("jboss.org").setChild(new FocusPoint("tools") //$NON-NLS-1$ //$NON-NLS-2$
+			.setChild(new FocusPoint("usage").setChild(new FocusPoint("action") //$NON-NLS-1$ //$NON-NLS-2$
+					.setChild(new FocusPoint("wsstartup"))))); //$NON-NLS-1$
 
 	public void report() {
 
 		Display.getDefault().asyncExec(new Runnable() {
 
 			public void run() {
-				UsageReportEnablementDialog dialog = new UsageReportEnablementDialog("Report usage",
-						"Please allow Red Hat Inc. to report this installation anynomously for statistical matters.",
-						"Report usage anonymously to Red Hat Inc.", true, PlatformUI.getWorkbench()
-								.getActiveWorkbenchWindow());
+				UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(Messages.UsageReport_DialogTitle,
+						Messages.UsageReport_DialogMessage,
+						Messages.UsageReport_Checkbox_Text,
+						true,
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				if (isAskUser()) {
 					if (dialog.open() == Window.OK) {
 						setReportEnabled(dialog.isReportEnabled());
@@ -62,8 +63,8 @@ public class UsageReport {
 	}
 
 	private void setReportEnabled(boolean enabled) {
-		IEclipsePreferences preferences = new ConfigurationScope().getNode(JBossToolsUsageActivator.PLUGIN_ID);
-		preferences.putBoolean(IUsageReportPreferenceConstants.USAGEREPORT_ENABLED, enabled);
+		PreferencesUtil.getConfigurationPreferences().putBoolean(
+				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID, enabled);
 	}
 
 	private void report(ITracker tracker) {
@@ -81,27 +82,26 @@ public class UsageReport {
 	}
 
 	private boolean isAskUser() {
-		IEclipsePreferences preferences = getPreferences();
-		return preferences.getBoolean(IUsageReportPreferenceConstants.ASK_USER, true);
+		IEclipsePreferences preferences = PreferencesUtil.getConfigurationPreferences();
+		return preferences.getBoolean(IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID, true);
 	}
 
 	private void setAskUser(boolean askUser) {
 		try {
-			IEclipsePreferences preferences = getPreferences();
-			preferences.putBoolean(IUsageReportPreferenceConstants.ASK_USER, askUser);
+			IEclipsePreferences preferences = PreferencesUtil.getConfigurationPreferences();
+			preferences.putBoolean(IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID, askUser);
 			preferences.flush();
 		} catch (BackingStoreException e) {
 			JBossToolsUsageActivator.getDefault().getLog().log(
-					StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID, "Could not save preferences {0}", e,
-							IUsageReportPreferenceConstants.ASK_USER));
+					StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
+							Messages.UsageReport_Error_SavePreferences, e,
+							IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID));
 		}
 	}
 
 	private boolean isReportEnabled() {
-		return getPreferences().getBoolean(IUsageReportPreferenceConstants.USAGEREPORT_ENABLED, true);
-	}
-
-	private IEclipsePreferences getPreferences() {
-		return new ConfigurationScope().getNode(JBossToolsUsageActivator.PLUGIN_ID);
+		return PreferencesUtil.getConfigurationPreferences().getBoolean(
+				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID,
+				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE);
 	}
 }

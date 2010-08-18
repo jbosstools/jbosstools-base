@@ -10,41 +10,30 @@
  ******************************************************************************/
 package org.jboss.tools.usage.preferences;
 
-import java.io.IOException;
-
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.util.PreferencesUtil;
 import org.jboss.tools.usage.util.StatusUtils;
+import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * @author Andre Dietisheim
  */
 public class UsageReportPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	private IPersistentPreferenceStore preferences;
-
 	public UsageReportPreferencePage() {
 		super(GRID);
-		setPreferenceStore(this.preferences = createPreferencesStore());
-	}
-
-	private IPersistentPreferenceStore createPreferencesStore() {
-		return new ScopedPreferenceStore(
-				new ConfigurationScope(),
-				JBossToolsUsageActivator.PLUGIN_ID);
+		setPreferenceStore(PreferencesUtil.createConfigurationPreferencesStore());
 	}
 
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
-				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED
-				, "&Allow JBoss Tools to report usage analytics anonymously for statistical matters"
+				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID
+				, Messages.UsageReportPreferencePage_AllowReporting
 				, getFieldEditorParent()));
 	}
 
@@ -54,10 +43,10 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 	@Override
 	public boolean performOk() {
 		try {
-			preferences.save();
-		} catch (IOException e) {
+			PreferencesUtil.getConfigurationPreferences().flush();
+		} catch (BackingStoreException e) {
 			IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-					"Could not save the preferences.", e);
+					Messages.UsageReportPreferencePage_Error_Saving, e);
 			JBossToolsUsageActivator.getDefault().getLog().log(status);
 		}
 		return super.performOk();

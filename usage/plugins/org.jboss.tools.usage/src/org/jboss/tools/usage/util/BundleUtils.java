@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.Bundle;
 
-
 /**
  * @author Andre Dietisheim
  */

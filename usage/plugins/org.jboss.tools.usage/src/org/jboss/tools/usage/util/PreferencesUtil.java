@@ -12,6 +12,8 @@ package org.jboss.tools.usage.util;
 
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jface.preference.IPersistentPreferenceStore;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 
 /**
@@ -19,12 +21,11 @@ import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
  */
 public class PreferencesUtil {
 
-	/**
-	 * Returns the preferences used for this plugin.
-	 *
-	 * @return the preferences
-	 */
 	public static IEclipsePreferences getConfigurationPreferences() {
 		return new ConfigurationScope().getNode(JBossToolsUsageActivator.PLUGIN_ID);
+	}
+
+	public static IPersistentPreferenceStore createConfigurationPreferencesStore() {
+		return new ScopedPreferenceStore(new ConfigurationScope(), JBossToolsUsageActivator.PLUGIN_ID);
 	}
 }
