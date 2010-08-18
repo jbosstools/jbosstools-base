@@ -179,27 +179,19 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 	}
 
 	public String getUserId() {
-		if (PreferencesUtils.getStore().contains(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID)) {
-			return PreferencesUtils.getStore().getString(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID);
-		} else {
-			String userId = createIdentifier();
-			PreferencesUtils.getStore().putValue(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, userId);
-			return userId;
+		IEclipsePreferences preferences = PreferencesUtils.getPreferences();
+		String userId = preferences.get(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, null);
+		try {
+			if (userId == null) {
+				userId = createIdentifier();
+				preferences.put(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, userId);
+				preferences.flush();
+			}
+		} catch (BackingStoreException e) {
+			StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID, "Could not retrieve {0} from preferences.",
+					e, IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID);
 		}
-//		IEclipsePreferences preferences = Preferences.getConfigurationPreferences();
-//		String userId = createIdentifier();
-//		try {
-//			if (!preferences.nodeExists(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID)) {
-//				preferences.put(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, userId);
-//				preferences.flush();
-//			} else {
-//				userId = preferences.get(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, userId);
-//			}
-//		} catch (BackingStoreException e) {
-//			StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID, "Could not retrieve {0} from preferences.",
-//					e, IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID);
-//		}
-//		return userId;
+		return userId;
 	}
 
 	/**
