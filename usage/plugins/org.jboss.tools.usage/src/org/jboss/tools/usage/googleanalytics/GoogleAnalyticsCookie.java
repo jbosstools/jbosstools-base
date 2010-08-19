@@ -12,13 +12,13 @@ package org.jboss.tools.usage.googleanalytics;
 
 import org.eclipse.core.runtime.Assert;
 
-public class UrlCookie {
+public class GoogleAnalyticsCookie {
 
 	private CharSequence value;
 	private String identifier;
 	private char delimiter;
 
-	public UrlCookie(String identifier, CharSequence value, char delimiter) {
+	public GoogleAnalyticsCookie(String identifier, CharSequence value, char delimiter) {
 		Assert.isTrue(identifier != null && identifier.length() > 0);
 		Assert.isTrue(value != null && value.length() > 0);
 
@@ -27,7 +27,7 @@ public class UrlCookie {
 		this.delimiter = delimiter;
 	}
 
-	public UrlCookie(String identifier, CharSequence value) {
+	public GoogleAnalyticsCookie(String identifier, CharSequence value) {
 		this(identifier, value, (char) -1);
 	}
 

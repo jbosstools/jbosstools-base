@@ -143,7 +143,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 	private String getCookies(FocusPoint focusPoint) {
 		StringBuilder builder = new StringBuilder();
 
-		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID,
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID,
 				new StringBuilder().append("999.")
 						.append(googleParameters.getUserId()).append(IGoogleAnalyticsParameters.DOT)
 						.append('0').append(IGoogleAnalyticsParameters.DOT)
@@ -154,7 +154,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 				IGoogleAnalyticsParameters.PLUS_SIGN)
 				.appendTo(builder);
 
-		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_REFERRAL_TYPE,
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_REFERRAL_TYPE,
 						new StringBuilder()
 							.append("999.")
 							.append("-1")
@@ -162,22 +162,22 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 							.append("1.1."))
 				.appendTo(builder);
 
-		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCSR,
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCSR,
 						"(direct)",
 						IGoogleAnalyticsParameters.PIPE)
 				.appendTo(builder);
 
-		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCCN,
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCCN,
 						"(direct)",
 						IGoogleAnalyticsParameters.PIPE)
 				.appendTo(builder);
 
-		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCMD,
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCMD,
 						"(none)", 
 						IGoogleAnalyticsParameters.PIPE)
 				.appendTo(builder);
 
-		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD,
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD,
 					googleParameters.getKeyword())
 		.appendTo(builder);
 		
