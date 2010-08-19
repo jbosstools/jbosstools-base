@@ -22,7 +22,11 @@ import org.jboss.tools.usage.util.EncodingUtils;
  * @author Andre Dietisheim
  * 
  * @see <a
- *      href="http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters">GIF Request Parameters</a>
+ *      href="http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters">GIF
+ *      Request Parameters</a>
+ * @see <a
+ *      href="http://code.google.com/apis/analytics/docs/concepts/gaConceptsCookies.html#cookiesSet">Cookies
+ *      Set By Google Analytics</a>
  */
 public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
@@ -124,7 +128,8 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		appendParameter(IGoogleAnalyticsParameters.PARAM_BROWSER_LANGUAGE, googleParameters.getBrowserLanguage(),
 				builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_TITLE, focusPoint.getContentTitle(), builder);
-//		appendParameter(IGoogleAnalyticsParameters.PARAM_HID, getRandomNumber(), builder);
+		// appendParameter(IGoogleAnalyticsParameters.PARAM_HID,
+		// getRandomNumber(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_REFERRAL, googleParameters.getReferral(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getContentURI(), builder);
 
@@ -136,80 +141,49 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 	}
 
 	private String getCookies(FocusPoint focusPoint) {
-		long timeStamp = System.currentTimeMillis();
 		StringBuilder builder = new StringBuilder();
-		builder.append(IGoogleAnalyticsParameters.PARAM_COOKIES_FIRST_VISIT)
-				.append(IGoogleAnalyticsParameters.EQUALS_SIGN)
-				.append("999.")
-				.append(googleParameters.getUserId()).append(IGoogleAnalyticsParameters.DOT)
-				.append(timeStamp).append(IGoogleAnalyticsParameters.DOT)
-				.append(timeStamp).append(IGoogleAnalyticsParameters.DOT)
-				.append(timeStamp).append(IGoogleAnalyticsParameters.DOT)
-				.append(VISITS)
-				.append(IGoogleAnalyticsParameters.SEMICOLON)
-				.append(IGoogleAnalyticsParameters.PLUS_SIGN)
-				.append(IGoogleAnalyticsParameters.PARAM_COOKIES_REFERRAL_TYPE)
-				.append(IGoogleAnalyticsParameters.EQUALS_SIGN)
-				.append("999.")
-				.append(timeStamp).append(IGoogleAnalyticsParameters.DOT)
-				.append("1.1.")
-				.append(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCSR).append(IGoogleAnalyticsParameters.EQUALS_SIGN)
-				.append("(direct)").append(IGoogleAnalyticsParameters.PIPE)
-				.append(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCCN).append(IGoogleAnalyticsParameters.EQUALS_SIGN)
-				.append("(direct)").append(IGoogleAnalyticsParameters.PIPE)
-				.append(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCMD).append(IGoogleAnalyticsParameters.EQUALS_SIGN)
-				.append("(none)");
-		appendCookieKeyword(builder);
+
+		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID,
+				new StringBuilder().append("999.")
+						.append(googleParameters.getUserId()).append(IGoogleAnalyticsParameters.DOT)
+						.append('0').append(IGoogleAnalyticsParameters.DOT)
+						.append('0').append(IGoogleAnalyticsParameters.DOT)
+						.append('0').append(IGoogleAnalyticsParameters.DOT)
+						.append(VISITS)
+						.append(IGoogleAnalyticsParameters.SEMICOLON),
+				IGoogleAnalyticsParameters.PLUS_SIGN)
+				.appendTo(builder);
+
+		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_REFERRAL_TYPE,
+						new StringBuilder()
+							.append("999.")
+							.append("-1")
+							.append(IGoogleAnalyticsParameters.DOT)
+							.append("1.1."))
+				.appendTo(builder);
+
+		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCSR,
+						"(direct)",
+						IGoogleAnalyticsParameters.PIPE)
+				.appendTo(builder);
+
+		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCCN,
+						"(direct)",
+						IGoogleAnalyticsParameters.PIPE)
+				.appendTo(builder);
+
+		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCMD,
+						"(none)", 
+						IGoogleAnalyticsParameters.PIPE)
+				.appendTo(builder);
+
+		new UrlCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD,
+					googleParameters.getKeyword())
+		.appendTo(builder);
+		
 		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
 
 		return EncodingUtils.checkedEncodeUtf8(builder.toString());
-
-		// builder.append(IGoogleAnalyticsParameters.PARAM_COOKIE_VALUES)
-		// .append(IGoogleAnalyticsParameters.EQUALS_SIGN)
-		// .append("__utma%3D")
-		// .append(getRandomNumber())
-		// .append(".")
-		// .append(getRandomNumber())
-		// .append(".")
-		// .append(now)
-		// .append(".")
-		// .append(now)
-		// .append(".")
-		// .append(now)
-		// .append(".2%3B%2B)")
-		//
-		// // .append("__utmb%3D")
-		// // .append(getRandomNumber())
-		// // .append("%3B%2B__utmc%3D")
-		// // .append(getRandomNumber())
-		// // .append("%3B%2B")
-		//
-		// .append("__utmz%3D")
-		// .append(getRandomNumber())
-		// .append(".")
-		// .append(now)
-		// .append(IGoogleAnalyticsParameters.AMPERSAND);
-
-		// .append("utmcsr%3D(direct)%7C")
-		// .append("utmccn%3D(direct)%7C")
-		// .append("utmcmd%3D(none)%3B");
-
-	}
-
-	/**
-	 * Appends the keyword to the cookies.
-	 * 
-	 * @param builder
-	 *            the builder to append to
-	 */
-	private void appendCookieKeyword(StringBuilder builder) {
-		String keyword = googleParameters.getKeyword();
-		if (keyword != null && keyword.length() > 0) {
-			builder.append(IGoogleAnalyticsParameters.PIPE)
-					.append(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD)
-					.append(IGoogleAnalyticsParameters.EQUALS_SIGN)
-					.append(keyword);
-		}
 	}
 
 	private String getRandomNumber() {

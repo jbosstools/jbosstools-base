@@ -36,7 +36,7 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_ACCOUNT_NAME = "utmac";
 	public static final String PARAM_HOST_NAME = "utmhn";
 	public static final String PARAM_COOKIES = "utmcc";
-	public static final String PARAM_COOKIES_FIRST_VISIT = "__utma";
+	public static final String PARAM_COOKIES_UNIQUE_VISITOR_ID = "__utma";
 	
 	public static final String PARAM_REFERRAL = "utmr";
 	public static final String PARAM_TRACKING_CODE_VERSION = "utmwv";
