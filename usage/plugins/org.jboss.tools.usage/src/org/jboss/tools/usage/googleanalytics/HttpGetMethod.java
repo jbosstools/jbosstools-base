@@ -8,14 +8,13 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.reporting;
+package org.jboss.tools.usage.googleanalytics;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
 
 /**
  * Class that executes a HTTP Get request to the given url.
@@ -24,14 +23,10 @@ import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
  */
 public class HttpGetMethod {
 	
-	private static final String USER_AGENT = "User-Agent";
+	private static final String USER_AGENT = "User-Agent"; //$NON-NLS-1$
 
-	private static final String GET_METHOD_NAME = "GET";
+	private static final String GET_METHOD_NAME = "GET"; //$NON-NLS-1$
 	
-	private static final String SUCCESS_MESSAGE = "Http Get to url {0} successfull!";
-	
-	private static final String ERROR_MESSAGE = "Http Get to {0} failed, response code was {1}";
-
 	private ILoggingAdapter loggingAdapter = null;
 
 //	private CookieHandler cookieHandler;
@@ -54,12 +49,12 @@ public class HttpGetMethod {
 			urlConnection.connect();
 			int responseCode = getResponseCode(urlConnection);
 			if (responseCode != HttpURLConnection.HTTP_OK) {
-				loggingAdapter.logMessage(MessageFormat.format(ERROR_MESSAGE, urlString, responseCode));
+				loggingAdapter.logMessage(MessageFormat.format(GoogleAnalyticsMessages.HttpGetMethod_Error_Http, urlString, responseCode));
 			} else {
-				loggingAdapter.logError(MessageFormat.format(SUCCESS_MESSAGE, urlString));
+				loggingAdapter.logError(MessageFormat.format(GoogleAnalyticsMessages.HttpGetMethod_Success, urlString));
 			}
 		} catch (Exception e) {
-			loggingAdapter.logError(e.getMessage());
+			loggingAdapter.logMessage(MessageFormat.format(GoogleAnalyticsMessages.HttpGetMethod_Error_Io, urlString, e.toString()));
 		} finally {
 //			setCookieHandler(currentCookieHandler);
 		}

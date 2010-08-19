@@ -8,13 +8,10 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.reporting;
+package org.jboss.tools.usage.googleanalytics;
 
 import java.io.UnsupportedEncodingException;
 
-import org.jboss.tools.usage.googleanalytics.FocusPoint;
-import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.googleanalytics.IURLBuildingStrategy;
 import org.jboss.tools.usage.util.EncodingUtils;
 
 /**

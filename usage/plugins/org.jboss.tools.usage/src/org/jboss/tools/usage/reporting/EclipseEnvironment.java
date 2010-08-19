@@ -19,6 +19,8 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
+import org.jboss.tools.usage.JBossToolsUsageActivator;
+import org.jboss.tools.usage.googleanalytics.AbstractGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.util.BundleUtils;

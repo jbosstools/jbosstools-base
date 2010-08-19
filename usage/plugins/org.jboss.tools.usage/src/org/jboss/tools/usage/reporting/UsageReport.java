@@ -11,10 +11,13 @@
 package org.jboss.tools.usage.reporting;
 
 import org.jboss.tools.usage.ITracker;
+import org.jboss.tools.usage.JBossToolsUsageActivator;
 import org.jboss.tools.usage.googleanalytics.FocusPoint;
+import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
 import org.jboss.tools.usage.googleanalytics.IURLBuildingStrategy;
+import org.jboss.tools.usage.googleanalytics.PluginLogger;
 import org.jboss.tools.usage.googleanalytics.Tracker;
 
 /**
@@ -22,13 +25,15 @@ import org.jboss.tools.usage.googleanalytics.Tracker;
  */
 public class UsageReport {
 
-	private static final String GANALYTICS_ACCOUNTNAME = Messages.UsageReport_GoogleAnalyticsAccount;
+	private static final String GANALYTICS_ACCOUNTNAME = ReportingMessages.UsageReport_GoogleAnalyticsAccount;
 
-	private static final String HOST_NAME = Messages.UsageReport_HostName;
+	private static final String HOST_NAME = ReportingMessages.UsageReport_HostName;
 
-	private FocusPoint focusPoint = new FocusPoint("jboss.org").setChild(new FocusPoint("tools") //$NON-NLS-1$ //$NON-NLS-2$
-			.setChild(new FocusPoint("usage").setChild(new FocusPoint("action") //$NON-NLS-1$ //$NON-NLS-2$
-					.setChild(new FocusPoint("wsstartup"))))); //$NON-NLS-1$
+	private FocusPoint focusPoint = new FocusPoint("tools") //$NON-NLS-1$ 
+			.setChild(new FocusPoint("usage") //$NON-NLS-1$ 
+					.setChild(new FocusPoint("action") //$NON-NLS-1$ 
+							.setChild(new FocusPoint("wsstartup") //$NON-NLS-1$ 
+							))); //$NON-NLS-1$
 
 	public void report() {
 		if (UsageReportPreferences.isEnabled()) {

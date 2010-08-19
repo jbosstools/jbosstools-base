@@ -12,6 +12,7 @@ package org.jboss.tools.usage.reporting;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.jboss.tools.usage.JBossToolsUsageActivator;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.util.PreferencesUtils;
 import org.jboss.tools.usage.util.StatusUtils;
@@ -51,7 +52,7 @@ public class UsageReportPreferences {
 		} catch (BackingStoreException e) {
 			JBossToolsUsageActivator.getDefault().getLog().log(
 					StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-							Messages.UsageReport_Error_SavePreferences, e,
+							ReportingMessages.UsageReport_Error_SavePreferences, e,
 							IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID));
 		}
 	}

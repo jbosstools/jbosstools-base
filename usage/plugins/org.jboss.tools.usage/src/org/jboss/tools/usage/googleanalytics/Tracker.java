@@ -10,11 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.usage.googleanalytics;
 
-import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
 import org.jboss.tools.usage.ITracker;
-import org.jboss.tools.usage.reporting.HttpGetMethod;
 
 /**
  * Reports (tracks) usage
@@ -35,13 +33,17 @@ public class Tracker implements ITracker {
 		this.urlBuildingStrategy = urlBuildingStrategy;
 	}
 
-	public void trackSynchronously(FocusPoint focusPoint) throws UnsupportedEncodingException {
-		loggingAdapter.logMessage("Tracking synchronously focusPoint=" + focusPoint.getContentTitle());
-		httpRequest.request(urlBuildingStrategy.build(focusPoint));
+	public void trackSynchronously(FocusPoint focusPoint) {
+		loggingAdapter.logMessage(MessageFormat.format(GoogleAnalyticsMessages.Tracker_Synchronous, focusPoint.getContentTitle()));
+		try {
+			httpRequest.request(urlBuildingStrategy.build(focusPoint));
+		} catch (Exception e) {
+			loggingAdapter.logMessage(MessageFormat.format(GoogleAnalyticsMessages.Tracker_Error, e.getMessage()));
+		}
 	}
 
 	public void trackAsynchronously(FocusPoint focusPoint) {
-		loggingAdapter.logMessage("Tracking Asynchronously focusPoint=" + focusPoint.getContentTitle());
+		loggingAdapter.logMessage(MessageFormat.format(GoogleAnalyticsMessages.Tracker_Asynchronous, focusPoint.getContentTitle()));
 		new TrackingThread(focusPoint).start();
 	}
 
@@ -56,8 +58,8 @@ public class Tracker implements ITracker {
 		public void run() {
 			try {
 				httpRequest.request(urlBuildingStrategy.build(focusPoint));
-			} catch (UnsupportedEncodingException e) {
-				loggingAdapter.logMessage(MessageFormat.format("Tracking failed: {0}", e.getMessage()));
+			} catch (Exception e) {
+				loggingAdapter.logMessage(MessageFormat.format(GoogleAnalyticsMessages.Tracker_Error, e.getMessage()));
 			}
 		}
 	}

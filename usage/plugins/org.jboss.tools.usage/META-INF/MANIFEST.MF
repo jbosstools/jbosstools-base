@@ -12,6 +12,6 @@ Export-Package: org.jboss.tools.usage,
 Require-Bundle: org.eclipse.osgi;bundle-version="3.5.0",
  org.eclipse.core.runtime;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.ui;bundle-version="3.5.0"
-Bundle-Activator: org.jboss.tools.usage.reporting.JBossToolsUsageActivator
+Bundle-Activator: org.jboss.tools.usage.JBossToolsUsageActivator
 Bundle-Vendor: %BundleVendor
 Bundle-ActivationPolicy: lazy

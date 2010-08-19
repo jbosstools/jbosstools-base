@@ -8,9 +8,8 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.reporting;
+package org.jboss.tools.usage.googleanalytics;
 
-import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 
 /**
  * @author Andre Dietisheim

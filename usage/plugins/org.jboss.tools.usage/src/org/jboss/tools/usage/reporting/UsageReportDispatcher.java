@@ -15,7 +15,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.PlatformUI;
-import org.jboss.tools.usage.reporting.Messages;
+import org.jboss.tools.usage.JBossToolsUsageActivator;
+import org.jboss.tools.usage.reporting.ReportingMessages;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -28,9 +29,9 @@ public class UsageReportDispatcher implements IStartup {
 		Display.getDefault().asyncExec(new Runnable() {
 
 			public void run() {
-				UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(Messages.UsageReport_DialogTitle,
-						Messages.UsageReport_DialogMessage,
-						Messages.UsageReport_Checkbox_Text,
+				UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(ReportingMessages.UsageReport_DialogTitle,
+						ReportingMessages.UsageReport_DialogMessage,
+						ReportingMessages.UsageReport_Checkbox_Text,
 						true,
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				if (UsageReportPreferences.isAskUser()) {
@@ -51,7 +52,7 @@ public class UsageReportDispatcher implements IStartup {
 					UsageReportPreferences.flush();
 				} catch (BackingStoreException e) {
 					IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-							Messages.UsageReport_Error_SavePreferences, e);
+							ReportingMessages.UsageReport_Error_SavePreferences, e);
 					JBossToolsUsageActivator.getDefault().getLog().log(status);
 				}
 			}

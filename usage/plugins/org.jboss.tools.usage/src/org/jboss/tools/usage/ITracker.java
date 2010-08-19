@@ -21,8 +21,7 @@ public interface ITracker {
 	 * @throws UnsupportedEncodingException
 	 */
 
-	public abstract void trackSynchronously(FocusPoint focusPoint)
-			throws UnsupportedEncodingException;
+	public abstract void trackSynchronously(FocusPoint focusPoint);
 
 	/**
 	 * Track the focusPoint in the application asynchronously. <br/>

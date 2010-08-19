@@ -8,24 +8,22 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.reporting;
+package org.jboss.tools.usage.preferences;
 
 import org.eclipse.osgi.util.NLS;
 
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.usage.reporting.messages"; //$NON-NLS-1$
-	public static String UsageReport_Checkbox_Text;
-	public static String UsageReport_DialogMessage;
-	public static String UsageReport_DialogTitle;
-	
-	public static String UsageReport_Error_SavePreferences;
-	public static String UsageReport_GoogleAnalyticsAccount;
-	public static String UsageReport_HostName;
+public class PreferencesMessages extends NLS {
+	private static final String BUNDLE_NAME = "org.jboss.tools.usage.preferences.preferences_messages"; //$NON-NLS-1$
+
+	public static String UsageReportPreferencePage_Description;
+	public static String UsageReportPreferencePage_AllowReporting;
+	public static String UsageReportPreferencePage_Error_Saving;
+
 	static {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+		NLS.initializeMessages(BUNDLE_NAME, PreferencesMessages.class);
 	}
 
-	private Messages() {
+	private PreferencesMessages() {
 	}
 }

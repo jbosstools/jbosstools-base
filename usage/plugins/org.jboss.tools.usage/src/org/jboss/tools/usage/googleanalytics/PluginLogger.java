@@ -8,12 +8,11 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.reporting;
+package org.jboss.tools.usage.googleanalytics;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
 
 /**
  * @author Andre Dietisheim
