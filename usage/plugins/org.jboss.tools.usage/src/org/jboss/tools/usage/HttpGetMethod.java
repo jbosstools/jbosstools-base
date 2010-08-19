@@ -48,10 +48,10 @@ public class HttpGetMethod {
 			HttpURLConnection urlConnection = createURLConnection(urlString, userAgent);
 			urlConnection.connect();
 			int responseCode = getResponseCode(urlConnection);
-			if (responseCode != HttpURLConnection.HTTP_OK) {
-				loggingAdapter.logMessage(MessageFormat.format(UsageMessages.HttpGetMethod_Error_Http, urlString, responseCode));
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+				loggingAdapter.logMessage(MessageFormat.format(UsageMessages.HttpGetMethod_Success, urlString, responseCode));
 			} else {
-				loggingAdapter.logError(MessageFormat.format(UsageMessages.HttpGetMethod_Success, urlString));
+				loggingAdapter.logError(MessageFormat.format(UsageMessages.HttpGetMethod_Error_Http, urlString));
 			}
 		} catch (Exception e) {
 			loggingAdapter.logMessage(MessageFormat.format(UsageMessages.HttpGetMethod_Error_Io, urlString, e.toString()));
