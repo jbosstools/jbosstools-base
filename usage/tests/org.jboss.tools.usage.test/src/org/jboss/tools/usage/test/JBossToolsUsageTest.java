@@ -13,12 +13,12 @@ package org.jboss.tools.usage.test;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.usage.ITracker;
 import org.jboss.tools.usage.googleanalytics.FocusPoint;
+import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
 import org.jboss.tools.usage.googleanalytics.IURLBuildingStrategy;
+import org.jboss.tools.usage.googleanalytics.PluginLogger;
 import org.jboss.tools.usage.googleanalytics.Tracker;
-import org.jboss.tools.usage.reporting.GoogleAnalyticsUrlStrategy;
-import org.jboss.tools.usage.reporting.PluginLogger;
 import org.junit.Test;
 
 /**
@@ -29,10 +29,10 @@ public class JBossToolsUsageTest {
 	private static final String HOST_NAME = "jboss.org";
 	private static final String LOCALE_US = "en_US";
 
-	private FocusPoint focusPoint = new FocusPoint("jboss.org")
-			.setChild(new FocusPoint("tools")
+	private FocusPoint focusPoint =
+			new FocusPoint("tools")
 					.setChild(new FocusPoint("usage")
-							.setChild(new FocusPoint("test"))));
+							.setChild(new FocusPoint("test")));
 
 	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 
