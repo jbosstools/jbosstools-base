@@ -2,7 +2,6 @@ package org.jboss.tools.usage;
 
 import java.io.UnsupportedEncodingException;
 
-import org.jboss.tools.usage.googleanalytics.FocusPoint;
 
 /**
  * @author Andre Dietisheim
