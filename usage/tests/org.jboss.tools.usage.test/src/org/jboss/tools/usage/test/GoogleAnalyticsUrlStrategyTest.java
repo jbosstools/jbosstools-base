@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.UnsupportedEncodingException;
 
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.usage.googleanalytics.FocusPoint;
+import org.jboss.tools.usage.FocusPoint;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.junit.Before;

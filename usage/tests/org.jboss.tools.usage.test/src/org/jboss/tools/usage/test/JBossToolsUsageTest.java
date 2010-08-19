@@ -11,14 +11,14 @@
 package org.jboss.tools.usage.test;
 
 import org.eclipse.core.runtime.Platform;
+import org.jboss.tools.usage.FocusPoint;
+import org.jboss.tools.usage.ILoggingAdapter;
 import org.jboss.tools.usage.ITracker;
-import org.jboss.tools.usage.googleanalytics.FocusPoint;
+import org.jboss.tools.usage.IURLBuildingStrategy;
+import org.jboss.tools.usage.PluginLogger;
+import org.jboss.tools.usage.Tracker;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
-import org.jboss.tools.usage.googleanalytics.IURLBuildingStrategy;
-import org.jboss.tools.usage.googleanalytics.PluginLogger;
-import org.jboss.tools.usage.googleanalytics.Tracker;
 import org.junit.Test;
 
 /**

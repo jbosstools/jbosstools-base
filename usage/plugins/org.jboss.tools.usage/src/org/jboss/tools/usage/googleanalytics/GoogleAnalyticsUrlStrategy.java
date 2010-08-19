@@ -12,12 +12,17 @@ package org.jboss.tools.usage.googleanalytics;
 
 import java.io.UnsupportedEncodingException;
 
+import org.jboss.tools.usage.FocusPoint;
+import org.jboss.tools.usage.IURLBuildingStrategy;
 import org.jboss.tools.usage.util.EncodingUtils;
 
 /**
  * Class that builds an URL that passes given parameters to google analytics
  * 
  * @author Andre Dietisheim
+ * 
+ * @see <a
+ *      href="http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters">GIF Request Parameters</a>
  */
 public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
@@ -119,7 +124,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		appendParameter(IGoogleAnalyticsParameters.PARAM_BROWSER_LANGUAGE, googleParameters.getBrowserLanguage(),
 				builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_TITLE, focusPoint.getContentTitle(), builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_HID, getRandomNumber(), builder);
+//		appendParameter(IGoogleAnalyticsParameters.PARAM_HID, getRandomNumber(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_REFERRAL, googleParameters.getReferral(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getContentURI(), builder);
 
@@ -131,7 +136,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 	}
 
 	private String getCookies(FocusPoint focusPoint) {
- 		long timeStamp = System.currentTimeMillis();
+		long timeStamp = System.currentTimeMillis();
 		StringBuilder builder = new StringBuilder();
 		builder.append(IGoogleAnalyticsParameters.PARAM_COOKIES_FIRST_VISIT)
 				.append(IGoogleAnalyticsParameters.EQUALS_SIGN)
@@ -193,8 +198,9 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 	/**
 	 * Appends the keyword to the cookies.
-	 *
-	 * @param builder the builder to append to
+	 * 
+	 * @param builder
+	 *            the builder to append to
 	 */
 	private void appendCookieKeyword(StringBuilder builder) {
 		String keyword = googleParameters.getKeyword();

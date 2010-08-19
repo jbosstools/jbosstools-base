@@ -15,7 +15,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.PlatformUI;
-import org.jboss.tools.usage.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.reporting.ReportingMessages;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;

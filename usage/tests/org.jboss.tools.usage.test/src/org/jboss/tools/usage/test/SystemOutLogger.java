@@ -1,6 +1,6 @@
 package org.jboss.tools.usage.test;
 
-import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
+import org.jboss.tools.usage.ILoggingAdapter;
 
 /**
  * @author Andre Dietisheim

@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.jboss.tools.usage.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 
 public class PreferencesUtils {
 		

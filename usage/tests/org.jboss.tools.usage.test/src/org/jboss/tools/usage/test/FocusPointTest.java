@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
-import org.jboss.tools.usage.googleanalytics.FocusPoint;
+import org.jboss.tools.usage.FocusPoint;
 import org.jboss.tools.usage.util.EncodingUtils;
 
 import junit.framework.TestCase;

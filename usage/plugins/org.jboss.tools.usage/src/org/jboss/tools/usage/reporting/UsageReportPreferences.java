@@ -12,7 +12,7 @@ package org.jboss.tools.usage.reporting;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.jboss.tools.usage.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.util.PreferencesUtils;
 import org.jboss.tools.usage.util.StatusUtils;

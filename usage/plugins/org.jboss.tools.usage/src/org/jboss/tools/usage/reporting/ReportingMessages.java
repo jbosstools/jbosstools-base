@@ -14,6 +14,8 @@ import org.eclipse.osgi.util.NLS;
 
 public class ReportingMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.usage.reporting.reporting_messages"; //$NON-NLS-1$
+	public static String EclipseEnvironment_Error_SavePreferences7;
+
 	public static String UsageReport_Checkbox_Text;
 	public static String UsageReport_DialogMessage;
 	public static String UsageReport_DialogTitle;

@@ -14,8 +14,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-import org.jboss.tools.usage.googleanalytics.HttpGetMethod;
-import org.jboss.tools.usage.googleanalytics.ILoggingAdapter;
+import org.jboss.tools.usage.HttpGetMethod;
+import org.jboss.tools.usage.ILoggingAdapter;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
