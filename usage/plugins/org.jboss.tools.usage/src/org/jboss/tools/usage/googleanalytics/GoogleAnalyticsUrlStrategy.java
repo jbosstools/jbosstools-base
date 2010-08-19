@@ -143,12 +143,14 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 	private String getCookies(FocusPoint focusPoint) {
 		StringBuilder builder = new StringBuilder();
 
+		String timeStamp = String.valueOf(System.currentTimeMillis());
+
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID,
 				new StringBuilder().append("999.")
 						.append(googleParameters.getUserId()).append(IGoogleAnalyticsParameters.DOT)
-						.append('0').append(IGoogleAnalyticsParameters.DOT)
-						.append('0').append(IGoogleAnalyticsParameters.DOT)
-						.append('0').append(IGoogleAnalyticsParameters.DOT)
+						.append(timeStamp).append(IGoogleAnalyticsParameters.DOT)
+						.append(timeStamp).append(IGoogleAnalyticsParameters.DOT)
+						.append(timeStamp).append(IGoogleAnalyticsParameters.DOT)
 						.append(VISITS)
 						.append(IGoogleAnalyticsParameters.SEMICOLON),
 				IGoogleAnalyticsParameters.PLUS_SIGN)
@@ -157,7 +159,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_REFERRAL_TYPE,
 						new StringBuilder()
 							.append("999.")
-							.append("-1")
+							.append(timeStamp)
 							.append(IGoogleAnalyticsParameters.DOT)
 							.append("1.1."))
 				.appendTo(builder);
