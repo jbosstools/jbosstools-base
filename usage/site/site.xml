@@ -5,7 +5,7 @@
 	<category-def label="JBoss Tools JBoss Tools Usage Reporting Nightly Build Update Site" name="JBoss Tools JBoss Tools Usage Reporting Nightly Build Update Site">
 		<description>JBoss Tools JBoss Tools Usage Reporting Nightly Build Update Site: contains all features in this build.</description>
 	</category-def>
-	<feature url="features/org.jboss.tools.usage_0.0.0.jar" id="org.jboss.tools.usage" version="0.0.0">
+	<feature url="features/org.jboss.tools.usage.feature_0.0.0.jar" id="org.jboss.tools.usage.feature" version="0.0.0">
 		<category name="JBoss Tools JBoss Tools Usage Reporting Nightly Build Update Site"/>
 	</feature>
 
