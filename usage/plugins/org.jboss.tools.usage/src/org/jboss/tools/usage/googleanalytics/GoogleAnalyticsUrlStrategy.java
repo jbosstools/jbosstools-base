@@ -91,28 +91,6 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 		 */
 
-		/*
-		 * our working tracking code
-		 * 
-		http://www.google-analytics.com/__utm.gif?utmwv=4.7.2
-		&utmn=338321265
-		&utmhn=jboss.org
-		&utmcs=UTF-8
-		&utmsr=1920x1080
-		&utmsc=24-bit
-		&utmul=en-us
-		&utmje=1
-		&utmfl=10.1%20r53
-		&utmdt=-%20JBoss%20Community
-		&utmhid=1087431432
-		&utmr=0
-		&utmp=%2Ftools%2Fusage.html
-		&utmac=UA-17645367-1
-		&utmcc=__utma%3D156030500.1285760711.1281430767.1281430767.1281430767.1%3B%2B__utmz%3D156030500.1281430767.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B
-		&gaq=1
-		 *
-		 */
-
 		StringBuilder builder = new StringBuilder(TRACKING_URL)
 				.append(IGoogleAnalyticsParameters.URL_PARAM_DELIMITER);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_TRACKING_CODE_VERSION,
@@ -143,7 +121,10 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 	private String getCookies(FocusPoint focusPoint) {
 		StringBuilder builder = new StringBuilder();
 
-		String timeStamp = String.valueOf(System.currentTimeMillis());
+		/**
+		 * unique visitor id cookie has to be unique per eclipse installation
+		 */
+		String timeStamp = "-1"; //String.valueOf(System.currentTimeMillis());
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID,
 				new StringBuilder().append("999.")

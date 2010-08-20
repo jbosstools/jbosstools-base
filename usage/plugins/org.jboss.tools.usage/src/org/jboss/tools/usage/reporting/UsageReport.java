@@ -32,8 +32,7 @@ public class UsageReport {
 	private FocusPoint focusPoint = new FocusPoint("tools") //$NON-NLS-1$ 
 			.setChild(new FocusPoint("usage") //$NON-NLS-1$ 
 					.setChild(new FocusPoint("action") //$NON-NLS-1$ 
-							.setChild(new FocusPoint("wsstartup") //$NON-NLS-1$ 
-							))); //$NON-NLS-1$
+							.setChild(new FocusPoint("wsstartup")))); //$NON-NLS-1$
 
 	public void report() {
 		if (UsageReportPreferences.isEnabled()) {

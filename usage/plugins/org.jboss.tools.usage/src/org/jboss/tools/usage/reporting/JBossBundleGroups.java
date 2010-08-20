@@ -11,8 +11,8 @@
 package org.jboss.tools.usage.reporting;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.jboss.tools.usage.util.BundleUtils.IBundleEntryFilter;
 import org.osgi.framework.Bundle;
@@ -200,7 +200,7 @@ public class JBossBundleGroups implements IBundleEntryFilter {
 		}
 	}
 
-	private Set<String> jbossBundleGroups = new HashSet<String>();
+	private Set<String> jbossBundleGroups = new TreeSet<String>();
 
 	/**
 	 * Collects the bundle groups the bundles it gets belong
