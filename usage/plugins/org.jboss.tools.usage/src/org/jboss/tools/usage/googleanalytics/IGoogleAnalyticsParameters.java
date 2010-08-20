@@ -80,5 +80,13 @@ public interface IGoogleAnalyticsParameters {
 	public String getUserId();
 	
 	public String getKeyword();
+	
+	public String getFirstVisit();
+	
+	public String getLastVisit();
+	
+	public String getCurrentVisit();
+		
+		
 
 }

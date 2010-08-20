@@ -24,7 +24,6 @@ import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.util.BundleUtils;
-import org.jboss.tools.usage.util.PreferencesUtils;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.jboss.tools.usage.util.BundleUtils.IBundleEntryFilter;
 import org.osgi.framework.Bundle;
@@ -38,23 +37,53 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 	private static final String USERAGENT_WIN = "{0}/{1} (Windows; U; Windows NT 6.1; {2})"; //$NON-NLS-1$
 	private static final String USERAGENT_MAC = "{0}/{1} (Macintosh; U; Intel Mac OS X 10.5; {2})"; //$NON-NLS-1$
 	private static final String USERAGENT_LINUX = "{0}/{1} (X11; U; Linux i686; {2})"; //$NON-NLS-1$
-
 	private static final char BUNDLE_GROUP_DELIMITER = '-';
-
 	private static final String JBOSS_TOOLS_BUNDLES_PREFIX = "org\\.jboss\\.tools.+"; //$NON-NLS-1$
-
 	private static final String ECLIPSE_RUNTIME_BULDEID = "org.eclipse.core.runtime"; //$NON-NLS-1$
 
 	private String screenResolution;
-
 	private String screenColorDepth;
-
 	private Random random;
-
-	public EclipseEnvironment(String accountName, String hostName, String referral) {
+	private IEclipsePreferences preferences;
+	private String firstVisit;
+	private String lastVisit;
+	private String currentVisit;
+	
+	public EclipseEnvironment(String accountName, String hostName, String referral, IEclipsePreferences preferences) {
 		super(accountName, hostName, referral);
 		this.random = new Random();
+		this.preferences = preferences;
 		initScreenSettings();
+		initVisits();
+	}
+
+	
+	protected void initScreenSettings() {
+		final Display display = getDisplay();
+		display.syncExec(new Runnable() {
+
+			public void run() {
+				screenColorDepth = display.getDepth() + SCREENCOLORDEPTH_POSTFIX;
+
+				Rectangle bounds = display.getBounds();
+				screenResolution = bounds.width + SCREERESOLUTION_DELIMITER + bounds.height;
+			}
+		});
+	}
+
+	private void initVisits() {
+		String currentTime = String.valueOf(System.currentTimeMillis());
+		this.currentVisit = currentTime;
+		this.firstVisit = preferences.get(IUsageReportPreferenceConstants.FIRST_VISIT, null);
+		if (firstVisit == null) {
+			this.firstVisit = currentTime;
+			preferences.put(IUsageReportPreferenceConstants.FIRST_VISIT, firstVisit);
+			this.lastVisit = currentTime;
+		} else {
+			lastVisit = preferences.get(IUsageReportPreferenceConstants.LAST_VISIT, null);
+		}
+		/* store current visit as last vist for next instantiation */
+		preferences.put(IUsageReportPreferenceConstants.LAST_VISIT, currentTime);
 	}
 
 	public String getBrowserLanguage() {
@@ -77,19 +106,6 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 
 	protected String getNL() {
 		return Platform.getNL(); //$NON-NLS-1$
-	}
-
-	protected void initScreenSettings() {
-		final Display display = getDisplay();
-		display.syncExec(new Runnable() {
-
-			public void run() {
-				screenColorDepth = display.getDepth() + SCREENCOLORDEPTH_POSTFIX;
-
-				Rectangle bounds = display.getBounds();
-				screenResolution = bounds.width + SCREERESOLUTION_DELIMITER + bounds.height;
-			}
-		});
 	}
 
 	public String getScreenResolution() {
@@ -185,22 +201,22 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 	}
 
 	public String getUserId() {
-		IEclipsePreferences preferences = PreferencesUtils.getPreferences();
 		String userId = preferences.get(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, null);
 		if (userId == null) {
 			userId = createIdentifier();
 			preferences.put(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, userId);
-			savePreferences(preferences);
+			savePreferences();
 		}
 		return userId;
 	}
 
-	private void savePreferences(IEclipsePreferences preferences) {
+	
+	private void savePreferences() {
 		try {
 			preferences.flush();
 		} catch (BackingStoreException e) {
 			StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-					ReportingMessages.EclipseEnvironment_Error_SavePreferences7,
+					ReportingMessages.EclipseEnvironment_Error_SavePreferences,
 					e, IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID);
 		}
 	}
@@ -240,5 +256,17 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 					.append(delimiter);
 		}
 		return builder.toString();
+	}
+
+	public String getCurrentVisit() {
+		return currentVisit;
+	}
+
+	public String getFirstVisit() {
+		return firstVisit;
+	}
+
+	public String getLastVisit() {
+		return lastVisit;
 	}
 }

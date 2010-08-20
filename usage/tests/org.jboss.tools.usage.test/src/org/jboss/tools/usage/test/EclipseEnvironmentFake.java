@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.reporting.EclipseEnvironment;
 
 /**
@@ -20,10 +21,14 @@ public class EclipseEnvironmentFake extends EclipseEnvironment {
 	private String locale;
 	private String os;
 
-	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale) {
-		super(accountName, hostName, referral);
+	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale, IEclipsePreferences preferences) {
+		super(accountName, hostName, referral, preferences);
 		this.os = os;
 		this.locale = locale;
+	}
+	
+	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale) {
+		this(accountName, hostName, referral, os, locale, new EclipsePreferencesFake());
 	}
 
 	@Override
@@ -60,5 +65,4 @@ public class EclipseEnvironmentFake extends EclipseEnvironment {
 	protected String getApplicationVersion() {
 		return "3.0.1";
 	}
-
 }

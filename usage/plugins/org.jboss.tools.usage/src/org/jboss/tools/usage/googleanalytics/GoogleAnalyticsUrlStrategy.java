@@ -27,6 +27,8 @@ import org.jboss.tools.usage.util.EncodingUtils;
  * @see <a
  *      href="http://code.google.com/apis/analytics/docs/concepts/gaConceptsCookies.html#cookiesSet">Cookies
  *      Set By Google Analytics</a>
+ *      
+ * @see <a href="http://www.morevisibility.com/analyticsblog/from-__utma-to-__utmz-google-analytics-cookies.html">From __utma to __utmz (Google Analytics Cookies)</a>
  */
 public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 

@@ -35,4 +35,8 @@ public interface IUsageReportPreferenceConstants {
 	 * instance.
 	 */
 	public static final String ECLIPSE_INSTANCE_ID = "eclipseInstanceId"; //$NON-NLS-1$
+	
+	public static final String FIRST_VISIT = "firstVisit";
+
+	public static final String LAST_VISIT = "lastVisit";
 }

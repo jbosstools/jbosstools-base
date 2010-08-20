@@ -242,4 +242,52 @@ public class EclipseEnvironmenTest {
 			throw new UnsupportedOperationException();
 		}
 	}
+	
+	@Test
+	public void testVisitsOnFirstVisit() {
+		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
+		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
+				Platform.OS_LINUX, LOCALE_US, preferences);
+		String firstVisit = eclipseEnvironment.getFirstVisit();
+		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
+		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
+		assertEquals(firstVisit, eclipseEnvironment.getCurrentVisit());
+	}
+
+	@Test
+	public void testVisitsOnSecondVisit() throws InterruptedException {
+		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
+		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
+				Platform.OS_LINUX, LOCALE_US, preferences);
+		String firstVisit = eclipseEnvironment.getFirstVisit();
+
+		Thread.sleep(10); // delay second instantiation
+		
+		eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
+				Platform.OS_LINUX, LOCALE_US, preferences);
+		assertEquals(firstVisit, eclipseEnvironment.getFirstVisit());
+		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
+		assertTrue(!firstVisit.equals(eclipseEnvironment.getCurrentVisit()));
+	}
+
+	@Test
+	public void testVisitsOnThirdVisit() throws InterruptedException {
+		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
+		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
+				Platform.OS_LINUX, LOCALE_US, preferences);
+		String firstVisit = eclipseEnvironment.getFirstVisit();
+
+		Thread.sleep(10); // delay second instantiation
+
+		eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
+				Platform.OS_LINUX, LOCALE_US, preferences);
+		String currentVisit = eclipseEnvironment.getCurrentVisit();
+		
+		Thread.sleep(10); // delay third instantiation
+
+		eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
+				Platform.OS_LINUX, LOCALE_US, preferences);
+		assertEquals(currentVisit, eclipseEnvironment.getLastVisit());
+		assertTrue(!firstVisit.equals(eclipseEnvironment.getCurrentVisit()));
+	}
 }
