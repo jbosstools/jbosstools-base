@@ -598,7 +598,7 @@ public class JBossToolsUsageRequestsTest {
 		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
 		String url = "http://www.google-analytics.com/__utm.gif?" 
 			+"utmwv=4.7.2"
-			+"&utmn=351334794"
+			+"&utmn=351358794"
 			+"&utmhn=jboss.org"
 			+"&utmcs=UTF-8"
 			+"&utmsr=1920x1080"
@@ -626,7 +626,7 @@ public class JBossToolsUsageRequestsTest {
 		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
 		String url = "http://www.google-analytics.com/__utm.gif?" 
 			+"utmwv=4.7.2"
-			+"&utmn=351334794"
+			+"&utmn=261334794"
 			+"&utmhn=jboss.org"
 			+"&utmcs=UTF-8"
 			+"&utmsr=1920x1080"
@@ -654,7 +654,7 @@ public class JBossToolsUsageRequestsTest {
 		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
 		String url = "http://www.google-analytics.com/__utm.gif?" 
 			+"utmwv=4.7.2"
-			+"&utmn=351334794"
+			+"&utmn=351784794"
 			+"&utmhn=jboss.org"
 			+"&utmcs=UTF-8"
 			+"&utmsr=1920x1080"

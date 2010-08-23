@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage;
 
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
 /**
@@ -17,7 +18,8 @@ import java.text.MessageFormat;
  * 
  * @author Andre Dietisheim
  * @see based on <a
- *      href="http://jgoogleAnalytics.googlecode.com">http://jgoogleAnalytics.googlecode.com</a>
+ *      href="http://jgoogleAnalytics.googlecode.com">http://jgoogleAnalytics
+ *      .googlecode.com</a>
  */
 public class Tracker implements ITracker {
 
@@ -32,30 +34,35 @@ public class Tracker implements ITracker {
 	}
 
 	public void trackSynchronously(FocusPoint focusPoint) {
-		loggingAdapter.logMessage(MessageFormat.format(UsageMessages.Tracker_Synchronous, focusPoint.getContentTitle()));
+		loggingAdapter
+				.logMessage(MessageFormat.format(UsageMessages.Tracker_Synchronous, focusPoint.getContentTitle()));
 		try {
-			httpRequest.request(urlBuildingStrategy.build(focusPoint));
+			httpRequest.request(getTrackingUrl(focusPoint));
 		} catch (Exception e) {
 			loggingAdapter.logMessage(MessageFormat.format(UsageMessages.Tracker_Error, e.getMessage()));
 		}
 	}
 
-	public void trackAsynchronously(FocusPoint focusPoint) {
-		loggingAdapter.logMessage(MessageFormat.format(UsageMessages.Tracker_Asynchronous, focusPoint.getContentTitle()));
-		new TrackingThread(focusPoint).start();
+	protected String getTrackingUrl(FocusPoint focusPoint) throws UnsupportedEncodingException {
+		return urlBuildingStrategy.build(focusPoint);
 	}
 
-	private class TrackingThread extends Thread {
+	public void trackAsynchronously(FocusPoint focusPoint) {
+		loggingAdapter.logMessage(MessageFormat
+				.format(UsageMessages.Tracker_Asynchronous, focusPoint.getContentTitle()));
+		new Thread(new TrackingRunnable(focusPoint)).start();
+	}
+
+	private class TrackingRunnable implements Runnable {
 		private FocusPoint focusPoint;
 
-		public TrackingThread(FocusPoint focusPoint) {
+		private TrackingRunnable(FocusPoint focusPoint) {
 			this.focusPoint = focusPoint;
-			this.setPriority(Thread.MIN_PRIORITY);
 		}
 
 		public void run() {
 			try {
-				httpRequest.request(urlBuildingStrategy.build(focusPoint));
+				httpRequest.request(getTrackingUrl(focusPoint));
 			} catch (Exception e) {
 				loggingAdapter.logMessage(MessageFormat.format(UsageMessages.Tracker_Error, e.getMessage()));
 			}

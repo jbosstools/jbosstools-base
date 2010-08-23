@@ -10,11 +10,15 @@
  ******************************************************************************/
 package org.jboss.tools.usage.util;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.reporting.ReportingMessages;
+import org.osgi.service.prefs.BackingStoreException;
 
 public class PreferencesUtils {
 		
@@ -28,5 +32,17 @@ public class PreferencesUtils {
 	
 	public static IPersistentPreferenceStore getStore() {
 		return new ScopedPreferenceStore(new ConfigurationScope(), JBossToolsUsageActivator.PLUGIN_ID);
+	}
+
+	public static void checkedSavePreferences(IEclipsePreferences preferences, Plugin plugin, String message) {
+		try {
+			preferences.flush();
+		} catch (BackingStoreException e) {
+			IStatus status = StatusUtils.getErrorStatus(plugin.getBundle().getSymbolicName(),
+					ReportingMessages.EclipseEnvironment_Error_SavePreferences,
+					e, message);
+			plugin.getLog().log(status);
+		}
+
 	}
 }

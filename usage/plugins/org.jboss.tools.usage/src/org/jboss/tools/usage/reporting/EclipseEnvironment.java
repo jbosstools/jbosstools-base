@@ -24,10 +24,9 @@ import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.util.BundleUtils;
-import org.jboss.tools.usage.util.StatusUtils;
+import org.jboss.tools.usage.util.PreferencesUtils;
 import org.jboss.tools.usage.util.BundleUtils.IBundleEntryFilter;
 import org.osgi.framework.Bundle;
-import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * @author Andre Dietisheim
@@ -202,19 +201,9 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		if (userId == null) {
 			userId = createIdentifier();
 			preferences.put(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, userId);
-			savePreferences();
+			PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(), ReportingMessages.EclipseEnvironment_Error_SavePreferences);
 		}
 		return userId;
-	}
-
-	private void savePreferences() {
-		try {
-			preferences.flush();
-		} catch (BackingStoreException e) {
-			StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-					ReportingMessages.EclipseEnvironment_Error_SavePreferences,
-					e, IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID);
-		}
 	}
 
 	/**
@@ -276,6 +265,6 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		currentVisit = String.valueOf(System.currentTimeMillis());
 		visitCount++;
 		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount);
-		savePreferences();
+		PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(), ReportingMessages.EclipseEnvironment_Error_SavePreferences);
 	}
 }
