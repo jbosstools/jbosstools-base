@@ -57,7 +57,7 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_COOKIES_KEYWORD = "utmctr";
 	
 	public static final String VALUE_TRACKING_CODE_VERSION = "4.7.2";
-	public static final String VALUE_NO_REFERRAL = "-";
+	public static final String VALUE_NO_REFERRAL = "0";
 	public static final String VALUE_ENCODING_UTF8 = "UTF-8";
 	
 	public static final String SCREERESOLUTION_DELIMITER = "x";
@@ -86,7 +86,8 @@ public interface IGoogleAnalyticsParameters {
 	public String getLastVisit();
 	
 	public String getCurrentVisit();
-		
-		
-
+	
+	public long getVisitCount();
+	
+	public void visit();	
 }

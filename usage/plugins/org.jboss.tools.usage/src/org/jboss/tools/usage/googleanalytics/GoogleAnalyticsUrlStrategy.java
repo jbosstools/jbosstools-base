@@ -34,7 +34,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 	private static final String TRACKING_URL = "http://www.google-analytics.com/__utm.gif";
 
-	private static final int VISITS = -1;
+//	private static final int VISITS = -1;
 
 	private IGoogleAnalyticsParameters googleParameters;
 
@@ -117,6 +117,8 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(focusPoint), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_GAQ, "1", false, builder);
 
+		googleParameters.visit();
+		
 		return builder.toString();
 	}
 
@@ -126,15 +128,15 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		/**
 		 * unique visitor id cookie has to be unique per eclipse installation
 		 */
-		String timeStamp = "-1"; //String.valueOf(System.currentTimeMillis());
+//		String timeStamp = "-1"; //String.valueOf(System.currentTimeMillis());
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID,
 				new StringBuilder().append("999.")
 						.append(googleParameters.getUserId()).append(IGoogleAnalyticsParameters.DOT)
-						.append(timeStamp).append(IGoogleAnalyticsParameters.DOT)
-						.append(timeStamp).append(IGoogleAnalyticsParameters.DOT)
-						.append(timeStamp).append(IGoogleAnalyticsParameters.DOT)
-						.append(VISITS)
+						.append(googleParameters.getFirstVisit()).append(IGoogleAnalyticsParameters.DOT)
+						.append(googleParameters.getLastVisit()).append(IGoogleAnalyticsParameters.DOT)
+						.append(googleParameters.getCurrentVisit()).append(IGoogleAnalyticsParameters.DOT)
+						.append(googleParameters.getVisitCount())
 						.append(IGoogleAnalyticsParameters.SEMICOLON),
 				IGoogleAnalyticsParameters.PLUS_SIGN)
 				.appendTo(builder);
@@ -142,7 +144,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_REFERRAL_TYPE,
 						new StringBuilder()
 							.append("999.")
-							.append(timeStamp)
+							.append(googleParameters.getFirstVisit())
 							.append(IGoogleAnalyticsParameters.DOT)
 							.append("1.1."))
 				.appendTo(builder);
@@ -187,24 +189,4 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 			builder.append(IGoogleAnalyticsParameters.AMPERSAND);
 		}
 	}
-
-	// private String getIpAddress() throws SocketException {
-	// Enumeration<NetworkInterface> e1 =
-	// (Enumeration<NetworkInterface>)NetworkInterface.getNetworkInterfaces();
-	// while(e1.hasMoreElements()) {
-	// NetworkInterface ni = e1.nextElement();
-	//			
-	// System.out.print(ni.getName());
-	// System.out.print(" : [");
-	// Enumeration<InetAddress> e2 = ni.getInetAddresses();
-	// while(e2.hasMoreElements()) {
-	// InetAddress ia = e2.nextElement();
-	// System.out.print(ia);
-	// if( e2.hasMoreElements()) {
-	// System.out.print(",");
-	// }
-	// }
-	// System.out.println("]");
-	// }
-	// }
 }

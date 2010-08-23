@@ -387,7 +387,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
-
+	@Ignore
 	@Test
 	public void testUrl0_7_3_1() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
@@ -435,6 +435,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 	
+	@Ignore
 	@Test
 	public void testUrl0_7_3_win_referral() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
@@ -459,6 +460,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 	
+	@Ignore
 	@Test
 	public void testUrl0_7_3_win_adcontent() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
@@ -483,6 +485,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Ignore
 	@Test
 	public void testUrl0_7_3_win_keyword() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
@@ -508,6 +511,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 	
+	@Ignore
 	@Test
 	public void testUrl0_7_3_win_utmz() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
@@ -533,6 +537,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Ignore
 	@Test
 	public void testUrl0_7_3_win_utmctr() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
@@ -558,6 +563,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Ignore
 	@Test
 	public void testUrl0_7_3_win_utmctr_lengthtest() throws IOException {
 		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
@@ -586,6 +592,90 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Test
+	public void testUrl_utmaCookies_0() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=351334794"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmdt=tools-usage-testUrl_utmaCookies_0"
+			+"&utmhid=1087431432"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_0"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc="
+				+"__utma%3D133697892.1285760711.1281430767.1281430767.1281430767.1%3B%2B"
+				+"__utmz%3D156030500.1281430767.1.1."
+					+"utmcsr%3D(direct)%7C"
+					+"utmccn%3D(direct)%7C"
+					+"utmcmd%3D(none)%7C"
+					+"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+	
+	@Test
+	public void testUrl_utmaCookies_1() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=351334794"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmdt=tools-usage-testUrl_utmaCookies_1"
+			+"&utmhid=1087431432"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_1"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc="
+				+"__utma%3D133697892.1285760711.1281430767.1281430767.1281430867.2%3B%2B"
+				+"__utmz%3D156030500.1281430767.1.1."
+					+"utmcsr%3D(direct)%7C"
+					+"utmccn%3D(direct)%7C"
+					+"utmcmd%3D(none)%7C"
+					+"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+	
+	@Test
+	public void testUrl_utmaCookies_2() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?" 
+			+"utmwv=4.7.2"
+			+"&utmn=351334794"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=1920x1080"
+			+"&utmsc=24-bit"
+			+"&utmul=en-us"
+			+"&utmdt=tools-usage-testUrl_utmaCookies_2"
+			+"&utmhid=1087431432"
+			+"&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_2"
+			+"&utmac=UA-17645367-1"
+			+"&utmcc="
+				+"__utma%3D133697892.1285760711.1281430767.1281430867.1281430967.2%3B%2B"
+				+"__utmz%3D156030500.1281430767.1.1."
+					+"utmcsr%3D(direct)%7C"
+					+"utmccn%3D(direct)%7C"
+					+"utmcmd%3D(none)%7C"
+					+"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+	
 	protected class TestHttpGetMethod extends HttpGetMethod {
 
 		private HttpURLConnection urlConnection;

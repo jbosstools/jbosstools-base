@@ -51,7 +51,7 @@ public class JBossToolsUsageTest {
 
 	private ITracker getGoogleAnalyticsTracker() {
 		IGoogleAnalyticsParameters eclipseSettings = new EclipseEnvironmentFake(
-				GANALYTICS_ACCOUNTNAME, HOST_NAME, JBossToolsUsageTestActivator.PLUGIN_ID, Platform.OS_LINUX, LOCALE_US);
+				GANALYTICS_ACCOUNTNAME, HOST_NAME, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, Platform.OS_LINUX, LOCALE_US);
 		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageTestActivator.getDefault());
 		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(eclipseSettings);
 		return new Tracker(urlStrategy, eclipseSettings.getUserAgent(), loggingAdapter);

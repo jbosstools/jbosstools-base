@@ -35,10 +35,12 @@ public class UsageReport {
 
 	private static final String HOST_NAME = ReportingMessages.UsageReport_HostName;
 
-	private FocusPoint focusPoint = new FocusPoint("tools") //$NON-NLS-1$ 
-			.setChild(new FocusPoint("usage") //$NON-NLS-1$ 
-					.setChild(new FocusPoint("action") //$NON-NLS-1$ 
-							.setChild(new FocusPoint("wsstartup")))); //$NON-NLS-1$
+//	private FocusPoint focusPoint = new FocusPoint("tools") //$NON-NLS-1$ 
+//			.setChild(new FocusPoint("usage") //$NON-NLS-1$ 
+//					.setChild(new FocusPoint("action") //$NON-NLS-1$ 
+//							.setChild(new FocusPoint("wsstartup")))); //$NON-NLS-1$
+
+	private FocusPoint focusPoint = new FocusPoint("test"); //$NON-NLS-1$ 
 
 	public void report() {
 		UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(ReportingMessages.UsageReport_DialogTitle,

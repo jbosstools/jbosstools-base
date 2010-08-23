@@ -39,4 +39,6 @@ public interface IUsageReportPreferenceConstants {
 	public static final String FIRST_VISIT = "firstVisit";
 
 	public static final String LAST_VISIT = "lastVisit";
+
+	public static final String VISIT_COUNT = "visitCount";
 }

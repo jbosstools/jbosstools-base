@@ -8,10 +8,10 @@ import org.jboss.tools.usage.ILoggingAdapter;
 public class SystemOutLogger implements ILoggingAdapter {
 
 	public void logError(String errorMessage) {
-		System.out.println("[DEBUG]: " + errorMessage);
+		System.out.println("[ERROR]: " + errorMessage);
 	}
 
 	public void logMessage(String message) {
-		System.out.println("[ERROR]" + message);
+		System.out.println("[INFO]" + message);
 	}
 }

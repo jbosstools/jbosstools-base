@@ -48,7 +48,8 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 	private String firstVisit;
 	private String lastVisit;
 	private String currentVisit;
-	
+	private long visitCount;
+
 	public EclipseEnvironment(String accountName, String hostName, String referral, IEclipsePreferences preferences) {
 		super(accountName, hostName, referral);
 		this.random = new Random();
@@ -57,7 +58,6 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		initVisits();
 	}
 
-	
 	protected void initScreenSettings() {
 		final Display display = getDisplay();
 		display.syncExec(new Runnable() {
@@ -78,12 +78,9 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		if (firstVisit == null) {
 			this.firstVisit = currentTime;
 			preferences.put(IUsageReportPreferenceConstants.FIRST_VISIT, firstVisit);
-			this.lastVisit = currentTime;
-		} else {
-			lastVisit = preferences.get(IUsageReportPreferenceConstants.LAST_VISIT, null);
 		}
-		/* store current visit as last vist for next instantiation */
-		preferences.put(IUsageReportPreferenceConstants.LAST_VISIT, currentTime);
+		lastVisit = preferences.get(IUsageReportPreferenceConstants.LAST_VISIT, currentTime);
+		visitCount = preferences.getLong(IUsageReportPreferenceConstants.VISIT_COUNT, 1);
 	}
 
 	public String getBrowserLanguage() {
@@ -210,7 +207,6 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		return userId;
 	}
 
-	
 	private void savePreferences() {
 		try {
 			preferences.flush();
@@ -268,5 +264,18 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 
 	public String getLastVisit() {
 		return lastVisit;
+	}
+
+	public long getVisitCount() {
+		return visitCount;
+	}
+
+	public void visit() {
+		lastVisit = currentVisit;
+		preferences.put(IUsageReportPreferenceConstants.LAST_VISIT, lastVisit);
+		currentVisit = String.valueOf(System.currentTimeMillis());
+		visitCount++;
+		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount);
+		savePreferences();
 	}
 }

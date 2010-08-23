@@ -249,6 +249,7 @@ public class EclipseEnvironmenTest {
 		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
 				Platform.OS_LINUX, LOCALE_US, preferences);
 		String firstVisit = eclipseEnvironment.getFirstVisit();
+		assertEquals(1, eclipseEnvironment.getVisitCount());
 		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
 		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
 		assertEquals(firstVisit, eclipseEnvironment.getCurrentVisit());
@@ -260,11 +261,10 @@ public class EclipseEnvironmenTest {
 		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
 				Platform.OS_LINUX, LOCALE_US, preferences);
 		String firstVisit = eclipseEnvironment.getFirstVisit();
+		Thread.sleep(10);
+		eclipseEnvironment.visit();
 
-		Thread.sleep(10); // delay second instantiation
-		
-		eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
-				Platform.OS_LINUX, LOCALE_US, preferences);
+		assertEquals(2, eclipseEnvironment.getVisitCount());
 		assertEquals(firstVisit, eclipseEnvironment.getFirstVisit());
 		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
 		assertTrue(!firstVisit.equals(eclipseEnvironment.getCurrentVisit()));
@@ -276,17 +276,14 @@ public class EclipseEnvironmenTest {
 		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
 				Platform.OS_LINUX, LOCALE_US, preferences);
 		String firstVisit = eclipseEnvironment.getFirstVisit();
+		Thread.sleep(10);
+		eclipseEnvironment.visit();
 
-		Thread.sleep(10); // delay second instantiation
-
-		eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
-				Platform.OS_LINUX, LOCALE_US, preferences);
 		String currentVisit = eclipseEnvironment.getCurrentVisit();
-		
-		Thread.sleep(10); // delay third instantiation
+		Thread.sleep(10);
+		eclipseEnvironment.visit();
 
-		eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
-				Platform.OS_LINUX, LOCALE_US, preferences);
+		assertEquals(3, eclipseEnvironment.getVisitCount());
 		assertEquals(currentVisit, eclipseEnvironment.getLastVisit());
 		assertTrue(!firstVisit.equals(eclipseEnvironment.getCurrentVisit()));
 	}

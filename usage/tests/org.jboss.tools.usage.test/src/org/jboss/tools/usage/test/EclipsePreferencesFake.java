@@ -98,7 +98,12 @@ public class EclipsePreferencesFake implements IEclipsePreferences {
 	}
 
 	public long getLong(String key, long defaultValue) {
-		throw new UnsupportedOperationException();
+		String value = preferences.get(key);
+		if (value != null) {
+			return Long.valueOf(value);
+		} else {
+			return defaultValue;
+		}
 	}
 
 	public String[] keys() throws BackingStoreException {
@@ -142,7 +147,7 @@ public class EclipsePreferencesFake implements IEclipsePreferences {
 	}
 
 	public void putLong(String key, long value) {
-		throw new UnsupportedOperationException();
+		preferences.put(key, String.valueOf(value));
 	}
 
 	public void remove(String key) {
