@@ -1,4 +1,4 @@
-private package org.jboss.tools.ui.bot.ext.parts;
+package org.jboss.tools.ui.bot.ext.parts;
 
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 import static org.junit.Assert.assertNotNull;
