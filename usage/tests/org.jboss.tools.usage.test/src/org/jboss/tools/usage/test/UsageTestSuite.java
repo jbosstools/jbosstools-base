@@ -18,7 +18,8 @@ import org.junit.runners.Suite;
 		FocusPointTest.class,
 		GoogleAnalyticsUrlStrategyTest.class,
 		JBossToolsUsageIntegrationTest.class,
-		EclipseEnvironmenTest.class })
+		EclipseEnvironmenTest.class,
+		GlobalReportingEnablementTest.class})
 
 /**
  * @author Andre Dietisheim

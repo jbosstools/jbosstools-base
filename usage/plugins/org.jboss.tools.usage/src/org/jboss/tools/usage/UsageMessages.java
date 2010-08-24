@@ -22,6 +22,10 @@ public class UsageMessages extends NLS {
 	public static String HttpGetMethod_Error_Io;
 	public static String HttpGetMethod_Success;
 
+	public static String KillSwitchPreference_Error_Exception;
+	public static String KillSwitchPreference_Error_Http;
+	public static String KillSwitchPreference_Info_HttpQuery;
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, UsageMessages.class);
