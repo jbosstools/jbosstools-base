@@ -39,6 +39,7 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_COOKIES_UNIQUE_VISITOR_ID = "__utma";
 	public static final String PARAM_COOKIES_SESSION = "__utmb";
 	public static final String PARAM_COOKIES_BROWSERSESSION = "__utmc";
+	public static final String PARAM_COOKIES_REFERRAL_TYPE = "__utmz";
 	
 	public static final String PARAM_REFERRAL = "utmr";
 	public static final String PARAM_TRACKING_CODE_VERSION = "utmwv";

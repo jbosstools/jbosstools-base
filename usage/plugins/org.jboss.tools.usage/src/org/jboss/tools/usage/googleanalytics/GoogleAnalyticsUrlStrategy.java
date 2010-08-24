@@ -153,19 +153,29 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 				IGoogleAnalyticsParameters.PLUS_SIGN)
 				.appendTo(builder);
 
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_REFERRAL_TYPE,
+						new StringBuilder()
+								.append("999.")
+								.append(googleParameters.getFirstVisit())
+								.append(IGoogleAnalyticsParameters.DOT)
+								.append("1.1.")
+								, IGoogleAnalyticsParameters.SEMICOLON
+								, IGoogleAnalyticsParameters.PLUS_SIGN)
+				.appendTo(builder);
+
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_SESSION,
 				new StringBuilder()
 						.append("1"),
 						IGoogleAnalyticsParameters.SEMICOLON
 						, IGoogleAnalyticsParameters.PLUS_SIGN)
-		.appendTo(builder);
-		
+				.appendTo(builder);
+
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_BROWSERSESSION,
 				new StringBuilder()
 						.append("1"),
 						IGoogleAnalyticsParameters.SEMICOLON
 						, IGoogleAnalyticsParameters.PLUS_SIGN)
-		.appendTo(builder);
+				.appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCSR,
 						"(direct)",
