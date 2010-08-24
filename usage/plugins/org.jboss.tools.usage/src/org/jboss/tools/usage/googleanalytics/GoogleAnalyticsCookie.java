@@ -16,15 +16,15 @@ public class GoogleAnalyticsCookie {
 
 	private CharSequence value;
 	private String identifier;
-	private char delimiter;
+	private char[] delimiters;
 
-	public GoogleAnalyticsCookie(String identifier, CharSequence value, char delimiter) {
+	public GoogleAnalyticsCookie(String identifier, CharSequence value, char... delimiters) {
 		Assert.isTrue(identifier != null && identifier.length() > 0);
 		Assert.isTrue(value != null && value.length() > 0);
 
 		this.identifier = identifier;
 		this.value = value;
-		this.delimiter = delimiter;
+		this.delimiters = delimiters;
 	}
 
 	public GoogleAnalyticsCookie(String identifier, CharSequence value) {
@@ -35,7 +35,7 @@ public class GoogleAnalyticsCookie {
 		builder.append(identifier)
 				.append(IGoogleAnalyticsParameters.EQUALS_SIGN)
 				.append(value);
-		if (delimiter != (char) -1) {
+		for (char delimiter : delimiters) {
 			builder.append(delimiter);
 		}
 	}

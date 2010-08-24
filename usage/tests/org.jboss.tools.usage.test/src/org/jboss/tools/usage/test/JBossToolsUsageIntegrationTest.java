@@ -52,8 +52,8 @@ public class JBossToolsUsageIntegrationTest {
 		tracker = getTracker(getEclipseEnvironmentInstance());
 		tracker.trackSynchronously(focusPoint);
 		String newUserId = getUserId(tracker.getTrackingUrl());
-		assertTrue(newUserId != null);
 
+		assertTrue(newUserId != null);
 		assertEquals(userId, newUserId);
 	}
 
@@ -66,11 +66,11 @@ public class JBossToolsUsageIntegrationTest {
 
 		tracker = getTracker(createEclipseEnvironment());
 		FocusPoint focusPoint = createFocusPoint("testDifferentUserIdOnDifferentEclipseInstance"
-				+ +System.currentTimeMillis());
+				+ System.currentTimeMillis());
 		tracker.trackSynchronously(focusPoint);
 		String newUserId = getUserId(tracker.getTrackingUrl());
-		assertTrue(newUserId != null);
 
+		assertTrue(newUserId != null);
 		assertTrue(!userId.equals(newUserId));
 	}
 

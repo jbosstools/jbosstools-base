@@ -27,14 +27,16 @@ import org.jboss.tools.usage.util.EncodingUtils;
  * @see <a
  *      href="http://code.google.com/apis/analytics/docs/concepts/gaConceptsCookies.html#cookiesSet">Cookies
  *      Set By Google Analytics</a>
- *      
- * @see <a href="http://www.morevisibility.com/analyticsblog/from-__utma-to-__utmz-google-analytics-cookies.html">From __utma to __utmz (Google Analytics Cookies)</a>
+ * 
+ * @see <a
+ *      href="http://www.morevisibility.com/analyticsblog/from-__utma-to-__utmz-google-analytics-cookies.html">From
+ *      __utma to __utmz (Google Analytics Cookies)</a>
  */
 public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 	private static final String TRACKING_URL = "http://www.google-analytics.com/__utm.gif";
 
-//	private static final int VISITS = -1;
+	// private static final int VISITS = -1;
 
 	private IGoogleAnalyticsParameters googleParameters;
 
@@ -114,22 +116,32 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getContentURI(), builder);
 
 		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, googleParameters.getAccountName(), builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(focusPoint), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_GAQ, "1", false, builder);
 
 		googleParameters.visit();
-		
+
 		return builder.toString();
 	}
 
-	private String getCookies(FocusPoint focusPoint) {
+	/**
+	 * Returns the google analytics cookies. These cookies determines user
+	 * identity, session identity etc.
+	 * 
+	 * @return the cookies
+	 * 
+	 * @see <a
+	 *      href="http://www.analyticsexperts.com/google-analytics/information-about-the-utmlinker-and-the-__utma-__utmb-and-__utmc-cookies/">Information
+	 *      about the utmLinker and the __utma, __utmb and __utmc cookies</a>
+	 */
+	private String getCookies() {
 		StringBuilder builder = new StringBuilder();
 
 		/**
 		 * unique visitor id cookie has to be unique per eclipse installation
 		 */
-//		String timeStamp = "-1"; //String.valueOf(System.currentTimeMillis());
-
+		// String timeStamp = "-1";
+		// //String.valueOf(System.currentTimeMillis());
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID,
 				new StringBuilder().append("999.")
 						.append(googleParameters.getUserId()).append(IGoogleAnalyticsParameters.DOT)
@@ -141,13 +153,19 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 				IGoogleAnalyticsParameters.PLUS_SIGN)
 				.appendTo(builder);
 
-		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_REFERRAL_TYPE,
-						new StringBuilder()
-							.append("999.")
-							.append(googleParameters.getFirstVisit())
-							.append(IGoogleAnalyticsParameters.DOT)
-							.append("1.1."))
-				.appendTo(builder);
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_SESSION,
+				new StringBuilder()
+						.append("1"),
+						IGoogleAnalyticsParameters.SEMICOLON
+						, IGoogleAnalyticsParameters.PLUS_SIGN)
+		.appendTo(builder);
+		
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_BROWSERSESSION,
+				new StringBuilder()
+						.append("1"),
+						IGoogleAnalyticsParameters.SEMICOLON
+						, IGoogleAnalyticsParameters.PLUS_SIGN)
+		.appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCSR,
 						"(direct)",
@@ -160,14 +178,14 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 				.appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCMD,
-						"(none)", 
+						"(none)",
 						IGoogleAnalyticsParameters.PIPE)
 				.appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD,
 					googleParameters.getKeyword())
-		.appendTo(builder);
-		
+				.appendTo(builder);
+
 		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
 
 		return EncodingUtils.checkedEncodeUtf8(builder.toString());

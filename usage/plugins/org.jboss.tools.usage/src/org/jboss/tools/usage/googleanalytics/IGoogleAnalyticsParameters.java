@@ -37,6 +37,8 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_HOST_NAME = "utmhn";
 	public static final String PARAM_COOKIES = "utmcc";
 	public static final String PARAM_COOKIES_UNIQUE_VISITOR_ID = "__utma";
+	public static final String PARAM_COOKIES_SESSION = "__utmb";
+	public static final String PARAM_COOKIES_BROWSERSESSION = "__utmc";
 	
 	public static final String PARAM_REFERRAL = "utmr";
 	public static final String PARAM_TRACKING_CODE_VERSION = "utmwv";
@@ -50,7 +52,6 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_REPEAT_CAMPAIGN_VISIT = "utmcr";
 	public static final String PARAM_PAGE_TITLE = "utmdt";
 	public static final String PARAM_GAQ = "gaq";
-	public static final String PARAM_COOKIES_REFERRAL_TYPE = "__utmz";
 	public static final String PARAM_COOKIES_UTMCSR = "utmcsr";
 	public static final String PARAM_COOKIES_UTMCCN = "utmccn";
 	public static final String PARAM_COOKIES_UTMCMD = "utmcmd";
