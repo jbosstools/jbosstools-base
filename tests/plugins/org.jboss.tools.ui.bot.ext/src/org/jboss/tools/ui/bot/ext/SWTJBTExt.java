@@ -492,4 +492,21 @@ public class SWTJBTExt {
     return SWTJBTExt.getDefinedServerRuntimeVersion(bot,index);
       
   }
+
+  /**
+   * Closes RH Report Usage Dialog if found
+   * @param cancel selecte if ok or cancel button is used
+   */
+public void closeReportUsageWindowIfOpened(boolean cancel) {
+	try {
+		bot.shell("Report usage").activate();
+		bot.button(
+				cancel ? IDELabel.Button.CANCEL
+						: IDELabel.Button.OK).click();
+		log.info("Report usage window closed");
+	} catch (WidgetNotFoundException wnfe) {
+		log.info("Report usage window didn't appear");
+	}
+	
+}
 }
