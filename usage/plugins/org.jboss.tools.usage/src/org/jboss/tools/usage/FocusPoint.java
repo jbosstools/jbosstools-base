@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage;
 
-import org.jboss.tools.usage.util.EncodingUtils;
+import org.jboss.tools.usage.util.HttpEncodingUtils;
 
 /**
  * Focus point of the application. It can represent data points like application
@@ -43,7 +43,7 @@ public class FocusPoint {
 	public String getContentURI() {
 		StringBuilder builder = new StringBuilder();
 		appendContentURI(builder, this);
-		return EncodingUtils.checkedEncodeUtf8(builder.toString());
+		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}
 
 	private void appendContentURI(StringBuilder builder, FocusPoint focusPoint) {
@@ -58,7 +58,7 @@ public class FocusPoint {
 	public String getContentTitle() {
 		StringBuilder builder = new StringBuilder();
 		appendContentTitle(builder, this);
-		return EncodingUtils.checkedEncodeUtf8(builder.toString());
+		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}
 
 	private void appendContentTitle(StringBuilder builder, FocusPoint focusPoint) {

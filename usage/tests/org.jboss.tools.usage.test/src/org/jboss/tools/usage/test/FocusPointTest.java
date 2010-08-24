@@ -11,7 +11,7 @@
 package org.jboss.tools.usage.test;
 
 import org.jboss.tools.usage.FocusPoint;
-import org.jboss.tools.usage.util.EncodingUtils;
+import org.jboss.tools.usage.util.HttpEncodingUtils;
 
 import junit.framework.TestCase;
 
@@ -24,9 +24,9 @@ public class FocusPointTest extends TestCase {
 	
 	private static final String child1 = "child1";
 	
-	private static final String URI_SEPARATOR_ENCODED = EncodingUtils.checkedEncodeUtf8(FocusPoint.URI_SEPARATOR);
+	private static final String URI_SEPARATOR_ENCODED = HttpEncodingUtils.checkedEncodeUtf8(FocusPoint.URI_SEPARATOR);
 	
-	private static final String TITLE_SEPARATOR_ENCODED = EncodingUtils.checkedEncodeUtf8(FocusPoint.TITLE_SEPARATOR);
+	private static final String TITLE_SEPARATOR_ENCODED = HttpEncodingUtils.checkedEncodeUtf8(FocusPoint.TITLE_SEPARATOR);
 	
 	public void testGetContentURI_Simple() throws Exception {
 		FocusPoint focusPoint = new FocusPoint(root);

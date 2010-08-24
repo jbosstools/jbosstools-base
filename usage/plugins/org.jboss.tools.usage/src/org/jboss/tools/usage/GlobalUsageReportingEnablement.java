@@ -10,15 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.usage;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.jboss.tools.usage.util.HttpEncodingUtils;
 import org.jboss.tools.usage.util.StatusUtils;
 
 /**
@@ -26,26 +28,34 @@ import org.jboss.tools.usage.util.StatusUtils;
  * implementation queries a given url and extracts the enablement value out of
  * the response.
  */
-public class GlobalReportingEnablement {
+public class GlobalUsageReportingEnablement {
+
+	private static final String REPORTING_ENABLEMENT_ENABLEDVALUE = "ENABLED";
 
 	private static final String GET_METHOD_NAME = "GET"; //$NON-NLS-1$
-	private static final String REPORTING_ENABLEMENT_URL = "https://community.jboss.org/wiki/JBossToolsJBossDeveloperStudioUsageReportingEnablement"; //$NON-NLS-1$
-	private static final String REPORTING_ENABLEMENT_REGEX = "Usage Reporting is ([A-Za-z]+)"; //$NON-NLS-1$
+	private static final String REPORTING_ENABLEMENT_URL = "http://community.jboss.org/wiki/JBossToolsJBossDeveloperStudioUsageReportingEnablement"; //$NON-NLS-1$
+	private static final String REPORTING_ENABLEMENT_STARTSEQUENCE = "Usage Reporting is "; //$NON-NLS-1$
 
 	private Plugin plugin;
 	private HttpURLConnection urlConnection;
-	private Pattern pattern;
 
-	public GlobalReportingEnablement(Plugin plugin) throws IOException {
+	public GlobalUsageReportingEnablement(Plugin plugin) throws IOException {
 		Assert.isNotNull(plugin);
 
 		this.plugin = plugin;
 		this.urlConnection = createURLConnection(REPORTING_ENABLEMENT_URL);
-		this.pattern = Pattern.compile(REPORTING_ENABLEMENT_REGEX);
 	}
 
 	public boolean isEnabled() {
-		return parse(request(REPORTING_ENABLEMENT_URL));
+		try {
+			return parse(request(REPORTING_ENABLEMENT_URL));
+		} catch (IOException e) {
+			IStatus status = StatusUtils.getErrorStatus(
+					plugin.getBundle().getSymbolicName()
+					, UsageMessages.KillSwitchPreference_Error_Exception, e);
+			plugin.getLog().log(status);
+			return false;
+		}
 	}
 
 	/**
@@ -56,20 +66,22 @@ public class GlobalReportingEnablement {
 	 * @param url
 	 *            the url to send the GET request to
 	 * @return the response or <tt>null</tt> if an error occured.
+	 * @throws UnsupportedEncodingException
 	 * 
 	 * @see HttpURLConnection
 	 */
-	protected String request(String url) {
-		String response = null;
+	protected InputStreamReader request(String url) throws UnsupportedEncodingException {
+		InputStreamReader responseReader = null;
 		try {
 			urlConnection.connect();
 			int responseCode = getResponseCode(urlConnection);
 			if (responseCode == HttpURLConnection.HTTP_OK) {
 				IStatus status = StatusUtils.getDebugStatus(
 						plugin.getBundle().getSymbolicName()
-						, UsageMessages.KillSwitchPreference_Info_HttpQuery, url);
+						, UsageMessages.KillSwitchPreference_Info_HttpQuery
+						, url);
 				plugin.getLog().log(status);
-				response = urlConnection.getResponseMessage();
+				responseReader = getInputStreamReader(urlConnection.getContentType());
 			} else {
 				IStatus status = StatusUtils.getErrorStatus(
 						plugin.getBundle().getSymbolicName()
@@ -79,30 +91,47 @@ public class GlobalReportingEnablement {
 		} catch (Exception e) {
 			IStatus status = StatusUtils.getErrorStatus(
 					plugin.getBundle().getSymbolicName()
-					, UsageMessages.KillSwitchPreference_Error_Http, null, url);
+					, UsageMessages.KillSwitchPreference_Error_Http, e, url);
 			plugin.getLog().log(status);
 		}
-		return response;
+		return responseReader;
+	}
+
+	private InputStreamReader getInputStreamReader(String contentType) throws UnsupportedEncodingException, IOException {
+		String contentTypeCharset = HttpEncodingUtils.getContentTypeCharset(contentType);
+		if (contentTypeCharset != null && contentTypeCharset.length() > 0) {
+			return new InputStreamReader(new BufferedInputStream(urlConnection.getInputStream()),
+					contentTypeCharset);
+		} else {
+			return new InputStreamReader(new BufferedInputStream(urlConnection.getInputStream()));
+		}
 	}
 
 	/**
 	 * Parses the given string and extracts the enablement value.
 	 * 
-	 * @param response
-	 *            the response
+	 * @param input
+	 *            stream that holds
 	 * @return true, if successful
 	 */
-	private boolean parse(String response) {
-		Matcher matcher = pattern.matcher(response);
-		if (matcher.find() && matcher.groupCount() >= 1) {
-			String enablementValue = matcher.group(1);
-			return isEnabled(enablementValue);
+	private boolean parse(InputStreamReader reader) throws IOException {
+		int i = 0;
+		char[] reportingValueCharacters = new char[REPORTING_ENABLEMENT_ENABLEDVALUE.length()];
+		for (int character = 0; character != -1; character = reader.read()) {
+			if (REPORTING_ENABLEMENT_STARTSEQUENCE.charAt(i) == (char) character) {
+				if (++i == REPORTING_ENABLEMENT_STARTSEQUENCE.length()) {
+					reader.read(reportingValueCharacters);
+					return isEnabled(new String(reportingValueCharacters));
+				}
+			} else {
+				i = 0;
+			}
 		}
 		return false;
 	}
 
 	private boolean isEnabled(String enablementValue) {
-		return (enablementValue != null && "ENABLED".equals(enablementValue.toUpperCase()));
+		return (enablementValue != null && REPORTING_ENABLEMENT_ENABLEDVALUE.equals(enablementValue.toUpperCase()));
 	}
 
 	/**

@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.jboss.tools.usage.FocusPoint;
 import org.jboss.tools.usage.IURLBuildingStrategy;
-import org.jboss.tools.usage.util.EncodingUtils;
+import org.jboss.tools.usage.util.HttpEncodingUtils;
 
 /**
  * Class that builds an URL that passes given parameters to google analytics
@@ -188,7 +188,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
 
-		return EncodingUtils.checkedEncodeUtf8(builder.toString());
+		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}
 
 	private String getRandomNumber() {

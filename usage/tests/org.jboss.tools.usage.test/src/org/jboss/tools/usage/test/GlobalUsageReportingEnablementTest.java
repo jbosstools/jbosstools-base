@@ -12,15 +12,18 @@ package org.jboss.tools.usage.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
-import org.jboss.tools.usage.GlobalReportingEnablement;
+import org.jboss.tools.usage.GlobalUsageReportingEnablement;
 import org.junit.Test;
 
 /**
  * The Class GlobalReportingEnablementTest.
  */
-public class GlobalReportingEnablementTest {
+public class GlobalUsageReportingEnablementTest {
 
 	@Test
 	public void canExtractEnabledValue() throws IOException {
@@ -40,7 +43,7 @@ public class GlobalReportingEnablementTest {
 		assertTrue(reportEnablement.isEnabled());
 	}
 
-	private class GlobalReportingEnablementFake extends GlobalReportingEnablement {
+	private class GlobalReportingEnablementFake extends GlobalUsageReportingEnablement {
 
 		private String enablementValue;
 
@@ -50,8 +53,8 @@ public class GlobalReportingEnablementTest {
 		}
 
 		@Override
-		protected String request(String url) {
-			return getEnablementPageContent(enablementValue);
+		protected InputStreamReader request(String url) throws UnsupportedEncodingException {
+			return new InputStreamReader(new ByteArrayInputStream(getEnablementPageContent(enablementValue).getBytes()), "UTF-8");
 
 		}
 	}
@@ -109,7 +112,9 @@ public class GlobalReportingEnablementTest {
 				+ "	<div class=\"jive-content-body\"> "
 				+ " "
 				+ "<!-- [DocumentBodyStart:e26c60c0-cb73-47b7-bded-f4eb7320305b] --><div class=\"jive-rendered-content\"><p>This article is queried by the JBoss Tools / JBoss Developer Studio usage reporting plugin. It implements a global kill-switch that allows us to disable usage reporting stats. The plugin looks for a string of the format:</p><p style=\"min-height: 8pt; height: 8pt; padding: 0px;\">&#160;</p><p><strong>Usage&#160; Reporting&#160; is &lt;"
+
 				+ enablementValue
+
 				+ "&gt;</strong>. Any value that differs from ENABLED is interpreted as DISABLED.</p><p style=\"min-height: 8pt; height: 8pt; padding: 0px;\">&#160;</p><h1>Usage Reporting is ENABLED</h1></div><!-- [DocumentBodyEnd:e26c60c0-cb73-47b7-bded-f4eb7320305b] --> "
 				+ " "
 				+ "	</div> "
@@ -126,5 +131,11 @@ public class GlobalReportingEnablementTest {
 				+ "</div> "
 				+ "</body> "
 				+ "</html> ";
+	}
+	
+	@Test
+	public void isPageAccessible() throws IOException {
+		GlobalUsageReportingEnablement reportEnablement = new GlobalUsageReportingEnablement(JBossToolsUsageTestActivator.getDefault());
+		System.err.println("Usage reporting is globally \"" + reportEnablement.isEnabled() + "\"");
 	}
 }
