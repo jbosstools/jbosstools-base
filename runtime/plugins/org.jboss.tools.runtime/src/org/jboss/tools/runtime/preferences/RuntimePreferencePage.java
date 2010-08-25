@@ -10,8 +10,17 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.preferences;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -20,6 +29,9 @@ import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -34,7 +46,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.eclipse.ui.internal.wizards.preferences.PreferencesExportWizard;
+import org.eclipse.ui.internal.wizards.preferences.PreferencesImportWizard;
+import org.eclipse.wst.server.core.IServerWorkingCopy;
+import org.eclipse.wst.server.core.internal.IMemento;
+import org.eclipse.wst.server.core.internal.Server;
+import org.eclipse.wst.server.core.internal.ServerPlugin;
+import org.eclipse.wst.server.core.internal.XMLMemento;
+import org.jboss.tools.jbpm.preferences.JbpmInstallation;
+import org.jboss.tools.jbpm.preferences.PreferencesManager;
 import org.jboss.tools.runtime.Activator;
 import org.jboss.tools.runtime.JBossRuntimeLocator;
 
@@ -45,12 +67,15 @@ import org.jboss.tools.runtime.JBossRuntimeLocator;
 public class RuntimePreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
+	private static final String SERVER_DATA_FILE = "servers.xml";
+
 	private static final String LASTPATH = "lastPath";
 	public static final String SEAM_PREFERENCES_ID = "org.jboss.tools.common.model.ui.seam"; //$NON-NLS-1$
 	public static final String WTP_PREFERENCES_ID = "org.eclipse.wst.server.ui.runtime.preferencePage"; //$NON-NLS-1$
 	private static final String DROOLS_PREFERENCES_ID = "org.drools.eclipse.preferences.DroolsRuntimesPreferencePage";
 	private static final String JBPM_PREFERENCES_ID = "org.jboss.tools.jbpm.locations";
 	
+	protected Map<String, Object> map = new HashMap<String, Object>();
 
 	/*
 	 * (non-Javadoc)
@@ -67,10 +92,6 @@ public class RuntimePreferencePage extends PreferencePage implements
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
 		
-		//layout.marginHeight= convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
-		//layout.marginWidth= 0;
-		//layout.verticalSpacing= convertVerticalDLUsToPixels(10);
-		//layout.horizontalSpacing= convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
 		composite.setLayout(layout);
 		
 		createLink(composite, "See <a>WTP Runtime</a>", WTP_PREFERENCES_ID);
@@ -125,13 +146,117 @@ public class RuntimePreferencePage extends PreferencePage implements
 	}
 
 	private void exportRuntimes() {
-		// TODO Auto-generated method stub	
+		exportServers();
+		exportJbpms();
+		PreferencesExportWizard wizard = new PreferencesExportWizard();
+		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection());
+		WizardDialog dialog = new WizardDialog(getShell(), wizard);
+		dialog.create();
+		dialog.open();
 	}
 	
+	private void exportJbpms() {
+		File file = org.jboss.tools.jbpm.Activator.getDefault().getStateLocation().append("jbpm-installations.xml").toFile();
+		if (!file.exists()) {
+			Activator.getDefault().getPreferenceStore().setValue(Activator.JBPMS, "");
+			return;
+		}
+		try {
+			XMLMemento memento = (XMLMemento) XMLMemento.loadMemento(file.getAbsolutePath());
+			String xmlString = memento.saveToString();
+			Activator.getDefault().getPreferenceStore().setValue(Activator.JBPMS, xmlString);
+			Activator.getDefault().savePluginPreferences();
+		} catch (Exception e) {
+			Activator.log (e);
+		}
+	}
+
+	private void exportServers() {
+		String filename = ServerPlugin.getInstance().getStateLocation().append(SERVER_DATA_FILE).toOSString();
+		if ( !(new File(filename).exists()) ) {
+			Activator.getDefault().getPreferenceStore().setValue(Activator.SERVERS, "");
+			return;
+		}
+		try {
+			XMLMemento memento = (XMLMemento) XMLMemento.loadMemento(filename);
+			String xmlString = memento.saveToString();
+			Activator.getDefault().getPreferenceStore().setValue(Activator.SERVERS, xmlString);
+			Activator.getDefault().savePluginPreferences();
+		} catch (Exception e) {
+			Activator.log (e);
+		}
+	}
+
 	private void importRuntimes() {
-		// TODO Auto-generated method stub	
+		PreferencesImportWizard wizard = new PreferencesImportWizard();
+		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection());
+		WizardDialog dialog = new WizardDialog(getShell(), wizard);
+		dialog.create();
+		int ok = dialog.open();
+		if (ok == Window.OK) {
+			String jbpms = Activator.getDefault().getPreferenceStore().getString(Activator.JBPMS);
+			if (jbpms != null && jbpms.trim().length() > 0) {
+				loadJBPMInstalations(jbpms);
+			}
+			String servers = Activator.getDefault().getPreferenceStore().getString(Activator.SERVERS);
+			if (servers != null && servers.trim().length() > 0) {
+				loadServerInstalations(servers);
+			}
+		}
 	}
 	
+	/**
+	 * @param servers
+	 */
+	private void loadServerInstalations(String servers) {
+		InputStream in = null;
+		try {
+			in = new ByteArrayInputStream(servers.getBytes("UTF-8"));
+			IMemento memento = XMLMemento.loadMemento(in);
+			
+			IMemento[] children = memento.getChildren("server");
+			int size = children.length;
+			
+			for (int i = 0; i < size; i++) {
+				ServerEx server = new ServerEx(null);
+				server.loadFromMemento(children[i], null);
+				IServerWorkingCopy wc = server.createWorkingCopy();
+				wc.save(false, null);
+			}
+		} catch (Exception e) {
+			Activator.log(e);
+		}
+	}
+
+	/**
+	 * @param jbpms
+	 */
+	private void loadJBPMInstalations(String jbpms) {
+		InputStream in = null;
+		try {
+			in = new ByteArrayInputStream(jbpms.getBytes("UTF-8"));
+			IMemento memento = XMLMemento.loadMemento(in);
+			IMemento[] children = memento.getChildren("installation");
+			for (int i = 0; i < children.length; i++) {
+				JbpmInstallation installation = new JbpmInstallation();
+				installation.name = children[i].getString("name");
+				installation.location = children[i].getString("location");
+				installation.version = children[i].getString("version");
+				PreferencesManager.getInstance().getJbpmInstallationMap()
+						.put(installation.name, installation);
+			}
+		} catch (Exception e) {
+			Activator.log(e);
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException e) {
+			}
+		}
+	}
+
 	private Button createButton(Composite parent, String labelText, String buttonText) {
 		GridLayout layout;
 		Composite composite = new Composite(parent,SWT.NONE);	
@@ -156,10 +281,10 @@ public class RuntimePreferencePage extends PreferencePage implements
 	}
 
 	private void createLink(Composite composite, String text, final String preferencesId) {
-		Link wtpRuntime = new Link(composite, SWT.NONE);
-		wtpRuntime.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		wtpRuntime.setText(text);
-		wtpRuntime.addSelectionListener(new SelectionAdapter() {
+		Link link = new Link(composite, SWT.NONE);
+		link.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+		link.setText(text);
+		link.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(getShell(),preferencesId, new String[] {preferencesId},null);
 				if (dialog != null) {
@@ -217,5 +342,20 @@ public class RuntimePreferencePage extends PreferencePage implements
 			((GridData)gd).horizontalAlignment = GridData.FILL;
 		}
 	}
+	
+	private static class ServerEx extends Server {
 
+		/**
+		 * @param file
+		 */
+		public ServerEx(IFile file) {
+			super(file);
+		}
+		
+		@Override
+		public void loadFromMemento(IMemento memento, IProgressMonitor monitor) {
+			super.loadFromMemento(memento, monitor);
+		}
+		
+	}
 }

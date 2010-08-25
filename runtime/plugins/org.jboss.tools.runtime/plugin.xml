@@ -22,7 +22,45 @@
            id="org.jboss.tools.runtime.preferences.RuntimePreferencePage"
            name="%JBoss_Runtimes"/>
    </extension>
-    
+   
+   <extension
+         point="org.eclipse.ui.preferenceTransfer">
+      <transfer
+            id="org.jboss.tools.runtime.jbossruntime"
+            icon="$nl$/icons/jboss.gif"
+            name="JBoss Runtimes">
+         <mapping
+               scope="instance">
+            <entry
+               node="org.drools.eclipse">
+               <key name="Drools.Runtimes"></key>
+            </entry>
+            <entry
+               node="org.eclipse.wst.server.core">
+               <key name="runtimes"></key>
+            </entry>
+            <entry
+               node="org.jboss.tools.seam.core">
+               <key name="org.jboss.tools.seam.core.runtime.list"></key>
+            </entry>
+            <entry
+               node="org.jboss.tools.jbpm.common">
+               <key name="jbpm-name"></key>
+            </entry>
+            <entry
+               node="org.jboss.tools.runtime">
+               <key name="servers"></key>
+               <key name="jbpms"></key>
+            </entry>
+            <entry
+               node="org.jboss.ide.eclipse.as.ui">
+            </entry>
+         </mapping>
+         <description>
+            	Export JBoss Runtimes
+		 </description>
+      </transfer>
+   </extension>
    <!--
    <extension
          point="org.eclipse.wst.server.core.runtimeLocators">

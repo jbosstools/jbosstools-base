@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.StringTokenizer;
 
 import org.drools.eclipse.util.DroolsRuntime;
 import org.drools.eclipse.util.DroolsRuntimeManager;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -26,6 +29,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.datatools.connectivity.ConnectionProfileConstants;
@@ -57,6 +61,7 @@ import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.jboss.ide.eclipse.as.core.util.JBossServerType;
 import org.jboss.ide.eclipse.as.core.util.ServerBeanLoader;
+import org.jboss.tools.jbpm.preferences.JbpmInstallation;
 import org.jboss.tools.jbpm.preferences.PreferencesManager;
 import org.jboss.tools.seam.core.SeamCorePlugin;
 import org.jboss.tools.seam.core.SeamUtil;
@@ -64,8 +69,14 @@ import org.jboss.tools.seam.core.project.facet.SeamRuntime;
 import org.jboss.tools.seam.core.project.facet.SeamRuntimeManager;
 import org.jboss.tools.seam.core.project.facet.SeamVersion;
 import org.osgi.framework.Bundle;
+import org.osgi.service.prefs.BackingStoreException;
 
 public class JBossRuntimeStartup implements IStartup {
+
+	/**
+	 * 
+	 */
+	private static final String DEFAULT_DS = "DefaultDS";
 
 	private static final String RUNTIME = Messages.JBossRuntimeStartup_Runtime;
 
@@ -78,6 +89,10 @@ public class JBossRuntimeStartup implements IStartup {
 	private static final String EPP = "EPP"; //$NON-NLS-1$
 	
 	private static final String EWP = "EWP"; //$NON-NLS-1$
+	
+	public static final String SEAM = "SEAM"; // NON-NLS-1$
+	
+	public static final String DROOLS = "DROOLS"; // NON-NLS-1$
 
 	public static final String JBOSS_EAP_HOME = "../../../../jboss-eap/jboss-as"; 	// JBoss AS home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
 	
@@ -102,10 +117,6 @@ public class JBossRuntimeStartup implements IStartup {
 	public static final String SEAM_2_0_HOME_CONFIGURATION_CP = "../../jboss-eap/seam2";  //$NON-NLS-1$
 	
 	public static final String[] SEAM_HOME_FOLDER_OPTIONS = {"seam","seam1","seam2","seamfp"};
-
-	
-	
-	private static final String JBPM_VERSION="jBPM3"; //$NON-NLS-1$
 	
 	// This constants are made to avoid dependency with org.jboss.ide.eclipse.as.core plugin
 	public static final String JBOSS_AS_RUNTIME_TYPE_ID[] = {
@@ -177,20 +188,77 @@ public class JBossRuntimeStartup implements IStartup {
 								= "org.eclipse.datatools.connectivity.db.URL"; //$NON-NLS-1$
 
 	private static final String HSQL_PROFILE_ID = "org.eclipse.datatools.enablement.hsqldb.connectionProfile";
+
+	public static final String JBPM = "JBPM";
 	
 	private List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
+
+	private IEclipsePreferences preferences;
 	
 	public void earlyStartup() {
 		if (!isJBDS()) {
 			return;
 		}
-		boolean firstStart = Activator.getDefault().getPreferenceStore().getBoolean(Activator.FIRST_START);
-		if (!firstStart) {
+		if (!willBeInitialized()) {
 			return;
 		}
-		Activator.getDefault().getPreferenceStore().setValue(Activator.FIRST_START, false);
 		parseServerFile();
 		initializeRuntimes(serverDefinitions);
+		saveWorkspacePreferences();
+	}
+
+	private void saveWorkspacePreferences() {
+		String workspaces = getWorkspaces();
+		String newWorkspaces = "";
+		if (workspaces == null || workspaces.trim().length() == 0) {
+			newWorkspaces = getWorkspace();
+		} else {
+			newWorkspaces = workspaces + "," + getWorkspace();
+		}
+		IEclipsePreferences prefs = getPreferences();
+		prefs.put(Activator.WORKSPACES, newWorkspaces);
+		try {
+			prefs.flush();
+		} catch (BackingStoreException e) {
+			Activator.log(e);
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	private boolean willBeInitialized() {
+		String workspaces = getWorkspaces();
+		if (workspaces == null || workspaces.trim().length() == 0) {
+			return true;
+		}
+		StringTokenizer tokenizer = new StringTokenizer(workspaces, ",");
+		while (tokenizer.hasMoreTokens()) {
+			String workspace = tokenizer.nextToken();
+			if (workspace.equals(getWorkspace())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private String getWorkspaces() {
+		IEclipsePreferences prefs = getPreferences();
+		String workspaces = prefs.get(Activator.WORKSPACES, "");
+		return workspaces;
+	}
+
+	private String getWorkspace() {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IPath workspacePath = root.getLocation();
+		return workspacePath.toOSString();
+	}
+
+	private IEclipsePreferences getPreferences() {
+		if (preferences == null) {
+			preferences = new ConfigurationScope().getNode(Activator.PLUGIN_ID);
+		}
+		return preferences;
 	}
 
 	private boolean isJBDS() {
@@ -236,11 +304,7 @@ public class JBossRuntimeStartup implements IStartup {
 	}
 
 	public void initializeSeam(List<ServerDefinition> serverDefinitions) {
-		IEclipsePreferences node = (IEclipsePreferences)
-		Platform.getPreferencesService()
-			.getRootNode()
-			.node(InstanceScope.SCOPE)
-			.node(SeamCorePlugin.PLUGIN_ID);
+		
 		Map<String, SeamRuntime> map = new HashMap<String,SeamRuntime>();
 
 		// to fix https://jira.jboss.org/jira/browse/JBDS-682
@@ -326,15 +390,31 @@ public class JBossRuntimeStartup implements IStartup {
 	}
 
 	private void addSeam(Map<String, SeamRuntime> map, String seamPath,SeamVersion seamVersion, String name) {
-		File seamFolder = new File(seamPath);
-		if(seamFolder.exists() && seamFolder.isDirectory()) {
-			SeamRuntime rt = new SeamRuntime();
-			rt.setHomeDir(seamPath);
-			rt.setName(name);
-			rt.setDefault(true);
-			rt.setVersion(seamVersion);
-			SeamRuntimeManager.getInstance().addRuntime(rt);
+		if (!seamExists(seamPath)) {
+			File seamFolder = new File(seamPath);
+			if(seamFolder.exists() && seamFolder.isDirectory()) {
+				SeamRuntime rt = new SeamRuntime();
+				rt.setHomeDir(seamPath);
+				rt.setName(name);
+				rt.setDefault(true);
+				rt.setVersion(seamVersion);
+				SeamRuntimeManager.getInstance().addRuntime(rt);
+			}
 		}
+	}
+
+	/**
+	 * @param seamPath
+	 * @return
+	 */
+	private boolean seamExists(String seamPath) {
+		SeamRuntime[] seamRuntimes = SeamRuntimeManager.getInstance().getRuntimes();
+		for (SeamRuntime sr:seamRuntimes) {
+			if (seamPath != null && seamPath.equals(sr.getHomeDir())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private String getSeamGenBuildPath(String seamHomePath,
@@ -409,7 +489,10 @@ public class JBossRuntimeStartup implements IStartup {
 				index = 6;
 			} else if ("5.0".equals(version)) { //$NON-NLS-1$
 				index = 7;
-			}
+			} else if ("5.1".equals(version)) { //$NON-NLS-1$
+				// FIXME - this needs to be changed when adding a new runtime type for JBoss EAP 5.1
+				index = 7;
+			} 
 		}
 		return index;
 	}
@@ -581,14 +664,20 @@ public class JBossRuntimeStartup implements IStartup {
 	 * @throws CoreException
 	 */
 	private static IServerWorkingCopy createServer(IProgressMonitor progressMonitor, IRuntime runtime, int index, String name) throws CoreException {
+		if (name == null) {
+			name = JBOSS_AS_NAME[index];
+		}
+		IServer[] servers = ServerCore.getServers();
+		for (IServer server:servers) {
+			if (name.equals(server.getName()) ) {
+				return null;
+			}
+		}
 		IServerType serverType = ServerCore.findServerType(JBOSS_AS_TYPE_ID[index]);
 		IServerWorkingCopy server = serverType.createServer(null, null, runtime, progressMonitor);
 
 		server.setHost(JBOSS_AS_HOST);
-		if(name != null)
-			server.setName(name);
-		else
-			server.setName(JBOSS_AS_NAME[index]);
+		server.setName(name);
 		
 		// JBossServer.DEPLOY_DIRECTORY
 		String deployVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("deploy").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -606,8 +695,6 @@ public class JBossRuntimeStartup implements IStartup {
 		return server;
 	}
 
-	private static boolean driverIsCreated = false;
-
 	/**
 	 * Creates HSQL DB Driver
 	 * @param jbossASLocation location of JBoss AS
@@ -616,7 +703,7 @@ public class JBossRuntimeStartup implements IStartup {
 	 * @return driver instance
 	 */
 	private static void createDriver(String jbossASLocation, int index) throws ConnectionProfileException {
-		if(driverIsCreated) {
+		if(ProfileManager.getInstance().getProfileByName(DEFAULT_DS) != null) {
 			// Don't create the driver a few times
 			return;
 		}
@@ -656,7 +743,7 @@ public class JBossRuntimeStartup implements IStartup {
 		}
 
 		driver = DriverManager.getInstance().getDriverInstanceByName(HSQL_DRIVER_NAME);
-		if (driver != null && ProfileManager.getInstance().getProfileByName("DefaultDS") == null) { //$NON-NLS-1$
+		if (driver != null && ProfileManager.getInstance().getProfileByName(DEFAULT_DS) == null) { //$NON-NLS-1$
 			// create profile
 			Properties props = new Properties();
 			props.setProperty(ConnectionProfileConstants.PROP_DRIVER_DEFINITION_ID, HSQL_DRIVER_DEFINITION_ID);
@@ -670,26 +757,30 @@ public class JBossRuntimeStartup implements IStartup {
 			props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID));
 			props.setProperty(IDBDriverDefinitionConstants.URL_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.URL_PROP_ID));
 
-			ProfileManager.getInstance().createProfile("DefaultDS",	Messages.JBossRuntimeStartup_The_JBoss_AS_Hypersonic_embedded_database, HSQL_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			ProfileManager.getInstance().createProfile(DEFAULT_DS,	Messages.JBossRuntimeStartup_The_JBoss_AS_Hypersonic_embedded_database, HSQL_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
-		if(driver!=null) {
-			driverIsCreated = true;
-		}
+		
 	}
 	
 	public void initializeDroolsRuntime(List<ServerDefinition> serverDefinitions) {
 		List<DroolsRuntime> droolsRuntimes = new ArrayList<DroolsRuntime>();
 		for (ServerDefinition serverDefinition : serverDefinitions) {
 			String type = serverDefinition.getType();
-			if (SOA_P.equals(type)) {
-				File droolsRoot = serverDefinition.getLocation(); //$NON-NLS-1$
-				if (droolsRoot.isDirectory()) {
-					DroolsRuntime runtime = new DroolsRuntime();
-			        runtime.setName("Drools - " + serverDefinition.getName()); //$NON-NLS-1$
-			        runtime.setPath(droolsRoot.getAbsolutePath());
-					DroolsRuntimeManager.recognizeJars(runtime);
-					runtime.setDefault(true);
-					droolsRuntimes.add(runtime);
+			if (!droolsExists(serverDefinition)) {
+				if (SOA_P.equals(type) || DROOLS.equals(type)) {
+					File droolsRoot = serverDefinition.getLocation(); //$NON-NLS-1$
+					if (droolsRoot.isDirectory()) {
+						DroolsRuntime runtime = new DroolsRuntime();
+						if (SOA_P.equals(type)) {
+							runtime.setName("Drools - " + serverDefinition.getName()); //$NON-NLS-1$
+						} else {
+							runtime.setName("Drools " + serverDefinition.getVersion()+ " - " + serverDefinition.getName()); //$NON-NLS-1$
+						}
+						runtime.setPath(droolsRoot.getAbsolutePath());
+						DroolsRuntimeManager.recognizeJars(runtime);
+						runtime.setDefault(true);
+						droolsRuntimes.add(runtime);
+					}
 				}
 			}
 		}
@@ -700,17 +791,56 @@ public class JBossRuntimeStartup implements IStartup {
 		
 	}
 
+	/**
+	 * @param serverDefinition
+	 * @return
+	 */
+	private boolean droolsExists(ServerDefinition serverDefinition) {
+		DroolsRuntime[] droolsRuntimes = DroolsRuntimeManager.getDroolsRuntimes();
+		for (DroolsRuntime dr:droolsRuntimes) {
+			String location = dr.getPath();
+			if (location != null && location.equals(serverDefinition.getLocation().getAbsolutePath())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void initializeJbpmRuntime(List<ServerDefinition> serverDefinitions) {
 		for (ServerDefinition serverDefinition : serverDefinitions) {
-			String type = serverDefinition.getType();
-			if (SOA_P.equals(type)) {
-				File jbpmRoot = new File(serverDefinition.getLocation(),"jbpm-jpdl"); //$NON-NLS-1$
-				if (jbpmRoot.isDirectory()) {
-					PreferencesManager.getInstance().initializeDefaultJbpmInstallation(serverDefinition.getName(), jbpmRoot.getAbsolutePath(), JBPM_VERSION);
+			if (!jbpmExists(serverDefinition)) {
+				String type = serverDefinition.getType();
+				if (SOA_P.equals(type)) {
+					File jbpmRoot = new File(serverDefinition.getLocation(),"jbpm-jpdl"); //$NON-NLS-1$
+					if (jbpmRoot.isDirectory()) {
+						String version = JBossRuntimeLocator.JBPM3;
+						if (JBossRuntimeLocator.isJbpm4(serverDefinition.getLocation().getAbsolutePath())) {
+							version = JBossRuntimeLocator.JBPM4;
+						}
+						PreferencesManager.getInstance().initializeDefaultJbpmInstallation(serverDefinition.getName(), jbpmRoot.getAbsolutePath(), version);
+					}
+				} else if (JBPM.equals(type)) {
+					PreferencesManager.getInstance().addJbpmInstallation(serverDefinition.getName(), serverDefinition.getLocation().getAbsolutePath(), serverDefinition.getVersion());
 				}
 			}
 		}
 		
+	}
+
+	/**
+	 * @param serverDefinition
+	 * @return
+	 */
+	private boolean jbpmExists(ServerDefinition serverDefinition) {
+		Map<String, JbpmInstallation> jbpmMap = PreferencesManager.getInstance().getJbpmInstallationMap();
+		Collection<JbpmInstallation> jbpmInstalations = jbpmMap.values();
+		for (JbpmInstallation jbpm:jbpmInstalations) {
+			String location = jbpm.location;
+			if (location != null && location.equals(serverDefinition.getLocation().getAbsolutePath())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
