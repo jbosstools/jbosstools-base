@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
@@ -16,7 +15,6 @@ import org.jboss.tools.ui.bot.ext.config.TestConfiguration;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
 import org.junit.Test;
-import org.junit.experimental.categories.Categories.CategoryFilter;
 import org.junit.experimental.categories.Categories.ExcludeCategory;
 import org.junit.experimental.categories.Categories.IncludeCategory;
 import org.junit.experimental.categories.Category;
@@ -131,7 +129,6 @@ public class RequirementAwareSuite extends Suite {
 		@Override
 		protected List<FrameworkMethod> computeTestMethods() {
 			List<FrameworkMethod> testMethods = getTestClass().getAnnotatedMethods(Test.class);
-			List<FrameworkMethod> filteredMethods = new Vector<FrameworkMethod>(); 
 			for (FrameworkMethod method : testMethods) {
 				method.getAnnotation(Category.class);
 			}
