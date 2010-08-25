@@ -17,13 +17,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-import org.jboss.tools.usage.GlobalUsageReportingEnablement;
+import org.jboss.tools.usage.GlobalUsageReportingSettings;
 import org.junit.Test;
 
 /**
  * The Class GlobalReportingEnablementTest.
  */
-public class GlobalUsageReportingEnablementTest {
+public class GlobalUsageReportingSettingsTest {
 
 	@Test
 	public void canExtractEnabledValue() throws IOException {
@@ -43,7 +43,7 @@ public class GlobalUsageReportingEnablementTest {
 		assertTrue(reportEnablement.isEnabled());
 	}
 
-	private class GlobalReportingEnablementFake extends GlobalUsageReportingEnablement {
+	private class GlobalReportingEnablementFake extends GlobalUsageReportingSettings {
 
 		private String enablementValue;
 
@@ -135,7 +135,7 @@ public class GlobalUsageReportingEnablementTest {
 	
 	@Test
 	public void isPageAccessible() throws IOException {
-		GlobalUsageReportingEnablement reportEnablement = new GlobalUsageReportingEnablement(JBossToolsUsageTestActivator.getDefault());
+		GlobalUsageReportingSettings reportEnablement = new GlobalUsageReportingSettings(JBossToolsUsageTestActivator.getDefault());
 		System.err.println("Usage reporting is globally \"" + reportEnablement.isEnabled() + "\"");
 	}
 }

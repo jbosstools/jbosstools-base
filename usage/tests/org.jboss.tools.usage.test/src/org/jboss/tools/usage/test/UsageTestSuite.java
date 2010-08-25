@@ -19,7 +19,7 @@ import org.junit.runners.Suite;
 		GoogleAnalyticsUrlStrategyTest.class,
 		JBossToolsUsageIntegrationTest.class,
 		EclipseEnvironmenTest.class,
-		GlobalUsageReportingEnablementTest.class})
+		GlobalUsageReportingSettingsTest.class})
 
 /**
  * @author Andre Dietisheim

@@ -14,7 +14,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
 
-import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.usage.FocusPoint;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
@@ -26,11 +25,6 @@ import org.junit.Test;
  */
 public class GoogleAnalyticsUrlStrategyTest {
 
-	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
-	private static final String HOSTNAME = "jboss.org";
-	private static final String REFERRAL = "0";
-	private static final String LOCALE_US = "en_US";
-
 //	private static final String COOKIE_DELIMITER = EncodingUtils.checkedEncodeUtf8(String
 //			.valueOf(IGoogleAnalyticsParameters.PLUS_SIGN));
 	
@@ -38,7 +32,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 
 	@Before
 	public void setUp() {
-		this.urlStrategy = new EclipseEnvironmentGAUrlStrategy();
+		this.urlStrategy = new GoogleAnalyticsUrlStrategy(new EclipseEnvironmentFake());
 	}
 
 	@Test
@@ -116,32 +110,5 @@ public class GoogleAnalyticsUrlStrategyTest {
 				}
 		}
 		return value;
-	}
-
-	private class EclipseEnvironmentGAUrlStrategy extends GoogleAnalyticsUrlStrategy {
-
-		private EclipseEnvironmentGAUrlStrategy() {
-			super(new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, Platform.OS_LINUX, LOCALE_US) {
-
-				@Override
-				public String getScreenColorDepth() {
-					return "24-bit";
-				}
-
-				@Override
-				public String getScreenResolution() {
-					return "1920x1080";
-				}
-
-				@Override
-				public String getBrowserLanguage() {
-					return "en_us";
-				}
-
-				@Override
-				public String getUserId() {
-					return String.valueOf(System.currentTimeMillis());
-				}});
-		}
 	}
 }

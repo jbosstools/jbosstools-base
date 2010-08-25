@@ -46,7 +46,7 @@ public class JBossToolsUsageIntegrationTest {
 	@Test
 	public void sameUserIdOnSametEclipseInstance() throws Exception {
 		UrlRevealingTracker tracker = getTracker(getEclipseEnvironmentInstance());
-		FocusPoint focusPoint = createFocusPoint("/testSameUserIdOnSametEclipseInstance" + System.currentTimeMillis());
+		FocusPoint focusPoint = createFocusPoint("testSameUserIdOnSametEclipseInstance" + System.currentTimeMillis());
 		tracker.trackSynchronously(focusPoint);
 		String userId = getUserId(tracker.getTrackingUrl());
 		assertTrue(userId != null);
@@ -67,7 +67,7 @@ public class JBossToolsUsageIntegrationTest {
 		assertTrue(userId != null);
 
 		tracker = getTracker(createEclipseEnvironment());
-		FocusPoint focusPoint = createFocusPoint("/testDifferentUserIdOnDifferentEclipseInstance"
+		FocusPoint focusPoint = createFocusPoint("testDifferentUserIdOnDifferentEclipseInstance"
 				+ System.currentTimeMillis());
 		tracker.trackSynchronously(focusPoint);
 		String newUserId = getUserId(tracker.getTrackingUrl());
@@ -133,6 +133,7 @@ public class JBossToolsUsageIntegrationTest {
 			try {
 				lock.lock();
 				super.trackAsynchronously(focusPoint);
+				lock.unlock();
 			} catch (Exception e) {
 				lock.unlock();
 				throw new RuntimeException(e);
@@ -141,9 +142,7 @@ public class JBossToolsUsageIntegrationTest {
 
 		@Override
 		protected String getTrackingUrl(FocusPoint focusPoint) throws UnsupportedEncodingException {
-			trackingUrl = super.getTrackingUrl(focusPoint);
-			lock.unlock();
-			return trackingUrl;
+			return trackingUrl = super.getTrackingUrl(focusPoint);
 		}
 
 		private String getTrackingUrl() {

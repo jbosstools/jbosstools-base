@@ -37,15 +37,9 @@ import org.osgi.framework.Version;
  */
 public class EclipseEnvironmenTest {
 
-	private static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
-	private static final String HOSTNAME = "jboss.org";
-	private static final String REFERRAL = "0";
-	private static final String LOCALE_US = "en_US";
-
 	@Test
 	public void testMacOs() {
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
-				Platform.OS_MACOSX, LOCALE_US);
+		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(Platform.OS_MACOSX);
 		String userAgent = eclipseEnvironment.getUserAgent();
 		assertApplicationNameAndVersion("com.jboss.jbds.product", "3.0.1", userAgent);
 		assertOs("Macintosh", "Intel Mac OS X 10.5", userAgent);
@@ -54,8 +48,7 @@ public class EclipseEnvironmenTest {
 
 	@Test
 	public void testLinux() {
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
-				Platform.OS_LINUX, LOCALE_US);
+		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(Platform.OS_LINUX);
 		String userAgent = eclipseEnvironment.getUserAgent();
 		assertApplicationNameAndVersion("com.jboss.jbds.product", "3.0.1", userAgent);
 		assertOs("X11", "Linux i686", userAgent);
@@ -64,8 +57,7 @@ public class EclipseEnvironmenTest {
 
 	@Test
 	public void testWindows() {
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
-				Platform.OS_WIN32, LOCALE_US);
+		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(Platform.OS_WIN32);
 		String userAgent = eclipseEnvironment.getUserAgent();
 		assertApplicationNameAndVersion("com.jboss.jbds.product", "3.0.1", userAgent);
 		assertOs("Windows", "Windows NT 6.1", userAgent);
@@ -74,8 +66,7 @@ public class EclipseEnvironmenTest {
 
 	@Test
 	public void testKeyword() {
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
-				Platform.OS_WIN32, LOCALE_US) {
+		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake() {
 			@Override
 			protected Bundle[] getBundles() {
 				return new Bundle[] {
@@ -96,7 +87,7 @@ public class EclipseEnvironmenTest {
 		assertTrue(keyword.indexOf(JBossBundleGroups.BundleGroup.SEAM.name()) >= 0);
 		assertTrue(keyword.indexOf(JBossBundleGroups.BundleGroup.SMOOKS.name()) >= 0);
 	}
-	
+
 	private void assertApplicationNameAndVersion(String applicationName, String applicationVersion, String userAgent) {
 		Matcher matcher = Pattern.compile("([a-zA-Z\\.]+)/([0-9\\.]+).+").matcher(userAgent);
 		assertTrue(matcher.matches());
@@ -119,7 +110,7 @@ public class EclipseEnvironmenTest {
 		assertEquals(1, matcher.groupCount());
 		assertEquals(language, matcher.group(1));
 	}
-	
+
 	private class BundleSymbolicNameFake implements Bundle {
 
 		private String symbolicName;
@@ -242,12 +233,11 @@ public class EclipseEnvironmenTest {
 			throw new UnsupportedOperationException();
 		}
 	}
-	
+
 	@Test
 	public void testVisitsOnFirstVisit() {
 		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
-				Platform.OS_LINUX, LOCALE_US, preferences);
+		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(preferences);
 		String firstVisit = eclipseEnvironment.getFirstVisit();
 		assertEquals(1, eclipseEnvironment.getVisitCount());
 		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
@@ -258,8 +248,7 @@ public class EclipseEnvironmenTest {
 	@Test
 	public void testVisitsOnSecondVisit() throws InterruptedException {
 		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
-				Platform.OS_LINUX, LOCALE_US, preferences);
+		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(preferences);
 		String firstVisit = eclipseEnvironment.getFirstVisit();
 		Thread.sleep(10);
 		eclipseEnvironment.visit();
@@ -273,8 +262,7 @@ public class EclipseEnvironmenTest {
 	@Test
 	public void testVisitsOnThirdVisit() throws InterruptedException {
 		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL,
-				Platform.OS_LINUX, LOCALE_US, preferences);
+		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(preferences);
 		String firstVisit = eclipseEnvironment.getFirstVisit();
 		Thread.sleep(10);
 		eclipseEnvironment.visit();

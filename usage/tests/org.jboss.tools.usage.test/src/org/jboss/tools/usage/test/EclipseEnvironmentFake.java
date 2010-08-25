@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.reporting.EclipseEnvironment;
 
@@ -18,15 +19,33 @@ import org.jboss.tools.usage.reporting.EclipseEnvironment;
  */
 public class EclipseEnvironmentFake extends EclipseEnvironment {
 
+	public static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
+	public static final String HOSTNAME = "jboss.org";
+	public static final String REFERRAL = "0";
+	public static final String LOCALE_US = "en_US";
+
 	private String locale;
 	private String os;
 
-	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale, IEclipsePreferences preferences) {
+	public EclipseEnvironmentFake() {
+		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, Platform.OS_LINUX, LOCALE_US);
+	}
+
+	public EclipseEnvironmentFake(String platform) {
+		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, platform, LOCALE_US);
+	}
+
+	public EclipseEnvironmentFake(IEclipsePreferences preferences) {
+		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, Platform.OS_LINUX, LOCALE_US, preferences);
+	}
+
+	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale,
+			IEclipsePreferences preferences) {
 		super(accountName, hostName, referral, preferences);
 		this.os = os;
 		this.locale = locale;
 	}
-	
+
 	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale) {
 		this(accountName, hostName, referral, os, locale, new EclipsePreferencesFake());
 	}
@@ -60,7 +79,7 @@ public class EclipseEnvironmentFake extends EclipseEnvironment {
 	protected String getOS() {
 		return os;
 	}
-	
+
 	@Override
 	protected String getApplicationVersion() {
 		return "3.0.1";
