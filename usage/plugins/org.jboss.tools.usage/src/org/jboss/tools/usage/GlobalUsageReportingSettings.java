@@ -28,7 +28,7 @@ import org.jboss.tools.usage.util.StatusUtils;
  * implementation queries a given url and extracts the enablement value out of
  * the response.
  */
-public class GlobalUsageReportingEnablement {
+public class GlobalUsageReportingSettings {
 
 	private static final String REPORTING_ENABLEMENT_ENABLEDVALUE = "ENABLED";
 
@@ -39,7 +39,7 @@ public class GlobalUsageReportingEnablement {
 	private Plugin plugin;
 	private HttpURLConnection urlConnection;
 
-	public GlobalUsageReportingEnablement(Plugin plugin) throws IOException {
+	public GlobalUsageReportingSettings(Plugin plugin) throws IOException {
 		Assert.isNotNull(plugin);
 
 		this.plugin = plugin;

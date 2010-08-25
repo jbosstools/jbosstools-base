@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -27,27 +28,27 @@ public class GlobalUsageReportingSettingsTest {
 
 	@Test
 	public void canExtractEnabledValue() throws IOException {
-		GlobalReportingEnablementFake reportEnablement = new GlobalReportingEnablementFake("ENABLED");
-		assertTrue(reportEnablement.isEnabled());
+		GlobalReportingSettingsFake reportSettings= new GlobalReportingSettingsFake("ENABLED");
+		assertTrue(reportSettings.isEnabled());
 	}
 
 	@Test
 	public void canExtractDisabledValue() throws IOException {
-		GlobalReportingEnablementFake reportEnablement = new GlobalReportingEnablementFake("DISABLED");
-		assertTrue(reportEnablement.isEnabled());
+		GlobalReportingSettingsFake reportSettings = new GlobalReportingSettingsFake("DISABLED");
+		assertFalse(reportSettings.isEnabled());
 	}
 
 	@Test
 	public void canExtractDisabledOutUndefinedValue() throws IOException {
-		GlobalReportingEnablementFake reportEnablement = new GlobalReportingEnablementFake("Rubbish");
-		assertTrue(reportEnablement.isEnabled());
+		GlobalReportingSettingsFake reportEnablement = new GlobalReportingSettingsFake("Rubbish");
+		assertFalse(reportEnablement.isEnabled());
 	}
 
-	private class GlobalReportingEnablementFake extends GlobalUsageReportingSettings {
+	private class GlobalReportingSettingsFake extends GlobalUsageReportingSettings {
 
 		private String enablementValue;
 
-		public GlobalReportingEnablementFake(String enablementValue) throws IOException {
+		public GlobalReportingSettingsFake(String enablementValue) throws IOException {
 			super(JBossToolsUsageTestActivator.getDefault());
 			this.enablementValue = enablementValue;
 		}
@@ -112,10 +113,9 @@ public class GlobalUsageReportingSettingsTest {
 				+ "	<div class=\"jive-content-body\"> "
 				+ " "
 				+ "<!-- [DocumentBodyStart:e26c60c0-cb73-47b7-bded-f4eb7320305b] --><div class=\"jive-rendered-content\"><p>This article is queried by the JBoss Tools / JBoss Developer Studio usage reporting plugin. It implements a global kill-switch that allows us to disable usage reporting stats. The plugin looks for a string of the format:</p><p style=\"min-height: 8pt; height: 8pt; padding: 0px;\">&#160;</p><p><strong>Usage&#160; Reporting&#160; is &lt;"
-
-				+ enablementValue
-
-				+ "&gt;</strong>. Any value that differs from ENABLED is interpreted as DISABLED.</p><p style=\"min-height: 8pt; height: 8pt; padding: 0px;\">&#160;</p><h1>Usage Reporting is ENABLED</h1></div><!-- [DocumentBodyEnd:e26c60c0-cb73-47b7-bded-f4eb7320305b] --> "
+				+ "ENABLED&gt;</strong>. Any value that differs from ENABLED is interpreted as DISABLED.</p><p style=\"min-height: 8pt; height: 8pt; padding: 0px;\">&#160;</p><h1>Usage Reporting is "
+				+ enablementValue 
+				+ "</h1></div><!-- [DocumentBodyEnd:e26c60c0-cb73-47b7-bded-f4eb7320305b] --> "
 				+ " "
 				+ "	</div> "
 				+ "    <div class=\"jive-content-footer\"> "
