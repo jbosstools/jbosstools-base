@@ -246,7 +246,7 @@ public class DropContext {
 			Object ooo = LocalSelectionTransfer.getTransfer().getSelection();
 			if(ooo instanceof StructuredSelection) {
 				ooo = ((StructuredSelection)ooo).getFirstElement();
-				InnerDragBuffer.object = ooo;
+				InnerDragBuffer.setInnerDragObject(ooo);
 			}
 			mimeData = ooo == null ? null : ooo.toString();
 		}

@@ -11,6 +11,15 @@
 package org.jboss.tools.common.model.ui.editors.dnd.context;
 
 public class InnerDragBuffer {
-	public static Object object = null;
+	
+	private static Object innerDragObject = null;
 
+	public static Object getInnerDragObject() {
+		return innerDragObject;
+	}
+
+	public static void setInnerDragObject(Object innerDragObject) {
+		InnerDragBuffer.innerDragObject = innerDragObject;
+	}
+	
 }
