@@ -78,6 +78,9 @@ public class IDELabel {
     public static final String NAVIGATION = "Navigation";
     public static final String MAXIMIZE_ACTIVE_VIEW_OR_EDITOR = "Maximize Active View or Editor";
     public static final String REFRESH = "Refresh";
+    public static final String CUT = "Cut";
+    public static final String COPY = "Copy";
+    public static final String PASTE = "Paste";
 	}
 
 	public class Button {
@@ -205,6 +208,7 @@ public class IDELabel {
 		public static final String GUVNOR_RESOURCE_HISTORY = "Guvnor Resource History";
 		public static final String PROPERTIES = "Properties";
 		public static final String JBOSS_TOOLS_PALETTE = "JBoss Tools Palette";
+		public static final String PALETTE = "Palette";
 	}
 	
 	public class ViewGroup {

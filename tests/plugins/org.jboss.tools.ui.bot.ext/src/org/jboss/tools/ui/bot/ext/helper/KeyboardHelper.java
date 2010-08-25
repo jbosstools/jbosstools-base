@@ -74,10 +74,21 @@ public class KeyboardHelper {
   /**
    * Simulate typing of key with keyCode via AWT
    * @param awtKeyCode
+   * @param modifiers keyboard modifiers such CTRL, ALT, SHIFT ...
    */
-  public static void typeKeyCodeUsingAWT (int awtKeyCode){
+  public static void typeKeyCodeUsingAWT (int awtKeyCode , int... modifiers){
+    if (modifiers != null){
+      for (int modifierCode : modifiers){
+        KeyboardHelper.pressKeyCodeUsingAWT(modifierCode);
+      }
+    }
     KeyboardHelper.pressKeyCodeUsingAWT(awtKeyCode);
     KeyboardHelper.releaseKeyCodeUsingAWT(awtKeyCode);
+    if (modifiers != null){
+      for (int modifierCode : modifiers){
+        KeyboardHelper.releaseKeyCodeUsingAWT(modifierCode);
+      }
+    }
   }
   /**
    * Simulate typing of basic string via AWT
