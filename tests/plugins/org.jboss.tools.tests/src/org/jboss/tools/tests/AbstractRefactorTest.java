@@ -9,10 +9,16 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.eclipse.ltk.core.refactoring.participants.MoveArguments;
+import org.eclipse.ltk.core.refactoring.participants.MoveParticipant;
+import org.eclipse.ltk.core.refactoring.participants.RefactoringProcessor;
+import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
+import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.jboss.tools.test.util.JobUtils;
@@ -27,6 +33,49 @@ public class AbstractRefactorTest extends TestCase{
 		JobUtils.waitForIdle(2000);
 
 		// Test before renaming
+		checkBeforeRefactoring(changeList);
+
+		// Rename
+		processor.checkInitialConditions(new NullProgressMonitor());
+		processor.checkFinalConditions(new NullProgressMonitor(), null);
+		CompositeChange rootChange = (CompositeChange)processor.createChange(new NullProgressMonitor());
+		
+		checkChanges(rootChange, changeList);
+	}
+	
+	protected void checkMove(RefactoringProcessor processor, IResource oldObject, IResource destinationObject, MoveParticipant participant, List<TestChangeStructure> changeList) throws CoreException {
+		JobUtils.waitForIdle(2000);
+
+		// Test before moving
+		checkBeforeRefactoring(changeList);
+
+		// Move
+		MoveArguments arguments = new MoveArguments(destinationObject, true);
+		participant.initialize(processor, oldObject, arguments);
+		participant.checkConditions(new NullProgressMonitor(), null);
+		
+		CompositeChange rootChange = (CompositeChange)participant.createChange(new NullProgressMonitor());
+		
+		checkChanges(rootChange, changeList);
+	}
+
+	protected void checkRename(RefactoringProcessor processor, IResource oldObject, String newName, RenameParticipant participant, List<TestChangeStructure> changeList) throws CoreException {
+		JobUtils.waitForIdle(2000);
+
+		// Test before renaming
+		checkBeforeRefactoring(changeList);
+
+		// Rename
+		RenameArguments arguments = new RenameArguments(newName, true);
+		participant.initialize(processor, oldObject, arguments);
+		participant.checkConditions(new NullProgressMonitor(), null);
+		
+		CompositeChange rootChange = (CompositeChange)participant.createChange(new NullProgressMonitor());
+		
+		checkChanges(rootChange, changeList);
+	}
+	
+	private void checkBeforeRefactoring(List<TestChangeStructure> changeList){
 		for(TestChangeStructure changeStructure : changeList){
 			IFile file = changeStructure.getProject().getFile(changeStructure.getFileName());
 			String content = null;
@@ -41,12 +90,10 @@ public class AbstractRefactorTest extends TestCase{
 				assertNotSame(change.getText(), content.substring(change.getOffset(), change.getOffset()+change.getLength()));
 			}
 		}
-
-		// Rename
-		processor.checkInitialConditions(new NullProgressMonitor());
-		processor.checkFinalConditions(new NullProgressMonitor(), null);
-		CompositeChange rootChange = (CompositeChange)processor.createChange(new NullProgressMonitor());
-		
+	}
+	
+	private void checkChanges(CompositeChange rootChange, List<TestChangeStructure> changeList) throws CoreException {
+		assertNotNull("Root change is null",rootChange);
 		assertEquals("There is unexpected number of changes",changeList.size(), rootChange.getChildren().length);
 
 		for(int i = 0; i < rootChange.getChildren().length;i++){
@@ -62,7 +109,6 @@ public class AbstractRefactorTest extends TestCase{
 
 		rootChange.perform(new NullProgressMonitor());
 		JobUtils.waitForIdle(2000);
-		
 
 		// Test results
 		for(TestChangeStructure changeStructure : changeList){
@@ -74,7 +120,6 @@ public class AbstractRefactorTest extends TestCase{
 			}
 		}
 	}
-
 	
 	protected TestChangeStructure findChange(List<TestChangeStructure> changeList, IFile file){
 		for(TestChangeStructure tcs : changeList){
