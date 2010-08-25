@@ -21,6 +21,8 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.usage.FocusPoint;
+import org.jboss.tools.usage.HttpGetRequest;
+import org.jboss.tools.usage.IHttpGetRequest;
 import org.jboss.tools.usage.ILoggingAdapter;
 import org.jboss.tools.usage.IURLBuildingStrategy;
 import org.jboss.tools.usage.PluginLogger;
@@ -44,7 +46,7 @@ public class JBossToolsUsageIntegrationTest {
 	@Test
 	public void sameUserIdOnSametEclipseInstance() throws Exception {
 		UrlRevealingTracker tracker = getTracker(getEclipseEnvironmentInstance());
-		FocusPoint focusPoint = createFocusPoint("testSameUserIdOnSametEclipseInstance" + System.currentTimeMillis());
+		FocusPoint focusPoint = createFocusPoint("/testSameUserIdOnSametEclipseInstance" + System.currentTimeMillis());
 		tracker.trackSynchronously(focusPoint);
 		String userId = getUserId(tracker.getTrackingUrl());
 		assertTrue(userId != null);
@@ -65,7 +67,7 @@ public class JBossToolsUsageIntegrationTest {
 		assertTrue(userId != null);
 
 		tracker = getTracker(createEclipseEnvironment());
-		FocusPoint focusPoint = createFocusPoint("testDifferentUserIdOnDifferentEclipseInstance"
+		FocusPoint focusPoint = createFocusPoint("/testDifferentUserIdOnDifferentEclipseInstance"
 				+ System.currentTimeMillis());
 		tracker.trackSynchronously(focusPoint);
 		String newUserId = getUserId(tracker.getTrackingUrl());
@@ -88,7 +90,8 @@ public class JBossToolsUsageIntegrationTest {
 	private UrlRevealingTracker getTracker(IGoogleAnalyticsParameters environment) {
 		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageTestActivator.getDefault());
 		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(environment);
-		return new UrlRevealingTracker(urlStrategy, environment.getUserAgent(), loggingAdapter);
+		IHttpGetRequest httpGetRequest = new HttpGetRequest(environment.getUserAgent(), loggingAdapter);
+		return new UrlRevealingTracker(urlStrategy, httpGetRequest, loggingAdapter);
 	}
 
 	private IGoogleAnalyticsParameters getEclipseEnvironmentInstance() {
@@ -119,16 +122,21 @@ public class JBossToolsUsageIntegrationTest {
 		private String trackingUrl;
 		private Lock lock;
 
-		public UrlRevealingTracker(IURLBuildingStrategy urlBuildingStrategy, String userAgent,
+		public UrlRevealingTracker(IURLBuildingStrategy urlBuildingStrategy, IHttpGetRequest httpGetRequest,
 				ILoggingAdapter loggingAdapter) {
-			super(urlBuildingStrategy, userAgent, loggingAdapter);
+			super(urlBuildingStrategy, httpGetRequest, loggingAdapter);
 			lock = new ReentrantLock();
 		}
 
 		@Override
 		public void trackAsynchronously(FocusPoint focusPoint) {
-			lock.lock();
-			super.trackAsynchronously(focusPoint);
+			try {
+				lock.lock();
+				super.trackAsynchronously(focusPoint);
+			} catch (Exception e) {
+				lock.unlock();
+				throw new RuntimeException(e);
+			}
 		}
 
 		@Override

@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-import org.jboss.tools.usage.HttpGetMethod;
+import org.jboss.tools.usage.HttpGetRequest;
 import org.jboss.tools.usage.ILoggingAdapter;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -802,7 +802,7 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
-	protected class TestHttpGetMethod extends HttpGetMethod {
+	protected class TestHttpGetMethod extends HttpGetRequest {
 
 		private HttpURLConnection urlConnection;
 

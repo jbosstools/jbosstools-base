@@ -24,11 +24,11 @@ import java.text.MessageFormat;
 public class Tracker implements ITracker {
 
 	private IURLBuildingStrategy urlBuildingStrategy = null;
-	private HttpGetMethod httpRequest;
+	private IHttpGetRequest httpRequest;
 	private ILoggingAdapter loggingAdapter;
 
-	public Tracker(IURLBuildingStrategy urlBuildingStrategy, String userAgent, ILoggingAdapter loggingAdapter) {
-		this.httpRequest = new HttpGetMethod(userAgent, loggingAdapter);
+	public Tracker(IURLBuildingStrategy urlBuildingStrategy, IHttpGetRequest httpGetRequest, ILoggingAdapter loggingAdapter) {
+		this.httpRequest = httpGetRequest;
 		this.loggingAdapter = loggingAdapter;
 		this.urlBuildingStrategy = urlBuildingStrategy;
 	}

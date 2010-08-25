@@ -21,7 +21,7 @@ import java.text.MessageFormat;
  * 
  * @author Andre Dietisheim
  */
-public class HttpGetMethod {
+public class HttpGetRequest implements IHttpGetRequest {
 	
 	private static final String USER_AGENT = "User-Agent"; //$NON-NLS-1$
 
@@ -33,7 +33,7 @@ public class HttpGetMethod {
 	
 	private String userAgent;
 
-	public HttpGetMethod(String userAgent, ILoggingAdapter loggingAdapter) {
+	public HttpGetRequest(String userAgent, ILoggingAdapter loggingAdapter) {
 		this.userAgent = userAgent;
 		this.loggingAdapter = loggingAdapter;
 //		this.cookieHandler = new CookieHandler();
@@ -41,6 +41,9 @@ public class HttpGetMethod {
 //		cookieHandler.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.jboss.tools.usage.IHttpGetRequest#request(java.lang.String)
+	 */
 	public void request(String urlString) {
 
 //		CookieHandler currentCookieHandler = setCookieHandler(cookieHandler);

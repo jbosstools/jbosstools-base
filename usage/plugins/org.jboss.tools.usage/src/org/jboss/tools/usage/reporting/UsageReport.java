@@ -14,6 +14,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.FocusPoint;
+import org.jboss.tools.usage.HttpGetRequest;
+import org.jboss.tools.usage.IHttpGetRequest;
 import org.jboss.tools.usage.ILoggingAdapter;
 import org.jboss.tools.usage.ITracker;
 import org.jboss.tools.usage.IURLBuildingStrategy;
@@ -76,13 +78,14 @@ public class UsageReport {
 	}
 
 	private ITracker getTracker() {
-		IGoogleAnalyticsParameters eclipseSettings = new EclipseEnvironment(
+		IGoogleAnalyticsParameters eclipseEnvironment = new EclipseEnvironment(
 				GANALYTICS_ACCOUNTNAME
 				, HOST_NAME
 				, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL
 				, PreferencesUtils.getPreferences());
 		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageActivator.getDefault());
-		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(eclipseSettings);
-		return new Tracker(urlStrategy, eclipseSettings.getUserAgent(), loggingAdapter);
+		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment);
+		IHttpGetRequest httpGetRequest = new HttpGetRequest(eclipseEnvironment.getUserAgent(), loggingAdapter);
+		return new Tracker(urlStrategy, httpGetRequest, loggingAdapter);
 	}
 }
