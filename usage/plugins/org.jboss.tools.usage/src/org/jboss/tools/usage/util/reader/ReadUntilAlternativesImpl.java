@@ -70,6 +70,7 @@ public class ReadUntilAlternativesImpl extends ReadUntilImpl {
 			}
 
 		}
+		this.alternativesIndex = -1;
 		return false;
 	}
 

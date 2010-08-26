@@ -29,21 +29,18 @@ import org.junit.Test;
  */
 public class GlobalUsageReportingSettingsTest {
 
-	@Ignore
 	@Test
 	public void canExtractEnabledValue() throws IOException {
 		GlobalReportingSettingsFake reportSettings = new GlobalReportingSettingsFake("ENABLED", "", "");
 		assertTrue(reportSettings.isEnabled());
 	}
 
-	@Ignore
 	@Test
 	public void canExtractDisabledValue() throws IOException {
 		GlobalReportingSettingsFake reportSettings = new GlobalReportingSettingsFake("DISABLED", "", "");
 		assertFalse(reportSettings.isEnabled());
 	}
 
-	@Ignore
 	@Test
 	public void canExtractDisabledOutUndefinedValue() throws IOException {
 		GlobalReportingSettingsFake reportEnablement = new GlobalReportingSettingsFake("Rubbish", "", "");
