@@ -66,5 +66,8 @@ public class SWTTestExt extends SWTBotTestCase{
 	public static int TIME_10S = Timing.time10S();
 	public static int TIME_20S = Timing.time20S();
 	
-
+  protected void setUp() throws Exception {
+    // close Report Usage Window
+    jbt.closeReportUsageWindowIfOpened(false);
+  }
 }
