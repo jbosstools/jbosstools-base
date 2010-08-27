@@ -105,12 +105,23 @@ public class UsageReport {
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
+			if (monitor.isCanceled()) {
+				return Status.CANCEL_STATUS;
+			}
 			if (globalSettings.isEnabled()) {
+				monitor.beginTask("querying whether reporting is globally enabled", 2);
+				if (monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
 				if (UsageReportPreferences.isAskUser()) {
 					askUserAndReport();
+					if (monitor.isCanceled()) {
+						return Status.CANCEL_STATUS;
+					}
 				} else {
 					doReport();
 				}
+				monitor.done();
 			}
 			return Status.OK_STATUS;
 		}
