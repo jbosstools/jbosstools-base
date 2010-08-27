@@ -108,11 +108,12 @@ public class UsageReport {
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
 			}
+			monitor.beginTask(ReportingMessages.UsageReport_Querying_Enablement, 2);
 			if (globalSettings.isEnabled()) {
-				monitor.beginTask(ReportingMessages.UsageReport_Querying_Enablement, 2);
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}
+				monitor.worked(1);
 				if (UsageReportPreferences.isAskUser()) {
 					askUserAndReport();
 					if (monitor.isCanceled()) {
@@ -121,6 +122,7 @@ public class UsageReport {
 				} else {
 					doReport();
 				}
+				monitor.worked(2);
 				monitor.done();
 			}
 			return Status.OK_STATUS;
