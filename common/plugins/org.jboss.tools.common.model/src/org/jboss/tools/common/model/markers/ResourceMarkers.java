@@ -79,7 +79,7 @@ public class ResourceMarkers {
 				int location = getLocation(i);
 				if(location < 0) location = getLocation(error);
 				String attr = getObjectAttributeForError(i);
-				IMarker marker = findMarker(path, message, attr, ms);
+				IMarker marker = findMarker(path, message, attr, dms);
 				if(marker != null) {
 					dms.remove(marker);
 					updateLocation(marker, location, getStart(i), getEnd(i));
@@ -114,16 +114,16 @@ public class ResourceMarkers {
 		}
 	}
 	
-	private IMarker findMarker(String path, String message, String attr, IMarker[] ms) {
-		if(ms == null) return null;
-		for (int i = 0; i < ms.length; i++) {
+	private IMarker findMarker(String path, String message, String attr, Set<IMarker> dms) {
+		if(dms == null) return null;
+		for (IMarker m: dms) {
 			try {
-				if(!message.equals(ms[i].getAttribute(IMarker.MESSAGE))) continue;
-				if(attr != null && !attr.equals(ms[i].getAttribute("attribute"))) continue; //$NON-NLS-1$
-				if(!path.equals(ms[i].getAttribute("path"))) { //$NON-NLS-1$
-					ms[i].setAttribute("path", path); //$NON-NLS-1$
+				if(!message.equals(m.getAttribute(IMarker.MESSAGE))) continue;
+				if(attr != null && !attr.equals(m.getAttribute("attribute"))) continue; //$NON-NLS-1$
+				if(!path.equals(m.getAttribute("path"))) { //$NON-NLS-1$
+					m.setAttribute("path", path); //$NON-NLS-1$
 				}
-				return ms[i];
+				return m;
 			} catch (CoreException e) {
 				//ignore
 				continue;
@@ -203,7 +203,7 @@ public class ResourceMarkers {
 		if(_type.startsWith("org.jboss.tools.")) { //$NON-NLS-1$
 			return _type.equals(type);
 		}
-		return m.isSubtypeOf(IMarker.TEXT) || m.isSubtypeOf(IMarker.PROBLEM);
+		return false;
 	}
 	
 	protected String[] getErrors() {
