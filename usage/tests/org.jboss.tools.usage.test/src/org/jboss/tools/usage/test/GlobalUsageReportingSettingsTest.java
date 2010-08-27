@@ -18,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 
 import org.jboss.tools.usage.preferences.GlobalUsageReportingSettings;
 import org.junit.Test;
@@ -73,7 +74,7 @@ public class GlobalUsageReportingSettingsTest {
 		}
 
 		@Override
-		protected InputStreamReader request(String url) throws UnsupportedEncodingException {
+		protected InputStreamReader request(HttpURLConnection urlConnection) throws UnsupportedEncodingException  {
 			return new InputStreamReader(new ByteArrayInputStream(getEnablementPageContent(enablementValue,
 					stringValue, integerValue).getBytes()), "UTF-8");
 		}

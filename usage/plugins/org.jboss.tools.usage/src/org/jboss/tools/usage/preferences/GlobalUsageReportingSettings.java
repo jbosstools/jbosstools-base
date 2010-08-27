@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.usage.preferences;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Plugin;
@@ -36,7 +35,7 @@ public class GlobalUsageReportingSettings extends HttpResourceMap {
 	/* the delimiter that delimits the value */
 	private static final char VALUE_DELIMITER = '<';
 
-	public GlobalUsageReportingSettings(Plugin plugin) throws IOException {
+	public GlobalUsageReportingSettings(Plugin plugin) {
 		super(REPORTING_ENABLEMENT_URL
 				, VALUE_DELIMITER
 				, plugin
@@ -45,7 +44,6 @@ public class GlobalUsageReportingSettings extends HttpResourceMap {
 				, INTEGER_VALUE_KEY);
 
 		this.plugin = plugin;
-		this.urlConnection = createURLConnection(REPORTING_ENABLEMENT_URL);
 	}
 
 	public boolean isEnabled() {

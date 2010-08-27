@@ -2,6 +2,7 @@ package org.jboss.tools.usage;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -20,7 +21,6 @@ public abstract class HttpResourceMap {
 	static final String GET_METHOD_NAME = "GET"; //$NON-NLS-1$
 
 	protected Plugin plugin;
-	protected HttpURLConnection urlConnection;
 	private Map<String, String> valuesMap;
 
 	private String[] keys;
@@ -38,7 +38,9 @@ public abstract class HttpResourceMap {
 
 	protected Map<String, String> getValueMap() throws IOException {
 		if (valuesMap == null) {
-			this.valuesMap = parse(keys, valueDelimiter, request(url), new HashMap<String, String>());
+			HttpURLConnection urlConnection = createURLConnection(url);
+			InputStreamReader reader = request(urlConnection);
+			this.valuesMap = parse(keys, valueDelimiter, reader, new HashMap<String, String>());
 		}
 		return valuesMap;
 	}
@@ -55,7 +57,7 @@ public abstract class HttpResourceMap {
 	 * 
 	 * @see HttpURLConnection
 	 */
-	protected InputStreamReader request(String url) throws IOException {
+	protected InputStreamReader request(HttpURLConnection urlConnection) throws IOException {
 		InputStreamReader responseReader = null;
 		try {
 			urlConnection.connect();
@@ -66,7 +68,7 @@ public abstract class HttpResourceMap {
 						, UsageMessages.KillSwitchPreference_Info_HttpQuery
 						, url);
 				plugin.getLog().log(status);
-				responseReader = getInputStreamReader(urlConnection.getContentType());
+				responseReader = getInputStreamReader(urlConnection.getInputStream(), urlConnection.getContentType());
 			} else {
 				IStatus status = StatusUtils.getErrorStatus(
 						plugin.getBundle().getSymbolicName()
@@ -83,13 +85,13 @@ public abstract class HttpResourceMap {
 		}
 	}
 
-	private InputStreamReader getInputStreamReader(String contentType) throws UnsupportedEncodingException, IOException {
+	private InputStreamReader getInputStreamReader(InputStream inputStream, String contentType) throws UnsupportedEncodingException, IOException {
 		String contentTypeCharset = HttpEncodingUtils.getContentTypeCharset(contentType);
 		if (contentTypeCharset != null && contentTypeCharset.length() > 0) {
-			return new InputStreamReader(new BufferedInputStream(urlConnection.getInputStream()),
+			return new InputStreamReader(new BufferedInputStream(inputStream),
 					contentTypeCharset);
 		} else {
-			return new InputStreamReader(new BufferedInputStream(urlConnection.getInputStream()));
+			return new InputStreamReader(new BufferedInputStream(inputStream));
 		}
 	}
 
@@ -118,6 +120,7 @@ public abstract class HttpResourceMap {
 	 * @param urlString
 	 *            the url string
 	 * @return the http url connection
+	 * @throws IOException 
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
