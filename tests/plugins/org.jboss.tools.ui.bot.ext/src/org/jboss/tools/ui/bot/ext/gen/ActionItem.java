@@ -4698,6 +4698,10 @@ public static String getItemString(IActionItem item) {
 			* text field labeled 'Name*'
 			*/
 			public static final String TEXT_FILE_NAME = "File name:";
+			/**
+			* text field labeled 'Enter or select the parent folder:'
+			*/
+			public static final String TEXT_ENTER_OR_SELECT_THE_PARENT_FOLDER = "Enter or select the parent folder:";
 			}
 		public static class JBossToolsWebHTMLFile {
 			/**
