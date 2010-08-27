@@ -18,8 +18,8 @@ import java.io.Reader;
  */
 public class ReadUntilAlternativesImpl extends ReadUntilImpl {
 
-	private char[][] alternativesCharSequences;
-	private char[] alternativeCharacter;
+	private char[][] allAlternatives;
+	private char[] currentAlternative;
 	private int alternativesIndex = -1;
 
 	public ReadUntilAlternativesImpl(Reader reader, String... stringAlternatives) {
@@ -28,24 +28,16 @@ public class ReadUntilAlternativesImpl extends ReadUntilImpl {
 	}
 
 	private void initAlternativesCharSequences(String... stringAlternatives) {
-		this.alternativesCharSequences = new char[stringAlternatives.length][];
+		this.allAlternatives = new char[stringAlternatives.length][];
 		for (int i = 0; i < stringAlternatives.length; i++) {
-			this.alternativesCharSequences[i] = stringAlternatives[i].toCharArray();
+			this.allAlternatives[i] = stringAlternatives[i].toCharArray();
 		}
-	}
-
-	protected boolean doContinueRead(char character, int numberOfCharactersRead) throws IOException {
-		boolean continueRead = super.doContinueRead(character, numberOfCharactersRead);
-		if (!isMatching()) {
-			setMatchingIndex(0);
-		}
-		return continueRead;
 	}
 
 	@Override
 	protected int getNumberOfCharactersToMatch() {
-		if (alternativeCharacter != null) {
-			return alternativeCharacter.length;
+		if (currentAlternative != null) {
+			return currentAlternative.length;
 		} else {
 			return 0;
 		}
@@ -53,44 +45,71 @@ public class ReadUntilAlternativesImpl extends ReadUntilImpl {
 
 	@Override
 	protected boolean doesMatch(char character) {
-		if (alternativeCharacter == null || alternativeCharacter[getMatchingIndex()] != character) {
-			return matchAlternative(character);
+		if (currentAlternative == null || currentAlternative[getMatchingIndex()] != character) {
+			// current alternative does not match new character, select a new
+			// alternative
+			boolean newAlternativeSelected = matchAlternative(character);
+			if (!newAlternativeSelected) {
+				// no alternative matches current character + new one
+				setMatchingIndex(0);
+			}
+			return newAlternativeSelected;
 		} else {
 			return true;
 		}
 	}
 
+	/**
+	 * Returns whether the given character matches an alternative (in other
+	 * words the given character matches an alternative at the current matching
+	 * index).
+	 * 
+	 * @param character
+	 *            the character
+	 * @return true, if successful
+	 */
 	private boolean matchAlternative(char character) {
-		for (int i = alternativesIndex + 1; i < alternativesCharSequences.length; i++) {
-			char[] alternative = alternativesCharSequences[i];
+		for (int i = alternativesIndex + 1; i < allAlternatives.length; i++) {
+			char[] alternative = allAlternatives[i];
 			if (doesMatch(character, alternative)) {
-				this.alternativeCharacter = alternative;
+				this.currentAlternative = alternative;
 				this.alternativesIndex = i;
 				return true;
 			}
 
 		}
+		this.currentAlternative = null;
 		this.alternativesIndex = -1;
 		return false;
 	}
 
-	private boolean doesMatch(char character, char[] alternative) {
-		for (int j = 0; j <= getMatchingIndex(); j++) {
-			if (alternative[j] != character) {
+	/**
+	 * Returns whether the given potentially matching alternative (String)
+	 * matches the currently selected alternative and the additional character.
+	 * 
+	 * @param character
+	 * @param potentiallyMatchingAlternative
+	 *            the new alternative that could match
+	 * @return
+	 */
+	private boolean doesMatch(char character, char[] potentiallyMatchingAlternative) {
+		int currentMatchingIndex = getMatchingIndex();
+		for (int j = 0; j < currentMatchingIndex; j++) {
+			if (potentiallyMatchingAlternative[j] != currentAlternative[j]) {
 				return false;
 			}
 		}
-		return true;
+		return potentiallyMatchingAlternative[currentMatchingIndex] == character;
 	}
 
 	@Override
 	protected char[] getCharactersToMatch() {
-		return alternativeCharacter;
+		return currentAlternative;
 	}
 
 	public String getAlternative() {
 		if (alternativesIndex >= 0) {
-			return new String(alternativesCharSequences[alternativesIndex]);
+			return new String(allAlternatives[alternativesIndex]);
 		} else {
 			return null;
 		}

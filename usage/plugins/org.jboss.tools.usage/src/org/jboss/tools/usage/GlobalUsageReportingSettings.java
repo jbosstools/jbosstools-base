@@ -25,9 +25,9 @@ public class GlobalUsageReportingSettings extends HttpResourceMap {
 
 	private static final String REPORTING_ENABLEMENT_URL = "http://community.jboss.org/wiki/JBossToolsJBossDeveloperStudioUsageReportingEnablement"; //$NON-NLS-1$
 
-	private static final String KEY_REPORT_ENABLEMENT = "Usage Reporting is ";
-	private static final String KEY_DUMMY_VALUE = "Dummy Value is ";
-	private static final String KEY_INTEGER_VALUE = "Integer Value is ";
+	public static final String KEY_REPORT_ENABLEMENT = "Usage Reporting is ";
+	public static final String KEY_DUMMY_VALUE = "Dummy Value is ";
+	public static final String KEY_INTEGER_VALUE = "Integer Value is ";
 
 	private static final char VALUE_DELIMITER = '<';
 

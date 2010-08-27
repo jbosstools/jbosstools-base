@@ -53,7 +53,7 @@ public class ReadUntilImpl implements ReaderVisitor {
 		setMatches(matches);
 		return continueRead;
 	}
-
+	
 	public boolean isMatching() {
 		return matched;
 	}
