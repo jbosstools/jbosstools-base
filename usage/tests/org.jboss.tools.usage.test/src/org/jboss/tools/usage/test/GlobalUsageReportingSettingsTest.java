@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-import org.jboss.tools.usage.GlobalUsageReportingSettings;
+import org.jboss.tools.usage.preferences.GlobalUsageReportingSettings;
 import org.junit.Test;
 
 /**

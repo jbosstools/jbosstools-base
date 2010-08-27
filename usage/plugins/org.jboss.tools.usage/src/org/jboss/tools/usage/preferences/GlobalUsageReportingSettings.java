@@ -8,13 +8,14 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage;
+package org.jboss.tools.usage.preferences;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Plugin;
+import org.jboss.tools.usage.HttpResourceMap;
 
 /**
  * A class that implements a global reporting enablement setting. The current
