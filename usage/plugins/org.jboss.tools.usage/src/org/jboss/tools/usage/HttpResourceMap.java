@@ -36,7 +36,7 @@ public abstract class HttpResourceMap {
 		this.plugin = plugin;
 	}
 
-	protected Map<String, String> getValueMap() throws UnsupportedEncodingException, IOException {
+	protected Map<String, String> getValueMap() throws IOException {
 		if (valuesMap == null) {
 			this.valuesMap = parse(keys, valueDelimiter, request(url), new HashMap<String, String>());
 		}
@@ -55,7 +55,7 @@ public abstract class HttpResourceMap {
 	 * 
 	 * @see HttpURLConnection
 	 */
-	protected InputStreamReader request(String url) throws UnsupportedEncodingException {
+	protected InputStreamReader request(String url) throws IOException {
 		InputStreamReader responseReader = null;
 		try {
 			urlConnection.connect();
@@ -73,13 +73,14 @@ public abstract class HttpResourceMap {
 						, UsageMessages.KillSwitchPreference_Error_Http, null, url);
 				plugin.getLog().log(status);
 			}
-		} catch (Exception e) {
+			return responseReader;
+		} catch (IOException e) {
 			IStatus status = StatusUtils.getErrorStatus(
 					plugin.getBundle().getSymbolicName()
 					, UsageMessages.KillSwitchPreference_Error_Http, e, url);
 			plugin.getLog().log(status);
+			throw e;
 		}
-		return responseReader;
 	}
 
 	private InputStreamReader getInputStreamReader(String contentType) throws UnsupportedEncodingException, IOException {
