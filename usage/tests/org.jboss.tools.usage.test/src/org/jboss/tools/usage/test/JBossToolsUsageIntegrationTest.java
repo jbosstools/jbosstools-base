@@ -61,19 +61,31 @@ public class JBossToolsUsageIntegrationTest {
 
 	@Test
 	public void differentUserIdOnDifferentEclipseInstance() throws Exception {
+		String focusPointName = "testDifferentUserIdOnDifferentEclipseInstance"
+			+ System.currentTimeMillis();
 		UrlRevealingTracker tracker = getTracker(createEclipseEnvironment());
-		tracker.trackSynchronously(createFocusPoint(""));
+		tracker.trackSynchronously(createFocusPoint(focusPointName));
 		String userId = getUserId(tracker.getTrackingUrl());
 		assertTrue(userId != null);
 
 		tracker = getTracker(createEclipseEnvironment());
-		FocusPoint focusPoint = createFocusPoint("testDifferentUserIdOnDifferentEclipseInstance"
-				+ System.currentTimeMillis());
+		FocusPoint focusPoint = createFocusPoint(focusPointName);
 		tracker.trackSynchronously(focusPoint);
 		String newUserId = getUserId(tracker.getTrackingUrl());
 
 		assertTrue(newUserId != null);
 		assertTrue(!userId.equals(newUserId));
+	}
+
+	@Test
+	public void visitCountIncreases() throws Exception {
+		IGoogleAnalyticsParameters eclipseEnvironment = createEclipseEnvironment();
+		assertEquals(1, eclipseEnvironment.getVisitCount());
+		UrlRevealingTracker tracker = getTracker(eclipseEnvironment);
+		tracker.trackSynchronously(createFocusPoint("testVisitCount"));
+		assertEquals(2, eclipseEnvironment.getVisitCount());
+		tracker.trackSynchronously(createFocusPoint("testVisitCount"));
+		assertEquals(3, eclipseEnvironment.getVisitCount());
 	}
 
 	private String getUserId(String trackingUrl) {

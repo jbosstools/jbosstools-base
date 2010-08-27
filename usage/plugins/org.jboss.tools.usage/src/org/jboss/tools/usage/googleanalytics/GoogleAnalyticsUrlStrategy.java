@@ -158,9 +158,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 								.append("999.")
 								.append(googleParameters.getFirstVisit())
 								.append(IGoogleAnalyticsParameters.DOT)
-								.append("1.1.")
-								, IGoogleAnalyticsParameters.SEMICOLON
-								, IGoogleAnalyticsParameters.PLUS_SIGN)
+								.append("1.1."))
 				.appendTo(builder);
 
 //		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_SESSION,

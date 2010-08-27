@@ -801,6 +801,70 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	/**
+	 * this test should create a request from the same eclipse instance later in
+	 * time (visit count increased, visit timestamps updated, userId identical)
+	 */
+	@Test
+	public void testUrl_debug_utma() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?"
+				+ "utmwv=4.7.2"
+				+ "&utmn=15176694"
+				+ "&utmhn=jboss.org"
+				+ "&utmcs=UTF-8"
+				+ "&utmsr=1920x1080"
+				+ "&utmsc=24-bit"
+				+ "&utmul=en-us"
+				+ "&utmdt=tools-usage-testUrl_utmaCookies_utmb_utmc_1"
+				+ "&utmhid=1087431432"
+				+ "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_utmb_utmc_1"
+				+ "&utmac=UA-17645367-1"
+				+ "&utmcc="
+				+ "__utma%3D999.5737734690471263281282924103927.1282924103925.1282924103925.1282924103925.1%3B%2B"
+				+ "__utmb%3D1%3B%2B"
+				+ "__utmc%3D1%3B%2B"
+				+ "__utmz%3D156030500.1281430767.1.1."
+					+ "utmcsr%3D(direct)%7C"
+					+ "utmccn%3D(direct)%7C"
+					+ "utmcmd%3D(none)%7C"
+					+ "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+				+ "&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testUrl_utma_utmz() throws IOException {
+		String userAgent = "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+		TestHttpGetMethod method = new TestHttpGetMethod(userAgent, loggingAdapter);
+		String url = "http://www.google-analytics.com/__utm.gif?"
+				+ "utmwv=4.7.2"
+				+ "&utmn=15176694"
+				+ "&utmhn=jboss.org"
+				+ "&utmcs=UTF-8"
+				+ "&utmsr=1920x1080"
+				+ "&utmsc=24-bit"
+				+ "&utmul=en-us"
+				+ "&utmdt=tools-usage-testUrl_utmaCookies_utmb_utmc_1"
+				+ "&utmhid=1087431432"
+				+ "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_utmb_utmc_1"
+				+ "&utmac=UA-17645367-1"
+				+ "&utmcc="
+				+ "__utma%3D999.5737734690471263281282924103927.1282924103925.1282924103925.1282924103925.1%3B%2B"
+				+ "__utmb%3D1%3B%2B"
+				+ "__utmc%3D1%3B%2B"
+				+ "__utmz%3D999.1282924103925.1.1."
+					+ "utmcsr%3D(direct)%7C"
+					+ "utmccn%3D(direct)%7C"
+					+ "utmcmd%3D(none)%7C"
+					+ "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+				+ "&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+	
 	protected class TestHttpGetMethod extends HttpGetRequest {
 
 		private HttpURLConnection urlConnection;
