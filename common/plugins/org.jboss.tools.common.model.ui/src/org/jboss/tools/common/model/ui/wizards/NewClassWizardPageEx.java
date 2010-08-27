@@ -18,7 +18,7 @@ import org.eclipse.jdt.ui.wizards.NewClassWizardPage;
  */
 public class NewClassWizardPageEx extends NewClassWizardPage {
 	
-	private NewTypeWizardAdapter adapter = null;
+	protected NewTypeWizardAdapter adapter = null;
 	
 	public NewClassWizardPageEx() {
 		super();
