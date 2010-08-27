@@ -100,7 +100,7 @@ public class UsageReport {
 
 	private class ReportingJob extends Job {
 		private ReportingJob() {
-			super("Reporting eclipse usage");
+			super(ReportingMessages.UsageReport_Reporting_Usage);
 		}
 
 		@Override
@@ -109,7 +109,7 @@ public class UsageReport {
 				return Status.CANCEL_STATUS;
 			}
 			if (globalSettings.isEnabled()) {
-				monitor.beginTask("querying whether reporting is globally enabled", 2);
+				monitor.beginTask(ReportingMessages.UsageReport_Querying_Enablement, 2);
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}
@@ -162,7 +162,7 @@ public class UsageReport {
 
 	private class AskUserJob extends UIJob {
 		private AskUserJob() {
-			super("Asking User to allow reporting");
+			super(ReportingMessages.UsageReport_Asking_User);
 		}
 
 		@Override

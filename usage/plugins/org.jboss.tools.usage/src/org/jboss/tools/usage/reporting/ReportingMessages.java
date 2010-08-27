@@ -16,6 +16,9 @@ public class ReportingMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.usage.reporting.messages"; //$NON-NLS-1$
 	public static String EclipseEnvironment_Error_SavePreferences;
 
+	public static String UsageReport_Reporting_Usage;
+	public static String UsageReport_Querying_Enablement;
+	public static String UsageReport_Asking_User;
 	public static String UsageReport_Checkbox_Text;
 	public static String UsageReport_DialogMessage;
 	public static String UsageReport_DialogTitle;
