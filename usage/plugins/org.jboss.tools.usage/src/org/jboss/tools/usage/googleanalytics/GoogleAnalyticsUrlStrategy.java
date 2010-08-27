@@ -163,19 +163,19 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 								, IGoogleAnalyticsParameters.PLUS_SIGN)
 				.appendTo(builder);
 
-		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_SESSION,
-				new StringBuilder()
-						.append("1"),
-						IGoogleAnalyticsParameters.SEMICOLON
-						, IGoogleAnalyticsParameters.PLUS_SIGN)
-				.appendTo(builder);
-
-		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_BROWSERSESSION,
-				new StringBuilder()
-						.append("1"),
-						IGoogleAnalyticsParameters.SEMICOLON
-						, IGoogleAnalyticsParameters.PLUS_SIGN)
-				.appendTo(builder);
+//		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_SESSION,
+//				new StringBuilder()
+//						.append("1"),
+//						IGoogleAnalyticsParameters.SEMICOLON
+//						, IGoogleAnalyticsParameters.PLUS_SIGN)
+//				.appendTo(builder);
+//
+//		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_BROWSERSESSION,
+//				new StringBuilder()
+//						.append("1"),
+//						IGoogleAnalyticsParameters.SEMICOLON
+//						, IGoogleAnalyticsParameters.PLUS_SIGN)
+//				.appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCSR,
 						"(direct)",

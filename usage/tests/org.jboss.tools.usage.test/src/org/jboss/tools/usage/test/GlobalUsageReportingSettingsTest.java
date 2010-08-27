@@ -20,7 +20,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 import org.jboss.tools.usage.GlobalUsageReportingSettings;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -200,7 +199,6 @@ public class GlobalUsageReportingSettingsTest {
 		 + "</html> ";
 	}
 
-	@Ignore
 	@Test
 	public void isPageAccessible() throws IOException {
 		GlobalUsageReportingSettings reportEnablement = new GlobalUsageReportingSettings(JBossToolsUsageTestActivator
