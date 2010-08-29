@@ -41,10 +41,10 @@ public class AbstractResourceMarkerTest extends TestCase {
 		super(name);
 	}
 
-	public static int findMarkerLine(IResource resource, String type, String pattern)
+	public static int findMarkerLine(IResource resource, String type, String errorMessage, boolean pattern)
 			throws CoreException {
 		int number = -1;
-		List<Integer> lines = findMarkerLines(resource, type, pattern);
+		List<Integer> lines = findMarkerLines(resource, type, errorMessage, pattern);
 		if(!lines.isEmpty()) {
 			number = lines.get(0);
 		}
@@ -53,8 +53,13 @@ public class AbstractResourceMarkerTest extends TestCase {
 
 	public static List<Integer> findMarkerLines(IResource resource, String type,
 			String pattern) throws CoreException {
+		return findMarkerLines(resource, type, pattern, true);
+	}
+
+	public static List<Integer> findMarkerLines(IResource resource, String type,
+			String errorMessage, boolean pattern) throws CoreException {
 		List<Integer> numbers = new ArrayList<Integer>();
-		IMarker[] markers = findMarkers(resource, type, pattern);
+		IMarker[] markers = findMarkers(resource, type, errorMessage, pattern);
 		for (int i = 0; i < markers.length; i++) {
 			numbers.add(markers[i].getAttribute(IMarker.LINE_NUMBER, -1));
 		}
@@ -63,11 +68,15 @@ public class AbstractResourceMarkerTest extends TestCase {
 	}
 
 	public static IMarker[] findMarkers(IResource resource, String type, String pattern) throws CoreException {
+		return findMarkers(resource, type, pattern, true);
+	}
+
+	public static IMarker[] findMarkers(IResource resource, String type, String errorMessage, boolean pattern) throws CoreException {
 		List<IMarker> result = new ArrayList<IMarker>();
 		IMarker[] markers = resource.findMarkers(type, true, IResource.DEPTH_INFINITE);
 		for (int i = 0; i < markers.length; i++) {
 			String message = markers[i].getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
-			if ((message.matches(pattern)||message.equals(pattern)) && markers[i].exists()) {
+			if (pattern?message.matches(errorMessage)||message.equals(errorMessage):message.equals(errorMessage) && markers[i].exists()) {
 				result.add(markers[i]);
 			}
 		}
@@ -75,19 +84,23 @@ public class AbstractResourceMarkerTest extends TestCase {
 	}
 
 	public static void assertMarkerIsCreated(IResource resource, MarkerData markerData) throws CoreException {
-		assertMarkerIsCreated(resource, markerData.type, markerData.pattern, markerData.line);
+		assertMarkerIsCreated(resource, markerData.type, markerData.pattern, true, markerData.line);
 	}
 
-	public static void assertMarkerIsCreated(IResource resource, String type, String pattern, int... expectedLines) 
+	public static void assertMarkerIsCreated(IResource resource, String type, String pattern, int... expectedLines) throws CoreException {
+		assertMarkerIsCreated(resource, type, pattern, true, expectedLines);
+	}
+
+	public static void assertMarkerIsCreated(IResource resource, String type, String errorMessage, boolean pattern, int... expectedLines) 
 		throws CoreException {
 
 		List<Integer> lines = findMarkerLines(
-				resource, type, pattern);
+				resource, type, errorMessage, pattern);
 
-		assertFalse("Marker  matches the '" + pattern + "' pattern wasn't found",  //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse("Marker  matches the '" + errorMessage + "' pattern wasn't found",  //$NON-NLS-1$ //$NON-NLS-2$
 				lines.isEmpty());
 
-		assertEquals("Wrong number of found marker matches the '" + pattern + "' pattern",  //$NON-NLS-1$//$NON-NLS-2$
+		assertEquals("Wrong number of found marker matches the '" + errorMessage + "' pattern",  //$NON-NLS-1$//$NON-NLS-2$
 				expectedLines.length, lines.size());
 
 		StringBuffer expectedString = new StringBuffer();
@@ -114,7 +127,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 					break;
 				}
 			}
-			assertTrue("Marker matches the '" + pattern + "' pattern was found at wrong lines. Expected: " + expectedString + " but were: " + realString,  //$NON-NLS-1$//$NON-NLS-2$
+			assertTrue("Marker matches the '" + errorMessage + "' pattern was found at wrong lines. Expected: " + expectedString + " but were: " + realString,  //$NON-NLS-1$//$NON-NLS-2$
 					found);
 		}
 	}
@@ -123,7 +136,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 			IResource resource, String type, String pattern, int lineNumber,
 			int startPosition, int endPosition) throws CoreException {
 
-		IMarker[] markers = findMarkers(resource, type, pattern);
+		IMarker[] markers = findMarkers(resource, type, pattern, true);
 		StringBuffer sb = new StringBuffer("[");
 		for (int i = 0; i < markers.length; i++) {
 			int line = markers[i].getAttribute(IMarker.LINE_NUMBER, -1);
@@ -149,7 +162,11 @@ public class AbstractResourceMarkerTest extends TestCase {
 	}
 
 	public static void assertMarkerIsNotCreated(IResource resource, String type, String pattern, int expectedLine) throws CoreException {
-		List<Integer> lines = findMarkerLines(resource, type, pattern);
+		assertMarkerIsNotCreated(resource, type, pattern, true, expectedLine);
+	}
+
+	public static void assertMarkerIsNotCreated(IResource resource, String type, String errorMessage, boolean pattern, int expectedLine) throws CoreException {
+		List<Integer> lines = findMarkerLines(resource, type, errorMessage, pattern);
 
 		assertFalse("Marker  matches the '" + pattern + "' pattern was found", lines.contains(expectedLine)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
