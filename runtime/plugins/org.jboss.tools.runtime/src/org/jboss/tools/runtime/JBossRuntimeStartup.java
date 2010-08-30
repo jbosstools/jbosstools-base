@@ -93,6 +93,8 @@ public class JBossRuntimeStartup implements IStartup {
 	public static final String SEAM = "SEAM"; // NON-NLS-1$
 	
 	public static final String DROOLS = "DROOLS"; // NON-NLS-1$
+	
+	private static final String AS = "AS"; //$NON-NLS-1$
 
 	public static final String JBOSS_EAP_HOME = "../../../../jboss-eap/jboss-as"; 	// JBoss AS home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
 	
@@ -312,11 +314,14 @@ public class JBossRuntimeStartup implements IStartup {
 		// then process seam runtimes from bundled servers
 		for(ServerDefinition serverDefinition:serverDefinitions) {
 			String type = serverDefinition.getType();
-			if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type)) {
+			if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type) ) {
 				for (String folder : SEAM_HOME_FOLDER_OPTIONS) {
 					File seamFile = new File(serverDefinition.getLocation(),folder); //$NON-NLS-1$
 					addSeam(map, serverDefinition, seamFile);
 				} 
+			}
+			if (SEAM.equals(type)) {
+				addSeam(map, serverDefinition, serverDefinition.getLocation());
 			}
 		}
 
@@ -459,7 +464,7 @@ public class JBossRuntimeStartup implements IStartup {
 					int index = getJBossASVersion(asLocation);
 					createJBossServer(asLocation,index,name, runtimeName);
 				}
-			} else {
+			} else if (AS.equals(type)){
 				String version = serverDefinition.getVersion();
 				int index = 2;
 				if ("3.2".equals(version)) { //$NON-NLS-1$

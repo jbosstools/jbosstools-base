@@ -82,6 +82,7 @@ public class JBossRuntimeLocator extends RuntimeLocatorDelegate {
 							droolsFound = true;
 						}
 					}
+					boolean jbpmFound = false;
 					if (!droolsFound) {
 						boolean isJBPM = isValidJbpmInstallation(root.getAbsolutePath());
 						if (isJBPM) {
@@ -92,10 +93,14 @@ public class JBossRuntimeLocator extends RuntimeLocatorDelegate {
 								version = JBPM4;
 							}
 							serverDefinitions.add(new ServerDefinition(root.getName(), version, JBossRuntimeStartup.JBPM, root.getAbsoluteFile()));
+							jbpmFound = true;
 						}
 					}
+					if (!droolsFound && !jbpmFound) {
+						children = root.listFiles();
+					}
 				}
-				children = root.listFiles();
+				
 			}
 		} else {
 			children = File.listRoots();
