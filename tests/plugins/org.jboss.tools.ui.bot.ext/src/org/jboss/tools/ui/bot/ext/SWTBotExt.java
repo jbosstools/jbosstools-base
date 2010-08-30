@@ -22,6 +22,7 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCCombo;
@@ -168,6 +169,16 @@ public class SWTBotExt extends SWTWorkbenchBot {
 	public SWTBotSection section(String label) {
 		try {
 		List<Section> sections = (List<Section>)widgets(allOf(withText(label),widgetOfType(Section.class)));
+		return new SWTBotSection(sections.get(0));
+		} catch (WidgetNotFoundException ex) {
+			throw new WidgetNotFoundException(
+					"Could not find widget of type Section", ex);
+		}
+	}
+	@SuppressWarnings("unchecked")
+	public SWTBotSection section(SWTBot bot, String label) {
+		try {
+		List<Section> sections = (List<Section>)bot.widgets(allOf(withText(label),widgetOfType(Section.class)));
 		return new SWTBotSection(sections.get(0));
 		} catch (WidgetNotFoundException ex) {
 			throw new WidgetNotFoundException(

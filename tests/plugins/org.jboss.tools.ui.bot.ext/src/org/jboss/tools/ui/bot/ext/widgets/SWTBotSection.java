@@ -1,5 +1,6 @@
 package org.jboss.tools.ui.bot.ext.widgets;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.ui.forms.widgets.Section;
@@ -12,8 +13,13 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class SWTBotSection extends AbstractSWTBotControl<Section> {
 
+	private final SWTBot bot;
 	public SWTBotSection(Section w) throws WidgetNotFoundException {
-		super(w);		
+		super(w);
+		bot = new SWTBot(w);
+	}
+	public SWTBot bot() {
+		return bot;
 	}
 
 }
