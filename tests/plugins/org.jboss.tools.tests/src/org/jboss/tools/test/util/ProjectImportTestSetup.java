@@ -15,7 +15,6 @@ import junit.framework.Test;
 
 import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -62,16 +61,15 @@ public class ProjectImportTestSetup extends TestSetup {
 	}	
 
 	public static IProject loadProject(String projectName) throws CoreException {
-		IResource project = ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		assertNotNull("Can't load " + projectName, project); //$NON-NLS-1$
-		IProject result = project.getProject();
 		try {
-			result.build(IncrementalProjectBuilder.FULL_BUILD, null);
+			project.build(IncrementalProjectBuilder.FULL_BUILD, null);
 		} catch (ResourceException e) {
 			JUnitUtils.fail(e.getMessage(), e);
 		}
 		JobUtils.waitForIdle();
-		return result;
+		return project;
 	}
 
 	@Override

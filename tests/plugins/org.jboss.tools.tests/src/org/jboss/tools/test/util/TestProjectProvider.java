@@ -17,15 +17,10 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -55,10 +50,13 @@ public class TestProjectProvider {
 	 */
 	public TestProjectProvider(String bundleName, String projectPath, String name, boolean makeCopy) throws CoreException {
 		try {
-			if( null == projectPath ) {
-				project = ResourcesUtils.importProject(bundleName, "projects" + Path.SEPARATOR + name, null);
-			} else {
-				project = ResourcesUtils.importProject(bundleName, projectPath, name, null);
+			project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+			if(project==null || !project.isAccessible()) {
+				if( null == projectPath ) {
+					project = ResourcesUtils.importProject(bundleName, "projects" + Path.SEPARATOR + name, null);
+				} else {
+					project = ResourcesUtils.importProject(bundleName, projectPath, name, null);
+				}
 			}
 		} catch (IOException e) {
 			throw new CoreException(new Status(Status.ERROR,bundleName,e.getMessage(),e));
