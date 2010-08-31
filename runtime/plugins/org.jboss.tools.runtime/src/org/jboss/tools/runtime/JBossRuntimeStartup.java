@@ -210,19 +210,32 @@ public class JBossRuntimeStartup implements IStartup {
 	}
 
 	private void saveWorkspacePreferences() {
+		Activator.getDefault().getPreferenceStore().setValue(Activator.FIRST_START, false);
 		String workspaces = getWorkspaces();
 		String newWorkspaces = "";
+		boolean addWorkspace = true;
 		if (workspaces == null || workspaces.trim().length() == 0) {
 			newWorkspaces = getWorkspace();
 		} else {
-			newWorkspaces = workspaces + "," + getWorkspace();
+			StringTokenizer tokenizer = new StringTokenizer(workspaces, ",");
+			while (tokenizer.hasMoreTokens()) {
+				String workspace = tokenizer.nextToken();
+				if (workspace.equals(getWorkspace())) {
+					addWorkspace = false;
+				}
+			}
+			if (addWorkspace) {
+				newWorkspaces = workspaces + "," + getWorkspace();
+			}
 		}
-		IEclipsePreferences prefs = getPreferences();
-		prefs.put(Activator.WORKSPACES, newWorkspaces);
-		try {
-			prefs.flush();
-		} catch (BackingStoreException e) {
-			Activator.log(e);
+		if (addWorkspace) {
+			IEclipsePreferences prefs = getPreferences();
+			prefs.put(Activator.WORKSPACES, newWorkspaces);
+			try {
+				prefs.flush();
+			} catch (BackingStoreException e) {
+				Activator.log(e);
+			}
 		}
 	}
 
@@ -230,6 +243,11 @@ public class JBossRuntimeStartup implements IStartup {
 	 * @return
 	 */
 	private boolean willBeInitialized() {
+		boolean firstStart = Activator.getDefault().getPreferenceStore().getBoolean(Activator.FIRST_START);
+		if (firstStart) {
+			return true;
+		}
+	
 		String workspaces = getWorkspaces();
 		if (workspaces == null || workspaces.trim().length() == 0) {
 			return true;
