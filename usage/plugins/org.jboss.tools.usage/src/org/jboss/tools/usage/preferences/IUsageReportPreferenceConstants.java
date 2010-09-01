@@ -22,13 +22,13 @@ public interface IUsageReportPreferenceConstants {
 	 * The identifier to be used to identify the value that determines if usage
 	 * shall be reported.
 	 */
-	public static final String USAGEREPORT_ENABLED_ID = "allowUsageReportPreference"; //$NON-NLS-1$
+	public static final String USAGEREPORT_ENABLED_ID = "allow_usage_report_preference"; //$NON-NLS-1$
 
 	/**
 	 * The identifier to be used for the value that determines if the user shall
 	 * be asked for reporting.
 	 */
-	public static final String ASK_USER_USAGEREPORT_ID = "askUserForUsageReportPreference"; //$NON-NLS-1$
+	public static final String ASK_USER_USAGEREPORT_ID = "ask_user_for_usage_report_preference"; //$NON-NLS-1$
 
 	/**
 	 * The identifier to be used for the value that determines this eclipse
