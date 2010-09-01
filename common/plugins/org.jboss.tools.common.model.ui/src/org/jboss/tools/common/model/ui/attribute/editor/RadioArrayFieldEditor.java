@@ -83,7 +83,7 @@ public class RadioArrayFieldEditor extends ExtendedFieldEditor implements IField
 
 	public Control[] getControls(Composite parent) {
 	    Control label = null;
-	    if (makeGroup()) {
+	    if (makeGroup() || hideLabel()) {
 		label = new Label(parent,SWT.NONE);
 	    } else {
 		label = getLabelComposite(parent);
@@ -122,7 +122,9 @@ public class RadioArrayFieldEditor extends ExtendedFieldEditor implements IField
 			}
 			/// change!
 			int k = getTags().length;
-			if(k != 3 || makeGroup) k = 1;
+			if(!isHorizontalLayout()) {
+				if(k != 3 || makeGroup) k = 1;
+			}
 			GridLayout layout = new GridLayout(k, false);
 			panel.setLayout(layout);
 //			panel.setFont(font);
@@ -152,6 +154,24 @@ public class RadioArrayFieldEditor extends ExtendedFieldEditor implements IField
 		if(input instanceof DefaultValueAdapter) {
 			DefaultValueAdapter adapter = (DefaultValueAdapter)input;
 			return "true".equals(adapter.getAttribute().getProperty("border")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		return false;
+	}
+
+	boolean hideLabel() {
+		Object input = propertyEditor.getInput();
+		if(input instanceof DefaultValueAdapter) {
+			DefaultValueAdapter adapter = (DefaultValueAdapter)input;
+			return "false".equals(adapter.getAttribute().getProperty("label")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		return false;
+	}
+
+	boolean isHorizontalLayout() {
+		Object input = propertyEditor.getInput();
+		if(input instanceof DefaultValueAdapter) {
+			DefaultValueAdapter adapter = (DefaultValueAdapter)input;
+			return "true".equals(adapter.getAttribute().getProperty("horizontal")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return false;
 	}
