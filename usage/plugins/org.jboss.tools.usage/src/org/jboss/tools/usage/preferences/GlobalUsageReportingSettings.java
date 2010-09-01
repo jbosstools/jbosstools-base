@@ -24,7 +24,7 @@ public class GlobalUsageReportingSettings extends HttpResourceMap {
 
 	private static final String REPORTING_ENABLEMENT_URL = "http://anonsvn.jboss.org/repos/jbosstools/workspace/usage/usage.properties"; //$NON-NLS-1$
 
-	public static final String REPORT_ENABLEMENT_KEY = "usageReportingEnabled "; //$NON-NLS-1$
+	public static final String REPORT_ENABLEMENT_KEY = "usage_reporting_enabled="; //$NON-NLS-1$
 	private static final boolean REPORT_ENABLEMENT_DEFAULT = false;
 
 	/* the delimiter that delimits the value */
