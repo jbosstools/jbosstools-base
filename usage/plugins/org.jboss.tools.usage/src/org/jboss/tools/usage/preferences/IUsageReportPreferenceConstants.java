@@ -34,11 +34,11 @@ public interface IUsageReportPreferenceConstants {
 	 * The identifier to be used for the value that determines this eclipse
 	 * instance.
 	 */
-	public static final String ECLIPSE_INSTANCE_ID = "eclipseInstanceId"; //$NON-NLS-1$
+	public static final String ECLIPSE_INSTANCE_ID = "eclipse_instance_id"; //$NON-NLS-1$
 	
-	public static final String FIRST_VISIT = "firstVisit";
+	public static final String FIRST_VISIT = "first_visit";
 
-	public static final String LAST_VISIT = "lastVisit";
+	public static final String LAST_VISIT = "last_visit";
 
-	public static final String VISIT_COUNT = "visitCount";
+	public static final String VISIT_COUNT = "visit_count";
 }
