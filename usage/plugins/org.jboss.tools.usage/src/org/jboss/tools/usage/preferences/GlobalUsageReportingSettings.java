@@ -22,26 +22,19 @@ import org.jboss.tools.usage.HttpResourceMap;
  */
 public class GlobalUsageReportingSettings extends HttpResourceMap {
 
-	private static final String REPORT_ENABLEMENT_ENABLEDVALUE = "ENABLED"; //$NON-NLS-1$
+	private static final String REPORTING_ENABLEMENT_URL = "http://anonsvn.jboss.org/repos/jbosstools/workspace/usage/usage.properties"; //$NON-NLS-1$
 
-	private static final String REPORTING_ENABLEMENT_URL = "http://community.jboss.org/wiki/JBossToolsJBossDeveloperStudioUsageReportingEnablement"; //$NON-NLS-1$
-
-	public static final String REPORT_ENABLEMENT_KEY = "Usage Reporting is "; //$NON-NLS-1$
-	private static final boolean REPORT_ENABLEMENT_DEFAULT = true;
-
-	public static final String DUMMY_VALUE_KEY = "Dummy Value is "; //$NON-NLS-1$
-	public static final String INTEGER_VALUE_KEY = "Integer Value is "; //$NON-NLS-1$
+	public static final String REPORT_ENABLEMENT_KEY = "usageReportingEnabled "; //$NON-NLS-1$
+	private static final boolean REPORT_ENABLEMENT_DEFAULT = false;
 
 	/* the delimiter that delimits the value */
-	private static final char VALUE_DELIMITER = '<';
+	private static final char VALUE_DELIMITER = '=';
 
 	public GlobalUsageReportingSettings(Plugin plugin) {
 		super(REPORTING_ENABLEMENT_URL
 				, VALUE_DELIMITER
 				, plugin
-				, REPORT_ENABLEMENT_KEY
-				, DUMMY_VALUE_KEY
-				, INTEGER_VALUE_KEY);
+				, REPORT_ENABLEMENT_KEY);
 
 		this.plugin = plugin;
 	}
@@ -50,31 +43,9 @@ public class GlobalUsageReportingSettings extends HttpResourceMap {
 		try {
 			Map<String, String> valueMap = getValueMap();
 			String isEnabled = valueMap.get(REPORT_ENABLEMENT_KEY);
-			return isEnabled != null && REPORT_ENABLEMENT_ENABLEDVALUE.equals(isEnabled.toUpperCase());
+			return Boolean.valueOf(isEnabled);
 		} catch (Exception e) {
 			return REPORT_ENABLEMENT_DEFAULT;
 		}
-	}
-
-	public String getStringValue() {
-		try {
-			Map<String, String> valueMap = getValueMap();
-			return valueMap.get(DUMMY_VALUE_KEY);
-		} catch (Exception e) {
-			return "";
-		}
-	}
-
-	public Integer getIntegerValue() {
-		Integer returnValue = null;
-		try {
-			Map<String, String> valueMap = getValueMap();
-			String integerValue = valueMap.get(INTEGER_VALUE_KEY);
-			if (integerValue != null) {
-				returnValue = Integer.parseInt(integerValue);
-			}
-		} catch (Exception e) {
-		}
-		return returnValue;
 	}
 }
