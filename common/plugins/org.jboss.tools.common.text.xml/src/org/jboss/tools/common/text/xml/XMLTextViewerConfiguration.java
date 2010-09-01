@@ -35,7 +35,10 @@ import org.jboss.tools.common.text.xml.contentassist.ProposalSorter;
  */
 @SuppressWarnings("restriction")
 public class XMLTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
-	
+	private static final char[] PROPOSAL_AUTO_ACTIVATION_CHARS = new char[] {
+		'<', '=', '"', '\'', '.', '{'
+	};
+
 	SourceViewerConfiguration initial = null;
 
 	public XMLTextViewerConfiguration() {
@@ -62,6 +65,20 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 						return ProposalSorter.filterAndSortProposals(proposals, monitor, context);
 					}
 
+					@Override
+					public char[] getCompletionProposalAutoActivationCharacters() {
+						char[] superAutoActivationCharacters = super.getCompletionProposalAutoActivationCharacters();
+						if (superAutoActivationCharacters == null)
+							return PROPOSAL_AUTO_ACTIVATION_CHARS;
+						
+						String chars = new String(superAutoActivationCharacters);
+						for (char ch : PROPOSAL_AUTO_ACTIVATION_CHARS) {
+							if (chars.indexOf(ch) == -1) {
+								chars += ch;
+							}
+						}
+						return chars.toCharArray();
+					}
 		};
 		
 		List<IContentAssistProcessor> processors = new ArrayList<IContentAssistProcessor>();
