@@ -28,7 +28,7 @@ public class GlobalUsageReportingSettings extends HttpResourceMap {
 	private static final boolean REPORT_ENABLEMENT_DEFAULT = false;
 
 	/* the delimiter that delimits the value */
-	private static final char VALUE_DELIMITER = '=';
+	private static final char VALUE_DELIMITER = '\n';
 
 	public GlobalUsageReportingSettings(Plugin plugin) {
 		super(REPORTING_ENABLEMENT_URL
