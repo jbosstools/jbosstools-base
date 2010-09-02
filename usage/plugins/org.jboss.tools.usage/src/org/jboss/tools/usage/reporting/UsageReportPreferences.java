@@ -31,17 +31,10 @@ public class UsageReportPreferences {
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE);
 	}
 
-	public static void flush() throws BackingStoreException {
-		PreferencesUtils.getPreferences().flush();
-	}
-
-	public static IPreferenceStore createPreferenceStore() {
-		return PreferencesUtils.getStore();
-	}
-
 	public static boolean isAskUser() {
-		IEclipsePreferences preferences = PreferencesUtils.getPreferences();
-		return preferences.getBoolean(IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID, true);
+		return PreferencesUtils.getPreferences().getBoolean(
+				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID, 
+				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_DEFAULTVALUE);
 	}
 
 	public static void setAskUser(boolean askUser) {
@@ -55,5 +48,13 @@ public class UsageReportPreferences {
 							ReportingMessages.UsageReport_Error_SavePreferences, e,
 							IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID));
 		}
+	}
+
+	public static void flush() throws BackingStoreException {
+		PreferencesUtils.getPreferences().flush();
+	}
+
+	public static IPreferenceStore createPreferenceStore() {
+		return PreferencesUtils.getStore();
 	}
 }
