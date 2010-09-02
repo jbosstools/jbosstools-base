@@ -15,37 +15,34 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
+import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.util.BrowserUtil;
 
 /**
  * @author Andre Dietisheim
  */
 public class UsageReportEnablementDialog extends Dialog {
 
+	protected static final String USAGE_URL = "http://jboss.org/tools/usage"; // $NON
 	private Button checkBox;
-	private String title;
-	private String message;
 	private boolean reportEnabled;
-	private String checkBoxLabel;
 
-	public UsageReportEnablementDialog(String title, String message, String checkBoxLabel,
-			boolean reportEnabled, IShellProvider parentShell) {
+	public UsageReportEnablementDialog(boolean reportEnabled, IShellProvider parentShell) {
 		super(parentShell);
-		this.title = title;
-		this.message = message;
-		this.checkBoxLabel = checkBoxLabel;
 		this.reportEnabled = reportEnabled;
 	}
 
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == IDialogConstants.OK_ID) {
 			this.reportEnabled = checkBox.getSelection();
-		}
-		else if (buttonId == IDialogConstants.CANCEL_ID) {
+		} else if (buttonId == IDialogConstants.CANCEL_ID) {
 			this.reportEnabled = false;
 		}
 		super.buttonPressed(buttonId);
@@ -53,9 +50,7 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		if (title != null) {
-			shell.setText(title);
-		}
+		shell.setText(ReportingMessages.UsageReport_DialogTitle);
 	}
 
 	protected void createButtonsForButtonBar(Composite parent) {
@@ -67,19 +62,30 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
-		if (message != null) {
-			Label label = new Label(composite, SWT.WRAP);
-			label.setFont(parent.getFont());
-			label.setText(message);
-			GridDataFactory.fillDefaults()
-				.align(SWT.FILL, SWT.CENTER).grab(true, false)
-				.hint(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH, SWT.DEFAULT)
-				.applyTo(label);
-		}
+
+		// message
+		Link link = new Link(composite, SWT.WRAP);
+		link.setFont(parent.getFont());
+		link.setText(ReportingMessages.UsageReport_DialogMessage);
+		link.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				BrowserUtil.checkedCreateExternalBrowser(USAGE_URL, JBossToolsUsageActivator.PLUGIN_ID, JBossToolsUsageActivator.getDefault().getLog());
+			}
+		});
+		GridDataFactory.fillDefaults()
+					.align(SWT.FILL, SWT.CENTER)
+					.grab(true, false)
+					.hint(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH, SWT.DEFAULT)
+					.applyTo(link);
+
+		// checkbox
 		checkBox = new Button(composite, SWT.CHECK);
-		checkBox.setText(checkBoxLabel);
+		checkBox.setText(ReportingMessages.UsageReport_Checkbox_Text);
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.LEFT, SWT.CENTER).applyTo(checkBox);
+
 		applyDialogFont(composite);
+
 		return composite;
 	}
 

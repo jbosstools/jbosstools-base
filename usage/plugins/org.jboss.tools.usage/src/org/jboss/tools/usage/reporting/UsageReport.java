@@ -58,9 +58,6 @@ public class UsageReport {
 
 	private void askUser() {
 		UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(
-				ReportingMessages.UsageReport_DialogTitle,
-				ReportingMessages.UsageReport_DialogMessage,
-				ReportingMessages.UsageReport_Checkbox_Text,
 				true,
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 		if (dialog.open() == Window.OK) {
@@ -115,11 +112,14 @@ public class UsageReport {
 				}
 				monitor.worked(1);
 				if (UsageReportPreferences.isAskUser()) {
-					askUserAndReport();
 					if (monitor.isCanceled()) {
 						return Status.CANCEL_STATUS;
 					}
+					askUserAndReport();
 				} else {
+					if (monitor.isCanceled()) {
+						return Status.CANCEL_STATUS;
+					}
 					doReport();
 				}
 				monitor.worked(2);

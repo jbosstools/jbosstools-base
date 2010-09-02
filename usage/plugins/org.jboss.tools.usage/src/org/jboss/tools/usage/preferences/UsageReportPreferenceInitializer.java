@@ -21,6 +21,10 @@ public class UsageReportPreferenceInitializer extends
 
 	public void initializeDefaultPreferences() {
 		PreferencesUtils.getStore().setDefault(
+				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID,
+				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_DEFAULTVALUE);
+
+		PreferencesUtils.getStore().setDefault(
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID,
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE);
 	}
