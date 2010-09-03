@@ -57,6 +57,7 @@ import org.jboss.tools.common.util.FileUtil;
 import org.jboss.tools.common.xml.XMLUtilities;
 
 public class XModelObjectLoaderUtil {
+	public static String ENT_ANY_ELEMENT = "AnyElement"; //$NON-NLS-1$
 	public static String ATTR_ID_NAME = "_id_"; //$NON-NLS-1$
     private Hashtable<String,String> singular = null;
     private boolean saveentity = true;
@@ -90,7 +91,7 @@ public class XModelObjectLoaderUtil {
     }
 
     public void load(Element element, XModelObject o) {
-    	if("AnyElement".equals(o.getModelEntity().getName())) { //$NON-NLS-1$
+    	if(ENT_ANY_ELEMENT.equals(o.getModelEntity().getName())) {
     		loadAnyElement(element, o);
     	} else {
 			loadAttributes(element, o);
@@ -111,7 +112,7 @@ public class XModelObjectLoaderUtil {
     static Map<XModelEntity, Set<String>> allowedChildren = new HashMap<XModelEntity, Set<String>>();
     
     protected Set<String> getAllowedChildren(XModelEntity entity) {
-    	if(entity.getChild("AnyElement") != null) return null; //$NON-NLS-1$
+    	if(entity.getChild(ENT_ANY_ELEMENT) != null) return null;
     	Set<String> x = allowedChildren.get(entity);
     	if(x != null) return x;
     	Set<String> children = new HashSet<String>();
@@ -154,7 +155,7 @@ public class XModelObjectLoaderUtil {
     }
 
     protected Set<String> getAllowedAttributes(XModelEntity entity) {
-    	if(entity.getChild("AnyElement") != null) return null; //$NON-NLS-1$
+    	if(entity.getChild(ENT_ANY_ELEMENT) != null) return null;
     	Set<String> attributes = new HashSet<String>();
     	if(saveentity) {
     		attributes.add(XModelConstants.XMODEL_ENTITY_ATTR);
@@ -312,7 +313,7 @@ public class XModelObjectLoaderUtil {
             if(n.getNodeType() != Node.ELEMENT_NODE) continue;
             Element e = (Element)n;
             String en = getChildEntity(entity, e);
-            if(en == null && entity.getChild("AnyElement") != null) en = "AnyElement"; //$NON-NLS-1$ //$NON-NLS-2$
+            if(en == null && entity.getChild(ENT_ANY_ELEMENT) != null) en = ENT_ANY_ELEMENT;
             if(en == null) continue;
             XModelObject co = model.createModelObject(en, null);
             if(co == null) continue;
@@ -425,7 +426,7 @@ public class XModelObjectLoaderUtil {
 	}
 
     public boolean save(Element parent, XModelObject o) {
-		if("AnyElement".equals(o.getModelEntity().getName())) { //$NON-NLS-1$
+		if(ENT_ANY_ELEMENT.equals(o.getModelEntity().getName())) {
 			saveAnyElement(parent, o);
 			return true;
 		} else {

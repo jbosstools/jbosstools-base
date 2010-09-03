@@ -17,6 +17,7 @@ import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.impl.AnyElementObjectImpl;
+import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
 	static String ATTRIBUTES = "attributes"; //$NON-NLS-1$
@@ -111,7 +112,7 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
 	public String[][] getAttributes() {
 		XModelObject o = getTarget();
 		if(!(o instanceof AnyElementObjectImpl)) {
-			o = o.getModel().createModelObject("AnyElement", null); //$NON-NLS-1$
+			o = o.getModel().createModelObject(XModelObjectLoaderUtil.ENT_ANY_ELEMENT, null);
 			o.setAttributeValue(ATTRIBUTES, getTarget().getAttributeValue(ATTRIBUTES));
 		}
 		
