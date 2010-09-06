@@ -151,14 +151,28 @@ public class MetaLibLoader {
 		
     }
     
+    boolean isRootUsed = false;
+    
     Element parse(InputStream stream) {
+    	if(isRootUsed) {
+    		root = XMLUtilities.createDocumentElement("meta"); //$NON-NLS-1$
+    		ModelPlugin.getDefault().logError("Is root used");
+    		System.out.println("Is root used");
+    	}
+    	isRootUsed = true;
 		Parser p = new Parser();
 		p.documentElement = root;
 		p.current = root;
 		p.parse(stream);
 		Element g = p.documentElement;
 		g = XMLUtilities.getUniqueChild(g, "XModelEntityGroup"); //$NON-NLS-1$
-		p.documentElement.removeChild(g);
+		try {
+			p.documentElement.removeChild(g);
+		} catch (NullPointerException e) {
+			ModelPlugin.getDefault().logError("Null pointer while trying to remove child " + g);
+			System.out.println("Null pointer while trying to remove child " + g);
+		}
+		isRootUsed = false;
 		return g;
     }
 
