@@ -66,11 +66,15 @@ public class FileSystemsLoader extends URLRootLoader {
             XObjectLoader loader = XModelObjectLoaderUtil.getObjectLoader(cs[i]);
             if(loader != null) b &= loader.update(cs[i]);
         }
+        updateClassPath(object);
+       	((FileSystemsImpl)object).updateOverlapped();
+        return b;
+    }
+   
+    public void updateClassPath(XModelObject object) {
 		updateLibs(object);
 		removeMissingJarSystems(object);
 		updateSrcs(object);
-       	((FileSystemsImpl)object).updateOverlapped();
-        return b;
     }
 
 	public void load(XModelObject object) {

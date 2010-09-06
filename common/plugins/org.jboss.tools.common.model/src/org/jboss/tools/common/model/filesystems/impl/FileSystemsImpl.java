@@ -202,15 +202,35 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 	public void resourceChanged(IResourceChangeEvent event) {
 		if(!isActive() || event == null || event.getDelta() == null) return;
 		if(!checkDelta(event.getDelta())) return;
+		IFile f = findFile(event.getDelta());
+		if(f != null && f.getName().equals(".classpath")) { //$NON-NLS-1$
+			new FileSystemsLoader().updateClassPath(this);
+			return;
+		}
 		fileSystemsRenameListener.checkFileSystemRename(event);
 
 		requireUpdate();
+	}
+
+	IFile findFile(IResourceDelta delta) {
+		IResource r = delta.getResource();
+		if(r instanceof IFile) return (IFile)r;
+		IResourceDelta[] ds =  delta.getAffectedChildren();
+		for (IResourceDelta d: ds) {
+			IFile f = findFile(d);
+			if(f != null) return f;
+		}
+		return null;
+	}
+
+	private void onUpdateClassPath() {
+		
 	}
 	
 	UpdateRunnable currentUpdate = null;
 	
 	void requireUpdate() {
-		if(lock == 0) {
+		if(lock == 0 && currentUpdate == null) {
 //			synchronized (this) {
 				currentUpdate = new UpdateRunnable();
 //			}			
@@ -271,6 +291,10 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 				ModelPlugin.getWorkspace().removeResourceChangeListener(FileSystemsImpl.this);
 			} else {
 				doUpdate();
+				if(request != 0) {
+					request = 0;
+					doUpdate();
+				}
 			}
 			if(this == currentUpdate) currentUpdate = null;
 		}
@@ -373,4 +397,3 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 	}
 
 }
-
