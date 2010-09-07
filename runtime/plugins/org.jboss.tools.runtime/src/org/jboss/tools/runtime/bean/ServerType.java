@@ -51,7 +51,7 @@ public class ServerType {
 			"EAP",
 			"Enterprise Application Platform",
 			JBOSS_AS_PATH + File.separatorChar + BIN_PATH+ File.separatorChar + TWIDDLE_JAR_NAME, 
-			new String[]{"4.2","4.3","5.0"}, new EAPServerTypeCondition());
+			new String[]{"4.2","4.3","5.0","5.1"}, new EAPServerTypeCondition());
 	
 	public static final ServerType SOAP = new ServerType(
 			"SOA-P",

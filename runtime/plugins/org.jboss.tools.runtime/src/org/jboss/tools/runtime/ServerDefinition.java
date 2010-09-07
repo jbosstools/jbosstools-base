@@ -24,6 +24,7 @@ public class ServerDefinition {
 	private String version;
 	private String type;
 	private File location;
+	private boolean enabled = true;
 	
 	public ServerDefinition(String name, String version, String type,
 			File location) {
@@ -117,6 +118,14 @@ public class ServerDefinition {
 	public String toString() {
 		return "ServerDefinition [name=" + name + ", version=" + version
 				+ ", type=" + type + ", location=" + location + "]";
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 }

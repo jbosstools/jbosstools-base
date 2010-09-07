@@ -14,19 +14,23 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.layout.PixelConverter;
-import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -59,6 +63,8 @@ import org.jboss.tools.jbpm.preferences.JbpmInstallation;
 import org.jboss.tools.jbpm.preferences.PreferencesManager;
 import org.jboss.tools.runtime.Activator;
 import org.jboss.tools.runtime.JBossRuntimeLocator;
+import org.jboss.tools.runtime.JBossRuntimeStartup;
+import org.jboss.tools.runtime.ServerDefinition;
 
 /**
  * @author Snjeza
@@ -76,6 +82,8 @@ public class RuntimePreferencePage extends PreferencePage implements
 	private static final String JBPM_PREFERENCES_ID = "org.jboss.tools.jbpm.locations";
 	
 	protected Map<String, Object> map = new HashMap<String, Object>();
+
+	private List<ServerDefinition> serverDefinitions;
 
 	/*
 	 * (non-Javadoc)
@@ -286,10 +294,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		link.setText(text);
 		link.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(getShell(),preferencesId, new String[] {preferencesId},null);
-				if (dialog != null) {
-					dialog.open();
-				}
+				PreferencesUtil.createPreferenceDialogOn(getShell(),preferencesId, null, null);
 			}
 		});
 	}
@@ -306,13 +311,51 @@ public class RuntimePreferencePage extends PreferencePage implements
 		DirectoryDialog dialog = new DirectoryDialog(getShell());
 		dialog.setMessage("Search for JBoss Runtimes");
 		dialog.setFilterPath(lastUsedPath);
-		String path = dialog.open();
+		final String path = dialog.open();
 		if (path == null) {
 			return;
 		}
 		dialogSettings.put(LASTPATH, path);
-		JBossRuntimeLocator locator = new JBossRuntimeLocator();
-		locator.searchForRuntimes(path, new NullProgressMonitor());
+		
+		IRunnableWithProgress op = new IRunnableWithProgress() {
+			
+			public void run(IProgressMonitor monitor) {
+				JBossRuntimeLocator locator = new JBossRuntimeLocator();
+				serverDefinitions = locator.searchForRuntimes(path, monitor);
+				
+			}
+		};
+		
+		try {
+			serverDefinitions = null;
+			new ProgressMonitorDialog(getShell()).run(true, true, op);
+		} catch (InvocationTargetException e) {
+			Activator.log(e);
+		} catch (InterruptedException e) {
+			//  ignore
+		}
+
+		if (serverDefinitions == null || serverDefinitions.size() == 0) {
+			MessageDialog.openInformation(null, "Search for JBoss Runtimes",
+							"The search found 0 runtimes while searching "
+									+ path + ".");
+		} else {
+			RuntimeDialog runtimeDialog = new RuntimeDialog(getShell(),
+					serverDefinitions, path);
+			int ok = runtimeDialog.open();
+			if (ok == Window.OK) {
+				Iterator<ServerDefinition> iterator = serverDefinitions.iterator();
+				while (iterator.hasNext()) {
+					 ServerDefinition definition = iterator.next();
+					 if (!definition.isEnabled()) {
+						 iterator.remove();
+					 }
+				}
+				JBossRuntimeStartup runtimeStartup = new JBossRuntimeStartup();
+				runtimeStartup.initializeRuntimes(serverDefinitions);
+			}
+		}
+			
 	}
 	
 	/**

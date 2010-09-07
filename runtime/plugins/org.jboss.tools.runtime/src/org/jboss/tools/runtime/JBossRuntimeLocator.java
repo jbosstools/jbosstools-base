@@ -26,7 +26,7 @@ import org.jboss.tools.runtime.bean.ServerBean;
 import org.jboss.tools.runtime.bean.ServerBeanLoader;
 import org.jboss.tools.runtime.bean.ServerType;
 
-public class JBossRuntimeLocator extends RuntimeLocatorDelegate {
+public class JBossRuntimeLocator {
 
 	public static final String JBPM3 = "jBPM3";
 	
@@ -36,23 +36,25 @@ public class JBossRuntimeLocator extends RuntimeLocatorDelegate {
 
 	public JBossRuntimeLocator() {
 	}
+	
+	public List<ServerDefinition> searchForRuntimes(String path, IProgressMonitor monitor) {
+		return searchForRuntimes(new Path(path), monitor);
+	}
 
-	@Override
-	public void searchForRuntimes(IPath path, IRuntimeSearchListener listener,
-			IProgressMonitor monitor) {
+	public List<ServerDefinition> searchForRuntimes(IPath path, IProgressMonitor monitor) {
 		ServerBeanLoader loader = new ServerBeanLoader();
 		List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
-		searchForRuntimes(serverDefinitions, path, loader, 4, monitor);
-		JBossRuntimeStartup runtimeStartup = new JBossRuntimeStartup();
-		runtimeStartup.initializeRuntimes(serverDefinitions);
+		return searchForRuntimes(serverDefinitions, path, loader, 4, monitor);
 	}
 	
-	public void searchForRuntimes(String path, IProgressMonitor monitor) {
-		searchForRuntimes(new Path(path), null, monitor);
-	}
-	
-	private void searchForRuntimes(List<ServerDefinition> serverDefinitions, IPath path, ServerBeanLoader loader, int depth, IProgressMonitor monitor) {
+	private List<ServerDefinition> searchForRuntimes(List<ServerDefinition> serverDefinitions, IPath path, ServerBeanLoader loader, int depth, IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			return serverDefinitions;
+		}
 		File[] children = null;
+		if (path != null) {
+			monitor.setTaskName("Searching " + path.toOSString());
+		}
 		if (path != null) {
 			File root = path.toFile();
 			ServerBean serverBean = loader.loadFromLocation(root);
@@ -106,17 +108,16 @@ public class JBossRuntimeLocator extends RuntimeLocatorDelegate {
 			children = File.listRoots();
 		}
 		if (depth == 0) {
-			return; 
+			return serverDefinitions; 
 		}
 		if( children != null ) {
-			monitor.beginTask("Searching for JBoss runtime...", children.length); //$NON-NLS-1$
 			for( int i = 0; i < children.length; i++ ) {
 				if( children[i].isDirectory()) {
 					searchForRuntimes(serverDefinitions, new Path(children[i].getAbsolutePath()), loader, --depth, monitor);
 				}
 			}
 		}
-		monitor.done();
+		return serverDefinitions;
 	}
 
 	/**
