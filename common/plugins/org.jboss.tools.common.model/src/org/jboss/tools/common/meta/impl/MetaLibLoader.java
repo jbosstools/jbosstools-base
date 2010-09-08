@@ -253,13 +253,8 @@ class Parser implements ContentHandler {
 	}
    
     XMLReader newInstance() throws SAXException {
-    	Bundle b = Platform.getBundle("org.apache.xerces");
-    	if(b == null) {
-    		System.out.println("Cannot find plugin org.apache.xerces");
-    		throw new SAXException("Cannot find plugin org.apache.xerces");
-    	}
     	try {
-    	    return (XMLReader) b.loadClass(DEFAULT_SAX_PARSER_CLASS_NAME).newInstance();
+    	    return (XMLReader) ModelPlugin.getDefault().getBundle().loadClass(DEFAULT_SAX_PARSER_CLASS_NAME).newInstance();
     	} catch (ClassNotFoundException e1) {
     	    throw new SAXException("SAX2 driver class " + DEFAULT_SAX_PARSER_CLASS_NAME +
     				   " not found", e1);
