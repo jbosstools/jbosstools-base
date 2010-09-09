@@ -28,7 +28,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLInputSource;
-import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
@@ -36,7 +35,6 @@ import org.jboss.tools.common.xml.SAXValidator;
 import org.jboss.tools.common.xml.XMLEntityResolver;
 import org.jboss.tools.common.xml.XMLEntityResolverImpl;
 import org.jboss.tools.common.xml.XMLUtilities;
-import org.osgi.framework.Bundle;
 
 public class MetaLibLoader {
 	public static String DOC_PUBLICID = "-//Red Hat, Inc.//DTD Meta 1.0//EN"; //$NON-NLS-1$
@@ -104,7 +102,7 @@ public class MetaLibLoader {
 		
 			Element g = parse(stream2);
 			if(g == null) {
-				System.out.println("SAX parser failed to load meta resource " + name);
+				ModelPlugin.getPluginLog().logError("SAX parser failed to load meta resource " + name);
 				stream1 = url.openStream();
 				stream2 = new BufferedInputStream(stream1, 16384);
 				g = XMLUtilities.getElement(stream2, new EmptyResolver());
@@ -114,7 +112,7 @@ public class MetaLibLoader {
 			} else {
 				load0(g, name, url.toString());
 			}
-			
+		
 		} catch (IOException e) {
 			ModelPlugin.getPluginLog().logError("MetaLoader: Cannot read resource " + url.toString()); //$NON-NLS-1$
 			return;
@@ -279,7 +277,7 @@ class Parser implements ContentHandler {
             parserInstance = newInstance();
             	//XMLReaderFactory.createXMLReader(DEFAULT_SAX_PARSER_CLASS_NAME);
         } catch (SAXException e) {
-        	System.out.println("default parser failed: " + e.getMessage());        	
+        	ModelPlugin.getPluginLog().logError("default parser failed: " + e.getMessage());        	
         	return null;
         }
 
