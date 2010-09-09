@@ -10,22 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.usage.reporting;
 
-import java.text.MessageFormat;
 import java.util.Random;
 
-import org.eclipse.core.runtime.IProduct;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.googleanalytics.AbstractGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
+import org.jboss.tools.usage.googleanalytics.IUserAgent;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.util.BundleUtils;
-import org.jboss.tools.usage.util.PreferencesUtils;
 import org.jboss.tools.usage.util.BundleUtils.IBundleEntryFilter;
+import org.jboss.tools.usage.util.PreferencesUtils;
 import org.osgi.framework.Bundle;
 
 /**
@@ -34,12 +32,8 @@ import org.osgi.framework.Bundle;
 public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implements IGoogleAnalyticsParameters {
 
 	private static final String SYSPROP_JAVA_VERSION = "java.version";
-	private static final String USERAGENT_WIN = "{0}/{1} (Windows; U; Windows NT 6.1; {2})"; //$NON-NLS-1$
-	private static final String USERAGENT_MAC = "{0}/{1} (Macintosh; U; Intel Mac OS X 10.5; {2})"; //$NON-NLS-1$
-	private static final String USERAGENT_LINUX = "{0}/{1} (X11; U; Linux i686; {2})"; //$NON-NLS-1$
-	private static final char BUNDLE_GROUP_DELIMITER = '-';
 	private static final String JBOSS_TOOLS_BUNDLES_PREFIX = "org\\.jboss\\.tools.+"; //$NON-NLS-1$
-	private static final String ECLIPSE_RUNTIME_BULDEID = "org.eclipse.core.runtime"; //$NON-NLS-1$
+	private static final char BUNDLE_GROUP_DELIMITER = '-';
 
 	private String screenResolution;
 	private String screenColorDepth;
@@ -49,11 +43,13 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 	private String lastVisit;
 	private String currentVisit;
 	private long visitCount;
+	private IUserAgent eclipseUserAgent;
 
 	public EclipseEnvironment(String accountName, String hostName, String referral, IEclipsePreferences preferences) {
 		super(accountName, hostName, referral);
 		this.random = new Random();
 		this.preferences = preferences;
+		eclipseUserAgent = createEclipseUserAgent();
 		initScreenSettings();
 		initVisits();
 	}
@@ -83,26 +79,12 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		visitCount = preferences.getLong(IUsageReportPreferenceConstants.VISIT_COUNT, 1);
 	}
 
-	public String getBrowserLanguage() {
-		String nl = getNL();
-		if (nl == null) {
-			return ""; //$NON-NLS-1$
-		}
-
-		int indexOf = nl.indexOf(JAVA_LOCALE_DELIMITER); //$NON-NLS-1$
-		if (indexOf <= 0) {
-			return nl;
-		}
-
-		StringBuilder builder = new StringBuilder();
-		builder.append(nl.substring(0, indexOf));
-		builder.append(BROWSER_LOCALE_DELIMITER);
-		builder.append(nl.substring(indexOf + 1));
-		return builder.toString();
+	protected IUserAgent createEclipseUserAgent() {
+		return new EclipseUserAgent();
 	}
 
-	protected String getNL() {
-		return Platform.getNL(); //$NON-NLS-1$
+	public String getBrowserLanguage() {
+		return eclipseUserAgent.getBrowserLanguage();
 	}
 
 	public String getScreenResolution() {
@@ -126,75 +108,7 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 	}
 
 	public String getUserAgent() {
-
-		String productId = getApplicationName();
-		String productVersion = getApplicationVersion();
-		String browserLanguage = getBrowserLanguage();
-
-		/**
-		 * Google API for android: this.userAgent = String.format(
-		 * "GoogleAnalytics/%s (Linux; U; Android %s; %s-%s; %s; Build/%s)" ,
-		 * new Object[] { "1.0" , Build.VERSION.RELEASE ,
-		 * (localLocale.getLanguage() != null) ?
-		 * localLocale.getLanguage().toLowerCase() : "en" ,
-		 * (localLocale.getCountry() != null) ?
-		 * localLocale.getCountry().toLowerCase() : "" , Build.MODEL, Build.ID
-		 * });
-		 */
-
-		return MessageFormat.format(
-				getUserAgentPattern(getOS())
-				, productId
-				, productVersion
-				, browserLanguage
-				);
-	}
-
-	private String getUserAgentPattern(String os) {
-		String userAgentPattern = ""; //$NON-NLS-1$
-		/*
-		 * TODO: implement architecture (i686, x86_64 etc.), Windows version, MacOS version etc. 
-		 */
-		if (Platform.OS_LINUX.equals(os)) {
-			return USERAGENT_LINUX; //$NON-NLS-1$
-		} else if (Platform.OS_MACOSX.equals(os)) {
-			return USERAGENT_MAC; //$NON-NLS-1$
-		} else if (Platform.OS_WIN32.equals(os)) {
-			return USERAGENT_WIN; //$NON-NLS-1$
-		}
-		return userAgentPattern;
-	}
-
-	protected String getOS() {
-		return Platform.getOS();
-	}
-
-	protected String getApplicationName() {
-		return getApplicationBundle().getSymbolicName();
-	}
-
-	protected String getApplicationVersion() {
-		String fullVersion = getApplicationBundle().getVersion().toString();
-		int productVersionStart = fullVersion.lastIndexOf(VERSION_DELIMITER);
-		if (productVersionStart > 0) {
-			return fullVersion.substring(0, productVersionStart);
-		} else {
-			return fullVersion;
-		}
-	}
-
-	/**
-	 * Returns the bundle that launched the application that this class runs in.
-	 * 
-	 * @return the defining bundle
-	 */
-	private Bundle getApplicationBundle() {
-		IProduct product = Platform.getProduct();
-		if (product != null) {
-			return product.getDefiningBundle();
-		} else {
-			return Platform.getBundle(ECLIPSE_RUNTIME_BULDEID);
-		}
+		return eclipseUserAgent.toString();
 	}
 
 	public String getUserId() {

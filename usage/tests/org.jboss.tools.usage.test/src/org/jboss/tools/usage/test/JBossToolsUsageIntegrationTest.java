@@ -31,17 +31,15 @@ import org.junit.Test;
  */
 public class JBossToolsUsageIntegrationTest {
 
-	private IGoogleAnalyticsParameters eclipseEnvironment;
-
 	@Test
 	public void sameUserIdOnSametEclipseInstance() throws Exception {
-		UrlRevealingTracker tracker = getTracker(eclipseEnvironment);
+		UrlRevealingTracker tracker = getTracker(EclipseEnvironmentFakeSingleton.INSTANCE);
 		FocusPoint focusPoint = createFocusPoint("testSameUserIdOnSametEclipseInstance" + System.currentTimeMillis());
 		tracker.trackSynchronously(focusPoint);
 		String userId = getUserId(tracker.getTrackingUrl());
 		assertTrue(userId != null);
 
-		tracker = getTracker(eclipseEnvironment );
+		tracker = getTracker(EclipseEnvironmentFakeSingleton.INSTANCE);
 		tracker.trackSynchronously(focusPoint);
 		String newUserId = getUserId(tracker.getTrackingUrl());
 
@@ -52,7 +50,7 @@ public class JBossToolsUsageIntegrationTest {
 	@Test
 	public void differentUserIdOnDifferentEclipseInstance() throws Exception {
 		String focusPointName = "testDifferentUserIdOnDifferentEclipseInstance"
-			+ System.currentTimeMillis();
+				+ System.currentTimeMillis();
 		UrlRevealingTracker tracker = getTracker(new EclipseEnvironmentFake());
 		tracker.trackSynchronously(createFocusPoint(focusPointName));
 		String userId = getUserId(tracker.getTrackingUrl());

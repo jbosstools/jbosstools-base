@@ -27,10 +27,7 @@ public interface IGoogleAnalyticsParameters {
 	public static final char PLUS_SIGN = '+';
 	public static final char DOT = '.';
 	public static final char SEMICOLON = ';';
-	public static final char JAVA_LOCALE_DELIMITER = '_';
-	public static final char BROWSER_LOCALE_DELIMITER = '-';
 	public static final char PIPE = '|';
-	public static final char VERSION_DELIMITER = '.';
 
 	public static final String PARAM_HID = "utmhid";
 	public static final String PARAM_PAGE_REQUEST = "utmp";

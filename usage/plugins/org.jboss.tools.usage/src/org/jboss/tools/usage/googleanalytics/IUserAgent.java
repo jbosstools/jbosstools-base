@@ -8,22 +8,15 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.test;
-
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
-@RunWith(Suite.class)
-@Suite.SuiteClasses( {
-		FocusPointTest.class,
-		GoogleAnalyticsUrlStrategyTest.class,
-		JBossToolsUsageIntegrationTest.class,
-		EclipseUserAgentTest.class,
-		GlobalUsageReportingSettingsTest.class})
+package org.jboss.tools.usage.googleanalytics;
 
 /**
  * @author Andre Dietisheim
  */
-public class UsageTestSuite {
+public interface IUserAgent {
 
+	public static final char BROWSER_LOCALE_DELIMITER = '-';
+
+	public String getBrowserLanguage();
+	public String toString();
 }

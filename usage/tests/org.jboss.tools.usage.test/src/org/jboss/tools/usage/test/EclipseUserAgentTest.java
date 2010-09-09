@@ -35,33 +35,38 @@ import org.osgi.framework.Version;
 /**
  * @author Andre Dietisheim
  */
-public class EclipseEnvironmenTest {
+public class EclipseUserAgentTest {
+
+	@Test
+	public void testLanguage() {
+		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US).toString();
+		assertLanguage("en-US", userAgent);
+	}
+
+	@Test
+	public void testApplicationNameAndVersion() {
+		String applicationName = "com.jboss.jbds.product";
+		String applicationVersion = "3.0.1";
+		String userAgent = new EclipseUserAgentFake().toString();
+		assertApplicationNameAndVersion(applicationName, applicationVersion, userAgent);
+	}
 
 	@Test
 	public void testMacOs() {
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(Platform.OS_MACOSX);
-		String userAgent = eclipseEnvironment.getUserAgent();
-		assertApplicationNameAndVersion("com.jboss.jbds.product", "3.0.1", userAgent);
+		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_MACOSX).toString();
 		assertOs("Macintosh", "Intel Mac OS X 10.5", userAgent);
-		assertLanguage("en-US", userAgent);
 	}
 
 	@Test
 	public void testLinux() {
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(Platform.OS_LINUX);
-		String userAgent = eclipseEnvironment.getUserAgent();
-		assertApplicationNameAndVersion("com.jboss.jbds.product", "3.0.1", userAgent);
+		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_LINUX).toString();
 		assertOs("X11", "Linux i686", userAgent);
-		assertLanguage("en-US", userAgent);
 	}
 
 	@Test
 	public void testWindows() {
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(Platform.OS_WIN32);
-		String userAgent = eclipseEnvironment.getUserAgent();
-		assertApplicationNameAndVersion("com.jboss.jbds.product", "3.0.1", userAgent);
+		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_WIN32).toString();
 		assertOs("Windows", "Windows NT 6.1", userAgent);
-		assertLanguage("en-US", userAgent);
 	}
 
 	@Test

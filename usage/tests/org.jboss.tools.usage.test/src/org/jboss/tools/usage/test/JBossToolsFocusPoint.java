@@ -10,20 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
-@RunWith(Suite.class)
-@Suite.SuiteClasses( {
-		FocusPointTest.class,
-		GoogleAnalyticsUrlStrategyTest.class,
-		JBossToolsUsageIntegrationTest.class,
-		EclipseUserAgentTest.class,
-		GlobalUsageReportingSettingsTest.class})
+import org.jboss.tools.usage.FocusPoint;
 
 /**
  * @author Andre Dietisheim
  */
-public class UsageTestSuite {
+public class JBossToolsFocusPoint extends FocusPoint {
+
+	public JBossToolsFocusPoint(String childFocusPoint) {
+		super("tools");
+		setChild(new FocusPoint("usage")
+			.setChild(new FocusPoint(childFocusPoint)));
+	}
 
 }
