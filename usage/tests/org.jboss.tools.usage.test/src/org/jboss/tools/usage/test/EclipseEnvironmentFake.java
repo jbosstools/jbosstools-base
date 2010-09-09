@@ -23,31 +23,37 @@ public class EclipseEnvironmentFake extends EclipseEnvironment {
 	public static final String HOSTNAME = "jboss.org";
 	public static final String REFERRAL = "0";
 	public static final String LOCALE_US = "en_US";
+	public static final String JAVA_VERSION = "1.6.0_20";
 
 	private String locale;
 	private String os;
+	private String javaVersion;
 
 	public EclipseEnvironmentFake() {
-		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, Platform.OS_LINUX, LOCALE_US);
+		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, Platform.OS_LINUX, LOCALE_US, JAVA_VERSION);
 	}
 
 	public EclipseEnvironmentFake(String platform) {
-		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, platform, LOCALE_US);
+		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, platform, LOCALE_US, JAVA_VERSION);
 	}
 
 	public EclipseEnvironmentFake(IEclipsePreferences preferences) {
-		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, Platform.OS_LINUX, LOCALE_US, preferences);
-	}
-
-	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale,
-			IEclipsePreferences preferences) {
-		super(accountName, hostName, referral, preferences);
-		this.os = os;
-		this.locale = locale;
+		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, Platform.OS_LINUX, LOCALE_US, JAVA_VERSION, preferences);
 	}
 
 	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale) {
-		this(accountName, hostName, referral, os, locale, new EclipsePreferencesFake());
+		this(accountName, hostName, referral, os, locale, JAVA_VERSION);
+	}
+			public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale,
+			String javaVersion, IEclipsePreferences preferences) {
+		super(accountName, hostName, referral, preferences);
+		this.os = os;
+		this.javaVersion = javaVersion;
+		this.locale = locale;
+	}
+
+	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String javaVersion, String locale) {
+		this(accountName, hostName, referral, os, locale, javaVersion, new EclipsePreferencesFake());
 	}
 
 	@Override
@@ -83,5 +89,9 @@ public class EclipseEnvironmentFake extends EclipseEnvironment {
 	@Override
 	protected String getApplicationVersion() {
 		return "3.0.1";
+	}
+	
+	protected String getJavaVersion() {
+		return javaVersion;
 	}
 }

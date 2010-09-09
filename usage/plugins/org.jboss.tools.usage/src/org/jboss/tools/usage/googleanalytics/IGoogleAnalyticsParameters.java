@@ -16,7 +16,8 @@ package org.jboss.tools.usage.googleanalytics;
  * 
  * @author Andre Dietisheim
  * @see <a
- *      href="http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters">GIF Request Parameters</a>
+ *      href="http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters">GIF
+ *      Request Parameters</a>
  */
 public interface IGoogleAnalyticsParameters {
 
@@ -40,7 +41,7 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_COOKIES_SESSION = "__utmb";
 	public static final String PARAM_COOKIES_BROWSERSESSION = "__utmc";
 	public static final String PARAM_COOKIES_REFERRAL_TYPE = "__utmz";
-	
+
 	public static final String PARAM_REFERRAL = "utmr";
 	public static final String PARAM_TRACKING_CODE_VERSION = "utmwv";
 	public static final String PARAM_UNIQUE_TRACKING_NUMBER = "utmn";
@@ -49,6 +50,7 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_SCREEN_COLOR_DEPTH = "utmsc";
 	public static final String PARAM_PRODUCT_NAME = "utmipn";
 	public static final String PARAM_PRODUCT_CODE = "utmipc";
+	public static final String PARAM_FLASH_VERSION = "utmfl";
 	public static final String PARAM_BROWSER_LANGUAGE = "utmul";
 	public static final String PARAM_REPEAT_CAMPAIGN_VISIT = "utmcr";
 	public static final String PARAM_PAGE_TITLE = "utmdt";
@@ -57,11 +59,11 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_COOKIES_UTMCCN = "utmccn";
 	public static final String PARAM_COOKIES_UTMCMD = "utmcmd";
 	public static final String PARAM_COOKIES_KEYWORD = "utmctr";
-	
+
 	public static final String VALUE_TRACKING_CODE_VERSION = "4.7.2";
 	public static final String VALUE_NO_REFERRAL = "0";
 	public static final String VALUE_ENCODING_UTF8 = "UTF-8";
-	
+
 	public static final String SCREERESOLUTION_DELIMITER = "x";
 	public static final String SCREENCOLORDEPTH_POSTFIX = "-bit";
 
@@ -72,24 +74,34 @@ public interface IGoogleAnalyticsParameters {
 	public String getScreenResolution();
 
 	public String getScreenColorDepth();
-	
+
 	public String getBrowserLanguage();
 
 	public String getHostname();
 
 	public String getUserAgent();
-	
+
 	public String getUserId();
-	
+
 	public String getKeyword();
-	
+
 	public String getFirstVisit();
-	
+
 	public String getLastVisit();
-	
+
 	public String getCurrentVisit();
-	
+
 	public long getVisitCount();
+
+	/**
+	 * Tells that a visit was triggered. The
+	 * consequence is that visit timestamps and visit counters get updated
+	 * 
+	 * @see #getLastVisit()
+	 * @see #getCurrentVisit()
+	 * @see #getVisitCount()
+	 */
+	public void visit();
 	
-	public void visit();	
+	public String getFlashVersion();
 }

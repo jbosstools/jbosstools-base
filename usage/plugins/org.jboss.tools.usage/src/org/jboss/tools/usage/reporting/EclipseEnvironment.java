@@ -33,6 +33,7 @@ import org.osgi.framework.Bundle;
  */
 public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implements IGoogleAnalyticsParameters {
 
+	private static final String SYSPROP_JAVA_VERSION = "java.version";
 	private static final String USERAGENT_WIN = "{0}/{1} (Windows; U; Windows NT 6.1; {2})"; //$NON-NLS-1$
 	private static final String USERAGENT_MAC = "{0}/{1} (Macintosh; U; Intel Mac OS X 10.5; {2})"; //$NON-NLS-1$
 	private static final String USERAGENT_LINUX = "{0}/{1} (X11; U; Linux i686; {2})"; //$NON-NLS-1$
@@ -266,5 +267,13 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		visitCount++;
 		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount);
 		PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(), ReportingMessages.EclipseEnvironment_Error_SavePreferences);
+	}
+
+	public String getFlashVersion() {
+		return getJavaVersion();
+	}
+
+	private String getJavaVersion() {
+		return System.getProperty(SYSPROP_JAVA_VERSION);
 	}
 }

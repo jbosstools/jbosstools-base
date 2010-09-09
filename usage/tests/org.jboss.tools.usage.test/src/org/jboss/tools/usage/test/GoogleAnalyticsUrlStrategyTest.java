@@ -36,7 +36,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 	}
 
 	@Test
-	public void testUrlIsCorrect() throws UnsupportedEncodingException {
+	public void createsCorrectUrl() throws UnsupportedEncodingException {
 		FocusPoint focusPoint = new FocusPoint("testing").setChild(new FocusPoint("strategy"));
 		String url = urlStrategy.build(focusPoint);
 		String targetUrl = "http://www.google-analytics.com/__utm.gif?"
@@ -51,6 +51,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 				+ "&utmhid=1087431432"
 				+ "&utmr=0"
 				+ "&utmp=%2Ftesting%2Fstrategy"
+				+ "&utmfl=" + EclipseEnvironmentFake.JAVA_VERSION
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D156030503.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 				+ "&gaq=1";
@@ -63,6 +64,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_REFERRAL, url, targetUrl));
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, url, targetUrl));
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, url, targetUrl));
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_FLASH_VERSION, url, targetUrl));
 
 		assertTrue(hasCookieValue("__utma", url));
 		assertTrue(hasCookieValue("__utmz", url));

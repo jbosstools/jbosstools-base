@@ -119,8 +119,7 @@ public class EclipseEnvironmenTest {
 			this.symbolicName = symbolicName;
 		}
 
-		@SuppressWarnings("unchecked")
-		public Enumeration findEntries(String path, String filePattern, boolean recurse) {
+		public Enumeration<?> findEntries(String path, String filePattern, boolean recurse) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -136,18 +135,15 @@ public class EclipseEnvironmenTest {
 			throw new UnsupportedOperationException();
 		}
 
-		@SuppressWarnings("unchecked")
-		public Enumeration getEntryPaths(String path) {
+		public Enumeration<?> getEntryPaths(String path) {
 			throw new UnsupportedOperationException();
 		}
 
-		@SuppressWarnings("unchecked")
-		public Dictionary getHeaders() {
+		public Dictionary<?, ?> getHeaders() {
 			throw new UnsupportedOperationException();
 		}
 
-		@SuppressWarnings("unchecked")
-		public Dictionary getHeaders(String locale) {
+		public Dictionary<?, ?> getHeaders(String locale) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -167,8 +163,7 @@ public class EclipseEnvironmenTest {
 			throw new UnsupportedOperationException();
 		}
 
-		@SuppressWarnings("unchecked")
-		public Enumeration getResources(String name) throws IOException {
+		public Enumeration<?> getResources(String name) throws IOException {
 			throw new UnsupportedOperationException();
 		}
 
@@ -176,8 +171,7 @@ public class EclipseEnvironmenTest {
 			throw new UnsupportedOperationException();
 		}
 
-		@SuppressWarnings("unchecked")
-		public Map getSignerCertificates(int signersType) {
+		public Map<?, ?> getSignerCertificates(int signersType) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -199,8 +193,7 @@ public class EclipseEnvironmenTest {
 
 		}
 
-		@SuppressWarnings("unchecked")
-		public Class loadClass(String name) throws ClassNotFoundException {
+		public Class<?> loadClass(String name) throws ClassNotFoundException {
 			throw new UnsupportedOperationException();
 		}
 
