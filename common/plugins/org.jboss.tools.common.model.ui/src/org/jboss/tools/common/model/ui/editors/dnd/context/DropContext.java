@@ -246,7 +246,9 @@ public class DropContext {
 			Object ooo = LocalSelectionTransfer.getTransfer().getSelection();
 			if(ooo instanceof StructuredSelection) {
 				ooo = ((StructuredSelection)ooo).getFirstElement();
-				InnerDragBuffer.setInnerDragObject(ooo);
+				// commented by yradtsevich, see JBIDE-6439 (InnerDragBuffer is removed,
+				// nodes are transfered through vpe/xpath flavor now)
+				//InnerDragBuffer.setInnerDragObject(ooo);
 			}
 			mimeData = ooo == null ? null : ooo.toString();
 		}

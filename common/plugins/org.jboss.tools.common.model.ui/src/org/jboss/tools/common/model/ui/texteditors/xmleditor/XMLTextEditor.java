@@ -14,10 +14,6 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
-import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDrop;
-import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDropProvider;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
@@ -57,19 +53,14 @@ import org.eclipse.wst.xml.core.internal.document.AttrImpl;
 import org.eclipse.wst.xml.core.internal.document.ElementImpl;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.eclipse.wst.xml.ui.internal.XMLUIPlugin;
-import org.w3c.dom.DocumentType;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.Text;
-
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.XModelBuffer;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelTransferBuffer;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
-import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
-import org.jboss.tools.common.text.xml.ui.FreeCaretStyledText;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.dnd.ModelTransfer;
 import org.jboss.tools.common.model.ui.editor.EditorDescriptor;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.model.ui.editors.dnd.DropCommandFactory;
@@ -77,12 +68,19 @@ import org.jboss.tools.common.model.ui.editors.dnd.DropData;
 import org.jboss.tools.common.model.ui.editors.dnd.EmptyTagProposalFactory;
 import org.jboss.tools.common.model.ui.editors.dnd.context.DropContext;
 import org.jboss.tools.common.model.ui.editors.dnd.context.IDNDTextEditor;
-import org.jboss.tools.common.model.ui.editors.dnd.context.InnerDragBuffer;
+import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDrop;
+import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDropProvider;
 import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
+import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 import org.jboss.tools.common.text.xml.IOccurrencePreferenceProvider;
 import org.jboss.tools.common.text.xml.XMLTextViewerConfiguration;
 import org.jboss.tools.common.text.xml.XmlEditorPlugin;
+import org.jboss.tools.common.text.xml.ui.FreeCaretStyledText;
 import org.jboss.tools.jst.jsp.text.xpl.IStructuredTextOccurrenceStructureProvider;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 
 /**
  * @author Jeremy
@@ -506,13 +504,13 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
     			event.detail = DND.DROP_NONE;
 				return;
 			}
-			// Drop from VPE to Source is forbidden
-			if(dropContext.getFlavor().equals("text/html")) { //$NON-NLS-1$
-				if(InnerDragBuffer.getInnerDragObject()!= null) {
-					event.detail = DND.DROP_NONE;
-				}
-    			return;
-			}
+//			// Drop from VPE to Source is forbidden
+//			if(dropContext.getFlavor().equals("text/html")) { //$NON-NLS-1$
+//				if(InnerDragBuffer.getInnerDragObject()!= null) {
+//					event.detail = DND.DROP_NONE;
+//				}
+//    			return;
+//			}
             int pos = getPosition(event.x, event.y);
             if(lastpos == pos && pos >= 0) {
             	pos = lastpos;
