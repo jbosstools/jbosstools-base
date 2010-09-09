@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
@@ -25,9 +26,6 @@ import org.junit.Test;
  */
 public class GoogleAnalyticsUrlStrategyTest {
 
-//	private static final String COOKIE_DELIMITER = EncodingUtils.checkedEncodeUtf8(String
-//			.valueOf(IGoogleAnalyticsParameters.PLUS_SIGN));
-	
 	private GoogleAnalyticsUrlStrategy urlStrategy;
 
 	@Before
@@ -51,7 +49,8 @@ public class GoogleAnalyticsUrlStrategyTest {
 				+ "&utmhid=1087431432"
 				+ "&utmr=0"
 				+ "&utmp=%2Ftesting%2Fstrategy"
-				+ "&utmfl=" + EclipseEnvironmentFake.JAVA_VERSION
+				+ "&utmfl="
+					+ EclipseEnvironmentFake.JAVA_VERSION
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D156030503.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 				+ "&gaq=1";
@@ -75,6 +74,16 @@ public class GoogleAnalyticsUrlStrategyTest {
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_GAQ, url, targetUrl));
 	}
 
+	@Test
+	public void visitCountIncreases() throws Exception {
+		IGoogleAnalyticsParameters eclipseEnvironment = new EclipseEnvironmentFake();
+		assertEquals(1, eclipseEnvironment.getVisitCount());
+		eclipseEnvironment.visit();
+		assertEquals(2, eclipseEnvironment.getVisitCount());
+		eclipseEnvironment.visit();
+		assertEquals(3, eclipseEnvironment.getVisitCount());
+	}
+	
 	private boolean areEqualParameterValues(String paramName, String url, String targetUrl) {
 		return areEqualParameterValues(paramName, url, targetUrl, String.valueOf(IGoogleAnalyticsParameters.AMPERSAND));
 	}
@@ -90,26 +99,18 @@ public class GoogleAnalyticsUrlStrategyTest {
 				String.valueOf(IGoogleAnalyticsParameters.AMPERSAND));
 		return cookieValues != null && cookieValues.indexOf(cookieName) >= 0;
 	}
-	
-//	private void assertEqualCookieParameterValues(String paramName, String url, String targetUrl) {
-//		String targetCookieValues = getParameterValue(IGoogleAnalyticsParameters.PARAM_COOKIES, targetUrl,
-//				IGoogleAnalyticsParameters.AMPERSAND);
-//		String cookieValues = getParameterValue(IGoogleAnalyticsParameters.PARAM_COOKIES, url,
-//				IGoogleAnalyticsParameters.AMPERSAND);
-//		assertEqualParameterValues(paramName, cookieValues, targetCookieValues, COOKIE_DELIMITER.toCharArray());
-//	}
 
 	private String getParameterValue(String parameterName, String url, String delimiters) {
 		String value = null;
 		int parameterNameStart = url.indexOf(parameterName);
 		if (parameterNameStart >= 0) {
 			int valueStart = parameterNameStart + parameterName.length() + 1;
-				int valueEnd = url.indexOf(delimiters, parameterNameStart + parameterName.length());
-				if (valueEnd < 0) {
-					value = url.substring(valueStart);
-				} else {
-					value = url.substring(valueStart, valueEnd);
-				}
+			int valueEnd = url.indexOf(delimiters, parameterNameStart + parameterName.length());
+			if (valueEnd < 0) {
+				value = url.substring(valueStart);
+			} else {
+				value = url.substring(valueStart, valueEnd);
+			}
 		}
 		return value;
 	}

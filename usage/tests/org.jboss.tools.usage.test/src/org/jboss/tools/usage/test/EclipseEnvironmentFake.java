@@ -38,13 +38,14 @@ public class EclipseEnvironmentFake extends EclipseEnvironment {
 	}
 
 	public EclipseEnvironmentFake(IEclipsePreferences preferences) {
-		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, Platform.OS_LINUX, LOCALE_US, JAVA_VERSION, preferences);
+		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, Platform.OS_LINUX, LOCALE_US, JAVA_VERSION);
 	}
 
 	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale) {
 		this(accountName, hostName, referral, os, locale, JAVA_VERSION);
 	}
-			public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale,
+
+	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String locale,
 			String javaVersion, IEclipsePreferences preferences) {
 		super(accountName, hostName, referral, preferences);
 		this.os = os;
@@ -52,7 +53,8 @@ public class EclipseEnvironmentFake extends EclipseEnvironment {
 		this.locale = locale;
 	}
 
-	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String javaVersion, String locale) {
+	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String os, String javaVersion,
+			String locale) {
 		this(accountName, hostName, referral, os, locale, javaVersion, new EclipsePreferencesFake());
 	}
 
@@ -90,7 +92,7 @@ public class EclipseEnvironmentFake extends EclipseEnvironment {
 	protected String getApplicationVersion() {
 		return "3.0.1";
 	}
-	
+
 	protected String getJavaVersion() {
 		return javaVersion;
 	}
