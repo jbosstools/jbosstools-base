@@ -89,7 +89,7 @@ public class PropertiesLoader implements XObjectLoader {
             }
             lineEnd.setLength(0);
 			if(state == 3) {
-				if(!s.endsWith("\\")) { //$NON-NLS-1$
+				if(!endsWithBackslash(s)) {
 					sb.append(s);
 					state = 2;
 				} else {
@@ -128,7 +128,7 @@ public class PropertiesLoader implements XObjectLoader {
             object.addChild(c);
 
             String dirtyvalue = (i < s.length()) ? s.substring(i + 1) : ""; //$NON-NLS-1$
-            if(s.endsWith("\\")) { //$NON-NLS-1$
+            if(endsWithBackslash(s)) {
             	state = 3;
             	sb.append(dirtyvalue.substring(0, dirtyvalue.length() - 1)).append(INTERNAL_SEPARATOR);
             } else {
@@ -143,6 +143,15 @@ public class PropertiesLoader implements XObjectLoader {
 			c.setAttributeValue("dirtyvalue", sb.toString()); //$NON-NLS-1$
 			c.setAttributeValue("line-end", lineEnd.toString()); //$NON-NLS-1$
         }
+    }
+   
+    boolean endsWithBackslash(String s) {
+    	boolean result = false;
+    	for (int i = s.length() - 1; i >= 0; i--) {
+    		if(s.charAt(i) != '\\') return result;
+    		result = !result;
+    	}
+    	return result;
     }
 
     public boolean update(XModelObject object) throws XModelException {
