@@ -17,13 +17,11 @@ package org.jboss.tools.usage.googleanalytics;
 public abstract class AbstractGoogleAnalyticsParameters implements IGoogleAnalyticsParameters {
 
 	private String accountName;
-	private String referral;
 	private String hostName;
 
-	public AbstractGoogleAnalyticsParameters(String accountName, String hostName, String referral) {
+	public AbstractGoogleAnalyticsParameters(String accountName, String hostName) {
 		this.accountName = accountName;
 		this.hostName = hostName;
-		this.referral = referral;
 	}
 
 	public String getAccountName() {
@@ -32,9 +30,5 @@ public abstract class AbstractGoogleAnalyticsParameters implements IGoogleAnalyt
 	
 	public String getHostname() {
 		return hostName;
-	}
-
-	public String getReferral() {
-		return referral;
 	}
 }

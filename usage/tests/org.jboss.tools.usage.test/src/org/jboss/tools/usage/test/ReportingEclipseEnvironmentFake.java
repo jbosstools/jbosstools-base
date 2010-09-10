@@ -21,26 +21,25 @@ public class ReportingEclipseEnvironmentFake extends ReportingEclipseEnvironment
 
 	public static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 	public static final String HOSTNAME = "jboss.org";
-	public static final String REFERRAL = "0";
 	public static final String JAVA_VERSION = "1.6.0_20";
 
 	private String javaVersion;
 
 	public ReportingEclipseEnvironmentFake() {
-		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, JAVA_VERSION, new EclipsePreferencesFake());
+		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, JAVA_VERSION, new EclipsePreferencesFake());
 	}
 
 	public ReportingEclipseEnvironmentFake(IEclipsePreferences preferences) {
-		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, JAVA_VERSION, preferences);
+		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, JAVA_VERSION, preferences);
 	}
 
-	public ReportingEclipseEnvironmentFake(String accountName, String hostName, String referral) {
-		this(accountName, hostName, referral, JAVA_VERSION, new EclipsePreferencesFake());
+	public ReportingEclipseEnvironmentFake(String accountName, String hostName) {
+		this(accountName, hostName, JAVA_VERSION, new EclipsePreferencesFake());
 	}
 
-	public ReportingEclipseEnvironmentFake(String accountName, String hostName, String referral, String javaVersion,
+	public ReportingEclipseEnvironmentFake(String accountName, String hostName, String javaVersion,
 			IEclipsePreferences preferences) {
-		super(accountName, hostName, referral, preferences);
+		super(accountName, hostName, preferences);
 		this.javaVersion = javaVersion;
 	}
 

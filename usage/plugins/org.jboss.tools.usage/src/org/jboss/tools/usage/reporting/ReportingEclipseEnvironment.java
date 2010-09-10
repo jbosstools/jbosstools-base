@@ -25,8 +25,8 @@ public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 	private static final String JBOSS_TOOLS_BUNDLES_PREFIX = "org\\.jboss\\.tools.+"; //$NON-NLS-1$
 	private static final char BUNDLE_GROUP_DELIMITER = '-';
 
-	public ReportingEclipseEnvironment(String accountName, String hostName, String referral, IEclipsePreferences preferences) {
-		super(accountName, hostName, referral, preferences);
+	public ReportingEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
+		super(accountName, hostName, preferences);
 	}
 
 	@Override
@@ -53,5 +53,13 @@ public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 					.append(delimiter);
 		}
 		return builder.toString();
+	}
+	
+	public String getReferral() {
+		return getBundleVersion();
+	}
+
+	private String getBundleVersion() {
+		return JBossToolsUsageActivator.getDefault().getBundle().getVersion().toString();
 	}
 }

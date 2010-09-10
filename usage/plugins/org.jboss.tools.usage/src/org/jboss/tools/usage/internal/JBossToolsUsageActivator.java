@@ -10,14 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.usage.internal;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * @author Andre Dietisheim
  */
-public class JBossToolsUsageActivator extends AbstractUIPlugin {
+public class JBossToolsUsageActivator extends Plugin {
 
 	public static final String PLUGIN_ID = "org.jboss.tools.usage"; //$NON-NLS-1$
 
@@ -35,10 +34,6 @@ public class JBossToolsUsageActivator extends AbstractUIPlugin {
 
 	public static JBossToolsUsageActivator getDefault() {
 		return plugin;
-	}
-
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 	
 	public void start(BundleContext context) throws Exception {

@@ -87,7 +87,6 @@ public class UsageReport {
 		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironment(
 				GANALYTICS_ACCOUNTNAME
 				, HOST_NAME
-				, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL
 				, PreferencesUtils.getPreferences());
 		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageActivator.getDefault());
 		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment);

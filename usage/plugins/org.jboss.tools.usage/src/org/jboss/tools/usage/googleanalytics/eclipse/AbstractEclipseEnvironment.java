@@ -40,8 +40,8 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	private long visitCount;
 	private IUserAgent eclipseUserAgent;
 
-	public AbstractEclipseEnvironment(String accountName, String hostName, String referral, IEclipsePreferences preferences) {
-		super(accountName, hostName, referral);
+	public AbstractEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
+		super(accountName, hostName);
 		this.random = new Random();
 		this.preferences = preferences;
 		eclipseUserAgent = createEclipseUserAgent();

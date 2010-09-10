@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import org.jboss.tools.usage.FocusPoint;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
+import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,7 +48,8 @@ public class GoogleAnalyticsUrlStrategyTest {
 				+ "&utmul=en-us"
 				+ "&utmdt=testing-strategy"
 				+ "&utmhid=1087431432"
-				+ "&utmr=0"
+				+ "&utmr="
+					+ JBossToolsUsageActivator.getDefault().getBundle().getVersion()
 				+ "&utmp=%2Ftesting%2Fstrategy"
 				+ "&utmfl="
 					+ ReportingEclipseEnvironmentFake.JAVA_VERSION
