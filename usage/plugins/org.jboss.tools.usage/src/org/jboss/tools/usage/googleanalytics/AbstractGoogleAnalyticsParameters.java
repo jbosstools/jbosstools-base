@@ -18,10 +18,16 @@ public abstract class AbstractGoogleAnalyticsParameters implements IGoogleAnalyt
 
 	private String accountName;
 	private String hostName;
+	private String referrer;
 
-	public AbstractGoogleAnalyticsParameters(String accountName, String hostName) {
+	public AbstractGoogleAnalyticsParameters(String accountName, String hostName, String referrer) {
 		this.accountName = accountName;
 		this.hostName = hostName;
+		this.referrer = referrer;
+	}
+
+	public String getReferrer() {
+		return referrer;
 	}
 
 	public String getAccountName() {

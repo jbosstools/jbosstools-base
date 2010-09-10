@@ -26,7 +26,8 @@ import org.jboss.tools.usage.util.PreferencesUtils;
 /**
  * @author Andre Dietisheim
  */
-public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalyticsParameters implements IGoogleAnalyticsParameters {
+public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalyticsParameters implements
+		IGoogleAnalyticsParameters {
 
 	private static final String SYSPROP_JAVA_VERSION = "java.version";
 
@@ -41,7 +42,12 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	private IUserAgent eclipseUserAgent;
 
 	public AbstractEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
-		super(accountName, hostName);
+		this(accountName, hostName, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, preferences);
+	}
+
+	public AbstractEclipseEnvironment(String accountName, String hostName, String referrer,
+			IEclipsePreferences preferences) {
+		super(accountName, hostName, referrer);
 		this.random = new Random();
 		this.preferences = preferences;
 		eclipseUserAgent = createEclipseUserAgent();
@@ -111,7 +117,8 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		if (userId == null) {
 			userId = createIdentifier();
 			preferences.put(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, userId);
-			PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(), GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
+			PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(),
+					GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
 		}
 		return userId;
 	}
@@ -129,7 +136,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	}
 
 	public abstract String getKeyword();
-	
+
 	public String getCurrentVisit() {
 		return currentVisit;
 	}
@@ -152,7 +159,8 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		currentVisit = String.valueOf(System.currentTimeMillis());
 		visitCount++;
 		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount);
-		PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(), GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
+		PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(),
+				GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
 	}
 
 	public String getFlashVersion() {
