@@ -52,21 +52,21 @@ public class EclipseUserAgentTest {
 	}
 
 	@Test
-	public void testMacOs() {
-		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_MACOSX).toString();
-		assertOs("Macintosh", "Intel Mac OS X 10.5", userAgent);
+	public void testMacOsSnowLeopard() {
+		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_MACOSX, EclipseUserAgentFake.MACSNOWLEOPARD_VERSION).toString();
+		assertOs("Macintosh", "Intel Mac OS X " + EclipseUserAgentFake.MACSNOWLEOPARD_VERSION, userAgent);
 	}
 
 	@Test
 	public void testLinux() {
-		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_LINUX).toString();
+		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_LINUX, EclipseUserAgentFake.WIN7_VERSION).toString();
 		assertOs("X11", "Linux i686", userAgent);
 	}
 
 	@Test
-	public void testWindows() {
-		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_WIN32).toString();
-		assertOs("Windows", "Windows NT 6.1", userAgent);
+	public void testWindows7() {
+		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_WIN32, EclipseUserAgentFake.WIN7_VERSION).toString();
+		assertOs("Windows", "Windows NT " + EclipseUserAgentFake.WIN7_VERSION, userAgent);
 	}
 
 	@Test
