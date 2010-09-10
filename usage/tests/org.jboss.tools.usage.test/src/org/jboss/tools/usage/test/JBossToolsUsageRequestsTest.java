@@ -1002,7 +1002,7 @@ public class JBossToolsUsageRequestsTest {
 
 	@Test
 	public void testWinWin7UserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WINXP);
+		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WIN7);
 		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
 				+ "&utmn=911593326"
 				+ "&utmhn=jboss.org"
@@ -1023,7 +1023,7 @@ public class JBossToolsUsageRequestsTest {
 
 	@Test
 	public void testWinVistaUserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WINXP);
+		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WINVISTA);
 		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
 				+ "&utmn=958593326"
 				+ "&utmhn=jboss.org"
