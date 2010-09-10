@@ -425,12 +425,6 @@ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 END OF TERMS AND CONDITIONS
    </license>
 
-   <!-- url element commented out because of 
-        https://jira.jboss.org/jira/browse/JBDS-1187 Configuration plugin errors in feature.xml file -->
-   <!--url-->
-	  <!-- <update label="%updateSiteName" url="http://download.jboss.org/jbosstools/updates/stable/helios/"/> -->
-   <!-- url -->
-
    <plugin
          id="org.jboss.tools.runtime"
          download-size="0"
