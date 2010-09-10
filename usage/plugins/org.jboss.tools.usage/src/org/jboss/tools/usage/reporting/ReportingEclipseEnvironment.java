@@ -10,12 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.usage.reporting;
 
+import java.util.Collection;
+
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.util.BundleUtils;
-import org.jboss.tools.usage.util.CollectionFilterUtils;
-import org.jboss.tools.usage.util.ICollectionEntryFilter;
 import org.osgi.framework.Bundle;
 
 /**
@@ -23,7 +22,6 @@ import org.osgi.framework.Bundle;
  */
 public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 
-	private static final String JBOSS_TOOLS_BUNDLES_PREFIX = "org\\.jboss\\.tools.+"; //$NON-NLS-1$
 	private static final char BUNDLE_GROUP_DELIMITER = '-';
 
 	public ReportingEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
@@ -32,25 +30,18 @@ public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 
 	@Override
 	public String getKeyword() {
-		JBossComponents jbossBundleGroups = new JBossComponents();
-		ICollectionEntryFilter<Bundle> jbossToolsFilter = new BundleUtils.BundleSymbolicNameFilter(JBOSS_TOOLS_BUNDLES_PREFIX);
-		ICollectionEntryFilter<Bundle> compositeFilter = new CollectionFilterUtils.CompositeCollectionFilter<Bundle>(
-				jbossToolsFilter
-				, jbossBundleGroups);
-		BundleUtils.getBundles(compositeFilter, getBundles());
-
-		return bundleGroupsToKeywordString(jbossBundleGroups);
+		return bundleGroupsToKeywordString(JBossComponents.getComponentIds(getBundles()));
 	}
 
 	protected Bundle[] getBundles() {
 		return JBossToolsUsageActivator.getDefault().getBundle().getBundleContext().getBundles();
 	}
 
-	private String bundleGroupsToKeywordString(JBossComponents jbossBundleGroups) {
+	private String bundleGroupsToKeywordString(Collection<String> jbossComponentNames) {
 		char delimiter = BUNDLE_GROUP_DELIMITER;
 		StringBuilder builder = new StringBuilder();
-		for (String bundleGroupId : jbossBundleGroups.getBundleGroupIds()) {
-			builder.append(bundleGroupId)
+		for (String componentName : jbossComponentNames) {
+			builder.append(componentName)
 					.append(delimiter);
 		}
 		return builder.toString();

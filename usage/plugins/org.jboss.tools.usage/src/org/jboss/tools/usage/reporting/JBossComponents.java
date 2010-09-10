@@ -14,13 +14,15 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jboss.tools.usage.util.BundleUtils;
+import org.jboss.tools.usage.util.CollectionFilterUtils;
 import org.jboss.tools.usage.util.ICollectionEntryFilter;
 import org.osgi.framework.Bundle;
 
 /**
  * @author Andre Dietisheim
  */
-public class JBossComponents implements ICollectionEntryFilter<Bundle> {
+public class JBossComponents {
 
 	public enum BundleGroup {
 		ARCHIVES("org.jboss.ide.eclipse.archives.core",
@@ -200,24 +202,52 @@ public class JBossComponents implements ICollectionEntryFilter<Bundle> {
 		}
 	}
 
-	private Set<String> jbossBundleGroups = new TreeSet<String>();
+	private static final String JBOSS_TOOLS_BUNDLES_PREFIX = "org\\.jboss\\.tools.+"; //$NON-NLS-1$
 
-	/**
-	 * Collects the bundle groups the bundles it gets belong
-	 * to. Always returns <tt>true</tt> (does match) while collecting
-	 */
-	public boolean matches(Bundle bundle) {
-		String bundleName = bundle.getSymbolicName();
-		for (BundleGroup bundleGroup : BundleGroup.values()) {
-			if (bundleGroup.isMember(bundleName)) {
-				jbossBundleGroups.add(bundleGroup.name());
-				break;
-			}
+	private static class JBossComponentBundlesFilter implements ICollectionEntryFilter<Bundle> {
+
+		private Collection<String> componentNames;
+
+		private JBossComponentBundlesFilter(Collection<String> componentNames) {
+			this.componentNames = componentNames;
 		}
-		return true;
+
+		/**
+		 * Collects the bundle groups the bundles it gets belong to. Always
+		 * returns <tt>true</tt> (does match) while collecting
+		 */
+		public boolean matches(Bundle bundle) {
+			String bundleName = bundle.getSymbolicName();
+			for (BundleGroup bundleGroup : BundleGroup.values()) {
+				if (bundleGroup.isMember(bundleName)) {
+					componentNames.add(bundleGroup.name());
+					break;
+				}
+			}
+			return true;
+		}
 	}
 
-	public Collection<String> getBundleGroupIds() {
-		return jbossBundleGroups;
+	private JBossComponents() {
+		// inhibit instantiation
+	}
+	
+	/**
+	 * Returns the jboss components that the given bundles are members of
+	 * 
+	 * @param bundles
+	 *            the bundles to check
+	 * @return
+	 */
+	public static Collection<String> getComponentIds(Bundle[] bundles) {
+		Set<String> jbossComponentNames = new TreeSet<String>();
+		ICollectionEntryFilter<Bundle> jbossToolsFilter = new BundleUtils.BundleSymbolicNameFilter(
+				JBOSS_TOOLS_BUNDLES_PREFIX);
+		@SuppressWarnings("unchecked")
+		ICollectionEntryFilter<Bundle> compositeFilter = new CollectionFilterUtils.CompositeCollectionFilter<Bundle>(
+				jbossToolsFilter
+				, new JBossComponentBundlesFilter(jbossComponentNames));
+		BundleUtils.getBundles(compositeFilter, bundles);
+		return jbossComponentNames;
 	}
 }
