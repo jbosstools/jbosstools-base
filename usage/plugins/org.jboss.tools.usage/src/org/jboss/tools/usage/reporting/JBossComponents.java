@@ -14,13 +14,13 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jboss.tools.usage.util.BundleUtils.IBundleEntryFilter;
+import org.jboss.tools.usage.util.ICollectionEntryFilter;
 import org.osgi.framework.Bundle;
 
 /**
  * @author Andre Dietisheim
  */
-public class JBossBundleGroups implements IBundleEntryFilter {
+public class JBossComponents implements ICollectionEntryFilter<Bundle> {
 
 	public enum BundleGroup {
 		ARCHIVES("org.jboss.ide.eclipse.archives.core",

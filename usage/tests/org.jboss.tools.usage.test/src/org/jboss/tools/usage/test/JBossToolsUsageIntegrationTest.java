@@ -33,13 +33,13 @@ public class JBossToolsUsageIntegrationTest {
 
 	@Test
 	public void sameUserIdOnSametEclipseInstance() throws Exception {
-		UrlRevealingTracker tracker = getTracker(EclipseEnvironmentFakeSingleton.INSTANCE);
+		UrlRevealingTracker tracker = getTracker(RepportingEclipseEnvironmentFakeSingleton.INSTANCE);
 		FocusPoint focusPoint = createFocusPoint("testSameUserIdOnSametEclipseInstance" + System.currentTimeMillis());
 		tracker.trackSynchronously(focusPoint);
 		String userId = getUserId(tracker.getTrackingUrl());
 		assertTrue(userId != null);
 
-		tracker = getTracker(EclipseEnvironmentFakeSingleton.INSTANCE);
+		tracker = getTracker(RepportingEclipseEnvironmentFakeSingleton.INSTANCE);
 		tracker.trackSynchronously(focusPoint);
 		String newUserId = getUserId(tracker.getTrackingUrl());
 

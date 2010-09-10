@@ -18,7 +18,7 @@ import org.jboss.tools.usage.reporting.ReportingEclipseEnvironment;
  * @author Andre Dietisheim
  */
 public class ReportingEclipseEnvironmentFake extends ReportingEclipseEnvironment {
-
+	
 	public static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 	public static final String HOSTNAME = "jboss.org";
 	public static final String JAVA_VERSION = "1.6.0_20";

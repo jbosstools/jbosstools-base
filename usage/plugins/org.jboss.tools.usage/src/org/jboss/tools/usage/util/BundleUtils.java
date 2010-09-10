@@ -29,7 +29,7 @@ public class BundleUtils {
 	 * @param bundles the bundles
 	 * @return the bundles that match the given filter
 	 */
-	public static List<Bundle> getBundles(IBundleEntryFilter filter, Bundle[] bundles) {
+	public static List<Bundle> getBundles(ICollectionEntryFilter<Bundle> filter, Bundle[] bundles) {
 		List<Bundle> bundleList = new ArrayList<Bundle>();
 		for (Bundle bundle : bundles) {
 			if (filter.matches(bundle)) {
@@ -53,7 +53,7 @@ public class BundleUtils {
 	/**
 	 * A filter that matches bundles against a given symbolic name regex.
 	 */
-	public static class BundleSymbolicNameFilter implements IBundleEntryFilter {
+	public static class BundleSymbolicNameFilter implements ICollectionEntryFilter<Bundle> {
 
 		private Pattern pattern;
 
@@ -67,52 +67,5 @@ public class BundleUtils {
 			return pattern.matcher(bundle.getSymbolicName()).matches();
 		}
 
-	}
-
-	/**
-	 * A filter that applies several given filters
-	 */
-	public static class CompositeFilter implements IBundleEntryFilter {
-
-		private IBundleEntryFilter filters[];
-
-		/**
-		 * Instantiates a new composite filter that applies several given
-		 * filters.
-		 * 
-		 * @param filters
-		 *            the filters
-		 */
-		public CompositeFilter(IBundleEntryFilter... filters) {
-			this.filters = filters;
-		}
-
-		/**
-		 * Applies the filters this composite filter has. All filters have to
-		 * match so that the filter says the given bundle matches.
-		 */
-		public boolean matches(Bundle bundle) {
-			for (IBundleEntryFilter filter : filters) {
-				if (!filter.matches(bundle)) {
-					return false;
-				}
-			}
-			return true;
-		}
-	}
-
-	/**
-	 * The Interface IBundleEntryFilter.
-	 */
-	public static interface IBundleEntryFilter {
-
-		/**
-		 * Matches.
-		 * 
-		 * @param bundle
-		 *            the bundle
-		 * @return true, if successful
-		 */
-		public boolean matches(Bundle bundle);
 	}
 }

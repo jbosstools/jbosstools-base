@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
-import org.jboss.tools.usage.reporting.JBossBundleGroups;
+import org.jboss.tools.usage.reporting.JBossComponents;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -88,9 +88,9 @@ public class EclipseUserAgentTest {
 
 		Matcher matcher = Pattern.compile("(([A-Z]+)-){3}").matcher(keyword);
 		assertTrue(matcher.matches());
-		assertTrue(keyword.indexOf(JBossBundleGroups.BundleGroup.GWT.name()) >= 0);
-		assertTrue(keyword.indexOf(JBossBundleGroups.BundleGroup.SEAM.name()) >= 0);
-		assertTrue(keyword.indexOf(JBossBundleGroups.BundleGroup.SMOOKS.name()) >= 0);
+		assertTrue(keyword.indexOf(JBossComponents.BundleGroup.GWT.name()) >= 0);
+		assertTrue(keyword.indexOf(JBossComponents.BundleGroup.SEAM.name()) >= 0);
+		assertTrue(keyword.indexOf(JBossComponents.BundleGroup.SMOOKS.name()) >= 0);
 	}
 
 	private void assertApplicationNameAndVersion(String applicationName, String applicationVersion, String userAgent) {

@@ -14,7 +14,8 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.BundleUtils;
-import org.jboss.tools.usage.util.BundleUtils.IBundleEntryFilter;
+import org.jboss.tools.usage.util.CollectionFilterUtils;
+import org.jboss.tools.usage.util.ICollectionEntryFilter;
 import org.osgi.framework.Bundle;
 
 /**
@@ -31,9 +32,9 @@ public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 
 	@Override
 	public String getKeyword() {
-		JBossBundleGroups jbossBundleGroups = new JBossBundleGroups();
-		IBundleEntryFilter jbossToolsFilter = new BundleUtils.BundleSymbolicNameFilter(JBOSS_TOOLS_BUNDLES_PREFIX);
-		IBundleEntryFilter compositeFilter = new BundleUtils.CompositeFilter(
+		JBossComponents jbossBundleGroups = new JBossComponents();
+		ICollectionEntryFilter<Bundle> jbossToolsFilter = new BundleUtils.BundleSymbolicNameFilter(JBOSS_TOOLS_BUNDLES_PREFIX);
+		ICollectionEntryFilter<Bundle> compositeFilter = new CollectionFilterUtils.CompositeCollectionFilter<Bundle>(
 				jbossToolsFilter
 				, jbossBundleGroups);
 		BundleUtils.getBundles(compositeFilter, getBundles());
@@ -45,7 +46,7 @@ public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 		return JBossToolsUsageActivator.getDefault().getBundle().getBundleContext().getBundles();
 	}
 
-	private String bundleGroupsToKeywordString(JBossBundleGroups jbossBundleGroups) {
+	private String bundleGroupsToKeywordString(JBossComponents jbossBundleGroups) {
 		char delimiter = BUNDLE_GROUP_DELIMITER;
 		StringBuilder builder = new StringBuilder();
 		for (String bundleGroupId : jbossBundleGroups.getBundleGroupIds()) {

@@ -8,13 +8,18 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.test;
-
+package org.jboss.tools.usage.util;
 /**
- * @author Andre Dietisheim
+ * @authro Andre Dietisheim
  */
-public class EclipseEnvironmentFakeSingleton {
+public interface ICollectionEntryFilter<E> {
 
-	public static ReportingEclipseEnvironmentFake INSTANCE = new ReportingEclipseEnvironmentFake();
-	
+	/**
+	 * Matches.
+	 * 
+	 * @param bundle
+	 *            the bundle
+	 * @return true, if successful
+	 */
+	public boolean matches(E entry);
 }

@@ -8,6 +8,7 @@ public class EclipseUserAgentFake extends EclipseUserAgent {
 
 	private static final String APPLICATION_NAME = "com.jboss.jbds.product";
 	private static final String APPLICATION_VERSION = "3.0.1";
+
 	public static final String LOCALE_US = "en_US";
 
 	static final String WIN2000_VERSION = "5.0";
