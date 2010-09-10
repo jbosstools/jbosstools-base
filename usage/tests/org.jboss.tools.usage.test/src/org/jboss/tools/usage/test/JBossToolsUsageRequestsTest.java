@@ -966,11 +966,11 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmsr=1920x1080"
 				+ "&utmsc=24-bit"
 				+ "&utmul=en-US"
-				+ "&utmdt=testJBossToolsVersionInRefererrer"
+				+ "&utmdt=testJBossToolsVersionInAdContent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=0"
 				+ "&utm_content=1.0.0.qualifier"
-				+ "&utmp=testJBossToolsVersionInRefererrer"
+				+ "&utmp=testJBossToolsVersionInAdContent"
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297294488397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
