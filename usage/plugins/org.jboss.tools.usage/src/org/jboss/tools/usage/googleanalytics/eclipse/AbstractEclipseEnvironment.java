@@ -45,9 +45,9 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		this(accountName, hostName, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, preferences);
 	}
 
-	public AbstractEclipseEnvironment(String accountName, String hostName, String referrer,
+	public AbstractEclipseEnvironment(String accountName, String hostName, String referral,
 			IEclipsePreferences preferences) {
-		super(accountName, hostName, referrer);
+		super(accountName, hostName, referral);
 		this.random = new Random();
 		this.preferences = preferences;
 		eclipseUserAgent = createEclipseUserAgent();

@@ -49,7 +49,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 				+ "&utmdt=testing-strategy"
 				+ "&utmhid=1087431432"
 				+ "&utmr="
-					+ JBossToolsUsageActivator.getDefault().getBundle().getVersion()
+					+ IGoogleAnalyticsParameters.VALUE_NO_REFERRAL
 				+ "&utmp=%2Ftesting%2Fstrategy"
 				+ "&utmfl="
 					+ ReportingEclipseEnvironmentFake.JAVA_VERSION
