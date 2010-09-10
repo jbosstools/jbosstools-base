@@ -54,4 +54,12 @@ public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 		}
 		return builder.toString();
 	}
+
+	public String getAdContent() {
+		return getBundleVersion();
+	}
+
+	private String getBundleVersion() {
+		return JBossToolsUsageActivator.getDefault().getBundle().getVersion().toString();
+	}
 }

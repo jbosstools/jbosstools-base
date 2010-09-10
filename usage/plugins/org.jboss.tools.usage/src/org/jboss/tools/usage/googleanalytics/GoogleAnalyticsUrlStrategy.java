@@ -118,9 +118,10 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, googleParameters.getAccountName(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_AD_CONTENT, googleParameters.getAdContent(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_GAQ, "1", false, builder);
-
-		googleParameters.visit();
+		
+		googleParameters.visit(); // update visit timestamps and count
 
 		return builder.toString();
 	}

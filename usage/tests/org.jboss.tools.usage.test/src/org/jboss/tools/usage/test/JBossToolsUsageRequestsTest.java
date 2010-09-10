@@ -932,6 +932,9 @@ public class JBossToolsUsageRequestsTest {
 	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	// }
 
+	/**
+	 * FAILED
+	 */
 	@Test
 	public void testJBossToolsVersionInRefererrer() throws IOException {
 		TestHttpGetMethod method = new TestHttpGetMethod();
@@ -945,6 +948,28 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testJBossToolsVersionInRefererrer"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
+				+ "&utmp=testJBossToolsVersionInRefererrer"
+				+ "&utmac=UA-17645367-1"
+				+ "&utmcc=__utma%3D999.43297294488397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testJBossToolsVersionInAdContent() throws IOException {
+		TestHttpGetMethod method = new TestHttpGetMethod();
+		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+				+ "&utmn=818594305"
+				+ "&utmhn=jboss.org"
+				+ "&utmcs=UTF-8"
+				+ "&utmsr=1920x1080"
+				+ "&utmsc=24-bit"
+				+ "&utmul=en-US"
+				+ "&utmdt=testJBossToolsVersionInRefererrer"
+				+ "&utmfl=1.6.0_20"
+				+ "&utmr=0"
+				+ "&utm_content=1.0.0.qualifier"
 				+ "&utmp=testJBossToolsVersionInRefererrer"
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297294488397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
@@ -975,26 +1000,47 @@ public class JBossToolsUsageRequestsTest {
 	}
 
 	@Test
-	public void testWin7UserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WIN7);
+	public void testWinWin7UserAgent() throws IOException {
+		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WINXP);
 		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=958594305"
+				+ "&utmn=911593326"
 				+ "&utmhn=jboss.org"
 				+ "&utmcs=UTF-8"
 				+ "&utmsr=1920x1080"
 				+ "&utmsc=24-bit"
 				+ "&utmul=en-US"
-				+ "&utmdt=testWin7UserAgent"
+				+ "&utmdt=testWinWin7UserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=testWin7UserAgent"
+				+ "&utmp=testWinWin7UserAgent"
 				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.43297292388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&utmcc=__utma%3D999.43297885388356354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
-
+	
+	@Test
+	public void testWinVistaUserAgent() throws IOException {
+		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WINXP);
+		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+				+ "&utmn=958593326"
+				+ "&utmhn=jboss.org"
+				+ "&utmcs=UTF-8"
+				+ "&utmsr=1920x1080"
+				+ "&utmsc=24-bit"
+				+ "&utmul=en-US"
+				+ "&utmdt=testWinVistaUserAgent"
+				+ "&utmfl=1.6.0_20"
+				+ "&utmr=1.0.0.qualifier"
+				+ "&utmp=testWinVistaUserAgent"
+				+ "&utmac=UA-17645367-1"
+				+ "&utmcc=__utma%3D999.43297885388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+	
 	@Test
 	public void testWinXPUserAgent() throws IOException {
 		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WINXP);

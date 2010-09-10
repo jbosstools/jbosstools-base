@@ -56,7 +56,8 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_COOKIES_UTMCCN = "utmccn";
 	public static final String PARAM_COOKIES_UTMCMD = "utmcmd";
 	public static final String PARAM_COOKIES_KEYWORD = "utmctr";
-
+	public static final String PARAM_AD_CONTENT = "utm_content";
+	
 	public static final String VALUE_TRACKING_CODE_VERSION = "4.7.2";
 	public static final String VALUE_NO_REFERRAL = "0";
 	public static final String VALUE_ENCODING_UTF8 = "UTF-8";
@@ -101,4 +102,6 @@ public interface IGoogleAnalyticsParameters {
 	public void visit();
 	
 	public String getFlashVersion();
+
+	public String getAdContent();
 }

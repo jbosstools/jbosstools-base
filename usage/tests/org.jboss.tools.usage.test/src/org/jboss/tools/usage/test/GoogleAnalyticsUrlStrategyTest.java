@@ -55,7 +55,9 @@ public class GoogleAnalyticsUrlStrategyTest {
 					+ ReportingEclipseEnvironmentFake.JAVA_VERSION
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D156030503.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+				+ "&utm_content=" + JBossToolsUsageActivator.getDefault().getBundle().getVersion()
 				+ "&gaq=1";
+		
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_TRACKING_CODE_VERSION, url, targetUrl));
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_HOST_NAME, url, targetUrl));
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_LANGUAGE_ENCODING, url, targetUrl));
@@ -66,6 +68,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, url, targetUrl));
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, url, targetUrl));
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_FLASH_VERSION, url, targetUrl));
+		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_AD_CONTENT, url, targetUrl));
 
 		assertTrue(hasCookieValue("__utma", url));
 		assertTrue(hasCookieValue("__utmz", url));
