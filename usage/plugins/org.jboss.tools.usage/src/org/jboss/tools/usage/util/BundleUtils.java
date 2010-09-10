@@ -10,8 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Assert;
@@ -29,14 +28,8 @@ public class BundleUtils {
 	 * @param bundles the bundles
 	 * @return the bundles that match the given filter
 	 */
-	public static List<Bundle> getBundles(ICollectionEntryFilter<Bundle> filter, Bundle[] bundles) {
-		List<Bundle> bundleList = new ArrayList<Bundle>();
-		for (Bundle bundle : bundles) {
-			if (filter.matches(bundle)) {
-				bundleList.add(bundle);
-			}
-		}
-		return bundleList;
+	public static Collection<Bundle> getBundles(ICollectionEntryFilter<Bundle> filter, Bundle[] bundles) {
+		return CollectionFilterUtils.filter(filter, bundles);
 	}
 
 	/**
@@ -46,7 +39,7 @@ public class BundleUtils {
 	 * @param bundles the bundles
 	 * @return the bundles
 	 */
-	public static List<Bundle> getBundles(String bundleSymbolicNameRegex, Bundle[] bundles) {
+	public static Collection<Bundle> getBundles(String bundleSymbolicNameRegex, Bundle[] bundles) {
 		return getBundles(new BundleSymbolicNameFilter(bundleSymbolicNameRegex), bundles);
 	}
 

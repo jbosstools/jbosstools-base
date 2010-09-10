@@ -13,7 +13,10 @@ package org.jboss.tools.usage.reporting;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.IBundleGroup;
+import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.jboss.tools.usage.util.BundleUtils;
 import org.jboss.tools.usage.util.CollectionFilterUtils;
 import org.jboss.tools.usage.util.ICollectionEntryFilter;
@@ -231,7 +234,7 @@ public class JBossComponents {
 	private JBossComponents() {
 		// inhibit instantiation
 	}
-	
+
 	/**
 	 * Returns the jboss components that the given bundles are members of
 	 * 
@@ -249,5 +252,22 @@ public class JBossComponents {
 				, new JBossComponentBundlesFilter(jbossComponentNames));
 		BundleUtils.getBundles(compositeFilter, bundles);
 		return jbossComponentNames;
+	}
+
+	private static class JBossBundleGroupNameFilter implements ICollectionEntryFilter<IBundleGroup> {
+
+		Pattern pattern = Pattern.compile(JBOSS_TOOLS_BUNDLES_PREFIX);
+
+		public boolean matches(IBundleGroup bundleGroup) {
+			return pattern.matcher(bundleGroup.getName()).matches();
+		}
+	}
+
+	public static Collection<String> getComponentIds(IBundleGroupProvider[] bundleGroupProviders) {
+		Set<String> components = new TreeSet<String>();
+		for (IBundleGroupProvider bundleGroupProvider : bundleGroupProviders) {
+			CollectionFilterUtils.filter(new JBossBundleGroupNameFilter(), bundleGroupProvider.getBundleGroups());
+		}
+		return components;
 	}
 }

@@ -10,6 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.usage.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 
 /**
  * @author Andre Dietisheim
@@ -47,4 +51,22 @@ public class CollectionFilterUtils {
 			return true;
 		}
 	}
+	
+	/**
+	 * Returns the entries that match the given filter.
+	 *
+	 * @param filter the filter to match the available entries against
+	 * @param entries the entries to filter
+	 * @return the entries that match the given filter
+	 */
+	public static <E> Collection<E> filter(ICollectionEntryFilter<E> filter, E[] entries) {
+		List<E> filteredList = new ArrayList<E>();
+		for (E entry : entries) {
+			if (filter.matches(entry)) {
+				filteredList.add(entry);
+			}
+		}
+		return filteredList;
+	}
+
 }
