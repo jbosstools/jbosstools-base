@@ -14,7 +14,6 @@ import org.eclipse.osgi.util.NLS;
 
 public class ReportingMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.usage.reporting.messages"; //$NON-NLS-1$
-	public static String EclipseEnvironment_Error_SavePreferences;
 
 	public static String UsageReport_Reporting_Usage;
 	public static String UsageReport_Querying_Enablement;
@@ -26,6 +25,7 @@ public class ReportingMessages extends NLS {
 	public static String UsageReport_Error_SavePreferences;
 	public static String UsageReport_GoogleAnalyticsAccount;
 	public static String UsageReport_HostName;
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, ReportingMessages.class);

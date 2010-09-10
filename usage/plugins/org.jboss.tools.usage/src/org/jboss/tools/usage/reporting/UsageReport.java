@@ -84,7 +84,7 @@ public class UsageReport {
 	}
 
 	private ITracker getTracker() {
-		IGoogleAnalyticsParameters eclipseEnvironment = new EclipseEnvironment(
+		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironment(
 				GANALYTICS_ACCOUNTNAME
 				, HOST_NAME
 				, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL

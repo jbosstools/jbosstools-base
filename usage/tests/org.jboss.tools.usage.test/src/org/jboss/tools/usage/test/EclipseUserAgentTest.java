@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.usage.reporting.EclipseEnvironment;
+import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
 import org.jboss.tools.usage.reporting.JBossBundleGroups;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
@@ -71,7 +71,7 @@ public class EclipseUserAgentTest {
 
 	@Test
 	public void testKeyword() {
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake() {
+		AbstractEclipseEnvironment eclipseEnvironment = new ReportingEclipseEnvironmentFake() {
 			@Override
 			protected Bundle[] getBundles() {
 				return new Bundle[] {
@@ -235,7 +235,7 @@ public class EclipseUserAgentTest {
 	@Test
 	public void testVisitsOnFirstVisit() {
 		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(preferences);
+		AbstractEclipseEnvironment eclipseEnvironment = new ReportingEclipseEnvironmentFake(preferences);
 		String firstVisit = eclipseEnvironment.getFirstVisit();
 		assertEquals(1, eclipseEnvironment.getVisitCount());
 		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
@@ -246,7 +246,7 @@ public class EclipseUserAgentTest {
 	@Test
 	public void testVisitsOnSecondVisit() throws InterruptedException {
 		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(preferences);
+		AbstractEclipseEnvironment eclipseEnvironment = new ReportingEclipseEnvironmentFake(preferences);
 		String firstVisit = eclipseEnvironment.getFirstVisit();
 		Thread.sleep(10);
 		eclipseEnvironment.visit();
@@ -260,7 +260,7 @@ public class EclipseUserAgentTest {
 	@Test
 	public void testVisitsOnThirdVisit() throws InterruptedException {
 		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
-		EclipseEnvironment eclipseEnvironment = new EclipseEnvironmentFake(preferences);
+		AbstractEclipseEnvironment eclipseEnvironment = new ReportingEclipseEnvironmentFake(preferences);
 		String firstVisit = eclipseEnvironment.getFirstVisit();
 		Thread.sleep(10);
 		eclipseEnvironment.visit();

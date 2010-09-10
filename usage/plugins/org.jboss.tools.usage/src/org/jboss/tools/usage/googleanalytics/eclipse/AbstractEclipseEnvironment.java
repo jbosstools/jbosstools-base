@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.reporting;
+package org.jboss.tools.usage.googleanalytics.eclipse;
 
 import java.util.Random;
 
@@ -21,19 +21,14 @@ import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.IUserAgent;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
-import org.jboss.tools.usage.util.BundleUtils;
-import org.jboss.tools.usage.util.BundleUtils.IBundleEntryFilter;
 import org.jboss.tools.usage.util.PreferencesUtils;
-import org.osgi.framework.Bundle;
 
 /**
  * @author Andre Dietisheim
  */
-public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implements IGoogleAnalyticsParameters {
+public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalyticsParameters implements IGoogleAnalyticsParameters {
 
 	private static final String SYSPROP_JAVA_VERSION = "java.version";
-	private static final String JBOSS_TOOLS_BUNDLES_PREFIX = "org\\.jboss\\.tools.+"; //$NON-NLS-1$
-	private static final char BUNDLE_GROUP_DELIMITER = '-';
 
 	private String screenResolution;
 	private String screenColorDepth;
@@ -45,7 +40,7 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 	private long visitCount;
 	private IUserAgent eclipseUserAgent;
 
-	public EclipseEnvironment(String accountName, String hostName, String referral, IEclipsePreferences preferences) {
+	public AbstractEclipseEnvironment(String accountName, String hostName, String referral, IEclipsePreferences preferences) {
 		super(accountName, hostName, referral);
 		this.random = new Random();
 		this.preferences = preferences;
@@ -116,7 +111,7 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		if (userId == null) {
 			userId = createIdentifier();
 			preferences.put(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, userId);
-			PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(), ReportingMessages.EclipseEnvironment_Error_SavePreferences);
+			PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(), GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
 		}
 		return userId;
 	}
@@ -133,31 +128,8 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		return builder.toString();
 	}
 
-	public String getKeyword() {
-		JBossBundleGroups jbossBundleGroups = new JBossBundleGroups();
-		IBundleEntryFilter jbossToolsFilter = new BundleUtils.BundleSymbolicNameFilter(JBOSS_TOOLS_BUNDLES_PREFIX);
-		IBundleEntryFilter compositeFilter = new BundleUtils.CompositeFilter(
-				jbossToolsFilter
-				, jbossBundleGroups);
-		BundleUtils.getBundles(compositeFilter, getBundles());
-
-		return bundleGroupsToKeywordString(jbossBundleGroups);
-	}
-
-	protected Bundle[] getBundles() {
-		return JBossToolsUsageActivator.getDefault().getBundle().getBundleContext().getBundles();
-	}
-
-	private String bundleGroupsToKeywordString(JBossBundleGroups jbossBundleGroups) {
-		char delimiter = BUNDLE_GROUP_DELIMITER;
-		StringBuilder builder = new StringBuilder();
-		for (String bundleGroupId : jbossBundleGroups.getBundleGroupIds()) {
-			builder.append(bundleGroupId)
-					.append(delimiter);
-		}
-		return builder.toString();
-	}
-
+	public abstract String getKeyword();
+	
 	public String getCurrentVisit() {
 		return currentVisit;
 	}
@@ -180,7 +152,7 @@ public class EclipseEnvironment extends AbstractGoogleAnalyticsParameters implem
 		currentVisit = String.valueOf(System.currentTimeMillis());
 		visitCount++;
 		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount);
-		PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(), ReportingMessages.EclipseEnvironment_Error_SavePreferences);
+		PreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(), GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
 	}
 
 	public String getFlashVersion() {

@@ -12,12 +12,12 @@ package org.jboss.tools.usage.test;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.googleanalytics.IUserAgent;
-import org.jboss.tools.usage.reporting.EclipseEnvironment;
+import org.jboss.tools.usage.reporting.ReportingEclipseEnvironment;
 
 /**
  * @author Andre Dietisheim
  */
-public class EclipseEnvironmentFake extends EclipseEnvironment {
+public class ReportingEclipseEnvironmentFake extends ReportingEclipseEnvironment {
 
 	public static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 	public static final String HOSTNAME = "jboss.org";
@@ -26,19 +26,19 @@ public class EclipseEnvironmentFake extends EclipseEnvironment {
 
 	private String javaVersion;
 
-	public EclipseEnvironmentFake() {
+	public ReportingEclipseEnvironmentFake() {
 		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, JAVA_VERSION, new EclipsePreferencesFake());
 	}
 
-	public EclipseEnvironmentFake(IEclipsePreferences preferences) {
+	public ReportingEclipseEnvironmentFake(IEclipsePreferences preferences) {
 		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, REFERRAL, JAVA_VERSION, preferences);
 	}
 
-	public EclipseEnvironmentFake(String accountName, String hostName, String referral) {
+	public ReportingEclipseEnvironmentFake(String accountName, String hostName, String referral) {
 		this(accountName, hostName, referral, JAVA_VERSION, new EclipsePreferencesFake());
 	}
 
-	public EclipseEnvironmentFake(String accountName, String hostName, String referral, String javaVersion,
+	public ReportingEclipseEnvironmentFake(String accountName, String hostName, String referral, String javaVersion,
 			IEclipsePreferences preferences) {
 		super(accountName, hostName, referral, preferences);
 		this.javaVersion = javaVersion;

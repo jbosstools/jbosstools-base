@@ -30,7 +30,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 
 	@Before
 	public void setUp() {
-		this.urlStrategy = new GoogleAnalyticsUrlStrategy(new EclipseEnvironmentFake());
+		this.urlStrategy = new GoogleAnalyticsUrlStrategy(new ReportingEclipseEnvironmentFake());
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 				+ "&utmr=0"
 				+ "&utmp=%2Ftesting%2Fstrategy"
 				+ "&utmfl="
-					+ EclipseEnvironmentFake.JAVA_VERSION
+					+ ReportingEclipseEnvironmentFake.JAVA_VERSION
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D156030503.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 				+ "&gaq=1";
@@ -76,7 +76,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 
 	@Test
 	public void visitCountIncreases() throws Exception {
-		IGoogleAnalyticsParameters eclipseEnvironment = new EclipseEnvironmentFake();
+		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironmentFake();
 		assertEquals(1, eclipseEnvironment.getVisitCount());
 		eclipseEnvironment.visit();
 		assertEquals(2, eclipseEnvironment.getVisitCount());

@@ -2,7 +2,7 @@ package org.jboss.tools.usage.test;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.usage.reporting.EclipseUserAgent;
+import org.jboss.tools.usage.googleanalytics.eclipse.EclipseUserAgent;
 
 public class EclipseUserAgentFake extends EclipseUserAgent {
 

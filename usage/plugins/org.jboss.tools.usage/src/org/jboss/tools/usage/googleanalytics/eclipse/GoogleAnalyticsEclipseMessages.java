@@ -8,13 +8,21 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.test;
+package org.jboss.tools.usage.googleanalytics.eclipse;
 
-/**
- * @author Andre Dietisheim
- */
-public class EclipseEnvironmentFakeSingleton {
+import org.eclipse.osgi.util.NLS;
 
-	public static ReportingEclipseEnvironmentFake INSTANCE = new ReportingEclipseEnvironmentFake();
+public class GoogleAnalyticsEclipseMessages extends NLS {
 	
+	private static final String BUNDLE_NAME = "org.jboss.tools.usage.googleanalytics.messages"; //$NON-NLS-1$
+
+	public static String EclipseEnvironment_Error_SavePreferences;
+
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, GoogleAnalyticsEclipseMessages.class);
+	}
+
+	private GoogleAnalyticsEclipseMessages() {
+	}
 }

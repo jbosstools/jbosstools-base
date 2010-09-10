@@ -51,12 +51,12 @@ public class JBossToolsUsageIntegrationTest {
 	public void differentUserIdOnDifferentEclipseInstance() throws Exception {
 		String focusPointName = "testDifferentUserIdOnDifferentEclipseInstance"
 				+ System.currentTimeMillis();
-		UrlRevealingTracker tracker = getTracker(new EclipseEnvironmentFake());
+		UrlRevealingTracker tracker = getTracker(new ReportingEclipseEnvironmentFake());
 		tracker.trackSynchronously(createFocusPoint(focusPointName));
 		String userId = getUserId(tracker.getTrackingUrl());
 		assertTrue(userId != null);
 
-		tracker = getTracker(new EclipseEnvironmentFake());
+		tracker = getTracker(new ReportingEclipseEnvironmentFake());
 		FocusPoint focusPoint = createFocusPoint(focusPointName);
 		tracker.trackSynchronously(focusPoint);
 		String newUserId = getUserId(tracker.getTrackingUrl());
@@ -67,7 +67,7 @@ public class JBossToolsUsageIntegrationTest {
 
 	@Test
 	public void visitCountIncreases() throws Exception {
-		IGoogleAnalyticsParameters eclipseEnvironment = new EclipseEnvironmentFake();
+		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironmentFake();
 		assertEquals(1, eclipseEnvironment.getVisitCount());
 		UrlRevealingTracker tracker = getTracker(eclipseEnvironment);
 		tracker.trackSynchronously(createFocusPoint("testVisitCount"));

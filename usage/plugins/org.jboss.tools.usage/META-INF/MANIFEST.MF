@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.jboss.tools.usage,
  org.jboss.tools.usage.googleanalytics,
- org.jboss.tools.usage.preferences; x-friends:="org.jboss.tools.usage.test",
+ org.jboss.tools.usage.googleanalytics.eclipse,
+ org.jboss.tools.usage.preferences;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.reporting;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.util
 Require-Bundle: org.eclipse.osgi;bundle-version="3.5.0",
