@@ -129,10 +129,12 @@ public class XAttributeSupport {
 			XAttribute attr = ads[i].getAttribute();
 			IModelPropertyEditorAdapter adapter = (useObject) ? createAdapter(xmo, attr) : createAdapter(xmo, ads[i]);
 			PropertyEditor editor = (useObject) ? createEditor(adapter, xmo, attr) : createEditor(adapter, xmo, ads[i]);
-			String labelText = WizardKeys.getAttributeDisplayName(ads[i]);
-			if (labelText!=null) {
-				labelText = labelText + ((ads[i].getMandatoryFlag()) ? "*" : ""); //$NON-NLS-1$ //$NON-NLS-2$
-				editor.setLabelText(labelText);
+			if(editor.getLabelText() == null) {
+				String labelText = WizardKeys.getAttributeDisplayName(ads[i]);
+				if (labelText!=null) {
+					labelText = labelText + ((ads[i].getMandatoryFlag()) ? "*" : ""); //$NON-NLS-1$ //$NON-NLS-2$
+					editor.setLabelText(labelText);
+				}
 			}
 			adapters.add(adapter);
 			

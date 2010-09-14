@@ -217,10 +217,12 @@ public class Form extends ExpandableForm {
 			for(int i=0; i<attributes.length; i++) {
 				shownProperties[i] = attributes[i].getName();
 				String label = null;
-				if(childEntity != null && childEntity.getAttribute(attributes[i].getName()) != null) {
+				if(attributes[i].getDisplayName() != null && attributes[i].getDisplayName().length() > 0) {
+					label = attributes[i].getDisplayName();
+				} else if(childEntity != null && childEntity.getAttribute(attributes[i].getName()) != null) {
 					label = WizardKeys.getAttributeDisplayName(childEntity.getAttribute(attributes[i].getName()), true);
 				}
-				columnLabels[i] = label != null ? label : attributes[i].getDisplayName();
+				columnLabels[i] = label != null ? label : "";
 				widths[i] = attributes[i].getWidth();
 			}
 

@@ -108,7 +108,7 @@ public class FormAttributeData implements IFormAttributeData {
 	 * For use only as table column name
 	 */
 	public String getDisplayName() {
-		return (displayName == null) ? WizardKeys.toDisplayName(name) : displayName;
+		return displayName;
 	}
 
     public ILayoutDataFactory getLayoutDataFactory() {
