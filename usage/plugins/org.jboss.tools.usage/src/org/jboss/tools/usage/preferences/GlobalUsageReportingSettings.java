@@ -13,12 +13,14 @@ package org.jboss.tools.usage.preferences;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Plugin;
-import org.jboss.tools.usage.HttpResourceMap;
+import org.jboss.tools.usage.http.HttpResourceMap;
 
 /**
  * A class that implements a global reporting enablement setting. The current
  * implementation queries a given url and extracts the enablement value out of
  * the response.
+ * 
+ * @author Andre Dietisheim
  */
 public class GlobalUsageReportingSettings extends HttpResourceMap {
 

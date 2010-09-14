@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage;
+package org.jboss.tools.usage.http;
 
 /**
  * A interface that represents a HTTP Get Request.

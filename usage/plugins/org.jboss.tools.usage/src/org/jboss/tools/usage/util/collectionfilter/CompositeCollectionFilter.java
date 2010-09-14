@@ -11,6 +11,9 @@
 
 package org.jboss.tools.usage.util.collectionfilter;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class CompositeCollectionFilter<E> implements ICollectionFilter<E> {
 
 	private ICollectionFilter<E> filters[];

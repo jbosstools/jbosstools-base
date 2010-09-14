@@ -13,6 +13,8 @@ package org.jboss.tools.usage;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
+import org.jboss.tools.usage.http.IHttpGetRequest;
+
 /**
  * Reports (tracks) usage
  * 

@@ -15,6 +15,11 @@ import org.jboss.tools.usage.util.HttpEncodingUtils;
 /**
  * Focus point of the application. It can represent data points like application
  * load, application module load, user actions, error events etc.
+ * 
+ * @author Andre Dietisheim
+ * @see based on <a
+ *      href="http://jgoogleAnalytics.googlecode.com">http://jgoogleAnalytics
+ *      .googlecode.com</a>
  */
 public class FocusPoint {
 

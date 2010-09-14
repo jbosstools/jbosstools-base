@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.usage.util.collectionfilter;
 
+/**
+ * @author Andre Dietisheim
+ */
 public interface ICollectionEntryConverter<E, T> {
 	public T convert(E entry);
 }

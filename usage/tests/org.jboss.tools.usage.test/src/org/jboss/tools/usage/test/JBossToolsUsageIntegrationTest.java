@@ -17,13 +17,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jboss.tools.usage.FocusPoint;
-import org.jboss.tools.usage.HttpGetRequest;
-import org.jboss.tools.usage.IHttpGetRequest;
 import org.jboss.tools.usage.ILoggingAdapter;
 import org.jboss.tools.usage.IURLBuildingStrategy;
 import org.jboss.tools.usage.PluginLogger;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
+import org.jboss.tools.usage.http.HttpGetRequest;
+import org.jboss.tools.usage.http.IHttpGetRequest;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.jboss.tools.usage.test.fakes.RepportingEclipseEnvironmentFakeSingleton;
 import org.junit.Test;
@@ -97,8 +97,6 @@ public class JBossToolsUsageIntegrationTest {
 	}
 
 	private FocusPoint createFocusPoint(String childFocusPoint) {
-		return new FocusPoint("tools")
-					.setChild(new FocusPoint("usage")
-							.setChild(new FocusPoint(childFocusPoint)));
+		return new JBossToolsTestsFocusPoint(childFocusPoint);
 	}
 }

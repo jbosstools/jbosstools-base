@@ -15,12 +15,13 @@ import org.jboss.tools.usage.FocusPoint;
 /**
  * @author Andre Dietisheim
  */
-public class JBossToolsFocusPoint extends FocusPoint {
+public class JBossToolsTestsFocusPoint extends FocusPoint {
 
-	public JBossToolsFocusPoint(String childFocusPoint) {
+	public JBossToolsTestsFocusPoint(String childFocusPoint) {
 		super("tools");
 		setChild(new FocusPoint("usage")
-			.setChild(new FocusPoint(childFocusPoint)));
+				.setChild(new FocusPoint("tests")
+						.setChild(new FocusPoint(childFocusPoint))));
 	}
 
 }

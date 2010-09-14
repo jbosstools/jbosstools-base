@@ -12,7 +12,6 @@ package org.jboss.tools.usage;
 
 import java.io.UnsupportedEncodingException;
 
-
 /**
  * Interface for the URL building strategy
  * 

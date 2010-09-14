@@ -14,8 +14,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-import org.jboss.tools.usage.HttpGetRequest;
 import org.jboss.tools.usage.ILoggingAdapter;
+import org.jboss.tools.usage.http.HttpGetRequest;
 import org.junit.Test;
 
 /**
@@ -971,7 +971,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=0"
 				+ "&utm_content=1.0.0.qualifier"
-				+ "&utmp=testJBossToolsVersionInAdContent"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testJBossToolsVersionInAdContent")
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297294488397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1013,7 +1013,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testWinWin7UserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=testWinWin7UserAgent"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinWin7UserAgent")
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297885388356354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1034,7 +1034,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testWinVistaUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=testWinVistaUserAgent"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinVistaUserAgent")
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297885388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1055,7 +1055,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testWinXPUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=testWinXPUserAgent"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinXPUserAgent")
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297245388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1076,7 +1076,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testWin2000UserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=testWin2000UserAgent"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWin2000UserAgent")
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297292388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1097,7 +1097,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testMacLeopardUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=testMacLeopardUserAgent"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testMacLeopardUserAgent")
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297292388397333581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1118,7 +1118,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testMacSnowLeopardUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=testMacSnowLeopardUserAgent"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testMacSnowLeopardUserAgent")
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297292388397333581222108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";

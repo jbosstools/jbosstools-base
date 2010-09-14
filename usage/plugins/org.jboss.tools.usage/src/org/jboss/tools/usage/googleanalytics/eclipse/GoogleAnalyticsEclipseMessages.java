@@ -12,6 +12,9 @@ package org.jboss.tools.usage.googleanalytics.eclipse;
 
 import org.eclipse.osgi.util.NLS;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class GoogleAnalyticsEclipseMessages extends NLS {
 	
 	private static final String BUNDLE_NAME = "org.jboss.tools.usage.googleanalytics.messages"; //$NON-NLS-1$

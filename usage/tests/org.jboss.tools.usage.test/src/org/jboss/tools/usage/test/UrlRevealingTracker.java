@@ -15,10 +15,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.jboss.tools.usage.FocusPoint;
-import org.jboss.tools.usage.IHttpGetRequest;
 import org.jboss.tools.usage.ILoggingAdapter;
 import org.jboss.tools.usage.IURLBuildingStrategy;
 import org.jboss.tools.usage.Tracker;
+import org.jboss.tools.usage.http.IHttpGetRequest;
 
 /**
  * @author Andre Dietisheim

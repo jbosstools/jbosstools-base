@@ -15,11 +15,8 @@ import org.junit.runners.Suite;
 
 /**
  * @author Andre Dietisheim
- *
  */
 @RunWith(Suite.class)
-/**
- */
 @Suite.SuiteClasses({
 		FocusPointTest.class,
 		GoogleAnalyticsUrlStrategyTest.class,

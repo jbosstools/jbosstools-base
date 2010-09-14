@@ -19,6 +19,9 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.osgi.service.prefs.BackingStoreException;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class PreferencesUtils {
 		
 	private PreferencesUtils() {

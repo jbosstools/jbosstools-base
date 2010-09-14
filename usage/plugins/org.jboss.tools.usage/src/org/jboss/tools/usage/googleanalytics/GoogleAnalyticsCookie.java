@@ -11,6 +11,9 @@
 package org.jboss.tools.usage.googleanalytics;
 
 
+/**
+ * @author Andre Dietisheim
+ */
 public class GoogleAnalyticsCookie {
 
 	private CharSequence value;

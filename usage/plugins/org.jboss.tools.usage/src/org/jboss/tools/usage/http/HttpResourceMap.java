@@ -1,4 +1,14 @@
-package org.jboss.tools.usage;
+/*******************************************************************************
+ * Copyright (c) 2010 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.usage.http;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -12,10 +22,18 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.jboss.tools.usage.UsageMessages;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.jboss.tools.usage.util.reader.ReaderUtils;
 
+/**
+ * Base class that holds a map that subclasses may get. The values in the map
+ * are fetched and parsed from a document that is fetched on a url that the
+ * subclass provides
+ * 
+ * @author Andre Dietisheim
+ */
 public abstract class HttpResourceMap {
 
 	static final String GET_METHOD_NAME = "GET"; //$NON-NLS-1$
@@ -85,7 +103,8 @@ public abstract class HttpResourceMap {
 		}
 	}
 
-	private InputStreamReader getInputStreamReader(InputStream inputStream, String contentType) throws UnsupportedEncodingException, IOException {
+	private InputStreamReader getInputStreamReader(InputStream inputStream, String contentType)
+			throws UnsupportedEncodingException, IOException {
 		String contentTypeCharset = HttpEncodingUtils.getContentTypeCharset(contentType);
 		if (contentTypeCharset != null && contentTypeCharset.length() > 0) {
 			return new InputStreamReader(new BufferedInputStream(inputStream),
@@ -120,7 +139,7 @@ public abstract class HttpResourceMap {
 	 * @param urlString
 	 *            the url string
 	 * @return the http url connection
-	 * @throws IOException 
+	 * @throws IOException
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */

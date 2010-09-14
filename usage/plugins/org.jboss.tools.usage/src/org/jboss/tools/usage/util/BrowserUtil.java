@@ -19,6 +19,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class BrowserUtil {
 
 	/**

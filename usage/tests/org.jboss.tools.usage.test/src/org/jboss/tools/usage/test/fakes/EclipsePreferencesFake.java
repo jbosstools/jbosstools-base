@@ -18,6 +18,9 @@ import org.eclipse.core.runtime.preferences.IPreferenceNodeVisitor;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class EclipsePreferencesFake implements IEclipsePreferences {
 
 	private Map<String, String> preferences;

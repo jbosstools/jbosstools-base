@@ -18,6 +18,9 @@ import org.jboss.tools.usage.util.PreferencesUtils;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class UsageReportPreferences {
 
 	public static void setEnabled(boolean enabled) {

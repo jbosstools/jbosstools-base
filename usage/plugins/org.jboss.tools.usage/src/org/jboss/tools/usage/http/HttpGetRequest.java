@@ -8,13 +8,15 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage;
+package org.jboss.tools.usage.http;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
 
+import org.jboss.tools.usage.ILoggingAdapter;
+import org.jboss.tools.usage.UsageMessages;
 
 /**
  * Class that executes a HTTP Get request to the given url.

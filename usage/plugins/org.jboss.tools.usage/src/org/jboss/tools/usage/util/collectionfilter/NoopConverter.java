@@ -10,7 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.usage.util.collectionfilter;
 
-
+/**
+ * @author Andre Dietisheim
+ */
 public class NoopConverter<E, T> implements ICollectionEntryConverter<E, T> {
 
 	@SuppressWarnings("unchecked")
