@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Assert;
+import org.jboss.tools.usage.util.collectionfilter.CollectionFilterUtils;
+import org.jboss.tools.usage.util.collectionfilter.ICollectionFilter;
 import org.osgi.framework.Bundle;
 
 /**
@@ -23,30 +25,38 @@ public class BundleUtils {
 
 	/**
 	 * Returns the bundles among the available ones that match the given filter.
-	 *
-	 * @param filter the filter to match the available bundles against
-	 * @param bundles the bundles
+	 * 
+	 * @param filter
+	 *            the filter to match the available bundles against
+	 * @param bundles
+	 *            the bundles
 	 * @return the bundles that match the given filter
 	 */
-	public static Collection<Bundle> getBundles(ICollectionEntryFilter<Bundle> filter, Bundle[] bundles) {
-		return CollectionFilterUtils.filter(filter, bundles);
+	public static void getBundles(ICollectionFilter<Bundle> filter, Collection<Bundle> filteredBundleCollection,
+			Bundle[] bundles) {
+		CollectionFilterUtils.filter(filter, bundles, filteredBundleCollection);
 	}
 
 	/**
 	 * Returns the bundles that have a symbolic name that match the given regex.
-	 *
-	 * @param bundleSymbolicNameRegex the symbolic name regex to match.
-	 * @param bundles the bundles
+	 * 
+	 * @param bundleSymbolicNameRegex
+	 *            the symbolic name regex to match.
+	 * @param bundles
+	 *            the bundles
 	 * @return the bundles
 	 */
-	public static Collection<Bundle> getBundles(String bundleSymbolicNameRegex, Bundle[] bundles) {
-		return getBundles(new BundleSymbolicNameFilter(bundleSymbolicNameRegex), bundles);
+	public static void getBundles(String bundleSymbolicNameRegex, Collection<Bundle> filteredBundleCollection,
+			Bundle[] bundles) {
+		getBundles(new BundleSymbolicNameFilter(bundleSymbolicNameRegex)
+				, filteredBundleCollection
+				, bundles);
 	}
 
 	/**
 	 * A filter that matches bundles against a given symbolic name regex.
 	 */
-	public static class BundleSymbolicNameFilter implements ICollectionEntryFilter<Bundle> {
+	public static class BundleSymbolicNameFilter implements ICollectionFilter<Bundle> {
 
 		private Pattern pattern;
 

@@ -8,11 +8,11 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.util;
+package org.jboss.tools.usage.util.collectionfilter;
 /**
  * @authro Andre Dietisheim
  */
-public interface ICollectionEntryFilter<E> {
+public interface ICollectionFilter<E> {
 
 	/**
 	 * Matches.

@@ -12,17 +12,18 @@ package org.jboss.tools.usage.reporting;
 
 import java.util.Collection;
 
+import org.eclipse.core.runtime.IBundleGroupProvider;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.osgi.framework.Bundle;
 
 /**
  * @author Andre Dietisheim
  */
 public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 
-	private static final char BUNDLE_GROUP_DELIMITER = '-';
+	private static final char JBOSS_COMPONENTS_DELIMITER = '-';
 
 	public ReportingEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
 		super(accountName, hostName, preferences);
@@ -30,15 +31,16 @@ public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 
 	@Override
 	public String getKeyword() {
-		return bundleGroupsToKeywordString(JBossComponents.getComponentIds(getBundles()));
+		Collection<String> jbossComponentNames = JBossComponents.getComponentIds(getBundleGroupProviders());
+		return bundleGroupsToKeywordString(jbossComponentNames );
 	}
 
-	protected Bundle[] getBundles() {
-		return JBossToolsUsageActivator.getDefault().getBundle().getBundleContext().getBundles();
+	protected IBundleGroupProvider[] getBundleGroupProviders() {
+		return Platform.getBundleGroupProviders();
 	}
 
 	private String bundleGroupsToKeywordString(Collection<String> jbossComponentNames) {
-		char delimiter = BUNDLE_GROUP_DELIMITER;
+		char delimiter = JBOSS_COMPONENTS_DELIMITER;
 		StringBuilder builder = new StringBuilder();
 		for (String componentName : jbossComponentNames) {
 			builder.append(componentName)
