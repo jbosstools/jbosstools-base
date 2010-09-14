@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.test;
+package org.jboss.tools.usage.test.fakes;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.googleanalytics.IUserAgent;

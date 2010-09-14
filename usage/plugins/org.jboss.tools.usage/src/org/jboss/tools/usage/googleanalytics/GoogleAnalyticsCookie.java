@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.usage.googleanalytics;
 
-import org.eclipse.core.runtime.Assert;
 
 public class GoogleAnalyticsCookie {
 
@@ -19,9 +18,6 @@ public class GoogleAnalyticsCookie {
 	private char[] delimiters;
 
 	public GoogleAnalyticsCookie(String identifier, CharSequence value, char... delimiters) {
-		Assert.isTrue(identifier != null && identifier.length() > 0);
-		Assert.isTrue(value != null && value.length() > 0);
-
 		this.identifier = identifier;
 		this.value = value;
 		this.delimiters = delimiters;
@@ -32,11 +28,13 @@ public class GoogleAnalyticsCookie {
 	}
 
 	public void appendTo(StringBuilder builder) {
-		builder.append(identifier)
-				.append(IGoogleAnalyticsParameters.EQUALS_SIGN)
-				.append(value);
-		for (char delimiter : delimiters) {
-			builder.append(delimiter);
+		if (identifier != null && identifier.length() > 0 && value != null && value.length() > 0) {
+			builder.append(identifier)
+					.append(IGoogleAnalyticsParameters.EQUALS_SIGN)
+					.append(value);
+			for (char delimiter : delimiters) {
+				builder.append(delimiter);
+			}
 		}
 	}
 }

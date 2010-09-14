@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2010 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.usage.test;
 
 import static org.junit.Assert.assertTrue;
@@ -5,13 +15,16 @@ import static org.junit.Assert.assertTrue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
 import org.jboss.tools.usage.reporting.JBossComponents;
+import org.jboss.tools.usage.test.fakes.BundleGroupProviderFake;
+import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.junit.Test;
-import org.osgi.framework.Bundle;
 
+/**
+ * @author Andre Dietisheim
+ */
 public class ReportingEclipseEnvironmentTest {
 
 	@Test
@@ -56,59 +69,5 @@ public class ReportingEclipseEnvironmentTest {
 		assertTrue(keyword != null && keyword.length() == 0);
 	}
 
-	private static class BundleGroupProviderFake implements IBundleGroupProvider {
 
-		private String[] featureNames;
-
-		public BundleGroupProviderFake(String... featureNames) {
-			this.featureNames = featureNames;
-		}
-
-		public String getName() {
-			throw new UnsupportedOperationException();
-		}
-
-		public IBundleGroup[] getBundleGroups() {
-			IBundleGroup[] bundleGroups = new IBundleGroup[featureNames.length];
-			for (int i = 0; i < featureNames.length; i++) {
-				bundleGroups[i] = createBundleGroup(featureNames[i]);
-			}
-			return bundleGroups;
-		}
-
-		private IBundleGroup createBundleGroup(final String name) {
-			return new IBundleGroup() {
-
-				public String getVersion() {
-					throw new UnsupportedOperationException();
-				}
-
-				public String getProviderName() {
-					throw new UnsupportedOperationException();
-				}
-
-				public String getProperty(String key) {
-					throw new UnsupportedOperationException();
-				}
-
-				public String getName() {
-					return name;
-				}
-
-				public String getIdentifier() {
-					throw new UnsupportedOperationException();
-				}
-
-				public String getDescription() {
-					throw new UnsupportedOperationException();
-
-				}
-
-				public Bundle[] getBundles() {
-					throw new UnsupportedOperationException();
-				}
-			};
-		}
-
-	}
 }

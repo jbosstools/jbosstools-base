@@ -1,4 +1,4 @@
-package org.jboss.tools.usage.test;
+package org.jboss.tools.usage.test.fakes;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
@@ -11,12 +11,12 @@ public class EclipseUserAgentFake extends EclipseUserAgent {
 
 	public static final String LOCALE_US = "en_US";
 
-	static final String WIN2000_VERSION = "5.0";
-	static final String WINXP_VERSION = "5.1";
-	static final String VISTA_VERSION = "6.0";
-	static final String WIN7_VERSION = "6.1";
-	static final String MACLEOPARD_VERSION = "10.5";
-	static final String MACSNOWLEOPARD_VERSION = "10.6";
+	public static final String WIN2000_VERSION = "5.0";
+	public static final String WINXP_VERSION = "5.1";
+	public static final String VISTA_VERSION = "6.0";
+	public static final String WIN7_VERSION = "6.1";
+	public static final String MACLEOPARD_VERSION = "10.5";
+	public static final String MACSNOWLEOPARD_VERSION = "10.6";
 	
 	private String applicationName;
 	private String applicationVersion;

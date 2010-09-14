@@ -13,17 +13,20 @@ package org.jboss.tools.usage.test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses( {
-		FocusPointTest.class,
-		GoogleAnalyticsUrlStrategyTest.class,
-		JBossToolsUsageIntegrationTest.class,
-		EclipseUserAgentTest.class,
-		GlobalUsageReportingSettingsTest.class})
-
 /**
  * @author Andre Dietisheim
+ *
  */
+@RunWith(Suite.class)
+/**
+ */
+@Suite.SuiteClasses({
+		FocusPointTest.class,
+		GoogleAnalyticsUrlStrategyTest.class,
+		EclipseUserAgentTest.class,
+		ReportingEclipseEnvironmentTest.class,
+		JBossComponentsTest.class,
+		GlobalUsageReportingSettingsTest.class,
+		JBossToolsUsageIntegrationTest.class })
 public class UsageTestSuite {
-
 }

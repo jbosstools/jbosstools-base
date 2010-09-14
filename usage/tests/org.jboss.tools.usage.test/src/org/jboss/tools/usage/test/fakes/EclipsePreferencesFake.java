@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.test;
+package org.jboss.tools.usage.test.fakes;
 
 import java.util.HashMap;
 import java.util.Map;

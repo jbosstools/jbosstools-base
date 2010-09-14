@@ -13,24 +13,15 @@ package org.jboss.tools.usage.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
-import org.jboss.tools.usage.reporting.JBossComponents;
+import org.jboss.tools.usage.test.fakes.EclipsePreferencesFake;
+import org.jboss.tools.usage.test.fakes.EclipseUserAgentFake;
+import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.junit.Test;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.Version;
 
 /**
  * @author Andre Dietisheim
