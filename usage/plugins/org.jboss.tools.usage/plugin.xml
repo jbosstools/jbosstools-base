@@ -12,7 +12,7 @@
       <page
             class="org.jboss.tools.usage.preferences.UsageReportPreferencePage"
             id="org.jboss.tools.usage.analytics.preferences.UsageAnalyticsPreferencePage"
-            name="Usage Reporting Preferences"
+            name="%page.name"
             category="org.jboss.tools.common.model.ui.MainPreferencePage">
       </page>
    </extension>
