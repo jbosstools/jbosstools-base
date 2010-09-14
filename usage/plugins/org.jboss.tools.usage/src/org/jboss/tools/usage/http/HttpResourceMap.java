@@ -22,8 +22,8 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
-import org.jboss.tools.usage.UsageMessages;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
+import org.jboss.tools.usage.util.LoggingUtils;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.jboss.tools.usage.util.reader.ReaderUtils;
 
@@ -81,23 +81,23 @@ public abstract class HttpResourceMap {
 			urlConnection.connect();
 			int responseCode = getResponseCode(urlConnection);
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				IStatus status = StatusUtils.getDebugStatus(
+				IStatus status = StatusUtils.getInfoStatus(
 						plugin.getBundle().getSymbolicName()
-						, UsageMessages.KillSwitchPreference_Info_HttpQuery
+						, HttpMessages.HttpResourceMap_Info_HttpQuery
 						, url);
-				plugin.getLog().log(status);
+				LoggingUtils.log(status, plugin);
 				responseReader = getInputStreamReader(urlConnection.getInputStream(), urlConnection.getContentType());
 			} else {
 				IStatus status = StatusUtils.getErrorStatus(
 						plugin.getBundle().getSymbolicName()
-						, UsageMessages.KillSwitchPreference_Error_Http, null, url);
+						, HttpMessages.HttpGetMethod_Error_Http, null, url);
 				plugin.getLog().log(status);
 			}
 			return responseReader;
 		} catch (IOException e) {
 			IStatus status = StatusUtils.getErrorStatus(
 					plugin.getBundle().getSymbolicName()
-					, UsageMessages.KillSwitchPreference_Error_Http, e, url);
+					, HttpMessages.HttpGetMethod_Error_Http, e, url);
 			plugin.getLog().log(status);
 			throw e;
 		}

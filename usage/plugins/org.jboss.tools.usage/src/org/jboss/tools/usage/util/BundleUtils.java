@@ -69,6 +69,5 @@ public class BundleUtils {
 
 			return pattern.matcher(bundle.getSymbolicName()).matches();
 		}
-
 	}
 }

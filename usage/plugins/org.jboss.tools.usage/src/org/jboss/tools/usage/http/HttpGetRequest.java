@@ -16,7 +16,6 @@ import java.net.URL;
 import java.text.MessageFormat;
 
 import org.jboss.tools.usage.ILoggingAdapter;
-import org.jboss.tools.usage.UsageMessages;
 
 /**
  * Class that executes a HTTP Get request to the given url.
@@ -54,12 +53,12 @@ public class HttpGetRequest implements IHttpGetRequest {
 			urlConnection.connect();
 			int responseCode = getResponseCode(urlConnection);
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				loggingAdapter.logMessage(MessageFormat.format(UsageMessages.HttpGetMethod_Success, urlString, responseCode));
+				loggingAdapter.logMessage(MessageFormat.format(HttpMessages.HttpGetMethod_Success, urlString, responseCode));
 			} else {
-				loggingAdapter.logError(MessageFormat.format(UsageMessages.HttpGetMethod_Error_Http, urlString));
+				loggingAdapter.logError(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, urlString));
 			}
 		} catch (Exception e) {
-			loggingAdapter.logMessage(MessageFormat.format(UsageMessages.HttpGetMethod_Error_Io, urlString, e.toString()));
+			loggingAdapter.logMessage(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, urlString, e.toString()));
 		} finally {
 //			setCookieHandler(currentCookieHandler);
 		}

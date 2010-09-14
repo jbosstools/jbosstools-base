@@ -59,7 +59,7 @@ public class StatusUtils {
 	 * 
 	 * @return the debug status
 	 */
-	public static IStatus getDebugStatus(String pluginId, String message, Object... messageArguments) {
+	public static IStatus getInfoStatus(String pluginId, String message, Object... messageArguments) {
 		return new Status(Status.INFO, pluginId, Status.INFO, MessageFormat.format(message, messageArguments), null);
 	}
 
@@ -74,7 +74,7 @@ public class StatusUtils {
 	public static IStatus clone(IStatus status) {
 		switch (status.getSeverity()) {
 		case IStatus.INFO:
-			return getDebugStatus(status.getPlugin(), status.getMessage());
+			return getInfoStatus(status.getPlugin(), status.getMessage());
 		case IStatus.ERROR:
 			return getErrorStatus(status.getPlugin(), status.getMessage(), status.getException());
 		default:

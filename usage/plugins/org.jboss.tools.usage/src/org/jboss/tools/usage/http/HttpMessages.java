@@ -8,21 +8,26 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage;
+package org.jboss.tools.usage.http;
 
 import org.eclipse.osgi.util.NLS;
 
-public class UsageMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.usage.messages"; //$NON-NLS-1$
-	public static String Tracker_Synchronous;
-	public static String Tracker_Asynchronous;
-	public static String Tracker_Error;
+public class HttpMessages extends NLS {
+	private static final String BUNDLE_NAME = "org.jboss.tools.usage.http.messages"; //$NON-NLS-1$
+	
+	public static String HttpGetMethod_Error_Http;
+	public static String HttpGetMethod_Error_Io;
+	public static String HttpGetMethod_Success;
 
+	public static String HttpResourceMap_Error_Exception;
+	public static String HttpResourceMap_Error_Http;
+	public static String HttpResourceMap_Info_HttpQuery;
+	
 	static {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, UsageMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, HttpMessages.class);
 	}
 
-	private UsageMessages() {
+	private HttpMessages() {
 	}
 }

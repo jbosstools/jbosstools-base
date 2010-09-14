@@ -17,7 +17,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public class GoogleAnalyticsEclipseMessages extends NLS {
 	
-	private static final String BUNDLE_NAME = "org.jboss.tools.usage.googleanalytics.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.jboss.tools.usage.googleanalytics.eclipse.messages"; //$NON-NLS-1$
 
 	public static String EclipseEnvironment_Error_SavePreferences;
 

@@ -8,21 +8,24 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage;
+package org.jboss.tools.usage.util;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Plugin;
 
-public class UsageMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.usage.messages"; //$NON-NLS-1$
-	public static String Tracker_Synchronous;
-	public static String Tracker_Asynchronous;
-	public static String Tracker_Error;
+/**
+ * @author Andre Dietisheim
+ */
+public class LoggingUtils {
 
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, UsageMessages.class);
+	public static boolean isPluginTracingEnabled(Plugin plugin) {
+		return plugin != null && plugin.isDebugging();
 	}
 
-	private UsageMessages() {
+	public static void log(IStatus status, Plugin plugin) {
+		if (status.getSeverity() == IStatus.INFO && !isPluginTracingEnabled(plugin)) {
+			return;
+		}
+		plugin.getLog().log(status);
 	}
 }

@@ -41,7 +41,7 @@ public class Tracker implements ITracker {
 		try {
 			httpRequest.request(getTrackingUrl(focusPoint));
 		} catch (Exception e) {
-			loggingAdapter.logMessage(MessageFormat.format(UsageMessages.Tracker_Error, e.getMessage()));
+			loggingAdapter.logError(MessageFormat.format(UsageMessages.Tracker_Error, e.getMessage()));
 		}
 	}
 
@@ -66,7 +66,7 @@ public class Tracker implements ITracker {
 			try {
 				httpRequest.request(getTrackingUrl(focusPoint));
 			} catch (Exception e) {
-				loggingAdapter.logMessage(MessageFormat.format(UsageMessages.Tracker_Error, e.getMessage()));
+				loggingAdapter.logError(MessageFormat.format(UsageMessages.Tracker_Error, e.getMessage()));
 			}
 		}
 	}
