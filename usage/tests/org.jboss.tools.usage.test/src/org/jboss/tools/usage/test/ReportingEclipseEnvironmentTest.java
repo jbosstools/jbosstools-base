@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
-import org.jboss.tools.usage.reporting.JBossComponents;
+import org.jboss.tools.usage.reporting.JBossToolsComponents;
 import org.jboss.tools.usage.test.fakes.BundleGroupProviderFake;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.junit.Test;
@@ -46,9 +46,9 @@ public class ReportingEclipseEnvironmentTest {
 
 		Matcher matcher = Pattern.compile("(([A-Z]+)-){3}").matcher(keyword);
 		assertTrue(matcher.matches());
-		assertTrue(keyword.indexOf(JBossComponents.JBossToolsFeatureNames.GWT.name()) >= 0);
-		assertTrue(keyword.indexOf(JBossComponents.JBossToolsFeatureNames.SEAM.name()) >= 0);
-		assertTrue(keyword.indexOf(JBossComponents.JBossToolsFeatureNames.SMOOKS.name()) >= 0);
+		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureNames.GWT.name()) >= 0);
+		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureNames.SEAM.name()) >= 0);
+		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureNames.SMOOKS.name()) >= 0);
 	}
 
 	@Test

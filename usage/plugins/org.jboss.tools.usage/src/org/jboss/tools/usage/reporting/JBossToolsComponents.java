@@ -24,7 +24,7 @@ import org.jboss.tools.usage.util.collectionfilter.ICollectionFilter;
 /**
  * @author Andre Dietisheim
  */
-public class JBossComponents {
+public class JBossToolsComponents {
 
 	public enum JBossToolsFeatureNames {
 		ARCHIVES("org.jboss.ide.eclipse.archives.feature"),
@@ -84,7 +84,7 @@ public class JBossComponents {
 
 	private static final String JBOSS_TOOLS_BUNDLES_PREFIX = "org\\.jboss\\.tools.+"; //$NON-NLS-1$
 
-	private JBossComponents() {
+	private JBossToolsComponents() {
 		// inhibit instantiation
 	}
 

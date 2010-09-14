@@ -6,16 +6,16 @@ import static org.junit.Assert.assertThat;
 import java.util.Collection;
 
 import org.eclipse.core.runtime.IBundleGroupProvider;
-import org.jboss.tools.usage.reporting.JBossComponents;
+import org.jboss.tools.usage.reporting.JBossToolsComponents;
 import org.jboss.tools.usage.test.fakes.BundleGroupProviderFake;
 import org.junit.Test;
 import org.junit.matchers.JUnitMatchers;
 
-public class JBossComponentsTest {
+public class JBossToolsComponentsTest {
 
 	@Test
 	public void reportedComponentsListIsComplete() {
-		Collection<String> componentIds = JBossComponents.getComponentIds(
+		Collection<String> componentIds = JBossToolsComponents.getComponentIds(
 				new IBundleGroupProvider[] {
 						new BundleGroupProviderFake("org.jboss.tools.gwt.feature")
 						, new BundleGroupProviderFake(
@@ -26,9 +26,9 @@ public class JBossComponentsTest {
 					});
 
 		assertThat(componentIds, JUnitMatchers.hasItems(
-				JBossComponents.JBossToolsFeatureNames.GWT.getAbbreviation(),
-				JBossComponents.JBossToolsFeatureNames.SEAM.getAbbreviation(),
-				JBossComponents.JBossToolsFeatureNames.SMOOKS.getAbbreviation()));
-		assertFalse(componentIds.contains(JBossComponents.JBossToolsFeatureNames.USAGE.getAbbreviation()));
+				JBossToolsComponents.JBossToolsFeatureNames.GWT.getAbbreviation(),
+				JBossToolsComponents.JBossToolsFeatureNames.SEAM.getAbbreviation(),
+				JBossToolsComponents.JBossToolsFeatureNames.SMOOKS.getAbbreviation()));
+		assertFalse(componentIds.contains(JBossToolsComponents.JBossToolsFeatureNames.USAGE.getAbbreviation()));
 	}
 }

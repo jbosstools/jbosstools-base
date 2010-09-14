@@ -31,7 +31,7 @@ public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 
 	@Override
 	public String getKeyword() {
-		Collection<String> jbossComponentNames = JBossComponents.getComponentIds(getBundleGroupProviders());
+		Collection<String> jbossComponentNames = JBossToolsComponents.getComponentIds(getBundleGroupProviders());
 		return bundleGroupsToKeywordString(jbossComponentNames );
 	}
 

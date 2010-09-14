@@ -25,7 +25,7 @@ import org.junit.runners.Suite;
 		GoogleAnalyticsUrlStrategyTest.class,
 		EclipseUserAgentTest.class,
 		ReportingEclipseEnvironmentTest.class,
-		JBossComponentsTest.class,
+		JBossToolsComponentsTest.class,
 		GlobalUsageReportingSettingsTest.class,
 		JBossToolsUsageIntegrationTest.class })
 public class UsageTestSuite {
