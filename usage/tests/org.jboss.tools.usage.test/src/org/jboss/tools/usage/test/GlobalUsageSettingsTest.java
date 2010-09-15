@@ -30,56 +30,81 @@ import org.junit.Test;
  */
 public class GlobalUsageSettingsTest {
 
+	/**
+	 * <ul>
+	 * <li>sys prop: <code>not set</code></li>
+	 * <li>remote prop: <code>not set</code></li>
+	 * </ul>
+	 * 
+	 * <p>
+	 * <code>enabled</code>
+	 * <p>
+	 */
 	@Test
-	public void canExtractEnabledValue() throws IOException {
-		GlobalUsageSettingsFake reportSettings = new GlobalUsageSettingsFake("true", "", "");
-		assertTrue(reportSettings.isAllInstancesReportingEnabled());
+	public void reportingIsENABLEDIfSysPropIsNOTSETAndRemotePropIsNOTSET() throws IOException {
+		GlobalUsageSettingsFake reportEnablement = new GlobalUsageSettingsFake("");
+		assertTrue(reportEnablement.isReportingEnabled());
 	}
 
+	/**
+	 * <ul>
+	 * <li>sys prop: <code>false</code></li>
+	 * <li>remote prop: <code>not set</code></li>
+	 * </ul>
+	 * 
+	 * <p>
+	 * <code>disabled</code>
+	 * <p>
+	 */
 	@Test
-	public void canExtractDisabledValue() throws IOException {
-		GlobalUsageSettingsFake reportSettings = new GlobalUsageSettingsFake("false", "", "");
-		assertFalse(reportSettings.isAllInstancesReportingEnabled());
+	public void instanceReportingIsDISABLEDIfSysPropIsFALSEAndRemotePropIsNOTSET() throws IOException {
+		System.setProperty(GlobalUsageSettings.USAGE_REPORTING_ENABLED_KEY, Boolean.FALSE.toString());
+		GlobalUsageSettingsFake reportEnablement = new GlobalUsageSettingsFake("");
+		assertFalse(reportEnablement.isReportingEnabled());
 	}
 
+	/**
+	 * <ul>
+	 * <li>sys prop: <code>true</code></li>
+	 * <li>remote prop: <code>false</code></li>
+	 * </ul>
+	 * 
+	 * <p>
+	 * <code>disabled</code>
+	 * <p>
+	 */
 	@Test
-	public void canExtractDisabledOutUndefinedValue() throws IOException {
-		GlobalUsageSettingsFake reportEnablement = new GlobalUsageSettingsFake("Rubbish", "", "");
-		assertFalse(reportEnablement.isAllInstancesReportingEnabled());
+	public void instanceReportingIsENABLEDIfSysPropIsTRUEAndRemotePropIsFALSE() throws IOException {
+		System.setProperty(GlobalUsageSettings.USAGE_REPORTING_ENABLED_KEY, Boolean.TRUE.toString());
+		GlobalUsageSettingsFake reportEnablement = new GlobalUsageSettingsFake("false");
+		assertFalse(reportEnablement.isReportingEnabled());
 	}
 
+	/**
+	 * <ul>
+	 * <li>sys prop: <code>not set</code></li>
+	 * <li>remote prop: <code>false</code></li>
+	 * </ul>
+	 * 
+	 * <p>
+	 * <code>disabled</code>
+	 * <p>
+	 */
 	@Test
-	public void instanceReportingIsEnabledIfSysPropIsNotSet() throws IOException {
-		GlobalUsageSettingsFake reportEnablement = new GlobalUsageSettingsFake("", "", "");
-		assertTrue(reportEnablement.isInstanceReportingEnabled());
-	}
-
-	@Test
-	public void instanceReportingIsDisabledIfSysPropIsFalse() throws IOException {
-		GlobalUsageSettingsFake reportEnablement = new GlobalUsageSettingsFake("", "", "");
-		System.setProperty(GlobalUsageSettings.SYSPROPS_INSTANCE_ENABLED_KEY, Boolean.FALSE.toString());
-		assertFalse(reportEnablement.isInstanceReportingEnabled());
-	}
-
-	@Test
-	public void instanceReportingIsEnabledIfSysPropIsTrue() throws IOException {
-		GlobalUsageSettingsFake reportEnablement = new GlobalUsageSettingsFake("", "", "");
-		System.setProperty(GlobalUsageSettings.SYSPROPS_INSTANCE_ENABLED_KEY, Boolean.TRUE.toString());
-		assertTrue(reportEnablement.isInstanceReportingEnabled());
+	public void instanceReportingIsENABLEDIfSysPropIsNOTSETAndRemotePropIsTRUE() throws IOException {
+		GlobalUsageSettingsFake reportEnablement = new GlobalUsageSettingsFake("");
+		System.setProperty(GlobalUsageSettings.USAGE_REPORTING_ENABLED_KEY, Boolean.FALSE.toString());
+		assertFalse(reportEnablement.isReportingEnabled());
 	}
 
 	private class GlobalUsageSettingsFake extends GlobalUsageSettings {
 
-		private String allInstancesEnabledValue;
-		private String integerValue;
-		private String stringValue;
+		private String usageReportingEnabled;
 
-		public GlobalUsageSettingsFake(String allInstancesEnabledValue, String dummyValue, String anotherValue)
+		public GlobalUsageSettingsFake(String usageReportingEnabled)
 				throws IOException {
 			super(JBossToolsUsageTestActivator.getDefault());
-			this.allInstancesEnabledValue = allInstancesEnabledValue;
-			this.stringValue = dummyValue;
-			this.integerValue = anotherValue;
+			this.usageReportingEnabled = usageReportingEnabled;
 		}
 
 		@Override
@@ -89,21 +114,18 @@ public class GlobalUsageSettingsTest {
 				@Override
 				protected InputStreamReader request(HttpURLConnection urlConnection)
 						throws UnsupportedEncodingException {
-					return new InputStreamReader(new ByteArrayInputStream(
-							getRemotePropertiesRawData(
-									allInstancesEnabledValue
-									, stringValue
-									, integerValue).getBytes())
+					return new InputStreamReader(
+							new ByteArrayInputStream(getRemotePropertiesRawData(usageReportingEnabled).getBytes())
 							, "UTF-8");
 				}
 			};
 		}
 	}
 
-	private String getRemotePropertiesRawData(String enablementValue, String dummyValue, String integerValue) {
+	private String getRemotePropertiesRawData(String enablementValue) {
 
 		return "some rubbish at the beginning..."
-				+ GlobalUsageSettings.REMOTEPROPS_ALLINSTANCES_ENABLED_KEY
+				+ GlobalUsageSettings.REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY
 				+ enablementValue
 				+ "\n"
 				+ "#"
@@ -115,6 +137,6 @@ public class GlobalUsageSettingsTest {
 	public void isPageAccessible() throws IOException {
 		GlobalUsageSettings reportEnablement = new GlobalUsageSettings(JBossToolsUsageTestActivator
 				.getDefault());
-		System.err.println("Usage reporting is globally \"" + reportEnablement.isAllInstancesReportingEnabled() + "\"");
+		System.err.println("Usage reporting is globally \"" + reportEnablement.isReportingEnabled() + "\"");
 	}
 }

@@ -24,6 +24,7 @@ import org.junit.runners.Suite;
 		EclipseUserAgentTest.class,
 		ReportingEclipseEnvironmentTest.class,
 		JBossToolsComponentsTest.class,
+		HttpRemotePropertiesTest.class,
 		GlobalUsageSettingsTest.class,
 		JBossToolsUsageIntegrationTest.class })
 public class UsageTestSuite {
