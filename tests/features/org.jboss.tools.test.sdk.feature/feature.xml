@@ -207,11 +207,11 @@ Raleigh NC 27606 USA.
          version="0.0.0"
          unpack="true"/>
 
-   <plugin
+   <!-- JBDS-1322 removed <plugin
          id="org.jboss.tools.jbpm.convert.test"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"/> -->
 
    <plugin
          id="org.jboss.tools.jsf.ui.test"
