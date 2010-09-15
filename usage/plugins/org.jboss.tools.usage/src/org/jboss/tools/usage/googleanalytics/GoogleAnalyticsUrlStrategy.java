@@ -109,12 +109,12 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 				builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_BROWSER_LANGUAGE, googleParameters.getBrowserLanguage(),
 				builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_TITLE, focusPoint.getContentTitle(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_TITLE, focusPoint.getTitle(), builder);
 		// appendParameter(IGoogleAnalyticsParameters.PARAM_HID,
 		// getRandomNumber(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_FLASH_VERSION, googleParameters.getFlashVersion(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_REFERRAL, googleParameters.getReferral(), builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getContentURI(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getURI(), builder);
 
 		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, googleParameters.getAccountName(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(), builder);

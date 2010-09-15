@@ -11,11 +11,12 @@
 package org.jboss.tools.usage.test;
 
 import org.jboss.tools.usage.FocusPoint;
+import org.jboss.tools.usage.JBossToolsFocusPoint;
 
 /**
  * @author Andre Dietisheim
  */
-public class JBossToolsTestsFocusPoint extends FocusPoint {
+public class JBossToolsTestsFocusPoint extends JBossToolsFocusPoint {
 
 	public JBossToolsTestsFocusPoint(String childFocusPoint) {
 		super("tools");

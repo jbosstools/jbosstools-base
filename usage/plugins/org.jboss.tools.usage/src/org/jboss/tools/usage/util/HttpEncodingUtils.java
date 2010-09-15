@@ -33,11 +33,11 @@ public class HttpEncodingUtils {
 	 * @return the encoded string or <tt>null</tt> if an error occured while
 	 *         encoding
 	 */
-	public static String checkedEncodeUtf8(String aString) {
+	public static String checkedEncodeUtf8(String string) {
 		try {
-			return URLEncoder.encode(aString, ENCODING_UTF8);
+			return URLEncoder.encode(string, ENCODING_UTF8);
 		} catch (UnsupportedEncodingException e) {
-			return aString;
+			return string;
 		}
 	}
 

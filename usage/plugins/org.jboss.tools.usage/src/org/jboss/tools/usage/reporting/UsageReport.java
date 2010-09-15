@@ -23,6 +23,7 @@ import org.jboss.tools.usage.FocusPoint;
 import org.jboss.tools.usage.ILoggingAdapter;
 import org.jboss.tools.usage.ITracker;
 import org.jboss.tools.usage.IURLBuildingStrategy;
+import org.jboss.tools.usage.JBossToolsFocusPoint;
 import org.jboss.tools.usage.PluginLogger;
 import org.jboss.tools.usage.Tracker;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
@@ -44,7 +45,7 @@ public class UsageReport {
 
 	private static final String HOST_NAME = ReportingMessages.UsageReport_HostName;
 
-	private FocusPoint focusPoint = new FocusPoint("tools") //$NON-NLS-1$ 
+	private FocusPoint focusPoint = new JBossToolsFocusPoint("tools") //$NON-NLS-1$ 
 			.setChild(new FocusPoint("usage") //$NON-NLS-1$ 
 					.setChild(new FocusPoint("action") //$NON-NLS-1$ 
 							.setChild(new FocusPoint("wsstartup")))); //$NON-NLS-1$

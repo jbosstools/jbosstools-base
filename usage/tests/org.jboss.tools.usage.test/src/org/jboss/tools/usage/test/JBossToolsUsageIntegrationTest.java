@@ -78,6 +78,16 @@ public class JBossToolsUsageIntegrationTest {
 		assertEquals(3, eclipseEnvironment.getVisitCount());
 	}
 
+	@Test
+	public void urlEndsWithJBossToolsVersion() {
+		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironmentFake();
+		UrlRevealingTracker tracker = getTracker(eclipseEnvironment);
+		tracker.trackSynchronously(createFocusPoint("testJBossToolsVersion"));
+		assertEquals(2, eclipseEnvironment.getVisitCount());
+		tracker.trackSynchronously(createFocusPoint("testVisitCount"));
+		assertEquals(3, eclipseEnvironment.getVisitCount());
+	}
+	
 	private String getUserId(String trackingUrl) {
 		Pattern pattern = Pattern.compile(".+" + IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID
 				+ "%3D([0-9]+\\.[0-9]+)\\..+");

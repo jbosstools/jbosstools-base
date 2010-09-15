@@ -19,6 +19,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 		FocusPointTest.class,
+		JBossToolsFocusPointTest.class,
 		GoogleAnalyticsUrlStrategyTest.class,
 		EclipseUserAgentTest.class,
 		ReportingEclipseEnvironmentTest.class,

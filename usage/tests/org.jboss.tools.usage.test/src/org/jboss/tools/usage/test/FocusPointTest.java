@@ -10,49 +10,55 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.jboss.tools.usage.FocusPoint;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
-
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * @author Andre Dietisheim
  */
-public class FocusPointTest extends TestCase {
+public class FocusPointTest {
 
-	private static final String root = "root";
+	private static final String ROOT = "root";
 	
-	private static final String child1 = "child1";
+	private static final String CHILD1 = "child1";
 	
 	private static final String URI_SEPARATOR_ENCODED = HttpEncodingUtils.checkedEncodeUtf8(FocusPoint.URI_SEPARATOR);
 	
 	private static final String TITLE_SEPARATOR_ENCODED = HttpEncodingUtils.checkedEncodeUtf8(FocusPoint.TITLE_SEPARATOR);
 	
+	@Test
 	public void testGetContentURI_Simple() throws Exception {
-		FocusPoint focusPoint = new FocusPoint(root);
-		String contentURI = focusPoint.getContentURI();
+		FocusPoint focusPoint = new FocusPoint(ROOT);
+		String contentURI = focusPoint.getURI();
 		assertNotNull(contentURI);
-		assertEquals(URI_SEPARATOR_ENCODED + root, contentURI);
+		assertEquals(URI_SEPARATOR_ENCODED + ROOT, contentURI);
 	}
 
+	@Test
 	public void testGetContentURI_OneLevel() throws Exception {
-		FocusPoint focusPoint = new FocusPoint(root).setChild(new FocusPoint(child1));
-		String contentURI = focusPoint.getContentURI();
+		FocusPoint focusPoint = new FocusPoint(ROOT).setChild(new FocusPoint(CHILD1));
+		String contentURI = focusPoint.getURI();
 		assertNotNull(contentURI);
-		assertEquals(URI_SEPARATOR_ENCODED + root + URI_SEPARATOR_ENCODED + child1, contentURI);
+		assertEquals(URI_SEPARATOR_ENCODED + ROOT + URI_SEPARATOR_ENCODED + CHILD1, contentURI);
 	}
 
+	@Test
 	public void testGetContentTitle_Simple() throws Exception {
-		FocusPoint focusPoint = new FocusPoint(root);
-		String contentTitle = focusPoint.getContentTitle();
+		FocusPoint focusPoint = new FocusPoint(ROOT);
+		String contentTitle = focusPoint.getTitle();
 		assertNotNull(contentTitle);
-		assertEquals(root, contentTitle);
+		assertEquals(ROOT, contentTitle);
 	}
 
+	@Test
 	public void testGetContentTitle_OneLevel() throws Exception {
-		FocusPoint focusPoint = new FocusPoint(root).setChild(new FocusPoint(child1));
-		String contentTitle = focusPoint.getContentTitle();
+		FocusPoint focusPoint = new FocusPoint(ROOT).setChild(new FocusPoint(CHILD1));
+		String contentTitle = focusPoint.getTitle();
 		assertNotNull(contentTitle);
-		assertEquals(root + TITLE_SEPARATOR_ENCODED + child1, contentTitle);
+		assertEquals(ROOT + TITLE_SEPARATOR_ENCODED + CHILD1, contentTitle);
 	}
 }

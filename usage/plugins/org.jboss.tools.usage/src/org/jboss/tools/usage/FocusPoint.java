@@ -45,13 +45,13 @@ public class FocusPoint {
 		return childFocusPoint;
 	}
 
-	public String getContentURI() {
+	public String getURI() {
 		StringBuilder builder = new StringBuilder();
 		appendContentURI(builder, this);
 		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}
 
-	private void appendContentURI(StringBuilder builder, FocusPoint focusPoint) {
+	protected void appendContentURI(StringBuilder builder, FocusPoint focusPoint) {
 		FocusPoint parentFocuPoint = focusPoint.getChild();
 		builder.append(URI_SEPARATOR);
 		builder.append(focusPoint.getName());
@@ -60,13 +60,13 @@ public class FocusPoint {
 		}
 	}
 
-	public String getContentTitle() {
+	public String getTitle() {
 		StringBuilder builder = new StringBuilder();
 		appendContentTitle(builder, this);
 		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}
 
-	private void appendContentTitle(StringBuilder builder, FocusPoint focusPoint) {
+	protected void appendContentTitle(StringBuilder builder, FocusPoint focusPoint) {
 		FocusPoint childFocusPoint = focusPoint.getChild();
 		builder.append(focusPoint.getName());
 		if (childFocusPoint != null) {

@@ -37,7 +37,7 @@ public class Tracker implements ITracker {
 
 	public void trackSynchronously(FocusPoint focusPoint) {
 		loggingAdapter
-				.logMessage(MessageFormat.format(UsageMessages.Tracker_Synchronous, focusPoint.getContentTitle()));
+				.logMessage(MessageFormat.format(UsageMessages.Tracker_Synchronous, focusPoint.getTitle()));
 		try {
 			httpRequest.request(getTrackingUrl(focusPoint));
 		} catch (Exception e) {
@@ -51,7 +51,7 @@ public class Tracker implements ITracker {
 
 	public void trackAsynchronously(FocusPoint focusPoint) {
 		loggingAdapter.logMessage(MessageFormat
-				.format(UsageMessages.Tracker_Asynchronous, focusPoint.getContentTitle()));
+				.format(UsageMessages.Tracker_Asynchronous, focusPoint.getTitle()));
 		new Thread(new TrackingRunnable(focusPoint)).start();
 	}
 
