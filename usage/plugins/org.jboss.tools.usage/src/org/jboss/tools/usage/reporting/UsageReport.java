@@ -106,8 +106,8 @@ public class UsageReport {
 				return Status.CANCEL_STATUS;
 			}
 			monitor.beginTask(ReportingMessages.UsageReport_Querying_Enablement, 2);
-			if (globalSettings.isAllInstancesReportingEnabled() 
-					&& globalSettings.isInstanceReportingEnabled()) {
+			if (globalSettings.isInstanceReportingEnabled()
+					&& globalSettings.isAllInstancesReportingEnabled()) {
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}
