@@ -31,7 +31,7 @@ import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.http.HttpGetRequest;
 import org.jboss.tools.usage.http.IHttpGetRequest;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.preferences.GlobalUsageReportingSettings;
+import org.jboss.tools.usage.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.util.PreferencesUtils;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
@@ -50,7 +50,7 @@ public class UsageReport {
 					.setChild(new FocusPoint("action") //$NON-NLS-1$ 
 							.setChild(new FocusPoint("wsstartup")))); //$NON-NLS-1$
 
-	private GlobalUsageReportingSettings globalSettings = new GlobalUsageReportingSettings(JBossToolsUsageActivator
+	private GlobalUsageSettings globalSettings = new GlobalUsageSettings(JBossToolsUsageActivator
 			.getDefault());
 
 	public void report() {
@@ -106,7 +106,8 @@ public class UsageReport {
 				return Status.CANCEL_STATUS;
 			}
 			monitor.beginTask(ReportingMessages.UsageReport_Querying_Enablement, 2);
-			if (globalSettings.isEnabled()) {
+			if (globalSettings.isAllInstancesReportingEnabled() 
+					&& globalSettings.isInstanceReportingEnabled()) {
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}

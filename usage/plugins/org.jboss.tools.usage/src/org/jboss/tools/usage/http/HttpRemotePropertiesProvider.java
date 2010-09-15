@@ -34,7 +34,7 @@ import org.jboss.tools.usage.util.reader.ReaderUtils;
  * 
  * @author Andre Dietisheim
  */
-public abstract class HttpResourceMap {
+public class HttpRemotePropertiesProvider {
 
 	static final String GET_METHOD_NAME = "GET"; //$NON-NLS-1$
 
@@ -47,14 +47,14 @@ public abstract class HttpResourceMap {
 
 	private char valueDelimiter;
 
-	public HttpResourceMap(String url, char valueDelimiter, Plugin plugin, String... keys) {
+	public HttpRemotePropertiesProvider(String url, char valueDelimiter, Plugin plugin, String... keys) {
 		this.url = url;
 		this.keys = keys;
 		this.valueDelimiter = valueDelimiter;
 		this.plugin = plugin;
 	}
 
-	protected Map<String, String> getValueMap() throws IOException {
+	public Map<String, String> getValueMap() throws IOException {
 		if (valuesMap == null) {
 			HttpURLConnection urlConnection = createURLConnection(url);
 			InputStreamReader reader = request(urlConnection);
