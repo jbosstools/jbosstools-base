@@ -27,6 +27,7 @@ import org.jboss.tools.usage.util.collectionfilter.ICollectionFilter;
 public class JBossToolsComponents {
 
 	public enum JBossToolsFeatureNames {
+		AS("org.jboss.ide.eclipse.as.feature"),
 		ARCHIVES("org.jboss.ide.eclipse.archives.feature"),
 		BIRT("org.jboss.tools.birt.feature"),
 		BPEL("org.jboss.tools.bpel.feature"),
