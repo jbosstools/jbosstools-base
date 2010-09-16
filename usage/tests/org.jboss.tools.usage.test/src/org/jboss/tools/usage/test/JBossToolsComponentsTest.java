@@ -25,20 +25,59 @@ public class JBossToolsComponentsTest {
 
 	@Test
 	public void reportedComponentsListIsComplete() {
+		Collection<String> componentIds = JBossToolsComponents
+				.getComponentIds(
+				new IBundleGroupProvider[] {
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureNames.GWT.getFeatureName()),
+						new BundleGroupProviderFake(
+								JBossToolsComponents.JBossToolsFeatureNames.SEAM.getFeatureName(), "rubbish"),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureNames.SMOOKS.getFeatureName()),
+						new BundleGroupProviderFake("org.jboss.tools.usage.feature.badname")
+					});
+
+		assertThat(componentIds, JUnitMatchers.hasItems(
+				JBossToolsComponents.JBossToolsFeatureNames.GWT.getComponentName(),
+				JBossToolsComponents.JBossToolsFeatureNames.SEAM.getComponentName(),
+				JBossToolsComponents.JBossToolsFeatureNames.SMOOKS.getComponentName()));
+		assertFalse(componentIds.contains(JBossToolsComponents.JBossToolsFeatureNames.USAGE.getComponentName()));
+	}
+
+	@Test
+	public void reportsAS() {
 		Collection<String> componentIds = JBossToolsComponents.getComponentIds(
 				new IBundleGroupProvider[] {
-						new BundleGroupProviderFake("org.jboss.tools.gwt.feature")
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureNames.GWT.getFeatureName())
 						, new BundleGroupProviderFake(
 								"rubbish",
-								"org.jboss.tools.seam.feature")
-						, new BundleGroupProviderFake("org.jboss.tools.smooks.feature")
+								JBossToolsComponents.JBossToolsFeatureNames.SEAM.getFeatureName())
+						, new BundleGroupProviderFake(
+								"org.jboss.tools.as.feature.badname")
+						, new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureNames.AS.getFeatureName())
 						, new BundleGroupProviderFake("org.jboss.tools.usage.feature.bandname")
 					});
 
 		assertThat(componentIds, JUnitMatchers.hasItems(
-				JBossToolsComponents.JBossToolsFeatureNames.GWT.getAbbreviation(),
-				JBossToolsComponents.JBossToolsFeatureNames.SEAM.getAbbreviation(),
-				JBossToolsComponents.JBossToolsFeatureNames.SMOOKS.getAbbreviation()));
-		assertFalse(componentIds.contains(JBossToolsComponents.JBossToolsFeatureNames.USAGE.getAbbreviation()));
+				JBossToolsComponents.JBossToolsFeatureNames.AS.getComponentName()));
+	}
+
+	@Test
+	public void reportsAllFeaturesThatDoNotStartWith_org_jboss_tools() {
+		Collection<String> componentIds = JBossToolsComponents.getComponentIds(
+				new IBundleGroupProvider[] {
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureNames.GWT.getFeatureName()), 
+						new BundleGroupProviderFake(
+								"rubbish",
+								JBossToolsComponents.JBossToolsFeatureNames.SEAM.getFeatureName()),
+						new BundleGroupProviderFake("org.jboss.tools.as.feature.badname"),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureNames.AS.getFeatureName()),
+						new BundleGroupProviderFake("org.jboss.tools.usage.feature.bandname"),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureNames.HIBERNATETOOLS.getFeatureName()),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureNames.DROOLS.getFeatureName()),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureNames.FREEMARKER.getFeatureName()),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureNames.XULRUNNER.getFeatureName())
+					});
+
+		assertThat(componentIds, JUnitMatchers.hasItems(
+				JBossToolsComponents.JBossToolsFeatureNames.AS.getComponentName()));
 	}
 }

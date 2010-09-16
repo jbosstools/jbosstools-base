@@ -13,12 +13,10 @@ package org.jboss.tools.usage.reporting;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.jboss.tools.usage.util.collectionfilter.CollectionFilterUtils;
-import org.jboss.tools.usage.util.collectionfilter.CompositeCollectionFilter;
 import org.jboss.tools.usage.util.collectionfilter.ICollectionFilter;
 
 /**
@@ -26,6 +24,22 @@ import org.jboss.tools.usage.util.collectionfilter.ICollectionFilter;
  */
 public class JBossToolsComponents {
 
+	/**
+	 * The jboss tools features to check and report.
+	 * <p>
+	 * ATTENTION: the following features do not start with org.jboss.tools
+	 * </p>
+	 * <p>
+	 * <ul>
+	 * <li>org.hibernate.eclipse.feature</li>
+	 * <li>org.jboss.ide.eclipse.freemarker.feature</li>
+	 * <li>org.drools.eclipse.feature</li>
+	 * <li>org.jboss.ide.eclipse.as.feature</li>
+	 * <li>org.mozilla.xulrunner.feature</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 */
 	public enum JBossToolsFeatureNames {
 		AS("org.jboss.ide.eclipse.as.feature"),
 		ARCHIVES("org.jboss.ide.eclipse.archives.feature"),
@@ -78,46 +92,55 @@ public class JBossToolsComponents {
 			return featureName.equals(bundleGroup.getName());
 		}
 
-		public String getAbbreviation() {
+		public String getComponentName() {
 			return name();
 		}
-	}
 
-	private static final String JBOSS_TOOLS_BUNDLES_PREFIX = "org\\.jboss\\.tools.+"; //$NON-NLS-1$
+		public String getFeatureName() {
+			return featureName;
+		}
+	}
 
 	private JBossToolsComponents() {
 		// inhibit instantiation
 	}
 
-
 	/**
-	 * Returns the jboss components that the given bundle group provider provides
+	 * Returns the jboss components that the given bundle group provider
+	 * provides
 	 * 
 	 * @param bundles
 	 *            the bundles group providers to check for jboss components
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static Collection<String> getComponentIds(IBundleGroupProvider[] bundleGroupProviders) {
 		Set<String> componentNames = new TreeSet<String>();
 		for (IBundleGroupProvider bundleGroupProvider : bundleGroupProviders) {
 			CollectionFilterUtils.filter(
+					/* not all jboss tools features start with org.jboss.tools. @see https://jira.jboss.org/browse/JBIDE-7082 
+					 * 
 					new CompositeCollectionFilter<IBundleGroup>(
 							new JBossToolsNameFilter()
-							, new JBossToolsFeaturesFilter(componentNames))
+							, new JBossToolsFeaturesFilter(componentNames)) */
+					new JBossToolsFeaturesFilter(componentNames)
 					, bundleGroupProvider.getBundleGroups(), null);
 		}
 		return componentNames;
 	}
 
-	private static class JBossToolsNameFilter implements ICollectionFilter<IBundleGroup> {
-
-		Pattern pattern = Pattern.compile(JBOSS_TOOLS_BUNDLES_PREFIX);
-
-		public boolean matches(IBundleGroup bundleGroup) {
-			return pattern.matcher(bundleGroup.getName()).matches();
-		}
-	}
+	/* not all jboss tools features start with org.jboss.tools. @see https://jira.jboss.org/browse/JBIDE-7082 
+	 * 
+	 private static class JBossToolsNameFilter implements
+	 ICollectionFilter<IBundleGroup> {
+	
+	 private static final String JBOSS_TOOLS_FEATURES_PREFIX = "org\\.jboss.+"; //$NON-NLS-1$
+	 Pattern pattern = Pattern.compile(JBOSS_TOOLS_FEATURES_PREFIX);
+	
+	 public boolean matches(IBundleGroup bundleGroup) {
+	 return pattern.matcher(bundleGroup.getName()).matches();
+	 }
+	 }
+	 */
 
 	private static class JBossToolsFeaturesFilter implements ICollectionFilter<IBundleGroup> {
 
@@ -130,7 +153,7 @@ public class JBossToolsComponents {
 		public boolean matches(IBundleGroup bundleGroup) {
 			for (JBossToolsFeatureNames featureName : JBossToolsFeatureNames.values()) {
 				if (featureName.matches(bundleGroup)) {
-					this.componentNames.add(featureName.getAbbreviation());
+					this.componentNames.add(featureName.getComponentName());
 					return true;
 				}
 			}
