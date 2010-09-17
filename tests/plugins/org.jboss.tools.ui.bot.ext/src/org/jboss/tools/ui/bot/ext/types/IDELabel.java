@@ -164,7 +164,7 @@ public class IDELabel {
 	
 	public class EntityLabel {
 		public static final String HIBERNATE_MAPPING_FILE = "Hibernate XML Mapping file (hbm.xml)";
-		public static final String HIBERNATE_REVERSE_FILE = "Hibernate Reverse Engineering File(reveng.xml)";
+		public static final String HIBERNATE_REVERSE_FILE = "Hibernate Reverse Engineering File (reveng.xml)";
 		public static final String HIBERNATE_CONSOLE = "Hibernate Console Configuration";
 		public static final String JAVA_CLASS = "Class";
 		public static final String JAVA_PROJECT =  "Java Project";

@@ -96,7 +96,11 @@ public class SWTEclipseExt {
 	 * Close view by text
 	 */
 	public void closeView(String view) {
-		bot.viewByTitle(view).close();
+		try {
+			bot.viewByTitle(view).close();
+		} catch (WidgetNotFoundException ex) {
+			log.info("WARN - Can't close the view \"" + view + "\"");
+		}		
 	}
 
 	/**
