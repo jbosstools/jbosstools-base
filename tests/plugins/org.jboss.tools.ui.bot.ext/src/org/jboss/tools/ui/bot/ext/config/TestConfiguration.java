@@ -87,7 +87,7 @@ public class TestConfiguration {
 								+ server.withJavaVersion
 								+ " but no JAVA is configured");
 			}
-			if (java != null) {
+			if (java != null && server!=null) {
 				if (!java.version.equals(server.withJavaVersion)
 						&& !Values.SERVER_WITH_DEFAULT_JAVA
 								.equals(server.withJavaVersion)) {
