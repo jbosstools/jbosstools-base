@@ -30,7 +30,6 @@ import org.jboss.tools.usage.util.BrowserUtil;
  */
 public class UsageReportEnablementDialog extends Dialog {
 
-	protected static final String USAGE_URL = "http://jboss.org/tools/usage"; // $NON
 	private Button checkBox;
 	private boolean reportEnabled;
 
@@ -70,7 +69,7 @@ public class UsageReportEnablementDialog extends Dialog {
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				BrowserUtil.checkedCreateExternalBrowser(USAGE_URL, JBossToolsUsageActivator.PLUGIN_ID, JBossToolsUsageActivator.getDefault().getLog());
+				BrowserUtil.checkedCreateExternalBrowser(ReportingMessages.UsageReport_GoogleAnalytics_Url, JBossToolsUsageActivator.PLUGIN_ID, JBossToolsUsageActivator.getDefault().getLog());
 			}
 		});
 		GridDataFactory.fillDefaults()

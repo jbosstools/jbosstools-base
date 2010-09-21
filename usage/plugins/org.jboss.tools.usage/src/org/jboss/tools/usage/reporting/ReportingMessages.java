@@ -23,8 +23,9 @@ public class ReportingMessages extends NLS {
 	public static String UsageReport_DialogTitle;
 	
 	public static String UsageReport_Error_SavePreferences;
-	public static String UsageReport_GoogleAnalyticsAccount;
+	public static String UsageReport_GoogleAnalytics_Account;
 	public static String UsageReport_HostName;
+	public static String UsageReport_GoogleAnalytics_Url;
 	
 	static {
 		// initialize resource bundle

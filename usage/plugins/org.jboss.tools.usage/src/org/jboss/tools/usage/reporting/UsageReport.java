@@ -42,7 +42,7 @@ import org.osgi.service.prefs.BackingStoreException;
  */
 public class UsageReport {
 
-	private static final String GANALYTICS_ACCOUNTNAME = ReportingMessages.UsageReport_GoogleAnalyticsAccount;
+	private static final String GANALYTICS_ACCOUNTNAME = ReportingMessages.UsageReport_GoogleAnalytics_Account;
 
 	private static final String HOST_NAME = ReportingMessages.UsageReport_HostName;
 
