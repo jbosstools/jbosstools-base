@@ -14,6 +14,7 @@ package org.jboss.tools.ui.bot.ext;
 import static org.jboss.tools.ui.bot.ext.SWTTestExt.eclipse;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
@@ -28,6 +29,7 @@ import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
+import org.osgi.framework.Version;
 /**
  * Provides JBoss Tools common operations based on SWTBot element operations
  * @author Vladimir Pakan
@@ -68,6 +70,13 @@ public class SWTJBTExt {
 	  
 	  return jbdsIsRunning;
 	  
+	}
+	/**
+	 * Returns JBT version (taken from version of org.jboss.tools.common plugin version)
+	 * @return
+	 */
+	public Version getJBTVersion() {
+		return Platform.getBundle("org.jboss.tools.common").getVersion();
 	}
 	/**
 	 * Returns true when in Web Page of Wizard is defined at least one Server Runtime Instance
