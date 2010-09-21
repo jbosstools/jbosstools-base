@@ -8,13 +8,12 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.reporting;
+package org.jboss.tools.usage.preferences;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
-import org.jboss.tools.usage.util.PreferencesUtils;
+import org.jboss.tools.usage.reporting.ReportingMessages;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -24,25 +23,25 @@ import org.osgi.service.prefs.BackingStoreException;
 public class UsageReportPreferences {
 
 	public static void setEnabled(boolean enabled) {
-		PreferencesUtils.getStore().putValue(
+		UsageReportPreferencesUtils.getStore().putValue(
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID, String.valueOf(enabled));
 	}
 
 	public static boolean isEnabled() {
-		return PreferencesUtils.getPreferences().getBoolean(
+		return UsageReportPreferencesUtils.getPreferences().getBoolean(
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID,
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE);
 	}
 
 	public static boolean isAskUser() {
-		return PreferencesUtils.getPreferences().getBoolean(
+		return UsageReportPreferencesUtils.getPreferences().getBoolean(
 				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID, 
 				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_DEFAULTVALUE);
 	}
 
 	public static void setAskUser(boolean askUser) {
 		try {
-			IEclipsePreferences preferences = PreferencesUtils.getPreferences();
+			IEclipsePreferences preferences = UsageReportPreferencesUtils.getPreferences();
 			preferences.putBoolean(IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID, askUser);
 			preferences.flush();
 		} catch (BackingStoreException e) {
@@ -54,10 +53,10 @@ public class UsageReportPreferences {
 	}
 
 	public static void flush() throws BackingStoreException {
-		PreferencesUtils.getPreferences().flush();
+		UsageReportPreferencesUtils.getPreferences().flush();
 	}
 
 	public static IPreferenceStore createPreferenceStore() {
-		return PreferencesUtils.getStore();
+		return UsageReportPreferencesUtils.getStore();
 	}
 }

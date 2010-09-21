@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.util;
+package org.jboss.tools.usage.preferences;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
@@ -17,14 +17,15 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * @author Andre Dietisheim
  */
-public class PreferencesUtils {
+public class UsageReportPreferencesUtils {
 		
-	private PreferencesUtils() {
+	private UsageReportPreferencesUtils() {
 		// inhibit instantiation
 	}
 

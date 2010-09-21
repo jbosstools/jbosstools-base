@@ -32,7 +32,8 @@ import org.jboss.tools.usage.http.HttpGetRequest;
 import org.jboss.tools.usage.http.IHttpGetRequest;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.preferences.GlobalUsageSettings;
-import org.jboss.tools.usage.util.PreferencesUtils;
+import org.jboss.tools.usage.preferences.UsageReportPreferences;
+import org.jboss.tools.usage.preferences.UsageReportPreferencesUtils;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -88,7 +89,7 @@ public class UsageReport {
 		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironment(
 				GANALYTICS_ACCOUNTNAME
 				, HOST_NAME
-				, PreferencesUtils.getPreferences());
+				, UsageReportPreferencesUtils.getPreferences());
 		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageActivator.getDefault());
 		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment);
 		IHttpGetRequest httpGetRequest = new HttpGetRequest(eclipseEnvironment.getUserAgent(), loggingAdapter);
