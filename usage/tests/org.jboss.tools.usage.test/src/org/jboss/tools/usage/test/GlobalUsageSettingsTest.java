@@ -37,13 +37,13 @@ public class GlobalUsageSettingsTest {
 	 * </ul>
 	 * 
 	 * <p>
-	 * <code>enabled</code>
+	 * <code>disabled</code>
 	 * <p>
 	 */
 	@Test
 	public void reportingIsENABLEDIfSysPropIsNOTSETAndRemotePropIsNOTSET() throws IOException {
 		GlobalUsageSettingsFake reportEnablement = new GlobalUsageSettingsFake("");
-		assertTrue(reportEnablement.isReportingEnabled());
+		assertFalse(reportEnablement.isReportingEnabled());
 	}
 
 	/**
