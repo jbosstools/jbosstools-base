@@ -3,4 +3,8 @@
 <plugin>
    <extension-point id="elResolver" name="EL Resolver" schema="schema/elResolver.exsd"/>
 
+   <extension point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.jboss.tools.common.el.core.ca.preferences.ELContentAssistPreferenceInitializer"/>
+   </extension>
+
 </plugin>

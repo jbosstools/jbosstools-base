@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2007-2009 Red Hat, Inc. 
+ * Copyright (c) 2007-2010 Red Hat, Inc. 
  * Distributed under license by Red Hat, Inc. All rights reserved. 
  * This program is made available under the terms of the 
  * Eclipse Public License v1.0 which accompanies this distribution, 
@@ -714,7 +714,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				*/
 
 				Set<MemberPresentation> methodPresentations = 
-					infos.getMethodPresentations();
+					infos.getMethodPresentations(returnEqualedVariablesOnly);
 
 				if (methodPresentations != null) {
 					for (MemberPresentation presentation : methodPresentations) {
@@ -759,7 +759,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				*/
 
 				Set<MemberPresentation> propertyPresentations = 
-					infos.getPropertyPresentations(segment.getUnpairedGettersOrSetters());
+					infos.getPropertyPresentations(segment.getUnpairedGettersOrSetters(), returnEqualedVariablesOnly);
 
 				if (propertyPresentations != null) {
 					for (MemberPresentation presentation : propertyPresentations) {
@@ -809,8 +809,8 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if (TypeInfoCollector.isNotParameterizedCollection(mbr) || TypeInfoCollector.isResourceBundle(mbr.getMemberType())) {
 					resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
 				}
-				proposalsToFilter.addAll(infos.getMethodPresentations());
-				proposalsToFilter.addAll(infos.getPropertyPresentations(segment.getUnpairedGettersOrSetters()));
+				proposalsToFilter.addAll(infos.getMethodPresentations(returnEqualedVariablesOnly));
+				proposalsToFilter.addAll(infos.getPropertyPresentations(segment.getUnpairedGettersOrSetters(), returnEqualedVariablesOnly));
 //				segment.setMemberInfo(mbr);
 			}
 			

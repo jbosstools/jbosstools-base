@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -34,6 +34,7 @@ import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.jboss.tools.common.el.core.ELCorePlugin;
+import org.jboss.tools.common.el.core.ca.preferences.ELContentAssistPreferences;
 import org.jboss.tools.common.model.util.EclipseJavaUtil;
 
 /**
@@ -1045,8 +1046,8 @@ public class TypeInfoCollector {
 	 * Returns the method presentation strings for the type specified
 	 * @return
 	 */
-	public Set<String> getMethodPresentationStrings() {
-		Set<MemberPresentation> set = getMethodPresentations();
+	public Set<String> getMethodPresentationStrings(boolean isValidating) {
+		Set<MemberPresentation> set = getMethodPresentations(isValidating);
 		Set<String> result = new HashSet<String>();
 		for (MemberPresentation presentation : set) {
 			result.add(presentation.getPresentation());
@@ -1058,7 +1059,7 @@ public class TypeInfoCollector {
 	 * Returns the method presentations for the type specified  
 	 * @return
 	 */
-	public Set<MemberPresentation> getMethodPresentations() {
+	public Set<MemberPresentation> getMethodPresentations(boolean isValidating) {
 		Set<MemberPresentation> methods = new TreeSet<MemberPresentation>(MEMBER_PRESENTATION_COMPARATOR);
 		List<MemberInfo> mthds = getMethods();
 		for (MemberInfo info : mthds) {
@@ -1069,8 +1070,20 @@ public class TypeInfoCollector {
 
 			StringBuffer name = new StringBuffer(method.getName());
 
-			// Add method as 'foo'
-			methods.add(new MemberPresentation(name.toString(), method));
+			boolean disabledGettersAndSettersView = 
+				!ELCorePlugin.getDefault().getPreferenceStore().getBoolean(ELContentAssistPreferences.SHOW_GETTERS_AND_SETTERS) &&
+				(method.isGetter() || method.isSetter());
+	
+			if (!isValidating && disabledGettersAndSettersView) {
+				continue;
+			}
+			boolean enabledNonParenthesesView = 
+					!ELCorePlugin.getDefault().getPreferenceStore().getBoolean(ELContentAssistPreferences.SHOW_METHODS_WITH_PARENTHESES_ONLY);
+			
+			if (isValidating || enabledNonParenthesesView) {
+				// Add method as 'foo'
+				methods.add(new MemberPresentation(name.toString(), method));
+			}
 
 			// Add method as 'foo(param1,param2)'
 			name.append('(');
@@ -1127,8 +1140,8 @@ public class TypeInfoCollector {
 	 * 
 	 * @return
 	 */
-	public Set<MemberPresentation> getPropertyPresentations() {
-		return getPropertyPresentations(null);
+	public Set<MemberPresentation> getPropertyPresentations(boolean isValidating) {
+		return getPropertyPresentations(null, isValidating);
 	}
 
 	/**
@@ -1136,8 +1149,8 @@ public class TypeInfoCollector {
 	 * 
 	 * @return
 	 */
-	public Set<String> getPropertyPresentationStrings() {
-		return getPropertyPresentationStrings(null);
+	public Set<String> getPropertyPresentationStrings(boolean isValidating) {
+		return getPropertyPresentationStrings(null, isValidating);
 	}
 
 	/**
@@ -1146,8 +1159,8 @@ public class TypeInfoCollector {
 	 * @param unpairedGettersOrSetters - map of unpaired getters or setters of type's properties. 'key' is property name.
 	 * @return
 	 */
-	public Set<String> getPropertyPresentationStrings(Map<String, MethodInfo> unpairedGettersOrSetters) {
-		Set<MemberPresentation> set = getPropertyPresentations(unpairedGettersOrSetters);
+	public Set<String> getPropertyPresentationStrings(Map<String, MethodInfo> unpairedGettersOrSetters, boolean isValidating) {
+		Set<MemberPresentation> set = getPropertyPresentations(unpairedGettersOrSetters, isValidating);
 		Set<String> result = new HashSet<String>();
 		for (MemberPresentation presentation : set) {
 			result.add(presentation.getPresentation());
@@ -1161,7 +1174,7 @@ public class TypeInfoCollector {
 	 * @param unpairedGettersOrSetters - map of unpaired getters or setters of type's properties. 'key' is property name.
 	 * @return
 	 */
-	public Set<MemberPresentation> getPropertyPresentations(Map<String, MethodInfo> unpairedGettersOrSetters) {
+	public Set<MemberPresentation> getPropertyPresentations(Map<String, MethodInfo> unpairedGettersOrSetters, boolean isValidating) {
 		Set<MemberPresentation> properties = new TreeSet<MemberPresentation>(MEMBER_PRESENTATION_COMPARATOR); 
 		HashMap<String, MemberPresentation> presentations = new HashMap<String, MemberPresentation>(); 
 		List<MemberInfo> props = getProperties(); 
