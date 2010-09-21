@@ -34,7 +34,11 @@ public class GlobalUsageSettings {
 
 	public static final String REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY = USAGE_REPORTING_ENABLED_KEY + "="; //$NON-NLS-1$
 
-	private static final boolean USAGE_REPORTING_ENABLED_DEFAULT = true;
+	/** the enablement default for the local instance */ 
+	private static final boolean INSTANCE_USAGE_REPORTING_ENABLED_DEFAULT = true;
+
+	/** the enablement default for all instances */ 
+	private static final boolean ALLINSTANCES_USAGE_REPORTING_ENABLED_DEFAULT = false;
 
 	/** the delimiter that delimits the key/value-pairs */
 	private static final char VALUE_DELIMITER = '\n';
@@ -72,12 +76,12 @@ public class GlobalUsageSettings {
 			Map<String, String> valueMap = remoteMap.getValueMap();
 			String isEnabled = valueMap.get(REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY);
 			if (isEnabled == null) {
-				return USAGE_REPORTING_ENABLED_DEFAULT;
+				return ALLINSTANCES_USAGE_REPORTING_ENABLED_DEFAULT;
 			}
 
 			return Boolean.valueOf(isEnabled);
 		} catch (Exception e) {
-			return USAGE_REPORTING_ENABLED_DEFAULT;
+			return ALLINSTANCES_USAGE_REPORTING_ENABLED_DEFAULT;
 		}
 	}
 
@@ -92,7 +96,7 @@ public class GlobalUsageSettings {
 	private boolean isInstanceReportingEnabled() {
 		return Boolean.valueOf(
 				System.getProperty(USAGE_REPORTING_ENABLED_KEY,
-						String.valueOf(USAGE_REPORTING_ENABLED_DEFAULT)));
+						String.valueOf(INSTANCE_USAGE_REPORTING_ENABLED_DEFAULT)));
 	}
 
 	protected HttpRemotePropertiesProvider createRemoteMap(String url, char valueDelimiter, Plugin plugin,
