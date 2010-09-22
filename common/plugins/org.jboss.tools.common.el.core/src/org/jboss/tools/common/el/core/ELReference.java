@@ -253,6 +253,10 @@ public abstract class ELReference implements ITextSourceReference {
 		markers.add(marker);
 	}
 
+	public boolean hasMarkers() {
+		return !markers.isEmpty();
+	}
+
 	/**
 	 * Removes all markers from this EL.
 	 */
