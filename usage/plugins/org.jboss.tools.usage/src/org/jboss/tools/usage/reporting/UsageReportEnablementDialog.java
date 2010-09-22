@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.tools.usage.internal.JBDSMessageKeysUtils;
+import org.jboss.tools.usage.internal.JBDSUtils;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.BrowserUtil;
 
@@ -66,12 +66,13 @@ public class UsageReportEnablementDialog extends Dialog {
 		// message
 		Link link = new Link(composite, SWT.WRAP);
 		link.setFont(parent.getFont());
-		link.setText(JBDSMessageKeysUtils.getMessageKey(ReportingMessages.UsageReport_DialogMessage));
+		link.setText(
+				getLinkText());
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				BrowserUtil.checkedCreateExternalBrowser(
-						JBDSMessageKeysUtils.getMessageKey(ReportingMessages.UsageReport_ExplanationPage),
+						getExplanationUrl(),
 						JBossToolsUsageActivator.PLUGIN_ID,
 						JBossToolsUsageActivator.getDefault().getLog());
 			}
@@ -84,7 +85,7 @@ public class UsageReportEnablementDialog extends Dialog {
 
 		// checkbox
 		checkBox = new Button(composite, SWT.CHECK);
-		checkBox.setText(JBDSMessageKeysUtils.getMessageKey(ReportingMessages.UsageReport_Checkbox_Text));
+		checkBox.setText(getCheckBoxText());
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.LEFT, SWT.CENTER).applyTo(checkBox);
 
 		applyDialogFont(composite);
@@ -95,4 +96,29 @@ public class UsageReportEnablementDialog extends Dialog {
 	public boolean isReportEnabled() {
 		return reportEnabled;
 	}
+	
+	private String getCheckBoxText() {
+		if (JBDSUtils.isJBDS()) {
+			return ReportingMessages.UsageReport_Checkbox_Text_JBDS;
+		} else {
+			return ReportingMessages.UsageReport_Checkbox_Text;
+		}
+	}
+
+	private String getLinkText() {
+		if (JBDSUtils.isJBDS()) {
+			return ReportingMessages.UsageReport_DialogMessage_JBDS;
+		} else {
+			return ReportingMessages.UsageReport_DialogMessage;
+		}
+	}
+
+	private String getExplanationUrl() {
+		if (JBDSUtils.isJBDS()) {
+			return ReportingMessages.UsageReport_ExplanationPage_JBDS;
+		} else {
+			return ReportingMessages.UsageReport_ExplanationPage;
+		}
+	}
+
 }

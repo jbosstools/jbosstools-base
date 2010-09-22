@@ -23,7 +23,7 @@ import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.http.HttpGetRequest;
 import org.jboss.tools.usage.http.IHttpGetRequest;
-import org.jboss.tools.usage.internal.JBDSMessageKeysUtils;
+import org.jboss.tools.usage.internal.JBDSUtils;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.preferences.UsageReportPreferences;
@@ -91,8 +91,8 @@ public class UsageReport {
 
 	private ITracker getTracker() {
 		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironment(
-				JBDSMessageKeysUtils.getMessageKey(ReportingMessages.UsageReport_GoogleAnalytics_Account)
-				, JBDSMessageKeysUtils.getMessageKey(ReportingMessages.UsageReport_HostName)
+				getGoogleAnalyticsAccount()
+				, getGoogleAnalyticsHostname()
 				, UsageReportPreferencesUtils.getPreferences());
 		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageActivator.getDefault());
 		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment);
@@ -100,6 +100,21 @@ public class UsageReport {
 		return new Tracker(urlStrategy, httpGetRequest, loggingAdapter);
 	}
 
+	private String getGoogleAnalyticsAccount() {
+		if (JBDSUtils.isJBDS()) {
+			return ReportingMessages.UsageReport_GoogleAnalytics_Account_JBDS;
+		} else {
+			return ReportingMessages.UsageReport_GoogleAnalytics_Account;
+		}
+	}
+
+	private String getGoogleAnalyticsHostname() {
+		if (JBDSUtils.isJBDS()) {
+			return ReportingMessages.UsageReport_HostName_JBDS;
+		} else {
+			return ReportingMessages.UsageReport_HostName;
+		}
+	}
 	private class ReportingJob extends Job {
 		private ReportingJob() {
 			super(ReportingMessages.UsageReport_Reporting_Usage);

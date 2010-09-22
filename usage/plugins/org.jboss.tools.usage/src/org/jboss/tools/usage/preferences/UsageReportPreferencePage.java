@@ -15,7 +15,7 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.jboss.tools.usage.internal.JBDSMessageKeysUtils;
+import org.jboss.tools.usage.internal.JBDSUtils;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
@@ -32,13 +32,30 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID
-				, JBDSMessageKeysUtils.getMessageKey(PreferencesMessages.UsageReportPreferencePage_AllowReporting)
+				, getCheckBoxlabel()
 				, getFieldEditorParent()));
 	}
 
+	private String getCheckBoxlabel() {
+		if (JBDSUtils.isJBDS()) {
+			return PreferencesMessages.UsageReportPreferencePage_AllowReporting_JBDS;
+		} else {
+			return PreferencesMessages.UsageReportPreferencePage_AllowReporting;
+		}
+	}
+	
+
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(UsageReportPreferences.createPreferenceStore());
-		setDescription(JBDSMessageKeysUtils.getMessageKey(PreferencesMessages.UsageReportPreferencePage_Description));
+		setDescription(getPageDescription());
+	}
+
+	private String getPageDescription() {
+		if (JBDSUtils.isJBDS()) {
+			return PreferencesMessages.UsageReportPreferencePage_Description_JBDS;
+		} else {
+			return PreferencesMessages.UsageReportPreferencePage_Description;
+		}
 	}
 
 	@Override
@@ -47,9 +64,19 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 			UsageReportPreferences.flush();
 		} catch (BackingStoreException e) {
 			IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-					JBDSMessageKeysUtils.getMessageKey(PreferencesMessages.UsageReportPreferencePage_Error_Saving), e);
+					getPrefsSaveErrorMessage() , e);
 			JBossToolsUsageActivator.getDefault().getLog().log(status);
 		}
 		return super.performOk();
 	}
+
+	private String getPrefsSaveErrorMessage() {
+		if (JBDSUtils.isJBDS()) {
+			return PreferencesMessages.UsageReportPreferencePage_Error_Saving_JBDS;
+		} else {
+			return PreferencesMessages.UsageReportPreferencePage_Error_Saving;
+		}
+	}
+	
+	
 }

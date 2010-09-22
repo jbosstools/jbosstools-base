@@ -12,13 +12,10 @@ package org.jboss.tools.usage.preferences;
 
 import java.util.Map;
 
-import org.eclipse.core.runtime.IProduct;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.http.IPropertiesProvider;
-import org.jboss.tools.usage.internal.JBDSConstants;
-import org.jboss.tools.usage.internal.JBDSMessageKeysUtils;
+import org.jboss.tools.usage.internal.JBDSUtils;
 
 /**
  * A class that implements a global reporting enablement setting. The current
@@ -50,10 +47,18 @@ public class GlobalUsageSettings {
 
 	public GlobalUsageSettings(Plugin plugin) {
 		remoteMap = createRemoteMap(
-				JBDSMessageKeysUtils.getMessageKey(PreferencesMessages.GlobalUsageSettings_RemoteProps_URL)
+				getRemotePropsUrl()
 				, VALUE_DELIMITER
 				, plugin
 				, REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY);
+	}
+
+	private String getRemotePropsUrl() {
+		if (JBDSUtils.isJBDS()) {
+			return PreferencesMessages.GlobalUsageSettings_RemoteProps_URL_JBDS;
+		} else {
+			return PreferencesMessages.GlobalUsageSettings_RemoteProps_URL;
+		}
 	}
 
 	/**
