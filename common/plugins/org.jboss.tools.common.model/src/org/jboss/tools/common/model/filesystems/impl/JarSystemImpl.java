@@ -51,12 +51,12 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
 
         if(this != getJarAccess().getMain()) return;
         if(loaded2) return;
-        loaded2 = true;
 
 		synchronized (this) {
 			jar.setLocation(getLocation());
 			super.loadChildren();
 		}
+        loaded2 = true;
     }
 
     public XModelObject[] getChildren() {
