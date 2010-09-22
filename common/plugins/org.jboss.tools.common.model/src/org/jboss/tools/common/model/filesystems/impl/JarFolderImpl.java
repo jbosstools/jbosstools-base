@@ -58,13 +58,17 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
         JarAccess jar = getJarSystem().getJarAccess();
         if(!jar.isLoaded()) return;
         jar.lockJar();
-        loaded = true;
         String path = getAbsolutePath();
         String[] cs = jar.getChildren(path);
         Properties p = new Properties();
-        for (int i = 0; i < cs.length; i++) {
+        for (int i = 0; i < cs.length && !loaded; i++) {
             boolean d = cs[i].endsWith(XModelObjectConstants.SEPARATOR);
             if(d) cs[i] = cs[i].substring(0, cs[i].length() - 1);
+
+        	if(children.getObject(FilePathHelper.toPathPath(cs[i])) != null) {
+        		continue;
+        	}
+            
             if(d) {
                 p.clear();
                 p.setProperty(XModelObjectConstants.ATTR_NAME, cs[i]);
@@ -76,6 +80,7 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
         }
         fire = true;
         jar.unlockJar();
+        loaded = true;
     }
 
     private void createFileObject(JarAccess jar, String path, String name) {
