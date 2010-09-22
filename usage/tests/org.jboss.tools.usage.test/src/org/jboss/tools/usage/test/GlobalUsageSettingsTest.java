@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 
 import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
+import org.jboss.tools.usage.http.IPropertiesProvider;
 import org.jboss.tools.usage.preferences.GlobalUsageSettings;
 import org.junit.Test;
 
@@ -107,7 +108,7 @@ public class GlobalUsageSettingsTest {
 		}
 
 		@Override
-		protected HttpRemotePropertiesProvider createRemoteMap(String url, char valueDelimiter, Plugin plugin,
+		protected IPropertiesProvider createRemoteMap(String url, char valueDelimiter, Plugin plugin,
 				String... keys) {
 			return new HttpRemotePropertiesProvider(url, valueDelimiter, plugin, keys) {
 				@Override

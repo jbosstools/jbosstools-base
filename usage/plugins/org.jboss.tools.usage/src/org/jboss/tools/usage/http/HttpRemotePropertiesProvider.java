@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ import org.jboss.tools.usage.util.HttpEncodingUtils;
 import org.jboss.tools.usage.util.LoggingUtils;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.jboss.tools.usage.util.reader.ReaderUtils;
+import org.osgi.service.component.ComponentContext;
+
 
 /**
  * Base class that holds a map that subclasses may get. The values in the map
@@ -34,7 +37,7 @@ import org.jboss.tools.usage.util.reader.ReaderUtils;
  * 
  * @author Andre Dietisheim
  */
-public class HttpRemotePropertiesProvider {
+public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 
 	static final String GET_METHOD_NAME = "GET"; //$NON-NLS-1$
 
@@ -54,7 +57,11 @@ public class HttpRemotePropertiesProvider {
 		this.plugin = plugin;
 	}
 
-	public Map<String, String> getValueMap() throws IOException {
+
+	/* (non-Javadoc)
+	 * @see org.jboss.tools.usage.http.IMapProvider#getValueMap()
+	 */
+	public Map<String, String> getMap() throws IOException {
 		if (valuesMap == null) {
 			HttpURLConnection urlConnection = createURLConnection(url);
 			InputStreamReader reader = request(urlConnection);
@@ -62,7 +69,7 @@ public class HttpRemotePropertiesProvider {
 		}
 		return valuesMap;
 	}
-
+	
 	/**
 	 * Sends a http GET request to the given URL. Returns the response string or
 	 * <tt>null</tt> if an error occurred. The errors catched are Exceptions or

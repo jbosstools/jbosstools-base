@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
+import org.jboss.tools.usage.http.IPropertiesProvider;
 
 /**
  * A class that implements a global reporting enablement setting. The current
@@ -24,13 +25,11 @@ import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
  */
 public class GlobalUsageSettings {
 
-	private static final String REMOTEPROPS_URL = "http://anonsvn.jboss.org/repos/jbosstools/workspace/usage/usage.properties"; //$NON-NLS-1$
-
 	/**
 	 * system property that enables/disables reporting for current eclipse
 	 * instance
 	 */
-	public static final String USAGE_REPORTING_ENABLED_KEY = "usage_reporting_enabled"; //$NON-NLS-1$
+	public static final String USAGE_REPORTING_ENABLED_KEY = "usage_reporting_enabled";
 
 	public static final String REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY = USAGE_REPORTING_ENABLED_KEY + "="; //$NON-NLS-1$
 
@@ -43,11 +42,11 @@ public class GlobalUsageSettings {
 	/** the delimiter that delimits the key/value-pairs */
 	private static final char VALUE_DELIMITER = '\n';
 
-	private HttpRemotePropertiesProvider remoteMap;
+	private IPropertiesProvider remoteMap;
 
 	public GlobalUsageSettings(Plugin plugin) {
 		remoteMap = createRemoteMap(
-				REMOTEPROPS_URL
+				PreferencesMessages.GlobalUsageSettings_RemoteProps_URL
 				, VALUE_DELIMITER
 				, plugin
 				, REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY);
@@ -73,7 +72,7 @@ public class GlobalUsageSettings {
 	 */
 	private boolean isAllInstancesReportingEnabled() {
 		try {
-			Map<String, String> valueMap = remoteMap.getValueMap();
+			Map<String, String> valueMap = remoteMap.getMap();
 			String isEnabled = valueMap.get(REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY);
 			if (isEnabled == null) {
 				return ALLINSTANCES_USAGE_REPORTING_ENABLED_DEFAULT;
@@ -99,7 +98,7 @@ public class GlobalUsageSettings {
 						String.valueOf(INSTANCE_USAGE_REPORTING_ENABLED_DEFAULT)));
 	}
 
-	protected HttpRemotePropertiesProvider createRemoteMap(String url, char valueDelimiter, Plugin plugin,
+	protected IPropertiesProvider createRemoteMap(String url, char valueDelimiter, Plugin plugin,
 			String... keys) {
 		return new HttpRemotePropertiesProvider(
 				url,

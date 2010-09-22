@@ -16,16 +16,16 @@ import static org.junit.Assert.assertTrue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jboss.tools.usage.FocusPoint;
-import org.jboss.tools.usage.ILoggingAdapter;
-import org.jboss.tools.usage.IURLBuildingStrategy;
-import org.jboss.tools.usage.PluginLogger;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.http.HttpGetRequest;
 import org.jboss.tools.usage.http.IHttpGetRequest;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.jboss.tools.usage.test.fakes.RepportingEclipseEnvironmentFakeSingleton;
+import org.jboss.tools.usage.tracker.ILoggingAdapter;
+import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
+import org.jboss.tools.usage.tracker.internal.IFocusPoint;
+import org.jboss.tools.usage.tracker.internal.PluginLogger;
 import org.junit.Test;
 
 /**
@@ -36,7 +36,7 @@ public class JBossToolsUsageIntegrationTest {
 	@Test
 	public void sameUserIdOnSametEclipseInstance() throws Exception {
 		UrlRevealingTracker tracker = getTracker(RepportingEclipseEnvironmentFakeSingleton.INSTANCE);
-		FocusPoint focusPoint = createFocusPoint("testSameUserIdOnSametEclipseInstance" + System.currentTimeMillis());
+		IFocusPoint focusPoint = createFocusPoint("testSameUserIdOnSametEclipseInstance" + System.currentTimeMillis());
 		tracker.trackSynchronously(focusPoint);
 		String userId = getUserId(tracker.getTrackingUrl());
 		assertTrue(userId != null);
@@ -59,7 +59,7 @@ public class JBossToolsUsageIntegrationTest {
 		assertTrue(userId != null);
 
 		tracker = getTracker(new ReportingEclipseEnvironmentFake());
-		FocusPoint focusPoint = createFocusPoint(focusPointName);
+		IFocusPoint focusPoint = createFocusPoint(focusPointName);
 		tracker.trackSynchronously(focusPoint);
 		String newUserId = getUserId(tracker.getTrackingUrl());
 
@@ -87,7 +87,7 @@ public class JBossToolsUsageIntegrationTest {
 		tracker.trackSynchronously(createFocusPoint("testVisitCount"));
 		assertEquals(3, eclipseEnvironment.getVisitCount());
 	}
-	
+
 	private String getUserId(String trackingUrl) {
 		Pattern pattern = Pattern.compile(".+" + IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID
 				+ "%3D([0-9]+\\.[0-9]+)\\..+");
@@ -106,7 +106,7 @@ public class JBossToolsUsageIntegrationTest {
 		return new UrlRevealingTracker(urlStrategy, httpGetRequest, loggingAdapter);
 	}
 
-	private FocusPoint createFocusPoint(String childFocusPoint) {
+	private IFocusPoint createFocusPoint(String childFocusPoint) {
 		return new JBossToolsTestsFocusPoint(childFocusPoint);
 	}
 }

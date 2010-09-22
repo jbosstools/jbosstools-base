@@ -4,13 +4,14 @@ Bundle-Name: %bundle-name
 Bundle-SymbolicName: org.jboss.tools.usage;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.jboss.tools.usage,
- org.jboss.tools.usage.googleanalytics,
+Export-Package: org.jboss.tools.usage.googleanalytics,
  org.jboss.tools.usage.googleanalytics.eclipse,
  org.jboss.tools.usage.http,
  org.jboss.tools.usage.internal;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.preferences;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.reporting;x-friends:="org.jboss.tools.usage.test",
+ org.jboss.tools.usage.tracker,
+ org.jboss.tools.usage.tracker.internal;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.util,
  org.jboss.tools.usage.util.collectionfilter,
  org.jboss.tools.usage.util.reader
@@ -20,3 +21,7 @@ Require-Bundle: org.eclipse.osgi;bundle-version="[3.5.0,4.0.0)",
 Bundle-Activator: org.jboss.tools.usage.internal.JBossToolsUsageActivator
 Bundle-Vendor: %bundle-vendor
 Bundle-ActivationPolicy: lazy
+Service-Component: tracker-service.xml, OSGI-INF/propertiesprovider-factory.xml
+Import-Package: org.osgi.service.cm;version="[1.2.1,2.0.0)",
+ org.osgi.service.component;version="[1.1.0,2.0.0)"
+

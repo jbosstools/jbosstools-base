@@ -46,9 +46,9 @@ public class ReportingEclipseEnvironmentTest {
 
 		Matcher matcher = Pattern.compile("(([A-Z]+)-){3}").matcher(keyword);
 		assertTrue(matcher.matches());
-		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureNames.GWT.name()) >= 0);
-		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureNames.SEAM.name()) >= 0);
-		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureNames.SMOOKS.name()) >= 0);
+		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureIdentifiers.GWT.name()) >= 0);
+		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureIdentifiers.SEAM.name()) >= 0);
+		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureIdentifiers.SMOOKS.name()) >= 0);
 	}
 
 	@Test

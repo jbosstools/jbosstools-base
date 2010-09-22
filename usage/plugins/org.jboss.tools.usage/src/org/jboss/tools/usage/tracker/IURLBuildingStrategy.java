@@ -8,20 +8,20 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.test;
+package org.jboss.tools.usage.tracker;
 
-import org.jboss.tools.usage.tracker.ILoggingAdapter;
+import java.io.UnsupportedEncodingException;
+
+import org.jboss.tools.usage.tracker.internal.IFocusPoint;
 
 /**
+ * Interface for the URL building strategy
+ * 
  * @author Andre Dietisheim
+ * 
  */
-public class SystemOutLogger implements ILoggingAdapter {
+public interface IURLBuildingStrategy {
 
-	public void logError(String errorMessage) {
-		System.out.println("[ERROR]: " + errorMessage);
-	}
+	public String build(IFocusPoint focusPoint) throws UnsupportedEncodingException;
 
-	public void logMessage(String message) {
-		System.out.println("[INFO]" + message);
-	}
 }

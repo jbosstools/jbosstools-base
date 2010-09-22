@@ -8,21 +8,13 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.test;
+package org.jboss.tools.usage.http;
 
-import org.jboss.tools.usage.tracker.internal.FocusPoint;
-import org.jboss.tools.usage.tracker.internal.JBossToolsFocusPoint;
+import java.io.IOException;
+import java.util.Map;
 
-/**
- * @author Andre Dietisheim
- */
-public class JBossToolsTestsFocusPoint extends JBossToolsFocusPoint {
+public interface IPropertiesProvider {
 
-	public JBossToolsTestsFocusPoint(String childFocusPoint) {
-		super("tools");
-		setChild(new FocusPoint("usage")
-				.setChild(new FocusPoint("tests")
-						.setChild(new FocusPoint(childFocusPoint))));
-	}
+	public Map<String, String> getMap() throws IOException;
 
 }

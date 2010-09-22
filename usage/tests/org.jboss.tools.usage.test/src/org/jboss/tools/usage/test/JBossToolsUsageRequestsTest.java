@@ -14,8 +14,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-import org.jboss.tools.usage.ILoggingAdapter;
 import org.jboss.tools.usage.http.HttpGetRequest;
+import org.jboss.tools.usage.tracker.ILoggingAdapter;
 import org.junit.Test;
 
 /**

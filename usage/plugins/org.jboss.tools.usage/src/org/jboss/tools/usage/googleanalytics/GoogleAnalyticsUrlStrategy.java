@@ -12,8 +12,8 @@ package org.jboss.tools.usage.googleanalytics;
 
 import java.io.UnsupportedEncodingException;
 
-import org.jboss.tools.usage.FocusPoint;
-import org.jboss.tools.usage.IURLBuildingStrategy;
+import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
+import org.jboss.tools.usage.tracker.internal.IFocusPoint;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 
 /**
@@ -44,7 +44,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		this.googleParameters = googleAnalyticsParameters;
 	}
 
-	public String build(FocusPoint focusPoint) throws UnsupportedEncodingException {
+	public String build(IFocusPoint focusPoint) throws UnsupportedEncodingException {
 		/*
 		 * Google Analytics for Android:
 		 * 

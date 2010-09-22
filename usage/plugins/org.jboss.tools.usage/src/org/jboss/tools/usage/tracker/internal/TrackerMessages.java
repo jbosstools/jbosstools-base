@@ -8,24 +8,21 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.preferences;
+package org.jboss.tools.usage.tracker.internal;
 
 import org.eclipse.osgi.util.NLS;
 
-public class PreferencesMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.usage.preferences.messages"; //$NON-NLS-1$
-
-	public static String UsageReportPreferencePage_Description;
-	public static String UsageReportPreferencePage_AllowReporting;
-	public static String UsageReportPreferencePage_Error_Saving;
-
-	public static String GlobalUsageSettings_RemoteProps_URL;
+public class TrackerMessages extends NLS {
+	private static final String BUNDLE_NAME = "org.jboss.tools.usage.tracker.messages"; //$NON-NLS-1$
+	public static String Tracker_Synchronous;
+	public static String Tracker_Asynchronous;
+	public static String Tracker_Error;
 
 	static {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, PreferencesMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, TrackerMessages.class);
 	}
 
-	private PreferencesMessages() {
+	private TrackerMessages() {
 	}
 }

@@ -37,7 +37,7 @@ public class BundleGroupProviderFake implements IBundleGroupProvider {
 		return bundleGroups;
 	}
 
-	private IBundleGroup createBundleGroup(final String name) {
+	private IBundleGroup createBundleGroup(final String id) {
 		return new IBundleGroup() {
 
 			public String getVersion() {
@@ -53,11 +53,11 @@ public class BundleGroupProviderFake implements IBundleGroupProvider {
 			}
 
 			public String getName() {
-				return name;
+				throw new UnsupportedOperationException();
 			}
 
 			public String getIdentifier() {
-				throw new UnsupportedOperationException();
+				return id;
 			}
 
 			public String getDescription() {

@@ -69,7 +69,10 @@ public class UsageReportEnablementDialog extends Dialog {
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				BrowserUtil.checkedCreateExternalBrowser(ReportingMessages.UsageReport_GoogleAnalytics_Url, JBossToolsUsageActivator.PLUGIN_ID, JBossToolsUsageActivator.getDefault().getLog());
+				BrowserUtil.checkedCreateExternalBrowser(
+						ReportingMessages.UsageReport_WikiPage,
+						JBossToolsUsageActivator.PLUGIN_ID,
+						JBossToolsUsageActivator.getDefault().getLog());
 			}
 		});
 		GridDataFactory.fillDefaults()

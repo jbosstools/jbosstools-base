@@ -15,11 +15,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
 
-import org.jboss.tools.usage.FocusPoint;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
+import org.jboss.tools.usage.tracker.internal.FocusPoint;
+import org.jboss.tools.usage.tracker.internal.IFocusPoint;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,7 +38,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 
 	@Test
 	public void createsCorrectUrl() throws UnsupportedEncodingException {
-		FocusPoint focusPoint = new FocusPoint("testing").setChild(new FocusPoint("strategy"));
+		IFocusPoint focusPoint = new FocusPoint("testing").setChild(new FocusPoint("strategy"));
 		String url = urlStrategy.build(focusPoint);
 		String targetUrl = "http://www.google-analytics.com/__utm.gif?"
 				+ "utmwv=4.7.2"

@@ -12,8 +12,9 @@ package org.jboss.tools.usage.test;
 
 import static org.junit.Assert.*;
 
-import org.jboss.tools.usage.FocusPoint;
-import org.jboss.tools.usage.JBossToolsFocusPoint;
+import org.jboss.tools.usage.tracker.internal.FocusPoint;
+import org.jboss.tools.usage.tracker.internal.IFocusPoint;
+import org.jboss.tools.usage.tracker.internal.JBossToolsFocusPoint;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 import org.junit.Test;
 
@@ -35,7 +36,7 @@ public class JBossToolsFocusPointTest {
 
 	@Test
 	public void appendsJBossToolsVersionToTheEnd() throws Exception {
-		FocusPoint focusPoint = new JBossToolsFocusPointFake(ROOT)
+		IFocusPoint focusPoint = new JBossToolsFocusPointFake(ROOT)
 				.setChild(new FocusPoint(CHILD)
 						.setChild(new FocusPoint(CHILD)));
 		String contentURI = focusPoint.getURI();

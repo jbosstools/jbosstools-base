@@ -14,11 +14,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.jboss.tools.usage.FocusPoint;
-import org.jboss.tools.usage.ILoggingAdapter;
-import org.jboss.tools.usage.IURLBuildingStrategy;
-import org.jboss.tools.usage.Tracker;
 import org.jboss.tools.usage.http.IHttpGetRequest;
+import org.jboss.tools.usage.tracker.ILoggingAdapter;
+import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
+import org.jboss.tools.usage.tracker.internal.IFocusPoint;
+import org.jboss.tools.usage.tracker.internal.Tracker;
 
 /**
  * @author Andre Dietisheim
@@ -35,7 +35,7 @@ public class UrlRevealingTracker extends Tracker {
 	}
 
 	@Override
-	public void trackAsynchronously(FocusPoint focusPoint) {
+	public void trackAsynchronously(IFocusPoint focusPoint) {
 		try {
 			lock.lock();
 			super.trackAsynchronously(focusPoint);
@@ -47,7 +47,7 @@ public class UrlRevealingTracker extends Tracker {
 	}
 
 	@Override
-	protected String getTrackingUrl(FocusPoint focusPoint) throws UnsupportedEncodingException {
+	protected String getTrackingUrl(IFocusPoint focusPoint) throws UnsupportedEncodingException {
 		return trackingUrl = super.getTrackingUrl(focusPoint);
 	}
 

@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 
 import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
+import org.jboss.tools.usage.http.IPropertiesProvider;
 import org.junit.Test;
 
 /**
@@ -34,23 +35,23 @@ public class HttpRemotePropertiesTest {
 
 	@Test
 	public void canExtractTrueValue() throws IOException {
-		HttpRemotePropertiesProvider propertiesProvider = createHttpPropertiesProvider("true", "", "", VALUE_DELIMITER, KEY);
-		assertEquals("true", propertiesProvider.getValueMap().get(KEY));
+		IPropertiesProvider propertiesProvider = createHttpPropertiesProvider("true", "", "", VALUE_DELIMITER, KEY);
+		assertEquals("true", propertiesProvider.getMap().get(KEY));
 	}
 
 	@Test
 	public void canExtractFalseValue() throws IOException {
-		HttpRemotePropertiesProvider propertiesProvider = createHttpPropertiesProvider("false", "", "", VALUE_DELIMITER, KEY);
-		assertEquals("false", propertiesProvider.getValueMap().get(KEY));
+		IPropertiesProvider propertiesProvider = createHttpPropertiesProvider("false", "", "", VALUE_DELIMITER, KEY);
+		assertEquals("false", propertiesProvider.getMap().get(KEY));
 	}
 
 	@Test
 	public void canExtractRubbish() throws IOException {
-		HttpRemotePropertiesProvider propertiesProvider = createHttpPropertiesProvider("Rubbish", "", "", VALUE_DELIMITER, KEY);
-		assertEquals("Rubbish", propertiesProvider.getValueMap().get(KEY));
+		IPropertiesProvider propertiesProvider = createHttpPropertiesProvider("Rubbish", "", "", VALUE_DELIMITER, KEY);
+		assertEquals("Rubbish", propertiesProvider.getMap().get(KEY));
 	}
 
-	private HttpRemotePropertiesProvider createHttpPropertiesProvider(final String booleanValue,
+	private IPropertiesProvider createHttpPropertiesProvider(final String booleanValue,
 			final String stringValue, final String anotherValue, char valueDelimiter, String... keys) {
 
 		return new HttpRemotePropertiesProvider("http://dummy", valueDelimiter,

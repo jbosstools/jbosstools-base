@@ -13,7 +13,8 @@ package org.jboss.tools.usage.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.jboss.tools.usage.FocusPoint;
+import org.jboss.tools.usage.tracker.internal.FocusPoint;
+import org.jboss.tools.usage.tracker.internal.IFocusPoint;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class FocusPointTest {
 	
 	@Test
 	public void testGetContentURI_Simple() throws Exception {
-		FocusPoint focusPoint = new FocusPoint(ROOT);
+		IFocusPoint focusPoint = new FocusPoint(ROOT);
 		String contentURI = focusPoint.getURI();
 		assertNotNull(contentURI);
 		assertEquals(URI_SEPARATOR_ENCODED + ROOT, contentURI);
@@ -40,7 +41,7 @@ public class FocusPointTest {
 
 	@Test
 	public void testGetContentURI_OneLevel() throws Exception {
-		FocusPoint focusPoint = new FocusPoint(ROOT).setChild(new FocusPoint(CHILD1));
+		IFocusPoint focusPoint = new FocusPoint(ROOT).setChild(new FocusPoint(CHILD1));
 		String contentURI = focusPoint.getURI();
 		assertNotNull(contentURI);
 		assertEquals(URI_SEPARATOR_ENCODED + ROOT + URI_SEPARATOR_ENCODED + CHILD1, contentURI);
@@ -48,7 +49,7 @@ public class FocusPointTest {
 
 	@Test
 	public void testGetContentTitle_Simple() throws Exception {
-		FocusPoint focusPoint = new FocusPoint(ROOT);
+		IFocusPoint focusPoint = new FocusPoint(ROOT);
 		String contentTitle = focusPoint.getTitle();
 		assertNotNull(contentTitle);
 		assertEquals(ROOT, contentTitle);
@@ -56,7 +57,7 @@ public class FocusPointTest {
 
 	@Test
 	public void testGetContentTitle_OneLevel() throws Exception {
-		FocusPoint focusPoint = new FocusPoint(ROOT).setChild(new FocusPoint(CHILD1));
+		IFocusPoint focusPoint = new FocusPoint(ROOT).setChild(new FocusPoint(CHILD1));
 		String contentTitle = focusPoint.getTitle();
 		assertNotNull(contentTitle);
 		assertEquals(ROOT + TITLE_SEPARATOR_ENCODED + CHILD1, contentTitle);
