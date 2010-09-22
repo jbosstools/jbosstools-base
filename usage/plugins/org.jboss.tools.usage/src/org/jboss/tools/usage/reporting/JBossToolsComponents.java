@@ -40,7 +40,7 @@ public class JBossToolsComponents {
 	 * </p>
 	 * 
 	 */
-	public enum JBossToolsFeatureNames {
+	public enum JBossToolsFeatureIdentifiers {
 		AS("org.jboss.ide.eclipse.as.feature"),
 		ARCHIVES("org.jboss.ide.eclipse.archives.feature"),
 		BIRT("org.jboss.tools.birt.feature"),
@@ -73,10 +73,10 @@ public class JBossToolsComponents {
 		WS("org.jboss.tools.ws.feature"),
 		XULRUNNER("org.mozilla.xulrunner.feature");
 
-		private String featureName;
+		private String featureIdentifier;
 
-		JBossToolsFeatureNames(String featureName) {
-			this.featureName = featureName;
+		JBossToolsFeatureIdentifiers(String featureIdentifier) {
+			this.featureIdentifier = featureIdentifier;
 		}
 
 		/**
@@ -89,7 +89,7 @@ public class JBossToolsComponents {
 		 * @return <tt>true</tt>, if the given bundle
 		 */
 		public boolean matches(IBundleGroup bundleGroup) {
-			return featureName.equals(bundleGroup.getName());
+			return featureIdentifier.equals(bundleGroup.getIdentifier());
 		}
 
 		public String getComponentName() {
@@ -97,7 +97,7 @@ public class JBossToolsComponents {
 		}
 
 		public String getFeatureName() {
-			return featureName;
+			return featureIdentifier;
 		}
 	}
 
@@ -151,9 +151,9 @@ public class JBossToolsComponents {
 		}
 
 		public boolean matches(IBundleGroup bundleGroup) {
-			for (JBossToolsFeatureNames featureName : JBossToolsFeatureNames.values()) {
-				if (featureName.matches(bundleGroup)) {
-					this.componentNames.add(featureName.getComponentName());
+			for (JBossToolsFeatureIdentifiers featureIdentifier : JBossToolsFeatureIdentifiers.values()) {
+				if (featureIdentifier.matches(bundleGroup)) {
+					this.componentNames.add(featureIdentifier.getComponentName());
 					return true;
 				}
 			}
