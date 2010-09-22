@@ -10,18 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.usage.internal;
 
+import org.eclipse.core.runtime.IProduct;
+import org.eclipse.core.runtime.Platform;
+
 
 public class JBDSUtils {
 
 	private static Boolean isJBDS = null;
 
 	public static boolean isJBDS() {
-//		if (isJBDS == null) {
-//			IProduct product = Platform.getProduct();
-//			isJBDS = (product != null
-//					&& JBDSConstants.JBDS_PRODUCT_ID.equals(product.getId()));
-//		}
-//		return isJBDS;
-		return true;
+		if (isJBDS == null) {
+			IProduct product = Platform.getProduct();
+			isJBDS = (product != null
+					&& JBDSConstants.JBDS_PRODUCT_ID.equals(product.getId()));
+		}
+		return isJBDS;
 	}
 }
