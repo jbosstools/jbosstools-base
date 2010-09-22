@@ -15,6 +15,7 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.jboss.tools.usage.internal.JBDSMessageKeysUtils;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
@@ -31,13 +32,13 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID
-				, PreferencesMessages.UsageReportPreferencePage_AllowReporting
+				, JBDSMessageKeysUtils.getMessageKey(PreferencesMessages.UsageReportPreferencePage_AllowReporting)
 				, getFieldEditorParent()));
 	}
 
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(UsageReportPreferences.createPreferenceStore());
-		setDescription(PreferencesMessages.UsageReportPreferencePage_Description);
+		setDescription(JBDSMessageKeysUtils.getMessageKey(PreferencesMessages.UsageReportPreferencePage_Description));
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 			UsageReportPreferences.flush();
 		} catch (BackingStoreException e) {
 			IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-					PreferencesMessages.UsageReportPreferencePage_Error_Saving, e);
+					JBDSMessageKeysUtils.getMessageKey(PreferencesMessages.UsageReportPreferencePage_Error_Saving), e);
 			JBossToolsUsageActivator.getDefault().getLog().log(status);
 		}
 		return super.performOk();

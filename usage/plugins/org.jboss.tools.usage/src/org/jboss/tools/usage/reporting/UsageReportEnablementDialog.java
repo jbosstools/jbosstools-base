@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
+import org.jboss.tools.usage.internal.JBDSMessageKeysUtils;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.BrowserUtil;
 
@@ -65,12 +66,12 @@ public class UsageReportEnablementDialog extends Dialog {
 		// message
 		Link link = new Link(composite, SWT.WRAP);
 		link.setFont(parent.getFont());
-		link.setText(ReportingMessages.UsageReport_DialogMessage);
+		link.setText(JBDSMessageKeysUtils.getMessageKey(ReportingMessages.UsageReport_DialogMessage));
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				BrowserUtil.checkedCreateExternalBrowser(
-						ReportingMessages.UsageReport_WikiPage,
+						JBDSMessageKeysUtils.getMessageKey(ReportingMessages.UsageReport_ExplanationPage),
 						JBossToolsUsageActivator.PLUGIN_ID,
 						JBossToolsUsageActivator.getDefault().getLog());
 			}
@@ -83,7 +84,7 @@ public class UsageReportEnablementDialog extends Dialog {
 
 		// checkbox
 		checkBox = new Button(composite, SWT.CHECK);
-		checkBox.setText(ReportingMessages.UsageReport_Checkbox_Text);
+		checkBox.setText(JBDSMessageKeysUtils.getMessageKey(ReportingMessages.UsageReport_Checkbox_Text));
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.LEFT, SWT.CENTER).applyTo(checkBox);
 
 		applyDialogFont(composite);

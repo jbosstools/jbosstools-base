@@ -8,21 +8,12 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage;
+package org.jboss.tools.usage.internal;
 
-import org.eclipse.osgi.util.NLS;
+public class JBDSConstants {
+	/** the suffix that gets added to message keys when reporting JBDS */
+	public static final String JBDS_MESSAGEKEY_SUFFIX = "_JBDS";
 
-public class UsageMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.usage.messages"; //$NON-NLS-1$
-	public static String Tracker_Synchronous;
-	public static String Tracker_Asynchronous;
-	public static String Tracker_Error;
-
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, UsageMessages.class);
-	}
-
-	private UsageMessages() {
-	}
+	/** the JBDS product feature id */
+	public static final String JBDS_PRODUCT_ID = "com.jboss.jbds.product.feature";
 }

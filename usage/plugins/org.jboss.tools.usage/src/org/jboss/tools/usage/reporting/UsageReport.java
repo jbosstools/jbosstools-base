@@ -23,6 +23,7 @@ import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.http.HttpGetRequest;
 import org.jboss.tools.usage.http.IHttpGetRequest;
+import org.jboss.tools.usage.internal.JBDSMessageKeysUtils;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.preferences.UsageReportPreferences;
@@ -90,8 +91,8 @@ public class UsageReport {
 
 	private ITracker getTracker() {
 		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironment(
-				ReportingMessages.UsageReport_GoogleAnalytics_Account
-				, ReportingMessages.UsageReport_HostName
+				JBDSMessageKeysUtils.getMessageKey(ReportingMessages.UsageReport_GoogleAnalytics_Account)
+				, JBDSMessageKeysUtils.getMessageKey(ReportingMessages.UsageReport_HostName)
 				, UsageReportPreferencesUtils.getPreferences());
 		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageActivator.getDefault());
 		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment);

@@ -12,9 +12,13 @@ package org.jboss.tools.usage.preferences;
 
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProduct;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.http.IPropertiesProvider;
+import org.jboss.tools.usage.internal.JBDSConstants;
+import org.jboss.tools.usage.internal.JBDSMessageKeysUtils;
 
 /**
  * A class that implements a global reporting enablement setting. The current
@@ -33,10 +37,10 @@ public class GlobalUsageSettings {
 
 	public static final String REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY = USAGE_REPORTING_ENABLED_KEY + "="; //$NON-NLS-1$
 
-	/** the enablement default for the local instance */ 
+	/** the enablement default for the local instance */
 	private static final boolean INSTANCE_USAGE_REPORTING_ENABLED_DEFAULT = true;
 
-	/** the enablement default for all instances */ 
+	/** the enablement default for all instances */
 	private static final boolean ALLINSTANCES_USAGE_REPORTING_ENABLED_DEFAULT = false;
 
 	/** the delimiter that delimits the key/value-pairs */
@@ -46,7 +50,7 @@ public class GlobalUsageSettings {
 
 	public GlobalUsageSettings(Plugin plugin) {
 		remoteMap = createRemoteMap(
-				PreferencesMessages.GlobalUsageSettings_RemoteProps_URL
+				JBDSMessageKeysUtils.getMessageKey(PreferencesMessages.GlobalUsageSettings_RemoteProps_URL)
 				, VALUE_DELIMITER
 				, plugin
 				, REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY);
@@ -63,7 +67,9 @@ public class GlobalUsageSettings {
 
 	/**
 	 * Returns <code>true</code> if reporting is enabled for all instances. The
-	 * appropriate setting is queried in a remote properties file at {@link #REMOTEPROPS_URL}. The key is {@link #REMOTEPROPS_ALLINSTANCES_ENABLED_DEFAULT}
+	 * appropriate setting is queried in a remote properties file at
+	 * {@link #REMOTEPROPS_URL}. The key is
+	 * {@link #REMOTEPROPS_ALLINSTANCES_ENABLED_DEFAULT}
 	 * 
 	 * @return <code>true, if the remote peer is set to enabled
 	 * 

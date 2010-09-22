@@ -18,15 +18,21 @@ public class ReportingMessages extends NLS {
 	public static String UsageReport_Reporting_Usage;
 	public static String UsageReport_Querying_Enablement;
 	public static String UsageReport_Asking_User;
+	public static String UsageReport_DialogTitle;
+	public static String UsageReport_Error_SavePreferences;
+
 	public static String UsageReport_Checkbox_Text;
 	public static String UsageReport_DialogMessage;
-	public static String UsageReport_DialogTitle;
-	
-	public static String UsageReport_Error_SavePreferences;
 	public static String UsageReport_GoogleAnalytics_Account;
 	public static String UsageReport_HostName;
-	public static String UsageReport_WikiPage;
-	
+	public static String UsageReport_ExplanationPage;
+
+	public static String UsageReport_Checkbox_Text_JBDS;
+	public static String UsageReport_DialogMessage_JBDS;
+	public static String UsageReport_GoogleAnalytics_Account_JBDS;
+	public static String UsageReport_HostName_JBDS;
+	public static String UsageReport_ExplanationPage_JBDS;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, ReportingMessages.class);
