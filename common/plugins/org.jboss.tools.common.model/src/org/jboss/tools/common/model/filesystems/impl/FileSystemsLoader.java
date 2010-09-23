@@ -21,6 +21,7 @@ import org.w3c.dom.*;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.loaders.impl.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -158,63 +159,12 @@ public class FileSystemsLoader extends URLRootLoader {
     	IProject project = EclipseResourceUtil.getProject(object);
     	if(project == null) return;
     	XModelObject lib = validateLib(object);
-    	if(lib == null) {
-    		return;
-    	}
-		List<String> newPaths = null;
-		try {
-			newPaths = EclipseResourceUtil.getClassPath(project.getProject());
-			List<String> jre = EclipseResourceUtil.getJREClassPath(project.getProject());
-			if(jre != null) newPaths.removeAll(jre);
-		} catch (CoreException e) {
-			//TODO
-			ModelPlugin.getDefault().logError(e);
-		} catch (IOException e) {
-			ModelPlugin.getDefault().logError(e);
-		}
-		if(paths == null && newPaths == null) return;
-		if((newPaths == null || paths == null) || (paths.size() != newPaths.size())) {
-			paths = newPaths;
-		} else { 
-			boolean b = false;
-			for (int i = 0; i < paths.size() && !b; i++) {
-				if(!paths.get(i).equals(newPaths.get(i))) b = true;
-			}
-			if(!b) return;
-			paths = newPaths;
-		}
-		XModelObject[] fs = object.getChildren("FileSystemJar"); //$NON-NLS-1$
-		Set<XModelObject> fss = new HashSet<XModelObject>();
-		for (int i = 0; i < fs.length; i++) fss.add(fs[i]);
-		
-		for (int i = 0; i < paths.size(); i++) {
-			String path = paths.get(i);
-			if(!EclipseResourceUtil.isJar(path)) continue;
-			String fileName = new File(path).getName();
-			if(EclipseResourceUtil.SYSTEM_JAR_SET.contains(fileName)) continue;
-			String jsname = "lib-" + fileName; //$NON-NLS-1$
-			XModelObject o = object.getChildByPath(jsname); 
-			if(o != null) {
-				fss.remove(o);
-			} else {
-				o = object.getModel().createModelObject("FileSystemJar", null); //$NON-NLS-1$
-				o.setAttributeValue(XModelObjectConstants.ATTR_NAME, jsname); 
-				o.setAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION, path); 
-				o.set(IS_ADDED_TO_CLASSPATH, XModelObjectConstants.TRUE); 
-				object.addChild(o);
-//				object.setModified(true);
-			}			
-		}
-		
-		for (XModelObject o: fss) {
-			String path = XModelObjectUtil.expand(o.getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION), o.getModel(), null); 
-			if(XModelObjectConstants.TRUE.equals(o.get(FileSystemsLoader.IS_ADDED_TO_CLASSPATH))) { 
-				o.removeFromParent(); 
-			} else if(!new File(path).exists()) {
-				o.removeFromParent();
-			}			
-		}
-		
+//    	if(lib == null) {
+//    		return;
+//    	}
+    	
+    	Libs libs = FileSystemsHelper.getLibs(object);
+    	if(libs != null) libs.update();
     }
     
     private XModelObject validateLib(XModelObject object) {

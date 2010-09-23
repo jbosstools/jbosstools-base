@@ -47,6 +47,9 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
     boolean loaded2 = false;
 
     protected void loadChildren() {
+    	if(!isActive()) {
+    		return;
+    	}
 //        if(jar.isLoaded()) return;
 
         if(this != getJarAccess().getMain()) return;

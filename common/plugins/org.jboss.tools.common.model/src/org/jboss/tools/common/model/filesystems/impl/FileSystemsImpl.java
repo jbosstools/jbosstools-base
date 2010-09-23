@@ -32,9 +32,15 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
     Ov overlapper = null;
     FileSystemsRenameListener fileSystemsRenameListener = new FileSystemsRenameListener(this);
 
+    Libs libs = new Libs(this);
+
     public FileSystemsImpl() {
 		IWorkspace workspace = ModelPlugin.getWorkspace();
 		if (workspace != null) workspace.addResourceChangeListener(this);
+    }
+
+    public Libs getLibs() {
+    	return libs;
     }
 
     public String getPresentationString() {

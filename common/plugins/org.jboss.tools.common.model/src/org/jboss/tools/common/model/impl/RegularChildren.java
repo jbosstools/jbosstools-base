@@ -99,8 +99,9 @@ public class RegularChildren {
 	public Map<String, XModelObject> getObjectsMap() {
 		Map<String, XModelObject> result = new HashMap<String, XModelObject>();
 		if (objects != null) {
-			synchronized(objects) {
-				result.putAll(objects.getMap());
+			Map<String, XModelObject> entries = objects.getMap();
+			synchronized(entries) {
+				result.putAll(entries);
 			}
 		}
 		return result;

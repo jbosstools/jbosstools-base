@@ -289,14 +289,14 @@ public class JarAccess {
 
 	public JarSystemImpl getMain() {
 		IProject p = EclipseResourceUtil.getProject(main);
-		if(p == null || !p.isAccessible() || main.getParent() == null) {
+		if(p == null || !p.isAccessible() || !main.isActive()) {
 			main = null;
 			synchronized(slaves) {
 				Iterator<JarSystemImpl> it = slaves.iterator();
 				while(it.hasNext()) {
 					JarSystemImpl s = it.next();
 					p = EclipseResourceUtil.getProject(s);
-					if(p == null || !p.isAccessible() || s.getParent() == null) {
+					if(p == null || !p.isAccessible() || !s.isActive()) {
 						it.remove();
 					} else if(main == null) {
 						main = s;

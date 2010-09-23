@@ -11,6 +11,8 @@
 package org.jboss.tools.common.model.filesystems;
 
 import org.jboss.tools.common.model.*;
+import org.jboss.tools.common.model.filesystems.impl.FileSystemsImpl;
+import org.jboss.tools.common.model.filesystems.impl.Libs;
 
 public class FileSystemsHelper {
 	public static final String FILE_SYSTEMS = "FileSystems"; //$NON-NLS-1$
@@ -29,6 +31,18 @@ public class FileSystemsHelper {
 
 	public static XModelObject getWebInf(XModel model) {
 		return model.getByPath(FILE_SYSTEMS + "/WEB-INF"); //$NON-NLS-1$
+	}
+
+	public static Libs getLibs(XModel model) {
+		XModelObject fs = getFileSystems(model);
+		return (!(fs instanceof FileSystemsImpl)) ? null : ((FileSystemsImpl)fs).getLibs();
+	}
+
+	public static Libs getLibs(XModelObject object) {
+		if(object instanceof FileSystemsImpl) {
+			return  ((FileSystemsImpl)object).getLibs();
+		}
+		return object == null ? null : getLibs(object.getModel());
 	}
 
 }
