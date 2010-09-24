@@ -180,10 +180,9 @@ public class EclipseResourceUtil extends EclipseUtil {
 
 	public static XModelObject addFileSystem(IResource resource, XModel model) {
 		XModelObject fss = FileSystemsHelper.getFileSystems(model);
-		if(fss == null) return null;
-		if(resource == null) return null;
+		if(fss == null || resource == null) return null;
 		Properties properties = new Properties();
-		String fsLoc = resource.getLocation().toString();
+		String fsLoc = resource.getLocation() != null ? resource.getLocation().toString() : resource.getLocationURI().toString();
 		if(resource == resource.getProject()) {
 			fsLoc = "%" + IModelNature.ECLIPSE_PROJECT + "%"; //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
