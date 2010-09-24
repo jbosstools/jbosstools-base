@@ -50,7 +50,15 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(ReportingMessages.UsageReport_DialogTitle);
+		shell.setText(getDialogTitle());
+	}
+
+	private String getDialogTitle() {
+		if (JBDSUtils.isJBDS()) {
+			return ReportingMessages.UsageReport_DialogTitle_JBDS;
+		} else {
+			return ReportingMessages.UsageReport_DialogTitle;
+		}
 	}
 
 	protected void createButtonsForButtonBar(Composite parent) {

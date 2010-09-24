@@ -17,7 +17,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +26,6 @@ import org.jboss.tools.usage.util.HttpEncodingUtils;
 import org.jboss.tools.usage.util.LoggingUtils;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.jboss.tools.usage.util.reader.ReaderUtils;
-import org.osgi.service.component.ComponentContext;
 
 
 /**

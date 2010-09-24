@@ -27,9 +27,10 @@ public class ReportingMessages extends NLS {
 	public static String UsageReport_HostName;
 	public static String UsageReport_ExplanationPage;
 
-	public static String UsageReport_Checkbox_Text_JBDS;
+	public static String UsageReport_DialogTitle_JBDS;
 	public static String UsageReport_DialogMessage_JBDS;
 	public static String UsageReport_GoogleAnalytics_Account_JBDS;
+	public static String UsageReport_Checkbox_Text_JBDS;
 	public static String UsageReport_HostName_JBDS;
 	public static String UsageReport_ExplanationPage_JBDS;
 
