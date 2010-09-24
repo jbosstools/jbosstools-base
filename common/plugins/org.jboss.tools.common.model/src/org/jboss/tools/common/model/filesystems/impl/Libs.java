@@ -23,6 +23,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.IElementChangedListener;
+import org.eclipse.jdt.core.IJavaElementDelta;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -34,7 +39,7 @@ import org.jboss.tools.common.model.util.XModelObjectUtil;
  * @author Viacheslav Kabanovich
  *
  */
-public class Libs {
+public class Libs implements IElementChangedListener {
 	protected FileSystemsImpl object;
 	protected List<String> paths = null;
 	Map<IPath, String> paths2 = new HashMap<IPath, String>();
@@ -43,6 +48,7 @@ public class Libs {
 	
 	public Libs(FileSystemsImpl object) {
 		this.object = object;
+		JavaCore.addElementChangedListener(this);
 	}
 
 	private IProject getProjectResource() {
@@ -50,29 +56,48 @@ public class Libs {
 	}
 
 	public boolean update() {
+		boolean result = updatePaths();
+		if(result) fire();
+		if(paths == null && result) return true;
+	
+		updateFileSystems(paths);
+		fsVersion = pathsVersion;
+
+		return result;
+	}
+
+	synchronized boolean updatePaths() {
+		if(classpathpVersion <= pathsVersion) {
+			return false;
+		}
+		pathsVersion = classpathpVersion;
 		List<String> newPaths = null;
 		try {
 			newPaths = EclipseResourceUtil.getClassPath(getProjectResource());
 			List<String> jre = EclipseResourceUtil.getJREClassPath(getProjectResource());
 			if(jre != null) newPaths.removeAll(jre);
 		} catch (CoreException e) {
-			//TODO
 			ModelPlugin.getDefault().logError(e);
 		} catch(IOException e) {
 			ModelPlugin.getDefault().logError(e);			
 		}
 		if(paths == null && newPaths == null) return false;
-		if((newPaths == null || paths == null) || (paths.size() != newPaths.size())) {
-			paths = newPaths;
-		} else { 
+		if((newPaths != null && paths != null) && (paths.size() == newPaths.size())) {
 			boolean b = false;
 			for (int i = 0; i < paths.size() && !b; i++) {
 				if(!paths.get(i).equals(newPaths.get(i))) b = true;
 			}
 			if(!b) return false;
-			paths = newPaths;
 		}
-		createMap(); if(paths == null) return true;
+		paths = newPaths;
+		createMap();
+		return true;
+	}
+
+	void updateFileSystems(List<String> paths) {
+		if(fsVersion >= pathsVersion) {
+			return;
+		}
 		XModelObject[] fs = object.getChildren("FileSystemJar"); //$NON-NLS-1$
 		Set<XModelObject> fss = new HashSet<XModelObject>();
 		for (int i = 0; i < fs.length; i++) fss.add(fs[i]);
@@ -104,8 +129,6 @@ public class Libs {
 				o.removeFromParent();
 			}			
 		}
-		
-		return true;
 	}
 
 	public List<String> getPaths() {
@@ -142,4 +165,33 @@ public class Libs {
 			listener.pathsChanged(paths);
 		}
 	}
+
+	int classpathpVersion = 0;
+	int pathsVersion = -1;
+	int fsVersion = -1;
+
+	public void elementChanged(ElementChangedEvent event) {
+		IProject project = getProjectResource();
+		if(project == null || !project.exists()) {
+			JavaCore.removeElementChangedListener(this);
+			return;
+		}
+
+		IJavaElementDelta d = event.getDelta();
+		IJavaElementDelta[] ds = d.getAffectedChildren();
+		IJavaElementDelta p = null;
+
+		for (IJavaElementDelta dc: ds) {
+			if(dc.getElement() instanceof IJavaProject && ((IJavaProject)dc.getElement()).getProject() == project) {
+				p = dc;
+			}
+		}
+		if(p == null) return;
+		int f = p.getFlags();
+		if((f & (IJavaElementDelta.F_CLASSPATH_CHANGED 
+			| IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED)) != 0) {
+			classpathpVersion++;
+		}		
+	}
+
 }
