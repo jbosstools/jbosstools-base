@@ -13,7 +13,8 @@ package org.jboss.tools.usage.tracker.internal;
 import org.eclipse.osgi.util.NLS;
 
 public class TrackerMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.usage.tracker.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.jboss.tools.usage.tracker.internal.messages"; //$NON-NLS-1$
+
 	public static String Tracker_Synchronous;
 	public static String Tracker_Asynchronous;
 	public static String Tracker_Error;
