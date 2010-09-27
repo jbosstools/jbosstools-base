@@ -15,5 +15,5 @@ public class JBDSConstants {
 	public static final String JBDS_MESSAGEKEY_SUFFIX = "_JBDS";
 
 	/** the JBDS product feature id */
-	public static final String JBDS_PRODUCT_ID = "com.jboss.jbds.product.feature";
+	public static final String JBDS_PRODUCT_ID = "com.jboss.jbds.product.product";
 }
