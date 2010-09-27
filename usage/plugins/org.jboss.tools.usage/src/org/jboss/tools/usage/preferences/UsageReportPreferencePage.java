@@ -11,8 +11,15 @@
 package org.jboss.tools.usage.preferences;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.jboss.tools.usage.internal.JBDSUtils;
@@ -29,11 +36,39 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		super(GRID);
 	}
 
+	@Override
+	protected Control createContents(Composite parent) {
+		Control control = super.createContents(parent);
+		appendReportingData((Composite) control);
+		return control;
+	}
+
+	private void appendReportingData(Composite control) {
+		Group group = new Group(control, SWT.NONE);
+		group.setText(PreferencesMessages.UsageReportPreferencePage_ReportedValues);
+		GridDataFactory.fillDefaults().grab(true, false).hint(SWT.FILL, 300).applyTo(group);
+		FillLayout fillLayout = new FillLayout();
+		fillLayout.marginHeight = 4;
+		fillLayout.marginWidth = 8;
+		group.setLayout(fillLayout);
+		StyledText text = new StyledText(group, SWT.BORDER | SWT.V_SCROLL);
+		text.setText("This is the StyledText widget\n...\n...\n...\n...\n...\n...\n\n...\n...\n...\n...\n...\n...\n\n...\n...\n...\n...\n...\n...\n\n...\n...\n...\n...\n...\n...\n\n...\n...\n...\n...\n...\n...\n\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n....");
+		text.setEditable(false);
+	}
+
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID
 				, getCheckBoxlabel()
 				, getFieldEditorParent()));
+
+		addReportedValues();
+
+	}
+
+	private void addReportedValues() {
+		// TODO Auto-generated method stub
+
 	}
 
 	private String getCheckBoxlabel() {
@@ -43,7 +78,6 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 			return PreferencesMessages.UsageReportPreferencePage_AllowReporting;
 		}
 	}
-	
 
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(UsageReportPreferences.createPreferenceStore());
@@ -64,7 +98,7 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 			UsageReportPreferences.flush();
 		} catch (BackingStoreException e) {
 			IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-					getPrefsSaveErrorMessage() , e);
+					getPrefsSaveErrorMessage(), e);
 			JBossToolsUsageActivator.getDefault().getLog().log(status);
 		}
 		return super.performOk();
@@ -77,6 +111,5 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 			return PreferencesMessages.UsageReportPreferencePage_Error_Saving;
 		}
 	}
-	
-	
+
 }
