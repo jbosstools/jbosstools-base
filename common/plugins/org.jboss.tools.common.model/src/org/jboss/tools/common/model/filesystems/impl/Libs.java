@@ -102,7 +102,7 @@ public class Libs implements IElementChangedListener {
 		Set<XModelObject> fss = new HashSet<XModelObject>();
 		for (int i = 0; i < fs.length; i++) fss.add(fs[i]);
 		
-		for (int i = 0; i < paths.size(); i++) {
+		if(paths != null) for (int i = 0; i < paths.size(); i++) {
 			String path = paths.get(i);
 			if(!EclipseResourceUtil.isJar(path)) continue;
 			String fileName = new File(path).getName();
