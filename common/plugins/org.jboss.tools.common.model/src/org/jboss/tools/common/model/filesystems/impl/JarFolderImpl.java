@@ -75,7 +75,7 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
                 XModelObject c = getModel().createModelObject("JarFolder", p); //$NON-NLS-1$
                 addChild(c);
             } else {
-                createFileObject(jar, path, cs[i]);
+                createFileObject(jar, path, cs[i], true);
             }
         }
         fire = true;
@@ -83,7 +83,7 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
         loaded = true;
     }
 
-    private void createFileObject(JarAccess jar, String path, String name) {
+    private XModelObject createFileObject(JarAccess jar, String path, String name, boolean add) {
         String cpath = (path.length() == 0) ? name : path + XModelObjectConstants.SEPARATOR + name;
         Properties p = new Properties();
         FolderImpl.parseFileName(p, name);
@@ -110,7 +110,23 @@ public class JarFolderImpl extends RegularObjectImpl implements FolderLoader {
                 loader.load(c);
             }
         }
-        addChild(c);
+        if(add) {
+        	addChild(c);
+        } else {
+        	((XModelObjectImpl)c).setParent_0(this);
+        }
+        return c;
+    }
+
+    public XModelObject createValidChildCopy(XModelObject child) {
+        JarAccess jar = getJarSystem().getJarAccess();
+        if(!jar.isLoaded()) return null;
+        jar.lockJar();
+        String path = getAbsolutePath();
+        String item = FileAnyImpl.toFileName(child);
+    	XModelObject copy = createFileObject(jar, path, item, false);
+        jar.unlockJar();
+    	return copy;
     }
 
     protected boolean fire = false;

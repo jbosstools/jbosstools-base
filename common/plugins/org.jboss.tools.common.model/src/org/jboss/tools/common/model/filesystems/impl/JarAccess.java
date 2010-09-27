@@ -60,11 +60,11 @@ public class JarAccess {
 		return location;
 	}
 
-	public boolean isLoaded() {
+	public synchronized boolean isLoaded() {
 		return (exists || loading);
 	}
 
-	public void validate() {
+	public synchronized void validate() {
 		if (isLoaded()) return;
 		loading = true;
 		templocation = null;

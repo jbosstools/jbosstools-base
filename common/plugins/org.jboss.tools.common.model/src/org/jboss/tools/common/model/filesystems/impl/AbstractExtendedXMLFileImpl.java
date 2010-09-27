@@ -12,7 +12,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Display;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -24,7 +23,6 @@ import org.jboss.tools.common.model.filesystems.BodySource;
 import org.jboss.tools.common.model.filesystems.impl.AbstractXMLFileImpl;
 import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.markers.ConstraintChecker;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.impl.*;
 import org.jboss.tools.common.model.util.*;
 
@@ -35,8 +33,20 @@ import org.jboss.tools.common.model.util.*;
 public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     private static final long serialVersionUID = 7942041044569562286L;
 	ConstraintChecker constraintChecker = new ConstraintChecker(this);
+	
+	ThreadSafeCopyFactory threadSafeCopyFactory = null;
 
     public AbstractExtendedXMLFileImpl() {}
+
+    /**
+     * Returns ready to be loaded copy of this object if and only if this object is being loaded by another thread.
+     * Otherwise, returns null.
+     * 
+     * @return
+     */
+    XModelObject getThreadSafeCopy() {
+    	return threadSafeCopyFactory == null ? null : threadSafeCopyFactory.getThreadSafeCopy();
+    }
 
     public boolean hasChildren() {
         return true;
@@ -51,6 +61,11 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         if (getParent() != null && ns.indexOf("." + name + ".") < 0) { //$NON-NLS-1$ //$NON-NLS-2$
        		if(loadAttributeSeparately(name)) return super.get(name);
             loadChildren();
+            
+            XModelObject copy = getThreadSafeCopy();
+            if(copy != null) {
+            	return copy.get(name);
+            }
             
         }
         return super.get(name);
@@ -74,7 +89,8 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
      */    
     private boolean loadAttributeSeparately(String xmlname) {
         BodySource source = getBodySource();
-        if(source == null) return true;
+        if(source == null) return threadSafeCopyFactory == null;
+
     	if(!shouldLoadAttributeSeparately(xmlname)) return false;
     	if(xmlname == null || xmlname.length() == 0) return false;
     	String oldvalue = super.get(xmlname);
@@ -95,20 +111,34 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     public boolean isObjectEditable() {
     	return super.isObjectEditable() && (!XModelObjectConstants.YES.equals(get("_hasErrors_"))); //$NON-NLS-1$
     }
+
+    public XModelObject[] getChildren() {
+    	XModelObject copy = getThreadSafeCopy();
+    	return (copy != null) ? copy.getChildren() : super.getChildren();
+    }
     
     protected void loadChildren() {
+    	getThreadSafeCopy();   		
+ 	
         BodySource source = getBodySource();
         if (source == null) return;
+        
+        threadSafeCopyFactory = new ThreadSafeCopyFactory(this);
+
         super.setBodySource(null);
         XObjectLoader loader = XModelObjectLoaderUtil.getObjectLoader(this);
         String body = source.get();
         XModelObjectLoaderUtil.setTempBody(this, body);
         loader.load(this);
+
+        threadSafeCopyFactory.destroy();
+        threadSafeCopyFactory = null;
+
         if(!isIncorrect() && !isOverlapped()) {
         	runCheckerOnLoad();
         }
     }
-    WorkspaceJob checkerOnLoad = new WorkspaceJob("Checking on load...") {
+    WorkspaceJob checkerOnLoad = new WorkspaceJob("Checking on load...") { //$NON-NLS-1$
 
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor)
@@ -166,7 +196,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 		String entity = getModel().getEntityRecognizer().getEntityName(new EntityRecognizerContext(toFileName(this), getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION), body));
 		if(entity == null || !entity.equals(getModelEntity().getName())) {
 			String[] errors = (body.length() == 0) ? null : XMLUtil.getXMLErrors(new java.io.StringReader(body), false);
-			if(errors == null || errors.length == 0) errors = new String[]{"Doctype has been changed. Please save file for the change to take effect in object model.    :0:0"};
+			if(errors == null || errors.length == 0) errors = new String[]{"Doctype has been changed. Please save file for the change to take effect in object model.    :0:0"}; //$NON-NLS-1$
 			setErrors(body, errors);
 			XModelImpl m = (XModelImpl)getModel();
 			m.fireStructureChanged(this);

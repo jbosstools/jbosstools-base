@@ -47,6 +47,7 @@ import org.jboss.tools.common.model.filesystems.FilePathHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.impl.RegularObjectImpl;
 import org.jboss.tools.common.model.impl.XModelImpl;
+import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.loaders.AuxiliaryLoader;
 import org.jboss.tools.common.model.loaders.EntityRecognizerContext;
 import org.jboss.tools.common.model.loaders.Reloadable;
@@ -220,7 +221,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             }
             addChild(c);
         } else {
-            createFileObject(f);
+            createFileObject(f, true);
         }
         peer.register(f);
 	}
@@ -245,18 +246,22 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         return p;
     }
 
-    private void createFileObject(File f) {
-        createFileObject(f, getEntityProperties(f));
+    private XModelObject createFileObject(File f, boolean add) {
+        return createFileObject(f, getEntityProperties(f), add);
     }
 
-    private void createFileObject(File f, Properties p) {
+    private XModelObject createFileObject(File f, Properties p) {
+    	return createFileObject(f, p, true);
+    }
+
+    private XModelObject createFileObject(File f, Properties p, boolean add) {
     	BodySource bs = getBodySource(f);
         String body = p.getProperty(XModelObjectConstants.ATTR_NAME_BODY);
         String entity = p.getProperty(XMetaDataConstants.ENTITY);
         XModelObject c = getModel().createModelObject(entity, p);
         if(c == null) {
         	ModelPlugin.getPluginLog().logInfo("Cannot create file for entity " + entity); //$NON-NLS-1$
-        	return;
+        	return null;
         }
         if(isLateloadFile2(c)) {
             ((FileAnyImpl)c).setBodySource(bs);
@@ -277,7 +282,23 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         if(linked.filesByFileName.containsValue(f)) {
         	c.setObject("file", f); //$NON-NLS-1$
         }
-        addChild(c);
+        if(add) {
+        	addChild(c);
+        } else {
+        	((XModelObjectImpl)c).setParent_0(this);
+        }
+        
+        return c;
+    }
+
+    public XModelObject createValidChildCopy(XModelObject child) {
+    	File pf = getFile();
+    	String s = FileAnyImpl.toFileName(child);
+    	File f = new File(pf, s);
+    	if(f.exists()) {
+    		return createFileObject(f, false);
+    	}
+    	return null;
     }
 
 	int updateLock = 0;
