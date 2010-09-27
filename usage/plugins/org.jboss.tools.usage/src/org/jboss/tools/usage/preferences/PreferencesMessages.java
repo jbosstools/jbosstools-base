@@ -18,6 +18,7 @@ public class PreferencesMessages extends NLS {
 	public static String UsageReportPreferencePage_Description;
 	public static String UsageReportPreferencePage_AllowReporting;
 	public static String UsageReportPreferencePage_Error_Saving;
+	public static String UsageReportPreferencePage_ReportedValues;
 
 	public static String GlobalUsageSettings_RemoteProps_URL;
 
