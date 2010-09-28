@@ -19,23 +19,14 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
-import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
-import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.http.HttpGetRequest;
-import org.jboss.tools.usage.http.IHttpGetRequest;
-import org.jboss.tools.usage.internal.JBDSUtils;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.preferences.UsageReportPreferences;
-import org.jboss.tools.usage.preferences.UsageReportPreferencesUtils;
-import org.jboss.tools.usage.tracker.ILoggingAdapter;
+import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.ITracker;
-import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
+import org.jboss.tools.usage.tracker.internal.EclipseIDETrackerFactory;
 import org.jboss.tools.usage.tracker.internal.FocusPoint;
-import org.jboss.tools.usage.tracker.internal.IFocusPoint;
 import org.jboss.tools.usage.tracker.internal.JBossToolsFocusPoint;
-import org.jboss.tools.usage.tracker.internal.PluginLogger;
-import org.jboss.tools.usage.tracker.internal.Tracker;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -85,36 +76,11 @@ public class UsageReport {
 
 	private void doReport() {
 		if (UsageReportPreferences.isEnabled()) {
-			getTracker().trackAsynchronously(focusPoint);
+			ITracker tracker = EclipseIDETrackerFactory.INSTANCE.create();
+			tracker.trackAsynchronously(focusPoint);
 		}
 	}
-
-	private ITracker getTracker() {
-		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironment(
-				getGoogleAnalyticsAccount()
-				, getGoogleAnalyticsHostname()
-				, UsageReportPreferencesUtils.getPreferences());
-		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageActivator.getDefault());
-		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment);
-		IHttpGetRequest httpGetRequest = new HttpGetRequest(eclipseEnvironment.getUserAgent(), loggingAdapter);
-		return new Tracker(urlStrategy, httpGetRequest, loggingAdapter);
-	}
-
-	private String getGoogleAnalyticsAccount() {
-		if (JBDSUtils.isJBDS()) {
-			return ReportingMessages.UsageReport_GoogleAnalytics_Account_JBDS;
-		} else {
-			return ReportingMessages.UsageReport_GoogleAnalytics_Account;
-		}
-	}
-
-	private String getGoogleAnalyticsHostname() {
-		if (JBDSUtils.isJBDS()) {
-			return ReportingMessages.UsageReport_HostName_JBDS;
-		} else {
-			return ReportingMessages.UsageReport_HostName;
-		}
-	}
+	
 	private class ReportingJob extends Job {
 		private ReportingJob() {
 			super(ReportingMessages.UsageReport_Reporting_Usage);

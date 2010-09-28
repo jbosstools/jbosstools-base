@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.tracker.internal;
 
+import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 
 /**

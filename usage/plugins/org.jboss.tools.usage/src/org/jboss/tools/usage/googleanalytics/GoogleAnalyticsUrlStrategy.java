@@ -12,8 +12,8 @@ package org.jboss.tools.usage.googleanalytics;
 
 import java.io.UnsupportedEncodingException;
 
+import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
-import org.jboss.tools.usage.tracker.internal.IFocusPoint;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 
 /**
@@ -118,7 +118,6 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, googleParameters.getAccountName(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(), builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_AD_CONTENT, googleParameters.getAdContent(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_GAQ, "1", false, builder);
 		
 		googleParameters.visit(); // update visit timestamps and count

@@ -170,4 +170,9 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	private String getJavaVersion() {
 		return System.getProperty(SYSPROP_JAVA_VERSION);
 	}
+	
+	public String toHumanReadable() {
+		StringBuilder builder = new StringBuilder();
+		return builder.toString();
+	}
 }

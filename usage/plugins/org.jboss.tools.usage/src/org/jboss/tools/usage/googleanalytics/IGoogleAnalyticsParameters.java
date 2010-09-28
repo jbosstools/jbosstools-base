@@ -102,6 +102,4 @@ public interface IGoogleAnalyticsParameters {
 	public void visit();
 	
 	public String getFlashVersion();
-
-	public String getAdContent();
 }

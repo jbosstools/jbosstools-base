@@ -12,7 +12,6 @@ package org.jboss.tools.usage.tracker;
 
 import java.io.UnsupportedEncodingException;
 
-import org.jboss.tools.usage.tracker.internal.IFocusPoint;
 
 /**
  * Interface for the URL building strategy

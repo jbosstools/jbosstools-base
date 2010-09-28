@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 
 /**
  * @author Andre Dietisheim
@@ -47,13 +46,5 @@ public class ReportingEclipseEnvironment extends AbstractEclipseEnvironment {
 					.append(delimiter);
 		}
 		return builder.toString();
-	}
-
-	public String getAdContent() {
-		return getBundleVersion();
-	}
-
-	private String getBundleVersion() {
-		return JBossToolsUsageActivator.getDefault().getBundle().getVersion().toString();
 	}
 }

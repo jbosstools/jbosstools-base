@@ -19,6 +19,13 @@ public class TrackerMessages extends NLS {
 	public static String Tracker_Asynchronous;
 	public static String Tracker_Error;
 
+	public static String Tracker_HostName;
+	public static String Tracker_GoogleAnalytics_Account;
+
+	public static String Tracker_HostName_JBDS;
+	public static String Tracker_GoogleAnalytics_Account_JBDS;
+
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, TrackerMessages.class);

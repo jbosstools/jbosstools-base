@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.jboss.tools.usage.googleanalytics.eclipse.EclipseUserAgent;
 import org.jboss.tools.usage.internal.JBDSUtils;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.StatusUtils;
@@ -52,7 +53,7 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		fillLayout.marginWidth = 8;
 		group.setLayout(fillLayout);
 		StyledText text = new StyledText(group, SWT.BORDER | SWT.V_SCROLL);
-		text.setText("This is the StyledText widget\n...\n...\n...\n...\n...\n...\n\n...\n...\n...\n...\n...\n...\n\n...\n...\n...\n...\n...\n...\n\n...\n...\n...\n...\n...\n...\n\n...\n...\n...\n...\n...\n...\n\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n....");
+		text.setText(new EclipseUserAgent().toHumanReadable());
 		text.setEditable(false);
 	}
 

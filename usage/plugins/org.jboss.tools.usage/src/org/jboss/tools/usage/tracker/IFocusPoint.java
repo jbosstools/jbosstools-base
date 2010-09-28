@@ -1,4 +1,4 @@
-package org.jboss.tools.usage.tracker.internal;
+package org.jboss.tools.usage.tracker;
 
 public interface IFocusPoint {
 

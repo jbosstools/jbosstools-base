@@ -14,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
 import org.jboss.tools.usage.http.IHttpGetRequest;
+import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.ILoggingAdapter;
 import org.jboss.tools.usage.tracker.ITracker;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
@@ -31,7 +32,7 @@ public class Tracker implements ITracker {
 	private IURLBuildingStrategy urlBuildingStrategy = null;
 	private IHttpGetRequest httpRequest;
 	private ILoggingAdapter loggingAdapter;
-
+	
 	public Tracker(IURLBuildingStrategy urlBuildingStrategy, IHttpGetRequest httpGetRequest, ILoggingAdapter loggingAdapter) {
 		this.httpRequest = httpGetRequest;
 		this.loggingAdapter = loggingAdapter;

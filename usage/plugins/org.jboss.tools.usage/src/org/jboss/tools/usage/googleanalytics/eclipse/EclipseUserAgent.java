@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -14,16 +14,19 @@ import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
+import org.jboss.tools.usage.IHumanReadable;
 import org.jboss.tools.usage.googleanalytics.IUserAgent;
 import org.osgi.framework.Bundle;
 
 /**
  * @author Andre Dietisheim
  */
-public class EclipseUserAgent implements IUserAgent {
+public class EclipseUserAgent implements IUserAgent, IHumanReadable {
+
+	private static final String LINE_SEPARATOR_KEY = "line.separator";
 
 	public static final char JAVA_LOCALE_DELIMITER = '_';
-
+	
 	private static final String ECLIPSE_RUNTIME_BULDEID = "org.eclipse.core.runtime"; //$NON-NLS-1$
 
 	private static final String USERAGENT_WIN = "{0}/{1} (Windows; U; Windows NT {2}; {3})"; //$NON-NLS-1$
@@ -88,7 +91,31 @@ public class EclipseUserAgent implements IUserAgent {
 				, getBrowserLanguage()
 				);
 	}
+	
+	public String toHumanReadable() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("product id: ")
+		.append(getApplicationName())
+		.append(getLineSeparator())
+		.append("product version: ")
+		.append( getApplicationVersion())
+		.append(getLineSeparator())
+		.append("operatign system: ")
+		.append(getOS())
+		.append(getLineSeparator())
+		.append("operating system version: ")
+		.append(getOSVersion())
+		.append(getLineSeparator())
+		.append("locale: ")
+		.append(getBrowserLanguage())
+		.append(getLineSeparator());
+		return builder.toString();
+	}
 
+	private String getLineSeparator() {
+		return System.getProperty(LINE_SEPARATOR_KEY);
+	}
+	
 	protected String getOS() {
 		return Platform.getOS();
 	}
@@ -100,7 +127,7 @@ public class EclipseUserAgent implements IUserAgent {
 	 * @return the os version
 	 * 
 	 * @see <a href="http://lopica.sourceforge.net/os.html">list of os versions
-	 *      and os names</a> return by the j
+	 *      and os names</a>
 	 */
 	protected Object getOSVersion() {
 		return System.getProperty(PROP_OS_VERSION);
