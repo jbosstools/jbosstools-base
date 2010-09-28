@@ -114,6 +114,19 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 
 	}
 
+	/**
+	 * Appends a labeled value to the given string builder and adds a bold font
+	 * style range to the given styles.
+	 * 
+	 * @param label
+	 *            the label to append
+	 * @param value
+	 *            the value to append
+	 * @param builder
+	 *            the builder to append the strings (label, value) to
+	 * @param styles
+	 *            the styles list to add the style range to
+	 */
 	private void appendLabeledValue(String label, String value, StringBuilder builder, List<StyleRange> styles) {
 		StyleRange styleRange = startLabelStyleRange(builder);
 		builder.append(label);
