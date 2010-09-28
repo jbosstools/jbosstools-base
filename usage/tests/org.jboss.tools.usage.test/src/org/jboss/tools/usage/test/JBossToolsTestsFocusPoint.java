@@ -10,19 +10,25 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
+import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.tracker.internal.FocusPoint;
-import org.jboss.tools.usage.tracker.internal.JBossToolsFocusPoint;
+import org.jboss.tools.usage.tracker.internal.SuffixFocusPoint;
 
 /**
  * @author Andre Dietisheim
  */
-public class JBossToolsTestsFocusPoint extends JBossToolsFocusPoint {
+public class JBossToolsTestsFocusPoint extends SuffixFocusPoint {
 
 	public JBossToolsTestsFocusPoint(String childFocusPoint) {
-		super("tools");
+		super("tools", getJBossToolsVersion());
 		setChild(new FocusPoint("usage")
 				.setChild(new FocusPoint("tests")
 						.setChild(new FocusPoint(childFocusPoint))));
 	}
 
+	public static String getJBossToolsVersion() {
+		return JBossToolsUsageActivator.getDefault().getBundle().getVersion().toString();
+	}
+
+	
 }

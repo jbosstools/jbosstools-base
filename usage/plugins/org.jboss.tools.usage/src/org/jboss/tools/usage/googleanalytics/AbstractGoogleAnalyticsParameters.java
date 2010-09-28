@@ -12,7 +12,6 @@ package org.jboss.tools.usage.googleanalytics;
 
 import org.jboss.tools.usage.IHumanReadable;
 
-
 /**
  * @author Andre Dietisheim
  */
@@ -35,8 +34,10 @@ public abstract class AbstractGoogleAnalyticsParameters implements IGoogleAnalyt
 	public String getAccountName() {
 		return accountName;
 	}
-	
+
 	public String getHostname() {
 		return hostName;
 	}
+
+	public abstract String toHumanReadable();
 }

@@ -12,12 +12,12 @@ package org.jboss.tools.usage.test.fakes;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.googleanalytics.IUserAgent;
-import org.jboss.tools.usage.reporting.ReportingEclipseEnvironment;
+import org.jboss.tools.usage.reporting.JBossToolsEclipseEnvironment;
 
 /**
  * @author Andre Dietisheim
  */
-public class ReportingEclipseEnvironmentFake extends ReportingEclipseEnvironment {
+public class ReportingEclipseEnvironmentFake extends JBossToolsEclipseEnvironment {
 	
 	public static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 	public static final String HOSTNAME = "jboss.org";

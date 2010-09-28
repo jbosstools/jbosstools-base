@@ -10,41 +10,34 @@
  ******************************************************************************/
 package org.jboss.tools.usage.tracker.internal;
 
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 
 /**
  * A focus point that always reports the current jboss tools version as last
  * component.
  */
-public class JBossToolsFocusPoint extends FocusPoint {
+public class SuffixFocusPoint extends FocusPoint {
 
-	public JBossToolsFocusPoint(String name) {
+	private String suffix;
+
+	public SuffixFocusPoint(String name, String suffix) {
 		super(name);
+		this.suffix = suffix;
 	}
 
 	@Override
 	public String getURI() {
 		StringBuilder builder = new StringBuilder();
 		appendContentURI(builder, this);
-		appendJBossToolsVersion(builder, URI_SEPARATOR);
+		appendToURI(suffix, builder);
 		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
-	}
-
-	protected void appendJBossToolsVersion(StringBuilder builder, String separator) {
-		builder.append(separator);
-		builder.append(getJBossToolsVersion());
 	}
 
 	@Override
 	public String getTitle() {
 		StringBuilder builder = new StringBuilder();
 		appendContentTitle(builder, this);
-		appendJBossToolsVersion(builder, TITLE_SEPARATOR);
+		appendToTitle(suffix, builder);
 		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
-	}
-	
-	protected String getJBossToolsVersion() {
-		return JBossToolsUsageActivator.getDefault().getBundle().getVersion().toString();
 	}
 }

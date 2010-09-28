@@ -16,14 +16,13 @@ import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.usage.IHumanReadable;
 import org.jboss.tools.usage.googleanalytics.IUserAgent;
+import org.jboss.tools.usage.util.StringUtils;
 import org.osgi.framework.Bundle;
 
 /**
  * @author Andre Dietisheim
  */
 public class EclipseUserAgent implements IUserAgent, IHumanReadable {
-
-	private static final String LINE_SEPARATOR_KEY = "line.separator";
 
 	public static final char JAVA_LOCALE_DELIMITER = '_';
 	
@@ -96,26 +95,22 @@ public class EclipseUserAgent implements IUserAgent, IHumanReadable {
 		StringBuilder builder = new StringBuilder();
 		builder.append("product id: ")
 		.append(getApplicationName())
-		.append(getLineSeparator())
+		.append(StringUtils.getLineSeparator())
 		.append("product version: ")
 		.append( getApplicationVersion())
-		.append(getLineSeparator())
+		.append(StringUtils.getLineSeparator())
 		.append("operatign system: ")
 		.append(getOS())
-		.append(getLineSeparator())
+		.append(StringUtils.getLineSeparator())
 		.append("operating system version: ")
 		.append(getOSVersion())
-		.append(getLineSeparator())
+		.append(StringUtils.getLineSeparator())
 		.append("locale: ")
 		.append(getBrowserLanguage())
-		.append(getLineSeparator());
+		.append(StringUtils.getLineSeparator());
 		return builder.toString();
 	}
 
-	private String getLineSeparator() {
-		return System.getProperty(LINE_SEPARATOR_KEY);
-	}
-	
 	protected String getOS() {
 		return Platform.getOS();
 	}

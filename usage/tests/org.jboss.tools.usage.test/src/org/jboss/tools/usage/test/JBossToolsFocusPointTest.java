@@ -10,11 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.internal.FocusPoint;
-import org.jboss.tools.usage.tracker.internal.JBossToolsFocusPoint;
+import org.jboss.tools.usage.tracker.internal.SuffixFocusPoint;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 import org.junit.Test;
 
@@ -58,15 +59,10 @@ public class JBossToolsFocusPointTest {
 						+ JBOSS_TOOLS_VERSION, title);
 	}
 
-	private static class JBossToolsFocusPointFake extends JBossToolsFocusPoint {
+	private static class JBossToolsFocusPointFake extends SuffixFocusPoint {
 
 		public JBossToolsFocusPointFake(String name) {
-			super(name);
-		}
-
-		@Override
-		protected String getJBossToolsVersion() {
-			return JBOSS_TOOLS_VERSION;
+			super(name, JBOSS_TOOLS_VERSION);
 		}
 	}
 }

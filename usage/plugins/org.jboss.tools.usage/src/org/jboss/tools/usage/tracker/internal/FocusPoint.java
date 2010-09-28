@@ -66,13 +66,21 @@ public class FocusPoint implements IFocusPoint {
 
 	protected void appendContentURI(StringBuilder builder, IFocusPoint focusPoint) {
 		IFocusPoint parentFocuPoint = focusPoint.getChild();
-		builder.append(URI_SEPARATOR);
-		builder.append(focusPoint.getName());
+		appendToURI(focusPoint.getName(), builder);
 		if (parentFocuPoint != null) {
 			appendContentURI(builder, parentFocuPoint);
 		}
 	}
+	
+	protected void appendToURI(String toAppend, StringBuilder builder) {
+		builder.append(URI_SEPARATOR);
+		builder.append(toAppend);
+	}
 
+	protected void appendToTitle(String toAppend, StringBuilder builder) {
+		builder.append(TITLE_SEPARATOR);
+		builder.append(toAppend);
+	}
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.usage.tracker.internal.IFocusPoint#getTitle()
 	 */

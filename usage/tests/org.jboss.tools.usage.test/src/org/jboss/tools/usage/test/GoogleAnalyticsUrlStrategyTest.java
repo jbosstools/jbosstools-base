@@ -70,7 +70,6 @@ public class GoogleAnalyticsUrlStrategyTest {
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, url, targetUrl));
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, url, targetUrl));
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_FLASH_VERSION, url, targetUrl));
-		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_AD_CONTENT, url, targetUrl));
 
 		assertTrue(hasCookieValue("__utma", url));
 		assertTrue(hasCookieValue("__utmz", url));

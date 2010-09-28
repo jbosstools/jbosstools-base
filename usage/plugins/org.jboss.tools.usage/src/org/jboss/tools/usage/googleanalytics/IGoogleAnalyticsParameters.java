@@ -92,7 +92,7 @@ public interface IGoogleAnalyticsParameters {
 	public long getVisitCount();
 
 	/**
-	 * Tells that a visit was triggered. The
+	 * Signals that a visit was executed. The
 	 * consequence is that visit timestamps and visit counters get updated
 	 * 
 	 * @see #getLastVisit()
