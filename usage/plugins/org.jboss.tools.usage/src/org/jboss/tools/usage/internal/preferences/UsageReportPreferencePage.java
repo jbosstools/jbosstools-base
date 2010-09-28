@@ -59,7 +59,7 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 	private void createReportingData(Composite parent) {
 		Group group = new Group(parent, SWT.NONE);
 		group.setText(PreferencesMessages.UsageReportPreferencePage_ReportedValues);
-		GridDataFactory.fillDefaults().grab(true, false).hint(SWT.FILL, 300).applyTo(group);
+		GridDataFactory.fillDefaults().grab(true, true).hint(SWT.FILL, SWT.FILL).applyTo(group);
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.marginHeight = 4;
 		fillLayout.marginWidth = 8;
@@ -72,7 +72,6 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 	}
 
 	private void createText(IJBossToolsEclipseEnvironment eclipseEnvironment, StyledText text) {
-		text.setLayoutDeferred(true);
 		List<StyleRange> styles = new ArrayList<StyleRange>();
 		StringBuilder builder = new StringBuilder();
 
@@ -110,7 +109,6 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		for (StyleRange style : styles) {
 			text.setStyleRange(style);
 		}
-		text.setLayoutDeferred(false);
 
 	}
 
