@@ -19,8 +19,8 @@ import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
+import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.internal.FocusPoint;
-import org.jboss.tools.usage.tracker.internal.IFocusPoint;
 import org.junit.Before;
 import org.junit.Test;
 

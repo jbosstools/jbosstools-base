@@ -22,9 +22,9 @@ import org.jboss.tools.usage.http.HttpGetRequest;
 import org.jboss.tools.usage.http.IHttpGetRequest;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.jboss.tools.usage.test.fakes.RepportingEclipseEnvironmentFakeSingleton;
+import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.ILoggingAdapter;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
-import org.jboss.tools.usage.tracker.internal.IFocusPoint;
 import org.jboss.tools.usage.tracker.internal.PluginLogger;
 import org.junit.Test;
 

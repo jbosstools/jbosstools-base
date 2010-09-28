@@ -15,9 +15,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.jboss.tools.usage.http.IHttpGetRequest;
+import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.ILoggingAdapter;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
-import org.jboss.tools.usage.tracker.internal.IFocusPoint;
 import org.jboss.tools.usage.tracker.internal.Tracker;
 
 /**
