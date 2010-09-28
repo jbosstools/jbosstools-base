@@ -15,10 +15,25 @@ import org.eclipse.osgi.util.NLS;
 public class PreferencesMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.usage.internal.preferences.messages"; //$NON-NLS-1$
 
+	public static String UsageReportPreferencePage_ReportedValues;
+	public static String UsageReportPreferencePage_CurrentUsageHit;
+	public static String UsageReportPreferencePage_FirstUsageHit;
+	public static String UsageReportPreferencePage_JBossToolsComponents;
+	public static String UsageReportPreferencePage_JBossToolsVersion;
+	public static String UsageReportPreferencePage_LastUsageHit;
+	public static String UsageReportPreferencePage_Locale;
+	public static String UsageReportPreferencePage_NumberOfUsageHits;
+	public static String UsageReportPreferencePage_OperatingSystem;
+	public static String UsageReportPreferencePage_OperatingSystemVersion;
+	public static String UsageReportPreferencePage_ProductId;
+	public static String UsageReportPreferencePage_ProductOwner;
+	public static String UsageReportPreferencePage_ProductVersion;
+	public static String UsageReportPreferencePage_ScreenColors;
+	public static String UsageReportPreferencePage_ScreenResolution;
+
 	public static String UsageReportPreferencePage_Description;
 	public static String UsageReportPreferencePage_AllowReporting;
 	public static String UsageReportPreferencePage_Error_Saving;
-	public static String UsageReportPreferencePage_ReportedValues;
 
 	public static String GlobalUsageSettings_RemoteProps_URL;
 

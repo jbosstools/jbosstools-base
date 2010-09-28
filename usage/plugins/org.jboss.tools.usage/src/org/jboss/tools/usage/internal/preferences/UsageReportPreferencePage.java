@@ -75,33 +75,33 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		List<StyleRange> styles = new ArrayList<StyleRange>();
 		StringBuilder builder = new StringBuilder();
 
-		appendLabeledValue("JBoss Tools Version: ", eclipseEnvironment.getJBossToolsVersion(), builder, styles);
-		appendLabeledValue("JBoss Tools Components: ", eclipseEnvironment.getKeyword(), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_JBossToolsVersion, eclipseEnvironment.getJBossToolsVersion(), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_JBossToolsComponents, eclipseEnvironment.getKeyword(), builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
 		IEclipseUserAgent eclipseUserAgent = eclipseEnvironment.getEclipseUserAgent();
-		appendLabeledValue("Product id: ", eclipseUserAgent.getApplicationName(), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductId, eclipseUserAgent.getApplicationName(), builder, styles);
 
-		appendLabeledValue("Product version: ", eclipseUserAgent.getApplicationVersion(), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductVersion, eclipseUserAgent.getApplicationVersion(), builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
-		appendLabeledValue("Operating system: ", eclipseUserAgent.getOS(), builder, styles);
-		appendLabeledValue("Operating system version: ", eclipseUserAgent.getOSVersion(), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_OperatingSystem, eclipseUserAgent.getOS(), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_OperatingSystemVersion, eclipseUserAgent.getOSVersion(), builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
-		appendLabeledValue("Locale: ", eclipseUserAgent.getBrowserLanguage(), builder, styles);
-		appendLabeledValue("Screen Colors: ", eclipseEnvironment.getScreenColorDepth(), builder, styles);
-		appendLabeledValue("Screen Resolution: ", eclipseEnvironment.getScreenResolution(), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_Locale, eclipseUserAgent.getBrowserLanguage(), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ScreenColors, eclipseEnvironment.getScreenColorDepth(), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ScreenResolution, eclipseEnvironment.getScreenResolution(), builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
-		appendLabeledValue("Product owner: ", eclipseEnvironment.getHostname(), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductOwner, eclipseEnvironment.getHostname(), builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
-		appendLabeledValue("Number of usage-hits: ", String.valueOf(eclipseEnvironment.getVisitCount()), builder,
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_NumberOfUsageHits, String.valueOf(eclipseEnvironment.getVisitCount()), builder,
 				styles);
-		appendLabeledValue("First usage-hit: ", getFormattedDate(eclipseEnvironment.getFirstVisit()), builder, styles);
-		appendLabeledValue("Last usage-hit: ", getFormattedDate(eclipseEnvironment.getLastVisit()), builder, styles);
-		appendLabeledValue("Current usage-hit: ", getFormattedDate(eclipseEnvironment.getCurrentVisit()), builder,
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_FirstUsageHit, getFormattedDate(eclipseEnvironment.getFirstVisit()), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_LastUsageHit, getFormattedDate(eclipseEnvironment.getLastVisit()), builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_CurrentUsageHit, getFormattedDate(eclipseEnvironment.getCurrentVisit()), builder,
 				styles);
 
 		text.setText(builder.toString());
@@ -203,6 +203,6 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 			}
 		} catch (NumberFormatException e) {
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }
