@@ -11,8 +11,8 @@
 package org.jboss.tools.usage.test.fakes;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.jboss.tools.usage.googleanalytics.IUserAgent;
-import org.jboss.tools.usage.reporting.JBossToolsEclipseEnvironment;
+import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
+import org.jboss.tools.usage.internal.reporting.JBossToolsEclipseEnvironment;
 
 /**
  * @author Andre Dietisheim
@@ -49,7 +49,7 @@ public class ReportingEclipseEnvironmentFake extends JBossToolsEclipseEnvironmen
 	}
 
 	@Override
-	protected IUserAgent createEclipseUserAgent() {
+	protected IEclipseUserAgent createEclipseUserAgent() {
 		return new EclipseUserAgentFake();
 	}
 

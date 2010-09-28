@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
 import java.util.Collection;
 
 import org.eclipse.core.runtime.IBundleGroupProvider;
-import org.jboss.tools.usage.reporting.JBossToolsComponents;
+import org.jboss.tools.usage.internal.reporting.JBossToolsComponents;
 import org.jboss.tools.usage.test.fakes.BundleGroupProviderFake;
 import org.junit.Test;
 import org.junit.matchers.JUnitMatchers;

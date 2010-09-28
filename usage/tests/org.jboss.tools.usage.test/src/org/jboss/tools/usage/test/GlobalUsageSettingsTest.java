@@ -21,7 +21,7 @@ import java.net.HttpURLConnection;
 import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.http.IPropertiesProvider;
-import org.jboss.tools.usage.preferences.GlobalUsageSettings;
+import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.junit.Test;
 
 /**

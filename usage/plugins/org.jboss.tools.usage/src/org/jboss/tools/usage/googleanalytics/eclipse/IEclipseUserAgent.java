@@ -8,15 +8,31 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.googleanalytics;
+
+package org.jboss.tools.usage.googleanalytics.eclipse;
 
 /**
  * @author Andre Dietisheim
  */
-public interface IUserAgent {
+public interface IEclipseUserAgent {
 
-	public static final char BROWSER_LOCALE_DELIMITER = '-';
+	public abstract String getBrowserLanguage();
 
-	public String getBrowserLanguage();
-	public String toString();
+	public abstract String getOS();
+
+	/**
+	 * Returns the version of the operating system this jre is currently running
+	 * on.
+	 * 
+	 * @return the os version
+	 * 
+	 * @see <a href="http://lopica.sourceforge.net/os.html">list of os versions
+	 *      and os names</a>
+	 */
+	public abstract String getOSVersion();
+
+	public abstract String getApplicationName();
+
+	public abstract String getApplicationVersion();
+
 }

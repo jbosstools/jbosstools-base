@@ -25,8 +25,7 @@ import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 /**
  * @author Andre Dietisheim
  */
-public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalyticsParameters implements
-		IGoogleAnalyticsParameters {
+public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalyticsParameters implements IEclipseEnvironment {
 
 	private static final String SYSPROP_JAVA_VERSION = "java.version";
 
@@ -38,7 +37,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	private String lastVisit;
 	private String currentVisit;
 	private long visitCount;
-	protected EclipseUserAgent eclipseUserAgent;
+	protected IEclipseUserAgent eclipseUserAgent;
 
 	public AbstractEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
 		this(accountName, hostName, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, preferences);
@@ -79,7 +78,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		visitCount = preferences.getLong(IUsageReportPreferenceConstants.VISIT_COUNT, 1);
 	}
 
-	protected EclipseUserAgent createEclipseUserAgent() {
+	protected IEclipseUserAgent createEclipseUserAgent() {
 		return new EclipseUserAgent();
 	}
 
@@ -170,8 +169,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		return System.getProperty(SYSPROP_JAVA_VERSION);
 	}
 	
-	public String toHumanReadable() {
-		StringBuilder builder = new StringBuilder();
-		return builder.toString();
+	public IEclipseUserAgent getEclipseUserAgent() {
+		return eclipseUserAgent;
 	}
 }

@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
-import org.jboss.tools.usage.reporting.JBossToolsComponents;
+import org.jboss.tools.usage.internal.reporting.JBossToolsComponents;
 import org.jboss.tools.usage.test.fakes.BundleGroupProviderFake;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import org.junit.Test;
 /**
  * @author Andre Dietisheim
  */
-public class ReportingEclipseEnvironmentTest {
+public class JBossToolsEclipseEnvironmentTest {
 
 	@Test
 	public void keywordReportsJbossComponents() {

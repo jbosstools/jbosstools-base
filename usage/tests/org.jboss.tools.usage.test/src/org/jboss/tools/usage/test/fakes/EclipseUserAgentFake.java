@@ -76,22 +76,22 @@ public class EclipseUserAgentFake extends EclipseUserAgent {
 	}
 
 	@Override
-	protected String getApplicationName() {
+	public String getApplicationName() {
 		return applicationName;
 	}
 
 	@Override
-	protected String getOS() {
+	public String getOS() {
 		return os;
 	}
 
 	@Override
-	protected String getOSVersion() {
+	public String getOSVersion() {
 		return osVersion;
 	}
 	
 	@Override
-	protected String getApplicationVersion() {
+	public String getApplicationVersion() {
 		return applicationVersion;
 	}
 }

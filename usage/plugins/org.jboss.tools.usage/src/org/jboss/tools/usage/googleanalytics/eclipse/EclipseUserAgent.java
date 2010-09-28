@@ -14,18 +14,17 @@ import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.usage.IHumanReadable;
-import org.jboss.tools.usage.googleanalytics.IUserAgent;
-import org.jboss.tools.usage.util.StringUtils;
 import org.osgi.framework.Bundle;
 
 /**
  * @author Andre Dietisheim
  */
-public class EclipseUserAgent implements IUserAgent, IHumanReadable {
+public class EclipseUserAgent implements IEclipseUserAgent {
+
+	public static final char BROWSER_LOCALE_DELIMITER = '-';
 
 	public static final char JAVA_LOCALE_DELIMITER = '_';
-	
+
 	private static final String ECLIPSE_RUNTIME_BULDEID = "org.eclipse.core.runtime"; //$NON-NLS-1$
 
 	private static final String USERAGENT_WIN = "{0}/{1} (Windows; U; Windows NT {2}; {3})"; //$NON-NLS-1$
@@ -90,41 +89,12 @@ public class EclipseUserAgent implements IUserAgent, IHumanReadable {
 				, getBrowserLanguage()
 				);
 	}
-	
-	public String toHumanReadable() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("product id: ")
-		.append(getApplicationName())
-		.append(StringUtils.getLineSeparator())
-		.append("product version: ")
-		.append( getApplicationVersion())
-		.append(StringUtils.getLineSeparator())
-		.append("operatign system: ")
-		.append(getOS())
-		.append(StringUtils.getLineSeparator())
-		.append("operating system version: ")
-		.append(getOSVersion())
-		.append(StringUtils.getLineSeparator())
-		.append("locale: ")
-		.append(getBrowserLanguage())
-		.append(StringUtils.getLineSeparator());
-		return builder.toString();
-	}
 
-	protected String getOS() {
+	public String getOS() {
 		return Platform.getOS();
 	}
 
-	/**
-	 * Returns the version of the operating system this jre is currently running
-	 * on.
-	 * 
-	 * @return the os version
-	 * 
-	 * @see <a href="http://lopica.sourceforge.net/os.html">list of os versions
-	 *      and os names</a>
-	 */
-	protected Object getOSVersion() {
+	public String getOSVersion() {
 		return System.getProperty(PROP_OS_VERSION);
 	}
 
@@ -143,11 +113,11 @@ public class EclipseUserAgent implements IUserAgent, IHumanReadable {
 		return userAgentPattern;
 	}
 
-	protected String getApplicationName() {
+	public String getApplicationName() {
 		return getApplicationBundle().getSymbolicName();
 	}
 
-	protected String getApplicationVersion() {
+	public String getApplicationVersion() {
 		String fullVersion = getApplicationBundle().getVersion().toString();
 		int productVersionStart = fullVersion.lastIndexOf(VERSION_DELIMITER);
 		if (productVersionStart > 0) {

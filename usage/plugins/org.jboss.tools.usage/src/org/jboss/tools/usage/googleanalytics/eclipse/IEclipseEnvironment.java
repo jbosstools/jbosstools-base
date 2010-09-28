@@ -8,10 +8,15 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage;
+package org.jboss.tools.usage.googleanalytics.eclipse;
 
-public interface IHumanReadable {
+import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 
-	public String toHumanReadable();
-	
+/**
+ * 
+ * @author Andre Dietisheim
+ *
+ */
+public interface IEclipseEnvironment extends IGoogleAnalyticsParameters {
+	public IEclipseUserAgent getEclipseUserAgent();
 }
