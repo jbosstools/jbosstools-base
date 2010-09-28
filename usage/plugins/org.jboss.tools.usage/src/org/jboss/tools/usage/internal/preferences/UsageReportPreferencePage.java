@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.preferences;
+package org.jboss.tools.usage.internal.preferences;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.jboss.tools.usage.googleanalytics.eclipse.EclipseUserAgent;
+import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.JBDSUtils;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.StatusUtils;
@@ -53,7 +53,8 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		fillLayout.marginWidth = 8;
 		group.setLayout(fillLayout);
 		StyledText text = new StyledText(group, SWT.BORDER | SWT.V_SCROLL);
-		text.setText(new EclipseUserAgent().toHumanReadable());
+		IJBossToolsEclipseEnvironment eclipseEnvironment = JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment();
+		text.setText(eclipseEnvironment.toHumanReadable());
 		text.setEditable(false);
 	}
 
@@ -62,14 +63,6 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID
 				, getCheckBoxlabel()
 				, getFieldEditorParent()));
-
-		addReportedValues();
-
-	}
-
-	private void addReportedValues() {
-		// TODO Auto-generated method stub
-
 	}
 
 	private String getCheckBoxlabel() {

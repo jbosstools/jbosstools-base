@@ -8,12 +8,12 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.preferences;
+package org.jboss.tools.usage.internal.preferences;
 
 import org.eclipse.osgi.util.NLS;
 
 public class PreferencesMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.usage.preferences.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.jboss.tools.usage.internal.preferences.messages"; //$NON-NLS-1$
 
 	public static String UsageReportPreferencePage_Description;
 	public static String UsageReportPreferencePage_AllowReporting;

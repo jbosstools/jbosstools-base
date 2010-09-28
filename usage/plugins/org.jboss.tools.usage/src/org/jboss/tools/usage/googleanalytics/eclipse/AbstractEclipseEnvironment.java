@@ -18,10 +18,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.googleanalytics.AbstractGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.googleanalytics.IUserAgent;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.preferences.IUsageReportPreferenceConstants;
-import org.jboss.tools.usage.preferences.UsageReportPreferencesUtils;
+import org.jboss.tools.usage.internal.preferences.IUsageReportPreferenceConstants;
+import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 
 /**
  * @author Andre Dietisheim
@@ -39,7 +38,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	private String lastVisit;
 	private String currentVisit;
 	private long visitCount;
-	private IUserAgent eclipseUserAgent;
+	protected EclipseUserAgent eclipseUserAgent;
 
 	public AbstractEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
 		this(accountName, hostName, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, preferences);
@@ -80,7 +79,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		visitCount = preferences.getLong(IUsageReportPreferenceConstants.VISIT_COUNT, 1);
 	}
 
-	protected IUserAgent createEclipseUserAgent() {
+	protected EclipseUserAgent createEclipseUserAgent() {
 		return new EclipseUserAgent();
 	}
 

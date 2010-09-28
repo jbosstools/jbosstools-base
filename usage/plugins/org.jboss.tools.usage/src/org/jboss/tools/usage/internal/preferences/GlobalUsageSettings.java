@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.preferences;
+package org.jboss.tools.usage.internal.preferences;
 
 import java.util.Map;
 

@@ -8,26 +8,22 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.util;
+package org.jboss.tools.usage.internal.reporting;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IStartup;
 
+/**
+ * @author Andre Dieitsheim
+ */
+public class UsageReportDispatcher implements IStartup {
 
-public class DateUtils {
+	public void earlyStartup() {
+		Display.getDefault().asyncExec(new Runnable() {
 
-	private DateUtils() {
+			public void run() {
+				new UsageReport().report();
+			}
+		});
 	}
-
-	private static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance();
-
-	public static Date checkedParseDateString(String date) {
-		try {
-			return DATE_FORMAT.parse(date);
-		} catch (ParseException e) {
-			return null;
-		}
-	}
-
 }
