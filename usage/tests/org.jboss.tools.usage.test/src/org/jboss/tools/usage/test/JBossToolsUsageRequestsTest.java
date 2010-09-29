@@ -27,7 +27,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0() throws IOException {
 	// String userAgent =
-	// "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) Firefox/10.0.0";
+	// "Mozilla/5.0 (X11; U; Linux x86_64; th-TH; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) Firefox/10.0.0";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -37,7 +37,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmje=1"
 	// + "&utmfl=10.1%20r53"
 	// + "&utmdt=-%20JBoss%20Community"
@@ -56,7 +56,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_0() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -66,7 +66,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmje=1"
 	// + "&utmfl=10.1%20r53"
 	// + "&utmdt=-%20JBoss%20Community"
@@ -85,7 +85,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_1() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) v201006010437R-H98-GA";
+	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; th-TH; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) v201006010437R-H98-GA";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -95,7 +95,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmje=1"
 	// + "&utmfl=10.1%20r53"
 	// + "&utmdt=-%20JBoss%20Community"
@@ -114,7 +114,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_2() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) Eclipse/3.5.0";
+	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; th-TH; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) Eclipse/3.5.0";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -124,7 +124,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmje=1"
 	// + "&utmfl=10.1%20r53"
 	// + "&utmdt=-%20JBoss%20Community"
@@ -143,7 +143,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_3() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US;) Eclipse/3.5.0";
+	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; th-TH;) Eclipse/3.5.0";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -153,7 +153,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmje=1"
 	// + "&utmfl=10.1%20r53"
 	// + "&utmdt=-%20JBoss%20Community"
@@ -181,7 +181,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmje=1"
 	// + "&utmfl=10.1%20r53"
 	// + "&utmdt=-%20JBoss%20Community"
@@ -209,7 +209,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmje=1"
 	// + "&utmfl=10.1%20r53"
 	// + "&utmdt=-%20JBoss%20Community"
@@ -228,7 +228,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_6() throws IOException {
 	// String userAgent =
-	// "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) com.jboss.jbds.product/3.0.1";
+	// "Mozilla/5.0 (X11; U; Linux x86_64; th-TH; rv:1.9.2.4) Gecko/20100614 Ubuntu/10.04 (lucid) com.jboss.jbds.product/3.0.1";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -238,7 +238,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmje=1"
 	// + "&utmfl=10.1%20r53"
 	// + "&utmdt=-%20JBoss%20Community"
@@ -257,7 +257,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -267,7 +267,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmje=1"
 	// + "&utmfl=10.1%20r53"
 	// + "&utmdt=-%20JBoss%20Community"
@@ -286,7 +286,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_1() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-us)";
+	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -314,7 +314,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_2() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -324,7 +324,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=-%20JBoss%20Community"
 	// + "&utmhid=1087431432"
 	// + "&utmr=0"
@@ -341,7 +341,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_3() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (X11; U; Linux x86_64; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -351,7 +351,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-test_0_7_3"
 	// + "&utmhid=1087431432"
 	// + "&utmr=0"
@@ -378,7 +378,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-test_0_7_3"
 	// + "&utmhid=1087431432"
 	// + "&utmr=0"
@@ -395,7 +395,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_3_win() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -405,7 +405,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-test_0_7_3_win"
 	// + "&utmhid=1087431432"
 	// + "&utmr=0"
@@ -422,7 +422,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_3_1() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -432,7 +432,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-test_0_7_3_1"
 	// + "&utmhid=1087431432"
 	// + "&utmr=smooks|seam|drools|esb"
@@ -449,7 +449,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl8() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -459,7 +459,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-US"
+	// + "&utmul=th-TH"
 	// + "&utmdt=jboss.org-tools-usage-instance"
 	// + "&utmhid=1722580305"
 	// + "&utmr=org.jboss.tools.usage.tests"
@@ -476,7 +476,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_3_win_referral() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -486,7 +486,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-test_0_7_3_win_referral"
 	// + "&utmhid=1087431432"
 	// + "&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
@@ -504,7 +504,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_3_win_adcontent() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -514,7 +514,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-test_0_7_3_win_adcontent"
 	// + "&utmhid=1087431432"
 	// + "&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
@@ -532,7 +532,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_3_win_keyword() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -542,7 +542,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-test_0_7_3_win_keyword"
 	// + "&utmhid=1087431432"
 	// + "&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
@@ -561,7 +561,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_3_win_utmz() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -571,7 +571,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-test_0_7_3_win__utmz"
 	// + "&utmhid=1087431432"
 	// + "&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
@@ -590,7 +590,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_3_win_utmctr() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -600,7 +600,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-test_0_7_3_win__utmctr"
 	// + "&utmhid=1087431432"
 	// + "&utmr=seam|esb|smooks|birt|bpel|cdi|deltacloud|drools"
@@ -619,7 +619,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl0_7_3_win_utmctr_lengthtest() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -629,7 +629,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-test_0_7_3_win_lengthtest"
 	// + "&utmhid=1087431432"
 	// + "&utmp=%2Ftools%2Fusage%2FtestUrl0_7_3_win_lengthtest"
@@ -658,7 +658,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-testUrl_utmaCookies_0"
 	// + "&utmhid=1087431432"
 	// + "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_0"
@@ -692,7 +692,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-testUrl_utmaCookies_0"
 	// + "&utmhid=1087431432"
 	// + "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_0"
@@ -720,7 +720,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-testUrl_utmaCookies_1"
 	// + "&utmhid=1087431432"
 	// + "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_1"
@@ -742,7 +742,7 @@ public class JBossToolsUsageRequestsTest {
 	// @Test
 	// public void testUrl_utmaCookies_1B() throws IOException {
 	// String userAgent =
-	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)";
+	// "com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)";
 	// TestHttpGetMethod method = new TestHttpGetMethod(userAgent,
 	// loggingAdapter);
 	// String url = "http://www.google-analytics.com/__utm.gif?"
@@ -752,7 +752,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-testUrl_utmaCookies_1B"
 	// + "&utmhid=1087431432"
 	// + "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_1B"
@@ -781,7 +781,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-testUrl_utmaCookies_2"
 	// + "&utmhid=1087431432"
 	// + "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_2"
@@ -810,7 +810,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-testUrl_utmaCookies_utmb_utmc_1"
 	// + "&utmhid=1087431432"
 	// + "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_utmb_utmc_1"
@@ -845,7 +845,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-testUrl_utmaCookies_utmb_utmc_1"
 	// + "&utmhid=1087431432"
 	// + "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_utmb_utmc_1"
@@ -880,7 +880,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-testUrl_utmaCookies_utmb_utmc_1"
 	// + "&utmhid=1087431432"
 	// + "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_utmb_utmc_1"
@@ -911,7 +911,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-us"
+	// + "&utmul=th-TH"
 	// + "&utmdt=tools-usage-testUrl_utmaCookies_utmb_utmc_1"
 	// + "&utmhid=1087431432"
 	// + "&utmp=%2Ftools%2Fusage%2FtestUrl_utmaCookies_utmb_utmc_1"
@@ -944,7 +944,7 @@ public class JBossToolsUsageRequestsTest {
 	// + "&utmcs=UTF-8"
 	// + "&utmsr=1920x1080"
 	// + "&utmsc=24-bit"
-	// + "&utmul=en-US"
+	// + "&utmul=th-TH"
 	// + "&utmdt=testJBossToolsVersionInRefererrer"
 	// + "&utmfl=1.6.0_20"
 	// + "&utmr=1.0.0.qualifier"
@@ -957,37 +957,40 @@ public class JBossToolsUsageRequestsTest {
 	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	// }
 
-	@Test
-	public void testJBossToolsVersionInAdContent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod();
-		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=818594305"
-				+ "&utmhn=jboss.org"
-				+ "&utmcs=UTF-8"
-				+ "&utmsr=1920x1080"
-				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
-				+ "&utmdt=testJBossToolsVersionInAdContent"
-				+ "&utmfl=1.6.0_20"
-				+ "&utmr=0"
-				+ "&utm_content=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testJBossToolsVersionInAdContent").getURI()
-				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.43297294488397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-				+ "&gaq=1";
-		method.request(url);
-		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-	}
+	/**
+	 * FAILURE
+	 */
+//	@Test
+//	public void testJBossToolsVersionInAdContent() throws IOException {
+//		TestHttpGetMethod method = new TestHttpGetMethod();
+//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+//				+ "&utmn=818594305"
+//				+ "&utmhn=jboss.org"
+//				+ "&utmcs=UTF-8"
+//				+ "&utmsr=1920x1080"
+//				+ "&utmsc=24-bit"
+//				+ "&utmul=th-TH"
+//				+ "&utmdt=testJBossToolsVersionInAdContent"
+//				+ "&utmfl=1.6.0_20"
+//				+ "&utmr=0"
+//				+ "&utm_content=1.0.0.qualifier"
+//				+ "&utmp=" + new JBossToolsTestsFocusPoint("testJBossToolsVersionInAdContent").getURI()
+//				+ "&utmac=UA-17645367-1"
+//				+ "&utmcc=__utma%3D999.43297294488397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+//				+ "&gaq=1";
+//		method.request(url);
+//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+//	}
 
 	enum UserAgentString {
 
-		DEFAULT("com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)"),
-		WIN7("com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; en-US)"),
-		WINVISTA("com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.0; en-US)"),
-		WINXP("com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 5.1; en-US)"),
-		WIN2000("com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 5.0; en-US)"),
-		MACOS_SNOWLEO("com.jboss.jbds.product/3.0.1 (Macintosh; U; Intel Mac OS X 10.6; en-US)"),
-		MACOS_LEO("com.jboss.jbds.product/3.0.1 (macintosh; U; Intel Mac OS X 10.5; en-US)");
+		DEFAULT("com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)"),
+		WIN7("com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.1; th-TH)"),
+		WINVISTA("com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 6.0; th-TH)"),
+		WINXP("com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 5.1; th-TH)"),
+		WIN2000("com.jboss.jbds.product/3.0.1 (Windows; U; Windows NT 5.0; th-TH)"),
+		MACOS_SNOWLEO("com.jboss.jbds.product/3.0.1 (Macintosh; U; Intel Mac OS X 10.6; th-TH)"),
+		MACOS_LEO("com.jboss.jbds.product/3.0.1 (macintosh; U; Intel Mac OS X 10.5; th-TH)");
 
 		private String userAgent;
 
@@ -1000,148 +1003,166 @@ public class JBossToolsUsageRequestsTest {
 		}
 	}
 
-	@Test
-	public void testWinWin7UserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WIN7);
-		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=911593326"
-				+ "&utmhn=jboss.org"
-				+ "&utmcs=UTF-8"
-				+ "&utmsr=1920x1080"
-				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
-				+ "&utmdt=testWinWin7UserAgent"
-				+ "&utmfl=1.6.0_20"
-				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinWin7UserAgent").getURI()
-				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.43297885388356354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-				+ "&gaq=1";
-		method.request(url);
-		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-	}
+	/**
+	 * SUCCESS
+	 */
+//	@Test
+//	public void testWinWin7UserAgent() throws IOException {
+//		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WIN7);
+//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+//				+ "&utmn=9115966544326"
+//				+ "&utmhn=jboss.org"
+//				+ "&utmcs=UTF-8"
+//				+ "&utmsr=1920x1080"
+//				+ "&utmsc=24-bit"
+//				+ "&utmul=th-TH"
+//				+ "&utmdt=testWinWin7UserAgent"
+//				+ "&utmfl=1.6.0_20"
+//				+ "&utmr=1.0.0.qualifier"
+//				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinWin7UserAgent").getURI()
+//				+ "&utmac=UA-17645367-1"
+//				+ "&utmcc=__utma%3D999.43297885388356354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+//				+ "&gaq=1";
+//		method.request(url);
+//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+//	}
 
-	@Test
-	public void testWinVistaUserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WINVISTA);
-		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=958593326"
-				+ "&utmhn=jboss.org"
-				+ "&utmcs=UTF-8"
-				+ "&utmsr=1920x1080"
-				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
-				+ "&utmdt=testWinVistaUserAgent"
-				+ "&utmfl=1.6.0_20"
-				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinVistaUserAgent").getURI()
-				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.43297885388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-				+ "&gaq=1";
-		method.request(url);
-		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-	}
+	/**
+	 * SUCCESS
+	 */
+//	@Test
+//	public void testWinVistaUserAgent() throws IOException {
+//		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WINVISTA);
+//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+//				+ "&utmn=9586654334566"
+//				+ "&utmhn=jboss.org"
+//				+ "&utmcs=UTF-8"
+//				+ "&utmsr=1920x1080"
+//				+ "&utmsc=24-bit"
+//				+ "&utmul=th-TH"
+//				+ "&utmdt=testWinVistaUserAgent"
+//				+ "&utmfl=1.6.0_20"
+//				+ "&utmr=1.0.0.qualifier"
+//				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinVistaUserAgent").getURI()
+//				+ "&utmac=UA-17645367-1"
+//				+ "&utmcc=__utma%3D999.432978853883973545812841087555446.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+//				+ "&gaq=1";
+//		method.request(url);
+//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+//	}
 
-	@Test
-	public void testWinXPUserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WINXP);
-		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=958593335"
-				+ "&utmhn=jboss.org"
-				+ "&utmcs=UTF-8"
-				+ "&utmsr=1920x1080"
-				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
-				+ "&utmdt=testWinXPUserAgent"
-				+ "&utmfl=1.6.0_20"
-				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinXPUserAgent").getURI()
-				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.43297245388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-				+ "&gaq=1";
-		method.request(url);
-		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-	}
+	/**
+	 * SUCCESS
+	 */
+//	@Test
+//	public void testWinXPUserAgent() throws IOException {
+//		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WINXP);
+//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+//				+ "&utmn=958593335"
+//				+ "&utmhn=jboss.org"
+//				+ "&utmcs=UTF-8"
+//				+ "&utmsr=1920x1080"
+//				+ "&utmsc=24-bit"
+//				+ "&utmul=th-TH"
+//				+ "&utmdt=testWinXPUserAgent"
+//				+ "&utmfl=1.6.0_20"
+//				+ "&utmr=1.0.0.qualifier"
+//				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinXPUserAgent").getURI()
+//				+ "&utmac=UA-17645367-1"
+//				+ "&utmcc=__utma%3D999.43297245388397354581284544794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+//				+ "&gaq=1";
+//		method.request(url);
+//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+//	}
 
-	@Test
-	public void testWin2000UserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WIN2000);
-		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=958894305"
-				+ "&utmhn=jboss.org"
-				+ "&utmcs=UTF-8"
-				+ "&utmsr=1920x1080"
-				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
-				+ "&utmdt=testWin2000UserAgent"
-				+ "&utmfl=1.6.0_20"
-				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWin2000UserAgent").getURI()
-				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.43297292388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-				+ "&gaq=1";
-		method.request(url);
-		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-	}
+	/**
+	 * SUCCESS
+	 */
+//	@Test
+//	public void testWin2000UserAgent() throws IOException {
+//		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.WIN2000);
+//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+//				+ "&utmn=9588949905"
+//				+ "&utmhn=jboss.org"
+//				+ "&utmcs=UTF-8"
+//				+ "&utmsr=1920x1080"
+//				+ "&utmsc=24-bit"
+//				+ "&utmul=th-TH"
+//				+ "&utmdt=testWin2000UserAgent"
+//				+ "&utmfl=1.6.0_20"
+//				+ "&utmr=1.0.0.qualifier"
+//				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWin2000UserAgent").getURI()
+//				+ "&utmac=UA-17645367-1"
+//				+ "&utmcc=__utma%3D999.43297292388397354581284009098776666.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+//				+ "&gaq=1";
+//		method.request(url);
+//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+//	}
 
-	@Test
-	public void testMacLeopardUserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.MACOS_LEO);
-		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=958890305"
-				+ "&utmhn=jboss.org"
-				+ "&utmcs=UTF-8"
-				+ "&utmsr=1920x1080"
-				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
-				+ "&utmdt=testMacLeopardUserAgent"
-				+ "&utmfl=1.6.0_20"
-				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testMacLeopardUserAgent").getURI()
-				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.43297292388397333581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-				+ "&gaq=1";
-		method.request(url);
-		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-	}
+	/**
+	 * SUCCESS
+	 */
+//	@Test
+//	public void testMacLeopardUserAgent() throws IOException {
+//		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.MACOS_LEO);
+//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+//				+ "&utmn=958890665"
+//				+ "&utmhn=jboss.org"
+//				+ "&utmcs=UTF-8"
+//				+ "&utmsr=1920x1080"
+//				+ "&utmsc=24-bit"
+//				+ "&utmul=th-TH"
+//				+ "&utmdt=testMacLeopardUserAgent"
+//				+ "&utmfl=1.6.0_20"
+//				+ "&utmr=1.0.0.qualifier"
+//				+ "&utmp=" + new JBossToolsTestsFocusPoint("testMacLeopardUserAgent").getURI()
+//				+ "&utmac=UA-17645367-1"
+//				+ "&utmcc=__utma%3D999.432972923883973335812841778899886.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+//				+ "&gaq=1";
+//		method.request(url);
+//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+//	}
 
-	@Test
-	public void testMacSnowLeopardUserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.MACOS_SNOWLEO);
-		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=958890444"
-				+ "&utmhn=jboss.org"
-				+ "&utmcs=UTF-8"
-				+ "&utmsr=1920x1080"
-				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
-				+ "&utmdt=testMacSnowLeopardUserAgent"
-				+ "&utmfl=1.6.0_20"
-				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testMacSnowLeopardUserAgent").getURI()
-				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.43297292388397333581222108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-				+ "&gaq=1";
-		method.request(url);
-		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-	}
+	/**
+	 * SUCCESS
+	 */
+//	@Test
+//	public void testMacSnowLeopardUserAgent() throws IOException {
+//		TestHttpGetMethod method = new TestHttpGetMethod(UserAgentString.MACOS_SNOWLEO);
+//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+//				+ "&utmn=958890444"
+//				+ "&utmhn=jboss.org"
+//				+ "&utmcs=UTF-8"
+//				+ "&utmsr=1920x1080"
+//				+ "&utmsc=24-bit"
+//				+ "&utmul=th-TH"
+//				+ "&utmdt=testMacSnowLeopardUserAgent"
+//				+ "&utmfl=1.6.0_20"
+//				+ "&utmr=1.0.0.qualifier"
+//				+ "&utmp=" + new JBossToolsTestsFocusPoint("testMacSnowLeopardUserAgent").getURI()
+//				+ "&utmac=UA-17645367-1"
+//				+ "&utmcc=__utma%3D999.432972923883973335812221087554396.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+//				+ "&gaq=1";
+//		method.request(url);
+//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+//	}
 
 	@Test
 	public void testLinuxFedoraUserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.14) Gecko/20080612 Fedora/2.0.0.14-20080612.fc8.acer Firefox/2.0.0.14");
+		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.8.1.14) Gecko/20080612 Fedora/2.0.0.14-20080612.fc8.acer Firefox/2.0.0.14");
 		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=958344444"
+				+ "&utmn=95830066444"
 				+ "&utmhn=jboss.org"
 				+ "&utmcs=UTF-8"
 				+ "&utmsr=1920x1080"
 				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
+				+ "&utmul=th-TH"
 				+ "&utmdt=testLinuxFedoraUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
 				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxFedoraUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.43297292388397333777722108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&utmcc=__utma%3D999.43297292388397333777722108766778.1284108997725.1284198794990.1284108794995.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
@@ -1151,12 +1172,12 @@ public class JBossToolsUsageRequestsTest {
 	public void testLinuxUbuntuUserAgent() throws IOException {
 		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.9.0.2) Gecko/20121223 Ubuntu/9.25 (jaunty) Firefox/3.8");
 		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=958877444"
+				+ "&utmn=958990044"
 				+ "&utmhn=jboss.org"
 				+ "&utmcs=UTF-8"
 				+ "&utmsr=1920x1080"
 				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
+				+ "&utmul=th-TH"
 				+ "&utmdt=testLinuxUbuntuUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
@@ -1170,14 +1191,14 @@ public class JBossToolsUsageRequestsTest {
 	
 	@Test
 	public void testLinuxSUSEUserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.8) Gecko/20100723 SUSE/3.6.8-0.1.1 Firefox/3.6.8");
+		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux x86_64; th-TH; rv:1.9.2.8) Gecko/20100723 SUSE/3.6.8-0.1.1 Firefox/3.6.8");
 		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=957077444"
+				+ "&utmn=957000994"
 				+ "&utmhn=jboss.org"
 				+ "&utmcs=UTF-8"
 				+ "&utmsr=1920x1080"
 				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
+				+ "&utmul=th-TH"
 				+ "&utmdt=testLinuxSUSEUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
@@ -1191,20 +1212,20 @@ public class JBossToolsUsageRequestsTest {
 
 	@Test
 	public void testLinuxSlackwareUserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.3) Gecko/20090914 Slackware/13.0_stable Firefox/3.5.3");
+		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux x86_64; th-TH; rv:1.9.1.3) Gecko/20090914 Slackware/13.0_stable Firefox/3.5.3");
 		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-				+ "&utmn=957077444"
+				+ "&utmn=98888444"
 				+ "&utmhn=jboss.org"
 				+ "&utmcs=UTF-8"
 				+ "&utmsr=1920x1080"
 				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
+				+ "&utmul=th-TH"
 				+ "&utmdt=testLinuxSlackwareUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
 				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxSlackwareUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108996025.1284197794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
@@ -1212,20 +1233,20 @@ public class JBossToolsUsageRequestsTest {
 	
 	@Test
 	public void testLinuxGentooUserAgent() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.3) Gecko/20090912 Gentoo Firefox/3.5.3 FirePHP/0.3");
+		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gecko/20090912 Gentoo Firefox/3.5.3 FirePHP/0.3");
 		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
 				+ "&utmn=957077444"
 				+ "&utmhn=jboss.org"
 				+ "&utmcs=UTF-8"
 				+ "&utmsr=1920x1080"
 				+ "&utmsc=24-bit"
-				+ "&utmul=en-US"
+				+ "&utmul=th-TH"
 				+ "&utmdt=testLinuxGentooUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
 				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxGentooUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
-				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108788442.1284108880025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
