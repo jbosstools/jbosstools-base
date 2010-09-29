@@ -21,19 +21,29 @@ public class LinuxDistroTest {
 
 	@Test
 	public void canExtractFedoraVersion() {
-		ILinuxDistro distro = new FedoraLinuxDistroFake();
+		ILinuxDistro distro = new LinuxDistroFake(ILinuxDistro.FEDORA.getName(), "Fedora release 13 (Goddard)");
 		assertEquals("13", distro.getVersion());
 	}
 
-	public class FedoraLinuxDistroFake extends LinuxDistro {
+	@Test
+	public void canExtractUbuntuVersion() {
+		ILinuxDistro distro = new LinuxDistroFake(ILinuxDistro.UBUNTU.getName(),
+				"DISTRIB_ID=Ubuntu\nDISTRIB_RELEASE=9.04\nDISTRIB_CODENAME=jaunty\nDISTRIB_DESCRIPTION=\"Ubuntu 9.04\"");
+		assertEquals("9.04", distro.getVersion());
+	}
 
-		public FedoraLinuxDistroFake() {
-			super(ILinuxDistro.FEDORA.getName(), "dummy");
+	public class LinuxDistroFake extends LinuxDistro {
+
+		private String releaseFileContent;
+
+		public LinuxDistroFake(String name, String releaseFileContent) {
+			super(name, "dummy");
+			this.releaseFileContent = releaseFileContent;
 		}
 
 		@Override
 		protected String getDistroFileContent(String filePath) throws IOException {
-			return "Fedora release 13 (Goddard)";
+			return releaseFileContent;
 		}
 	}
 }

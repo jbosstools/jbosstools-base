@@ -28,32 +28,44 @@ public interface ILinuxDistro {
 	public static final ILinuxDistro REDHAT = new LinuxDistro("RedHat", "/etc/redhat-release");
 	public static final ILinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
 	public static final ILinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
-	public static final ILinuxDistro UBUNTU = new LinuxDistro("Ubuntu",  "/etc/lsb-release");
+	public static final ILinuxDistro UBUNTU = new LinuxDistro("Ubuntu", "/etc/lsb-release");
 	public static final ILinuxDistro YELLOWDOG = new LinuxDistro("YellowDog", "/etc/yellowdog-release");
 
-	public static final ILinuxDistro[] ALL = new ILinuxDistro[]{
-		DEBIAN,
-		FEDORA,
-		GENTOO,
-		KNOPPIX,
-		MANDRAKE,
-		MANDRIVA,
-		PLD,
-		REDHAT,
-		SLACKWARE,
-		SUSE,
-		UBUNTU,
-		YELLOWDOG
-	}; 
+	public static final ILinuxDistro[] ALL = new ILinuxDistro[] {
+			DEBIAN,
+			FEDORA,
+			GENTOO,
+			KNOPPIX,
+			MANDRAKE,
+			MANDRIVA,
+			PLD,
+			REDHAT,
+			SLACKWARE,
+			SUSE,
+			UBUNTU,
+			YELLOWDOG
+	};
 
 	public boolean isDistro();
+
 	public String getName();
+
 	public String getVersion();
+
 	public String getNameAndVersion();
 
 	public class LinuxDistro implements ILinuxDistro {
 
-		private final Pattern VERSION_REGEX = Pattern.compile("[^0-9]+([0-9.]+).*");
+		/**
+		 * The pattern to match the contents of the release-file -
+		 * /etc/fedora-release etc. Attention: Ubuntu has multi-line release
+		 * file
+		 * 
+		 * @see <a
+		 *      href="http://superuser.com/questions/11008/how-do-i-find-out-what-version-of-linux-im-running">release-file
+		 *      strings</a>
+		 */
+		private final Pattern VERSION_REGEX = Pattern.compile("([0-9.]+)");
 
 		private final String releaseFilePath;
 		private String name;
@@ -75,7 +87,7 @@ public interface ILinuxDistro {
 			try {
 				String distroString = getDistroFileContent(releaseFilePath);
 				Matcher matcher = VERSION_REGEX.matcher(distroString);
-				if (matcher.matches()) {
+				if (matcher.find()) {
 					return matcher.group(1);
 				}
 			} catch (IOException e) {

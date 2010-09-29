@@ -22,6 +22,7 @@ import org.junit.runners.Suite;
 		JBossToolsFocusPointTest.class,
 		GoogleAnalyticsUrlStrategyTest.class,
 		EclipseUserAgentTest.class,
+		LinuxDistroTest.class,
 		JBossToolsEclipseEnvironmentTest.class,
 		JBossToolsComponentsTest.class,
 		HttpRemotePropertiesTest.class,
