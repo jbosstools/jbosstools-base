@@ -1085,13 +1085,13 @@ public class TypeInfoCollector {
 				methods.add(new MemberPresentation(name.toString(), method));
 			}
 
-			// Add method as 'foo(param1,param2)'
+			// As requirement of JBIDE-7168: Add method as 'foo()' (do not extract the parameters)
 			name.append('(');
-			String[] mParams = method.getParameterNames();
-			for (int j = 0; mParams != null && j < mParams.length; j++) {
-				if (j > 0) name.append(", "); //$NON-NLS-1$
-				name.append(mParams[j]);
-			}
+//			String[] mParams = method.getParameterNames();
+//			for (int j = 0; mParams != null && j < mParams.length; j++) {
+//				if (j > 0) name.append(", "); //$NON-NLS-1$
+//				name.append(mParams[j]);
+//			}
 			name.append(')');
 
 			methods.add(new MemberPresentation(name.toString(), method));
