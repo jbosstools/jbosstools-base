@@ -508,7 +508,7 @@ public class SWTJBTExt {
    */
 public void closeReportUsageWindowIfOpened(boolean cancel) {
 	try {
-		bot.shell("Report usage").activate();
+		bot.shell("JBoss Tools Usage").activate();
 		bot.button(
 				cancel ? IDELabel.Button.CANCEL
 						: IDELabel.Button.OK).click();

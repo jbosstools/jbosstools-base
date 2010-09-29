@@ -179,7 +179,12 @@ public class SWTEclipseExt {
     bot.sleep(Timing.time1S());		
 		menu2.menu(IDELabel.Menu.OTHER).click();
     bot.sleep(Timing.time1S());		
+    try {
 		bot.table().select(perspectiveLabel);
+    } catch (WidgetNotFoundException e) {
+    	log.warn("WARN - Perspecive with label " + perspectiveLabel + " not found, try + (default)");
+		bot.table().select(perspectiveLabel + (" (default)"));
+    }
     bot.sleep(Timing.time1S());
 		// Another approach
 		SWTBotShell openPerpectiveShell = bot.shell("Open Perspective");
