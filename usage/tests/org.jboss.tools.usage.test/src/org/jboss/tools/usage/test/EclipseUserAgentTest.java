@@ -50,7 +50,7 @@ public class EclipseUserAgentTest {
 
 	@Test
 	public void testLinux() {
-		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_LINUX, EclipseUserAgentFake.WIN7_VERSION).toString();
+		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US, Platform.OS_LINUX, EclipseUserAgentFake.LINUX_FEDORA13_VERSION).toString();
 		assertOs("X11", "Linux i686", userAgent);
 	}
 

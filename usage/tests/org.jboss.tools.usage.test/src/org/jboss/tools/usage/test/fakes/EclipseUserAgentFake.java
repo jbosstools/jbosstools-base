@@ -29,6 +29,8 @@ public class EclipseUserAgentFake extends EclipseUserAgent {
 	public static final String WIN7_VERSION = "6.1";
 	public static final String MACLEOPARD_VERSION = "10.5";
 	public static final String MACSNOWLEOPARD_VERSION = "10.6";
+	public static final String LINUX_FEDORA13_VERSION = "13";
+
 	
 	private String applicationName;
 	private String applicationVersion;
@@ -39,7 +41,7 @@ public class EclipseUserAgentFake extends EclipseUserAgent {
 	public EclipseUserAgentFake() {
 		this(APPLICATION_NAME, APPLICATION_VERSION, LOCALE_US, Platform.OS_WIN32, WIN7_VERSION);
 	}
-	
+
 	public EclipseUserAgentFake(String nl) {
 		this(APPLICATION_NAME, APPLICATION_VERSION, nl, Platform.OS_WIN32, WIN7_VERSION);
 	}
@@ -51,18 +53,27 @@ public class EclipseUserAgentFake extends EclipseUserAgent {
 	/**
 	 * Instantiates a fake of the EclipseUserAgent class
 	 * 
-	 * @param applicationName the name of the applicaiton
-	 * @param applicationVersion the version of the application
-	 * @param nl the platform locale as returned from <code>Platform.getNL()</code>
-	 * @param os the os name as return from <code>Platform.getOS()</code>
-	 * @param osVersion the version of the os as returned from <code>System.getProperty("os.name")</code>
+	 * @param applicationName
+	 *            the name of the applicaiton
+	 * @param applicationVersion
+	 *            the version of the application
+	 * @param nl
+	 *            the platform locale as returned from
+	 *            <code>Platform.getNL()</code>
+	 * @param os
+	 *            the os name as return from <code>Platform.getOS()</code>
+	 * @param osVersion
+	 *            the version of the os as returned from
+	 *            <code>System.getProperty("os.name")</code>
 	 * 
 	 * @see Platform#getNL()
 	 * @see Platform#getOS()
 	 * @see System#getProperty("os.version")
 	 */
-	public EclipseUserAgentFake(String applicationName, String applicationVersion, String nl, String os, String osVersion) {
-		Assert.isTrue(nl != null && nl.indexOf(JAVA_LOCALE_DELIMITER) >= 0, "nl parameter must for a java locale string <xx_XX>");
+	public EclipseUserAgentFake(String applicationName, String applicationVersion, String nl, String os,
+			String osVersion) {
+		Assert.isTrue(nl != null && nl.indexOf(JAVA_LOCALE_DELIMITER) >= 0,
+				"nl parameter must for a java locale string <xx_XX>");
 		this.applicationName = applicationName;
 		this.applicationVersion = applicationVersion;
 		this.nl = nl;
@@ -89,7 +100,7 @@ public class EclipseUserAgentFake extends EclipseUserAgent {
 	public String getOSVersion() {
 		return osVersion;
 	}
-	
+
 	@Override
 	public String getApplicationVersion() {
 		return applicationVersion;

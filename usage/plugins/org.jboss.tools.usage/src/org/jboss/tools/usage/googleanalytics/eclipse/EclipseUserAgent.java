@@ -95,14 +95,24 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 	}
 
 	public String getOSVersion() {
-		return System.getProperty(PROP_OS_VERSION);
+		if (!Platform.OS_LINUX.equals(getOS())) {
+			return System.getProperty(PROP_OS_VERSION);
+		} else {
+			return getLinuxDistro();
+		}
+	}
+
+	protected String getLinuxDistro() {
+		for (ILinuxDistro distro : ILinuxDistro.ALL) {
+			if (distro.isDistro()) {
+				return distro.getNameAndVersion();
+			}
+		}
+		return "";
 	}
 
 	private String getUserAgentPattern(String os) {
 		String userAgentPattern = ""; //$NON-NLS-1$
-		/*
-		 * TODO: implement architecture (i686, x86_64 etc.), Windows version, MacOS version etc. 
-		 */
 		if (Platform.OS_LINUX.equals(os)) {
 			return USERAGENT_LINUX; //$NON-NLS-1$
 		} else if (Platform.OS_MACOSX.equals(os)) {
@@ -140,4 +150,6 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 			return Platform.getBundle(ECLIPSE_RUNTIME_BULDEID);
 		}
 	}
+
+
 }
