@@ -971,7 +971,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=0"
 				+ "&utm_content=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testJBossToolsVersionInAdContent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testJBossToolsVersionInAdContent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297294488397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1013,7 +1013,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testWinWin7UserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinWin7UserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinWin7UserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297885388356354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1034,7 +1034,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testWinVistaUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinVistaUserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinVistaUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297885388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1055,7 +1055,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testWinXPUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinXPUserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWinXPUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297245388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1076,7 +1076,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testWin2000UserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWin2000UserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testWin2000UserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297292388397354581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1097,7 +1097,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testMacLeopardUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testMacLeopardUserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testMacLeopardUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297292388397333581284108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1118,7 +1118,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testMacSnowLeopardUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testMacSnowLeopardUserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testMacSnowLeopardUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297292388397333581222108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1139,7 +1139,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testLinuxFedoraUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxFedoraUserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxFedoraUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.43297292388397333777722108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1160,7 +1160,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testLinuxUbuntuUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxUbuntuUserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxUbuntuUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.46667292388397333777722108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1181,7 +1181,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testLinuxSUSEUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxSUSEUserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxSUSEUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1202,7 +1202,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testLinuxSlackwareUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxSlackwareUserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxSlackwareUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
@@ -1223,7 +1223,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmdt=testLinuxGentooUserAgent"
 				+ "&utmfl=1.6.0_20"
 				+ "&utmr=1.0.0.qualifier"
-				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxGentooUserAgent")
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxGentooUserAgent").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
 				+ "&gaq=1";
