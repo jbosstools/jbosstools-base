@@ -1126,9 +1126,117 @@ public class JBossToolsUsageRequestsTest {
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
 
+	@Test
+	public void testLinuxFedoraUserAgent() throws IOException {
+		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.14) Gecko/20080612 Fedora/2.0.0.14-20080612.fc8.acer Firefox/2.0.0.14");
+		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+				+ "&utmn=958344444"
+				+ "&utmhn=jboss.org"
+				+ "&utmcs=UTF-8"
+				+ "&utmsr=1920x1080"
+				+ "&utmsc=24-bit"
+				+ "&utmul=en-US"
+				+ "&utmdt=testLinuxFedoraUserAgent"
+				+ "&utmfl=1.6.0_20"
+				+ "&utmr=1.0.0.qualifier"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxFedoraUserAgent")
+				+ "&utmac=UA-17645367-1"
+				+ "&utmcc=__utma%3D999.43297292388397333777722108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testLinuxUbuntuUserAgent() throws IOException {
+		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.9.0.2) Gecko/20121223 Ubuntu/9.25 (jaunty) Firefox/3.8");
+		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+				+ "&utmn=958877444"
+				+ "&utmhn=jboss.org"
+				+ "&utmcs=UTF-8"
+				+ "&utmsr=1920x1080"
+				+ "&utmsc=24-bit"
+				+ "&utmul=en-US"
+				+ "&utmdt=testLinuxUbuntuUserAgent"
+				+ "&utmfl=1.6.0_20"
+				+ "&utmr=1.0.0.qualifier"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxUbuntuUserAgent")
+				+ "&utmac=UA-17645367-1"
+				+ "&utmcc=__utma%3D999.46667292388397333777722108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}	
+	
+	@Test
+	public void testLinuxSUSEUserAgent() throws IOException {
+		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.8) Gecko/20100723 SUSE/3.6.8-0.1.1 Firefox/3.6.8");
+		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+				+ "&utmn=957077444"
+				+ "&utmhn=jboss.org"
+				+ "&utmcs=UTF-8"
+				+ "&utmsr=1920x1080"
+				+ "&utmsc=24-bit"
+				+ "&utmul=en-US"
+				+ "&utmdt=testLinuxSUSEUserAgent"
+				+ "&utmfl=1.6.0_20"
+				+ "&utmr=1.0.0.qualifier"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxSUSEUserAgent")
+				+ "&utmac=UA-17645367-1"
+				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}	
+
+	@Test
+	public void testLinuxSlackwareUserAgent() throws IOException {
+		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.3) Gecko/20090914 Slackware/13.0_stable Firefox/3.5.3");
+		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+				+ "&utmn=957077444"
+				+ "&utmhn=jboss.org"
+				+ "&utmcs=UTF-8"
+				+ "&utmsr=1920x1080"
+				+ "&utmsc=24-bit"
+				+ "&utmul=en-US"
+				+ "&utmdt=testLinuxSlackwareUserAgent"
+				+ "&utmfl=1.6.0_20"
+				+ "&utmr=1.0.0.qualifier"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxSlackwareUserAgent")
+				+ "&utmac=UA-17645367-1"
+				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}	
+	
+	@Test
+	public void testLinuxGentooUserAgent() throws IOException {
+		TestHttpGetMethod method = new TestHttpGetMethod("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.3) Gecko/20090912 Gentoo Firefox/3.5.3 FirePHP/0.3");
+		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+				+ "&utmn=957077444"
+				+ "&utmhn=jboss.org"
+				+ "&utmcs=UTF-8"
+				+ "&utmsr=1920x1080"
+				+ "&utmsc=24-bit"
+				+ "&utmul=en-US"
+				+ "&utmdt=testLinuxGentooUserAgent"
+				+ "&utmfl=1.6.0_20"
+				+ "&utmr=1.0.0.qualifier"
+				+ "&utmp=" + new JBossToolsTestsFocusPoint("testLinuxGentooUserAgent")
+				+ "&utmac=UA-17645367-1"
+				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+				+ "&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}	
 	protected class TestHttpGetMethod extends HttpGetRequest {
 
 		private HttpURLConnection urlConnection;
+
+		public TestHttpGetMethod(String userAgentString) {
+			this(userAgentString, new SystemOutLogger());
+		}
 
 		public TestHttpGetMethod(UserAgentString userAgentString) {
 			this(userAgentString.toString(), new SystemOutLogger());
