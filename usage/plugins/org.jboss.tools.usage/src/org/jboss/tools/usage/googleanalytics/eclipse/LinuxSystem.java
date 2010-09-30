@@ -18,6 +18,13 @@ import java.util.regex.Pattern;
 
 public class LinuxSystem {
 
+	/**
+	 * @see <a href="http://linuxmafia.com/faq/Admin/release-files.html">
+	 *      an extensive list of release file locations</a>
+	 * @see <a
+	 *      href="http://superuser.com/questions/11008/how-do-i-find-out-what-version-of-linux-im-running">
+	 *      release-file strings</a>
+	 */
 	public static final LinuxDistro CENTOS = new LinuxDistro("CentOS", "/etc/redhat-release");
 	public static final LinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
 	public static final LinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
@@ -73,10 +80,6 @@ public class LinuxSystem {
 		 * The pattern to match the contents of the release-file -
 		 * /etc/fedora-release etc. Attention: Ubuntu has multi-line release
 		 * file
-		 * 
-		 * @see <a
-		 *      href="http://superuser.com/questions/11008/how-do-i-find-out-what-version-of-linux-im-running">release-file
-		 *      strings</a>
 		 */
 		private final Pattern VERSION_REGEX = Pattern.compile("([0-9.]+)");
 
