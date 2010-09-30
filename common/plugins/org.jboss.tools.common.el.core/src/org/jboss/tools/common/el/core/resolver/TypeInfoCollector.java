@@ -972,18 +972,24 @@ public class TypeInfoCollector {
 	 */
 	public static class MemberPresentation {
 		private String presentation;
+		private String displayName;
 		private MemberInfo member;
 		private Set<MemberInfo> allMembers = new HashSet<MemberInfo>(); 
 
-		public MemberPresentation(String presentation, MemberInfo member) {
+		public MemberPresentation(String presentation, String displayName, MemberInfo member) {
 			super();
 			this.presentation = presentation;
+			this.displayName = displayName;
 			this.member = member;
 			addMember(member);
 		}
 
 		public String getPresentation() {
 			return presentation;
+		}
+
+		public String getPresentationDisplayName() {
+			return displayName;
 		}
 
 		public MemberInfo getMember() {
@@ -1069,6 +1075,7 @@ public class TypeInfoCollector {
 			MethodInfo method = (MethodInfo)info;
 
 			StringBuffer name = new StringBuffer(method.getName());
+			StringBuffer displayName = new StringBuffer(method.getName());
 
 			boolean disabledGettersAndSettersView = 
 				!ELCorePlugin.getDefault().getPreferenceStore().getBoolean(ELContentAssistPreferences.SHOW_GETTERS_AND_SETTERS) &&
@@ -1082,19 +1089,27 @@ public class TypeInfoCollector {
 			
 			if (isValidating || enabledNonParenthesesView) {
 				// Add method as 'foo'
-				methods.add(new MemberPresentation(name.toString(), method));
+				methods.add(new MemberPresentation(name.toString(), displayName.toString(),  method));
 			}
 
-			// As requirement of JBIDE-7168: Add method as 'foo()' (do not extract the parameters)
+			// As requirement of JBIDE-7168: Add method as 'foo()' (do not extract the parameters),
+			// but show the method parameters with their types
 			name.append('(');
-//			String[] mParams = method.getParameterNames();
-//			for (int j = 0; mParams != null && j < mParams.length; j++) {
-//				if (j > 0) name.append(", "); //$NON-NLS-1$
-//				name.append(mParams[j]);
-//			}
+			displayName.append('(');
+			String[] mParams = method.getParameterNames();
+			String[] mTypes = method.getParameterTypeNames();
+			for (int j = 0; mParams != null && j < mParams.length; j++) {
+				String typeName = mTypes[j] == null ? "" : mTypes[j]; //$NON-NLS-1$
+				if (typeName.indexOf('.') != -1)
+					typeName = typeName.substring(typeName.lastIndexOf('.') + 1);
+				
+				if (j > 0) displayName.append(", "); //$NON-NLS-1$
+				displayName.append(typeName).append(' ').append(mParams[j]);
+			}
 			name.append(')');
+			displayName.append(')');
 
-			methods.add(new MemberPresentation(name.toString(), method));
+			methods.add(new MemberPresentation(name.toString(), displayName.toString(), method));
 		}
 		return methods;
 	}
@@ -1195,7 +1210,7 @@ public class TypeInfoCollector {
 						name.setCharAt(0, Character.toLowerCase(name.charAt(0)));
 					}
 					String propertyName = name.toString();
-					MemberPresentation pr = new MemberPresentation(propertyName, m);
+					MemberPresentation pr = new MemberPresentation(propertyName, propertyName, m);
 					if(!properties.contains(pr)) {
 						properties.add(pr);
 						presentations.put(pr.getPresentation(), pr);
@@ -1219,7 +1234,7 @@ public class TypeInfoCollector {
 					}
 				}
 			} else {
-				MemberPresentation pr = new MemberPresentation(info.getName(), info);
+				MemberPresentation pr = new MemberPresentation(info.getName(), info.getName(), info);
 				properties.add(pr);
 				presentations.put(pr.getPresentation(), pr);
 			}

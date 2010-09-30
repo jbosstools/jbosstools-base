@@ -719,6 +719,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if (methodPresentations != null) {
 					for (MemberPresentation presentation : methodPresentations) {
 						String presentationString = presentation.getPresentation();
+						String presentationDisplayName = presentation.getPresentationDisplayName();
 						MemberInfo member = presentation.getMember();
 						String sourceTypeName = member == null ? null : member.getDeclaringTypeQualifiedName();
 						if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) 
@@ -729,7 +730,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 						ELTextProposal proposal = new ELTextProposal();
 						proposal.setReplacementString(presentationString);
-						proposal.setLabel(presentationString);
+						proposal.setLabel(presentationDisplayName);
 						proposal.setImage(getELProposalImage());
 						proposal.setType(typeName);
 						proposal.setSourceType(sourceTypeName);
@@ -764,6 +765,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if (propertyPresentations != null) {
 					for (MemberPresentation presentation : propertyPresentations) {
 						String presentationString = presentation.getPresentation();
+						String presentationDisplayName = presentation.getPresentationDisplayName();
 						MemberInfo member = presentation.getMember();
 						String sourceTypeName = member == null ? null : member.getDeclaringTypeQualifiedName();
 						if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) 
@@ -774,7 +776,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 						ELTextProposal proposal = new ELTextProposal();
 						proposal.setReplacementString(presentationString);
-						proposal.setLabel(presentationString);
+						proposal.setLabel(presentationDisplayName);
 						proposal.setImage(getELProposalImage());
 						proposal.setType(typeName);
 						proposal.setSourceType(sourceTypeName);
@@ -862,7 +864,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 					ELTextProposal kbProposal = new ELTextProposal();
 					kbProposal.setReplacementString(proposal.getPresentation().substring(filter.length()));
-					kbProposal.setLabel(proposal.getPresentation());
+					kbProposal.setLabel(proposal.getPresentationDisplayName());
 					kbProposal.setImage(getELProposalImage());
 					kbProposal.setType(typeName);
 					kbProposal.setSourceType(sourceTypeName);
