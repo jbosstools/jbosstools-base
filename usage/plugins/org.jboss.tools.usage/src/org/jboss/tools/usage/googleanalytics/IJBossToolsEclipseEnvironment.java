@@ -19,4 +19,5 @@ public interface IJBossToolsEclipseEnvironment extends IEclipseEnvironment {
 	
 	public String getJBossToolsVersion();
 
+	public boolean isLinuxDistro();
 }

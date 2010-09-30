@@ -53,4 +53,8 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 	public String getJBossToolsVersion() {
 		return JBossToolsUsageActivator.getDefault().getBundle().getVersion().toString();
 	}
+
+	public boolean isLinuxDistro() {
+		return getLinuxDistroNameAndVersion() != null;
+	}
 }

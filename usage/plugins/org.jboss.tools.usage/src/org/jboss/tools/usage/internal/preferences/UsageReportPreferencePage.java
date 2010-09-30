@@ -87,6 +87,9 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_OperatingSystem, eclipseUserAgent.getOS(), builder, styles);
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_OperatingSystemVersion, eclipseUserAgent.getOSVersion(), builder, styles);
+		if (eclipseEnvironment.isLinuxDistro()) {
+			appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_LinuxDistro, eclipseEnvironment.getUserDefined(), builder, styles);
+		}
 		builder.append(StringUtils.getLineSeparator());
 
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_Locale, eclipseUserAgent.getBrowserLanguage(), builder, styles);
