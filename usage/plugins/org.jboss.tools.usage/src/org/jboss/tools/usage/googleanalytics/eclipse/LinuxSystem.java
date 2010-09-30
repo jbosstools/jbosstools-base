@@ -18,9 +18,11 @@ import java.util.regex.Pattern;
 
 public class LinuxSystem {
 
+	public static final LinuxDistro CENTOS = new LinuxDistro("CentOS", "/etc/redhat-release");
 	public static final LinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
 	public static final LinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
 	public static final LinuxDistro GENTOO = new LinuxDistro("Gentoo", "/etc/gentoo-release");
+	public static final LinuxDistro YELLOWDOG = new LinuxDistro("YellowDog", "/etc/yellowdog-release");
 	public static final LinuxDistro KNOPPIX = new LinuxDistro("Knoppix", "knoppix_version");
 	public static final LinuxDistro MANDRAKE = new LinuxDistro("Mandrake", "/etc/mandrake-release");
 	public static final LinuxDistro MANDRIVA = new LinuxDistro("Mandriva", "/etc/mandriva-release");
@@ -29,41 +31,41 @@ public class LinuxSystem {
 	public static final LinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
 	public static final LinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
 	public static final LinuxDistro UBUNTU = new LinuxDistro("Ubuntu", "/etc/lsb-release");
-	public static final LinuxDistro YELLOWDOG = new LinuxDistro("YellowDog", "/etc/yellowdog-release");
 
 	private static final LinuxDistro[] ALL = new LinuxDistro[] {
-				DEBIAN,
-				FEDORA,
-				GENTOO,
-				KNOPPIX,
-				MANDRAKE,
-				MANDRIVA,
-				PLD,
-				REDHAT,
-				SLACKWARE,
-				SUSE,
-				UBUNTU,
-				YELLOWDOG
+			CENTOS,
+			DEBIAN,
+			FEDORA,
+			GENTOO,
+			KNOPPIX,
+			MANDRAKE,
+			MANDRIVA,
+			PLD,
+			REDHAT,
+			SLACKWARE,
+			SUSE,
+			UBUNTU,
+			YELLOWDOG
 		};
 
 	public static LinuxDistro getDistro() {
-			for (LinuxDistro distro : ALL) {
-				if (distro.currentSysIsDistro()) {
-					return distro;
-				}
+		for (LinuxDistro distro : ALL) {
+			if (distro.currentSysIsDistro()) {
+				return distro;
 			}
-			return null;
-
 		}
+		return null;
+
+	}
 
 	public static String getDistroNameAndVersion() {
-			LinuxDistro distro = getDistro();
-			if (distro != null) {
-				return distro.getNameAndVersion();
-			} else {
-				return "";
-			}
+		LinuxDistro distro = getDistro();
+		if (distro != null) {
+			return distro.getNameAndVersion();
+		} else {
+			return "";
 		}
+	}
 
 	public static class LinuxDistro {
 

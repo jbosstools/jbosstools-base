@@ -44,5 +44,12 @@ public class LinuxDistroTest {
 				"Gentoo Base System release 2.0.1");
 		assertEquals("Gentoo2.0.1", distro.getNameAndVersion());
 	}
+	
+	@Test
+	public void canExtractCentOSVersion() {
+		LinuxDistro distro = new LinuxDistroFake(LinuxSystem.CENTOS.getName(),
+		"CentOS release 5.3 (Final)");
+		assertEquals("CentOS5.3", distro.getNameAndVersion());
+	}
 }
 
