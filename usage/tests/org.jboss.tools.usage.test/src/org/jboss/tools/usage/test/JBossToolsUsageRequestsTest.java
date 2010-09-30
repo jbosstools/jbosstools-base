@@ -1193,321 +1193,435 @@ public class JBossToolsUsageRequestsTest {
 	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	// }
 
-//	@Test
-//	public void testLinuxFedoraUserAgent() throws IOException {
-//		TestHttpGetMethod method = new TestHttpGetMethod(
-//				"Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.8.1.14) Gecko/20080612 Fedora/2.0.0.14-20080612.fc8.acer Firefox/2.0.0.14");
-//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-//				+ "&utmn=95830066444"
-//				+ "&utmhn=jboss.org"
-//				+ "&utmcs=UTF-8"
-//				+ "&utmsr=1920x1080"
-//				+ "&utmsc=24-bit"
-//				+ "&utmul=th-TH"
-//				+ "&utmdt=testLinuxFedoraUserAgent"
-//				+ "&utmfl=1.6.0_20"
-//				+ "&utmr=1.0.0.qualifier"
-//				+ "&utmp="
-//				+ new JBossToolsTestsFocusPoint("testLinuxFedoraUserAgent").getURI()
-//				+ "&utmac=UA-17645367-1"
-//				+ "&utmcc=__utma%3D999.43297292388397333777722108766778.1284108997725.1284198794990.1284108794995.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-//				+ "&gaq=1";
-//		method.request(url);
-//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-//	}
+	// @Test
+	// public void testLinuxFedoraUserAgent() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.8.1.14) Gecko/20080612 Fedora/2.0.0.14-20080612.fc8.acer Firefox/2.0.0.14");
+	// String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+	// + "&utmn=95830066444"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testLinuxFedoraUserAgent"
+	// + "&utmfl=1.6.0_20"
+	// + "&utmr=1.0.0.qualifier"
+	// + "&utmp="
+	// + new JBossToolsTestsFocusPoint("testLinuxFedoraUserAgent").getURI()
+	// + "&utmac=UA-17645367-1"
+	// +
+	// "&utmcc=__utma%3D999.43297292388397333777722108766778.1284108997725.1284198794990.1284108794995.1%3B%2B__utmz%3D999.1284108794025.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
 
-//	@Test
-//	public void testLinuxUbuntuUserAgent() throws IOException {
-//		TestHttpGetMethod method = new TestHttpGetMethod(
-//				"Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.9.0.2) Gecko/20121223 Ubuntu/9.25 (jaunty) Firefox/3.8");
-//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-//				+ "&utmn=958990044"
-//				+ "&utmhn=jboss.org"
-//				+ "&utmcs=UTF-8"
-//				+ "&utmsr=1920x1080"
-//				+ "&utmsc=24-bit"
-//				+ "&utmul=th-TH"
-//				+ "&utmdt=testLinuxUbuntuUserAgent"
-//				+ "&utmfl=1.6.0_20"
-//				+ "&utmr=1.0.0.qualifier"
-//				+ "&utmp="
-//				+ new JBossToolsTestsFocusPoint("testLinuxUbuntuUserAgent").getURI()
-//				+ "&utmac=UA-17645367-1"
-//				+ "&utmcc=__utma%3D999.46667292388397333777722108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-//				+ "&gaq=1";
-//		method.request(url);
-//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-//	}
+	// @Test
+	// public void testLinuxUbuntuUserAgent() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.9.0.2) Gecko/20121223 Ubuntu/9.25 (jaunty) Firefox/3.8");
+	// String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+	// + "&utmn=958990044"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testLinuxUbuntuUserAgent"
+	// + "&utmfl=1.6.0_20"
+	// + "&utmr=1.0.0.qualifier"
+	// + "&utmp="
+	// + new JBossToolsTestsFocusPoint("testLinuxUbuntuUserAgent").getURI()
+	// + "&utmac=UA-17645367-1"
+	// +
+	// "&utmcc=__utma%3D999.46667292388397333777722108794036.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
 
-//	@Test
-//	public void testLinuxSUSEUserAgent() throws IOException {
-//		TestHttpGetMethod method = new TestHttpGetMethod(
-//				"Mozilla/5.0 (X11; U; Linux x86_64; th-TH; rv:1.9.2.8) Gecko/20100723 SUSE/3.6.8-0.1.1 Firefox/3.6.8");
-//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-//				+ "&utmn=957000994"
-//				+ "&utmhn=jboss.org"
-//				+ "&utmcs=UTF-8"
-//				+ "&utmsr=1920x1080"
-//				+ "&utmsc=24-bit"
-//				+ "&utmul=th-TH"
-//				+ "&utmdt=testLinuxSUSEUserAgent"
-//				+ "&utmfl=1.6.0_20"
-//				+ "&utmr=1.0.0.qualifier"
-//				+ "&utmp="
-//				+ new JBossToolsTestsFocusPoint("testLinuxSUSEUserAgent").getURI()
-//				+ "&utmac=UA-17645367-1"
-//				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-//				+ "&gaq=1";
-//		method.request(url);
-//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-//	}
+	// @Test
+	// public void testLinuxSUSEUserAgent() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (X11; U; Linux x86_64; th-TH; rv:1.9.2.8) Gecko/20100723 SUSE/3.6.8-0.1.1 Firefox/3.6.8");
+	// String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+	// + "&utmn=957000994"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testLinuxSUSEUserAgent"
+	// + "&utmfl=1.6.0_20"
+	// + "&utmr=1.0.0.qualifier"
+	// + "&utmp="
+	// + new JBossToolsTestsFocusPoint("testLinuxSUSEUserAgent").getURI()
+	// + "&utmac=UA-17645367-1"
+	// +
+	// "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
 
-//	@Test
-//	public void testLinuxSlackwareUserAgent() throws IOException {
-//		TestHttpGetMethod method = new TestHttpGetMethod(
-//				"Mozilla/5.0 (X11; U; Linux x86_64; th-TH; rv:1.9.1.3) Gecko/20090914 Slackware/13.0_stable Firefox/3.5.3");
-//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-//				+ "&utmn=98888444"
-//				+ "&utmhn=jboss.org"
-//				+ "&utmcs=UTF-8"
-//				+ "&utmsr=1920x1080"
-//				+ "&utmsc=24-bit"
-//				+ "&utmul=th-TH"
-//				+ "&utmdt=testLinuxSlackwareUserAgent"
-//				+ "&utmfl=1.6.0_20"
-//				+ "&utmr=1.0.0.qualifier"
-//				+ "&utmp="
-//				+ new JBossToolsTestsFocusPoint("testLinuxSlackwareUserAgent").getURI()
-//				+ "&utmac=UA-17645367-1"
-//				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108996025.1284197794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-//				+ "&gaq=1";
-//		method.request(url);
-//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-//	}
+	// @Test
+	// public void testLinuxSlackwareUserAgent() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (X11; U; Linux x86_64; th-TH; rv:1.9.1.3) Gecko/20090914 Slackware/13.0_stable Firefox/3.5.3");
+	// String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+	// + "&utmn=98888444"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testLinuxSlackwareUserAgent"
+	// + "&utmfl=1.6.0_20"
+	// + "&utmr=1.0.0.qualifier"
+	// + "&utmp="
+	// + new JBossToolsTestsFocusPoint("testLinuxSlackwareUserAgent").getURI()
+	// + "&utmac=UA-17645367-1"
+	// +
+	// "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108996025.1284197794025.1284108794025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
 
-//	@Test
-//	public void testLinuxGentooUserAgent() throws IOException {
-//		TestHttpGetMethod method = new TestHttpGetMethod(
-//				"Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gecko/20090912 Gentoo Firefox/3.5.3 FirePHP/0.3");
-//		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
-//				+ "&utmn=957077444"
-//				+ "&utmhn=jboss.org"
-//				+ "&utmcs=UTF-8"
-//				+ "&utmsr=1920x1080"
-//				+ "&utmsc=24-bit"
-//				+ "&utmul=th-TH"
-//				+ "&utmdt=testLinuxGentooUserAgent"
-//				+ "&utmfl=1.6.0_20"
-//				+ "&utmr=1.0.0.qualifier"
-//				+ "&utmp="
-//				+ new JBossToolsTestsFocusPoint("testLinuxGentooUserAgent").getURI()
-//				+ "&utmac=UA-17645367-1"
-//				+ "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108788442.1284108880025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
-//				+ "&gaq=1";
-//		method.request(url);
-//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-//	}
+	// @Test
+	// public void testLinuxGentooUserAgent() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gecko/20090912 Gentoo Firefox/3.5.3 FirePHP/0.3");
+	// String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+	// + "&utmn=957077444"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testLinuxGentooUserAgent"
+	// + "&utmfl=1.6.0_20"
+	// + "&utmr=1.0.0.qualifier"
+	// + "&utmp="
+	// + new JBossToolsTestsFocusPoint("testLinuxGentooUserAgent").getURI()
+	// + "&utmac=UA-17645367-1"
+	// +
+	// "&utmcc=__utma%3D999.46667292388397333777722108798936.1284108794025.1284108788442.1284108880025.1%3B%2B__utmz%3D999.1284108794225.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7Cutmctr%3DVPE-%EF%BF%BF%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
 
-//	@Test
-//	public void testLinuxSimplifiedGentooUserAgent1() throws IOException {
-//		TestHttpGetMethod method = new TestHttpGetMethod(
-//				"Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gecko/20090912 Gentoo Firefox/3.5.3");
-//		String url = "http://www.google-analytics.com/__utm.gif?"
-//				+ "utmwv=4.7.2"
-//				+ "&utmn=22172214"
-//				+ "&utmhn=jboss.org"
-//				+ "&utmcs=UTF-8"
-//				+ "&utmsr=1920x1080"
-//				+ "&utmsc=24-bit"
-//				+ "&utmul=th-TH"
-//				+ "&utmdt=testLinuxSimplifiedGentooUserAgent1"
-//				+ "&utmhid=1087431432"
-//				+ "&utmp="
-//				+ new JBossToolsTestsFocusPoint("testLinuxSimplifiedGentooUserAgent1").getURI()
-//				+ "&utmac=UA-17645367-1"
-//				+ "&utmcc="
-//				+ "__utma%3D999.44677790471263281282924103927.1282924103925.1282924103925.1282924103925.1%3B%2B"
-//				+ "__utmb%3D1%3B%2B"
-//				+ "__utmc%3D1%3B%2B"
-//				+ "__utmz%3D156030500.1281430767.1.1."
-//				+ "utmcsr%3D(direct)%7C"
-//				+ "utmccn%3D(direct)%7C"
-//				+ "utmcmd%3D(none)%7C"
-//				+
-//				"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
-//				+ "&gaq=1";
-//		method.request(url);
-//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-//	}
+	// @Test
+	// public void testLinuxSimplifiedGentooUserAgent1() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gecko/20090912 Gentoo Firefox/3.5.3");
+	// String url = "http://www.google-analytics.com/__utm.gif?"
+	// + "utmwv=4.7.2"
+	// + "&utmn=22172214"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testLinuxSimplifiedGentooUserAgent1"
+	// + "&utmhid=1087431432"
+	// + "&utmp="
+	// + new
+	// JBossToolsTestsFocusPoint("testLinuxSimplifiedGentooUserAgent1").getURI()
+	// + "&utmac=UA-17645367-1"
+	// + "&utmcc="
+	// +
+	// "__utma%3D999.44677790471263281282924103927.1282924103925.1282924103925.1282924103925.1%3B%2B"
+	// + "__utmb%3D1%3B%2B"
+	// + "__utmc%3D1%3B%2B"
+	// + "__utmz%3D156030500.1281430767.1.1."
+	// + "utmcsr%3D(direct)%7C"
+	// + "utmccn%3D(direct)%7C"
+	// + "utmcmd%3D(none)%7C"
+	// +
+	// "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
 
-//	@Test
-//	public void testLinuxSimplifiedGentooUserAgent2() throws IOException {
-//		TestHttpGetMethod method = new TestHttpGetMethod(
-//				"Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gecko/20090912 Gentoo");
-//		String url = "http://www.google-analytics.com/__utm.gif?"
-//				+ "utmwv=4.7.2"
-//				+ "&utmn=1517776694"
-//				+ "&utmhn=jboss.org"
-//				+ "&utmcs=UTF-8"
-//				+ "&utmsr=1920x1080"
-//				+ "&utmsc=24-bit"
-//				+ "&utmul=th-TH"
-//				+ "&utmdt=testLinuxSimplifiedGentooUserAgent2"
-//				+ "&utmhid=1087431432"
-//				+ "&utmp="
-//				+ new JBossToolsTestsFocusPoint("testLinuxSimplifiedGentooUserAgent2").getURI()
-//				+ "&utmac=UA-17645367-1"
-//				+ "&utmcc="
-//				+
-//				"__utma%3D999.3332224690471263281282924103927.1282924103925.1282924103925.1282924103925.1%3B%2B"
-//				+ "__utmb%3D1%3B%2B"
-//				+ "__utmc%3D1%3B%2B"
-//				+ "__utmz%3D156030500.1281430767.1.1."
-//				+ "utmcsr%3D(direct)%7C"
-//				+ "utmccn%3D(direct)%7C"
-//				+ "utmcmd%3D(none)%7C"
-//				+
-//				"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
-//				+ "&gaq=1";
-//		method.request(url);
-//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-//	}
+	// @Test
+	// public void testLinuxSimplifiedGentooUserAgent2() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gecko/20090912 Gentoo");
+	// String url = "http://www.google-analytics.com/__utm.gif?"
+	// + "utmwv=4.7.2"
+	// + "&utmn=1517776694"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testLinuxSimplifiedGentooUserAgent2"
+	// + "&utmhid=1087431432"
+	// + "&utmp="
+	// + new
+	// JBossToolsTestsFocusPoint("testLinuxSimplifiedGentooUserAgent2").getURI()
+	// + "&utmac=UA-17645367-1"
+	// + "&utmcc="
+	// +
+	// "__utma%3D999.3332224690471263281282924103927.1282924103925.1282924103925.1282924103925.1%3B%2B"
+	// + "__utmb%3D1%3B%2B"
+	// + "__utmc%3D1%3B%2B"
+	// + "__utmz%3D156030500.1281430767.1.1."
+	// + "utmcsr%3D(direct)%7C"
+	// + "utmccn%3D(direct)%7C"
+	// + "utmcmd%3D(none)%7C"
+	// +
+	// "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
 
-//	@Test
-//	public void testLinuxSimplifiedGentooUserAgent3() throws IOException {
-//		TestHttpGetMethod method = new TestHttpGetMethod(
-//				"Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gentoo");
-//		String url = "http://www.google-analytics.com/__utm.gif?"
-//				+ "utmwv=4.7.2"
-//				+ "&utmn=66543336546694"
-//				+ "&utmhn=jboss.org"
-//				+ "&utmcs=UTF-8"
-//				+ "&utmsr=1920x1080"
-//				+ "&utmsc=24-bit"
-//				+ "&utmul=th-TH"
-//				+ "&utmdt=testLinuxSimplifiedGentooUserAgent3"
-//				+ "&utmhid=1087431432"
-//				+ "&utmp="
-//				+ new JBossToolsTestsFocusPoint("testLinuxSimplifiedGentooUserAgent3").getURI()
-//				+ "&utmac=UA-17645367-1"
-//				+ "&utmcc="
-//				+
-//				"__utma%3D999.333222469055434512381282924103927.1282924103925.1282924103925.1282924103925.1%3B%2B"
-//				+ "__utmb%3D1%3B%2B"
-//				+ "__utmc%3D1%3B%2B"
-//				+ "__utmz%3D156030500.1281430767.1.1."
-//				+ "utmcsr%3D(direct)%7C"
-//				+ "utmccn%3D(direct)%7C"
-//				+ "utmcmd%3D(none)%7C"
-//				+
-//				"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
-//				+ "&gaq=1";
-//		method.request(url);
-//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-//	}
-	
-	
-//	@Test
-//	public void testLinuxSimplifiedFedoraUserAgent1() throws IOException {
-//		TestHttpGetMethod method = new TestHttpGetMethod(
-//				"Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gecko/20090912 Fedora release 13 (Goddard)");
-//		String url = "http://www.google-analytics.com/__utm.gif?"
-//				+ "utmwv=4.7.2"
-//				+ "&utmn=1517779994"
-//				+ "&utmhn=jboss.org"
-//				+ "&utmcs=UTF-8"
-//				+ "&utmsr=1920x1080"
-//				+ "&utmsc=24-bit"
-//				+ "&utmul=th-TH"
-//				+ "&utmdt=testLinuxSimplifiedFedoraUserAgent1"
-//				+ "&utmhid=1087431432"
-//				+ "&utmp="
-//				+ new JBossToolsTestsFocusPoint("testLinuxSimplifiedFedoraUserAgent1").getURI()
-//				+ "&utmac=UA-17645367-1"
-//				+ "&utmcc="
-//				+
-//				"__utma%3D999.3332224690455442812829241027.1282924103925.1282924103925.1282924103925.1%3B%2B"
-//				+ "__utmb%3D1%3B%2B"
-//				+ "__utmc%3D1%3B%2B"
-//				+ "__utmz%3D156030500.1281430767.1.1."
-//				+ "utmcsr%3D(direct)%7C"
-//				+ "utmccn%3D(direct)%7C"
-//				+ "utmcmd%3D(none)%7C"
-//				+
-//				"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
-//				+ "&gaq=1";
-//		method.request(url);
-//		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-//	}
-	
+	// @Test
+	// public void testLinuxSimplifiedGentooUserAgent3() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gentoo");
+	// String url = "http://www.google-analytics.com/__utm.gif?"
+	// + "utmwv=4.7.2"
+	// + "&utmn=66543336546694"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testLinuxSimplifiedGentooUserAgent3"
+	// + "&utmhid=1087431432"
+	// + "&utmp="
+	// + new
+	// JBossToolsTestsFocusPoint("testLinuxSimplifiedGentooUserAgent3").getURI()
+	// + "&utmac=UA-17645367-1"
+	// + "&utmcc="
+	// +
+	// "__utma%3D999.333222469055434512381282924103927.1282924103925.1282924103925.1282924103925.1%3B%2B"
+	// + "__utmb%3D1%3B%2B"
+	// + "__utmc%3D1%3B%2B"
+	// + "__utmz%3D156030500.1281430767.1.1."
+	// + "utmcsr%3D(direct)%7C"
+	// + "utmccn%3D(direct)%7C"
+	// + "utmcmd%3D(none)%7C"
+	// +
+	// "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
+
+	// @Test
+	// public void testLinuxSimplifiedFedoraUserAgent1() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (X11; U; Linux i686; th-TH; rv:1.9.1.3) Gecko/20090912 Fedora release 13 (Goddard)");
+	// String url = "http://www.google-analytics.com/__utm.gif?"
+	// + "utmwv=4.7.2"
+	// + "&utmn=1517779994"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testLinuxSimplifiedFedoraUserAgent1"
+	// + "&utmhid=1087431432"
+	// + "&utmp="
+	// + new
+	// JBossToolsTestsFocusPoint("testLinuxSimplifiedFedoraUserAgent1").getURI()
+	// + "&utmac=UA-17645367-1"
+	// + "&utmcc="
+	// +
+	// "__utma%3D999.3332224690455442812829241027.1282924103925.1282924103925.1282924103925.1%3B%2B"
+	// + "__utmb%3D1%3B%2B"
+	// + "__utmc%3D1%3B%2B"
+	// + "__utmz%3D156030500.1281430767.1.1."
+	// + "utmcsr%3D(direct)%7C"
+	// + "utmccn%3D(direct)%7C"
+	// + "utmcmd%3D(none)%7C"
+	// +
+	// "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
+
+	// @Test
+	// public void testKonquerorUserAgent1() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (compatible; Konqueror/3.5; Linux 2.6.14-kanotix-6; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
+	// String url = "http://www.google-analytics.com/__utm.gif?"
+	// + "utmwv=4.7.2"
+	// + "&utmn=1223329994"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testKonquerorUserAgent1"
+	// + "&utmhid=1087431432"
+	// + "&utmp="
+	// + new JBossToolsTestsFocusPoint("testKonquerorUserAgent1").getURI()
+	// + "&utmac=UA-17645367-1"
+	// + "&utmcc="
+	// +
+	// "__utma%3D999.33322242235555442812829241027.1282924103925.1282924103925.1282924103925.1%3B%2B"
+	// + "__utmb%3D1%3B%2B"
+	// + "__utmc%3D1%3B%2B"
+	// + "__utmz%3D156030500.1281430767.1.1."
+	// + "utmcsr%3D(direct)%7C"
+	// + "utmccn%3D(direct)%7C"
+	// + "utmcmd%3D(none)%7C"
+	// +
+	// "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
+
+	// @Test
+	// public void testKonquerorUserAgent1B() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (compatible; Konqueror/3.5; Linux Fedora13; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
+	// String url = "http://www.google-analytics.com/__utm.gif?"
+	// + "utmwv=4.7.2"
+	// + "&utmn=1223329994"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testKonquerorUserAgent1B"
+	// + "&utmhid=1087431432"
+	// + "&utmp="
+	// + new JBossToolsTestsFocusPoint("testKonquerorUserAgent1B").getURI()
+	// + "&utmac=UA-17645367-1"
+	// + "&utmcc="
+	// +
+	// "__utma%3D999.33322242235555442812829241027.1282924103925.1282924103925.1282924103925.1%3B%2B"
+	// + "__utmb%3D1%3B%2B"
+	// + "__utmc%3D1%3B%2B"
+	// + "__utmz%3D156030500.1281430767.1.1."
+	// + "utmcsr%3D(direct)%7C"
+	// + "utmccn%3D(direct)%7C"
+	// + "utmcmd%3D(none)%7C"
+	// +
+	// "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
+
+	// /**
+	// * FAILURE on 29.9. SUCCESS on 30.9 (how odd!!)
+	// */
+	// @Test
+	// public void testKonquerorUserAgent1C() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "JBossToolsTest/5.0 (compatible; Konqueror/3.5; Linux 2.6.14-kanotix-6; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
+	// String url = "http://www.google-analytics.com/__utm.gif?"
+	// + "utmwv=4.7.2"
+	// + "&utmn=1213328994"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testKonquerorUserAgent1C"
+	// + "&utmhid=1087431432"
+	// + "&utmp="
+	// + new JBossToolsTestsFocusPoint("testKonquerorUserAgent1C").getURI()
+	// + "&utmac=UA-17645367-1"
+	// + "&utmcc="
+	// +
+	// "__utma%3D999.33554422242235555442817769241027.1282924103925.1282924103925.1282924103925.1%3B%2B"
+	// + "__utmb%3D1%3B%2B"
+	// + "__utmc%3D1%3B%2B"
+	// + "__utmz%3D156030500.1281430767.1.1."
+	// + "utmcsr%3D(direct)%7C"
+	// + "utmccn%3D(direct)%7C"
+	// + "utmcmd%3D(none)%7C"
+	// +
+	// "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
+
+	// @Test
+	// public void testKonquerorUserAgent2() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (compatible; Konqueror/3.5; Linux Fedora13; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
+	// String url = "http://www.google-analytics.com/__utm.gif?"
+	// + "utmwv=4.7.2"
+	// + "&utmn=122366977894"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testKonquerorUserAgent2"
+	// + "&utmhid=1087431432"
+	// + "&utmp="
+	// + new JBossToolsTestsFocusPoint("testKonquerorUserAgent2").getURI()
+	// + "&utmac=UA-17645367-1"
+	// + "&utmcc="
+	// +
+	// "__utma%3D999.33327772235565334281282977327.1282924103925.1282924103925.1282924103925.1%3B%2B"
+	// + "__utmb%3D1%3B%2B"
+	// + "__utmc%3D1%3B%2B"
+	// + "__utmz%3D156030500.1281430767.1.1."
+	// + "utmcsr%3D(direct)%7C"
+	// + "utmccn%3D(direct)%7C"
+	// + "utmcmd%3D(none)%7C"
+	// +
+	// "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
+
+	// @Test
+	// public void testKonquerorUserAgent3() throws IOException {
+	// TestHttpGetMethod method = new TestHttpGetMethod(
+	// "Mozilla/5.0 (compatible; Konqueror/3.5; Linux Fedora13; X11) KHTML/3.5.3 (like Gecko)");
+	// String url = "http://www.google-analytics.com/__utm.gif?"
+	// + "utmwv=4.7.2"
+	// + "&utmn=126732977894"
+	// + "&utmhn=jboss.org"
+	// + "&utmcs=UTF-8"
+	// + "&utmsr=1920x1080"
+	// + "&utmsc=24-bit"
+	// + "&utmul=th-TH"
+	// + "&utmdt=testKonquerorUserAgent3"
+	// + "&utmhid=1087431432"
+	// + "&utmp="
+	// + new JBossToolsTestsFocusPoint("testKonquerorUserAgent3").getURI()
+	// + "&utmac=UA-17645367-1"
+	// + "&utmcc="
+	// +
+	// "__utma%3D999.33322242235565388981282924327.1282924103925.1282924103925.1282924103925.1%3B%2B"
+	// + "__utmb%3D1%3B%2B"
+	// + "__utmc%3D1%3B%2B"
+	// + "__utmz%3D156030500.1281430767.1.1."
+	// + "utmcsr%3D(direct)%7C"
+	// + "utmccn%3D(direct)%7C"
+	// + "utmcmd%3D(none)%7C"
+	// +
+	// "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+	// + "&gaq=1";
+	// method.request(url);
+	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	// }
+
+	/**
+	 * FAILURE on 29.9. SUCCESS on 30.9 (how odd!!)
+	 */
 	@Test
-	public void testKonquerorUserAgent1() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(
-				"Mozilla/5.0 (compatible; Konqueror/3.5; Linux 2.6.14-kanotix-6; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
-		String url = "http://www.google-analytics.com/__utm.gif?"
-				+ "utmwv=4.7.2"
-				+ "&utmn=1223329994"
-				+ "&utmhn=jboss.org"
-				+ "&utmcs=UTF-8"
-				+ "&utmsr=1920x1080"
-				+ "&utmsc=24-bit"
-				+ "&utmul=th-TH"
-				+ "&utmdt=testKonquerorUserAgent1"
-				+ "&utmhid=1087431432"
-				+ "&utmp="
-				+ new JBossToolsTestsFocusPoint("testKonquerorUserAgent1").getURI()
-				+ "&utmac=UA-17645367-1"
-				+ "&utmcc="
-				+
-				"__utma%3D999.33322242235555442812829241027.1282924103925.1282924103925.1282924103925.1%3B%2B"
-				+ "__utmb%3D1%3B%2B"
-				+ "__utmc%3D1%3B%2B"
-				+ "__utmz%3D156030500.1281430767.1.1."
-				+ "utmcsr%3D(direct)%7C"
-				+ "utmccn%3D(direct)%7C"
-				+ "utmcmd%3D(none)%7C"
-				+
-				"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
-				+ "&gaq=1";
-		method.request(url);
-		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-	}
-
-	@Test
-	public void testKonquerorUserAgent1B() throws IOException {
-		TestHttpGetMethod method = new TestHttpGetMethod(
-				"Mozilla/5.0 (compatible; Konqueror/3.5; Linux Fedora13; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
-		String url = "http://www.google-analytics.com/__utm.gif?"
-				+ "utmwv=4.7.2"
-				+ "&utmn=1223329994"
-				+ "&utmhn=jboss.org"
-				+ "&utmcs=UTF-8"
-				+ "&utmsr=1920x1080"
-				+ "&utmsc=24-bit"
-				+ "&utmul=th-TH"
-				+ "&utmdt=testKonquerorUserAgent1B"
-				+ "&utmhid=1087431432"
-				+ "&utmp="
-				+ new JBossToolsTestsFocusPoint("testKonquerorUserAgent1B").getURI()
-				+ "&utmac=UA-17645367-1"
-				+ "&utmcc="
-				+
-				"__utma%3D999.33322242235555442812829241027.1282924103925.1282924103925.1282924103925.1%3B%2B"
-				+ "__utmb%3D1%3B%2B"
-				+ "__utmc%3D1%3B%2B"
-				+ "__utmz%3D156030500.1281430767.1.1."
-				+ "utmcsr%3D(direct)%7C"
-				+ "utmccn%3D(direct)%7C"
-				+ "utmcmd%3D(none)%7C"
-				+
-				"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
-				+ "&gaq=1";
-		method.request(url);
-		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
-	}
-
-	@Test
-	public void testKonquerorUserAgent1C() throws IOException {
+	public void testFedora1() throws IOException {
 		TestHttpGetMethod method = new TestHttpGetMethod(
 				"JBossToolsTest/5.0 (compatible; Konqueror/3.5; Linux 2.6.14-kanotix-6; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
 		String url = "http://www.google-analytics.com/__utm.gif?"
@@ -1518,10 +1632,10 @@ public class JBossToolsUsageRequestsTest {
 				+ "&utmsr=1920x1080"
 				+ "&utmsc=24-bit"
 				+ "&utmul=th-TH"
-				+ "&utmdt=testKonquerorUserAgent1C"
+				+ "&utmdt=testFedora1"
 				+ "&utmhid=1087431432"
 				+ "&utmp="
-				+ new JBossToolsTestsFocusPoint("testKonquerorUserAgent1C").getURI()
+				+ new JBossToolsTestsFocusPoint("testFedora1").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc="
 				+
@@ -1538,67 +1652,101 @@ public class JBossToolsUsageRequestsTest {
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
+
 	@Test
-	public void testKonquerorUserAgent2() throws IOException {
+	public void testFedora2B() throws IOException {
 		TestHttpGetMethod method = new TestHttpGetMethod(
-				"Mozilla/5.0 (compatible; Konqueror/3.5; Linux Fedora13; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
+				"JBossToolsTest/5.0 (compatible; Konqueror/3.5; Linux Fedora2.6.14-kanotix-6; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
 		String url = "http://www.google-analytics.com/__utm.gif?"
 				+ "utmwv=4.7.2"
-				+ "&utmn=122366977894"
+				+ "&utmn=1213322444"
 				+ "&utmhn=jboss.org"
 				+ "&utmcs=UTF-8"
 				+ "&utmsr=1920x1080"
 				+ "&utmsc=24-bit"
 				+ "&utmul=th-TH"
-				+ "&utmdt=testKonquerorUserAgent2"
+				+ "&utmdt=testFedora2B"
 				+ "&utmhid=1087431432"
 				+ "&utmp="
-				+ new JBossToolsTestsFocusPoint("testKonquerorUserAgent2").getURI()
+				+ new JBossToolsTestsFocusPoint("testFedora2B").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc="
 				+
-				"__utma%3D999.33327772235565334281282977327.1282924103925.1282924103925.1282924103925.1%3B%2B"
+				"__utma%3D999.542543254325423542367678888899.1282924103925.1282924103925.1282924103925.1%3B%2B"
 				+ "__utmb%3D1%3B%2B"
 				+ "__utmc%3D1%3B%2B"
 				+ "__utmz%3D156030500.1281430767.1.1."
 				+ "utmcsr%3D(direct)%7C"
 				+ "utmccn%3D(direct)%7C"
 				+ "utmcmd%3D(none)%7C"
-				+
-				"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+				+ "__utmv%3Distro.Fedora13%7C"
+				+ "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
 				+ "&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
-	
+
 	@Test
-	public void testKonquerorUserAgent3() throws IOException {
+	public void testKonquerorUserAgent1E() throws IOException {
 		TestHttpGetMethod method = new TestHttpGetMethod(
-				"Mozilla/5.0 (compatible; Konqueror/3.5; Linux Fedora13; X11) KHTML/3.5.3 (like Gecko)");
+				"JBossToolsTest/5.0 (compatible; Konqueror/3.5; Linux Fedora2.6.14-kanotix-6; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
 		String url = "http://www.google-analytics.com/__utm.gif?"
 				+ "utmwv=4.7.2"
-				+ "&utmn=126732977894"
+				+ "&utmn=22566794"
 				+ "&utmhn=jboss.org"
 				+ "&utmcs=UTF-8"
 				+ "&utmsr=1920x1080"
 				+ "&utmsc=24-bit"
 				+ "&utmul=th-TH"
-				+ "&utmdt=testKonquerorUserAgent3"
+				+ "&utmdt=testKonquerorUserAgent1E"
 				+ "&utmhid=1087431432"
 				+ "&utmp="
-				+ new JBossToolsTestsFocusPoint("testKonquerorUserAgent3").getURI()
+				+ new JBossToolsTestsFocusPoint("testKonquerorUserAgent1E").getURI()
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc="
 				+
-				"__utma%3D999.33322242235565388981282924327.1282924103925.1282924103925.1282924103925.1%3B%2B"
+				"__utma%3D999.556425245435468874422899.1282924103925.1282924103925.1282924103925.1%3B%2B"
 				+ "__utmb%3D1%3B%2B"
 				+ "__utmc%3D1%3B%2B"
 				+ "__utmz%3D156030500.1281430767.1.1."
 				+ "utmcsr%3D(direct)%7C"
 				+ "utmccn%3D(direct)%7C"
 				+ "utmcmd%3D(none)%7C"
+				+ "__utmv%3Distro.Fedora13"
+				+ "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+				+ "&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+
+	@Test
+	public void testKonquerorUserAgent1F() throws IOException {
+		TestHttpGetMethod method = new TestHttpGetMethod(
+				"JBossToolsTest/5.0 (compatible; Konqueror/3.5; Linux 2.6.14-kanotix-6; X11) KHTML/3.5.3 (like Gecko) (Debian package 4:3.5.3-1)");
+		String url = "http://www.google-analytics.com/__utm.gif?"
+				+ "utmwv=4.7.2"
+				+ "&utmn=2277888794"
+				+ "&utmhn=jboss.org"
+				+ "&utmcs=UTF-8"
+				+ "&utmsr=1920x1080"
+				+ "&utmsc=24-bit"
+				+ "&utmul=th-TH"
+				+ "&utmdt=testKonquerorUserAgent1F"
+				+ "&utmhid=1087431432"
+				+ "&utmp="
+				+ new JBossToolsTestsFocusPoint("testKonquerorUserAgent1F").getURI()
+				+ "&utmac=UA-17645367-1"
+				+ "&utmcc="
 				+
-				"utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+				"__utma%3D999.55642524543567654765765899.1282333925.12823334103925.1282924103925.1%3B%2B"
+				+ "__utmb%3D1%3B%2B"
+				+ "__utmc%3D1%3B%2B"
+				+ "__utmz%3D156030500.1281430767.1.1."
+				+ "utmcsr%3D(direct)%7C"
+				+ "utmccn%3D(direct)%7C"
+				+ "utmcmd%3D(none)%7C"
+				+ "__utmv%3Distro=Fedora13"
+				+ "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
 				+ "&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());

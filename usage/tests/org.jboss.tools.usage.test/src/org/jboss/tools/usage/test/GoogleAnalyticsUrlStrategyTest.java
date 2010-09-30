@@ -17,7 +17,6 @@ import java.io.UnsupportedEncodingException;
 
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.internal.FocusPoint;
@@ -40,6 +39,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 	public void createsCorrectUrl() throws UnsupportedEncodingException {
 		IFocusPoint focusPoint = new FocusPoint("testing").setChild(new FocusPoint("strategy"));
 		String url = urlStrategy.build(focusPoint);
+		
 		String targetUrl = "http://www.google-analytics.com/__utm.gif?"
 				+ "utmwv=4.7.2"
 				+ "&utmn=33832126513"
@@ -57,7 +57,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 					+ ReportingEclipseEnvironmentFake.JAVA_VERSION
 				+ "&utmac=UA-17645367-1"
 				+ "&utmcc=__utma%3D156030503.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
-				+ "&utm_content=" + JBossToolsUsageActivator.getDefault().getBundle().getVersion()
+				+ "__utmv=Fedora13"
 				+ "&gaq=1";
 		
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_TRACKING_CODE_VERSION, url, targetUrl));
@@ -76,6 +76,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 		assertTrue(hasCookieValue("utmcsr", url));
 		assertTrue(hasCookieValue("utmccn", url));
 		assertTrue(hasCookieValue("utmcmd", url));
+		assertTrue(hasCookieValue("__utmv", url));
 
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_GAQ, url, targetUrl));
 	}
