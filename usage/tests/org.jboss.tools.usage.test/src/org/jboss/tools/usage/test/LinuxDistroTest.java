@@ -11,10 +11,8 @@ package org.jboss.tools.usage.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
 import org.jboss.tools.usage.googleanalytics.eclipse.ILinuxDistro;
-import org.jboss.tools.usage.googleanalytics.eclipse.ILinuxDistro.LinuxDistro;
+import org.jboss.tools.usage.test.fakes.LinuxDistroFake;
 import org.junit.Test;
 
 public class LinuxDistroTest {
@@ -32,18 +30,10 @@ public class LinuxDistroTest {
 		assertEquals("9.04", distro.getVersion());
 	}
 
-	public class LinuxDistroFake extends LinuxDistro {
-
-		private String releaseFileContent;
-
-		public LinuxDistroFake(String name, String releaseFileContent) {
-			super(name, "dummy");
-			this.releaseFileContent = releaseFileContent;
-		}
-
-		@Override
-		protected String getDistroFileContent(String filePath) throws IOException {
-			return releaseFileContent;
-		}
+	@Test
+	public void canExtractREDHATVersion() {
+		ILinuxDistro distro = new LinuxDistroFake(ILinuxDistro.REDHAT.getName(),
+				"Red Hat Enterprise Linux Workstation release 6.0 (Santiago)");
+		assertEquals("6.0", distro.getVersion());
 	}
 }
