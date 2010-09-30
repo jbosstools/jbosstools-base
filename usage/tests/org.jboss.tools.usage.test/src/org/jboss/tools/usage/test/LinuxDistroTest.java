@@ -28,13 +28,21 @@ public class LinuxDistroTest {
 	public void canExtractUbuntuVersion() {
 		LinuxDistro distro = new LinuxDistroFake(CurrentLinuxDistro.UBUNTU.getName(),
 				"DISTRIB_ID=Ubuntu\nDISTRIB_RELEASE=9.04\nDISTRIB_CODENAME=jaunty\nDISTRIB_DESCRIPTION=\"Ubuntu 9.04\"");
-		assertEquals("9.04", distro.getVersion());
+		assertEquals("Ubuntu9.04", distro.getNameAndVersion());
 	}
 
 	@Test
-	public void canExtractREDHATVersion() {
+	public void canExtractRedHatVersion() {
 		LinuxDistro distro = new LinuxDistroFake(CurrentLinuxDistro.REDHAT.getName(),
 				"Red Hat Enterprise Linux Workstation release 6.0 (Santiago)");
-		assertEquals("6.0", distro.getVersion());
+		assertEquals("RedHat6.0", distro.getNameAndVersion());
+	}
+
+	@Test
+	public void canExtractGentooVersion() {
+		LinuxDistro distro = new LinuxDistroFake(CurrentLinuxDistro.GENTOO.getName(),
+				"Gentoo Base System release 2.0.1");
+		assertEquals("Gentoo2.0.1", distro.getNameAndVersion());
 	}
 }
+
