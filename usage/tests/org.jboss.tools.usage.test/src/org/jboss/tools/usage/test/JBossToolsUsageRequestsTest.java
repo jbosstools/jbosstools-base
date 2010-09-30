@@ -81,7 +81,7 @@ public class JBossToolsUsageRequestsTest {
 	// assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	// }
 	//
-	// @Ignore
+	// @IgnoreJBossToolsUsageRequestsTest
 	// @Test
 	// public void testUrl0_1() throws IOException {
 	// String userAgent =
@@ -1713,7 +1713,7 @@ public class JBossToolsUsageRequestsTest {
 				+ "utmccn%3D(direct)%7C"
 				+ "utmcmd%3D(none)%7C"
 				+ "__utmv%3Distro.Fedora13"
-				+ "utmctr%3Dtest1%7Ctest2%7Ctest3%7Ctest4%7Ctest5%7Ctest6%7Ctest7%7Ctest8%7Ctest8%7Ctest9%7Ctest10%7Ctest11%7Ctest12%7Ctest13%7Ctest514%7Ctest14%7Ctest15%7Ctest16%7Ctest17%7Ctest18%7Ctest19%7Ctest20%7Ctest20%7Ctest21%7Ctest22%7Ctest23%7Ctest514%7Ctest24%7Ctest25%7Ctest26%7Ctest27%7Ctest28%7Ctest29%7Ctest30%7Ctest31%3B"
+				+ "&utmcc=__utma%3D999.75104087789840654911285868550350.1285868546766.1285868546766.1285868546766.1%3B%2B__utmz%3D999.1285868546766.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7C__utmv%3D1917863289.CentOS13%EF%BF%BF%3B"
 				+ "&gaq=1";
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
@@ -1751,6 +1751,29 @@ public class JBossToolsUsageRequestsTest {
 		method.request(url);
 		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
 	}
+	
+	@Test
+	public void verifyCurrentReportingRequest() throws IOException {
+		TestHttpGetMethod method = new TestHttpGetMethod(
+				"JBossToolsTest/6.0 (compatible; Konqueror/3.5; Linux 2.6.14-fc13; X11) KHTML/3.5.3 (like Gecko) (Fedora)");
+		String url = "http://www.google-analytics.com/__utm.gif?utmwv=4.7.2"
+			+"&utmn=363487156"
+			+"&utmhn=jboss.org"
+			+"&utmcs=UTF-8"
+			+"&utmsr=2880x1024"
+			+"&utmsc=24-bit"
+			+"&utmul=en-US"
+			+"&utmdt=verifyCurrentReportingRequest"
+			+"&utmfl=1.6.0_21"
+			+"&utmr=0"
+			+"&utmp=" + new JBossToolsTestsFocusPoint("verifyCurrentReportingRequest").getURI()
+			+"&utmac=UA-17645367-1"
+			+"&utmcc=__utma%3D999.32635895694074051961285867957380.1285867856601.1285867856601.1285867856601.1%3B%2B__utmz%3D999.1285867856601.1.1.%EF%BF%BFutmcsr%3D%28direct%29%7Cutmccn%3D%28direct%29%7Cutmcmd%3D%28none%29%7C__utmv%3DCentOS13%EF%BF%BF%3B"
+			+"&gaq=1";
+		method.request(url);
+		assertEquals(HttpURLConnection.HTTP_OK, method.getResponseCode());
+	}
+	
 	
 	protected class TestHttpGetMethod extends HttpGetRequest {
 

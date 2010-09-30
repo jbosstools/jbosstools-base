@@ -193,16 +193,23 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 						IGoogleAnalyticsParameters.PIPE)
 				.appendTo(builder);
 
-		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_USERDEFINED,
-					googleParameters.getUserDefined())
-				.appendTo(builder);
-
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD,
 					googleParameters.getKeyword())
 				.appendTo(builder);
 
+		/**
+		 * <tt>User defined Value<tt> cookie format: (domain hash).(setvar value)
+		 * @see <a href="http://www.martynj.com/google-analytics-cookies-tracking-multiple-domains-filters">__utmv, __utmb, __utmc cookies formats and more</a>
+		 */
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_USERDEFINED,
+				getRandomNumber()
+				+ IGoogleAnalyticsParameters.DOT
+				+ googleParameters.getUserDefined())
+			.appendTo(builder);
+
 		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
 
+		
 		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}
 
