@@ -180,7 +180,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	}
 
 	protected String getLinuxDistroNameAndVersion() {
-		return CurrentLinuxDistro.getNameAndVersion();
+		return LinuxSystem.getDistroNameAndVersion();
 	}
 
 }

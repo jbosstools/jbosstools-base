@@ -11,7 +11,7 @@
 package org.jboss.tools.usage.test.fakes;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.jboss.tools.usage.googleanalytics.eclipse.CurrentLinuxDistro;
+import org.jboss.tools.usage.googleanalytics.eclipse.LinuxSystem;
 import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
 import org.jboss.tools.usage.internal.reporting.JBossToolsEclipseEnvironment;
 
@@ -70,6 +70,6 @@ public class ReportingEclipseEnvironmentFake extends JBossToolsEclipseEnvironmen
 
 	@Override
 	protected String getLinuxDistroNameAndVersion() {
-		return new LinuxDistroFake(CurrentLinuxDistro.FEDORA.getName(), "Fedora release 13 (Goddard)").getNameAndVersion();
+		return new LinuxDistroFake(LinuxSystem.FEDORA.getName(), "Fedora release 13 (Goddard)").getNameAndVersion();
 	}
 }

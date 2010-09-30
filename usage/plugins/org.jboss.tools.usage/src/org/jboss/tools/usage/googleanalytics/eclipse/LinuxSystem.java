@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CurrentLinuxDistro {
+public class LinuxSystem {
 
 	public static final LinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
 	public static final LinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
@@ -56,7 +56,7 @@ public class CurrentLinuxDistro {
 
 		}
 
-	public static String getNameAndVersion() {
+	public static String getDistroNameAndVersion() {
 			LinuxDistro distro = getDistro();
 			if (distro != null) {
 				return distro.getNameAndVersion();

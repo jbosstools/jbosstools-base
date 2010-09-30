@@ -11,7 +11,7 @@ package org.jboss.tools.usage.test.fakes;
 
 import java.io.IOException;
 
-import org.jboss.tools.usage.googleanalytics.eclipse.CurrentLinuxDistro.LinuxDistro;
+import org.jboss.tools.usage.googleanalytics.eclipse.LinuxSystem.LinuxDistro;
 
 public class LinuxDistroFake extends LinuxDistro {
 
