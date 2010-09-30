@@ -65,6 +65,9 @@ public class PositionSearcher {
 	private void selectAttribute() { 
 		if(attribute == null || attribute.length() == 0) return;
 		XAttribute a = object.getModelEntity().getAttribute(attribute);
+		if(isESB(a)) {
+			findESBAttrPosition(a);
+		}
 		String xml = (a == null) ? null : a.getXMLName();
 		if(xml == null || xml.length() == 0) return;
 		if(xml.indexOf(".") < 0) { //$NON-NLS-1$
@@ -217,6 +220,47 @@ public class PositionSearcher {
 			return nextStartPos(token, ce + 3);
 		}
 
+	}
+
+	/**
+	 * Temporal solution; should be refactored to a framework.
+	 * 
+	 */
+	boolean isESB(XAttribute a) {
+		return a != null && "true".equals(a.getProperty("pre"));
+	}
+
+	void findESBAttrPosition(XAttribute a) {
+		int ep = text.indexOf("</action>", startPosition);
+		if(ep < 0) return;
+		
+		String dt = text.substring(startPosition, ep);
+		
+		String name = "name=\"" + a.getXMLName() + "\"";
+		int name_i = dt.indexOf(name);
+		if(name_i < 0) return;
+		int ps = dt.lastIndexOf("<property", name_i);
+		if(ps < 0) return;
+		int pe = dt.indexOf("/>", ps);
+		if(pe < 0) return;
+		String dt2 = dt.substring(ps, pe + 2);
+		int value_i = dt2.indexOf("value=");
+		
+		if(value_i >= 0) {
+			int i2 = dt2.indexOf('"', value_i);
+			int i3 = (i2 < 0) ? -1 : dt2.indexOf('"', i2 + 1);
+			if(i3 > i2 + 1) {
+				startPosition = startPosition + ps + i2 + 1;
+				endPosition = startPosition + i3 - i2 - 1;
+				return;
+			} else if(i3 == i2 + 1) {
+				startPosition = startPosition + ps + i2;
+				endPosition = startPosition + 2;
+				return;
+			}
+		}
+		startPosition = startPosition + ps;
+		endPosition = startPosition + pe + 2 - ps;
 	}
 	
 }
