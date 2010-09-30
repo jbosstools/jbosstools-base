@@ -134,6 +134,9 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 	 * @see <a
 	 *      href="http://www.analyticsexperts.com/google-analytics/information-about-the-utmlinker-and-the-__utma-__utmb-and-__utmc-cookies/">Information
 	 *      about the utmLinker and the __utma, __utmb and __utmc cookies</a>
+	 * @see <a
+	 *      href="http://www.martynj.com/google-analytics-cookies-tracking-multiple-domains-filters">cookie
+	 *      values and formats</a>
 	 */
 	private String getCookies() {
 		StringBuilder builder = new StringBuilder();
@@ -199,17 +202,19 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 		/**
 		 * <tt>User defined Value<tt> cookie format: (domain hash).(setvar value)
-		 * @see <a href="http://www.martynj.com/google-analytics-cookies-tracking-multiple-domains-filters">__utmv, __utmb, __utmc cookies formats and more</a>
+		 * 
+		 * @see <a
+		 *      href="http://www.martynj.com/google-analytics-cookies-tracking-multiple-domains-filters">__utmv,
+		 *      __utmb, __utmc cookies formats and more</a>
 		 */
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_USERDEFINED,
 				getRandomNumber()
-				+ IGoogleAnalyticsParameters.DOT
-				+ googleParameters.getUserDefined())
-			.appendTo(builder);
+						+ IGoogleAnalyticsParameters.DOT
+						+ googleParameters.getUserDefined())
+				.appendTo(builder);
 
 		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
 
-		
 		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}
 
