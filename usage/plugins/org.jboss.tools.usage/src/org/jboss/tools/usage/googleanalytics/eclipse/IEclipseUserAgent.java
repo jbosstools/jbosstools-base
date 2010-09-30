@@ -16,9 +16,9 @@ package org.jboss.tools.usage.googleanalytics.eclipse;
  */
 public interface IEclipseUserAgent {
 
-	public abstract String getBrowserLanguage();
+	public String getBrowserLanguage();
 
-	public abstract String getOS();
+	public String getOS();
 
 	/**
 	 * Returns the version of the operating system this jre is currently running
@@ -29,10 +29,10 @@ public interface IEclipseUserAgent {
 	 * @see <a href="http://lopica.sourceforge.net/os.html">list of os versions
 	 *      and os names</a>
 	 */
-	public abstract String getOSVersion();
+	public String getOSVersion();
 
-	public abstract String getApplicationName();
+	public String getApplicationName();
 
-	public abstract String getApplicationVersion();
+	public String getApplicationVersion();
 
 }

@@ -16,24 +16,22 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public interface ILinuxDistro {
+public class CurrentLinuxDistro {
 
-	public class CurrentDistro {
+	public static final LinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
+	public static final LinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
+	public static final LinuxDistro GENTOO = new LinuxDistro("Gentoo", "/etc/gentoo-release");
+	public static final LinuxDistro KNOPPIX = new LinuxDistro("Knoppix", "knoppix_version");
+	public static final LinuxDistro MANDRAKE = new LinuxDistro("Mandrake", "/etc/mandrake-release");
+	public static final LinuxDistro MANDRIVA = new LinuxDistro("Mandriva", "/etc/mandriva-release");
+	public static final LinuxDistro PLD = new LinuxDistro("PLD", "/etc/pld-release");
+	public static final LinuxDistro REDHAT = new LinuxDistro("RedHat", "/etc/redhat-release");
+	public static final LinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
+	public static final LinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
+	public static final LinuxDistro UBUNTU = new LinuxDistro("Ubuntu", "/etc/lsb-release");
+	public static final LinuxDistro YELLOWDOG = new LinuxDistro("YellowDog", "/etc/yellowdog-release");
 
-		public static final ILinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
-		public static final ILinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
-		public static final ILinuxDistro GENTOO = new LinuxDistro("Gentoo", "/etc/gentoo-release");
-		public static final ILinuxDistro KNOPPIX = new LinuxDistro("Knoppix", "knoppix_version");
-		public static final ILinuxDistro MANDRAKE = new LinuxDistro("Mandrake", "/etc/mandrake-release");
-		public static final ILinuxDistro MANDRIVA = new LinuxDistro("Mandriva", "/etc/mandriva-release");
-		public static final ILinuxDistro PLD = new LinuxDistro("PLD", "/etc/pld-release");
-		public static final ILinuxDistro REDHAT = new LinuxDistro("RedHat", "/etc/redhat-release");
-		public static final ILinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
-		public static final ILinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
-		public static final ILinuxDistro UBUNTU = new LinuxDistro("Ubuntu", "/etc/lsb-release");
-		public static final ILinuxDistro YELLOWDOG = new LinuxDistro("YellowDog", "/etc/yellowdog-release");
-		
-		private static final ILinuxDistro[] ALL = new ILinuxDistro[] {
+	private static final LinuxDistro[] ALL = new LinuxDistro[] {
 				DEBIAN,
 				FEDORA,
 				GENTOO,
@@ -47,9 +45,9 @@ public interface ILinuxDistro {
 				UBUNTU,
 				YELLOWDOG
 		};
-		
-		public ILinuxDistro getDistro() {
-			for (ILinuxDistro distro : ALL) {
+
+	public static LinuxDistro getDistro() {
+			for (LinuxDistro distro : ALL) {
 				if (distro.currentSysIsDistro()) {
 					return distro;
 				}
@@ -57,26 +55,17 @@ public interface ILinuxDistro {
 			return null;
 
 		}
-		
-		public String getNameAndVersion() {
-			ILinuxDistro distro = getDistro();
+
+	public static String getNameAndVersion() {
+			LinuxDistro distro = getDistro();
 			if (distro != null) {
-				return distro.getName();
+				return distro.getNameAndVersion();
 			} else {
 				return "";
 			}
 		}
-	}
 
-	public boolean currentSysIsDistro();
-
-	public String getName();
-
-	public String getVersion();
-
-	public String getNameAndVersion();
-
-	public class LinuxDistro implements ILinuxDistro {
+	public static class LinuxDistro {
 
 		/**
 		 * The pattern to match the contents of the release-file -
@@ -92,12 +81,12 @@ public interface ILinuxDistro {
 		private final String releaseFilePath;
 		private String name;
 
-		protected LinuxDistro(String name, String releaseFilePath) {
+		private LinuxDistro(String name, String releaseFilePath) {
 			this.name = name;
 			this.releaseFilePath = releaseFilePath;
 		}
 
-		public boolean currentSysIsDistro() {
+		private boolean currentSysIsDistro() {
 			return new File(releaseFilePath).exists();
 		}
 
@@ -105,7 +94,7 @@ public interface ILinuxDistro {
 			return name;
 		}
 
-		public String getVersion() {
+		private String getVersion() {
 			try {
 				String distroString = getDistroFileContent(releaseFilePath);
 				Matcher matcher = VERSION_REGEX.matcher(distroString);
@@ -117,7 +106,7 @@ public interface ILinuxDistro {
 			return "";
 		}
 
-		public String getNameAndVersion() {
+		private String getNameAndVersion() {
 			return new StringBuilder().append(getName()).append(getVersion()).toString();
 		}
 

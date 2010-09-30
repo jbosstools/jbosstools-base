@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.usage.googleanalytics;
 
-
 /**
  * @author Andre Dietisheim
  */
@@ -30,6 +29,14 @@ public class GoogleAnalyticsCookie {
 		this(identifier, value, (char) -1);
 	}
 
+	/**
+	 * Appends the identifier and the value of this cookie to the given
+	 * <code>StringBuilder</code>. If no value is present <code>null</code>,
+	 * nothing is appended.
+	 * 
+	 * @param builder
+	 *            the builder
+	 */
 	public void appendTo(StringBuilder builder) {
 		if (identifier != null && identifier.length() > 0 && value != null && value.length() > 0) {
 			builder.append(identifier)

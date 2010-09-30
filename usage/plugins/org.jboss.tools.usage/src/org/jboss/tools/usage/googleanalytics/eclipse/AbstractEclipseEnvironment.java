@@ -25,7 +25,8 @@ import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 /**
  * @author Andre Dietisheim
  */
-public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalyticsParameters implements IEclipseEnvironment {
+public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalyticsParameters implements
+		IEclipseEnvironment {
 
 	private static final String SYSPROP_JAVA_VERSION = "java.version";
 
@@ -168,8 +169,18 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	private String getJavaVersion() {
 		return System.getProperty(SYSPROP_JAVA_VERSION);
 	}
-	
+
 	public IEclipseUserAgent getEclipseUserAgent() {
 		return eclipseUserAgent;
 	}
+
+	@Override
+	public String getUserDefined() {
+		return getLinuxDistroNameAndVersion();
+	}
+
+	protected String getLinuxDistroNameAndVersion() {
+		return CurrentLinuxDistro.getNameAndVersion();
+	}
+
 }

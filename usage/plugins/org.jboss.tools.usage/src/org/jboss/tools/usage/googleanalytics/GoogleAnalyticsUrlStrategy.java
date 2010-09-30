@@ -119,7 +119,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, googleParameters.getAccountName(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_GAQ, "1", false, builder);
-		
+
 		googleParameters.visit(); // update visit timestamps and count
 
 		return builder.toString();
@@ -162,19 +162,21 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 								.append("1.1."))
 				.appendTo(builder);
 
-//		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_SESSION,
-//				new StringBuilder()
-//						.append("1"),
-//						IGoogleAnalyticsParameters.SEMICOLON
-//						, IGoogleAnalyticsParameters.PLUS_SIGN)
-//				.appendTo(builder);
-//
-//		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_BROWSERSESSION,
-//				new StringBuilder()
-//						.append("1"),
-//						IGoogleAnalyticsParameters.SEMICOLON
-//						, IGoogleAnalyticsParameters.PLUS_SIGN)
-//				.appendTo(builder);
+		// new
+		// GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_SESSION,
+		// new StringBuilder()
+		// .append("1"),
+		// IGoogleAnalyticsParameters.SEMICOLON
+		// , IGoogleAnalyticsParameters.PLUS_SIGN)
+		// .appendTo(builder);
+		//
+		// new
+		// GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_BROWSERSESSION,
+		// new StringBuilder()
+		// .append("1"),
+		// IGoogleAnalyticsParameters.SEMICOLON
+		// , IGoogleAnalyticsParameters.PLUS_SIGN)
+		// .appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCSR,
 						"(direct)",
@@ -189,6 +191,10 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCMD,
 						"(none)",
 						IGoogleAnalyticsParameters.PIPE)
+				.appendTo(builder);
+
+		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_USERDEFINED,
+					googleParameters.getUserDefined())
 				.appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD,

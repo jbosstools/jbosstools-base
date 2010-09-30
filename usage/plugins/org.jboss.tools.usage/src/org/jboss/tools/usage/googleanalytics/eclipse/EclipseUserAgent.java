@@ -95,20 +95,7 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 	}
 
 	public String getOSVersion() {
-		if (!Platform.OS_LINUX.equals(getOS())) {
-			return System.getProperty(PROP_OS_VERSION);
-		} else {
-			return getLinuxDistro();
-		}
-	}
-
-	protected String getLinuxDistro() {
-		for (ILinuxDistro distro : ILinuxDistro.ALL) {
-			if (distro.isDistro()) {
-				return distro.getNameAndVersion();
-			}
-		}
-		return "";
+		return System.getProperty(PROP_OS_VERSION);
 	}
 
 	private String getUserAgentPattern(String os) {
@@ -150,6 +137,5 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 			return Platform.getBundle(ECLIPSE_RUNTIME_BULDEID);
 		}
 	}
-
 
 }

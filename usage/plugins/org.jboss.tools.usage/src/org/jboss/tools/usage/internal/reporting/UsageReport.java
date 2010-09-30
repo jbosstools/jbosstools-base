@@ -83,6 +83,10 @@ public class UsageReport {
 		}
 	}
 
+	/**
+	 * Reports the usage of the current JBoss Tools / JBoss Developer Studio
+	 * installation.
+	 */
 	private void doReport() {
 		if (UsageReportPreferences.isEnabled()) {
 			IURLBuildingStrategy urlBuildingStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment);
