@@ -81,7 +81,7 @@ public class CurrentLinuxDistro {
 		private final String releaseFilePath;
 		private String name;
 
-		private LinuxDistro(String name, String releaseFilePath) {
+		protected LinuxDistro(String name, String releaseFilePath) {
 			this.name = name;
 			this.releaseFilePath = releaseFilePath;
 		}
@@ -94,7 +94,7 @@ public class CurrentLinuxDistro {
 			return name;
 		}
 
-		private String getVersion() {
+		public String getVersion() {
 			try {
 				String distroString = getDistroFileContent(releaseFilePath);
 				Matcher matcher = VERSION_REGEX.matcher(distroString);
@@ -106,7 +106,7 @@ public class CurrentLinuxDistro {
 			return "";
 		}
 
-		private String getNameAndVersion() {
+		public String getNameAndVersion() {
 			return new StringBuilder().append(getName()).append(getVersion()).toString();
 		}
 
