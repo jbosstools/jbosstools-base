@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -34,7 +33,6 @@ import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.util.BundleUtils;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.jboss.tools.usage.util.StringUtils;
 import org.osgi.service.prefs.BackingStoreException;
@@ -46,9 +44,11 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 
 	private static final DateFormat DATE_FORMAT = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,
 			DateFormat.SHORT);
+	private IUsageBranding branding;
 
 	public UsageReportPreferencePage() {
 		super(GRID);
+		this.branding = JBossToolsUsageActivator.getDefault().getUsageBranding();
 	}
 
 	@Override
@@ -171,34 +171,15 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 	}
 
 	public void createFieldEditors() {
-		IUsageBranding branding;
-		try {
-			branding = BundleUtils.getHighestRankedService(IUsageBranding.class.getName(), JBossToolsUsageActivator
-					.getDefault().getBundle());
-			addField(new BooleanFieldEditor(
+		addField(new BooleanFieldEditor(
 					IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID
 					, branding.getPreferencesAllowReportingCheckboxLabel()
 					, getFieldEditorParent()));
-		} catch (Exception e) {
-			catchBrandingError(e);
-		}
 	}
 
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(UsageReportPreferences.createPreferenceStore());
-		IUsageBranding branding;
-		try {
-			branding = BundleUtils.getHighestRankedService(IUsageBranding.class.getName(), JBossToolsUsageActivator
-					.getDefault().getBundle());
-			setDescription(branding.getPreferencesDescription());
-		} catch (Exception e) {
-			catchBrandingError(e);
-		}
-	}
-
-	private void catchBrandingError(Exception e) {
-		IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID, "Could not find branding.", e);
-		ErrorDialog.openError(getShell(), "Branding Error", "Could not display usage reporting preferences", status);
+		setDescription(branding.getPreferencesDescription());
 	}
 
 	@Override

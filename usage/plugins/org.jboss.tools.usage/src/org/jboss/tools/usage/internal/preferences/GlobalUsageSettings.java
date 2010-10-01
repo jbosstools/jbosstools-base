@@ -12,15 +12,11 @@ package org.jboss.tools.usage.internal.preferences;
 
 import java.util.Map;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.http.IPropertiesProvider;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.util.BundleUtils;
-import org.jboss.tools.usage.util.LoggingUtils;
-import org.jboss.tools.usage.util.StatusUtils;
 
 /**
  * A class that implements a global reporting enablement setting. The current
@@ -51,18 +47,12 @@ public class GlobalUsageSettings {
 	private IPropertiesProvider remoteMap;
 
 	public GlobalUsageSettings(Plugin plugin) {
-		try {
-			IUsageBranding brandingService = BundleUtils.getHighestRankedService(IUsageBranding.class.getName(),
-					JBossToolsUsageActivator.getDefault().getBundle());
-			remoteMap = createRemoteMap(
-					brandingService.getGlobalRemotePropertiesUrl()
+		IUsageBranding branding = JBossToolsUsageActivator.getDefault().getUsageBranding();
+		remoteMap = createRemoteMap(
+					branding.getGlobalRemotePropertiesUrl()
 					, VALUE_DELIMITER
 					, plugin
 					, REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY);
-		} catch (Exception e) {
-			IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID, "could not ", e);
-			LoggingUtils.log(status, JBossToolsUsageActivator.getDefault());
-		}
 	}
 
 	/**

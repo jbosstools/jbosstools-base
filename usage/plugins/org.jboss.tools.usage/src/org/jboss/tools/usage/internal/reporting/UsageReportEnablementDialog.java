@@ -10,9 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.internal.reporting;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.window.IShellProvider;
@@ -27,9 +25,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.BrowserUtil;
-import org.jboss.tools.usage.util.BundleUtils;
-import org.jboss.tools.usage.util.StatusUtils;
-import org.osgi.framework.InvalidSyntaxException;
 
 /**
  * @author Andre Dietisheim
@@ -38,10 +33,12 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	private Button checkBox;
 	private boolean reportEnabled;
+	private IUsageBranding branding;
 
 	public UsageReportEnablementDialog(boolean reportEnabled, IShellProvider parentShell) {
 		super(parentShell);
 		this.reportEnabled = reportEnabled;
+		this.branding = JBossToolsUsageActivator.getDefault().getUsageBranding();
 	}
 
 	protected void buttonPressed(int buttonId) {
@@ -55,14 +52,7 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		try {
-			IUsageBranding branding = BundleUtils.getHighestRankedService(IUsageBranding.class.getName(),
-					JBossToolsUsageActivator
-							.getDefault().getBundle());
-			shell.setText(branding.getStartupAllowReportingTitle());
-		} catch (InvalidSyntaxException e) {
-			catchBrandingError(e);
-		}
+		shell.setText(branding.getStartupAllowReportingTitle());
 	}
 
 	protected void createButtonsForButtonBar(Composite parent) {
@@ -81,42 +71,30 @@ public class UsageReportEnablementDialog extends Dialog {
 	}
 
 	private void createUsageReportingWidgets(Composite parent, Composite composite) {
-		try {
-			// message
-			Link link = new Link(composite, SWT.WRAP);
-			link.setFont(parent.getFont());
+		// message
+		Link link = new Link(composite, SWT.WRAP);
+		link.setFont(parent.getFont());
 
-			final IUsageBranding branding = BundleUtils.getHighestRankedService(IUsageBranding.class.getName(),
-					JBossToolsUsageActivator.getDefault().getBundle());
-			link.setText(branding.getStartupAllowReportingMessage());
-			link.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					BrowserUtil.checkedCreateExternalBrowser(
+		link.setText(branding.getStartupAllowReportingMessage());
+		link.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				BrowserUtil.checkedCreateExternalBrowser(
 							branding.getStartupAllowReportingDetailLink(),
 							JBossToolsUsageActivator.PLUGIN_ID,
 							JBossToolsUsageActivator.getDefault().getLog());
-				}
-			});
-			GridDataFactory.fillDefaults()
+			}
+		});
+		GridDataFactory.fillDefaults()
 					.align(SWT.FILL, SWT.CENTER)
 					.grab(true, false)
 					.hint(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH, SWT.DEFAULT)
 					.applyTo(link);
 
-			// checkbox
-			checkBox = new Button(composite, SWT.CHECK);
-			checkBox.setText(branding.getStartupAllowReportingCheckboxLabel());
-			GridDataFactory.fillDefaults().grab(true, false).align(SWT.LEFT, SWT.CENTER).applyTo(checkBox);
-		} catch (Exception e) {
-			catchBrandingError(e);
-		}
-	}
-
-	private void catchBrandingError(Exception e) {
-		IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID, "Could not find branding.", e);
-		ErrorDialog.openError(getShell(), "Branding Error", "Could not ask to allow usage reporting", status);
-		close();
+		// checkbox
+		checkBox = new Button(composite, SWT.CHECK);
+		checkBox.setText(branding.getStartupAllowReportingCheckboxLabel());
+		GridDataFactory.fillDefaults().grab(true, false).align(SWT.LEFT, SWT.CENTER).applyTo(checkBox);
 	}
 
 	public boolean isReportEnabled() {

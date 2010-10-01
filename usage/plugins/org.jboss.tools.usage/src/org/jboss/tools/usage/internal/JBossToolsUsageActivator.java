@@ -13,11 +13,10 @@ package org.jboss.tools.usage.internal;
 import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
+import org.jboss.tools.usage.internal.branding.UsageBrandingServiceTracker;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 import org.jboss.tools.usage.internal.reporting.JBossToolsEclipseEnvironment;
-import org.jboss.tools.usage.util.BundleUtils;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
 
 /**
  * @author Andre Dietisheim
@@ -30,6 +29,8 @@ public class JBossToolsUsageActivator extends Plugin {
 
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
 
+	private UsageBrandingServiceTracker branding;
+
 	public JBossToolsUsageActivator() {
 		plugin = this;
 	}
@@ -37,6 +38,8 @@ public class JBossToolsUsageActivator extends Plugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+		branding.close();
+		this.branding = null;
 		super.stop(context);
 	}
 
@@ -46,29 +49,29 @@ public class JBossToolsUsageActivator extends Plugin {
 
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		initBranding(context);
+	}
+
+	private void initBranding(BundleContext context) {
+		branding = new UsageBrandingServiceTracker(getBundle().getBundleContext());
+		branding.open();
 	}
 
 	public IJBossToolsEclipseEnvironment getJBossToolsEclipseEnvironment() {
-		try {
-			if (eclipseEnvironment == null) {
-				eclipseEnvironment = createEclipseEnvironment();
-			}
-			return eclipseEnvironment;
-		} catch (Exception e) {
-			return null;
+		if (eclipseEnvironment == null) {
+			eclipseEnvironment = createEclipseEnvironment();
 		}
+		return eclipseEnvironment;
 	}
 
-	private IJBossToolsEclipseEnvironment createEclipseEnvironment() throws InvalidSyntaxException {
-		IUsageBranding branding = BundleUtils.getHighestRankedService(IUsageBranding.class.getName(),
-				JBossToolsUsageActivator
-						.getDefault().getBundle());
-		if (branding == null) {
-			return null;
-		}
-
+	private IJBossToolsEclipseEnvironment createEclipseEnvironment() {
+		IUsageBranding branding = getUsageBranding();
 		return new JBossToolsEclipseEnvironment(
 				branding.getGoogleAnalyticsAccount(), branding.getGoogleAnalyticsReportingHost(),
 				UsageReportPreferencesUtils.getPreferences());
+	}
+
+	public synchronized IUsageBranding getUsageBranding() {
+		return branding;
 	}
 }
