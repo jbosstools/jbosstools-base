@@ -145,7 +145,8 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 				.appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD,
-					googleParameters.getKeyword())
+					googleParameters.getKeyword(),
+					IGoogleAnalyticsParameters.PIPE)
 				.appendTo(builder);
 
 		/**
@@ -158,10 +159,11 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_USERDEFINED,
 				getRandomNumber()
 						+ IGoogleAnalyticsParameters.DOT
-						+ googleParameters.getUserDefined())
+						+ googleParameters.getUserDefined(),
+						' ')
 				.appendTo(builder);
 
-//		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
+		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
 
 		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}
