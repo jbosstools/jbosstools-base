@@ -12,6 +12,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.ltk.core.refactoring.participants.MoveArguments;
@@ -21,6 +22,7 @@ import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
 import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
 import org.eclipse.text.edits.MultiTextEdit;
+import org.eclipse.text.edits.TextEdit;
 import org.jboss.tools.test.util.JobUtils;
 
 public class AbstractRefactorTest extends TestCase{
@@ -56,6 +58,9 @@ public class AbstractRefactorTest extends TestCase{
 		
 		CompositeChange rootChange = (CompositeChange)participant.createChange(new NullProgressMonitor());
 		
+		Change mainChange = processor.createChange(new NullProgressMonitor());
+		mainChange.perform(new NullProgressMonitor());
+
 		checkChanges(rootChange, changeList);
 	}
 
@@ -71,6 +76,9 @@ public class AbstractRefactorTest extends TestCase{
 		participant.checkConditions(new NullProgressMonitor(), null);
 		
 		CompositeChange rootChange = (CompositeChange)participant.createChange(new NullProgressMonitor());
+		
+		Change mainChange = processor.createChange(new NullProgressMonitor());
+		mainChange.perform(new NullProgressMonitor());
 		
 		checkChanges(rootChange, changeList);
 	}
