@@ -183,18 +183,10 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 			UsageReportPreferences.flush();
 		} catch (BackingStoreException e) {
 			IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-					getPrefsSaveErrorMessage(), e);
+					PreferencesMessages.UsageReportPreferencePage_Error_Saving, e);
 			JBossToolsUsageActivator.getDefault().getLog().log(status);
 		}
 		return super.performOk();
-	}
-
-	private String getPrefsSaveErrorMessage() {
-		if (JBDSUtils.isJBDS()) {
-			return PreferencesMessages.UsageReportPreferencePage_Error_Saving_JBDS;
-		} else {
-			return PreferencesMessages.UsageReportPreferencePage_Error_Saving;
-		}
 	}
 
 	private String getFormattedDate(String timeStamp) {
