@@ -21,7 +21,22 @@ public class XAttributeConstraintList extends XAttributeConstraintAList {
     }
 
     public String getError(String value) {
-        return accepts(value) ? null : ModelMessages.CONSTRAINT_IS_NOT_IN_LIST;
+    	if(accepts(value)) {
+    		return null;
+    	}
+    	String[] vs = getValues();
+    	if(vs.length < 6) {
+    		String message = " should be one of ";
+    		int j = 0;
+    		for (int i = 0; i < vs.length; i++) {
+    			if(vs[i].length() == 0 || vs[i].startsWith("Default(")) continue; //$NON-NLS-1$
+    			if(j > 0) message += ", "; //$NON-NLS-1$
+    			message += getValues()[i];
+    			j++;
+    		}
+    		return message;
+    	}
+        return ModelMessages.CONSTRAINT_IS_NOT_IN_LIST;
     }
 
 }
