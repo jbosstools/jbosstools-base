@@ -35,9 +35,6 @@ import org.jboss.tools.usage.util.HttpEncodingUtils;
 public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 	private static final String TRACKING_URL = "http://www.google-analytics.com/__utm.gif";
-
-	// private static final int VISITS = -1;
-
 	private IGoogleAnalyticsParameters googleParameters;
 
 	public GoogleAnalyticsUrlStrategy(IGoogleAnalyticsParameters googleAnalyticsParameters) {
@@ -45,55 +42,6 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 	}
 
 	public String build(IFocusPoint focusPoint) throws UnsupportedEncodingException {
-		/*
-		 * Google Analytics for Android:
-		 * 
-		String str = ""; 
-		if (paramEvent.action != null) 
-			str = paramEvent.action; 
-		if (!(str.startsWith("/"))) 
-			str = "/" + str; 
-		str = encode(str); 
-		Locale localLocale = Locale.getDefault(); 
-		StringBuilder localStringBuilder = new StringBuilder();
-		localStringBuilder.append("/__utm.gif");
-		localStringBuilder.append("?utmwv=4.3");
-		localStringBuilder.append("&utmn=").append(paramEvent.randomVal);
-		localStringBuilder.append("&utmcs=UTF-8");
-		localStringBuilder.append(String.format("&utmsr=%dx%d", new Object[] { 
-			Integer.valueOf(paramEvent.screenWidth)
-			, Integer.valueOf(paramEvent.screenHeight) }));
-		localStringBuilder.append(String.format("&utmul=%s-%s", new Object[] { 
-			localLocale.getLanguage()
-			, localLocale.getCountry() }));
-		localStringBuilder.append("&utmp=").append(str);
-		localStringBuilder.append("&utmac=").append(paramEvent.accountId);
-		localStringBuilder.append("&utmcc=").append(
-		  		getEscapedCookieString(paramEvent, paramString)); 
-		return localStringBuilder.toString();
-		 
-		*
-		* getEscapedCookieString:
-		* 
-		StringBuilder localStringBuilder = new StringBuilder();
-		localStringBuilder.append("__utma=");
-		localStringBuilder.append("999").append(".");
-		localStringBuilder.append(paramEvent.userId).append(".");
-		localStringBuilder.append(paramEvent.timestampFirst).append(".");
-		localStringBuilder.append(paramEvent.timestampPrevious).append(".");
-		localStringBuilder.append(paramEvent.timestampCurrent).append(".");
-		localStringBuilder.append(paramEvent.visits);
-		if (paramString != null)
-		{
-		localStringBuilder.append("+__utmz=");
-		localStringBuilder.append("999").append(".");
-		localStringBuilder.append(paramEvent.timestampFirst).append(".");
-		localStringBuilder.append("1.1.");
-		localStringBuilder.append(paramString);
-		}
-		return encode(localStringBuilder.toString());
-
-		 */
 
 		StringBuilder builder = new StringBuilder(TRACKING_URL)
 				.append(IGoogleAnalyticsParameters.URL_PARAM_DELIMITER);
@@ -213,7 +161,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 						+ googleParameters.getUserDefined())
 				.appendTo(builder);
 
-		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
+//		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
 
 		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}

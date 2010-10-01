@@ -18,29 +18,31 @@ import java.util.regex.Pattern;
 
 public class LinuxSystem {
 
+	public static final LinuxSystem INSTANCE = new LinuxSystem();
+
 	/**
-	 * @see <a href="http://linuxmafia.com/faq/Admin/release-files.html">
-	 *      an extensive list of release file locations</a>
-	 *      
+	 * @see <a href="http://linuxmafia.com/faq/Admin/release-files.html"> an
+	 *      extensive list of release file locations</a>
+	 * 
 	 * @see <a
 	 *      href="http://superuser.com/questions/11008/how-do-i-find-out-what-version-of-linux-im-running">
 	 *      release-file strings</a>
 	 */
-	public static final LinuxDistro CENTOS = new LinuxDistro("CentOS", "/etc/redhat-release");
-	public static final LinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
-	public static final LinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
-	public static final LinuxDistro GENTOO = new LinuxDistro("Gentoo", "/etc/gentoo-release");
-	public static final LinuxDistro YELLOWDOG = new LinuxDistro("YellowDog", "/etc/yellowdog-release");
-	public static final LinuxDistro KNOPPIX = new LinuxDistro("Knoppix", "knoppix_version");
-	public static final LinuxDistro MANDRAKE = new LinuxDistro("Mandrake", "/etc/mandrake-release");
-	public static final LinuxDistro MANDRIVA = new LinuxDistro("Mandriva", "/etc/mandriva-release");
-	public static final LinuxDistro PLD = new LinuxDistro("PLD", "/etc/pld-release");
-	public static final LinuxDistro REDHAT = new LinuxDistro("RedHat", "/etc/redhat-release");
-	public static final LinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
-	public static final LinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
-	public static final LinuxDistro UBUNTU = new LinuxDistro("Ubuntu", "/etc/lsb-release");
+	public final LinuxDistro CENTOS = new CentOSDistro("CentOS", "/etc/redhat-release");
+	public final LinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
+	public final LinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
+	public final LinuxDistro GENTOO = new LinuxDistro("Gentoo", "/etc/gentoo-release");
+	public final LinuxDistro YELLOWDOG = new LinuxDistro("YellowDog", "/etc/yellowdog-release");
+	public final LinuxDistro KNOPPIX = new LinuxDistro("Knoppix", "knoppix_version");
+	public final LinuxDistro MANDRAKE = new LinuxDistro("Mandrake", "/etc/mandrake-release");
+	public final LinuxDistro MANDRIVA = new LinuxDistro("Mandriva", "/etc/mandriva-release");
+	public final LinuxDistro PLD = new LinuxDistro("PLD", "/etc/pld-release");
+	public final LinuxDistro REDHAT = new LinuxDistro("RedHat", "/etc/redhat-release");
+	public final LinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
+	public final LinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
+	public final LinuxDistro UBUNTU = new LinuxDistro("Ubuntu", "/etc/lsb-release");
 
-	private static final LinuxDistro[] ALL = new LinuxDistro[] {
+	private final LinuxDistro[] ALL = new LinuxDistro[] {
 			CENTOS,
 			DEBIAN,
 			FEDORA,
@@ -56,9 +58,9 @@ public class LinuxSystem {
 			YELLOWDOG
 		};
 
-	public static LinuxDistro getDistro() {
+	public LinuxDistro getDistro() {
 		for (LinuxDistro distro : ALL) {
-			if (distro.currentSysIsDistro()) {
+			if (distro.isDistro()) {
 				return distro;
 			}
 		}
@@ -66,7 +68,7 @@ public class LinuxSystem {
 
 	}
 
-	public static String getDistroNameAndVersion() {
+	public String getDistroNameAndVersion() {
 		LinuxDistro distro = getDistro();
 		if (distro != null) {
 			return distro.getNameAndVersion();
@@ -74,8 +76,29 @@ public class LinuxSystem {
 			return "";
 		}
 	}
+	
+	protected class CentOSDistro extends LinuxDistro {
+		private static final String CENTOS_NAME = "CentOS";
 
-	public static class LinuxDistro {
+		protected CentOSDistro(String name, String releaseFilePath) {
+			super(name, releaseFilePath);
+		}
+
+		@Override
+		protected boolean isDistro() {
+			try {
+				boolean fileExists = super.isDistro();
+				if (fileExists) {
+					String content = getDistroFileContent(releaseFilePath);
+					return content != null && content.indexOf(CENTOS_NAME) >= 0;
+				}
+			} catch (IOException e) {
+			}
+			return false;
+		}
+	}
+
+	public class LinuxDistro {
 
 		/**
 		 * The pattern to match the contents of the release-file -
@@ -84,7 +107,7 @@ public class LinuxSystem {
 		 */
 		private final Pattern VERSION_REGEX = Pattern.compile("([0-9.]+)");
 
-		private final String releaseFilePath;
+		protected final String releaseFilePath;
 		private String name;
 
 		protected LinuxDistro(String name, String releaseFilePath) {
@@ -92,8 +115,8 @@ public class LinuxSystem {
 			this.releaseFilePath = releaseFilePath;
 		}
 
-		private boolean currentSysIsDistro() {
-			return new File(releaseFilePath).exists();
+		protected boolean isDistro() {
+			return exists(releaseFilePath);
 		}
 
 		public String getName() {
@@ -113,21 +136,29 @@ public class LinuxSystem {
 		}
 
 		public String getNameAndVersion() {
-			return new StringBuilder().append(getName()).append(getVersion()).toString();
+			return new StringBuilder().append(getName()).append(" ").append(getVersion()).toString();
 		}
-
-		protected String getDistroFileContent(String filePath) throws IOException {
-			int charachtersToRead = 1024;
-			StringBuilder builder = new StringBuilder(charachtersToRead);
-			BufferedReader reader = new BufferedReader(new FileReader(filePath));
-			char[] buf = new char[charachtersToRead];
-			int charRead = 0;
-			while ((charRead = reader.read(buf)) != -1 && builder.length() < charachtersToRead) {
-				String readData = String.valueOf(buf, 0, charRead);
-				builder.append(readData);
-			}
-			reader.close();
-			return builder.toString();
+		
+		public String getReleaseFilePath() {
+			return releaseFilePath;
 		}
+	}
+	
+	protected boolean exists(String releaseFilePath) {
+			return new File(releaseFilePath).exists();
+	}
+	
+	protected String getDistroFileContent(String filePath) throws IOException {
+		int charachtersToRead = 1024;
+		StringBuilder builder = new StringBuilder(charachtersToRead);
+		BufferedReader reader = new BufferedReader(new FileReader(filePath));
+		char[] buf = new char[charachtersToRead];
+		int charRead = 0;
+		while ((charRead = reader.read(buf)) != -1 && builder.length() < charachtersToRead) {
+			String readData = String.valueOf(buf, 0, charRead);
+			builder.append(readData);
+		}
+		reader.close();
+		return builder.toString();
 	}
 }
