@@ -10,7 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.usage.internal.reporting;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.window.IShellProvider;
@@ -22,9 +24,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.tools.usage.internal.JBDSUtils;
+import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.BrowserUtil;
+import org.jboss.tools.usage.util.BundleUtils;
+import org.jboss.tools.usage.util.StatusUtils;
+import org.osgi.framework.InvalidSyntaxException;
 
 /**
  * @author Andre Dietisheim
@@ -50,14 +55,13 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(getDialogTitle());
-	}
-
-	private String getDialogTitle() {
-		if (JBDSUtils.isJBDS()) {
-			return ReportingMessages.UsageReport_DialogTitle_JBDS;
-		} else {
-			return ReportingMessages.UsageReport_DialogTitle;
+		try {
+			IUsageBranding branding = BundleUtils.getHighestRankedService(IUsageBranding.class.getName(),
+					JBossToolsUsageActivator
+							.getDefault().getBundle());
+			shell.setText(branding.getStartupAllowReportingTitle());
+		} catch (InvalidSyntaxException e) {
+			catchBrandingError(e);
 		}
 	}
 
@@ -70,63 +74,52 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
-
-		// message
-		Link link = new Link(composite, SWT.WRAP);
-		link.setFont(parent.getFont());
-		link.setText(
-				getLinkText());
-		link.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				BrowserUtil.checkedCreateExternalBrowser(
-						getExplanationUrl(),
-						JBossToolsUsageActivator.PLUGIN_ID,
-						JBossToolsUsageActivator.getDefault().getLog());
-			}
-		});
-		GridDataFactory.fillDefaults()
-					.align(SWT.FILL, SWT.CENTER)
-					.grab(true, false)
-					.hint(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH, SWT.DEFAULT)
-					.applyTo(link);
-
-		// checkbox
-		checkBox = new Button(composite, SWT.CHECK);
-		checkBox.setText(getCheckBoxText());
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.LEFT, SWT.CENTER).applyTo(checkBox);
-
+		createUsageReportingWidgets(parent, composite);
 		applyDialogFont(composite);
 
 		return composite;
 	}
 
+	private void createUsageReportingWidgets(Composite parent, Composite composite) {
+		try {
+			// message
+			Link link = new Link(composite, SWT.WRAP);
+			link.setFont(parent.getFont());
+
+			final IUsageBranding branding = BundleUtils.getHighestRankedService(IUsageBranding.class.getName(),
+					JBossToolsUsageActivator.getDefault().getBundle());
+			link.setText(branding.getStartupAllowReportingMessage());
+			link.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					BrowserUtil.checkedCreateExternalBrowser(
+							branding.getStartupAllowReportingDetailLink(),
+							JBossToolsUsageActivator.PLUGIN_ID,
+							JBossToolsUsageActivator.getDefault().getLog());
+				}
+			});
+			GridDataFactory.fillDefaults()
+					.align(SWT.FILL, SWT.CENTER)
+					.grab(true, false)
+					.hint(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH, SWT.DEFAULT)
+					.applyTo(link);
+
+			// checkbox
+			checkBox = new Button(composite, SWT.CHECK);
+			checkBox.setText(branding.getStartupAllowReportingCheckboxLabel());
+			GridDataFactory.fillDefaults().grab(true, false).align(SWT.LEFT, SWT.CENTER).applyTo(checkBox);
+		} catch (Exception e) {
+			catchBrandingError(e);
+		}
+	}
+
+	private void catchBrandingError(Exception e) {
+		IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID, "Could not find branding.", e);
+		ErrorDialog.openError(getShell(), "Branding Error", "Could not ask to allow usage reporting", status);
+		close();
+	}
+
 	public boolean isReportEnabled() {
 		return reportEnabled;
 	}
-	
-	private String getCheckBoxText() {
-		if (JBDSUtils.isJBDS()) {
-			return ReportingMessages.UsageReport_Checkbox_Text_JBDS;
-		} else {
-			return ReportingMessages.UsageReport_Checkbox_Text;
-		}
-	}
-
-	private String getLinkText() {
-		if (JBDSUtils.isJBDS()) {
-			return ReportingMessages.UsageReport_DialogMessage_JBDS;
-		} else {
-			return ReportingMessages.UsageReport_DialogMessage;
-		}
-	}
-
-	private String getExplanationUrl() {
-		if (JBDSUtils.isJBDS()) {
-			return ReportingMessages.UsageReport_ExplanationPage_JBDS;
-		} else {
-			return ReportingMessages.UsageReport_ExplanationPage;
-		}
-	}
-
 }

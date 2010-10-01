@@ -34,6 +34,7 @@ import org.jboss.tools.usage.tracker.internal.PluginLogger;
 import org.jboss.tools.usage.tracker.internal.SuffixFocusPoint;
 import org.jboss.tools.usage.tracker.internal.Tracker;
 import org.jboss.tools.usage.util.StatusUtils;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -47,7 +48,7 @@ public class UsageReport {
 
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
 
-	public UsageReport() {
+	public UsageReport() throws InvalidSyntaxException {
 		eclipseEnvironment = JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment();
 		focusPoint = new SuffixFocusPoint("tools", eclipseEnvironment.getJBossToolsVersion()) //$NON-NLS-1$ 
 				.setChild(new FocusPoint("usage") //$NON-NLS-1$ 

@@ -11,11 +11,13 @@
 package org.jboss.tools.usage.internal;
 
 import org.eclipse.core.runtime.Plugin;
+import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 import org.jboss.tools.usage.internal.reporting.JBossToolsEclipseEnvironment;
-import org.jboss.tools.usage.internal.reporting.ReportingMessages;
+import org.jboss.tools.usage.util.BundleUtils;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
 
 /**
  * @author Andre Dietisheim
@@ -27,7 +29,7 @@ public class JBossToolsUsageActivator extends Plugin {
 	private static JBossToolsUsageActivator plugin;
 
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
-	
+
 	public JBossToolsUsageActivator() {
 		plugin = this;
 	}
@@ -41,37 +43,32 @@ public class JBossToolsUsageActivator extends Plugin {
 	public static JBossToolsUsageActivator getDefault() {
 		return plugin;
 	}
-	
+
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
 
 	public IJBossToolsEclipseEnvironment getJBossToolsEclipseEnvironment() {
-		if (eclipseEnvironment == null) {
-			eclipseEnvironment = createEclipseEnvironment();
+		try {
+			if (eclipseEnvironment == null) {
+				eclipseEnvironment = createEclipseEnvironment();
+			}
+			return eclipseEnvironment;
+		} catch (Exception e) {
+			return null;
 		}
-		return eclipseEnvironment;
 	}
 
-	private IJBossToolsEclipseEnvironment createEclipseEnvironment() {
+	private IJBossToolsEclipseEnvironment createEclipseEnvironment() throws InvalidSyntaxException {
+		IUsageBranding branding = BundleUtils.getHighestRankedService(IUsageBranding.class.getName(),
+				JBossToolsUsageActivator
+						.getDefault().getBundle());
+		if (branding == null) {
+			return null;
+		}
+
 		return new JBossToolsEclipseEnvironment(
-				getGoogleAnalyticsAccount(), getGoogleAnalyticsHostname(),
+				branding.getGoogleAnalyticsAccount(), branding.getGoogleAnalyticsReportingHost(),
 				UsageReportPreferencesUtils.getPreferences());
-	}
-
-	private String getGoogleAnalyticsAccount() {
-		if (JBDSUtils.isJBDS()) {
-			return ReportingMessages.UsageReport_GoogleAnalytics_Account_JBDS;
-		} else {
-			return ReportingMessages.UsageReport_GoogleAnalytics_Account;
-		}
-	}
-
-	private String getGoogleAnalyticsHostname() {
-		if (JBDSUtils.isJBDS()) {
-			return ReportingMessages.UsageReport_HostName_JBDS;
-		} else {
-			return ReportingMessages.UsageReport_HostName;
-		}
 	}
 }

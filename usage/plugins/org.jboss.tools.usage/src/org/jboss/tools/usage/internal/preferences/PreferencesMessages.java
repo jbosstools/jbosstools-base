@@ -33,16 +33,6 @@ public class PreferencesMessages extends NLS {
 	public static String UsageReportPreferencePage_ScreenResolution;
 	public static String UsageReportPreferencePage_Error_Saving;
 
-	public static String UsageReportPreferencePage_Description;
-	public static String UsageReportPreferencePage_AllowReporting;
-
-	public static String GlobalUsageSettings_RemoteProps_URL;
-
-	public static String UsageReportPreferencePage_Description_JBDS;
-	public static String UsageReportPreferencePage_AllowReporting_JBDS;
-	
-	public static String GlobalUsageSettings_RemoteProps_URL_JBDS;
-
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, PreferencesMessages.class);
