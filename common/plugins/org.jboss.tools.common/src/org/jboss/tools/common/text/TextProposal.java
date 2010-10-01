@@ -31,6 +31,7 @@ public class TextProposal {
 	public static final int R_XML_ATTRIBUTE_NAME = 910;
 	public static final int R_TAG_INSERTION = 1210;				// This value was changed from 500 to 1210 because it seems that according WTP's value was risen up to 1200 in 3.6 
 	public static final int R_XML_ATTRIBUTE_VALUE_TEMPLATE = 91;
+	public static final int R_XML_TAG_INSERTION = 91;
 	public static final int R_CLOSE_TAG = 1550;
 	
 	private static final long serialVersionUID = 3257007635692926512L;
