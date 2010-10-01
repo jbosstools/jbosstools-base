@@ -70,6 +70,6 @@ public class ReportingEclipseEnvironmentFake extends JBossToolsEclipseEnvironmen
 
 	@Override
 	protected String getLinuxDistroNameAndVersion() {
-		return new LinuxDistroFake(LinuxSystem.FEDORA.getName(), "Fedora release 13 (Goddard)").getNameAndVersion();
+		return new LinuxSystemFake(LinuxSystem.INSTANCE.FEDORA.getName(), "Fedora release 13 (Goddard)").getDistroNameAndVersion();
 	}
 }

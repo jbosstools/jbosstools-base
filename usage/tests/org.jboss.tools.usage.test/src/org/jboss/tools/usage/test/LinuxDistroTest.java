@@ -12,44 +12,42 @@ package org.jboss.tools.usage.test;
 import static org.junit.Assert.assertEquals;
 
 import org.jboss.tools.usage.googleanalytics.eclipse.LinuxSystem;
-import org.jboss.tools.usage.googleanalytics.eclipse.LinuxSystem.LinuxDistro;
-import org.jboss.tools.usage.test.fakes.LinuxDistroFake;
+import org.jboss.tools.usage.test.fakes.LinuxSystemFake;
 import org.junit.Test;
 
 public class LinuxDistroTest {
 
 	@Test
 	public void canExtractFedoraVersion() {
-		LinuxDistro distro = new LinuxDistroFake(LinuxSystem.FEDORA.getName(), "Fedora release 13 (Goddard)");
-		assertEquals("13", distro.getVersion());
+		LinuxSystem linuxSystem = new LinuxSystemFake(LinuxSystem.INSTANCE.FEDORA.getReleaseFilePath(), "Fedora release 13 (Goddard)");
+		assertEquals("Fedora 13", linuxSystem.getDistroNameAndVersion());
 	}
 
 	@Test
 	public void canExtractUbuntuVersion() {
-		LinuxDistro distro = new LinuxDistroFake(LinuxSystem.UBUNTU.getName(),
+		LinuxSystem linuxSystem = new LinuxSystemFake(LinuxSystem.INSTANCE.UBUNTU.getReleaseFilePath(),
 				"DISTRIB_ID=Ubuntu\nDISTRIB_RELEASE=9.04\nDISTRIB_CODENAME=jaunty\nDISTRIB_DESCRIPTION=\"Ubuntu 9.04\"");
-		assertEquals("Ubuntu9.04", distro.getNameAndVersion());
+		assertEquals("Ubuntu 9.04", linuxSystem.getDistroNameAndVersion());
 	}
 
 	@Test
 	public void canExtractRedHatVersion() {
-		LinuxDistro distro = new LinuxDistroFake(LinuxSystem.REDHAT.getName(),
+		LinuxSystem linuxSystem = new LinuxSystemFake(LinuxSystem.INSTANCE.REDHAT.getReleaseFilePath(),
 				"Red Hat Enterprise Linux Workstation release 6.0 (Santiago)");
-		assertEquals("RedHat6.0", distro.getNameAndVersion());
+		assertEquals("RedHat 6.0", linuxSystem.getDistroNameAndVersion());
 	}
 
 	@Test
 	public void canExtractGentooVersion() {
-		LinuxDistro distro = new LinuxDistroFake(LinuxSystem.GENTOO.getName(),
+		LinuxSystem linuxSystem = new LinuxSystemFake(LinuxSystem.INSTANCE.GENTOO.getReleaseFilePath(),
 				"Gentoo Base System release 2.0.1");
-		assertEquals("Gentoo2.0.1", distro.getNameAndVersion());
+		assertEquals("Gentoo 2.0.1", linuxSystem.getDistroNameAndVersion());
 	}
 	
 	@Test
 	public void canExtractCentOSVersion() {
-		LinuxDistro distro = new LinuxDistroFake(LinuxSystem.CENTOS.getName(),
+		LinuxSystem linuxSystem = new LinuxSystemFake(LinuxSystem.INSTANCE.CENTOS.getReleaseFilePath(),
 		"CentOS release 5.3 (Final)");
-		assertEquals("CentOS5.3", distro.getNameAndVersion());
+		assertEquals("CentOS 5.3", linuxSystem.getDistroNameAndVersion());
 	}
 }
-
