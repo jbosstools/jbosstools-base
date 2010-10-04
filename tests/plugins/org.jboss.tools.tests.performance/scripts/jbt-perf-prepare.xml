@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Automated JBoss Tools Performance Testing" default="all" basedir=".">
+    <import file="get-deps.xml"/>
+    <property name="tested.build" value=""/>
+    <target name="init">
+        <property file="jbt-perf-prepare.properties"/>
+        <condition property="clean" value="noclean" else="clean">
+            <and>
+                <isset property="noclean"/>
+                <istrue value="${noclean}"/>
+            </and>
+        </condition>
+        <mkdir dir="${jbt.perf.db.loc}"/>
+
+    </target>
+    
+    <target name="prepare" depends="init,get-deps-all">
+    	
+        <property name="perf.baseBuildID" value=""/><!--3.2_201009010244_201009010244-->
+        <!-- buildID is set by get-deps-all target 
+    	<property name="perf.buildID" value="3.2_201009081606_201009081606"/>
+    	-->
+        <property name="perf.memory" value="-Xms256M -Xmx512M -XX:MaxPermSize=256M"/>
+        <property name="perf.db" value="-Declipse.perf.dbloc=${jbt.perf.db.loc};create=true;dbname=perfdb;dbuser=guest;dbpasswd=guest"/>
+        <property name="perf.config" value="-Declipse.perf.config=build=${perf.buildID};desc=${jbt.host.desc};os=${osgi.os};arch=${osgi.arch};jvm=sun"/>
+        <condition property="perf.baseBuild" value="-Declipse.perf.assertAgainst=build=${perf.baseBuildID};host=localhost;jvm=sun" else="">
+            <and>
+                <isset property="perf.baseBuildID"/>
+                <not>
+                    <equals arg1="${perf.baseBuildID}" arg2="" trim="true"/>
+                </not>
+            </and>
+        </condition>
+    	
+        <copy todir="workdir/eclipse-testing" verbose="true" flatten="true">
+            <resources>
+                <file file="jbt-performance.xml"/>
+                <file file="jbt-performance.properties"/>
+            </resources>
+        </copy>
+        <!--
+        <mkdir dir="workdir"/>
+        <unzip src="${jbt.dependencies.folder}/eclipse-Automated-Tests-3.6.zip" dest="workdir"/>
+        <unzip src="${jbt.dependencies.folder}/eclipse-platform-3.6-win32.zip" dest="workdir"/>
+        
+        <gunzip src="${jbt.dependencies.folder}/eclipse-platform-3.6-linux-gtk.tar.gz" dest="${jbt.dependencies.folder}"/>
+         
+        <untar src="${jbt.dependencies.folder}/eclipse-platform-3.6-linux-gtk.tar" dest="workdir"/>
+        -->    	
+    </target>
+    
+    <target name="run" depends="prepare">
+        <java jar="workdir/eclipse/plugins/org.eclipse.equinox.launcher_1.1.0.v20100507.jar" fork="true" dir="workdir/eclipse-testing">
+            <jvmarg value="-Dosgi.os=${osgi.os} -Dosgi.ws=${osgi.ws} -Dosgi.arch=${osgi.arch}"/>
+            <arg line="-data ../workspace"/>
+            <arg line="-application org.eclipse.ant.core.antRunner"/>
+            <arg line="-file jbt-performance.xml"/>
+            <arg line="${tests}"/>
+            <arg line="-Dos=${osgi.os} -Dws=${osgi.ws} -Darch=${osgi.arch}"/>
+            <arg line="-D${clean}=true"/>
+            <arg line="-logger org.apache.tools.ant.DefaultLogger"/>
+            <arg line="-Dvmargs='${perf.memory} ${perf.db} ${perf.config} ${perf.baseBuild}'"/>
+        	<arg line="-DruntimeArchive=${runtimeArchive}"/>
+        	<arg line="-Dtest.target=performance"/>            
+        </java>
+    </target>
+    
+    <target name="saveDB" depends="init">
+        <tstamp>
+            <format property="tstamp" pattern="yyyyMMdd-hhmm"/>
+        </tstamp>
+        <zip destfile="perfDB-${tstamp}.zip" basedir="${jbt.perf.db.loc}"/>
+    </target>
+    
+    <target name="all" depends="run, saveDB" />
+</project>

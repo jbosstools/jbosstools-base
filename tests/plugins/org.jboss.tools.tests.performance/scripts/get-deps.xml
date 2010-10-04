@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<project default="get-deps-all">
+	<property environment="env"/>
+	<property file="jbt-perf-prepare.properties" />
+	<!--
+	<property name="mirror" value="http://carroll.aset.psu.edu/pub/eclipse" />
+	-->
+	<property name="mirror" value="http://ftp.sh.cvut.cz/MIRRORS/eclipse" />
+	<property name="destdir" value="." />
+	<property name="workdir" value="work" />
+	<property name="libdir" value="${jbt.dependencies.folder}" />
+	<property name="tmpdir" value="tmp" />
+	<property name="get.zip.jboss.tools" value="http://download.jboss.org/jbosstools/builds/staging/jbosstools-3.2.0.Beta2.aggregate/all/jbosstools-3.2.0.Beta2.aggregate-Update-SNAPSHOT.zip" />
+	<condition property="ext.win" value=".zip" else="">
+		<os family="windows" />
+	</condition>
+	<condition property="ext.linux" value=".tar.gz" else="">
+		<os family="unix" />
+	</condition>
+	<condition property="os.win" value="win32" else="">
+		<os family="windows" />
+	</condition>
+	<condition property="os.linux" value="linux-gtk" else="">
+		<os family="unix" />
+	</condition>
+	<condition property="arch.x86_64" value="-x86_64" else="">
+			<os arch="amd64" />
+	</condition>
+
+	<target name="get-deps-all" depends="install-jbt">		
+		<antcall target="prepare-platform" />
+	</target>
+	<target name="prepare-platform">
+		<groovy>
+			def ant = new AntBuilder()
+			println 'Unzipping eclipse platform'
+			ant.mkdir(dir:properties['workdir'])
+			def file = properties['libdir']+'/'+properties['zip.eclipse.platform']
+			if (file.endsWith('.tar.gz')) {
+				ant.delete(  file:file+'.tar')
+				ant.gunzip(src:file,dest:file+'.tar')
+				ant.untar(src:file+'.tar',dest:properties['workdir'])
+				ant.delete(  file:file+'.tar')
+			}
+			else if (file.endsWith('.zip')) {
+				ant.unzip(  src:file,dest:properties['workdir'],overwrite:'true' )
+			}
+			println 'Unzipping Automated tests'
+			ant.unzip(  src:properties['libdir']+'/'+properties['zip.eclipse.automated'],dest:properties['workdir'],overwrite:'true' )
+		</groovy>
+	</target>
+	<target name="get-dependencies">
+		<property name ="zip.eclipse.platform" value="eclipse-platform-3.6-${os.win}${os.linux}${arch.x86_64}${ext.linux}${ext.win}" />		
+		<property name="zip.eclipse.j2ee" value="eclipse-jee-helios-${os.win}${os.linux}${arch.x86_64}${ext.linux}${ext.win}" />
+
+
+		<property name="get.zip.eclipse.platform" value="${mirror}/eclipse/downloads/drops/R-3.6-201006080911/${zip.eclipse.platform}" />
+		<property name="md5.eclipse.platform" value="http://download.eclipse.org/eclipse/downloads/drops/R-3.6-201006080911/checksum/${zip.eclipse.platform}.md5" />
+		<property name="zip.test.framework" value="eclipse-test-framework-3.6.zip" />
+		<property name="get.zip.test.framework" value="${mirror}/eclipse/downloads/drops/R-3.6-201006080911/${zip.test.framework}" />
+		<property name="md5.test.framework" value="http://download.eclipse.org/eclipse/downloads/drops/R-3.6-201006080911/checksum/eclipse-test-framework-3.6.zip.md5" />
+		<property name="zip.eclipse.automated" value="eclipse-Automated-Tests-3.6.zip" />
+		<property name="get.zip.eclipse.automated" value="${mirror}/eclipse/downloads/drops/R-3.6-201006080911/${zip.eclipse.automated}" />
+		<property name="md5.eclipse.automated" value="http://download.eclipse.org/eclipse/downloads/drops/R-3.6-201006080911/checksum/eclipse-Automated-Tests-3.6.zip.md5" />
+		<property name="get.zip.eclipse.j2ee" value="${mirror}/technology/epp/downloads/release/helios/R/${zip.eclipse.j2ee}" />
+		<property name="md5.eclipse.j2ee" value="${get.zip.eclipse.j2ee}.md5" />
+		<groovy>
+			def zip = properties['get.zip.jboss.tools'].replaceAll('.*\\/','')
+			properties['zip.jboss.tools']=zip
+		</groovy>
+		
+		<property name="get.zip.derby.plugin" value="http://apache.thelorne.com//db/derby/db-derby-10.6.1.0/derby_core_plugin_10.6.1.zip" />
+		<property name="zip.derby.plugin" value="derby_core_plugin_10.6.1.zip" />
+		<property name="md5.derby.plugin" value="http://www.apache.org/dist/db/derby/db-derby-10.6.1.0/derby_core_plugin_10.6.1.zip.md5" />
+		
+		
+		<mkdir dir="${destdir}" />
+		<mkdir dir="${tmpdir}/" />
+		<mkdir dir="${libdir}/" />
+		<get-and-checksum pattern="{0} *{1}" dir="${libdir}" md5="${md5.test.framework}" dst="${zip.test.framework}" src="${get.zip.test.framework}" />
+		<get-and-checksum pattern="{0} *{1}" dir="${libdir}" md5="${md5.eclipse.platform}" dst="${zip.eclipse.platform}" src="${get.zip.eclipse.platform}" />
+		<get-and-checksum pattern="{0} *{1}" dir="${libdir}" md5="${md5.eclipse.automated}" dst="${zip.eclipse.automated}" src="${get.zip.eclipse.automated}" />
+		<get-and-checksum pattern="{0} {1}" dir="${libdir}" md5="${md5.eclipse.j2ee}" dst="${zip.eclipse.j2ee}" src="${get.zip.eclipse.j2ee}" />
+		<get dest="${libdir}/${zip.jboss.tools}" skipexisting="true" src="${get.zip.jboss.tools}"/>
+		<!--
+		<get-and-checksum pattern="MD5 ({1}) = {0}" dir="${libdir}" md5="${md5.derby.plugin}" dst="${zip.derby.plugin}" src="${get.zip.derby.plugin}"/>
+		<move file="${libdir}/${zip.derby.plugin}" tofile="${libdir}/org.apache.derby_1.0.0.zip" />
+		-->
+	</target>
+	
+	<target name="cleanup">
+		<delete includeEmptyDirs="true">
+	    	<fileset dir="${tmpdir}"/>
+	  	</delete>
+	</target>
+	<target name="install-jbt" depends="get-dependencies,cleanup">
+		<sequential>
+			<groovy>
+
+
+				println 'Unzipping update site'
+				ant.mkdir(dir:properties['tmpdir']+'/upd-site')
+				ant.unzip(
+						src:properties['libdir']+'/'+properties['zip.jboss.tools'],
+						dest:properties['tmpdir']+'/upd-site'
+				)
+				println 'Searching for features and detecting version'
+				def version = ""
+				def features = ""
+				def featuresDir = new File(properties['tmpdir']+'/upd-site/features')
+				if (!featuresDir.isDirectory() || !featuresDir.exists()) {
+					ant.fail(message:'Update site unzip error, '+properties['tmpdir']+'/upd-site/features does not exist')
+				}
+				featuresDir.eachFile({
+					match = it.getName() =~ '(org.jboss.tools[^_]+)_.*v(.*)\\.jar'
+					if (match.matches()) {
+						version = match[0][2]
+						features += ","+match[0][1]+'.feature.group'
+					}		
+				})
+				features = features.substring(1)
+				def output=properties['destdir']+'/jboss-tools-'+version+'.zip'
+				println 'Detetected JBoss Tools version '+version
+				majorVersion = '0.0.0'
+				
+				// jbosstools-3.2.0.M2.aggregate-Update-2010-09-08_17-17-54-H243a.zip
+				match = properties['get.zip.jboss.tools'] =~ '.*/jbosstools-(\\d\\.\\d\\.\\d).*'
+				if (match.matches()) majorVersion = match[0][1]
+				
+				println 'Setting up properties'
+				properties['runtimeArchive']='../../jboss-tools-'+version+'.zip'				
+				buildID = version.split('-')
+				properties['perf.buildID'] = majorVersion+'_'+buildID[0] + buildID[1]+'_'+buildID[0] + buildID[1]
+				if (properties['os.linux']!="") {
+					properties['osgi.os']='linux'
+					properties['osgi.ws']='gtk'
+				}
+				if (properties['os.win']!="") { 
+					properties['osgi.os']='win32'
+					properties['osgi.ws']='win32'
+				}
+				if (properties['arch.x86_64']!="") {
+					properties['osgi.arch']='x86_64'
+				} else {
+					properties['osgi.arch']='x86'
+				}
+				reconcilerPropKey = 'org.eclipse.equinox.p2.reconciler.tests.35.platform.archive.'+properties['osgi.os']
+				properties[reconcilerPropKey] = '../../'+properties['zip.eclipse.platform']
+				println 'Property: osgi.os='+properties['osgi.os']
+				println 'Property: osgi.ws='+properties['osgi.ws']
+				println 'Property: osgi.arch='+properties['osgi.arch']
+				println 'Property: perf.buildID='+properties['perf.buildID']
+				println 'Property: runtimeArchive='+properties['runtimeArchive']
+				println 'Property: '+reconcilerPropKey+'='+properties[reconcilerPropKey]
+				if (new File(output).exists()) {
+					println 'Result file '+output+' exists, skipping installation'
+					return
+				}
+				println 'Unzipping base eclipse'
+				def file = properties['libdir']+'/'+properties['zip.eclipse.j2ee']
+				if (file.endsWith('.tar.gz')) {
+					ant.delete(  file:file+'.tar')
+					ant.gunzip(src:file,dest:file+'.tar')
+					ant.untar(src:file+'.tar',dest:properties['tmpdir'])
+					ant.delete(  file:file+'.tar')
+				}
+				else if (file.endsWith('.zip')) {
+					ant.unzip(  src:file,dest:properties['tmpdir'],overwrite:'true' )
+				}
+				ant.chmod(perm:'ugo+rwx', file:properties['tmpdir']+'/eclipse/eclipse')
+								
+				println 'Installing all JBoss Tools'
+				def eclipseSites="http://download.eclipse.org/tptp/updates,http://download.eclipse.org/tools/gef/updates/releases/,http://download.eclipse.org/modeling/emf/updates/releases/,http://download.eclipse.org/eclipse/updates/3.6,http://download.eclipse.org/webtools/repository/helios"
+				def thirdpartySites=eclipseSites+",http://download.eclipse.org/birt/update-site/2.6,http://m2eclipse.sonatype.org/sites/m2e,http://m2eclipse.sonatype.org/sites/m2e-extras,http://dl.google.com/eclipse/plugin/3.6"
+				def eclipse = new File(properties['tmpdir']+'/eclipse').getAbsolutePath()				
+				def repo = new File(properties['tmpdir']+'/upd-site').getAbsolutePath()
+				def cmd = eclipse+'/eclipse'
+				cmd+=" -application org.eclipse.equinox.p2.director"
+				cmd+=" -nosplash"
+				cmd+=" --launcher.suppressErrors"
+				cmd+=" -consoleLog"
+				cmd+=" -p2.os "+properties['osgi.os'] 
+				cmd+=" -p2.ws "+properties['osgi.ws'] 
+				cmd+=" -p2.arch "+properties['osgi.arch'] 
+				cmd+=" -profile epp.package.jee"
+				cmd+=" -destination " + eclipse
+				cmd+=" -bundlepool " + eclipse
+				cmd+=" -installIUs "+features
+				cmd+=" -repository file:"+repo+",file:"+eclipse+","+thirdpartySites
+				proc = cmd.execute (null, new File(eclipse))
+				proc.consumeProcessOutput (System.out, System.err)
+				proc.waitFor()
+				if (proc.exitValue()!=0) {
+					ant.fail(message:'Unable to install JBoss Tools, exit value :'+proc.exitValue())
+				}
+				println 'Building results'
+				ant.delete(file:output)
+				ant.zip(destfile:output,basedir:properties['tmpdir'],includes:'eclipse/**')				
+			</groovy>
+		</sequential>
+	</target>
+
+
+		<taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy">
+            <classpath>
+                <fileset dir="${env.GROOVY_HOME}" includes="embeddable/groovy-all-*.jar,lib/ivy*.jar"/>
+            </classpath>
+        </taskdef>
+
+	 <macrodef name="get-and-checksum">
+	    <attribute name="src"/>
+	    <attribute name="dst"/>
+	    <attribute name="md5"/>
+	    <attribute name="dir"/>
+	    <attribute name="pattern" />
+	    <sequential>     
+	      <get dest="@{dir}/@{dst}" skipexisting="true" src="@{src}" />
+	      <get dest="@{dir}/@{dst}.md5" skipexisting="true" src="@{md5}" />      
+	      <local name="checksum.matches.fail"/>
+	      <echo>MD5 Checksum ...</echo>
+	      <condition property="checksum.matches.fail">
+	        <checksum pattern="@{pattern}" file="@{dir}/@{dst}" algorithm="md5" fileext=".md5"/>
+	      </condition>
+		<fail unless="checksum.matches.fail">Checksum error, try deleting @{dir}/@{dst}</fail>
+		<echo>MD5 Checksum OK</echo>
+	    </sequential>
+	  </macrodef>
+
+</project>
