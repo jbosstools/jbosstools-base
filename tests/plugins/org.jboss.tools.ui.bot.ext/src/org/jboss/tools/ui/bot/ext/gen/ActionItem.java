@@ -4370,15 +4370,15 @@ public static String getItemString(IActionItem item) {
 			/**
 			* text field labeled 'Folder*'
 			*/
-			public static final String TEXT_FOLDER = "Folder*";
+			public static final String TEXT_FOLDER = "Folder:*";
 			/**
 			* text field labeled 'Version*'
 			*/
-			public static final String TEXT_VERSION = "Version*";
+			public static final String TEXT_VERSION = "Version:*";
 			/**
 			* text field labeled 'Name*'
 			*/
-			public static final String TEXT_NAME = "Name*";
+			public static final String TEXT_NAME = "Name:*";
 			}
 		public static class EJBEJB3MessageDrivenBean {
 			/**

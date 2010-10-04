@@ -97,6 +97,10 @@ public class AddServer extends RequirementBase {
 				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
 			}
+			if ("5.1".equals(version)) {
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
+			}
 			
 		}
 		if (TestConfigurator.Values.SERVER_TYPE_EPP.equals(serverType)) {

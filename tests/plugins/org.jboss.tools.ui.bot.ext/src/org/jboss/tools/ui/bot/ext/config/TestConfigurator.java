@@ -64,7 +64,7 @@ public class TestConfigurator {
 					log
 					.info("Loading exeternaly configuration file '"
 							+ propFile + "'");
-					multiProperties.put(SWTBOT_TEST_PROPERTIES_FILE, propFile);
+					multiProperties.put("Default", propFile);
 				}
 				else {
 					throw new IOException(SWTBOT_TEST_PROPERTIES_FILE + " "
