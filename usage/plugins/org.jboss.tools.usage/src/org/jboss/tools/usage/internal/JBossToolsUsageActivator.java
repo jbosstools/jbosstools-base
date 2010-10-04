@@ -13,7 +13,8 @@ package org.jboss.tools.usage.internal;
 import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
-import org.jboss.tools.usage.internal.branding.UsageBrandingServiceTracker;
+import org.jboss.tools.usage.internal.branding.JBossToolsUsageBranding;
+import org.jboss.tools.usage.internal.branding.UsageBrandingMediator;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 import org.jboss.tools.usage.internal.reporting.JBossToolsEclipseEnvironment;
 import org.osgi.framework.BundleContext;
@@ -29,7 +30,7 @@ public class JBossToolsUsageActivator extends Plugin {
 
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
 
-	private UsageBrandingServiceTracker branding;
+	private UsageBrandingMediator branding;
 
 	public JBossToolsUsageActivator() {
 		plugin = this;
@@ -53,7 +54,9 @@ public class JBossToolsUsageActivator extends Plugin {
 	}
 
 	private void initBranding(BundleContext context) {
-		branding = new UsageBrandingServiceTracker(getBundle().getBundleContext());
+		branding = new UsageBrandingMediator(
+				new JBossToolsUsageBranding()
+				, getBundle().getBundleContext());
 		branding.open();
 	}
 
