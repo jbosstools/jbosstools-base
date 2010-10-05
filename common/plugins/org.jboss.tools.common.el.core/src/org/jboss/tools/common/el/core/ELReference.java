@@ -41,6 +41,7 @@ public abstract class ELReference implements ITextSourceReference {
 	private IFile resource;
 	private IPath path;
 	private int length;
+	private int lineNumber;
 	private int startPosition;
 	private ELExpression[] el;
 	private Set<IMarker> markers;
@@ -48,6 +49,20 @@ public abstract class ELReference implements ITextSourceReference {
 	private boolean needToInitMarkers = false;
 	private List<SyntaxError> syntaxErrors;
 	private String source;
+
+	/**
+	 * @return
+	 */
+	public int getLineNumber() {
+		return lineNumber;
+	}
+
+	/**
+	 * @param lineNumber the lineNumber to set
+	 */
+	public void setLineNumber(int lineNumber) {
+		this.lineNumber = lineNumber;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.seam.core.ISeamTextSourceReference#getLength()

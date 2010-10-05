@@ -19,10 +19,10 @@ public interface ITextSourceReference {
 	/**
 	 * @return start position of element in text
 	 */
-	public int getStartPosition();
+	int getStartPosition();
 
 	/**
 	 * @return number of characters of element in text
 	 */
-	public int getLength();
+	int getLength();
 }
