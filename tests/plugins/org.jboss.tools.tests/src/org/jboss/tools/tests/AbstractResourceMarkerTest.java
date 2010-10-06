@@ -10,15 +10,21 @@
  ******************************************************************************/ 
 package org.jboss.tools.tests;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.test.util.JUnitUtils;
+import org.jboss.tools.test.util.JobUtils;
 
 /**
  * @author eskimo
@@ -27,6 +33,8 @@ import org.jboss.tools.test.util.JUnitUtils;
 public class AbstractResourceMarkerTest extends TestCase {
 
 	public static final String MARKER_TYPE = "org.eclipse.wst.validation.problemmarker";
+	
+	protected IProject project = null;
 
 	/**
 	 * 
@@ -40,6 +48,37 @@ public class AbstractResourceMarkerTest extends TestCase {
 	public AbstractResourceMarkerTest(String name) {
 		super(name);
 	}
+	
+	protected void copyContentsFile(String originalName, String newContentName) throws CoreException{
+		IFile originalFile = project.getFile(originalName);
+		IFile newContentFile = project.getFile(newContentName);
+		
+		copyContentsFile(originalFile, newContentFile);
+	}
+	
+	protected void copyContentsFile(IFile originalFile, String newContentName) throws CoreException{
+		IFile newContentFile = project.getFile(newContentName);
+		copyContentsFile(originalFile, newContentFile);
+	}
+
+	protected void copyContentsFile(IFile originalFile, IFile newContentFile) throws CoreException{
+		InputStream is = null;
+		try{
+			is = newContentFile.getContents();
+			originalFile.setContents(is, true, false, null);
+		} finally {
+			if(is!=null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		originalFile.getProject().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+		JobUtils.waitForIdle();
+	}
+
 
 	public static int findMarkerLine(IResource resource, String type, String errorMessage, boolean pattern)
 			throws CoreException {
