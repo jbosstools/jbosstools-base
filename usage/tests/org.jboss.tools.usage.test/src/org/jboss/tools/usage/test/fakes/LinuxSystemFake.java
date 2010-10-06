@@ -28,23 +28,50 @@ import org.jboss.tools.usage.googleanalytics.eclipse.LinuxSystem;
   */
 public class LinuxSystemFake extends LinuxSystem {
 
-	private String releaseFilePath;
+	/** release file paths on the faked system */
+	private ReleaseFile[] releaseFiles;
 	
-	private String releaseFileContent;
-
-	public LinuxSystemFake(String releaseFilePath, String releaseFileContent) {
-		super();
-		this.releaseFilePath = releaseFilePath;
-		this.releaseFileContent = releaseFileContent;
+	public LinuxSystemFake(ReleaseFile... releaseFiles) {
+		this.releaseFiles = releaseFiles;
 	}
 
 	@Override
 	protected boolean exists(String releaseFilePath) {
-		return this.releaseFilePath.equals(releaseFilePath);
+		for (ReleaseFile releaseFile : releaseFiles) {
+			if(releaseFile.getPath().equals(releaseFilePath)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	protected String getDistroFileContent(String filePath) throws IOException {
-		return releaseFileContent;
+		for (ReleaseFile releaseFile : releaseFiles) {
+			if (releaseFile.getPath().equals(filePath)) {
+				return releaseFile.getContent();
+			}
+		}
+		return null;
 	}
+
+	public static class ReleaseFile {
+		private String path;
+		private String content;
+
+		public ReleaseFile(String path, String content) {
+			this.path = path;
+			this.content = content;
+		}
+
+		public String getPath() {
+			return path;
+		}
+
+		public String getContent() {
+			return content;
+		}
+	}
+
+
 }

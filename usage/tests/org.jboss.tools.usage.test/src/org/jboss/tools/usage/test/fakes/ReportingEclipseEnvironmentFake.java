@@ -11,15 +11,16 @@
 package org.jboss.tools.usage.test.fakes;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.jboss.tools.usage.googleanalytics.eclipse.LinuxSystem;
 import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
+import org.jboss.tools.usage.googleanalytics.eclipse.LinuxSystem;
 import org.jboss.tools.usage.internal.reporting.JBossToolsEclipseEnvironment;
+import org.jboss.tools.usage.test.fakes.LinuxSystemFake.ReleaseFile;
 
 /**
  * @author Andre Dietisheim
  */
 public class ReportingEclipseEnvironmentFake extends JBossToolsEclipseEnvironment {
-	
+
 	public static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
 	public static final String HOSTNAME = "jboss.org";
 	public static final String JAVA_VERSION = "1.6.0_20";
@@ -70,6 +71,6 @@ public class ReportingEclipseEnvironmentFake extends JBossToolsEclipseEnvironmen
 
 	@Override
 	protected String getLinuxDistroNameAndVersion() {
-		return new LinuxSystemFake(LinuxSystem.INSTANCE.FEDORA.getName(), "Fedora release 13 (Goddard)").getDistroNameAndVersion();
+		return new LinuxSystemFake(new ReleaseFile(LinuxSystem.INSTANCE.FEDORA.getReleaseFilePath(), "Fedora release 13 (Goddard)")).getDistroNameAndVersion();
 	}
 }

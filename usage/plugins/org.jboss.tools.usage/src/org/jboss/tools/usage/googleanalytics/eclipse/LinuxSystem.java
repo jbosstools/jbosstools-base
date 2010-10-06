@@ -28,6 +28,7 @@ public class LinuxSystem {
 	 *      href="http://superuser.com/questions/11008/how-do-i-find-out-what-version-of-linux-im-running">
 	 *      release-file strings</a>
 	 */
+	
 	public final LinuxDistro CENTOS = new CentOSDistro("CentOS", "/etc/redhat-release");
 	public final LinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
 	public final LinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
@@ -44,6 +45,21 @@ public class LinuxSystem {
 
 	private final LinuxDistro[] ALL = new LinuxDistro[] {
 			CENTOS,
+			/**
+			 * Attention: ubuntu has 2 release files
+			 * <ul>
+			 * <li>/etc/lsb-release</li>
+			 * <li>/etc/debian_version</li>
+			 * </ul>
+			 * 
+			 * It is not reliable to check Debian first and check there if no
+			 * /etc/lsb-release exists. Debian may also have a /etc/lsb-release. We must
+			 * check ubuntu prior to Debian.
+			 * 
+			 * @see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=444678
+			 * 
+			 */
+			UBUNTU,
 			DEBIAN,
 			FEDORA,
 			GENTOO,
@@ -54,7 +70,6 @@ public class LinuxSystem {
 			REDHAT,
 			SLACKWARE,
 			SUSE,
-			UBUNTU,
 			YELLOWDOG
 		};
 
@@ -76,7 +91,7 @@ public class LinuxSystem {
 			return "";
 		}
 	}
-	
+
 	protected class CentOSDistro extends LinuxDistro {
 		private static final String CENTOS_NAME = "CentOS";
 
@@ -138,16 +153,16 @@ public class LinuxSystem {
 		public String getNameAndVersion() {
 			return new StringBuilder().append(getName()).append(" ").append(getVersion()).toString();
 		}
-		
+
 		public String getReleaseFilePath() {
 			return releaseFilePath;
 		}
 	}
-	
+
 	protected boolean exists(String releaseFilePath) {
-			return new File(releaseFilePath).exists();
+		return new File(releaseFilePath).exists();
 	}
-	
+
 	protected String getDistroFileContent(String filePath) throws IOException {
 		int charachtersToRead = 1024;
 		StringBuilder builder = new StringBuilder(charachtersToRead);
