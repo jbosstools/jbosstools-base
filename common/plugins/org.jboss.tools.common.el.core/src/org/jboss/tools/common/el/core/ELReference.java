@@ -134,6 +134,14 @@ public abstract class ELReference implements ITextSourceReference {
 		return source;
 	}
 
+	public int getStartPossitionOfFirstEL() {
+		ELExpression[] els = getEl();
+		if(els.length>0) {
+			return startPosition + els[0].getStartPosition();
+		}
+		return startPosition;
+	}
+
 	/**
 	 * @return the el
 	 */
