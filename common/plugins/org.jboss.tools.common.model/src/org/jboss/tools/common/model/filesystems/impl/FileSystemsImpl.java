@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.*;
 import java.util.*;
+
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.IJavaElement;
@@ -208,7 +209,26 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 	public void resourceChanged(IResourceChangeEvent event) {
 		if(!isActive() || event == null || event.getDelta() == null) return;
 		if(!checkDelta(event.getDelta())) return;
-		IFile f = findFile(event.getDelta());
+		List<IResourceDelta> fileDeltas = findFileDeltas(event.getDelta(), null);
+		if(fileDeltas != null) {
+			boolean onlyMarkers = true;
+			for (IResourceDelta d: fileDeltas) {
+				if(d.getKind() != IResourceDelta.CHANGED) {
+					onlyMarkers = false;
+					break;
+				}
+				int flags = d.getFlags();
+				if(flags != IResourceDelta.MARKERS) {
+					onlyMarkers = false;
+					break;
+				}
+			}
+			if(onlyMarkers) {
+				return;
+			}
+		}
+		
+		IFile f = fileDeltas == null || fileDeltas.size() == 0 ? null : (IFile)fileDeltas.get(0).getResource();
 		if(f != null && f.getName().equals(".classpath")) { //$NON-NLS-1$
 			new FileSystemsLoader().updateClassPath(this);
 			return;
@@ -218,15 +238,17 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 		requireUpdate();
 	}
 
-	IFile findFile(IResourceDelta delta) {
+	List<IResourceDelta> findFileDeltas(IResourceDelta delta, List<IResourceDelta> fileDeltas) {
 		IResource r = delta.getResource();
-		if(r instanceof IFile) return (IFile)r;
+		if(r instanceof IFile) {
+			if(fileDeltas == null) fileDeltas = new ArrayList<IResourceDelta>();
+			fileDeltas.add(delta);
+		}
 		IResourceDelta[] ds =  delta.getAffectedChildren();
 		for (IResourceDelta d: ds) {
-			IFile f = findFile(d);
-			if(f != null) return f;
+			fileDeltas = findFileDeltas(d, fileDeltas);
 		}
-		return null;
+		return fileDeltas;
 	}
 
 	private void onUpdateClassPath() {
