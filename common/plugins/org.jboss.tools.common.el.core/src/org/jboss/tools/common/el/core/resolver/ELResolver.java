@@ -36,7 +36,7 @@ public interface ELResolver {
 	List<TextProposal> getProposals(ELContext context, int offset);
 
 	/**
-	 * Resolves EL operand.
+	 * Resolves EL operand. May return null.
 	 * @param context
 	 * @param operand
 	 * @return
