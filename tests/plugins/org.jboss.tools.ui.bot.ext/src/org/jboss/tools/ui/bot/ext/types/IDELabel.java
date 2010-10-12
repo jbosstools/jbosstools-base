@@ -565,21 +565,21 @@ public class IDELabel {
    
    public static class CreateGroupDialog{
      
-     public static final String NAME = "Name*";
+     public static final String NAME = "Name:*";
 
    }
    
    public static class AddPaletteGroupDialog{
      
-     public static final String NAME = "Name*";
+     public static final String NAME = "Name:*";
 
    }
 
    public static class AddPaletteMacroDialog{
      
-     public static final String NAME = "Name*";
-     public static final String START_TEXT = "Start Text";
-     public static final String END_TEXT = "End Text";
+     public static final String NAME = "Name:*";
+     public static final String START_TEXT = "Start Text:";
+     public static final String END_TEXT = "End Text:";
 
    }
    
