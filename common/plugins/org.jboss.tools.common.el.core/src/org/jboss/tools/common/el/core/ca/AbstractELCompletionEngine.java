@@ -103,7 +103,9 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		ELResolutionImpl resolution;
 		try {
 			resolution = resolveELOperand(context.getResource(), parseOperand(el), false, vars, new ElVarSearcher(context.getResource(), this));
-			completions.addAll(resolution.getProposals());
+			if(resolution!=null) {
+				completions.addAll(resolution.getProposals());
+			}
 		} catch (StringIndexOutOfBoundsException e) {
 			log(e);
 		} catch (BadLocationException e) {
@@ -315,6 +317,9 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				String prefix = operand.toString();
 				if(v.getName().startsWith(prefix)) {
 					ELResolution r = resolveEL(file, v.getElToken(), true, vars, varSearcher);
+					if(r==null) {
+						continue;
+					}
 					ELSegment lastSegment = r.getLastSegment();
 					JavaMemberELSegment jmSegment = null;
 					
