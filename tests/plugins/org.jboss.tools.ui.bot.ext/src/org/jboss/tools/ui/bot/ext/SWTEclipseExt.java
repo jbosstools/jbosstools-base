@@ -38,17 +38,18 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
+import org.jboss.tools.ui.bot.ext.condition.ButtonIsDisabled;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ServerServer;
 import org.jboss.tools.ui.bot.ext.gen.IServer;
 import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ServerServer;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
-import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
 
 /**
  * Provides Eclipse common operation based on SWTBot element operations
@@ -207,12 +208,15 @@ public class SWTEclipseExt {
 		waitForShell(IDELabel.Shell.NEW_JAVA_PROJECT);
 
 		// JavaProjectWizard
+		SWTBotShell shell = bot.activeShell();
 		bot.textWithLabel(IDELabel.JavaProjectWizard.PROJECT_NAME).setText(
 				entity.getProjectName());
+
+		bot.waitWhile(new ButtonIsDisabled(IDELabel.Button.FINISH));			
 		bot.button(IDELabel.Button.FINISH).click();
 
 		// Wait for shell closing JavaProjectWizard
-		waitForClosedShell(IDELabel.Shell.NEW_JAVA_PROJECT);
+		waitForClosedShell(shell);
 		util.waitForNonIgnoredJobs();
 	}
 
