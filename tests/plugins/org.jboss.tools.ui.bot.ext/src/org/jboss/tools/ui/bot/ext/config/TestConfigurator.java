@@ -137,10 +137,13 @@ public class TestConfigurator {
 			removeServer.getDependsOn().add(RequirementBase.createStopServer());
 			return removeServer;
 		}
-		if (ServerState.NotRunning.equals(s.state())) {
+		else if (ServerState.NotRunning.equals(s.state())) {
 			RequirementBase stopServer = RequirementBase.createStopServer();
 			stopServer.getDependsOn().add(RequirementBase.createAddServer());
 			return stopServer;
+		}
+		else if (ServerState.Present.equals(s.state())) {
+			return RequirementBase.createAddServer();
 		}
 		return RequirementBase.createStartServer();
 	}

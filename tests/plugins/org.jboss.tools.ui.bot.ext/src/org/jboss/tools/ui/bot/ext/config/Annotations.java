@@ -148,6 +148,10 @@ public class Annotations {
 	}
 	public enum ServerState {
 		/**
+		 * server is present, no matter if runs or not
+		 */
+		Present,
+		/**
 		 * server will run
 		 */
 		Running,

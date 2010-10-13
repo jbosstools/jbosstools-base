@@ -67,6 +67,9 @@ public class AddServer extends RequirementBase {
 			if ("5.0".equals(TestConfigurator.currentConfig.getServer().version)) {
 				SWTTestExt.configuredState.getServer().bundledESBVersion="4.7";
 			}
+			if ("5.1".equals(TestConfigurator.currentConfig.getServer().version)) {
+				SWTTestExt.configuredState.getServer().bundledESBVersion="4.9";
+			}
 		} 
 	}
 
@@ -122,6 +125,10 @@ public class AddServer extends RequirementBase {
 						);				
 			}
 			if ("5.0".equals(version)) {
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
+			}
+			if ("5.1".equals(version)) {
 				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
 			}
