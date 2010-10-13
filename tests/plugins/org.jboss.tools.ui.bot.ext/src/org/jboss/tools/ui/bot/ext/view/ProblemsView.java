@@ -10,7 +10,9 @@
   ******************************************************************************/
 package org.jboss.tools.ui.bot.ext.view;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.SWTBot;
@@ -20,6 +22,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt.StringConditionType;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.gen.IView;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 /**
@@ -35,7 +39,7 @@ public class ProblemsView extends ViewBase {
   public static final int PROBLEMS_TYPE_COLUMN_INDEX = 4;
 	Logger log = Logger.getLogger(ProblemsView.class);
 	public ProblemsView() {
-
+		viewObject = ActionItem.View.GeneralProblems.LABEL;
 	}
 
   /**
@@ -90,6 +94,7 @@ public class ProblemsView extends ViewBase {
     return errorsTreeItems;
     
   }
+
   
   /**
    * Returns Errors Node from Problems View static version
