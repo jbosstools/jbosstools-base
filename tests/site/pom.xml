@@ -7,7 +7,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.tests</groupId>
-	<artifactId>site</artifactId> 
+	<artifactId>tests.site</artifactId> 
 	<name>tests.site</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>eclipse-update-site</packaging>

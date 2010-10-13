@@ -6,7 +6,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.usage</groupId>
-	<artifactId>site</artifactId> 
+	<artifactId>usage.site</artifactId> 
 	<name>usage.site</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>eclipse-update-site</packaging>
