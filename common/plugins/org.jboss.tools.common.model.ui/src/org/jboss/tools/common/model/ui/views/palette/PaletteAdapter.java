@@ -76,6 +76,7 @@ public class PaletteAdapter implements IPaletteAdapter {
 	public void initActionBars() {
 		IActionBars bars = viewPart.getActionBars();
 		if(bars != null) {
+			createPaletteTabs();
 			IMenuManager menuManager = bars.getMenuManager();
 
 			bars.getToolBarManager().add(new PaletteEditAction());
@@ -125,6 +126,7 @@ public class PaletteAdapter implements IPaletteAdapter {
 	
 	private void createPaletteTabs() {
 		IActionBars bars = viewPart.getActionBars();
+		if(bars == null) return;
 		IMenuManager menuManager = bars.getMenuManager();
 		IPaletteNode root = model.getRoot();
 		IPaletteNode[] nodes = root.getChildren();
@@ -264,8 +266,8 @@ public class PaletteAdapter implements IPaletteAdapter {
 	public void dispose() {
 		dropManager.dispose();
 		descriptionManager.dispose();
-		model.removeModelTreeListener(modelListener);
-		viewPart.getActionBars().getToolBarManager().removeAll();
+		if(model != null) model.removeModelTreeListener(modelListener);
+		if(viewPart.getActionBars() != null) viewPart.getActionBars().getToolBarManager().removeAll();
 		try {
 			if (selectedTab != null) { 
 				ModelUIPlugin.getWorkspace().getRoot().setPersistentProperty(persistentTabQualifiedName, selectedTab);
