@@ -14,6 +14,7 @@ package org.jboss.tools.ui.bot.ext;
 import static org.jboss.tools.ui.bot.ext.SWTTestExt.eclipse;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -52,25 +53,10 @@ public class SWTJBTExt {
 	 * @return
 	 */
   public boolean isJBDSRun (){
-    return SWTJBTExt.isJBDSRun(bot);
+    IProduct prod = Platform.getProduct();
+    return prod != null;
   }
-  /**
-   * Check if JBoss Developer Studio Is Running
-   * @param bot
-   * @return
-   */
-	public static boolean isJBDSRun (SWTWorkbenchBot bot){
-	  boolean jbdsIsRunning = false;
-	  try{
-	    bot.menu(IDELabel.Menu.HELP).menu(IDELabel.Menu.ABOUT_JBOSS_DEVELOPER_STUDIO);
-	    jbdsIsRunning = true;
-	  }catch (WidgetNotFoundException wnfe){
-	    // do nothing
-	  }
-	  
-	  return jbdsIsRunning;
-	  
-	}
+
 	/**
 	 * Returns JBT version (taken from version of org.jboss.tools.common plugin version)
 	 * @return
