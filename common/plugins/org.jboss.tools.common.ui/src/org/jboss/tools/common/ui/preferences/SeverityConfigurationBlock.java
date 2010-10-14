@@ -12,13 +12,17 @@
 package org.jboss.tools.common.ui.preferences;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.corext.util.Messages;
 import org.eclipse.jdt.internal.ui.dialogs.StatusInfo;
 import org.eclipse.jdt.internal.ui.preferences.OptionsConfigurationBlock;
+import org.eclipse.jdt.internal.ui.preferences.PreferencesMessages;
 import org.eclipse.jdt.internal.ui.preferences.ScrolledPageContent;
 import org.eclipse.jdt.internal.ui.wizards.IStatusChangeListener;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -28,12 +32,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.jboss.tools.common.preferences.SeverityPreferences;
 
 /**
- * Find in SeverirtyPreferences the instruction to Framework for Severity preferences
+ * See more info in SeverityPreferences.
  * To modify section descriptions:
  * 1) If new option is to be added to existing description,
  *    add array of two String objects, where first is the preference name 
@@ -70,6 +75,8 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		SeverityPreferencesMessages.VALIDATOR_CONFIGURATION_BLOCK_IGNORE
 	};
 
+	protected PixelConverter fPixelConverter;
+
 	public SeverityConfigurationBlock(IStatusChangeListener context,
 			IProject project, Key[] allKeys,
 			IWorkbenchPreferenceContainer container) {
@@ -88,6 +95,9 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		final ScrolledPageContent sc1 = new ScrolledPageContent(folder);
 
 		Composite composite = sc1.getBody();
+
+		addMaxNumberOfMarkersField(composite);
+
 		GridLayout layout= new GridLayout(nColumns, false);
 		layout.marginHeight= 0;
 		layout.marginWidth= 0;
@@ -124,8 +134,37 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		return sc1;
 	}
 
+	protected void addMaxNumberOfMarkersField(Composite composite) {
+		Text text = addTextField(composite, SeverityPreferencesMessages.MAX_NUMBER_OF_MARKERS, getMaxNumberOfProblemsKey(), 0, 0);
+		GridData gd = (GridData) text.getLayoutData();
+		gd.widthHint = fPixelConverter.convertWidthInCharsToPixels(8);
+		gd.horizontalAlignment = GridData.BEGINNING;
+		text.setTextLimit(6);
+	}
+
+	private IStatus validateMaxNumberProblems() {
+		String number = getValue(getMaxNumberOfProblemsKey());
+		StatusInfo status= new StatusInfo();
+		if (number == null || number.length() == 0) {
+			status.setError(PreferencesMessages.JavaBuildConfigurationBlock_empty_input);
+		} else {
+			try {
+				int value= Integer.parseInt(number);
+				if (value <= 0) {
+					status.setError(Messages.format(PreferencesMessages.JavaBuildConfigurationBlock_invalid_input, number));
+				}
+			} catch (NumberFormatException e) {
+				status.setError(Messages.format(PreferencesMessages.JavaBuildConfigurationBlock_invalid_input, number));
+			}
+		}
+		return status;
+	}
+
+	abstract protected Key getMaxNumberOfProblemsKey();
+
 	@Override
 	protected Control createContents(Composite parent) {
+		fPixelConverter = new PixelConverter(parent);
 		setShell(parent.getShell());
 
 		Composite mainComp = new Composite(parent, SWT.NONE);
@@ -173,7 +212,15 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 			return;
 		}
 
-		fContext.statusChanged(new StatusInfo());		
+		if (changedKey != null) {
+			if (getMaxNumberOfProblemsKey().equals(changedKey)) {
+				fContext.statusChanged(validateMaxNumberProblems());
+				return;
+			} else {
+				return;
+			}
+		}
+		fContext.statusChanged(validateMaxNumberProblems());
 	}
 
 	public static class SectionDescription {

@@ -28,6 +28,7 @@ public class SeverityPreferencesMessages extends NLS {
 	public static String VALIDATOR_CONFIGURATION_BLOCK_IGNORE;
 	public static String VALIDATOR_CONFIGURATION_BLOCK_WARNING;
 	public static String ENABLE_VALIDATION;
+	public static String MAX_NUMBER_OF_MARKERS;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, SeverityPreferencesMessages.class);

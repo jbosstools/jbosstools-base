@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.JavaCore;
+import org.jboss.tools.common.CommonPlugin;
 
 /**
  * Constants for names of seam preferences.
@@ -44,7 +45,9 @@ import org.eclipse.jdt.core.JavaCore;
  */
 public abstract class SeverityPreferences {
 
-	public static String ENABLE_BLOCK_PREFERENCE_NAME = "enableBlock";
+	public static final String ENABLE_BLOCK_PREFERENCE_NAME = "enableBlock"; //$NON-NLS-1$
+	public static final String MAX_NUMBER_OF_MARKERS_PREFERENCE_NAME = CommonPlugin.PLUGIN_ID + ".validator.problem.markersBlock"; //$NON-NLS-1$
+	public static final int DEFAULT_MAX_NUMBER_OF_MARKERS_PER_FILE = 20;
 
 	public static final String ERROR = "error"; //$NON-NLS-1$
 	public static final String WARNING = "warning"; //$NON-NLS-1$
@@ -78,6 +81,24 @@ public abstract class SeverityPreferences {
 		}
 		String value = p.get(key, null);
 		return value != null ? value : getInstancePreference(key);
+	}
+
+	public int getMaxNumberOfProblemMarkersPerResource(IProject project) {
+		IEclipsePreferences p = getProjectPreferences(project);
+		if(p == null) {
+			return 0;
+		}
+		String value = p.get(MAX_NUMBER_OF_MARKERS_PREFERENCE_NAME, null);
+		if(value!=null) {
+			return p.getInt(MAX_NUMBER_OF_MARKERS_PREFERENCE_NAME, 0);
+		}
+		p = getInstancePreferences();
+		value = p == null ? null : p.get(MAX_NUMBER_OF_MARKERS_PREFERENCE_NAME, null);
+		if(value!=null) {
+			return p.getInt(MAX_NUMBER_OF_MARKERS_PREFERENCE_NAME, 0);
+		}
+		p = getDefaultPreferences();
+		return p.getInt(MAX_NUMBER_OF_MARKERS_PREFERENCE_NAME, 0);
 	}
 
 	public boolean isEnabled(IProject project) {
