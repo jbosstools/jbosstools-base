@@ -286,12 +286,9 @@ public class AbstractResourceMarkerTest extends TestCase {
 		return numbers.toArray(new Integer[0]);
 	}
 
-	public static int getMarkersNumberByGroupName(IResource resource, String messageGroup) {
+	public static int getMarkersNumberByGroupName(String type, IResource resource, String messageGroup) {
 		try{
-			IMarker[] markers = resource.findMarkers(MARKER_TYPE, true, IResource.DEPTH_INFINITE);
-//			for(int i=0;i<markers.length;i++){
-//				System.out.println("Marker - "+markers[i].getAttribute(IMarker.MESSAGE, ""));
-//			}
+			IMarker[] markers = resource.findMarkers(type, true, IResource.DEPTH_INFINITE);
 			int length = markers.length;
 			for (int i = 0; i < markers.length; i++) {
 				String groupName = markers[i].getAttribute("groupName", null);
@@ -304,6 +301,10 @@ public class AbstractResourceMarkerTest extends TestCase {
 			JUnitUtils.fail("Can'r get problem markers", ex);
 		}
 		return -1;
+	}
+
+	public static int getMarkersNumberByGroupName(IResource resource, String messageGroup) {
+		return getMarkersNumberByGroupName(MARKER_TYPE, resource, messageGroup);
 	}
 
 	/**
