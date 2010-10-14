@@ -48,6 +48,7 @@ import org.jboss.tools.common.el.core.resolver.ELResolver;
 import org.jboss.tools.common.el.core.resolver.ELSegment;
 import org.jboss.tools.common.el.core.resolver.ELSegmentImpl;
 import org.jboss.tools.common.el.core.resolver.ElVarSearcher;
+import org.jboss.tools.common.el.core.resolver.IRelevanceCheck;
 import org.jboss.tools.common.el.core.resolver.IVariable;
 import org.jboss.tools.common.el.core.resolver.JavaMemberELSegment;
 import org.jboss.tools.common.el.core.resolver.JavaMemberELSegmentImpl;
@@ -113,6 +114,10 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		}
 		
 		return completions;
+	}
+
+	public IRelevanceCheck createRelevanceCheck(IJavaElement element) {
+		return new DefaultJavaRelevanceCheck(element);
 	}
 
 	/*

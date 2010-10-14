@@ -12,6 +12,7 @@ package org.jboss.tools.common.el.core.resolver;
 
 import java.util.List;
 
+import org.eclipse.jdt.core.IJavaElement;
 import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.parser.ELParserFactory;
 import org.jboss.tools.common.text.TextProposal;
@@ -47,4 +48,13 @@ public interface ELResolver {
 	 * @return EL parser factory
 	 */
 	ELParserFactory getParserFactory();
+
+	/**
+	 * Creates object that will do fast check if resolution obtained from resolve method 
+	 * may include segments with this element
+	 *  
+	 * @param element
+	 * @return
+	 */
+	IRelevanceCheck createRelevanceCheck(IJavaElement element);
 }
