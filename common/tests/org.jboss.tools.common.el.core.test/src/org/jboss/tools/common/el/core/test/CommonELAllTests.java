@@ -26,6 +26,7 @@ public class CommonELAllTests {
 		suite.setName("All tests for " + PLUGIN_ID);
 		suite.addTestSuite(ELParserTest.class);
 		suite.addTestSuite(ELModelTest.class);
+		suite.addTestSuite(RelevanceCheckTest.class);
 		return suite;
 	}
 }
