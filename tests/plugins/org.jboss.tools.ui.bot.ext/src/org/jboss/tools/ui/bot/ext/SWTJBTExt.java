@@ -52,9 +52,17 @@ public class SWTJBTExt {
 	 * Dynamic version of isJBDSRun Method
 	 * @return
 	 */
-  public boolean isJBDSRun (){
+  public static boolean isJBDSRun (){
     IProduct prod = Platform.getProduct();
     return prod != null;
+  }
+  /*
+   * 
+   * check if JBoss Developer Studio is running 
+   */
+  @Deprecated
+  public static boolean isJBDSRun(SWTBot bot) {
+	  return isJBDSRun();
   }
 
 	/**
