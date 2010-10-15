@@ -17,11 +17,11 @@ import org.jboss.tools.usage.tracker.ILoggingAdapter;
  */
 public class SystemOutLogger implements ILoggingAdapter {
 
-	public void logError(String errorMessage) {
+	public void error(String errorMessage) {
 		System.out.println("[ERROR]: " + errorMessage);
 	}
 
-	public void logMessage(String message) {
+	public void debug(String message) {
 		System.out.println("[INFO]" + message);
 	}
 }
