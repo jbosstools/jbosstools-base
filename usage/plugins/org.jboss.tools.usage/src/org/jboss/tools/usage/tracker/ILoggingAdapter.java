@@ -15,8 +15,8 @@ package org.jboss.tools.usage.tracker;
  */
 public interface ILoggingAdapter {
 
-  public void logError(String errorMessage);
+  public void error(String errorMessage);
 
-  public void logMessage(String message);
+  public void debug(String message);
 
 }

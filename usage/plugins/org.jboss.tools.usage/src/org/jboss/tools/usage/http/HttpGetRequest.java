@@ -53,12 +53,12 @@ public class HttpGetRequest implements IHttpGetRequest {
 			urlConnection.connect();
 			int responseCode = getResponseCode(urlConnection);
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				loggingAdapter.logMessage(MessageFormat.format(HttpMessages.HttpGetMethod_Success, urlString, responseCode));
+				loggingAdapter.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Success, urlString, responseCode));
 			} else {
-				loggingAdapter.logError(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, urlString));
+				loggingAdapter.error(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, urlString));
 			}
 		} catch (Exception e) {
-			loggingAdapter.logMessage(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, urlString, e.toString()));
+			loggingAdapter.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, urlString, e.toString()));
 		} finally {
 //			setCookieHandler(currentCookieHandler);
 		}

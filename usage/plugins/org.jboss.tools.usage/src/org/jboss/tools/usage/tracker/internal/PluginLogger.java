@@ -30,11 +30,11 @@ public class PluginLogger implements ILoggingAdapter {
 		this.plugin = plugin;
 	}
 
-	public void logError(String message) {
+	public void error(String message) {
 		log(IStatus.ERROR, message);
 	}
 
-	public void logMessage(String message) {
+	public void debug(String message) {
 		log(IStatus.INFO, message);
 	}
 

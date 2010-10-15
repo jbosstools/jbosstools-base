@@ -41,11 +41,11 @@ public class Tracker implements ITracker {
 
 	public void trackSynchronously(IFocusPoint focusPoint) {
 		loggingAdapter
-				.logMessage(MessageFormat.format(TrackerMessages.Tracker_Synchronous, focusPoint.getTitle()));
+				.debug(MessageFormat.format(TrackerMessages.Tracker_Synchronous, focusPoint.getTitle()));
 		try {
 			httpRequest.request(getTrackingUrl(focusPoint));
 		} catch (Exception e) {
-			loggingAdapter.logError(MessageFormat.format(TrackerMessages.Tracker_Error, e.getMessage()));
+			loggingAdapter.error(MessageFormat.format(TrackerMessages.Tracker_Error, e.getMessage()));
 		}
 	}
 
@@ -54,7 +54,7 @@ public class Tracker implements ITracker {
 	}
 
 	public void trackAsynchronously(IFocusPoint focusPoint) {
-		loggingAdapter.logMessage(MessageFormat
+		loggingAdapter.debug(MessageFormat
 				.format(TrackerMessages.Tracker_Asynchronous, focusPoint.getTitle()));
 		new Thread(new TrackingRunnable(focusPoint)).start();
 	}
@@ -70,7 +70,7 @@ public class Tracker implements ITracker {
 			try {
 				httpRequest.request(getTrackingUrl(focusPoint));
 			} catch (Exception e) {
-				loggingAdapter.logError(MessageFormat.format(TrackerMessages.Tracker_Error, e.getMessage()));
+				loggingAdapter.error(MessageFormat.format(TrackerMessages.Tracker_Error, e.getMessage()));
 			}
 		}
 	}
