@@ -76,7 +76,7 @@ public class JBossRuntimeLocator {
 						}
 					});
 					boolean droolsFound = false;
-					if (files.length > 0) {
+					if (files != null && files.length > 0) {
 						String version = getImplementationVersion(root,files[0]);
 						if (version != null) {
 							version = version.substring(0,3);
