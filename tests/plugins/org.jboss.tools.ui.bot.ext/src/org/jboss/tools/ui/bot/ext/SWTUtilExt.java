@@ -53,8 +53,14 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
 /**
- * Base class for all classes using SWTBot
+ * SWTUtilExt is contains helper method for writing SWTBot tests, i.e. various delay methods
+ * and wait for jobs etc which don't directly depend on SWTBot.
  * 
+ * Note1: These methods should not reference anything from SWTBot directly, if you need to add
+ * anything like that that reference it, consider to add into SWTBotExt, SWTEclipseExt, SWTJBTExt
+ * or SWTOpenExt
+ *
+ * Note2: These method are statically accessible in any classes extending SWTTestExt 
  * @author jpeterka
  * 
  */
