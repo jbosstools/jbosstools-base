@@ -42,6 +42,9 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -565,9 +568,29 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	}
 
 	private void showConfirmDialog() {
-		String filename = logFileName.getText();
+		final String filename = logFileName.getText();
 		String message = NLS.bind(UIMessages.REPORT_PROBLEM_RESULT, filename);
-		MessageDialog.openInformation(problemDescription.getShell(), "Info", message);
+		
+		MessageDialog dialog = new MessageDialog(problemDescription.getShell(),
+				"Info",
+				null,
+				message,
+				MessageDialog.INFORMATION,
+				new String[]{UIMessages.REPORT_PROBLEM_COPY_BUTTON, "Close"},
+				1) {
+			protected void buttonPressed(int buttonId) {
+				if(buttonId == 0) {
+					Clipboard clipboard= new Clipboard(problemDescription.getShell().getDisplay());
+					try {
+						clipboard.setContents(new String[] { filename }, new Transfer[] { TextTransfer.getInstance() });
+					} finally {
+						clipboard.dispose();
+					}
+				}
+				super.buttonPressed(buttonId);
+			}
+		};
+		dialog.open();
 	}
 
 	private String formatContent(String content) {

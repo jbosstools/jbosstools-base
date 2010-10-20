@@ -30,4 +30,5 @@ public class UIMessages extends NLS {
 	public static String REPORT_PROBLEM_DESCRIPTION;
 	public static String REPORT_PROBLEM_NO_DESCRIPTION;
 	public static String REPORT_PROBLEM_RESULT;
+	public static String REPORT_PROBLEM_COPY_BUTTON;
 }
