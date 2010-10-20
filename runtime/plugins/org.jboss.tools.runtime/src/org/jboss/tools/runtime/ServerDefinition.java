@@ -12,7 +12,7 @@ package org.jboss.tools.runtime;
 
 import java.io.File;
 
-import org.jboss.tools.runtime.bean.ServerBean;
+import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
 
 /**
  * @author Snjeza

@@ -21,10 +21,9 @@ import java.util.jar.JarFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.wst.server.core.model.RuntimeLocatorDelegate;
-import org.jboss.tools.runtime.bean.ServerBean;
-import org.jboss.tools.runtime.bean.ServerBeanLoader;
-import org.jboss.tools.runtime.bean.ServerType;
+import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
+import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
+import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
 
 public class JBossRuntimeLocator {
 
@@ -59,7 +58,7 @@ public class JBossRuntimeLocator {
 			File root = path.toFile();
 			ServerBean serverBean = loader.loadFromLocation(root);
 			
-			if (!ServerType.UNKNOWN.equals(serverBean.getType())) {
+			if (!JBossServerType.UNKNOWN.equals(serverBean.getType())) {
 				serverDefinitions.add(new ServerDefinition(serverBean));
 			} else {
 				String seamVersion = getSeamVersionFromManifest(root.getAbsolutePath());
