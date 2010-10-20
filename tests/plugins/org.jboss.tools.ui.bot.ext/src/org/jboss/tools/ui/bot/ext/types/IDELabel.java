@@ -160,6 +160,7 @@ public class IDELabel {
 		public static final String DROOLS = "Drools";
 		public static final String GUVNOR = "Guvnor";		
 		public static final String SMOOKS = "Smooks";
+		public static final String JBPM = "JBoss jBPM";
 	}
 	
 	public class EntityLabel {
@@ -178,6 +179,7 @@ public class IDELabel {
 		public static final String DSL_DROOLS_FILE = "Domain Specific Language";
 		public static final String SMOOKS_CONF_FILE = "Smooks Configuration File";
 		public static final String RESOURCES_FROM_GUVNOR = "Resources from Guvnor";
+		public static final String JBPM3_PROJECT = "jBPM 3 Project";
 	}
 
 	public class JavaProjectWizard {
@@ -231,6 +233,7 @@ public class IDELabel {
 		public static final String DEBUG = "Debug";
 		public static final String GUVNOR_REPOSITORY_EXPLORING = "Guvnor Repository Exploring";
 		public static final String DROOLS = "Drools";
+		public static final String JBPM3 = "jBPM jPDL 3";
 	}
 	/**
 	 * Hibernate Console Wizard (ConsoleConfigurationCreationWizard) Labels (

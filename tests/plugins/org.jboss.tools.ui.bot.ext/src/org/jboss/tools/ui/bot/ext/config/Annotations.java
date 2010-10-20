@@ -40,9 +40,14 @@ public class Annotations {
 		 */
 		ESB esb() default @ESB( required = false);
 		/**
-		 * name of perspective to run within
+		 * optionally require JBPM runtime
 		 * @return
 		 */
+		JBPM jbpm() default @JBPM ( required = false );
+		/**
+		 * name of perspective to run within
+		 * @return
+		 */		
 		String perspective() default "";
 		/**
 		 * my default workspace is cleaned before test (attempt to close all shells and editors, closes 'Welcome' view), 
@@ -146,6 +151,28 @@ public class Annotations {
 		String operator() default "=";
 		
 	}
+	
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface JBPM {
+		/**
+		 * true if JBPM is required (default)
+		 * @return
+		 */
+		boolean required() default true;
+		/**
+		 * version of require runtime (use * for all)
+		 * @return
+		 */
+		String version() default "*";
+		/**
+		 * defines operator on runtime version, possible values (=,<,>=<=,>=,!=) default =
+		 * @return
+		 */
+		String operator() default "=";
+	}
+	
+	
 	public enum ServerState {
 		/**
 		 * server is present, no matter if runs or not

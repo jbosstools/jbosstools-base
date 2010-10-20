@@ -119,6 +119,11 @@ public abstract class RequirementBase {
 		RequirementBase req = new AddESB();
 		return req;
 	}
+	
+	public static RequirementBase createAddJBPM() {
+		RequirementBase req = new AddJBPM(); 
+		return req;
+	}
 
 	public static AddJava createAddJava() {
 		AddJava req = new AddJava();

@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ESB;
+import org.jboss.tools.ui.bot.ext.config.Annotations.JBPM;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
@@ -26,6 +27,7 @@ public class TestConfigurator {
 		public static final String SEAM = "SEAM";
 		public static final String JAVA = "JAVA";
 		public static final String ESB = "ESB";
+		public static final String JBPM = "JBPM";
 	}
 
 	public class Values {
@@ -81,6 +83,7 @@ public class TestConfigurator {
 			ex.printStackTrace();
 		}
 		// load default config by default
+		/*
 		try {
 			log.info(" * Loading default configuration first");
 			currentConfig = new TestConfiguration("default", "");
@@ -92,6 +95,7 @@ public class TestConfigurator {
 		finally {
 			log.info(" * Defaults loaded");
 		}
+		*/
 
 	}
 	/**
@@ -175,6 +179,16 @@ public class TestConfigurator {
 		}
 		return RequirementBase.createAddESB();
 	}
+	
+	private static RequirementBase getJBPMRequirement(JBPM j) {
+		if (!j.required() || currentConfig.getJBPM() == null ) {
+			return null;
+		}
+		if (!matches(currentConfig.getJBPM().version, j.operator(), j.version())) {
+			return null;
+		}
+		return RequirementBase.createAddJBPM();
+	}
 
 	/**
 	 * returns list of requirements if given class (Test) can run, all this is
@@ -213,6 +227,14 @@ public class TestConfigurator {
 			}
 			reqs.add(req);
 		}
+		if (requies.jbpm().required()) {
+			RequirementBase req = getJBPMRequirement(requies.jbpm());
+			if (req == null) {
+				return null;
+			}
+			reqs.add(req);
+		}
+		
 		if (!"".equals(requies.perspective())) {
 			reqs.add(RequirementBase.createSwitchPerspective(requies
 					.perspective()));

@@ -28,6 +28,7 @@ public class TestConfiguration {
 	private SeamBean seam;
 	private ESBBean esb;
 	private JavaBean java;
+	private JBPMBean jbpm;
 
 	public TestConfiguration(String propName, String propFile) throws Exception {
 		this.propName = propName;
@@ -55,6 +56,8 @@ public class TestConfiguration {
 		printConfig(Keys.SEAM, seam);
 		esb = ESBBean.fromString(getProperty(Keys.ESB));
 		printConfig(Keys.ESB, esb);
+		jbpm = JBPMBean.fromString(getProperty(Keys.JBPM));
+		printConfig(Keys.JBPM, jbpm);
 		
 		checkConfig();
 	}
@@ -131,5 +134,9 @@ public class TestConfiguration {
 
 	public String getPropName() {
 		return propName;
+	}
+	
+	public JBPMBean getJBPM() {
+		return jbpm;
 	}
 }

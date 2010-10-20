@@ -162,14 +162,17 @@ public class SWTEclipseExt {
 			perspectiveLabel = IDELabel.SelectPerspectiveDialog.JPA;
 			break;
 		case DEBUG:
-      perspectiveLabel = IDELabel.SelectPerspectiveDialog.DEBUG;
-      break;	
+			perspectiveLabel = IDELabel.SelectPerspectiveDialog.DEBUG;
+			break;
 		case GUVNOR_REPOSITORY_EXPLORING:
-      perspectiveLabel = IDELabel.SelectPerspectiveDialog.GUVNOR_REPOSITORY_EXPLORING;
-      break;
+			perspectiveLabel = IDELabel.SelectPerspectiveDialog.GUVNOR_REPOSITORY_EXPLORING;
+			break;
 		case DROOLS:
-      perspectiveLabel = IDELabel.SelectPerspectiveDialog.DROOLS;
-      break;
+			perspectiveLabel = IDELabel.SelectPerspectiveDialog.DROOLS;
+			break;
+		case JBPM3:
+			perspectiveLabel = IDELabel.SelectPerspectiveDialog.JBPM3;
+			break;
 		default:
 			fail("Unknown perspective to open");
 		}
@@ -503,6 +506,17 @@ public class SWTEclipseExt {
 			open.finish(wiz, IDELabel.Button.OK);
 		}
 	}
+	
+	public void addJBPMRuntime(String name, String version, String runtimeHome) {
+		// TODO - needs to be impl.
+		log.info("WARN - Adding JBPM Runtime, needs to be impl.");
+	}
+	
+	public void removeJBPMRuntime(String name) {
+		// TODO - needs to be impl
+		log.info("WARN - Removing JBPM Runtime, needs to be impl.");	
+	}
+	
 	public void addESBRuntime(String name, String version, String runtimeHome ) {
 		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossToolsJBossESBRuntimes.LABEL);
 		

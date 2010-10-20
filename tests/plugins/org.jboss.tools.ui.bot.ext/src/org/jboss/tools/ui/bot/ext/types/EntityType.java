@@ -22,7 +22,7 @@ import java.util.List;
 public enum EntityType {
 	HIBERNATE_MAPPING_FILE, JAVA_PROJECT, JAVA_CLASS, HIBERNATE_REVERSE_FILE, HIBERNATE_CONSOLE, 
 	HIBERNATE_CONFIGURATION_FILE, STRUTS_PROJECT, JPA_PROJECT, DROOLS_PROJECT, DROOLS_RULE,
-	GUIDED_DROOLS_RULE,DSL_DROOLS_FILE,RESOURCES_FROM_GUVNOR,SMOOKS_CONFIG;
+	GUIDED_DROOLS_RULE,DSL_DROOLS_FILE,RESOURCES_FROM_GUVNOR,SMOOKS_CONFIG, JBPM3_PROJECT;
 		
 	public List<String> getGroupsLabels() {
 	  List<String> groupLabel = new LinkedList<String>();
@@ -42,6 +42,7 @@ public enum EntityType {
 		case DSL_DROOLS_FILE: groupLabel.add(IDELabel.EntityGroup.DROOLS);break;
 		case RESOURCES_FROM_GUVNOR: groupLabel.add(IDELabel.EntityGroup.GUVNOR);break;
 		case SMOOKS_CONFIG: groupLabel.add(IDELabel.EntityGroup.SMOOKS);break;
+		case JBPM3_PROJECT: groupLabel.add(IDELabel.EntityGroup.JBPM);break;
 		default: fail("Unknown Entity Type");
 		}
 		
@@ -70,6 +71,7 @@ public enum EntityType {
 		case DSL_DROOLS_FILE:  entityLabel = IDELabel.EntityLabel.DSL_DROOLS_FILE; break;		
 		case RESOURCES_FROM_GUVNOR:  entityLabel = IDELabel.EntityLabel.RESOURCES_FROM_GUVNOR; break;
 		case SMOOKS_CONFIG: entityLabel = IDELabel.EntityLabel.SMOOKS_CONF_FILE; break;
+		case JBPM3_PROJECT: entityLabel = IDELabel.EntityLabel.JBPM3_PROJECT; break;
 		default: fail("Unknown Entity Type");
 		}		
 		
