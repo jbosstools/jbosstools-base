@@ -26,4 +26,8 @@ public class UIMessages extends NLS {
 	public static String PROPERTIES_EDITOR_EXPRESSION;
 	public static String PROPERTIES_EDITOR_ILLEGAL_NAME_EXPRESSION;
 	public static String PROPERTIES_EDITOR_ILLEGAL_VALUE_EXPRESSION;
+	
+	public static String REPORT_PROBLEM_DESCRIPTION;
+	public static String REPORT_PROBLEM_NO_DESCRIPTION;
+	public static String REPORT_PROBLEM_RESULT;
 }

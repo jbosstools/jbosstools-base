@@ -37,6 +37,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -57,6 +59,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.about.ISystemSummarySection;
@@ -74,18 +77,21 @@ import org.jboss.tools.common.model.ui.ModelUIImages;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.attribute.XAttributeSupport;
 import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAdapter;
+import org.jboss.tools.common.model.ui.messages.UIMessages;
 import org.jboss.tools.common.model.ui.widgets.ReferenceListener;
 import org.jboss.tools.common.model.ui.widgets.TextAndReferenceComponent;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView;
+import org.jboss.tools.common.model.ui.wizards.query.IQueryDialog;
 import org.jboss.tools.common.reporting.ProblemReportingHelper;
 
 public class ReportProblemWizard extends AbstractQueryWizard {
 
 	public ReportProblemWizard() {
 		setView(new ReportProblemWizardView());
-		
+		getView().setMessage(UIMessages.REPORT_PROBLEM_DESCRIPTION);
 	}
+
 }
 
 /**
@@ -192,11 +198,22 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		getCommandBar().setEnabled(OK, !isMessageEmpty());
 	}
 
+	void validate() {
+		if(problemDescription == null || problemDescription.isDisposed()) return;
+		String text = problemDescription.getText();
+		if(text == null || text.trim().length() == 0) {
+			setErrorMessage(UIMessages.REPORT_PROBLEM_NO_DESCRIPTION);
+		} else {
+			setErrorMessage(null);
+			setMessage(UIMessages.REPORT_PROBLEM_DESCRIPTION);
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView#getPreferredSize()
 	 */
 	public Point getPreferredSize() {
-		return new Point(400, 500);		
+		return new Point(750, 500);		
 	}
 
 	/* (non-Javadoc)
@@ -456,6 +473,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		problemDescription.setLayoutData(new GridData(GridData.FILL_BOTH));
 		problemDescription.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
+				validate();
 				updateBar();
 			}
 		});
@@ -471,6 +489,11 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		infoSupport.setLayout(getDefaultSupportLayout());
 		Control c = infoSupport.createControl(g);
 		c.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		infoSupport.addPropertyChangeListener(new PropertyChangeListener() {			
+			public void propertyChange(PropertyChangeEvent evt) {
+				validate();				
+			}
+		});
 	}
 
 	private void createStackTracesLabelControl(Composite parent) {
@@ -529,6 +552,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 			// Submit.getInstance().submit(reportText, addRedHatLog);
 			// ProblemReportingHelper.buffer.report(text, email, other,
 			// addRedHatLog);
+			showConfirmDialog();
 		} catch (IOException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
@@ -540,6 +564,11 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 		}
 	}
 
+	private void showConfirmDialog() {
+		String filename = logFileName.getText();
+		String message = NLS.bind(UIMessages.REPORT_PROBLEM_RESULT, filename);
+		MessageDialog.openInformation(problemDescription.getShell(), "Info", message);
+	}
 
 	private String formatContent(String content) {
 		StringBuffer sb = new StringBuffer();
