@@ -12,7 +12,6 @@ package org.jboss.tools.runtime.preferences;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -59,12 +58,12 @@ import org.eclipse.wst.server.core.internal.IMemento;
 import org.eclipse.wst.server.core.internal.Server;
 import org.eclipse.wst.server.core.internal.ServerPlugin;
 import org.eclipse.wst.server.core.internal.XMLMemento;
-import org.jboss.tools.jbpm.preferences.JbpmInstallation;
-import org.jboss.tools.jbpm.preferences.PreferencesManager;
 import org.jboss.tools.runtime.Activator;
 import org.jboss.tools.runtime.JBossRuntimeLocator;
 import org.jboss.tools.runtime.JBossRuntimeStartup;
 import org.jboss.tools.runtime.ServerDefinition;
+import org.jboss.tools.runtime.JBossRuntimeStartup.IJBossRuntimePersistanceHandler;
+import org.jboss.tools.runtime.handlers.JbpmHandler;
 
 /**
  * @author Snjeza
@@ -72,8 +71,6 @@ import org.jboss.tools.runtime.ServerDefinition;
  */
 public class RuntimePreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
-
-	private static final String SERVER_DATA_FILE = "servers.xml";
 
 	private static final String LASTPATH = "lastPath";
 	public static final String SEAM_PREFERENCES_ID = "org.jboss.tools.common.model.ui.seam"; //$NON-NLS-1$
@@ -154,8 +151,10 @@ public class RuntimePreferencePage extends PreferencePage implements
 	}
 
 	private void exportRuntimes() {
-		exportServers();
-		exportJbpms();
+		IJBossRuntimePersistanceHandler[] exportHandlers = JBossRuntimeStartup.getPersistanceHandlers();
+		for( int i = 0; i < exportHandlers.length; i++ ) {
+			exportHandlers[i].exportRuntimes();
+		}
 		PreferencesExportWizard wizard = new PreferencesExportWizard();
 		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection());
 		WizardDialog dialog = new WizardDialog(getShell(), wizard);
@@ -163,36 +162,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		dialog.open();
 	}
 	
-	private void exportJbpms() {
-		File file = org.jboss.tools.jbpm.Activator.getDefault().getStateLocation().append("jbpm-installations.xml").toFile();
-		if (!file.exists()) {
-			Activator.getDefault().getPreferenceStore().setValue(Activator.JBPMS, "");
-			return;
-		}
-		try {
-			XMLMemento memento = (XMLMemento) XMLMemento.loadMemento(file.getAbsolutePath());
-			String xmlString = memento.saveToString();
-			Activator.getDefault().getPreferenceStore().setValue(Activator.JBPMS, xmlString);
-			Activator.getDefault().savePluginPreferences();
-		} catch (Exception e) {
-			Activator.log (e);
-		}
-	}
-
 	private void exportServers() {
-		String filename = ServerPlugin.getInstance().getStateLocation().append(SERVER_DATA_FILE).toOSString();
-		if ( !(new File(filename).exists()) ) {
-			Activator.getDefault().getPreferenceStore().setValue(Activator.SERVERS, "");
-			return;
-		}
-		try {
-			XMLMemento memento = (XMLMemento) XMLMemento.loadMemento(filename);
-			String xmlString = memento.saveToString();
-			Activator.getDefault().getPreferenceStore().setValue(Activator.SERVERS, xmlString);
-			Activator.getDefault().savePluginPreferences();
-		} catch (Exception e) {
-			Activator.log (e);
-		}
 	}
 
 	private void importRuntimes() {
@@ -202,69 +172,13 @@ public class RuntimePreferencePage extends PreferencePage implements
 		dialog.create();
 		int ok = dialog.open();
 		if (ok == Window.OK) {
-			String jbpms = Activator.getDefault().getPreferenceStore().getString(Activator.JBPMS);
-			if (jbpms != null && jbpms.trim().length() > 0) {
-				loadJBPMInstalations(jbpms);
-			}
-			String servers = Activator.getDefault().getPreferenceStore().getString(Activator.SERVERS);
-			if (servers != null && servers.trim().length() > 0) {
-				loadServerInstalations(servers);
+			IJBossRuntimePersistanceHandler[] importHandlers = JBossRuntimeStartup.getPersistanceHandlers();
+			for( int i = 0; i < importHandlers.length; i++ ) {
+				importHandlers[i].importRuntimes();
 			}
 		}
 	}
 	
-	/**
-	 * @param servers
-	 */
-	private void loadServerInstalations(String servers) {
-		InputStream in = null;
-		try {
-			in = new ByteArrayInputStream(servers.getBytes("UTF-8"));
-			IMemento memento = XMLMemento.loadMemento(in);
-			
-			IMemento[] children = memento.getChildren("server");
-			int size = children.length;
-			
-			for (int i = 0; i < size; i++) {
-				ServerEx server = new ServerEx(null);
-				server.loadFromMemento(children[i], null);
-				IServerWorkingCopy wc = server.createWorkingCopy();
-				wc.save(false, null);
-			}
-		} catch (Exception e) {
-			Activator.log(e);
-		}
-	}
-
-	/**
-	 * @param jbpms
-	 */
-	private void loadJBPMInstalations(String jbpms) {
-		InputStream in = null;
-		try {
-			in = new ByteArrayInputStream(jbpms.getBytes("UTF-8"));
-			IMemento memento = XMLMemento.loadMemento(in);
-			IMemento[] children = memento.getChildren("installation");
-			for (int i = 0; i < children.length; i++) {
-				JbpmInstallation installation = new JbpmInstallation();
-				installation.name = children[i].getString("name");
-				installation.location = children[i].getString("location");
-				installation.version = children[i].getString("version");
-				PreferencesManager.getInstance().getJbpmInstallationMap()
-						.put(installation.name, installation);
-			}
-		} catch (Exception e) {
-			Activator.log(e);
-		} finally {
-			try {
-				if (in != null) {
-					in.close();
-				}
-			} catch (IOException e) {
-			}
-		}
-	}
-
 	private Button createButton(Composite parent, String labelText, String buttonText) {
 		GridLayout layout;
 		Composite composite = new Composite(parent,SWT.NONE);	
@@ -384,21 +298,5 @@ public class RuntimePreferencePage extends PreferencePage implements
 			((GridData)gd).widthHint= getButtonWidthHint(button);
 			((GridData)gd).horizontalAlignment = GridData.FILL;
 		}
-	}
-	
-	private static class ServerEx extends Server {
-
-		/**
-		 * @param file
-		 */
-		public ServerEx(IFile file) {
-			super(file);
-		}
-		
-		@Override
-		public void loadFromMemento(IMemento memento, IProgressMonitor monitor) {
-			super.loadFromMemento(memento, monitor);
-		}
-		
 	}
 }

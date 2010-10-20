@@ -25,7 +25,7 @@ import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
 
-public class JBossRuntimeLocator {
+public class JBossRuntimeLocator implements IJBossRuntimePluginConstants {
 
 	public static final String JBPM3 = "jBPM3";
 	
@@ -63,7 +63,7 @@ public class JBossRuntimeLocator {
 			} else {
 				String seamVersion = getSeamVersionFromManifest(root.getAbsolutePath());
 				if (seamVersion != null) {
-					serverDefinitions.add(new ServerDefinition(root.getName(), seamVersion, JBossRuntimeStartup.SEAM, root.getAbsoluteFile()));
+					serverDefinitions.add(new ServerDefinition(root.getName(), seamVersion, SEAM, root.getAbsoluteFile()));
 				} else {
 					String[] files = root.list(new FilenameFilter() {
 						
@@ -79,7 +79,7 @@ public class JBossRuntimeLocator {
 						String version = getImplementationVersion(root,files[0]);
 						if (version != null) {
 							version = version.substring(0,3);
-							serverDefinitions.add(new ServerDefinition(root.getName(), version, JBossRuntimeStartup.DROOLS, root.getAbsoluteFile()));
+							serverDefinitions.add(new ServerDefinition(root.getName(), version, DROOLS, root.getAbsoluteFile()));
 							droolsFound = true;
 						}
 					}
@@ -93,7 +93,7 @@ public class JBossRuntimeLocator {
 							} else if (isJbpm4(root.getAbsolutePath())) {
 								version = JBPM4;
 							}
-							serverDefinitions.add(new ServerDefinition(root.getName(), version, JBossRuntimeStartup.JBPM, root.getAbsoluteFile()));
+							serverDefinitions.add(new ServerDefinition(root.getName(), version, JBPM, root.getAbsoluteFile()));
 							jbpmFound = true;
 						}
 					}

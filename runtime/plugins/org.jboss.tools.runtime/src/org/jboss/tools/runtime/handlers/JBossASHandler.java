@@ -1,0 +1,404 @@
+/*******************************************************************************
+ * Copyright (c) 2010 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.runtime.handlers;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
+import java.util.Properties;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.datatools.connectivity.ConnectionProfileConstants;
+import org.eclipse.datatools.connectivity.ConnectionProfileException;
+import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.datatools.connectivity.db.generic.IDBConnectionProfileConstants;
+import org.eclipse.datatools.connectivity.db.generic.IDBDriverDefinitionConstants;
+import org.eclipse.datatools.connectivity.drivers.DriverInstance;
+import org.eclipse.datatools.connectivity.drivers.DriverManager;
+import org.eclipse.datatools.connectivity.drivers.IDriverMgmtConstants;
+import org.eclipse.datatools.connectivity.drivers.IPropertySet;
+import org.eclipse.datatools.connectivity.drivers.PropertySetImpl;
+import org.eclipse.datatools.connectivity.drivers.models.TemplateDescriptor;
+import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.wst.server.core.IRuntime;
+import org.eclipse.wst.server.core.IRuntimeType;
+import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.IServerType;
+import org.eclipse.wst.server.core.IServerWorkingCopy;
+import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.ServerUtil;
+import org.eclipse.wst.server.core.internal.IMemento;
+import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
+import org.eclipse.wst.server.core.internal.Server;
+import org.eclipse.wst.server.core.internal.ServerPlugin;
+import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
+import org.eclipse.wst.server.core.internal.XMLMemento;
+import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
+import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
+import org.jboss.tools.runtime.Activator;
+import org.jboss.tools.runtime.IJBossRuntimePluginConstants;
+import org.jboss.tools.runtime.JBossRuntimeStartup.IJBossRuntimePersistanceHandler;
+import org.jboss.tools.runtime.Messages;
+import org.jboss.tools.runtime.ServerDefinition;
+
+public class JBossASHandler implements IJBossRuntimePersistanceHandler, IJBossRuntimePluginConstants {
+
+	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
+		createInitialJBossServer();
+		createJBossServerFromDefinitions(serverDefinitions);
+	}
+	
+	public static void createInitialJBossServer(){
+		try {
+			String pluginLocation = FileLocator.resolve(Activator.getDefault().getBundle().getEntry("/")).getPath(); //$NON-NLS-1$
+			File jbossASDir = new File(pluginLocation, JBOSS_EAP_HOME);
+			if (!jbossASDir.isDirectory()) {
+				Location configLocation = Platform.getConfigurationLocation();
+				URL configURL = configLocation.getURL();
+				String configuration = FileLocator.resolve(configURL).getPath();
+				jbossASDir = new File(configuration, JBOSS_EAP_HOME_CONFIGURATION).getCanonicalFile();
+			} else {
+				jbossASDir = jbossASDir.getCanonicalFile();
+			}
+			if (jbossASDir.isDirectory()) {
+				int index = getJBossASVersion(jbossASDir);
+				createJBossServer(jbossASDir,index, "jboss-eap", "jboss-eap " + RUNTIME); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		} catch (IOException e) {
+			Activator.log(e,Messages.JBossRuntimeStartup_Cannot_create_new_JBoss_Server);
+		}
+	}
+	public static void createJBossServerFromDefinitions(List<ServerDefinition> serverDefinitions) {
+		for (ServerDefinition serverDefinition:serverDefinitions) {
+			String type = serverDefinition.getType();
+			if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || SOA_P_STD.equals(type) || EWP.equals(type)) {
+				File asLocation = new File(serverDefinition.getLocation(), "jboss-as");
+				if(SOA_P_STD.equals(type)) {
+					asLocation = new File(serverDefinition.getLocation(),"jboss-esb"); //$NON-NLS-1$					
+				} else if(EWP.equals(type)){
+					asLocation = new File(serverDefinition.getLocation(),"jboss-as-web"); //$NON-NLS-1$
+				}
+				if (asLocation.isDirectory()) {
+					String name = serverDefinition.getName();
+					String runtimeName = name + " " + RUNTIME; //$NON-NLS-1$
+					int index = getJBossASVersion(asLocation);
+					createJBossServer(asLocation,index,name, runtimeName);
+				}
+			} else if (AS.equals(type)){
+				String version = serverDefinition.getVersion();
+				int index = 2;
+				if ("3.2".equals(version)) { //$NON-NLS-1$
+					index = 0;
+				} else if ("4.0".equals(version)) { //$NON-NLS-1$
+					index = 1;
+				} else if ("4.2".equals(version)) { //$NON-NLS-1$
+					index = 2;
+				} else if ("5.0".equals(version)) { //$NON-NLS-1$
+					index = 3;
+				} else if ("5.1".equals(version)) { //$NON-NLS-1$
+					index = 4;
+				} else if ("6.0".equals(version)) { //$NON-NLS-1$
+					index = 5;
+				}
+				createJBossServer(serverDefinition.getLocation(),index,serverDefinition.getName(),serverDefinition.getName() + " " + RUNTIME); //$NON-NLS-1$
+			}
+		}	
+	}
+
+	private static int getJBossASVersion(File asLocation) {
+		int index = -1;
+		String fullVersion = new ServerBeanLoader().getFullServerVersion(new File(asLocation, JBossServerType.AS.getSystemJarPath()));
+		if(fullVersion != null ) {
+			String version = fullVersion.substring(0, 3);
+			if ("4.3".equals(version)) { //$NON-NLS-1$
+				index = 6;
+			} else if ("5.0".equals(version)) { //$NON-NLS-1$
+				index = 7;
+			} else if ("5.1".equals(version)) { //$NON-NLS-1$
+				// FIXME - this needs to be changed when adding a new runtime type for JBoss EAP 5.1
+				index = 7;
+			} 
+		}
+		return index;
+	}
+
+	private static void createJBossServer(File asLocation, int index, String name, String runtimeName) {
+		if (!asLocation.isDirectory() || index==-1) {
+			return;
+		}
+		IPath jbossAsLocationPath = new Path(asLocation.getAbsolutePath());
+
+		IServer[] servers = ServerCore.getServers();
+		for (int i = 0; i < servers.length; i++) {
+			IRuntime runtime = servers[i].getRuntime();
+			if(runtime != null && runtime.getLocation().equals(jbossAsLocationPath)) {
+				return;
+			}
+		}
+
+		IRuntime runtime = null;
+		IRuntime[] runtimes = ServerCore.getRuntimes();
+		for (int i = 0; i < runtimes.length; i++) {
+			if (runtimes[0].getLocation().equals(jbossAsLocationPath)) {
+				runtime = runtimes[0].createWorkingCopy();
+				break;
+			}
+		}
+
+		IProgressMonitor progressMonitor = new NullProgressMonitor();
+		try {
+			if (runtime == null) {
+				runtime = createRuntime(runtimeName, asLocation.getAbsolutePath(), progressMonitor, index);
+			}
+			if (runtime != null) {
+				createServer(progressMonitor, runtime, index, name);
+			}
+
+			createDriver(asLocation.getAbsolutePath(), index);
+		} catch (CoreException e) {
+			Activator.log(e,Messages.JBossRuntimeStartup_Cannot_create_new_JBoss_Server);
+		} catch (ConnectionProfileException e) {
+			Activator.log(e,Messages.JBossRuntimeStartup_Cannott_create_new_DTP_Connection_Profile);
+		}
+	}
+	/**
+	 * Creates new JBoss AS Runtime, Server and hsqldb driver
+	 * @param jbossASLocation location of JBoss Server
+	 * @param progressMonitor to report progress
+	 * @return server working copy
+	 * @throws CoreException
+	 * @throws ConnectionProfileException
+	 */
+//	public static IServerWorkingCopy initJBossAS(String jbossASLocation, IProgressMonitor progressMonitor) throws CoreException, ConnectionProfileException {
+//		IRuntime runtime = createRuntime(null, jbossASLocation, progressMonitor, 2);
+//		IServerWorkingCopy server = null;
+//		if (runtime != null) {
+//			server = createServer(progressMonitor, runtime, 2, null);
+//		}
+//		createDriver(jbossASLocation);
+//		return server;
+//	}
+
+	/**
+	 * Creates new JBoss AS Runtime
+	 * @param jbossASLocation location of JBoss AS
+	 * @param progressMonitor
+	 * @return runtime working copy
+	 * @throws CoreException
+	 */
+	private static IRuntime createRuntime(String runtimeName, String jbossASLocation, IProgressMonitor progressMonitor, int index) throws CoreException {
+		IRuntimeWorkingCopy runtime = null;
+		String type = null;
+		String version = null;
+		String runtimeId = null;
+		IPath jbossAsLocationPath = new Path(jbossASLocation);
+		IRuntimeType[] runtimeTypes = ServerUtil.getRuntimeTypes(type, version, JBOSS_AS_RUNTIME_TYPE_ID[index]);
+		if (runtimeTypes.length > 0) {
+			runtime = runtimeTypes[0].createRuntime(runtimeId, progressMonitor);
+			runtime.setLocation(jbossAsLocationPath);
+			if(runtimeName!=null) {
+				runtime.setName(runtimeName);				
+			}
+//			to fix https://jira.jboss.org/jira/browse/JBDS-852 VM attributes initialization below was commented
+//			IVMInstall defaultVM = JavaRuntime.getDefaultVMInstall();
+			// IJBossServerRuntime.PROPERTY_VM_ID
+//			((RuntimeWorkingCopy) runtime).setAttribute("PROPERTY_VM_ID", defaultVM.getId()); //$NON-NLS-1$
+			// IJBossServerRuntime.PROPERTY_VM_TYPE_ID
+//			((RuntimeWorkingCopy) runtime).setAttribute("PROPERTY_VM_TYPE_ID", defaultVM.getVMInstallType().getId()); //$NON-NLS-1$
+			// IJBossServerRuntime.PROPERTY_CONFIGURATION_NAME
+			((RuntimeWorkingCopy) runtime).setAttribute("org.jboss.ide.eclipse.as.core.runtime.configurationName", JBOSS_AS_DEFAULT_CONFIGURATION_NAME); //$NON-NLS-1$
+
+			return runtime.save(false, progressMonitor);
+		}
+		return runtime;
+	}
+
+	/**
+	 * Creates new JBoss Server
+	 * @param progressMonitor
+	 * @param runtime parent JBoss AS Runtime
+	 * @return server working copy
+	 * @throws CoreException
+	 */
+	private static IServerWorkingCopy createServer(IProgressMonitor progressMonitor, IRuntime runtime, int index, String name) throws CoreException {
+		if (name == null) {
+			name = JBOSS_AS_NAME[index];
+		}
+		IServer[] servers = ServerCore.getServers();
+		for (IServer server:servers) {
+			if (name.equals(server.getName()) ) {
+				return null;
+			}
+		}
+		IServerType serverType = ServerCore.findServerType(JBOSS_AS_TYPE_ID[index]);
+		IServerWorkingCopy server = serverType.createServer(null, null, runtime, progressMonitor);
+
+		server.setHost(JBOSS_AS_HOST);
+		server.setName(name);
+		
+		// JBossServer.DEPLOY_DIRECTORY
+		String deployVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("deploy").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
+		((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.deployDirectory", deployVal); //$NON-NLS-1$
+
+		// IDeployableServer.TEMP_DEPLOY_DIRECTORY
+		String deployTmpFolderVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("tmp").append("jbosstoolsTemp").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.tempDeployDirectory", deployTmpFolderVal); //$NON-NLS-1$
+
+		// If we'd need to set up a username / pw for JMX, do it here.
+//		((ServerWorkingCopy)serverWC).setAttribute(JBossServer.SERVER_USERNAME, authUser);
+//		((ServerWorkingCopy)serverWC).setAttribute(JBossServer.SERVER_PASSWORD, authPass);
+
+		server.save(false, progressMonitor);
+		return server;
+	}
+
+	/**
+	 * Creates HSQL DB Driver
+	 * @param jbossASLocation location of JBoss AS
+	 * @param index 
+	 * @throws ConnectionProfileException
+	 * @return driver instance
+	 */
+	private static void createDriver(String jbossASLocation, int index) throws ConnectionProfileException {
+		if(ProfileManager.getInstance().getProfileByName(DEFAULT_DS) != null) {
+			// Don't create the driver a few times
+			return;
+		}
+		String driverPath;
+		try {
+			driverPath = new File(jbossASLocation + JBOSS_AS_HSQL_DRIVER_LOCATION[index]).getCanonicalPath(); //$NON-NLS-1$
+		} catch (IOException e) {
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, Messages.JBossRuntimeStartup_Cannott_create_new_HSQL_DB_Driver, e));
+			return;
+		}
+
+		DriverInstance driver = DriverManager.getInstance().getDriverInstanceByName(HSQL_DRIVER_NAME);
+		if (driver == null) {
+			TemplateDescriptor descr = TemplateDescriptor.getDriverTemplateDescriptor(HSQL_DRIVER_TEMPLATE_ID);
+			IPropertySet instance = new PropertySetImpl(HSQL_DRIVER_NAME, HSQL_DRIVER_DEFINITION_ID);
+			instance.setName(HSQL_DRIVER_NAME);
+			instance.setID(HSQL_DRIVER_DEFINITION_ID);
+			Properties props = new Properties();
+
+			IConfigurationElement[] template = descr.getProperties();
+			for (int i = 0; i < template.length; i++) {
+				IConfigurationElement prop = template[i];
+				String id = prop.getAttribute("id"); //$NON-NLS-1$
+
+				String value = prop.getAttribute("value"); //$NON-NLS-1$
+				props.setProperty(id, value == null ? "" : value); //$NON-NLS-1$
+			}
+			props.setProperty(DTP_DB_URL_PROPERTY_ID, "jdbc:hsqldb:."); //$NON-NLS-1$
+			props.setProperty(IDriverMgmtConstants.PROP_DEFN_TYPE, descr.getId());
+			props.setProperty(IDriverMgmtConstants.PROP_DEFN_JARLIST, driverPath);
+
+			instance.setBaseProperties(props);
+			DriverManager.getInstance().removeDriverInstance(instance.getID());
+			System.gc();
+			DriverManager.getInstance().addDriverInstance(instance);
+		}
+
+		driver = DriverManager.getInstance().getDriverInstanceByName(HSQL_DRIVER_NAME);
+		if (driver != null && ProfileManager.getInstance().getProfileByName(DEFAULT_DS) == null) { //$NON-NLS-1$
+			// create profile
+			Properties props = new Properties();
+			props.setProperty(ConnectionProfileConstants.PROP_DRIVER_DEFINITION_ID, HSQL_DRIVER_DEFINITION_ID);
+			props.setProperty(IDBConnectionProfileConstants.CONNECTION_PROPERTIES_PROP_ID, ""); //$NON-NLS-1$
+			props.setProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID));
+			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID,	driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID));
+			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID));
+			props.setProperty(IDBDriverDefinitionConstants.DATABASE_NAME_PROP_ID, "Default"); //$NON-NLS-1$
+			props.setProperty(IDBDriverDefinitionConstants.PASSWORD_PROP_ID, ""); //$NON-NLS-1$
+			props.setProperty(IDBConnectionProfileConstants.SAVE_PASSWORD_PROP_ID, "false"); //$NON-NLS-1$
+			props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID));
+			props.setProperty(IDBDriverDefinitionConstants.URL_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.URL_PROP_ID));
+
+			ProfileManager.getInstance().createProfile(DEFAULT_DS,	Messages.JBossRuntimeStartup_The_JBoss_AS_Hypersonic_embedded_database, HSQL_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		
+	}
+
+	public void importRuntimes() {
+		String servers = Activator.getDefault().getPreferenceStore().getString(Activator.SERVERS);
+		if (servers != null && servers.trim().length() > 0) {
+			loadServerInstalations(servers);
+		}
+	}
+	/**
+	 * @param servers
+	 */
+	private void loadServerInstalations(String servers) {
+		InputStream in = null;
+		try {
+			in = new ByteArrayInputStream(servers.getBytes("UTF-8"));
+			IMemento memento = XMLMemento.loadMemento(in);
+			
+			IMemento[] children = memento.getChildren("server");
+			int size = children.length;
+			
+			for (int i = 0; i < size; i++) {
+				ServerEx server = new ServerEx(null);
+				server.loadFromMemento(children[i], null);
+				IServerWorkingCopy wc = server.createWorkingCopy();
+				wc.save(false, null);
+			}
+		} catch (Exception e) {
+			Activator.log(e);
+		}
+	}
+
+	private static final String SERVER_DATA_FILE = "servers.xml";
+	public void exportRuntimes() {
+		String filename = ServerPlugin.getInstance().getStateLocation().append(SERVER_DATA_FILE).toOSString();
+		if ( !(new File(filename).exists()) ) {
+			Activator.getDefault().getPreferenceStore().setValue(Activator.SERVERS, "");
+			return;
+		}
+		try {
+			XMLMemento memento = (XMLMemento) XMLMemento.loadMemento(filename);
+			String xmlString = memento.saveToString();
+			Activator.getDefault().getPreferenceStore().setValue(Activator.SERVERS, xmlString);
+			Activator.getDefault().savePluginPreferences();
+		} catch (Exception e) {
+			Activator.log (e);
+		}
+	}
+	private static class ServerEx extends Server {
+
+		/**
+		 * @param file
+		 */
+		public ServerEx(IFile file) {
+			super(file);
+		}
+		
+		@Override
+		public void loadFromMemento(IMemento memento, IProgressMonitor monitor) {
+			super.loadFromMemento(memento, monitor);
+		}
+		
+	}
+}

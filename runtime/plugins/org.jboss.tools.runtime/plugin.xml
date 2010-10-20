@@ -28,7 +28,7 @@
       <transfer
             id="org.jboss.tools.runtime.jbossruntime"
             icon="$nl$/icons/jboss.gif"
-            name="JBoss Runtimes">
+            name="%JBoss_Runtimes">
          <mapping
                scope="instance">
             <entry
@@ -56,9 +56,7 @@
                node="org.jboss.ide.eclipse.as.ui">
             </entry>
          </mapping>
-         <description>
-            	Export JBoss Runtimes
-		 </description>
+         <description>%ImportExportJBossRuntimes</description>
       </transfer>
    </extension>
    <!--
