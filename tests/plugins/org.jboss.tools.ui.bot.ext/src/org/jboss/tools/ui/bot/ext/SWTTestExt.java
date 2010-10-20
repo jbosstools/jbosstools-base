@@ -48,6 +48,14 @@ public class SWTTestExt extends SWTBotTestCase{
 	 */
 	public static final ConfiguredState configuredState = new ConfiguredState();
 	
+	public static Properties properties;
+	/**
+	 * Get properties for tests
+	 * @param key
+	 */
+	public static String getProperty(String key) {
+		return util.getValue(properties,key);
+	}	
 	static {
 		System.setProperty("org.eclipse.swtbot.playback.delay","10");
 	}
