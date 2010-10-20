@@ -43,6 +43,8 @@ public class TestConfigurator {
 	public static Properties multiProperties = new Properties();
 	public static TestConfiguration currentConfig;
 	static {
+		boolean loadDefault = true;
+		
 		try {
 			// try to load from file first
 			String propFile = System.getProperty(SWTBOT_TEST_PROPERTIES_FILE,
@@ -55,6 +57,7 @@ public class TestConfigurator {
 					.info("Loading exeternaly provided multi-configuration file '"
 							+ propMultiFile + "'");
 					multiProperties.load(new FileInputStream(propMultiFile));
+					loadDefault = false;
 				}
 				else {
 					throw new IOException(SWTBOT_TEST_PROPERTIES_MULTI_FILE + " "
@@ -67,6 +70,7 @@ public class TestConfigurator {
 					.info("Loading exeternaly configuration file '"
 							+ propFile + "'");
 					multiProperties.put("Default", propFile);
+					loadDefault = false;					
 				}
 				else {
 					throw new IOException(SWTBOT_TEST_PROPERTIES_FILE + " "
@@ -75,27 +79,27 @@ public class TestConfigurator {
 			}
 			else {
 				log.info("No configuration property passed, using default");
-				multiProperties.put(SWTBOT_TEST_PROPERTIES_FILE, "");
-
+				multiProperties.put(SWTBOT_TEST_PROPERTIES_FILE, "");			
 			}
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		// load default config by default
-		/*
-		try {
-			log.info(" * Loading default configuration first");
-			currentConfig = new TestConfiguration("default", "");
-			
-		} catch (Exception e) {
-			// log only message, nothing 
-			log.error(e.getMessage());
+		
+		if (loadDefault) {
+			// load default config by default
+			try {
+				log.info(" * Loading default configuration first");
+				currentConfig = new TestConfiguration("default", "");
+				
+			} catch (Exception e) {
+				// log only message, nothing 
+				log.error(e.getMessage());
+			}
+			finally {
+				log.info(" * Defaults loaded");
+			}
 		}
-		finally {
-			log.info(" * Defaults loaded");
-		}
-		*/
 
 	}
 	/**
