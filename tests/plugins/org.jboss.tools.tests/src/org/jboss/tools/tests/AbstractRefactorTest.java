@@ -14,6 +14,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
+import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.eclipse.ltk.core.refactoring.RefactoringStatusEntry;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.ltk.core.refactoring.participants.MoveArguments;
 import org.eclipse.ltk.core.refactoring.participants.MoveParticipant;
@@ -22,7 +24,6 @@ import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
 import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
 import org.eclipse.text.edits.MultiTextEdit;
-import org.eclipse.text.edits.TextEdit;
 import org.jboss.tools.test.util.JobUtils;
 
 public class AbstractRefactorTest extends TestCase{
@@ -38,8 +39,25 @@ public class AbstractRefactorTest extends TestCase{
 		checkBeforeRefactoring(changeList);
 
 		// Rename
-		processor.checkInitialConditions(new NullProgressMonitor());
-		processor.checkFinalConditions(new NullProgressMonitor(), null);
+		RefactoringStatus status = processor.checkInitialConditions(new NullProgressMonitor());
+		
+		RefactoringStatusEntry[] entries = status.getEntries();
+		for(RefactoringStatusEntry entry : entries){
+			System.out.println("Refactor status - "+entry.getMessage());
+		}
+		
+		assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
+		
+		status = processor.checkFinalConditions(new NullProgressMonitor(), null);
+		
+		entries = status.getEntries();
+		for(RefactoringStatusEntry entry : entries){
+			System.out.println("Refactor status - "+entry.getMessage());
+		}
+		
+		assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
+		
+		
 		CompositeChange rootChange = (CompositeChange)processor.createChange(new NullProgressMonitor());
 		
 		checkChanges(rootChange, changeList);
@@ -53,8 +71,18 @@ public class AbstractRefactorTest extends TestCase{
 
 		// Move
 		MoveArguments arguments = new MoveArguments(destinationObject, true);
-		participant.initialize(processor, oldObject, arguments);
-		participant.checkConditions(new NullProgressMonitor(), null);
+		boolean initialized = participant.initialize(processor, oldObject, arguments);
+		
+		assertTrue("Participant has not been initialized", initialized);
+		
+		RefactoringStatus status = participant.checkConditions(new NullProgressMonitor(), null);
+		
+		RefactoringStatusEntry[] entries = status.getEntries();
+		for(RefactoringStatusEntry entry : entries){
+			System.out.println("Refactor status - "+entry.getMessage());
+		}
+		
+		assertNull("Move processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
 		
 		CompositeChange rootChange = (CompositeChange)participant.createChange(new NullProgressMonitor());
 		
@@ -72,8 +100,18 @@ public class AbstractRefactorTest extends TestCase{
 
 		// Rename
 		RenameArguments arguments = new RenameArguments(newName, true);
-		participant.initialize(processor, oldObject, arguments);
-		participant.checkConditions(new NullProgressMonitor(), null);
+		boolean initialized = participant.initialize(processor, oldObject, arguments);
+		
+		assertTrue("Participant has not been initialized", initialized);
+		
+		RefactoringStatus status = participant.checkConditions(new NullProgressMonitor(), null);
+		
+		RefactoringStatusEntry[] entries = status.getEntries();
+		for(RefactoringStatusEntry entry : entries){
+			System.out.println("Refactor status - "+entry.getMessage());
+		}
+		
+		assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
 		
 		CompositeChange rootChange = (CompositeChange)participant.createChange(new NullProgressMonitor());
 		
@@ -108,6 +146,8 @@ public class AbstractRefactorTest extends TestCase{
 			TextFileChange fileChange = (TextFileChange)rootChange.getChildren()[i];
 
 			MultiTextEdit edit = (MultiTextEdit)fileChange.getEdit();
+			
+			//System.out.println("File - "+fileChange.getFile().getFullPath()+" offset - "+edit.getOffset());
 			
 			TestChangeStructure change = findChange(changeList, fileChange.getFile());
 			if(change != null){
