@@ -111,8 +111,6 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		Group runtimeGroup = new Group(composite, SWT.NONE);
 		layout = new GridLayout(1, false);
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
 		runtimeGroup.setLayout(layout);
 		runtimeGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		runtimeGroup.setText("JBoss Runtimes");
