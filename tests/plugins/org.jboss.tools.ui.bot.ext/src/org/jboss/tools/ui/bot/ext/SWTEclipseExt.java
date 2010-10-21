@@ -507,14 +507,68 @@ public class SWTEclipseExt {
 		}
 	}
 	
-	public void addJBPMRuntime(String name, String version, String runtimeHome) {
-		// TODO - needs to be impl.
-		log.info("WARN - Adding JBPM Runtime, needs to be impl.");
+	/**
+	 * Adds jBPM runtime via SWTBot
+	 * @param name
+	 * @param runtimeHome
+	 */
+	public void addJBPMRuntime(String name, String runtimeHome) {
+		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossjBPMRuntimeLocations.LABEL);
+		
+		boolean createRuntime = true;
+		// first check if Environment doesn't exist
+		SWTBotTable tbRuntimeEnvironments = bot.table();
+		int numRows = tbRuntimeEnvironments.rowCount();
+		if (numRows > 0) {
+			int currentRow = 0;
+			while (createRuntime && currentRow < numRows) {
+				if (tbRuntimeEnvironments.cell(currentRow, 1).equalsIgnoreCase(
+						name)) {
+					createRuntime = false;
+				} else {
+					currentRow++;
+				}
+			}
+		}
+		if (createRuntime) {
+			wiz.button("Add...").click();
+			log.info("jBPM Runtime '" + name +"' added.");
+			
+			bot.shell(IDELabel.Shell.NEW_JBPM_RUNTIME).activate();
+			bot.text(0).setText(name);
+			bot.text(1).setText(runtimeHome);
+			bot.clickButton(IDELabel.Button.OK);
+
+		}
+		open.finish(wiz, IDELabel.Button.OK);		
 	}
 	
+	/**
+	 * Removes jBPM Runtime via SWTBot
+	 * @param name
+	 */
 	public void removeJBPMRuntime(String name) {
-		// TODO - needs to be impl
-		log.info("WARN - Removing JBPM Runtime, needs to be impl.");	
+		SWTBot wiz = open.preferenceOpen(ActionItem.Preference.JBossjBPMRuntimeLocations.LABEL);
+		SWTBotTable tbRuntimeEnvironments = bot.table();
+		int numRows = tbRuntimeEnvironments.rowCount();
+		if (numRows > 0) {
+			int currentRow = 0;
+			while (currentRow < numRows) {
+				if (tbRuntimeEnvironments.cell(currentRow, 1).equalsIgnoreCase(
+						name)) {
+					tbRuntimeEnvironments.click(currentRow, 1);
+					wiz.button(IDELabel.Button.REMOVE).click();
+					SWTBotShell shell = bot.shell("Confirm Runtime Delete");
+					shell.activate();
+					shell.bot().button(IDELabel.Button.OK).click();
+					log.info("jBPM Runtime '" + name +"' removed.");
+					break;
+				} else {
+					currentRow++;
+				}
+			}
+		}
+		open.finish(wiz,IDELabel.Button.OK);
 	}
 	
 	public void addESBRuntime(String name, String version, String runtimeHome ) {

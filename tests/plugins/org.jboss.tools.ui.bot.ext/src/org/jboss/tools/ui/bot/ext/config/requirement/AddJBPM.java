@@ -13,7 +13,7 @@ public class AddJBPM extends RequirementBase {
 	@Override
 	public void handle() {
 		String jbpmName = "JBPM-"+TestConfigurator.currentConfig.getJBPM().version;
-		SWTTestExt.eclipse.addJBPMRuntime(jbpmName, TestConfigurator.currentConfig.getJBPM().version, TestConfigurator.currentConfig.getJBPM().jbpmHome);
+		SWTTestExt.eclipse.addJBPMRuntime(jbpmName, TestConfigurator.currentConfig.getJBPM().jbpmHome);
 		SWTTestExt.configuredState.getJBPM().isConfigured=true;
 		SWTTestExt.configuredState.getJBPM().name=jbpmName;
 		SWTTestExt.configuredState.getJBPM().version=TestConfigurator.currentConfig.getJBPM().version;	

@@ -137,6 +137,7 @@ public class IDELabel {
 	  public static final String CONFIRM_PERSPECTIVE_SWITCH = "Confirm Perspective Switch";
 	  public static final String NEW_SEAM_RUNTIME = "New Seam Runtime";
 	  public static final String NEW_ESB_RUNTIME = "New JBoss ESB Runtime";
+	  public static final String NEW_JBPM_RUNTIME = "Add Location";
 	  public static final String CONFIRM_DELETE = "Confirm Delete";  
 	  public static final String SHOW_VIEW = "Show View";
 	  public static final String PROPERTIES_FOR = "Properties for";
