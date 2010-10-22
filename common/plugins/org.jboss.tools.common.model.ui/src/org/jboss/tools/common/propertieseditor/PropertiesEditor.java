@@ -410,6 +410,8 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	}
 
 	public void doGlobalAction(String actionName) {
+		if(nsupport.doGlobalAction(actionName));
+		if(vsupport.doGlobalAction(actionName));
 		if(ITextEditorActionConstants.DELETE.equals(actionName)) {
 			action(XChildrenEditor.DELETE);
 		} else if(ITextEditorActionConstants.COPY.equals(actionName)) {
@@ -420,6 +422,10 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	}
 	
 	private void doXActionCopy() {
+		if(xtable == null || xtable.getTable() == null || xtable.getTable().isDisposed()
+				|| !xtable.getTable().isFocusControl()) {
+			return;
+		}
 		ISelection selection = getSelectionProvider().getSelection();
 		if(selection == null || selection.isEmpty() || !(selection instanceof StructuredSelection)) return;
 		StructuredSelection ss = (StructuredSelection)selection;
@@ -435,6 +441,10 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	}
 
 	private void doXActionPaste() {
+		if(xtable == null || xtable.getTable() == null || xtable.getTable().isDisposed()
+				|| !xtable.getTable().isFocusControl()) {
+			return;
+		}
 		invokeXAction(XAction.PASTE, helper.getModelObject(), null);
 	}
 
