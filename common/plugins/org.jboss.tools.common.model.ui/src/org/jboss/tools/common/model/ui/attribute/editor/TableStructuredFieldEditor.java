@@ -305,8 +305,44 @@ public class TableStructuredFieldEditor extends ExtendedFieldEditor
 					control.setLayoutData(gd);
 				}
 			}
+			updateTableLayoutData();
 		}
 		return tableButtonsControl;
+	}
+
+	public boolean updateTableLayoutData() {
+		if(tableField == null || tableField.isDisposed()) return false;
+		boolean isNew = false;
+		boolean changed = false;
+		GridData data = null;
+		if(tableButtonsControl.getLayoutData() instanceof GridData) {
+			data = (GridData)tableButtonsControl.getLayoutData();
+		} else {
+			data = new GridData(GridData.FILL_BOTH);
+			data.horizontalSpan = 2;
+			isNew = true;
+			changed = true;
+		}
+		int itemCount = tableField.getItemCount();
+		if(itemCount > 10) {
+			if(data.heightHint != 250 || data.verticalAlignment != GridData.BEGINNING) {
+				changed = true;
+				data.verticalAlignment = GridData.BEGINNING;
+				data.heightHint = 250;
+			}
+		} else {
+			if(data.heightHint != SWT.DEFAULT || data.verticalAlignment != GridData.FILL) {
+				changed = true;
+				data.verticalAlignment = GridData.FILL;
+				data.heightHint = SWT.DEFAULT;
+			}
+		}
+		if(changed) {
+			tableButtonsControl.setLayoutData(data);
+		}
+		
+		
+		return !isNew && changed;
 	}
 	
 	public Control getControl() {
@@ -338,6 +374,11 @@ public class TableStructuredFieldEditor extends ExtendedFieldEditor
 		if(i < 0) i = 0;
 		tableViewer.refresh();
 		int c = tableViewer.getTable().getItemCount();
+		if(updateTableLayoutData()) {
+			tableButtonsControl.layout();
+			tableButtonsControl.getParent().layout();
+			tableButtonsControl.getParent().getParent().layout();
+		}
 		while(i >= c) --i;
 		if(i >= 0) {
 			tableViewer.setSelection(new StructuredSelection(tableViewer.getTable().getItem(i).getData()));
