@@ -37,6 +37,7 @@ import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IPropertyFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.JavaEclipseChoicerEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.TableStructuredEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.TableStructuredFieldEditor;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 
 /**
@@ -110,7 +111,7 @@ public class Form extends ExpandableForm {
 		layout.marginWidth = 5;
 		composite.setLayout(layout);
 		Control[] control = null;
-		GridData gd;
+		GridData gd = null;
 
 		String description = formData.getDescription();
 		if(description!=null && description.length()>0) {
@@ -172,8 +173,15 @@ public class Form extends ExpandableForm {
 			control = ((IFieldEditor)fieldEditor).getControls(composite);
 
 			control[0].dispose(); // cannot show label
-
-			gd = new GridData(GridData.FILL_BOTH);
+			
+			if(fieldEditor instanceof TableStructuredFieldEditor) {
+				((TableStructuredFieldEditor)fieldEditor).updateTableLayoutData();
+				gd = (GridData)control[1].getLayoutData();
+			}
+			if(gd == null) {
+				gd = new GridData(GridData.FILL_HORIZONTAL);
+				gd.heightHint = 300;
+			}
 			gd.horizontalSpan = 2;
 			control[1].setLayoutData(gd);
 			fieldEditor.setEnabled(xmo.isObjectEditable());
