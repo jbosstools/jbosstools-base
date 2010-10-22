@@ -171,7 +171,12 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			if (bg==null) bg = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);// bug with gray bg
 			Color fg = getSettings().getColor("Combo.Foreground"); //$NON-NLS-1$
 			Font font = getSettings().getFont("Combo.Font"); //$NON-NLS-1$
-			Border border = getSettings().getBorder("Combo.Border"); //$NON-NLS-1$
+			Border border = null; //$NON-NLS-1$
+			//Platform check has been added for not drawning black border for mac os
+			//added by Maksim Areshkau as fix for JBIDE-7382
+			if(!Platform.OS_MACOSX.equals(Platform.getOS())){
+				border = getSettings().getBorder("Combo.Border");
+			}
 			if (style == SWT.DEFAULT) style = defaultStyle;
 			if (isDropDown()) style = style | SWT.READ_ONLY;
 						
