@@ -48,10 +48,18 @@ public class Libs implements IElementChangedListener {
 	
 	public Libs(FileSystemsImpl object) {
 		this.object = object;
+	}
+
+	public void init() {
 		JavaCore.addElementChangedListener(this);
 	}
 
 	private IProject getProjectResource() {
+		try {
+			EclipseResourceUtil.getProject(object);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 		return EclipseResourceUtil.getProject(object);
 	}
 

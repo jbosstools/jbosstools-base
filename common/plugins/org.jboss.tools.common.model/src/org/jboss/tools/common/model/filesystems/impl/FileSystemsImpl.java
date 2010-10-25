@@ -43,6 +43,11 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
     public Libs getLibs() {
     	return libs;
     }
+   
+    protected void onSetEntity(String entity) {
+    	super.onSetEntity(entity);
+    	libs.init();
+    }
 
     public String getPresentationString() {
     	IProject p = EclipseResourceUtil.getProject(this);
