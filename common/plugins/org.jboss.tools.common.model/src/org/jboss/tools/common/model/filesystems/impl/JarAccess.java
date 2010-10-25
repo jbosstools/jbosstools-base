@@ -15,10 +15,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -45,14 +47,20 @@ public class JarAccess {
 	private long timeStamp = -1;
 	private long size = -1;
 
+	List<String> errors = new ArrayList<String>();
+
 	public JarAccess() {}
+
+	public List<String> getErrors() {
+		return errors;
+	}
 
 	public void setLocation(String location) {
 		this.location = location;
 		validate();
 	}
     
-	public void lockJar() {
+	public synchronized void lockJar() {
 		jarLock++;
 	}
 
@@ -129,9 +137,9 @@ public class JarAccess {
 	}
 
 	public void unlockJar() {
-		jarLock--;
-		if(jarLock > 0 || jar == null) return;
 		synchronized (this) {
+			jarLock--;
+			if(jarLock > 0 || jar == null) return;
 			if(jar != null && jarLock == 0) {
 				try {
 					jar.close();
@@ -203,6 +211,7 @@ public class JarAccess {
 			ZipEntry entry = jar.getEntry(path);
 			if(entry == null) {
 				String error = "JarAccess: cannot obtain entry for path '" + path + "' from jar '" + location + "'.";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+				errors.add(error);
 				ModelPlugin.getDefault().logError(error);
 				return ""; //$NON-NLS-1$
 			}
@@ -227,6 +236,7 @@ public class JarAccess {
 			}
 			return sb.toString();
 		} catch (IOException e) {
+			errors.add(e.getClass().getName() + ": " + e.getMessage());
 			ModelPlugin.getPluginLog().logError(e);
 			return ""; //$NON-NLS-1$
 		} finally {
