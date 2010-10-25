@@ -142,6 +142,9 @@ public class XChildrenEditor implements CommandBarListener {
 
 	public void setObject(XModelObject object) {
 		helper.setModelObject(object);
+		if(xtable != null && xtable.getTable() != null && xtable.getSelectionIndex() < 0 && xtable.getTable().getItemCount() > 0) {
+			xtable.getTable().select(0);
+		}
 	}
 	
 	protected boolean areUpDounActionsEnabled() {
@@ -347,6 +350,7 @@ public class XChildrenEditor implements CommandBarListener {
 			for (int i = 0; i < helper.size(); i++) {
 				if(helper.getModelObject(i) == object) {
 					xtable.setSelection(i);
+					updateBar();
 					return;
 				}
 			}
