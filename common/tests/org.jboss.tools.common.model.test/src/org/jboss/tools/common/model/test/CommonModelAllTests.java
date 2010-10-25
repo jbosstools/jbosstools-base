@@ -31,6 +31,7 @@ public class CommonModelAllTests {
 		suite.addTestSuite(DeveloperExceptionTest.class);
 		suite.addTestSuite(XModelTransferBufferTest.class);
 		suite.addTestSuite(PropertiesLoaderTest.class);
+		suite.addTestSuite(JarAccessTest.class);
 		return suite;
 	}
 }
