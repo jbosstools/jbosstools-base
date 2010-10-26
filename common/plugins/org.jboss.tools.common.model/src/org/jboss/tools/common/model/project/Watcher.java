@@ -140,7 +140,7 @@ public class Watcher implements XModelTreeListener {
 
 	class RM extends ResourceMarkers {
 		public RM() {
-			super(ResourceMarkers.JST_WEB_PROBLEM);
+			super(ResourceMarkers.JST_WEB_PROBLEM, ResourceMarkers.OLD_JST_WEB_PROBLEM);
 		}
 		protected String[] getErrors() {
 			return (error == null) ? new String[0] : new String[]{error};
