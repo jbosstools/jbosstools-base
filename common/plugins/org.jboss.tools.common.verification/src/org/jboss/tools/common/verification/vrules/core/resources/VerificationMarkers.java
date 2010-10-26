@@ -17,7 +17,7 @@ public class VerificationMarkers extends ResourceMarkers {
 	ResourceProblems p;
 
 	public VerificationMarkers(ResourceProblems p) {
-		super(ResourceMarkers.JST_WEB_PROBLEM);
+		super(ResourceMarkers.JST_WEB_PROBLEM, ResourceMarkers.OLD_JST_WEB_PROBLEM);
 		this.p = p;
 	}
 	

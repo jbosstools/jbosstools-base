@@ -23,7 +23,7 @@ public class MarkerClearer {
 	public static void clear(XModelObject o) {
 		if(o == null || o.getFileType() == XModelObject.NONE) return;
 		if(o.getFileType() == XModelObject.FILE) {
-			ResourceMarkers markers = new ResourceMarkers(ResourceMarkers.JST_WEB_PROBLEM);
+			ResourceMarkers markers = new ResourceMarkers(ResourceMarkers.JST_WEB_PROBLEM, ResourceMarkers.OLD_JST_WEB_PROBLEM);
 			markers.setModelObject(o);
 			markers.update();
 		} else {
