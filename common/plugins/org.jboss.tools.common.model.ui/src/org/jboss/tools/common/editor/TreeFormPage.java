@@ -41,6 +41,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -128,7 +129,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 		
 		this.form = mainContainer;	
 	}
-	
+
 	public void addErrorSelectionListener(ErrorSelectionListener listener) {
 		errorForm.addErrorSelectionListener(listener);
 	}
@@ -224,7 +225,18 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 			}
 			rightFormContainer.addForm(form);
 			form.setParent(rightFormContainer);
+			if(checkFocus()) {
+				setFocus();
+			}
 		}
+	}
+
+	boolean checkFocus() {
+		Control c =  Display.getDefault().getFocusControl();
+		if(c == null) {
+			return true;
+		}
+		return false;
 	}
 
 	private IFormFactory getFormFactory(XModelObject selected) {
@@ -410,7 +422,11 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 	}
 
 	public void setFocus() {
-		if(control != null && !control.isDisposed()) control.setFocus();
+		if(treeForm != null && treeForm.getControl() != null && !treeForm.getControl().isDisposed()) {
+			treeForm.setFocus();
+		} else {
+			if(control != null && !control.isDisposed()) control.setFocus();
+		}
 	}
 
 	public Object getAdapter(Class adapter) {

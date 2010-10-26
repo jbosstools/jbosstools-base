@@ -53,6 +53,15 @@ public class SampleTreeForm extends ExpandableForm implements ISelectionChangedL
 		createActionMapping();
 	}
 
+	public void setFocus() {
+		if(tree != null && tree.getViewer() != null) {
+			Control c = tree.getViewer().getControl();
+			if(c != null && !c.isDisposed()) {
+				c.setFocus();
+			}
+		}
+	}
+
 	public void dispose() {
 		super.dispose();
 		if (tree!=null) tree.dispose();
