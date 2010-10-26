@@ -30,14 +30,22 @@ import org.jboss.tools.common.model.util.PositionHolder;
 
 public class ResourceMarkers {
 	public static String TEXT_PROBLEM = "org.jboss.tools.common.model.textproblemmarker"; //$NON-NLS-1$
-	public static String CONSTRAINT_PROBLEM = "org.jboss.tools.jst.web.ui.constraintsmarker"; //$NON-NLS-1$
-	public static String JST_WEB_PROBLEM = "org.jboss.tools.jst.web.ui.strutsmarker"; //$NON-NLS-1$
+	public static String CONSTRAINT_PROBLEM = "org.jboss.tools.jst.web.constraintsmarker"; //$NON-NLS-1$
+	public static String JST_WEB_PROBLEM = "org.jboss.tools.jst.web.strutsmarker"; //$NON-NLS-1$
+	public static String OLD_CONSTRAINT_PROBLEM = "org.jboss.tools.jst.web.ui.constraintsmarker"; //$NON-NLS-1$
+	public static String OLD_JST_WEB_PROBLEM = "org.jboss.tools.jst.web.ui.strutsmarker"; //$NON-NLS-1$
 	private XModelObject object;
 	
-	String type;
+	String type = null;
+	String oldType = null;
 	
 	public ResourceMarkers(String type) {
 		this.type = type;
+	}
+	
+	public ResourceMarkers(String type, String oldType) {
+		this.type = type;
+		this.oldType = oldType;
 	}
 	
 	public void setModelObject(XModelObject object) {
@@ -120,6 +128,7 @@ public class ResourceMarkers {
 			try {
 				if(!message.equals(m.getAttribute(IMarker.MESSAGE))) continue;
 				if(attr != null && !attr.equals(m.getAttribute("attribute"))) continue; //$NON-NLS-1$
+				if(oldType != null && oldType.equals(m.getType())) continue;
 				if(!path.equals(m.getAttribute("path"))) { //$NON-NLS-1$
 					m.setAttribute("path", path); //$NON-NLS-1$
 				}
@@ -201,7 +210,7 @@ public class ResourceMarkers {
 		String _type = m.getType();
 		if(_type == null) return true;
 		if(_type.startsWith("org.jboss.tools.")) { //$NON-NLS-1$
-			return _type.equals(type);
+			return _type.equals(type) || (oldType != null && _type.equals(oldType));
 		}
 		return false;
 	}

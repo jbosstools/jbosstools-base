@@ -16,7 +16,7 @@ public class ConstraintMarkers extends ResourceMarkers {
 	ResourceProblems p;
 
 	public ConstraintMarkers(ResourceProblems p) {
-		super(ResourceMarkers.CONSTRAINT_PROBLEM);
+		super(ResourceMarkers.CONSTRAINT_PROBLEM, ResourceMarkers.OLD_CONSTRAINT_PROBLEM);
 		this.p = p;
 	}
 	
