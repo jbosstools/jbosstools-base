@@ -138,17 +138,40 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         	runCheckerOnLoad();
         }
     }
-    WorkspaceJob checkerOnLoad = new WorkspaceJob("Checking on load...") { //$NON-NLS-1$
+    
+    static class CheckerJob extends WorkspaceJob {
+		List<AbstractExtendedXMLFileImpl> files = new ArrayList<AbstractExtendedXMLFileImpl>();
 
-		@Override
+		public CheckerJob() {
+			super("Checking constraints on load..."); //$NON-NLS-1$
+		}
+    	
+		public void add(AbstractExtendedXMLFileImpl file) {
+			synchronized (files) {
+				files.add(file);
+			}
+			schedule();
+		}
+
+    	@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor)
 				throws CoreException {
-			getResourceMarkers().clear();
-	   		constraintChecker.check();
+			while(true) {
+    			AbstractExtendedXMLFileImpl file = null;
+    			synchronized (files) {
+    				if(files.isEmpty()) break;
+    				file = files.remove(0);
+    			}
+    			file.getResourceMarkers().clear();
+    			file.constraintChecker.check();
+    		}
+			
 			return Status.OK_STATUS;
 		}
     	
-    };
+    }
+    static CheckerJob checkerOnLoad = new CheckerJob();
+   
     void runCheckerOnLoad() {
     	if(!isActive()) return;
     	XModelObject s = getParent();
@@ -163,7 +186,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     		}
     	};
     	Display.getDefault().asyncExec(r);*/
-    	checkerOnLoad.schedule();
+    	checkerOnLoad.add(this);
     }
 
     public void set(String name, String value) {
