@@ -81,6 +81,7 @@ public class IDELabel {
     public static final String CUT = "Cut";
     public static final String COPY = "Copy";
     public static final String PASTE = "Paste";
+    public static final String UNDO = "Undo";
 	}
 
 	public class Button {
