@@ -60,7 +60,7 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 	 * Otherwise, updates inner model and disables class loader.
 	 * @return
 	 */
-	public boolean update() {
+	public synchronized boolean update() {
 		Libs libs = FileSystemsHelper.getLibs(model);
 		libs.update();
 		List<String> newPaths = libs.getPaths();
@@ -92,6 +92,9 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 	}
 
 	public void pathsChanged(List<String> paths) {
-		libsModified = true;		
+		synchronized (this) {
+			libsModified = true;
+		}
 	}
+
 }
