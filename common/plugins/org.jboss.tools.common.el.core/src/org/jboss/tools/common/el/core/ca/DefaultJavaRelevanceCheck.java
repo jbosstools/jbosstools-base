@@ -37,6 +37,7 @@ public class DefaultJavaRelevanceCheck implements IRelevanceCheck {
 	public boolean isRelevant(String content) {
 		if(test1 != null && content.contains(test1)) return true;
 		if(test2 != null && content.contains(test2)) return true;
+		if(test3 != null && content.contains(test3)) return true;
 		return false;
 	}
 
