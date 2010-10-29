@@ -2,8 +2,10 @@ package org.jboss.tools.common.model.project.ext;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,7 +78,7 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 	
 	public void pathLoaded(IPath path) {
 		String p = paths2.get(path);
-		if(p != null) {
+		if(p != null) synchronized (processedPaths) {
 			processedPaths.add(p);
 		}
 	}
@@ -88,7 +90,29 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 	public void clean() {
 		paths = null;
 		if(paths2 != null) paths2.clear();
-		processedPaths.clear();
+		synchronized (processedPaths) {
+			processedPaths.clear();
+		}
+	}
+
+	protected List<String> syncProcessedPaths() {
+		ArrayList<String> removed = new ArrayList<String>();
+		synchronized (processedPaths) {
+			Iterator<String> it = processedPaths.iterator();
+			while(it.hasNext()) {
+				String p = it.next();
+				if(paths.contains(p)) continue;
+				removed.add(p);
+				it.remove();
+			}
+		}
+		return removed;
+	}
+
+	protected boolean requestForLoad(String p) {
+		synchronized (processedPaths) {
+			return processedPaths.add(p);
+		}
 	}
 
 	public void pathsChanged(List<String> paths) {
