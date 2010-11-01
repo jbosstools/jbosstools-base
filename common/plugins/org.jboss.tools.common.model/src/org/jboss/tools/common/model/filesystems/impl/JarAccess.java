@@ -131,6 +131,7 @@ public class JarAccess {
 	private ZipFile getZipFile() throws IOException {
 		synchronized (this) {
 			lockJar();
+			if(!new File(templocation).isFile()) return null;
 			if(jar != null) return jar;
 			return jar = new ZipFile(templocation);
 		}
@@ -200,6 +201,11 @@ public class JarAccess {
 		try {
 			jar = getZipFile();
 		} catch (IOException e) {
+			String error = "JarAccess: cannot load zip file for location " + templocation; //$NON-NLS-1$
+			errors.add(error);
+			ModelPlugin.getDefault().logError(error);
+		}
+		if(jar == null) {
 			unlockJar();
 			return ""; //$NON-NLS-1$
 		}
