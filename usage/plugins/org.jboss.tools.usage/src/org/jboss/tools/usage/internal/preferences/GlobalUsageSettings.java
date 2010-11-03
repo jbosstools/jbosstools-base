@@ -17,6 +17,7 @@ import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.http.IPropertiesProvider;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 
 /**
  * A class that implements a global reporting enablement setting. The current
@@ -108,7 +109,7 @@ public class GlobalUsageSettings {
 		return new HttpRemotePropertiesProvider(
 				url,
 				valueDelimiter,
-				plugin,
+				new UsagePluginLogger(plugin),
 				keys);
 	}
 }

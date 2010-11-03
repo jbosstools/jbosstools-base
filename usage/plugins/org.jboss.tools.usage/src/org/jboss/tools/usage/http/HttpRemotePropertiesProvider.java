@@ -17,11 +17,13 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.jboss.tools.common.log.ILoggingAdapter;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 import org.jboss.tools.usage.util.LoggingUtils;
 import org.jboss.tools.usage.util.StatusUtils;
@@ -39,20 +41,18 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 
 	static final String GET_METHOD_NAME = "GET"; //$NON-NLS-1$
 
-	protected Plugin plugin;
 	private Map<String, String> valuesMap;
-
 	private String[] keys;
-
 	private String url;
-
 	private char valueDelimiter;
+	protected Plugin plugin;
+	private ILoggingAdapter loggingAdapter;
 
-	public HttpRemotePropertiesProvider(String url, char valueDelimiter, Plugin plugin, String... keys) {
+	public HttpRemotePropertiesProvider(String url, char valueDelimiter, ILoggingAdapter loggingAdapter, String... keys) {
 		this.url = url;
 		this.keys = keys;
 		this.valueDelimiter = valueDelimiter;
-		this.plugin = plugin;
+		this.loggingAdapter = loggingAdapter;
 	}
 
 
@@ -93,17 +93,11 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 				LoggingUtils.log(status, plugin);
 				responseReader = getInputStreamReader(urlConnection.getInputStream(), urlConnection.getContentType());
 			} else {
-				IStatus status = StatusUtils.getErrorStatus(
-						plugin.getBundle().getSymbolicName()
-						, HttpMessages.HttpGetMethod_Error_Http, null, url, responseCode);
-				plugin.getLog().log(status);
+				loggingAdapter.error(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, url, responseCode));
 			}
 			return responseReader;
 		} catch (IOException e) {
-			IStatus status = StatusUtils.getErrorStatus(
-					plugin.getBundle().getSymbolicName()
-					, HttpMessages.HttpGetMethod_Error_Io, e, url, e.getMessage());
-			plugin.getLog().log(status);
+			loggingAdapter.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, url, e.toString()));
 			throw e;
 		}
 	}
