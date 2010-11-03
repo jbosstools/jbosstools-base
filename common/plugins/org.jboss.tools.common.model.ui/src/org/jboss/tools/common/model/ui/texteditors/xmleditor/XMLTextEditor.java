@@ -253,20 +253,24 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 
 	class TextFocusListener extends FocusAdapter {
 		public void focusLost(FocusEvent e) {
-			if(!XMLTextEditor.super.isDirty()) return;
-			Display.getDefault().syncExec( 
-				new Runnable() {
-					public void run() {
-						try {
-							Thread.sleep(200);
-						} catch (InterruptedException e) {
-							//ignore
-						}
-						save();
-					}
-				}
-			);			
+			saveInThread();
 		}
+	}
+
+	private void saveInThread() {
+		if(!XMLTextEditor.super.isDirty()) return;
+		Display.getDefault().syncExec( 
+			new Runnable() {
+				public void run() {
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						//ignore
+					}
+					save();
+				}
+			}
+		);			
 	}
 
 	public void save() {
@@ -274,7 +278,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 			lock = true;
 			try {
 				FileAnyImpl f = (FileAnyImpl)getModelObject();
-				if(f != null) f.edit(getSourceViewer().getDocument().get());						
+				if(f != null) f.edit(getSourceViewer().getDocument().get());
 			} catch (XModelException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			} finally {
@@ -446,6 +450,12 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 
 	public void documentChanged(DocumentEvent event) {
 		textChanged(null);
+		StyledText text = getSourceViewer() != null ? getSourceViewer().getTextWidget() : null;
+		if(text != null && !text.isDisposed()) {
+			if(!text.isFocusControl() && text.isVisible()) {
+				saveInThread();
+			}
+		}
 	}
 
 	public void doRevertToSaved() {

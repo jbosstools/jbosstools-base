@@ -345,7 +345,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			if(monitor != null) monitor.setCanceled(true);
 			return;
 		} 
-		if(textEditor != null && textEditor.isModified()) textEditor.save();
+		lock2 = false;
+		try {
+		if(textEditor != null && textEditor.isModified()) {
+				textEditor.save();
+		}
 		XModelObject o = getModelObject();
 		if(o == null || !o.isActive()) return;
 		XModelObject p = o.getParent();
@@ -372,6 +376,9 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		saveX(monitor);
 		
 		f.updateRegistration(o);
+		} finally {
+			lock2 = false;
+		}
 	}
 	
 	
@@ -495,21 +502,16 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	boolean lock2 = false;
 	
 	boolean waitForMerge = false;
-	int waitingEventsCount = 0;
 	
 	public void nodeChanged(XModelTreeEvent event) {
 		if(lock2) return;
 		if(event.getDetails() == XModelTreeEvent.BEFORE_MERGE && event.getModelObject() == getModelObject()) {
 			waitForMerge = true;
-			waitingEventsCount = 0;
 			return;
 		}
 		if(event.getDetails() == XModelTreeEvent.AFTER_MERGE && event.getModelObject() == getModelObject()) {
 			waitForMerge = false;
-//			System.out.println("waitingEventsCount=" + waitingEventsCount);
-			waitingEventsCount = 0;
 		}
-		waitingEventsCount++;
 		if(waitForMerge) return;
 		if(needsUpdate()) {
 			Display.getDefault().syncExec(new U());
@@ -518,7 +520,6 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	
 	public void structureChanged(XModelTreeEvent event) {
 		if(lock2) return;
-		waitingEventsCount++;
 		if(waitForMerge) return;
 		if(needsUpdate()) {
 			Display.getDefault().syncExec(new U());
@@ -725,7 +726,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			e.widget.getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					handleActivation();
-					if(getActivePage() != getSourcePageIndex() && textEditor != null && textEditor.isModified()) {
+					if(textEditor != null && textEditor.isModified()) {
 						textEditor.save();
 					}
 				}
