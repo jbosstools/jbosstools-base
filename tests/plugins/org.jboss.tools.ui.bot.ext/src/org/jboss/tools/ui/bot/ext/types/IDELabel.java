@@ -150,6 +150,7 @@ public class IDELabel {
 	  public static final String ADD_PALETTE_GROUP = "Add Palette Group";
 	  public static final String ADD_PALETTE_MACRO = "Add Palette Macro";
 	  public static final String CONFIRMATION = "Confirmation";
+	  public static final String USER_SPECIFIED_TAG_TEMPLATE = "User specified tag template";
 	}
 
 	public class EntityGroup {
@@ -585,6 +586,12 @@ public class IDELabel {
      public static final String NAME = "Name:*";
      public static final String START_TEXT = "Start Text:";
      public static final String END_TEXT = "End Text:";
+
+   }
+   
+   public static class UserSpecifiedTagTemplateDialog{
+     
+     public static final String TAG_FOR_DISPLAY = "Tag for display:";
 
    }
    
