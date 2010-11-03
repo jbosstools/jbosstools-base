@@ -22,6 +22,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.ui.IEditorReference;
+import org.jboss.tools.ui.bot.ext.Timing;
 
 public class SWTBotEditorExt extends SWTBotEclipseEditor {
 
@@ -63,6 +64,17 @@ public class SWTBotEditorExt extends SWTBotEclipseEditor {
 	    } catch (WidgetNotFoundException wnfe){
 	      // do nothing there is no tabfolder in editor
 	    }
-	  }
+	}
+	/**
+	 * Deselect current selection and set cursor position to specified line and column
+	 * @param line
+	 * @param column
+	 */
+	public void deselectAndSetCursorPosition (int line, int column){
+	  selectRange(0, 0, 0);
+	  insertText(line, column, "");
+	  save();
+	  bot.sleep(Timing.time2S());
+	}
 }
 	

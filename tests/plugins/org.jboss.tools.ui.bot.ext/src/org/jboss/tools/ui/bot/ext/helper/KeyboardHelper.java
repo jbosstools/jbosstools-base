@@ -109,7 +109,11 @@ public class KeyboardHelper {
       KeyboardHelper.robot.delay(Timing.time1S());
     }
   }
-  
+  /**
+   * Gets AWT Key Code for specified character ch
+   * @param ch
+   * @return
+   */
   public static int getAWTKeyCode (char ch){
     int result = KeyEvent.VK_UNDEFINED;
     try {
@@ -123,5 +127,28 @@ public class KeyboardHelper {
     } catch (IllegalAccessException e) {
     }
     return result;
+  }
+  /**
+   * Selects text from current cursor position and selectionLength length. Selection direction is specified
+   * by forward parameter
+   * @param forward
+   * @param selectionLength
+   */
+  public static void selectTextUsingAWTKeyBoard (boolean forward , int selectionLength) {
+    int arrowCode = forward ? KeyEvent.VK_RIGHT : KeyEvent.VK_LEFT;
+    for (int index = 0 ; index < selectionLength; index ++){
+      typeKeyCodeUsingAWT(arrowCode,KeyEvent.VK_SHIFT);
+    }
+  }
+  /***
+   * Simulate typing of key with keyCode via AWT repeating numOfRepeats times
+   * @param awtKeyCode
+   * @param numOfRepeats
+   * @param modifiers
+   */
+  public static void typeKeyCodeUsingAWTRepeately (int awtKeyCode , int numOfRepeats, int... modifiers) {
+    for (int index = 0 ; index < numOfRepeats ; index++){
+      KeyboardHelper.typeKeyCodeUsingAWT(awtKeyCode, modifiers);
+    }
   }
 }
