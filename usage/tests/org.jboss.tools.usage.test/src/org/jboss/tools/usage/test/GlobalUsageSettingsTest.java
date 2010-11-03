@@ -110,7 +110,7 @@ public class GlobalUsageSettingsTest {
 		@Override
 		protected IPropertiesProvider createRemoteMap(String url, char valueDelimiter, Plugin plugin,
 				String... keys) {
-			return new HttpRemotePropertiesProvider(url, valueDelimiter, plugin, keys) {
+			return new HttpRemotePropertiesProvider(url, valueDelimiter, new SystemOutLogger(), keys) {
 				@Override
 				protected InputStreamReader request(HttpURLConnection urlConnection)
 						throws UnsupportedEncodingException {

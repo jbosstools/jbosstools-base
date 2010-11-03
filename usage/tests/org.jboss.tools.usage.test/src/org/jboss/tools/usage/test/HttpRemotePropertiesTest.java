@@ -55,7 +55,7 @@ public class HttpRemotePropertiesTest {
 			final String stringValue, final String anotherValue, char valueDelimiter, String... keys) {
 
 		return new HttpRemotePropertiesProvider("http://dummy", valueDelimiter,
-					JBossToolsUsageTestActivator.getDefault(), keys) {
+					new SystemOutLogger(), keys) {
 			@Override
 			protected InputStreamReader request(HttpURLConnection urlConnection)
 						throws UnsupportedEncodingException {
