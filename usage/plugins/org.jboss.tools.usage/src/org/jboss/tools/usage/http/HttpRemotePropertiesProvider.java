@@ -95,14 +95,14 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 			} else {
 				IStatus status = StatusUtils.getErrorStatus(
 						plugin.getBundle().getSymbolicName()
-						, HttpMessages.HttpGetMethod_Error_Http, null, url);
+						, HttpMessages.HttpGetMethod_Error_Http, null, url, responseCode);
 				plugin.getLog().log(status);
 			}
 			return responseReader;
 		} catch (IOException e) {
 			IStatus status = StatusUtils.getErrorStatus(
 					plugin.getBundle().getSymbolicName()
-					, HttpMessages.HttpGetMethod_Error_Http, e, url);
+					, HttpMessages.HttpGetMethod_Error_Io, e, url, e.getMessage());
 			plugin.getLog().log(status);
 			throw e;
 		}
