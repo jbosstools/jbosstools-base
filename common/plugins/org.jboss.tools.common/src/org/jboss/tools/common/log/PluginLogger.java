@@ -15,6 +15,8 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 
 /**
+ * A logging adapter that logs to a given plugin.
+ * 
  * @author Andre Dietisheim
  */
 public class PluginLogger implements ILoggingAdapter {
@@ -42,6 +44,10 @@ public class PluginLogger implements ILoggingAdapter {
 			IStatus status = new Status(severity, plugin.getBundle().getSymbolicName(), message);
 			plugin.getLog().log(status);
 		}
+	}
+
+	protected Plugin getPlugin() {
+		return plugin;
 	}
 	
 	protected boolean isTracingEnabled() {
