@@ -55,7 +55,7 @@ public class HttpGetRequest implements IHttpGetRequest {
 			if (responseCode == HttpURLConnection.HTTP_OK) {
 				loggingAdapter.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Success, urlString, responseCode));
 			} else {
-				loggingAdapter.error(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, urlString));
+				loggingAdapter.error(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, urlString, responseCode));
 			}
 		} catch (Exception e) {
 			loggingAdapter.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, urlString, e.toString()));
