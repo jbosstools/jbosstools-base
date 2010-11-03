@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jboss.tools.common.log.ILoggingAdapter;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.http.HttpGetRequest;
@@ -23,9 +24,8 @@ import org.jboss.tools.usage.http.IHttpGetRequest;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.jboss.tools.usage.test.fakes.RepportingEclipseEnvironmentFakeSingleton;
 import org.jboss.tools.usage.tracker.IFocusPoint;
-import org.jboss.tools.usage.tracker.ILoggingAdapter;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
-import org.jboss.tools.usage.tracker.internal.PluginLogger;
+import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.junit.Test;
 
 /**
@@ -100,7 +100,7 @@ public class JBossToolsUsageIntegrationTest {
 	}
 
 	private UrlRevealingTracker getTracker(IGoogleAnalyticsParameters environment) {
-		ILoggingAdapter loggingAdapter = new PluginLogger(JBossToolsUsageTestActivator.getDefault());
+		ILoggingAdapter loggingAdapter = new UsagePluginLogger(JBossToolsUsageTestActivator.getDefault());
 		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(environment);
 		IHttpGetRequest httpGetRequest = new HttpGetRequest(environment.getUserAgent(), loggingAdapter);
 		return new UrlRevealingTracker(urlStrategy, httpGetRequest, loggingAdapter);

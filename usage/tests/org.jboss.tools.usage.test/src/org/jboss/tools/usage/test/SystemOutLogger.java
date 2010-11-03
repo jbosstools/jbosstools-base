@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
-import org.jboss.tools.usage.tracker.ILoggingAdapter;
+import org.jboss.tools.common.log.ILoggingAdapter;
 
 /**
  * @author Andre Dietisheim
