@@ -13,9 +13,9 @@ package org.jboss.tools.usage.tracker.internal;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
+import org.jboss.tools.common.log.ILoggingAdapter;
 import org.jboss.tools.usage.http.IHttpGetRequest;
 import org.jboss.tools.usage.tracker.IFocusPoint;
-import org.jboss.tools.usage.tracker.ILoggingAdapter;
 import org.jboss.tools.usage.tracker.ITracker;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
 
