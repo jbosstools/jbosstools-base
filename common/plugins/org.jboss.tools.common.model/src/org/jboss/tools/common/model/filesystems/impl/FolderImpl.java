@@ -608,9 +608,10 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     
     public void updateChildFile(XModelObject o, File f) throws XModelException {
 		FileSystemPeer peer = getFileSystem().getPeer();
+		if(f.isFile() && peer.contains(f) && !peer.isUpdated(f)) return;
+		int i = (!o.isModified()) ? 0 :	question(f);
+		if(i < 0) return;
 		if(!registerFileInPeer(peer, f)) return;
-		int i = (!o.isModified()) ? 0 : 
-			question(f);
 		if(i == 0) {
 			reload(o, f);
 		}
