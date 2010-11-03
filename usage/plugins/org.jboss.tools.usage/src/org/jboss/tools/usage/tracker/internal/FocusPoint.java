@@ -1,23 +1,32 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
- * Distributed under license by Red Hat, Inc. All rights reserved.
- * This program is made available under the terms of the
- * Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *   Licensed to the Apache Software Foundation (ASF) under one or more
+ *   contributor license agreements.  See the NOTICE file distributed with
+ *   this work for additional information regarding copyright ownership.
+ *   The ASF licenses this file to You under the Apache License, Version 2.0
+ *   (the "License"); you may not use this file except in compliance with
+ *   the License.  You may obtain a copy of the License at
  *
- * Contributors:
- *     Red Hat, Inc. - initial API and implementation
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  ******************************************************************************/
+
 package org.jboss.tools.usage.tracker.internal;
 
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 
 /**
- * Focus point of the application. It can represent data points like application
- * load, application module load, user actions, error events etc.
+ * Represents a focus in the usage of a application. It can represent
+ * application related events like startup, module load, user actions, error
+ * events etc.
  * 
  * @author Andre Dietisheim
+ * @author Siddique Hameed
  * @see based on <a
  *      href="http://jgoogleAnalytics.googlecode.com">http://jgoogleAnalytics
  *      .googlecode.com</a>
@@ -33,31 +42,19 @@ public class FocusPoint implements IFocusPoint {
 		this.name = name;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.usage.tracker.internal.IFocusPoint#getName()
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.usage.tracker.internal.IFocusPoint#setChild(org.jboss.tools.usage.tracker.internal.IFocusPoint)
-	 */
 	public IFocusPoint setChild(IFocusPoint childFocusPoint) {
 		this.childFocusPoint = childFocusPoint;
 		return this;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.usage.tracker.internal.IFocusPoint#getChild()
-	 */
 	public IFocusPoint getChild() {
 		return childFocusPoint;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.usage.tracker.internal.IFocusPoint#getURI()
-	 */
 	public String getURI() {
 		StringBuilder builder = new StringBuilder();
 		appendContentURI(builder, this);
@@ -71,7 +68,7 @@ public class FocusPoint implements IFocusPoint {
 			appendContentURI(builder, parentFocuPoint);
 		}
 	}
-	
+
 	protected void appendToURI(String toAppend, StringBuilder builder) {
 		builder.append(URI_SEPARATOR);
 		builder.append(toAppend);
@@ -81,9 +78,7 @@ public class FocusPoint implements IFocusPoint {
 		builder.append(TITLE_SEPARATOR);
 		builder.append(toAppend);
 	}
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.usage.tracker.internal.IFocusPoint#getTitle()
-	 */
+
 	public String getTitle() {
 		StringBuilder builder = new StringBuilder();
 		appendContentTitle(builder, this);

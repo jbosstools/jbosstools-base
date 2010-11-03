@@ -1,13 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
- * Distributed under license by Red Hat, Inc. All rights reserved.
- * This program is made available under the terms of the
- * Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *   Licensed to the Apache Software Foundation (ASF) under one or more
+ *   contributor license agreements.  See the NOTICE file distributed with
+ *   this work for additional information regarding copyright ownership.
+ *   The ASF licenses this file to You under the Apache License, Version 2.0
+ *   (the "License"); you may not use this file except in compliance with
+ *   the License.  You may obtain a copy of the License at
  *
- * Contributors:
- *     Red Hat, Inc. - initial API and implementation
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  ******************************************************************************/
+
 package org.jboss.tools.usage.tracker.internal;
 
 import java.io.UnsupportedEncodingException;
@@ -23,9 +30,8 @@ import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
  * Reports (tracks) usage
  * 
  * @author Andre Dietisheim
- * @see based on <a
- *      href="http://jgoogleAnalytics.googlecode.com">http://jgoogleAnalytics
- *      .googlecode.com</a>
+ * @author Siddique Hameed
+ * @see based on <a href="http://jgoogleAnalytics.googlecode.com">http://jgoogleAnalytics.googlecode.com</a>
  */
 public class Tracker implements ITracker {
 
