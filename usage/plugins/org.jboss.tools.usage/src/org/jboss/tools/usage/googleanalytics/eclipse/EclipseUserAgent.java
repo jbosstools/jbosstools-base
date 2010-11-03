@@ -17,6 +17,9 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 /**
+ * Emulates a Firefox Browser User-Agent String but reports eclipse related
+ * informations.
+ * 
  * @author Andre Dietisheim
  */
 public class EclipseUserAgent implements IEclipseUserAgent {
@@ -70,17 +73,6 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 		String productId = getApplicationName();
 		String productVersion = getApplicationVersion();
 
-		/**
-		 * Google API for android: this.userAgent = String.format(
-		 * "GoogleAnalytics/%s (Linux; U; Android %s; %s-%s; %s; Build/%s)" ,
-		 * new Object[] { "1.0" , Build.VERSION.RELEASE ,
-		 * (localLocale.getLanguage() != null) ?
-		 * localLocale.getLanguage().toLowerCase() : "en" ,
-		 * (localLocale.getCountry() != null) ?
-		 * localLocale.getCountry().toLowerCase() : "" , Build.MODEL, Build.ID
-		 * });
-		 */
-
 		return MessageFormat.format(
 				getUserAgentPattern(getOS())
 				, productId
@@ -101,11 +93,11 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 	private String getUserAgentPattern(String os) {
 		String userAgentPattern = ""; //$NON-NLS-1$
 		if (Platform.OS_LINUX.equals(os)) {
-			return USERAGENT_LINUX; //$NON-NLS-1$
+			return USERAGENT_LINUX;
 		} else if (Platform.OS_MACOSX.equals(os)) {
-			return USERAGENT_MAC; //$NON-NLS-1$
+			return USERAGENT_MAC;
 		} else if (Platform.OS_WIN32.equals(os)) {
-			return USERAGENT_WIN; //$NON-NLS-1$
+			return USERAGENT_WIN;
 		}
 		return userAgentPattern;
 	}
@@ -137,5 +129,4 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 			return Platform.getBundle(ECLIPSE_RUNTIME_BULDEID);
 		}
 	}
-
 }
