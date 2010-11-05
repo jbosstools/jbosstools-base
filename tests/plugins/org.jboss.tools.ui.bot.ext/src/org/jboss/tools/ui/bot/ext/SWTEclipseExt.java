@@ -90,6 +90,25 @@ public class SWTEclipseExt {
 		this.open = new SWTOpenExt(bot);
 	}
 
+	
+	// ------------------------------------------------------------
+	// Check methods
+	// ------------------------------------------------------------
+	/**
+	 * Check if view is opened
+	 */
+	public boolean isViewOpened(String view) {
+		try {
+			bot.viewByTitle(view);
+			log.info("View \"" + view + "\" is opened");
+			return true;
+		}
+		catch (WidgetNotFoundException ex) {
+			log.info("View \"" + view + "\" is NOT opened");
+			return false;
+		}
+	}
+	
 	// ------------------------------------------------------------
 	// View related methods
 	// ------------------------------------------------------------
@@ -308,7 +327,7 @@ public class SWTEclipseExt {
 			log.info(nodeName);
 		}
 		return item.select();
-	}
+	}	
 
 	// ------------------------------------------------------------
 	// Subroutines
