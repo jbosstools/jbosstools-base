@@ -61,7 +61,7 @@ public class ELResolverFactoryManager {
 //			return result;
 //		}
 		Set<ELResolver> resolverSet = new HashSet<ELResolver>();
-        IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = registry.getExtensionPoint("org.jboss.tools.common.el.core.elResolver");  //$NON-NLS-1$
 		IExtension[] extensions = extensionPoint.getExtensions();
 		for (int i=0; i<extensions.length; i++) {
@@ -80,8 +80,6 @@ public class ELResolverFactoryManager {
 								ELCorePlugin.getPluginLog().logError(resolver.getClass().getName() + " must be instance of org.jboss.tools.common.el.core.resolver.ELResolver"); //$NON-NLS-1$
 							}
 						}
-					} catch (InvalidRegistryObjectException e) {
-						ELCorePlugin.getPluginLog().logError(e);
 					} catch (CoreException e) {
 						ELCorePlugin.getPluginLog().logError(e);
 					}
@@ -107,6 +105,6 @@ public class ELResolverFactoryManager {
 //		result = resolverSet.toArray(new ELResolver[resolverSet.size()]);
 //		resolvers.put(project.getName(), result);
 //		return result;
-		return resolverSet.toArray(new ELResolver[0]);
+		return resolverSet.toArray(new ELResolver[resolverSet.size()]);
 	}
 }
