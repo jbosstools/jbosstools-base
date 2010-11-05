@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.io.StringBufferInputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -108,6 +110,21 @@ public class ResourcesUtils {
 		project.create(descr, monitor);
 		project.open(IResource.BACKGROUND_REFRESH, monitor);
 
+		return project;
+	}
+	
+	public static IProject createEclipseProject(String name)
+			throws CoreException, IOException {
+		String descriptionText = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><projectDescription><name>{0}</name></projectDescription>";
+		IProjectDescription descr = ResourcesPlugin.getWorkspace().loadProjectDescription(new StringBufferInputStream(MessageFormat.format(descriptionText,name)));
+		descr.setLocation(null);
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				descr.getName());
+		NullProgressMonitor nullProgress = new NullProgressMonitor();
+		if(!project.exists()) {
+			project.create(descr, nullProgress);
+		}
+		project.open(IResource.BACKGROUND_REFRESH, nullProgress);
 		return project;
 	}
 	

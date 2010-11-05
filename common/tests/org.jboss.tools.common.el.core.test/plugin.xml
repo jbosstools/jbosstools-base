@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.jboss.tools.common.el.core.elResolver">
+      <el-resolver>
+         <factory
+               class="org.jboss.tools.common.el.core.test.resolver.ELResolverFactory1"></factory>
+         <project-nature
+               id="org.jboss.tools.common.el.core.test.project-nature1"
+               resolver-class="org.jboss.tools.common.el.core.test.resolver.ResolverProjectNature1">
+         </project-nature>
+         <project-nature
+               id="org.jboss.tools.common.el.core.test.project-nature1"
+               resolver-class="org.jboss.tools.common.el.core.test.resolver.ResolverProjectNature2">
+         </project-nature>
+         <factory
+               class="org.jboss.tools.common.el.core.test.resolver.ELResolverFactory2">
+         </factory>
+      </el-resolver>
+   </extension>
+   <extension
+         id="project-nature1"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.jboss.tools.common.el.core.test.resolver.ProjectNature1">
+         </run>
+      </runtime>
+   </extension>
+
+</plugin>

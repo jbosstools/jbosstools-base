@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.test;
 
+import org.jboss.tools.common.el.core.resolver.ELResolverFactoryManager;
+import org.jboss.tools.common.el.core.test.resolver.ELResolverFactoryManagerTest;
+import org.jboss.tools.common.el.core.test.resolver.ElVarSearcherTest;
 import org.jboss.tools.test.util.ProjectImportTestSetup;
 
 import junit.framework.Test;
@@ -27,6 +30,8 @@ public class CommonELAllTests {
 		suite.addTestSuite(ELParserTest.class);
 		suite.addTestSuite(ELModelTest.class);
 		suite.addTestSuite(RelevanceCheckTest.class);
+		suite.addTestSuite(ElVarSearcherTest.class);
+		suite.addTestSuite(ELResolverFactoryManagerTest.class);
 		return suite;
 	}
 }
