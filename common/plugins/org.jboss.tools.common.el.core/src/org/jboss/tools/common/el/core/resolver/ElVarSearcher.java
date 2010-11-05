@@ -111,36 +111,32 @@ public class ElVarSearcher {
 	 */
 
 	public static IndexedRegion getNodeAt(IFile file, int documentOffset) {
-
-		if (file == null)
-			return null;
-
 		IndexedRegion node = null;
-		IModelManager mm = StructuredModelManager.getModelManager();
-		IStructuredModel model = null;
-		if (mm != null) {
-			try {
-				model = mm.getModelForRead(file);
-			} catch (IOException e) {
-				ELCorePlugin.getDefault().logError(e);
-				return null;
-			} catch (CoreException e) {
-				ELCorePlugin.getDefault().logError(e);
-				return null;
-			}
-		}
-		try {
-			if (model != null) {
-				int lastOffset = documentOffset;
-				node = model.getIndexedRegion(documentOffset);
-				while (node == null && lastOffset >= 0) {
-					lastOffset--;
-					node = model.getIndexedRegion(lastOffset);
+		if (file != null) { 
+			IModelManager mm = StructuredModelManager.getModelManager();
+			IStructuredModel model = null;
+			if (mm != null) {
+				try {
+					model = mm.getModelForRead(file);
+					if (model != null) {
+						int lastOffset = documentOffset;
+						node = model.getIndexedRegion(documentOffset);
+						while (node == null && lastOffset >= 0) {
+							lastOffset--;
+							node = model.getIndexedRegion(lastOffset);
+						}
+					}
+				} catch (IOException e) {
+					ELCorePlugin.getDefault().logError(e);
+					node = null;
+				} catch (CoreException e) {
+					ELCorePlugin.getDefault().logError(e);
+					node = null;
+				} finally {
+					if (model != null)
+						model.releaseFromRead();
 				}
 			}
-		} finally {
-			if (model != null)
-				model.releaseFromRead();
 		}
 		return node;
 	}
