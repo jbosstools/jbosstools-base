@@ -22,7 +22,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources;bundle-version="3.5.0",
  org.eclipse.draw2d;bundle-version="3.6.1",
  org.eclipse.zest.core;bundle-version="1.2.0",
- org.eclipse.zest.layouts;bundle-version="1.1.0"
+ org.eclipse.zest.layouts;bundle-version="1.1.0",
+ org.eclipse.swtbot.eclipse.gef.finder;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: org.apache.log4j
@@ -30,6 +31,7 @@ Export-Package: org.jboss.tools.ui.bot.ext,
  org.jboss.tools.ui.bot.ext.config,
  org.jboss.tools.ui.bot.ext.config.requirement,
  org.jboss.tools.ui.bot.ext.entity,
+ org.jboss.tools.ui.bot.ext.gef,
  org.jboss.tools.ui.bot.ext.gen,
  org.jboss.tools.ui.bot.ext.helper,
  org.jboss.tools.ui.bot.ext.parts,
@@ -39,3 +41,4 @@ Export-Package: org.jboss.tools.ui.bot.ext,
  org.jboss.tools.ui.bot.ext.zest
 Bundle-Vendor: JBoss by Red Hat
 Bundle-ClassPath: .
+Import-Package: org.eclipse.gef
