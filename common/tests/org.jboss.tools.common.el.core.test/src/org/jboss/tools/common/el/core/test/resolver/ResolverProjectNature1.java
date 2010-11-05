@@ -17,33 +17,28 @@ public class ResolverProjectNature1 implements ELResolver {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	public List<TextProposal> getProposals(ELContext context, String el,
 			int offset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public List<TextProposal> getProposals(ELContext context, int offset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public ELResolution resolve(ELContext context, ELExpression operand,
 			int offset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public ELParserFactory getParserFactory() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public IRelevanceCheck createRelevanceCheck(IJavaElement element) {
 		// TODO Auto-generated method stub
 		return null;
