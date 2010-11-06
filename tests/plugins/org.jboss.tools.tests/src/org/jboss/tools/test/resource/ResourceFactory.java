@@ -46,7 +46,6 @@ public class ResourceFactory {
 			this.fullPath = fullPath;
 		}
 
-		@Override
 		public Object invoke(Object proxy, Method method, Object[] args)
 				throws Throwable {
 			Object result =  null;
