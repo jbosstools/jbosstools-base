@@ -182,7 +182,9 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 						wizard.performFinish();
 					}
 				}
-				dialog.close();
+				if(dialog.getShell() != null && !dialog.getShell().isDisposed()) {
+					dialog.close();
+				}
 			} else {
 				try {
                     JavaUI.openInEditor(javaElement);
