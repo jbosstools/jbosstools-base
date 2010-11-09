@@ -115,17 +115,6 @@ public class SWTBotExt extends SWTWorkbenchBot {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public SWTBotBrowserExt browser() {
-		try {
-			List<Browser> bsrs = (List<Browser>) widgets(widgetOfType(Browser.class));
-			return new SWTBotBrowserExt(bsrs.get(0));
-		} catch (WidgetNotFoundException ex) {
-			throw new WidgetNotFoundException(
-					"Could not find widget of type Browser", ex);
-		}
-	}
-
 	public SWTBotScaleExt scale() {
 		return scale(0);
 	}
