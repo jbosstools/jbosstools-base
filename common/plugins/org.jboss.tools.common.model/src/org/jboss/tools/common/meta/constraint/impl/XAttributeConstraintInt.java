@@ -46,10 +46,10 @@ public class XAttributeConstraintInt extends XAttributeConstraintProperties {
     	} else if(min == 0 && max == Integer.MAX_VALUE) {
     		return "must be a non-negative integer.";
     	} else if(min > Integer.MIN_VALUE && max == Integer.MAX_VALUE) {
-    		return MessageFormat.format("must be an integer greater than {0}.",
+    		return MessageFormat.format("must be an integer not less than {0}.",
 					min);
     	} else if(min == Integer.MIN_VALUE && max < Integer.MAX_VALUE) {
-    		return MessageFormat.format("must be an integer less than {0}.", max);
+    		return MessageFormat.format("must be an integer not greater than {0}.", max);
     	} else {
     		return MessageFormat.format("must be an integer from {0} to {1}.",
 					min, max);
