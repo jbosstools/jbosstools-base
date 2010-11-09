@@ -231,6 +231,14 @@
          			<axis path="*/[http://java.sun.com/jsp/jstl/core]:redirect/url" />
         		</partitionType>
 			</contentType>
+			<contentType id="jsf.facelet.composite">
+				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
+         			<axis path="*/[http://java.sun.com/jstl/core]:import/url" />
+         			<axis path="*/[http://java.sun.com/jstl/core]:redirect/url" />
+         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:import/url" />
+         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:redirect/url" />
+        		</partitionType>
+			</contentType>
 		</hyperlinkPartitioner>
 		
 		
@@ -629,6 +637,9 @@
 				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.INCLUDE_FILE" />
          	</contenttypeidentifier>
          	<contenttypeidentifier id="jsf.facelet">
+				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.INCLUDE_FILE" />
+         	</contenttypeidentifier>
+         	<contenttypeidentifier id="jsf.facelet.composite">
 				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.INCLUDE_FILE" />
          	</contenttypeidentifier>
 		</hyperlink>
