@@ -154,6 +154,7 @@ public class IDELabel {
 	  public static final String USER_SPECIFIED_TAG_TEMPLATE = "User specified tag template";
 	  public static final String PAGE_DESIGN_OPTIONS = "Page Design Options";
 	  public static final String ADD_TAGLIB_REFRENCE = "Add Taglib Reference";
+	  public static final String ADD_EL_REFERENCE = "Add EL Reference";
 	}
 
 	public class EntityGroup {
@@ -603,7 +604,10 @@ public class IDELabel {
      public static final String INCLUDED_TAG_LIBS_TAB = "Included tag libs";
      public static final String INCLUDED_TAG_LIBS_URI = "URI*";
      public static final String INCLUDED_TAG_LIBS_PREFIX = "Prefix";
-
+     
+     public static final String SUBSTITUTED_EL_EXPRESSIONS_TAB = "Substituted EL expressions";
+     public static final String SUBSTITUTED_EL_EXPRESSIONS_EL_NAME = "El Name*";
+     public static final String SUBSTITUTED_EL_EXPRESSIONS_VALUE = "Value";
    }   
    
    public static class AddTaglibReferenceDialog{
