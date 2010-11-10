@@ -172,7 +172,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 	}
 
 	public ELExpression parseOperand(String operand, ELParserFactory factory) {
-		if(operand == null) return null;
+		if(operand == null || factory == null) return null;
 		String el = (operand.indexOf("#{") < 0 && operand.indexOf("${") < 0) ? "#{" + operand + "}" : operand; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		ELParser p = factory.createParser();
 		ELModel model = p.parse(el);
@@ -573,12 +573,14 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					segment = new JavaMemberELSegmentImpl();
 					if(left instanceof ELArgumentInvocation) {
 						String s = "#{" + left.getLeft().toString() + collectionAdditionForCollectionDataModel + "}"; //$NON-NLS-1$ //$NON-NLS-2$
-						ELParser p = getParserFactory().createParser();
-						ELInvocationExpression expr1 = (ELInvocationExpression)p.parse(s).getInstances().get(0).getExpression();
-						members = resolveSegment(expr1.getLeft(), members, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
-						members = resolveSegment(expr1, members, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
-						if(resolution.getLastResolvedToken() == expr1) {
-							resolution.setLastResolvedToken(left);
+						if(getParserFactory()!=null) {
+							ELParser p = getParserFactory().createParser();
+							ELInvocationExpression expr1 = (ELInvocationExpression)p.parse(s).getInstances().get(0).getExpression();
+							members = resolveSegment(expr1.getLeft(), members, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
+							members = resolveSegment(expr1, members, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
+							if(resolution.getLastResolvedToken() == expr1) {
+								resolution.setLastResolvedToken(left);
+							}
 						}
 					} else {
 						members = resolveSegment(left, members, resolution, returnEqualedVariablesOnly, varIsUsed, segment);

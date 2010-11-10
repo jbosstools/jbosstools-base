@@ -256,7 +256,7 @@ public class ElVarSearcher {
 	 * @return found var/value or null
 	 */
 	public static Var findVar(Node node, ELParserFactory factory) {
-		if(node!=null && Node.ELEMENT_NODE == node.getNodeType()) {
+		if(factory!=null && node!=null && Node.ELEMENT_NODE == node.getNodeType()) {
 			Element element = (Element)node;			
 			if(element.hasAttribute(VAR_ATTRIBUTE_NAME)) {
 				String var = element.getAttribute(VAR_ATTRIBUTE_NAME);
