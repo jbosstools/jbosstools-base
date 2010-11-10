@@ -101,6 +101,7 @@ public class IDELabel {
 		public static final String REMOVE = "Remove";
 		public static final String EDIT = "Edit...";
 		public static final String ADD_WITHOUT_DOTS = "Add";
+		public static final String EDIT_WITHOUT_DOTS = "Edit";
 		public static final String DROOLS_WORKBENCH = "Drools workbench";
 		public static final String REFRESH = "Refresh";
 	}
@@ -599,7 +600,9 @@ public class IDELabel {
    
    public static class PageDesignOptionsDialog{
      
-     public static final String INCLUDED_TAG_LIBS_TAB = "Included tag tibs";
+     public static final String INCLUDED_TAG_LIBS_TAB = "Included tag libs";
+     public static final String INCLUDED_TAG_LIBS_URI = "URI*";
+     public static final String INCLUDED_TAG_LIBS_PREFIX = "Prefix";
 
    }   
    
