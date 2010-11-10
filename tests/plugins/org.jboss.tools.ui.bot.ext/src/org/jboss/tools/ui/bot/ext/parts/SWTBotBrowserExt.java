@@ -235,4 +235,15 @@ public class SWTBotBrowserExt extends AbstractSWTBotControl<Browser> {
 	  new SWTUtilExt(bot).waitForBrowserLoadsPage(this);
 	  bot.sleep(Timing.time5S());
 	}
+	 /**
+   * Set Text of Input on position specified by index via Java script 
+   * @param text 
+   * @param index
+   */
+  public void setInputTextViaJavaScript(String text, int index,SWTWorkbenchBot bot){
+    executeScriptAsync("document.getElementsByTagName('input')[" +
+      index +
+      "].value = \""+ text +"\";");
+    bot.sleep(Timing.time5S());
+  }
 }

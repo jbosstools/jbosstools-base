@@ -151,6 +151,8 @@ public class IDELabel {
 	  public static final String ADD_PALETTE_MACRO = "Add Palette Macro";
 	  public static final String CONFIRMATION = "Confirmation";
 	  public static final String USER_SPECIFIED_TAG_TEMPLATE = "User specified tag template";
+	  public static final String PAGE_DESIGN_OPTIONS = "Page Design Options";
+	  public static final String ADD_TAGLIB_REFRENCE = "Add Taglib Reference";
 	}
 
 	public class EntityGroup {
@@ -497,7 +499,7 @@ public class IDELabel {
      public static final String ADD_GUVNOR_REPOSITORY_TOOLTIP = "Add a Guvnor respository connection";
      public static final String REMOVE_GUVNOR_REPOSITORY_TOOLTIP = "Delete Guvnor repository connection";
      public static final String REMOVE_GUVNOR_REPOSITORY_DIALOG_TITLE = "Remove repository connection";
-     public static final String GUVNOR_REPOSITORY_ROOT_TREE_ITEM = "http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/webdav/";
+     public static final String GUVNOR_REPOSITORY_ROOT_TREE_ITEM = "http://localhost:8080/jboss-brms/org.drools.guvnor.Guvnor/webdav/";
      public static final String PACKAGES_TREE_ITEM = "packages/";
      public static final String MORTGAGE_TREE_ITEM = "mortgages/";
      public static final String GO_INTO_GUVNOR_REPOSITORY_TOOLTIP = "Go Into";
@@ -509,7 +511,7 @@ public class IDELabel {
    
    public static final class GuvnorConsole {
      
-     public static final String GUVNOR_CONSOLE_TITLE = "JBoss Guvnor";
+     public static final String GUVNOR_CONSOLE_TITLE = "JBoss BRMS";
      public static final String BUTTON_YES_INSTALL_SAMPLES = "Yes, please install samples";
      
    }
@@ -595,4 +597,22 @@ public class IDELabel {
 
    }
    
+   public static class PageDesignOptionsDialog{
+     
+     public static final String INCLUDED_TAG_LIBS_TAB = "Included tag tibs";
+
+   }   
+   
+   public static class AddTaglibReferenceDialog{
+     
+     public static final String INCLUDED_TAG_LIBS_TAB = "Included tag libs";
+
+   } 
+   
+   public static class GuvnorConsoleLoginDialog{
+     
+     public static final String USER_NAME = "User Name: ";
+     public static final String PASSWORD = "Password:  ";
+
+   }
  }
