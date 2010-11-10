@@ -54,6 +54,12 @@ public class Annotations {
 		 * setting this to false will disable this feature
 		 * @return
 		 */
+		/**
+		 * optionally require Database
+		 * @return
+		 */
+		DB db() default @DB (required = false);
+		
 		boolean clearWorkspace() default true;
 		/**
 		 * by default all projects are undeployed from pre-configured server & deleted before test runs
@@ -172,6 +178,24 @@ public class Annotations {
 		String operator() default "=";
 	}
 	
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface DB {
+		/**
+		 * true if DB is required ()
+		 * @return
+		 */
+		boolean required() default true;
+		/**
+		 * version of database (use * for al)
+		 * @return
+		 */		
+		String version() default "*";
+		/**
+		 * defines operator for version version, possible values (=,<,>=<=,>=,!=) default =
+		 * @return
+		 */
+		String operator() default "=";
+	}
 	
 	public enum ServerState {
 		/**

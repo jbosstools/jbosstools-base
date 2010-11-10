@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ESB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.JBPM;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
@@ -28,6 +29,7 @@ public class TestConfigurator {
 		public static final String JAVA = "JAVA";
 		public static final String ESB = "ESB";
 		public static final String JBPM = "JBPM";
+		public static final String DB = "DB";
 	}
 
 	public class Values {
@@ -193,6 +195,16 @@ public class TestConfigurator {
 		}
 		return RequirementBase.createAddJBPM();
 	}
+	
+	private static RequirementBase getDBRequirement(DB d) {
+		if (!d.required() || currentConfig.getDB() == null) {
+			return null;
+		}
+		if (!matches(currentConfig.getDB().version, d.operator(), d.version())) {
+			return null;
+		}
+		return RequirementBase.prepareDB();
+	}
 
 	/**
 	 * returns list of requirements if given class (Test) can run, all this is
@@ -233,6 +245,13 @@ public class TestConfigurator {
 		}
 		if (requies.jbpm().required()) {
 			RequirementBase req = getJBPMRequirement(requies.jbpm());
+			if (req == null) {
+				return null;
+			}
+			reqs.add(req);
+		}
+		if (requies.db().required()) {
+			RequirementBase req = getDBRequirement(requies.db());
 			if (req == null) {
 				return null;
 			}

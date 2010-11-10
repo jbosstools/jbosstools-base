@@ -162,7 +162,10 @@ public abstract class RequirementBase {
 		RequirementBase req = new RemoveServer();
 		return req;
 	}
-
 	
-
+	public static RequirementBase prepareDB () {
+		RequirementBase req = new PrepareDB();
+		return req;
+	}
+	
 }

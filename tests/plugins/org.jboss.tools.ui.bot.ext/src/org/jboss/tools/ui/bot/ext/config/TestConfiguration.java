@@ -29,6 +29,7 @@ public class TestConfiguration {
 	private ESBBean esb;
 	private JavaBean java;
 	private JBPMBean jbpm;
+	private DBBean db;
 
 	public TestConfiguration(String propName, String propFile) throws Exception {
 		this.propName = propName;
@@ -58,6 +59,7 @@ public class TestConfiguration {
 		printConfig(Keys.ESB, esb);
 		jbpm = JBPMBean.fromString(getProperty(Keys.JBPM));
 		printConfig(Keys.JBPM, jbpm);
+		db = DBBean.fromString(getProperty(Keys.DB));
 		
 		checkConfig();
 	}
@@ -80,6 +82,12 @@ public class TestConfiguration {
 				checkDirExists(server.runtimeHome);
 			if (esb != null)
 				checkDirExists(esb.esbHome);
+			if (jbpm != null)
+				checkDirExists(jbpm.jbpmHome);
+			if (db != null) {
+				checkFileExists(db.driverPath);
+				checkFileExists(db.scriptPath);
+			}
 			// special checks capturing dependency of server on java
 			if (java == null
 					&& server != null
@@ -111,6 +119,12 @@ public class TestConfiguration {
 					+ "' does not exist or is not directory");
 		}
 	}
+	
+	private static void checkFileExists(String path) throws FileNotFoundException {
+		if (!new File(path).exists() || !new File(path).isFile()) {
+			throw new FileNotFoundException("File " + path + " not exist or is not file");
+		}
+	}
 
 	public ESBBean getEsb() {
 		return esb;
@@ -138,5 +152,9 @@ public class TestConfiguration {
 	
 	public JBPMBean getJBPM() {
 		return jbpm;
+	}
+	
+	public DBBean getDB() {
+		return db;
 	}
 }

@@ -18,6 +18,7 @@ public class ConfiguredState {
 	private Seam seam = new Seam();
 	private ESB esb = new ESB();
 	private JBPM jbpm = new JBPM();
+	private DB db = new DB();
 
 	private boolean viewsPrepared = false;
 
@@ -70,6 +71,13 @@ public class ConfiguredState {
 	 */
 	public JBPM getJBPM() {
 		return jbpm;
+	}
+	
+	/**
+	 * gets configured database
+	 */
+	public DB getDB() {
+		return db;
 	}
 	
 	public class Server {
@@ -137,6 +145,22 @@ public class ConfiguredState {
 	public class JBPM {
 		/**
 		 * version of ESB runtime
+		 */		
+		public String version = null;
+		/**
+		 * is configured?
+		 */		
+		public boolean isConfigured = false;
+		/**
+		 * name of added runtime
+		 */		
+		public String name = null;
+	}
+	
+	
+	public class DB {		
+		/**
+		 * version of DB
 		 */		
 		public String version = null;
 		/**

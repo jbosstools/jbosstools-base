@@ -1,5 +1,8 @@
 package org.jboss.tools.ui.bot.ext.helper;
 
+import static org.eclipse.swtbot.eclipse.finder.matchers.WithPartName.withPartName;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
@@ -18,12 +21,23 @@ import org.eclipse.datatools.connectivity.drivers.IDriverMgmtConstants;
 import org.eclipse.datatools.connectivity.drivers.IPropertySet;
 import org.eclipse.datatools.connectivity.drivers.PropertySetImpl;
 import org.eclipse.datatools.connectivity.drivers.models.TemplateDescriptor;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.IViewReference;
+import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.Activator;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.types.DriverEntity;
+import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
+import org.jboss.tools.ui.bot.ext.types.ViewType;
 
 public class DatabaseHelper {
 
-		
+	public static int SLEEP = 1000;
+
 	/**
 	 * Create HSQLDB Driver 
 	 * @throws ConnectionProfileException
@@ -93,5 +107,169 @@ public class DatabaseHelper {
   public static void createDriver(DriverEntity entity) throws ConnectionProfileException {
     createDriver(entity,"DefaultDS");
   }
-	
+	/**
+   * 
+   */
+	public static void openSQLEditor(DBType type, String profile, String db) {
+		SWTEclipseExt eclipse = new SWTEclipseExt();
+		SWTWorkbenchBot bot = eclipse.getBot();
+
+		eclipse.openPerspective(PerspectiveType.DB_DEVELOPMENT);
+		eclipse.showView(ViewType.DATA_SOURCE_EXPLORER);
+
+		bot.saveAllEditors();
+		bot.closeAllEditors();
+
+		bot.sleep(SLEEP);
+
+		Matcher<IViewReference> matcher = withPartName("Data Source Explorer");
+		SWTBotView view = bot.view(matcher);
+
+		bot.sleep(SLEEP);
+		SWTBotTree tree = view.bot().tree();
+
+		// Open SQL Scrapbook
+		SWTBotTreeItem item = tree.expandNode("Database Connections")
+				.expandNode(profile);
+		item.contextMenu("Connect").click();
+		item.contextMenu("Open SQL Scrapbook").click();
+
+		// Set SQL Scrapbook
+		SWTBotEditor editor = bot.editorByTitle("SQL Scrapbook 0");
+		editor.setFocus();
+		bot.comboBoxWithLabelInGroup("Type:", "Connection profile")
+				.setSelection(getTypeCombo(type));
+		bot.comboBoxWithLabelInGroup("Name:", "Connection profile")
+				.setSelection(profile);
+		bot.comboBoxWithLabelInGroup("Database:", "Connection profile")
+				.setSelection(db);
+	}
+
+	/**
+	 * 
+	 * @param script
+	 */
+	public static void runSQLScript(String script) {
+		SWTEclipseExt eclipse = new SWTEclipseExt();
+		SWTWorkbenchBot bot = eclipse.getBot();
+
+		SWTBotEditor editor = bot.editorByTitle("SQL Scrapbook 0");
+		editor.toTextEditor().setText(script);
+
+		// Execute Script and close
+		bot.editorByTitle("SQL Scrapbook 0").toTextEditor()
+				.contextMenu("Execute All").click();
+		editor.close();
+		bot.sleep(SLEEP);
+	}
+
+	/**
+	 * Database type enum
+	 * 
+	 * @author jpeterka
+	 * 
+	 */
+	public enum DBType {
+		hsqldb18, db2_97, mssql2005, mssql2008, mysql50, mysql51, oracle10g, oracle11gR1, oracle11gR1RAC, oracle11gR2, oracle11gR2RAC, postgresql82, postgresql83, postgresql84, sybase15
+	}
+
+	/**
+	 * Return driver template for creating new connection
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public static String getDriverTemplate(DBType type) {
+		String ret = "";
+		switch (type) {
+		case hsqldb18:
+			ret = "org.eclipse.datatools.enablement.hsqldb.1_8.driver";
+			break;
+		case db2_97:
+			ret = "org.eclipse.datatools.enablement.ibm.db2.luw.driverTemplate";
+			break;
+		case mssql2005:
+			ret = "org.eclipse.datatools.enablement.msft.sqlserver.2005.driverTemplate";
+			break;
+		case mssql2008:
+			ret = "org.eclipse.datatools.enablement.msft.sqlserver.2008.driverTemplate";
+			break;
+		case mysql50:
+			ret = "org.eclipse.datatools.enablement.mysql.5_0.driverTemplate";
+			break;
+		case mysql51:
+			ret = "org.eclipse.datatools.enablement.mysql.5_1.driverTemplate";
+			break;
+		case oracle10g:
+			ret = "org.eclipse.datatools.enablement.oracle.10.driverTemplate";
+			break;
+		case oracle11gR1: // Intentionally empty
+		case oracle11gR1RAC: // Intentionally empty
+		case oracle11gR2: // Intentionally empty
+		case oracle11gR2RAC:
+			ret = "org.eclipse.datatools.enablement.oracle.11.driverTemplate";
+			break;
+		case postgresql82: // Intentionally empty
+		case postgresql83: // Intentionally empty
+		case postgresql84: // Intentionally empty
+		case sybase15:
+			ret = "org.eclipse.datatools.connectivity.db.sybase.ase.genericDriverTemplate_15";
+			break;
+		default:
+			fail("Unknown db type");
+			break;
+		}
+		return ret;
+	}
+
+	/**
+	 * Resolves db type for eclipse usage in SQL editor
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public static String getTypeCombo(DBType type) {
+		String ret = "";
+		switch (type) {
+		case hsqldb18:
+			ret = "HSQLDB_1.8";
+			break;
+		case db2_97:
+			ret = "DB2 UDB_V9.1";
+			break;
+		case mssql2005:
+			ret = "SQL Server_2005";
+			break;
+		case mssql2008:
+			ret = "SQL Server_2008";
+			break;
+		case mysql50:
+			ret = "MySQL_5.0";
+			break;
+		case mysql51:
+			ret = "MySQL_5.1";
+			break;
+		case oracle10g:
+			ret = "Oracle_10";
+			break;
+		case oracle11gR1: // Intentionally empty
+		case oracle11gR1RAC: // Intentionally empty
+		case oracle11gR2: // Intentionally empty
+		case oracle11gR2RAC:
+			ret = "Oracle_11";
+			break;
+		case postgresql82: // Intentionally empty
+		case postgresql83: // Intentionally empty
+		case postgresql84:
+			ret = "postgres_8.x";
+			break;
+		case sybase15:
+			ret = "Sybase_ASE_15.x";
+			break;
+		default:
+			fail("Unknown db type");
+			break;
+		}
+		return ret;
+	}
 }
