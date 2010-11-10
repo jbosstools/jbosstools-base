@@ -41,10 +41,10 @@ public class DatabaseHelper {
 
 		DriverInstance driver = DriverManager.getInstance().getDriverInstanceByName(entity.getInstanceName());
 		if (driver == null) {
-			TemplateDescriptor descr = TemplateDescriptor.getDriverTemplateDescriptor("org.eclipse.datatools.enablement.hsqldb.1_8.driver");
-			IPropertySet instance = new PropertySetImpl(entity.getInstanceName(), "DriverDefn.Hypersonic DB");
+			TemplateDescriptor descr = TemplateDescriptor.getDriverTemplateDescriptor(entity.getDriverTemplateDescId());
+			IPropertySet instance = new PropertySetImpl(entity.getInstanceName(), entity.getDriverDefId());
 			instance.setName(entity.getInstanceName());
-			instance.setID("DriverDefn.Hypersonic DB");
+			instance.setID(entity.getDriverDefId());
 			Properties props = new Properties();
 
 			IConfigurationElement[] template = descr.getProperties();
@@ -70,15 +70,15 @@ public class DatabaseHelper {
 		if (driver != null && ProfileManager.getInstance().getProfileByName(profileName) == null) { //$NON-NLS-1$
 			// create profile
 			Properties props = new Properties();
-			props.setProperty(ConnectionProfileConstants.PROP_DRIVER_DEFINITION_ID, "DriverDefn.Hypersonic DB");
+			props.setProperty(ConnectionProfileConstants.PROP_DRIVER_DEFINITION_ID, entity.getDriverDefId());
 			props.setProperty(IDBConnectionProfileConstants.CONNECTION_PROPERTIES_PROP_ID, ""); //$NON-NLS-1$
 			props.setProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID));
 			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID,	driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID));
 			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID));
 			props.setProperty(IDBDriverDefinitionConstants.DATABASE_NAME_PROP_ID, entity.getDatabaseName()); //$NON-NLS-1$
-			props.setProperty(IDBDriverDefinitionConstants.PASSWORD_PROP_ID, ""); //$NON-NLS-1$
-			props.setProperty(IDBConnectionProfileConstants.SAVE_PASSWORD_PROP_ID, "false"); //$NON-NLS-1$
-			props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID));
+			props.setProperty(IDBDriverDefinitionConstants.PASSWORD_PROP_ID, entity.getPassword()); //$NON-NLS-1$ //my
+			props.setProperty(IDBConnectionProfileConstants.SAVE_PASSWORD_PROP_ID, "false"); //$NON-NLS-1$ 
+			props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID, entity.getUser()/*driver.getProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID)*/);
 			props.setProperty(IDBDriverDefinitionConstants.URL_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.URL_PROP_ID));
 
 			ProfileManager.getInstance().createProfile(entity.getProfileName(),	entity.getProfileDescription(), IDBConnectionProfileConstants.CONNECTION_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
