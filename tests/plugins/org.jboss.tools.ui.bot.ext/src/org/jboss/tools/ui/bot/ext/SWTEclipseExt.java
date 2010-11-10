@@ -1216,7 +1216,7 @@ public class SWTEclipseExt {
         IDELabel.Menu.DEBUG_AS_DROOLS_APPLICATION).click();
   }  
   /**
-   * Returns true if parentNode contains Tree Item with nodeLabel
+   * Returns true if parentNode containss Tree Item with nodeLabel
    * @param parentNode
    * @param nodeLabel
    * @return
