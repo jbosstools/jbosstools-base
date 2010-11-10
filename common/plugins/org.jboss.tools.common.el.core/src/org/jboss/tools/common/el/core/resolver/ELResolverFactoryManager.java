@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.el.core.ELCorePlugin;
 
@@ -93,7 +92,7 @@ public class ELResolverFactoryManager {
 							if(resolver!=null) {
 								resolverSet.add(resolver);
 							}
-						} else {
+						} else if(!(factory instanceof TestELResolverFactory)) {
 							ELCorePlugin.getPluginLog().logError(factory.getClass().getName() + " must be instance of org.jboss.tools.common.el.core.resolver.ELResolverFactory"); //$NON-NLS-1$
 						}
 					} catch (CoreException e) {
