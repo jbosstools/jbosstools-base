@@ -17,6 +17,8 @@ import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 
@@ -30,13 +32,25 @@ public class DropWizardDialog extends WizardDialog {
 	}
 	
 	protected void configureShell(Shell newShell) {
+		Control shell = newShell == null ? null : newShell.getParent();
 		super.configureShell(newShell);
-		newShell.setBounds(
-			ModelPlugin.getDefault().getWorkbench().getDisplay().getBounds().width/2-DO_WIDTH_VALUE/2,
-			ModelPlugin.getDefault().getWorkbench().getDisplay().getBounds().height/2-DO_HEIGHT_VALUE/2,				
-			getPreferredWidth(),
-			DO_HEIGHT_VALUE
-		);
+		
+		int width = getPreferredWidth();
+		int height = DO_HEIGHT_VALUE;
+		Display d = shell != null ? shell.getDisplay() : ModelPlugin.getDefault().getWorkbench().getDisplay();
+		int x = d.getBounds().width/2-width/2;
+		int y = d.getBounds().height/2-height/2;
+			
+		if(shell != null) {
+			x = shell.getBounds().x + shell.getBounds().width/2-width/2;
+			if(x < 0) x = 0;
+			y = shell.getBounds().y + shell.getBounds().height/2-height/2;
+			if(y + height > d.getBounds().height) {
+				y = d.getBounds().height - height;
+			}
+		}
+
+		newShell.setBounds(x, y, width, height);
 	}
 	
 	protected int getPreferredWidth() {
