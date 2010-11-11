@@ -25,7 +25,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.viewers.ISelection;
@@ -36,6 +35,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -86,6 +87,9 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 			{ENT_PROPERTY, "yes"}, //$NON-NLS-1$
 			{ATTR_VALUE, "no"} //$NON-NLS-1$
 	}));
+	
+	ExpandableComposite filterComposite;
+	Button caseSensitive = null;
 	Button fake = null;
 	
 	private Label statistics;
@@ -100,8 +104,10 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	private QualifiedName nameFilterId = new QualifiedName("", "nameFilter"); //$NON-NLS-1$ //$NON-NLS-2$
 	private QualifiedName valueFilterId = new QualifiedName("", "valueFilter"); //$NON-NLS-1$ //$NON-NLS-2$
 	private QualifiedName isFilterExpressionId = new QualifiedName("", "isFilterExpression"); //$NON-NLS-1$ //$NON-NLS-2$
+	private QualifiedName isCaseSensitiveId = new QualifiedName("", "isCaseSensitiveId"); //$NON-NLS-1$ //$NON-NLS-2$
 	private boolean filterOpened = false;
 	private boolean isFilterExpression = false;
+	private boolean isCaseSensitive = false;
 	
 	
 	public PropertiesEditor() {
@@ -129,8 +135,8 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		nsupport.getPropertyEditorAdapterByName(ATTR_NAME).setValue(pHelper.nameFilter);
 		vsupport.getPropertyEditorAdapterByName(ATTR_VALUE).setValue(pHelper.valueFilter);
 		
-		ExpandableComposite g = new ExpandableComposite(panel, SWT.NONE);
-		g.setText(UIMessages.PROPERTIES_EDITOR_FILTER);
+		ExpandableComposite g = filterComposite = new ExpandableComposite(panel, SWT.NONE);
+		g.setText(UIMessages.PROPERTIES_EDITOR_FILTER_REGULAR);
 		g.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		Composite g1 = new Composite(g, SWT.NONE);
 		GridLayout l1 = new GridLayout(3, false);
@@ -154,7 +160,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 
 		Composite ng = new Composite(g1, SWT.NONE);
 		GridLayout nl = new GridLayout(2, false);
-		nl.marginRight = 5;
+		nl.marginRight = 0;
 		nl.marginHeight = 0;
 		ng.setLayout(nl);
 		ng.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -168,32 +174,18 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		vg.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		vsupport.fillComposite(vg);
 		vsupport.addPropertyChangeListener(pHelper);
+	
+		createCaseSensitive(g1);
 
-		fake = new Button(g1, SWT.CHECK);
-		fake.setText(UIMessages.PROPERTIES_EDITOR_EXPRESSION);
-		GridData fd = new GridData();
-		fd.widthHint = convertHorizontalDLUsToPixels(g1, IDialogConstants.BUTTON_WIDTH);
-		fake.setLayoutData(fd);
-		fake.setSelection(isFilterExpression);
-		fake.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				isFilterExpression = fake.getSelection();
-				pHelper.applyFilters();
-				refresh();				
-			}		
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
-		});
-//		fake.setVisible(false);
-
-		statistics = new Label(panel, SWT.NONE);
-		statistics.setVisible(false);
+		statistics = new Label(g1, SWT.NONE);
+//		statistics.setVisible(false);
 		GridData d = new GridData(GridData.FILL_HORIZONTAL);
 		d.horizontalSpan = 2;
-		d.heightHint = 1;
+//		d.heightHint = 1;
 		statistics.setLayoutData(d);
-		
+
+		createRegExp(g1, g);
+
 		Control c = super.createControl(panel);
 		c.setLayoutData(new GridData(GridData.FILL_BOTH));
 	
@@ -204,7 +196,66 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		
 		return panel;	
 	}
-	
+
+	void createCaseSensitive(Composite g1) {
+		caseSensitive = new Button(g1, SWT.CHECK);
+		caseSensitive.setText("Case sensitive");
+		GridData fd = new GridData();
+		Font font = caseSensitive.getFont();
+		if(font != null) {
+			FontData[] data = font.getFontData();
+			data[0].setHeight(data[0].getHeight() - 2);
+			font = new Font(font.getDevice(), data);
+			caseSensitive.setFont(font);
+		}
+		
+		caseSensitive.setLayoutData(fd);
+		caseSensitive.setSelection(isCaseSensitive);
+		caseSensitive.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				isCaseSensitive = caseSensitive.getSelection();
+				pHelper.applyFilters();
+				refresh();
+			}		
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
+	}
+
+	void createRegExp(Composite g1, final ExpandableComposite g) {
+		fake = new Button(g1, SWT.CHECK);
+		fake.setText(UIMessages.PROPERTIES_EDITOR_EXPRESSION);
+		GridData fd = new GridData();
+//		fd.widthHint = convertHorizontalDLUsToPixels(g1, IDialogConstants.BUTTON_WIDTH);
+		Font font = fake.getFont();
+		if(font != null) {
+			FontData[] data = font.getFontData();
+			data[0].setHeight(data[0].getHeight() - 2);
+			font = new Font(font.getDevice(), data);
+			fake.setFont(font);
+		}
+		
+		fake.setLayoutData(fd);
+		fake.setSelection(isFilterExpression);
+		fake.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				isFilterExpression = fake.getSelection();
+				pHelper.applyFilters();
+//				if(fake.getSelection()) {
+//					g.setText(UIMessages.PROPERTIES_EDITOR_FILTER_REGULAR);
+//				} else {
+//					g.setText(UIMessages.PROPERTIES_EDITOR_FILTER_SIMPLE);
+//					g.layout();
+//				}
+				refresh();
+			}		
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
+	}
+
 	protected void setMargins(CommandBar bar) {
 		bar.getLayout().setMargins(10,10,0,10);
 	}
@@ -302,6 +353,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 			if(pHelper.nameFilter == null) pHelper.nameFilter = ""; //$NON-NLS-1$
 			if(pHelper.valueFilter == null) pHelper.valueFilter = ""; //$NON-NLS-1$
 			isFilterExpression = "true".equals(f.getPersistentProperty(isFilterExpressionId)); //$NON-NLS-1$
+			isCaseSensitive = "true".equals(f.getPersistentProperty(isCaseSensitiveId)); //$NON-NLS-1$
 		} catch (CoreException e) {
 			//ignore
 		}
@@ -314,6 +366,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 			f.setPersistentProperty(nameFilterId, pHelper.nameFilter);
 			f.setPersistentProperty(valueFilterId, "" + pHelper.valueFilter); //$NON-NLS-1$
 			f.setPersistentProperty(isFilterExpressionId, "" + isFilterExpression); //$NON-NLS-1$
+			f.setPersistentProperty(isCaseSensitiveId, "" + isCaseSensitive); //$NON-NLS-1$
 		} catch (CoreException e) {
 			//ignore
 		}
@@ -470,18 +523,26 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		int filtered = pHelper.filteredChildren.length;
 		int total = pHelper.getModelObject().getChildren().length;
 		boolean errors = pHelper.compileError.length() > 0;
-		boolean visible = (filtered != total || errors);
-		boolean mod = visible != statistics.isVisible();
-		if(mod) {
-			statistics.setVisible(visible);
-			GridData d = (GridData)statistics.getLayoutData();
-			d.heightHint = visible ? SWT.DEFAULT : 1;
-		}
-		if(filtered != total) {
-			statistics.setText(NLS.bind(UIMessages.PROPERTIES_EDITOR_FILTER_MATCHES, filtered, total));
+//		boolean visible = (filtered != total || errors);
+//		boolean mod = visible != statistics.isVisible();
+//		if(mod) {
+//			statistics.setVisible(visible);
+//			GridData d = (GridData)statistics.getLayoutData();
+//			d.heightHint = visible ? SWT.DEFAULT : 1;
+//		}
+		if(!isFilterExpression) {
+			statistics.setText(UIMessages.PROPERTIES_EDITOR_FILTER_SIMPLE);
 		} else if(errors) {
 			statistics.setText(pHelper.compileError);
+		} else {
+			statistics.setText("");
 		}
+		if(filtered != total) {
+			filterComposite.setText(UIMessages.PROPERTIES_EDITOR_FILTER_REGULAR + " " + NLS.bind(UIMessages.PROPERTIES_EDITOR_FILTER_MATCHES, filtered, total));
+		} else {
+			filterComposite.setText(UIMessages.PROPERTIES_EDITOR_FILTER_REGULAR);
+		}
+		filterComposite.layout();
 		statistics.update();
 		panel.update();
 		panel.layout();
@@ -518,17 +579,18 @@ class FPTableHelper extends AbstractTableHelper implements PropertyChangeListene
 			filteredChildren = new XModelObject[0];
 		} else if(nameFilter.length() == 0 && valueFilter.length() == 0) {
 			filteredChildren = object.getChildren();
-		} else if(pe.fake.getSelection()) {
+		} else {
+			boolean isCaseSensitive = pe.caseSensitive.getSelection();
 			filteredChildren = object.getChildren();
 			Pattern pn = null, pv = null;
 			if(nameFilter.length() > 0) try {
-				pn = Pattern.compile(nameFilter);
+				pn = Pattern.compile(convertToRegExp(nameFilter, pe.fake.getSelection(), isCaseSensitive));
 			} catch (Exception e) {
 				compileError = NLS.bind(UIMessages.PROPERTIES_EDITOR_ILLEGAL_NAME_EXPRESSION, e.getMessage());
 				return;
 			}
 			if(valueFilter.length() > 0) try {
-				pv = Pattern.compile(valueFilter);
+				pv = Pattern.compile(convertToRegExp(valueFilter, pe.fake.getSelection(), isCaseSensitive));
 			} catch (Exception e) {
 				compileError = NLS.bind(UIMessages.PROPERTIES_EDITOR_ILLEGAL_VALUE_EXPRESSION, e.getMessage());
 				return;
@@ -536,31 +598,13 @@ class FPTableHelper extends AbstractTableHelper implements PropertyChangeListene
 			XModelObject[] children = object.getChildren();
 			List<XModelObject> list = new ArrayList<XModelObject>();
 			for (XModelObject c: children) {
-				String n = c.getAttributeValue(PropertiesEditor.ATTR_NAME);
-				String v = c.getAttributeValue(PropertiesEditor.ATTR_VALUE);
+				String n = checkCase(c.getAttributeValue(PropertiesEditor.ATTR_NAME), isCaseSensitive);
+				String v = checkCase(c.getAttributeValue(PropertiesEditor.ATTR_VALUE), isCaseSensitive);
 				if(pn != null && !pn.matcher(n).find()) {
 					continue;
 				}
 				if(pv != null && !pv.matcher(v).find()) {
 					continue;
-				}
-				
-				list.add(c);
-			}
-			filteredChildren = list.toArray(new XModelObject[0]);
-		} else {
-			String lowNameFilter = nameFilter.toLowerCase();
-			String lowValueFilter = valueFilter.toLowerCase();
-			XModelObject[] children = object.getChildren();
-			List<XModelObject> list = new ArrayList<XModelObject>();
-			for (XModelObject c: children) {
-				String n = c.getAttributeValue(PropertiesEditor.ATTR_NAME);
-				String v = c.getAttributeValue(PropertiesEditor.ATTR_VALUE);
-				if(nameFilter.length() > 0) {
-					if(n.toLowerCase().indexOf(lowNameFilter) < 0) continue; //TODO improve
-				}
-				if(valueFilter.length() > 0) {
-					if(v.toLowerCase().indexOf(lowValueFilter) < 0) continue; //TODO improve
 				}
 				
 				list.add(c);
@@ -607,5 +651,44 @@ class FPTableHelper extends AbstractTableHelper implements PropertyChangeListene
 			pe.refresh();
 		}
 		
+	}
+	
+	static String ESCAPE = "()[]{}+.!@#$%^&";
+
+	static String checkCase(String s, boolean isCaseSensitive) {
+		return isCaseSensitive ? s : s.toLowerCase();
+	}
+
+	static String convertToRegExp(String filter, boolean isRegExp, boolean isCaseSensitive) {
+		if(filter == null || filter.length() == 0) return "";
+		filter = checkCase(filter, isCaseSensitive);
+		if(isRegExp) return filter;
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < filter.length(); i++) {
+			char ch = filter.charAt(i);
+			if(ch == '?') {
+				sb.append(".");
+			} else if(ch == '*') {
+				sb.append(".*");
+			} else if(ESCAPE.indexOf(ch) >= 0) {
+				sb.append('\\').append(ch);
+			} else if(ch == '\\') {
+				if(i >= filter.length() - 1) {
+					sb.append("\\\\");
+				} else {
+					char c = filter.charAt(i + 1);
+					if(c == '*' || c == '?' || c == '\\') {
+						sb.append('\\').append(c);
+						i++;
+					} else {
+						sb.append("\\\\");
+					}
+				}
+			} else {
+				sb.append(ch);
+			}
+		}
+		
+		return sb.toString();
 	}
 }
