@@ -132,7 +132,7 @@ public class SWTBotExt extends SWTWorkbenchBot {
 	public SWTBotScaleExt scale(int index) {
 		try {
 			List<Scale> bsrs = (List<Scale>) widgets(widgetOfType(Scale.class));
-			return new SWTBotScaleExt(bsrs.get(0));
+			return new SWTBotScaleExt(bsrs.get(index));
 		} catch (WidgetNotFoundException ex) {
 			throw new WidgetNotFoundException(
 					"Could not find widget of type Browser", ex);
