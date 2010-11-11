@@ -16,6 +16,7 @@ import org.eclipse.osgi.util.NLS;
 public class UIMessages extends NLS {
 	
 	private static final String BUNDLE_NAME = "org.jboss.tools.common.model.ui.messages.messages";//$NON-NLS-1$
+	
 	static {
 		// load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, UIMessages.class);		
@@ -31,4 +32,7 @@ public class UIMessages extends NLS {
 	public static String REPORT_PROBLEM_NO_DESCRIPTION;
 	public static String REPORT_PROBLEM_RESULT;
 	public static String REPORT_PROBLEM_COPY_BUTTON;
+	public static String PROPERTIES_EDITOR_FILTER_REGULAR = PROPERTIES_EDITOR_EXPRESSION;
+	public static String PROPERTIES_EDITOR_FILTER_SIMPLE = PROPERTIES_EDITOR_FILTER;
+
 }
