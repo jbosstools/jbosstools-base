@@ -27,7 +27,8 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: org.apache.log4j
-Export-Package: org.jboss.tools.ui.bot.ext,
+Export-Package: org.hsqldb,
+ org.jboss.tools.ui.bot.ext,
  org.jboss.tools.ui.bot.ext.config,
  org.jboss.tools.ui.bot.ext.config.requirement,
  org.jboss.tools.ui.bot.ext.entity,
@@ -40,5 +41,6 @@ Export-Package: org.jboss.tools.ui.bot.ext,
  org.jboss.tools.ui.bot.ext.widgets,
  org.jboss.tools.ui.bot.ext.zest
 Bundle-Vendor: JBoss by Red Hat
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ resources/drv/hsqldb.jar
 Import-Package: org.eclipse.gef

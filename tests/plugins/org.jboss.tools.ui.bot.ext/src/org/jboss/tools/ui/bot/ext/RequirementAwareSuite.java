@@ -274,6 +274,7 @@ public class RequirementAwareSuite extends Suite {
 						.info("All tests finished, performing cleanup requirements ");
 				try {
 					RequirementBase.createStopServer().fulfill();
+					RequirementBase.createStopDBServer().fulfill();
 
 					log.info("All cleanup requirements performed");
 				} catch (Exception ex) {
@@ -356,5 +357,4 @@ public class RequirementAwareSuite extends Suite {
 		ExcludeCategory annotation= klass.getAnnotation(ExcludeCategory.class);
 		return annotation == null ? null : annotation.value();
 	}
-	
 }

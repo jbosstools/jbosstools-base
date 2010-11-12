@@ -85,8 +85,10 @@ public class TestConfiguration {
 			if (jbpm != null)
 				checkDirExists(jbpm.jbpmHome);
 			if (db != null) {
-				checkFileExists(db.driverPath);
-				checkFileExists(db.scriptPath);
+				if (!db.internal)
+					checkFileExists(db.driverPath);
+				if (!db.scriptPath.isEmpty())
+					checkFileExists(db.scriptPath);
 			}
 			// special checks capturing dependency of server on java
 			if (java == null

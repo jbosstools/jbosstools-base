@@ -2,6 +2,9 @@ package org.jboss.tools.ui.bot.ext.config;
 
 import static org.junit.Assert.fail;
 
+import java.io.File;
+
+import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.ui.bot.ext.helper.DatabaseHelper.DBType;
 
 /**
@@ -12,9 +15,13 @@ import org.jboss.tools.ui.bot.ext.helper.DatabaseHelper.DBType;
 public class DBBean {
 	public String version;
 	public String jdbcString;
+	public String username;
+	public String password;
 	public String driverPath;
 	public String scriptPath;
 	public DBType dbType; 
+	public String name;
+	public boolean internal = true;
 	
 	public static DBBean fromString(String propValue) throws Exception{
 		try {
@@ -27,8 +34,32 @@ public class DBBean {
 			bean.version = dbParams[1];
 			bean.driverPath=dbParams[2];
 			bean.jdbcString=dbParams[3];
-			bean.scriptPath=dbParams[4];
-			
+			bean.username=dbParams[4];
+			// optional
+			try {
+				bean.password=dbParams[5];			
+			} catch (Exception ex) {
+				bean.password = "";
+			}
+			try {
+				bean.scriptPath=dbParams[6];			
+			} catch (Exception ex) {
+				bean.scriptPath= "";
+			}				
+			bean.name=bean.dbType.toString() + "_" + bean.version;
+
+			// Internal version
+			if (bean.version.equalsIgnoreCase("internal")) {
+				bean.internal = true;
+				bean.version="1.8";
+				bean.internal = true;
+				bean.driverPath = Platform.getLocation() + File.separator + "hsqldb.jar";
+				bean.jdbcString = "jdbc:hsqldb:hsql://localhost/xdb";
+				bean.username = "sa";
+				bean.password = "";						
+			} else {
+				bean.internal = false;
+			}
 
 			return bean;
 			}

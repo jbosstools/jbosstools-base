@@ -168,4 +168,8 @@ public abstract class RequirementBase {
 		return req;
 	}
 	
+	public static RequirementBase createStopDBServer() {
+		RequirementBase req = new StopDBServer();
+		return req;
+	}
 }

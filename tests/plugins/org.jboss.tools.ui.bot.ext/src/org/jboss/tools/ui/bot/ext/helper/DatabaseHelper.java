@@ -4,11 +4,21 @@ import static org.eclipse.swtbot.eclipse.finder.matchers.WithPartName.withPartNa
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.datatools.connectivity.ConnectionProfileConstants;
 import org.eclipse.datatools.connectivity.ConnectionProfileException;
@@ -28,15 +38,19 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IViewReference;
 import org.hamcrest.Matcher;
+import org.hsqldb.Server;
 import org.jboss.tools.ui.bot.ext.Activator;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.types.DriverEntity;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 
 public class DatabaseHelper {
-
+	
 	public static int SLEEP = 1000;
+	public static Logger log = Logger.getLogger(DatabaseHelper.class);
+	private static boolean hsqlRunning;
 
 	/**
 	 * Create HSQLDB Driver 
@@ -49,7 +63,7 @@ public class DatabaseHelper {
 			driverPath = new File(entity.getDrvPath()).getCanonicalPath(); //$NON-NLS-1$
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, "Can't create driver", e));
+					Activator.PLUGIN_ID, "Can't get driver' path", e));
 			return;
 		}
 
@@ -157,8 +171,8 @@ public class DatabaseHelper {
 		editor.toTextEditor().setText(script);
 
 		// Execute Script and close
-		bot.editorByTitle("SQL Scrapbook 0").toTextEditor()
-				.contextMenu("Execute All").click();
+		editor.toTextEditor().contextMenu("Execute All").click();
+		editor.toTextEditor().setText("");		
 		editor.close();
 		bot.sleep(SLEEP);
 	}
@@ -172,7 +186,7 @@ public class DatabaseHelper {
 	public enum DBType {
 		hsqldb18, db2_97, mssql2005, mssql2008, mysql50, mysql51, oracle10g, oracle11gR1, oracle11gR1RAC, oracle11gR2, oracle11gR2RAC, postgresql82, postgresql83, postgresql84, sybase15
 	}
-
+	
 	/**
 	 * Return driver template for creating new connection
 	 * 
@@ -271,5 +285,91 @@ public class DatabaseHelper {
 			break;
 		}
 		return ret;
+	}
+	
+	/**
+	 * Run HSQLDB database in server mode
+	 * @param file
+	 * @param dbname
+	 */
+	public static void startHSQLDBServer(final String file, final String dbname) {
+		Thread hsqlThread = null;
+		log.info("Starting HSQLDB...");
+		try {
+			Class.forName("org.hsqldb.jdbcDriver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Runnable runable = new Runnable() {
+			
+			public void run() {
+				Server.main(new String[] {"-database.0","file:" + file,"-dbname.0",dbname });
+			}
+		};
+		
+		hsqlThread = new Thread(runable);
+		hsqlThread.start();
+		hsqlRunning = true;
+		log.info("HSQLDB started");
+	}
+	
+	/**
+	 * Stop HSQL Database by sending SHUTDOWN command
+	 */
+	public static void stopHSQLDBServer() {
+		if (!hsqlRunning) return;
+		
+		try {		
+			Class.forName("org.hsqldb.jdbcDriver");
+			
+			Connection connection = java.sql.DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/xdb");
+			
+			Statement statement = connection.createStatement();
+			ResultSet resultset = statement.executeQuery("SHUTDOWN");
+			
+			resultset.close();
+			statement.close();
+			connection.close();
+
+			hsqlRunning = false;
+			log.error("Internal hql server stopped");
+
+			
+		} catch (SQLException e) {
+			
+		}
+		catch (ClassNotFoundException e) {
+			log.error("Unable to stop HSQLDB " + e);
+		}
+	}
+	
+	/**
+	 * Returns flag refering if HSQLDB is running
+	 */
+	public static boolean isHSQLDBRunning() {
+		return hsqlRunning;
+	}
+	
+	/**
+	 * Add HSQLDB driver into project
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public static void addDriverIntoWorkspace() throws FileNotFoundException, IOException {
+		File in = SWTUtilExt.getResourceFile(Activator.PLUGIN_ID, "drv","hsqldb.jar");
+		File out = new File(Platform.getLocation() + File.separator + "hsqldb.jar");
+		
+        FileChannel inChannel = null;
+        FileChannel outChannel = null;
+
+		inChannel = new FileInputStream(in).getChannel();
+		outChannel = new FileOutputStream(out).getChannel();
+
+    	inChannel.transferTo(0, inChannel.size(),	outChannel);
+
+    	if (inChannel != null) inChannel.close();
+    	if (outChannel != null) outChannel.close();
+    	log.info("Driver hsqldb.jar copied");
 	}
 }
