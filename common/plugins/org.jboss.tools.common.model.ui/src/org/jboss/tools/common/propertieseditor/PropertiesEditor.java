@@ -136,7 +136,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		vsupport.getPropertyEditorAdapterByName(ATTR_VALUE).setValue(pHelper.valueFilter);
 		
 		ExpandableComposite g = filterComposite = new ExpandableComposite(panel, SWT.NONE);
-		g.setText(UIMessages.PROPERTIES_EDITOR_FILTER_REGULAR);
+		g.setText(UIMessages.PROPERTIES_EDITOR_FILTER);
 		g.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		Composite g1 = new Composite(g, SWT.NONE);
 		GridLayout l1 = new GridLayout(3, false);
@@ -243,7 +243,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 				isFilterExpression = fake.getSelection();
 				pHelper.applyFilters();
 //				if(fake.getSelection()) {
-//					g.setText(UIMessages.PROPERTIES_EDITOR_FILTER_REGULAR);
+//					g.setText(UIMessages.PROPERTIES_EDITOR_FILTER);
 //				} else {
 //					g.setText(UIMessages.PROPERTIES_EDITOR_FILTER_SIMPLE);
 //					g.layout();
@@ -538,9 +538,9 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 			statistics.setText("");
 		}
 		if(filtered != total) {
-			filterComposite.setText(UIMessages.PROPERTIES_EDITOR_FILTER_REGULAR + " " + NLS.bind(UIMessages.PROPERTIES_EDITOR_FILTER_MATCHES, filtered, total));
+			filterComposite.setText(UIMessages.PROPERTIES_EDITOR_FILTER + " " + NLS.bind(UIMessages.PROPERTIES_EDITOR_FILTER_MATCHES, filtered, total));
 		} else {
-			filterComposite.setText(UIMessages.PROPERTIES_EDITOR_FILTER_REGULAR);
+			filterComposite.setText(UIMessages.PROPERTIES_EDITOR_FILTER);
 		}
 		filterComposite.layout();
 		statistics.update();
