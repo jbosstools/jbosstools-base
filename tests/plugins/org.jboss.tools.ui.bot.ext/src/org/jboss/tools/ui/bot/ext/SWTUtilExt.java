@@ -353,7 +353,7 @@ public class SWTUtilExt extends SWTUtils {
 	/**
 	 * Get resource file
 	 */
-	public File getResourceFile(String pluginId, String... path) {
+	public static File getResourceFile(String pluginId, String... path) {
 
 		// Construct path
 		StringBuilder builder = new StringBuilder();
@@ -374,7 +374,7 @@ public class SWTUtilExt extends SWTUtils {
 			}
 		} catch (IOException ex) {
 			String message = filePath + " resource file not found";
-			log.error(message);
+			//log.error(message);
 			fail(message);
 		}
 
