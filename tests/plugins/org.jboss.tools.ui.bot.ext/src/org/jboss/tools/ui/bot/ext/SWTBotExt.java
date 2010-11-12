@@ -87,7 +87,11 @@ public class SWTBotExt extends SWTWorkbenchBot {
 	}
 	
 	public void sleep(long ms, String msg) {
-		log.info("Bot sleeps for " + ms + " ms  " + msg);
+		StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+		if ((ste != null) && (ste[3] != null))
+			log.info("Bot sleeps for " + ms + " ms  " + msg + " " + ste[3].toString());
+		else
+			log.info("Bot sleeps for " + ms + " ms  " + msg);
 		super.sleep(ms);		
 	}
 	
