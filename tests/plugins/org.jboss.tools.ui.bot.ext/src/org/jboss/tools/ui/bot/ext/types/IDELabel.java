@@ -551,7 +551,7 @@ public class IDELabel {
      public static final String BOLD_TOOLBAR_BUTTON_LABEL = "Bold";
      public static final String ITALIC_TOOLBAR_BUTTON_LABEL = "Italic";
      public static final String UNDERLINE_TOOLBAR_BUTTON_LABEL = "Underline";
-
+     
    }
 
    public static class JBossToolsPalette{
