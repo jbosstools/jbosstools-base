@@ -272,9 +272,16 @@ public class ResourcesUtils {
 						.getFullPath(), source, zipStrProvider , overwrite);
 				importOp.setFilesToImport(zipStrProvider.getChildren(source));
 			} else {
+			ImportProvider importProvider = new ImportProvider();
+
+			// need to remove from imported project "svn" files
+			List<String> unimportedFiles = new ArrayList<String>();
+			unimportedFiles.add(".svn"); //$NON-NLS-1$
+
+			importProvider.setUnimportedFiles(unimportedFiles);
 				// create import operation
 				importOp = new ImportOperation(project
-						.getFullPath(), new File(path), FileSystemStructureProvider.INSTANCE, overwrite);
+						.getFullPath(), new File(path), importProvider, overwrite);
 			}
 			
 			// import files just to project folder ( without old structure )
