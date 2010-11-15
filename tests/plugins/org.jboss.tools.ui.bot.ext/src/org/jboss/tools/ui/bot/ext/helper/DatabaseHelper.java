@@ -50,7 +50,7 @@ public class DatabaseHelper {
 	
 	public static int SLEEP = 1000;
 	public static Logger log = Logger.getLogger(DatabaseHelper.class);
-	private static boolean hsqlRunning;
+	private static boolean hsqlRunning = false;
 
 	/**
 	 * Create HSQLDB Driver 

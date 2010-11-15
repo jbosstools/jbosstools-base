@@ -21,7 +21,7 @@ public class DBBean {
 	public String scriptPath;
 	public DBType dbType; 
 	public String name;
-	public boolean internal = true;
+	public boolean internal = false;
 	
 	public static DBBean fromString(String propValue) throws Exception{
 		try {

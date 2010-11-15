@@ -7,8 +7,9 @@ public class StopDBServer extends RequirementBase {
 
 	@Override
 	public boolean checkFulfilled() {
-		if (TestConfigurator.currentConfig.getDB().internal && DatabaseHelper.isHSQLDBRunning())
-			return false;
+		if (TestConfigurator.currentConfig.getDB() != null)
+			if (TestConfigurator.currentConfig.getDB().internal && DatabaseHelper.isHSQLDBRunning()) 
+				return false;
 		return true;
 	}
 
