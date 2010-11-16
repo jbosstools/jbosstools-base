@@ -608,6 +608,12 @@ public class IDELabel {
      public static final String SUBSTITUTED_EL_EXPRESSIONS_TAB = "Substituted EL expressions";
      public static final String SUBSTITUTED_EL_EXPRESSIONS_EL_NAME = "El Name*";
      public static final String SUBSTITUTED_EL_EXPRESSIONS_VALUE = "Value";
+     
+     public static final String SUBSTITUTED_EL_EXPRESSIONS_SCOPE_PAGE = "Page: Only This Page";
+     public static final String SUBSTITUTED_EL_EXPRESSIONS_SCOPE_FOLDER = "Folder: Any Page at the Same Folder";
+     public static final String SUBSTITUTED_EL_EXPRESSIONS_SCOPE_PROJECT = "Project: Any Page at the Same Project";
+     public static final String SUBSTITUTED_EL_EXPRESSIONS_FOLDER_SCOPE_TABLE_LABEL = "Folder";
+     
    }   
    
    public static class AddTaglibReferenceDialog{

@@ -16,6 +16,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.jboss.tools.ui.bot.ext.Timing;
 
 /**
@@ -51,6 +52,38 @@ public class SWTBotTableExt extends AbstractSWTBotControl<Table> {
     swtBotTable.click(row, column);
     bot.sleep(Timing.time1S());
     bot.text(oldValue, 0).setText(newValue);
+    
+  }
+  /**
+   * Returns first Table Item from table which has column values specified by columns parameter
+   * @param columns
+   * @return
+   */
+  public SWTBotTableItem getTableItem (String... columns){
+    
+    SWTBotTableItem result = null;
+    
+    int rowIndex = 0;
+    while (result == null && rowIndex < swtBotTable.rowCount()) {
+      int columnIndex = 0;
+      boolean isEqual = true;
+      while (isEqual && columnIndex < columns.length){
+        if (columns[columnIndex] == null || 
+            swtBotTable.cell(rowIndex, columnIndex).trim().equals(columns[columnIndex].trim())){
+          columnIndex++;
+        }
+        else{
+          isEqual = false;
+        }
+      }
+      if (isEqual) {
+        result = swtBotTable.getTableItem(rowIndex);
+      } else {
+        rowIndex++;
+      }
+    }
+    
+    return result;
     
   }
   
