@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -91,9 +92,13 @@ public class WorkbenchUtils {
 	}
 	
 	public static IEditorPart openEditor(String inputFile) {
+		return openEditor(new Path(inputFile));
+	}
+	
+	public static IEditorPart openEditor(IPath inputFile) {
 		IEditorPart part = null;
 		try {
-			part = IDE.openEditor(getWorkbenchActivePage(),ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(inputFile)));
+			part = IDE.openEditor(getWorkbenchActivePage(),ResourcesPlugin.getWorkspace().getRoot().getFile(inputFile));
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
