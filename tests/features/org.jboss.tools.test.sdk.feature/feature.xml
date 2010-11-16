@@ -141,8 +141,7 @@ Raleigh NC 27606 USA.
          id="org.jboss.tools.common.model.ui.test"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="true"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.jboss.tools.jst.jsp.test"
@@ -197,21 +196,13 @@ Raleigh NC 27606 USA.
          id="org.jboss.tools.ws.ui.bot.test"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="true"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.jboss.tools.jmx.core.test"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="true"/>
-
-   <!-- JBDS-1322 removed <plugin
-         id="org.jboss.tools.jbpm.convert.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/> -->
+         version="0.0.0"/>
 
    <plugin
          id="org.jboss.tools.jsf.ui.test"
@@ -243,8 +234,7 @@ Raleigh NC 27606 USA.
          download-size="0"
          install-size="0"
          version="0.0.0"
-         fragment="true"
-         unpack="true"/>
+         fragment="true"/>
 
    <plugin
          id="org.jboss.tools.jst.web.kb.test"
@@ -338,10 +328,18 @@ Raleigh NC 27606 USA.
          install-size="0"
          version="0.0.0"/>
 
-   <!--<plugin
-         id="org.jboss.tools.modeshape.rest.test"
+   <plugin
+         id="org.jboss.tools.jst.jsp.base.test"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>-->
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.seam.base.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
