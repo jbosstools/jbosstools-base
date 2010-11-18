@@ -2,11 +2,13 @@ package org.jboss.tools.ui.bot.ext.config;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -46,63 +48,83 @@ public class TestConfigurator {
 	public static TestConfiguration currentConfig;
 	static {
 		boolean loadDefault = true;
-		
+
 		try {
 			// try to load from file first
 			String propFile = System.getProperty(SWTBOT_TEST_PROPERTIES_FILE,
 					null);
-			String propMultiFile = System.getProperty(SWTBOT_TEST_PROPERTIES_MULTI_FILE,
-					null);
-			if (propMultiFile!=null) {
+			String propMultiFile = System.getProperty(
+					SWTBOT_TEST_PROPERTIES_MULTI_FILE, null);
+			if (propMultiFile != null) {
 				if (new File(propMultiFile).exists()) {
-					log
-					.info("Loading exeternaly provided multi-configuration file '"
+					log.info("Loading exeternaly provided multi-configuration file '"
 							+ propMultiFile + "'");
+					log.warn("Property name '"
+							+ SWTBOT_TEST_PROPERTIES_MULTI_FILE
+							+ "' is deprecated and will be removed soon, use '"
+							+ SWTBOT_TEST_PROPERTIES_FILE
+							+ "' property instead, file type is now auto-detected by content.");
 					multiProperties.load(new FileInputStream(propMultiFile));
 					loadDefault = false;
+				} else {
+					throw new IOException(SWTBOT_TEST_PROPERTIES_MULTI_FILE
+							+ " " + propMultiFile + " does not exist!");
 				}
-				else {
-					throw new IOException(SWTBOT_TEST_PROPERTIES_MULTI_FILE + " "
-							+ propMultiFile + " does not exist!");
-				}
-			} 
-			else if (propFile!=null) {
+			} else if (propFile != null) {
 				if (new File(propFile).exists()) {
-					log
-					.info("Loading exeternaly configuration file '"
+					log.info("Loading exeternaly configuration file '"
 							+ propFile + "'");
-					multiProperties.put("Default", propFile);
-					loadDefault = false;					
-				}
-				else {
+					if (isMultiPropertiesFile(propFile)) {
+						log.info(" * loading multi-configuration");
+						multiProperties.load(new FileInputStream(propFile));
+					}
+					else {
+						log.info(" * loading single-configuration");
+						multiProperties.put("Default", propFile);
+					}
+					
+					loadDefault = false;
+				} else {
 					throw new IOException(SWTBOT_TEST_PROPERTIES_FILE + " "
 							+ propFile + " does not exist!");
 				}
-			}
-			else {
+			} else {
 				log.info("No configuration property passed, using default");
-				multiProperties.put(SWTBOT_TEST_PROPERTIES_FILE, "");			
+				multiProperties.put(SWTBOT_TEST_PROPERTIES_FILE, "");
 			}
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
+
 		if (loadDefault) {
 			// load default config by default
 			try {
 				log.info(" * Loading default configuration first");
 				currentConfig = new TestConfiguration("default", "");
-				
+
 			} catch (Exception e) {
-				// log only message, nothing 
+				// log only message, nothing
 				log.error(e.getMessage());
-			}
-			finally {
+			} finally {
 				log.info(" * Defaults loaded");
 			}
 		}
 
+	}
+	public static boolean isMultiPropertiesFile(String propFile) {
+		Properties props = new Properties();
+		try {
+			props.load(new FileInputStream(propFile));
+			for (Entry<Object,Object> e : props.entrySet()) {
+				if (e.getValue()!=null && e.getValue().toString().endsWith(".properties")) {
+					return true;
+				}
+			}
+			return false;
+		} catch (Exception e) {
+			return false;
+		} 
 	}
 	/**
 	 * returns null when given Server annotation does not match global test
@@ -115,7 +137,8 @@ public class TestConfigurator {
 	 */
 	private static RequirementBase getServerRequirement(Server s) {
 		// tests omitting server must run even when server not configured
-		if (ServerState.Disabled.equals(s.state()) && currentConfig.getServer() == null) {
+		if (ServerState.Disabled.equals(s.state())
+				&& currentConfig.getServer() == null) {
 			return RequirementBase.createRemoveServer();
 		}
 		if (!s.required() || currentConfig.getServer() == null) {
@@ -123,36 +146,39 @@ public class TestConfigurator {
 		}
 		if (!s.type().equals(ServerType.ALL)) {
 			if (s.type().equals(ServerType.EAP)
-					&& !currentConfig.getServer().type.equals(Values.SERVER_TYPE_EAP)) {
+					&& !currentConfig.getServer().type
+							.equals(Values.SERVER_TYPE_EAP)) {
 				return null;
 			}
 			if (s.type().equals(ServerType.JbossAS)
-					&& !currentConfig.getServer().type.equals(Values.SERVER_TYPE_JBOSSAS)) {
+					&& !currentConfig.getServer().type
+							.equals(Values.SERVER_TYPE_JBOSSAS)) {
 				return null;
 			}
 			if (s.type().equals(ServerType.EPP)
-					&& !currentConfig.getServer().type.equals(Values.SERVER_TYPE_EPP)) {
+					&& !currentConfig.getServer().type
+							.equals(Values.SERVER_TYPE_EPP)) {
 				return null;
 			}
 			if (s.type().equals(ServerType.SOA)
-					&& !currentConfig.getServer().type.equals(Values.SERVER_TYPE_SOA)) {
+					&& !currentConfig.getServer().type
+							.equals(Values.SERVER_TYPE_SOA)) {
 				return null;
 			}
 		}
-		if (!matches(currentConfig.getServer().version, s.operator(), s.version())) {
+		if (!matches(currentConfig.getServer().version, s.operator(),
+				s.version())) {
 			return null;
 		}
 		if (ServerState.Disabled.equals(s.state())) {
 			RequirementBase removeServer = RequirementBase.createRemoveServer();
 			removeServer.getDependsOn().add(RequirementBase.createStopServer());
 			return removeServer;
-		}
-		else if (ServerState.NotRunning.equals(s.state())) {
+		} else if (ServerState.NotRunning.equals(s.state())) {
 			RequirementBase stopServer = RequirementBase.createStopServer();
 			stopServer.getDependsOn().add(RequirementBase.createAddServer());
 			return stopServer;
-		}
-		else if (ServerState.Present.equals(s.state())) {
+		} else if (ServerState.Present.equals(s.state())) {
 			return RequirementBase.createAddServer();
 		}
 		return RequirementBase.createStartServer();
@@ -185,9 +211,9 @@ public class TestConfigurator {
 		}
 		return RequirementBase.createAddESB();
 	}
-	
+
 	private static RequirementBase getJBPMRequirement(JBPM j) {
-		if (!j.required() || currentConfig.getJBPM() == null ) {
+		if (!j.required() || currentConfig.getJBPM() == null) {
 			return null;
 		}
 		if (!matches(currentConfig.getJBPM().version, j.operator(), j.version())) {
@@ -195,7 +221,7 @@ public class TestConfigurator {
 		}
 		return RequirementBase.createAddJBPM();
 	}
-	
+
 	private static RequirementBase getDBRequirement(DB d) {
 		if (!d.required() || currentConfig.getDB() == null) {
 			return null;
@@ -257,7 +283,7 @@ public class TestConfigurator {
 			}
 			reqs.add(req);
 		}
-		
+
 		if (!"".equals(requies.perspective())) {
 			reqs.add(RequirementBase.createSwitchPerspective(requies
 					.perspective()));
@@ -319,10 +345,10 @@ public class TestConfigurator {
 
 	private static int versionToNumber(String version) {
 		version = version.replaceAll("\\.", "");
-		int addZeros = 4-version.length();
-		if (addZeros>0) {
-			while (addZeros>0) {
-				version+="0";
+		int addZeros = 4 - version.length();
+		if (addZeros > 0) {
+			while (addZeros > 0) {
+				version += "0";
 				addZeros--;
 			}
 		}
