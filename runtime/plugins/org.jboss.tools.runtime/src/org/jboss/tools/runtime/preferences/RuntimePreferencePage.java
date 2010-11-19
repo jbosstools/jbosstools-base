@@ -116,27 +116,27 @@ public class RuntimePreferencePage extends PreferencePage implements
 
 		});
 		
-		Button exportButton = createButton(runtimeGroup, "Export JBoss Runtimes", "Export...");
-		exportButton.addSelectionListener(new SelectionAdapter() {
-			
-			public void widgetSelected(SelectionEvent e) {
-				exportRuntimes();
-			}
-
-		});
-		
-		Button importButton = createButton(runtimeGroup, "Import JBoss Runtimes", "Import...");
-		importButton.addSelectionListener(new SelectionAdapter() {
-			
-			public void widgetSelected(SelectionEvent e) {
-				importRuntimes();
-			}
-
-		});
-		
+//		Button exportButton = createButton(runtimeGroup, "Export JBoss Runtimes", "Export...");
+//		exportButton.addSelectionListener(new SelectionAdapter() {
+//			
+//			public void widgetSelected(SelectionEvent e) {
+//				exportRuntimes();
+//			}
+//
+//		});
+//		
+//		Button importButton = createButton(runtimeGroup, "Import JBoss Runtimes", "Import...");
+//		importButton.addSelectionListener(new SelectionAdapter() {
+//			
+//			public void widgetSelected(SelectionEvent e) {
+//				importRuntimes();
+//			}
+//
+//		});
+//		
 		setButtonDimensionHint(searchButton);
-		setButtonDimensionHint(exportButton);
-		setButtonDimensionHint(importButton);
+//		setButtonDimensionHint(exportButton);
+//		setButtonDimensionHint(importButton);
 		Dialog.applyDialogFont(composite);
 		return composite;
 	}
