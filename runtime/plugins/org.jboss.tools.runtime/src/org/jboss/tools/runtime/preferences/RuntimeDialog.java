@@ -45,7 +45,7 @@ public class RuntimeDialog extends Dialog {
 		Composite contents = new Composite(area, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 400;
-		gd.widthHint = 500;
+		gd.widthHint = 700;
 		contents.setLayoutData(gd);
 		contents.setLayout(new GridLayout());
 		getShell().setText("JBoss Runtimes");
@@ -64,8 +64,8 @@ public class RuntimeDialog extends Dialog {
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 
-		String[] columnNames = new String[] { "Name", "Version", "Type", "Location"};
-		int[] columnWidths = new int[] { 140, 50, 50, 245};
+		String[] columnNames = new String[] { "Name", "Version", "Type", "Location", "Description"};
+		int[] columnWidths = new int[] { 140, 50, 50, 245, 200};
 		
 		for (int i = 0; i < columnNames.length; i++) {
 			TableColumn tc = new TableColumn(table, SWT.LEFT);
@@ -120,6 +120,9 @@ public class RuntimeDialog extends Dialog {
 					if (location != null) {
 						return definition.getLocation().getAbsolutePath();
 					}
+				}
+				if (columnIndex == 4) {
+					return definition.getDescription();
 				}
 			}
 			return null;

@@ -70,6 +70,7 @@ public class SeamHandler implements IJBossRuntimePersistanceHandler, IJBossRunti
 		seamGenBuildPath = getSeamGenBuildPath(SEAM_2_0_HOME_CP, SEAM_2_0_HOME_CONFIGURATION_CP);
 		seamVersion = getSeamVersion(seamGenBuildPath);
 		addSeam2(map, seamGenBuildPath, seamVersion);
+		SeamRuntimeManager.getInstance().save();
 	}
 
 	private static void addSeam1(Map<String, SeamRuntime> map,
@@ -104,22 +105,6 @@ public class SeamHandler implements IJBossRuntimePersistanceHandler, IJBossRunti
 		}
 	}
 
-	private static SeamVersion getSeamVersion(String seamGenBuildPath) {
-		if (seamGenBuildPath == null || seamGenBuildPath.trim().length() <= 0) {
-			return null;
-		}
-		String fullVersion = SeamUtil.getSeamVersionFromManifest(seamGenBuildPath);
-		if (fullVersion == null) {
-			return null;	
-		}
-		String version = fullVersion.substring(0,3);
-		SeamVersion seamVersion = null;
-		if (version != null) {
-			seamVersion = SeamVersion.findByString(version);
-		}
-		return seamVersion;
-	}
-
 	private static void addSeam(Map<String, SeamRuntime> map, String seamPath,SeamVersion seamVersion, String name) {
 		if (!seamExists(seamPath)) {
 			File seamFolder = new File(seamPath);
@@ -132,20 +117,6 @@ public class SeamHandler implements IJBossRuntimePersistanceHandler, IJBossRunti
 				SeamRuntimeManager.getInstance().addRuntime(rt);
 			}
 		}
-	}
-
-	/**
-	 * @param seamPath
-	 * @return
-	 */
-	private static boolean seamExists(String seamPath) {
-		SeamRuntime[] seamRuntimes = SeamRuntimeManager.getInstance().getRuntimes();
-		for (SeamRuntime sr:seamRuntimes) {
-			if (seamPath != null && seamPath.equals(sr.getHomeDir())) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private static String getSeamGenBuildPath(String seamHomePath,
@@ -182,6 +153,54 @@ public class SeamHandler implements IJBossRuntimePersistanceHandler, IJBossRunti
 	public void exportRuntimes() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public static String includeSeam(ServerDefinition serverDefinition) {
+		StringBuilder builder = new StringBuilder();
+		for (String folder : IJBossRuntimePluginConstants.SEAM_HOME_FOLDER_OPTIONS) {
+			File seamFile = new File(serverDefinition.getLocation(),folder); //$NON-NLS-1$
+			if (seamFile.exists() && seamFile.canRead() && seamFile.isDirectory()) {
+				SeamVersion seamVersion = getSeamVersion(seamFile.getAbsolutePath());
+				if (seamVersion != null) {
+					if (builder.toString().length() > 0) {
+						builder.append(", ");
+					}
+					builder.append("Seam ");
+					builder.append(seamVersion);
+				}
+			}
+		} 
+		return builder.toString();
+	}
+
+	public static SeamVersion getSeamVersion(String seamGenBuildPath) {
+		if (seamGenBuildPath == null || seamGenBuildPath.trim().length() <= 0) {
+			return null;
+		}
+		String fullVersion = SeamUtil.getSeamVersionFromManifest(seamGenBuildPath);
+		if (fullVersion == null) {
+			return null;	
+		}
+		String version = fullVersion.substring(0,3);
+		SeamVersion seamVersion = null;
+		if (version != null) {
+			seamVersion = SeamVersion.findByString(version);
+		}
+		return seamVersion;
+	}
+	
+	/**
+	 * @param seamPath
+	 * @return
+	 */
+	public static boolean seamExists(String seamPath) {
+		SeamRuntime[] seamRuntimes = SeamRuntimeManager.getInstance().getRuntimes();
+		for (SeamRuntime sr:seamRuntimes) {
+			if (seamPath != null && seamPath.equals(sr.getHomeDir())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

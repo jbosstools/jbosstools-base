@@ -13,6 +13,11 @@ package org.jboss.tools.runtime;
 import java.io.File;
 
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
+import org.jboss.tools.runtime.handlers.DroolsHandler;
+import org.jboss.tools.runtime.handlers.JbpmHandler;
+import org.jboss.tools.runtime.handlers.SeamHandler;
+
+import static org.jboss.tools.runtime.IJBossRuntimePluginConstants.*;
 
 /**
  * @author Snjeza
@@ -23,6 +28,7 @@ public class ServerDefinition {
 	private String name;
 	private String version;
 	private String type;
+	private String description;
 	private File location;
 	private boolean enabled = true;
 	
@@ -33,6 +39,7 @@ public class ServerDefinition {
 		this.version = version;
 		this.type = type;
 		this.location = location;
+		this.description = null;
 	}
 	
 	/**
@@ -57,17 +64,23 @@ public class ServerDefinition {
 	public void setVersion(String version) {
 		this.version = version;
 	}
+	
 	public String getType() {
 		return type;
 	}
+	
 	public void setType(String type) {
 		this.type = type;
+		this.description = "";
 	}
+	
 	public File getLocation() {
 		return location;
 	}
+	
 	public void setLocation(File location) {
 		this.location = location;
+		this.description = "";
 	}
 
 	@Override
@@ -126,6 +139,42 @@ public class ServerDefinition {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getDescription() {
+		if (type == null || location == null) {
+			return "";
+		}
+		if (description == null || description.length() == 0) {
+			StringBuilder builder = new StringBuilder();
+			if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type)) {
+				String includeSeam = SeamHandler.includeSeam(this);
+				append(builder, includeSeam);
+			}
+			if (SOA_P.equals(type)) {
+				String includeDrools = DroolsHandler.includeDrools(this);
+				append(builder, includeDrools);
+				String includeJbpm = JbpmHandler.includeJbpm(this);
+				append(builder, includeJbpm);
+			}
+			description = builder.toString();
+		}
+		return description;
+	}
+
+	private void append(StringBuilder builder, String string) {
+		if (string != null && string.length() > 0) {
+			if (builder.toString().length() == 0) {
+				builder.append("Includes ");
+			} else {
+				builder.append(", ");
+			}
+			builder.append(string);
+		}
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }

@@ -111,6 +111,19 @@ public class JbpmHandler implements IJBossRuntimePersistanceHandler,IJBossRuntim
 		}
 	}
 
+	public static String includeJbpm(ServerDefinition serverDefinition) {
+		StringBuilder builder = new StringBuilder();
+		File jbpmRoot = new File(serverDefinition.getLocation(),"jbpm-jpdl"); //$NON-NLS-1$
+		if (jbpmRoot.isDirectory()) {
+			String version = JBossRuntimeLocator.JBPM3;
+			if (JBossRuntimeLocator.isJbpm4(serverDefinition.getLocation().getAbsolutePath())) {
+				version = JBossRuntimeLocator.JBPM4;
+			}
+			builder.append(version);
+		}
+		return builder.toString();
+	}
+	
 	public void importRuntimes() {
 		String jbpms = Activator.getDefault().getPreferenceStore().getString(Activator.JBPMS);
 		if (jbpms != null && jbpms.trim().length() > 0) {

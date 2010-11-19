@@ -10,16 +10,12 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.preferences;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,6 +26,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -47,23 +44,18 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.internal.wizards.preferences.PreferencesExportWizard;
 import org.eclipse.ui.internal.wizards.preferences.PreferencesImportWizard;
-import org.eclipse.wst.server.core.IServerWorkingCopy;
-import org.eclipse.wst.server.core.internal.IMemento;
-import org.eclipse.wst.server.core.internal.Server;
-import org.eclipse.wst.server.core.internal.ServerPlugin;
-import org.eclipse.wst.server.core.internal.XMLMemento;
 import org.jboss.tools.runtime.Activator;
 import org.jboss.tools.runtime.JBossRuntimeLocator;
 import org.jboss.tools.runtime.JBossRuntimeStartup;
-import org.jboss.tools.runtime.ServerDefinition;
 import org.jboss.tools.runtime.JBossRuntimeStartup.IJBossRuntimePersistanceHandler;
-import org.jboss.tools.runtime.handlers.JbpmHandler;
+import org.jboss.tools.runtime.ServerDefinition;
 
 /**
  * @author Snjeza
@@ -72,6 +64,7 @@ import org.jboss.tools.runtime.handlers.JbpmHandler;
 public class RuntimePreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
+	public static String ID = "org.jboss.tools.runtime.preferences.RuntimePreferencePage";
 	private static final String LASTPATH = "lastPath";
 	public static final String SEAM_PREFERENCES_ID = "org.jboss.tools.common.model.ui.seam"; //$NON-NLS-1$
 	public static final String WTP_PREFERENCES_ID = "org.eclipse.wst.server.ui.runtime.preferencePage"; //$NON-NLS-1$
@@ -99,10 +92,10 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		composite.setLayout(layout);
 		
-		createLink(composite, "See <a>WTP Runtime</a>", WTP_PREFERENCES_ID);
-		createLink(composite, "See <a>Seam Runtime</a>", SEAM_PREFERENCES_ID);
-		createLink(composite, "See <a>Drools Runtime</a>", DROOLS_PREFERENCES_ID);
-		createLink(composite, "See <a>JBPM Runtime</a>", JBPM_PREFERENCES_ID);
+		createLink(composite, "See <a>WTP Runtimes</a>", WTP_PREFERENCES_ID);
+		createLink(composite, "See <a>Seam Runtimes</a>", SEAM_PREFERENCES_ID);
+		createLink(composite, "See <a>Drools Runtimes</a>", DROOLS_PREFERENCES_ID);
+		createLink(composite, "See <a>JBPM Runtimes</a>", JBPM_PREFERENCES_ID);
 		
 		new Label(composite, SWT.NONE);
 		
@@ -159,9 +152,6 @@ public class RuntimePreferencePage extends PreferencePage implements
 		dialog.create();
 		dialog.open();
 	}
-	
-	private void exportServers() {
-	}
 
 	private void importRuntimes() {
 		PreferencesImportWizard wizard = new PreferencesImportWizard();
@@ -174,6 +164,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 			for( int i = 0; i < importHandlers.length; i++ ) {
 				importHandlers[i].importRuntimes();
 			}
+			refreshPreferencePage();
 		}
 	}
 	
@@ -265,9 +256,17 @@ public class RuntimePreferencePage extends PreferencePage implements
 				}
 				JBossRuntimeStartup runtimeStartup = new JBossRuntimeStartup();
 				runtimeStartup.initializeRuntimes(serverDefinitions);
+				refreshPreferencePage();
 			}
 		}
 			
+	}
+
+	private void refreshPreferencePage() {
+		getShell().close();
+		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		PreferenceDialog preferenceDialog = PreferencesUtil.createPreferenceDialogOn(shell, ID, null, null);
+		preferenceDialog.open();
 	}
 	
 	/**

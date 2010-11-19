@@ -60,10 +60,16 @@ public class JBossRuntimeLocator implements IJBossRuntimePluginConstants {
 			
 			if (!JBossServerType.UNKNOWN.equals(serverBean.getType())) {
 				serverDefinitions.add(new ServerDefinition(serverBean));
+				if (monitor.isCanceled()) {
+					return serverDefinitions;
+				}
 			} else {
 				String seamVersion = getSeamVersionFromManifest(root.getAbsolutePath());
 				if (seamVersion != null) {
 					serverDefinitions.add(new ServerDefinition(root.getName(), seamVersion, SEAM, root.getAbsoluteFile()));
+					if (monitor.isCanceled()) {
+						return serverDefinitions;
+					}
 				} else {
 					String[] files = root.list(new FilenameFilter() {
 						
@@ -83,6 +89,9 @@ public class JBossRuntimeLocator implements IJBossRuntimePluginConstants {
 							droolsFound = true;
 						}
 					}
+					if (monitor.isCanceled()) {
+						return serverDefinitions;
+					}
 					boolean jbpmFound = false;
 					if (!droolsFound) {
 						boolean isJBPM = isValidJbpmInstallation(root.getAbsolutePath());
@@ -97,6 +106,9 @@ public class JBossRuntimeLocator implements IJBossRuntimePluginConstants {
 							jbpmFound = true;
 						}
 					}
+					if (monitor.isCanceled()) {
+						return serverDefinitions;
+					}
 					if (!droolsFound && !jbpmFound) {
 						children = root.listFiles();
 					}
@@ -105,6 +117,9 @@ public class JBossRuntimeLocator implements IJBossRuntimePluginConstants {
 			}
 		} else {
 			children = File.listRoots();
+		}
+		if (monitor.isCanceled()) {
+			return serverDefinitions;
 		}
 		if (depth == 0) {
 			return serverDefinitions; 
@@ -140,6 +155,25 @@ public class JBossRuntimeLocator implements IJBossRuntimePluginConstants {
 	}	
 
 	public static String getSeamVersionFromManifest(String seamHome) {
+		File seamHomeFolder = new File(seamHome);
+		if (seamHomeFolder == null || !seamHomeFolder.isDirectory()) {
+			return null;
+		}
+		String[] seamFiles = seamHomeFolder.list(new FilenameFilter() {
+			
+			public boolean accept(File dir, String name) {
+				if ("seam-gen".equals(name)) {
+					return true;
+				}
+				if ("examples".equals(name)) {
+					return true;
+				}
+				return false;
+			}
+		});
+		if (seamFiles == null || seamFiles.length != 2) {
+			return null;
+		}
 		File jarFile = new File(seamHome, "lib/" + seamJarName);
 		if(!jarFile.isFile()) {
 			jarFile = new File(seamHome, seamJarName);

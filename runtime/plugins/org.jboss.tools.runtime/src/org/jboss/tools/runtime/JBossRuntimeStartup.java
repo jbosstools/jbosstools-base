@@ -44,6 +44,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 public class JBossRuntimeStartup implements IStartup, IJBossRuntimePluginConstants {
 
+	private static IJBossRuntimePersistanceHandler[] jBossRuntimePersistanceHandler = null;
 	public static interface IJBossRuntimePersistanceHandler {
 		public void initializeRuntimes(List<ServerDefinition> serverDefinitions);
 		public void importRuntimes();
@@ -51,12 +52,15 @@ public class JBossRuntimeStartup implements IStartup, IJBossRuntimePluginConstan
 	}
 
 	public static IJBossRuntimePersistanceHandler[] getPersistanceHandlers() {
-		return new 	IJBossRuntimePersistanceHandler[] {
-			new JbpmHandler(),
-			new DroolsHandler(),
-			new JBossASHandler(),
-			new SeamHandler()
-		};
+		if (jBossRuntimePersistanceHandler == null) {
+			jBossRuntimePersistanceHandler = new IJBossRuntimePersistanceHandler[] {
+					new JbpmHandler(),
+					new DroolsHandler(),
+					new JBossASHandler(),
+					new SeamHandler()
+			};
+		}
+		return jBossRuntimePersistanceHandler;
 	}
 	
 	private List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();

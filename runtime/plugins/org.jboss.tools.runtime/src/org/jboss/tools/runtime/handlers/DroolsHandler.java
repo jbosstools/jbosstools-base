@@ -66,6 +66,18 @@ public class DroolsHandler implements IJBossRuntimePersistanceHandler,IJBossRunt
 		return false;
 	}
 
+	public static String includeDrools(ServerDefinition serverDefinition) {
+		StringBuilder builder = new StringBuilder();
+		File droolsRoot = serverDefinition.getLocation(); //$NON-NLS-1$
+		if (droolsRoot.isDirectory()) {
+			builder.append("Drools");
+			if (serverDefinition.getVersion() != null && serverDefinition.getVersion().length() > 0) {
+				builder.append(" ");
+				builder.append(serverDefinition.getVersion());
+			}
+		}
+		return builder.toString();
+	}
 	public void importRuntimes() {
 		// TODO Auto-generated method stub
 		
