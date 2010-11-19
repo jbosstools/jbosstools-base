@@ -19,7 +19,6 @@ import java.io.StringBufferInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -40,7 +39,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
-import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
 import org.jboss.tools.tests.ImportProvider;
@@ -189,13 +187,17 @@ public class ResourcesUtils {
 	 */
 	public static IProject importProject(String bundleName, String templatePath,
 			IProgressMonitor monitor) throws IOException, CoreException, InvocationTargetException, InterruptedException {
-		// TODO Auto-generated method stub
-		return importProject(Platform.getBundle(bundleName), templatePath, monitor==null?new NullProgressMonitor():monitor);
+		Bundle bundle = Platform.getBundle(bundleName);
+		if (bundle == null)
+			return null;
+		return importProject(bundle, templatePath, monitor==null?new NullProgressMonitor():monitor);
 	}
 	
 	public static IProject importProject(String bundleName, String templatePath) throws IOException, CoreException, InvocationTargetException, InterruptedException {
-		// TODO Auto-generated method stub
-		return importProject(Platform.getBundle(bundleName), templatePath, null);
+		Bundle bundle = Platform.getBundle(bundleName);
+		if (bundle == null)
+			return null;
+		return importProject(bundle, templatePath, null);
 	}
 	
 	public static void deleteProject(String projectName) throws CoreException {
