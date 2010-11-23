@@ -95,6 +95,7 @@ public class PrepareDB extends RequirementBase {
 				fail("Can't read script" + file.getAbsolutePath());
 			}
 			builder.append(line);
+			builder.append(System.getProperty("line.separator"));
 		} 		
 		return builder;
 	}
