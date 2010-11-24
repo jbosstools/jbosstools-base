@@ -1,7 +1,5 @@
 package org.jboss.tools.common.model.project.ext;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,18 +9,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.model.XModel;
-import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
-import org.jboss.tools.common.model.filesystems.impl.FileSystemsLoader;
 import org.jboss.tools.common.model.filesystems.impl.Libs;
 import org.jboss.tools.common.model.filesystems.impl.LibsListener;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.jboss.tools.common.model.util.XModelObjectUtil;
 
 /**
  * Monitors class path of project and loads seam components of it.
@@ -33,7 +24,9 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 	protected XModel model = null;
 	protected P project;
 	
-	protected List<String> paths = null;
+	protected List<String> paths = new ArrayList<String>();
+	private boolean loaded = false;
+
 	protected Map<IPath, String> paths2 = new HashMap<IPath, String>();
 	boolean libsModified = false;
 	
@@ -66,8 +59,14 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 		Libs libs = FileSystemsHelper.getLibs(model);
 		libs.update();
 		List<String> newPaths = libs.getPaths();
-		boolean result = libsModified || paths == null;
-		paths = newPaths;
+		boolean result = libsModified || !loaded;
+		if(newPaths != null) {
+			paths = newPaths;
+			loaded = true;
+		} else {
+			paths = new ArrayList<String>();
+			loaded = false;
+		}
 		if(result) {
 			paths2.clear();
 			paths2.putAll(libs.getPathsAsMap());
@@ -88,7 +87,8 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 	}
 
 	public void clean() {
-		paths = null;
+		paths = new ArrayList<String>();
+		loaded = false;
 		if(paths2 != null) paths2.clear();
 		synchronized (processedPaths) {
 			processedPaths.clear();
