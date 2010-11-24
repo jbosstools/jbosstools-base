@@ -184,7 +184,7 @@ public class DatabaseHelper {
 	 * 
 	 */
 	public enum DBType {
-		hsqldb18, db2_97, mssql2005, mssql2008, mysql50, mysql51, oracle10g, oracle11gR1, oracle11gR1RAC, oracle11gR2, oracle11gR2RAC, postgresql82, postgresql83, postgresql84, sybase15
+		hsqldb18, db2_97, mssql2005, mssql2008, mysql50, mysql51, oracle10g, oracle11gR1, oracle11gR1RAC, oracle11gR2, oracle11gR2RAC, postgresql82, postgresql83, postgresql84, sybase15, teiid
 	}
 	
 	/**
@@ -228,6 +228,9 @@ public class DatabaseHelper {
 		case postgresql84: // Intentionally empty
 		case sybase15:
 			ret = "org.eclipse.datatools.connectivity.db.sybase.ase.genericDriverTemplate_15";
+			break;
+		case teiid:
+			ret = "org.teiid.datatools.connectivity.driver.serverDriverTemplate";
 			break;
 		default:
 			fail("Unknown db type");
