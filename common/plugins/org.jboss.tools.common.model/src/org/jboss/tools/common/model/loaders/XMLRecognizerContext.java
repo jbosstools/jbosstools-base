@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 
-import org.jboss.tools.common.model.util.SafeDocumentBuilderFactory;
+import org.jboss.tools.common.xml.XMLUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.xml.sax.EntityResolver;
@@ -90,7 +90,7 @@ public class XMLRecognizerContext extends EntityRecognizerContext {
 			return doctypes.get(docTypeString);
 		}
 		Reader xml = new StringReader(docTypeString + "<root></root>"); //$NON-NLS-1$
-		DocumentBuilder db = SafeDocumentBuilderFactory.createDocumentBuilder(false);
+		DocumentBuilder db = XMLUtilities.createDocumentBuilder(false);
 		if (db == null) 
 			return NULL_INFO;
 	
