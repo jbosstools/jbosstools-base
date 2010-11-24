@@ -201,12 +201,15 @@ public class SWTEclipseExt {
 		SWTBotMenu menu2 = menu1.menu(IDELabel.Menu.OPEN_PERSPECTIVE);
     bot.sleep(Timing.time1S());		
 		menu2.menu(IDELabel.Menu.OTHER).click();
-    bot.sleep(Timing.time1S());		
-    try {
-		bot.table().select(perspectiveLabel);
-    } catch (WidgetNotFoundException e) {
-    	log.warn("WARN - Perspecive with label " + perspectiveLabel + " not found, try + (default)");
-		bot.table().select(perspectiveLabel + (" (default)"));
+    bot.sleep(Timing.time1S());
+    SWTBotTable table = bot.table();
+    if (isItemInTableColumn(table, perspectiveLabel, 0)){
+      table.select(perspectiveLabel);
+    }
+    else{
+      log.warn("WARN - Perspecive with label '" + perspectiveLabel + "' was not found, trying label '" 
+          + perspectiveLabel + " (default)'");
+      table.select(perspectiveLabel + (" (default)"));
     }
     bot.sleep(Timing.time1S());
 		// Another approach
@@ -398,7 +401,7 @@ public class SWTEclipseExt {
 	 */
 	public void assertSameContent(String pluginId, String projectName,
 			String... path) {
-		File file = util.getResourceFile(pluginId, path);
+		File file = SWTUtilExt.getResourceFile(pluginId, path);
 		String resourceContent = SWTTestExt.util.readTextFile(file);
 
 		openAsText(projectName, path);
@@ -439,7 +442,7 @@ public class SWTEclipseExt {
 		SWTBotEclipseEditor editor;
 		editor = bot.editorByTitle(path[path.length - 1]).toTextEditor();
 		editor.selectRange(0, 0, editor.getLineCount());
-		File file = util.getResourceFile(pluginId, path);
+		File file = SWTUtilExt.getResourceFile(pluginId, path);
 		String content = util.readTextFile(file);
 		editor.setText(content);
 		if (save)
@@ -457,7 +460,7 @@ public class SWTEclipseExt {
 			String pluginId, String... path) {
 		SWTBotEclipseEditor edit = editor.toTextEditor();
 		edit.selectRange(0, 0, edit.getText().length());
-		File file = util.getResourceFile(pluginId, path);
+		File file = SWTUtilExt.getResourceFile(pluginId, path);
 		String content = util.readTextFile(file);
 		edit.setText(content);
 		if (save)
