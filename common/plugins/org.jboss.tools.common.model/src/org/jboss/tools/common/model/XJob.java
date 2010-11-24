@@ -17,12 +17,14 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.internal.decorators.DecoratorManager;
 import org.eclipse.ui.progress.UIJob;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class XJob extends WorkspaceJob {
 	public static Object FAMILY_XJOB = new Object();
@@ -172,7 +174,17 @@ public class XJob extends WorkspaceJob {
 				ids.remove(r.getId());
 			}
 			if (!isSuspended()) {
-				r.run();
+				try {
+					r.run();
+				} catch (Exception e) {
+					if(e instanceof RuntimeException) {
+						synchronized(this) {
+							running = false;
+						}
+						throw (RuntimeException)e;
+					}
+					ModelPlugin.getDefault().logError("Error in job " + r.getId(), e);
+				}
 			}
 			//}
 		}
