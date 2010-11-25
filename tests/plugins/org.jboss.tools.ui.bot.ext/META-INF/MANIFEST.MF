@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.draw2d;bundle-version="3.6.1",
  org.eclipse.zest.core;bundle-version="1.2.0",
  org.eclipse.zest.layouts;bundle-version="1.1.0",
- org.eclipse.swtbot.eclipse.gef.finder;bundle-version="2.0.0"
+ org.eclipse.swtbot.eclipse.gef.finder;bundle-version="2.0.0",
+ org.eclipse.gef;bundle-version="3.6.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: org.apache.log4j
@@ -36,6 +37,7 @@ Export-Package: org.hsqldb,
  org.jboss.tools.ui.bot.ext.gen,
  org.jboss.tools.ui.bot.ext.helper,
  org.jboss.tools.ui.bot.ext.parts,
+ org.jboss.tools.ui.bot.ext.teiid,
  org.jboss.tools.ui.bot.ext.types,
  org.jboss.tools.ui.bot.ext.view,
  org.jboss.tools.ui.bot.ext.widgets,
@@ -43,4 +45,8 @@ Export-Package: org.hsqldb,
 Bundle-Vendor: JBoss by Red Hat
 Bundle-ClassPath: .,
  resources/drv/hsqldb.jar
-Import-Package: org.eclipse.gef
+Import-Package: com.metamatrix.modeler.diagram.ui.figure,
+ com.metamatrix.modeler.diagram.ui.notation.uml.figure,
+ com.metamatrix.modeler.transformation.ui,
+ com.metamatrix.modeler.transformation.ui.figure,
+ org.eclipse.gef
