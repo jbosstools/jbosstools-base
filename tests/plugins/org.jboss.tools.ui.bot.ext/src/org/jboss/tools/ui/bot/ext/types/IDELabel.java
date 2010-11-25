@@ -389,6 +389,7 @@ public class IDELabel {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Middleware";
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Middleware";
+     public static final String JBOSS_EAP_5_x = "JBoss Enterprise Middleware";
      public static final String JBOSS_COMMUNITY = "JBoss Community";
        
    }
@@ -396,6 +397,7 @@ public class IDELabel {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3 Runtime";
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0 Runtime";
+     public static final String JBOSS_EAP_5_x = "JBoss Enterprise Application Platform 5.x Runtime";
      public static final String JBOSS_AS_5_1 = "JBoss 5.1 Runtime";
        
    }
@@ -403,6 +405,7 @@ public class IDELabel {
 
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3";
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0";
+     public static final String JBOSS_EAP_5_x = "JBoss Enterprise Application Platform 5.x";
      public static final String JBOSS_AS_5_1 = "JBoss AS 5.1";
      
    }
