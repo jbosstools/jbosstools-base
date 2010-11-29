@@ -37,7 +37,6 @@ Export-Package: org.hsqldb,
  org.jboss.tools.ui.bot.ext.gen,
  org.jboss.tools.ui.bot.ext.helper,
  org.jboss.tools.ui.bot.ext.parts,
- org.jboss.tools.ui.bot.ext.teiid,
  org.jboss.tools.ui.bot.ext.types,
  org.jboss.tools.ui.bot.ext.view,
  org.jboss.tools.ui.bot.ext.widgets,
@@ -45,8 +44,4 @@ Export-Package: org.hsqldb,
 Bundle-Vendor: JBoss by Red Hat
 Bundle-ClassPath: .,
  resources/drv/hsqldb.jar
-Import-Package: com.metamatrix.modeler.diagram.ui.figure,
- com.metamatrix.modeler.diagram.ui.notation.uml.figure,
- com.metamatrix.modeler.transformation.ui,
- com.metamatrix.modeler.transformation.ui.figure,
- org.eclipse.gef
+Import-Package: org.eclipse.gef
