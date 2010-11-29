@@ -100,7 +100,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		new Label(composite, SWT.NONE);
 		
 		Label searchLabel = new Label(composite, SWT.NONE);
-		searchLabel.setText("JBoss AS, Seam, JBPM and Drools Runtimes wiil be configured based on the entered path.\nYou can also export/import configured JBoss runtimes.");
+		searchLabel.setText("JBoss AS, Seam, JBPM and Drools Runtimes will be configured based on the entered path.");
 		
 		Group runtimeGroup = new Group(composite, SWT.NONE);
 		layout = new GridLayout(1, false);
