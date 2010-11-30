@@ -29,6 +29,4 @@ public class JBossToolsTestsFocusPoint extends SuffixFocusPoint {
 	public static String getJBossToolsVersion() {
 		return JBossToolsUsageActivator.getDefault().getBundle().getVersion().toString();
 	}
-
-	
 }

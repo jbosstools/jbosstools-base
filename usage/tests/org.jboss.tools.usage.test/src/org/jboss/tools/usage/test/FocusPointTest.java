@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.internal.FocusPoint;
+import org.jboss.tools.usage.tracker.internal.SuffixFocusPoint;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
 import org.junit.Test;
 
@@ -30,6 +31,11 @@ public class FocusPointTest {
 	private static final String URI_SEPARATOR_ENCODED = HttpEncodingUtils.checkedEncodeUtf8(FocusPoint.URI_SEPARATOR);
 	
 	private static final String TITLE_SEPARATOR_ENCODED = HttpEncodingUtils.checkedEncodeUtf8(FocusPoint.TITLE_SEPARATOR);
+
+	private static final String JBOSS_TOOLS_VERSION = "42.0.42";
+
+	private static final String CHILD = "child";
+
 	
 	@Test
 	public void testGetContentURI_Simple() throws Exception {
@@ -61,5 +67,36 @@ public class FocusPointTest {
 		String contentTitle = focusPoint.getTitle();
 		assertNotNull(contentTitle);
 		assertEquals(ROOT + TITLE_SEPARATOR_ENCODED + CHILD1, contentTitle);
+	}
+
+	@Test
+	public void appendsJBossToolsVersionToTheEnd() throws Exception {
+		IFocusPoint focusPoint = new FocusPointFake(ROOT)
+				.setChild(new FocusPoint(CHILD)
+						.setChild(new FocusPoint(CHILD)));
+		String contentURI = focusPoint.getURI();
+
+		assertNotNull(contentURI);
+		assertEquals( URI_SEPARATOR_ENCODED
+				+ ROOT
+				+ URI_SEPARATOR_ENCODED
+						+ CHILD + URI_SEPARATOR_ENCODED
+						+ CHILD + URI_SEPARATOR_ENCODED
+						+ JBOSS_TOOLS_VERSION, contentURI);
+
+		String title = focusPoint.getTitle();
+		assertNotNull(title);
+		assertEquals(ROOT
+				+ TITLE_SEPARATOR_ENCODED
+						+ CHILD + TITLE_SEPARATOR_ENCODED
+						+ CHILD + TITLE_SEPARATOR_ENCODED
+						+ JBOSS_TOOLS_VERSION, title);
+	}
+
+	private static class FocusPointFake extends SuffixFocusPoint {
+
+		public FocusPointFake(String name) {
+			super(name, JBOSS_TOOLS_VERSION);
+		}
 	}
 }
