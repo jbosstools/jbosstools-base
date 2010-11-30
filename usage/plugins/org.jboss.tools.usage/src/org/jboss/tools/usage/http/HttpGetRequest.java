@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import org.jboss.tools.common.log.ILoggingAdapter;
+import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 
 /**
  * Class that executes a HTTP Get request to the given url.
@@ -28,18 +28,13 @@ public class HttpGetRequest implements IHttpGetRequest {
 
 	private static final String GET_METHOD_NAME = "GET"; //$NON-NLS-1$
 	
-	private ILoggingAdapter loggingAdapter = null;
+	private UsagePluginLogger logger = null;
 
-//	private CookieHandler cookieHandler;
-	
 	private String userAgent;
 
-	public HttpGetRequest(String userAgent, ILoggingAdapter loggingAdapter) {
+	public HttpGetRequest(String userAgent, UsagePluginLogger logger) {
 		this.userAgent = userAgent;
-		this.loggingAdapter = loggingAdapter;
-//		this.cookieHandler = new CookieHandler();
-//		this.cookieHandler = CookieHandler.getDefault();
-//		cookieHandler.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+		this.logger = logger;
 	}
 
 	/* (non-Javadoc)
@@ -47,20 +42,17 @@ public class HttpGetRequest implements IHttpGetRequest {
 	 */
 	public void request(String urlString) {
 
-//		CookieHandler currentCookieHandler = setCookieHandler(cookieHandler);
 		try {
 			HttpURLConnection urlConnection = createURLConnection(urlString, userAgent);
 			urlConnection.connect();
 			int responseCode = getResponseCode(urlConnection);
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				loggingAdapter.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Success, urlString, responseCode));
+				logger.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Success, urlString, responseCode));
 			} else {
-				loggingAdapter.error(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, urlString, responseCode));
+				logger.error(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, urlString, responseCode));
 			}
 		} catch (Exception e) {
-			loggingAdapter.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, urlString, e.toString()));
-		} finally {
-//			setCookieHandler(currentCookieHandler);
+			logger.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, urlString, e.toString()));
 		}
 	}
 
@@ -75,12 +67,6 @@ public class HttpGetRequest implements IHttpGetRequest {
 	protected int getResponseCode(HttpURLConnection urlConnection) throws IOException {
 		return urlConnection.getResponseCode();
 	}
-
-//	private CookieHandler setCookieHandler(CookieHandler cookieHandler) {
-//		CookieHandler currentCookieHandler = CookieHandler.getDefault();
-//		CookieHandler.setDefault(cookieHandler);
-//		return currentCookieHandler;
-//	}
 
 	/**
 	 * Creates a new url connection.

@@ -10,11 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.usage.internal.preferences;
 
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import java.io.IOException;
+
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.reporting.ReportingMessages;
-import org.jboss.tools.usage.util.StatusUtils;
+import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -24,7 +25,8 @@ public class UsageReportPreferences {
 
 	public static void setEnabled(boolean enabled) {
 		UsageReportPreferencesUtils.getStore().putValue(
-				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID, String.valueOf(enabled));
+					IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID, String.valueOf(enabled));
+		save();
 	}
 
 	public static boolean isEnabled() {
@@ -35,21 +37,24 @@ public class UsageReportPreferences {
 
 	public static boolean isAskUser() {
 		return UsageReportPreferencesUtils.getPreferences().getBoolean(
-				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID, 
+				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID,
 				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_DEFAULTVALUE);
 	}
 
 	public static void setAskUser(boolean askUser) {
+		UsageReportPreferencesUtils.getStore().putValue(IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID,
+				String.valueOf(askUser));
+		save();
+	}
+
+	private static void save() {
 		try {
-			IEclipsePreferences preferences = UsageReportPreferencesUtils.getPreferences();
-			preferences.putBoolean(IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID, askUser);
-			preferences.flush();
-		} catch (BackingStoreException e) {
-			JBossToolsUsageActivator.getDefault().getLog().log(
-					StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-							ReportingMessages.UsageReport_Error_SavePreferences, e,
-							IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID));
+			UsageReportPreferencesUtils.getStore().save();
+		} catch (IOException e) {
+			new UsagePluginLogger(JBossToolsUsageActivator.getDefault()).error(
+							ReportingMessages.UsageReport_Error_SavePreferences);
 		}
+
 	}
 
 	public static void flush() throws BackingStoreException {

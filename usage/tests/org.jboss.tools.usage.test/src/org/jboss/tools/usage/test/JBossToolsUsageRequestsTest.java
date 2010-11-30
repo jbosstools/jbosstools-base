@@ -14,8 +14,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-import org.jboss.tools.common.log.ILoggingAdapter;
 import org.jboss.tools.usage.http.HttpGetRequest;
+import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.junit.Test;
 
 /**
@@ -23,6 +23,8 @@ import org.junit.Test;
  */
 public class JBossToolsUsageRequestsTest {
 
+	UsagePluginLogger logger = new UsagePluginLogger(JBossToolsUsageTestActivator.getDefault());
+	
 	// @Ignore
 	// @Test
 	// public void testUrl0() throws IOException {
@@ -1780,19 +1782,19 @@ public class JBossToolsUsageRequestsTest {
 		private HttpURLConnection urlConnection;
 
 		public TestHttpGetMethod(String userAgentString) {
-			this(userAgentString, new SystemOutLogger());
+			this(userAgentString, logger);
 		}
 
 		public TestHttpGetMethod(UserAgentString userAgentString) {
-			this(userAgentString.toString(), new SystemOutLogger());
+			this(userAgentString.toString(), logger);
 		}
 
 		public TestHttpGetMethod() {
-			super(UserAgentString.DEFAULT.toString(), new SystemOutLogger());
+			super(UserAgentString.DEFAULT.toString(), logger);
 		}
 
-		public TestHttpGetMethod(String userAgent, ILoggingAdapter loggingAdapter) {
-			super(userAgent, loggingAdapter);
+		public TestHttpGetMethod(String userAgent, UsagePluginLogger logger) {
+			super(userAgent, logger);
 		}
 
 		@Override

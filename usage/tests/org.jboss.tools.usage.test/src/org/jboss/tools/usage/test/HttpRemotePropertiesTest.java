@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 
 import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.http.IPropertiesProvider;
+import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.junit.Test;
 
 /**
@@ -55,7 +56,7 @@ public class HttpRemotePropertiesTest {
 			final String stringValue, final String anotherValue, char valueDelimiter, String... keys) {
 
 		return new HttpRemotePropertiesProvider("http://dummy", valueDelimiter,
-					new SystemOutLogger(), keys) {
+					new UsagePluginLogger(JBossToolsUsageTestActivator.getDefault()), keys) {
 			@Override
 			protected InputStreamReader request(HttpURLConnection urlConnection)
 						throws UnsupportedEncodingException {

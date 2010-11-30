@@ -20,7 +20,6 @@ package org.jboss.tools.usage.tracker.internal;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
-import org.jboss.tools.common.log.ILoggingAdapter;
 import org.jboss.tools.usage.http.IHttpGetRequest;
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.ITracker;
@@ -37,21 +36,21 @@ public class Tracker implements ITracker {
 
 	private IURLBuildingStrategy urlBuildingStrategy = null;
 	private IHttpGetRequest httpRequest;
-	private ILoggingAdapter loggingAdapter;
+	private UsagePluginLogger logger;
 	
-	public Tracker(IURLBuildingStrategy urlBuildingStrategy, IHttpGetRequest httpGetRequest, ILoggingAdapter loggingAdapter) {
+	public Tracker(IURLBuildingStrategy urlBuildingStrategy, IHttpGetRequest httpGetRequest, UsagePluginLogger logger) {
 		this.httpRequest = httpGetRequest;
-		this.loggingAdapter = loggingAdapter;
+		this.logger = logger;
 		this.urlBuildingStrategy = urlBuildingStrategy;
 	}
 
 	public void trackSynchronously(IFocusPoint focusPoint) {
-		loggingAdapter
+		logger
 				.debug(MessageFormat.format(TrackerMessages.Tracker_Synchronous, focusPoint.getTitle()));
 		try {
 			httpRequest.request(getTrackingUrl(focusPoint));
 		} catch (Exception e) {
-			loggingAdapter.error(MessageFormat.format(TrackerMessages.Tracker_Error, e.getMessage()));
+			logger.error(MessageFormat.format(TrackerMessages.Tracker_Error, e.getMessage()));
 		}
 	}
 
@@ -60,7 +59,7 @@ public class Tracker implements ITracker {
 	}
 
 	public void trackAsynchronously(IFocusPoint focusPoint) {
-		loggingAdapter.debug(MessageFormat
+		logger.debug(MessageFormat
 				.format(TrackerMessages.Tracker_Asynchronous, focusPoint.getTitle()));
 		new Thread(new TrackingRunnable(focusPoint)).start();
 	}
@@ -76,7 +75,7 @@ public class Tracker implements ITracker {
 			try {
 				httpRequest.request(getTrackingUrl(focusPoint));
 			} catch (Exception e) {
-				loggingAdapter.error(MessageFormat.format(TrackerMessages.Tracker_Error, e.getMessage()));
+				logger.error(MessageFormat.format(TrackerMessages.Tracker_Error, e.getMessage()));
 			}
 		}
 	}

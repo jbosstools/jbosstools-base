@@ -14,11 +14,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.jboss.tools.common.log.ILoggingAdapter;
 import org.jboss.tools.usage.http.IHttpGetRequest;
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
 import org.jboss.tools.usage.tracker.internal.Tracker;
+import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 
 /**
  * @author Andre Dietisheim
@@ -29,8 +29,8 @@ public class UrlRevealingTracker extends Tracker {
 	private Lock lock;
 
 	public UrlRevealingTracker(IURLBuildingStrategy urlBuildingStrategy, IHttpGetRequest httpGetRequest,
-			ILoggingAdapter loggingAdapter) {
-		super(urlBuildingStrategy, httpGetRequest, loggingAdapter);
+			UsagePluginLogger logger) {
+		super(urlBuildingStrategy, httpGetRequest, logger);
 		lock = new ReentrantLock();
 	}
 

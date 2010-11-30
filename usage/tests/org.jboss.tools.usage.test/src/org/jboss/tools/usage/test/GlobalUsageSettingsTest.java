@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.http.IPropertiesProvider;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
+import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.junit.Test;
 
 /**
@@ -110,7 +111,7 @@ public class GlobalUsageSettingsTest {
 		@Override
 		protected IPropertiesProvider createRemoteMap(String url, char valueDelimiter, Plugin plugin,
 				String... keys) {
-			return new HttpRemotePropertiesProvider(url, valueDelimiter, new SystemOutLogger(), keys) {
+			return new HttpRemotePropertiesProvider(url, valueDelimiter, new UsagePluginLogger(plugin), keys) {
 				@Override
 				protected InputStreamReader request(HttpURLConnection urlConnection)
 						throws UnsupportedEncodingException {

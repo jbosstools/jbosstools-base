@@ -21,12 +21,8 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
-import org.jboss.tools.common.log.ILoggingAdapter;
+import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
-import org.jboss.tools.usage.util.LoggingUtils;
-import org.jboss.tools.usage.util.StatusUtils;
 import org.jboss.tools.usage.util.reader.ReaderUtils;
 
 
@@ -45,14 +41,13 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 	private String[] keys;
 	private String url;
 	private char valueDelimiter;
-	protected Plugin plugin;
-	private ILoggingAdapter loggingAdapter;
+	private UsagePluginLogger logger;
 
-	public HttpRemotePropertiesProvider(String url, char valueDelimiter, ILoggingAdapter loggingAdapter, String... keys) {
+	public HttpRemotePropertiesProvider(String url, char valueDelimiter, UsagePluginLogger loggingAdapter, String... keys) {
 		this.url = url;
 		this.keys = keys;
 		this.valueDelimiter = valueDelimiter;
-		this.loggingAdapter = loggingAdapter;
+		this.logger = loggingAdapter;
 	}
 
 
@@ -86,18 +81,14 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 			urlConnection.connect();
 			int responseCode = getResponseCode(urlConnection);
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				IStatus status = StatusUtils.getInfoStatus(
-						plugin.getBundle().getSymbolicName()
-						, HttpMessages.HttpResourceMap_Info_HttpQuery
-						, url);
-				LoggingUtils.log(status, plugin);
+				logger.debug(MessageFormat.format(HttpMessages.HttpResourceMap_Info_HttpQuery, url));
 				responseReader = getInputStreamReader(urlConnection.getInputStream(), urlConnection.getContentType());
 			} else {
-				loggingAdapter.error(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, url, responseCode));
+				logger.error(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, url, responseCode));
 			}
 			return responseReader;
 		} catch (IOException e) {
-			loggingAdapter.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, url, e.toString()));
+			logger.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, url, e.toString()));
 			throw e;
 		}
 	}

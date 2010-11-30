@@ -32,8 +32,12 @@ public class GlobalUsageSettings {
 	 * system property that enables/disables reporting for current eclipse
 	 * instance
 	 */
-	public static final String USAGE_REPORTING_ENABLED_KEY = "usage_reporting_enabled";
+	public static final String USAGE_REPORTING_ENABLED_KEY = "usage_reporting_enabled"; //$NON-NLS-1$
 
+	/**
+	 * system property that enables/disables reporting for all eclipse
+	 * instances
+	 */
 	public static final String REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY = USAGE_REPORTING_ENABLED_KEY + "="; //$NON-NLS-1$
 
 	/** the enablement default for the local instance */
@@ -96,7 +100,8 @@ public class GlobalUsageSettings {
 	 * 
 	 * @return true, if this instance shall report usage
 	 * 
-	 * @see #SYSPROPS_INSTANCE_ENABLED_KEY
+	 * @see #USAGE_REPORTING_ENABLED_KEY
+	 * @see #INSTANCE_USAGE_REPORTING_ENABLED_DEFAULT
 	 */
 	private boolean isInstanceReportingEnabled() {
 		return Boolean.valueOf(

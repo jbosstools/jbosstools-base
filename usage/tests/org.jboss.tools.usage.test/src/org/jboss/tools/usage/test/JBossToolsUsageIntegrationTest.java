@@ -100,10 +100,10 @@ public class JBossToolsUsageIntegrationTest {
 	}
 
 	private UrlRevealingTracker getTracker(IGoogleAnalyticsParameters environment) {
-		ILoggingAdapter loggingAdapter = new UsagePluginLogger(JBossToolsUsageTestActivator.getDefault());
+		UsagePluginLogger logger = new UsagePluginLogger(JBossToolsUsageTestActivator.getDefault());
 		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(environment);
-		IHttpGetRequest httpGetRequest = new HttpGetRequest(environment.getUserAgent(), loggingAdapter);
-		return new UrlRevealingTracker(urlStrategy, httpGetRequest, loggingAdapter);
+		IHttpGetRequest httpGetRequest = new HttpGetRequest(environment.getUserAgent(), logger);
+		return new UrlRevealingTracker(urlStrategy, httpGetRequest, logger);
 	}
 
 	private IFocusPoint createFocusPoint(String childFocusPoint) {

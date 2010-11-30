@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
-import org.jboss.tools.common.log.ILoggingAdapter;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.http.HttpGetRequest;
@@ -33,7 +32,6 @@ import org.jboss.tools.usage.tracker.internal.FocusPoint;
 import org.jboss.tools.usage.tracker.internal.SuffixFocusPoint;
 import org.jboss.tools.usage.tracker.internal.Tracker;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
-import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -48,13 +46,14 @@ public class UsageReport {
 
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
 
+	UsagePluginLogger logger = new UsagePluginLogger(JBossToolsUsageActivator.getDefault());
+	
 	public UsageReport() throws InvalidSyntaxException {
 		eclipseEnvironment = JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment();
 		focusPoint = new SuffixFocusPoint("tools", eclipseEnvironment.getJBossToolsVersion()) //$NON-NLS-1$ 
 				.setChild(new FocusPoint("usage") //$NON-NLS-1$ 
 						.setChild(new FocusPoint("action") //$NON-NLS-1$ 
 								.setChild(new FocusPoint("wsstartup")))); //$NON-NLS-1$
-
 		globalSettings = new GlobalUsageSettings(JBossToolsUsageActivator
 				.getDefault());
 	}
@@ -78,9 +77,7 @@ public class UsageReport {
 		try {
 			UsageReportPreferences.flush();
 		} catch (BackingStoreException e) {
-			IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
-					ReportingMessages.UsageReport_Error_SavePreferences, e);
-			JBossToolsUsageActivator.getDefault().getLog().log(status);
+			logger.error(ReportingMessages.UsageReport_Error_SavePreferences);
 		}
 	}
 
@@ -91,11 +88,10 @@ public class UsageReport {
 	private void doReport() {
 		if (UsageReportPreferences.isEnabled()) {
 			IURLBuildingStrategy urlBuildingStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment);
-			ILoggingAdapter loggingAdapter = new UsagePluginLogger(JBossToolsUsageActivator.getDefault());
 			ITracker tracker = new Tracker(
 					urlBuildingStrategy
-					, new HttpGetRequest(eclipseEnvironment.getUserAgent(), loggingAdapter)
-					, loggingAdapter);
+					, new HttpGetRequest(eclipseEnvironment.getUserAgent(), logger)
+					, logger);
 			tracker.trackAsynchronously(focusPoint);
 		}
 	}
