@@ -1676,12 +1676,12 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
 			}
-		public static class JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50 {
+		public static class JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x {
 			/**
-			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 5.0
+			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 5.x
 			*/
 			public static final IServer LABEL = new IServer() {
-				public String getName() { return "JBoss Enterprise Application Platform 5.0";}
+				public String getName() { return "JBoss Enterprise Application Platform 5.x";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Enterprise Middleware");
@@ -10382,12 +10382,12 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
 			}
-		public static class JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime {
+		public static class JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime {
 			/**
-			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 5.0 Runtime
+			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 5.x Runtime
 			*/
 			public static final IServerRuntime LABEL = new IServerRuntime() {
-				public String getName() { return "JBoss Enterprise Application Platform 5.0 Runtime";}
+				public String getName() { return "JBoss Enterprise Application Platform 5.x Runtime";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Enterprise Middleware");

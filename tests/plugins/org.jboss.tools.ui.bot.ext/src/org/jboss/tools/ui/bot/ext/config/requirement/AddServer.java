@@ -11,13 +11,13 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS50;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS51;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS60;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss42Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss50Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss51Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss60Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43Runtime;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime;
 /**
  * adds server (version and type depends on {@link TestConfigurator#server})
  * @author lzoubek
@@ -96,13 +96,13 @@ public class AddServer extends RequirementBase {
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43.LABEL
 						);				
 			}
-			if ("5.0".equals(version)) {
-				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
-						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
+			if ("5.0".equals(version) || "5.x".equals(version)) {
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x.LABEL);
 			}
 			if ("5.1".equals(version)) {
-				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
-						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x.LABEL);
 			}
 			
 		}
@@ -112,9 +112,9 @@ public class AddServer extends RequirementBase {
 						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43.LABEL
 						);				
 			}
-			if ("5.0".equals(version)) {
-				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
-						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
+			if ("5.0".equals(version) || "5.x".equals(version)) {
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x.LABEL);
 			}
 			
 		}
@@ -125,12 +125,12 @@ public class AddServer extends RequirementBase {
 						);				
 			}
 			if ("5.0".equals(version)) {
-				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
-						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x.LABEL);
 			}
-			if ("5.1".equals(version)) {
-				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50Runtime.LABEL,
-						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform50.LABEL);
+			if ("5.1".equals(version) || "5.x".equals(version)) {
+				return new ServerInfo(JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime.LABEL,
+						JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x.LABEL);
 			}
 			
 		}
