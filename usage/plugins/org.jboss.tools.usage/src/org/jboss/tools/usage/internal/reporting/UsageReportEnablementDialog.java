@@ -35,10 +35,10 @@ public class UsageReportEnablementDialog extends Dialog {
 	private boolean reportEnabled;
 	private IUsageBranding branding;
 
-	public UsageReportEnablementDialog(boolean reportEnabled, IShellProvider parentShell) {
+	public UsageReportEnablementDialog(boolean reportEnabled, IShellProvider parentShell, IUsageBranding branding) {
 		super(parentShell);
 		this.reportEnabled = reportEnabled;
-		this.branding = JBossToolsUsageActivator.getDefault().getUsageBranding();
+		this.branding = branding;
 	}
 
 	protected void buttonPressed(int buttonId) {

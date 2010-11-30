@@ -13,12 +13,10 @@ package org.jboss.tools.usage.internal.reporting;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.progress.UIJob;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.http.HttpGetRequest;
@@ -32,7 +30,6 @@ import org.jboss.tools.usage.tracker.internal.FocusPoint;
 import org.jboss.tools.usage.tracker.internal.SuffixFocusPoint;
 import org.jboss.tools.usage.tracker.internal.Tracker;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
-import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -47,30 +44,101 @@ public class UsageReport {
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
 
 	UsagePluginLogger logger = new UsagePluginLogger(JBossToolsUsageActivator.getDefault());
-	
-	public UsageReport() throws InvalidSyntaxException {
-		eclipseEnvironment = JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment();
-		focusPoint = new SuffixFocusPoint("tools", eclipseEnvironment.getJBossToolsVersion()) //$NON-NLS-1$ 
-				.setChild(new FocusPoint("usage") //$NON-NLS-1$ 
-						.setChild(new FocusPoint("action") //$NON-NLS-1$ 
-								.setChild(new FocusPoint("wsstartup")))); //$NON-NLS-1$
-		globalSettings = new GlobalUsageSettings(JBossToolsUsageActivator
-				.getDefault());
+
+	public UsageReport() {
+		this(JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment());
+
 	}
 
+	/**
+	 * Instantiates a new usage report.
+	 * 
+	 * @param eclipseEnvironment
+	 *            the eclipse environment
+	 */
+	protected UsageReport(IJBossToolsEclipseEnvironment eclipseEnvironment) {
+		this(
+				new SuffixFocusPoint("tools", eclipseEnvironment.getJBossToolsVersion()) //$NON-NLS-1$ 
+						.setChild(new FocusPoint("usage") //$NON-NLS-1$ 
+								.setChild(new FocusPoint("action") //$NON-NLS-1$ 
+										.setChild(new FocusPoint("wsstartup")))), //$NON-NLS-1$
+				eclipseEnvironment,
+				new GlobalUsageSettings(JBossToolsUsageActivator.getDefault()));
+	}
+
+	/**
+	 * Instantiates a new usage report.
+	 * 
+	 * @param focusPoint
+	 *            the focus point
+	 * @param eclipseEnvironment
+	 *            the eclipse environment
+	 * @param globalSettings
+	 *            the global settings
+	 */
+	protected UsageReport(IFocusPoint focusPoint, IJBossToolsEclipseEnvironment eclipseEnvironment,
+			GlobalUsageSettings globalSettings) {
+		this.eclipseEnvironment = eclipseEnvironment;
+		this.focusPoint = focusPoint;
+		this.globalSettings = globalSettings;
+	}
+
+	/**
+	 * Reports the usage of this eclipse/jboss tools instance.
+	 */
 	public void report() {
 		new ReportingJob().schedule();
 	}
 
+	protected boolean isReportingGloballyEnabled() {
+		return globalSettings.isReportingEnabled();
+	}
+
+	/**
+	 * Asks the user is he allows us to report usage. Opens a dialog for this
+	 * sake.
+	 */
 	private void askUser() {
-		UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(
-				true,
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-		if (dialog.open() == Window.OK) {
-			UsageReportPreferences.setEnabled(dialog.isReportEnabled());
+		Boolean isEnabled = askUserForEnablement();
+		if (isEnabled != null) {
+			UsageReportPreferences.setEnabled(isEnabled);
 			UsageReportPreferences.setAskUser(false);
 			flushPreferences();
 		}
+	}
+
+	/**
+	 * Checks reporting shall ask the user (which is the case if this was never
+	 * done before. Asking user shall only be done once per eclipse
+	 * installation)
+	 * 
+	 * @return true, if is ask user
+	 */
+	protected boolean isAskUser() {
+		return UsageReportPreferences.isAskUser();
+	}
+
+	/**
+	 * Asks the user if he allows us to report.
+	 * 
+	 * @return the boolean
+	 */
+	protected Boolean askUserForEnablement() {
+		final Boolean[] userResponse = new Boolean[1];
+		Display.getDefault().syncExec(new Runnable() {
+
+			public void run() {
+				UsageReportEnablementDialog dialog =
+						new UsageReportEnablementDialog(true, PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
+								JBossToolsUsageActivator.getDefault().getUsageBranding());
+				if (dialog.open() == Window.OK) {
+					userResponse[0] = dialog.isReportEnabled();
+				} else {
+					userResponse[0] = null;
+				}
+			}
+		});
+		return userResponse[0];
 	}
 
 	private void flushPreferences() {
@@ -85,7 +153,7 @@ public class UsageReport {
 	 * Reports the usage of the current JBoss Tools / JBoss Developer Studio
 	 * installation.
 	 */
-	private void doReport() {
+	protected void doReport() {
 		if (UsageReportPreferences.isEnabled()) {
 			IURLBuildingStrategy urlBuildingStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment);
 			ITracker tracker = new Tracker(
@@ -97,6 +165,7 @@ public class UsageReport {
 	}
 
 	private class ReportingJob extends Job {
+
 		private ReportingJob() {
 			super(ReportingMessages.UsageReport_Reporting_Usage);
 		}
@@ -107,70 +176,21 @@ public class UsageReport {
 				return Status.CANCEL_STATUS;
 			}
 			monitor.beginTask(ReportingMessages.UsageReport_Querying_Enablement, 2);
-			if (globalSettings.isReportingEnabled()) {
+			if (isReportingGloballyEnabled()) {
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}
 				monitor.worked(1);
-				if (UsageReportPreferences.isAskUser()) {
+				if (isAskUser()) {
 					if (monitor.isCanceled()) {
 						return Status.CANCEL_STATUS;
 					}
-					askUserAndReport();
-				} else {
-					if (monitor.isCanceled()) {
-						return Status.CANCEL_STATUS;
-					}
-					doReport();
+					askUser();
 				}
+				doReport();
 				monitor.worked(2);
 				monitor.done();
 			}
-			return Status.OK_STATUS;
-		}
-
-		private void askUserAndReport() {
-			Job askUserJob = new AskUserJob();
-			askUserJob.addJobChangeListener(new IJobChangeListener() {
-
-				public void sleeping(IJobChangeEvent event) {
-					// ignore
-				}
-
-				public void scheduled(IJobChangeEvent event) {
-					// ignore
-				}
-
-				public void running(IJobChangeEvent event) {
-					// ignore
-				}
-
-				public void done(IJobChangeEvent event) {
-					doReport();
-				}
-
-				public void awake(IJobChangeEvent event) {
-					// ignore
-				}
-
-				public void aboutToRun(IJobChangeEvent event) {
-					// ignore
-				}
-			});
-			askUserJob.setUser(true);
-			askUserJob.setPriority(Job.SHORT);
-			askUserJob.schedule();
-		}
-	}
-
-	private class AskUserJob extends UIJob {
-		private AskUserJob() {
-			super(ReportingMessages.UsageReport_Asking_User);
-		}
-
-		@Override
-		public IStatus runInUIThread(IProgressMonitor monitor) {
-			askUser();
 			return Status.OK_STATUS;
 		}
 	}
