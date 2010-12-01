@@ -246,4 +246,12 @@ public class PaletteCreator {
 		return editor;
 	}
 
+	/**
+	 * Used for test
+	 * @return
+	 */
+	public IPaletteAdapter getAdapter() {
+		return paletteAdapter;
+	}
+
 }
