@@ -20,6 +20,8 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.IAnnotatable;
+import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
@@ -221,4 +223,29 @@ public class EclipseJavaUtil {
 		}
 		return suppers;
 	}
+	
+	public static IAnnotation findAnnotation(IType sourceType, IAnnotatable member, String qulifiedAnnotationName) throws JavaModelException{
+		IAnnotation[] annotations = member.getAnnotations();
+		String simpleAnnotationTypeName = qulifiedAnnotationName;
+		int lastDot = qulifiedAnnotationName.lastIndexOf('.');
+		if(lastDot>-1) {
+			simpleAnnotationTypeName = simpleAnnotationTypeName.substring(lastDot + 1);
+		}
+		for (IAnnotation annotation : annotations) {
+			if(qulifiedAnnotationName.equals(annotation.getElementName())) {
+				return annotation;
+			}
+			if(simpleAnnotationTypeName.equals(annotation.getElementName())) {
+				String fullAnnotationclassName = EclipseJavaUtil.resolveType(sourceType, simpleAnnotationTypeName);
+				if(fullAnnotationclassName!=null) {
+					IType annotationType = sourceType.getJavaProject().findType(fullAnnotationclassName);
+					if(annotationType!=null && annotationType.getFullyQualifiedName().equals(qulifiedAnnotationName)) {
+						return annotation;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 }
