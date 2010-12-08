@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -38,6 +39,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -58,7 +60,6 @@ import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemImpl;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemsImpl;
-import org.jboss.tools.common.model.filesystems.impl.FileSystemsLoader;
 import org.jboss.tools.common.model.filesystems.impl.JarSystemImpl;
 import org.jboss.tools.common.model.icons.impl.XModelObjectIcon;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
@@ -833,6 +834,29 @@ public class EclipseResourceUtil extends EclipseUtil {
 			ModelPlugin.getPluginLog().logError(ex);
 		}
 		return null;
+	}
+
+	public static Set<IFolder> getSourceFolders(IProject project) {
+		Set<IFolder> folders = new HashSet<IFolder>();
+		IPackageFragmentRoot[] roots;
+		try {
+			// From source folders
+			IJavaProject javaProject = EclipseUtil.getJavaProject(project);
+			if(javaProject!=null) { 
+				roots = javaProject.getPackageFragmentRoots();
+				for (int i = 0; i < roots.length; i++) {
+					if (roots[i].getKind() == IPackageFragmentRoot.K_SOURCE) {
+						IResource source = roots[i].getCorrespondingResource();
+						if(source instanceof IFolder) {
+							folders.add((IFolder)source);
+						}
+					}
+				}
+			}
+		} catch (JavaModelException e) {
+			ModelPlugin.getDefault().logError(e);
+		}
+		return folders;
 	}
 
 	public static void openResource(IResource resource) {
