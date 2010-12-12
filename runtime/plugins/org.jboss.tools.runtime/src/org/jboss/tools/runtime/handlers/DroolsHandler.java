@@ -23,7 +23,13 @@ import org.jboss.tools.runtime.ServerDefinition;
 public class DroolsHandler implements IJBossRuntimePersistanceHandler,IJBossRuntimePluginConstants {
 
 	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
+		DroolsRuntime[] existingRuntimes = DroolsRuntimeManager.getDroolsRuntimes();
 		List<DroolsRuntime> droolsRuntimes = new ArrayList<DroolsRuntime>();
+		if (existingRuntimes != null) {
+			for (DroolsRuntime runtime:existingRuntimes) {
+				droolsRuntimes.add(runtime);
+			}
+		}
 		for (ServerDefinition serverDefinition : serverDefinitions) {
 			String type = serverDefinition.getType();
 			if (!droolsExists(serverDefinition)) {
