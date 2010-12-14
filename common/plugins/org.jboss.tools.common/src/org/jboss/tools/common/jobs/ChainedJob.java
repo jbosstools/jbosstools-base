@@ -43,7 +43,7 @@ public abstract class ChainedJob extends Job {
 	 * @see Job#belongsTo(java.lang.Object)
 	 */
 	public boolean belongsTo(Object family) {
-		if (family == null) {
+		if (this.family == null) {
 			return false;
 		}
 		return this.family.equals(family);
