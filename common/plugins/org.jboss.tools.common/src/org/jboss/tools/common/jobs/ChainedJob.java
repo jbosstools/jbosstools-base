@@ -24,6 +24,10 @@ public abstract class ChainedJob extends Job {
 	private IJobChangeListener listener;
 	private String family;
 
+	public ChainedJob(String name) {
+		this(name, null);
+	}
+
 	/**
 	 * Create a new dependent job.
 	 * 
@@ -39,6 +43,9 @@ public abstract class ChainedJob extends Job {
 	 * @see Job#belongsTo(java.lang.Object)
 	 */
 	public boolean belongsTo(Object family) {
+		if (family == null) {
+			return false;
+		}
 		return this.family.equals(family);
 	}
 
