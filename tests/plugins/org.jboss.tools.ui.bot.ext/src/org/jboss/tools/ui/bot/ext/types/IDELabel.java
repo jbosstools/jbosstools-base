@@ -155,6 +155,9 @@ public class IDELabel {
 	  public static final String PAGE_DESIGN_OPTIONS = "Page Design Options";
 	  public static final String ADD_TAGLIB_REFRENCE = "Add Taglib Reference";
 	  public static final String ADD_EL_REFERENCE = "Add EL Reference";
+	  public static final String ADD_CSS_REFERENCE = "Add CSS Reference";
+	  public static final String NEW_CSS_FILE = "New CSS File";
+	  public static final String NEW_HTML_FILE = "New HTML File";
 	}
 
 	public class EntityGroup {
@@ -617,6 +620,9 @@ public class IDELabel {
      public static final String SUBSTITUTED_EL_EXPRESSIONS_SCOPE_PROJECT = "Project: Any Page at the Same Project";
      public static final String SUBSTITUTED_EL_EXPRESSIONS_FOLDER_SCOPE_TABLE_LABEL = "Folder";
      
+     public static final String INCLUDED_CSS_FILES_TAB = "Included css files";
+     public static final String INCLUDED_CSS_FILES_CSS_FILE_PATH = "CSS File Path*";
+     
    }   
    
    public static class AddTaglibReferenceDialog{
@@ -631,4 +637,13 @@ public class IDELabel {
      public static final String PASSWORD = "Password:  ";
 
    }
+   
+   public class NewHTMLWizard {
+     public static final String FILE_NAME = "File name:";
+   }
+   
+   public class NewCSSWizard {
+     public static final String FILE_NAME = "File name:";
+   }
+
  }

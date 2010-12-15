@@ -4533,7 +4533,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : Web->HTML Page
 			*/
 			public static final INewObject LABEL = new INewObject() {
-				public String getName() { return "HTML Page";}
+				public String getName() { return "HTML File";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("Web");
