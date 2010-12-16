@@ -319,7 +319,7 @@ public class IDELabel {
 
 	public static final class NewXHTMLFileDialog {
 
-		public static final String NAME = "Name*";
+		public static final String FILE_NAME = "Name*";
 		public static final String TEMPLATE = "Template";
 		public static final String TEMPLATE_FACELET_FORM_XHTML = "FaceletForm.xhtml";
 		public static final String TEMPLATE_FACELET_FORM_XHTML_NAME = "Form Facelet Page";
@@ -380,6 +380,7 @@ public class IDELabel {
      public static final String JBOSS_TOOLS_WEB_EDITORS = "Editors";
      public static final String JBOSS_TOOLS_WEB_EDITORS_VPE = "Visual Page Editor";
      public static final String JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES = "Visual Templates";
+     public static final String JBOSS_TOOLS_EL_VARIABLES = "El Variables";
    }
    
    public static class JBossServerRuntimeDialog {
@@ -646,4 +647,11 @@ public class IDELabel {
      public static final String FILE_NAME = "File name:";
    }
 
+   public static class AddELReferenceDialog{
+     
+     public static final String EL_NAME = "El Name*";
+     public static final String VALUE = "Value";
+     
+   }  
+   
  }
