@@ -136,8 +136,22 @@ public class AbstractResourceMarkerTest extends TestCase {
 		List<Integer> lines = findMarkerLines(
 				resource, type, errorMessage, pattern);
 
-		assertFalse("Marker  matches the '" + errorMessage + "' pattern wasn't found",  //$NON-NLS-1$ //$NON-NLS-2$
-				lines.isEmpty());
+		if(lines.isEmpty()) {
+			IMarker[] allMarkers = findMarkers(resource, null, "*", true);
+			StringBuffer sb = new StringBuffer("Marker  matches the '"); //$NON-NLS-1$
+			sb.append(errorMessage).append("' pattern wasn't found. Here is a list of found markers in ").append(resource.getFullPath().toOSString()).append(" : [\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			int i=0;
+			for (IMarker marker : allMarkers) {
+				String message = marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
+				marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
+				int line = marker.getAttribute(IMarker.LINE_NUMBER, -1);
+				String mType = marker.getType();
+				sb.append(i).append(") line: \"").append(line).append("\"; type: \"").append(mType).append("\"; message: \"").append(message).append("\";\r\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				i++;
+			}
+			sb.append("\r\n]"); //$NON-NLS-1$
+			fail(sb.toString());
+		}
 
 		assertEquals("Wrong number of found marker matches the '" + errorMessage + "' pattern",  //$NON-NLS-1$//$NON-NLS-2$
 				expectedLines.length, lines.size());
