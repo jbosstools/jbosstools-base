@@ -129,7 +129,8 @@ public class UsageReport {
 
 			public void run() {
 				UsageReportEnablementDialog dialog =
-						new UsageReportEnablementDialog(true, PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
+						new UsageReportEnablementDialog(
+								PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
 								JBossToolsUsageActivator.getDefault().getUsageBranding());
 				if (dialog.open() == Window.OK) {
 					userResponse[0] = dialog.isReportEnabled();
