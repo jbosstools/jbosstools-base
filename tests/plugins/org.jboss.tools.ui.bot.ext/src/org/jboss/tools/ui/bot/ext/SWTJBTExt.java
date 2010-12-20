@@ -496,36 +496,28 @@ public class SWTJBTExt {
       
   }
 
-  /**
-   * Closes RH Report Usage Dialog if found
-   * @param cancel selecte if ok or cancel button is used
-   */
-public void closeReportUsageWindowIfOpened(boolean cancel) {
-  boolean usageWindowAppeared = false;
-  // Check Usage Reporting For JBT
-	try {
-		bot.shell("JBoss Tools Usage").activate();
-		bot.button(
-				cancel ? IDELabel.Button.CANCEL
-						: IDELabel.Button.OK).click();
-		log.info("Report usage window closed");
-		usageWindowAppeared = true;
-	} catch (WidgetNotFoundException wnfe) {
-		// do nothing continue to try to close JBDS Usage Report Dialog
+	/**
+	 * Closes RH Report Usage Dialog if found
+	 * 
+	 * @param cancel
+	 *            select if ok or cancel button is used
+	 */
+	public void closeReportUsageWindowIfOpened(boolean cancel) {
+
+		String title;
+		if (isJBDSRun()) {
+			title = "JBoss Developer Studio Usage";
+		} else {
+			title = "JBoss Tools Usage";
+		}
+		try {
+
+			bot.shell(title).activate();
+			bot.button(cancel ? IDELabel.Button.CANCEL : IDELabel.Button.OK)
+					.click();
+			log.info("Report usage window closed");
+		} catch (WidgetNotFoundException wnfe) {
+			log.info("Report usage window didn't appear");
+		}
 	}
-  // Check Usage Reporting For JBDS
-	if (!usageWindowAppeared){
-	   try {
-	      bot.shell("JBoss Developer Studio Usage").activate();
-	      bot.button(
-	          cancel ? IDELabel.Button.CANCEL
-	              : IDELabel.Button.OK).click();
-	      log.info("Report usage window closed");
-	      usageWindowAppeared = true;
-	    } catch (WidgetNotFoundException wnfe) {
-	      log.info("Report usage window didn't appear");
-	    }
-	}
-	
-}
 }
