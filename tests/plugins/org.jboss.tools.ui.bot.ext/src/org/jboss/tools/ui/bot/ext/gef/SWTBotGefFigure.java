@@ -18,13 +18,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 
 /**
  * Gef figure bot controler. It performs actions which are missing or works
@@ -37,28 +31,9 @@ public class SWTBotGefFigure {
 
 	private IFigure figure;
 	private Logger log = Logger.getLogger(SWTBotGefFigure.class);
-	private SWTBotGefEditor editor;
-	private SWTBot bot;
-	private SWTBotGefFigureCanvas canvas;
-	private SWTBotGefEditPart part;
 
-	private SWTBotGefFigure(SWTBotGefEditor editor, SWTBotGefEditPart part,
-			IFigure figure) {
-		this.editor = editor;
-		this.bot = editor.bot();
-		this.canvas = SWTBotGefFinder.findCanvas(editor);
-		this.part = part;
+	public SWTBotGefFigure(IFigure figure) {
 		this.figure = figure;
-	}
-
-	/**
-	 * Default Constructor, requires gef editor and gef part
-	 * 
-	 * @param editor
-	 * @param part
-	 */
-	public SWTBotGefFigure(SWTBotGefEditor editor, SWTBotGefEditPart part) {
-		this(editor, part, ((GraphicalEditPart) part.part()).getFigure());
 	}
 
 	/**
@@ -135,7 +110,7 @@ public class SWTBotGefFigure {
 				Label label = (Label) figure;
 				log.info(label.getText());
 				if (label.getText().equalsIgnoreCase(string))
-					return new SWTBotGefFigure(editor, part, label);
+					return new SWTBotGefFigure(figure);
 			}
 		}
 		throw new WidgetNotFoundException("No Label with " + string + " found");
@@ -153,18 +128,6 @@ public class SWTBotGefFigure {
 		throw new WidgetNotFoundException("Widget is not Label type");
 	}
 
-	/**
-	 * Performs setText action for Label figure in GEF editor
-	 * 
-	 * @param str
-	 */
-	public void setText(String str) {
-		part.select();
-		SWTBotGefMouse mouse = new SWTBotGefMouse(bot, canvas);
-		mouse.moveAndClick(this);
-		SWTBotText text = bot.text(0);
-		canvas.typeText(text.widget, str);
-	}
 
 	private void getSubFigures(IFigure figure, List<IFigure> figures) {
 		@SuppressWarnings("unchecked")

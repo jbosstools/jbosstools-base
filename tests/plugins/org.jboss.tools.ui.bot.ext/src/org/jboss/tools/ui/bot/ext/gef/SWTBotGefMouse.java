@@ -61,6 +61,7 @@ public class SWTBotGefMouse {
 				canvas().getDisplay().post(event);
 			}
 		});
+		bot.sleep(SLEEP);
 	}
 
 	/**
@@ -83,7 +84,15 @@ public class SWTBotGefMouse {
 		move(figure);
 		click();
 	}
-
+	
+	/**
+	 *  Moves and left mouse click on given position
+	 */
+	public void moveAndClick(int x, int y) {
+		move(x,y);
+		click();
+	}
+	
 	/**
 	 * Calculates element position to display, call it from UI thread
 	 */
@@ -103,6 +112,24 @@ public class SWTBotGefMouse {
 		});
 	}
 
+	/**
+	 * Moves on position related to canvas position
+	 */
+	public void moveCanvas(int x, int y) {
+		
+		final Point p = new Point();
+		UIThreadRunnable.syncExec(new VoidResult() {
+				public void run() {
+					p.x = canvas().toDisplay(0,0).x;
+					p.y = canvas().toDisplay(0,0).y;
+
+					log.info("Canvas position on display is :" + p.x + "," + p.y);
+				}
+			});
+		
+		move(p.x + x, p.y + y);
+	}
+	
 	/**
 	 * Left click on give position
 	 */

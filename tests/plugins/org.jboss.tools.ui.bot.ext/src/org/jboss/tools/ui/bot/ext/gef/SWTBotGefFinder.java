@@ -19,6 +19,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 
 /**
  * SWTBotGefProvider provides some often conversion tasks for getting
@@ -56,6 +57,22 @@ public class SWTBotGefFinder {
 					"Unable to get Canvas from editor");
 		}
 		return canvas;
+	}
+	
+	/**
+	 * Returns graphical viewer from editor
+	 */
+	public static GraphicalViewer getViewer(final SWTBotGefEditor editor) 
+	{
+		GraphicalViewer graphicalViewer = UIThreadRunnable.syncExec(new Result<GraphicalViewer>() {
+			public GraphicalViewer run() {
+				IEditorReference partReference = editor.getReference();
+				final IEditorPart editor = partReference.getEditor(true);
+				return (GraphicalViewer) editor.getAdapter(GraphicalViewer.class);
+			}
+		});
+				
+		return graphicalViewer;
 	}
 
 }
