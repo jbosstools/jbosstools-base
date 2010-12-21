@@ -291,6 +291,59 @@ public class DatabaseHelper {
 	}
 	
 	/**
+	 * Resolves db type for eclipse usage in SQL editor
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public static String getDialect(DBType type) {
+		// TODO verify values
+		String ret = "";
+		switch (type) {
+		case hsqldb18:
+			ret = "HSQL";
+			break;
+		case db2_97:
+			ret = "DB2 UDB_V9.1";
+			break;
+		case mssql2005:
+			ret = "SQL Server_2005";
+			break;
+		case mssql2008:
+			ret = "SQL Server_2008";
+			break;
+		case mysql50:
+			ret = "MySQL_5.0";
+			break;
+		case mysql51:
+			ret = "MySQL 5";
+			break;
+		case oracle10g:
+			ret = "Oracle_10";
+			break;
+		case oracle11gR1: // Intentionally empty
+		case oracle11gR1RAC: // Intentionally empty
+		case oracle11gR2: // Intentionally empty
+		case oracle11gR2RAC:
+			ret = "Oracle_11";
+			break;
+		case postgresql82: // Intentionally empty
+		case postgresql83: // Intentionally empty
+		case postgresql84:
+			ret = "PostgreSQL";
+			break;
+		case sybase15:
+			ret = "Sybase_ASE_15.x";
+			break;
+		default:
+			fail("Unknown db type");
+			break;
+		}
+		return ret;
+	}
+	
+	
+	/**
 	 * Run HSQLDB database in server mode
 	 * @param file
 	 * @param dbname
@@ -374,5 +427,51 @@ public class DatabaseHelper {
     	if (inChannel != null) inChannel.close();
     	if (outChannel != null) outChannel.close();
     	log.info("Driver hsqldb.jar copied");
+	}
+
+	public static String getDriverClass(DBType type) {
+		// TODO verify values
+		String ret = "";
+		switch (type) {
+		case hsqldb18:
+			ret = "org.hsqldb.jdbcDriver";
+			break;
+		case db2_97:
+			ret = "DB2 UDB_V9.1";
+			break;
+		case mssql2005:
+			ret = "SQL Server_2005";
+			break;
+		case mssql2008:
+			ret = "SQL Server_2008";
+			break;
+		case mysql50:
+			ret = "com.mysql.jdbc.Driver";
+			break;
+		case mysql51:
+			ret = "com.mysql.jdbc.Driver";
+			break;
+		case oracle10g:
+			ret = "Oracle_10";
+			break;
+		case oracle11gR1: // Intentionally empty
+		case oracle11gR1RAC: // Intentionally empty
+		case oracle11gR2: // Intentionally empty
+		case oracle11gR2RAC:
+			ret = "Oracle_11";
+			break;
+		case postgresql82: // Intentionally empty
+		case postgresql83: // Intentionally empty
+		case postgresql84:
+			ret = "org.postgresql.Driver";
+			break;
+		case sybase15:
+			ret = "Sybase_ASE_15.x";
+			break;
+		default:
+			fail("Unknown db type");
+			break;
+		}
+		return ret;
 	}
 }
