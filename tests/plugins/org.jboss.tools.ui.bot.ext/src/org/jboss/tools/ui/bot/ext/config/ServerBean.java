@@ -40,4 +40,12 @@ public class ServerBean {
 		return String.format("Server type=%s,version=%s,home=%s,withJava=%s", this.type,this.version,this.runtimeHome,this.withJavaVersion);
 	}
 	
+	/**
+	 * Returns server runtime name ([type]-[version])
+	 * @return server runtime name
+	 */
+	public String getName() {
+		return type + "-" + version; 
+	}
+	
 }
