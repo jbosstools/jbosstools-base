@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -199,7 +200,16 @@ public class Libs implements IElementChangedListener {
 		if((f & (IJavaElementDelta.F_CLASSPATH_CHANGED 
 			| IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED)) != 0) {
 			classpathpVersion++;
-		}		
+		} else {
+			IJavaElementDelta[] ds1 = p.getAffectedChildren();
+			for (IJavaElementDelta d1: ds1) {
+				IJavaElement e = d1.getElement();
+				if(d1.getKind() == IJavaElementDelta.ADDED) {
+					classpathpVersion++;
+					break;
+				}
+			}
+		}
 	}
 
 }
