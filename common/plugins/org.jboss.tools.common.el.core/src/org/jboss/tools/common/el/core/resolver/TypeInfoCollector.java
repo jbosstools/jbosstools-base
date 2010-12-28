@@ -36,6 +36,7 @@ import org.eclipse.jdt.core.Signature;
 import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.ca.preferences.ELContentAssistPreferences;
 import org.jboss.tools.common.model.util.EclipseJavaUtil;
+import org.jboss.tools.common.util.BeanUtil;
 
 /**
  * This class helps to collect information of java elements used in Seam EL.
@@ -585,15 +586,11 @@ public class TypeInfoCollector {
 		}
 
 		public boolean isGetter() {
-			if (null == getType()) {
-				return false;
-			}
-
-			return (((getName().startsWith("get") && !getName().equals("get")) || getName().startsWith("is")) && getNumberOfParameters() == 0); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			return getType() != null && BeanUtil.isGetter(getName(), getNumberOfParameters());
 		}
 
 		public boolean isSetter() {
-			return ((getName().startsWith("set") && !getName().equals("set")) && getNumberOfParameters() == 1); //$NON-NLS-1$ //$NON-NLS-2$
+			return BeanUtil.isSetter(getName(), getNumberOfParameters());
 		}
 
 		public List<String> getAsPresentedStrings() {
@@ -1200,16 +1197,8 @@ public class TypeInfoCollector {
 				MethodInfo m = (MethodInfo)info;
 
 				if (m.isGetter() || m.isSetter()) {
-					StringBuffer name = new StringBuffer(m.getName());
-					if(m.getName().startsWith("i")) { //$NON-NLS-1$
-						name.delete(0, 2);
-					} else {
-						name.delete(0, 3);
-					}
-					if(name.length()<2 || Character.isLowerCase(name.charAt(1))) {
-						name.setCharAt(0, Character.toLowerCase(name.charAt(0)));
-					}
-					String propertyName = name.toString();
+					String propertyName = BeanUtil.getPropertyName(m.getName());
+					if(propertyName == null) continue;
 					MemberPresentation pr = new MemberPresentation(propertyName, propertyName, m);
 					if(!properties.contains(pr)) {
 						properties.add(pr);
