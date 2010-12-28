@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.jboss.tools.common.reporting.test.ProblemReportingHelperTest;
+import org.jboss.tools.common.util.test.BeanUtilTest;
 import org.jboss.tools.common.util.test.HttpUtilTest;
 import org.jboss.tools.common.xml.test.SAXValidatorTest;
 import org.jboss.tools.common.xml.test.XMLUtilitiesTest;
@@ -34,6 +35,7 @@ public class CommonAllTests extends TestCase {
 		suite.addTest(ZipAllTests.suite());
 		suite.addTestSuite(MessagesTest.class);
 		suite.addTestSuite(MethodNotImplementedExceptionTest.class);
+		suite.addTestSuite(BeanUtilTest.class);
 		return suite;
 	}
 }
