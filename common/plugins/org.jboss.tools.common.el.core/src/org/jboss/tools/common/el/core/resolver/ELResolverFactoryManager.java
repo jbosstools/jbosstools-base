@@ -51,8 +51,11 @@ public class ELResolverFactoryManager {
 	 * @return
 	 */
 	public ELResolver[] getResolvers(IResource resource) {
+		if(!resource.isAccessible()) {
+			return new ELResolver[0];
+		}
 		IProject project = resource.getProject();
-		if (project == null)
+		if (project == null || !project.isAccessible())
 			return new ELResolver[0];
 
 //		ELResolver[] result =  resolvers.get(project.getName());

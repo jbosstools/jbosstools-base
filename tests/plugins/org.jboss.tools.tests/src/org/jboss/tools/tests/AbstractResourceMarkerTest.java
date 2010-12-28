@@ -139,7 +139,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 		if(lines.isEmpty()) {
 			IMarker[] allMarkers = findMarkers(resource, null, ".*", true);
 			StringBuffer sb = new StringBuffer("Marker matches the '"); //$NON-NLS-1$
-			sb.append(errorMessage).append("' pattern wasn't found. Here is a list of found markers in ").append(resource.getFullPath().toOSString()).append(" : [\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			sb.append(errorMessage).append("' pattern wasn't found. Here is a list of found markers in ").append(resource.getFullPath().toOSString()).append(allMarkers.length==0?" : [": " : [\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			int i=0;
 			for (IMarker marker : allMarkers) {
 				String message = marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
