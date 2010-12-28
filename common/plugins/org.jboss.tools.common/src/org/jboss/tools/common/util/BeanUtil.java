@@ -34,11 +34,11 @@ public class BeanUtil {
 	}
 
 	public static boolean isGetter(IMethod method) {
-		return isGetter(method.getElementName(), method.getNumberOfParameters());
+		return method != null && isGetter(method.getElementName(), method.getNumberOfParameters());
 	}
 
 	public static boolean isSetter(IMethod method) {
-		return isSetter(method.getElementName(), method.getNumberOfParameters());
+		return method != null && isSetter(method.getElementName(), method.getNumberOfParameters());
 	}
 
 	public static String getPropertyName(String methodName) {
@@ -49,7 +49,7 @@ public class BeanUtil {
 			} else {
 				name.delete(0, 3);
 			}
-			if(name.length() < 2 || Character.isLowerCase(name.charAt(1))) {
+			if(name.length() < 2 || !Character.isUpperCase(name.charAt(1))) {
 				name.setCharAt(0, Character.toLowerCase(name.charAt(0)));
 			}
 			return name.toString();
