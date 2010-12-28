@@ -41,7 +41,7 @@ public class BeanUtilTest extends TestCase {
 		assertEquals("x", BeanUtil.getPropertyName("getX"));
 		assertEquals("x", BeanUtil.getPropertyName("setX"));
 		assertEquals("x", BeanUtil.getPropertyName("isX"));
-		assertEquals("X0", BeanUtil.getPropertyName("isX0"));
+		assertEquals("x0", BeanUtil.getPropertyName("isX0"));
 		assertEquals("xo", BeanUtil.getPropertyName("isXo"));
 		assertEquals("XO", BeanUtil.getPropertyName("isXO"));
 	}
