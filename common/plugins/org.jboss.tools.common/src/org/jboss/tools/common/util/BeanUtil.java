@@ -10,6 +10,8 @@
   ******************************************************************************/
 package org.jboss.tools.common.util;
 
+import org.eclipse.jdt.core.IMethod;
+
 /**
  * 
  * @author V. Kabanovich
@@ -29,6 +31,14 @@ public class BeanUtil {
 	public static boolean isSetter(String methodName, int numberOfParameters) {
 		return (((methodName.startsWith(SET) && !methodName.equals(SET)))
 				&& numberOfParameters == 1);
+	}
+
+	public static boolean isGetter(IMethod method) {
+		return isGetter(method.getElementName(), method.getNumberOfParameters());
+	}
+
+	public static boolean isSetter(IMethod method) {
+		return isSetter(method.getElementName(), method.getNumberOfParameters());
 	}
 
 	public static String getPropertyName(String methodName) {
