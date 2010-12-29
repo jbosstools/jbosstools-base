@@ -55,10 +55,10 @@ public class ResourceFactory {
 				result = Boolean.TRUE;
 			} else if(method.equals(IFile.class.getMethod("getFullPath"))){
 				result = fullPath;
-			}
+			} else if(method.equals(IFile.class.getMethod("isAccessible"))){
+				return true;
+			} 
 			return result;
 		}
-		
-
 	}
 }

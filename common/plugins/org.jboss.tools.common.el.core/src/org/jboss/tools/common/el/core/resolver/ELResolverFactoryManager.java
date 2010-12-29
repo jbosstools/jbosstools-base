@@ -32,8 +32,6 @@ public class ELResolverFactoryManager {
 
 	private static final ELResolverFactoryManager INSTANCE = new ELResolverFactoryManager();
 
-//	private Map<String, ELResolver[]> resolvers = new HashMap<String, ELResolver[]>();
-
 	private ELResolverFactoryManager() {
 	}
 
@@ -51,17 +49,13 @@ public class ELResolverFactoryManager {
 	 * @return
 	 */
 	public ELResolver[] getResolvers(IResource resource) {
-		if(resource==null || !resource.isAccessible()) {
+		if(!resource.isAccessible()) {
 			return new ELResolver[0];
 		}
 		IProject project = resource.getProject();
 		if (project == null || !project.isAccessible())
 			return new ELResolver[0];
 
-//		ELResolver[] result =  resolvers.get(project.getName());
-//		if(result!=null) {
-//			return result;
-//		}
 		Set<ELResolver> resolverSet = new HashSet<ELResolver>();
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = registry.getExtensionPoint("org.jboss.tools.common.el.core.elResolver");  //$NON-NLS-1$
@@ -104,9 +98,6 @@ public class ELResolverFactoryManager {
 				}
 			}
 		}
-//		result = resolverSet.toArray(new ELResolver[resolverSet.size()]);
-//		resolvers.put(project.getName(), result);
-//		return result;
 		return resolverSet.toArray(new ELResolver[resolverSet.size()]);
 	}
 }
