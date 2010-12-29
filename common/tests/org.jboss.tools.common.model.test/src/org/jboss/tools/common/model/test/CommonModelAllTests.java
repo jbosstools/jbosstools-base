@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.test;
 
 import org.jboss.tools.common.ant.parser.test.AntParserTest;
 import org.jboss.tools.common.model.exception.test.DeveloperExceptionTest;
+import org.jboss.tools.common.model.util.test.EclipseJavaUtilTest;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -32,6 +33,7 @@ public class CommonModelAllTests {
 		suite.addTestSuite(XModelTransferBufferTest.class);
 		suite.addTestSuite(PropertiesLoaderTest.class);
 		suite.addTestSuite(JarAccessTest.class);
+		suite.addTestSuite(EclipseJavaUtilTest.class);
 		return suite;
 	}
 }
