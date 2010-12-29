@@ -34,7 +34,24 @@ public class BeanUtil {
 	}
 
 	public static boolean isGetter(IMethod method) {
-		return method != null && isGetter(method.getElementName(), method.getNumberOfParameters());
+		return method != null && isGetter(method.getElementName(), method.getNumberOfParameters())
+			&& checkPropertyReturnType(method);
+	}
+
+	private static boolean checkPropertyReturnType(IMethod method) {
+		if(method == null) {
+			return false;
+		}
+		String typeName = EclipseJavaUtil.getMemberTypeAsString(method);
+		if(typeName == null || typeName.equals("void")) { //$NON-NLS-1$
+			return false;
+		}
+		if(method.getElementName().startsWith(BeanUtil.IS)) {
+			if(!"boolean".equals(typeName) && !"java.lang.Boolean".equals(typeName)) { //$NON-NLS-1$ //$NON-NLS-2$
+				return false;
+			}			
+		}
+		return true;
 	}
 
 	public static boolean isSetter(IMethod method) {
