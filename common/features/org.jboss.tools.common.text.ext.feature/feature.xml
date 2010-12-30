@@ -23,7 +23,12 @@ Raleigh NC 27606 USA.
 </license>
 
    <requires>
-      <import feature="org.jboss.tools.common.core.feature" version="2.0.0" match="greaterOrEqual"/>
+      <import feature="org.jboss.tools.common.core.feature" 
+         version="0.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.wst.common_core.feature"
+         version="0.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.wst.common_ui.feature"
+         version="0.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

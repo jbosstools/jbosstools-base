@@ -21,17 +21,34 @@ licenses. For precise licensing details, consult the corresponding
 source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
 Raleigh NC 27606 USA.
 </license>
-
-   <includes
-         id="org.eclipse.wst.common_core.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.wst.common_ui.feature"
-         version="0.0.0"/>
-
    <requires>
-      <import feature="org.jboss.tools.common.text.ext.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.wst.common_core.feature"
+         version="0.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.wst.common_ui.feature"
+         version="0.0.0" match="greaterOrEqual"/>
    </requires>
+   
+   <plugin
+         id="org.jboss.tools.common.el.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
+   <plugin
+         id="org.jboss.tools.common.el.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.common.resref.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.common.resref.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 </feature>
