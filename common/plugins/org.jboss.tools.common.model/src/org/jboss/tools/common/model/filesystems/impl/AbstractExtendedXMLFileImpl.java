@@ -131,8 +131,10 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         XModelObjectLoaderUtil.setTempBody(this, body);
         loader.load(this);
 
-        threadSafeCopyFactory.destroy();
-        threadSafeCopyFactory = null;
+        if(threadSafeCopyFactory != null) {
+        	threadSafeCopyFactory.destroy();
+        	threadSafeCopyFactory = null;
+        }
 
         if(!isIncorrect() && !isOverlapped()) {
         	runCheckerOnLoad();
