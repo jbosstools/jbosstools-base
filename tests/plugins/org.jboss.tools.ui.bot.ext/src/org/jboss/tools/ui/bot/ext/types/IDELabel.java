@@ -654,4 +654,9 @@ public class IDELabel {
      
    }  
    
+   public static class ToolbarButton{
+     
+     public static final String REFRESH = "Refresh";
+     
+   }
  }
