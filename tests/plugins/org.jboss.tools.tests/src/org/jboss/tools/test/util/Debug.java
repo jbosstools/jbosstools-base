@@ -8,7 +8,7 @@ public class Debug {
 	public static final boolean DEBUG_IMPORT_OPERATION;
 	
 	static {
-		DEBUG_IMPORT_OPERATION = true; //getDebugOption("/debug/importProject");
+		DEBUG_IMPORT_OPERATION = getDebugOption("/debug/importProject");
 	}
 	
     private static boolean getDebugOption(String option) {
