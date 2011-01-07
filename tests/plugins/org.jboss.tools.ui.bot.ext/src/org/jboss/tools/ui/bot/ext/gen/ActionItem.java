@@ -20,6 +20,34 @@ public static String getItemString(IActionItem item) {
 	sb.append(item.getName());
 	return sb.toString();
 }
+	/**
+	 * creates new action item instance from given path 
+	 * @param path
+	 * @return
+	 */
+	public static IActionItem create(final String...path) {
+		if (path.length<1) {
+			throw new IllegalArgumentException("path must contain at least 1 item");
+		}
+		return new IActionItem() {
+	
+			@Override
+			public String getName() {
+				// TODO Auto-generated method stub
+				return path[path.length-1];
+			}
+	
+			@Override
+			public List<String> getGroupPath() {
+				List<String> l = new Vector<String>();
+				for (int i=0; i<path.length-1;i++) {
+					l.add(path[i]);
+				}
+				return l;
+			}
+			
+		};
+	}
 	public static class View {
 		public static class JavaBrowsingTypes {
 			/**

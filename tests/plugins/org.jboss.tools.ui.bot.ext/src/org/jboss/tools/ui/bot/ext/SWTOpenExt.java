@@ -76,13 +76,20 @@ public class SWTOpenExt {
 					+ "'");
 		}
 	}
-
 	/**
 	 * selects given actionItem in bot's tree();
 	 * 
 	 * @param item
 	 */
 	public void selectTreeNode(IActionItem item) {
+		selectTreeNode(this.bot,item);
+	}
+	/**
+	 * selects given actionItem in bot's tree();
+	 * 
+	 * @param item
+	 */
+	public void selectTreeNode(SWTBot bot, IActionItem item) {
 		SWTBotTreeItem ti = null;
 		try {
 			Iterator<String> iter = item.getGroupPath().iterator();
