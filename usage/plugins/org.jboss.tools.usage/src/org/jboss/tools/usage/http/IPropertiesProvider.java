@@ -13,6 +13,9 @@ package org.jboss.tools.usage.http;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * @author André Dietisheim
+ */
 public interface IPropertiesProvider {
 
 	public Map<String, String> getMap() throws IOException;
