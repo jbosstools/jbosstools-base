@@ -16,7 +16,7 @@ package org.jboss.tools.usage.util.collectionfilter;
 public interface ICollectionFilter<E> {
 
 	/**
-	 * Matches.
+	 * Returns <code>true</code> if the given entry matches the criteria in this filter.
 	 * 
 	 * @param bundle
 	 *            the bundle
