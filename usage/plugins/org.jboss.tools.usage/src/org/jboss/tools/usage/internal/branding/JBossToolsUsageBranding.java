@@ -12,6 +12,9 @@ package org.jboss.tools.usage.internal.branding;
 
 import org.jboss.tools.usage.branding.IUsageBranding;
 
+/**
+ * @author André Dietisheim
+ */
 public class JBossToolsUsageBranding implements IUsageBranding {
 
 	public String getPreferencesDescription() {
