@@ -10,7 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.usage.util;
 
-
+/**
+ * @author André Dietisheim
+ */
 public class StringUtils {
 
 	private static final String LINE_SEPARATOR_KEY = "line.separator";
