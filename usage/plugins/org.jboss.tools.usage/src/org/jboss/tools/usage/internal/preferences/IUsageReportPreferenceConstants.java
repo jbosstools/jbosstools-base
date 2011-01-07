@@ -15,7 +15,7 @@ package org.jboss.tools.usage.internal.preferences;
  */
 public interface IUsageReportPreferenceConstants {
 
-	/** The value that determines if usage shall be reported if there's no user set setting. */
+	/** The value that determines if usage shall be reported if there's no user setting. */
 	public static final boolean USAGEREPORT_ENABLED_DEFAULTVALUE = false;
 
 	/**

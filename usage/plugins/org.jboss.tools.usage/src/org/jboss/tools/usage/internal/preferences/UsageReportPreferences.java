@@ -40,6 +40,19 @@ public class UsageReportPreferences {
 	}
 
 	/**
+	 * Returns <code>true</code> if the usage reporting enablement is set in the
+	 * preferences. Returns <code>false</code> otherwise.
+	 * 
+	 * @return
+	 */
+	public static boolean isEnablementSet() {
+		String defaultValue = new String("undefinedValue");
+		String value = UsageReportPreferencesUtils.getPreferences().get(
+				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID, defaultValue);
+		return value != defaultValue;
+	}
+
+	/**
 	 * Returns <code>true</code> if usage reporting is enabled
 	 * 
 	 * @return true, if is enabled

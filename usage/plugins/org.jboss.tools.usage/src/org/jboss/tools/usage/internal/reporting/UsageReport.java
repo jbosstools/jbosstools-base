@@ -87,7 +87,10 @@ public class UsageReport {
 	 * Reports the usage of this eclipse/jboss tools instance.
 	 */
 	public void report() {
-		new ReportingJob().schedule();
+		if (!UsageReportPreferences.isEnablementSet()
+				|| UsageReportPreferences.isEnabled()) {
+			new ReportingJob().schedule();
+		}
 	}
 
 	protected boolean isReportingGloballyEnabled() {
