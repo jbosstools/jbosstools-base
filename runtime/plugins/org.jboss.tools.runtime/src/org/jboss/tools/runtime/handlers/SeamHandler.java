@@ -11,26 +11,50 @@
 package org.jboss.tools.runtime.handlers;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.jboss.tools.runtime.Activator;
 import org.jboss.tools.runtime.IJBossRuntimePluginConstants;
-import org.jboss.tools.runtime.JBossRuntimeStartup.IJBossRuntimePersistanceHandler;
-import org.jboss.tools.runtime.ServerDefinition;
+import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
+import org.jboss.tools.runtime.core.model.ServerDefinition;
 import org.jboss.tools.seam.core.SeamUtil;
 import org.jboss.tools.seam.core.project.facet.SeamRuntime;
 import org.jboss.tools.seam.core.project.facet.SeamRuntimeManager;
 import org.jboss.tools.seam.core.project.facet.SeamVersion;
 
-public class SeamHandler implements IJBossRuntimePersistanceHandler, IJBossRuntimePluginConstants {
+public class SeamHandler extends AbstractRuntimeDetector implements IJBossRuntimePluginConstants {
+
+	private final static String seamJarName = "jboss-seam.jar";
+	private final static String seamVersionAttributeName = "Seam-Version";
+
+	public static File getSeamRoot(ServerDefinition serverDefinition) {
+		String type = serverDefinition.getType();
+		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type) ) {
+			for (String folder : SEAM_HOME_FOLDER_OPTIONS) {
+				File seamFile = new File(serverDefinition.getLocation(),folder); //$NON-NLS-1$
+				if (seamFile != null && seamFile.isDirectory()) {
+					return seamFile;
+				}
+			} 
+		}
+		if (SEAM.equals(type)) {
+			return serverDefinition.getLocation();
+		}
+		return null;
+	}
+	
 	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
 		
 		Map<String, SeamRuntime> map = new HashMap<String,SeamRuntime>();
@@ -39,6 +63,9 @@ public class SeamHandler implements IJBossRuntimePersistanceHandler, IJBossRunti
 		// seam runtime initialization goes throug added servers first and 
 		// then process seam runtimes from bundled servers
 		for(ServerDefinition serverDefinition:serverDefinitions) {
+			if (!serverDefinition.isEnabled()) {
+				continue;
+			}
 			String type = serverDefinition.getType();
 			if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type) ) {
 				for (String folder : SEAM_HOME_FOLDER_OPTIONS) {
@@ -145,34 +172,6 @@ public class SeamHandler implements IJBossRuntimePersistanceHandler, IJBossRunti
 		return ""; //$NON-NLS-1$
 	}
 
-	public void importRuntimes() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void exportRuntimes() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public static String includeSeam(ServerDefinition serverDefinition) {
-		StringBuilder builder = new StringBuilder();
-		for (String folder : IJBossRuntimePluginConstants.SEAM_HOME_FOLDER_OPTIONS) {
-			File seamFile = new File(serverDefinition.getLocation(),folder); //$NON-NLS-1$
-			if (seamFile.exists() && seamFile.canRead() && seamFile.isDirectory()) {
-				SeamVersion seamVersion = getSeamVersion(seamFile.getAbsolutePath());
-				if (seamVersion != null) {
-					if (builder.toString().length() > 0) {
-						builder.append(", ");
-					}
-					builder.append("Seam ");
-					builder.append(seamVersion);
-				}
-			}
-		} 
-		return builder.toString();
-	}
-
 	public static SeamVersion getSeamVersion(String seamGenBuildPath) {
 		if (seamGenBuildPath == null || seamGenBuildPath.trim().length() <= 0) {
 			return null;
@@ -203,4 +202,83 @@ public class SeamHandler implements IJBossRuntimePersistanceHandler, IJBossRunti
 		return false;
 	}
 
+	public ServerDefinition getServerDefinition(File root,
+			IProgressMonitor monitor) {
+		if (monitor.isCanceled() || root == null) {
+			return null;
+		}
+		String seamVersion = getSeamVersionFromManifest(root.getAbsolutePath());
+		if (seamVersion != null) {
+			return new ServerDefinition(root.getName(), seamVersion, SEAM, root.getAbsoluteFile());
+		}
+		return null;
+	}
+
+	public static String getSeamVersionFromManifest(String seamHome) {
+		File seamHomeFolder = new File(seamHome);
+		if (seamHomeFolder == null || !seamHomeFolder.isDirectory()) {
+			return null;
+		}
+		String[] seamFiles = seamHomeFolder.list(new FilenameFilter() {
+			
+			public boolean accept(File dir, String name) {
+				if ("seam-gen".equals(name)) {
+					return true;
+				}
+				if ("examples".equals(name)) {
+					return true;
+				}
+				return false;
+			}
+		});
+		if (seamFiles == null || seamFiles.length != 2) {
+			return null;
+		}
+		File jarFile = new File(seamHome, "lib/" + seamJarName);
+		if(!jarFile.isFile()) {
+			jarFile = new File(seamHome, seamJarName);
+			if(!jarFile.isFile()) {
+				return null;
+			}
+		}
+		try {
+			JarFile jar = new JarFile(jarFile);
+			Attributes attributes = jar.getManifest().getMainAttributes();
+			String version = attributes.getValue(seamVersionAttributeName);
+			return version;
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	public static String included(ServerDefinition serverDefinition) {
+		StringBuilder builder = new StringBuilder();
+		for (String folder : IJBossRuntimePluginConstants.SEAM_HOME_FOLDER_OPTIONS) {
+			File seamFile = new File(serverDefinition.getLocation(),folder); //$NON-NLS-1$
+			if (seamFile.exists() && seamFile.canRead() && seamFile.isDirectory()) {
+				SeamVersion seamVersion = getSeamVersion(seamFile.getAbsolutePath());
+				if (seamVersion != null) {
+					if (builder.toString().length() > 0) {
+						builder.append(", ");
+					}
+					builder.append("Seam ");
+					builder.append(seamVersion);
+				}
+			}
+		} 
+		return builder.toString();
+	}
+
+	@Override
+	public boolean exists(ServerDefinition serverDefinition) {
+		if (serverDefinition == null || serverDefinition.getLocation() == null) {
+			return false;
+		}
+		File seamRoot = getSeamRoot(serverDefinition);
+		if (seamRoot == null || !seamRoot.isDirectory()) {
+			return false;
+		}
+		String path = seamRoot.getAbsolutePath();
+		return seamExists(path);
+	}
 }

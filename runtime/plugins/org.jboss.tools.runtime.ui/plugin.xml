@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           category="org.jboss.tools.common.model.ui.MainPreferencePage"
+           class="org.jboss.tools.runtime.ui.preferences.RuntimePreferencePage"
+           id="org.jboss.tools.runtime.preferences.RuntimePreferencePage"
+           name="%JBoss_Runtimes"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.jboss.tools.runtime.ui.RuntimeScanner"></startup>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.jboss.tools.runtime.ui.preferences.JBossRuntimePreferencesInitializer"/>
+   </extension>
+</plugin>

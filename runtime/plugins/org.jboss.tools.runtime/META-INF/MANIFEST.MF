@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %BundleName
 Bundle-SymbolicName: org.jboss.tools.runtime;singleton:=true
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: org.jboss.tools.runtime.Activator
 Bundle-Vendor: %BundleVendor
 Require-Bundle: org.eclipse.core.runtime,
@@ -18,9 +18,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.datatools.connectivity;visibility:=reexport,
  org.eclipse.datatools.connectivity.db.generic,
  org.jboss.tools.common,
+ org.jboss.tools.runtime.core,
  org.jboss.ide.eclipse.as.core,
  org.jboss.tools.jbpm.common
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
+Export-Package: org.jboss.tools.runtime,
+ org.jboss.tools.runtime.handlers,
+ org.jboss.tools.runtime.preferences
 

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -35,33 +36,13 @@ import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonNavigator;
-import org.jboss.tools.runtime.handlers.DroolsHandler;
-import org.jboss.tools.runtime.handlers.JBossASHandler;
-import org.jboss.tools.runtime.handlers.JbpmHandler;
-import org.jboss.tools.runtime.handlers.SeamHandler;
+import org.jboss.tools.runtime.core.RuntimeCoreActivator;
+import org.jboss.tools.runtime.core.model.IRuntimeDetector;
+import org.jboss.tools.runtime.core.model.ServerDefinition;
 import org.osgi.framework.Bundle;
 import org.osgi.service.prefs.BackingStoreException;
 
 public class JBossRuntimeStartup implements IStartup, IJBossRuntimePluginConstants {
-
-	private static IJBossRuntimePersistanceHandler[] jBossRuntimePersistanceHandler = null;
-	public static interface IJBossRuntimePersistanceHandler {
-		public void initializeRuntimes(List<ServerDefinition> serverDefinitions);
-		public void importRuntimes();
-		public void exportRuntimes();
-	}
-
-	public static IJBossRuntimePersistanceHandler[] getPersistanceHandlers() {
-		if (jBossRuntimePersistanceHandler == null) {
-			jBossRuntimePersistanceHandler = new IJBossRuntimePersistanceHandler[] {
-					new JbpmHandler(),
-					new DroolsHandler(),
-					new JBossASHandler(),
-					new SeamHandler()
-			};
-		}
-		return jBossRuntimePersistanceHandler;
-	}
 	
 	private List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
 	private IEclipsePreferences preferences;
@@ -75,9 +56,11 @@ public class JBossRuntimeStartup implements IStartup, IJBossRuntimePluginConstan
 	}
 	
 	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
-		IJBossRuntimePersistanceHandler[] handlers = getPersistanceHandlers();
-		for( int i = 0; i < handlers.length; i++ ) {
-			handlers[i].initializeRuntimes(serverDefinitions);
+		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
+		for( IRuntimeDetector detector:detectors) {
+			if (detector.isEnabled()) {
+				detector.initializeRuntimes(serverDefinitions);
+			}
 		}
 		refreshCommonNavigator();
 	}
@@ -172,8 +155,6 @@ public class JBossRuntimeStartup implements IStartup, IJBossRuntimePluginConstan
 			}
 		});
 	}
-	
-
 
 	private void parseServerFile() {
 		

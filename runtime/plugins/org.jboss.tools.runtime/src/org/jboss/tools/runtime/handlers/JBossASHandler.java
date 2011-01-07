@@ -10,15 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.runtime.handlers;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -49,23 +46,21 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
-import org.eclipse.wst.server.core.internal.IMemento;
 import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
-import org.eclipse.wst.server.core.internal.Server;
-import org.eclipse.wst.server.core.internal.ServerPlugin;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
-import org.eclipse.wst.server.core.internal.XMLMemento;
+import org.jboss.ide.eclipse.as.core.server.IDeployableServer;
 import org.jboss.ide.eclipse.as.core.server.IDeployableServer;
 import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
+import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
 import org.jboss.tools.runtime.Activator;
 import org.jboss.tools.runtime.IJBossRuntimePluginConstants;
-import org.jboss.tools.runtime.JBossRuntimeStartup.IJBossRuntimePersistanceHandler;
 import org.jboss.tools.runtime.Messages;
-import org.jboss.tools.runtime.ServerDefinition;
+import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
+import org.jboss.tools.runtime.core.model.ServerDefinition;
 
-public class JBossASHandler implements IJBossRuntimePersistanceHandler, IJBossRuntimePluginConstants {
-
+public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRuntimePluginConstants {
+	
 	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
 		createInitialJBossServer();
 		createJBossServerFromDefinitions(serverDefinitions);
@@ -91,22 +86,40 @@ public class JBossASHandler implements IJBossRuntimePersistanceHandler, IJBossRu
 			Activator.log(e,Messages.JBossRuntimeStartup_Cannot_create_new_JBoss_Server);
 		}
 	}
+	
+	private static File getLocation(ServerDefinition serverDefinition) {
+		String type = serverDefinition.getType();
+		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type)) {
+			return new File(serverDefinition.getLocation(), "jboss-as");
+		}
+		if (SOA_P_STD.equals(type)) {
+			return new File(serverDefinition.getLocation(),"jboss-esb"); //$NON-NLS-1$					
+		}
+		if(EWP.equals(type)) {
+				return new File(serverDefinition.getLocation(),"jboss-as-web"); //$NON-NLS-1$
+		}
+		if (AS.equals(type)) {
+			return serverDefinition.getLocation();
+		}
+		return null;
+	}
+	
 	public static void createJBossServerFromDefinitions(List<ServerDefinition> serverDefinitions) {
 		for (ServerDefinition serverDefinition:serverDefinitions) {
+			if (!serverDefinition.isEnabled()) {
+				continue;
+			}
+			File asLocation = getLocation(serverDefinition);
+			if (asLocation == null || !asLocation.isDirectory()) {
+				continue;
+			}
 			String type = serverDefinition.getType();
-			if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || SOA_P_STD.equals(type) || EWP.equals(type)) {
-				File asLocation = new File(serverDefinition.getLocation(), "jboss-as");
-				if(SOA_P_STD.equals(type)) {
-					asLocation = new File(serverDefinition.getLocation(),"jboss-esb"); //$NON-NLS-1$					
-				} else if(EWP.equals(type)){
-					asLocation = new File(serverDefinition.getLocation(),"jboss-as-web"); //$NON-NLS-1$
-				}
-				if (asLocation.isDirectory()) {
-					String name = serverDefinition.getName();
-					String runtimeName = name + " " + RUNTIME; //$NON-NLS-1$
-					int index = getJBossASVersion(asLocation);
-					createJBossServer(asLocation,index,name, runtimeName);
-				}
+			if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type)
+					|| SOA_P_STD.equals(type) || EWP.equals(type)) {
+				String name = serverDefinition.getName();
+				String runtimeName = name + " " + RUNTIME; //$NON-NLS-1$
+				int index = getJBossASVersion(asLocation);
+				createJBossServer(asLocation, index, name, runtimeName);
 			} else if (AS.equals(type)){
 				String version = serverDefinition.getVersion();
 				int index = 2;
@@ -344,64 +357,79 @@ public class JBossASHandler implements IJBossRuntimePersistanceHandler, IJBossRu
 		
 	}
 
-	public void importRuntimes() {
-		String servers = Activator.getDefault().getPreferenceStore().getString(Activator.SERVERS);
-		if (servers != null && servers.trim().length() > 0) {
-			loadServerInstalations(servers);
+	public ServerDefinition getServerDefinition(File root,
+			IProgressMonitor monitor) {
+		if (monitor.isCanceled() || root == null) {
+			return null;
 		}
+		ServerBeanLoader loader = new ServerBeanLoader();
+		ServerBean serverBean = loader.loadFromLocation(root);
+		
+		if (!JBossServerType.UNKNOWN.equals(serverBean.getType())) {
+			ServerDefinition serverDefinition = new ServerDefinition(serverBean.getName(), 
+					serverBean.getVersion(), serverBean.getType().getId(), new File(serverBean.getLocation()));
+			serverDefinition.setDescription(includedRuntimes(serverDefinition));
+			return serverDefinition;
+		}
+		return null;
 	}
-	/**
-	 * @param servers
-	 */
-	private void loadServerInstalations(String servers) {
-		InputStream in = null;
-		try {
-			in = new ByteArrayInputStream(servers.getBytes("UTF-8"));
-			IMemento memento = XMLMemento.loadMemento(in);
-			
-			IMemento[] children = memento.getChildren("server");
-			int size = children.length;
-			
-			for (int i = 0; i < size; i++) {
-				ServerEx server = new ServerEx(null);
-				server.loadFromMemento(children[i], null);
-				IServerWorkingCopy wc = server.createWorkingCopy();
-				wc.save(false, null);
+
+	@Override
+	public String includedRuntimes(ServerDefinition serverDefinition) {
+		if (serverDefinition == null || serverDefinition.getType() == null) {
+			return super.includedRuntimes(serverDefinition);
+		}
+		StringBuilder builder = new StringBuilder();
+		String type = serverDefinition.getType();
+		
+		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type)) {
+			String includeSeam = SeamHandler.included(serverDefinition);
+			append(builder, includeSeam);
+		}
+		if (SOA_P.equals(type)) {
+			String includeDrools = DroolsHandler.included(serverDefinition);
+			append(builder, includeDrools);
+			String includeJbpm = JbpmHandler.included(serverDefinition);
+			append(builder, includeJbpm);
+		}
+		return builder.toString();
+		
+	}
+
+	private void append(StringBuilder builder, String string) {
+		if (string != null && string.length() > 0) {
+			if (builder.toString().length() == 0) {
+				builder.append("Includes ");
+			} else {
+				builder.append(", ");
 			}
-		} catch (Exception e) {
-			Activator.log(e);
+			builder.append(string);
 		}
 	}
 
-	private static final String SERVER_DATA_FILE = "servers.xml";
-	public void exportRuntimes() {
-		String filename = ServerPlugin.getInstance().getStateLocation().append(SERVER_DATA_FILE).toOSString();
-		if ( !(new File(filename).exists()) ) {
-			Activator.getDefault().getPreferenceStore().setValue(Activator.SERVERS, "");
-			return;
+	@Override
+	public boolean exists(ServerDefinition serverDefinition) {
+		if (serverDefinition == null || serverDefinition.getLocation() == null) {
+			return false;
 		}
-		try {
-			XMLMemento memento = (XMLMemento) XMLMemento.loadMemento(filename);
-			String xmlString = memento.saveToString();
-			Activator.getDefault().getPreferenceStore().setValue(Activator.SERVERS, xmlString);
-			Activator.getDefault().savePluginPreferences();
-		} catch (Exception e) {
-			Activator.log (e);
+		File location = getLocation(serverDefinition);
+		if (location == null || !location.isDirectory()) {
+			return false;
 		}
-	}
-	private static class ServerEx extends Server {
-
-		/**
-		 * @param file
-		 */
-		public ServerEx(IFile file) {
-			super(file);
+		String path = location.getAbsolutePath();
+		if (path == null) {
+			return false;
 		}
-		
-		@Override
-		public void loadFromMemento(IMemento memento, IProgressMonitor monitor) {
-			super.loadFromMemento(memento, monitor);
+		IServer[] servers = ServerCore.getServers();
+		for (int i = 0; i < servers.length; i++) {
+			IRuntime runtime = servers[i].getRuntime();
+			if (runtime == null || runtime.getLocation() == null) {
+				continue;
+			}
+			if(path.equals(runtime.getLocation().toOSString())) {
+				return true;
+			}
 		}
-		
+		return false;
 	}
 }

@@ -12,6 +12,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
+		<module>org.jboss.tools.runtime.core.feature</module>
 		<module>org.jboss.tools.runtime.feature</module>
 	</modules>
 </project>
