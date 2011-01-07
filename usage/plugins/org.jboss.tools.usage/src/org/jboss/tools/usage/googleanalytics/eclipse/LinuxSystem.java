@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author André Dietisheim
+ */
 public class LinuxSystem {
 
 	public static final LinuxSystem INSTANCE = new LinuxSystem();
