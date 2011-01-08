@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<description>To install these features, point Eclipse at this site.</description>
-	<!-- JBoss Tools runtime Nightly Build Update Site -->
-	<category-def label="JBoss Tools runtime Nightly Build Update Site" name="JBoss Tools runtime Nightly Build Update Site">
-		<description>JBoss Tools runtime Nightly Build Update Site: contains all features in this build.</description>
-	</category-def>
-	<feature url="features/org.jboss.tools.runtime.feature_0.0.0.jar" id="org.jboss.tools.runtime.feature" version="0.0.0">
-		<category name="JBoss Tools runtime Nightly Build Update Site"/>
-	</feature>
-
+   <description>
+      To install these features, point Eclipse at this site.
+   </description>
+   <feature url="features/org.jboss.tools.runtime.feature_0.0.0.jar" id="org.jboss.tools.runtime.feature" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.jboss.tools.runtime.core.feature_0.0.0.jar" id="org.jboss.tools.runtime.core.feature" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
+   <category-def name="JBoss Tools runtime Nightly Build Update Site" label="JBoss Tools runtime Nightly Build Update Site">
+      <description>
+         JBoss Tools runtime Nightly Build Update Site: contains all features in this build.
+      </description>
+   </category-def>
 </site>
