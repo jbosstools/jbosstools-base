@@ -22,9 +22,4 @@
   <refLib type="servlet" location="../servlet" />
   <projectTempl location="./jsf-2.0" />
  </version>
- <version displayName="JSF 2.0 &amp; RichFaces 4.0" servlet-version="3.0">
-  <lib type="core" location="../lib/RichFaces4.0" />
-  <refLib type="servlet" location="../servlet" />
-  <projectTempl location="./jsf-2.0-RichFaces-4.0" />
- </version>
 </versions>
