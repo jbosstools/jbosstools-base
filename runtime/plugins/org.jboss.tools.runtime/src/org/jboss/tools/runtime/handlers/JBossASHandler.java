@@ -159,7 +159,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	}
 
 	private static void createJBossServer(File asLocation, int index, String name, String runtimeName) {
-		if (!asLocation.isDirectory() || index==-1) {
+		if (asLocation == null || !asLocation.isDirectory() || index==-1) {
 			return;
 		}
 		IPath jbossAsLocationPath = new Path(asLocation.getAbsolutePath());
@@ -167,7 +167,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		IServer[] servers = ServerCore.getServers();
 		for (int i = 0; i < servers.length; i++) {
 			IRuntime runtime = servers[i].getRuntime();
-			if(runtime != null && runtime.getLocation().equals(jbossAsLocationPath)) {
+			if(runtime != null && runtime.getLocation() != null && runtime.getLocation().equals(jbossAsLocationPath)) {
 				return;
 			}
 		}
@@ -175,8 +175,11 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		IRuntime runtime = null;
 		IRuntime[] runtimes = ServerCore.getRuntimes();
 		for (int i = 0; i < runtimes.length; i++) {
-			if (runtimes[0].getLocation().equals(jbossAsLocationPath)) {
-				runtime = runtimes[0].createWorkingCopy();
+			if (runtimes[i] == null || runtimes[i].getLocation() == null) {
+				continue;
+			}
+			if (runtimes[i].getLocation().equals(jbossAsLocationPath)) {
+				runtime = runtimes[i].createWorkingCopy();
 				break;
 			}
 		}
