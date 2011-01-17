@@ -235,9 +235,10 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	protected void okPressed() {
 		getShell().setCursor(Display.getCurrent().getSystemCursor(SWT.CURSOR_WAIT));
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
+		List<ServerDefinition> definitions = getServerDefinitions(true);
 		for( IRuntimeDetector detector:detectors) {
 			if (detector.isEnabled()) {
-				detector.initializeRuntimes(getServerDefinitions(true));
+				detector.initializeRuntimes(definitions);
 			}
 		}
 		getShell().setCursor(null);
