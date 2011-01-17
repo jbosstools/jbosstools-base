@@ -49,9 +49,11 @@ import org.jboss.tools.common.model.impl.RegularObjectImpl;
 import org.jboss.tools.common.model.impl.XModelImpl;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.loaders.AuxiliaryLoader;
+import org.jboss.tools.common.model.loaders.EntityRecognizer;
 import org.jboss.tools.common.model.loaders.EntityRecognizerContext;
 import org.jboss.tools.common.model.loaders.Reloadable;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
+import org.jboss.tools.common.model.loaders.impl.ModelEntityRecognizer;
 import org.jboss.tools.common.model.loaders.impl.PropertiesLoader;
 import org.jboss.tools.common.model.markers.ResourceMarkers;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -231,19 +233,28 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         parseFileName(p, f.getName());
         String ext = p.getProperty(XModelObjectConstants.ATTR_NAME_EXTENSION);
         String body = null;
-        String entity = getModel().getEntityRecognizer().getEntityName(new EntityRecognizerContext(f.getName(), ext, body));
+        EntityRecognizer recognizer = getModel().getEntityRecognizer();
+        EntityRecognizerContext context = new EntityRecognizerContext(f.getName(), ext, body);
+        String entity = recognizer.getEntityName(context);
         if("FileAny".equals(entity)) { //$NON-NLS-1$
         	boolean isText = XModelObjectLoaderUtil.isTextFile(f, 100);
             if(f.length() > 100000 || !isText) entity = XModelObjectConstants.ENT_FILE_ANY_LONG;
             else if(isText) entity = "FileTXT"; //$NON-NLS-1$
-        } else /*if(entity == null)*/ {
+        } else if(isRecognizerNeedingBody(entity, recognizer, context)) {
             body = getBodySource(f).get();
-            entity = getModel().getEntityRecognizer().getEntityName(new EntityRecognizerContext(f.getName(), ext, body));
+            entity = recognizer.getEntityName(new EntityRecognizerContext(f.getName(), ext, body));
         }
         if(entity == null || getModel().getMetaData().getEntity(entity) == null) entity = "FileAny"; //$NON-NLS-1$
         p.setProperty(XMetaDataConstants.ENTITY, entity);
         if(body != null) p.setProperty(XModelObjectConstants.ATTR_NAME_BODY, body);
         return p;
+    }
+   
+    private boolean isRecognizerNeedingBody(String entityForNullBody, EntityRecognizer recognizer, EntityRecognizerContext context) {
+    	if(recognizer instanceof ModelEntityRecognizer) {
+    		return ((ModelEntityRecognizer)recognizer).isBodyRequired(context, entityForNullBody);
+    	}
+    	return true;
     }
 
     private XModelObject createFileObject(File f, boolean add) {
