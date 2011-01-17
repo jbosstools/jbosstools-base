@@ -19,6 +19,7 @@ import org.jboss.tools.common.model.util.ModelFeatureFactory;
 public class ModelEntityRecognizer implements EntityRecognizer {
     private XModelMetaData meta = null;
     private HashMap<String,EntityRecognizer[]> recognizers = new HashMap<String,EntityRecognizer[]>();
+    private Set<String> umbiguousExtensions = new HashSet<String>();
 
     public ModelEntityRecognizer() {}
     
@@ -40,6 +41,11 @@ public class ModelEntityRecognizer implements EntityRecognizer {
             if(n != null) return n;
         }
         return null;
+	}
+
+	public boolean isBodyRequired(EntityRecognizerContext context, String entityForNullBody) {
+		return entityForNullBody == null 
+					|| (context.getExtension() != null && umbiguousExtensions.contains(context.getExtension()));
 	}
 
     private void load() {
@@ -76,6 +82,12 @@ public class ModelEntityRecognizer implements EntityRecognizer {
             if(rs.length > 0) {
             	recognizers.put(ks[i], rs);
             }            
+        }
+        for (String ext: recognizers.keySet()) {
+        	EntityRecognizer[] rs = recognizers.get(ext);
+        	if(rs != null && rs.length > 1) {
+        		umbiguousExtensions.add(ext);
+        	}
         }
     }
     
@@ -166,4 +178,3 @@ public class ModelEntityRecognizer implements EntityRecognizer {
     }
 
 }
-
