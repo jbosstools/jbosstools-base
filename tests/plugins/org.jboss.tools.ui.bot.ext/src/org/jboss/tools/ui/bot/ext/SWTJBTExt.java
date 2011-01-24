@@ -513,7 +513,7 @@ public class SWTJBTExt {
 		try {
 
 			bot.shell(title).activate();
-			bot.button(cancel ? IDELabel.Button.CANCEL : IDELabel.Button.OK)
+			bot.button(cancel ? IDELabel.Button.NO : IDELabel.Button.YES)
 					.click();
 			log.info("Report usage window closed");
 		} catch (WidgetNotFoundException wnfe) {

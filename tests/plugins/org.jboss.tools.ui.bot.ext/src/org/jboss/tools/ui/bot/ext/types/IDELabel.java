@@ -380,7 +380,8 @@ public class IDELabel {
      public static final String JBOSS_TOOLS_WEB_EDITORS = "Editors";
      public static final String JBOSS_TOOLS_WEB_EDITORS_VPE = "Visual Page Editor";
      public static final String JBOSS_TOOLS_WEB_EDITORS_VPE_VISUAL_TEMPLATES = "Visual Templates";
-     public static final String JBOSS_TOOLS_EL_VARIABLES = "El Variables";
+     public static final String JBOSS_TOOLS_EXPRESSION_LANGUAGE = "Expression Language";
+     public static final String JBOSS_TOOLS_VARIABLES = "Variables";
    }
    
    public static class JBossServerRuntimeDialog {
