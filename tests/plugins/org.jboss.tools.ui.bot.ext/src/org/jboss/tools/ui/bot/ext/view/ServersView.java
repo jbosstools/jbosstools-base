@@ -106,7 +106,7 @@ public class ServersView extends ViewBase {
 		}
 	}
 	
-	private SWTBotTreeItem findServerByName(SWTBotTree tree, String name) {
+	public SWTBotTreeItem findServerByName(SWTBotTree tree, String name) {
 		
 		for (SWTBotTreeItem i : tree.getAllItems()) {
 			if (i.getText().startsWith(name)) {
