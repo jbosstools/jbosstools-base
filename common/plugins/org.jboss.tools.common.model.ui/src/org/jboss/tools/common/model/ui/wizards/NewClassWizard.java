@@ -29,7 +29,7 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
  * @author au
  */
 
-public class NewClassWizard extends Wizard {
+public class NewClassWizard extends Wizard implements INewClassWizard {
 
 	protected NewTypeWizardAdapter adapter = null;
 	protected NewClassWizardPageEx mainPage;

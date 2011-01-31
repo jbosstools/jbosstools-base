@@ -54,6 +54,8 @@ import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAdapter;
 import org.jboss.tools.common.model.ui.templates.ControlContentAssistHelper;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
+import org.jboss.tools.common.model.ui.wizards.INewClassWizard;
+import org.jboss.tools.common.model.ui.wizards.INewClassWizardFactory;
 import org.jboss.tools.common.model.ui.wizards.NewClassWizard;
 import org.jboss.tools.common.model.ui.wizards.NewTypeWizardAdapter;
 import org.jboss.tools.common.model.util.AccessibleJava;
@@ -159,13 +161,19 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 					}
 				}
 				
-				NewClassWizard wizard = null;
+				INewClassWizard wizard = null;
 				
 				XAttribute a = ((DefaultValueAdapter)getPropertyEditor().getInput()).getAttribute();
 				if(a != null) {
 					String cls = a.getProperty("newWizardClass");
 					if(cls != null && cls.length() > 0) {
-						wizard = (NewClassWizard)ModelFeatureFactory.getInstance().createFeatureInstance(cls);
+						wizard = (INewClassWizard)ModelFeatureFactory.getInstance().createFeatureInstance(cls);
+					} else {
+						cls = a.getProperty("newWizardClassFactory");
+						if(cls != null && cls.length() > 0) {
+							INewClassWizardFactory factory = (INewClassWizardFactory)ModelFeatureFactory.getInstance().createFeatureInstance(cls);
+							wizard = factory.createWizard(((DefaultValueAdapter)getPropertyEditor().getInput()).getModelObject(), a);
+						}
 					}
 				}
 				if(wizard == null) {
