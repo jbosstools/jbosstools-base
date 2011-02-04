@@ -17,6 +17,9 @@ import java.util.Comparator;
 import java.util.ListIterator;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposal;
@@ -32,7 +35,9 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.attribute.IAttributeContentProposalProvider;
 import org.jboss.tools.common.model.ui.attribute.IValueFilter;
 import org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkCueLabelProvider;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
+import org.jboss.tools.common.util.EclipseJavaUtil;
 
 public class JavaClassContentAssistProvider implements
 		IAttributeContentProposalProvider {
@@ -227,10 +232,37 @@ class TypeContentProposalProvider extends TypePackageCompletionProcessor impleme
 			proposals = (IContentProposal[]) list.toArray(new IContentProposal[list.size()]);
 			// Sort the proposals alphabetically
 			Arrays.sort(proposals, fComparator);
+
+			restoreDefaultPackage(proposals);
+			
 		} else {
 			proposals = new IContentProposal[0];
 		}
 		return proposals;
+	}
+
+	private void restoreDefaultPackage(IContentProposal[] proposals) {
+		for (int i = 0; i < proposals.length; i++) {
+			IContentProposal p = proposals[i];
+			String content = p.getContent();
+			if(content == null || content.indexOf('.') >= 0) continue;
+			String label = p.getLabel();
+			if(label != null && label.indexOf("- null") >= 0 && p instanceof TypeContentProposal) {
+				String qn = "java.lang." + content;
+				IJavaProject jp = EclipseResourceUtil.getJavaProject(fProject);
+				IType t = null;
+				try {
+					t = EclipseJavaUtil.findType(jp, qn);
+				} catch (JavaModelException e) {
+					e.printStackTrace();
+				}
+				int k = label.indexOf("- null");
+				String pack = t != null ? "java.lang" : "(default)";
+				label = label.substring(0, k + 2) + pack;
+				TypeContentProposal p1 = new TypeContentProposal(label, content, p.getDescription(), ((TypeContentProposal)p).getImage());
+				proposals[i] = p1;
+			}
+		}
 	}
 
 	/**
