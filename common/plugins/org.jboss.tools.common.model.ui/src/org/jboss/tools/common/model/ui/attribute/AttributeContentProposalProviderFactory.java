@@ -31,6 +31,7 @@ import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.fieldassist.IControlContentAdapter;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.pde.internal.ui.editor.contentassist.TypeContentProposal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -108,6 +109,17 @@ public class AttributeContentProposalProviderFactory {
 				cpp,
 				AttributeContentProposalProviderFactory.getCtrlSpaceKeyStroke(), 
 				null);
+			
+			//TODO let IAttributeContentProposalProvider return specific label provider.
+			adapter.setLabelProvider(new LabelProvider() {
+				public Image getImage(Object element) {
+					if(element instanceof TypeContentProposal) {
+						return ((TypeContentProposal)element).getImage();
+					}
+					return null;
+				}				
+			});
+			
 			adapter.setPropagateKeys(true);
 			adapter.setProposalAcceptanceStyle(p.getProposalAcceptanceStyle());
 			if(listener != null) {
