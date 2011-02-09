@@ -17,14 +17,23 @@ import java.util.Comparator;
 import java.util.ListIterator;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.CompletionProposal;
+import org.eclipse.jdt.core.CompletionRequestor;
+import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.IBuffer;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.pde.internal.ui.PDEPluginImages;
 import org.eclipse.pde.internal.ui.editor.contentassist.TypeContentProposal;
 import org.eclipse.pde.internal.ui.editor.contentassist.TypePackageCompletionProcessor;
 import org.eclipse.swt.graphics.Image;
@@ -35,9 +44,7 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.attribute.IAttributeContentProposalProvider;
 import org.jboss.tools.common.model.ui.attribute.IValueFilter;
 import org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkCueLabelProvider;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
-import org.jboss.tools.common.util.EclipseJavaUtil;
 
 public class JavaClassContentAssistProvider implements
 		IAttributeContentProposalProvider {
@@ -233,36 +240,10 @@ class TypeContentProposalProvider extends TypePackageCompletionProcessor impleme
 			// Sort the proposals alphabetically
 			Arrays.sort(proposals, fComparator);
 
-			restoreDefaultPackage(proposals);
-			
 		} else {
 			proposals = new IContentProposal[0];
 		}
 		return proposals;
-	}
-
-	private void restoreDefaultPackage(IContentProposal[] proposals) {
-		for (int i = 0; i < proposals.length; i++) {
-			IContentProposal p = proposals[i];
-			String content = p.getContent();
-			if(content == null || content.indexOf('.') >= 0) continue;
-			String label = p.getLabel();
-			if(label != null && label.indexOf("- null") >= 0 && p instanceof TypeContentProposal) {
-				String qn = "java.lang." + content;
-				IJavaProject jp = EclipseResourceUtil.getJavaProject(fProject);
-				IType t = null;
-				try {
-					t = EclipseJavaUtil.findType(jp, qn);
-				} catch (JavaModelException e) {
-					e.printStackTrace();
-				}
-				int k = label.indexOf("- null");
-				String pack = t != null ? "java.lang" : "(default)";
-				label = label.substring(0, k + 2) + pack;
-				TypeContentProposal p1 = new TypeContentProposal(label, content, p.getDescription(), ((TypeContentProposal)p).getImage());
-				proposals[i] = p1;
-			}
-		}
 	}
 
 	/**
@@ -314,5 +295,90 @@ class TypeContentProposalProvider extends TypePackageCompletionProcessor impleme
 		}
 		return filteredContentProposals;
 	}
+
+	
+	protected void generateTypePackageProposals(String currentContent, IProject project, Collection c, int startOffset, int typeScope, boolean replaceEntireContents) {
+		currentContent = removeLeadingSpaces(currentContent);
+		if (c == null || currentContent.length() == 0)
+			return;
+		int length = (replaceEntireContents) ? -1 : currentContent.length();
+		generateProposals(currentContent, project, c, startOffset, length, typeScope);
+	}
+
+	private void generateProposals(String currentContent, IProject project, final Collection c, final int startOffset, final int length, final int typeScope) {
+
+		class TypePackageCompletionRequestor extends CompletionRequestor {
+
+			public TypePackageCompletionRequestor() {
+				super(true);
+				setIgnored(CompletionProposal.PACKAGE_REF, false);
+				setIgnored(CompletionProposal.TYPE_REF, false);
+			}
+
+			public void accept(CompletionProposal proposal) {
+				if (proposal.getKind() == CompletionProposal.PACKAGE_REF) {
+					String pkgName = new String(proposal.getCompletion());
+					addProposalToCollection(c, startOffset, length, pkgName, pkgName, PDEPluginImages.get(PDEPluginImages.OBJ_DESC_PACKAGE));
+				} else {
+					boolean isInterface = Flags.isInterface(proposal.getFlags());
+					String completion = new String(proposal.getCompletion());
+					if (isInterface && typeScope == IJavaSearchConstants.CLASS || (!isInterface && typeScope == IJavaSearchConstants.INTERFACE) || completion.equals("Dummy2")) //$NON-NLS-1$
+						// don't want Dummy class showing up as option.
+						return;
+					int period = completion.lastIndexOf('.');
+					String cName = null, pName = null;
+					if (period == -1) {
+						cName = completion;
+					} else {
+						cName = completion.substring(period + 1);
+						pName = completion.substring(0, period);
+					}
+					if(pName == null) {
+						char[] declaration = proposal.getDeclarationSignature();
+						pName = declaration == null || declaration.length == 0 ? "(default)" : new String(declaration);
+					}
+					Image image = isInterface ? PDEPluginImages.get(PDEPluginImages.OBJ_DESC_GENERATE_INTERFACE) : PDEPluginImages.get(PDEPluginImages.OBJ_DESC_GENERATE_CLASS);
+					addProposalToCollection(c, startOffset, length, cName + " - " + pName, //$NON-NLS-1$
+							completion, image);
+				}
+			}
+
+		}
+
+		try {
+			ICompilationUnit unit = getWorkingCopy(project);
+			if (unit == null) {
+				generateTypeProposals(currentContent, project, c, startOffset, length, 1);
+				return;
+			}
+			IBuffer buff = unit.getBuffer();
+			buff.setContents("class Dummy2 { " + currentContent); //$NON-NLS-1$
+
+			CompletionRequestor req = new TypePackageCompletionRequestor();
+			unit.codeComplete(15 + currentContent.length(), req);
+			unit.discardWorkingCopy();
+		} catch (JavaModelException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
+	}
+
+	private ICompilationUnit getWorkingCopy(IProject project) throws JavaModelException {
+		IPackageFragmentRoot[] roots = JavaCore.create(project).getPackageFragmentRoots();
+		if (roots.length > 0) {
+			IPackageFragment frag = null;
+			for (int i = 0; i < roots.length; i++)
+				if (roots[i].getKind() == IPackageFragmentRoot.K_SOURCE || project.equals(roots[i].getCorrespondingResource()) || (roots[i].isArchive() && !roots[i].isExternal())) {
+					IJavaElement[] elems = roots[i].getChildren();
+					if ((elems.length > 0) && (i < elems.length) && (elems[i] instanceof IPackageFragment)) {
+						frag = (IPackageFragment) elems[i];
+						break;
+					}
+				}
+			if (frag != null)
+				return frag.getCompilationUnit("Dummy2.java").getWorkingCopy(new NullProgressMonitor()); //$NON-NLS-1$
+		}
+		return null;
+	}
+
 
 }
