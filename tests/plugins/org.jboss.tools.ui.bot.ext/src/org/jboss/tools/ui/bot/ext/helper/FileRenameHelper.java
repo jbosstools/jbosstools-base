@@ -95,7 +95,7 @@ public class FileRenameHelper {
         return "Renamed File " + newFileName + " was not found."; 
       }
       // Editor Title was renamed
-      bot.sleep(Timing.time2S());
+      bot.sleep(Timing.time5S());
       try{
         bot.editorByTitle(newFileName);
       }catch (WidgetNotFoundException wnfe) {

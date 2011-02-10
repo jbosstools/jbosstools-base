@@ -149,6 +149,11 @@ public class ContextMenuHelper {
   private static void hide(final Menu menu , boolean hideRecursively) {
     if (menu != null){
       menu.notifyListeners(SWT.Hide, new Event());
+      try {
+        Thread.sleep(50);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
       if (menu.getParentMenu() != null && hideRecursively) {
         hide(menu.getParentMenu(),hideRecursively);
       }
@@ -538,6 +543,11 @@ public class ContextMenuHelper {
         menu.setVisible(false);
       }
     });
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -552,6 +562,11 @@ public class ContextMenuHelper {
         menu.setVisible(false);
       }
     });
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
