@@ -36,12 +36,15 @@ import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionP
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
+import org.eclipse.ui.menus.IWorkbenchWidget;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModelObject;
@@ -178,6 +181,9 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 				}
 				if(wizard == null) {
 					wizard = new NewClassWizard();
+				} 
+				if(wizard instanceof IWorkbenchWizard) {
+					((IWorkbenchWizard)wizard).init(ModelUIPlugin.getDefault().getWorkbench(), new StructuredSelection());
 				}
 				wizard.setAdapter(wizardAdapter);
 				WizardDialog dialog = new WizardDialog(ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
