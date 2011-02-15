@@ -37,6 +37,7 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -250,10 +251,16 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	}
 	
 	public static void refreshPreferencePage(Shell shell) {
+		Shell mainShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		if (shell != null && !shell.isDisposed()) {
 			shell.close();
+		} else {
+			shell = Display.getCurrent().getActiveShell();
+			if (shell != mainShell) {
+				shell.close();
+			}
 		}
-		shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		shell = mainShell;
 		PreferenceDialog preferenceDialog = PreferencesUtil.createPreferenceDialogOn(shell, RuntimePreferencePage.ID, null, null);
 		preferenceDialog.open();
 	}
