@@ -14,6 +14,7 @@ public interface IJBossRuntimePluginConstants {
 	public static final String DEFAULT_DS = "DefaultDS";
 	public static final String RUNTIME = Messages.JBossRuntimeStartup_Runtime;
 	public static final String EAP = "EAP"; //$NON-NLS-1$
+	public static final String EAP_STD = "EAP_STD"; //$NON-NLS-1$
 	public static final String SOA_P = "SOA-P"; //$NON-NLS-1$
 	public static final String SOA_P_STD = "SOA-P-STD"; //$NON-NLS-1$
 	public static final String EPP = "EPP"; //$NON-NLS-1$

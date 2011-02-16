@@ -98,7 +98,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		if(EWP.equals(type)) {
 				return new File(serverDefinition.getLocation(),"jboss-as-web"); //$NON-NLS-1$
 		}
-		if (AS.equals(type)) {
+		if (AS.equals(type) || EAP_STD.equals(type)) {
 			return serverDefinition.getLocation();
 		}
 		return null;
@@ -115,7 +115,8 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			}
 			String type = serverDefinition.getType();
 			if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type)
-					|| SOA_P_STD.equals(type) || EWP.equals(type)) {
+					|| SOA_P_STD.equals(type) || EWP.equals(type)
+					|| EAP_STD.equals(type)) {
 				String name = serverDefinition.getName();
 				String runtimeName = name + " " + RUNTIME; //$NON-NLS-1$
 				int index = getJBossASVersion(asLocation);
