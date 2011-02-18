@@ -18,6 +18,7 @@ public class ModelMessages extends NLS {
 	public static String CONSTRAINT_NONEMPTY;
 	public static String CONSTRAINT_NO_JAVA_KEYWORD;
 	public static String CONSTRAINT_JAVA_NAME;
+	public static String CONSTRAINT_NMTOKEN;
 	public static String CONSTRAINT_INTEGER_OR_LIST;
 	public static String CONSTRAINT_RED_HAT_TEMPLATE_NAME;
 	public static String CONSTRAINT_XML_NAME;
