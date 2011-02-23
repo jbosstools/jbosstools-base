@@ -37,6 +37,20 @@ public class AbstractResourceMarkerTest extends TestCase {
 	protected IProject project = null;
 
 	/**
+	 * @return the project
+	 */
+	public IProject getProject() {
+		return project;
+	}
+
+	/**
+	 * @param project the project to set
+	 */
+	public void setProject(IProject project) {
+		this.project = project;
+	}
+
+	/**
 	 * 
 	 */
 	public AbstractResourceMarkerTest() {
