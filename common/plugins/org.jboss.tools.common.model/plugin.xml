@@ -339,6 +339,8 @@
 			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintInt"/>
 		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintJavaName"
 			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintJavaName"/>
+		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintNmtoken"
+			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintNmtoken"/>
 		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintJavaNameOrEmpty"
 			class="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintJavaNameOrEmpty"/>
 		<xclass id="org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintList"
