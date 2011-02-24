@@ -18,6 +18,7 @@ import org.jboss.tools.ui.bot.ext.view.ConsoleView;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.ProblemsView;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
+import org.jboss.tools.ui.bot.ext.view.PropertiesView;
 import org.jboss.tools.ui.bot.ext.view.ServersView;
 /**
  * Base class for SWTBot Tests using SWTBotExt
@@ -39,6 +40,7 @@ public class SWTTestExt extends SWTBotTestCase{
 	public static final ServersView servers = new ServersView();
 	public static final ProblemsView problems = new ProblemsView();
 	public static final ConsoleView console = new ConsoleView();
+	public static final PropertiesView properties = new PropertiesView();
 	
 	// config & state
 	/**
@@ -48,13 +50,13 @@ public class SWTTestExt extends SWTBotTestCase{
 	 */
 	public static final ConfiguredState configuredState = new ConfiguredState();
 	
-	public static Properties properties;
+	private static Properties props;
 	/**
 	 * Get properties for tests
 	 * @param key
 	 */
 	public static String getProperty(String key) {
-		return util.getValue(properties,key);
+		return util.getValue(props,key);
 	}	
 	static {
 		System.setProperty("org.eclipse.swtbot.playback.delay","10");
