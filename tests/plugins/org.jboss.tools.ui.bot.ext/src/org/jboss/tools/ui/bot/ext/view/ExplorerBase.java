@@ -10,6 +10,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
@@ -31,8 +32,7 @@ public abstract class ExplorerBase extends ViewBase {
 	 * Selects given project in Package Explorer
 	 */
 	public void selectProject(String projectName) {
-		SWTBot viewBot = viewByTitle(viewObject.getName()).bot();
-		viewBot.tree().expandNode(projectName).select();
+		bot().tree().expandNode(projectName).select();
   }
 
   /**
@@ -45,7 +45,7 @@ public abstract class ExplorerBase extends ViewBase {
    */
   public SWTBotTreeItem selectTreeItem(int timeOut, String treeItemText,
       String[] path) {
-    SWTBot viewBot = show().bot();
+    SWTBot viewBot = bot();
     return SWTEclipseExt.getTreeItemOnPath(viewBot, viewBot.tree(), timeOut,
         treeItemText, path).select();
   }
@@ -71,13 +71,13 @@ public abstract class ExplorerBase extends ViewBase {
 		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
 		ContextMenuHelper.prepareTreeItemForContextMenu(viewBot.tree(), item);
 		new SWTBotMenu(ContextMenuHelper.getContextMenu(viewBot.tree(), IDELabel.Menu.DELETE, false)).click();
-	     shell("Delete Resources").activate();
+	     SWTBotShell shell = bot.shell("Delete Resources").activate();
 	     if (fileSystem) {
-	    	 checkBox().click();
+	    	 shell.bot().checkBox().click();
 	     }
-	     open.finish(this,IDELabel.Button.OK);
-	     new SWTUtilExt(this).waitForNonIgnoredJobs();
-	     new SWTUtilExt(this).waitForAll(Timing.time3S());
+	     open.finish(shell.bot(),IDELabel.Button.OK);
+	     util.waitForNonIgnoredJobs();
+	     util.waitForAll(Timing.time3S());
 	}
 	/**
 	 * deletes all projects from workspace
@@ -123,7 +123,7 @@ public abstract class ExplorerBase extends ViewBase {
 		}
 		item.select().doubleClick();
 		log.info("File Opened:" + builder.toString());
-		SWTBotEditor editor = activeEditor();
+		SWTBotEditor editor = bot.activeEditor();
 		return editor;
 	}
 	/**
@@ -165,9 +165,9 @@ public abstract class ExplorerBase extends ViewBase {
 		      });
 		    if (menuItem != null){
 		      new SWTBotMenu(menuItem).click();
-		      shell(IDELabel.Shell.RUN_ON_SERVER).activate();
-		      open.finish(this);		      
-		      new SWTUtilExt(this).waitForAll(Timing.time3S());
+		      SWTBotShell shell = bot.shell(IDELabel.Shell.RUN_ON_SERVER).activate();
+		      open.finish(shell.bot());		      
+		      util.waitForAll(Timing.time3S());
 		    }
 		    else{
 		      throw new WidgetNotFoundException("Unable to find Menu Item with Label 'Run on Server'");

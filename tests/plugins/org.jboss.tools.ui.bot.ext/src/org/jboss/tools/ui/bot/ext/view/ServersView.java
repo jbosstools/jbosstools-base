@@ -33,7 +33,7 @@ public class ServersView extends ViewBase {
 			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
 	        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.ADD_AND_REMOVE, false)).click();
 	        try {
-	        	SWTBotShell shell = shell(IDELabel.Menu.ADD_AND_REMOVE);
+	        	SWTBotShell shell = bot.shell(IDELabel.Menu.ADD_AND_REMOVE);
 	        	shell.activate();
 		        SWTBotButton btRemoveAll=shell.bot().button("<< Remove All");		        
 		        if (btRemoveAll.isEnabled()) {
@@ -41,12 +41,12 @@ public class ServersView extends ViewBase {
 		        	log.info("Removing all projects from server '"+serverName+"'");
 		        }
 		        open.finish(shell.bot(), IDELabel.Button.FINISH);
-		        new SWTUtilExt(this).waitForNonIgnoredJobs();
-		        new SWTUtilExt(this).waitForAll(Timing.time3S());
+		        util.waitForNonIgnoredJobs();
+		        util.waitForAll(Timing.time3S());
 	        } catch (WidgetNotFoundException ex) {
 	        	ex.printStackTrace();
-	        	shell("Server").activate();
-	        	button(IDELabel.Button.OK).click();
+	        	bot.shell("Server").activate();
+	        	bot.button(IDELabel.Button.OK).click();
 	        }
 	        
 		}
@@ -62,8 +62,8 @@ public class ServersView extends ViewBase {
 		if (server!=null) {
 			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
 	        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.STOP, false)).click();
-		    new SWTUtilExt(this).waitForNonIgnoredJobs();
-		    new SWTUtilExt(this).waitForAll(Timing.time10S());
+		    util.waitForNonIgnoredJobs();
+		    util.waitForAll(Timing.time10S());
 	        
 		}
 	}
@@ -78,7 +78,7 @@ public class ServersView extends ViewBase {
 		if (server!=null) {
 			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
 	        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.DELETE, false)).click();
-	        SWTBotShell shell = shell("Delete Server");
+	        SWTBotShell shell = bot.shell("Delete Server");
 	          shell.activate();
 	          open.finish(shell.bot(), IDELabel.Button.OK);
 	          log.info("Removed  server: " + serverName);
@@ -97,8 +97,8 @@ public class ServersView extends ViewBase {
 		if (server!=null) {
 			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
 	        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.START, false)).click();
-		    new SWTUtilExt(this).waitForNonIgnoredJobs(Timing.time100S());
-		    new SWTUtilExt(this).waitForAll(Timing.time3S());
+		    util.waitForNonIgnoredJobs(Timing.time100S());
+		    util.waitForAll(Timing.time3S());
 		}
 		else{
 		  throw new RuntimeException("Unable to start server witn name: " + serverName +
@@ -139,11 +139,11 @@ public class ServersView extends ViewBase {
 	          log.info("Found project to be removed from server: " + serverTreeItemChildren[itemIndex].getText());
 	          ContextMenuHelper.prepareTreeItemForContextMenu(serverTree,serverTreeItemChildren[itemIndex]);
 	          new SWTBotMenu(ContextMenuHelper.getContextMenu(serverTree, IDELabel.Menu.REMOVE, false)).click();
-	          SWTBotShell shell = shell("Server");
+	          SWTBotShell shell = bot.shell("Server");
 	          shell.activate();
 	          open.finish(shell.bot(), IDELabel.Button.OK);
 	          log.info("Removed project from server: " + serverTreeItemChildren[itemIndex].getText());
-	          new SWTUtilExt(this).waitForNonIgnoredJobs();	          
+	          util.waitForNonIgnoredJobs();	          
 	        } else {
 	        	log.info("Project '"+projectName+"' not found on any server");
 	        }

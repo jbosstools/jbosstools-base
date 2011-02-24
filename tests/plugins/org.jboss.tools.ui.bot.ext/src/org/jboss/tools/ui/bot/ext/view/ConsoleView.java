@@ -43,7 +43,7 @@ public class ConsoleView extends ViewBase {
 	public String getConsoleText(){
 	  
 	  show();
-	  SWTBot viewBot = viewByTitle(viewObject.getName()).bot();
+	  SWTBot viewBot = bot.viewByTitle(viewObject.getName()).bot();
 	  String consoleText = null;
 	  try{
 	    consoleText = viewBot.styledText().getText();
@@ -60,7 +60,7 @@ public class ConsoleView extends ViewBase {
 	public void clearConsole(){
 	  
     show();
-    SWTBot viewBot = viewByTitle(viewObject.getName()).bot();
+    SWTBot viewBot = bot.viewByTitle(viewObject.getName()).bot();
     try{
       SWTBotButton clearConsole = viewBot.buttonWithTooltip(IDELabel.ConsoleView.BUTTON_CLEAR_CONSOLE_TOOLTIP).click();
       clearConsole.click();
@@ -93,7 +93,7 @@ public class ConsoleView extends ViewBase {
 	public String getConsoleText (long sleepTime , long timeOut , boolean quitWhenNoChange){
 	  
     long estimatedTime = 0;
-    SWTBot viewBot = viewByTitle(viewObject.getName()).bot();
+    SWTBot viewBot = bot.viewByTitle(viewObject.getName()).bot();
     String prevConsoleText = getConsoleText();
     String consoleText = prevConsoleText;
     log.info("Waiting for console text with TimeOut: " + timeOut);
