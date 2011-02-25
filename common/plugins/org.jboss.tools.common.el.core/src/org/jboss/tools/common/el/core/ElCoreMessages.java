@@ -23,9 +23,11 @@ public class ElCoreMessages extends NLS {
 	public static String StringTokenDescription_Name;
 	public static String WhiteSpaceTokenDescription_Name;
 	
-	public static String EL_RENAME_PROCESSOR_OUT_OF_SYNC_FILE;
-	public static String EL_RENAME_PROCESSOR_ERROR_PHANTOM_FILE;
+	public static String EL_RENAME_PROCESSOR_OUT_OF_SYNC_PROJECT;
 	public static String EL_RENAME_PROCESSOR_ERROR_READ_ONLY_FILE;
+	public static String EL_RENAME_PROCESSOR_QUESTION_DIALOG_TITLE;
+	public static String EL_RENAME_PROCESSOR_QUESTION_DIALOG_MESSAGE;
+	
 	public static String RENAME_EL_VARIABLE_PROCESSOR_TITLE;
 	public static String RENAME_MESSAGE_PROPERTY_PROCESSOR_TITLE;
 	public static String RENAME_EL_VARIABLE_PROCESSOR_CAN_NOT_FIND_EL_VARIABLE;
