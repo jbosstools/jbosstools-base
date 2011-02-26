@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -26,6 +27,11 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
+import org.eclipse.wst.sse.ui.internal.SSEUIPlugin;
+import org.eclipse.wst.sse.ui.internal.taginfo.AnnotationHoverProcessor;
+import org.eclipse.wst.sse.ui.internal.taginfo.BestMatchHover;
+import org.eclipse.wst.sse.ui.internal.taginfo.ProblemAnnotationHoverProcessor;
+import org.eclipse.wst.sse.ui.internal.taginfo.TextHoverManager;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLStructuredContentAssistProcessor;
 import org.jboss.tools.common.text.xml.contentassist.ProposalSorter;
@@ -178,6 +184,23 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 		if(sc == null || sc == Object.class) 
 			return null;
 		return findDeclaredMethod(sc, name, paramTypes);
+	}
+
+	@Override
+	public ITextHover getTextHover(ISourceViewer sourceViewer,	String contentType, int stateMask) {
+		TextHoverManager.TextHoverDescriptor[] hoverDescs = SSEUIPlugin.getDefault().getTextHoverManager().getTextHovers();
+		int i = 0;
+		while (i < hoverDescs.length) {
+			if (hoverDescs[i].isEnabled() && computeStateMask(hoverDescs[i].getModifierString()) == stateMask) {
+				String hoverType = hoverDescs[i].getId();
+				if (TextHoverManager.COMBINATION_HOVER.equalsIgnoreCase(hoverType)){
+					return new MarkerProblemAnnotationHoverProcessor();
+				}
+			}
+			i++;
+		}
+		
+		return super.getTextHover(sourceViewer, contentType, stateMask);
 	}
 
 }
