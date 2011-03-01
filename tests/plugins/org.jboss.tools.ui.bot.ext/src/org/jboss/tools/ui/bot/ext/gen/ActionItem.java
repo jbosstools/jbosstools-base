@@ -49,6 +49,34 @@ public static String getItemString(IActionItem item) {
 		};
 	}
 	public static class View {
+		/**
+		 * creates new action item instance from given path 
+		 * @param path
+		 * @return
+		 */
+		public static IView create(final String...path) {
+			if (path.length<1) {
+				throw new IllegalArgumentException("path must contain at least 1 item");
+			}
+			return new IView() {
+		
+				@Override
+				public String getName() {
+					// TODO Auto-generated method stub
+					return path[path.length-1];
+				}
+		
+				@Override
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					for (int i=0; i<path.length-1;i++) {
+						l.add(path[i]);
+					}
+					return l;
+				}
+				
+			};
+		}
 		public static class JavaBrowsingTypes {
 			/**
 			* represents item : Java Browsing->Types
@@ -2046,6 +2074,34 @@ public static String getItemString(IActionItem item) {
 		}
 
 	public static class NewObject {
+		/**
+		 * creates new action item instance from given path 
+		 * @param path
+		 * @return
+		 */
+		public static INewObject create(final String...path) {
+			if (path.length<1) {
+				throw new IllegalArgumentException("path must contain at least 1 item");
+			}
+			return new INewObject() {
+		
+				@Override
+				public String getName() {
+					// TODO Auto-generated method stub
+					return path[path.length-1];
+				}
+		
+				@Override
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					for (int i=0; i<path.length-1;i++) {
+						l.add(path[i]);
+					}
+					return l;
+				}
+				
+			};
+		}
 		public static class CVSProjectsfromCVS {
 			/**
 			* represents item : CVS->Projects from CVS
@@ -7394,6 +7450,34 @@ public static String getItemString(IActionItem item) {
 		}
 
 	public static class Preference {
+		/**
+		 * creates new action item instance from given path 
+		 * @param path
+		 * @return
+		 */
+		public static IPreference create(final String...path) {
+			if (path.length<1) {
+				throw new IllegalArgumentException("path must contain at least 1 item");
+			}
+			return new IPreference() {
+		
+				@Override
+				public String getName() {
+					// TODO Auto-generated method stub
+					return path[path.length-1];
+				}
+		
+				@Override
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					for (int i=0; i<path.length-1;i++) {
+						l.add(path[i]);
+					}
+					return l;
+				}
+				
+			};
+		}
 		public static class RunDebugViewManagement {
 			/**
 			* represents item : Run/Debug->View Management

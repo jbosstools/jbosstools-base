@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +34,7 @@ import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
@@ -49,7 +51,11 @@ import org.jboss.tools.ui.bot.ext.condition.ButtonIsDisabled;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ServerServer;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Preference;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.View;
+import org.jboss.tools.ui.bot.ext.gen.INewObject;
 import org.jboss.tools.ui.bot.ext.gen.IServer;
 import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
@@ -58,6 +64,7 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
+import org.jboss.tools.ui.bot.ext.view.RemoteSystems;
 
 /**
  * Provides Eclipse common operation based on SWTBot element operations
@@ -485,10 +492,28 @@ public class SWTEclipseExt {
 	 * @param serverName
 	 */
 	public void addServer(IServer server, String serverName) {
+	  addServer(server, serverName, null,null);
+	}
+	/**
+	 * adds server (Server runtime must be defined, the default selected runtime
+	 * is used)
+	 * 
+	 * @param server
+	 *            to add ( for example
+	 *            {@link ActionItem.Server.JBossCommunityJBossAS50#LABEL} class)
+	 * @param serverName
+	 */
+	public void addServer(IServer server, String serverName, String remoteSystem,String remoteHome) {
 	  log.info("Adding server: " + serverName);
 		SWTBot wiz = open.newObject(ActionItem.NewObject.ServerServer.LABEL);
 		open.selectTreeNode(server);
 		wiz.textWithLabel(ServerServer.TEXT_SERVER_NAME).setText(serverName);
+		wiz.button(IDELabel.Button.NEXT).click();
+		if (remoteSystem!=null && remoteHome!=null) {
+			wiz.comboBoxInGroup("Server Behaviour", 0).setSelection("Remote System Deployment");
+			wiz.comboBoxWithLabel("Host").setSelection(remoteSystem);
+			wiz.textInGroup("Server Behaviour", 0).setText(remoteHome);
+		}
 		open.finish(wiz);
 	}
 	/**
@@ -680,7 +705,52 @@ public class SWTEclipseExt {
 		props.put(IDELabel.JBossServerRuntimeDialog.NAME, name);
 		addServerRuntime(runtime, props, jreToUse);
 	}
-
+	/**
+	 * adds remote system to RSE, does not verify hostname 
+	 * @param connectionName
+	 * @param hostname
+	 */
+	public void addRemoteSystem(String connectionName, String hostname) {
+		log.info(String.format("Adding remote system connection name=%s hostname=%s",connectionName,hostname));
+		RemoteSystems remote = new RemoteSystems();
+		if (remote.existsConnection(connectionName)) {
+			log.warn(String.format("Connection called '%' already exits, skipping",connectionName));
+			return;
+		}
+		SWTBot wiz = open.newObject(NewObject.create("Remote System Explorer","Connection"));
+		open.selectTreeNode(ActionItem.create("General","SSH Only"));
+		wiz.button(IDELabel.Button.NEXT).click();
+		wiz.textWithLabel("Connection name:").setText(connectionName);
+		wiz.comboBoxWithLabel("Host name:").setText(hostname);
+		wiz.checkBox("Verify host name").deselect();
+		open.finish(wiz);
+		log.info("Connection was added");		
+	}
+	/**
+	 * adds path to private key into SSH2 Preference page
+	 * @param pathToKey
+	 */
+	public void setSSHKey(String pathToKey) {
+		SWTBot wiz = open.preferenceOpen(Preference.create("General","Network Connections","SSH2"));
+		wiz.tabItem("General").activate();
+		wiz.textWithLabel("Private keys:").setText(pathToKey);
+		open.finish(wiz, IDELabel.Button.OK);
+	}
+	public void removeRemoteSystem(String connectionName) {
+		log.info(String.format("Removing remote system connection name=%s",connectionName));
+		RemoteSystems remote = new RemoteSystems();
+		if (remote.existsConnection(connectionName)) {
+			log.warn(String.format("Connection called '%' does not exist!",connectionName));
+			return;
+		}
+		remote.bot().tree().select(connectionName);
+		if (!remote.bot().tree().contextMenu(IDELabel.Menu.DELETE).isEnabled()) {
+			remote.bot().tree().contextMenu("Disconnect").click();
+		}
+		remote.bot().tree().contextMenu(IDELabel.Menu.DELETE).click();
+		open.finish(bot.shell("Delete Confirmation").bot(), true);
+		log.info("Connection was removed");
+	}
 	/**
 	 * adds server runtime only if it's not specified yet
 	 * 

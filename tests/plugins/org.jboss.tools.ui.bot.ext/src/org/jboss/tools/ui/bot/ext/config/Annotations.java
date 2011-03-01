@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.jboss.tools.ui.bot.ext.SWTTestExt;
+
 
 
 public class Annotations {
@@ -16,8 +18,12 @@ public class Annotations {
 	 * <li>{@link SWTBotTestRequires#clearProjects()}</li>
 	 * <li>{@link SWTBotTestRequires#clearWorkspace()}</li>
 	 * <li>{@link SWTBotTestRequires#perspective()}</li>
+	 * <li>{@link SWTBotTestRequires#runOnce()}</li>
 	 * <li>{@link Server}</li>
 	 * <li>{@link Seam}</li>
+	 * <li>{@link ESB}</li>
+	 * <li>{@link DB}</li>
+	 * <li>{@link JBPM}</li>
 	 * </ul>
 	 * @author lzoubek
 	 *
@@ -50,17 +56,17 @@ public class Annotations {
 		 */		
 		String perspective() default "";
 		/**
-		 * my default workspace is cleaned before test (attempt to close all shells and editors, closes 'Welcome' view), 
+		 * workspace is cleaned before test class is run (attempt to close all shells and editors, closes 'Welcome' view), 
 		 * setting this to false will disable this feature
 		 * @return
 		 */
+		boolean clearWorkspace() default true;
 		/**
 		 * optionally require Database
 		 * @return
 		 */
 		DB db() default @DB (required = false);
 		
-		boolean clearWorkspace() default true;
 		/**
 		 * by default all projects are undeployed from pre-configured server & deleted before test runs
 		 * setting this to false will disable this feature
@@ -77,7 +83,9 @@ public class Annotations {
 		boolean runOnce() default false;
 	}
 	/**
-	 * Server requirement, by default matches all server types and versions
+	 * Server requirement, by default matches all server types and versions,
+	 * if you enable this requirement, you get server running before your test class 
+	 * runs. Server name,type and version can be retrieved via {@link SWTTestExt#configuredState}
 	 * @author lzoubek
 	 *
 	 */
@@ -89,15 +97,20 @@ public class Annotations {
 		 */
 		boolean required() default true;
 		/**
-		 * state (default Running)
+		 * state (default (default {@link ServerState#ALL}))
 		 * @return
 		 */
 		ServerState state() default ServerState.Running;
 		/**
-		 * server type to match (Default ALL)
+		 * server type to match (default {@link ServerType#ALL})
 		 * @return
 		 */
 		ServerType type() default ServerType.ALL;
+		/**
+		 * server location (derfault {@link ServerLocation#Any})
+		 * @return
+		 */
+		ServerLocation location() default ServerLocation.Any;
 		/**
 		 * version of required server (use * for all versions) default *
 		 * @return
@@ -110,7 +123,8 @@ public class Annotations {
 		String operator() default "=";	
 	}
 	/**
-	 * 
+	 * Seam runtime requirement, by default matches all versions, if enabled seam runtime will 
+	 * be configured in workspace before test class runs. Runtime details can be referenced from {@link SWTTestExt#configuredState}
 	 * @author lzoubek@redhat.com
 	 *
 	 */
@@ -196,7 +210,6 @@ public class Annotations {
 		 */
 		String operator() default "=";
 	}
-	
 	public enum ServerState {
 		/**
 		 * server is present, no matter if runs or not
@@ -214,6 +227,20 @@ public class Annotations {
 		 * server (and runtime) not present
 		 */
 		Disabled
+	}
+	public enum ServerLocation {
+		/**
+		 * no matter where is server located (default)
+		 */
+		Any,
+		/**
+		 * server is required to be local
+		 */
+		Local,
+		/**
+		 * server is running on remote host
+		 */
+		Remote,
 	}
 	public enum ServerType {
 		/**

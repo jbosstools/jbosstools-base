@@ -162,7 +162,15 @@ public abstract class RequirementBase {
 		RequirementBase req = new RemoveServer();
 		return req;
 	}
-	
+	public static RequirementBase createAddRemoteSystem() {
+		RequirementBase req = new AddRemoteSystem();
+		return req;
+	}
+
+	public static RequirementBase createRemoveRemoteSystem() {
+		RequirementBase req = new RemoveRemoteSystem();
+		return req;
+	}
 	public static RequirementBase prepareDB () {
 		RequirementBase req = new PrepareDB();
 		return req;

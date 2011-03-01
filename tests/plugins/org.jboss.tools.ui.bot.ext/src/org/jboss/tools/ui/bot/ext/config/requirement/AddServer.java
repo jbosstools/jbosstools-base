@@ -33,6 +33,9 @@ public class AddServer extends RequirementBase {
 			getDependsOn().add(addJava);
 			javaName=addJava.getAddedAsName();
 		}
+		if (TestConfigurator.currentConfig.getServer().remoteSystem!=null) {
+			getDependsOn().add(createAddRemoteSystem());
+		}
 		
 	}
 
@@ -53,7 +56,10 @@ public class AddServer extends RequirementBase {
 		String runtimeName=TestConfigurator.currentConfig.getServer().type+"-"+TestConfigurator.currentConfig.getServer().version;
 		SWTTestExt.eclipse.addJbossServerRuntime(serverInfo.runtime, 
 				runtimeHome, runtimeName, javaName);
-		SWTTestExt.eclipse.addServer(serverInfo.server, runtimeName);
+		String remoteSystem = TestConfigurator.currentConfig.getServer().remoteSystem;
+		String remoteHome = TestConfigurator.currentConfig.getServer().remoteHome;
+		SWTTestExt.eclipse.addServer(serverInfo.server, runtimeName,remoteSystem,remoteHome);
+		SWTTestExt.configuredState.getServer().isLocal = remoteSystem==null;
 		SWTTestExt.configuredState.getServer().isConfigured=true;
 		SWTTestExt.configuredState.getServer().name=runtimeName;
 		SWTTestExt.configuredState.getServer().version=TestConfigurator.currentConfig.getServer().version;

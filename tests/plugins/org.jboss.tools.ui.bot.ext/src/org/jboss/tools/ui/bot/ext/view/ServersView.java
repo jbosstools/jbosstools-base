@@ -90,6 +90,15 @@ public class ServersView extends ViewBase {
 	 * @param serverName
 	 */
 	public void startServer(String serverName) {
+		startServer(serverName, null, null);
+	}
+	/**
+	 * start server with given name, username and password are used in case server is remote type
+	 * @param serverName
+	 * @param username remote user, can be null (server is then treated as local)
+	 * @param password should be null when SSH keys are properly set
+	 */
+	public void startServer(String serverName, String username, String password) {
 		show();
 		SWTBot bot = show().bot();
 		SWTBotTree tree = bot.tree();
@@ -97,6 +106,18 @@ public class ServersView extends ViewBase {
 		if (server!=null) {
 			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
 	        new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.START, false)).click();
+	        if (username!=null) {
+	        	try {
+	        		SWTBot shell = bot.shell("Enter Password").bot();
+	       			shell.textWithLabel("User ID:").setText(username);
+	        		if (password!=null)
+	        			shell.textWithLabel("Password (optional):").setText(password);
+	        		shell.button(IDELabel.Button.OK).click();
+	        	}
+	        	catch (Exception ex){
+	        		log.error(ex);
+	        	}
+	        }
 		    util.waitForNonIgnoredJobs(Timing.time100S());
 		    util.waitForAll(Timing.time3S());
 		}
@@ -105,7 +126,6 @@ public class ServersView extends ViewBase {
 		    "\nThis server is not defined within Servers view");
 		}
 	}
-	
 	public SWTBotTreeItem findServerByName(SWTBotTree tree, String name) {
 		
 		for (SWTBotTreeItem i : tree.getAllItems()) {

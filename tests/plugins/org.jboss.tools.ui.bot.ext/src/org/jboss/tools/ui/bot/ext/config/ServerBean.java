@@ -1,5 +1,7 @@
 package org.jboss.tools.ui.bot.ext.config;
 
+import java.util.Arrays;
+
 /**
  * 
  * @author lzoubek
@@ -11,7 +13,14 @@ public class ServerBean {
 	public String runtimeHome;
 	public String withJavaVersion;
 	public String type;
-	
+	/**
+	 * name of remote system for this server, if null, server is local
+	 */
+	public String remoteSystem;
+	/**
+	 * home of app server located in remote system
+	 */
+	public String remoteHome;
 	/**
 	 * creates bean instance from property string
 	 * @param propValue property value
@@ -29,6 +38,11 @@ public class ServerBean {
 		bean.runtimeHome=serverParams[3];
 		bean.version=serverParams[1];
 		bean.type =  serverParams[0];
+		
+		if (serverParams.length>4) {
+			bean.remoteSystem=serverParams[4];
+			bean.remoteHome=serverParams[5];
+		}
 		return bean;
 		}
 		catch (Exception ex) {
@@ -37,7 +51,7 @@ public class ServerBean {
 	}
 	@Override
 	public String toString() {
-		return String.format("Server type=%s,version=%s,home=%s,withJava=%s", this.type,this.version,this.runtimeHome,this.withJavaVersion);
+		return String.format("Server type=%s,version=%s,home=%s,withJava=%s,remoteSystem=%s", this.type,this.version,this.runtimeHome,this.withJavaVersion,this.remoteSystem);
 	}
 	
 	/**

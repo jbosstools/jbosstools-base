@@ -17,6 +17,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.JBPM;
 import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
+import org.jboss.tools.ui.bot.ext.config.Annotations.ServerLocation;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
@@ -31,6 +32,7 @@ public class TestConfigurator {
 		public static final String ESB = "ESB";
 		public static final String JBPM = "JBPM";
 		public static final String DB = "DB";
+		public static final String RS = "RS";
 	}
 
 	public class Values {
@@ -165,22 +167,37 @@ public class TestConfigurator {
 				return null;
 			}
 		}
+		if (s.location().equals(ServerLocation.Local) && currentConfig.getServer().remoteSystem!=null) {
+			return null;
+		}
+		if (s.location().equals(ServerLocation.Remote) && currentConfig.getServer().remoteSystem==null) {
+			return null;
+		}
 		if (!matches(currentConfig.getServer().version, s.operator(),
 				s.version())) {
 			return null;
 		}
-		if (ServerState.Disabled.equals(s.state())) {
-			RequirementBase removeServer = RequirementBase.createRemoveServer();
-			removeServer.getDependsOn().add(RequirementBase.createStopServer());
-			return removeServer;
-		} else if (ServerState.NotRunning.equals(s.state())) {
-			RequirementBase stopServer = RequirementBase.createStopServer();
-			stopServer.getDependsOn().add(RequirementBase.createAddServer());
-			return stopServer;
-		} else if (ServerState.Present.equals(s.state())) {
-			return RequirementBase.createAddServer();
-		}
-		return RequirementBase.createStartServer();
+		RequirementBase serverReq = null;
+		switch (s.state()) {
+			case Disabled: {
+				serverReq = RequirementBase.createRemoveServer();
+				serverReq.getDependsOn().add(RequirementBase.createStopServer());
+				break;
+			}
+			case NotRunning: {
+				serverReq = RequirementBase.createStopServer();
+				serverReq.getDependsOn().add(RequirementBase.createAddServer());
+				break;
+			}
+			case Present:{
+				serverReq = RequirementBase.createAddServer();
+				break;
+			}
+			default:
+				serverReq = RequirementBase.createStartServer();
+				break;
+			}
+		return serverReq;
 	}
 
 	/**

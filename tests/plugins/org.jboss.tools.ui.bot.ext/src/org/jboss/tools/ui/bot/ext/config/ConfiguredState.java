@@ -7,10 +7,8 @@ import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
 
 /**
  * this class represents state of running test suite. Properties of this object
- * should be changed only by classed extending {@link RequirementBase} class.
- * 
+ * should be changed only by classes extending {@link RequirementBase} class.
  * @author lzoubek@redhat.com
- * 
  */
 public class ConfiguredState {
 	private List<String> jreList = new Vector<String>();
@@ -19,7 +17,8 @@ public class ConfiguredState {
 	private ESB esb = new ESB();
 	private JBPM jbpm = new JBPM();
 	private DB db = new DB();
-
+	private RemoteSystem remoteSystem = new RemoteSystem();
+	
 	private boolean viewsPrepared = false;
 
 	public boolean isViewsPrepared() {
@@ -79,7 +78,18 @@ public class ConfiguredState {
 	public DB getDB() {
 		return db;
 	}
-	
+	/**
+	 * gets configured remote host
+	 * @return
+	 */
+	public RemoteSystem getRemoteSystem() {
+		return remoteSystem;
+	}
+	/**
+	 * represents current server configuration
+	 * @author lzoubek
+	 *
+	 */
 	public class Server {
 		/**
 		 * is server runtime & server added?
@@ -110,6 +120,25 @@ public class ConfiguredState {
 		 * version of bundled ESB (applicable only for server type SOA)
 		 */
 		public String bundledESBVersion=null;
+		/**
+		 * is server local? if no see {@link RemoteSystem}
+		 */
+		public boolean isLocal = true;
+
+	}
+	public class RemoteSystem {
+		/**
+		 * is configured?
+		 */
+		public boolean isConfigured = false;
+		/**
+		 * server's hostname
+		 */
+		public String remoteHost = null;
+		/**
+		 * server's remote username
+		 */
+		public String remoteUser = null;
 	}
 
 	public class Seam {

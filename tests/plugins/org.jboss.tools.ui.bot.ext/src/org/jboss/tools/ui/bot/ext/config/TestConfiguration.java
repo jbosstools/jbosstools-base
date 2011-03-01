@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.jboss.tools.ui.bot.ext.Activator;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator.Keys;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator.Values;
 
@@ -30,7 +30,8 @@ public class TestConfiguration {
 	private JavaBean java;
 	private JBPMBean jbpm;
 	private DBBean db;
-
+	private RemoteSystemBean remoteSystem;
+	
 	public TestConfiguration(String propName, String propFile) throws Exception {
 		this.propName = propName;
 		this.propFile = propFile;
@@ -44,15 +45,18 @@ public class TestConfiguration {
 
 		} else {
 			log.info("Loading default configuration");
-			swtTestProperties.load(new FileInputStream(SWTTestExt.util
+			swtTestProperties.load(new FileInputStream(SWTUtilExt
 					.getResourceFile(Activator.PLUGIN_ID,
 							"/SWTBotTest-default.properties")));
 		}
 		// properties got loaded
 		java = JavaBean.fromString(getProperty(Keys.JAVA));
 		printConfig(Keys.JAVA, java);
+		log.info(getProperty(Keys.SERVER));
 		server = ServerBean.fromString(getProperty(Keys.SERVER));
 		printConfig(Keys.SERVER, server);
+		remoteSystem = RemoteSystemBean.fromString(getProperty(Keys.RS));
+		printConfig(Keys.RS, remoteSystem);
 		seam = SeamBean.fromString(getProperty(Keys.SEAM));
 		printConfig(Keys.SEAM, seam);
 		esb = ESBBean.fromString(getProperty(Keys.ESB));
@@ -60,6 +64,7 @@ public class TestConfiguration {
 		jbpm = JBPMBean.fromString(getProperty(Keys.JBPM));
 		printConfig(Keys.JBPM, jbpm);
 		db = DBBean.fromString(getProperty(Keys.DB));
+		printConfig(Keys.DB,db);
 		
 		checkConfig();
 	}
@@ -111,8 +116,27 @@ public class TestConfiguration {
 									+ java.version);
 				}
 			}
-			return true;
 
+			if (server!=null) {
+				if (server.remoteSystem!=null) {
+					if (remoteSystem!=null) {
+						if (!server.remoteSystem.equals(remoteSystem.host)) {
+							throw new Exception("Server is configured with remote system called "
+										+ server.remoteSystem
+										+" but RS is configured as "
+										+ remoteSystem.host
+										+" these names must be equal");
+						}
+					}
+					else {
+						throw new Exception(
+								"Server is configured to run with remote system "
+										+ server.remoteSystem
+										+ " but no RS is configured");
+					}
+				}
+			}
+			return true;
 	}
 
 	private static void checkDirExists(String dir) throws FileNotFoundException {
@@ -158,5 +182,8 @@ public class TestConfiguration {
 	
 	public DBBean getDB() {
 		return db;
+	}
+	public RemoteSystemBean getRemoteSystem() {
+		return remoteSystem;
 	}
 }
