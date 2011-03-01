@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses( {
+	ConfigBeanTest.class,
 	NotAnnotated.class,
 	//ClassWithoutTests.class,
 	AnnotatedDefaultServer.class,
@@ -26,6 +27,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	AnnotatedDisabledServer.class,
 	AnonatedRunningServer.class, 
 	AnnotatedWithSeam.class,
+	AnnotatedRemoteServer.class,
+	AnnotatedLocalServer.class
 })
 @RunWith(RequirementAwareSuite.class)
 public class Suite {

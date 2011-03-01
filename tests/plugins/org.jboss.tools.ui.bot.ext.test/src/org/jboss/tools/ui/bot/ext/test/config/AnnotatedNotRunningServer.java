@@ -27,14 +27,7 @@ public class AnnotatedNotRunningServer extends SWTTestExt {
 	
 	@Test
 	public void serverExists() {
-		boolean found=false;
-		for (SWTBotTreeItem item : servers.show().bot().tree().getAllItems()) {
-			if (item.getText().startsWith(configuredState.getServer().name)) {
-				found = true;
-				break;
-			}
-		}
-		assertTrue(found);
+		ServerUtil.serverExists();
 	}
 	
 	@Test
