@@ -136,6 +136,11 @@ public abstract class RequirementBase {
 		return req;
 	}
 
+	public static RequirementBase createSetProperties() {
+		RequirementBase req = new SetProperties();
+		req.setPriority(-99);
+		return req;
+	}	
 	public static RequirementBase createClearWorkspace() {
 		RequirementBase req = new ClearWorkspace();
 		req.setPriority(-2);

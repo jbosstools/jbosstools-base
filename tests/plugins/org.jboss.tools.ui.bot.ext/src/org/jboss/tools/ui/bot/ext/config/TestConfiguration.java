@@ -31,6 +31,7 @@ public class TestConfiguration {
 	private JBPMBean jbpm;
 	private DBBean db;
 	private RemoteSystemBean remoteSystem;
+	private SecureStorage secureStorage;
 	
 	public TestConfiguration(String propName, String propFile) throws Exception {
 		this.propName = propName;
@@ -65,7 +66,8 @@ public class TestConfiguration {
 		printConfig(Keys.JBPM, jbpm);
 		db = DBBean.fromString(getProperty(Keys.DB));
 		printConfig(Keys.DB,db);
-		
+		secureStorage = SecureStorage.fromString(Keys.SS, getProperty(Keys.SS));
+		printConfig("Secure Storage",secureStorage);
 		checkConfig();
 	}
 
@@ -185,5 +187,8 @@ public class TestConfiguration {
 	}
 	public RemoteSystemBean getRemoteSystem() {
 		return remoteSystem;
+	}
+	public SecureStorage getSecureStorage() {
+		return secureStorage;
 	}
 }

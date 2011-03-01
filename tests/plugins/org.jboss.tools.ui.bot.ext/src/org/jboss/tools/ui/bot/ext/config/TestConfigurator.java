@@ -33,6 +33,7 @@ public class TestConfigurator {
 		public static final String JBPM = "JBPM";
 		public static final String DB = "DB";
 		public static final String RS = "RS";
+		public static final String SS = "SS";
 	}
 
 	public class Values {
@@ -113,6 +114,12 @@ public class TestConfigurator {
 		}
 
 	}
+	/**
+	 * checks whether given property-file (its conntent) contains multiple configurations to load
+	 * or it is just that configuration file
+	 * @param propFile
+	 * @return true if given property-file (its conntent) contains multiple configurations
+	 */
 	public static boolean isMultiPropertiesFile(String propFile) {
 		Properties props = new Properties();
 		try {
@@ -260,6 +267,7 @@ public class TestConfigurator {
 		// internal list
 		List<RequirementBase> reqs = new ArrayList<RequirementBase>();
 		reqs.add(RequirementBase.createPrepareViews());
+		reqs.add(RequirementBase.createSetProperties());
 		// all not annotated classes can run
 		if (requies == null) {
 			return reqs;

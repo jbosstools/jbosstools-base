@@ -18,7 +18,7 @@ public class ConfiguredState {
 	private JBPM jbpm = new JBPM();
 	private DB db = new DB();
 	private RemoteSystem remoteSystem = new RemoteSystem();
-	
+	private String secureStoragePassword;
 	private boolean viewsPrepared = false;
 
 	public boolean isViewsPrepared() {
@@ -27,6 +27,12 @@ public class ConfiguredState {
 
 	public void setViewsPrepared(boolean viewsPrepared) {
 		this.viewsPrepared = viewsPrepared;
+	}
+	public String getSecureStoragePassword() {
+		return secureStoragePassword;
+	}
+	public void setSecureStoragePassword(String secureStoragePassword) {
+		this.secureStoragePassword = secureStoragePassword;
 	}
 
 	/**

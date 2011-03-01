@@ -40,6 +40,7 @@ Export-Package: org.hsqldb,
  org.jboss.tools.ui.bot.ext.types,
  org.jboss.tools.ui.bot.ext.view,
  org.jboss.tools.ui.bot.ext.widgets,
+ org.jboss.tools.ui.bot.ext.wizards,
  org.jboss.tools.ui.bot.ext.zest
 Bundle-Vendor: JBoss by Red Hat
 Bundle-ClassPath: .,
