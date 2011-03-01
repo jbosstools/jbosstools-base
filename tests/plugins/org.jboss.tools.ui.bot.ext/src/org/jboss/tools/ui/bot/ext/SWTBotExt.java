@@ -129,11 +129,11 @@ public class SWTBotExt extends SWTWorkbenchBot {
 		}
 	}
 
-	public SWTBotScaleExt scale() {
-		return scale(0);
+	public SWTBotScaleExt scaleExt() {
+		return scaleExt(0);
 	}
 	@SuppressWarnings("unchecked")
-	public SWTBotScaleExt scale(int index) {
+	public SWTBotScaleExt scaleExt(int index) {
 		try {
 			List<Scale> bsrs = (List<Scale>) widgets(widgetOfType(Scale.class));
 			return new SWTBotScaleExt(bsrs.get(index));
