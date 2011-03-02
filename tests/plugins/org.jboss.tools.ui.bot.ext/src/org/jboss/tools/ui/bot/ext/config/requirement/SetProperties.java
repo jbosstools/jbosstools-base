@@ -13,6 +13,7 @@ public class SetProperties extends RequirementBase {
 
 	@Override
 	public boolean checkFulfilled() {
+                if (TestConfigurator.currentConfig.getSecureStorage()!=null)
 		SWTTestExt.configuredState.setSecureStoragePassword(TestConfigurator.currentConfig.getSecureStorage().password);
 		return true;
 	}
