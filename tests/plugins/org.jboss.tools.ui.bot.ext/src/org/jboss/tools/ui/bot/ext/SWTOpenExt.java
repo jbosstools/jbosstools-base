@@ -84,6 +84,9 @@ public class SWTOpenExt {
 	public void selectTreeNode(IActionItem item) {
 		selectTreeNode(this.bot,item);
 	}
+	public void selectTreeNode(SWTBot bot, String... items) {
+		selectTreeNode(bot,ActionItem.create(items));
+	}
 	/**
 	 * selects given actionItem in bot's tree();
 	 * 
@@ -175,7 +178,6 @@ public class SWTOpenExt {
 		bot.button("Next >").click();
 		return bot;
 	}
-
 	/**
 	 * Wait for appearance shell of given name
 	 * 

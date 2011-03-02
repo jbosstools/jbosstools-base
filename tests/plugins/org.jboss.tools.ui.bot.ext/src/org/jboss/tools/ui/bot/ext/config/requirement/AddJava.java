@@ -11,7 +11,7 @@ public class AddJava extends RequirementBase {
 
 	/**
 	 * requirement for adding JRE/JDK
-	 * @param version to add
+	 * @param user to add
 	 */
 	public AddJava() {
 	}
