@@ -23,6 +23,7 @@ public class MessagePropertyELSegmentImpl extends ELSegmentImpl implements
 	private ITextSourceReference messagePropertySourceReference = null;
 	private int propertyStart=0, propertyLength=0;
 	private String baseName=null;
+	private boolean isBundle = false;
 
 	public IResource getMessageBundleResource() {
 		return messageBundleResource;
@@ -32,8 +33,16 @@ public class MessagePropertyELSegmentImpl extends ELSegmentImpl implements
 		messageBundleResource = resource;
 	}
 
+	public void setBundleOnlySegment(boolean set) {
+		isBundle = set;
+	}
+	
+	public boolean isBundle() {
+		return isBundle;
+	}
+	
 	public boolean isProperty() {
-		return messagePropertySourceReference != null;
+		return !isBundle && (messagePropertySourceReference != null);
 	}
 
 	public ITextSourceReference getMessagePropertySourceReference() {

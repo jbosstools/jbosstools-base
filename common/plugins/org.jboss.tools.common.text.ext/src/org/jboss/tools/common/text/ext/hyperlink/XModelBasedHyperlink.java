@@ -31,6 +31,7 @@ import org.w3c.dom.Text;
  * @author Jeremy
  */
 public abstract class XModelBasedHyperlink extends AbstractHyperlink {
+	protected Properties requestProperties = null;
 
 	/** 
 	 * @see com.ibm.sse.editor.AbstractHyperlink#doHyperlink(org.eclipse.jface.text.IRegion)
@@ -45,15 +46,15 @@ public abstract class XModelBasedHyperlink extends AbstractHyperlink {
 
 		IPromptingProvider provider = PromptingProviderFactory.WEB;
 
-		Properties p = getRequestProperties(region);
-		p.put(IPromptingProvider.FILE, documentFile);
+		requestProperties = getRequestProperties(region);
+		requestProperties.put(IPromptingProvider.FILE, documentFile);
 
-		List list = provider.getList(xModel, getRequestMethod(), p.getProperty("prefix"), p); //$NON-NLS-1$
+		List list = provider.getList(xModel, getRequestMethod(), requestProperties.getProperty("prefix"), requestProperties); //$NON-NLS-1$
 		if (list != null && list.size() >= 1) {
 			openFileInEditor((String)list.get(0));
 			return;
 		}
-		String error = p.getProperty(IPromptingProvider.ERROR); 
+		String error = requestProperties.getProperty(IPromptingProvider.ERROR); 
 		if ( error != null && error.length() > 0) {
 			openFileFailed();
 		}

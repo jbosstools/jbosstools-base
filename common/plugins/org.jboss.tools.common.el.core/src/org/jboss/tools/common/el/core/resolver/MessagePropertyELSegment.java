@@ -29,6 +29,11 @@ public interface MessagePropertyELSegment extends ELSegment {
 	IResource getMessageBundleResource();
 	
 	/**
+	 * @return true if the segment presents message bundle. In this case isProperty() always returns false; 
+	 */
+	boolean isBundle();
+	
+	/**
 	 * @return true if the segment presents message property.
 	 */
 	boolean isProperty();
