@@ -102,26 +102,33 @@ public class Libs implements IElementChangedListener {
 		createMap();
 		return true;
 	}
+	
+	static String LIB_PREFIX = "lib-"; //$NON-NLS-1$
 
 	void updateFileSystems(List<String> paths) {
 		if(fsVersion >= pathsVersion) {
 			return;
 		}
-		XModelObject[] fs = object.getChildren("FileSystemJar"); //$NON-NLS-1$
+		XModelObject[] fs = object.getChildren();
 		Set<XModelObject> fss = new HashSet<XModelObject>();
-		for (int i = 0; i < fs.length; i++) fss.add(fs[i]);
+		for (int i = 0; i < fs.length; i++) {
+			if(fs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME).startsWith(LIB_PREFIX)) {
+				fss.add(fs[i]);
+			}
+		}
 		
 		if(paths != null) for (int i = 0; i < paths.size(); i++) {
 			String path = paths.get(i);
-			if(!EclipseResourceUtil.isJar(path)) continue;
+			boolean isJar = EclipseResourceUtil.isJar(path);
+			String libEntity = isJar ? "FileSystemJar" : "FileSystemFolder"; //$NON-NLS-1$ //$NON-NLS-2$
 			String fileName = new File(path).getName();
-			if(EclipseResourceUtil.SYSTEM_JAR_SET.contains(fileName)) continue;
-			String jsname = "lib-" + fileName; //$NON-NLS-1$
+			if(isJar && EclipseResourceUtil.SYSTEM_JAR_SET.contains(fileName)) continue;
+			String jsname = LIB_PREFIX + fileName;
 			XModelObject o = object.getChildByPath(jsname);
 			if(o != null) {
 				fss.remove(o);
 			} else {
-				o = object.getModel().createModelObject("FileSystemJar", null); //$NON-NLS-1$
+				o = object.getModel().createModelObject(libEntity, null);
 				o.setAttributeValue(XModelObjectConstants.ATTR_NAME, jsname); 
 				o.setAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION, path);
 				o.set(FileSystemsLoader.IS_ADDED_TO_CLASSPATH, XModelObjectConstants.TRUE);
