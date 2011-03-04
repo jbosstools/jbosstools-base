@@ -615,7 +615,7 @@ public class EclipseResourceUtil extends EclipseUtil {
 	}
 	
 	/**
-	 * Returns list of canonical paths to resources included in class path.
+	 * Returns list of canonical paths to resources of libraries (jars and class folders) included in class path.
 	 * @throws IOException 
 	 */	
 	public static List<String> getClassPath(IProject project) throws CoreException, IOException {
@@ -623,32 +623,35 @@ public class EclipseResourceUtil extends EclipseUtil {
 		ArrayList<String> l = new ArrayList<String>();
 		IJavaProject javaProject = JavaCore.create(project);		
 
-		IPath p = javaProject.getOutputLocation();
-		IResource r = p == null ? null : project.getWorkspace().getRoot().findMember(p);
-		if(r != null && r.getLocation() != null && r.exists()) {
-			String s = r.getLocation().toString();
-			l.add(new java.io.File(s).getCanonicalPath());
-		}
+// maybe we should restore outputs with special boolean parameter.
+//		IPath p = javaProject.getOutputLocation();
+//		IResource r = p == null ? null : project.getWorkspace().getRoot().findMember(p);
+//		if(r != null && r.getLocation() != null && r.exists()) {
+//			String s = r.getLocation().toString();
+//			l.add(new java.io.File(s).getCanonicalPath());
+//		}
 
 		IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
+// maybe we should restore outputs with special boolean parameter.
+//		for (int i = 0; i < es.length; i++) {
+//			try {
+//				if(es[i].getEntryKind() == IClasspathEntry.CPE_SOURCE && es[i].getOutputLocation() != null) {
+//					IResource findMember = project.getWorkspace().getRoot().findMember(es[i].getOutputLocation());
+//					if(findMember!=null) {
+//						String s = findMember.getLocation().toString();
+//						l.add(new java.io.File(s).getCanonicalPath());
+//					}
+//				}
+//			} catch (IOException e) {
+//				//ignore - we do not care about non-existent files here.
+//			}
+//		}
 		for (int i = 0; i < es.length; i++) {
-			try {
-				if(es[i].getEntryKind() == IClasspathEntry.CPE_SOURCE && es[i].getOutputLocation() != null) {
-					IResource findMember = project.getWorkspace().getRoot().findMember(es[i].getOutputLocation());
-					if(findMember!=null) {
-						String s = findMember.getLocation().toString();
-						l.add(new java.io.File(s).getCanonicalPath());
-					}
-				}
-			} catch (IOException e) {
-				//ignore - we do not care about non-existent files here.
-			}
-		}
-		for (int i = 0; i < es.length; i++) {
-			try {
-				String s = null;
-				String path = es[i].getPath().toString();
+			if(es[i].getEntryKind() != IClasspathEntry.CPE_LIBRARY) continue;
 
+			String s = null;
+			String path = es[i].getPath().toString();
+			try {
 				//First let's check if path is defined within Eclipse work space.
 				if(path.startsWith(XModelObjectConstants.SEPARATOR) && path.indexOf(XModelObjectConstants.SEPARATOR, 1) > 1) {
 					IResource findMember = ResourcesPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
@@ -672,7 +675,7 @@ public class EclipseResourceUtil extends EclipseUtil {
 				
 				//If we failed to find resource in Eclipse work space, 
 				//lets try the path as absolute on disk
-				if(s == null && new java.io.File(path).isFile()) {
+				if(s == null && new java.io.File(path).exists()) {
 					s = path;
 				}
 				if(s != null) {
@@ -894,7 +897,16 @@ public class EclipseResourceUtil extends EclipseUtil {
 	 * @location Absolute path on disk
 	 */
 	public static IFile getFile(String location) {
-		return ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(location).makeAbsolute());
+		IPath path = new Path(location).makeAbsolute();
+		IFile result = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
+//TODO check if we need that addition 
+//		if(result == null || !result.exists()) {
+//			IFile[] fs = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(path);
+//			if(fs != null && fs.length > 0) {
+//				result = fs[0];
+//			}
+//		}
+		return result;
 	}
 
 	public static IResource getFolder(String location) {
