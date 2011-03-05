@@ -239,6 +239,14 @@
          			<axis path="*/[http://java.sun.com/jsp/jstl/core]:redirect/url" />
         		</partitionType>
 			</contentType>
+			<contentType id="org.jboss.tools.jst.jsp.jspincludesource">
+				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
+         			<axis path="*/[http://java.sun.com/jstl/core]:import/url" />
+         			<axis path="*/[http://java.sun.com/jstl/core]:redirect/url" />
+         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:import/url" />
+         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:redirect/url" />
+        		</partitionType>
+			</contentType>
 		</hyperlinkPartitioner>
 		
 		
@@ -581,6 +589,15 @@
 			<contenttypeidentifier id="org.eclipse.jst.jsp.core.jspsource">
             	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_CLASS" />
 			</contenttypeidentifier>
+			<contenttypeidentifier id="jsf.facelet">
+            	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_CLASS" />
+			</contenttypeidentifier>
+			<contenttypeidentifier id="jsf.facelet.composite">
+            	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_CLASS" />
+			</contenttypeidentifier>
+			<contenttypeidentifier id="org.jboss.tools.jst.jsp.jspincludesource">
+            	<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_CLASS" />
+			</contenttypeidentifier>
         	<contenttypeidentifier id="org.eclipse.jst.j2ee.webDD">
 				<partitiontype id="org.jboss.tools.common.text.ext.xml.XML_CLASS" />
         	</contenttypeidentifier>
@@ -642,6 +659,10 @@
          	<contenttypeidentifier id="jsf.facelet.composite">
 				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.INCLUDE_FILE" />
          	</contenttypeidentifier>
+			<contenttypeidentifier id="org.jboss.tools.jst.jsp.jspincludesource">
+				<partitiontype id="org.jboss.tools.common.text.ext.hyperlink.xml.INCLUDE_FILE" />
+         	</contenttypeidentifier>
+         	
 		</hyperlink>
    </extension>
 	
