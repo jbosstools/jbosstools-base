@@ -50,7 +50,7 @@ public class SWTTestExt extends SWTBotTestCase{
 	 */
 	public static final ConfiguredState configuredState = new ConfiguredState();
 	
-	private static Properties props;
+	public static Properties props;
 	/**
 	 * Get properties for tests
 	 * @param key
