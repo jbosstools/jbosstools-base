@@ -35,6 +35,7 @@ import org.eclipse.wst.sse.ui.internal.taginfo.TextHoverManager;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLStructuredContentAssistProcessor;
 import org.jboss.tools.common.text.xml.contentassist.ProposalSorter;
+import org.jboss.tools.common.text.xml.xpl.MarkerProblemAnnotationHoverProcessor;
 
 /**
  * @author Igels

@@ -19,7 +19,7 @@ import org.eclipse.ui.IMarkerResolution2;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
-class QuickFixProposal implements ICompletionProposal{
+public class QuickFixProposal implements ICompletionProposal{
 	private IMarkerResolution resolution;
 	private IMarker marker;
 	
