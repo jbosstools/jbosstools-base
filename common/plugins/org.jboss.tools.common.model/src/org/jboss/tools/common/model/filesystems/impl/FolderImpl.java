@@ -717,13 +717,31 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     protected void updateRemove(XModelObject o) throws XModelException {
         boolean d = (o instanceof FolderImpl);
-        FileSystemPeer peer = getFileSystem().getPeer();
-        File rf = getChildIOFile(o);
+        final FileSystemPeer peer = getFileSystem().getPeer();
+        final File rf = getChildIOFile(o);
         boolean c = (d && peer.containsDir(rf)) || ((!d) && peer.contains(rf));
         if(!c) return;
         int i = (!o.isModified()) ? 1 : question(o);
         if(i != 0) {
         	o.removeFromParent();
+        } else if(i == -100) {
+			if(rf.exists()) return;
+        	final XModelObject o1 = o;
+        	Display.getDefault().asyncExec(new Runnable() {
+        		public void run() {
+        			if(rf.exists()) return;
+        			if(question(o1) == 0) {
+       					o1.removeFromParent();
+        			} else {
+        				try {
+        					saveChild(o1, peer, rf);
+        					XActionInvoker.invoke("Open", o1, null);  //$NON-NLS-1$
+        				} catch (XModelException e) {
+        					ModelPlugin.getDefault().logError(e);
+        				}
+        			}
+        		}
+        	});
         } else {
 			saveChild(o, peer, rf);
        		XActionInvoker.invoke("Open", o, null);  //$NON-NLS-1$
@@ -768,7 +786,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     private static int question(XModelObject o) {
     	if(Display.getCurrent() == null) {
-    		//TODO we cannot display dialog. What should we do?
+    		return -100;
     	}
         return o.getModel().getService().showDialog("Update",
                MessageFormat
