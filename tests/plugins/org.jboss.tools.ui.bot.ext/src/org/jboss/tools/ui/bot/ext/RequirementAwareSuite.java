@@ -313,6 +313,7 @@ public class RequirementAwareSuite extends Suite {
 						new RequirementAwareRunnerBuilder(config), suiteName));
 			} catch (Exception ex) {
 				log.error("Error loading test configuration", ex);
+				throw ex; 				
 			}
 		}
 		
