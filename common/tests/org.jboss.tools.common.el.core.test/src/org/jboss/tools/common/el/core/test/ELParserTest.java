@@ -272,6 +272,11 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t, "aaa#{a}bbb#{1}#{c()}");
 	}
 
+	public void testElInParenthesis() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{(a + 1).toString()}");
+	}
+
 	private void checkCorrectEL(Tokenizer t, String test) {
 		LexicalToken token = t.parse(test);
 		assertEquals(test, restore(token));

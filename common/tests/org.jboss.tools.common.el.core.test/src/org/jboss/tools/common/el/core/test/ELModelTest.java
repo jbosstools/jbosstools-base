@@ -20,6 +20,7 @@ import org.jboss.tools.common.el.core.model.ELMultiExpression;
 import org.jboss.tools.common.el.core.model.ELObject;
 import org.jboss.tools.common.el.core.model.ELObjectType;
 import org.jboss.tools.common.el.core.model.ELParameters;
+import org.jboss.tools.common.el.core.model.ELPropertyInvocation;
 import org.jboss.tools.common.el.core.parser.ELParser;
 import org.jboss.tools.common.el.core.parser.ELParserUtil;
 
@@ -66,6 +67,38 @@ public class ELModelTest extends TestCase {
 		assertEquals(3, exprList2.size());
 		ELExpression expr_2_1 = exprList2.get(0);
 		assertEquals(ELObjectType.EL_COMPLEX_EXPRESSION, expr_2_1.getType());
+	}
+
+	public void testInvokingMethodOnExpressionInParenthesis() {
+		ELParser parser = ELParserUtil.getJbossFactory().createParser();
+		String el = "#{(a.b() + c).d()}";
+		ELModel model = parser.parse(el);
+		
+		List<ELInstance> instances = model.getInstances();
+		
+		assertEquals(1, instances.size());
+		
+		ELInstance instance = instances.get(0);
+		ELExpression expr = instance.getExpression();
+
+		List<ELObject> cs = expr.getChildren();
+		assertEquals(2, cs.size());
+		
+		
+		assertEquals("(a.b()+c)", cs.get(0).toString());
+		List<ELObject> cs1 = cs.get(0).getChildren();
+		assertEquals(1, cs1.size());
+		ELExpression expr1 = (ELExpression)cs1.get(0);
+		assertEquals("a.b()+c", expr1.toString());
+		List<ELObject> cs2 = expr1.getChildren();
+		assertTrue(cs2.get(0) instanceof ELMethodInvocation);
+		assertEquals("a.b()", cs2.get(0).toString());
+		assertTrue(cs2.get(2) instanceof ELPropertyInvocation);
+		assertEquals("c", cs2.get(2).toString());
+
+		assertTrue(cs.get(1) instanceof ELMethodInvocation);
+		assertEquals("d", ((ELMethodInvocation)cs.get(1)).getName().getText());
+		
 	}
 
 }
