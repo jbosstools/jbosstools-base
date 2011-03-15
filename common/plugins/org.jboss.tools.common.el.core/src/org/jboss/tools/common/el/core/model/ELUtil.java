@@ -50,6 +50,7 @@ public class ELUtil {
 							result = l;
 							l = l.getLeft();
 						}
+						return result;
 					}
 				}
 			}

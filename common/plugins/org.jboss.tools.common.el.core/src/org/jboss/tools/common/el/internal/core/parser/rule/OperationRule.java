@@ -50,7 +50,7 @@ public class OperationRule implements IRule, BasicStates {
 			case ArgEndTokenDescription.ARG_END:
 					return STATE_EXPECTING_CALL_AFTER_METHOD;
 			case ExprEndTokenDescription.EXPR_END:
-					return STATE_EXPECTING_OPERATION;
+					return STATE_EXPECTING_CALL; // STATE_EXPECTING_OPERATION;
 		}
 
 		return 0;

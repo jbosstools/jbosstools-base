@@ -10,11 +10,15 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.internal.core.parser;
 
+import java.util.List;
+
+import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.model.ELArgumentImpl;
 import org.jboss.tools.common.el.internal.core.model.ELArgumentExpressionImpl;
 import org.jboss.tools.common.el.internal.core.model.ELComplexExpressionImpl;
+import org.jboss.tools.common.el.internal.core.model.ELComplexInvocationExpressionImpl;
 import org.jboss.tools.common.el.internal.core.model.ELExpressionImpl;
 import org.jboss.tools.common.el.internal.core.model.ELInstanceImpl;
 import org.jboss.tools.common.el.internal.core.model.ELInvocationExpressionImpl;
@@ -156,6 +160,12 @@ public class ELParserImpl {
 		if(current == null) return null;
 		switch(current.getType()) {
 			case ExprStartTokenDescription.EXPR_START:
+				ELComplexExpressionImpl complex = readComplexExpression();
+				if(current != null && current.getType() == DotTokenDescription.DOT) {
+					return readComplexInvocationExpression(complex);
+				} else {
+					return complex;
+				}
 			case UnaryTokenDescription.UNARY:
 				return readComplexExpression();
 			case StringTokenDescription.STRING:
@@ -175,7 +185,7 @@ public class ELParserImpl {
 		return null;
 	}
 
-	protected ELExpressionImpl readComplexExpression() {
+	protected ELComplexExpressionImpl readComplexExpression() {
 		ELComplexExpressionImpl expr = new ELComplexExpressionImpl();
 		expr.setFirstToken(current);
 		if(!hasNextToken()) {
@@ -193,6 +203,28 @@ public class ELParserImpl {
 			setNextToken();
 		}
 		return expr;
+	}
+
+	protected ELComplexInvocationExpressionImpl readComplexInvocationExpression(ELComplexExpressionImpl complex) {
+		ELInvocationExpressionImpl left = null;
+		List<ELInvocationExpression> is = complex.getInvocations();
+		if(is != null && !is.isEmpty()) {
+			left = (ELInvocationExpressionImpl)is.get(0);
+		} else {
+			ELPropertyInvocationImpl fake = new ELPropertyInvocationImpl();
+			LexicalToken t = new LexicalToken(current.getStart(), 0, "", StringTokenDescription.STRING);
+			fake.setName(t);
+			left = fake;
+		}
+		ELComplexInvocationExpressionImpl result = new ELComplexInvocationExpressionImpl();
+		result.setExpression(complex);
+		ELInvocationExpressionImpl right = readRightExpression(left, true);
+		if(right != left) {
+			result.setInvocation(right);
+		}
+		result.setFirstToken(complex.getFirstToken());
+		result.setLastToken(right.getLastToken());
+		return result;
 	}
 
 	protected ELInvocationExpressionImpl readInvocationExpression() {
@@ -223,6 +255,10 @@ public class ELParserImpl {
 				}
 				break;
 		}
+		return readRightExpression(result, false);
+	}
+
+	ELInvocationExpressionImpl readRightExpression(ELInvocationExpressionImpl result, boolean isLeftFake) {
 		if(current != null && current.getType() == DotTokenDescription.DOT) {
 			LexicalToken dot = current;
 			setNextToken();
@@ -235,13 +271,15 @@ public class ELParserImpl {
 				} else {
 					//is it possible?
 				}
-				r.setLeft(result);				
+				r.setLeft(result);
+				r.setLeftIsFake(isLeftFake);
 				result = right;
 			} else {
 				ELPropertyInvocationImpl incompleteProperty = new ELPropertyInvocationImpl();
 				incompleteProperty.setSeparator(dot);
 				incompleteProperty.setLastToken(dot);
 				incompleteProperty.setLeft(result);
+				incompleteProperty.setLeftIsFake(isLeftFake);
 				result = incompleteProperty;
 			}
 		}

@@ -60,7 +60,7 @@ public class CallRule implements IRule, BasicStates {
 			case ArgStartTokenDescription.ARG_START:
 					return STATE_EXPECTING_ARG;
 			case ExprEndTokenDescription.EXPR_END:
-					return STATE_EXPECTING_OPERATION;
+				return STATE_EXPECTING_CALL; // STATE_EXPECTING_OPERATION;
 		}
 
 		return 0;

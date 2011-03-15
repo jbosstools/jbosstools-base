@@ -22,6 +22,7 @@ import org.jboss.tools.common.el.core.model.ELObject;
  */
 public abstract class ELInvocationExpressionImpl extends ELExpressionImpl implements ELInvocationExpression {
 	protected ELInvocationExpressionImpl left;
+	boolean leftIsFake = false;
 
 	public ELInvocationExpressionImpl() {}
 
@@ -30,6 +31,10 @@ public abstract class ELInvocationExpressionImpl extends ELExpressionImpl implem
 
 	public ELInvocationExpressionImpl getLeft() {
 		return left;
+	}
+
+	public void setLeftIsFake(boolean b) {
+		leftIsFake = b;
 	}
 
 	public void setLeft(ELInvocationExpressionImpl left) {
@@ -46,7 +51,7 @@ public abstract class ELInvocationExpressionImpl extends ELExpressionImpl implem
 	}
 
 	public String toString() {
-		return left != null ? left.toString() : ""; //$NON-NLS-1$
+		return left != null && !leftIsFake ? left.toString() : ""; //$NON-NLS-1$
 	}
 
 	public void collectInvocations(List<ELInvocationExpression> list) {
@@ -59,6 +64,7 @@ public abstract class ELInvocationExpressionImpl extends ELExpressionImpl implem
 			} else if(l instanceof ELArgumentExpressionImpl) {
 				((ELArgumentExpressionImpl)l).collectInvocationsInArgument(list);
 			}
+			if(leftIsFake) break;
 			l = l.getLeft();
 		}
 	}

@@ -37,7 +37,7 @@ public class ErrorRecoveryRule implements IRule {
 			case ParamEndTokenDescription.PARAM_END:
 				return BasicStates.STATE_EXPECTING_CALL_AFTER_METHOD;
 			case ExprEndTokenDescription.EXPR_END:
-				return BasicStates.STATE_EXPECTING_OPERATION;
+				return BasicStates.STATE_EXPECTING_CALL; // STATE_EXPECTING_OPERATION;
 		}
 		return 0;
 	}
