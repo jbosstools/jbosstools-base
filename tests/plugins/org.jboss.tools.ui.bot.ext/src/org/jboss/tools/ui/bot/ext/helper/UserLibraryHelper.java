@@ -23,6 +23,14 @@ import org.eclipse.jdt.core.ClasspathContainerInitializer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.tools.ui.bot.ext.SWTOpenExt;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
+import org.junit.Assert;
 
 /**
  * Helper for adding User Libraries (avoiding native dialogs)
@@ -100,5 +108,40 @@ public class UserLibraryHelper {
 			log.error("Unable to add user library");
 			log.error(e.getMessage());
 		}
+	}
+
+	/**
+	 * Add user library to project
+	 * @param libName user library name
+	 * @param projectName project name
+	 */
+	public static void addUserLibraryToProject(String libName,
+			String projectName) {
+
+		SWTBotExt bot = new SWTBotExt();
+		SWTOpenExt open = new SWTOpenExt(bot);
+		SWTEclipseExt eclipse = new SWTEclipseExt();
+		PackageExplorer projectExplorer = new PackageExplorer();
+
+		// Open Project Properties
+		open.viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);
+		projectExplorer.selectProject(projectName);
+		Assert.assertTrue(eclipse.isProjectInPackageExplorer(projectName));
+		SWTUtilExt util = new SWTUtilExt(bot);
+		util.waitForNonIgnoredJobs();
+		ContextMenuHelper.clickContextMenu(projectExplorer.bot().tree(),
+				"Properties");
+
+		// Add Library
+		eclipse.waitForShell("Properties for " + projectName);
+		bot.tree().expandNode("Java Build Path").select();
+		bot.tabItem("Libraries").activate();
+		bot.button("Add Library...").click();
+		bot.list().select("User Library");
+		bot.clickButton(IDELabel.Button.NEXT);
+		bot.table().getTableItem(libName).check();
+		bot.clickButton(IDELabel.Button.FINISH);
+		bot.clickButton(IDELabel.Button.OK);
+
 	}
 }
