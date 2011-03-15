@@ -264,7 +264,7 @@ public class DatabaseHelper {
 			ret = "MySQL_5.0";
 			break;
 		case mysql51:
-			ret = "MySQL_5.1";
+			ret = "MySql_5.1";
 			break;
 		case oracle10g:
 			ret = "Oracle_10";
@@ -316,7 +316,7 @@ public class DatabaseHelper {
 			ret = "MySQL_5.0";
 			break;
 		case mysql51:
-			ret = "MySQL 5";
+			ret = "MySQL";
 			break;
 		case oracle10g:
 			ret = "Oracle_10";
