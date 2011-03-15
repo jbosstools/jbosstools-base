@@ -114,5 +114,19 @@ public class DBBean {
 		throw new IllegalArgumentException("Can't get DB type");
 	}
 	
+	/**
+	 * Returns appropriate JDBC driver name
+	 * @return jar driver name or hsqldb if internal
+	 */
+	public String getDriverName() {
+		if (internal) {
+			return "hsqldb.jar";
+		}
+		else {
+			String[] all = driverPath.split(File.separator);
+			return all[all.length -1];
+		}
+	}
+	
 
 }
