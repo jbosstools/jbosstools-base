@@ -27,11 +27,16 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -44,6 +49,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -60,6 +66,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.XEntityDataImpl;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
@@ -193,6 +200,19 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		menu.setViewer(xtable.getViewer()); 
 		xtable.getViewer().getTable().addMouseListener(menu);
 		getControl().addMouseListener(menu);
+		xtable.getViewer().setColumnProperties(new String[]{"name", "value"});
+		xtable.getViewer().setCellModifier(new PCellModifier());
+		xtable.getViewer().setCellEditors(new CellEditor[]{new TextCellEditor(xtable.getTable()),new TextCellEditor(xtable.getTable())});
+		xtable.getTable().addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.keyCode == 13) {
+					if(xtable.getViewer().isCellEditorActive()) {
+						return;
+					}
+					if(bar.isEnabled(EDIT)) action(EDIT);
+				}
+			}
+		});
 		
 		return panel;	
 	}
@@ -557,6 +577,47 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 			savePreferences(f);
 		}
 	}
+}
+
+class PCellModifier implements ICellModifier {
+
+	public boolean canModify(Object element, String property) {
+		if(element instanceof XModelObject) {
+			XModelObject o = (XModelObject)element;
+			if(o.getModelEntity().getAttribute(property) != null) {
+				return o.isAttributeEditable(property);
+			}
+		}
+		return false;
+	}
+
+	public Object getValue(Object element, String property) {
+		if(element instanceof XModelObject) {
+			XModelObject o = (XModelObject)element;
+			if(o.getModelEntity().getAttribute(property) != null) {
+				return o.getAttributeValue(property);
+			}
+		}
+		return null;
+	}
+
+	public void modify(Object element, String property, Object value) {
+		if(element instanceof TableItem) {
+			TableItem t = (TableItem)element;
+			element = t.getData();
+		}
+		if(element instanceof XModelObject && value != null) {
+			XModelObject o = (XModelObject)element;
+			if(o.getModelEntity().getAttribute(property) != null) {
+				try {
+					o.getModel().editObjectAttribute(o, property, value.toString());
+				} catch (XModelException e) {
+					ModelUIPlugin.getDefault().logError(e);
+				}
+			}
+		}
+	}
+	
 }
 
 class FPTableHelper extends AbstractTableHelper implements PropertyChangeListener {
