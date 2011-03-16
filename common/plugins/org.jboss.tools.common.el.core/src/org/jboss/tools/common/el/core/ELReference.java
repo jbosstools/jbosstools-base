@@ -156,7 +156,7 @@ public abstract class ELReference implements ITextSourceReference {
 				List<SyntaxError> errors = model.getSyntaxErrors();
 				if(!errors.isEmpty()) {
 					ELCorePlugin.getDefault().logWarning("ELObject hold incorrect information. Maybe resource " + getResource() + " has been changed.");
-					return null;
+					return new ELExpression[0];
 				}
 				List<ELInstance> is = model.getInstances();
 				for (ELInstance i : is) {
