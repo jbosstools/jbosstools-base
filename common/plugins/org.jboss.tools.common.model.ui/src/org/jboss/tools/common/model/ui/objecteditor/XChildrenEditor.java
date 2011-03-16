@@ -380,6 +380,7 @@ public class XChildrenEditor implements CommandBarListener {
 		public void drop(Properties p) {
 			XModelObject draggedObject = (XModelObject)p.get("draggedObject"); //$NON-NLS-1$
 			if(draggedObject == null) return;
+			xtable.getViewer().cancelEditing();
 			update();
 			xtable.getViewer().setSelection(new StructuredSelection(draggedObject));
 		}
