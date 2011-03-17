@@ -83,6 +83,8 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 	private ModifyListener modifyListener;
 	private DisposeListener disposeListener;
 
+	private SimpleContentProposalProvider cpp;
+
 	public ComboBoxFieldEditor() {
 //		setStyle(SWT.DROP_DOWN | SWT.BORDER);
 	}
@@ -253,14 +255,7 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			}
 			
 			String[] ts = getTags();			
-			Set<String> set = new TreeSet<String>();
-			for (int i = 0; i < ts.length; i++) set.add(ts[i]);
-			if(elements != null) for (int i = 0; i < elements.length; i++) {
-				set.add(elements[i].toString());
-			}
-			
-			
-			SimpleContentProposalProvider cpp = new SimpleContentProposalProvider(set.toArray(new String[0]));
+			cpp = new SimpleContentProposalProvider(prepareProposals(ts, elements));
 			cpp.setFiltering(true);
 			KeyStroke ks = AttributeContentProposalProviderFactory.getCtrlSpaceKeyStroke();
 			
@@ -278,6 +273,15 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			checkParent(comboField, parent);
 		}
 		return comboField;
+	}
+
+	private String[] prepareProposals(String[] tags, Object[] elements) {
+		Set<String> set = new TreeSet<String>();
+		for (int i = 0; i < tags.length; i++) set.add(tags[i]);
+		if(elements != null) for (int i = 0; i < elements.length; i++) {
+			set.add(elements[i].toString());
+		}
+		return set.toArray(new String[0]);
 	}
 
 	protected void valueChanged() {
@@ -444,14 +448,17 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			String v = comboField.getText();
 			valueProvider.removeValueChangeListener(this);
 			String[] tags = getTags();
+			cpp.setProposals(prepareProposals(tags, elements));
 			comboField.setItems(tags);
 			comboField.setText(v);
 			int i = comboField.getSelectionIndex();
 			valueProvider.addValueChangeListener(this);
-			if(i < 0 && tags != null && tags.length > 0) {
-				comboField.setText(tags[0]);
-			} else if(i < 0) {
-				comboField.setText(""); //$NON-NLS-1$
+			if((propertyEditor.getInput() instanceof DefaultValueAdapter) && !((DefaultValueAdapter)propertyEditor.getInput()).getAttribute().getConstraint().accepts("anyRandomValue")) {
+				if(i < 0 && tags != null && tags.length > 0) {
+					comboField.setText(tags[0]);
+				} else if(i < 0) {
+					comboField.setText(""); //$NON-NLS-1$
+				}
 			}
 		}
 	}
@@ -530,6 +537,17 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			comboField.getParent().setFocus();
 			comboField.setSelection(new Point(0, comboField.getText().length()));
 			comboField.setFocus();
+		}
+	}
+
+	public void setFocusAndKeepSelection() {
+		if (comboField != null) {
+			Point p = comboField.getSelection();
+			comboField.getParent().setFocus();
+			comboField.setFocus();
+			if(p != null) {
+				comboField.setSelection(p);
+			}
 		}
 	}
 }
