@@ -34,6 +34,7 @@ public class CommonModelAllTests {
 		suite.addTestSuite(PropertiesLoaderTest.class);
 		suite.addTestSuite(JarAccessTest.class);
 		suite.addTestSuite(EclipseJavaUtilTest.class);
+		suite.addTestSuite(ResourceAdapterTest.class);
 		return suite;
 	}
 }
