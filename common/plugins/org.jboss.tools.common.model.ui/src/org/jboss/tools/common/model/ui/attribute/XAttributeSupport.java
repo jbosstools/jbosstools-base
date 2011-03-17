@@ -42,18 +42,25 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.ui.actions.ActionFactory;
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.meta.action.XAttributeData;
 import org.jboss.tools.common.meta.action.XEntityData;
 import org.jboss.tools.common.meta.key.WizardKeys;
+import org.jboss.tools.common.model.XModelFactory;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.widgets.DefaultSettings;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
+import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 /**
  * @author eskimo
  */
 public class XAttributeSupport {
+	public static interface IAttributeDependency extends java.beans.PropertyChangeListener {
+		public void setSupport(XAttributeSupport support);
+	}
+	
 	boolean isDebugging = ModelUIPlugin.getDefault().isDebugging();
 
 	private ArrayList<IModelPropertyEditorAdapter> adapters = new ArrayList<IModelPropertyEditorAdapter>();
@@ -114,6 +121,8 @@ public class XAttributeSupport {
 				alwaysGreedy.add(attribute[i].getName());
 			}
 		}
+
+		initDependencies(xmo.getModelEntity());
 	}
 
 	public void init(XModelObject xmo, XEntityData data, boolean useObject) {
@@ -145,6 +154,16 @@ public class XAttributeSupport {
 			}
 		}
 		
+		initDependencies(data.getModelEntity());
+	}
+
+	void initDependencies(XModelEntity entity) {
+		String dependencies = entity.getProperty("formDependencies");
+		if(dependencies == null || dependencies.length() == 0) return;
+		IAttributeDependency d = (IAttributeDependency)ModelFeatureFactory.getInstance().createFeatureInstance(dependencies);
+		if(d == null) return;
+		d.setSupport(this);
+		addPropertyChangeListener(d);
 	}
 	
 	public void dispose() {
