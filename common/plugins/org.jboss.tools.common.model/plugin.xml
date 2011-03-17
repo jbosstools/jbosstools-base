@@ -397,4 +397,13 @@
           resource="meta/options_general.xml" priority="0">
     </contribution>
  </extension>
+
+	<extension point="org.eclipse.core.runtime.adapters">
+	  <factory 
+	         class="org.jboss.tools.common.model.impl.XModelObjectToResourceAdapter" 
+	         adaptableType="org.jboss.tools.common.model.XModelObject">	            
+	    <adapter type="org.eclipse.core.resources.IResource"/>
+	  </factory>
+	</extension>
+
 </plugin>

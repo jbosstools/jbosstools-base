@@ -480,9 +480,8 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
 	public Object getAdapter(Class adapter) {
 		if(XModelObject.class == adapter) return this;
 		else if(adapter == IResource.class) {
-			XModelObject f = getResourceAncestor();
-			Object o = (f == null || f == this) ? null : f.getAdapter(IResource.class);
-			return (o instanceof IResource) ? o : null;
+			//implementation moved to XModelObjectToResourceAdapter
+			return null;
 		} else if(adapter == IProject.class) {
 			return EclipseResourceUtil.getProject(this);
 		} else if(adapter == IFile.class) {
