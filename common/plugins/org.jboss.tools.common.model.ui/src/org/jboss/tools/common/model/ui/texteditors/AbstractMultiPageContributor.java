@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.texteditors;
 
@@ -31,9 +31,11 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.jboss.tools.common.text.xml.ui.TextEditorMessages;
+import org.jboss.tools.common.text.xml.xpl.GoToMatchingTagAction;
 
 public abstract class AbstractMultiPageContributor extends MultiPageEditorActionBarContributor {
-	
+	protected static final String GO_TO_MATCHING_TAG_ID = "org.eclipse.wst.xml.ui.gotoMatchingTag"; //$NON-NLS-1$
+
 	/** The global actions to be connected with editor actions */
 	protected final static String[] ACTIONS= {
 		ITextEditorActionConstants.UNDO, 
@@ -96,7 +98,8 @@ public abstract class AbstractMultiPageContributor extends MultiPageEditorAction
 	protected RetargetTextEditorAction fContentAssistTip;
 	
 	protected TextEditorAction fToggleOccurencesMarkUp;
-	
+	protected GoToMatchingTagAction fGoToMatchingTagAction;
+
 	public AbstractMultiPageContributor() {
 		super();
 		createAssistObjects();
