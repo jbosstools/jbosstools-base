@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion> 
+	<parent>
+	  <groupId>org.jboss.tools</groupId>
+	  <artifactId>org.jboss.tools.parent.pom</artifactId>
+	  <version>0.0.2-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools.runtime.tests</groupId>
+	<artifactId>org.jboss.tools.runtime.test</artifactId> 
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>eclipse-test-plugin</packaging>
+
+	<properties>
+		<systemProperties>-Djbosstools.test.jboss.home.4.2=${requirement.build.root}/jboss-4.2.3.GA -Djbosstools.test.jboss.home.5.1=${requirement.build.root}/jboss-5.1.0.GA -Djbosstools.test.seam.2.0.1.GA.home=${requirement.build.root}/jboss-seam-2.0.1.GA -Djbosstools.test.seam.2.2.0.GA.home=${requirement.build.root}/jboss-seam-2.2.0.GA -Djbosstools.test.eap.4.3.home=${requirement.build.root}/jboss-eap-4.3</systemProperties>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>maven-osgi-test-plugin</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<useUIThread>false</useUIThread>
+					<useUIHarness>true</useUIHarness>
+					<testSuite>org.jboss.tools.runtime.test</testSuite>
+                    <testClass>org.jboss.tools.runtime.test.RuntimeDetectionAllTests</testClass> 
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
