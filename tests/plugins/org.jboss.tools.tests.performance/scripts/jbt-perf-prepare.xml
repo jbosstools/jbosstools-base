@@ -10,8 +10,9 @@
                 <istrue value="${noclean}"/>
             </and>
         </condition>
+        <!--
         <mkdir dir="${jbt.perf.db.loc}"/>
-
+	-->
     </target>
     
     <target name="prepare" depends="init,get-deps-all">
@@ -21,8 +22,8 @@
     	<property name="perf.buildID" value="3.2_201009081606_201009081606"/>
     	-->
         <property name="perf.memory" value="-Xms256M -Xmx512M -XX:MaxPermSize=256M"/>
-        <property name="perf.db" value="-Declipse.perf.dbloc=${jbt.perf.db.loc};create=true;dbname=perfdb;dbuser=guest;dbpasswd=guest"/>
-        <property name="perf.config" value="-Declipse.perf.config=build=${perf.buildID};desc=${jbt.host.desc};os=${osgi.os};arch=${osgi.arch};jvm=sun"/>
+        <property name="perf.db" value="-Declipse.perf.dbloc=${jbt.perf.db.loc};${jbt.perf.db.props}"/>
+        <property name="perf.config" value="-Declipse.perf.config=build=${perf.buildID};${jbt.host.desc}"/>
         <condition property="perf.baseBuild" value="-Declipse.perf.assertAgainst=build=${perf.baseBuildID};host=localhost;jvm=sun" else="">
             <and>
                 <isset property="perf.baseBuildID"/>
@@ -50,14 +51,15 @@
     </target>
     
     <target name="run" depends="prepare">
-        <java jar="workdir/eclipse/plugins/org.eclipse.equinox.launcher_1.1.0.v20100507.jar" fork="true" dir="workdir/eclipse-testing">
+        <java jar="workdir/eclipse/plugins/org.eclipse.equinox.launcher_1.1.1.R36x_v20101122_1400.jar" fork="true" dir="workdir/eclipse-testing">
             <jvmarg value="-Dosgi.os=${osgi.os} -Dosgi.ws=${osgi.ws} -Dosgi.arch=${osgi.arch}"/>
             <arg line="-data ../workspace"/>
             <arg line="-application org.eclipse.ant.core.antRunner"/>
             <arg line="-file jbt-performance.xml"/>
             <arg line="${tests}"/>
             <arg line="-Dos=${osgi.os} -Dws=${osgi.ws} -Darch=${osgi.arch}"/>
-            <arg line="-D${clean}=true"/>
+    	    <arg line="-D${clean}=true"/>        
+    	    
             <arg line="-logger org.apache.tools.ant.DefaultLogger"/>
             <arg line="-Dvmargs='${perf.memory} ${perf.db} ${perf.config} ${perf.baseBuild}'"/>
         	<arg line="-DruntimeArchive=${runtimeArchive}"/>
@@ -72,5 +74,5 @@
         <zip destfile="perfDB-${tstamp}.zip" basedir="${jbt.perf.db.loc}"/>
     </target>
     
-    <target name="all" depends="run, saveDB" />
+    <target name="all" depends="run" />
 </project>

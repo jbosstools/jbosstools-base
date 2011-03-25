@@ -2,6 +2,7 @@
 <project default="get-deps-all">
 	<property environment="env"/>
 	<property file="jbt-perf-prepare.properties" />
+	<property name="eclipse.site" value="http://download.eclipse.org" />
 	<!--
 	<property name="mirror" value="http://carroll.aset.psu.edu/pub/eclipse" />
 	-->
@@ -10,7 +11,6 @@
 	<property name="workdir" value="work" />
 	<property name="libdir" value="${jbt.dependencies.folder}" />
 	<property name="tmpdir" value="tmp" />
-	<property name="get.zip.jboss.tools" value="http://download.jboss.org/jbosstools/builds/staging/jbosstools-3.2.0.Beta2.aggregate/all/jbosstools-3.2.0.Beta2.aggregate-Update-SNAPSHOT.zip" />
 	<condition property="ext.win" value=".zip" else="">
 		<os family="windows" />
 	</condition>
@@ -50,24 +50,51 @@
 		</groovy>
 	</target>
 	<target name="get-dependencies">
-		<property name ="zip.eclipse.platform" value="eclipse-platform-3.6-${os.win}${os.linux}${arch.x86_64}${ext.linux}${ext.win}" />		
-		<property name="zip.eclipse.j2ee" value="eclipse-jee-helios-${os.win}${os.linux}${arch.x86_64}${ext.linux}${ext.win}" />
+                <groovy>
+                        properties['zip.jboss.tools.skipexisting']=true
+                        if (!properties['get.zip.jboss.tools']) {
+                                println 'Update-site zip not defined, determining default (nightly trunk)'                                           
+                                link = 'http://download.jboss.org/jbosstools/builds/nightly/trunk/latestBuild.html'
+                                ant.get(dest:properties['tmpdir'],src:link)
+                                latest =  new File(properties['tmpdir']+'/latestBuild.html').getText()
+                                match = latest.trim() =~ '.*url=([\\d\\w\\_\\-]+).*'
+                                if (match.matches()) {
+                                        latest = match[0][1];
+                                }
+                                link=link.replaceAll('latestBuild.html',latest)
+                                link+='/all'
+                                ant.get(dest:properties['tmpdir']+'/index',src:link)
+                                latest =  new File(properties['tmpdir']+'/index').getText()
+                                match = latest.trim().eachMatch('.*href=\\"([\\.\\w\\d\\-]+Update[\\-\\w\\.\\d]+zip).*') {
+                                        latest = it[1]
+                                }
+                                link = link+='/'+latest
+                                properties['get.zip.jboss.tools'] = link
+                                // always overwrite upd-site zipfile when using trunk
+                                properties['zip.jboss.tools.skipexisting']=false
+                        }
+                        def zip = properties['get.zip.jboss.tools'].replaceAll('.*\\/','')
+                        properties['zip.jboss.tools']=zip
 
+                </groovy>
 
-		<property name="get.zip.eclipse.platform" value="${mirror}/eclipse/downloads/drops/R-3.6-201006080911/${zip.eclipse.platform}" />
-		<property name="md5.eclipse.platform" value="http://download.eclipse.org/eclipse/downloads/drops/R-3.6-201006080911/checksum/${zip.eclipse.platform}.md5" />
-		<property name="zip.test.framework" value="eclipse-test-framework-3.6.zip" />
-		<property name="get.zip.test.framework" value="${mirror}/eclipse/downloads/drops/R-3.6-201006080911/${zip.test.framework}" />
-		<property name="md5.test.framework" value="http://download.eclipse.org/eclipse/downloads/drops/R-3.6-201006080911/checksum/eclipse-test-framework-3.6.zip.md5" />
-		<property name="zip.eclipse.automated" value="eclipse-Automated-Tests-3.6.zip" />
-		<property name="get.zip.eclipse.automated" value="${mirror}/eclipse/downloads/drops/R-3.6-201006080911/${zip.eclipse.automated}" />
-		<property name="md5.eclipse.automated" value="http://download.eclipse.org/eclipse/downloads/drops/R-3.6-201006080911/checksum/eclipse-Automated-Tests-3.6.zip.md5" />
-		<property name="get.zip.eclipse.j2ee" value="${mirror}/technology/epp/downloads/release/helios/R/${zip.eclipse.j2ee}" />
+		<property name="eclipse.drops" value="/eclipse/downloads/drops/R-3.6.2-201102101200" />
+
+		<property name="zip.eclipse.platform" value="eclipse-platform-3.6.2-${os.win}${os.linux}${arch.x86_64}${ext.linux}${ext.win}" />
+		<property name="get.zip.eclipse.platform" value="${mirror}/${eclipse.drops}/${zip.eclipse.platform}" />
+		<property name="md5.eclipse.platform" value="${mirror}/${eclipse.drops}/checksum/${zip.eclipse.platform}.md5" />
+
+		<property name="zip.test.framework" value="eclipse-test-framework-3.6.2.zip" />		
+		<property name="get.zip.test.framework" value="${mirror}/${eclipse.drops}/${zip.test.framework}" />
+		<property name="md5.test.framework" value="${mirror}/${eclipse.drops}/checksum/${zip.test.framework}.md5" />
+		
+		<property name="zip.eclipse.automated" value="eclipse-Automated-Tests-3.6.2.zip" />
+		<property name="get.zip.eclipse.automated" value="${mirror}/${eclipse.drops}/${zip.eclipse.automated}" />
+		<property name="md5.eclipse.automated" value="${mirror}/${eclipse.drops}/checksum/${zip.eclipse.automated}.md5" />
+
+		<property name="zip.eclipse.j2ee" value="eclipse-jee-helios-SR2-${os.win}${os.linux}${arch.x86_64}${ext.linux}${ext.win}" />
+		<property name="get.zip.eclipse.j2ee" value="${mirror}/technology/epp/downloads/release/helios/SR2/${zip.eclipse.j2ee}" />
 		<property name="md5.eclipse.j2ee" value="${get.zip.eclipse.j2ee}.md5" />
-		<groovy>
-			def zip = properties['get.zip.jboss.tools'].replaceAll('.*\\/','')
-			properties['zip.jboss.tools']=zip
-		</groovy>
 		
 		<property name="get.zip.derby.plugin" value="http://apache.thelorne.com//db/derby/db-derby-10.6.1.0/derby_core_plugin_10.6.1.zip" />
 		<property name="zip.derby.plugin" value="derby_core_plugin_10.6.1.zip" />
@@ -81,7 +108,7 @@
 		<get-and-checksum pattern="{0} *{1}" dir="${libdir}" md5="${md5.eclipse.platform}" dst="${zip.eclipse.platform}" src="${get.zip.eclipse.platform}" />
 		<get-and-checksum pattern="{0} *{1}" dir="${libdir}" md5="${md5.eclipse.automated}" dst="${zip.eclipse.automated}" src="${get.zip.eclipse.automated}" />
 		<get-and-checksum pattern="{0} {1}" dir="${libdir}" md5="${md5.eclipse.j2ee}" dst="${zip.eclipse.j2ee}" src="${get.zip.eclipse.j2ee}" />
-		<get dest="${libdir}/${zip.jboss.tools}" skipexisting="true" src="${get.zip.jboss.tools}"/>
+		<get dest="${libdir}/${zip.jboss.tools}" skipexisting="${zip.jboss.tools.skipexisting}" src="${get.zip.jboss.tools}"/>
 		<!--
 		<get-and-checksum pattern="MD5 ({1}) = {0}" dir="${libdir}" md5="${md5.derby.plugin}" dst="${zip.derby.plugin}" src="${get.zip.derby.plugin}"/>
 		<move file="${libdir}/${zip.derby.plugin}" tofile="${libdir}/org.apache.derby_1.0.0.zip" />
@@ -121,16 +148,31 @@
 				features = features.substring(1)
 				def output=properties['destdir']+'/jboss-tools-'+version+'.zip'
 				println 'Detetected JBoss Tools version '+version
-				majorVersion = '0.0.0'
+				majorVersion = '3.2.0'
 				
 				// jbosstools-3.2.0.M2.aggregate-Update-2010-09-08_17-17-54-H243a.zip
 				match = properties['get.zip.jboss.tools'] =~ '.*/jbosstools-(\\d\\.\\d\\.\\d).*'
 				if (match.matches()) majorVersion = match[0][1]
-				
+			
+				majorVersion='R-'+majorVersion
 				println 'Setting up properties'
 				properties['runtimeArchive']='../../jboss-tools-'+version+'.zip'				
+				import java.text.SimpleDateFormat;
 				buildID = version.split('-')
-				properties['perf.buildID'] = majorVersion+'_'+buildID[0] + buildID[1]+'_'+buildID[0] + buildID[1]
+				buildType = properties['jbt.build.type']
+				if ('R'.equals(buildType))
+				{
+					cal = Calendar.instance
+					df_date = new SimpleDateFormat("yyyyMMdd")
+					df_time = new SimpleDateFormat("HHmm")
+					properties['perf.buildID'] = majorVersion+'_'+buildID[0] + buildID[1]+'_'+ df_date.format(cal.time)+ df_time.format(cal.time)
+				}
+				else if (buildType == 'x' ) {
+					properties['perf.buildID'] = 'I'+buildID[0]+'-'+buildID[1]
+				}
+				else {
+					ant.fail('Unexpected value of property jbt.built.type')
+				}
 				if (properties['os.linux']!="") {
 					properties['osgi.os']='linux'
 					properties['osgi.ws']='gtk'
