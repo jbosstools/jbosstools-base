@@ -14,5 +14,6 @@
 	<modules>
 		<module>org.jboss.tools.runtime.core.feature</module>
 		<module>org.jboss.tools.runtime.feature</module>
+		<module>org.jboss.tools.runtime.test.feature</module>
 	</modules>
 </project>
