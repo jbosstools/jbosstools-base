@@ -21,8 +21,6 @@
 				<artifactId>maven-osgi-test-plugin</artifactId>
 				<version>${tychoVersion}</version>
 				<configuration>
-					<useUIThread>false</useUIThread>
-					<useUIHarness>true</useUIHarness>
 					<testSuite>org.jboss.tools.runtime.test</testSuite>
                     <testClass>org.jboss.tools.runtime.test.RuntimeDetectionAllTests</testClass> 
 				</configuration>
