@@ -57,15 +57,10 @@ public class RuntimeDetectionTest {
 				IRuntimeDetectionConstants.EAP_43_HOME };
 
 		for (String path : paths) {
-			assertTrue(path != null);
-			File file = new File(path);
-			assertTrue("The '" + path + "' path isn't valid.",
-					file.isDirectory());
 			RuntimePath runtimePath = new RuntimePath(path);
 			runtimePaths.add(runtimePath);
 		}
 		RuntimeUIActivator.getDefault().saveRuntimePaths();
-		runtimePaths = null;
 		List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator
 				.getRuntimeDetectors();
@@ -74,8 +69,6 @@ public class RuntimeDetectionTest {
 				detector.initializeRuntimes(serverDefinitions);
 			}
 		}
-		assertTrue("serverDefinitions.size()\nExpected: 0\nWas: "
-				+ serverDefinitions.size(), serverDefinitions.size() == 0);
 	}
 
 	private static void createRuntimes() {
@@ -119,6 +112,17 @@ public class RuntimeDetectionTest {
 				runtimePaths.size() == 5);
 	}
 
+	@Test
+	public void testLocations() {
+		List<ServerDefinition> serverDefinitions = RuntimeUIActivator
+				.getDefault().getServerDefinitions();
+		for (ServerDefinition serverDefinition : serverDefinitions) {
+			File location = serverDefinition.getLocation();
+			assertTrue("The '" + location.getAbsolutePath()
+					+ "' path isn't valid.", location.isDirectory());
+		}
+	}
+	
 	@Test
 	public void testServerDefinitions() {
 		List<ServerDefinition> serverDefinitions = RuntimeUIActivator
