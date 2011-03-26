@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %BundleName
-Bundle-SymbolicName: org.jboss.tools.runtime.test
+Bundle-SymbolicName: org.jboss.tools.runtime.test;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.junit4,

@@ -43,6 +43,8 @@ public class RuntimeDetectionTest {
 
 	@BeforeClass
 	public static void create() {
+		RuntimeCoreActivator.getDefault();
+		RuntimeUIActivator.getDefault();
 		addRuntimePaths();
 		createRuntimes();
 	}
@@ -58,6 +60,7 @@ public class RuntimeDetectionTest {
 
 		for (String path : paths) {
 			RuntimePath runtimePath = new RuntimePath(path);
+			runtimePath.setScanOnEveryStartup(false);
 			runtimePaths.add(runtimePath);
 		}
 		RuntimeUIActivator.getDefault().saveRuntimePaths();

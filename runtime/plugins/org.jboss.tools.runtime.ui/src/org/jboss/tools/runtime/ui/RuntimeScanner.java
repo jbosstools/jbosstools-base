@@ -32,6 +32,10 @@ public class RuntimeScanner implements IStartup {
 
 	@Override
 	public void earlyStartup() {
+		String skipRuntimeScanner = System.getProperty("skip.runtime.scanner", "false");
+		if ("true".equals(skipRuntimeScanner)) {
+			return;
+		}
 		final boolean firstStart = RuntimeUIActivator.getDefault().
 			getPreferenceStore().getBoolean(RuntimeUIActivator.FIRST_START);
 		Job runtimeJob = new Job("Searching runtimes...") {
