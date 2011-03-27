@@ -13,9 +13,13 @@ package org.jboss.tools.runtime.test;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IRuntime;
@@ -40,6 +44,7 @@ import org.junit.Test;
  * 
  */
 public class RuntimeDetectionTest {
+	private final static String seamVersionAttributeName = "Seam-Version";
 
 	@BeforeClass
 	public static void create() {
@@ -139,11 +144,54 @@ public class RuntimeDetectionTest {
 	}
 	
 	@Test
+	public void testSeam22Location() throws Exception {
+		String seamHome = IRuntimeDetectionConstants.SEAM_22_HOME;
+		testSeamHome(seamHome, "2.2");
+	}
+	
+	@Test
+	public void testSeam20Location() throws Exception {
+		String seamHome = IRuntimeDetectionConstants.SEAM_20_HOME;
+		testSeamHome(seamHome, "2.0");
+	}
+
+	private void testSeamHome(String seamHome, String seamVersion) throws IOException {
+		File file = new File(seamHome);
+		assertTrue("The '" + file.getAbsolutePath()
+				+ "' path isn't valid.", file.isDirectory());
+		String[] seamFiles = file.list(new FilenameFilter() {
+			
+			public boolean accept(File dir, String name) {
+				if ("seam-gen".equals(name)) {
+					return true;
+				}
+				if ("lib".equals(name)) {
+					return true;
+				}
+				return false;
+			}
+		});
+		assertTrue("seamFiles : " + seamFiles, seamFiles != null
+				&& seamFiles.length == 2);
+		File jarFile = new File(seamHome, "lib/jboss-seam.jar");
+		assertTrue("The '" + jarFile.getAbsolutePath() + "' path isn't valid.",
+				jarFile.isFile());
+		JarFile jar = new JarFile(jarFile);
+		Attributes attributes = jar.getManifest().getMainAttributes();
+		String version = attributes.getValue(seamVersionAttributeName);
+		assertTrue("seamVersion: " + version, version != null && version.startsWith(seamVersion));
+	}
+	
+	@Test
 	public void testServerDefinitions() {
 		List<ServerDefinition> serverDefinitions = RuntimeUIActivator
 				.getDefault().getServerDefinitions();
+		List<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
+			.getRuntimePaths();
 		assertTrue("serverDefinitions.size()\nExpected: 5\nWas: "
-				+ serverDefinitions.size() + "\n" + serverDefinitions, serverDefinitions.size() == 5);
+				+ serverDefinitions.size() + 
+				"\nserverDefinitions: " + serverDefinitions +
+				"\nruntimePaths=" + runtimePaths, serverDefinitions.size() == 5);
 	}
 
 	@Test

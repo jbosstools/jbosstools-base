@@ -225,7 +225,7 @@ public class SeamHandler extends AbstractRuntimeDetector implements IJBossRuntim
 				if ("seam-gen".equals(name)) {
 					return true;
 				}
-				if ("examples".equals(name)) {
+				if ("lib".equals(name)) {
 					return true;
 				}
 				return false;
