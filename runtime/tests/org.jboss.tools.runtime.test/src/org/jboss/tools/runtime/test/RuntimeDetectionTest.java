@@ -114,6 +114,18 @@ public class RuntimeDetectionTest {
 				"runtimePaths.size()\nExpected: 5\nWas: " + runtimePaths.size(),
 				runtimePaths.size() == 5);
 	}
+	
+	@Test
+	public void testRuntimePathsExists() {
+		List<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
+				.getRuntimePaths();
+		for (RuntimePath runtimePath:runtimePaths) {
+			String path = runtimePath.getPath();
+			File file = new File(path);
+			assertTrue("The '" + file.getAbsolutePath()
+					+ "' path isn't valid.", file.isDirectory());
+		}
+	}
 
 	@Test
 	public void testLocations() {
