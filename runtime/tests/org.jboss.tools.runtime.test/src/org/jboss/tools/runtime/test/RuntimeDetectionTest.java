@@ -143,7 +143,7 @@ public class RuntimeDetectionTest {
 		List<ServerDefinition> serverDefinitions = RuntimeUIActivator
 				.getDefault().getServerDefinitions();
 		assertTrue("serverDefinitions.size()\nExpected: 5\nWas: "
-				+ serverDefinitions.size(), serverDefinitions.size() == 5);
+				+ serverDefinitions.size() + "\n" + serverDefinitions, serverDefinitions.size() == 5);
 	}
 
 	@Test
