@@ -108,8 +108,18 @@
 		<get-and-checksum pattern="{0} *{1}" dir="${libdir}" md5="${md5.eclipse.platform}" dst="${zip.eclipse.platform}" src="${get.zip.eclipse.platform}" />
 		<get-and-checksum pattern="{0} *{1}" dir="${libdir}" md5="${md5.eclipse.automated}" dst="${zip.eclipse.automated}" src="${get.zip.eclipse.automated}" />
 		<get-and-checksum pattern="{0} {1}" dir="${libdir}" md5="${md5.eclipse.j2ee}" dst="${zip.eclipse.j2ee}" src="${get.zip.eclipse.j2ee}" />
-		<get dest="${libdir}/${zip.jboss.tools}" skipexisting="${zip.jboss.tools.skipexisting}" src="${get.zip.jboss.tools}"/>
+		<groovy>
+			if (properties['jbt.install.tools']=='true') {
+				ant.get(
+					dest:properties['libdir']+'/'+properties['zip.jboss.tools'],
+					skipexisting:properties['zip.jboss.tools.skipexisting'],
+					src:properties['get.zip.jboss.tools']
+				)
+			}
+		</groovy>
 		<!--
+		<get dest="${libdir}/${zip.jboss.tools}" skipexisting="${zip.jboss.tools.skipexisting}" src="${get.zip.jboss.tools}"/>
+		
 		<get-and-checksum pattern="MD5 ({1}) = {0}" dir="${libdir}" md5="${md5.derby.plugin}" dst="${zip.derby.plugin}" src="${get.zip.derby.plugin}"/>
 		<move file="${libdir}/${zip.derby.plugin}" tofile="${libdir}/org.apache.derby_1.0.0.zip" />
 		-->
