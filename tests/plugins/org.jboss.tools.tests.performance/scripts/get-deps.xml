@@ -52,7 +52,7 @@
 	<target name="get-dependencies">
                 <groovy>
                         properties['zip.jboss.tools.skipexisting']=true
-                        if (!properties['get.zip.jboss.tools']) {
+                        if (!properties['get.zip.jboss.tools'] &amp;&amp; properties['jbt.install.tools']=='true') {
                                 println 'Update-site zip not defined, determining default (nightly trunk)'                                           
                                 link = 'http://download.jboss.org/jbosstools/builds/nightly/trunk/latestBuild.html'
                                 ant.get(dest:properties['tmpdir'],src:link)
@@ -124,55 +124,75 @@
 		<sequential>
 			<groovy>
 
-
-				println 'Unzipping update site'
-				ant.mkdir(dir:properties['tmpdir']+'/upd-site')
-				ant.unzip(
+				import java.text.SimpleDateFormat;
+				def df_date = new SimpleDateFormat('yyyyMMddHHmm')				
+				def install= properties['jbt.install.tools'] == 'true'
+				if (install) {
+					// unzip JBossTools updatesite and determine buildID and build date
+					println 'Unzipping update site'
+					ant.mkdir(dir:properties['tmpdir']+'/upd-site')
+					ant.unzip(
 						src:properties['libdir']+'/'+properties['zip.jboss.tools'],
 						dest:properties['tmpdir']+'/upd-site'
-				)
-				println 'Searching for features and detecting version'
-				def version = ""
-				def features = ""
-				def featuresDir = new File(properties['tmpdir']+'/upd-site/features')
-				if (!featuresDir.isDirectory() || !featuresDir.exists()) {
-					ant.fail(message:'Update site unzip error, '+properties['tmpdir']+'/upd-site/features does not exist')
-				}
-				featuresDir.eachFile({
-					match = it.getName() =~ '(org.jboss.tools[^_]+)_.*v(.*)\\.jar'
-					if (match.matches()) {
-						version = match[0][2]
-						features += ","+match[0][1]+'.feature.group'
-					}		
-				})
-				features = features.substring(1)
-				def output=properties['destdir']+'/jboss-tools-'+version+'.zip'
-				println 'Detetected JBoss Tools version '+version
-				majorVersion = '3.2.0'
+					)
+					println 'Searching for features and detecting version'
+					def version = ""
+					def features = ""
+					def featuresDir = new File(properties['tmpdir']+'/upd-site/features')
+					if (!featuresDir.isDirectory() || !featuresDir.exists()) {
+						ant.fail(message:'Update site unzip error, '+properties['tmpdir']+'/upd-site/features does not exist')
+					}
+					featuresDir.eachFile({
+						match = it.getName() =~ '(org.jboss.tools[^_]+)_.*v(.*)\\.jar'
+						if (match.matches()) {
+							version = match[0][2]
+							features += ","+match[0][1]+'.feature.group'
+						}		
+					})
+					features = features.substring(1)
+					output=properties['destdir']+'/jboss-tools-'+version+'.zip'
+					properties['runtimeArchive']='../../jboss-tools-'+version+'.zip'				
+					println 'Detetected JBoss Tools version '+version
+					majorVersion = '3.2.0'
 				
-				// jbosstools-3.2.0.M2.aggregate-Update-2010-09-08_17-17-54-H243a.zip
-				match = properties['get.zip.jboss.tools'] =~ '.*/jbosstools-(\\d\\.\\d\\.\\d).*'
-				if (match.matches()) majorVersion = match[0][1]
-			
-				majorVersion='R-'+majorVersion
-				println 'Setting up properties'
-				properties['runtimeArchive']='../../jboss-tools-'+version+'.zip'				
-				import java.text.SimpleDateFormat;
-				buildID = version.split('-')
-				buildType = properties['jbt.build.type']
-				if ('R'.equals(buildType))
-				{
+					// jbosstools-3.2.0.M2.aggregate-Update-2010-09-08_17-17-54-H243a.zip
+					match = properties['get.zip.jboss.tools'] =~ '.*/jbosstools-(\\d\\.\\d\\.\\d).*'
+					if (match.matches()) majorVersion = match[0][1]
+					majorVersion=properties['jbt.build.prefix']+'-'+majorVersion
+					buildID = version.split('-')
 					cal = Calendar.instance
-					df_date = new SimpleDateFormat("yyyyMMdd")
-					df_time = new SimpleDateFormat("HHmm")
-					properties['perf.buildID'] = majorVersion+'_'+buildID[0] + buildID[1]+'_'+ df_date.format(cal.time)+ df_time.format(cal.time)
+					properties['perf.buildID'] = majorVersion+'_'+buildID[0] + buildID[1]+'_'+ df_date.format(cal.time)
+			
 				}
-				else if (buildType == 'x' ) {
-					properties['perf.buildID'] = 'I'+buildID[0]+'-'+buildID[1]
+				
+				println 'Unzipping base eclipse'
+				def file = properties['libdir']+'/'+properties['zip.eclipse.j2ee']
+				if (file.endsWith('.tar.gz')) {
+					ant.delete(  file:file+'.tar')
+					ant.gunzip(src:file,dest:file+'.tar')
+					ant.untar(src:file+'.tar',dest:properties['tmpdir'])
+					ant.delete(  file:file+'.tar')
 				}
-				else {
-					ant.fail('Unexpected value of property jbt.built.type')
+				else if (file.endsWith('.zip')) {
+					ant.unzip(  src:file,dest:properties['tmpdir'],overwrite:'true' )
 				}
+				ant.chmod(perm:'ugo+rwx', file:properties['tmpdir']+'/eclipse/eclipse')
+				if (!install) {
+					// determine eclipse version and set buildID
+					def eprops = new Properties()
+					eprops.load(new FileInputStream(properties['tmpdir']+'/eclipse/configuration/config.ini'))
+					println 'Loaded'
+					df_edate = new SimpleDateFormat('yyyyMMdd-HHmm')
+					buildDate = df_edate.parse(eprops['eclipse.buildId'].substring(1))
+					eprops.load(new FileInputStream(properties['tmpdir']+'/eclipse/.eclipseproduct'))
+					majorVersion = properties['jbt.build.prefix']+'-'+eprops['version']
+					println df_date.format(buildDate)
+					cal = Calendar.instance
+					properties['perf.buildID']=majorVersion+'_'+df_date.format(buildDate)+'_'+df_date.format(cal.time)
+					output=properties['destdir']+'/eclipse-'+majorVersion+'_'+df_date.format(buildDate)+'.zip'
+					properties['runtimeArchive']='../../eclipse-'+majorVersion+'_'+df_date.format(buildDate)+'.zip'				
+				}
+				println 'Setting up properties'
 				if (properties['os.linux']!="") {
 					properties['osgi.os']='linux'
 					properties['osgi.ws']='gtk'
@@ -195,45 +215,34 @@
 				println 'Property: runtimeArchive='+properties['runtimeArchive']
 				println 'Property: '+reconcilerPropKey+'='+properties[reconcilerPropKey]
 				if (new File(output).exists()) {
-					println 'Result file '+output+' exists, skipping installation'
+					println 'Result file '+output+' exists, DONE'
 					return
-				}
-				println 'Unzipping base eclipse'
-				def file = properties['libdir']+'/'+properties['zip.eclipse.j2ee']
-				if (file.endsWith('.tar.gz')) {
-					ant.delete(  file:file+'.tar')
-					ant.gunzip(src:file,dest:file+'.tar')
-					ant.untar(src:file+'.tar',dest:properties['tmpdir'])
-					ant.delete(  file:file+'.tar')
-				}
-				else if (file.endsWith('.zip')) {
-					ant.unzip(  src:file,dest:properties['tmpdir'],overwrite:'true' )
-				}
-				ant.chmod(perm:'ugo+rwx', file:properties['tmpdir']+'/eclipse/eclipse')
-								
+				}	
+				if (install) {				
 				println 'Installing all JBoss Tools'
-				def eclipseSites="http://download.eclipse.org/tptp/updates,http://download.eclipse.org/tools/gef/updates/releases/,http://download.eclipse.org/modeling/emf/updates/releases/,http://download.eclipse.org/eclipse/updates/3.6,http://download.eclipse.org/webtools/repository/helios"
-				def thirdpartySites=eclipseSites+",http://download.eclipse.org/birt/update-site/2.6,http://m2eclipse.sonatype.org/sites/m2e,http://m2eclipse.sonatype.org/sites/m2e-extras,http://dl.google.com/eclipse/plugin/3.6"
-				def eclipse = new File(properties['tmpdir']+'/eclipse').getAbsolutePath()				
-				def repo = new File(properties['tmpdir']+'/upd-site').getAbsolutePath()
-				def cmd = eclipse+'/eclipse'
-				cmd+=" -application org.eclipse.equinox.p2.director"
-				cmd+=" -nosplash"
-				cmd+=" --launcher.suppressErrors"
-				cmd+=" -consoleLog"
-				cmd+=" -p2.os "+properties['osgi.os'] 
-				cmd+=" -p2.ws "+properties['osgi.ws'] 
-				cmd+=" -p2.arch "+properties['osgi.arch'] 
-				cmd+=" -profile epp.package.jee"
-				cmd+=" -destination " + eclipse
-				cmd+=" -bundlepool " + eclipse
-				cmd+=" -installIUs "+features
-				cmd+=" -repository file:"+repo+",file:"+eclipse+","+thirdpartySites
-				proc = cmd.execute (null, new File(eclipse))
-				proc.consumeProcessOutput (System.out, System.err)
-				proc.waitFor()
-				if (proc.exitValue()!=0) {
-					ant.fail(message:'Unable to install JBoss Tools, exit value :'+proc.exitValue())
+					def eclipseSites="http://download.eclipse.org/tptp/updates,http://download.eclipse.org/tools/gef/updates/releases/,http://download.eclipse.org/modeling/emf/updates/releases/,http://download.eclipse.org/eclipse/updates/3.6,http://download.eclipse.org/webtools/repository/helios"
+					def thirdpartySites=eclipseSites+",http://download.eclipse.org/birt/update-site/2.6,http://m2eclipse.sonatype.org/sites/m2e,http://m2eclipse.sonatype.org/sites/m2e-extras,http://dl.google.com/eclipse/plugin/3.6"
+					def eclipse = new File(properties['tmpdir']+'/eclipse').getAbsolutePath()				
+					def repo = new File(properties['tmpdir']+'/upd-site').getAbsolutePath()
+					def cmd = eclipse+'/eclipse'
+					cmd+=" -application org.eclipse.equinox.p2.director"
+					cmd+=" -nosplash"
+					cmd+=" --launcher.suppressErrors"
+					cmd+=" -consoleLog"
+					cmd+=" -p2.os "+properties['osgi.os'] 
+					cmd+=" -p2.ws "+properties['osgi.ws'] 
+					cmd+=" -p2.arch "+properties['osgi.arch'] 
+					cmd+=" -profile epp.package.jee"
+					cmd+=" -destination " + eclipse
+					cmd+=" -bundlepool " + eclipse
+					cmd+=" -installIUs "+features
+					cmd+=" -repository file:"+repo+",file:"+eclipse+","+thirdpartySites
+					proc = cmd.execute (null, new File(eclipse))
+					proc.consumeProcessOutput (System.out, System.err)
+					proc.waitFor()
+					if (proc.exitValue()!=0) {
+						ant.fail(message:'Unable to install JBoss Tools, exit value :'+proc.exitValue())
+					}
 				}
 				println 'Building results'
 				ant.delete(file:output)
