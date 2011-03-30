@@ -189,8 +189,9 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		// OK button
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+		Button okButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
 				true);
+		okButton.setEnabled(false);
 		// cancel button
 		createCancelButton(parent);
 	}
