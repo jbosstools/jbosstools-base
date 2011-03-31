@@ -24,7 +24,7 @@
         <property name="perf.memory" value="-Xms256M -Xmx512M -XX:MaxPermSize=256M"/>
         <property name="perf.db" value="-Declipse.perf.dbloc=${jbt.perf.db.loc};${jbt.perf.db.props}"/>
         <property name="perf.config" value="-Declipse.perf.config=build=${perf.buildID};${jbt.host.desc}"/>
-        <property name="perf.dim.config" value="-Declipse.perf.default.dim=&quot;${perf.default.dim}&quot; -Declpise.perf.results.dimensions=&quot;${perf.dimensions}&quot;"/>
+        <property name="perf.dim.config" value="-Declpise.perf.results.dimensions=&quot;${perf.dimensions}&quot;"/>
         <condition property="perf.baseBuild" value="-Declipse.perf.assertAgainst=build=${perf.baseBuildID};host=localhost;jvm=sun" else="">
             <and>
                 <isset property="perf.baseBuildID"/>

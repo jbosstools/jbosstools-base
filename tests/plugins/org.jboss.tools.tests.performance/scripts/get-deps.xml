@@ -153,13 +153,13 @@
 						ant.fail(message:'Update site unzip error, '+properties['tmpdir']+'/upd-site/features does not exist')
 					}
 					featuresDir.eachFile({
-						match = it.getName() =~ '(org.jboss.tools[^_]+)_.*v(.*)\\.jar'
+						match = it.getName() =~ '(org.jboss.[^_]+)_.*v(.*)\\.jar'
 						if (match.matches()) {
 							version = match[0][2]
 							features += ","+match[0][1]+'.feature.group'
 						}		
 					})
-					features = features.substring(1)
+					properties['jbt.install.features'] = features.substring(1)
 					output=properties['destdir']+'/jboss-tools-'+version+'.zip'
 					properties['runtimeArchive']='../../jboss-tools-'+version+'.zip'				
 					println 'Detetected JBoss Tools version '+version
@@ -245,7 +245,7 @@
 					cmd+=" -profile epp.package.jee"
 					cmd+=" -destination " + eclipse
 					cmd+=" -bundlepool " + eclipse
-					cmd+=" -installIUs "+features
+					cmd+=" -installIUs "+properties['jbt.install.features']
 					cmd+=" -repository file:"+repo+",file:"+eclipse+","+thirdpartySites
 					proc = cmd.execute (null, new File(eclipse))
 					proc.consumeProcessOutput (System.out, System.err)
