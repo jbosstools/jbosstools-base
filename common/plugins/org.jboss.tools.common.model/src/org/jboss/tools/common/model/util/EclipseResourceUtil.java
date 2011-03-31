@@ -27,6 +27,8 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -356,6 +358,9 @@ public class EclipseResourceUtil extends EclipseUtil {
 		properties.put(XModelObjectConstants.PROJECT, project);
 		properties.put("isProjectFragment", XModelObjectConstants.TRUE); //$NON-NLS-1$
 		model = XModelFactory.getModel(properties);
+		if(deleteProjectListener == null) {
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(deleteProjectListener = new RCL());
+		}
 		models.put(project, model);
 		
 		XModelObject fs = FileSystemsHelper.getFileSystems(model);
@@ -1032,5 +1037,18 @@ public class EclipseResourceUtil extends EclipseUtil {
 		if(path == null) return false;
 		path = path.toLowerCase();
 		return path.endsWith(".jar") || path.endsWith(".zip"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	private static IResourceChangeListener deleteProjectListener = null;
+	private static class RCL implements IResourceChangeListener {
+
+		public void resourceChanged(IResourceChangeEvent event) {
+			if(event.getType() == IResourceChangeEvent.PRE_DELETE) {
+				IResource resource = event.getResource();
+				IProject project = (IProject)resource.getAdapter(IProject.class);
+				if(project != null) models.remove(project);
+			}
+		}
+		
 	}
 }
