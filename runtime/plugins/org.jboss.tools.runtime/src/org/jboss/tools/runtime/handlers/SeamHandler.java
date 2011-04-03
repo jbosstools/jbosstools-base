@@ -41,14 +41,14 @@ public class SeamHandler extends AbstractRuntimeDetector implements IJBossRuntim
 
 	public static File getSeamRoot(ServerDefinition serverDefinition) {
 		String type = serverDefinition.getType();
-		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type) ) {
-			for (String folder : SEAM_HOME_FOLDER_OPTIONS) {
-				File seamFile = new File(serverDefinition.getLocation(),folder); //$NON-NLS-1$
-				if (seamFile != null && seamFile.isDirectory()) {
-					return seamFile;
-				}
-			} 
-		}
+//		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type) ) {
+//			for (String folder : SEAM_HOME_FOLDER_OPTIONS) {
+//				File seamFile = new File(serverDefinition.getLocation(),folder); //$NON-NLS-1$
+//				if (seamFile != null && seamFile.isDirectory()) {
+//					return seamFile;
+//				}
+//			} 
+//		}
 		if (SEAM.equals(type)) {
 			return serverDefinition.getLocation();
 		}
@@ -59,23 +59,15 @@ public class SeamHandler extends AbstractRuntimeDetector implements IJBossRuntim
 		
 		Map<String, SeamRuntime> map = new HashMap<String,SeamRuntime>();
 
-		// to fix https://jira.jboss.org/jira/browse/JBDS-682
-		// seam runtime initialization goes throug added servers first and 
-		// then process seam runtimes from bundled servers
 		for(ServerDefinition serverDefinition:serverDefinitions) {
 			if (!serverDefinition.isEnabled()) {
 				continue;
 			}
 			String type = serverDefinition.getType();
-			if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type) ) {
-				for (String folder : SEAM_HOME_FOLDER_OPTIONS) {
-					File seamFile = new File(serverDefinition.getLocation(),folder); //$NON-NLS-1$
-					addSeam(map, serverDefinition, seamFile);
-				} 
-			}
 			if (SEAM.equals(type)) {
 				addSeam(map, serverDefinition, serverDefinition.getLocation());
 			}
+			initializeRuntimes(serverDefinition.getIncludedServerDefinitions());
 		}
 
 		// Initialize Seam Runtime from JBoss EAP
@@ -269,6 +261,22 @@ public class SeamHandler extends AbstractRuntimeDetector implements IJBossRuntim
 		return builder.toString();
 	}
 
+	public static void calculateIncludedServerDefinition(
+			ServerDefinition serverDefinition) {
+		for (String folder : IJBossRuntimePluginConstants.SEAM_HOME_FOLDER_OPTIONS) {
+			File seamFile = new File(serverDefinition.getLocation(),folder); //$NON-NLS-1$
+			if (seamFile.exists() && seamFile.canRead() && seamFile.isDirectory()) {
+				String seamVersion = getSeamVersionFromManifest(seamFile.getAbsolutePath());
+				if (seamVersion != null) {
+					String name = "Seam " + serverDefinition.getName() + " " + seamVersion; //$NON-NLS-1$ //$NON-NLS-2$
+					ServerDefinition sd = new ServerDefinition(name, seamVersion, SEAM, seamFile.getAbsoluteFile());
+					sd.setParent(serverDefinition);
+					serverDefinition.getIncludedServerDefinitions().add(sd);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public boolean exists(ServerDefinition serverDefinition) {
 		if (serverDefinition == null || serverDefinition.getLocation() == null) {
@@ -281,4 +289,5 @@ public class SeamHandler extends AbstractRuntimeDetector implements IJBossRuntim
 		String path = seamRoot.getAbsolutePath();
 		return seamExists(path);
 	}
+
 }

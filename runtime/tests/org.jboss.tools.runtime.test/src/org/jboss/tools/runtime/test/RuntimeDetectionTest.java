@@ -15,17 +15,29 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.jboss.ide.eclipse.as.core.util.IJBossToolingConstants;
+import org.jboss.tools.runtime.IJBossRuntimePluginConstants;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
@@ -37,13 +49,19 @@ import org.jboss.tools.seam.core.project.facet.SeamRuntimeManager;
 import org.jboss.tools.seam.core.project.facet.SeamVersion;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.osgi.framework.Bundle;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 /**
  * 
  * @author snjeza
  * 
  */
-public class RuntimeDetectionTest {
+public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 	private final static String seamVersionAttributeName = "Seam-Version";
 
 	@BeforeClass
@@ -288,5 +306,80 @@ public class RuntimeDetectionTest {
 		IRuntime[] runtimes = ServerCore.getRuntimes();
 		assertTrue("runtimes.length\nExpected: 3\nWas: " + runtimes.length,
 				runtimes.length == 3);
+	}
+	
+	@Test
+	public void testIncludedDefinitions() {
+		for (ServerDefinition serverDefinition:RuntimeUIActivator.getDefault().getServerDefinitions()){
+			String type = serverDefinition.getType();
+			if (EAP.equals(type)) {
+				assertTrue("EAP has to include server definitions", serverDefinition.getIncludedServerDefinitions().size() > 0);
+				for(ServerDefinition included:serverDefinition.getIncludedServerDefinitions()) {
+					assertTrue("Invalid parent definition", included.getParent() == serverDefinition);
+				}
+			}
+		}
+	}
+	
+	@Test
+	public void testSavePreferences() throws Exception {
+		// saves preferences
+		Bundle bundle = Platform.getBundle(RuntimeUIActivator.PLUGIN_ID);
+		bundle.stop();
+		// loads preferences
+		bundle.start();
+		// calls tests again
+		testServerDefinitions();
+		testIncludedDefinitions();
+		testRuntimePaths();
+		testRuntimeDetectors();
+		testLocations();
+		testSeamRuntimes();
+		testWtpRuntimes();
+		testSeam22();
+		testSeam22Location();
+	}
+	
+	@Test
+	public void testOldWorkspace() throws Exception {
+		String runtimes = ConfigurationScope.INSTANCE.getNode(
+				RuntimeUIActivator.PLUGIN_ID).get(
+				RuntimeUIActivator.RUNTIME_PATHS, null);
+		// removes version and included definitions
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    Document doc = factory.newDocumentBuilder().parse(new InputSource(new StringReader(runtimes)));
+		Element runtimePaths = (Element) doc.getElementsByTagName(RuntimeUIActivator.RUNTIME_PATHS).item(0);
+		runtimePaths.removeAttribute(RuntimeUIActivator.PREFERENCES_VERSION);
+		removeIncluded(doc);
+		runtimes = serialize(doc);
+	    // restarts the bundle
+		Bundle bundle = Platform.getBundle(RuntimeUIActivator.PLUGIN_ID);
+		bundle.stop();
+		bundle.start();
+		// saves preferences
+		ConfigurationScope.INSTANCE.getNode(RuntimeUIActivator.PLUGIN_ID).put(
+				RuntimeUIActivator.RUNTIME_PATHS, runtimes);
+		// calls tests again 
+		testIncludedDefinitions();
+		testServerDefinitions();
+	}
+	
+	private void removeIncluded(Node node) {
+		if (node.getNodeType() == Node.ELEMENT_NODE
+				&& node.getNodeName().equals("included")) {
+			node.getParentNode().removeChild(node);
+		} else {
+			NodeList list = node.getChildNodes();
+			for (int i = 0; i < list.getLength(); i++) {
+				removeIncluded(list.item(i));
+			}
+		}
+	}
+	
+	private String serialize(Document doc) throws TransformerException {
+		StringWriter stringWriter = new StringWriter(); 
+		Transformer serializer = TransformerFactory.newInstance().newTransformer();
+        serializer.transform(new DOMSource(doc), new StreamResult(stringWriter));
+        return stringWriter.toString(); 
 	}
 }

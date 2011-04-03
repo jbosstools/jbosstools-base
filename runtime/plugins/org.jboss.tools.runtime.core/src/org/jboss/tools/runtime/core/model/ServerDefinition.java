@@ -11,6 +11,8 @@
 package org.jboss.tools.runtime.core.model;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author snjeza
@@ -25,6 +27,8 @@ public class ServerDefinition {
 	private String description;
 	private boolean enabled = true;
 	private RuntimePath runtimePath;
+	private List<ServerDefinition> includedServerDefinitions = new ArrayList<ServerDefinition>();
+	private ServerDefinition parent;
 	
 	public ServerDefinition(String name, String version, 
 			String type, File location) {
@@ -139,6 +143,16 @@ public class ServerDefinition {
 		this.runtimePath = runtimePath;
 	}
 
-	
+	public List<ServerDefinition> getIncludedServerDefinitions() {
+		return includedServerDefinitions;
+	}
+
+	public ServerDefinition getParent() {
+		return parent;
+	}
+
+	public void setParent(ServerDefinition parent) {
+		this.parent = parent;
+	}
 	
 }

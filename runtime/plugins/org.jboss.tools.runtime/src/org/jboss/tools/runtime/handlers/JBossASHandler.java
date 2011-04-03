@@ -13,6 +13,8 @@ package org.jboss.tools.runtime.handlers;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -139,6 +141,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 				}
 				createJBossServer(serverDefinition.getLocation(),index,serverDefinition.getName(),serverDefinition.getName() + " " + RUNTIME); //$NON-NLS-1$
 			}
+			createJBossServerFromDefinitions(serverDefinition.getIncludedServerDefinitions());
 		}	
 	}
 
@@ -373,9 +376,26 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			ServerDefinition serverDefinition = new ServerDefinition(serverBean.getName(), 
 					serverBean.getVersion(), serverBean.getType().getId(), new File(serverBean.getLocation()));
 			serverDefinition.setDescription(includedRuntimes(serverDefinition));
+			calculateIncludedServerDefinition(serverDefinition);
 			return serverDefinition;
 		}
 		return null;
+	}
+	
+ 	private void calculateIncludedServerDefinition(ServerDefinition serverDefinition) {
+ 		if (serverDefinition == null || serverDefinition.getType() == null) {
+			return;
+		}
+ 		serverDefinition.getIncludedServerDefinitions().clear();
+ 		String type = serverDefinition.getType();
+ 		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type)) {
+			SeamHandler.calculateIncludedServerDefinition(serverDefinition);
+			
+		}
+		if (SOA_P.equals(type)) {
+			DroolsHandler.calculateIncludedServerDefinition(serverDefinition);
+			JbpmHandler.calculateIncludedServerDefinition(serverDefinition);
+		}
 	}
 
 	@Override
@@ -436,4 +456,12 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		}
 		return false;
 	}
+
+	@Override
+	public void computeIncludedServerDefinition(
+			ServerDefinition serverDefinition) {
+		calculateIncludedServerDefinition(serverDefinition);
+	}
+	
+	
 }

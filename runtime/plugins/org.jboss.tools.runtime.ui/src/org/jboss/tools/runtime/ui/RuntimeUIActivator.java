@@ -29,7 +29,8 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.CheckboxTreeViewer;
+import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -39,8 +40,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
@@ -89,6 +89,8 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	private static final String SERVER_DEFINITION = "serverDefinition";
 
 	private static final String NAME = "name";
+	
+	private static final String INCLUDED_DEFINITION = "included";
 
 	private static final String VERSION = "version";
 
@@ -101,7 +103,11 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	private static final String ENABLED = "enabled";
 	
 	public static final String FIRST_START = "firstStart"; //$NON-NLS-1$
+
+	public static final String PREFERENCES_VERSION = "version"; //$NON-NLS-1$
 	
+	private static final String RUNTIME_PREFERENCES_VERSION = "2"; //$NON-NLS-1$
+
 	private List<RuntimePath> runtimePaths = new ArrayList<RuntimePath>();
 	
 	private Set<IRuntimeDetector> runtimeDetectors;
@@ -155,27 +161,28 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		RuntimeUIActivator.getDefault().getLog().log(status);
 	}
 	
-	public static CheckboxTableViewer createRuntimeViewer(final List<RuntimePath> runtimePaths2, Composite composite, int heightHint) {
+	public static CheckboxTreeViewer createRuntimeViewer(final List<RuntimePath> runtimePaths2, Composite composite, int heightHint) {
 		GridData gd;
-		CheckboxTableViewer viewer = CheckboxTableViewer.newCheckList(composite, SWT.V_SCROLL
+		CheckboxTreeViewer viewer = new CheckboxTreeViewer(composite, SWT.V_SCROLL
 				| SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE);
-		Table table = viewer.getTable();
+		
+		Tree tree = viewer.getTree();
 		gd = new GridData(GridData.FILL_BOTH);
 		GC gc = new GC( composite);
 		FontMetrics fontMetrics = gc.getFontMetrics( );
 		gc.dispose( );
 		gd.heightHint = Dialog.convertHeightInCharsToPixels(fontMetrics, heightHint);
-		table.setLayoutData(gd);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
+		tree.setLayoutData(gd);
+		tree.setHeaderVisible(true);
+		tree.setLinesVisible(true);
 
-		String[] columnNames = new String[] { "Name", "Version", "Type", "Location", "Description"};
-		int[] columnWidths = new int[] {140, 50, 50, 245, 200};
+		String[] columnNames = new String[] { "Name", "Version", "Type", "Location"};
+		int[] columnWidths = new int[] {300, 100, 50, 200};
 		
 		for (int i = 0; i < columnNames.length; i++) {
-			TableColumn tc = new TableColumn(table, SWT.LEFT);
-			tc.setText(columnNames[i]);
-			tc.setWidth(columnWidths[i]);
+			TreeViewerColumn tc = new TreeViewerColumn(viewer, SWT.NONE);
+			tc.getColumn().setText(columnNames[i]);
+			tc.getColumn().setWidth(columnWidths[i]);
 		}
 
 		viewer.setLabelProvider(new RuntimeLabelProvider());
@@ -191,7 +198,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		return viewer;
 	}
 	
-	public static void refreshRuntimes(Shell shell, final List<RuntimePath> runtimePaths, final CheckboxTableViewer viewer, boolean needRefresh, int heightHint) {
+	public static void refreshRuntimes(Shell shell, final List<RuntimePath> runtimePaths, final CheckboxTreeViewer viewer, boolean needRefresh, int heightHint) {
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			
 			@Override
@@ -280,6 +287,8 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		}
 		Reader reader = new StringReader(runtimes);
 		XMLMemento memento = XMLMemento.createReadRoot(reader);
+		String preferencesVersion = memento.getString(PREFERENCES_VERSION);
+		boolean computeIncluded = preferencesVersion == null;
 		IMemento[] nodes = memento.getChildren(RUNTIME_PATH);
 		for (IMemento node:nodes) {
 			String path = node.getString(PATH);
@@ -299,22 +308,46 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 			IMemento serverDefinitionsNode = node.getChild(SERVER_DEFINITIONS);
 			IMemento[] sdNodes = serverDefinitionsNode.getChildren(SERVER_DEFINITION);
 			for (IMemento sdNode:sdNodes) {
-				String name = sdNode.getString(NAME);
-				String version = sdNode.getString(VERSION);
-				String type = sdNode.getString(TYPE);
-				String location = sdNode.getString(LOCATION);
-				String description = sdNode.getString(DESCRIPTION);
-				boolean enabled = sdNode.getBoolean(ENABLED);
-				ServerDefinition serverDefinition = 
-					new ServerDefinition(name, version, type, new File(location));
-				serverDefinition.setDescription(description);
-				serverDefinition.setEnabled(enabled);
+				ServerDefinition serverDefinition = createServerDefinition(sdNode);
 				serverDefinition.setRuntimePath(runtimePath);
+				IMemento includedDefinition = sdNode.getChild(INCLUDED_DEFINITION);
+				if (includedDefinition != null) {
+					IMemento[] includedNodes = includedDefinition
+							.getChildren(SERVER_DEFINITION);
+					for (IMemento includedNode : includedNodes) {
+						ServerDefinition included = createServerDefinition(includedNode);
+						included.setRuntimePath(runtimePath);
+						included.setParent(serverDefinition);
+						serverDefinition.getIncludedServerDefinitions().add(
+								included);
+					}
+				}
 				runtimePath.getServerDefinitions().add(serverDefinition);
 			}
 			runtimePaths.add(runtimePath);
-			
 		}
+		if (computeIncluded) {
+			for(ServerDefinition definition:getServerDefinitions()) {
+				Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
+				for (IRuntimeDetector detector:detectors) {
+					detector.computeIncludedServerDefinition(definition);
+				}
+			}
+		}
+	}
+
+	private ServerDefinition createServerDefinition(IMemento node) {
+		String name = node.getString(NAME);
+		String version = node.getString(VERSION);
+		String type = node.getString(TYPE);
+		String location = node.getString(LOCATION);
+		String description = node.getString(DESCRIPTION);
+		boolean enabled = node.getBoolean(ENABLED);
+		ServerDefinition serverDefinition = 
+			new ServerDefinition(name, version, type, new File(location));
+		serverDefinition.setDescription(description);
+		serverDefinition.setEnabled(enabled);
+		return serverDefinition;
 	}
 
 	private static IEclipsePreferences getPreferences() {
@@ -331,21 +364,15 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		XMLMemento memento = XMLMemento.createWriteRoot(RUNTIME_PATHS);
 		Writer writer = null;
 		try {
+			memento.putString(PREFERENCES_VERSION, RUNTIME_PREFERENCES_VERSION);
 			for (RuntimePath runtimePath:runtimePaths) {
 				IMemento runtimePathNode = memento.createChild(RUNTIME_PATH);
 				runtimePathNode.putString(PATH, runtimePath.getPath());
 				runtimePathNode.putBoolean(SCAN_ON_EVERY_STAERTUP, runtimePath.isScanOnEveryStartup());
 				runtimePathNode.putString(TIMESTAMP, String.valueOf(runtimePath.getTimestamp()));
-				IMemento serverDefintionsNode = runtimePathNode.createChild(SERVER_DEFINITIONS);
-				for (ServerDefinition serverDefinition:runtimePath.getServerDefinitions()) {
-					IMemento sdNode = serverDefintionsNode.createChild(SERVER_DEFINITION);
-					sdNode.putString(NAME, serverDefinition.getName());
-					sdNode.putString(VERSION, serverDefinition.getVersion());
-					sdNode.putString(TYPE, serverDefinition.getType());
-					sdNode.putString(LOCATION, serverDefinition.getLocation().getAbsolutePath());
-					sdNode.putString(DESCRIPTION, serverDefinition.getDescription());
-					sdNode.putBoolean(ENABLED, serverDefinition.isEnabled());
-				}
+				IMemento serverDefinitionsNode = runtimePathNode.createChild(SERVER_DEFINITIONS);
+				List<ServerDefinition> definitions = runtimePath.getServerDefinitions();
+				putDefinitions(serverDefinitionsNode, definitions);	
 			}
 			writer = new StringWriter();
 			memento.save(writer);
@@ -364,6 +391,29 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 				}
 			}
 		}
+	}
+
+	private void putDefinitions(IMemento serverDefintionsNode,
+			List<ServerDefinition> definitions) {
+		for (ServerDefinition serverDefinition:definitions) {
+			IMemento sdNode = serverDefintionsNode.createChild(SERVER_DEFINITION);
+			putServerDefinition(serverDefinition, sdNode);
+			IMemento includedNodes = sdNode.createChild(INCLUDED_DEFINITION);
+			for (ServerDefinition included:serverDefinition.getIncludedServerDefinitions()) {
+				IMemento includedNode = includedNodes.createChild(SERVER_DEFINITION);
+				putServerDefinition(included, includedNode);
+			}
+		}
+	}
+
+	private void putServerDefinition(ServerDefinition serverDefinition,
+			IMemento node) {
+		node.putString(NAME, serverDefinition.getName());
+		node.putString(VERSION, serverDefinition.getVersion());
+		node.putString(TYPE, serverDefinition.getType());
+		node.putString(LOCATION, serverDefinition.getLocation().getAbsolutePath());
+		node.putString(DESCRIPTION, serverDefinition.getDescription());
+		node.putBoolean(ENABLED, serverDefinition.isEnabled());
 	}
 
 	public List<RuntimePath> getRuntimePaths() {

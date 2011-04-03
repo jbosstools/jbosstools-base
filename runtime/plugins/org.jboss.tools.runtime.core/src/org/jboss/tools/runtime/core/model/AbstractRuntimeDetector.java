@@ -123,5 +123,12 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 		int p1 = this.getPriority();
 		int p2 = o.getPriority();
 		return p1 - p2;
-	}	
+	}
+
+	@Override
+	public void computeIncludedServerDefinition(
+			ServerDefinition serverDefinition) {
+		
+	}
+	
 }

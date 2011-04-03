@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -45,7 +45,7 @@ public class EditRuntimePathDialog extends Dialog {
 	
 	private RuntimePath runtimePath;
 	private List<RuntimePath> runtimePaths;
-	private CheckboxTableViewer tableViewer;
+	private CheckboxTreeViewer treeViewer;
 
 	public EditRuntimePathDialog(Shell parentShell, RuntimePath runtimePath) {
 		super(parentShell);
@@ -115,7 +115,7 @@ public class EditRuntimePathDialog extends Dialog {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				RuntimeUIActivator.refreshRuntimes(getShell(), getRuntimePaths(), tableViewer, false, 15);
+				RuntimeUIActivator.refreshRuntimes(getShell(), getRuntimePaths(), treeViewer, false, 15);
 			}
 		
 		});
@@ -133,8 +133,8 @@ public class EditRuntimePathDialog extends Dialog {
 		refreshButton.setEnabled( (new File(pathText.getText()).isDirectory()) );
 		
 		List<RuntimePath> runtimePaths = getRuntimePaths();
-		tableViewer = RuntimeUIActivator.createRuntimeViewer(runtimePaths, contents, 100);
-		tableViewer.addCheckStateListener(new ICheckStateListener() {
+		treeViewer = RuntimeUIActivator.createRuntimeViewer(runtimePaths, contents, 100);
+		treeViewer.addCheckStateListener(new ICheckStateListener() {
 			
 			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {

@@ -48,18 +48,11 @@ public class JbpmHandler extends AbstractRuntimeDetector implements IJBossRuntim
 					continue;
 				}
 				String type = serverDefinition.getType();
-				if (SOA_P.equals(type)) {
-					if (jbpmRoot.isDirectory()) {
-						String version = JBPM3;
-						if (isJbpm4(serverDefinition.getLocation().getAbsolutePath())) {
-							version = JBPM4;
-						}
-						PreferencesManager.getInstance().initializeDefaultJbpmInstallation(serverDefinition.getName(), jbpmRoot.getAbsolutePath(), version);
-					}
-				} else if (JBPM.equals(type)) {
+				if (JBPM.equals(type)) {
 					PreferencesManager.getInstance().addJbpmInstallation(serverDefinition.getName(), jbpmRoot.getAbsolutePath(), serverDefinition.getVersion());
 				}
 			}
+			initializeRuntimes(serverDefinition.getIncludedServerDefinitions());
 		}
 		
 	}
@@ -133,5 +126,22 @@ public class JbpmHandler extends AbstractRuntimeDetector implements IJBossRuntim
 			return false;
 		}
 		return jbpmExists(serverDefinition);
+	}
+
+	public static void calculateIncludedServerDefinition(
+			ServerDefinition serverDefinition) {
+		if (serverDefinition == null || !SOA_P.equals(serverDefinition.getType())) {
+			return;
+		}
+		File jbpmRoot = new File(serverDefinition.getLocation(),"jbpm-jpdl"); //$NON-NLS-1$
+		if (jbpmRoot.isDirectory()) {
+			String version = JBPM3;
+			if (isJbpm4(serverDefinition.getLocation().getAbsolutePath())) {
+				version = JBPM4;
+			}
+			ServerDefinition sd = new ServerDefinition(serverDefinition.getName(), version, JBPM, jbpmRoot);
+			sd.setParent(serverDefinition);
+			serverDefinition.getIncludedServerDefinitions().add(sd);
+		}
 	}
 }

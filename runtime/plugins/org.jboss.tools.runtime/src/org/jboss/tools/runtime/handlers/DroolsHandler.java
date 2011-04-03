@@ -32,18 +32,24 @@ public class DroolsHandler extends AbstractRuntimeDetector implements IJBossRunt
 				droolsRuntimes.add(runtime);
 			}
 		}
+		initializeInternal(serverDefinitions, droolsRuntimes);
+		if (droolsRuntimes.size() > 0) {
+			DroolsRuntime[] dra = droolsRuntimes.toArray(new DroolsRuntime[0]);
+			DroolsRuntimeManager.setDroolsRuntimes(dra);
+		}
+		
+	}
+
+	private void initializeInternal(List<ServerDefinition> serverDefinitions,
+			List<DroolsRuntime> droolsRuntimes) {
 		for (ServerDefinition serverDefinition : serverDefinitions) {
 			String type = serverDefinition.getType();
 			if (serverDefinition.isEnabled() && !droolsExists(serverDefinition)) {
-				if (SOA_P.equals(type) || DROOLS.equals(type)) {
+				if (DROOLS.equals(type)) {
 					File droolsRoot = serverDefinition.getLocation(); //$NON-NLS-1$
 					if (droolsRoot.isDirectory()) {
 						DroolsRuntime runtime = new DroolsRuntime();
-						if (SOA_P.equals(type)) {
-							runtime.setName("Drools - " + serverDefinition.getName()); //$NON-NLS-1$
-						} else {
-							runtime.setName("Drools " + serverDefinition.getVersion()+ " - " + serverDefinition.getName()); //$NON-NLS-1$
-						}
+						runtime.setName("Drools " + serverDefinition.getVersion()+ " - " + serverDefinition.getName()); //$NON-NLS-1$
 						runtime.setPath(droolsRoot.getAbsolutePath());
 						DroolsRuntimeManager.recognizeJars(runtime);
 						runtime.setDefault(true);
@@ -51,12 +57,8 @@ public class DroolsHandler extends AbstractRuntimeDetector implements IJBossRunt
 					}
 				}
 			}
+			initializeInternal(serverDefinition.getIncludedServerDefinitions(), droolsRuntimes);
 		}
-		if (droolsRuntimes.size() > 0) {
-			DroolsRuntime[] dra = droolsRuntimes.toArray(new DroolsRuntime[0]);
-			DroolsRuntimeManager.setDroolsRuntimes(dra);
-		}
-		
 	}
 
 	/**
@@ -117,5 +119,19 @@ public class DroolsHandler extends AbstractRuntimeDetector implements IJBossRunt
 			return false;
 		}
 		return droolsExists(serverDefinition);
+	}
+
+	public static void calculateIncludedServerDefinition(
+			ServerDefinition serverDefinition) {
+		if (serverDefinition == null || !SOA_P.equals(serverDefinition.getType())) {
+			return;
+		}
+		File droolsRoot = serverDefinition.getLocation(); //$NON-NLS-1$
+		if (droolsRoot.isDirectory()) {
+			String name = "Drools - " + serverDefinition.getName(); //$NON-NLS-1$
+			ServerDefinition sd = new ServerDefinition(name, serverDefinition.getVersion(), DROOLS, droolsRoot);
+			sd.setParent(serverDefinition);
+			serverDefinition.getIncludedServerDefinitions().add(sd);
+		}
 	}
 }

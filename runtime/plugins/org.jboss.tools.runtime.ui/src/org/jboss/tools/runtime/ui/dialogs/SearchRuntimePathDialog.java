@@ -20,12 +20,12 @@ import org.eclipse.jface.dialogs.ProgressIndicator;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ColumnViewerEditor;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
 import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.TableViewerEditor;
+import org.eclipse.jface.viewers.TreeViewerEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
@@ -53,7 +53,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 	private List<RuntimePath> runtimePaths = new ArrayList<RuntimePath>();
 	private boolean running = true;
-	private CheckboxTableViewer tableViewer;
+	private CheckboxTreeViewer treeViewer;
 	private boolean canceled;
 	private boolean needRefresh;
 	private Label foundRuntimesLabel;
@@ -115,8 +115,8 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		// Only set for backwards compatibility
 		taskLabel = messageLabel;
 		
-		tableViewer = RuntimeUIActivator.createRuntimeViewer(runtimePaths, composite, heightHint);
-		tableViewer.addCheckStateListener(new ICheckStateListener() {
+		treeViewer = RuntimeUIActivator.createRuntimeViewer(runtimePaths, composite, heightHint);
+		treeViewer.addCheckStateListener(new ICheckStateListener() {
 			
 			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
@@ -133,7 +133,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			}
 		});
 		
-		ColumnViewerEditorActivationStrategy actSupport = new ColumnViewerEditorActivationStrategy(tableViewer) {
+		ColumnViewerEditorActivationStrategy actSupport = new ColumnViewerEditorActivationStrategy(treeViewer) {
 			protected boolean isEditorActivationEvent(
 					ColumnViewerEditorActivationEvent event) {
 				return event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL
@@ -142,7 +142,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			}
 		};
 
-		TableViewerEditor.create(tableViewer, actSupport,
+		TreeViewerEditor.create(treeViewer, actSupport,
 				ColumnViewerEditor.TABBING_HORIZONTAL
 						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
 						| ColumnViewerEditor.TABBING_VERTICAL
@@ -209,21 +209,24 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 	private void refresh(String message) {
 		running = false;
-		tableViewer.setInput(null);
+		treeViewer.setInput(null);
 		List<ServerDefinition> serverDefinitions = getServerDefinitions(hideCreatedRuntimes.getSelection());
-		tableViewer.setInput(serverDefinitions);
+		treeViewer.setInput(serverDefinitions);
 		for (ServerDefinition definition:serverDefinitions) {
-			tableViewer.setChecked(definition, definition.isEnabled());
+			treeViewer.setChecked(definition, definition.isEnabled());
+			for (ServerDefinition included:definition.getIncludedServerDefinitions()) {
+				treeViewer.setChecked(included, included.isEnabled());
+			}
 		}
-		TableItem[] tableItems = tableViewer.getTable().getItems();
-		for (TableItem tableItem:tableItems) {
-			Object data = tableItem.getData();
+		TreeItem[] treeItems = treeViewer.getTree().getItems();
+		for (TreeItem treeItem:treeItems) {
+			Object data = treeItem.getData();
 			if (data instanceof ServerDefinition) {
 				ServerDefinition serverDefinition = (ServerDefinition) data;
 				boolean exists = RuntimeUIActivator.runtimeExists(serverDefinition);
 				if (exists) {
-					tableItem.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-					tableViewer.setChecked(serverDefinition, serverDefinition.isEnabled());
+					treeItem.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+					treeViewer.setChecked(serverDefinition, serverDefinition.isEnabled());
 				}
 			}
 		}
