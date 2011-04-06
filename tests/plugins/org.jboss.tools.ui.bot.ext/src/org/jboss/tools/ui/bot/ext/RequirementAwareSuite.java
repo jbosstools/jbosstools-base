@@ -194,25 +194,24 @@ public class RequirementAwareSuite extends Suite {
 			if (!this.config.equals(TestConfigurator.currentConfig)) {
 				TestConfigurator.currentConfig = this.config;
 			}
+			log.info("class "+klass.getCanonicalName());
 			List<RequirementBase> reqs = TestConfigurator.getClassRequirements(klass);
 			if (reqs != null) {
 				SWTBotTestRequires anno = klass.getAnnotation(SWTBotTestRequires.class);
 				if (anno!=null && anno.runOnce() && cleanUp.isClassPlanned(klass)) {
 					// class is already planned to run and contains annotation runOnce
-					log.info("Skipping class '" + klass.getCanonicalName()
-					+ "' - runOnce=true, class already planned");
+					log.info("runOnce=true, class already planned");
+					log.info("Skipped");
 					return null;
 				}
-				log.info("Returning runner for class '"
-						+ klass.getCanonicalName() + "'");
+				log.info("OK");
 				// increment number of tests planned to run by 1 (class contains
 				// at least 1 test method)
 				cleanUp.incrPlanned();
 				cleanUp.addClass(klass);
 				return new ReqAwareClassRunner(klass, reqs, config);
 			}
-			log.info("Skipping class '" + klass.getCanonicalName()
-					+ "' - annotations do not met configuration");
+			log.info("Skipped");
 			return null;
 		}
 
@@ -309,6 +308,7 @@ public class RequirementAwareSuite extends Suite {
 						.toString(), entry.getValue().toString());
 				String suiteName = config.getPropName() + " - "
 						+ klass.getCanonicalName();
+				log.info("Determine whether test classes meet configuration");
 				runners.add(new NamedSuite(klass,
 						new RequirementAwareRunnerBuilder(config), suiteName));
 			} catch (Exception ex) {

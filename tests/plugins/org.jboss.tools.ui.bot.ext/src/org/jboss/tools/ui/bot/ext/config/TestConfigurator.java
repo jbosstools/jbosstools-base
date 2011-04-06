@@ -150,38 +150,46 @@ public class TestConfigurator {
 			return RequirementBase.createRemoveServer();
 		}
 		if (!s.required() || currentConfig.getServer() == null) {
+			ReasonLogger.notConfigured("Server");
 			return null;
 		}
 		if (!s.type().equals(ServerType.ALL)) {
 			if (s.type().equals(ServerType.EAP)
 					&& !currentConfig.getServer().type
 							.equals(Values.SERVER_TYPE_EAP)) {
+				ReasonLogger.serverTypeMatch(s.type().toString(), currentConfig.getServer().type);
 				return null;
 			}
 			if (s.type().equals(ServerType.JbossAS)
 					&& !currentConfig.getServer().type
 							.equals(Values.SERVER_TYPE_JBOSSAS)) {
+				ReasonLogger.serverTypeMatch(s.type().toString(), currentConfig.getServer().type);
 				return null;
 			}
 			if (s.type().equals(ServerType.EPP)
 					&& !currentConfig.getServer().type
 							.equals(Values.SERVER_TYPE_EPP)) {
+				ReasonLogger.serverTypeMatch(s.type().toString(), currentConfig.getServer().type);
 				return null;
 			}
 			if (s.type().equals(ServerType.SOA)
 					&& !currentConfig.getServer().type
 							.equals(Values.SERVER_TYPE_SOA)) {
+				ReasonLogger.serverTypeMatch(s.type().toString(), currentConfig.getServer().type);
 				return null;
 			}
 		}
 		if (s.location().equals(ServerLocation.Local) && currentConfig.getServer().remoteSystem!=null) {
+			ReasonLogger.serverLocation("local", "remote");
 			return null;
 		}
 		if (s.location().equals(ServerLocation.Remote) && currentConfig.getServer().remoteSystem==null) {
+			ReasonLogger.serverLocation("remote", "local");
 			return null;
 		}
 		if (!matches(currentConfig.getServer().version, s.operator(),
 				s.version())) {
+			ReasonLogger.versionMatch("Server", s.operator(), s.version(), currentConfig.getServer().version);
 			return null;
 		}
 		RequirementBase serverReq = null;
@@ -206,7 +214,7 @@ public class TestConfigurator {
 			}
 		return serverReq;
 	}
-
+	
 	/**
 	 * returns null when given Seam annotation does not match global test
 	 * configuration (e.g. Test wants Seam version 2.2 but we are running on
@@ -217,9 +225,11 @@ public class TestConfigurator {
 	 */
 	private static RequirementBase getSeamRequirement(Seam s) {
 		if (!s.required() || currentConfig.getSeam() == null) {
+			ReasonLogger.notConfigured("Seam");
 			return null;
 		}
 		if (!matches(currentConfig.getSeam().version, s.operator(), s.version())) {
+			ReasonLogger.versionMatch("Seam", s.operator(), s.version(), currentConfig.getSeam().version);
 			return null;
 		}
 		return RequirementBase.createAddSeam();
@@ -227,9 +237,11 @@ public class TestConfigurator {
 
 	private static RequirementBase getESBRequirement(ESB e) {
 		if (!e.required() || currentConfig.getEsb() == null) {
+			ReasonLogger.notConfigured("ESB");
 			return null;
 		}
 		if (!matches(currentConfig.getEsb().version, e.operator(), e.version())) {
+			ReasonLogger.versionMatch("ESB", e.operator(), e.version(), currentConfig.getEsb().version);
 			return null;
 		}
 		return RequirementBase.createAddESB();
@@ -237,9 +249,11 @@ public class TestConfigurator {
 
 	private static RequirementBase getJBPMRequirement(JBPM j) {
 		if (!j.required() || currentConfig.getJBPM() == null) {
+			ReasonLogger.notConfigured("jBPM");
 			return null;
 		}
 		if (!matches(currentConfig.getJBPM().version, j.operator(), j.version())) {
+			ReasonLogger.versionMatch("jBPM", j.operator(), j.version(), currentConfig.getJBPM().version);
 			return null;
 		}
 		return RequirementBase.createAddJBPM();
@@ -247,9 +261,11 @@ public class TestConfigurator {
 
 	private static RequirementBase getDBRequirement(DB d) {
 		if (!d.required() || currentConfig.getDB() == null) {
+			ReasonLogger.notConfigured("DB");
 			return null;
 		}
 		if (!matches(currentConfig.getDB().version, d.operator(), d.version())) {
+			ReasonLogger.versionMatch("DB", d.operator(), d.version(), currentConfig.getDB().version);
 			return null;
 		}
 		return RequirementBase.prepareDB();
@@ -273,6 +289,7 @@ public class TestConfigurator {
 			return reqs;
 		}
 		if (requies.secureStorage() && currentConfig.getSecureStorage()==null) {
+			ReasonLogger.notConfigured("Secure Storage");
 			return null;
 		}
 		if (requies.server().required()) {
@@ -385,5 +402,26 @@ public class TestConfigurator {
 	public static String getProperty(String key) {
 		return currentConfig.getProperty(key);
 		// return SWTTestExt.util.getValue(swtTestProperties, key);
+	}
+	/**
+	 * internal class providing methods for logging reasons explaining which annotation
+	 * requirements have not been met and why a testclass was not executed
+	 * @author lzoubek
+	 *
+	 */
+	private static class ReasonLogger {
+
+		public static void notConfigured(String what) {
+			log.info(String.format("Requires %s, but it is not configured", what));
+		}
+		public static void serverTypeMatch(String required, String configured) {
+			log.info(String.format("Requires %s server type, but configured is %s",required,configured));
+		}
+		public static void serverLocation(String required, String configured) {
+			log.info(String.format("Requires %s server location, but is configured as %s",required,configured));
+		}
+		public static void versionMatch(String what, String operator, String required, String configured) {
+			log.info(String.format("Required %s %s %s version  does not match, configured is %s",operator,required,what,configured));
+		}
 	}
 }
