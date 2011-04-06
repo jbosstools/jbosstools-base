@@ -81,6 +81,12 @@ public class Annotations {
 		 * @return
 		 */
 		boolean runOnce() default false;
+		/**
+		 * if your class requires Secured Storage to be configured (master password is provided in configuration properties)
+		 * set this to true, default is false
+		 * @return
+		 */
+		boolean secureStorage() default false;
 	}
 	/**
 	 * Server requirement, by default matches all server types and versions,

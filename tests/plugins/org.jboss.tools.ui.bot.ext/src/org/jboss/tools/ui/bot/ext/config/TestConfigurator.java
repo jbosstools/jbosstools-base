@@ -272,6 +272,9 @@ public class TestConfigurator {
 		if (requies == null) {
 			return reqs;
 		}
+		if (requies.secureStorage() && currentConfig.getSecureStorage()==null) {
+			return null;
+		}
 		if (requies.server().required()) {
 			RequirementBase req = getServerRequirement(requies.server());
 			if (req == null) {
