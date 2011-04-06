@@ -104,6 +104,8 @@ public class IDELabel {
 		public static final String EDIT_WITHOUT_DOTS = "Edit";
 		public static final String DROOLS_WORKBENCH = "Drools workbench";
 		public static final String REFRESH = "Refresh";
+		public static final String TEST = "Test";
+		public static final String DELETE = "Delete";
 	}
 
 	public class Shell {
