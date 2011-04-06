@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class SWTBotWizard extends SWTBotShell {	
 	
@@ -32,21 +33,21 @@ public class SWTBotWizard extends SWTBotShell {
 	}
 
 	public SWTBotWizard back() {
-		clickButton("< Back");
+		clickButton(IDELabel.Button.BACK);
 		return this;
 	}
 
 	public SWTBotWizard next() {
-		clickButton("Next >");
+		clickButton(IDELabel.Button.NEXT);
 		return this;
 	}
 
 	public void cancel() {
-		clickButton("Cancel");
+		clickButton(IDELabel.Button.CANCEL);
 	}
 
 	public void finish() {
-		clickButton("Finish");
+		clickButton(IDELabel.Button.FINISH);
 	}
 
 	protected void clickButton(String text) {
