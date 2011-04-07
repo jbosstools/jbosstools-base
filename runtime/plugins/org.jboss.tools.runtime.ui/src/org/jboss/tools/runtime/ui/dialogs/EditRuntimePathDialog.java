@@ -50,7 +50,7 @@ public class EditRuntimePathDialog extends Dialog {
 	public EditRuntimePathDialog(Shell parentShell, RuntimePath runtimePath) {
 		super(parentShell);
 		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
-				| SWT.MODELESS | SWT.RESIZE | getDefaultOrientation());
+				| SWT.RESIZE | getDefaultOrientation());
 		this.runtimePath = runtimePath;
 	}
 
