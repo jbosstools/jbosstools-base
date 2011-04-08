@@ -18,15 +18,15 @@ Contributors:
 Exadel, Inc. and Red Hat, Inc. - initial API and implementation
    </copyright>
 
-   <license>Red Hat, Inc. licenses these features and plugins to you under
+   <license>
+      Red Hat, Inc. licenses these features and plugins to you under
 certain open source licenses (or aggregations of such licenses), which
 in a particular case may include the Eclipse Public License, the GNU
 Lesser General Public License, and/or certain other open source
 licenses. For precise licensing details, consult the corresponding
 source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
 Raleigh NC 27606 USA.
-</license>
-
+   </license>
 
    <plugin
          id="org.jboss.tools.tests"
@@ -45,5 +45,111 @@ Raleigh NC 27606 USA.
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+
+   <!-- SWTBot Tests -->
+
+   <plugin 
+         id="org.jboss.tools.bpel.ui.bot.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.bpmn.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.cdi.bot.test"
+         download-size="0"
+         install-size="0"        
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.deltacloud.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.drools.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.esb.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.hibernate.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.jbpm.ui.bot.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.jsf.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.jst.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.maven.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.modeshape.rest.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.seam.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.smooks.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.struts.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.vpe.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+         
+   <plugin 
+         id="org.jboss.tools.ws.ui.bot.test"
+         download-size="0"
+         install-size="0"         
+         version="0.0.0"/>
+   
 
 </feature>
