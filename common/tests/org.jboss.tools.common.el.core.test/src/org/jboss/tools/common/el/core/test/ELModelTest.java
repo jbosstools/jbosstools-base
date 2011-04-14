@@ -119,7 +119,6 @@ public class ELModelTest extends TestCase {
 		Set<String> keys = new HashSet<String>();
 		for (ELInvocationExpression i: is) {
 			String key = i.toString();
-			System.out.println(key);
 			keys.add(key);
 		}
 		assertTrue(keys.contains("e1"));
