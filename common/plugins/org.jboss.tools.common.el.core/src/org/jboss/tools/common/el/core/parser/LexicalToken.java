@@ -100,6 +100,10 @@ public class LexicalToken implements IToken {
 		return type;
 	}
 
+	public void setType(int type) {
+		this.type = type;
+	}
+
 	/*
 	 * Returns the token text
 	 */

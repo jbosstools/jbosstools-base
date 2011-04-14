@@ -180,6 +180,16 @@ public class ELParserImpl {
 				setNextToken();
 				return expr;
 			case JavaNameTokenDescription.JAVA_NAME:
+				LexicalToken t = lookUpNextToken(current);
+				if(t != null && t.getType() == OperationTokenDescription.OPERATION && t.getText().equals(":")) { //$NON-NLS-1$
+					LexicalToken t1 = lookUpNextToken(t);
+					if(t1 != null && t1.getType() == JavaNameTokenDescription.JAVA_NAME) {
+						LexicalToken t2 = lookUpNextToken(t1);
+						if(t2 != null && t2.getType() == ParamStartTokenDescription.PARAM_START) {
+							t.setType(DotTokenDescription.DOT);
+						}
+					}
+				}
 				return readInvocationExpression();
 		}
 		return null;
