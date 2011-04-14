@@ -10,10 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.test;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.model.ELInstance;
+import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.model.ELMethodInvocation;
 import org.jboss.tools.common.el.core.model.ELModel;
 import org.jboss.tools.common.el.core.model.ELMultiExpression;
@@ -98,6 +101,34 @@ public class ELModelTest extends TestCase {
 
 		assertTrue(cs.get(1) instanceof ELMethodInvocation);
 		assertEquals("d", ((ELMethodInvocation)cs.get(1)).getName().getText());
+		
+	}
+
+	public void testTagLibraryFunctionInvocation() {
+		ELParser parser = ELParserUtil.getJbossFactory().createParser();
+		String el = "#{e1 ? e2 : e3:f3() + (a:b(1,true) + c).d()}";
+		ELModel model = parser.parse(el);
+		
+		List<ELInstance> instances = model.getInstances();
+		
+		assertEquals(1, instances.size());
+		
+		ELInstance instance = instances.get(0);
+		ELExpression expr = instance.getExpression();
+		List<ELInvocationExpression> is = expr.getInvocations();
+		Set<String> keys = new HashSet<String>();
+		for (ELInvocationExpression i: is) {
+			String key = i.toString();
+			System.out.println(key);
+			keys.add(key);
+		}
+		assertTrue(keys.contains("e1"));
+		assertTrue(keys.contains("e2"));
+		assertTrue(keys.contains("e3:f3()"));
+		assertTrue(keys.contains("a:b(1,true)"));
+		assertTrue(keys.contains("c"));
+		assertTrue(keys.contains(".d()"));
+		assertEquals(6, is.size());
 		
 	}
 
