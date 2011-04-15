@@ -183,7 +183,7 @@ public class ELParserImpl {
 				LexicalToken t = lookUpNextToken(current);
 				if(t != null && t.getType() == OperationTokenDescription.OPERATION && t.getText().equals(":")) { //$NON-NLS-1$
 					LexicalToken t1 = lookUpNextToken(t);
-					if(t1 == null || t1.getType() == EndELTokenDescription.END_EL || t1.getType() == ParamEndTokenDescription.PARAM_END || t1.getType() == ArgEndTokenDescription.ARG_END || t1.getType() == ExprEndTokenDescription.EXPR_END) {
+					if(t1 == null || t1.getType() == EndELTokenDescription.END_EL || t1.getType() == ParamEndTokenDescription.PARAM_END || t1.getType() == ArgEndTokenDescription.ARG_END || t1.getType() == ExprEndTokenDescription.EXPR_END || t1.getType() == OperationTokenDescription.OPERATION) {
 						t.setType(DotTokenDescription.DOT); //in incomplete expressions prefer function call to operation sign
 					} else if(t1 != null && t1.getType() == JavaNameTokenDescription.JAVA_NAME) {
 						LexicalToken t2 = lookUpNextToken(t1);
