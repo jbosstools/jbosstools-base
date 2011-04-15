@@ -189,6 +189,11 @@ public class ELParserImpl {
 						LexicalToken t2 = lookUpNextToken(t1);
 						if(t2 != null && t2.getType() == ParamStartTokenDescription.PARAM_START) {
 							t.setType(DotTokenDescription.DOT);
+						} else {
+							LexicalToken t_ = lookUpPrevToken(current);
+							if(t_ == null || !"?".equals(t_.getText())) { //$NON-NLS-1$
+								t.setType(DotTokenDescription.DOT);
+							}
 						}
 					}
 				}
@@ -363,6 +368,17 @@ public class ELParserImpl {
 					|| c.getType() == WhiteSpaceTokenDescription.WHITESPACE
 					|| c.getType() == Tokenizer.LITERAL)) {
 			c = c.getNextToken();
+		}
+		return c;
+	}
+
+	private LexicalToken lookUpPrevToken(LexicalToken token) {
+		LexicalToken c = token;
+		while(c != null 
+				&& (c == token 
+					|| c.getType() == WhiteSpaceTokenDescription.WHITESPACE
+					|| c.getType() == Tokenizer.LITERAL)) {
+			c = c.getPreviousToken();
 		}
 		return c;
 	}
