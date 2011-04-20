@@ -195,8 +195,12 @@ public final class FileUtil {
 		String content = null;
 		InputStream in = null;
 		try {
+			String charset = file.getCharset();
+			if(charset != null) {
+				charset = validateEncoding(charset, null);
+			}
 			in = file.getContents();
-			content = FileUtil.readStream(in);
+			content = (charset == null) ? readStream(in) : readStream(in, charset);
 		} finally {
 			if(in!=null) {
 				try {
@@ -207,6 +211,22 @@ public final class FileUtil {
 			}
 		}
 		return content;
+    }
+
+    public static String readStream(InputStream is, String charset) {
+        StringBuffer sb = new StringBuffer(""); //$NON-NLS-1$
+        try {
+            byte[] b = new byte[4096];
+            while(true) {
+                int l = is.read(b, 0, b.length);
+                if(l < 0) break;
+                sb.append(new String(b, 0, l, charset));
+            }
+            is.close();
+        } catch (IOException e) {
+        	CommonPlugin.getPluginLog().logError(e);
+        }
+        return sb.toString();
     }
 
     public static void copyContent(IFile from, IFile to, boolean force, boolean keepHistory, IProgressMonitor monitor) throws CoreException {
