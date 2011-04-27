@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.jboss.tools.tests.TestsPlugin;
 
 /**
  * Test plugins may define test projects to be added 
@@ -88,10 +89,10 @@ public class TestProjectProvider {
 				ResourcesUtils.setBuildAutomatically(oldAutoBuilding);
 			}
 		} catch (CoreException ex) {
-			ILog log = Platform.getLog(Platform.getBundle("org.jboss.tools.common.test"));
+			ILog log = Platform.getLog(Platform.getBundle(TestsPlugin.ID));
 			IStatus error = new Status(
 					IStatus.ERROR,
-					"org.jboss.tools.common.test",
+					"org.jboss.tools.test",
 					"Exception occurs during project deletion",ex);
 			log.log(error);
 		}
