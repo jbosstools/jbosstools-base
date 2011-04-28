@@ -243,7 +243,8 @@ public class ResourcesUtils {
 		try {
 			 boolean state = ResourcesUtils.setBuildAutomatically(false);
 			 project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-			 project.create(null);
+			 if (!project.exists())
+				 project.create(null);
 			 project.open(null);
 			 JobUtils.waitForIdle(IMPORT_DELAY);
 			 
