@@ -14,6 +14,7 @@ package org.jboss.tools.common.model.project.ext.impl;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMemberValuePair;
@@ -32,6 +33,7 @@ import org.jboss.tools.common.xml.XMLUtilities;
 import org.w3c.dom.Element;
 
 public class ValueInfo implements IValueInfo {
+	IFile resource;
 	String value;
 	public int valueStartPosition;
 	public int valueLength;
@@ -77,6 +79,9 @@ public class ValueInfo implements IValueInfo {
 	public static ValueInfo getValueInfo(IAnnotation annotation, String name) {
 		if(name == null) name = "value"; //$NON-NLS-1$
 		ValueInfo result = new ValueInfo();
+		if(annotation.getResource() instanceof IFile) {
+			result.setResource((IFile)annotation.getResource());
+		}
 		ISourceRange r = null;
 		IMemberValuePair[] ps = null;
 		try {
@@ -162,4 +167,13 @@ public class ValueInfo implements IValueInfo {
 			}
 		}
 	}
+
+	public void setResource(IFile resource) {
+		this.resource = resource;
+	}
+
+	public IFile getResource() {
+		return resource;
+	}
+
 }
