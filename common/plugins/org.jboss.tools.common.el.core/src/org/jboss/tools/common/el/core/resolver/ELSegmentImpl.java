@@ -47,6 +47,9 @@ public class ELSegmentImpl implements ELSegment {
 				public int getLength() {
 					return token.getLength();
 				}
+				public IResource getResource() {
+					return resource;
+				}
 			};
 		}
 		return sourceReference;

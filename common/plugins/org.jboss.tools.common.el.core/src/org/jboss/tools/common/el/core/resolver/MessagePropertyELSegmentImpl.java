@@ -54,6 +54,9 @@ public class MessagePropertyELSegmentImpl extends ELSegmentImpl implements
 				public int getLength() {
 					return propertyLength;
 				}
+				public IResource getResource() {
+					return resource;
+				}
 			};
 		}
 		return messagePropertySourceReference;
