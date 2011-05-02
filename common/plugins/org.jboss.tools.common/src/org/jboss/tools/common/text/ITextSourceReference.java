@@ -10,6 +10,8 @@
   ******************************************************************************/
 package org.jboss.tools.common.text;
 
+import org.eclipse.core.resources.IResource;
+
 /**
  * An interface of seam tools model object that has text source.
  * @author Alexey Kazakov
@@ -25,4 +27,11 @@ public interface ITextSourceReference {
 	 * @return number of characters of element in text
 	 */
 	int getLength();
+
+	/**
+	 * 
+	 * @return resource to which this object references; may return null, if this object references source that is not a IResource object
+	 */
+	IResource getResource();
+
 }
