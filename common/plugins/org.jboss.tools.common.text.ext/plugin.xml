@@ -145,6 +145,32 @@
 		</hyperlinkPartitioner>
          
 		<hyperlinkPartitioner 
+			class="org.jboss.tools.common.text.ext.hyperlink.xml.XMLElementAttributeNameHyperlinkPartitioner" 
+			id="org.jboss.tools.common.text.ext.hyperlink.xml.XMLElementAttributeNameHyperlinkPartitioner">
+			<contentType id="org.eclipse.jst.jsf.facesconfig.facesConfigFile">
+				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+			</contentType>
+			<contentType id="org.eclipse.jst.jsp.core.tldsource">
+         		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+			</contentType>
+        	<contentType id="org.eclipse.wst.xml.core.xmlsource">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+        	</contentType>
+        	<contentType id="org.eclipse.core.runtime.xml">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+        	</contentType>
+        	<contentType id="org.eclipse.jst.j2ee.webDD">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+        	</contentType>
+        	<contentType id="org.eclipse.jst.jee.ee5webDD">
+      		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ROOT"/>
+      	</contentType>
+         <contentType id="org.jboss.tools.common.model.ui.xml">
+        		<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ELEMENT" />
+         </contentType>
+		</hyperlinkPartitioner> 
+		
+		<hyperlinkPartitioner 
 			class="org.jboss.tools.common.text.ext.hyperlink.xml.XMLElementAttributeValueHyperlinkPartitioner" 
 			id="org.jboss.tools.common.text.ext.hyperlink.xml.XMLElementAttributeValueHyperlinkPartitioner">
 			<contentType id="org.eclipse.jst.jsf.facesconfig.facesConfigFile">
