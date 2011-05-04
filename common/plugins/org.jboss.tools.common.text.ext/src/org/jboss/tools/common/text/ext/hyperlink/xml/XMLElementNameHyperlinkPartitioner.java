@@ -97,9 +97,9 @@ public class XMLElementNameHyperlinkPartitioner extends AbstractHyperlinkPartiti
 			IDOMElement elem = (IDOMElement)n;
 			String tagName = elem.getTagName();
 			int start = elem.getStartOffset();
-			int nameStart = start + (elem.isEndTag() ? "<" : "</").length(); //$NON-NLS-1$ //$NON-NLS-2$
+			int nameStart = start + (elem.isEndTag() ? "</" : "<").length(); //$NON-NLS-1$ //$NON-NLS-2$
 			int nameEnd = nameStart + tagName.length();
-			return (region.getOffset() > nameStart && region.getOffset() <= nameEnd);
+			return (region.getOffset() >= nameStart && region.getOffset() <= nameEnd);
 		} finally {
 			smw.dispose();
 		}
