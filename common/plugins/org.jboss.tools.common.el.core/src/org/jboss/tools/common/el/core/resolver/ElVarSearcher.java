@@ -1,5 +1,5 @@
  /*******************************************************************************
-  * Copyright (c) 2007 Red Hat, Inc.
+  * Copyright (c) 2007-2011 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -308,7 +308,7 @@ public class ElVarSearcher {
 								if(resolvedToken==null && parentVar.getElToken()!=null) {
 									try {
 										// Initialize parent vars.
-										engine.resolveELOperand(file, var.getElToken(), true, parentVars, this);
+										engine.resolveELOperand(file, var.getElToken(), true, parentVars, this, (var.getRegion() == null ? 0 : var.getRegion().getOffset()));
 										resolvedToken = parentVar.getResolvedElToken();
 									} catch (StringIndexOutOfBoundsException e) {
 										ELCorePlugin.getPluginLog().logError(e);

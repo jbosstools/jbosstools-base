@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2007-2010 Red Hat, Inc. 
+ * Copyright (c) 2007-2011 Red Hat, Inc. 
  * Distributed under license by Red Hat, Inc. All rights reserved. 
  * This program is made available under the terms of the 
  * Eclipse Public License v1.0 which accompanies this distribution, 
@@ -103,7 +103,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 		ELResolutionImpl resolution;
 		try {
-			resolution = resolveELOperand(context.getResource(), parseOperand(el), false, vars, new ElVarSearcher(context.getResource(), this));
+			resolution = resolveELOperand(context.getResource(), parseOperand(el), false, vars, new ElVarSearcher(context.getResource(), this), offset);
 			if(resolution!=null) {
 				completions.addAll(resolution.getProposals());
 			}
@@ -132,7 +132,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		}
 		ELResolutionImpl resolution = null;
 		try {
-			resolution = resolveELOperand(context.getResource(), operand, true, vars, new ElVarSearcher(context.getResource(), this));
+			resolution = resolveELOperand(context.getResource(), operand, true, vars, new ElVarSearcher(context.getResource(), this), offset);
 			if(resolution != null)
 				resolution.setContext(context);
 		} catch (StringIndexOutOfBoundsException e) {
@@ -158,7 +158,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			vars.add(array[i]);
 		}
 		try {
-			return resolveELOperand(context.getResource(), operand, returnEqualedVariablesOnly, vars, new ElVarSearcher(context.getResource(), this));
+			return resolveELOperand(context.getResource(), operand, returnEqualedVariablesOnly, vars, new ElVarSearcher(context.getResource(), this), offset);
 		} catch (StringIndexOutOfBoundsException e) {
 			log(e);
 		} catch (BadLocationException e) {
@@ -201,7 +201,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 	 */
 	public ELResolutionImpl resolveELOperand(IFile file,
 			ELExpression operand, boolean returnEqualedVariablesOnly,
-			List<Var> vars, ElVarSearcher varSearcher)
+			List<Var> vars, ElVarSearcher varSearcher, int offset)
 			throws BadLocationException, StringIndexOutOfBoundsException {
 		if(operand == null) {
 			//TODO
@@ -215,7 +215,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		boolean isArray = false;
 		ELResolution varELResolution = null;
 		if(var!=null) {
-			varELResolution = resolveEL(file, var.getElToken(), true);
+			varELResolution = resolveEL(file, var.getElToken(), true, offset);
 			if(varELResolution!=null && varELResolution.isResolved()) {
 				ELSegment segment = varELResolution.getLastSegment();
 				if(segment instanceof JavaMemberELSegment) {
@@ -254,7 +254,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						: parseOperand(newEl)) 
 				: operand;
 
-		ELResolutionImpl resolution = resolveELOperand(file, newOperand, returnEqualedVariablesOnly, prefixWasChanged);
+		ELResolutionImpl resolution = resolveELOperand(file, newOperand, returnEqualedVariablesOnly, prefixWasChanged, offset);
 		if(resolution==null) {
 			return null;
 		}
@@ -302,12 +302,12 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				resolution.setSegments(resultSegments);
 				var.resolveValue("#{" + var.getElToken().getText() + suffix + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 
-				ELResolutionImpl oldElResolution = resolveELOperand(file, operand, returnEqualedVariablesOnly, false);
+				ELResolutionImpl oldElResolution = resolveELOperand(file, operand, returnEqualedVariablesOnly, false, offset);
 				if(oldElResolution!=null) {
 					resolution.getProposals().addAll(oldElResolution.getProposals());
 				}
 			} else {
-				resolution = resolveELOperand(file, operand, returnEqualedVariablesOnly, false);
+				resolution = resolveELOperand(file, operand, returnEqualedVariablesOnly, false, offset);
 			}
 		}
 
@@ -321,7 +321,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			for (Var v : vars) {
 				String prefix = operand.toString();
 				if(v.getName().startsWith(prefix)) {
-					ELResolution r = resolveEL(file, v.getElToken(), true, vars, varSearcher);
+					ELResolution r = resolveEL(file, v.getElToken(), true, vars, varSearcher, offset);
 					if(r==null) {
 						continue;
 					}
@@ -375,27 +375,28 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 	 * @throws BadLocationException
 	 * @throws StringIndexOutOfBoundsException
 	 */
-	public ELResolution resolveEL(IFile file, ELExpression operand, boolean varIsUsed) throws BadLocationException, StringIndexOutOfBoundsException {
+	public ELResolution resolveEL(IFile file, ELExpression operand, boolean varIsUsed, int offset) throws BadLocationException, StringIndexOutOfBoundsException {
 		if(!(operand instanceof ELInvocationExpression)) return null;
-		return resolveELOperand(file, operand, true, varIsUsed);
+		return resolveELOperand(file, operand, true, varIsUsed, offset);
 	}
 
 	/**
 	 * Returns ELResolution for EL.
-	 * @param seamProject
 	 * @param file
 	 * @param operand EL without #{}
+	 * @param offset TODO
+	 * @param seamProject
 	 * @return ELResolution for EL.
 	 * @throws BadLocationException
 	 * @throws StringIndexOutOfBoundsException
 	 */
-	public ELResolution resolveEL(IFile file, ELExpression operand, boolean returnEqualedVariablesOnly, List<Var> vars, ElVarSearcher varSearcher) throws BadLocationException, StringIndexOutOfBoundsException {
+	public ELResolution resolveEL(IFile file, ELExpression operand, boolean returnEqualedVariablesOnly, List<Var> vars, ElVarSearcher varSearcher, int offset) throws BadLocationException, StringIndexOutOfBoundsException {
 		if(!(operand instanceof ELInvocationExpression)) return null;
-		return resolveELOperand(file, operand, returnEqualedVariablesOnly, vars, varSearcher);
+		return resolveELOperand(file, operand, returnEqualedVariablesOnly, vars, varSearcher, offset);
 	}
 
 	public ELResolutionImpl resolveELOperand(IFile file, ELExpression operand,  
-			boolean returnEqualedVariablesOnly, boolean varIsUsed) throws BadLocationException, StringIndexOutOfBoundsException {
+			boolean returnEqualedVariablesOnly, boolean varIsUsed, int offset) throws BadLocationException, StringIndexOutOfBoundsException {
 		if(!(operand instanceof ELInvocationExpression) || file == null) {
 			return null;
 		}
@@ -414,18 +415,18 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		if (expr.getLeft() != null && isArgument) {
 			left = expr.getLeft();
 			resolvedVariables = resolveVariables(file, left, false, 
-					true); 	// is Final and equal names are because of 
+					true, offset); 	// is Final and equal names are because of 
 							// we have no more to resolve the parts of expression, 
 							// but we have to resolve arguments of probably a message component
 		} else if (expr.getLeft() == null && isIncomplete) {
 			resolvedVariables = resolveVariables(file, expr, true, 
-					returnEqualedVariablesOnly);
+					returnEqualedVariablesOnly, offset);
 		} else {
 			while(left != null) {
 				List<V>resolvedVars = new ArrayList<V>();
 				resolvedVars = resolveVariables(file, 
 						left, left == expr, 
-						returnEqualedVariablesOnly);
+						returnEqualedVariablesOnly, offset);
 				if (resolvedVars != null && !resolvedVars.isEmpty()) {
 					resolvedVariables = resolvedVars;
 					resolution.setLastResolvedToken(left);
@@ -441,7 +442,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				isIncomplete) {
 			// no vars are resolved 
 			// the tokens are the part of var name ended with a separator (.)
-			resolvedVariables = resolveVariables(file, expr, true, returnEqualedVariablesOnly);			
+			resolvedVariables = resolveVariables(file, expr, true, returnEqualedVariablesOnly, offset);			
 
 			Set<TextProposal> proposals = new TreeSet<TextProposal>(TextProposal.KB_PROPOSAL_ORDER);
 			JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl();
@@ -453,7 +454,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if(varName.startsWith(operand.getText())) {
 					// JBIDE-512, JBIDE-2541 related changes ===>>>
 
-					MemberInfo member = getMemberInfoByVariable(var, true);
+					MemberInfo member = getMemberInfoByVariable(var, true, offset);
 
 					String sourceTypeName = member == null ? null : member.getDeclaringTypeQualifiedName();
 					if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) 
@@ -502,10 +503,10 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 			for (V var : resolvedVariables) {
 				if(isSingularAttribute(var)) {
-					bijectedAttribute = getMemberInfoByVariable(var, true);
+					bijectedAttribute = getMemberInfoByVariable(var, true, offset);
 				}
 
-				MemberInfo member = getMemberInfoByVariable(var, true);
+				MemberInfo member = getMemberInfoByVariable(var, true, offset);
 				String sourceTypeName = member == null ? null : member.getDeclaringTypeQualifiedName();
 				if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) 
 					sourceTypeName = Signature.getSimpleName(sourceTypeName);
@@ -556,7 +557,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl();
 		segment.setToken(expr.getFirstToken());
 		for (V var : resolvedVariables) {
-			TypeInfoCollector.MemberInfo member = getMemberInfoByVariable(var, returnEqualedVariablesOnly);
+			TypeInfoCollector.MemberInfo member = getMemberInfoByVariable(var, returnEqualedVariablesOnly, offset);
 			if (member != null && !members.contains(member)) { 
 				members.add(member);
 				segment.setMemberInfo(member);
@@ -607,9 +608,9 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		return resolution;
 	}
 
-	abstract public List<V> resolveVariables(IFile file, ELInvocationExpression expr, boolean isFinal, boolean onlyEqualNames);
+	abstract public List<V> resolveVariables(IFile file, ELInvocationExpression expr, boolean isFinal, boolean onlyEqualNames, int offset);
 
-	abstract protected TypeInfoCollector.MemberInfo getMemberInfoByVariable(V var, boolean onlyEqualNames);
+	abstract protected TypeInfoCollector.MemberInfo getMemberInfoByVariable(V var, boolean onlyEqualNames, int offset);
 
 	abstract protected boolean isStaticMethodsCollectingEnabled();
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2010 Red Hat, Inc.
+ * Copyright (c) 2007-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -35,6 +35,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.ca.preferences.ELContentAssistPreferences;
+import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
 import org.jboss.tools.common.model.util.EclipseJavaUtil;
 import org.jboss.tools.common.util.BeanUtil;
 
@@ -341,6 +342,77 @@ public class TypeInfoCollector {
 		abstract public IJavaElement getJavaElement();
 	}
 
+	public static class ArtificialTypeInfo extends TypeInfo {
+		private IType fType;
+		private IMethod fMethod;
+		private String fMethodName;
+		
+		public ArtificialTypeInfo (IType type, IMethod method, String methodName) throws JavaModelException {
+			super(type, null, false);
+			this.fType = type;
+			this.fMethod = method;
+			this.fMethodName = methodName;
+		}
+
+		@Override
+		public IJavaElement getJavaElement() {
+			return fType;
+		}
+
+		@Override
+		public TypeInfoCollector getTypeCollector(boolean varIsUsed,
+				boolean includeStaticMethods) {
+			return new TypeInfoCollector(this, varIsUsed, true) {
+				
+				@Override
+				public List<MemberInfo> getMethods() {
+					// Do not filter the static methods here, just return all the artificial methods
+					List<MemberInfo> methods = new ArrayList<MemberInfo>();
+					methods.addAll(fMethods);
+					return methods;
+				}
+
+				@Override
+				public List<MemberInfo> getProperties() {
+					// No properties are allowed here, just return an empty list here
+					return new ArrayList<MemberInfo>();
+				}
+
+				@Override
+				public void collectInfo(boolean var) {
+					if (fMethods == null) {
+						fMethods = new ArrayList<MethodInfo>();
+					} else {
+						fMethods.clear();
+					}
+
+					if (fFields == null) {
+						fFields = new ArrayList<FieldInfo>();
+					} else {
+						fFields.clear();
+					}
+
+					if (fType == null) {
+						return;
+					}
+					try {
+						IType binType = fType;
+						if(fMember instanceof TypeInfo) {
+							fTypeInfo = (TypeInfo)fMember;
+						} else {
+							fTypeInfo = new TypeInfo(binType, fMember, fMember.isDataModel());
+						}
+						TypeInfo parent = fTypeInfo;
+						MethodInfo info = new MethodInfo(fMethod, fMethodName, fTypeInfo, parent, false);
+						fMethods.add(info);
+					} catch (JavaModelException e) {
+						ELCorePlugin.getPluginLog().logError(e);
+					}
+				}
+			};
+		}
+	}
+	
 	public static class TypeInfo extends MemberInfo {
 		private IType fType;
 		private TypeInfo superType;
@@ -528,6 +600,23 @@ public class TypeInfoCollector {
 			setParameterTypeNames(parameterTypeQualifiedNames);
 			setParameterNames(parameterNames);
 		}
+
+		public MethodInfo(IMethod method, String name, TypeInfo parentMember, TypeInfo declaratedType, boolean dataModel) throws JavaModelException {
+			super(method.getDeclaringType(),
+					(method.getDeclaringType() == null ? null : method.getDeclaringType().getFullyQualifiedName()),
+					name,
+					method.getFlags(),
+					parentMember,
+					declaratedType,
+					dataModel,
+					new Type(method.getReturnType(),
+					method.getDeclaringType()));
+			fJavaElement = method;
+			setParameterNames(method.getParameterNames());
+			setParameterTypeNames(resolveSignatures(method.getDeclaringType(), method.getParameterTypes()));
+			setParametersNamesOfDeclaringType(getTypeErasureFromSignatureArray(method.getDeclaringType().getTypeParameterSignatures()));
+		}
+
 
 		public MethodInfo(IMethod method, TypeInfo parentMember, TypeInfo declaratedType, boolean dataModel) throws JavaModelException {
 			super(method.getDeclaringType(),
@@ -867,7 +956,7 @@ public class TypeInfoCollector {
 				false));
 	}
 
-	private static IType getSuperclass(IType type) throws JavaModelException {
+	public static IType getSuperclass(IType type) throws JavaModelException {
 		String superclassName = type.getSuperclassName();
 		if(superclassName!=null) {
 			String fullySuperclassName = EclipseJavaUtil.resolveType(type, superclassName);

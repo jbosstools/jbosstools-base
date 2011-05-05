@@ -44,7 +44,7 @@ public class ElVarSearcherTest extends TestCase{
 	private static class FakeELCompletionEngine implements ELCompletionEngine {
 		public ELResolution resolveELOperand(IFile file,
 				ELExpression operand, boolean returnEqualedVariablesOnly,
-				List<Var> vars, ElVarSearcher varSearcher)
+				List<Var> vars, ElVarSearcher varSearcher, int offset)
 				throws BadLocationException, StringIndexOutOfBoundsException {
 			return new ELResolutionImpl(operand);
 		}
