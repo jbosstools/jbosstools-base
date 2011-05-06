@@ -203,7 +203,14 @@ public class ResourcesUtils {
 	public static void deleteProject(String projectName) throws CoreException {
 		IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(projectName);
 		if (member != null) {
-			member.getProject().delete(true, true, null);
+			try { 
+				member.getProject().delete(true, true, null); 
+			} catch (Exception e) {
+				// Ignore any exceptions here (mostly because ResourceException rising is possible here)
+				// But we cannot break tearDown() procedures in test cases which widely use this method
+				// So, just print an exception stacktrace to see it in console log
+				e.printStackTrace();
+			}
 		}
 	}
 	
