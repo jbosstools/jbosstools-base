@@ -15,12 +15,12 @@ Export-Package: org.jboss.tools.common.el.core,
  org.jboss.tools.common.el.internal.core.parser,
  org.jboss.tools.common.el.internal.core.parser.token
 Bundle-Activator: org.jboss.tools.common.el.core.ELCorePlugin
-Require-Bundle: org.eclipse.jface.text,
- org.eclipse.wst.sse.core,
- org.eclipse.wst.sse.ui,
+Require-Bundle: org.eclipse.jface.text;bundle-version="3.7.0",
+ org.eclipse.wst.sse.core;bundle-version="1.1.600",
+ org.eclipse.wst.sse.ui;bundle-version="1.3.0",
  org.jboss.tools.common.model,
  org.jboss.tools.common.resref.core;visibility:=reexport,
- org.eclipse.ui,
- org.eclipse.jdt.ui;bundle-version="[3.5.0,4.0.0)"
+ org.eclipse.ui;bundle-version="3.7.0",
+ org.eclipse.jdt.ui;bundle-version="3.7.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .
