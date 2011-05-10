@@ -29,6 +29,7 @@ import org.eclipse.jface.viewers.TreeViewerEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -196,6 +197,17 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		createCancelButton(parent);
 	}
 
+	@Override
+	protected void createCancelButton(Composite parent) {
+		cancel = createButton(parent, IDialogConstants.CANCEL_ID,
+				IDialogConstants.CANCEL_LABEL, false);
+		if (arrowCursor == null) {
+			arrowCursor = new Cursor(cancel.getDisplay(), SWT.CURSOR_ARROW);
+		}
+		cancel.setCursor(arrowCursor);
+		setOperationCancelButtonEnabled(enableCancelButton);
+	}
+	
 	@Override
 	protected void cancelPressed() {
 		getProgressMonitor().setCanceled(true);
