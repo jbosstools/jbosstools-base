@@ -18,7 +18,7 @@ public class FileSystemsHelper {
 	public static final String FILE_SYSTEMS = "FileSystems"; //$NON-NLS-1$
 	
 	public static XModelObject getFileSystems(XModel model) {
-		return model.getByPath(FILE_SYSTEMS);
+		return model == null ? null : model.getByPath(FILE_SYSTEMS);
 	}
 
 	public static XModelObject getFileSystem(XModel model, String name) {

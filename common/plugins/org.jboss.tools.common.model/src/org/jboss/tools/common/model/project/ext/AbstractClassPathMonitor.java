@@ -57,6 +57,9 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 	 */
 	public synchronized boolean update() {
 		Libs libs = FileSystemsHelper.getLibs(model);
+		if(libs == null) {
+			return false;
+		}
 		libs.update();
 		List<String> newPaths = libs.getPaths();
 		boolean result = libsModified || !loaded;
