@@ -159,11 +159,11 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		CheckboxTableViewer viewer = CheckboxTableViewer.newCheckList(composite, SWT.V_SCROLL
 				| SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE);
 		Table table = viewer.getTable();
-		gd = new GridData(GridData.FILL_BOTH);
+		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		GC gc = new GC( composite);
 		FontMetrics fontMetrics = gc.getFontMetrics( );
 		gc.dispose( );
-		gd.heightHint = Dialog.convertHeightInCharsToPixels(fontMetrics, heightHint);
+		gd.minimumHeight = Dialog.convertHeightInCharsToPixels(fontMetrics, heightHint);
 		table.setLayoutData(gd);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);

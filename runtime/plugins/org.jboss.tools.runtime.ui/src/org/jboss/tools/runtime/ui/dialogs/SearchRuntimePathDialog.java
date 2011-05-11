@@ -95,16 +95,16 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		getShell().setText("Searching for runtimes...");
 		
 		Composite composite = new Composite(parent, SWT.NONE); 
-		GridData  gd = new GridData();
-		gd.horizontalAlignment = GridData.FILL;
-		gd.grabExcessHorizontalSpace = true;
+		GridData  gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		//gd.horizontalAlignment = GridData.FILL;
+		//gd.grabExcessHorizontalSpace = true;
 		gd.horizontalSpan = 2;
-		//gd.heightHint = convertVerticalDLUsToPixels(15);
+		gd.minimumHeight = convertVerticalDLUsToPixels(heightHint);
 		composite.setLayoutData(gd);
 		composite.setLayout(new GridLayout(1, false));
 		
 		foundRuntimesLabel = new Label(composite, SWT.NONE);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd = new GridData(GridData.FILL, SWT.FILL, true, false);
 		gd.horizontalSpan = 2;
 		foundRuntimesLabel.setLayoutData(gd);
 		foundRuntimesLabel.setFont(parent.getFont());
@@ -150,24 +150,24 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 		// label showing current task
 		subTaskLabel = new Label(parent, SWT.LEFT | SWT.WRAP);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd = new GridData(GridData.FILL, SWT.FILL, true, false);
 		gd.horizontalSpan = 2;
 		gd.heightHint = 0;
 		subTaskLabel.setLayoutData(gd);
 		subTaskLabel.setFont(parent.getFont());
 		// progress indicator
 		progressIndicator = new ProgressIndicator(parent);
-		gd = new GridData();
-		gd.horizontalAlignment = GridData.FILL;
-		gd.grabExcessHorizontalSpace = true;
+		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		//gd.horizontalAlignment = GridData.FILL;
+		//gd.grabExcessHorizontalSpace = true;
 		gd.horizontalSpan = 2;
 		gd.heightHint = 0;
 		progressIndicator.setLayoutData(gd);
 		
 		hideCreatedRuntimes = new Button(parent, SWT.CHECK);
-		gd = new GridData();
-		gd.horizontalAlignment = GridData.FILL;
-		gd.grabExcessHorizontalSpace = true;
+		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		//gd.horizontalAlignment = GridData.FILL;
+		//gd.grabExcessHorizontalSpace = true;
 		gd.horizontalSpan = 2;
 		hideCreatedRuntimes.setLayoutData(gd);
 		hideCreatedRuntimes.setText("Hide already created runtimes");
