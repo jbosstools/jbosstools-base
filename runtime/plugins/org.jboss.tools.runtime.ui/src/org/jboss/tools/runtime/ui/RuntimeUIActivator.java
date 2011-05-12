@@ -167,11 +167,11 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 				| SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE);
 		
 		Tree tree = viewer.getTree();
-		gd = new GridData(GridData.FILL_BOTH);
+		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		GC gc = new GC( composite);
 		FontMetrics fontMetrics = gc.getFontMetrics( );
 		gc.dispose( );
-		gd.heightHint = Dialog.convertHeightInCharsToPixels(fontMetrics, heightHint);
+		gd.minimumHeight = Dialog.convertHeightInCharsToPixels(fontMetrics, heightHint);
 		tree.setLayoutData(gd);
 		tree.setHeaderVisible(true);
 		tree.setLinesVisible(true);
