@@ -2,15 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion> 
 	<parent>
-	  <groupId>org.jboss.tools</groupId>
-	  <artifactId>org.jboss.tools.parent.pom</artifactId>
-	  <version>0.0.2-SNAPSHOT</version>
+		<groupId>org.jboss.tools.common</groupId>
+		<artifactId>tests</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.common</groupId>
+	<groupId>org.jboss.tools.common.tests</groupId>
 	<artifactId>org.jboss.tools.common.test</artifactId> 
 	<version>3.2.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
-
 	<properties>
 		<emma.filter>org.jboss.tools.common*</emma.filter>
 		<emma.instrument.bundles>org.jboss.tools.common</emma.instrument.bundles>
