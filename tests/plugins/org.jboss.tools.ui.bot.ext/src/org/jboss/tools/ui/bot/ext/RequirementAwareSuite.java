@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
@@ -212,6 +213,7 @@ public class RequirementAwareSuite extends Suite {
 				return new ReqAwareClassRunner(klass, reqs, config);
 			}
 			log.info("Skipped");
+			cleanUp.addSkippedClass(klass);
 			return null;
 		}
 
@@ -234,6 +236,14 @@ public class RequirementAwareSuite extends Suite {
 
 		public void incrPlanned() {
 			testsAboutToRun += 1;
+		}
+		/**
+		 * adds class to the list of skipped classes
+		 * @param klass
+		 */
+		public void addSkippedClass(Class<?> klass) {
+			skippedClasses.add(klass.getName());
+			
 		}
 
 		public void incrPlanned(int amount) {
@@ -262,15 +272,32 @@ public class RequirementAwareSuite extends Suite {
 		public boolean isClassPlanned(Class<?> klass) {
 			return classes.contains(klass.getName());
 		}
-
+		/**
+		 * set of classes that has been skipped (annotations not met etc)
+		 */
+		private Set<String> skippedClasses = new TreeSet<String>();
+		private void reportSkippedClasses() {
+			Set<String> finalized = new TreeSet<String>();
+			// lets figure out if a class that has been at least once skipped was not planned
+			for (String clazz : skippedClasses) {
+				if (!classes.contains(clazz)) {
+					finalized.add(clazz);
+				}
+			}
+			if (!finalized.isEmpty()) {
+				log.info("Several test classes have been skipped, see head of log to figure out why it happened");
+				for (String clazz : finalized) {
+					log.info(" * "+clazz);
+				}
+			}
+		}
 		@Override
 		public void testFinished(Description description) throws Exception {
 			incrFinished();
 			log.info("Finished test : " + description.getDisplayName());
 			log.info("Finished tests : " + getFinished() + "/" + getPlanned());
 			if (getFinished() >= getPlanned()) {
-				log
-						.info("All tests finished, performing cleanup requirements ");
+				log.info("All tests finished, performing cleanup requirements ");				
 				try {
 					RequirementBase.createStopServer().fulfill();
 					RequirementBase.createStopDBServer().fulfill();
@@ -279,6 +306,7 @@ public class RequirementAwareSuite extends Suite {
 				} catch (Exception ex) {
 					log.error("Unable to fulfill cleanup requirements", ex);
 				}
+				reportSkippedClasses();
 			}
 			super.testFinished(description);
 		}
