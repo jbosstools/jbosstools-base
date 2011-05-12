@@ -65,7 +65,16 @@ public abstract class RequirementBase {
 		log.info("Requirement '" + this.getClass().getName() + "' fulfilled");
 
 	}
-
+	/**
+	 * try catch wrapper for {@link #fulfill()} method which only logs possible error 
+	 */
+	public void fulfillIgnore() {
+			try {
+				fulfill();
+			} catch (Exception e) {
+				log.error(e);
+			}
+	}
 	/**
 	 * must return true if the Requirement is already fulfilled
 	 * 
