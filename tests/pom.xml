@@ -5,10 +5,11 @@
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>org.jboss.tools.parent.pom</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>../build/parent/pom.xml</relativePath>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
-	<artifactId>org.jboss.tools.tests.all</artifactId>
-	<name>org.jboss.tools.tests.all</name>
+	<artifactId>tests</artifactId>
+	<name>tests.all</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
