@@ -49,4 +49,8 @@ public interface IRuntimeDetector extends Comparable<IRuntimeDetector> {
 	void setPriority(int priority);
 	
 	void computeIncludedServerDefinition(ServerDefinition serverDefinition);
+	
+	boolean isValid();
+	
+	void setValid(boolean valid);
 }

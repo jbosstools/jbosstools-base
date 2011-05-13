@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.resource.JFaceResources;
@@ -214,7 +215,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 	}
 	
 	private TableViewer createDetectorViewer(Composite parent) {
-		CheckboxTableViewer tableViewer = CheckboxTableViewer.newCheckList(parent, SWT.BORDER
+		final CheckboxTableViewer tableViewer = CheckboxTableViewer.newCheckList(parent, SWT.BORDER
 				| SWT.V_SCROLL | SWT.SINGLE);
 		Table table = tableViewer.getTable();
 		GridData gd = new GridData(GridData.FILL_BOTH);
@@ -243,7 +244,13 @@ public class RuntimePreferencePage extends PreferencePage implements
 			
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				IRuntimeDetector detector = (IRuntimeDetector) event.getElement();
-				detector.setEnabled(!detector.isEnabled());
+				if (detector.isValid()) {
+					detector.setEnabled(!detector.isEnabled());
+				} else {
+					MessageDialog.openWarning(getShell(), "Information", "The '" + detector.getName() + "' detector is invalid.");
+					tableViewer.setChecked(detector, false);
+				}
+				
 			}
 		});
 		for (int i=0; i<runtimeDetectors.size(); i++) {
@@ -255,6 +262,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 				if (preferenceId != null && preferenceId.trim().length() > 0) {
 					Link link = new Link(table, SWT.NONE);
 					link.setText("     <a>Link</a>");
+					link.setEnabled(detector.isValid());
 					TableEditor editor = new TableEditor (table);
 					editor.grabHorizontal = editor.grabVertical = true;
 					editor.setEditor (link, item, 1);

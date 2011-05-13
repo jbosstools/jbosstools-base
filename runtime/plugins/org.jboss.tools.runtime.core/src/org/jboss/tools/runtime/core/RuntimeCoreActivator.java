@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
+import org.jboss.tools.runtime.core.model.InvalidRuntimeDetector;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -113,7 +114,8 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 						detector = (IRuntimeDetector) configurationElement.createExecutableExtension("class");
 					} catch (CoreException e) {
 						log(e);
-						continue;
+						detector = new InvalidRuntimeDetector();
+						detector.setValid(false);
 					}
 					String name = configurationElement.getAttribute(NAME);
 					String preferenceId = configurationElement.getAttribute(PREFERENCE_ID);

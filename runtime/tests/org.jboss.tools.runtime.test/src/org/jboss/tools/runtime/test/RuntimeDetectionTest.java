@@ -10,6 +10,7 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -41,6 +42,7 @@ import org.jboss.tools.runtime.IJBossRuntimePluginConstants;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
+import org.jboss.tools.runtime.core.model.InvalidRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.model.ServerDefinition;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
@@ -374,6 +376,18 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 				removeIncluded(list.item(i));
 			}
 		}
+	}
+	
+	@Test
+	public void testInvalidDetectors() {
+		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDeclaredRuntimeDetectors();
+		IRuntimeDetector invalidDetector = null;
+		for (IRuntimeDetector detector:detectors) {
+			if (detector instanceof InvalidRuntimeDetector) {
+				invalidDetector = detector;
+			}
+		}
+		assertFalse("Invalid detector is enabled.", invalidDetector.isEnabled());
 	}
 	
 	private String serialize(Document doc) throws TransformerException {
