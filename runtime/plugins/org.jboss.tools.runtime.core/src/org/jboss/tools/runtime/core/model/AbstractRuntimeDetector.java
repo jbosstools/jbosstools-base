@@ -24,6 +24,7 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 	private String name;
 	private String preferenceId;
 	private boolean enabled;
+	private boolean valid = true;
 	private int priority;
 
 	@Override
@@ -67,6 +68,9 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 	}
 
 	public boolean isEnabled() {
+		if (!isValid()) {
+			return false;
+		}
 		return enabled;
 	}
 
@@ -123,5 +127,13 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 		int p1 = this.getPriority();
 		int p2 = o.getPriority();
 		return p1 - p2;
+	}
+
+	public boolean isValid() {
+		return valid;
+	}
+
+	public void setValid(boolean valid) {
+		this.valid = valid;
 	}	
 }

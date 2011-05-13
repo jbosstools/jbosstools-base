@@ -47,4 +47,8 @@ public interface IRuntimeDetector extends Comparable<IRuntimeDetector> {
 	int getPriority();
 	
 	void setPriority(int priority);
+	
+	boolean isValid();
+	
+	void setValid(boolean valid);
 }
