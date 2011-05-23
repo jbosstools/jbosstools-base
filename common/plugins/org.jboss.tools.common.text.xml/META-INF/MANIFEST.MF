@@ -8,6 +8,7 @@ Bundle-SymbolicName: org.jboss.tools.common.text.xml;singleton:=true
 Bundle-Localization: plugin
 Export-Package: org.jboss.tools.common.text.xml,
  org.jboss.tools.common.text.xml.contentassist,
+ org.jboss.tools.common.text.xml.contentassist.test,
  org.jboss.tools.common.text.xml.internal.ui.preferencies,
  org.jboss.tools.common.text.xml.ui,
  org.jboss.tools.common.text.xml.ui.xpl,
@@ -27,6 +28,8 @@ Require-Bundle: org.jboss.tools.common,
  org.eclipse.core.resources;bundle-version="3.7.100",
  org.eclipse.wst.xsd.ui;bundle-version="1.2.404",
  org.eclipse.wst.dtd.ui;bundle-version="1.0.600",
+ org.junit;bundle-version="3.8.2",
+ org.jboss.tools.tests,
  org.eclipse.ui.ide;bundle-version="3.7.0"
 Bundle-Version: 3.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
