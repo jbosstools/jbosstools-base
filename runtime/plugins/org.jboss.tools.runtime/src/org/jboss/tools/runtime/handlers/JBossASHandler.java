@@ -13,8 +13,6 @@ package org.jboss.tools.runtime.handlers;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -51,7 +49,6 @@ import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.jboss.ide.eclipse.as.core.server.IDeployableServer;
-import org.jboss.ide.eclipse.as.core.server.IDeployableServer;
 import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
@@ -63,6 +60,8 @@ import org.jboss.tools.runtime.core.model.ServerDefinition;
 
 public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRuntimePluginConstants {
 	
+	private static final int JBOSS_AS7_INDEX = 8;
+
 	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
 		createInitialJBossServer();
 		createJBossServerFromDefinitions(serverDefinitions);
@@ -138,6 +137,8 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 					index = 4;
 				} else if ("6.0".equals(version)) { //$NON-NLS-1$
 					index = 5;
+				} else if ("7.0".equals(version)) { //$NON-NLS-1$
+					index = 8;
 				}
 				createJBossServer(serverDefinition.getLocation(),index,serverDefinition.getName(),serverDefinition.getName() + " " + RUNTIME); //$NON-NLS-1$
 			}
@@ -279,20 +280,21 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		server.setHost(JBOSS_AS_HOST);
 		server.setName(name);
 		
-		// JBossServer.DEPLOY_DIRECTORY
-		// JBIDE-7822
-		//String deployVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("deploy").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
-		//((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.deployDirectory", deployVal); //$NON-NLS-1$
-		((ServerWorkingCopy) server).setAttribute(IDeployableServer.DEPLOY_DIRECTORY_TYPE, IDeployableServer.DEPLOY_SERVER);
+		if (index != JBOSS_AS7_INDEX) {
+			// JBossServer.DEPLOY_DIRECTORY
+			// JBIDE-7822
+			//String deployVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("deploy").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
+			//((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.deployDirectory", deployVal); //$NON-NLS-1$
+			((ServerWorkingCopy) server).setAttribute(IDeployableServer.DEPLOY_DIRECTORY_TYPE, IDeployableServer.DEPLOY_SERVER);
 
-		// IDeployableServer.TEMP_DEPLOY_DIRECTORY
-		String deployTmpFolderVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("tmp").append("jbosstoolsTemp").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.tempDeployDirectory", deployTmpFolderVal); //$NON-NLS-1$
+			// IDeployableServer.TEMP_DEPLOY_DIRECTORY
+			String deployTmpFolderVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("tmp").append("jbosstoolsTemp").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.tempDeployDirectory", deployTmpFolderVal); //$NON-NLS-1$
 
-		// If we'd need to set up a username / pw for JMX, do it here.
-//		((ServerWorkingCopy)serverWC).setAttribute(JBossServer.SERVER_USERNAME, authUser);
-//		((ServerWorkingCopy)serverWC).setAttribute(JBossServer.SERVER_PASSWORD, authPass);
-
+			// If we'd need to set up a username / pw for JMX, do it here.
+//			((ServerWorkingCopy)serverWC).setAttribute(JBossServer.SERVER_USERNAME, authUser);
+//			((ServerWorkingCopy)serverWC).setAttribute(JBossServer.SERVER_PASSWORD, authPass);
+		}
 		server.save(false, progressMonitor);
 		return server;
 	}

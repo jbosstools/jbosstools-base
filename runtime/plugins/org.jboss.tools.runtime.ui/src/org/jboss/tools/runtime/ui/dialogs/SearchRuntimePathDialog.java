@@ -256,7 +256,13 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		setReturnCode(OK);
 		close();
 		if (needRefresh) {
-			RuntimeUIActivator.refreshPreferencePage(getShell());
+			Display.getCurrent().asyncExec(new Runnable() {
+				
+				public void run() {
+					RuntimeUIActivator.refreshPreferencePage(getShell());
+				}
+			});
+			
 		}
 	}
 

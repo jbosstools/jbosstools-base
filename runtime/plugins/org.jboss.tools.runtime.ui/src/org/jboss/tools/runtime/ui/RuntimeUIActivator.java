@@ -250,7 +250,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	public static boolean runtimeExists(ServerDefinition serverDefinition) {
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
 		for (IRuntimeDetector detector:detectors) {
-			if (detector.exists(serverDefinition)) {
+			if (detector.isEnabled() && detector.exists(serverDefinition)) {
 				return true;
 			}
 		}
@@ -258,17 +258,19 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	}
 	
 	public static void refreshPreferencePage(Shell shell) {
-		Shell mainShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		Shell mainShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getShell();
 		if (shell != null && !shell.isDisposed()) {
 			shell.close();
-		} else {
-			shell = Display.getCurrent().getActiveShell();
-			if (shell != mainShell) {
-				shell.close();
-			}
 		}
-		shell = mainShell;
-		PreferenceDialog preferenceDialog = PreferencesUtil.createPreferenceDialogOn(shell, RuntimePreferencePage.ID, null, null);
+		shell = Display.getCurrent().getActiveShell();
+		if (shell != mainShell && shell != null) {
+			shell.close();
+		}
+		PreferenceDialog preferenceDialog = PreferencesUtil
+				.createPreferenceDialogOn(PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell(),
+						RuntimePreferencePage.ID, null, null);
 		preferenceDialog.open();
 	}
 

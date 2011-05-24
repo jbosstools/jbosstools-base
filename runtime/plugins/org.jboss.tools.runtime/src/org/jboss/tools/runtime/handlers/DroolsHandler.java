@@ -18,9 +18,11 @@ import java.util.List;
 import org.drools.eclipse.util.DroolsRuntime;
 import org.drools.eclipse.util.DroolsRuntimeManager;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.runtime.IJBossRuntimePluginConstants;
 import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
 import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.osgi.framework.Bundle;
 
 public class DroolsHandler extends AbstractRuntimeDetector implements IJBossRuntimePluginConstants {
 
@@ -133,5 +135,14 @@ public class DroolsHandler extends AbstractRuntimeDetector implements IJBossRunt
 			sd.setParent(serverDefinition);
 			serverDefinition.getIncludedServerDefinitions().add(sd);
 		}
+	}
+
+	@Override
+	public boolean isValid() {
+		if (super.isValid()) {
+			Bundle droolsBundle = Platform.getBundle("org.eclipse.drools");
+			return droolsBundle != null;
+		} 
+		return false;
 	}
 }

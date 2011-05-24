@@ -15,6 +15,7 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.runtime.messages"; //$NON-NLS-1$
 	public static String JBossRuntimeStartup_JBoss_Application_Server_6_0;
+	public static String JBossRuntimeStartup_JBoss_Application_Server_7_0;
 	public static String JBossRuntimeStartup_Cannot_create_new_JBoss_Server;
 	public static String JBossRuntimeStartup_Cannott_create_new_DTP_Connection_Profile;
 	public static String JBossRuntimeStartup_Cannott_create_new_HSQL_DB_Driver;
