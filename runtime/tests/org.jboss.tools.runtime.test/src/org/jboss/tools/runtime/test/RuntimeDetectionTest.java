@@ -79,6 +79,7 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 				.getRuntimePaths();
 		String[] paths = { IRuntimeDetectionConstants.JBOSS_42_HOME,
 				IRuntimeDetectionConstants.JBOSS_51_HOME,
+				IRuntimeDetectionConstants.JBOSS_70_HOME,
 				IRuntimeDetectionConstants.SEAM_20_HOME,
 				IRuntimeDetectionConstants.SEAM_22_HOME,
 				IRuntimeDetectionConstants.EAP_43_HOME };
@@ -136,8 +137,8 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 		List<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
 				.getRuntimePaths();
 		assertTrue(
-				"runtimePaths.size()\nExpected: 5\nWas: " + runtimePaths.size(),
-				runtimePaths.size() == 5);
+				"runtimePaths.size()\nExpected: 6\nWas: " + runtimePaths.size(),
+				runtimePaths.size() == 6);
 	}
 	
 	@Test
@@ -208,10 +209,10 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 				.getDefault().getServerDefinitions();
 		List<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
 			.getRuntimePaths();
-		assertTrue("serverDefinitions.size()\nExpected: 5\nWas: "
+		assertTrue("serverDefinitions.size()\nExpected: 6\nWas: "
 				+ serverDefinitions.size() + 
 				"\nserverDefinitions: " + serverDefinitions +
-				"\nruntimePaths=" + runtimePaths, serverDefinitions.size() == 5);
+				"\nruntimePaths=" + runtimePaths, serverDefinitions.size() == 6);
 	}
 
 	@Test
@@ -289,6 +290,19 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 		}
 		assertTrue("JBoss AS 5.1\nExpected: 1\nWas: " + count, count == 1);
 	}
+	
+	@Test
+	public void testJBossAs70() {
+		IRuntime[] runtimes = ServerCore.getRuntimes();
+		int count = 0;
+		for (IRuntime runtime : runtimes) {
+			IRuntimeType runtimeType = runtime.getRuntimeType();
+			if (IJBossToolingConstants.AS_70.equals(runtimeType.getId())) {
+				count++;
+			}
+		}
+		assertTrue("JBoss AS 7.0\nExpected: 1\nWas: " + count, count == 1);
+	}
 
 	@Test
 	public void testJBossEap43() {
@@ -306,8 +320,8 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 	@Test
 	public void testWtpRuntimes() {
 		IRuntime[] runtimes = ServerCore.getRuntimes();
-		assertTrue("runtimes.length\nExpected: 3\nWas: " + runtimes.length,
-				runtimes.length == 3);
+		assertTrue("runtimes.length\nExpected: 4\nWas: " + runtimes.length,
+				runtimes.length == 4);
 	}
 	
 	@Test
