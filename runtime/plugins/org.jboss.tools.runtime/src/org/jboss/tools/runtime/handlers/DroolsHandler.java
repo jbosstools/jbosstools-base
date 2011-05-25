@@ -140,7 +140,7 @@ public class DroolsHandler extends AbstractRuntimeDetector implements IJBossRunt
 	@Override
 	public boolean isValid() {
 		if (super.isValid()) {
-			Bundle droolsBundle = Platform.getBundle("org.eclipse.drools");
+			Bundle droolsBundle = Platform.getBundle("org.drools.eclipse"); //$NON-NLS-1$
 			return droolsBundle != null;
 		} 
 		return false;

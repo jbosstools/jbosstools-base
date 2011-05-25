@@ -57,6 +57,7 @@ import org.jboss.tools.runtime.IJBossRuntimePluginConstants;
 import org.jboss.tools.runtime.Messages;
 import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
 import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.osgi.framework.Bundle;
 
 public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRuntimePluginConstants {
 	
@@ -395,7 +396,10 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			
 		}
 		if (SOA_P.equals(type)) {
-			DroolsHandler.calculateIncludedServerDefinition(serverDefinition);
+			Bundle droolsBundle = Platform.getBundle("org.drools.eclipse"); //$NON-NLS-1$
+			if (droolsBundle != null) {
+				DroolsHandler.calculateIncludedServerDefinition(serverDefinition);
+			}
 			JbpmHandler.calculateIncludedServerDefinition(serverDefinition);
 		}
 	}
@@ -413,8 +417,11 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			append(builder, includeSeam);
 		}
 		if (SOA_P.equals(type)) {
-			String includeDrools = DroolsHandler.included(serverDefinition);
-			append(builder, includeDrools);
+			Bundle droolsBundle = Platform.getBundle("org.drools.eclipse"); //$NON-NLS-1$
+			if (droolsBundle != null) {
+				String includeDrools = DroolsHandler.included(serverDefinition);
+				append(builder, includeDrools);
+			}
 			String includeJbpm = JbpmHandler.included(serverDefinition);
 			append(builder, includeJbpm);
 		}
