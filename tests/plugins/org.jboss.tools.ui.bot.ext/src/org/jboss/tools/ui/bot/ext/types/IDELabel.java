@@ -511,7 +511,6 @@ public class IDELabel {
      public static final String ADD_GUVNOR_REPOSITORY_TOOLTIP = "Add a Guvnor respository connection";
      public static final String REMOVE_GUVNOR_REPOSITORY_TOOLTIP = "Delete Guvnor repository connection";
      public static final String REMOVE_GUVNOR_REPOSITORY_DIALOG_TITLE = "Remove repository connection";
-     public static final String GUVNOR_REPOSITORY_ROOT_TREE_ITEM = "http://localhost:8080/jboss-brms/org.drools.guvnor.Guvnor/webdav/";
      public static final String PACKAGES_TREE_ITEM = "packages/";
      public static final String MORTGAGE_TREE_ITEM = "mortgages/";
      public static final String GO_INTO_GUVNOR_REPOSITORY_TOOLTIP = "Go Into";
@@ -662,4 +661,10 @@ public class IDELabel {
      public static final String REFRESH = "Refresh";
      
    }
+   
+   public static final class GuvnorAddRepositoryDialog {
+     
+     public static final String REPOSITORY = "Repository: ";
+   }
+   
  }
