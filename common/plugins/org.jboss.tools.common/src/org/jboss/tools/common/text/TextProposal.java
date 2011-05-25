@@ -55,6 +55,29 @@ public class TextProposal {
 
 	PostProcessing postProcessing;
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		TextProposal newObject = new TextProposal();
+		newObject.source = this.source;
+		newObject.label = this.label;
+		newObject.contextInfo = this.contextInfo;
+		newObject.image = this.image;
+		newObject.emptyImage = this.emptyImage;
+		newObject.replacementString = this.replacementString;
+		newObject.emptyContextInfo = this.emptyContextInfo;
+		newObject.relevance = this.relevance;
+		newObject.position = this.position;
+		newObject.autoActivationContentAssistantAfterApplication = this.autoActivationContentAssistantAfterApplication;
+		newObject.type = this.type;
+		newObject.sourceType = this.sourceType;
+		newObject.start = this.start;
+		newObject.end = this.end;
+		return newObject;
+	}
+
 	public String getType() {
 		return type;
 	}
