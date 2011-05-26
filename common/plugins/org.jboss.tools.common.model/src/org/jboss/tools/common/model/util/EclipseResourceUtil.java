@@ -63,6 +63,7 @@ import org.jboss.tools.common.model.filesystems.XFileObject;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemImpl;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemsImpl;
 import org.jboss.tools.common.model.filesystems.impl.JarSystemImpl;
+import org.jboss.tools.common.model.filesystems.impl.Libs;
 import org.jboss.tools.common.model.icons.impl.XModelObjectIcon;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -459,7 +460,7 @@ public class EclipseResourceUtil extends EclipseUtil {
 	
 	private static void validateJarSystem(XModelObject fs, IResource resource) {
 		if(fs == null || !isJar(resource)) return;
-		String jsname = "lib-" + resource.getName().toLowerCase(); //$NON-NLS-1$
+		String jsname = Libs.LIB_PREFIX + resource.getName().toLowerCase(); //$NON-NLS-1$
 		String location = resource.getLocation().toString().replace('\\', '/');
 		if(fs.getChildByPath(jsname) == null) {
 			XModelObject q = fs.getModel().createModelObject("FileSystemJar", null); //$NON-NLS-1$

@@ -45,6 +45,8 @@ public class Libs implements IElementChangedListener {
 	protected List<String> paths = null;
 	Map<IPath, String> paths2 = new HashMap<IPath, String>();
 
+	LibraryNames libraryNames = new LibraryNames();
+
 	List<LibsListener> listeners = new ArrayList<LibsListener>();
 	
 	public Libs(FileSystemsImpl object) {
@@ -62,6 +64,24 @@ public class Libs implements IElementChangedListener {
 			e.printStackTrace();
 		}
 		return EclipseResourceUtil.getProject(object);
+	}
+
+	public XModelObject getLibrary(String path) {
+		String libName = libraryNames.getName(path);
+		if(libName == null) {
+			//compatibility to old code.
+			libName = LIB_PREFIX + new File(path).getName();
+		}
+		return object.getChildByPath(libName);
+	}
+
+	public XModelObject getLibrary(File f) {
+		XModelObject result = null;
+		if(f.exists()) {
+			String path = f.getAbsolutePath().replace('\\', '/');
+			result = getLibrary(path);
+		}
+		return result;
 	}
 
 	public boolean update() {
@@ -103,12 +123,25 @@ public class Libs implements IElementChangedListener {
 		return true;
 	}
 	
-	static String LIB_PREFIX = "lib-"; //$NON-NLS-1$
+	public static String LIB_PREFIX = "lib-"; //$NON-NLS-1$
 
 	void updateFileSystems(List<String> paths) {
 		if(fsVersion >= pathsVersion) {
 			return;
 		}
+		
+		Set<String> oldPaths = libraryNames.getPaths();
+		for (String p: oldPaths) {
+			if(!paths.contains(p)) {
+				String n = libraryNames.getName(p);
+				XModelObject o = object.getChildByPath(n);
+				if(o != null) {
+					o.removeFromParent();
+				}
+				libraryNames.removePath(p);
+			}
+		}
+		
 		XModelObject[] fs = object.getChildren();
 		Set<XModelObject> fss = new HashSet<XModelObject>();
 		for (int i = 0; i < fs.length; i++) {
@@ -123,7 +156,14 @@ public class Libs implements IElementChangedListener {
 			String libEntity = isJar ? "FileSystemJar" : "FileSystemFolder"; //$NON-NLS-1$ //$NON-NLS-2$
 			String fileName = new File(path).getName();
 			if(isJar && EclipseResourceUtil.SYSTEM_JAR_SET.contains(fileName)) continue;
-			String jsname = LIB_PREFIX + fileName;
+			String jsname = libraryNames.getName(path);
+			if(jsname == null) {
+				jsname = LIB_PREFIX + fileName;
+				int q = 0;
+				while(libraryNames.hasName(jsname)) {
+					jsname = LIB_PREFIX + fileName + "-" + (++q); //$NON-NLS-1$
+				}				
+			}
 			XModelObject o = object.getChildByPath(jsname);
 			if(o != null) {
 				fss.remove(o);
@@ -134,7 +174,8 @@ public class Libs implements IElementChangedListener {
 				o.set(FileSystemsLoader.IS_ADDED_TO_CLASSPATH, XModelObjectConstants.TRUE);
 				object.addChild(o);
 //				object.setModified(true);
-			}			
+			}
+			libraryNames.put(path, jsname);
 		}
 		
 		for (XModelObject o: fss) {
@@ -219,4 +260,37 @@ public class Libs implements IElementChangedListener {
 		}
 	}
 
+}
+
+class LibraryNames {
+	private Map<String, String> pathToName = new HashMap<String, String>();
+	private Map<String, String> nameToPath = new HashMap<String, String>();
+
+	public void put(String path, String name) {
+		pathToName.put(path, name);
+		nameToPath.put(name, path);
+	}
+
+	public void removePath(String path) {
+		String name = pathToName.remove(path);
+		if(name != null) {
+			nameToPath.remove(name);
+		}
+	}
+
+	public String getName(String path) {
+		return pathToName.get(path);
+	}
+
+	public String getPath(String name) {
+		return nameToPath.get(name);
+	}
+
+	public boolean hasName(String name) {
+		return nameToPath.containsKey(name);
+	}
+
+	public Set<String> getPaths() {
+		return new HashSet<String>(pathToName.keySet());
+	}
 }
