@@ -376,4 +376,29 @@ public class AbstractResourceMarkerTest extends TestCase {
 			this.pattern = pattern;
 		}
 	}
+
+	public static void assertMarkerIsCreated(IResource resource, String pattern, int... expectedLines) throws CoreException {
+		assertMarkerIsCreated(resource, pattern, true, expectedLines);
+	}
+
+	public static void assertMarkerIsCreated(IResource resource, String message, boolean pattern, int... expectedLines) throws CoreException {
+		assertMarkerIsCreated(resource, AbstractResourceMarkerTest.MARKER_TYPE, pattern?convertMessageToPatern(message):message, pattern, expectedLines);
+	}
+
+	public static void assertMarkerIsNotCreated(IResource resource, String message) throws CoreException {
+		assertMarkerIsNotCreated(resource, AbstractResourceMarkerTest.MARKER_TYPE, convertMessageToPatern(message));
+	}
+
+	public static void assertMarkerIsNotCreated(IResource resource, String message, int expectedLine) throws CoreException {
+		assertMarkerIsNotCreated(resource, AbstractResourceMarkerTest.MARKER_TYPE, convertMessageToPatern(message), expectedLine);
+	}
+
+	public static void assertMarkerIsCreatedForGivenPosition(IResource resource, String message, int lineNumber, int startPosition, int endPosition) throws CoreException {
+		assertMarkerIsCreatedForGivenPosition(resource, AbstractResourceMarkerTest.MARKER_TYPE, convertMessageToPatern(message), lineNumber, startPosition, endPosition);
+	}
+
+	public static String convertMessageToPatern(String message) {
+		return message.replace("[", "\\[").replace("]", "\\]").replace("<", "\\<").replace(">", "\\>").replace("(", "\\(").replace(")", "\\)")
+				.replace("{", "\\{").replace("}", "\\}").replace("'", "\\'");
+	}
 }
