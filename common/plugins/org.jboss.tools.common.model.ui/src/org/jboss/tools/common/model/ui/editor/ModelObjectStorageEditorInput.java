@@ -11,8 +11,6 @@
 package org.jboss.tools.common.model.ui.editor;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
@@ -30,6 +28,7 @@ import org.eclipse.ui.editors.text.ILocationProvider;
 
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.impl.*;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.util.FileUtil;
 
@@ -79,21 +78,34 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 		if(!(o instanceof JarSystemImpl)) return null;
 		String file = ((JarSystemImpl)o).getLocation();
 
-//		IFile[] fs = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(new File(file).toURI());
-//		if(fs == null || fs.length == 0) return null;
-		
         IProject p = EclipseResourceUtil.getProject(o);     
         IJavaProject jp = EclipseResourceUtil.getJavaProject(p);        
         if(jp == null) return null;
-        
-        IPackageFragmentRoot root = jp.getPackageFragmentRoot(file);
-        if(root == null) return null;
 
-		try {
-			file = new File(file).getCanonicalPath();
-		} catch (IOException e) {
-			
-		}
+        IPackageFragmentRoot root = null;
+
+        try {
+        	IPackageFragmentRoot[] rs = jp.getAllPackageFragmentRoots();
+        	for (IPackageFragmentRoot r: rs) {
+        		if(r.getResource() != null && r.getResource().exists()
+        				&& r.getResource().getLocation().toString().equals(file)) {
+        			root = r;
+        		} else if(r.getPath() != null && r.getPath().toString().equals(file)) {
+        			root = r;
+        		}
+        	}
+        } catch (CoreException e) {
+        	ModelUIPlugin.getDefault().logError(e);
+        }
+        
+        if(root == null) {
+        	root = jp.getPackageFragmentRoot(file);
+        }
+        
+        if(root == null) {
+        	return null;
+        }
+
 		if(current != null && !"META-INF".equalsIgnoreCase(current.getName()) && packageName.length() > 0) {
 			IPackageFragment pf = root.getPackageFragment(packageName);
 			f.setParent(pf);
