@@ -386,7 +386,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			String includeSeam = SeamHandler.included(serverDefinition);
 			append(builder, includeSeam);
 		}
-		if (SOA_P.equals(type)) {
+		if (SOA_P.equals(type) || SOA_P_STD.equals(type)) {
 			String includeDrools = DroolsHandler.included(serverDefinition);
 			append(builder, includeDrools);
 			String includeJbpm = JbpmHandler.included(serverDefinition);

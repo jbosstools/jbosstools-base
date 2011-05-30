@@ -35,11 +35,11 @@ public class DroolsHandler extends AbstractRuntimeDetector implements IJBossRunt
 		for (ServerDefinition serverDefinition : serverDefinitions) {
 			String type = serverDefinition.getType();
 			if (serverDefinition.isEnabled() && !droolsExists(serverDefinition)) {
-				if (SOA_P.equals(type) || DROOLS.equals(type)) {
+				if (SOA_P.equals(type) || DROOLS.equals(type) || SOA_P_STD.equals(type)) {
 					File droolsRoot = serverDefinition.getLocation(); //$NON-NLS-1$
 					if (droolsRoot.isDirectory()) {
 						DroolsRuntime runtime = new DroolsRuntime();
-						if (SOA_P.equals(type)) {
+						if (SOA_P.equals(type) || SOA_P_STD.equals(type)) {
 							runtime.setName("Drools - " + serverDefinition.getName()); //$NON-NLS-1$
 						} else {
 							runtime.setName("Drools " + serverDefinition.getVersion()+ " - " + serverDefinition.getName()); //$NON-NLS-1$

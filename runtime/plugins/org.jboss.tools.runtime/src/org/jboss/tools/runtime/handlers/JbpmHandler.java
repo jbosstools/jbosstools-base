@@ -31,7 +31,7 @@ public class JbpmHandler extends AbstractRuntimeDetector implements IJBossRuntim
 	
 	public static File getJbpmRoot(ServerDefinition serverDefinition) {
 		String type = serverDefinition.getType();
-		if (SOA_P.equals(type)) {
+		if (SOA_P.equals(type) || SOA_P_STD.equals(type)) {
 			return new File(serverDefinition.getLocation(),"jbpm-jpdl"); //$NON-NLS-1$
 		}
 		if (JBPM.equals(type)) {
@@ -48,7 +48,7 @@ public class JbpmHandler extends AbstractRuntimeDetector implements IJBossRuntim
 					continue;
 				}
 				String type = serverDefinition.getType();
-				if (SOA_P.equals(type)) {
+				if (SOA_P.equals(type) || SOA_P_STD.equals(type)) {
 					if (jbpmRoot.isDirectory()) {
 						String version = JBPM3;
 						if (isJbpm4(serverDefinition.getLocation().getAbsolutePath())) {
