@@ -89,7 +89,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	
 	private static File getLocation(ServerDefinition serverDefinition) {
 		String type = serverDefinition.getType();
-		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type)) {
+		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type)) {
 			return new File(serverDefinition.getLocation(), "jboss-as");
 		}
 		if (SOA_P_STD.equals(type)) {
