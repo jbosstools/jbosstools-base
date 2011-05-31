@@ -98,6 +98,8 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 
 		addMaxNumberOfMarkersField(composite);
 
+		addWrongBuilderOrderField(composite);
+
 		GridLayout layout= new GridLayout(nColumns, false);
 		layout.marginHeight= 0;
 		layout.marginWidth= 0;
@@ -142,6 +144,12 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		text.setTextLimit(6);
 	}
 
+	protected void addWrongBuilderOrderField(Composite composite) {
+		if(getWrongBuilderOrderKey() != null) {
+			addComboBox(composite, SeverityPreferencesMessages.WRONG_BUILDER_ORDER, getWrongBuilderOrderKey(), errorWarningIgnore, errorWarningIgnoreLabels, 0);
+		}
+	}
+
 	private IStatus validateMaxNumberProblems() {
 		String number = getValue(getMaxNumberOfProblemsKey());
 		StatusInfo status= new StatusInfo();
@@ -161,6 +169,15 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 	}
 
 	abstract protected Key getMaxNumberOfProblemsKey();
+
+	/**
+	 * Returns Key object for preference controlling builders order if it is relevant.
+	 * If builders order is not relevant, returns null.
+	 * @return unique key or null
+	 */
+	protected Key getWrongBuilderOrderKey() {
+		return null;
+	}
 
 	@Override
 	protected Control createContents(Composite parent) {

@@ -29,6 +29,7 @@ public class SeverityPreferencesMessages extends NLS {
 	public static String VALIDATOR_CONFIGURATION_BLOCK_WARNING;
 	public static String ENABLE_VALIDATION;
 	public static String MAX_NUMBER_OF_MARKERS;
+	public static String WRONG_BUILDER_ORDER;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, SeverityPreferencesMessages.class);
