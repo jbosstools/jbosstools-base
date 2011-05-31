@@ -48,6 +48,7 @@ public abstract class SeverityPreferences {
 	public static final String ENABLE_BLOCK_PREFERENCE_NAME = "enableBlock"; //$NON-NLS-1$
 	public static final String MAX_NUMBER_OF_MARKERS_PREFERENCE_NAME = CommonPlugin.PLUGIN_ID + ".validator.problem.markersBlock"; //$NON-NLS-1$
 	public static final int DEFAULT_MAX_NUMBER_OF_MARKERS_PER_FILE = 20;
+	public static final String WRONG_BUILDER_ORDER_PREFERENCE_NAME = CommonPlugin.PLUGIN_ID + ".validator.problem.wrongBuilderOrder"; //$NON-NLS-1$
 
 	public static final String ERROR = "error"; //$NON-NLS-1$
 	public static final String WARNING = "warning"; //$NON-NLS-1$
@@ -117,6 +118,24 @@ public abstract class SeverityPreferences {
 		}
 		p = getDefaultPreferences();
 		return p.getBoolean(ENABLE_BLOCK_PREFERENCE_NAME, false);
+	}
+
+	public String getBuilderOrderPreference(IProject project) {
+		IEclipsePreferences p = getProjectPreferences(project);
+		if(p == null) {
+			return null;
+		}
+		String value = p.get(WRONG_BUILDER_ORDER_PREFERENCE_NAME, null);
+		if(value != null) {
+			return value;
+		}
+		p = getInstancePreferences();
+		value = p == null ? null : p.get(WRONG_BUILDER_ORDER_PREFERENCE_NAME, null);
+		if(value != null) {
+			return value;
+		}
+		p = getDefaultPreferences();
+		return p.get(WRONG_BUILDER_ORDER_PREFERENCE_NAME, null);
 	}
 
 	public String getInstancePreference(String key) {
