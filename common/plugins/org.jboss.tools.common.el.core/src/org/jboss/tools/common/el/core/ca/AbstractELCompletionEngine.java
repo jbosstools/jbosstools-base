@@ -921,8 +921,13 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				bSurroundWithQuotes = true;
 			} else {
 				if((filter.startsWith("'") || filter.startsWith("\"")) //$NON-NLS-1$ //$NON-NLS-2$
-					&& (filter.endsWith("'") || filter.endsWith("\""))) { //$NON-NLS-1$ //$NON-NLS-2$
-					filter = filter.length() == 1 ? "" : filter.substring(1, filter.length() - 1); //$NON-NLS-1$
+					|| (filter.endsWith("'") || filter.endsWith("\""))) { //$NON-NLS-1$ //$NON-NLS-2$
+					if (filter.startsWith("'") || filter.startsWith("\"")) {
+						filter = filter.length() == 1 ? "" : filter.substring(1); //$NON-NLS-1$	
+					}
+					if (filter.endsWith("'") || filter.endsWith("\"")) {
+						filter = filter.length() == 1 ? "" : filter.substring(0, filter.length() - 1); //$NON-NLS-1$	
+					}
 				} else {
 					//Value is set as expression itself, we cannot compute it
 					if(isMessages) {
@@ -979,10 +984,11 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 					String replacementString = proposal.getPresentation().substring(filter.length());
 					if (bSurroundWithQuotes) {
-						replacementString = "'" + replacementString + "']"; //$NON-NLS-1$ //$NON-NLS-2$
+						replacementString = "'" + replacementString; //$NON-NLS-1$ //$NON-NLS-2$
 					}
 
 					kbProposal.setReplacementString(replacementString);
+					kbProposal.setLabel(proposal.getPresentationDisplayName());
 					kbProposal.setImage(getELProposalImage());
 					kbProposal.setType(typeName);
 					kbProposal.setSourceType(sourceTypeName);
