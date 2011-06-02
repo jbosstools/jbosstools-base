@@ -9,6 +9,18 @@
    <feature url="features/org.jboss.tools.runtime.core.feature_0.0.0.jar" id="org.jboss.tools.runtime.core.feature" version="0.0.0">
       <category name="JBoss Tools runtime Nightly Build Update Site"/>
    </feature>
+   <feature url="features/org.jboss.tools.runtime.as.detector.feature_0.0.0.jar" id="org.jboss.tools.runtime.as.detector.feature" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.jboss.tools.runtime.drools.detector.feature_0.0.0.jar" id="org.jboss.tools.runtime.drools.detector.feature" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.jboss.tools.runtime.jbpm.detector.feature_0.0.0.jar" id="org.jboss.tools.runtime.jbpm.detector.feature" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.jboss.tools.runtime.seam.detector.feature_0.0.0.jar" id="org.jboss.tools.runtime.seam.detector.feature" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
    <category-def name="JBoss Tools runtime Nightly Build Update Site" label="JBoss Tools runtime Nightly Build Update Site">
       <description>
          JBoss Tools runtime Nightly Build Update Site: contains all features in this build.
