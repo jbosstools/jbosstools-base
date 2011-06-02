@@ -11,13 +11,14 @@
 package org.jboss.tools.runtime.handlers;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -37,7 +38,6 @@ import org.eclipse.datatools.connectivity.drivers.IDriverMgmtConstants;
 import org.eclipse.datatools.connectivity.drivers.IPropertySet;
 import org.eclipse.datatools.connectivity.drivers.PropertySetImpl;
 import org.eclipse.datatools.connectivity.drivers.models.TemplateDescriptor;
-import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
@@ -52,46 +52,52 @@ import org.jboss.ide.eclipse.as.core.server.IDeployableServer;
 import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
-import org.jboss.tools.runtime.Activator;
-import org.jboss.tools.runtime.IJBossRuntimePluginConstants;
-import org.jboss.tools.runtime.Messages;
+import org.jboss.tools.runtime.as.detector.IJBossRuntimePluginConstants;
+import org.jboss.tools.runtime.as.detector.Messages;
+import org.jboss.tools.runtime.as.detector.RuntimeAsActivator;
+import org.jboss.tools.runtime.core.JBossRuntimeLocator;
+import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
+import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.ServerDefinition;
 import org.osgi.framework.Bundle;
 
 public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRuntimePluginConstants {
 	
 	private static final int JBOSS_AS7_INDEX = 8;
+	private static String[] hasIncludedRuntimes = new String[] {SOA_P, EAP, EPP, EWP, SOA_P_STD};
+	private static final String DROOLS = "DROOLS"; // NON-NLS-1$
 
 	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
-		createInitialJBossServer();
+		// FIXME
+		//createInitialJBossServer();
 		createJBossServerFromDefinitions(serverDefinitions);
 	}
 	
-	public static void createInitialJBossServer(){
-		try {
-			String pluginLocation = FileLocator.resolve(Activator.getDefault().getBundle().getEntry("/")).getPath(); //$NON-NLS-1$
-			File jbossASDir = new File(pluginLocation, JBOSS_EAP_HOME);
-			if (!jbossASDir.isDirectory()) {
-				Location configLocation = Platform.getConfigurationLocation();
-				URL configURL = configLocation.getURL();
-				String configuration = FileLocator.resolve(configURL).getPath();
-				jbossASDir = new File(configuration, JBOSS_EAP_HOME_CONFIGURATION).getCanonicalFile();
-			} else {
-				jbossASDir = jbossASDir.getCanonicalFile();
-			}
-			if (jbossASDir.isDirectory()) {
-				int index = getJBossASVersion(jbossASDir);
-				createJBossServer(jbossASDir,index, "jboss-eap", "jboss-eap " + RUNTIME); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		} catch (IOException e) {
-			Activator.log(e,Messages.JBossRuntimeStartup_Cannot_create_new_JBoss_Server);
-		}
-	}
+//	public static void createInitialJBossServer(){
+//		try {
+//			String pluginLocation = FileLocator.resolve(Activator.getDefault().getBundle().getEntry("/")).getPath(); //$NON-NLS-1$
+//			File jbossASDir = new File(pluginLocation, JBOSS_EAP_HOME);
+//			if (!jbossASDir.isDirectory()) {
+//				Location configLocation = Platform.getConfigurationLocation();
+//				URL configURL = configLocation.getURL();
+//				String configuration = FileLocator.resolve(configURL).getPath();
+//				jbossASDir = new File(configuration, JBOSS_EAP_HOME_CONFIGURATION).getCanonicalFile();
+//			} else {
+//				jbossASDir = jbossASDir.getCanonicalFile();
+//			}
+//			if (jbossASDir.isDirectory()) {
+//				int index = getJBossASVersion(jbossASDir);
+//				createJBossServer(jbossASDir,index, "jboss-eap", "jboss-eap " + RUNTIME); //$NON-NLS-1$ //$NON-NLS-2$
+//			}
+//		} catch (IOException e) {
+//			Activator.log(e,Messages.JBossRuntimeStartup_Cannot_create_new_JBoss_Server);
+//		}
+//	}
 	
 	private static File getLocation(ServerDefinition serverDefinition) {
 		String type = serverDefinition.getType();
-		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type)) {
+		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type)) {
 			return new File(serverDefinition.getLocation(), "jboss-as");
 		}
 		if (SOA_P_STD.equals(type)) {
@@ -201,9 +207,9 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 
 			createDriver(asLocation.getAbsolutePath(), index);
 		} catch (CoreException e) {
-			Activator.log(e,Messages.JBossRuntimeStartup_Cannot_create_new_JBoss_Server);
+			RuntimeAsActivator.log(e,Messages.JBossRuntimeStartup_Cannot_create_new_JBoss_Server);
 		} catch (ConnectionProfileException e) {
-			Activator.log(e,Messages.JBossRuntimeStartup_Cannott_create_new_DTP_Connection_Profile);
+			RuntimeAsActivator.log(e,Messages.JBossRuntimeStartup_Cannott_create_new_DTP_Connection_Profile);
 		}
 	}
 	/**
@@ -316,8 +322,8 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		try {
 			driverPath = new File(jbossASLocation + JBOSS_AS_HSQL_DRIVER_LOCATION[index]).getCanonicalPath(); //$NON-NLS-1$
 		} catch (IOException e) {
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, Messages.JBossRuntimeStartup_Cannott_create_new_HSQL_DB_Driver, e));
+			RuntimeAsActivator.getDefault().getLog().log(new Status(IStatus.ERROR,
+					RuntimeAsActivator.PLUGIN_ID, Messages.JBossRuntimeStartup_Cannott_create_new_HSQL_DB_Driver, e));
 			return;
 		}
 
@@ -369,7 +375,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 
 	public ServerDefinition getServerDefinition(File root,
 			IProgressMonitor monitor) {
-		if (monitor.isCanceled() || root == null) {
+		if (monitor.isCanceled() || root == null || !isEnabled()) {
 			return null;
 		}
 		ServerBeanLoader loader = new ServerBeanLoader();
@@ -378,66 +384,77 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		if (!JBossServerType.UNKNOWN.equals(serverBean.getType())) {
 			ServerDefinition serverDefinition = new ServerDefinition(serverBean.getName(), 
 					serverBean.getVersion(), serverBean.getType().getId(), new File(serverBean.getLocation()));
-			serverDefinition.setDescription(includedRuntimes(serverDefinition));
-			calculateIncludedServerDefinition(serverDefinition);
+			calculateIncludedServerDefinition(serverDefinition, monitor);
 			return serverDefinition;
 		}
 		return null;
 	}
 	
- 	private void calculateIncludedServerDefinition(ServerDefinition serverDefinition) {
- 		if (serverDefinition == null || serverDefinition.getType() == null) {
+	private void calculateIncludedServerDefinition(
+			ServerDefinition serverDefinition, IProgressMonitor monitor) {
+		if (serverDefinition == null || serverDefinition.getType() == null) {
 			return;
 		}
- 		serverDefinition.getIncludedServerDefinitions().clear();
- 		String type = serverDefinition.getType();
- 		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type)) {
-			SeamHandler.calculateIncludedServerDefinition(serverDefinition);
-			
-		}
-		if (SOA_P.equals(type)) {
-			Bundle droolsBundle = Platform.getBundle("org.drools.eclipse"); //$NON-NLS-1$
-			if (droolsBundle != null) {
-				DroolsHandler.calculateIncludedServerDefinition(serverDefinition);
-			}
-			JbpmHandler.calculateIncludedServerDefinition(serverDefinition);
-		}
-	}
-
-	@Override
-	public String includedRuntimes(ServerDefinition serverDefinition) {
-		if (serverDefinition == null || serverDefinition.getType() == null) {
-			return super.includedRuntimes(serverDefinition);
-		}
-		StringBuilder builder = new StringBuilder();
 		String type = serverDefinition.getType();
-		
-		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type) || EWP.equals(type)) {
-			String includeSeam = SeamHandler.included(serverDefinition);
-			append(builder, includeSeam);
+		if (!hasIncludedRuntimes(type)) {
+			return;
 		}
-		if (SOA_P.equals(type)) {
-			Bundle droolsBundle = Platform.getBundle("org.drools.eclipse"); //$NON-NLS-1$
-			if (droolsBundle != null) {
-				String includeDrools = DroolsHandler.included(serverDefinition);
-				append(builder, includeDrools);
+		serverDefinition.getIncludedServerDefinitions().clear();
+		List<ServerDefinition> serverDefinitions = serverDefinition
+				.getIncludedServerDefinitions();
+		JBossRuntimeLocator locator = new JBossRuntimeLocator();
+		final File location = getLocation(serverDefinition);
+		File[] directories = serverDefinition.getLocation().listFiles(
+				new FileFilter() {
+
+					@Override
+					public boolean accept(File file) {
+						if (!file.isDirectory() || file.equals(location)) {
+							return false;
+						}
+						return true;
+					}
+				});
+		boolean saved = isEnabled();
+		try {
+			setEnabled(false);
+			for (File directory : directories) {
+				List<ServerDefinition> definitions = new ArrayList<ServerDefinition>();
+				locator.searchDirectory(directory, definitions, 1, monitor);
+				for (ServerDefinition definition:definitions) {
+					definition.setParent(serverDefinition);
+				}
+				serverDefinitions.addAll(definitions);
 			}
-			String includeJbpm = JbpmHandler.included(serverDefinition);
-			append(builder, includeJbpm);
+			if (SOA_P.equals(type) || SOA_P_STD.equals(type)) {
+				Bundle drools = Platform.getBundle("org.drools.eclipse");
+				Bundle droolsDetector = Platform
+						.getBundle("org.jboss.tools.runtime.drools.detector");
+				if (drools != null && droolsDetector != null) {
+					File droolsRoot = serverDefinition.getLocation();
+					if (droolsRoot.isDirectory()) {
+						String name = "Drools - " + serverDefinition.getName();
+						ServerDefinition droolsDefinition = new ServerDefinition(
+								name, serverDefinition.getVersion(), DROOLS,
+								droolsRoot);
+						droolsDefinition.setParent(serverDefinition);
+						serverDefinition.getIncludedServerDefinitions().add(
+								droolsDefinition);
+					}
+				}
+			}
+		} finally {
+			setEnabled(saved);
 		}
-		return builder.toString();
-		
 	}
 
-	private void append(StringBuilder builder, String string) {
-		if (string != null && string.length() > 0) {
-			if (builder.toString().length() == 0) {
-				builder.append("Includes ");
-			} else {
-				builder.append(", ");
+	private boolean hasIncludedRuntimes(String type) {
+		for (String t:hasIncludedRuntimes) {
+			if (t.equals(type)) {
+				return true;
 			}
-			builder.append(string);
 		}
+		return false;
 	}
 
 	@Override
@@ -469,7 +486,14 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	@Override
 	public void computeIncludedServerDefinition(
 			ServerDefinition serverDefinition) {
-		calculateIncludedServerDefinition(serverDefinition);
+		if (serverDefinition == null) {
+			return;
+		}
+		String type = serverDefinition.getType();
+		if (AS.equals(type)) {
+			return;
+		}
+		calculateIncludedServerDefinition(serverDefinition, new NullProgressMonitor());
 	}
 	
 	

@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.runtime;
+package org.jboss.tools.runtime.as.detector;
 
 public interface IJBossRuntimePluginConstants {
 	public static final String DEFAULT_DS = "DefaultDS";
@@ -19,8 +19,6 @@ public interface IJBossRuntimePluginConstants {
 	public static final String SOA_P_STD = "SOA-P-STD"; //$NON-NLS-1$
 	public static final String EPP = "EPP"; //$NON-NLS-1$
 	public static final String EWP = "EWP"; //$NON-NLS-1$
-	public static final String SEAM = "SEAM"; // NON-NLS-1$
-	public static final String DROOLS = "DROOLS"; // NON-NLS-1$
 	public static final String AS = "AS"; //$NON-NLS-1$
 	public static final String JBOSS_EAP_HOME = "../../../../jboss-eap/jboss-as"; 	// JBoss AS home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
 	public static final String JBOSS_EAP_HOME_CONFIGURATION = "../../jboss-eap/jboss-as"; 	// JBoss AS home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
@@ -28,18 +26,6 @@ public interface IJBossRuntimePluginConstants {
 	public static final String SERVERS_FILE = "../../../../studio/" + SERVERS_FILE_NAME; //$NON-NLS-1$
 	public static final String SERVERS_FILE_CONFIGURATION = "../../studio/" + SERVERS_FILE_NAME; //$NON-NLS-1$
 	public static String RUNTIME_CONFIG_FORMAT_VERSION = "1.0"; //$NON-NLS-1$
-	
-	public static final String SEAM_1_2_HOME = "../../../../jboss-eap/seam";  //$NON-NLS-1$
-	public static final String SEAM_1_2_HOME_CONFIGURATION = "../../jboss-eap/seam";  //$NON-NLS-1$
-	public static final String SEAM_1_2_HOME_CP = "../../../../jboss-eap/seam1";  //$NON-NLS-1$
-	public static final String SEAM_1_2_HOME_CONFIGURATION_CP = "../../jboss-eap/seam1";  //$NON-NLS-1$
-
-	public static final String SEAM_2_0_HOME = "../../../../jboss-eap/seamfp";  //$NON-NLS-1$
-	public static final String SEAM_2_0_HOME_CONFIGURATION = "../../jboss-eap/seamfp";  //$NON-NLS-1$
-	public static final String SEAM_2_0_HOME_CP = "../../../../jboss-eap/seam2";  //$NON-NLS-1$
-	public static final String SEAM_2_0_HOME_CONFIGURATION_CP = "../../jboss-eap/seam2";  //$NON-NLS-1$
-	
-	public static final String[] SEAM_HOME_FOLDER_OPTIONS = {"seam","seam1","seam2","seamfp"};
 	
 	// This constants are made to avoid dependency with org.jboss.ide.eclipse.as.core plugin
 	public static final String JBOSS_AS_RUNTIME_TYPE_ID[] = {
@@ -114,7 +100,5 @@ public interface IJBossRuntimePluginConstants {
 								= "org.eclipse.datatools.connectivity.db.URL"; //$NON-NLS-1$
 
 	public static final String HSQL_PROFILE_ID = "org.eclipse.datatools.enablement.hsqldb.connectionProfile";
-
-	public static final String JBPM = "JBPM";
 
 }

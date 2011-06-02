@@ -73,7 +73,7 @@ public class JBossRuntimeLocator {
 		
 	}
 	
-	private void searchDirectory(File directory, List<ServerDefinition> serverDefinitions,
+	public void searchDirectory(File directory, List<ServerDefinition> serverDefinitions,
 			int depth, IProgressMonitor monitor) {
 		if (depth == 0 || monitor.isCanceled() || directory == null || !directory.isDirectory()) {
 			return;

@@ -32,7 +32,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.tools.seam.ui.pages,
  org.jboss.tools.seam.xml,
  org.jboss.tools.seam.xml.ui,
- org.jboss.tools.seam.text.ext
+ org.jboss.tools.seam.text.ext,
+ org.jboss.tools.runtime.as.detector,
+ org.jboss.tools.runtime.drools.detector,
+ org.jboss.tools.runtime.jbpm.detector,
+ org.jboss.tools.runtime.seam.detector
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %BundleVendor

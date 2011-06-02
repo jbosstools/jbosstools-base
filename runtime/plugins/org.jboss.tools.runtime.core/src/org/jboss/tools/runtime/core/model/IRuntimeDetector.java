@@ -40,8 +40,6 @@ public interface IRuntimeDetector extends Comparable<IRuntimeDetector> {
 	
 	ServerDefinition getServerDefinition(File root, IProgressMonitor monitor);
 	
-	String includedRuntimes(ServerDefinition serverDefinition);
-	
 	boolean exists(ServerDefinition serverDefinition);
 	
 	int getPriority();

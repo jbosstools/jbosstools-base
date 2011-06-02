@@ -27,6 +27,8 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -36,13 +38,19 @@ import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonNavigator;
+import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.ServerDefinition;
 import org.osgi.framework.Bundle;
 import org.osgi.service.prefs.BackingStoreException;
 
-public class JBossRuntimeStartup implements IStartup, IJBossRuntimePluginConstants {
+public class JBossRuntimeStartup implements IStartup {
+	
+	private static final String JBOSS_EAP_HOME = "../../../../jboss-eap"; 	// JBoss EAP home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
+	private static final String SERVERS_FILE_NAME = "application_platforms.properties"; //$NON-NLS-1$
+	private static final String SERVERS_FILE = "../../../../studio/" + SERVERS_FILE_NAME; //$NON-NLS-1$
+	private static final String SERVERS_FILE_CONFIGURATION = "../../studio/" + SERVERS_FILE_NAME; //$NON-NLS-1$
 	
 	private List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
 	private IEclipsePreferences preferences;
@@ -50,11 +58,29 @@ public class JBossRuntimeStartup implements IStartup, IJBossRuntimePluginConstan
 	public void earlyStartup() {
 		if (isJBDS() && willBeInitialized()) {
 			parseServerFile();
+			initializeIncludedRuntimes();
 			initializeRuntimes(serverDefinitions);
 			saveWorkspacePreferences();
 		}
 	}
 	
+	private void initializeIncludedRuntimes() {
+		try {
+			String pluginLocation = FileLocator.resolve(Activator.getDefault().getBundle().getEntry("/")).getPath(); //$NON-NLS-1$
+			File directory = new File(pluginLocation, JBOSS_EAP_HOME);
+			if (directory.isDirectory()) {
+				IPath path = new Path(directory.getAbsolutePath());
+				JBossRuntimeLocator locator = new JBossRuntimeLocator();
+				List<ServerDefinition> definitions = locator.searchForRuntimes(path, new NullProgressMonitor());
+				serverDefinitions.addAll(definitions);
+				
+			}
+		} catch (IOException e) {
+			Activator.log(e);
+		}
+		
+	}
+
 	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
 		for( IRuntimeDetector detector:detectors) {

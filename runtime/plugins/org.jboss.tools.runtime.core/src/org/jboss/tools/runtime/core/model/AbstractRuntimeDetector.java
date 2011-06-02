@@ -46,11 +46,6 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 	public void setPreferenceId(String preferenceId) {
 		this.preferenceId = preferenceId;
 	}
-
-	@Override
-	public String includedRuntimes(ServerDefinition serverDefinition) {
-		return "";
-	}
 	
 	public String getImplementationVersion(File dir, String file) {
 		File jarFile = new File(dir, file);

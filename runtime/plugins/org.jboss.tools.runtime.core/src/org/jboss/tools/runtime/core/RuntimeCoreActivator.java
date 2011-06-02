@@ -56,6 +56,8 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 
 	private static final String PRIORITY = "priority";
 
+	private static Set<IRuntimeDetector> declaredRuntimeDetectors;
+	
 	private static Set<IRuntimeDetector> runtimeDetectors;
 	
 	// The shared instance
@@ -97,8 +99,8 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 	}
 
 	public static Set<IRuntimeDetector> getDeclaredRuntimeDetectors() {
-		if (runtimeDetectors == null) {
-			runtimeDetectors = new TreeSet<IRuntimeDetector>();
+		if (declaredRuntimeDetectors == null) {
+			declaredRuntimeDetectors = new TreeSet<IRuntimeDetector>();
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			IExtensionPoint extensionPoint = registry
 					.getExtensionPoint(RUNTIME_DETECTOR_EXTENSION_ID);
@@ -138,11 +140,11 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 						priority = Integer.MAX_VALUE;
 					}
 					detector.setPriority(priority);
-					runtimeDetectors.add(detector);
+					declaredRuntimeDetectors.add(detector);
 				}
 			}	
 		}
-		return runtimeDetectors;
+		return declaredRuntimeDetectors;
 	}
 	
 	public static void log(Throwable e) {
@@ -157,24 +159,28 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 	}
 
 	public static Set<IRuntimeDetector> getRuntimeDetectors() {
-		Set<IRuntimeDetector> detectors = getDeclaredRuntimeDetectors();
-		String enabledDetectors = getPreferences().get(ENABLED_DETECTORS, null);
-		if (enabledDetectors == null) {
-			saveEnabledDetectors(detectors);
-		} else {
-			StringTokenizer tokenizer = new StringTokenizer(enabledDetectors, ",");
-			List<String> enabled = new ArrayList<String>();
-			while (tokenizer.hasMoreTokens()) {
-				String token = tokenizer.nextToken();
-				if (token != null && !token.isEmpty()) {
-					enabled.add(token);
+		if (runtimeDetectors == null) {
+			runtimeDetectors = getDeclaredRuntimeDetectors();
+			String enabledDetectors = getPreferences().get(ENABLED_DETECTORS,
+					null);
+			if (enabledDetectors == null) {
+				saveEnabledDetectors(runtimeDetectors);
+			} else {
+				StringTokenizer tokenizer = new StringTokenizer(
+						enabledDetectors, ",");
+				List<String> enabled = new ArrayList<String>();
+				while (tokenizer.hasMoreTokens()) {
+					String token = tokenizer.nextToken();
+					if (token != null && !token.isEmpty()) {
+						enabled.add(token);
+					}
+				}
+				for (IRuntimeDetector detector : runtimeDetectors) {
+					detector.setEnabled(enabled.contains(detector.getId()));
 				}
 			}
-			for (IRuntimeDetector detector:detectors) {
-				detector.setEnabled(enabled.contains(detector.getId()));
-			}
 		}
-		return detectors;
+		return runtimeDetectors;
 	}
 
 	public static void saveEnabledDetectors(Set<IRuntimeDetector> detectors) {
