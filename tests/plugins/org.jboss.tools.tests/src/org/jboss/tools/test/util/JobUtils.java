@@ -28,6 +28,10 @@ public class JobUtils {
 	}
 
 	public static void waitForIdle(long delay) {
+		waitForIdle(delay, MAX_IDLE);
+	}
+
+	public static void waitForIdle(long delay, long maxIdle) {
 		long start = System.currentTimeMillis();
 		// Job.getJobManager().isIdle() is more efficient than
 		// EditorTestHelper.allJobsQuiet()
@@ -36,19 +40,17 @@ public class JobUtils {
 		// while (!EditorTestHelper.allJobsQuiet()) {
 		while (!Job.getJobManager().isIdle()) {
 			delay(delay);
-			if ((System.currentTimeMillis() - start) > MAX_IDLE) {
+			if ((System.currentTimeMillis() - start) > maxIdle) {
 				Job[] jobs = Job.getJobManager().find(null);
-				if (jobs != null) {
-					StringBuffer str = new StringBuffer();
-					for (Job job : jobs) {
-						if (job.getThread() != null) {
-							str.append("\n").append(job.getName()).append(" (")
-									.append(job.getClass()).append(")");
-						}
+				StringBuffer str = new StringBuffer();
+				for (Job job : jobs) {
+					if (job.getThread() != null) {
+						str.append("\n").append(job.getName()).append(" (")
+								.append(job.getClass()).append(")");
 					}
-					throw new RuntimeException(
-							"Long running tasks detected:" + str.toString()); //$NON-NLS-1$
 				}
+				throw new RuntimeException(
+						"Long running tasks detected:" + str.toString()); //$NON-NLS-1$
 			}
 		}
 	}
