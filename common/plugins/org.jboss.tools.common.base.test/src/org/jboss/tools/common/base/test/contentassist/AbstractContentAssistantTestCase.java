@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2010 Red Hat, Inc.
+ * Copyright (c) 2007-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -89,9 +89,9 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 
         assertTrue("Content Assistant returned no proposals", (res != null && res.size() > 0)); //$NON-NLS-1$
 
-        // for (int i = 0; i < result.length; i++) {
-        // System.out.println("proposal - "+result[i].getDisplayString());
-        // }
+//        for (ICompletionProposal p : res) {
+//        	System.out.println("proposal - "+p.getDisplayString());
+//        }
 
         ICompletionProposal[] result = res.toArray(new ICompletionProposal[res.size()]);
         int foundCounter = 0;
@@ -152,10 +152,10 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 				}
 				
 				// for an Unclosed EL the closing character is appended to the proposal string (i.e. person} )
-				// perform case sensitive compare operation
+				// perform case insensitive compare operation
 				replacementStringParts = replacementString.split("}"); //$NON-NLS-1$
 				if (replacementStringParts != null && replacementStringParts.length > 0) {
-					if (replacementStringParts[0].equals(proposalName)) return true;
+					if (replacementStringParts[0].equalsIgnoreCase(proposalName)) return true;
 				}
 				
 				// For an attribute value proposal there will be the quote characters
