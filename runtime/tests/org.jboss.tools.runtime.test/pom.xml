@@ -13,13 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>-Djbosstools.test.jboss.home.4.2=${requirement.build.root}/jboss-4.2.3.GA
-			-Djbosstools.test.jboss.home.5.1=${requirement.build.root}/jboss-5.1.0.GA
-			-Djbosstools.test.seam.2.0.1.GA.home=${requirement.build.root}/jboss-seam-2.0.1.GA
-			-Djbosstools.test.seam.2.2.0.GA.home=${requirement.build.root}/jboss-seam-2.2.0.GA
-			-Djbosstools.test.eap.4.3.home=${requirement.build.root}/jboss-eap-4.3
-			-Dskip.runtime.scanner=true
-			-Djbosstools.test.jboss.home.7.0=${requirement.build.root}/jboss-7.0.0.Beta3</systemProperties>
+		<systemProperties>-Djbosstools.test.jboss.home.4.2=${requirement.build.root}/jboss-4.2.3.GA -Djbosstools.test.jboss.home.5.1=${requirement.build.root}/jboss-5.1.0.GA -Djbosstools.test.seam.2.0.1.GA.home=${requirement.build.root}/jboss-seam-2.0.1.GA -Djbosstools.test.seam.2.2.0.GA.home=${requirement.build.root}/jboss-seam-2.2.0.GA -Djbosstools.test.eap.4.3.home=${requirement.build.root}/jboss-eap-4.3 -Dskip.runtime.scanner=true -Djbosstools.test.jboss.home.7.0=${requirement.build.root}/jboss-7.0.0.Beta3</systemProperties>
 	</properties>
 	<build>
 		<plugins>
