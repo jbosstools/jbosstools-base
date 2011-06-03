@@ -31,6 +31,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.jboss.tools.common.text.xml.contentassist.ProposalSorter;
+import org.jboss.tools.test.util.JobUtils;
 
 public class CATestUtil {
 
@@ -64,38 +65,14 @@ public class CATestUtil {
      *                the number of milliseconds
      */
     public static void delay(long waitTimeMillis) {
-		Display display = Display.getCurrent();
-	
-		// If this is the UI thread,
-		// then process input.
-		if (display != null) {
-		    long endTimeMillis = System.currentTimeMillis() + waitTimeMillis;
-		    while (System.currentTimeMillis() < endTimeMillis) {
-			if (!display.readAndDispatch())
-			    display.sleep();
-		    }
-		    display.update();
-		}
-		// Otherwise, perform a simple sleep.
-		else {
-		    try {
-			Thread.sleep(waitTimeMillis);
-		    } catch (InterruptedException e) {
-			// Ignored.
-		    }
-		}
+    	JobUtils.delay(waitTimeMillis);
     }
     
 	/**
 	 * Wait for idle.
 	 */
 	public static void waitForIdle(long maxIdle) {
-		long start = System.currentTimeMillis();
-		while (!Job.getJobManager().isIdle()) {
-			delay(500);
-			if ( (System.currentTimeMillis()-start) > maxIdle ) 
-				throw new RuntimeException("A long running task detected"); //$NON-NLS-1$
-		}
+		JobUtils.waitForIdle(500, maxIdle);
 	}
 
 	public static SourceViewerConfiguration getSourceViewerConfiguration(ITextEditor editor) {
