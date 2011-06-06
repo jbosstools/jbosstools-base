@@ -10,14 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.common.model.ui.dialog.test;
 
+import junit.framework.TestCase;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.model.ui.dialog.ErrorDialog;
-import org.jboss.tools.test.util.JobUtils;
-
-import junit.framework.TestCase;
 
 /**
  * @author eskimo
@@ -105,11 +104,14 @@ public class ErrorDialogTest extends TestCase {
 			super(shell, title, exception);
 		}
 
+		@Override
 		public void buttonPressed(int id) {
-			// TODO Auto-generated method stub
 			super.buttonPressed(id);
 		}
-		
-		
+
+		@Override
+		protected void submit() {
+			// Do nothing
+		}
 	}
 }
