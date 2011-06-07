@@ -11,6 +11,7 @@
 package org.jboss.tools.runtime.ui;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -67,7 +68,7 @@ public class RuntimeScanner implements IStartup {
 	}
 
 	private boolean runtimeExists(boolean firstStart, IProgressMonitor monitor) {
-		List<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
+		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
 		for (RuntimePath runtimePath:runtimePaths) {
 			if (!firstStart && !runtimePath.isScanOnEveryStartup()) {
 				continue;

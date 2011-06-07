@@ -318,6 +318,10 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			// Don't create the driver a few times
 			return;
 		}
+		if (index == 8) {
+			// AS 7
+			return;
+		}
 		String driverPath;
 		try {
 			driverPath = new File(jbossASLocation + JBOSS_AS_HSQL_DRIVER_LOCATION[index]).getCanonicalPath(); //$NON-NLS-1$

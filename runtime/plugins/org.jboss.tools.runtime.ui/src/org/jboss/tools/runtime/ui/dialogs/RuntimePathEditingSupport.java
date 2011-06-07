@@ -48,6 +48,9 @@ public class RuntimePathEditingSupport extends EditingSupport {
 
 	@Override
 	protected boolean canEdit(Object element) {
+		if (this.column == 0) {
+			return false;
+		}
 		return true;
 	}
 

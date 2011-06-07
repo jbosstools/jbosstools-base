@@ -11,8 +11,8 @@
 package org.jboss.tools.runtime.ui.dialogs;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -44,7 +44,7 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 public class EditRuntimePathDialog extends Dialog {
 	
 	private RuntimePath runtimePath;
-	private List<RuntimePath> runtimePaths;
+	private Set<RuntimePath> runtimePaths;
 	private CheckboxTreeViewer treeViewer;
 
 	public EditRuntimePathDialog(Shell parentShell, RuntimePath runtimePath) {
@@ -94,7 +94,7 @@ public class EditRuntimePathDialog extends Dialog {
 				if (path == null) {
 					return;
 				}
-				List<RuntimePath> runtimePaths2 = new ArrayList<RuntimePath>();
+				Set<RuntimePath> runtimePaths2 = new HashSet<RuntimePath>();
 				runtimePaths2.add(runtimePath);
 				RuntimeUIActivator.refreshRuntimes(getShell(), runtimePaths2, null, true, 15);
 				dialogSettings.put(RuntimeUIActivator.LASTPATH, path);
@@ -132,7 +132,7 @@ public class EditRuntimePathDialog extends Dialog {
 		});
 		refreshButton.setEnabled( (new File(pathText.getText()).isDirectory()) );
 		
-		List<RuntimePath> runtimePaths = getRuntimePaths();
+		Set<RuntimePath> runtimePaths = getRuntimePaths();
 		treeViewer = RuntimeUIActivator.createRuntimeViewer(runtimePaths, contents, 100);
 		treeViewer.addCheckStateListener(new ICheckStateListener() {
 			
@@ -145,9 +145,9 @@ public class EditRuntimePathDialog extends Dialog {
 		return area;
 	}
 
-	private List<RuntimePath> getRuntimePaths() {
+	private Set<RuntimePath> getRuntimePaths() {
 		if (runtimePaths == null) {
-			runtimePaths = new ArrayList<RuntimePath>();
+			runtimePaths = new HashSet<RuntimePath>();
 			runtimePaths.add(runtimePath);
 		}
 		return runtimePaths;

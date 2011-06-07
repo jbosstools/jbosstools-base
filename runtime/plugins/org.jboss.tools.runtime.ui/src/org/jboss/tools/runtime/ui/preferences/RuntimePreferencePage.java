@@ -11,8 +11,7 @@
 package org.jboss.tools.runtime.ui.preferences;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -72,9 +71,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
-import org.jboss.tools.runtime.ui.RuntimeContentProvider;
-import org.jboss.tools.runtime.ui.RuntimeLabelProvider;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
@@ -88,7 +84,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
 	public static String ID = "org.jboss.tools.runtime.preferences.RuntimePreferencePage";
-	private List<RuntimePath> runtimePaths = new ArrayList<RuntimePath>();
+	private Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
 	private Image checkboxOn;
 	private Image checkboxOff;
 	private Image errorIcon;
@@ -129,80 +125,9 @@ public class RuntimePreferencePage extends PreferencePage implements
 		Group detectorGroup = createGroup(composite,1);
 		detectorGroup.setText("Available runtime detectors");
 		detectorViewer = createDetectorViewer(detectorGroup);
-		
-//		Group runtimeDescriptionGroup = createGroup(composite,1);
-//		Label runtimeDescription = new Label(runtimeDescriptionGroup, SWT.NONE);
-//		runtimeDescription.setText("Runtimes found at the selected path.\n" +
-//				"Remove the check mark for any runtimes you do not want identified.");
-//		Group runtimeGroup = createGroup(composite,1);
-//		final TableViewer runtimesViewer = createRuntimesViewer(runtimeGroup);
-//		runtimePathViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-//			
-//			@Override
-//			public void selectionChanged(SelectionChangedEvent event) {
-//				runtimesViewer.setInput(getServerDefinitions());
-//			}
-//		});
-		
+				
 		Dialog.applyDialogFont(composite);
 		return composite;
-	}
-
-	private TableViewer createRuntimesViewer(Composite parent) {
-		CheckboxTableViewer tableViewer = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL
-				| SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE);
-		Table table = tableViewer.getTable();
-		GridData gd = new GridData(GridData.FILL_BOTH);
-		gd.heightHint = 100;
-		table.setLayoutData(gd);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-
-		String[] columnNames = new String[] { "Name", "Version", "Type", "Location", "Description"};
-		int[] columnWidths = new int[] { 120, 50, 50, 150, 150};
-		
-		for (int i = 0; i < columnNames.length; i++) {
-			TableColumn tc = new TableColumn(table, SWT.LEFT);
-			tc.setText(columnNames[i]);
-			tc.setWidth(columnWidths[i]);
-		}
-
-		tableViewer.setLabelProvider(new RuntimeLabelProvider());
-		final List<ServerDefinition> serverDefinitions = getServerDefinitions();
-		tableViewer.setContentProvider(new RuntimeContentProvider(serverDefinitions));
-		tableViewer.setInput(serverDefinitions);
-		for (ServerDefinition definition:serverDefinitions) {
-			tableViewer.setChecked(definition, definition.isEnabled());
-		}
-		tableViewer.addCheckStateListener(new ICheckStateListener() {
-			
-			public void checkStateChanged(CheckStateChangedEvent event) {
-				ServerDefinition definition = (ServerDefinition) event.getElement();
-				definition.setEnabled(!definition.isEnabled());
-//				boolean enableOk = false;
-//				for (ServerDefinition serverDefinition:serverDefinitions) {
-//					if (serverDefinition.isEnabled()) {
-//						enableOk = true;
-//					}
-//				}
-			}
-		});
-		return tableViewer;
-	}
-
-	private List<ServerDefinition> getServerDefinitions() {
-		List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
-		if (runtimePathViewer == null) {
-			return serverDefinitions;
-		}
-		ISelection selection = runtimePathViewer.getSelection();
-		if (selection instanceof IStructuredSelection) {
-			Object object = ((IStructuredSelection)selection).getFirstElement();
-			if (object instanceof RuntimePath) {
-				serverDefinitions = ((RuntimePath)object).getServerDefinitions();
-			}
-		}
-		return serverDefinitions;
 	}
 
 	private Group createGroup(Composite composite, int column) {
@@ -376,8 +301,12 @@ public class RuntimePreferencePage extends PreferencePage implements
 				}
 				dialogSettings.put(RuntimeUIActivator.LASTPATH, path);
 				RuntimePath runtimePath = new RuntimePath(path);
-				runtimePaths.add(runtimePath);
-				List<RuntimePath> runtimePaths2 = new ArrayList<RuntimePath>();
+				boolean exists = runtimePaths.add(runtimePath);
+				if (!exists) {
+					MessageDialog.openInformation(getShell(), "Add Runtime Path", "This runtime path already exists");
+					return;
+				}
+				Set<RuntimePath> runtimePaths2 = new HashSet<RuntimePath>();
 				runtimePaths2.add(runtimePath);
 				RuntimeUIActivator.refreshRuntimes(getShell(), runtimePaths2, null, true, 15);
 				configureSearch();
@@ -411,6 +340,13 @@ public class RuntimePreferencePage extends PreferencePage implements
 						EditRuntimePathDialog dialog = new EditRuntimePathDialog(getShell(), runtimePathClone);
 						int ok = dialog.open();
 						if (ok == Window.OK) {
+							if (runtimePath.equals(runtimePathClone)) {
+								return;
+							}
+							if (runtimePaths.contains(runtimePathClone)) {
+								MessageDialog.openInformation(getShell(), "Edit Runtime Path", "This runtime path already exists");
+								return;
+							}
 							runtimePaths.remove(runtimePath);
 							runtimePath = runtimePathClone;
 							runtimePaths.add(runtimePath);

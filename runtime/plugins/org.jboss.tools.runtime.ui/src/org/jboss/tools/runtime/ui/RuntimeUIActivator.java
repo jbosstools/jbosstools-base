@@ -18,6 +18,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -108,7 +109,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	
 	private static final String RUNTIME_PREFERENCES_VERSION = "2"; //$NON-NLS-1$
 
-	private List<RuntimePath> runtimePaths = new ArrayList<RuntimePath>();
+	private Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
 	
 	private Set<IRuntimeDetector> runtimeDetectors;
 
@@ -161,7 +162,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		RuntimeUIActivator.getDefault().getLog().log(status);
 	}
 	
-	public static CheckboxTreeViewer createRuntimeViewer(final List<RuntimePath> runtimePaths2, Composite composite, int heightHint) {
+	public static CheckboxTreeViewer createRuntimeViewer(final Set<RuntimePath> runtimePaths2, Composite composite, int heightHint) {
 		GridData gd;
 		CheckboxTreeViewer viewer = new CheckboxTreeViewer(composite, SWT.V_SCROLL
 				| SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE);
@@ -198,7 +199,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		return viewer;
 	}
 	
-	public static void refreshRuntimes(Shell shell, final List<RuntimePath> runtimePaths, final CheckboxTreeViewer viewer, boolean needRefresh, int heightHint) {
+	public static void refreshRuntimes(Shell shell, final Set<RuntimePath> runtimePaths, final CheckboxTreeViewer viewer, boolean needRefresh, int heightHint) {
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			
 			@Override
@@ -282,7 +283,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	}
 	
 	private void initRuntimePaths() throws WorkbenchException {
-		runtimePaths = new ArrayList<RuntimePath>();
+		runtimePaths = new HashSet<RuntimePath>();
 		String runtimes = getPreferences().get(RUNTIME_PATHS, null);
 		if (runtimes == null || runtimes.isEmpty()) {
 			return;
@@ -354,7 +355,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 
 	private static IEclipsePreferences getPreferences() {
 		if (prefs == null) {
-			prefs = new ConfigurationScope().getNode(PLUGIN_ID);
+			prefs = ConfigurationScope.INSTANCE.getNode(PLUGIN_ID);
 		}
 		return prefs;
 	}
@@ -418,13 +419,13 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		node.putBoolean(ENABLED, serverDefinition.isEnabled());
 	}
 
-	public List<RuntimePath> getRuntimePaths() {
+	public Set<RuntimePath> getRuntimePaths() {
 		if (runtimePaths == null) {
 			try {
 				initRuntimePaths();
 			} catch (WorkbenchException e) {
 				log(e);
-				runtimePaths = new ArrayList<RuntimePath>();
+				runtimePaths = new HashSet<RuntimePath>();
 			}
 		}
 		return runtimePaths;
@@ -450,11 +451,11 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	}
 
 	public void initDefaultRuntimePreferences() {
-		runtimePaths = new ArrayList<RuntimePath>();
+		runtimePaths = new HashSet<RuntimePath>();
 		runtimeDetectors = RuntimeCoreActivator.getDeclaredRuntimeDetectors();
 	}
 	
-	public static void setTimestamp(List<RuntimePath> runtimePaths2) {
+	public static void setTimestamp(Set<RuntimePath> runtimePaths2) {
 		for (RuntimePath runtimePath : runtimePaths2) {
 			String path = runtimePath.getPath();
 			if (path != null && !path.isEmpty()) {

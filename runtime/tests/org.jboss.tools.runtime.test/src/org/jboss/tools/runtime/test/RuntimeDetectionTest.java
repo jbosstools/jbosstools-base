@@ -75,7 +75,7 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 	}
 
 	private static void addRuntimePaths() {
-		List<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
+		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
 				.getRuntimePaths();
 		String[] paths = { IRuntimeDetectionConstants.JBOSS_42_HOME,
 				IRuntimeDetectionConstants.JBOSS_51_HOME,
@@ -102,7 +102,7 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 
 	private static void createRuntimes() {
 		JBossRuntimeLocator locator = new JBossRuntimeLocator();
-		List<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
+		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
 				.getRuntimePaths();
 		for (RuntimePath runtimePath : runtimePaths) {
 			List<ServerDefinition> serverDefinitions = locator
@@ -134,7 +134,7 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 
 	@Test
 	public void testRuntimePaths() {
-		List<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
+		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
 				.getRuntimePaths();
 		assertTrue(
 				"runtimePaths.size()\nExpected: 6\nWas: " + runtimePaths.size(),
@@ -143,7 +143,7 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 	
 	@Test
 	public void testRuntimePathsExists() {
-		List<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
+		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
 				.getRuntimePaths();
 		for (RuntimePath runtimePath:runtimePaths) {
 			String path = runtimePath.getPath();
@@ -207,7 +207,7 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 	public void testServerDefinitions() {
 		List<ServerDefinition> serverDefinitions = RuntimeUIActivator
 				.getDefault().getServerDefinitions();
-		List<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
+		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
 			.getRuntimePaths();
 		assertTrue("serverDefinitions.size()\nExpected: 6\nWas: "
 				+ serverDefinitions.size() + 

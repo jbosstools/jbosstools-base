@@ -12,6 +12,7 @@ package org.jboss.tools.runtime.ui.dialogs;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,7 +53,7 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
  */
 public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
-	private List<RuntimePath> runtimePaths = new ArrayList<RuntimePath>();
+	private Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
 	private boolean running = true;
 	private CheckboxTreeViewer treeViewer;
 	private boolean canceled;
@@ -62,7 +63,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	private Button hideCreatedRuntimes;
 	private int heightHint;
 
-	public SearchRuntimePathDialog(Shell parent, List<RuntimePath> runtimePaths, boolean needRefresh, int heightHint) {
+	public SearchRuntimePathDialog(Shell parent, Set<RuntimePath> runtimePaths, boolean needRefresh, int heightHint) {
 		super(parent);
 		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
 			 | SWT.RESIZE | getDefaultOrientation());
