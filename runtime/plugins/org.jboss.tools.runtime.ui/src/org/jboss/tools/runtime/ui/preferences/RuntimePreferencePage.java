@@ -112,17 +112,18 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
-		
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		composite.setLayout(layout);
 		
 		Group pathsGroup = createGroup(composite,1);
-		
+		pathsGroup.setText("Description");
 		Label pathsDescription = new Label(pathsGroup, SWT.NONE);
 		pathsDescription.setText("Each path on this list will be automatically scanned for runtimes when\n" +
 				"a new workspace is created or if selected at every Eclipse startup.\n" +
 				"Click Edit to configure rules/filters for the search.");
 		
 		Group pathsTableGroup = createGroup(composite,2);
+		pathsTableGroup.setText("Paths");
 		runtimePathViewer = createRuntimePathViewer(pathsTableGroup);
 		
 		Group detectorGroup = createGroup(composite,1);
@@ -207,7 +208,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 	private Group createGroup(Composite composite, int column) {
 		GridLayout layout;
 		Group group = new Group(composite, SWT.NONE);
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		group.setLayoutData(gd);
 		layout = new GridLayout(column, false);
 		group.setLayout(layout);
