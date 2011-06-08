@@ -28,6 +28,10 @@ public class ELSegmentImpl implements ELSegment {
 	protected boolean resolved = false;
 	protected List<IVariable> variables = new ArrayList<IVariable>();
 
+	public ELSegmentImpl(LexicalToken token) {
+		this.token = token;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.ELSegment#getResource()
 	 */

@@ -445,8 +445,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			resolvedVariables = resolveVariables(file, expr, true, returnEqualedVariablesOnly, offset);			
 
 			Set<TextProposal> proposals = new TreeSet<TextProposal>(TextProposal.KB_PROPOSAL_ORDER);
-			JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl();
-			segment.setToken(expr.getFirstToken());
+			JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl(expr.getFirstToken());
 			segment.setResolved(false);
 			resolution.addSegment(segment);
 			for (V var : resolvedVariables) {
@@ -496,8 +495,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			// JBIDE-512, JBIDE-2541 related changes ===>>>
 			TypeInfoCollector.MemberInfo bijectedAttribute = null;
 
-			JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl();
-			segment.setToken(operand.getFirstToken());
+			JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl(operand.getFirstToken());
 			segment.setResolved(true);
 			resolution.addSegment(segment);
 
@@ -554,8 +552,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 		// First segment is found - proceed with next tokens 
 		List<TypeInfoCollector.MemberInfo> members = new ArrayList<TypeInfoCollector.MemberInfo>();
-		JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl();
-		segment.setToken(expr.getFirstToken());
+		JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl(expr.getFirstToken());
 		for (V var : resolvedVariables) {
 			TypeInfoCollector.MemberInfo member = getMemberInfoByVariable(var, returnEqualedVariablesOnly, offset);
 			if (member != null && !members.contains(member)) { 
@@ -571,7 +568,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			while(left != expr) {
 				left = (ELInvocationExpression)left.getParent();
 				if (left != expr) { // inside expression
-					segment = new JavaMemberELSegmentImpl();
+					segment = new JavaMemberELSegmentImpl(left.getLastToken());
 					if(left instanceof ELArgumentInvocation) {
 						String s = "#{" + left.getLeft().toString() + collectionAdditionForCollectionDataModel + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 						if(getParserFactory()!=null) {
@@ -686,13 +683,14 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			boolean returnEqualedVariablesOnly, boolean varIsUsed) {
 		Set<TextProposal> kbProposals = new TreeSet<TextProposal>(TextProposal.KB_PROPOSAL_ORDER);
 
-		JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl();
+		JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl(null);
 		if(expr instanceof ELPropertyInvocation) {
 			segment.setToken(((ELPropertyInvocation)expr).getName());
 		}
-//		segment.setToken(expr.getLastToken());
 		if(segment.getToken()!=null) {
 			resolution.addSegment(segment);
+		} else {
+			segment.setToken(expr.getLastToken());
 		}
 		resolution.setProposals(kbProposals);
 

@@ -11,6 +11,7 @@
 package org.jboss.tools.common.el.core.resolver;
 
 import org.eclipse.core.resources.IResource;
+import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.text.ITextSourceReference;
 
 /**
@@ -24,6 +25,10 @@ public class MessagePropertyELSegmentImpl extends ELSegmentImpl implements
 	private int propertyStart=0, propertyLength=0;
 	private String baseName=null;
 	private boolean isBundle = false;
+
+	public MessagePropertyELSegmentImpl(LexicalToken token) {
+		super(token);
+	}
 
 	public IResource getMessageBundleResource() {
 		return messageBundleResource;
