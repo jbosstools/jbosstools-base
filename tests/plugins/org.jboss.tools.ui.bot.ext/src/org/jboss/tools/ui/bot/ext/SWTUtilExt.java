@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
@@ -798,6 +799,78 @@ public class SWTUtilExt extends SWTUtils {
     return ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() +
       File.separator +
       projectName;
+  }
+  /**
+   * Selects textToSelect within Source Pane of editor with title editorTitle
+   * @param bot
+   * @param editorTitle
+   * @param textToSelect
+   * @param selectionOffset
+   * @param selectionLength
+   * @return SWTBotEclipseEditor
+   */
+  public static SWTBotEclipseEditor selectTextInSourcePane(SWTBotExt bot,
+      String editorTitle, String textToSelect , 
+      int selectionOffset , int selectionLength) {
+    return selectTextInSourcePane(bot, editorTitle, textToSelect,
+        selectionOffset, selectionLength, 0);
+  }
+  /**
+   * Selects textToSelect within Source Pane of editor with title editorTitle
+   * @param bot
+   * @param editorTitle
+   * @param textToSelect
+   * @param selectionOffset
+   * @param selectionLength
+   * @param textToSelectIndex
+   * @return SWTBotEclipseEditor
+   */
+  public static SWTBotEclipseEditor selectTextInSourcePane(SWTBotExt bot,
+      String editorTitle, String textToSelect , 
+      int selectionOffset , int selectionLength , int textToSelectIndex) {
+    
+    SWTBotEclipseEditor editor = bot.editorByTitle(editorTitle).toTextEditor();
+    String editorText = editor.getText();
+    boolean found = false;
+    int iStartIndex = 0;
+    int iRow = 0;
+    if (editorText != null && editorText.length() > 0 && editorText.contains(textToSelect)){
+      String[] editorLines = editorText.split("\n");
+      int iOccurenceIndex = 0;
+      while (!found && iRow < editorLines.length){
+        String lineText = editorLines[iRow];
+        iStartIndex = 0;
+        while (!found && lineText.contains(textToSelect)){
+          if (iOccurenceIndex == textToSelectIndex){
+            found = true;
+            iStartIndex += lineText.indexOf(textToSelect);
+          }
+          else{
+            iOccurenceIndex++;
+            int iNewStartIndex = lineText.indexOf(textToSelect) + textToSelect.length();
+            iStartIndex += iNewStartIndex;
+            lineText = lineText.substring(iNewStartIndex);
+          }
+        }
+        if (!found){
+          iRow++;
+        }
+      }
+      
+    }
+    
+    if (found) {
+      editor.selectRange(iRow, iStartIndex + selectionOffset, selectionLength);
+    }
+    else{
+      throw new SelectTextInSourcePaneException ("Wrong parameters specified for method selectTextInSourcePane.\n" + 
+          "Unable to select required text '" + textToSelect + 
+          "' within editor with title " + editorTitle + ".\n" +
+          "Editor text is: " + editorText);
+    }
+    
+    return editor;
+    
   }
 
 }
