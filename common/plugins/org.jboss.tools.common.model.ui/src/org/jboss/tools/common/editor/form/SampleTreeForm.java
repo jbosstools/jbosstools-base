@@ -16,6 +16,7 @@ import java.util.Properties;
 
 import org.jboss.tools.common.editor.SelectionNotifier;
 import org.jboss.tools.common.editor.XModelObjectTreeViewComponent;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -141,7 +142,7 @@ public class SampleTreeForm extends ExpandableForm implements ISelectionChangedL
 			Viewer viewer = tree.getViewer();
 			ISelection oldSelection = viewer.getSelection();
 			ISelection newSelection = event.getSelection();
-			if (oldSelection.equals(newSelection)) return;
+			if (oldSelection.equals(newSelection) || newSelection instanceof ITextSelection) return;
 			viewer.setSelection(newSelection);
 			if(viewer.getSelection().isEmpty() && !oldSelection.isEmpty()) {
 				viewer.setSelection(oldSelection);

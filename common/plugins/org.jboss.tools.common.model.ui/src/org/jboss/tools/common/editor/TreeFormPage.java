@@ -29,6 +29,7 @@ import org.jboss.tools.common.model.util.XModelTreeListenerSWTASync;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -195,6 +196,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 
 	// ISelectionChangedListener
 	public void selectionChanged(SelectionChangedEvent event) {
+		if(event.getSelection() instanceof ITextSelection) return;
 		XModelObject xmo = getModelObject(event.getSelection());
 		if(selection == xmo) return;
 		selection = xmo;
@@ -275,7 +277,7 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 	}
 
 	private XModelObject getModelObject(ISelection selection) {
-		if(selection == null || selection.isEmpty()) return null;
+		if(!(selection instanceof IStructuredSelection) || selection.isEmpty()) return null;
 		IStructuredSelection s = (IStructuredSelection)selection;
 		Object o = s.getFirstElement();
 		return (o instanceof XModelObject) ? (XModelObject)o : null;
