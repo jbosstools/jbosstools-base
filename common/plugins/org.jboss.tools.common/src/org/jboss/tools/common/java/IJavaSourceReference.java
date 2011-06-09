@@ -10,13 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.java;
 
-import org.eclipse.jdt.core.IMember;
 import org.jboss.tools.common.text.ITextSourceReference;
 
 /**
  * @author Alexey Kazakov
  */
-public interface IJavaSourceReference extends ITextSourceReference {
+public interface IJavaSourceReference extends ITextSourceReference, IJavaMemberReference {
 
-	IMember getSourceMember();
 }
