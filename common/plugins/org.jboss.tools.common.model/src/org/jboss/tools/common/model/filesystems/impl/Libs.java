@@ -89,7 +89,7 @@ public class Libs implements IElementChangedListener {
 		if(result) fire();
 		if(paths == null && result) return true;
 	
-		updateFileSystems(paths);
+		if(paths != null) updateFileSystems(paths);
 		fsVersion = pathsVersion;
 
 		return result;

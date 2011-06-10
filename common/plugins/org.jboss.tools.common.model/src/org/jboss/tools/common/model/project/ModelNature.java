@@ -220,7 +220,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 	static Map<IProject, Set<String>> checked = new HashMap<IProject, Set<String>>();
 	
 	public static boolean checkModelNature(IProject project, String nature) {
-		if(project == null || !project.isOpen()) {
+		if(project == null || !project.isOpen() || !project.isSynchronized(IResource.DEPTH_ONE)) {
 			if(project != null && checked.containsKey(project)) {
 				checked.remove(project);
 			}
@@ -239,10 +239,7 @@ public abstract class ModelNature extends PlatformObject implements IProjectNatu
 			ns.add(nature);
 			return true;
 		}
-		if(!project.isSynchronized(1)) {
-			return false;
-		}
-		ns.add(nature);
+//		ns.add(nature);
 		return true;
 	}
 
