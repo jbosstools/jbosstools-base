@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 
 /**
@@ -46,7 +46,7 @@ public class OpenOnHelper {
     
     SWTBotEditor openedEditor = null;
      
-    SWTBotEclipseEditor sourceEditor = SWTUtilExt.selectTextInSourcePane(bot, editorTitle, textToSelect,
+    SWTBotEclipseEditor sourceEditor = SWTJBTExt.selectTextInSourcePane(bot, editorTitle, textToSelect,
       selectionOffset, selectionLength, textToSelectIndex);
      
      bot.sleep(Timing.time1S());

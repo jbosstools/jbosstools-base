@@ -12,14 +12,12 @@
 package org.jboss.tools.ui.bot.ext;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +32,6 @@ import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
@@ -46,6 +43,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.condition.ButtonIsDisabled;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
@@ -54,8 +52,6 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ServerServer;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Preference;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.View;
-import org.jboss.tools.ui.bot.ext.gen.INewObject;
 import org.jboss.tools.ui.bot.ext.gen.IServer;
 import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
@@ -63,7 +59,6 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
-import org.jboss.tools.ui.bot.ext.view.ProjectExplorer;
 import org.jboss.tools.ui.bot.ext.view.RemoteSystems;
 
 /**
@@ -1437,6 +1432,19 @@ public class SWTEclipseExt {
     }
     else{
       return null;
+    }
+  }
+  /**
+   * Closes all opened Editors
+   */
+  public void closeAllEditors(){
+    try{
+      bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.CLOSE_ALL).click();
+      log.info("All Editors closed");
+    } catch (WidgetNotFoundException wnfe){
+      log.info("No Editors to close");
+    } catch (TimeoutException te){
+      log.info("No Editors to close");
     }
   }
 }
