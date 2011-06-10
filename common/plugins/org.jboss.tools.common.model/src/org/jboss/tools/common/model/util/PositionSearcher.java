@@ -14,6 +14,8 @@ import java.util.StringTokenizer;
 
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.loaders.XObjectLoader;
+import org.jboss.tools.common.model.loaders.impl.SimpleWebFileLoader;
 
 /**
  * Searches for position of start tag corresponding to model object.
@@ -36,6 +38,7 @@ public class PositionSearcher {
 	int startPosition;
 	int endPosition;
 	boolean selectAttributeName = false;
+	XModelObjectLoaderUtil util;
 
 	public PositionSearcher() {}
 	
@@ -47,6 +50,19 @@ public class PositionSearcher {
 		this.text = text;
 		this.object = object;
 		this.attribute = attribute;
+		
+		XModelObject f = object;
+		while(f != null && f.getFileType() != XModelObject.FILE) f = f.getParent();
+		if(f != null) {
+			XObjectLoader loader = XModelObjectLoaderUtil.getObjectLoader(f);
+			if(loader instanceof SimpleWebFileLoader) {
+				//TODO have more common case, this does not include WebProcessLoader
+				SimpleWebFileLoader fileLoader = (SimpleWebFileLoader)loader;
+				fileLoader.createRootElement(f); // initializes namespaces if available.
+				util = fileLoader.getUtil();
+			}
+		}
+		
 	}
 	
 	public void execute() {
@@ -87,7 +103,7 @@ public class PositionSearcher {
 			}
 		} else {
 			xml = xml.substring(0, xml.indexOf('.'));
-			int e1 = text.indexOf("</" + object.getModelEntity().getXMLSubPath() + ">", startPosition); //$NON-NLS-1$ //$NON-NLS-2$
+			int e1 = text.indexOf("</" + getTagXMLName(object) + ">", startPosition); //$NON-NLS-1$ //$NON-NLS-2$
 			String s = e1 < 0 ? "" : text.substring(startPosition, e1); //$NON-NLS-1$
 			if(xml.length() == 0) {
 				int i1 = s.indexOf(">"); //$NON-NLS-1$
@@ -106,6 +122,20 @@ public class PositionSearcher {
 				}
 			}
 		}				
+	}
+
+	private String getTagXMLName(XModelObject object) {
+		String TAG_ATTR = "tag";//$NON-NLS-1$
+		String result = null;
+		if(object.getModelEntity().getAttribute(TAG_ATTR) != null) {
+			result = object.getAttributeValue(TAG_ATTR);
+		} else {
+			result = object.getModelEntity().getXMLSubPath();
+			if(result != null && util != null) {
+				result = util.applyNamespaceToTag(result);
+			}
+		}
+		return result;
 	}
 
 	private int findAttrPosition(String s, String name) {
@@ -149,7 +179,7 @@ public class PositionSearcher {
 	void findTagEnd() {
 		if(startPosition < 0) return;
 		if(attribute != null && attribute.length() > 0) return;
-		String tagname = object.getModelEntity().getXMLSubPath();
+		String tagname = getTagXMLName(object);
 		if(tagname == null || tagname.length() == 0) return;
 		String start = "<" + tagname; //$NON-NLS-1$
 		if(text.indexOf(start, startPosition) != startPosition) return;
@@ -169,7 +199,7 @@ public class PositionSearcher {
 		
 		public void selectObject(XModelObject object) {
 			if(object == null) return;
-			String xml = object.getModelEntity().getXMLSubPath();
+			String xml = getTagXMLName(object);
 			String token = "<" + xml; //$NON-NLS-1$
 			if(object.getFileType() == XModelObject.FILE) {
 				startPos = nextStartPos(token, startPos + 1);
@@ -187,7 +217,7 @@ public class PositionSearcher {
 //				String entity = object.getModelEntity().getName();
 				XModelObject[] os = parent.getChildren();
 				for (int i = 0; i < os.length; i++) {
-					String xml_i = os[i].getModelEntity().getXMLSubPath();
+					String xml_i = getTagXMLName(os[i]);
 					if(!xml.equals(xml_i)) continue;
 					boolean ok = false;
 					while(!ok) {

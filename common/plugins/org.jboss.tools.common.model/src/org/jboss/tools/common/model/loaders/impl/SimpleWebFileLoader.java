@@ -168,11 +168,15 @@ public class SimpleWebFileLoader implements SerializingLoader {
     }
 
     public String serializeObject(XModelObject object) {
+        Element element = createRootElement(object);
+        return serializeToElement(element, object);
+    }
+   
+    public Element createRootElement(XModelObject object) {
         String systemId = object.getAttributeValue("systemId"); //$NON-NLS-1$
         String publicId = object.getAttributeValue("publicId"); //$NON-NLS-1$
     	String rootName = getRootName(object);
-        Element element = createRootElement(rootName, publicId, systemId);
-        return serializeToElement(element, object);
+        return createRootElement(rootName, publicId, systemId);
     }
     
     protected String getRootName(XModelObject object) {

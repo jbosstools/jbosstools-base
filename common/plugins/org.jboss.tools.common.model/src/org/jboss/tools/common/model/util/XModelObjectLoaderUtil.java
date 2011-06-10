@@ -261,7 +261,7 @@ public class XModelObjectLoaderUtil {
     	return xmlname;
     }
     
-    protected final String applyNamespaceToTag(String xmlname) {
+    public final String applyNamespaceToTag(String xmlname) {
     	if(namespaceMapping != null) { 
     		xmlname = namespaceMapping.convertToActual(xmlname);
     	}
