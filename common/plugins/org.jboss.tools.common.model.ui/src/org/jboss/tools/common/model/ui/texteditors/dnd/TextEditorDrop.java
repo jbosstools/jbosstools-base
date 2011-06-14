@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.*;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.dnd.*;
+import org.eclipse.jface.text.ITextViewerExtension5;
 import org.eclipse.jface.text.source.ISourceViewer;
 
 import org.jboss.tools.common.model.XModelObject;
@@ -79,14 +80,25 @@ public class TextEditorDrop implements IControlDragDropProvider, IControlDropLis
 		x = pp.x;
 		y = pp.y;		
 		int lineIndex = (t.getTopPixel() + y) / t.getLineHeight();
+		int result = 0;
 		if (lineIndex >= t.getLineCount()) {
-			return t.getCharCount();
+			result = t.getCharCount();
 		} else {
 			int c = 0;
 			c = t.getOffsetAtLocation(new Point(x, y));
 			if(c < 0) c = 0;
-			return c;
+			result = c;
 		}
+
+		if (v instanceof ITextViewerExtension5) {
+		    ITextViewerExtension5 ext = (ITextViewerExtension5) v;
+		    int off = ext.widgetOffset2ModelOffset(result);
+		    if (off >= 0) {
+		    	result = off;
+		    }
+		}
+
+		return result;
 	}
 
 	public void drop(Properties p) {
