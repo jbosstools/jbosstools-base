@@ -40,32 +40,33 @@ public class OpenOnHelper {
    * @param expectedOpenedFileName
    */
   public static SWTBotEditor checkOpenOnFileIsOpened(SWTBotExt bot,
-      String editorTitle, String textToSelect , 
-      int selectionOffset , int selectionLength , int textToSelectIndex,
-      String expectedOpenedFileName){
-    
+      String editorTitle, String textToSelect, int selectionOffset,
+      int selectionLength, int textToSelectIndex, String expectedOpenedFileName) {
+
     SWTBotEditor openedEditor = null;
-     
-    SWTBotEclipseEditor sourceEditor = SWTJBTExt.selectTextInSourcePane(bot, editorTitle, textToSelect,
-      selectionOffset, selectionLength, textToSelectIndex);
-     
-     bot.sleep(Timing.time1S());
-     
-     sourceEditor.setFocus();
-     
-     bot.sleep(Timing.time1S());
-     
-     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_F3);
-     
-     bot.sleep(Timing.time3S());
-     
-     openedEditor = bot.activeEditor();
-     
-     assertTrue("Opened file has to have title " + expectedOpenedFileName + " but has " + openedEditor.getTitle(),
-       openedEditor.getTitle().equalsIgnoreCase(expectedOpenedFileName));
-     
-     return openedEditor;
-    
+
+    SWTBotEclipseEditor sourceEditor = SWTJBTExt.selectTextInSourcePane(bot,
+        editorTitle, textToSelect, selectionOffset, selectionLength,
+        textToSelectIndex);
+
+    bot.sleep(Timing.time1S());
+
+    sourceEditor.setFocus();
+
+    bot.sleep(Timing.time1S());
+
+    KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_F3);
+
+    bot.sleep(Timing.time3S());
+
+    openedEditor = bot.activeEditor();
+
+    assertTrue("Opened file has to have title " + expectedOpenedFileName
+        + " but has " + openedEditor.getTitle(), openedEditor.getTitle()
+        .equalsIgnoreCase(expectedOpenedFileName));
+
+    return openedEditor;
+
   }
   
 } 
