@@ -105,6 +105,11 @@ public class ErrorDialogTest extends TestCase {
 			super(shell, title, exception);
 		}
 
+		@Override
+	    protected void submit() {
+	    	// Do nothing
+	    }
+
 		public void buttonPressed(int id) {
 			// TODO Auto-generated method stub
 			super.buttonPressed(id);

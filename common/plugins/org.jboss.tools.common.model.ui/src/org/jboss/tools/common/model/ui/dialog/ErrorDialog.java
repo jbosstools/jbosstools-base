@@ -191,7 +191,7 @@ public class ErrorDialog extends IconAndMessageDialog {
     	super.cancelPressed();
     }
 
-    private void submit() {
+    protected void submit() {
     	String email = ReportPreference.E_MAIL_OPTION.getValue();
     	String other = ReportPreference.OTHER_OPTION.getValue();
     	String text = "" + getEnvironment() + "\n" + problemText;  //$NON-NLS-1$//$NON-NLS-2$
