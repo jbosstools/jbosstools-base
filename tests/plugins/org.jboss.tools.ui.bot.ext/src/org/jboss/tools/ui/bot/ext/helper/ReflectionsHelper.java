@@ -12,6 +12,8 @@
 package org.jboss.tools.ui.bot.ext.helper;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.apache.log4j.Logger;
 /**
@@ -35,5 +37,73 @@ public class ReflectionsHelper {
       return null;
     }
   }
+  /**
+   * Invoke method methodName of class clazz on instance and return return value
+   * @param <T>
+   * @param clazz
+   * @param methodName
+   * @param instance
+   * @param resultClazz
+   * @return
+   * @throws SecurityException
+   * @throws NoSuchMethodException
+   * @throws IllegalArgumentException
+   * @throws IllegalAccessException
+   * @throws InvocationTargetException
+   */
+  @SuppressWarnings("unchecked")
+  public static <T> T retrieveMethodReturnValue(Class<?> clazz,
+      String methodName, Object instance, Class<T> resultClazz)
+      throws SecurityException, NoSuchMethodException,
+      IllegalArgumentException, IllegalAccessException,
+      InvocationTargetException {
+
+    Method[] methods = clazz.getDeclaredMethods();
+    boolean notFound = true;
+    int index = 0;
+    while (notFound && methods.length > index) {
+      if (methods[index].getName().equals(methodName)) {
+        notFound = false;
+      } else {
+        index++;
+      }
+    }
+
+    if (!notFound) {
+      methods[index].setAccessible(true);
+      Object value = methods[index].invoke(instance);
+      if (value != null) {
+        return (T) value;
+      } else {
+        return null;
+      }
+
+    } else {
+      throw new NoSuchMethodException(methodName);
+    }
+  }
+  /**
+   * Returns true if class clazz implements method methodName
+   * @param clazz
+   * @param methodName
+   * @return
+   */
+  public static boolean isClassImplementingMethod(Class<?> clazz,
+      String methodName) {
+
+    Method[] methods = clazz.getDeclaredMethods();
+    boolean notFound = true;
+    int index = 0;
+    while (notFound && methods.length > index) {
+      if (methods[index].getName().equals(methodName)) {
+        notFound = false;
+      } else {
+        index++;
+      }
+    }
+
+    return !notFound;
+
+  } 
   
 } 

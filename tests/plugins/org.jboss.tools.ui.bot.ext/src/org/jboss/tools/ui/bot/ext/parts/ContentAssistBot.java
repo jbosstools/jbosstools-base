@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +19,13 @@ import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.swtbot.swt.finder.results.Result;
+import org.jboss.tools.ui.bot.ext.helper.ReflectionsHelper;
 
 /**
  * This provides working Content assist functionality. 
@@ -129,6 +133,55 @@ public class ContentAssistBot {
         }
       });
 		  
+		}
+		/* More accurate check here will be 
+		   (oEditor instanceof org.jboss.tools.common.model.ui.editor.EditorPartWrapper)
+		   but using Reflections dependency on org.jboss.tools.common.model.ui.editor is omitted
+		*/   
+		else if (ReflectionsHelper.isClassImplementingMethod(oEditor.getClass(), "getEditor")){
+		  final IEditorPart innerEditor;
+      try {
+        innerEditor = (IEditorPart)ReflectionsHelper.retrieveMethodReturnValue(
+            oEditor.getClass(),
+            "getEditor",
+            oEditor, 
+            IEditorPart.class);
+        if (innerEditor instanceof MultiPageEditorPart){
+          textEditor = syncExec(new Result<ITextEditor>() {
+            public ITextEditor run() {
+              ITextEditor result = null;
+              try {
+                result = (ITextEditor)ReflectionsHelper.retrieveMethodReturnValue(MultiPageEditorPart.class,
+                    "getActiveEditor",
+                    innerEditor, 
+                    IEditorPart.class);
+              } catch (SecurityException e) {
+                e.printStackTrace();
+              } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+              } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+              } catch (IllegalAccessException e) {
+                e.printStackTrace();
+              } catch (InvocationTargetException e) {
+                e.printStackTrace();
+              }
+              return result;
+            }
+          });
+      }
+        
+      } catch (SecurityException e1) {
+        e1.printStackTrace();
+      } catch (IllegalArgumentException e1) {
+        e1.printStackTrace();
+      } catch (NoSuchMethodException e1) {
+        e1.printStackTrace();
+      } catch (IllegalAccessException e1) {
+        e1.printStackTrace();
+      } catch (InvocationTargetException e1) {
+        e1.printStackTrace();
+      }
 		}
 		else{
 		  textEditor = (ITextEditor)oEditor;
