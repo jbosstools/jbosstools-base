@@ -11,6 +11,8 @@
 
 package org.jboss.tools.common.ui.preferences;
 
+import java.util.ArrayList;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.JavaCore;
@@ -19,6 +21,7 @@ import org.eclipse.jdt.internal.ui.dialogs.StatusInfo;
 import org.eclipse.jdt.internal.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.jdt.internal.ui.preferences.PreferencesMessages;
 import org.eclipse.jdt.internal.ui.preferences.ScrolledPageContent;
+import org.eclipse.jdt.internal.ui.preferences.OptionsConfigurationBlock.Key;
 import org.eclipse.jdt.internal.ui.wizards.IStatusChangeListener;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -54,6 +57,8 @@ import org.jboss.tools.common.preferences.SeverityPreferences;
  *		);
  *    create required constant and property in SeverityPreferencesMessages, 
  *    and add SECTION_A to array ALL_SECTIONS.
+ *    
+ *    Also, see ProblemSeveritiesConfigurationBlock
  * 
  * @author Viacheslav Kabanovich
  */
@@ -77,6 +82,8 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 
 	protected PixelConverter fPixelConverter;
 
+	protected FilteredPreferenceTree fFilteredPrefTree;
+
 	public SeverityConfigurationBlock(IStatusChangeListener context,
 			IProject project, Key[] allKeys,
 			IWorkbenchPreferenceContainer container) {
@@ -91,49 +98,57 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 
 	protected Composite createStyleTabContent(Composite folder) {
 		int nColumns = 3;
-
-		final ScrolledPageContent sc1 = new ScrolledPageContent(folder);
-
-		Composite composite = sc1.getBody();
-
-		addMaxNumberOfMarkersField(composite);
-
-		addWrongBuilderOrderField(composite);
-
 		GridLayout layout= new GridLayout(nColumns, false);
 		layout.marginHeight= 0;
 		layout.marginWidth= 0;
-		composite.setLayout(layout);
+		Composite c = new Composite(folder, 0);
+		c.setLayout(layout);
+		c.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Label description= new Label(composite, SWT.LEFT | SWT.WRAP);
-		description.setFont(description.getFont());
-		description.setText(getCommonDescription()); 
-		description.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false, nColumns - 1, 1));
+		addMaxNumberOfMarkersField(c);
+		addWrongBuilderOrderField(c);
+
+		fFilteredPrefTree = new FilteredPreferenceTree(this, folder, getCommonDescription());
+		final ScrolledPageContent sc1 = fFilteredPrefTree.getScrolledPageContent();
+
+		Composite composite = sc1.getBody();
+
+		composite.setLayout(layout);
 
 		int defaultIndent = 0;
 
-		SectionDescription[] sections = getAllSections();
-		for (int i = 0; i < sections.length; i++) {
-			SectionDescription section = sections[i];
-			String label = section.label; 
-			ExpandableComposite excomposite = createStyleSection(composite, label, nColumns);
-
-			Composite inner = new Composite(excomposite, SWT.NONE);
-			inner.setFont(composite.getFont());
-			inner.setLayout(new GridLayout(nColumns, false));
-			excomposite.setClient(inner);
-
-			for (int j = 0; j < section.options.length; j++) {
-				OptionDescription option = section.options[j];
-				label = option.label;
-				addComboBox(inner, label, option.key, errorWarningIgnore, errorWarningIgnoreLabels, defaultIndent);
-			}
+		for (SectionDescription section: getAllSections()) {
+			createSection(null, section, composite, nColumns, defaultIndent);
 		}
 
-		IDialogSettings section = getDialogSettings();
-		restoreSectionExpansionStates(section);
+		restoreSectionExpansionStates(getDialogSettings());
 
 		return sc1;
+	}
+
+	protected Composite createInnerComposite(ExpandableComposite excomposite, int nColumns, Font font) {
+		Composite inner= new Composite(excomposite, SWT.NONE);
+		inner.setFont(font);
+		inner.setLayout(new GridLayout(nColumns, false));
+		excomposite.setClient(inner);
+		return inner;
+	}
+	protected void createSection(PreferenceTreeNode parent, SectionDescription section, Composite composite, int nColumns, int defaultIndent) {
+		String label = section.getLabel(); 
+
+		Key twistieKey = OptionsConfigurationBlock.getLocalKey(label.replace(' ', '_'));
+		PreferenceTreeNode treeSection = fFilteredPrefTree.addExpandableComposite(composite, label, nColumns, twistieKey, parent, false);
+		ExpandableComposite excomposite = getExpandableComposite(twistieKey);
+		Composite inner = createInnerComposite(excomposite, nColumns, composite.getFont());
+		
+		for (SectionDescription s: section.getSections()) {
+			createSection(treeSection, s, inner, nColumns, defaultIndent);
+		}
+
+		for (OptionDescription option: section.getOptions()) {
+			label = option.label;
+			fFilteredPrefTree.addComboBox(inner, label, option.key, errorWarningIgnore, errorWarningIgnoreLabels, defaultIndent, treeSection);
+		}
 	}
 
 	protected void addMaxNumberOfMarkersField(Composite composite) {
@@ -141,6 +156,7 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		GridData gd = (GridData) text.getLayoutData();
 		gd.widthHint = fPixelConverter.convertWidthInCharsToPixels(8);
 		gd.horizontalAlignment = GridData.BEGINNING;
+		text.setLayoutData(gd);
 		text.setTextLimit(6);
 	}
 
@@ -229,26 +245,42 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 			return;
 		}
 
-		if (changedKey != null) {
-			if (getMaxNumberOfProblemsKey().equals(changedKey)) {
-				fContext.statusChanged(validateMaxNumberProblems());
-				return;
-			} else {
-				return;
-			}
+		if (changedKey == null || getMaxNumberOfProblemsKey().equals(changedKey)) {
+			fContext.statusChanged(validateMaxNumberProblems());
 		}
-		fContext.statusChanged(validateMaxNumberProblems());
 	}
 
 	public static class SectionDescription {
-		public String label;
-		public OptionDescription[] options;
+		private String label;
+		private SectionDescription[] sections;
+		private OptionDescription[] options;
 
 		public SectionDescription(String label, String[][] optionLabelsAndKeys, String pluginId) {
+			this(label, new SectionDescription[0], optionLabelsAndKeys, pluginId);
+		}
+		public SectionDescription(String label, SectionDescription[] sections, String[][] optionLabelsAndKeys, String pluginId) {
 			this.label = label;
+			this.sections = sections;
 			options = new OptionDescription[optionLabelsAndKeys.length];
 			for (int i = 0; i < options.length; i++) {
 				options[i] = new OptionDescription(optionLabelsAndKeys[i][0], optionLabelsAndKeys[i][1], pluginId);
+			}
+		}
+		public String getLabel() {
+			return label;
+		}
+		public SectionDescription[] getSections() {
+			return sections;
+		}
+		public OptionDescription[] getOptions() {
+			return options;
+		}
+		public void collectKeys(ArrayList<Key> keys) {
+			for (SectionDescription s: sections) {
+				s.collectKeys(keys);
+			}
+			for (OptionDescription o: options) {
+				keys.add(o.key);
 			}
 		}
 	}
