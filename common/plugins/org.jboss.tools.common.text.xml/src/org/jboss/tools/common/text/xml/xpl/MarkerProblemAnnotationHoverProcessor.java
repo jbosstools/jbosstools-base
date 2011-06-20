@@ -32,6 +32,7 @@ import org.eclipse.jface.text.ITextHoverExtension2;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.ITextViewerExtension;
 import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.SourceViewer;
@@ -59,9 +60,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.DefaultMarkerAnnotationAccess;
 import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
+import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 import org.eclipse.wst.sse.ui.internal.taginfo.ProblemAnnotationHoverProcessor;
 import org.jboss.tools.common.text.xml.MarkerAnnotationInfo;
-import org.jboss.tools.common.text.xml.QuickFixProposal;
+import org.jboss.tools.common.text.xml.MarkerAnnotationInfo.AnnotationInfo;
 import org.jboss.tools.common.text.xml.TextXMLMessages;
 
 public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHoverProcessor implements ITextHoverExtension, ITextHoverExtension2{
@@ -74,6 +76,10 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 	}
 
 	public Object getHoverInfo2(ITextViewer viewer, IRegion hoverRegion) {
+		List<AnnotationInfo> all = new ArrayList<AnnotationInfo>();
+		List<AnnotationInfo> high = new ArrayList<AnnotationInfo>();
+		List<AnnotationInfo> low = new ArrayList<AnnotationInfo>();
+
 		IAnnotationModel model = ((SourceViewer) viewer).getAnnotationModel();
 		if (model != null) {
 			Iterator<Annotation> iterator = model.getAnnotationIterator();
@@ -85,10 +91,19 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 				Position position = model.getPosition(annotation);
 
 				if (position.overlapsWith(hoverRegion.getOffset(), hoverRegion.getLength())) {
-					return new MarkerAnnotationInfo((SimpleMarkerAnnotation)annotation, position, viewer);
+					AnnotationInfo info = new AnnotationInfo(annotation, position);
+					if(info.isTop())
+						high.add(info);
+					else
+						low.add(info);
 				}
 			}
+			all.addAll(high);
+			all.addAll(low);
+			
 		}
+		if(all.size() > 0)
+			return new MarkerAnnotationInfo(all, (SourceViewer) viewer);
 		return null;
 	}
 	
@@ -99,7 +114,7 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 	}
 	
 	protected boolean isAnnotationValid(Annotation annotation) {
-		if(annotation instanceof SimpleMarkerAnnotation)
+		if(annotation instanceof SimpleMarkerAnnotation || annotation instanceof TemporaryAnnotation)
 			return true;
 		return false;
 	}
@@ -175,64 +190,32 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 		}
 		
 		protected void createContent() {
-			createInfo(parent, getAnnotationInfo().annotation);
-			setDecoration(parent, parent.getForeground(), parent.getBackground(), JFaceResources.getDialogFont());
+			boolean first = true;
 
-			QuickFixProposal[] proposals = getAnnotationInfo().getCompletionProposals();
-			if (proposals.length > 0)
-				createControl(parent, proposals);
-
-			parent.layout(true);
-		}
-		
-		private void createControl(Composite parent, QuickFixProposal[] proposals) {
-			Composite composite = new Composite(parent, SWT.NONE);
-			composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			GridLayout layout2 = new GridLayout(1, false);
-			layout2.marginHeight = 0;
-			layout2.marginWidth = 0;
-			layout2.verticalSpacing = 2;
-			composite.setLayout(layout2);
-
-			Label separator= new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
-			GridData gridData= new GridData(SWT.FILL, SWT.CENTER, true, false);
-			separator.setLayoutData(gridData);
-
-			Label quickFixLabel= new Label(composite, SWT.NONE);
-			GridData layoutData= new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
-			layoutData.horizontalIndent = 4;
-			quickFixLabel.setLayoutData(layoutData);
-			String text;
-			if (proposals.length == 1) {
-				text= TextXMLMessages.SINGLE_QUICK_FIX;
-			} else {
-				text= NLS.bind(TextXMLMessages.MULTIPLE_QUICK_FIX, proposals.length);
-			}
-			quickFixLabel.setText(text);
-
-			setDecoration(composite, parent.getForeground(), parent.getBackground(), JFaceResources.getDialogFont());
-			createList(composite, proposals);
-		}
-		
-		private void createList(Composite parent, QuickFixProposal[] proposals) {
 			final ScrolledComposite scrolledComposite= new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
 			GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 			scrolledComposite.setLayoutData(gridData);
 			scrolledComposite.setExpandVertical(false);
 			scrolledComposite.setExpandHorizontal(false);
-
+			
 			Composite composite = new Composite(scrolledComposite, SWT.NONE);
 			composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			GridLayout layout = new GridLayout(2, false);
+			GridLayout layout = new GridLayout(1, false);
 			layout.marginLeft = 5;
 			layout.verticalSpacing = 2;
 			composite.setLayout(layout);
-			
-			List<Link> list = new ArrayList<Link>();
-			for (QuickFixProposal proposal : proposals) {
-				list.add(createLink(composite, proposal));
-			}
 
+			
+			for(AnnotationInfo info : getAnnotationInfo().infos){
+				createInfo(composite, info.annotation, first);
+				if(first)
+					first = false;
+	
+				List<ICompletionProposal> proposals = getAnnotationInfo().getCompletionProposals(info);
+				if (proposals.size() > 0)
+					createControl(composite, proposals);
+			}
+			
 			scrolledComposite.setContent(composite);
 			setDecoration(scrolledComposite, parent.getForeground(), parent.getBackground(), JFaceResources.getDialogFont());
 
@@ -252,9 +235,45 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 				}
 				gridData.heightHint = contentSize.y - scrollBarHeight;
 			}
+
+			parent.layout(true);
+		}
+		
+		private void createControl(Composite parent, List<ICompletionProposal> proposals) {
+			Composite composite = new Composite(parent, SWT.NONE);
+			composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			GridLayout layout2 = new GridLayout(1, false);
+			layout2.verticalSpacing = 2;
+			layout2.marginLeft = 5;
+			composite.setLayout(layout2);
+
+			Label separator= new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
+			GridData gridData= new GridData(SWT.FILL, SWT.CENTER, true, false);
+			separator.setLayoutData(gridData);
+
+			Label quickFixLabel= new Label(composite, SWT.NONE);
+			GridData layoutData= new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+			layoutData.horizontalIndent = 4;
+			quickFixLabel.setLayoutData(layoutData);
+			String text;
+			if (proposals.size() == 1) {
+				text= TextXMLMessages.SINGLE_QUICK_FIX;
+			} else {
+				text= NLS.bind(TextXMLMessages.MULTIPLE_QUICK_FIX, proposals.size());
+			}
+			quickFixLabel.setText(text);
+
+			createList(composite, proposals);
+		}
+		
+		private void createList(Composite parent, List<ICompletionProposal> proposals) {
+			List<Link> list = new ArrayList<Link>();
+			for (ICompletionProposal proposal : proposals) {
+				list.add(createLink(parent, proposal));
+			}
 		}
 
-		private Link createLink(Composite parent, final QuickFixProposal proposal) {
+		private Link createLink(Composite parent, final ICompletionProposal proposal) {
 			Link proposalLink = new Link(parent, SWT.WRAP);
 			GridData layoutData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 			String linkText = proposal.getDisplayString();
@@ -265,7 +284,7 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 				}
 
 				public void mouseDown(MouseEvent e) {
-					fix(proposal, info.viewer, info.position.offset);
+					fix(proposal, info.viewer, info.infos.get(0).position.getOffset());
 				}
 
 				public void mouseUp(MouseEvent e) {
@@ -274,7 +293,7 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 			return proposalLink;
 		}
 
-		private void fix(QuickFixProposal p, ITextViewer viewer, int offset) {
+		private void fix(ICompletionProposal p, ITextViewer viewer, int offset) {
 			dispose();
 
 			IRewriteTarget target = null;
@@ -302,7 +321,13 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 			}
 		}
 		
-		private void createInfo(Composite parent, final Annotation annotation) {
+		private void createInfo(Composite parent, final Annotation annotation, boolean firstElement) {
+			if(!firstElement){
+				Label separator= new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+				GridData gridData= new GridData(SWT.FILL, SWT.CENTER, true, false);
+				separator.setLayoutData(gridData);
+			}
+			
 			Composite composite = new Composite(parent, SWT.NONE);
 			composite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 			GridLayout layout = new GridLayout(2, false);
