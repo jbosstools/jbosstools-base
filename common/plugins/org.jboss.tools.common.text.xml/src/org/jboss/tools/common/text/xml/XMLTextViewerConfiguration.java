@@ -104,34 +104,20 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 	 * @since 3.1
 	 */
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
-		if (fPreferenceStore == null)
-			return null;
-		if (sourceViewer == null || !fPreferenceStore.getBoolean(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_HYPERLINKS_ENABLED))
-			return null;
-
 		List<IHyperlinkDetector> allDetectors = new ArrayList<IHyperlinkDetector>(0);
 
 		IHyperlinkDetector extHyperlinkDetector = getTextEditorsExtensionsHyperlinkDetector(); 
 
 		if (extHyperlinkDetector != null) allDetectors.add(extHyperlinkDetector);
 		
-/*		
 		IHyperlinkDetector[] superDetectors = super.getHyperlinkDetectors(sourceViewer);
-		for (int m = 0; m < superDetectors.length; m++) {
-			IHyperlinkDetector detector = superDetectors[m];
+		for (IHyperlinkDetector detector : superDetectors) {
 			if (!allDetectors.contains(detector)) {
 				allDetectors.add(detector);
 			}
 		}
-*/
-		IHyperlinkDetector[] ts = (IHyperlinkDetector[]) allDetectors.toArray(new IHyperlinkDetector[0]);
-		IHyperlinkDetector[] in = (initial != null) ? initial.getHyperlinkDetectors(sourceViewer) : null;
-		if(in == null || in.length == 0) return ts;
-		if(ts == null || ts.length == 0) return in;
-		ArrayList<IHyperlinkDetector> total = new ArrayList<IHyperlinkDetector>();
-		for (int i = 0; i < ts.length; i++) total.add(ts[i]);
-		for (int i = 0; i < in.length; i++) if(!total.contains(in[i])) total.add(in[i]);
-		return total.toArray(new IHyperlinkDetector[0]);
+		
+		return allDetectors.toArray(new IHyperlinkDetector[0]);
 	}
 
 	@SuppressWarnings("deprecation")
