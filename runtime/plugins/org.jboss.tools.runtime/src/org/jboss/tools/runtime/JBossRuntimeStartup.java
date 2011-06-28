@@ -41,13 +41,15 @@ import org.eclipse.ui.navigator.CommonNavigator;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
+import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.osgi.framework.Bundle;
 import org.osgi.service.prefs.BackingStoreException;
 
 public class JBossRuntimeStartup implements IStartup {
 	
-	private static final String JBOSS_EAP_HOME = "../../../../jboss-eap"; 	// JBoss EAP home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
+	private static final String JBOSS_EAP_HOME = "../../jboss-eap"; 	// JBoss EAP home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
 	private static final String SERVERS_FILE_NAME = "application_platforms.properties"; //$NON-NLS-1$
 	private static final String SERVERS_FILE = "../../../../studio/" + SERVERS_FILE_NAME; //$NON-NLS-1$
 	private static final String SERVERS_FILE_CONFIGURATION = "../../studio/" + SERVERS_FILE_NAME; //$NON-NLS-1$
@@ -66,8 +68,8 @@ public class JBossRuntimeStartup implements IStartup {
 	
 	private void initializeIncludedRuntimes() {
 		try {
-			String pluginLocation = FileLocator.resolve(Activator.getDefault().getBundle().getEntry("/")).getPath(); //$NON-NLS-1$
-			File directory = new File(pluginLocation, JBOSS_EAP_HOME);
+			String configuration = getConfiguration();
+			File directory = new File(configuration, JBOSS_EAP_HOME);
 			if (directory.isDirectory()) {
 				IPath path = new Path(directory.getAbsolutePath());
 				JBossRuntimeLocator locator = new JBossRuntimeLocator();
@@ -118,6 +120,15 @@ public class JBossRuntimeStartup implements IStartup {
 			} catch (BackingStoreException e) {
 				Activator.log(e);
 			}
+		}
+		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
+		for (ServerDefinition serverDefinition:serverDefinitions) {
+			File location = serverDefinition.getLocation();
+			RuntimePath runtimePath = new RuntimePath(location.getAbsolutePath());
+			runtimePaths.add(runtimePath);
+		}
+		if (runtimePaths.size() > 0) {
+			RuntimeUIActivator.getDefault().saveRuntimePaths();
 		}
 	}
 
@@ -189,9 +200,7 @@ public class JBossRuntimeStartup implements IStartup {
 			File serversFile = new File(pluginLocation, SERVERS_FILE);
 
 			if (!serversFile.isFile()) {
-				Location configLocation = Platform.getConfigurationLocation();
-				URL configURL = configLocation.getURL();
-				String configuration = FileLocator.resolve(configURL).getPath();
+				String configuration = getConfiguration();
 				serversFile = new File(configuration, SERVERS_FILE_CONFIGURATION).getCanonicalFile();
 			} else {
 				serversFile = serversFile.getCanonicalFile();
@@ -236,5 +245,12 @@ public class JBossRuntimeStartup implements IStartup {
 		} catch (IOException e) {
 			Activator.log(e);
 		}
+	}
+
+	private String getConfiguration() throws IOException {
+		Location configLocation = Platform.getConfigurationLocation();
+		URL configURL = configLocation.getURL();
+		String configuration = FileLocator.resolve(configURL).getPath();
+		return configuration;
 	}		
 }
