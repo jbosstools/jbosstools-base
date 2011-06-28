@@ -95,11 +95,15 @@ public class Libs implements IElementChangedListener {
 		return result;
 	}
 
+	public void requestForUpdate() {
+		classpathVersion++;
+	}
+
 	synchronized boolean updatePaths() {
-		if(classpathpVersion <= pathsVersion) {
+		if(classpathVersion <= pathsVersion) {
 			return false;
 		}
-		pathsVersion = classpathpVersion;
+		pathsVersion = classpathVersion;
 		List<String> newPaths = null;
 		try {
 			newPaths = EclipseResourceUtil.getClassPath(getProjectResource());
@@ -223,7 +227,7 @@ public class Libs implements IElementChangedListener {
 		}
 	}
 
-	int classpathpVersion = 0;
+	int classpathVersion = 0;
 	int pathsVersion = -1;
 	int fsVersion = -1;
 
@@ -244,16 +248,17 @@ public class Libs implements IElementChangedListener {
 			}
 		}
 		if(p == null) return;
+		System.out.println("--->" + p);
 		int f = p.getFlags();
 		if((f & (IJavaElementDelta.F_CLASSPATH_CHANGED 
 			| IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED)) != 0) {
-			classpathpVersion++;
+			requestForUpdate();
 		} else {
 			IJavaElementDelta[] ds1 = p.getAffectedChildren();
 			for (IJavaElementDelta d1: ds1) {
 				IJavaElement e = d1.getElement();
 				if(d1.getKind() == IJavaElementDelta.ADDED) {
-					classpathpVersion++;
+					requestForUpdate();
 					break;
 				}
 			}

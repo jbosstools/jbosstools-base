@@ -90,6 +90,10 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 	}
 
 	public void clean() {
+		Libs libs = FileSystemsHelper.getLibs(model);
+		if(libs != null) {
+			libs.requestForUpdate();
+		}
 		paths = new ArrayList<String>();
 		loaded = false;
 		if(paths2 != null) paths2.clear();

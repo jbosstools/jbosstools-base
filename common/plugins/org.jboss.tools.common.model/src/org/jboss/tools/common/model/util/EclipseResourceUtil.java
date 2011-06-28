@@ -629,66 +629,47 @@ public class EclipseResourceUtil extends EclipseUtil {
 		ArrayList<String> l = new ArrayList<String>();
 		IJavaProject javaProject = JavaCore.create(project);		
 
-// maybe we should restore outputs with special boolean parameter.
-//		IPath p = javaProject.getOutputLocation();
-//		IResource r = p == null ? null : project.getWorkspace().getRoot().findMember(p);
-//		if(r != null && r.getLocation() != null && r.exists()) {
-//			String s = r.getLocation().toString();
-//			l.add(new java.io.File(s).getCanonicalPath());
-//		}
-
 		IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
-// maybe we should restore outputs with special boolean parameter.
-//		for (int i = 0; i < es.length; i++) {
-//			try {
-//				if(es[i].getEntryKind() == IClasspathEntry.CPE_SOURCE && es[i].getOutputLocation() != null) {
-//					IResource findMember = project.getWorkspace().getRoot().findMember(es[i].getOutputLocation());
-//					if(findMember!=null) {
-//						String s = findMember.getLocation().toString();
-//						l.add(new java.io.File(s).getCanonicalPath());
-//					}
-//				}
-//			} catch (IOException e) {
-//				//ignore - we do not care about non-existent files here.
-//			}
-//		}
 		for (int i = 0; i < es.length; i++) {
-			if(es[i].getEntryKind() != IClasspathEntry.CPE_LIBRARY) continue;
+			if(es[i].getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
+				String s = null;
+				String path = es[i].getPath().toString();
+				try {
+					//First let's check if path is defined within Eclipse work space.
+					if(path.startsWith(XModelObjectConstants.SEPARATOR) && path.indexOf(XModelObjectConstants.SEPARATOR, 1) > 1) {
+						IResource findMember = ResourcesPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
+						if(findMember != null) {
+							s = findMember.getLocation().toString();
+						}
+					}
+					//If search in Eclipse work space has failed, this is a useless attempt, but
+					//let keep it just in case (this is good old code that worked for a long while).
+					if(s == null && path.startsWith(XModelObjectConstants.SEPARATOR + project.getName() + XModelObjectConstants.SEPARATOR)) {
+						IResource findMember = project.findMember(es[i].getPath().removeFirstSegments(1));
+						if(findMember != null) {
+							s = findMember.getLocation().toString();
+						}
+					}
+				
+					//If we failed to find resource in Eclipse work space, 
+					//lets try the path as absolute on disk
+					if(s == null && new java.io.File(path).exists()) {
+						s = path;
+					}
+					if(s != null) {
+						l.add(new java.io.File(s).getCanonicalPath());
+					}				
+				} catch (IOException e) {
+					//ignore - we do not care about malformed URLs in classpath here.
+				}
+			} else if(es[i].getEntryKind() == IClasspathEntry.CPE_PROJECT) {
+				IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(es[i].getPath().lastSegment());
+				if(p == null || !p.isAccessible()) continue;
+				if(p.hasNature(JavaCore.NATURE_ID) && !p.hasNature("org.jboss.tools.jst.web.kb.kbnature")) {
+					String[] srcs = getJavaProjectSrcLocations(p);
+					for (String s: srcs) l.add(s);
+				}
 
-			String s = null;
-			String path = es[i].getPath().toString();
-			try {
-				//First let's check if path is defined within Eclipse work space.
-				if(path.startsWith(XModelObjectConstants.SEPARATOR) && path.indexOf(XModelObjectConstants.SEPARATOR, 1) > 1) {
-					IResource findMember = ResourcesPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
-					if(findMember != null) {
-						s = findMember.getLocation().toString();
-					} else {
-						s = null;
-					}
-				}
-				
-				//If search in Eclipse work space has failed, this is a useless attempt, but
-				//let keep it just in case (this is good old code that worked for a long while).
-				if(s == null && path.startsWith(XModelObjectConstants.SEPARATOR + project.getName() + XModelObjectConstants.SEPARATOR)) {
-					IResource findMember = project.findMember(es[i].getPath().removeFirstSegments(1));
-					if(findMember != null) {
-						s = findMember.getLocation().toString();
-					} else {
-						s = null;
-					}
-				}
-				
-				//If we failed to find resource in Eclipse work space, 
-				//lets try the path as absolute on disk
-				if(s == null && new java.io.File(path).exists()) {
-					s = path;
-				}
-				if(s != null) {
-					l.add(new java.io.File(s).getCanonicalPath());
-				}
-			} catch (IOException e) {
-				//ignore - we do not care about malformed URLs in classpath here.
 			}
 		}
 		return l;
