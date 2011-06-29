@@ -56,7 +56,7 @@ public class ParametedType implements IParametedType {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.jboss.tools.cdi.core.IParametedType#isPrimitive()
+	 * @see org.jboss.tools.common.java.IParametedType#isPrimitive()
 	 */
 	public boolean isPrimitive() {
 		return primitive;
