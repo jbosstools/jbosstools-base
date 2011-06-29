@@ -248,7 +248,6 @@ public class Libs implements IElementChangedListener {
 			}
 		}
 		if(p == null) return;
-		System.out.println("--->" + p);
 		int f = p.getFlags();
 		if((f & (IJavaElementDelta.F_CLASSPATH_CHANGED 
 			| IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED)) != 0) {
