@@ -7,6 +7,7 @@ Bundle-SymbolicName: org.jboss.tools.common;singleton:=true
 Bundle-Localization: plugin
 Export-Package: org.jboss.tools.common,
  org.jboss.tools.common.java,
+ org.jboss.tools.common.java.impl,
  org.jboss.tools.common.log,
  org.jboss.tools.common.preferences,
  org.jboss.tools.common.reporting,
