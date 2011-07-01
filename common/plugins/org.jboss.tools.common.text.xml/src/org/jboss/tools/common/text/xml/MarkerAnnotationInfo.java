@@ -22,7 +22,7 @@ import org.eclipse.jface.text.quickassist.IQuickAssistInvocationContext;
 import org.eclipse.jface.text.quickassist.IQuickAssistProcessor;
 import org.eclipse.jface.text.quickassist.IQuickFixableAnnotation;
 import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
@@ -32,9 +32,9 @@ import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 
 public class MarkerAnnotationInfo {
 	public final List<AnnotationInfo> infos;
-	public final SourceViewer viewer;
+	public final ISourceViewer viewer;
 
-	public MarkerAnnotationInfo(List<AnnotationInfo> infos, SourceViewer textViewer) {
+	public MarkerAnnotationInfo(List<AnnotationInfo> infos, ISourceViewer textViewer) {
 		this.infos = infos;
 		this.viewer = textViewer;
 	}

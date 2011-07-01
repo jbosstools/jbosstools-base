@@ -467,5 +467,37 @@
     <provider class="org.jboss.tools.common.model.ui.attribute.adapter.JavaClassContentAssistProvider"/>
     <provider class="org.jboss.tools.common.model.ui.attribute.adapter.PropertiesContentAssistProvider"/>
  </extension>
-
+<extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="org.jboss.tools.jst.jsp.jspeditor.HTMLTextEditor"
+            id="org.jboss.tools.jst.jsp.jspeditor.HTMLTextEditor.ruler.actions">
+         <action
+               label="SelectRulerAction.label"
+               class="org.jboss.tools.common.model.ui.actions.SelectRulerAction"
+               actionID="Rulerselect"
+               id="org.jboss.tools.common.model.ui.actions.SelectRulerAction">
+         </action>
+      </editorContribution>
+      <editorContribution
+            targetID="org.jboss.tools.jst.jsp.jspeditor.JSPTextEditor"
+            id="org.jboss.tools.jst.jsp.jspeditor.JSPTextEditor.ruler.actions">
+         <action
+               label="SelectRulerAction.label"
+               class="org.jboss.tools.common.model.ui.actions.SelectRulerAction"
+               actionID="Rulerselect"
+               id="org.jboss.tools.common.model.ui.actions.SelectRulerAction">
+         </action>
+      </editorContribution>
+      <editorContribution
+            targetID="org.jboss.tools.common.model.ui.editor.EditorPartWrapper"
+            id="org.jboss.tools.common.model.ui.editor.EditorPartWrapper.ruler.actions">
+         <action
+               label="SelectRulerAction.label"
+               class="org.jboss.tools.common.model.ui.actions.SelectRulerAction"
+               actionID="Rulerselect"
+               id="org.jboss.tools.common.model.ui.actions.SelectRulerAction">
+         </action>
+      </editorContribution>
+</extension>
 </plugin>
