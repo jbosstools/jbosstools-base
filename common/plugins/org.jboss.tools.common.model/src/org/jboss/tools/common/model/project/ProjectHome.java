@@ -11,8 +11,11 @@
 package org.jboss.tools.common.model.project;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -101,6 +104,42 @@ public class ProjectHome {
 		IVirtualFolder webInfDir = component.getRootFolder().getFolder(new Path("/WEB-INF")); //$NON-NLS-1$
 		IPath modulePath = webInfDir.getWorkspaceRelativePath();
 		return (!webInfDir.exists()) ? null : modulePath;
+	}
+
+	public static IPath[] getWebInfPaths(IProject project) {		
+		IVirtualComponent component = ComponentCore.createComponent(project);	
+		if(component != null && component.getRootFolder() != null) {
+			IVirtualFolder webInfDir = component.getRootFolder().getFolder(new Path("/WEB-INF")); //$NON-NLS-1$
+			if(webInfDir.exists()) {
+				IContainer[] cs = webInfDir.getUnderlyingFolders();
+				List<IPath> ps = new ArrayList<IPath>();
+				for (IContainer c: cs) {
+					if(c.exists()) {
+						ps.add(c.getFullPath());
+					}
+				}
+				return ps.toArray(new IPath[0]);
+			}
+		}
+		return new IPath[0];
+	}
+
+	public static IPath[] getWebContentPaths(IProject project) {		
+		IVirtualComponent component = ComponentCore.createComponent(project);	
+		if(component != null && component.getRootFolder() != null) {
+			IVirtualFolder webDir = component.getRootFolder().getFolder(new Path("/")); //$NON-NLS-1$
+			if(webDir.exists()) {
+				IContainer[] cs = webDir.getUnderlyingFolders();
+				List<IPath> ps = new ArrayList<IPath>();
+				for (IContainer c: cs) {
+					if(c.exists()) {
+						ps.add(c.getFullPath());
+					}
+				}
+				return ps.toArray(new IPath[0]);
+			}
+		}
+		return new IPath[0];
 	}
 
 	public static IPath getFirstWebContentPath(IProject project) {
