@@ -64,6 +64,9 @@ public class SelectAnnotationRulerAction  extends SelectMarkerRulerAction {
 
 	@Override
 	public void update() {
+		if(fTextEditor.getDocumentProvider() == null)
+			return;
+		
 		findAnnotation();
 		setEnabled(true);
 		if (fHasCorrection) {
