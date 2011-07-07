@@ -327,5 +327,13 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
         };
         return jarEditorInput;
 	}
+	
+	/**
+	 * for test purpose
+	 * @return
+	 */
+	public IFile getReadyToOpenFile(){
+		return null;
+	}
 
 }
