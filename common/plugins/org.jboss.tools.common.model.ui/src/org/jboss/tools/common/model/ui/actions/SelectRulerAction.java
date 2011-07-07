@@ -24,7 +24,6 @@ public class SelectRulerAction extends AbstractRulerActionDelegate {
 
 	@Override
 	protected IAction createAction(ITextEditor editor, IVerticalRulerInfo rulerInfo) {
-		if(action == null)
 		action = new SelectAnnotationRulerAction(ResourceBundle.getBundle("org.eclipse.jdt.internal.ui.javaeditor.ConstructedJavaEditorMessages"), "JavaSelectAnnotationRulerAction.", editor, rulerInfo); //$NON-NLS-1$
 		return action;
 	}
