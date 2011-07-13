@@ -18,6 +18,7 @@ import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.xerces.parsers.SAXParser;
 import org.apache.xerces.util.XMLCatalogResolver;
 import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.eclipse.core.runtime.Platform;
@@ -58,11 +59,8 @@ public class SAXValidator {
         DefaultHandler handler = new DefaultHandler();
         XMLReader parserInstance = null;
 
-        try {
-            parserInstance = XMLReaderFactory.createXMLReader(DEFAULT_SAX_PARSER_CLASS_NAME);
-        } catch (SAXException e) {
-        	return null;
-        }
+        parserInstance = new SAXParser();
+        //XMLReaderFactory.createXMLReader(DEFAULT_SAX_PARSER_CLASS_NAME);
 
         setFeature(parserInstance, NAMESPACES_FEATURE_ID, true);
         setFeature(parserInstance, NAMESPACE_PREFIXES_FEATURE_ID, false);
