@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.JavaModelException;
+import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
 
@@ -71,6 +73,11 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 	 */
 	public void setElement(IJavaElement element) {
 		this.element = element;
+		try {
+			setResource(element.getUnderlyingResource());
+		} catch (JavaModelException e) {
+			ELCorePlugin.getDefault().logError(e);
+		}
 	}
 
 	/**

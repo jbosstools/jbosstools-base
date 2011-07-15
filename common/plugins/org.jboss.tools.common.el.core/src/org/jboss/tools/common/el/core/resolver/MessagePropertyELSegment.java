@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IFile;
 import org.jboss.tools.common.text.ITextSourceReference;
 
 /**
@@ -26,18 +26,18 @@ public interface MessagePropertyELSegment extends ELSegment {
 	/**
 	 * @return resource of Message Bundle.
 	 */
-	IResource getMessageBundleResource();
-	
+	IFile getMessageBundleResource();
+
 	/**
 	 * @return true if the segment presents message bundle. In this case isProperty() always returns false; 
 	 */
 	boolean isBundle();
-	
+
 	/**
 	 * @return true if the segment presents message property.
 	 */
 	boolean isProperty();
-	
+
 	/**
 	 * @return source reference of message property.
 	 */

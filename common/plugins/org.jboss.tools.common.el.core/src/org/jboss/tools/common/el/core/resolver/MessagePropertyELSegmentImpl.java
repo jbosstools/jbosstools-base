@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.text.ITextSourceReference;
@@ -20,7 +21,7 @@ import org.jboss.tools.common.text.ITextSourceReference;
 public class MessagePropertyELSegmentImpl extends ELSegmentImpl implements
 		MessagePropertyELSegment {
 	
-	private IResource messageBundleResource = null;
+	private IFile messageBundleResource = null;
 	private ITextSourceReference messagePropertySourceReference = null;
 	private int propertyStart=0, propertyLength=0;
 	private String baseName=null;
@@ -30,12 +31,13 @@ public class MessagePropertyELSegmentImpl extends ELSegmentImpl implements
 		super(token);
 	}
 
-	public IResource getMessageBundleResource() {
+	public IFile getMessageBundleResource() {
 		return messageBundleResource;
 	}
 	
-	public void setMessageBundleResource(IResource resource){
+	public void setMessageBundleResource(IFile resource){
 		messageBundleResource = resource;
+		setResource(resource);
 	}
 
 	public void setBundleOnlySegment(boolean set) {
