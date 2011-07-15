@@ -2,6 +2,9 @@ package org.jboss.tools.ui.bot.ext;
 
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -15,19 +18,13 @@ import org.junit.Test;
  *
  */
 public class ExampleTest extends SWTTestExt{
+
 	/**
-	 * returns example project name (as it is imported to workspace)
+	 * returns list of example projects
 	 * @return
 	 */
-	public String getExampleProjectName() {
-		return null;
-	}
-	/**
-	 * returns name of example client project (null if none)
-	 * @return
-	 */
-	public String getExampleClientProjectName() {
-		return null;
+	public String[] getProjectNames() {
+		return new String[]{"example"};
 	}
 	/**
 	 * gets example name (listed in project examples dialog)
@@ -76,17 +73,34 @@ public class ExampleTest extends SWTTestExt{
 		bot.waitUntil(shellCloses(shell),Timing.time100S());
 		open.selectTreeNode(wiz,ActionItem.create(getExampleCategory(),getExampleName()));
 		String hasProjName = wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_NAME).getText();
-		assertTrue(String.format("Example project name changed, have '%s', expected '%s'",hasProjName,getExampleProjectName()),hasProjName.equals(getExampleProjectName()));
+		assertTrue(String.format("Example project name changed, have '%s', expected '%s'",hasProjName,getProjectNames()[0]),hasProjName.equals(getProjectNames()[0]));
+		int projSize = getProjectSize(wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_SIZE).getText());
 		wiz.checkBox("Show the Quick Fix dialog").deselect();
 		wiz.button(IDELabel.Button.FINISH).click();
 		shell = bot.shell("Downloading...");
 		shell.activate();
-		bot.waitUntil(shellCloses(shell),Timing.time100S());
+		bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));
 		util.waitForNonIgnoredJobs(Timing.time20S());
-		assertTrue(String.format("Example project '%s' was not found in project explorer",getExampleProjectName()),projectExplorer.existsResource(getExampleProjectName()));
-		if (getExampleClientProjectName()!=null) {
-			assertTrue(String.format("Example project '%s' was not found in project explorer",getExampleClientProjectName()),projectExplorer.existsResource(getExampleClientProjectName()));
+		for (String project : getProjectNames()) {
+			assertTrue(String.format("Example project '%s' was not found in project explorer",project),projectExplorer.existsResource(project));
+		}		
+	}
+	private int getProjectSize(String size) {
+		Pattern pattern = Pattern.compile("([\\d\\.]+)(M|K)");
+		Matcher m = pattern.matcher(size);
+		if (m.matches()) {
+			try {
+				double s = Double.parseDouble(m.group(1));
+				if ("M".equals(m.group(2))) {
+					return (int)s*1024;
+				}
+				return (int)s;
+			}
+			catch (Exception e) {
+				return 1000;
+			}
 		}
 		
+		return 1000;
 	}
 }
