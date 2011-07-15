@@ -60,5 +60,6 @@ public class Messages {
 	public static String Id;
 	public static String BrowseForBeanId;
 	public static String BeanId;
+	public static String OpenJsf2CCAttribute;
 
 }
