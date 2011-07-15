@@ -219,13 +219,13 @@ public class AbstractResourceMarkerTest extends TestCase {
 		}
 		sb.append("]");
 
-		fail("Marker  matches the '" + pattern + "' pattern wasn't found for line - " + lineNumber + ", start - " + startPosition + ", end - " + endPosition + ". Found markers for given patern: " + sb.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+		fail("Marker matches the '" + pattern + "' pattern wasn't found for line - " + lineNumber + ", start - " + startPosition + ", end - " + endPosition + ". Found markers for given patern: " + sb.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static void assertMarkerIsNotCreated(IResource resource, String type, String pattern) throws CoreException {
 		IMarker[] markers = findMarkers(resource, type, pattern);
 
-		assertFalse("Marker  matches the '" + pattern + "' pattern was found", markers.length>0); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse("Marker matches the '" + pattern + "' pattern was found", markers.length>0); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static void assertMarkerIsNotCreated(IResource resource, String type, String pattern, int expectedLine) throws CoreException {
@@ -235,13 +235,13 @@ public class AbstractResourceMarkerTest extends TestCase {
 	public static void assertMarkerIsNotCreated(IResource resource, String type, String errorMessage, boolean pattern, int expectedLine) throws CoreException {
 		List<Integer> lines = findMarkerLines(resource, type, errorMessage, pattern);
 
-		assertFalse("Marker  matches the '" + pattern + "' pattern was found", lines.contains(expectedLine)); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse("Marker matches the '" + errorMessage + "' pattern was found", lines.contains(expectedLine)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static void assertMarkerIsCreated(IResource resource, String type, String pattern) throws CoreException {
 		IMarker[] markers = findMarkers(resource, type, pattern);
 
-		assertTrue("Marker  matches the '" + pattern + "' pattern wasn't found",  //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue("Marker matches the '" + pattern + "' pattern wasn't found",  //$NON-NLS-1$ //$NON-NLS-2$
 			markers.length>0);
 	}
 
