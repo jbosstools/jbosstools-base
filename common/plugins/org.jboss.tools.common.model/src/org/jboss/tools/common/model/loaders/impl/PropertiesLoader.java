@@ -193,10 +193,10 @@ public class PropertiesLoader implements XObjectLoader {
 			appendComments(sb, cs[i].get("COMMENTS"), cs[i].get("SEPARATOR"), lineSeparator); //$NON-NLS-1$ //$NON-NLS-2$
 			if(XModelObjectConstants.NO.equals(cs[i].get("ENABLED"))) sb.append('#'); //$NON-NLS-1$
 			String dirtyname = cs[i].getAttributeValue("dirtyname"); //$NON-NLS-1$
-			String name = EncodedProperties.saveConvert(cs[i].get(XModelObjectConstants.XML_ATTR_NAME), true); // convertName(cs[i].get(XModelObjectConstants.XML_ATTR_NAME));
+			String name = EncodedProperties.saveConvert(cs[i].get(XModelObjectConstants.XML_ATTR_NAME), true);
 			String value = cs[i].get("VALUE"); //$NON-NLS-1$
 			String dirtyvalue = cs[i].getAttributeValue("dirtyvalue"); //$NON-NLS-1$
-			if(value == null || dirtyvalue == null || !value.equals(dirtyvalue.trim())) {
+			if(value == null || dirtyvalue == null || !value.equals(trimLeft(dirtyvalue))) {
 				value = EncodedProperties.saveConvert(value, false); // convertValue(value);
 			}
 			String resolved = resolveValue(value, dirtyvalue);
@@ -231,10 +231,16 @@ public class PropertiesLoader implements XObjectLoader {
 		if(conclusion != null) sb.append(conclusion);
 		return sb.toString();    	
     }
+   
+    private String trimLeft(String s) {
+		int qq = 0;
+		while(qq < s.length() && s.charAt(qq) <= ' ') qq++;
+		return (qq > 0) ? s.substring(qq) : s;
+    }
     
     String resolveValue(String value, String dirtyvalue) {
     	if(dirtyvalue == null) return value;
-    	if(dirtyvalue.trim().equals(value)) return dirtyvalue;
+    	if(trimLeft(dirtyvalue).equals(value)) return dirtyvalue;
     	if(dirtyvalue.indexOf(INTERNAL_SEPARATOR) < 0) {
         	if(value.equals(convertDirtyValue(dirtyvalue))) {
         		return dirtyvalue;
@@ -349,20 +355,28 @@ public class PropertiesLoader implements XObjectLoader {
 		String tr = s.trim();
 		if(tr.length() == 0 || tr.charAt(0) == '#' || tr.charAt(0) == '!') return -1;
 		boolean n = false;
+		boolean backslash = false;
 		int firstWhiteSpace = -1;
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
-			if(Character.isWhitespace(c)) {
+			if(backslash && (c == ' ' || c == 't' || c == 'n')) {
+				// do nothing
+			} else if(Character.isWhitespace(c)) {
 				if(n) {
 					if(firstWhiteSpace < 0) firstWhiteSpace = i;
 					//return i;
 				}
 				continue;
 			} else if(c == '=' || c == ':') {
-				return i;
+				if(!backslash) return i;
 			} else {
 				if(n && firstWhiteSpace >= 0) return firstWhiteSpace;
 				n = true;
+			}
+			if(c == '\\') {
+				backslash = !backslash;
+			} else {
+				backslash = false;
 			}
 		}
 		return s.length();
