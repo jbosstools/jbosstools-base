@@ -51,33 +51,46 @@ public class ExampleTest extends SWTTestExt{
 	/**
 	 * main test method, all steps can be overriden
 	 * <ol>
-	 * <li>{@link ESBExampleTest#importExamples()}</li>
+	 * <li>{@link ESBExampleTest#importExample()}</li>
 	 * <li>{@link ESBExampleTest#postImport()}</li>
 	 * <li>{@link ESBExampleTest#executeExample()}</li>
 	 * </ol>
 	 */
 	@Test
 	public void exampleTest() {
-		importExamples();
-		postImport();
-		executeExample();
+		SWTBot wiz;
+		// consider test as passed if example is not found
+		if ((wiz = existsExample()) != null) {
+			importExample(wiz);
+			postImport();
+			executeExample();	
+		}
 	}
-	/**
-	 * runs Project Examples dialog, downloads and imports example's projects to workspace
-	 */
-	protected void importExamples() {
+	private SWTBot existsExample() {
 		SWTBot wiz = open.newObject(JBossToolsProjectExamples.LABEL);
 		// wait for progress shell (downloading & parsing example xml)
 		SWTBotShell shell = bot.shell("Progress Information");
 		shell.activate();
 		bot.waitUntil(shellCloses(shell),Timing.time100S());
-		open.selectTreeNode(wiz,ActionItem.create(getExampleCategory(),getExampleName()));
+		try {
+			open.selectTreeNode(wiz,ActionItem.create(getExampleCategory(),getExampleName()));
+			return wiz;
+		}
+		catch (Exception ex) {
+			log.warn(String.format("Project example %s under category %s was not found",getExampleName(),getExampleCategory()));
+			return null;
+		}
+	}
+	/**
+	 * runs Project Examples dialog, downloads and imports example's projects to workspace
+	 */
+	protected void importExample(SWTBot wiz) {
 		String hasProjName = wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_NAME).getText();
 		assertTrue(String.format("Example project name changed, have '%s', expected '%s'",hasProjName,getProjectNames()[0]),hasProjName.equals(getProjectNames()[0]));
 		int projSize = getProjectSize(wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_SIZE).getText());
 		wiz.checkBox("Show the Quick Fix dialog").deselect();
 		wiz.button(IDELabel.Button.FINISH).click();
-		shell = bot.shell("Downloading...");
+		SWTBotShell shell = bot.shell("Downloading...");
 		shell.activate();
 		bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));
 		util.waitForNonIgnoredJobs(Timing.time20S());
