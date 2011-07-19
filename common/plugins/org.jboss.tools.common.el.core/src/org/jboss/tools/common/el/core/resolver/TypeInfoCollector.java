@@ -312,9 +312,9 @@ public class TypeInfoCollector {
 				initializeParameters();
 				try {
 					if(isDataModel() && getType().isArray()) {
-						fMemberType = getSourceType().getJavaProject().findType(getType().getQualifiedTypeNameOfArrayElement());
+						fMemberType = getType().getSource().getJavaProject().findType(getType().getQualifiedTypeNameOfArrayElement());
 					} else if(getType().getQualifiedName()!=null) {
-						fMemberType = getSourceType().getJavaProject().findType(getType().getQualifiedName());
+						fMemberType = getType().getSource().getJavaProject().findType(getType().getQualifiedName());
 					}
 				} catch (JavaModelException e) {
 					ELCorePlugin.getPluginLog().logError(e);
