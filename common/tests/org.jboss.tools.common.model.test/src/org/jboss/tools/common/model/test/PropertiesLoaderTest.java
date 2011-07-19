@@ -11,7 +11,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.jboss.tools.common.util.FileUtil;
 import org.jboss.tools.test.util.JobUtils;
 import org.jboss.tools.test.util.TestProjectProvider;
 
@@ -72,6 +74,18 @@ public class PropertiesLoaderTest extends TestCase {
 		XModelObject p4 = p.getChildByPath("three_backslash");
 		assertNotNull(p4);
 		assertEquals(p4.getAttributeValue("value"), "again first line \\again second line");
+	}
+
+	public void testLoadingPropertiesDoesNotModifyContent() throws CoreException {
+		IFile f = project.getFile(new Path("src/y.properties"));
+		String text = FileUtil.readStream(f);
+		System.out.println(text);
+		XModelObject p = EclipseResourceUtil.createObjectForResource(f);
+		assertNotNull(p);
+		String newText = ((FileAnyImpl)p).getAsText();
+		System.out.println(newText);
+		assertEquals(text, newText);
+
 	}
 
 }
