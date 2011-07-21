@@ -17,7 +17,7 @@ import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.FilePathHelper;
 
 public class FileSystemPeer {
-    private Hashtable<String,Long> p = new Hashtable<String,Long>();
+    private Hashtable<String,Info> p = new Hashtable<String,Info>();
 
     public FileSystemPeer() {}
 
@@ -26,7 +26,7 @@ public class FileSystemPeer {
     }
 
     public void register(File f) {
-        p.put(toKey(f), toLastModified(f));
+        p.put(toKey(f), new Info(f));
     }
 
     public void unregister(File f) {
@@ -38,17 +38,16 @@ public class FileSystemPeer {
     }
 
     public boolean contains(File f) {
-        return p.get(toKey(f)) != null;
+        return p.containsKey(toKey(f));
     }
 
     public boolean containsDir(File f) {
-        return p.get(toKey(f, true)) != null;
+        return p.containsKey(toKey(f, true));
     }
 
     public boolean isUpdated(File f) {
-        Object o = p.get(toKey(f));
-        if(o == null) return f.exists();
-        return f.lastModified() != ((Long)o).longValue();
+        Info o = p.get(toKey(f));
+        return (o == null) ? f.exists() : o.changed(f);
     }
 
     private String toKey(File f) {
@@ -61,8 +60,21 @@ public class FileSystemPeer {
         return (asDir) ? s + XModelObjectConstants.SEPARATOR : s;
     }
 
-    private Long toLastModified(File f) {
-        return !f.exists() ? Long.valueOf(0) : Long.valueOf(f.lastModified());
+    class Info {
+    	long lastModified;
+    	long length;
+    	Info(File f) {
+    		lastModified = !f.exists() ? 0 : f.lastModified();
+    		length = f.isFile() && f.exists() ? f.length() : 0;
+    	}
+    
+    	public boolean equals(Info other) {
+    		return lastModified != other.lastModified || length != other.length;
+    	}
+    
+    	public boolean changed(File f) {
+    		return equals(new Info(f));
+    	}
     }
 
 }
