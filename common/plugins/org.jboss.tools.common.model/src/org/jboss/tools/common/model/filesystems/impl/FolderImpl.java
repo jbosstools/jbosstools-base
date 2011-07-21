@@ -425,10 +425,36 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
       } finally {  
 		updateLock--;
 		unsynchronized = null;
+		synchronized (this) {
+			this.notifyAll();
+		}
       }
         return true;
     }
-    
+
+    /**
+     * Returns true if thread had to wait.
+     * @return
+     */
+    public long waitForUpdate() {
+    	if(updateLock == 0) {
+    		return 0;
+    	}
+    	long t = System.currentTimeMillis();
+    	long dt = 0;
+    	while(updateLock > 0 && dt < 10000) {
+    		synchronized(this) {
+    			try {
+    				this.wait(100);
+    			} catch (InterruptedException e) {
+    				return dt;
+    			}
+    		}
+    		dt = System.currentTimeMillis() - t;
+    	}
+    	return dt;
+    }
+
     protected File getChildIOFile(XModelObject o) {
         String s = FileAnyImpl.toFileName(o);
         File f = (File)o.getObject("file"); //for links //$NON-NLS-1$
