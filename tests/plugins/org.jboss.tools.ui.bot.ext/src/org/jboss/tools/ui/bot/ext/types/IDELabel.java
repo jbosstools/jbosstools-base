@@ -399,6 +399,7 @@ public class IDELabel {
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Middleware";
      public static final String JBOSS_EAP_5_x = "JBoss Enterprise Middleware";
      public static final String JBOSS_COMMUNITY = "JBoss Community";
+     public static final String JBOSS_AS_6_0 = "JBoss Community";
        
    }
    public static final class ServerRuntimeType {
@@ -407,6 +408,7 @@ public class IDELabel {
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0 Runtime";
      public static final String JBOSS_EAP_5_x = "JBoss Enterprise Application Platform 5.x Runtime";
      public static final String JBOSS_AS_5_1 = "JBoss 5.1 Runtime";
+     public static final String JBOSS_AS_6_0 = "JBoss 6.0 Runtime";
        
    }
    public static final class ServerType {
@@ -414,7 +416,7 @@ public class IDELabel {
      public static final String JBOSS_EAP_4_3 = "JBoss Enterprise Application Platform 4.3";
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0";
      public static final String JBOSS_EAP_5_x = "JBoss Enterprise Application Platform 5.x";
-     public static final String JBOSS_AS_5_1 = "JBoss AS 5.1";
+     public static final String JBOSS_AS_6_0 = "JBoss 6.0 Runtime";
      
    }
    public static final class DroolsRuntimeDialog {
@@ -674,5 +676,14 @@ public class IDELabel {
      public static final String TREE_TAB_LABEL = "Tree";
      public static final String DIAGRAM_TAB_LABEL = "Diagram";
      
+   } 
+   
+   public static class NewJsfProjectDialog{
+     
+     public static final String PROJECT_NAME_LABEL = "Project Name*";
+     public static final String JSF_ENVIRONMENT_LABEL = "JSF Environment*";
+     public static final String TEMPLATE_LABEL = "Template*";
+     public static final String RUNTIME_LABEL = "Runtime*";
+     public static final String HOME_DIRECTORY_LABEL = "Home Directory";
    } 
  }
