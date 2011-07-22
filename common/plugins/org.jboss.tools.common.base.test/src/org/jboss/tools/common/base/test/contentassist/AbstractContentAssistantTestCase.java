@@ -11,6 +11,7 @@
 
 package org.jboss.tools.common.base.test.contentassist;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -20,11 +21,11 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
-import org.eclipse.wst.sse.ui.StructuredTextEditor;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.jboss.tools.test.util.WorkbenchUtils;
@@ -33,7 +34,7 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 	protected String fileName;
 	protected IProject project = null;
 	protected IEditorPart editorPart = null;
-	protected StructuredTextEditor textEditor = null;
+	protected ITextEditor textEditor = null;
 	protected ISourceViewer viewer = null;
 	protected IContentAssistant contentAssistant = null;
 	protected IDocument document = null;
@@ -44,22 +45,31 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 		
 		obtainTextEditor(editorPart);
 
-		viewer = textEditor.getTextViewer();
+		viewer = getTextViewer();
 		document = viewer.getDocument();
 		SourceViewerConfiguration config = CATestUtil
 				.getSourceViewerConfiguration(textEditor);
-		contentAssistant = (config == null ? null : config
-				.getContentAssistant(viewer));
+		contentAssistant = getContentAssistantInternal();
+				//(config == null ? null : config.getContentAssistant(viewer));
 
 		assertTrue(
 				"Cannot get the Content Assistant instance for the editor for page \"" //$NON-NLS-1$
 						+ fileName + "\"", (contentAssistant != null)); //$NON-NLS-1$
 
-		assertTrue("The IDocument is not instance of IStructuredDocument for page \"" //$NON-NLS-1$
-				+ fileName + "\"", //$NON-NLS-1$
-				(document instanceof IStructuredDocument));
-
 	}
+
+	private IContentAssistant getContentAssistantInternal() {
+		try {
+			Field f = SourceViewer.class.getDeclaredField("fContentAssistant");
+			f.setAccessible(true);
+			return (IContentAssistant)f.get(viewer);
+		} catch (Exception e) {
+			e.printStackTrace();			
+		}
+		return null;
+	}
+
+	protected abstract ISourceViewer getTextViewer();
 
 	/**
 	 * Looks into editorPart for the test editor to apply content assist to.
@@ -194,7 +204,7 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 	/**
 	 * @return the jspTextEditor
 	 */
-	public StructuredTextEditor getTextEditor() {
+	public ITextEditor getTextEditor() {
 		return textEditor;
 	}
 
