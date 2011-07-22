@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -50,16 +51,24 @@ import org.osgi.service.prefs.BackingStoreException;
 public class JBossRuntimeStartup implements IStartup {
 	
 	private static final String JBOSS_EAP_HOME = "../../jboss-eap"; 	// JBoss EAP home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
+
 	private static final String SERVERS_FILE_NAME = "application_platforms.properties"; //$NON-NLS-1$
 	private static final String SERVERS_FILE = "../../../../studio/" + SERVERS_FILE_NAME; //$NON-NLS-1$
 	private static final String SERVERS_FILE_CONFIGURATION = "../../studio/" + SERVERS_FILE_NAME; //$NON-NLS-1$
-	
+
+	private static final String LOCATIONS_FILE_NAME = "runtime_locations.properties"; //$NON-NLS-1$
+	private static final String LOCATIONS_FILE = "../../../../studio/" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
+	private static final String LOCATIONS_FILE_CONFIGURATION = "../../studio/" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
+
 	private List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
 	private IEclipsePreferences preferences;
+	
+	Set<RuntimePath> installersRuntimePaths = new HashSet<RuntimePath>();
 	
 	public void earlyStartup() {
 		if (isJBDS() && willBeInitialized()) {
 			parseServerFile();
+			parseRuntimeLocationsFile();
 			initializeIncludedRuntimes();
 			initializeRuntimes(serverDefinitions);
 			saveWorkspacePreferences();
@@ -127,6 +136,9 @@ public class JBossRuntimeStartup implements IStartup {
 			RuntimePath runtimePath = new RuntimePath(location.getAbsolutePath());
 			runtimePaths.add(runtimePath);
 		}
+		
+		runtimePaths.addAll(installersRuntimePaths);
+		
 		if (runtimePaths.size() > 0) {
 			RuntimeUIActivator.getDefault().saveRuntimePaths();
 		}
@@ -247,10 +259,60 @@ public class JBossRuntimeStartup implements IStartup {
 		}
 	}
 
+	private void parseRuntimeLocationsFile() {
+		
+		try {
+			String pluginLocation = FileLocator.resolve(Activator.getDefault().getBundle().getEntry("/")).getPath(); //$NON-NLS-1$
+			File serversFile = new File(pluginLocation, LOCATIONS_FILE);
+
+			if (!serversFile.isFile()) {
+				String configuration = getConfiguration();
+				serversFile = new File(configuration, LOCATIONS_FILE_CONFIGURATION).getCanonicalFile();
+			} else {
+				serversFile = serversFile.getCanonicalFile();
+			}
+			if (!serversFile.isFile()) {
+				serversFile = new File(pluginLocation,LOCATIONS_FILE_NAME);
+			}
+			if (serversFile.isFile()) {
+				//String str = FileUtil.readFile(serversFile);
+				Properties servers = new Properties();
+				servers.load(new BufferedInputStream(new FileInputStream(serversFile)));
+				Enumeration<Object> elements = servers.elements();
+				while (elements.hasMoreElements()) {
+					String str = (String) elements.nextElement();
+					StringTokenizer lineTokenizer = new StringTokenizer(str,
+							"\n\r\f"); //$NON-NLS-1$
+					while (lineTokenizer.hasMoreTokens()) {
+						String lineToken = lineTokenizer.nextToken();
+						StringTokenizer tokenizer = new StringTokenizer(
+								lineToken, ","); //$NON-NLS-1$
+						if (tokenizer.countTokens() == 2) {
+							String location = tokenizer.nextToken();
+							boolean scan = Boolean.parseBoolean(tokenizer.nextToken());
+							File locationFile = new File(location);
+							if (locationFile.isDirectory()) {
+								RuntimePath tempLocation = new RuntimePath(location);
+								tempLocation.setScanOnEveryStartup(scan);
+								installersRuntimePaths.add(tempLocation);
+							}
+						}
+					}
+				}
+			}
+		} catch (FileNotFoundException e) {
+			Activator.log(e);
+		} catch (IOException e) {
+			Activator.log(e);
+		}
+	}
+
+	
 	private String getConfiguration() throws IOException {
 		Location configLocation = Platform.getConfigurationLocation();
 		URL configURL = configLocation.getURL();
 		String configuration = FileLocator.resolve(configURL).getPath();
 		return configuration;
-	}		
+	}
+
 }
