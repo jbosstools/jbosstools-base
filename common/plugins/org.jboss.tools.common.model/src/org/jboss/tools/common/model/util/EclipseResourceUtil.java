@@ -135,11 +135,21 @@ public class EclipseResourceUtil extends EclipseUtil {
 			FileSystemsImpl fso = (FileSystemsImpl)FileSystemsHelper.getFileSystems(model);
 			if(fso == null) return null;
 			fso.updateOverlapped();
+			XModelObject result = null;
+			int pathLength = 10000;
 			XModelObject[] fs = fso.getChildren(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER);
 			for (int i = 0; i < fs.length; i++) {
 				FileSystemImpl s = (FileSystemImpl)fs[i];
 				XModelObject o = findResourceInFileSystem(s, resource);
-				if(o != null) return o;
+				if(o != null) {
+					if(path == null || pathLength > o.getPath().length()) {
+						result = o;
+						pathLength = o.getPath().length();
+					}
+				}
+			}
+			if(result != null) {
+				return result;
 			}
 			fs = fso.getChildren("FileSystemJar"); //$NON-NLS-1$
 			String location = path == null ? null : path.toString().replace('\\', '/');
