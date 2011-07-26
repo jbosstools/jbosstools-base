@@ -10,18 +10,23 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PartInitException;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.el.core.ELCorePlugin;
+import org.jboss.tools.common.el.core.ElCoreMessages;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
 
@@ -180,7 +185,23 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 				
 				@Override
 				public String getLabel() {
-					return getJavaElement().getElementName();
+					IJavaElement javaElement = getJavaElement();
+					String name = ""; //$NON-NLS-1$
+					IType type = null;
+					if(javaElement instanceof IType){
+						name = javaElement.getElementName();
+						type = (IType)javaElement;
+						
+					}else if(javaElement instanceof IMethod){
+						type = ((IMethod) javaElement).getDeclaringType();
+						name = type.getElementName()+"."+javaElement.getElementName()+"()"; //$NON-NLS-1$ //$NON-NLS-2$
+					}else if(javaElement instanceof IField){
+						type = ((IField) javaElement).getDeclaringType();
+						name = type.getElementName()+"."+javaElement.getElementName(); //$NON-NLS-1$
+					}
+					if(type != null)
+						name += " - "+type.getPackageFragment().getElementName(); //$NON-NLS-1$
+					return MessageFormat.format(ElCoreMessages.Open, name);
 				}
 				
 				@Override
