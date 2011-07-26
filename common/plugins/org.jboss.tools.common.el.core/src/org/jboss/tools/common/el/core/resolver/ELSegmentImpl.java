@@ -59,6 +59,15 @@ public class ELSegmentImpl implements ELSegment {
 		return sourceReference;
 	}
 
+	/**
+	 * Default empty implementation. Subclasses should override this method.
+	 * 
+	 * @return
+	 */
+	public IOpenableReference[] getOpenable() {
+		return new IOpenableReference[0];
+	}
+
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.el.core.resolver.ELSegment#getToken()
 	 */

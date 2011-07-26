@@ -43,6 +43,12 @@ public interface ELSegment {
 	ITextSourceReference getSourceReference();
 
 	/**
+	 * 
+	 * @return references to objects that can be opened from this segment.
+	 */
+	IOpenableReference[] getOpenable();
+
+	/**
 	 * @return underlying variables.
 	 */
 	List<IVariable> getVariables();
