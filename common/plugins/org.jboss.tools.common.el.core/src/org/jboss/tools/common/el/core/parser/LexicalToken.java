@@ -147,4 +147,22 @@ public class LexicalToken implements IToken {
 		if(next != null) next.shift(delta);
 	}
 
+	/**
+	 * Computes combined token that starts with this token and ends with last token
+	 * @param last
+	 * @return
+	 */
+	public LexicalToken getCombinedToken(LexicalToken last) {
+		StringBuffer sb = new StringBuffer();
+		LexicalToken t = this;
+		while(t != null && t != last) {
+			sb.append(t.getText());
+			t = t.getNextToken();
+		}
+		LexicalToken token = new LexicalToken(this.start, last.getStart() + last.getLength() - start, sb.toString(), this.type);
+		token.previous = this.previous;
+		token.next = last.next;
+		return token;
+	}
+
 }
