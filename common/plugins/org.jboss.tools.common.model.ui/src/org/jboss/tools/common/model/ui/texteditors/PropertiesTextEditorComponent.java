@@ -227,10 +227,12 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 	
 	public void selectModelObject(XModelObject object) {
 		String text = getText();
-		String name = object.getAttributeValue("dirtyname"); //$NON-NLS-1$
+		String name = object.getAttributeValue("name"); //$NON-NLS-1$
+		String dname = object.getAttributeValue("dirtyname"); //$NON-NLS-1$
 		String nvs = object.getAttributeValue("name-value-separator"); //$NON-NLS-1$
-		int i = text.indexOf(name + nvs);
+		int i = text.indexOf(dname + nvs);
 		if(i < 0) return;
+		i = text.indexOf(name, i);
 		int j = text.indexOf('\n', i);
 		if(j < 0) j = text.length();
 		selectAndReveal(i, j - i);
