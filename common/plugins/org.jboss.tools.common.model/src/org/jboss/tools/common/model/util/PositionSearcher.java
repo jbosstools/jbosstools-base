@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
+import org.jboss.tools.common.model.loaders.impl.PropertiesLoader;
 import org.jboss.tools.common.model.loaders.impl.SimpleWebFileLoader;
 
 /**
@@ -39,6 +40,7 @@ public class PositionSearcher {
 	int endPosition;
 	boolean selectAttributeName = false;
 	XModelObjectLoaderUtil util;
+	PropertiesLoader propertiesLoader = null;
 
 	public PositionSearcher() {}
 	
@@ -60,6 +62,8 @@ public class PositionSearcher {
 				SimpleWebFileLoader fileLoader = (SimpleWebFileLoader)loader;
 				fileLoader.createRootElement(f); // initializes namespaces if available.
 				util = fileLoader.getUtil();
+			} else if(loader instanceof PropertiesLoader) {
+				propertiesLoader = (PropertiesLoader)loader;
 			}
 		}
 		
@@ -69,13 +73,26 @@ public class PositionSearcher {
 		startPosition = -1;
 		endPosition = -1;
 		if(text == null || object == null) return;
-		TagIterator it = new TagIterator();
-		it.selectObject(object);
-		if(it.startPos < 0 || it.endPos < it.startPos) return;
-		startPosition = it.startPos;
-		endPosition = it.endPos;
+		if(propertiesLoader != null) {
+			String name = object.getAttributeValue("name"); //$NON-NLS-1$
+			String dname = object.getAttributeValue("dirtyname"); //$NON-NLS-1$
+			String nvs = object.getAttributeValue("name-value-separator"); //$NON-NLS-1$
+			int i = text.indexOf(dname + nvs);
+			if(i >= 0) {
+				i = text.indexOf(name, i);
+				startPosition = i;
+				endPosition = i + name.length();
+			}
+			
+		} else {
+			TagIterator it = new TagIterator();
+			it.selectObject(object);
+			if(it.startPos < 0 || it.endPos < it.startPos) return;
+			startPosition = it.startPos;
+			endPosition = it.endPos;
 ///		findTagEnd();
-		selectAttribute();
+			selectAttribute();
+		}
 	}
 	
 	private void selectAttribute() { 
