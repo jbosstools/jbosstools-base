@@ -43,6 +43,8 @@ public interface ELSegment {
 	ITextSourceReference getSourceReference();
 
 	/**
+	 * Returns references to objects that can be opened from this segment.
+	 * If there are no references, empty array is returned. The returned object is never null.
 	 * 
 	 * @return references to objects that can be opened from this segment.
 	 */

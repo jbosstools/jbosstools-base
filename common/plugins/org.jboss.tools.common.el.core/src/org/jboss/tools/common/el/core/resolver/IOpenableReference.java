@@ -12,12 +12,31 @@ package org.jboss.tools.common.el.core.resolver;
 
 import org.eclipse.swt.graphics.Image;
 
+/**
+ * 
+ * @author Viacheslav Kabanovich
+ *
+ */
 public interface IOpenableReference {
 
+	/**
+	 * Opens editor and selects an object, defined by this reference.
+	 * Returns true if editor is successfully opened.
+	 * 
+	 * @return true if editor is successfully opened
+	 */
 	public boolean open();
 
+	/**
+	 * 
+	 * @return Text representation for option in the open-on menu.
+	 */
 	public String getLabel();
 
+	/**
+	 * 
+	 * @return Image representation for option in the open-on menu.
+	 */
 	public Image getImage();
 
 }
