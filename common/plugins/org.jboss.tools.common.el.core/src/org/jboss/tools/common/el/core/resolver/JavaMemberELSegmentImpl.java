@@ -17,6 +17,10 @@ import java.util.Set;
 
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.PartInitException;
+import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
@@ -158,4 +162,35 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 	public void clearUnpairedGettersOrSetters() {
 		getUnpairedGettersOrSetters().clear();
 	}
+
+	public IOpenableReference[] getOpenable() {
+		if(getJavaElement() != null && getJavaElement().exists()) {
+			IOpenableReference openable = new IOpenableReference() {
+				@Override
+				public boolean open() {
+					try {
+						return JavaUI.openInEditor(getJavaElement()) != null;
+					} catch (PartInitException e) {
+						CommonPlugin.getDefault().logError(e);
+					} catch (JavaModelException e) {
+						CommonPlugin.getDefault().logError(e);
+					}
+					return false;
+				}
+				
+				@Override
+				public String getLabel() {
+					return getJavaElement().getElementName();
+				}
+				
+				@Override
+				public Image getImage() {
+					return null;
+				}
+			};
+			return new IOpenableReference[]{openable};
+		}
+		return new IOpenableReference[0];
+	}
+
 }
