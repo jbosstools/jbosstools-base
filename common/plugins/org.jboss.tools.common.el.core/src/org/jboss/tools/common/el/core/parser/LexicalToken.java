@@ -159,6 +159,7 @@ public class LexicalToken implements IToken {
 			sb.append(t.getText());
 			t = t.getNextToken();
 		}
+		if(t != null) sb.append(t.getText());
 		LexicalToken token = new LexicalToken(this.start, last.getStart() + last.getLength() - start, sb.toString(), this.type);
 		token.previous = this.previous;
 		token.next = last.next;
