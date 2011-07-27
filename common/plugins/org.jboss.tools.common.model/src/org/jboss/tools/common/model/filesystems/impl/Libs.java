@@ -270,12 +270,12 @@ class LibraryNames {
 	private Map<String, String> pathToName = new HashMap<String, String>();
 	private Map<String, String> nameToPath = new HashMap<String, String>();
 
-	public void put(String path, String name) {
+	public synchronized void put(String path, String name) {
 		pathToName.put(path, name);
 		nameToPath.put(name, path);
 	}
 
-	public void removePath(String path) {
+	public synchronized void removePath(String path) {
 		String name = pathToName.remove(path);
 		if(name != null) {
 			nameToPath.remove(name);
@@ -294,7 +294,7 @@ class LibraryNames {
 		return nameToPath.containsKey(name);
 	}
 
-	public Set<String> getPaths() {
+	public synchronized Set<String> getPaths() {
 		return new HashSet<String>(pathToName.keySet());
 	}
 }
