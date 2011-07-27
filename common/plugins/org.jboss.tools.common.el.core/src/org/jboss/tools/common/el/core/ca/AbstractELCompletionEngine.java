@@ -495,7 +495,11 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			// JBIDE-512, JBIDE-2541 related changes ===>>>
 			TypeInfoCollector.MemberInfo bijectedAttribute = null;
 
-			JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl(operand.getFirstToken());
+			LexicalToken t = operand.getFirstToken();
+			if(t != null && t != operand.getLastToken() && operand.getLastToken() != null) {
+				t = t.getCombinedToken(operand.getLastToken());
+			}
+			JavaMemberELSegmentImpl segment = new JavaMemberELSegmentImpl(t);
 			segment.setResolved(true);
 			resolution.addSegment(segment);
 
@@ -556,6 +560,21 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		for (V var : resolvedVariables) {
 			TypeInfoCollector.MemberInfo member = getMemberInfoByVariable(var, returnEqualedVariablesOnly, offset);
 			if (member != null && !members.contains(member)) { 
+				String name = var.getName();
+				if(name.indexOf('.') >= 0) {
+					LexicalToken last = expr.getFirstToken();
+					StringBuffer sb = new StringBuffer();
+					sb.append(last.getText());
+					while(!name.equals(sb.toString()) && last != null) {
+						last = last.getNextToken();
+						if(last != null) {
+							sb.append(last.getText());
+						}
+					}
+					if(last != null && name.equals(sb.toString())) {
+						segment = new JavaMemberELSegmentImpl(expr.getFirstToken().getCombinedToken(last));
+					}
+				}
 				members.add(member);
 				segment.setMemberInfo(member);
 				segment.getVariables().add(var);
