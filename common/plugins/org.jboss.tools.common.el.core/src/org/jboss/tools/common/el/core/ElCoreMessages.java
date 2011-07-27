@@ -34,6 +34,9 @@ public class ElCoreMessages extends NLS {
 	public static String RENAME_MESSAGE_PROPERTY_PROCESSOR_CAN_NOT_FIND_MESSAGE_PROPERTY;
 
 	public static String Open;
+	public static String OpenBundle;
+	public static String OpenBundleProperty;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, ElCoreMessages.class);

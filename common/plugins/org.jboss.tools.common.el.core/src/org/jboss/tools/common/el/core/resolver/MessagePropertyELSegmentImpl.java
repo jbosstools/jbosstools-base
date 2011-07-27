@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2010 Red Hat, Inc. 
+ * Copyright (c) 2010-2011 Red Hat, Inc. 
  * Distributed under license by Red Hat, Inc. All rights reserved. 
  * This program is made available under the terms of the 
  * Eclipse Public License v1.0 which accompanies this distribution, 
@@ -10,12 +10,15 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.swt.graphics.Image;
+import org.jboss.tools.common.el.core.ElCoreMessages;
+import org.jboss.tools.common.el.core.ca.AbstractELCompletionEngine;
 import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.FindObjectHelper;
@@ -110,8 +113,17 @@ public class MessagePropertyELSegmentImpl extends ELSegmentImpl implements
 					public String getLabel() {
 						XModelObject p = o;
 						while(p != null && p.getFileType() < XModelObject.FILE) p = p.getParent();
+						
+						// Improve label - add a locale for a resource bundle
+						String baseName = getBaseName();
+						String propertyName = isBundle() ? null : AbstractELCompletionEngine.trimQuotes(getToken().getText());
+						if (propertyName == null)
+							return  MessageFormat.format(ElCoreMessages.OpenBundle, baseName);
+						
+						return MessageFormat.format(ElCoreMessages.OpenBundleProperty, propertyName, baseName);
+						
 						//improve label - now it returns file name, with locale
-						return p.getAttributeValue("name");
+//						return p.getAttributeValue("name");
 					}
 					
 					@Override
