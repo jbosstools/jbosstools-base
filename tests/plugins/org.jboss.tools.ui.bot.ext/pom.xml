@@ -4,10 +4,10 @@
 	<parent>
 		<groupId>org.jboss.tools.tests</groupId>
 		<artifactId>plugins</artifactId>
-		<version>0.0.1-SNAPSHOT</version>	
+		<version>3.2.0-SNAPSHOT</version>	
 	</parent>
 	<groupId>org.jboss.tools.tests.plugins</groupId>
 	<artifactId>org.jboss.tools.ui.bot.ext</artifactId> 
-	<version>3.2.0-SNAPSHOT</version>
+	
 	<packaging>eclipse-plugin</packaging>
 </project>

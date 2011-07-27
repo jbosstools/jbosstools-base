@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>tests</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>3.2.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.tests</groupId>
 	<artifactId>plugins</artifactId>
 	<name>tests.plugins</name>
-	<version>0.0.1-SNAPSHOT</version>
+	
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.jboss.tools.tests</module>

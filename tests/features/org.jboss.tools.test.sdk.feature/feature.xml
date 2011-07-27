@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.test.sdk.feature"
       label="All JBossTools Tests"
-      version="1.0.0.qualifier">
+      version="3.2.0.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
