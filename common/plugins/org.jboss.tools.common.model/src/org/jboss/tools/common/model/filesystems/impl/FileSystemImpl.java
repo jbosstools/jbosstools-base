@@ -89,6 +89,7 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 			return resource = f;			
 		}
 
+    	String wsloc = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString().replace('\\', '/');
 		IContainer f = null;
 		URI uri = URIUtil.toURI(thloc, true);
 		IContainer[] cs = ResourcesPlugin.getWorkspace().getRoot().findContainersForLocationURI(uri);
@@ -109,10 +110,12 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     	if(resource == null) {
     		f = project.getFolder(new Path(XModelObjectConstants.SEPARATOR + getAttributeValue(XModelObjectConstants.ATTR_NAME)));
     		if(!f.exists()) {
+				//Only create link if actual resource exists and 
+				//all other means to find resource in workspace failed.
+    			//Besides, never create link for actual resources inside workspace - 
+    			//if they do not appear in the workspace, let them be invisible to model as well.  
     			try {
-    				if(new File(thloc).exists()) {
-    					//only create link if actual resource exists and 
-    					//all other means to find resource in workspace failed.
+    				if(!thloc.startsWith(wsloc) && new File(thloc).exists()) {
     					((IFolder)f).createLink(new Path(thloc), IFolder.FORCE, null);
     					resource = f;
     				}
