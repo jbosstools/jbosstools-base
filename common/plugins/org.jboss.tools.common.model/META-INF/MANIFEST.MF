@@ -82,7 +82,8 @@ Require-Bundle: org.jboss.tools.common;visibility:=reexport,
  org.eclipse.jem.util;bundle-version="2.1.2",
  org.eclipse.wst.common.emfworkbench.integration;bundle-version="1.2.100",
  org.eclipse.core.resources;visibility:=reexport;bundle-version="3.7.100",
- org.eclipse.core.runtime;visibility:=reexport;bundle-version="3.7.0"
+ org.eclipse.core.runtime;visibility:=reexport;bundle-version="3.7.0",
+ org.eclipse.core.filesystem
 Bundle-Version: 3.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: org.jboss.tools.common.model.jar

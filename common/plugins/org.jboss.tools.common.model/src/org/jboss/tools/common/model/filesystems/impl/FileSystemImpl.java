@@ -12,8 +12,10 @@ package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 import org.eclipse.core.resources.*;
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.runtime.*;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -87,17 +89,42 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 			return resource = f;			
 		}
 
-    	IFolder f = project.getFolder(new Path(XModelObjectConstants.SEPARATOR + getAttributeValue(XModelObjectConstants.ATTR_NAME)));
-    	if(!f.exists()) {
-    		try {
-				f.createLink(new Path(thloc), IFolder.FORCE, null);
-				resource = f;
-    		} catch (CoreException e) {
-    			ModelPlugin.getPluginLog().logError("Cannot create link: " + e.getMessage()); //$NON-NLS-1$
-    			ModelPlugin.getPluginLog().logError("Project path=" + prloc); //$NON-NLS-1$
-    			ModelPlugin.getPluginLog().logError("   Link path=" + thloc); //$NON-NLS-1$
-    		}    		
-    	} else resource = f;
+		IContainer f = null;
+		URI uri = URIUtil.toURI(thloc, true);
+		IContainer[] cs = ResourcesPlugin.getWorkspace().getRoot().findContainersForLocationURI(uri);
+		for (IContainer c: cs) {
+			if(f == null || !c.isLinked()) {
+				f = c;
+			}
+		}
+		if(f != null && (!f.exists() && !f.isSynchronized(IResource.DEPTH_ONE))) {
+			try {
+				f.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+			} catch (CoreException e) {
+				ModelPlugin.getPluginLog().logError(e);
+			}
+		}
+		resource = f;
+
+    	if(resource == null) {
+    		f = project.getFolder(new Path(XModelObjectConstants.SEPARATOR + getAttributeValue(XModelObjectConstants.ATTR_NAME)));
+    		if(!f.exists()) {
+    			try {
+    				if(new File(thloc).exists()) {
+    					//only create link if actual resource exists and 
+    					//all other means to find resource in workspace failed.
+    					((IFolder)f).createLink(new Path(thloc), IFolder.FORCE, null);
+    					resource = f;
+    				}
+    			} catch (CoreException e) {
+    				ModelPlugin.getPluginLog().logError("Cannot create link: " + e.getMessage()); //$NON-NLS-1$
+    				ModelPlugin.getPluginLog().logError("Project path=" + prloc); //$NON-NLS-1$
+    				ModelPlugin.getPluginLog().logError("   Link path=" + thloc); //$NON-NLS-1$
+    			}    		
+    		} else {
+    			resource = f;
+    		}
+    	}
     	return resource;
     }
     
