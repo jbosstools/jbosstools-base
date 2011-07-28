@@ -1132,5 +1132,31 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			value = value.substring(0, value.length() - 1);
 		}
 		return value;
-	}	
+	}
+	
+	public static LexicalToken combineLexicalTokensForExpression(ELInvocationExpression expr) {
+		// Create a combined lexical token to store all the variable name (not only the name before first dot, but all the name including all the words and dots)
+		int variableTokenType = expr.getFirstToken().getType();
+		int variableTokenStart = expr.getFirstToken().getStart();
+		int variableTokenLength = 0;
+		StringBuffer variableTokenText = new StringBuffer();
+		LexicalToken current = expr.getFirstToken();
+		LexicalToken variableTokenNext = null;
+		while (current != null && current != expr.getLastToken()) {
+			variableTokenText.append(current.getText());
+			variableTokenLength += current.getLength();
+			variableTokenNext = current.getNextToken();
+			current = variableTokenNext;
+		}
+		if (current != null) {
+			variableTokenText.append(current.getText());
+			variableTokenLength += current.getLength();
+			variableTokenNext = current.getNextToken();
+		}				
+		
+		LexicalToken variableToken = new LexicalToken(variableTokenStart, variableTokenLength, variableTokenText, variableTokenType);
+		variableToken.setNextToken(variableTokenNext);
+
+		return variableToken;
+	}
 }
