@@ -13,7 +13,6 @@ package org.jboss.tools.test.util;
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 
-import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -65,7 +64,7 @@ public class ProjectImportTestSetup extends TestSetup {
 		assertNotNull("Can't load " + projectName, project); //$NON-NLS-1$
 		try {
 			project.build(IncrementalProjectBuilder.FULL_BUILD, null);
-		} catch (ResourceException e) {
+		} catch (CoreException e) {
 			JUnitUtils.fail(e.getMessage(), e);
 		}
 		JobUtils.waitForIdle();
