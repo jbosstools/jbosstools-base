@@ -675,7 +675,9 @@ public class EclipseResourceUtil extends EclipseUtil {
 			} else if(es[i].getEntryKind() == IClasspathEntry.CPE_PROJECT) {
 				IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(es[i].getPath().lastSegment());
 				if(p == null || !p.isAccessible()) continue;
-				if(p.hasNature(JavaCore.NATURE_ID) && !p.hasNature("org.jboss.tools.jst.web.kb.kbnature")) {
+				if(p.hasNature(JavaCore.NATURE_ID) 
+						&& !p.hasNature("org.jboss.tools.jst.web.kb.kbnature")
+						&& project.hasNature("org.jboss.tools.jst.web.kb.kbnature")) {
 					String[] srcs = getJavaProjectSrcLocations(p);
 					for (String s: srcs) l.add(s);
 				}
