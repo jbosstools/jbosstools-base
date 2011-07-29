@@ -62,6 +62,7 @@ import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.forms.DefaultFormFactory;
 import org.jboss.tools.common.model.ui.forms.FormFactory;
@@ -326,11 +327,10 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 	}
 	
 	private String getErrors() {
-		XModelObject f = installedObject;
-		while(f != null && f.getFileType() != XModelObject.FILE) {
-			f = f.getParent();
+		XModelObject f = FileSystemsHelper.getFile(installedObject);
+		if(f == null) {
+			f = installedObject;
 		}
-		if(f == null) f = installedObject;
 		return f.get("errors"); //$NON-NLS-1$
 	}
 
