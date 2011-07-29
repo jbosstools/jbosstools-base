@@ -45,4 +45,11 @@ public class FileSystemsHelper {
 		return object == null ? null : getLibs(object.getModel());
 	}
 
+	public static XModelObject getFile(XModelObject o) {
+		while(o != null && o.getFileType() != XModelObject.FILE) {
+			o = o.getParent();
+		}
+		return o;
+	}
+
 }

@@ -45,6 +45,7 @@ import org.jboss.tools.common.model.event.XModelChangeManager;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
+import org.jboss.tools.common.model.filesystems.impl.AbstractExtendedXMLFileImpl;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemImpl;
 import org.jboss.tools.common.model.filesystems.impl.FileSystemPeer;
 import org.jboss.tools.common.model.loaders.EntityRecognizer;
@@ -360,7 +361,11 @@ public class XModelImpl implements XModel {
         if(edit) {
         	((XModelObjectImpl)object).onAttributeValueEdit(attributeName, ov, nv);
         }
-////        ent.getAttribute(attributeName).valueChanged(object);
+        XModelObject f = FileSystemsHelper.getFile(object);
+        if(f instanceof AbstractExtendedXMLFileImpl) {
+        	((AbstractExtendedXMLFileImpl)f).check();
+        }
+//        ent.getAttribute(attributeName).valueChanged(object);
     }
     
     private boolean isDifferent(String v1, String v2) {
