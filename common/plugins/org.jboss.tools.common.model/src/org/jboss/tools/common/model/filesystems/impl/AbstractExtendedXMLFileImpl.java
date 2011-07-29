@@ -264,7 +264,9 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 			}
 			set("actualBodyTimeStamp", "" + getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
 			if(errors1) m.fireStructureChanged(this);
-        	if(!isOverlapped) constraintChecker.check();
+        	if(!isOverlapped) {
+        		check();
+        	}
 		} else {
 			//old edit by replace		
             p.removeChild_0(this);
@@ -273,6 +275,10 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
             f.setModified(true);
 		    if(!isOverlapped) f.getResourceMarkers().update();
         }
+    }
+   
+    public void check() {
+    	constraintChecker.check();
     }
     
     protected void safeChangeTimeStamp() {
