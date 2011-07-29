@@ -182,10 +182,8 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		if(input instanceof IURIEditorInput) {
 			URI uri = ((IURIEditorInput)input).getURI();
 			String f = uri.getPath();
-			XModelObject o = null;
-			o = EclipseResourceUtil.createObjectForLocation(f);
-			if(o != null && o.getFileType() != XModelObject.FILE) o = null;
-			return (o == null) ? (IEditorInput)input : new ModelObjectLocationEditorInput(getMainObject(o), new Path(f));
+			XModelObject o = EclipseResourceUtil.createObjectForLocation(f);
+			return (o == null || o.getFileType() != XModelObject.FILE) ? (IEditorInput)input : new ModelObjectLocationEditorInput(getMainObject(o), new Path(f));
 		}
 		return input;
 	}
@@ -203,16 +201,13 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		XModelObject o = EclipseResourceUtil.getObjectByResource(f);
 		if(o == null) {
 			o = EclipseResourceUtil.createObjectForResource(f);
-			if(o != null && o.getFileType() != XModelObject.FILE) o = null;
 		}
-		return (o == null) ? input : new XModelObjectEditorInput(getMainObject(o));
+		return (o == null || o.getFileType() != XModelObject.FILE) ? input : new XModelObjectEditorInput(getMainObject(o));
 	}
 	
 	private static IEditorInput convertExternalInput(ILocationProvider input) {
-		XModelObject o = null;
-		o = EclipseResourceUtil.createObjectForLocation(input.getPath(input).toString());
-		if(o != null && o.getFileType() != XModelObject.FILE) o = null;
-		return (o == null) ? (IEditorInput)input : new ModelObjectLocationEditorInput(getMainObject(o), input.getPath(input));
+		XModelObject o = EclipseResourceUtil.createObjectForLocation(input.getPath(input).toString());
+		return (o == null || o.getFileType() != XModelObject.FILE) ? (IEditorInput)input : new ModelObjectLocationEditorInput(getMainObject(o), input.getPath(input));
 	}
 	
 	private static IEditorInput convertStorageEditorInput(IStorageEditorInput input) {
