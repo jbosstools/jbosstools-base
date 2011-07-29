@@ -223,10 +223,9 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     }
     
     protected void safeChangeTimeStamp() {
-    	changeTimeStamp();
-    }
-    
-    
+        ++timeStamp;
+        if(parent != null) parent.safeChangeTimeStamp();
+    }    
 
     // children
 
