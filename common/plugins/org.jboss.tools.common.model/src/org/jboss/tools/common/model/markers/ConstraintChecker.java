@@ -32,9 +32,12 @@ public class ConstraintChecker {
 	
 	public void check() {
 		if(object == null || !object.isActive()) return;
+		boolean empty = p.problems.isEmpty();
 		p.problems.clear();
 		check(object);
-		addMarkers();
+		if(!empty || !p.problems.isEmpty()) {
+			addMarkers();
+		}
 	}
 	
 	private void check(XModelObject o) {
