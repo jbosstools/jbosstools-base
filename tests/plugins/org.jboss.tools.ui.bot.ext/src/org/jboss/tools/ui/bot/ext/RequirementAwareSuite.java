@@ -176,6 +176,7 @@ public class RequirementAwareSuite extends Suite {
 			} catch (Exception e) {
 				log.error("Fulfilling failed", e);
 			}
+			log.info("Done");
 			return super.withBeforeClasses(statement);
 		}
 	}

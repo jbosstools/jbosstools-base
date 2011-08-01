@@ -1,16 +1,16 @@
 package org.jboss.tools.ui.bot.ext.config;
 
-import java.util.Arrays;
+import java.io.File;
+
+import org.jboss.tools.ui.bot.ext.helper.FileHelper;
 
 /**
  * 
  * @author lzoubek
  *
  */
-public class ServerBean {
+public class ServerBean extends RuntimeBean {
 
-	public String version;
-	public String runtimeHome;
 	public String withJavaVersion;
 	public String type;
 	/**
@@ -21,6 +21,24 @@ public class ServerBean {
 	 * home of app server located in remote system
 	 */
 	public String remoteHome;
+	public static ServerBean fromString(String propValue, String url) throws Exception {
+		ServerBean bean = fromString(propValue);
+		if (bean!=null && url!=null) {
+			String runtimeFile = downloadRuntime(url);
+			if (runtimeFile!=null) {
+				// where to unzip it?
+				String runtimeOutput;
+				if (TestConfigurator.Values.SERVER_TYPE_JBOSSAS.equals(bean.type)) {
+					runtimeOutput=new File(bean.runtimeHome).getParent();
+				}
+				else {
+					runtimeOutput=new File(bean.runtimeHome).getParentFile().getParent();
+				}
+				FileHelper.unzipArchive(new File(runtimeFile), new File(runtimeOutput));
+			}			
+		}
+		return bean;
+	}
 	/**
 	 * creates bean instance from property string
 	 * @param propValue property value
@@ -28,12 +46,12 @@ public class ServerBean {
 	 * @throws Exception
 	 */
 	public static ServerBean fromString(String propValue) throws Exception {
+		ServerBean bean = new ServerBean();
 		try {
 			if (propValue==null) {
 				return null;
 			}
-		String[] serverParams = propValue.split(",");
-		ServerBean bean = new ServerBean();
+		String[] serverParams = propValue.split(",");		
 		bean.withJavaVersion = serverParams[2];		
 		bean.runtimeHome=serverParams[3];
 		bean.version=serverParams[1];
@@ -46,12 +64,12 @@ public class ServerBean {
 		return bean;
 		}
 		catch (Exception ex) {
-			throw new Exception("Cannot parse SERVER property line",ex);
+			throw new Exception("Cannot parse "+bean.key+" property line",ex);
 		}
 	}
 	@Override
 	public String toString() {
-		return String.format("Server type=%s,version=%s,home=%s,withJava=%s,remoteSystem=%s", this.type,this.version,this.runtimeHome,this.withJavaVersion,this.remoteSystem);
+		return String.format("%s type=%s,version=%s,home=%s,withJava=%s,remoteSystem=%s",this.key, this.type,this.version,this.runtimeHome,this.withJavaVersion,this.remoteSystem);
 	}
 	
 	/**
@@ -60,6 +78,9 @@ public class ServerBean {
 	 */
 	public String getName() {
 		return type + "-" + version; 
+	}
+	public ServerBean() {
+		this.key = TestConfigurator.Keys.SERVER;
 	}
 	
 }

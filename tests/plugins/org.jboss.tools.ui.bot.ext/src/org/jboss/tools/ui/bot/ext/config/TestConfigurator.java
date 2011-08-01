@@ -24,7 +24,7 @@ import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
 
 public class TestConfigurator {
 	private static final Logger log = Logger.getLogger(TestConfigurator.class);
-
+	public static final String RUNTIME_URL_SUFFIX="_URL";
 	public class Keys {
 		public static final String SERVER = "SERVER";
 		public static final String SEAM = "SEAM";

@@ -53,8 +53,7 @@ public class TestConfiguration {
 		// properties got loaded
 		java = JavaBean.fromString(getProperty(Keys.JAVA));
 		printConfig(Keys.JAVA, java);
-		log.info(getProperty(Keys.SERVER));
-		server = ServerBean.fromString(getProperty(Keys.SERVER));
+		server = ServerBean.fromString(getProperty(Keys.SERVER),getProperty(Keys.SERVER+TestConfigurator.RUNTIME_URL_SUFFIX));
 		printConfig(Keys.SERVER, server);
 		remoteSystem = RemoteSystemBean.fromString(getProperty(Keys.RS));
 		printConfig(Keys.RS, remoteSystem);
@@ -70,6 +69,7 @@ public class TestConfiguration {
 		printConfig("Secure Storage",secureStorage);
 		checkConfig();
 	}
+	
 
 	private static void printConfig(String propName, Object bean) {
 		if (bean == null) {
@@ -82,15 +82,15 @@ public class TestConfiguration {
 
 	private boolean checkConfig() throws Exception {
 			if (java != null)
-				checkDirExists(java.javaHome);
+				checkDirExists(java.runtimeHome);
 			if (seam != null)
-				checkDirExists(seam.seamHome);
+				checkDirExists(seam.runtimeHome);
 			if (server != null)
 				checkDirExists(server.runtimeHome);
 			if (esb != null)
-				checkDirExists(esb.esbHome);
+				checkDirExists(esb.runtimeHome);
 			if (jbpm != null)
-				checkDirExists(jbpm.jbpmHome);
+				checkDirExists(jbpm.runtimeHome);
 			if (db != null) {
 				if (!db.internal)
 					checkFileExists(db.driverPath);

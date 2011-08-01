@@ -13,7 +13,7 @@ public class AddESB extends RequirementBase {
 	@Override
 	public void handle() {
 		String esbName = "ESB-"+TestConfigurator.currentConfig.getEsb().version;
-		SWTTestExt.eclipse.addESBRuntime(esbName,TestConfigurator.currentConfig.getEsb().version,TestConfigurator.currentConfig.getEsb().esbHome);
+		SWTTestExt.eclipse.addESBRuntime(esbName,TestConfigurator.currentConfig.getEsb().version,TestConfigurator.currentConfig.getEsb().runtimeHome);
 		SWTTestExt.configuredState.getEsb().isConfiured=true;
 		SWTTestExt.configuredState.getEsb().name=esbName;
 		SWTTestExt.configuredState.getEsb().version=TestConfigurator.currentConfig.getEsb().version;	

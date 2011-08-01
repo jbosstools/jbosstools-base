@@ -29,7 +29,7 @@ public class AddJava extends RequirementBase {
 		return "JRE-"+TestConfigurator.currentConfig.getJava().version;
 	}
 	private String getJavaHome() {
-		return TestConfigurator.currentConfig.getJava().javaHome;
+		return TestConfigurator.currentConfig.getJava().runtimeHome;
 	}
 
 }
