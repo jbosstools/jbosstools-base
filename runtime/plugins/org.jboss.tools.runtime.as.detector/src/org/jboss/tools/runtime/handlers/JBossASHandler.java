@@ -142,9 +142,9 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 					index = 3;
 				} else if ("5.1".equals(version)) { //$NON-NLS-1$
 					index = 4;
-				} else if ("6.0".equals(version)) { //$NON-NLS-1$
+				} else if ("6.0".equals(version) || "6.1".equals(version)) { //$NON-NLS-1$
 					index = 5;
-				} else if ("7.0".equals(version)) { //$NON-NLS-1$
+				} else if ("7.0".equals(version) || "7.1".equals(version)) { //$NON-NLS-1$
 					index = 8;
 				}
 				createJBossServer(serverDefinition.getLocation(),index,serverDefinition.getName(),serverDefinition.getName() + " " + RUNTIME); //$NON-NLS-1$
