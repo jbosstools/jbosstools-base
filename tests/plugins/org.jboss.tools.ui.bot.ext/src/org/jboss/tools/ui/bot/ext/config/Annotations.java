@@ -103,7 +103,7 @@ public class Annotations {
 		 */
 		boolean required() default true;
 		/**
-		 * state (default (default {@link ServerState#ALL}))
+		 * state (default (default {@link ServerState#Running}))
 		 * @return
 		 */
 		ServerState state() default ServerState.Running;
@@ -113,7 +113,7 @@ public class Annotations {
 		 */
 		ServerType type() default ServerType.ALL;
 		/**
-		 * server location (derfault {@link ServerLocation#Any})
+		 * server location (default {@link ServerLocation#Any})
 		 * @return
 		 */
 		ServerLocation location() default ServerLocation.Any;
