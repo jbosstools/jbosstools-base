@@ -544,7 +544,9 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 					proposals.add(proposal);
 				}
-				segment.setMemberInfo(bijectedAttribute!=null?bijectedAttribute:member);
+				if(member!=null || bijectedAttribute!=null) {
+					segment.setMemberInfo(bijectedAttribute!=null?bijectedAttribute:member);
+				}
 				segment.getVariables().add(var);
 			}
 			// <<<=== JBIDE-512, JBIDE-2541 related changes

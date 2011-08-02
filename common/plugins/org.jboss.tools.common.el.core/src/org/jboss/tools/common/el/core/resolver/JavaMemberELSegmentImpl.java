@@ -145,7 +145,9 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 	 */
 	public void setMemberInfo(MemberInfo memberInfo) {
 		this.memberInfo = memberInfo;
-		this.setElement(memberInfo != null ? memberInfo.getJavaElement() : null);
+		if(memberInfo!=null && memberInfo.getJavaElement()!=null) {
+			this.setElement(memberInfo.getJavaElement());
+		}
 	}
 
 	/**
