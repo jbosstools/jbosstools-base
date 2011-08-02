@@ -8,5 +8,8 @@
 	<feature url="features/org.jboss.tools.usage.feature_0.0.0.jar" id="org.jboss.tools.usage.feature" version="0.0.0">
 		<category name="JBoss Tools Usage Reporting Nightly Build Update Site"/>
 	</feature>
+	<feature url="features/org.jboss.tools.usage.test.feature_0.0.0.jar" id="org.jboss.tools.usage.test.feature" version="0.0.0">
+		<category name="JBoss Tools Usage Reporting Nightly Build Update Site"/>
+	</feature>
 
 </site>
