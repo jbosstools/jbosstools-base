@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.jboss.tools.runtime.test.feature"
-      label="Feature"
-      version="1.3.0.qualifier">
+<feature id="org.jboss.tools.runtime.test.feature" label="Feature" version="1.3.0.qualifier">
 
-   <description>
+	<description>
       %description
    </description>
 
-   <copyright>
+	<copyright>
       %copyright
    </copyright>
 
-   <license url="%licenseURL">
+	<license url="%licenseURL">
       %license
    </license>
 
-   <plugin
-         id="org.jboss.tools.runtime.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+	<plugin id="org.jboss.tools.runtime.test" download-size="0" install-size="0" version="0.0.0" unpack="false" />
 </feature>

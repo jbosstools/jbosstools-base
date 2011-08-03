@@ -3,6 +3,11 @@
    <description>
       To install these features, point Eclipse at this site.
    </description>
+   <category-def name="JBoss Tools runtime Nightly Build Update Site" label="JBoss Tools runtime Nightly Build Update Site">
+      <description>
+         JBoss Tools runtime Nightly Build Update Site: contains all features in this build.
+      </description>
+   </category-def>
    <feature url="features/org.jboss.tools.runtime.feature_0.0.0.jar" id="org.jboss.tools.runtime.feature" version="0.0.0">
       <category name="JBoss Tools runtime Nightly Build Update Site"/>
    </feature>
@@ -21,9 +26,7 @@
    <feature url="features/org.jboss.tools.runtime.seam.detector.feature_0.0.0.jar" id="org.jboss.tools.runtime.seam.detector.feature" version="0.0.0">
       <category name="JBoss Tools runtime Nightly Build Update Site"/>
    </feature>
-   <category-def name="JBoss Tools runtime Nightly Build Update Site" label="JBoss Tools runtime Nightly Build Update Site">
-      <description>
-         JBoss Tools runtime Nightly Build Update Site: contains all features in this build.
-      </description>
-   </category-def>
+   <feature url="features/org.jboss.tools.runtime.test.feature_0.0.0.jar" id="org.jboss.tools.runtime.test.feature" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
 </site>
