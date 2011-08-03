@@ -54,7 +54,7 @@ public class ServerBean extends RuntimeBean {
 			}
 		String[] serverParams = propValue.split(",");		
 		bean.withJavaVersion = serverParams[2];		
-		bean.runtimeHome=serverParams[3];
+		bean.runtimeHome=new File(serverParams[3]).getAbsolutePath();
 		bean.version=serverParams[1];
 		bean.type =  serverParams[0];
 		

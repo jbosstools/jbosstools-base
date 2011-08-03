@@ -21,7 +21,7 @@ public class RuntimeBean {
 				return null;
 			}
 			String[] params = propValue.split(",");			
-			bean.runtimeHome=params[1];
+			bean.runtimeHome=new File(params[1]).getAbsolutePath();
 			bean.version=params[0];
 			return bean;
 			}
