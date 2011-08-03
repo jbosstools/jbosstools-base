@@ -27,14 +27,15 @@ public class ServerBean extends RuntimeBean {
 			String runtimeFile = downloadRuntime(url);
 			if (runtimeFile!=null) {
 				// where to unzip it?
-				String runtimeOutput;
+				File runtimeOutput;
+				File runtimeHomeAbs = new File(bean.runtimeHome).getAbsoluteFile();
 				if (TestConfigurator.Values.SERVER_TYPE_JBOSSAS.equals(bean.type)) {
-					runtimeOutput=new File(bean.runtimeHome).getParent();
+					runtimeOutput=runtimeHomeAbs.getParentFile();
 				}
 				else {
-					runtimeOutput=new File(bean.runtimeHome).getParentFile().getParent();
+					runtimeOutput=runtimeHomeAbs.getParentFile().getParentFile();
 				}
-				FileHelper.unzipArchive(new File(runtimeFile), new File(runtimeOutput));
+				FileHelper.unzipArchive(new File(runtimeFile), runtimeOutput);
 			}			
 		}
 		return bean;
