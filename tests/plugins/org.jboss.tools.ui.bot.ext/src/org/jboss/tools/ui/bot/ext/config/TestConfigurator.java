@@ -1,6 +1,7 @@
 package org.jboss.tools.ui.bot.ext.config;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,9 +23,21 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerType;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
 
+/**
+ * This class is main one for holding all possible configurations to run tests on. For every test class
+ * it's annotations are read and it is decided whether class is planned or not for given {@link TestConfiguration}
+ * 
+ * @author lzoubek@redhat.com
+ */
 public class TestConfigurator {
 	private static final Logger log = Logger.getLogger(TestConfigurator.class);
 	public static final String RUNTIME_URL_SUFFIX="_URL";
+	/**
+	 * property keys which are handled in configuration files
+	 * 
+	 * @author lzoubek
+	 *
+	 */
 	public class Keys {
 		public static final String SERVER = "SERVER";
 		public static final String SEAM = "SEAM";
@@ -35,7 +48,11 @@ public class TestConfigurator {
 		public static final String RS = "RS";
 		public static final String SS = "SS";
 	}
-
+	/**
+	 * constant property values which are handled in configuration files
+	 * @author lzoubek
+	 *
+	 */
 	public class Values {
 		public static final String SERVER_TYPE_EPP = "EPP";
 		public static final String SERVER_TYPE_EAP = "EAP";
@@ -43,9 +60,14 @@ public class TestConfigurator {
 		public static final String SERVER_TYPE_JBOSSAS = "JBOSS_AS";
 		public static final String SERVER_WITH_DEFAULT_JAVA = "default";
 	}
-
+	/**
+	 * directory which may contain .properties files to load configurations from
+	 */
+	public static final String CONFIGURATIONS_DIR="test.configurations.dir";
+	/**
+	 * path to property file which contains either 1 configuration or properties [config name]=[abs path to config property file]
+	 */
 	public static final String SWTBOT_TEST_PROPERTIES_FILE = "swtbot.test.properties.file";
-	public static final String SWTBOT_TEST_PROPERTIES_MULTI_FILE = "swtbot.test.properties.multi.file";
 	public static Properties multiProperties = new Properties();
 	public static TestConfiguration currentConfig;
 	static {
@@ -55,23 +77,33 @@ public class TestConfigurator {
 			// try to load from file first
 			String propFile = System.getProperty(SWTBOT_TEST_PROPERTIES_FILE,
 					null);
-			String propMultiFile = System.getProperty(
-					SWTBOT_TEST_PROPERTIES_MULTI_FILE, null);
-			if (propMultiFile != null) {
-				if (new File(propMultiFile).exists()) {
-					log.info("Loading exeternaly provided multi-configuration file '"
-							+ propMultiFile + "'");
-					log.warn("Property name '"
-							+ SWTBOT_TEST_PROPERTIES_MULTI_FILE
-							+ "' is deprecated and will be removed soon, use '"
-							+ SWTBOT_TEST_PROPERTIES_FILE
-							+ "' property instead, file type is now auto-detected by content.");
-					multiProperties.load(new FileInputStream(propMultiFile));
-					loadDefault = false;
-				} else {
-					throw new IOException(SWTBOT_TEST_PROPERTIES_MULTI_FILE
-							+ " " + propMultiFile + " does not exist!");
+			String configsDir=System.getProperty(CONFIGURATIONS_DIR,null);
+			File configsDirFile=new File(configsDir);
+			if (configsDir != null) {
+				if (!configsDirFile.exists()) {
+					throw new IOException(CONFIGURATIONS_DIR
+							+ " " + configsDir + " does not exist!");
 				}
+				if (!configsDirFile.isDirectory()) {
+					throw new IOException(CONFIGURATIONS_DIR
+							+ " " + configsDir + " must be a directory");
+				}
+				else {
+					log.info("Loading property config-files  from '"
+							+ configsDir + "'");
+					File[] propFiles = configsDirFile.listFiles(new FileFilter(){
+
+						@Override
+						public boolean accept(File  name) {
+							return name.getName().endsWith(".properties");
+						}});
+					for (File file : propFiles) 
+					{
+						log.info("Adding configuration file "+file.getName());
+						multiProperties.put(file.getName().replace(".properties", ""), file.getAbsolutePath());						
+					}
+					loadDefault = false;
+				} 
 			} else if (propFile != null) {
 				if (new File(propFile).exists()) {
 					log.info("Loading exeternaly configuration file '"
@@ -273,8 +305,9 @@ public class TestConfigurator {
 
 	/**
 	 * returns list of requirements if given class (Test) can run, all this is
-	 * done by exploring class'es annotations (see {@link SWTBotTestRequires} if
-	 * class cannot run returns null
+	 * done by exploring class'es annotations (see {@link SWTBotTestRequires}) and check against
+	 * current configuration   
+	 * if given class does not meet {@link TestConfigurator#currentConfig} method returns null
 	 */
 	public static List<RequirementBase> getClassRequirements(Class<?> klass) {
 
