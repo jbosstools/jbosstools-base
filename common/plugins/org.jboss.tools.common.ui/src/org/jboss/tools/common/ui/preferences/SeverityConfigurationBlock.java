@@ -105,7 +105,9 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		c.setLayout(layout);
 		c.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		addMaxNumberOfMarkersField(c);
+		if(getMaxNumberOfProblemsKey() != null) {
+			addMaxNumberOfMarkersField(c);
+		}
 		addWrongBuilderOrderField(c);
 
 		fFilteredPrefTree = new FilteredPreferenceTree(this, folder, getCommonDescription());
@@ -167,18 +169,20 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 	}
 
 	private IStatus validateMaxNumberProblems() {
-		String number = getValue(getMaxNumberOfProblemsKey());
 		StatusInfo status= new StatusInfo();
-		if (number == null || number.length() == 0) {
-			status.setError(PreferencesMessages.JavaBuildConfigurationBlock_empty_input);
-		} else {
-			try {
-				int value= Integer.parseInt(number);
-				if (value <= 0) {
+		if(getMaxNumberOfProblemsKey() != null) {
+			String number = getValue(getMaxNumberOfProblemsKey());
+			if (number == null || number.length() == 0) {
+				status.setError(PreferencesMessages.JavaBuildConfigurationBlock_empty_input);
+			} else {
+				try {
+					int value= Integer.parseInt(number);
+					if (value <= 0) {
+						status.setError(Messages.format(PreferencesMessages.JavaBuildConfigurationBlock_invalid_input, number));
+					}
+				} catch (NumberFormatException e) {
 					status.setError(Messages.format(PreferencesMessages.JavaBuildConfigurationBlock_invalid_input, number));
 				}
-			} catch (NumberFormatException e) {
-				status.setError(Messages.format(PreferencesMessages.JavaBuildConfigurationBlock_invalid_input, number));
 			}
 		}
 		return status;
@@ -245,8 +249,10 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 			return;
 		}
 
-		if (changedKey == null || getMaxNumberOfProblemsKey().equals(changedKey)) {
-			fContext.statusChanged(validateMaxNumberProblems());
+		if(getMaxNumberOfProblemsKey() != null) {
+			if (changedKey == null || getMaxNumberOfProblemsKey().equals(changedKey)) {
+				fContext.statusChanged(validateMaxNumberProblems());
+			}
 		}
 	}
 
