@@ -71,7 +71,6 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 //	protected Map<String, IResource> linkedResources = new HashMap<String, IResource>();
 
 	public static File toFile(IResource resource) {
-		if(resource == null) return null;
 		File f = null;
 		IPath path = resource.getLocation();
 		if(path == null || true) {
@@ -154,8 +153,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         File f = getFile();
         if(f == null) return null;
         if (!f.isDirectory()) return new File[0];
-        File[] fs = f.listFiles();
-        return (fs == null) ? new File[0] : fs;
+        return f.listFiles();
     }
 
     public void set(String name, String value) {
