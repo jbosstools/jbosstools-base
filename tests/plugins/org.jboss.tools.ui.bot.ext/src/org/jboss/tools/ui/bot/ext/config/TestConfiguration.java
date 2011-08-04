@@ -72,7 +72,8 @@ public class TestConfiguration {
 		printConfig(Keys.RS, remoteSystem);
 		seam = SeamBean.fromString(getProperty(Keys.SEAM));
 		printConfig(Keys.SEAM, seam);
-		esb = ESBBean.fromString(getProperty(Keys.ESB));
+		esb = ESBBean.fromString(getProperty(Keys.ESB),
+				getProperty(Keys.ESB + TestConfigurator.RUNTIME_URL_SUFFIX));
 		printConfig(Keys.ESB, esb);
 		jbpm = JBPMBean.fromString(getProperty(Keys.JBPM));
 		printConfig(Keys.JBPM, jbpm);

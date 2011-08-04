@@ -8,7 +8,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.apache.log4j.Logger;
+import org.jboss.tools.ui.bot.ext.helper.FileHelper;
 
+/**
+ * Ancestor of all configurable beans, having common methods for parsing property line or downloading runtime
+ * @author lzoubek
+ *
+ */
 public class RuntimeBean {
 	protected static final Logger log = Logger.getLogger(RuntimeBean.class);
 	protected String key;
@@ -29,12 +35,29 @@ public class RuntimeBean {
 				throw new Exception("Cannot parse "+bean.key+" property line",ex);
 			}
 	}
+	
+	protected static RuntimeBean fromString(String propValue, String url, RuntimeBean bean) throws Exception {
+		if (bean!=null && url!=null) {
+			String runtimeFile = downloadRuntime(url);
+			if (runtimeFile!=null) {
+				File runtimeHomeAbs = new File(bean.runtimeHome).getAbsoluteFile();
+				FileHelper.unzipArchive(new File(runtimeFile), runtimeHomeAbs.getParentFile());
+			}			
+		}
+		return bean;
+	}
 	@Override
 	public String toString() {
 		return String.format("%s runtime version=%s, home=%s",this.key,
 				this.version, this.runtimeHome);
 	}
-	public static String downloadRuntime(String url) {
+
+	/**
+	 * Downloads file from given url to temp dir
+	 * 
+	 * @return absolute path to downloaded file
+	 */
+	protected static String downloadRuntime(String url) {
 		BufferedInputStream in = null;
 		RandomAccessFile raf = null;
 		String outputFile = System.getProperty("java.io.tmpdir")+System.getProperty("file.separator")+url.replaceAll(".*/", "");
