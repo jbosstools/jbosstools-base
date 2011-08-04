@@ -64,16 +64,20 @@ public class FileSystemPeer {
     	long lastModified;
     	long length;
     	Info(File f) {
-    		lastModified = !f.exists() ? 0 : f.lastModified();
-    		length = f.isFile() && f.exists() ? f.length() : 0;
+    		lastModified = f.lastModified();
+    		length = f.length();
     	}
     
     	public boolean equals(Info other) {
     		return lastModified != other.lastModified || length != other.length;
     	}
-    
+
+    	public boolean equals(File other) {
+    		return lastModified != other.lastModified() || length != other.length();
+    	}
+    	
     	public boolean changed(File f) {
-    		return equals(new Info(f));
+    		return equals(f);
     	}
     }
 
