@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
@@ -65,6 +66,11 @@ public class TestConfigurator {
 	 */
 	public static final String CONFIGURATIONS_DIR="test.configurations.dir";
 	/**
+	 * regular expression for ignoring property files found in {@link TestConfigurator#CONFIGURATIONS_DIR}
+	 * filename matching this will be ignored
+	 */
+	public static final String CONFIGURATIONS_IGNORE="test.configurations.ignore";
+	/**
 	 * path to property file which contains either 1 configuration or properties [config name]=[abs path to config property file]
 	 */
 	public static final String SWTBOT_TEST_PROPERTIES_FILE = "swtbot.test.properties.file";
@@ -74,6 +80,13 @@ public class TestConfigurator {
 		boolean loadDefault = true;
 
 		try {
+			Pattern configMatch = Pattern.compile("nomatch");
+			try {
+			configMatch = Pattern.compile(System.getProperty(CONFIGURATIONS_IGNORE, "nomatch"));
+			}
+			catch (Exception ex) {
+				log.error("Error parsing property "+CONFIGURATIONS_IGNORE,ex);
+			}
 			// try to load from file first
 			String propFile = System.getProperty(SWTBOT_TEST_PROPERTIES_FILE,
 					null);
@@ -91,11 +104,12 @@ public class TestConfigurator {
 				else {
 					log.info("Loading property config-files  from '"
 							+ configsDir + "'");
+					final Pattern fMatch = Pattern.compile(configMatch.toString());
 					File[] propFiles = configsDirFile.listFiles(new FileFilter(){
 
 						@Override
 						public boolean accept(File  name) {
-							return name.getName().endsWith(".properties");
+							return name.getName().endsWith(".properties") && !fMatch.matcher(name.getName()).matches();
 						}});
 					for (File file : propFiles) 
 					{

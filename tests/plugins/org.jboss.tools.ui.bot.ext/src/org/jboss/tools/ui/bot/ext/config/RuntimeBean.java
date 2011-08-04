@@ -37,6 +37,7 @@ public class RuntimeBean {
 	}
 	
 	protected static RuntimeBean fromString(String propValue, String url, RuntimeBean bean) throws Exception {
+		bean = fromString(propValue, bean);
 		if (bean!=null && url!=null) {
 			String runtimeFile = downloadRuntime(url);
 			if (runtimeFile!=null) {
