@@ -26,6 +26,7 @@ public class ELSegmentImpl implements ELSegment {
 	protected ITextSourceReference sourceReference;
 	protected LexicalToken token;
 	protected boolean resolved = false;
+	protected boolean validatable = true;
 	protected List<IVariable> variables = new ArrayList<IVariable>();
 
 	public ELSegmentImpl(LexicalToken token) {
@@ -130,5 +131,21 @@ public class ELSegmentImpl implements ELSegment {
 	@Override
 	public String toString() {
 		return token!=null?token.getText() + "(" + resolved + ")": super.toString(); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELSegment#isValidatable()
+	 */
+	@Override
+	public boolean isValidatable() {
+		return validatable;
+	}
+
+	/**
+	 * @param validatable the validatable to set
+	 */
+	public void setValidatable(boolean validatable) {
+		this.validatable = validatable;
 	}
 }
