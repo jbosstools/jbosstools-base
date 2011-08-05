@@ -1023,7 +1023,8 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				}
 			}
 		}
-		segment.setResolved(!resolution.getProposals().isEmpty() || resolution.isMapOrCollectionOrBundleAmoungTheTokens());
+		segment.setResolved(!resolution.getProposals().isEmpty());
+		segment.setValidatable(!resolution.isMapOrCollectionOrBundleAmoungTheTokens());
 	}
 
 	protected boolean isSingularMember(TypeInfoCollector.MemberInfo mbr) {
