@@ -56,7 +56,7 @@ public interface ELSegment {
 	List<IVariable> getVariables();
 
 	/**
-	 * Returns false if EL validator should ignore this segment and don't mark it as a problem even if the segemtn is not resolved.
+	 * Returns false if EL validator should ignore this segment and don't mark it as a problem even if the segment is not resolved.
 	 * @return
 	 */
 	boolean isValidatable();

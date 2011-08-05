@@ -270,4 +270,18 @@ public class ELResolutionImpl implements ELResolution {
 		}
 		return super.toString();
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELResolution#isValidatable()
+	 */
+	@Override
+	public boolean isValidatable() {
+		for (ELSegment segment : segments) {
+			if(!segment.isValidatable()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

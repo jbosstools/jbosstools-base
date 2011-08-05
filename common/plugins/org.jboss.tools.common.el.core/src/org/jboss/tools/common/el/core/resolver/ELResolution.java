@@ -76,6 +76,12 @@ public interface ELResolution {
 	boolean isResolved();
 
 	/**
+	 * Returns false if EL validator should ignore this EL and don't mark it as a problem even if the EL is not resolved.
+	 * @return
+	 */
+	boolean isValidatable();
+
+	/**
 	 * @return last segment. May return null.
 	 */
 	ELSegment getLastSegment();
