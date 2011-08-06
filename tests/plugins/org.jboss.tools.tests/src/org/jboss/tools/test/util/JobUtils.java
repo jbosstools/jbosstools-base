@@ -33,11 +33,6 @@ public class JobUtils {
 
 	public static void waitForIdle(long delay, long maxIdle) {
 		long start = System.currentTimeMillis();
-		// Job.getJobManager().isIdle() is more efficient than
-		// EditorTestHelper.allJobsQuiet()
-		// EditorTestHelper.allJobsQuiet() isn't thread-safe
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=198241 is fixed
-		// while (!EditorTestHelper.allJobsQuiet()) {
 		while (!Job.getJobManager().isIdle()) {
 			delay(delay);
 			if ((System.currentTimeMillis() - start) > maxIdle) {

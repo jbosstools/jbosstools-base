@@ -133,7 +133,7 @@ public class AbstractResourceMarkerTest extends TestCase {
 				result.add(markers[i]);
 			}
 		}
-		return result.toArray(new IMarker[0]);
+		return result.toArray(new IMarker[result.size()]);
 	}
 
 	public static void assertMarkerIsCreated(IResource resource, MarkerData markerData) throws CoreException {
