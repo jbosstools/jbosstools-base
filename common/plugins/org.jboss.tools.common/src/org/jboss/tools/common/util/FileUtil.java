@@ -348,19 +348,26 @@ public final class FileUtil {
         os.flush();
     }
 
-    public static void clear(File f) {
-        if(!f.isDirectory()) return;
-        File[] fs = f.listFiles();
-        if(fs != null) for (int i = 0; i < fs.length; i++) remove(fs[i]);
-    }
+	public static void clear(File f) {
+		if (f.isDirectory()) {
+			File[] fs = f.listFiles();
+			for (int i = 0; i < fs.length; i++) {
+				remove(fs[i]);
+			}
+		}
+	}
 
-    public static void remove(File f) {
-        if(f.isFile()) f.delete();
-        if(!f.isDirectory()) return;
-        File[] fs = f.listFiles();
-        if(fs != null) for (int i = 0; i < fs.length; i++) remove(fs[i]);
-        f.delete();
-    }
+	public static void remove(File f) {
+		if (f.isFile()) {
+			f.delete();
+		} else if (f.isDirectory()) {
+			File[] fs = f.listFiles();
+			for (int i = 0; i < fs.length; i++) {
+				remove(fs[i]);
+			}
+			f.delete();
+		}
+	}
 
     public static boolean isSameFile(File f) {
         if(!f.exists()) return false;
