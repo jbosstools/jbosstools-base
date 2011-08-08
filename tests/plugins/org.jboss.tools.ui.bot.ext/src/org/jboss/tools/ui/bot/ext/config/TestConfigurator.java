@@ -91,8 +91,8 @@ public class TestConfigurator {
 			String propFile = System.getProperty(SWTBOT_TEST_PROPERTIES_FILE,
 					null);
 			String configsDir=System.getProperty(CONFIGURATIONS_DIR,null);
-			File configsDirFile=new File(configsDir);
 			if (configsDir != null) {
+				File configsDirFile=new File(configsDir);
 				if (!configsDirFile.exists()) {
 					throw new IOException(CONFIGURATIONS_DIR
 							+ " " + configsDir + " does not exist!");
