@@ -230,7 +230,7 @@ public class ResourcesUtils {
 	//	importProjectIntoWorkspace(bean);
 	//}
 
-	private static final long IMPORT_DELAY = 1000;
+	private static final long IMPORT_DELAY = 200;
 	
 	static public IProject importProjectIntoWorkspace(String path, String projectName) { 
 		return importProjectIntoWorkspace(path, projectName,"file");
@@ -253,8 +253,7 @@ public class ResourcesUtils {
 			 if (!project.exists())
 				 project.create(null);
 			 project.open(null);
-			 JobUtils.waitForIdle(IMPORT_DELAY);
-			 
+
 			 IOverwriteQuery overwrite = new IOverwriteQuery() {
 				public String queryOverwrite(String pathString) {
 					return ALL;
@@ -302,7 +301,7 @@ public class ResourcesUtils {
 			// run import
 			importOp.run(null);
 			ResourcesUtils.setBuildAutomatically(state);
-			
+
 			JobUtils.waitForIdle(IMPORT_DELAY);
 		} catch (InvocationTargetException ite) {
 //			TePlugin.getDefault().logError(ite.getCause());
