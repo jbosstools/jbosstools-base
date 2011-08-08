@@ -26,6 +26,7 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
+import org.eclipse.jface.text.information.IInformationProvider;
 import org.eclipse.jface.text.quickassist.IQuickAssistAssistant;
 import org.eclipse.jface.text.quickassist.QuickAssistAssistant;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -33,22 +34,21 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
+import org.eclipse.wst.sse.ui.internal.ExtendedConfigurationBuilder;
 import org.eclipse.wst.sse.ui.internal.SSEUIPlugin;
 import org.eclipse.wst.sse.ui.internal.derived.HTMLTextPresenter;
 import org.eclipse.wst.sse.ui.internal.preferences.EditorPreferenceNames;
 import org.eclipse.wst.sse.ui.internal.taginfo.AnnotationHoverProcessor;
-import org.eclipse.wst.sse.ui.internal.taginfo.BestMatchHover;
-import org.eclipse.wst.sse.ui.internal.taginfo.ProblemAnnotationHoverProcessor;
 import org.eclipse.wst.sse.ui.internal.taginfo.TextHoverManager;
 import org.eclipse.wst.sse.ui.internal.util.EditorUtility;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLStructuredContentAssistProcessor;
 import org.jboss.tools.common.text.xml.contentassist.ProposalSorter;
+import org.jboss.tools.common.text.xml.info.ChainTextHover;
 import org.jboss.tools.common.text.xml.xpl.MarkerProblemAnnotationHoverProcessor;
-
+import org.jboss.tools.common.text.xml.info.TextHoverInformationProvider;
 /**
  * @author Igels
  */
@@ -185,21 +185,76 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 		return findDeclaredMethod(sc, name, paramTypes);
 	}
 
+	/**
+	 * Create documentation hovers based on hovers contributed via
+	 * <code>org.eclipse.wst.sse.ui.editorConfiguration</code> extension point
+	 * 
+	 * Copied from
+	 * {@link org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration} because
+	 * of private modifier
+	 * 
+	 * @param partitionType
+	 * @return
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private ITextHover[] createDocumentationHovers(String partitionType) {
+		List extendedTextHover = ExtendedConfigurationBuilder.getInstance()
+				.getConfigurations(
+						ExtendedConfigurationBuilder.DOCUMENTATIONTEXTHOVER,
+						partitionType);
+		return (ITextHover[]) extendedTextHover
+				.toArray(new ITextHover[extendedTextHover.size()]);
+	}
+	
 	@Override
-	public ITextHover getTextHover(ISourceViewer sourceViewer,	String contentType, int stateMask) {
-		TextHoverManager.TextHoverDescriptor[] hoverDescs = SSEUIPlugin.getDefault().getTextHoverManager().getTextHovers();
+	protected IInformationProvider getInformationProvider(
+			ISourceViewer sourceViewer, String partitionType) {
+		ITextHover[] hovers = createDocumentationHovers(partitionType);
+		if (hovers == null) {
+			hovers = new ITextHover[] {new ChainTextHover(
+					new ITextHover[0])};
+		}
+		
+		return new TextHoverInformationProvider(new ChainTextHover(
+				hovers));
+	}
+	
+	@Override
+	public ITextHover getTextHover(ISourceViewer sourceViewer,
+			String contentType, int stateMask) {
+		ITextHover textHover = null;
+
+		/*
+		 * Returns a default problem, annotation, and best match hover depending
+		 * on stateMask
+		 */
+		TextHoverManager.TextHoverDescriptor[] hoverDescs = SSEUIPlugin
+				.getDefault().getTextHoverManager().getTextHovers();
 		int i = 0;
-		while (i < hoverDescs.length) {
-			if (hoverDescs[i].isEnabled() && computeStateMask(hoverDescs[i].getModifierString()) == stateMask) {
+		while (i < hoverDescs.length && textHover == null) {
+			if (hoverDescs[i].isEnabled()
+					&& computeStateMask(hoverDescs[i].getModifierString()) == stateMask) {
 				String hoverType = hoverDescs[i].getId();
-				if (TextHoverManager.COMBINATION_HOVER.equalsIgnoreCase(hoverType)){
-					return new MarkerProblemAnnotationHoverProcessor();
+				if (TextHoverManager.PROBLEM_HOVER.equalsIgnoreCase(hoverType))
+//					textHover = new ProblemAnnotationHoverProcessor();
+					textHover = new MarkerProblemAnnotationHoverProcessor();
+				else if (TextHoverManager.ANNOTATION_HOVER
+						.equalsIgnoreCase(hoverType))
+					textHover = new AnnotationHoverProcessor();
+				else if (TextHoverManager.COMBINATION_HOVER
+						.equalsIgnoreCase(hoverType)) {
+					textHover = new ChainTextHover(createDocumentationHovers(contentType));
+				} else if (TextHoverManager.DOCUMENTATION_HOVER
+						.equalsIgnoreCase(hoverType)) {
+					ITextHover[] hovers = createDocumentationHovers(contentType);
+					if (hovers.length > 0) {
+						textHover = hovers[0];
+					}
 				}
 			}
 			i++;
 		}
-		
-		return super.getTextHover(sourceViewer, contentType, stateMask);
+		return textHover;
 	}
 	
 	private IQuickAssistAssistant fQuickAssistant = null;

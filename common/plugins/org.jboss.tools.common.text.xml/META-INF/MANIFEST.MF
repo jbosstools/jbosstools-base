@@ -8,6 +8,7 @@ Bundle-SymbolicName: org.jboss.tools.common.text.xml;singleton:=true
 Bundle-Localization: plugin
 Export-Package: org.jboss.tools.common.text.xml,
  org.jboss.tools.common.text.xml.contentassist,
+ org.jboss.tools.common.text.xml.info,
  org.jboss.tools.common.text.xml.internal.ui.preferencies,
  org.jboss.tools.common.text.xml.ui,
  org.jboss.tools.common.text.xml.ui.xpl,
