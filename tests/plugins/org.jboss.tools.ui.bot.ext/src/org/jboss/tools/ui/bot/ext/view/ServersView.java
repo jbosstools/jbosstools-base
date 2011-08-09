@@ -118,7 +118,7 @@ public class ServersView extends ViewBase {
 	        		log.error(ex);
 	        	}
 	        }
-		    util.waitForNonIgnoredJobs(Timing.time100S());
+		    util.waitForNonIgnoredJobs(Timing.time(600 * 1000));
 		    util.waitForAll(Timing.time3S());
 		}
 		else{
