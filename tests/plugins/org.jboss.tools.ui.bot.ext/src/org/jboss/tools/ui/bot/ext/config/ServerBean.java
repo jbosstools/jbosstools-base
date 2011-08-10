@@ -21,15 +21,14 @@ public class ServerBean extends RuntimeBean {
 	 * home of app server located in remote system
 	 */
 	public String remoteHome;
-	public static ServerBean fromString(String propValue, String url) throws Exception {
-		ServerBean bean = fromString(propValue);
-		if (bean!=null && url!=null) {
+	public void getRuntime (String url) throws Exception {
+		if (url!=null) {
 			String runtimeFile = downloadRuntime(url);
 			if (runtimeFile!=null) {
 				// where to unzip it?
 				File runtimeOutput;
-				File runtimeHomeAbs = new File(bean.runtimeHome).getAbsoluteFile();
-				if (TestConfigurator.Values.SERVER_TYPE_JBOSSAS.equals(bean.type)) {
+				File runtimeHomeAbs = new File(runtimeHome).getAbsoluteFile();
+				if (TestConfigurator.Values.SERVER_TYPE_JBOSSAS.equals(type)) {
 					runtimeOutput=runtimeHomeAbs.getParentFile();
 				}
 				else {
@@ -38,7 +37,6 @@ public class ServerBean extends RuntimeBean {
 				FileHelper.unzipArchive(new File(runtimeFile), runtimeOutput);
 			}			
 		}
-		return bean;
 	}
 	/**
 	 * creates bean instance from property string

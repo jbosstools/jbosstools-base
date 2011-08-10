@@ -65,15 +65,13 @@ public class TestConfiguration {
 		substSystemProperties();
 		java = JavaBean.fromString(getProperty(Keys.JAVA));
 		printConfig(Keys.JAVA, java);
-		server = ServerBean.fromString(getProperty(Keys.SERVER),
-				getProperty(Keys.SERVER + TestConfigurator.RUNTIME_URL_SUFFIX));
+		server = ServerBean.fromString(getProperty(Keys.SERVER));
 		printConfig(Keys.SERVER, server);
 		remoteSystem = RemoteSystemBean.fromString(getProperty(Keys.RS));
 		printConfig(Keys.RS, remoteSystem);
 		seam = SeamBean.fromString(getProperty(Keys.SEAM));
 		printConfig(Keys.SEAM, seam);
-		esb = ESBBean.fromString(getProperty(Keys.ESB),
-				getProperty(Keys.ESB + TestConfigurator.RUNTIME_URL_SUFFIX));
+		esb = ESBBean.fromString(getProperty(Keys.ESB));
 		printConfig(Keys.ESB, esb);
 		jbpm = JBPMBean.fromString(getProperty(Keys.JBPM));
 		printConfig(Keys.JBPM, jbpm);
@@ -81,7 +79,25 @@ public class TestConfiguration {
 		printConfig(Keys.DB, db);
 		secureStorage = SecureStorage.fromString(Keys.SS, getProperty(Keys.SS));
 		printConfig("Secure Storage", secureStorage);
+	}
+	/**
+	 * initializes this configuration - runtimes, downloaded, homes checked
+	 */
+	public void initialize() throws Exception {
+		getRuntime(server);
+		getRuntime(esb);
+		getRuntime(seam);
 		checkConfig();
+	}
+	/**
+	 * attempts to get (download) runtime zip for given bean
+	 * @param bean
+	 * @throws Exception
+	 */
+	private void getRuntime(RuntimeBean bean) throws Exception {
+		if (bean!=null) {
+			bean.getRuntime(getProperty(bean.key+TestConfigurator.RUNTIME_URL_SUFFIX));
+		}
 	}
 
 	/**

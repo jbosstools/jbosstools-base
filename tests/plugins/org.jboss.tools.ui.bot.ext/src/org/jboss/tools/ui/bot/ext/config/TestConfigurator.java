@@ -80,12 +80,12 @@ public class TestConfigurator {
 		boolean loadDefault = true;
 
 		try {
-			Pattern configMatch = Pattern.compile("nomatch");
+			Pattern configMatch = Pattern.compile("");
 			try {
-			configMatch = Pattern.compile(System.getProperty(CONFIGURATIONS_IGNORE, "nomatch"));
+			configMatch = Pattern.compile(System.getProperty(CONFIGURATIONS_IGNORE, ""));
 			}
 			catch (Exception ex) {
-				log.error("Error parsing property "+CONFIGURATIONS_IGNORE,ex);
+				log.error("Error parsing regex property "+CONFIGURATIONS_IGNORE,ex);
 			}
 			// try to load from file first
 			String propFile = System.getProperty(SWTBOT_TEST_PROPERTIES_FILE,
@@ -316,7 +316,34 @@ public class TestConfigurator {
 		}
 		return RequirementBase.prepareDB();
 	}
-
+	/**
+	 * returns true if given class requires any of all possible runtimes
+	 * @param klass
+	 * @return
+	 */
+	public static boolean isRequiresAnyRuntime(Class<?> klass) {
+		SWTBotTestRequires an = klass
+		.getAnnotation(SWTBotTestRequires.class);
+		if (an==null) {
+			return false;
+		}
+		return an.db().required() || an.esb().required()
+		|| an.jbpm().required() || an.seam().required()
+		|| an.server().required();
+	}
+	/**
+	 * returns true if given class has {@link SWTBotTestRequires#runOnce()} annotation set to true
+	 * @param klass
+	 * @return
+	 */
+	public static boolean isRequiresRunOnce(Class<?> klass) {
+		SWTBotTestRequires an = klass
+		.getAnnotation(SWTBotTestRequires.class);
+		if (an==null) {
+			return false;
+		}
+		return an.runOnce();
+	}
 	/**
 	 * returns list of requirements if given class (Test) can run, all this is
 	 * done by exploring class'es annotations (see {@link SWTBotTestRequires}) and check against

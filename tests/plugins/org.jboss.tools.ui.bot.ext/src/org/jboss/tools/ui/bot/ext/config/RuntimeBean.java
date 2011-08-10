@@ -36,16 +36,14 @@ public class RuntimeBean {
 			}
 	}
 	
-	protected static RuntimeBean fromString(String propValue, String url, RuntimeBean bean) throws Exception {
-		bean = fromString(propValue, bean);
-		if (bean!=null && url!=null) {
+	protected void getRuntime(String url) throws Exception {
+		if (url!=null) {
 			String runtimeFile = downloadRuntime(url);
 			if (runtimeFile!=null) {
-				File runtimeHomeAbs = new File(bean.runtimeHome).getAbsoluteFile();
+				File runtimeHomeAbs = new File(runtimeHome).getAbsoluteFile();
 				FileHelper.unzipArchive(new File(runtimeFile), runtimeHomeAbs.getParentFile());
 			}			
 		}
-		return bean;
 	}
 	@Override
 	public String toString() {

@@ -3,6 +3,7 @@ package org.jboss.tools.ui.bot.ext;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
@@ -44,7 +45,7 @@ public class RequirementAwareSuite extends Suite {
 	final static DoAfterAllTestsRunListener cleanUp = new DoAfterAllTestsRunListener();
 
 	final Filter categoryFilter;
-	
+
 	public static class CategoryFilter extends Filter {
 		public static CategoryFilter include(Class<?> categoryType) {
 			return new CategoryFilter(categoryType, null);
@@ -55,8 +56,8 @@ public class RequirementAwareSuite extends Suite {
 
 		public CategoryFilter(Class<?> includedCategory,
 				Class<?> excludedCategory) {
-			fIncluded= includedCategory;
-			fExcluded= excludedCategory;
+			fIncluded = includedCategory;
+			fExcluded = excludedCategory;
 		}
 
 		@Override
@@ -75,7 +76,7 @@ public class RequirementAwareSuite extends Suite {
 		}
 
 		private boolean hasCorrectCategoryAnnotation(Description description) {
-			List<Class<?>> categories= categories(description);
+			List<Class<?>> categories = categories(description);
 			if (categories.isEmpty())
 				return fIncluded == null;
 			for (Class<?> each : categories)
@@ -88,25 +89,26 @@ public class RequirementAwareSuite extends Suite {
 		}
 
 		private List<Class<?>> categories(Description description) {
-			ArrayList<Class<?>> categories= new ArrayList<Class<?>>();
+			ArrayList<Class<?>> categories = new ArrayList<Class<?>>();
 			categories.addAll(Arrays.asList(directCategories(description)));
-			//categories.addAll(Arrays.asList(directCategories(parentDescription(description))));
+			// categories.addAll(Arrays.asList(directCategories(parentDescription(description))));
 			return categories;
 		}
 
 		private Description parentDescription(Description description) {
 			// TODO: how heavy are we cringing?
-			return Description.createSuiteDescription(description.getTestClass());
+			return Description.createSuiteDescription(description
+					.getTestClass());
 		}
 
 		private Class<?>[] directCategories(Description description) {
-			Category annotation= description.getAnnotation(Category.class);
+			Category annotation = description.getAnnotation(Category.class);
 			if (annotation == null)
 				return new Class<?>[0];
 			return annotation.value();
 		}
-	}	
-	
+	}
+
 	class ReqAwareClassRunner extends BlockJUnit4ClassRunner {
 		private final TestConfiguration config;
 		private final List<RequirementBase> requirements;
@@ -117,26 +119,31 @@ public class RequirementAwareSuite extends Suite {
 			super(klass);
 			this.requirements = requirements;
 			this.config = config;
-			
+
 			try {
 				filter(categoryFilter);
 			} catch (NoTestsRemainException e) {
 				// TODO Auto-generated catch block
 				throw new InitializationError(e);
 			}
-			
+
+		}
+
+		public List<RequirementBase> getRequirements() {
+			return Collections.unmodifiableList(this.requirements);
 		}
 
 		@Override
 		protected List<FrameworkMethod> computeTestMethods() {
-			List<FrameworkMethod> testMethods = getTestClass().getAnnotatedMethods(Test.class);
+			List<FrameworkMethod> testMethods = getTestClass()
+					.getAnnotatedMethods(Test.class);
 			for (FrameworkMethod method : testMethods) {
 				method.getAnnotation(Category.class);
 			}
 			return testMethods;
-			
+
 		}
-		
+
 		@Override
 		public void run(RunNotifier notifier) {
 			// planned test counter must know about all tests (methods) within a
@@ -196,15 +203,25 @@ public class RequirementAwareSuite extends Suite {
 			if (!this.config.equals(TestConfigurator.currentConfig)) {
 				TestConfigurator.currentConfig = this.config;
 			}
-			log.info("class "+klass.getCanonicalName());
-			List<RequirementBase> reqs = TestConfigurator.getClassRequirements(klass);
+			log.info("class " + klass.getCanonicalName());
+			List<RequirementBase> reqs = TestConfigurator
+					.getClassRequirements(klass);
 			if (reqs != null) {
-				SWTBotTestRequires anno = klass.getAnnotation(SWTBotTestRequires.class);
-				if (anno!=null && anno.runOnce() && cleanUp.isClassPlanned(klass)) {
-					// class is already planned to run and contains annotation runOnce
-					log.info("runOnce=true, class already planned");
-					log.info("Skipped");
-					return null;
+				if (cleanUp.isClassPlanned(klass)) {
+					if (TestConfigurator.isRequiresRunOnce(klass)) {
+						// class is already scheduled to run and contains
+						// annotation runOnce
+						log.info("runOnce=true, class already planned");
+						log.info("Skipped");
+						return null;
+					}
+					if (!TestConfigurator.isRequiresAnyRuntime(klass)) {
+						// class is scheduled and does not require any runtime, thus
+						// no need to run it against other configuration
+						log.info("no runtimes required + class already planned");
+						log.info("Skipped");
+						return null;
+					}
 				}
 				log.info("OK");
 				// increment number of tests planned to run by 1 (class contains
@@ -222,7 +239,8 @@ public class RequirementAwareSuite extends Suite {
 
 	/**
 	 * listener which listens to test runs, does some cleanup after all tests
-	 * have run it also holds set of all classes which run (usefull for runOnce annotation)
+	 * have run it also holds set of all classes which run (usefull for runOnce
+	 * annotation)
 	 * 
 	 * @author lzoubek
 	 * 
@@ -238,13 +256,15 @@ public class RequirementAwareSuite extends Suite {
 		public void incrPlanned() {
 			testsAboutToRun += 1;
 		}
+
 		/**
 		 * adds class to the list of skipped classes
+		 * 
 		 * @param klass
 		 */
 		public void addSkippedClass(Class<?> klass) {
 			skippedClasses.add(klass.getName());
-			
+
 		}
 
 		public void incrPlanned(int amount) {
@@ -262,24 +282,31 @@ public class RequirementAwareSuite extends Suite {
 		public int getFinished() {
 			return testsFinished;
 		}
+
 		private Set<String> classes = new HashSet<String>();
+
 		/**
 		 * adds class to runList - as it is planned to run
+		 * 
 		 * @param klass
 		 */
 		public void addClass(Class<?> klass) {
 			classes.add(klass.getName());
 		}
+
 		public boolean isClassPlanned(Class<?> klass) {
 			return classes.contains(klass.getName());
 		}
+
 		/**
 		 * set of classes that has been skipped (annotations not met etc)
 		 */
 		private Set<String> skippedClasses = new TreeSet<String>();
+
 		private void reportSkippedClasses() {
 			Set<String> finalized = new TreeSet<String>();
-			// lets figure out if a class that has been at least once skipped was not planned
+			// lets figure out if a class that has been at least once skipped
+			// was not planned
 			for (String clazz : skippedClasses) {
 				if (!classes.contains(clazz)) {
 					finalized.add(clazz);
@@ -288,17 +315,18 @@ public class RequirementAwareSuite extends Suite {
 			if (!finalized.isEmpty()) {
 				log.info("Several test classes have been skipped, see head of log to figure out why it happened");
 				for (String clazz : finalized) {
-					log.info(" * "+clazz);
+					log.info(" * " + clazz);
 				}
 			}
 		}
+
 		@Override
 		public void testFinished(Description description) throws Exception {
 			incrFinished();
 			log.info("Finished test : " + description.getDisplayName());
 			log.info("Finished tests : " + getFinished() + "/" + getPlanned());
 			if (getFinished() >= getPlanned()) {
-				log.info("All tests finished, performing cleanup requirements ");				
+				log.info("All tests finished, performing cleanup requirements ");
 				try {
 					RequirementBase.createStopServer().fulfill();
 					RequirementBase.createStopDBServer().fulfill();
@@ -329,7 +357,7 @@ public class RequirementAwareSuite extends Suite {
 	public RequirementAwareSuite(Class<?> klass) throws Throwable {
 		super(klass, Collections.<Runner> emptyList());
 		log.info("Loading test configurations");
-				
+
 		for (Entry<Object, Object> entry : TestConfigurator.multiProperties
 				.entrySet()) {
 			try {
@@ -338,23 +366,30 @@ public class RequirementAwareSuite extends Suite {
 				String suiteName = config.getPropName() + " - "
 						+ klass.getCanonicalName();
 				log.info("Determine whether test classes meet configuration");
-				runners.add(new NamedSuite(klass,
-						new RequirementAwareRunnerBuilder(config), suiteName));
+				NamedSuite suite = new NamedSuite(klass,new RequirementAwareRunnerBuilder(config), suiteName);
+				if (suite.getRunnerCount()>0) {
+					log.info("Suite (configuration) '"+suiteName+"' initialized with "+suite.getRunnerCount()+" runners.");
+					log.info(suite.getRunnerCount());
+					runners.add(suite);
+					config.initialize();
+				}
+				else {
+					log.info("Suite (configuration) '"+suiteName+"' skipped, no runners");				
+				}
 			} catch (Exception ex) {
 				log.error("Error loading test configuration", ex);
-				throw ex; 				
+				throw ex;
 			}
 		}
-		
+
 		try {
 			categoryFilter = new CategoryFilter(getIncludedCategory(klass),
-					getExcludedCategory(klass)); 
+					getExcludedCategory(klass));
 			filter(categoryFilter);
-			
+
 		} catch (NoTestsRemainException e) {
 			throw new InitializationError(e);
 		}
-		
 	}
 
 	@Override
@@ -370,21 +405,28 @@ public class RequirementAwareSuite extends Suite {
 			super(klass, builder);
 			this.suiteName = name;
 		}
+		/**
+		 * gets count of test runners within this suite
+		 * @return
+		 */
+		public int getRunnerCount() {
+			return getChildren().size();
+		}
 
 		@Override
 		protected String getName() {
 			return suiteName;
 		}
-
 	}
-	
+
 	private Class<?> getIncludedCategory(Class<?> klass) {
-		IncludeCategory annotation= klass.getAnnotation(IncludeCategory.class);
+		IncludeCategory annotation = klass.getAnnotation(IncludeCategory.class);
 		return annotation == null ? null : annotation.value();
 	}
 
 	private Class<?> getExcludedCategory(Class<?> klass) {
-		ExcludeCategory annotation= klass.getAnnotation(ExcludeCategory.class);
+		ExcludeCategory annotation = klass.getAnnotation(ExcludeCategory.class);
 		return annotation == null ? null : annotation.value();
 	}
+
 }
