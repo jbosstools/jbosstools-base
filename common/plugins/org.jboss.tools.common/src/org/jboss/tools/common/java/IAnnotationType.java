@@ -1,9 +1,7 @@
 package org.jboss.tools.common.java;
 
 import java.util.List;
-import java.util.Set;
 
-import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 
 /**
