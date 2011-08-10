@@ -70,18 +70,16 @@ public class ChainTextHover implements ITextHover, ITextHoverExtension, ITextHov
 //		hoverList.add(new ProblemAnnotationHoverProcessor());
 		hoverList.add(new MarkerProblemAnnotationHoverProcessor());
 
-		if (fTagInfoHovers != null) {
-			for (int i = 0; i < fTagInfoHovers.length; i++) {
+		for (int i = 0; i < fTagInfoHovers.length; i++) {
 //				if (fTagInfoHovers[i] instanceof FaceletTagInfoHoverProcessor) {
-				if (fTagInfoHovers[i].getClass().getName().startsWith("org.jboss.tools.")) {
-					hoverList.add(fTagInfoHovers[i]);
-				}
+			if (fTagInfoHovers[i].getClass().getName().startsWith("org.jboss.tools.")) {
+				hoverList.add(fTagInfoHovers[i]);
 			}
-			for (int i = 0; i < fTagInfoHovers.length; i++) {
+		}
+		for (int i = 0; i < fTagInfoHovers.length; i++) {
 //				if (!(fTagInfoHovers[i] instanceof FaceletTagInfoHoverProcessor)) {
-				if (!(fTagInfoHovers[i].getClass().getName().startsWith("org.jboss.tools."))) {
-					hoverList.add(fTagInfoHovers[i]);
-				}
+			if (!(fTagInfoHovers[i].getClass().getName().startsWith("org.jboss.tools."))) {
+				hoverList.add(fTagInfoHovers[i]);
 			}
 		}
 		hoverList.add(new AnnotationHoverProcessor());
