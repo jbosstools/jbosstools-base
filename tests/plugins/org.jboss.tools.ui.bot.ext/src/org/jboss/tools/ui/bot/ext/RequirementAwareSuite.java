@@ -367,14 +367,14 @@ public class RequirementAwareSuite extends Suite {
 						+ klass.getCanonicalName();
 				log.info("Determine whether test classes meet configuration");
 				NamedSuite suite = new NamedSuite(klass,new RequirementAwareRunnerBuilder(config), suiteName);
+				// when no class mathces given config, do not init it 
 				if (suite.getRunnerCount()>0) {
-					log.info("Suite (configuration) '"+suiteName+"' initialized with "+suite.getRunnerCount()+" runners.");
-					log.info(suite.getRunnerCount());
+					log.info("Configuration '"+config.getPropName()+"' initialized with "+suite.getRunnerCount()+" runners.");
 					runners.add(suite);
 					config.initialize();
 				}
 				else {
-					log.info("Suite (configuration) '"+suiteName+"' skipped, no runners");				
+					log.info("Configuration '"+config.getPropName()+"' skipped, no runners");				
 				}
 			} catch (Exception ex) {
 				log.error("Error loading test configuration", ex);
