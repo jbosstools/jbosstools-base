@@ -4700,7 +4700,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : Web Services->WSDL
 			*/
 			public static final INewObject LABEL = new INewObject() {
-				public String getName() { return "WSDL";}
+				public String getName() { return "WSDL File";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("Web Services");
