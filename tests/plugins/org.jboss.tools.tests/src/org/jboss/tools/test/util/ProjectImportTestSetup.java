@@ -25,8 +25,9 @@ import org.eclipse.core.runtime.CoreException;
 public class ProjectImportTestSetup extends TestSetup {
 
 	private String bundleName;
-	private String[] projectPaths;
-	private String[] projectNames;
+	protected String[] projectPaths;
+	protected String[] projectNames;
+	protected IProject[] projects;
 
 	/**
 	 * @param test
@@ -50,14 +51,14 @@ public class ProjectImportTestSetup extends TestSetup {
 	}
 
 	public IProject[] importProjects() throws Exception {
-		IProject[] projects = new IProject[projectPaths.length]; 
+		projects = new IProject[projectPaths.length]; 
 		JobUtils.waitForIdle();
 		for (int i = 0; i < projectPaths.length; i++) {
 			projects[i] = ResourcesUtils.importProject(bundleName, projectPaths[i]);
-			JobUtils.waitForIdle();
+			projects[i].build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
 		}
 		return projects;
-	}	
+	}
 
 	public static IProject loadProject(String projectName) throws CoreException {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
@@ -79,14 +80,13 @@ public class ProjectImportTestSetup extends TestSetup {
 	@Override
 	protected void tearDown() throws Exception {
 		boolean saveAutoBuild = ResourcesUtils.setBuildAutomatically(false);
-		JobUtils.waitForIdle();
 		for (int i = 0; i < projectNames.length; i++) {
 			ResourcesUtils.deleteProject(projectNames[i]);
 			JobUtils.waitForIdle();
 		}
 		ResourcesUtils.setBuildAutomatically(saveAutoBuild);
 	}
-	
+
 	public void deleteProjects() throws Exception {
 		tearDown();
 	}
