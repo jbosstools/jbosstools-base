@@ -29,6 +29,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -300,6 +301,7 @@ public class ResourcesUtils {
 					.getActiveWorkbenchWindow().getShell());
 			// run import
 			importOp.run(null);
+			project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
 			ResourcesUtils.setBuildAutomatically(state);
 
 			JobUtils.waitForIdle(IMPORT_DELAY);
