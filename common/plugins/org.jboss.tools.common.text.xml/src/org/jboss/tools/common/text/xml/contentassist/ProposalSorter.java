@@ -41,9 +41,9 @@ public class ProposalSorter {
 		if (proposals == null)
 			return null;
 		ICompletionProposal[] resultArray = (ICompletionProposal[])proposals.toArray(new ICompletionProposal[proposals.size()]);
+		resultArray = makeUnique(resultArray);
 		Object[] sorted = createSorter().sort(resultArray);
 		System.arraycopy(sorted, 0, resultArray, 0, sorted.length);
-		resultArray = makeUnique(resultArray);
 		return Arrays.asList(resultArray);
 	}
 	
@@ -107,6 +107,15 @@ public class ProposalSorter {
 			if (existingProposal == null) {
 				existingProposals.put(replString, proposal);
 				unique.add(proposal);
+			} else {
+				if (existingProposal instanceof IRelevanceCompletionProposal && proposal instanceof IRelevanceCompletionProposal) {
+					if (((IRelevanceCompletionProposal)existingProposal).getRelevance() <
+							((IRelevanceCompletionProposal)proposal).getRelevance()) {
+						existingProposals.put(replString, proposal);
+						unique.remove(existingProposal);
+						unique.add(proposal);
+					}
+				}
 			}
 		}
 		return unique.toArray(new ICompletionProposal[unique.size()]);
