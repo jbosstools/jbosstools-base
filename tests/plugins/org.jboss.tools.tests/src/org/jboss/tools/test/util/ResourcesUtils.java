@@ -312,7 +312,6 @@ public class ResourcesUtils {
 //			VPETestPlugin.getDefault().logError(ie);
 			ie.printStackTrace();
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException ex) {
 			ex.printStackTrace();

@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
@@ -58,6 +59,7 @@ public class TestProjectProvider {
 				} else {
 					project = ResourcesUtils.importProject(bundleName, projectPath, name, null);
 				}
+				project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
 			}
 		} catch (IOException e) {
 			throw new CoreException(new Status(Status.ERROR,bundleName,e.getMessage(),e));
