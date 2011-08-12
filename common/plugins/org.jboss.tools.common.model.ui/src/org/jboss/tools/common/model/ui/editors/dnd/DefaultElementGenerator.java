@@ -61,19 +61,15 @@ public class DefaultElementGenerator implements IElementGenerator {
 					}
 				}
 				
-				if(tagName.indexOf(':') > 0) { //TODO html case, old kb had specific method
-					if(valueProvider.canHaveBody()) {
-						tagText
-							.append(">") //$NON-NLS-1$
-							.append("</") //$NON-NLS-1$
-							.append(fullName);
-					} else {
-						tagText
-							.append("/"); //$NON-NLS-1$
-					}
-				} 
-				tagText			
-					.append(">"); //$NON-NLS-1$
+				if(valueProvider.canHaveBody()) {
+					tagText
+						.append(">") //$NON-NLS-1$
+						.append("</") //$NON-NLS-1$
+						.append(fullName);
+				} else {
+					tagText.append("/"); //$NON-NLS-1$
+				}
+				tagText.append(">"); //$NON-NLS-1$
 
 			} else {
 				tagText
