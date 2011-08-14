@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+	    <launchConfigurationTabGroup
+            type="org.eclipse.jdt.launching.remoteJavaApplication"
+            description="Attach to a Java virtual machine accepting debug connections"
+            class="org.jboss.tools.common.jdt.debug.ui.launching.JBossRemoteJavaApplicationTabGroup2"
+            id="org.jboss.tools.common.jdt.debug.ui.launching.launchConfigurationTabGroup.JBossRemoteJavaApplication2">
+        </launchConfigurationTabGroup>
+    </extension>
+    <!--
+	<extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.jboss.tools.common.jdt.debug.launching.JBossRemoteJavaApplication"
+            description="%remoteJavaApplicationTabGroupDescription"
+            class="org.jboss.tools.common.jdt.debug.ui.launching.JBossRemoteJavaApplicationTabGroup"
+            id="org.jboss.tools.common.jdt.debug.ui.launching.launchConfigurationTabGroup.JBossRemoteJavaApplication">
+      </launchConfigurationTabGroup>
+    </extension>
+    
+    <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="$nl$/icons/jboss.gif"
+            configTypeID="org.jboss.tools.common.jdt.debug.launching.JBossRemoteJavaApplication"
+            id="org.jboss.tools.common.jdt.debug.launchConfigurationTypeImage.JBossRemoteJavaApplication">
+      </launchConfigurationTypeImage>
+   </extension>
+   
+   <extension point="org.eclipse.core.expressions.propertyTesters">
+   		<propertyTester
+      		id="org.jboss.tools.common.jdt.debug.ui.propertyTester"
+      		namespace="org.jboss.tools.common.jdt.debug.ui"
+      		properties="remoteCount, remoteExists"
+      		type="java.lang.Object"
+      		class="org.jboss.tools.common.jdt.debug.ui.actions.RemoteApplicationPropertyTester">
+   		</propertyTester>
+   </extension>
+   
+   <extension point="org.eclipse.ui.menus">
+       <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+        <menu
+               id="org.jboss.tools.common.jdt.debug.ui.remoteDebug"
+               label="%menu.label"
+               mnemonic="%menu.mnemonic">
+            <dynamic class="org.jboss.tools.common.jdt.debug.ui.actions.RemoteDebugItems"
+      			id="org.jboss.tools.common.jdt.debug.ui.items"/>
+            <visibleWhen
+                  checkEnabled="false">
+               <with variable="selection">
+             		<iterate>
+             			<adapt type="org.eclipse.core.resources.IProject">
+             				<test property="org.eclipse.core.resources.projectNature" value="org.eclipse.jdt.core.javanature"/>
+                		</adapt>
+                		
+                		<test 
+                			forcePluginActivation="true"
+                			property="org.jboss.tools.common.jdt.debug.ui.remoteExists"
+                			value="true"/>
+                		
+             </iterate>
+           </with>
+            </visibleWhen>
+            <separator
+                  name="additions"
+                  visible="false">
+            </separator>
+         </menu>
+   		</menuContribution>
+   </extension> 
+   
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="JBoss Tools Remote Debugging"
+            description="JBoss Tools Remote Debugging"
+            id="org.jboss.tools.common.jdt.debug" />
+      <command
+            name="Remote Debug 0"
+            description="Remote Debug 0"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.0">
+      </command>
+      <command
+            name="Remote Debug 1"
+            description="Remote Debug 1"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.1">
+      </command>
+      <command
+            name="Remote Debug 2"
+            description="Remote Debug 2"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.2">
+      </command>
+      <command
+            name="Remote Debug 3"
+            description="Remote Debug 3"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.3">
+      </command>
+      <command
+            name="Remote Debug 4"
+            description="Remote Debug 4"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.4">
+      </command>
+      <command
+            name="Remote Debug 5"
+            description="Remote Debug 5"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.5">
+      </command>
+      <command
+            name="Remote Debug 6"
+            description="Remote Debug 6"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.6">
+      </command>
+      <command
+            name="Remote Debug 7"
+            description="Remote Debug 7"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.7">
+      </command>
+      <command
+            name="Remote Debug 8"
+            description="Remote Debug 8"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.8">
+      </command>
+      <command
+            name="Remote Debug 9"
+            description="Remote Debug 9"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.9">
+      </command>
+      
+      <command
+            name="Configure"
+            description="Configure"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.RemoteDebugHandler"
+            id="org.jboss.tools.common.jdt.debug.ui.configure">
+      </command>
+      
+      <command
+            name="Discover Remote Applications"
+            description="Discover Remote Applications"
+            categoryId="org.jboss.tools.common.jdt.debug"
+            defaultHandler="org.jboss.tools.common.jdt.debug.ui.handlers.DiscoverRemoteApplicationHandler"
+            id="org.jboss.tools.common.jdt.debug.ui.discover">
+      </command>
+      
+    </extension>
+    
+    <extension
+       point="org.eclipse.ui.bindings">
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.0"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D 0">
+    	</key>
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.1"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D 1">
+    	</key>
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.2"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D 2">
+    	</key>
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.3"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D 3">
+    	</key>
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.4"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D 4">
+    	</key>
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.5"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D 5">
+    	</key>
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.6"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D 6">
+    	</key>
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.7"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D 7">
+    	</key>
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.8"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D 8">
+    	</key>
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.9"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D 9">
+    	</key>
+    	<key
+          commandId="org.jboss.tools.common.jdt.debug.ui.discover"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+D D">
+    	</key>
+    	
+   </extension>       
+   -->
+   
+   <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           category="org.jboss.tools.common.model.ui.MainPreferencePage"
+           class="org.jboss.tools.common.jdt.debug.ui.preferences.RemoteDebugPreferencePage"
+           id="org.jboss.tools.common.jdt.debug.ui.preferences.RemoteDebugPreferencePage"
+           name="Remote Debug"/>
+   </extension>
+   
+   <extension point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+           class="org.jboss.tools.common.jdt.debug.ui.launching.RemoteJavaApplicationLaunchShortcut"
+           description="Remote Java Application..."
+           icon="$nl$/icons/jboss.gif"
+           id="org.jboss.tools.common.jdt.debug.ui.remoteJavaApplicationShortcut"
+           label="Remote Java Application..."
+           modes="debug">
+       <contextualLaunch>
+         <enablement>
+           <with variable="selection">
+              <iterate>
+                <adapt type="org.eclipse.jdt.core.IJavaElement">
+             		<test property="org.eclipse.jdt.core.isInJavaProject"/>
+                </adapt>
+              </iterate>
+             </with>
+         </enablement>
+                </contextualLaunch>
+       <configurationType
+              id="org.eclipse.jdt.launching.remoteJavaApplication">
+       </configurationType>
+       <description
+              description="Remote Java Application..."
+              mode="debug">
+       </description>
+    </shortcut>
+ </extension>
+ 
+ <extension
+         point="org.eclipse.ui.commands">
+      <command
+            name="Remote Java Application..."
+            description="Remote Java Application..."
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.jboss.tools.common.jdt.debug.ui.remoteJavaApplicationShortcut.debug">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            sequence="M3+M2+D D"
+            commandId="org.jboss.tools.common.jdt.debug.ui.remoteJavaApplicationShortcut.debug"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
+   
+</plugin>

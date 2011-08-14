@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    
+	<!--
+	<extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+      		delegate="org.eclipse.jdt.internal.launching.JavaRemoteApplicationLaunchConfigurationDelegate"
+            delegateDescription="%remoteJavaApplicationDelegate.description"
+            delegateName="%eclipseJDTLauncher.name"
+            id="org.jboss.tools.common.jdt.debug.launching.JBossRemoteJavaApplication"
+            migrationDelegate="org.eclipse.jdt.internal.launching.JavaMigrationDelegate"
+            modes="debug"
+            name="%remoteJavaApplication"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.jboss.tools.common.jdt.debug.sourceLookup.remoteDebugSourcePathComputer">
+      </launchConfigurationType>
+    </extension>
+    -->
+    
+    <extension point="org.eclipse.debug.core.sourcePathComputers">
+   		<sourcePathComputer
+   			id="org.jboss.tools.common.jdt.debug.sourceLookup.remoteDebugSourcePathComputer"
+   			class="org.jboss.tools.common.jdt.debug.sourcelookup.RemoteDebugSourcePathComputer">
+   		</sourcePathComputer>
+    </extension>
+   
+</plugin>
