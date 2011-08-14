@@ -23,6 +23,9 @@
 	<feature url="features/org.jboss.tools.common.verification.feature_0.0.0.jar" id="org.jboss.tools.common.verification.feature" version="0.0.0">
 		<category name="JBoss Tools common Nightly Build Update Site"/>
 	</feature>
+	<feature url="features/org.jboss.tools.common.jdt.feature_0.0.0.jar" id="org.jboss.tools.common.jdt.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
 
 	<!-- add tests plugins since downstream projects like ESB depend on them -->
 	<feature url="features/org.jboss.tools.common.all.tests.feature_0.0.0.jar" id="org.jboss.tools.common.all.tests.feature" version="0.0.0">
