@@ -1569,7 +1569,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : JBoss Community->JBoss AS 6.0
 			*/
 			public static final IServer LABEL = new IServer() {
-				public String getName() { return "JBoss AS 6.0";}
+				public String getName() { return "JBoss AS 6.x";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Community");
@@ -10584,7 +10584,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : JBoss Community->JBoss 6.0 Runtime
 			*/
 			public static final IServerRuntime LABEL = new IServerRuntime() {
-				public String getName() { return "JBoss 6.0 Runtime";}
+				public String getName() { return "JBoss 6.x Runtime";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Community");
