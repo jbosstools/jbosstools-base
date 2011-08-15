@@ -157,7 +157,11 @@ public class SWTOpenExt {
 		bot.menu("Window").menu("Open Perspective").menu("Other...").click();
 		SWTBotShell shell = bot.shell("Open Perspective");
 		shell.activate();
-		bot.table().select(perspective.getName());
+		if(bot.table().containsItem(perspective.getName())) {
+			bot.table().select(perspective.getName());
+		} else {
+			bot.table().select(perspective.getName()+ " (default)");
+		}
 		bot.button("OK").click();
 		log.info("Perspective switched to '" + perspective.getName() + "'");
 	}
