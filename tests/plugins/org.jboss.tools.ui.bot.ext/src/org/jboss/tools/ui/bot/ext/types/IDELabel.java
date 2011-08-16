@@ -161,6 +161,9 @@ public class IDELabel {
 	  public static final String ADD_CSS_REFERENCE = "Add CSS Reference";
 	  public static final String NEW_CSS_FILE = "New CSS File";
 	  public static final String NEW_HTML_FILE = "New HTML File";
+	  public static final String ADD_SVN_REPOSITORY = "Add SVN Repository";
+	  public static final String REPOSITORY_LOCATION_PROPERTIES = "Repository Location Properties";
+	  public static final String SECURE_STORAGE = "Secure Storage";
 	}
 
 	public class EntityGroup {
@@ -685,5 +688,17 @@ public class IDELabel {
      public static final String TEMPLATE_LABEL = "Template*";
      public static final String RUNTIME_LABEL = "Runtime*";
      public static final String HOME_DIRECTORY_LABEL = "Home Directory";
-   } 
+   }
+   
+   public static class SVNRepositoriesView {
+
+     public static final String ADD_SVN_REPOSITORY_TOOLTIP = "Add SVN Repository";
+     
+   }
+   
+   public static class AddSVNRepositoryDialog {
+
+     public static final String URL_TEXT_LABEL = "Url:";
+     
+   }
  }
