@@ -51,7 +51,7 @@ public class ProblemsView extends ViewBase {
   public static SWTBotTreeItem[] getFilteredWarningsTreeItems(SWTBotExt bot, String descriptionContains, String pathStartsWith,
       String resourceText,String typeText){
     
-    SWTBotTreeItem[] warningsTreeItems = null;
+    SWTBotTreeItem[] warningsTreeItems = new SWTBotTreeItem[0];
     SWTBotTreeItem warningsNode = ProblemsView.getWarningsNode(bot);
     SWTBotTree tree = bot.tree();
     if (warningsNode != null){
@@ -77,7 +77,7 @@ public class ProblemsView extends ViewBase {
   public static SWTBotTreeItem[] getFilteredErrorsTreeItems(SWTBotExt bot, String descriptionContains, String pathStartsWith,
       String resourceText,String typeText){
     
-    SWTBotTreeItem[] errorsTreeItems = null;
+    SWTBotTreeItem[] errorsTreeItems = new SWTBotTreeItem[0];
     SWTBotTreeItem errorsNode = ProblemsView.getErrorsNode(bot);
     SWTBotTree tree = bot.tree();
     if (errorsNode != null){
