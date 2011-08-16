@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
@@ -1287,10 +1288,12 @@ public class SWTEclipseExt {
 	  }
 	  return sb.toString();
   }
-  public static String getFormattedTreeNodeText (SWTBotTree tree, SWTBotTreeItem item){
+  public static String getFormattedTreeNodeText (SWTBotTreeItem item){
     StringBuilder stringBuilder = new StringBuilder("");
     
     if (item != null){
+      SWTBotTree tree = 
+        new SWTBotTree((Tree)SWTUtilExt.invokeMethodReturnObject(item.widget, "getParent"));
       for (int column = 0 ; column < tree.columnCount(); column++){
         if (column > 0){
           stringBuilder.append(" - ");
@@ -1309,7 +1312,7 @@ public class SWTEclipseExt {
     
   }
 
-  public static String getFormattedTreeNodesText (SWTBotTree tree, SWTBotTreeItem[] items){
+  public static String getFormattedTreeNodesText (SWTBotTreeItem[] items){
     StringBuilder stringBuilder = new StringBuilder("");
     
     if (items != null){
@@ -1317,7 +1320,7 @@ public class SWTEclipseExt {
         if (stringBuilder.length() > 0){
           stringBuilder.append("\n");
         }
-        stringBuilder.append(SWTEclipseExt.getFormattedTreeNodeText(tree,item));
+        stringBuilder.append(SWTEclipseExt.getFormattedTreeNodeText(item));
       }
     }
     

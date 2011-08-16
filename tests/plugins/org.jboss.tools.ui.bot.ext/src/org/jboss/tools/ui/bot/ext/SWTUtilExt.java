@@ -769,6 +769,28 @@ public class SWTUtilExt extends SWTUtils {
     return result;
   }
   /**
+   * Invoke method on object and returns result as Object
+   * @param object
+   * @param method
+   * @return
+   */
+  public static Object invokeMethodReturnObject (Object object, String method){
+    
+    String result = "<null>";
+    
+    try {
+      return SWTUtils.invokeMethod(object, method);
+    } catch (NoSuchMethodException e) {
+      result = "<null>";
+    } catch (IllegalAccessException e) {
+      result = "<null>";
+    } catch (InvocationTargetException e) {
+      result = "<null>";
+    }
+    
+    return result;
+  }
+  /**
    * Returns location of file within plugin 
    * @param pluginId
    * @param fileName
