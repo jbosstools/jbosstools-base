@@ -860,6 +860,49 @@ public class EclipseResourceUtil extends EclipseUtil {
 		}
 		return folders;
 	}
+	
+	private static class SourceFoldersCollector {
+		IProject project;
+		Set<IFolder> folders = new HashSet<IFolder>();
+		Set<IProject> processed = new HashSet<IProject>();
+
+		SourceFoldersCollector(IProject project) {
+			this.project = project;
+			process(project);
+		}
+		
+		void process(IProject project) {
+			if(processed.contains(project)) {
+				return;
+			}
+			processed.add(project);
+			folders.addAll(getSourceFolders(project));
+			IJavaProject javaProject = getJavaProject(project);
+			if(javaProject == null) {
+				return;
+			}
+			IClasspathEntry[] es = null;
+			try {
+				es = javaProject.getResolvedClasspath(true);
+			} catch (CoreException e) {
+				ModelPlugin.getDefault().logError(e);
+				return;
+			}
+			for (int i = 0; i < es.length; i++) {
+				if(es[i].getEntryKind() == IClasspathEntry.CPE_PROJECT
+						&& (project == this.project || es[i].isExported())) {
+					IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(es[i].getPath().lastSegment());
+					if(p != null && p.isAccessible()) {
+						process(p);
+					}
+				}
+			}
+		}
+	}
+
+	public static Set<IFolder> getAllVisibleSourceFolders(IProject project) {
+		return new SourceFoldersCollector(project).folders;
+	}
 
 	public static void openResource(IResource resource) {
 		XModelObject o = getObjectByResource(resource);
