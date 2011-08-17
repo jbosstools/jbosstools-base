@@ -1,5 +1,6 @@
 package org.jboss.tools.ui.bot.ext;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -128,6 +129,7 @@ public class RequirementAwareSuite extends Suite {
 			}
 
 		}
+		
 
 		public List<RequirementBase> getRequirements() {
 			return Collections.unmodifiableList(this.requirements);
@@ -135,14 +137,18 @@ public class RequirementAwareSuite extends Suite {
 
 		@Override
 		protected List<FrameworkMethod> computeTestMethods() {
-			List<FrameworkMethod> testMethods = getTestClass()
-					.getAnnotatedMethods(Test.class);
+			List<FrameworkMethod> testMethods = new ArrayList<FrameworkMethod>();			
+			for (Method mm : getTestClass().getJavaClass().getMethods()) {
+				if (mm.getName().startsWith("test") || mm.getAnnotation(Test.class)!=null) {
+					testMethods.add(new FrameworkMethod(mm));
+				}
+			}
 			for (FrameworkMethod method : testMethods) {
 				method.getAnnotation(Category.class);
 			}
 			return testMethods;
-
 		}
+		
 
 		@Override
 		public void run(RunNotifier notifier) {
@@ -184,9 +190,12 @@ public class RequirementAwareSuite extends Suite {
 				log.error("Fulfilling failed", e);
 			}
 			log.info("Done");
+
+
 			return super.withBeforeClasses(statement);
 		}
 	}
+	
 
 	private static final Logger log = Logger
 			.getLogger(RequirementAwareSuite.class);
