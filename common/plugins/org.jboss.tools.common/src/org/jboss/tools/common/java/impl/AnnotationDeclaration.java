@@ -11,14 +11,21 @@
 package org.jboss.tools.common.java.impl;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IImportDeclaration;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IType;
+import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.java.IAnnotationDeclaration;
 import org.jboss.tools.common.java.IAnnotationType;
 import org.jboss.tools.common.java.IJavaAnnotation;
 import org.jboss.tools.common.java.impl.JavaAnnotation;
+import org.jboss.tools.common.util.EclipseJavaUtil;
 
 /**
  * 
@@ -45,14 +52,14 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	public IMemberValuePair[] getMemberValuePairs() {
 		return annotation.getMemberValuePairs();
 	}
-
+	
 	public Object getMemberValue(String name) {
-		if(name == null) name = "value";
+		if(name == null) name = "value"; //$NON-NLS-1$
 		IMemberValuePair[] pairs = getMemberValuePairs();
 		if(pairs != null) {
 			for (IMemberValuePair pair: pairs) {
 				if(name.equals(pair.getMemberName())) {
-					return pair.getValue();
+					return resolveMemberValue(pair);
 				}
 			}
 		}
@@ -86,6 +93,72 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	public IAnnotation getJavaAnnotation() {
 		if(annotation instanceof JavaAnnotation) {
 			return ((JavaAnnotation) annotation).getAnnotation();
+		}
+		return null;
+	}
+
+	public Object resolveMemberValue(IMemberValuePair pair) {
+		Object value = pair.getValue();
+		int k = pair.getValueKind();
+		if(k == IMemberValuePair.K_QUALIFIED_NAME || k == IMemberValuePair.K_SIMPLE_NAME
+			|| (value instanceof Object[] && k == IMemberValuePair.K_UNKNOWN)) {
+			IAnnotation a = getJavaAnnotation();
+			if(a != null && a.getAncestor(IJavaElement.COMPILATION_UNIT) instanceof ICompilationUnit) {
+				value = validateNamedValue(value, a);
+			}
+		}
+		return value;
+	}
+
+	private Object validateNamedValue(Object value, IAnnotation a) {
+		if(value instanceof Object[]) {
+			Object[] vs = (Object[])value;
+			for (int i = 0; i < vs.length; i++) {
+				vs[i] = validateNamedValue(vs[i], a);
+			}
+		} else {
+			ICompilationUnit u = (ICompilationUnit)a.getAncestor(IJavaElement.COMPILATION_UNIT);
+			IType type = (IType)a.getAncestor(IJavaElement.TYPE);
+			try {
+				IImportDeclaration[] is = u.getImports();
+				String stringValue = value.toString();
+				int lastDot = stringValue.lastIndexOf('.');
+				String lastToken = stringValue.substring(lastDot + 1);
+				if(lastDot < 0) {
+					IField f = (a.getParent() == type) ? type.getField(lastToken) : EclipseJavaUtil.findField(type, lastToken);
+					if(f != null && f.exists()) {
+						value = f.getDeclaringType().getFullyQualifiedName() + "." + lastToken;
+					} else {
+						String v = getFullName(is, lastToken);
+						if(v != null) {
+							value = v;
+						}
+					}
+					return value;
+				}
+				String prefix = stringValue.substring(0, lastDot);
+				String t = EclipseJavaUtil.resolveType(type, prefix);
+				if(t != null) {
+					IType q = EclipseJavaUtil.findType(type.getJavaProject(), t);
+					if(q != null && q.getField(lastToken).exists()) {
+						value = t + "." + lastToken;
+					}
+				}
+				
+			} catch (CoreException e) {
+				CommonPlugin.getDefault().logError(e);
+			}
+		}
+		
+		return value;
+	}
+
+	private String getFullName(IImportDeclaration[] is, String name) {
+		for (IImportDeclaration d: is) {
+			String n = d.getElementName();
+			if(n.equals(name) || n.endsWith("." + name)) {
+				return n;
+			}
 		}
 		return null;
 	}

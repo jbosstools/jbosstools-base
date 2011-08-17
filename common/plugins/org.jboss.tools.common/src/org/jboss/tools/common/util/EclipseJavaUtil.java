@@ -13,10 +13,13 @@ package org.jboss.tools.common.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
@@ -206,6 +209,48 @@ public class EclipseJavaUtil {
 					}
 				}
 			}
+		}
+		return null;
+	}
+
+	/**
+	 * Finds field declared in the given type or its super types.
+	 * 
+	 * @param type
+	 * @param name
+	 * @return
+	 * @throws CoreException
+	 */
+	public static IField findField(IType type, String name) throws CoreException {
+		return findField(type, name, new HashSet<IType>());
+	}
+	private static IField findField(IType type, String name, Set<IType> processed) throws CoreException {
+		if(!type.exists() || processed.contains(type)) {
+			return null;
+		}
+		processed.add(type);
+		if(type.getField(name).exists()) {
+			return type.getField(name);
+		}
+		IField f = findField(type, type.getSuperclassName(), name, processed);
+		String[] is = type.getSuperInterfaceNames();
+		for (int i = 0; f == null && i < is.length; i++) {
+			f = findField(type, is[i], name, processed);
+		}
+		if(f == null) {
+			IType d = type.getDeclaringType();
+			if(d != null && d != type && d.exists()) {
+				f = findField(d, name);
+			}
+		}
+		
+		return f;
+	}
+	private static IField findField(IType context, String typeName, String fieldName, Set<IType> processed) throws CoreException {
+		typeName = resolveType(context, typeName);
+		if(typeName != null) {
+			IType s = findType(context.getJavaProject(), typeName);
+			return (s != null) ? findField(s, fieldName, processed) : null;
 		}
 		return null;
 	}
