@@ -19,6 +19,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt.StringConditionType;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -101,6 +102,7 @@ public class ProblemsView extends ViewBase {
   public static SWTBotTreeItem getErrorsNode (SWTBotExt bot){
     SWTBotTreeItem errorsNode = null;
     SWTBot problemsBot = SWTEclipseExt.showView(bot,ViewType.PROBLEMS);
+    bot.sleep(Timing.time3S());
     try{
       SWTBotTreeItem[] filteredTreeItems = ProblemsView.getProblemsTreeItemsContainingText(bot,problemsBot.tree(),null,
         IDELabel.ProblemsTree.ERRORS,"","","",
@@ -121,6 +123,7 @@ public class ProblemsView extends ViewBase {
   public static SWTBotTreeItem getWarningsNode (SWTBotExt bot){
     SWTBotTreeItem warningsNode = null;
     SWTBot problemsBot = SWTEclipseExt.showView(bot,ViewType.PROBLEMS);
+    bot.sleep(Timing.time3S());
     try{
       SWTBotTreeItem[] filteredTreeItems = ProblemsView.getProblemsTreeItemsContainingText(bot,problemsBot.tree(),null,
         IDELabel.ProblemsTree.WARNINGS,"","","",
