@@ -53,7 +53,7 @@ public class TestProjectProvider {
 	public TestProjectProvider(String bundleName, String projectPath, String name, boolean makeCopy) throws CoreException {
 		try {
 			project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
-			if(project==null || !project.isAccessible()) {
+			if(!project.isAccessible()) {
 				if( null == projectPath ) {
 					project = ResourcesUtils.importProject(bundleName, "projects" + Path.SEPARATOR + name, null);
 				} else {
