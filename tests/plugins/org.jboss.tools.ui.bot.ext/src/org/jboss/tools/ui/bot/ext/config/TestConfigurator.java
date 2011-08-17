@@ -58,7 +58,7 @@ public class TestConfigurator {
 		public static final String SERVER_TYPE_EPP = "EPP";
 		public static final String SERVER_TYPE_EAP = "EAP";
 		public static final String SERVER_TYPE_SOA = "SOA";
-		public static final String SERVER_TYPE_JBOSSAS = "JBOSS_AS";
+		public static final String SERVER_TYPE_AS = "AS";
 		public static final String SERVER_WITH_DEFAULT_JAVA = "default";
 	}
 	/**
@@ -208,7 +208,7 @@ public class TestConfigurator {
 			}
 			if (s.type().equals(ServerType.JbossAS)
 					&& !currentConfig.getServer().type
-							.equals(Values.SERVER_TYPE_JBOSSAS)) {
+							.equals(Values.SERVER_TYPE_AS)) {
 				ReasonLogger.serverTypeMatch(s.type().toString(), currentConfig.getServer().type);
 				return null;
 			}

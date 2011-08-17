@@ -140,7 +140,7 @@ public class AddServer extends RequirementBase {
 			}
 			
 		}
-		else if (TestConfigurator.Values.SERVER_TYPE_JBOSSAS.equals(serverType)) {
+		else if (TestConfigurator.Values.SERVER_TYPE_AS.equals(serverType)) {
 			if ("4.2".equals(version)) {
 				return new ServerInfo(JBossCommunityJBoss42Runtime.LABEL,JBossCommunityJBossAS42.LABEL);				
 			}

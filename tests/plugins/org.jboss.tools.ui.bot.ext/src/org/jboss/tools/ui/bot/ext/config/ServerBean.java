@@ -28,7 +28,7 @@ public class ServerBean extends RuntimeBean {
 				// where to unzip it?
 				File runtimeOutput;
 				File runtimeHomeAbs = new File(runtimeHome).getAbsoluteFile();
-				if (TestConfigurator.Values.SERVER_TYPE_JBOSSAS.equals(type)) {
+				if (TestConfigurator.Values.SERVER_TYPE_AS.equals(type)) {
 					runtimeOutput=runtimeHomeAbs.getParentFile();
 				}
 				else {
