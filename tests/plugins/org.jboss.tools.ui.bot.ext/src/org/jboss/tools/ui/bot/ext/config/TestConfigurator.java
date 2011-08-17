@@ -322,8 +322,7 @@ public class TestConfigurator {
 	 * @return
 	 */
 	public static boolean isRequiresAnyRuntime(Class<?> klass) {
-		SWTBotTestRequires an = klass
-		.getAnnotation(SWTBotTestRequires.class);
+		SWTBotTestRequires an = getAnnotation(klass);
 		if (an==null) {
 			return false;
 		}
@@ -337,12 +336,27 @@ public class TestConfigurator {
 	 * @return
 	 */
 	public static boolean isRequiresRunOnce(Class<?> klass) {
-		SWTBotTestRequires an = klass
-		.getAnnotation(SWTBotTestRequires.class);
+		SWTBotTestRequires an = getAnnotation(klass);
 		if (an==null) {
 			return false;
 		}
 		return an.runOnce();
+	}
+	/**
+	 * finds {@link SWTBotTestRequires} annotation in given class or recursive in super classes 
+	 * @param klass
+	 * @return
+	 */
+	private static SWTBotTestRequires getAnnotation(Class<?> klass) {
+		if (klass==null || Object.class.equals(klass)) {
+			return null;
+		}
+		SWTBotTestRequires requies = klass
+		.getAnnotation(SWTBotTestRequires.class);
+		if (requies != null) {
+			return requies;			
+		}
+		return getAnnotation(klass.getSuperclass());
 	}
 	/**
 	 * returns list of requirements if given class (Test) can run, all this is
@@ -352,8 +366,7 @@ public class TestConfigurator {
 	 */
 	public static List<RequirementBase> getClassRequirements(Class<?> klass) {
 
-		SWTBotTestRequires requies = klass
-				.getAnnotation(SWTBotTestRequires.class);
+		SWTBotTestRequires requies = getAnnotation(klass);
 		// internal list
 		List<RequirementBase> reqs = new ArrayList<RequirementBase>();
 		reqs.add(RequirementBase.createPrepareViews());
