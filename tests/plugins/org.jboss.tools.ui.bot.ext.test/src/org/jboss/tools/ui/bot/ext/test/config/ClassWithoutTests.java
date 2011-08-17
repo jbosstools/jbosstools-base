@@ -1,8 +1,8 @@
 package org.jboss.tools.ui.bot.ext.test.config;
 
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 
-@SWTBotTestRequires()
+@Require()
 public class ClassWithoutTests {
 
 }

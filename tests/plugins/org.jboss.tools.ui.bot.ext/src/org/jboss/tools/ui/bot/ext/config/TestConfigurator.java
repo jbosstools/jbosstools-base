@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ESB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.JBPM;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Seam;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerLocation;
@@ -322,7 +322,7 @@ public class TestConfigurator {
 	 * @return
 	 */
 	public static boolean isRequiresAnyRuntime(Class<?> klass) {
-		SWTBotTestRequires an = getAnnotation(klass);
+		Require an = getAnnotation(klass);
 		if (an==null) {
 			return false;
 		}
@@ -331,28 +331,28 @@ public class TestConfigurator {
 		|| an.server().required();
 	}
 	/**
-	 * returns true if given class has {@link SWTBotTestRequires#runOnce()} annotation set to true
+	 * returns true if given class has {@link Require#runOnce()} annotation set to true
 	 * @param klass
 	 * @return
 	 */
 	public static boolean isRequiresRunOnce(Class<?> klass) {
-		SWTBotTestRequires an = getAnnotation(klass);
+		Require an = getAnnotation(klass);
 		if (an==null) {
 			return false;
 		}
 		return an.runOnce();
 	}
 	/**
-	 * finds {@link SWTBotTestRequires} annotation in given class or recursive in super classes 
+	 * finds {@link Require} annotation in given class or recursive in super classes 
 	 * @param klass
 	 * @return
 	 */
-	private static SWTBotTestRequires getAnnotation(Class<?> klass) {
+	private static Require getAnnotation(Class<?> klass) {
 		if (klass==null || Object.class.equals(klass)) {
 			return null;
 		}
-		SWTBotTestRequires requies = klass
-		.getAnnotation(SWTBotTestRequires.class);
+		Require requies = klass
+		.getAnnotation(Require.class);
 		if (requies != null) {
 			return requies;			
 		}
@@ -360,13 +360,13 @@ public class TestConfigurator {
 	}
 	/**
 	 * returns list of requirements if given class (Test) can run, all this is
-	 * done by exploring class'es annotations (see {@link SWTBotTestRequires}) and check against
+	 * done by exploring class'es annotations (see {@link Require}) and check against
 	 * current configuration   
 	 * if given class does not meet {@link TestConfigurator#currentConfig} method returns null
 	 */
 	public static List<RequirementBase> getClassRequirements(Class<?> klass) {
 
-		SWTBotTestRequires requies = getAnnotation(klass);
+		Require requies = getAnnotation(klass);
 		// internal list
 		List<RequirementBase> reqs = new ArrayList<RequirementBase>();
 		reqs.add(RequirementBase.createPrepareViews());

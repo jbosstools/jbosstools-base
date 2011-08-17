@@ -1,13 +1,13 @@
 package org.jboss.tools.ui.bot.ext.test.config;
 
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.junit.Test;
 
 
-@SWTBotTestRequires(server=@Server(state=ServerState.Running),perspective="Java EE")
+@Require(server=@Server(state=ServerState.Running),perspective="Java EE")
 public class AnonatedRunningServer extends SWTTestExt {
 
 	@Test

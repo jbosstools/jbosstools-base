@@ -3,13 +3,13 @@ package org.jboss.tools.ui.bot.ext.test.config;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.junit.Test;
 
-@SWTBotTestRequires(server=@Server(state=ServerState.Disabled))
+@Require(server=@Server(state=ServerState.Disabled))
 public class AnnotatedDisabledServer extends SWTTestExt {
 
 	@Test

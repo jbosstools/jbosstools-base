@@ -1,11 +1,11 @@
 package org.jboss.tools.ui.bot.ext.test.config;
 
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerLocation;
 import org.junit.Test;
-@SWTBotTestRequires(server=@Server(location=ServerLocation.Local),perspective="Java EE")
+@Require(server=@Server(location=ServerLocation.Local),perspective="Java EE")
 public class AnnotatedLocalServer extends SWTTestExt{
 	@Test
 	public void configuredState() {

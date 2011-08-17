@@ -15,10 +15,10 @@ public class Annotations {
 	 * by default all sub-annotations are optional and are disabled, please go through
 	 * documentation of all items.
 	 * <ul>
-	 * <li>{@link SWTBotTestRequires#clearProjects()}</li>
-	 * <li>{@link SWTBotTestRequires#clearWorkspace()}</li>
-	 * <li>{@link SWTBotTestRequires#perspective()}</li>
-	 * <li>{@link SWTBotTestRequires#runOnce()}</li>
+	 * <li>{@link Require#clearProjects()}</li>
+	 * <li>{@link Require#clearWorkspace()}</li>
+	 * <li>{@link Require#perspective()}</li>
+	 * <li>{@link Require#runOnce()}</li>
 	 * <li>{@link Server}</li>
 	 * <li>{@link Seam}</li>
 	 * <li>{@link ESB}</li>
@@ -30,7 +30,7 @@ public class Annotations {
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
-	public @interface SWTBotTestRequires {	
+	public @interface Require {	
 		/**
 		 * optionally require server
 		 */

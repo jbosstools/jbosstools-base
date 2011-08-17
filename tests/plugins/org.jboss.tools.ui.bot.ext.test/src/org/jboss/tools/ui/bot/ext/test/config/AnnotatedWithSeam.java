@@ -7,7 +7,7 @@ import org.jboss.tools.ui.bot.ext.config.Annotations.*;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.junit.Test;
 
-@SWTBotTestRequires(seam=@Seam(),perspective="Java EE")
+@Require(seam=@Seam(),perspective="Java EE")
 public class AnnotatedWithSeam extends SWTTestExt {
 	
 	@Test

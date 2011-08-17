@@ -4,7 +4,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
@@ -12,7 +12,7 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
 
-@SWTBotTestRequires(server=@Server(state=ServerState.NotRunning),perspective="Java EE")
+@Require(server=@Server(state=ServerState.NotRunning),perspective="Java EE")
 public class AnnotatedNotRunningServer extends SWTTestExt {
 
 	@Test

@@ -13,7 +13,7 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.TestConfiguration;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.config.requirement.RequirementBase;
@@ -37,7 +37,7 @@ import org.junit.runners.model.Statement;
 /**
  * JUnit4 requirement aware testsuite runner. If suite class is annotated by @
  * RunWith({@link RequirementAwareSuite}) class, test classes can have
- * {@link SWTBotTestRequires} annotations
+ * {@link Require} annotations
  * 
  * @author lzoubek@redhat.com
  */
