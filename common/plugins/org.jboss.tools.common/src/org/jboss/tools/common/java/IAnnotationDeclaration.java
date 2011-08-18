@@ -35,7 +35,7 @@ public interface IAnnotationDeclaration extends ITextSourceReference {
 	/**
 	 * Convenience method that allows to get one member value without enumerating pairs.
 	 * @param name
-	 * @return
+	 * @return member value, may be null, e.g. when value is an expression
 	 */
 	Object getMemberValue(String name);
 
