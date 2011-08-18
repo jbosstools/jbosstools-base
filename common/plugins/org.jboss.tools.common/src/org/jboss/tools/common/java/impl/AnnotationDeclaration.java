@@ -12,6 +12,7 @@ package org.jboss.tools.common.java.impl;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -129,7 +130,7 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 					if(f != null && f.exists()) {
 						value = f.getDeclaringType().getFullyQualifiedName() + "." + lastToken;
 					} else {
-						String v = getFullName(is, lastToken);
+						String v = getFullName(type, is, lastToken);
 						if(v != null) {
 							value = v;
 						}
@@ -153,11 +154,22 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 		return value;
 	}
 
-	private String getFullName(IImportDeclaration[] is, String name) {
+	private String getFullName(IType type, IImportDeclaration[] is, String name) throws CoreException {
 		for (IImportDeclaration d: is) {
 			String n = d.getElementName();
 			if(n.equals(name) || n.endsWith("." + name)) {
 				return n;
+			}
+			if(Flags.isStatic(d.getFlags()) && n.endsWith(".*")) {
+				String typename = n.substring(0, n.length() - 2);
+				IType t = EclipseJavaUtil.findType(type.getJavaProject(), typename);
+				if(t != null && t.exists()) {
+					IField f = EclipseJavaUtil.findField(t, name);
+					if(f != null) {
+						return f.getDeclaringType().getFullyQualifiedName() + "." + name;
+					}
+				}
+				
 			}
 		}
 		return null;
