@@ -5,6 +5,7 @@ import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
@@ -141,8 +142,13 @@ public class SWTOpenExt {
 	 * @return
 	 */
 	public SWTBot preferenceOpen(IPreference pref) {
-		bot.menu("Window").menu("Preferences").click();
-		SWTBotShell shell = bot.shell("Preferences");
+		if (SWTJBTExt.isRunningOnMacOs()){
+		  bot.shells()[0].pressShortcut(SWT.COMMAND, ',');  
+		}
+		else{
+		  bot.menu("Window").menu("Preferences").click();				
+		}
+	  SWTBotShell shell = bot.shell("Preferences");
 		shell.activate();
 		selectTreeNode(pref);
 		return shell.bot();

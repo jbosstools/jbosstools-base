@@ -300,6 +300,8 @@ public class SWTJBTExt {
    */
   public static void runProjectOnServer(SWTWorkbenchBot bot, String projectName){
  
+    bot.shells()[0].activate();
+    
     SWTBotTree packageExplorerTree = eclipse.showView(ViewType.PACKAGE_EXPLORER).tree();
 
     packageExplorerTree.setFocus();
@@ -594,5 +596,12 @@ public class SWTJBTExt {
       int selectionOffset , int selectionLength) {
     return SWTJBTExt.selectTextInSourcePane(bot, editorTitle, textToSelect,
         selectionOffset, selectionLength, 0);
+  }
+  /**
+   * Returns true when test is running on Mac OS
+   * @return
+   */
+  public static boolean isRunningOnMacOs(){
+	  return Platform.getOS().equalsIgnoreCase("macosx");
   }
 }
