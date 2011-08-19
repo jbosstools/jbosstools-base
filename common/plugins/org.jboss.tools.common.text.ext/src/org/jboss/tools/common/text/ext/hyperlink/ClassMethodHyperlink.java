@@ -138,41 +138,43 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 		}
 	}
 
-	protected IJavaElement searchForClassMethod(IJavaProject javaProject, String className, String methodName) {
-		try {
-//		 Get the search pattern
-	    SearchPattern pattern = SearchPattern.createPattern(className + "." + methodName, IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE); //$NON-NLS-1$
-	    
-	    // Get the search scope
-	    IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] { javaProject });
+	protected IJavaElement searchForClassMethod(IJavaProject javaProject,
+			String className, String methodName) {
+		// Get the search pattern
+		SearchPattern pattern = SearchPattern
+				.createPattern(
+						className + "." + methodName, IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE); //$NON-NLS-1$
 
-	    final List<SearchMatch> matches = new ArrayList<SearchMatch>();
-	    // Get the search requestor
-	    SearchRequestor requestor = new SearchRequestor() {
-			public void acceptSearchMatch(SearchMatch match) throws CoreException {
+		// Get the search scope
+		IJavaSearchScope scope = SearchEngine
+				.createJavaSearchScope(new IJavaElement[] { javaProject });
+
+		final List<SearchMatch> matches = new ArrayList<SearchMatch>();
+		// Get the search requestor
+		SearchRequestor requestor = new SearchRequestor() {
+			public void acceptSearchMatch(SearchMatch match)
+					throws CoreException {
 				matches.add(match);
 			}
-	    };
+		};
 
-	    // Search
-	    SearchEngine searchEngine = new SearchEngine();
-	    try {
-	    	searchEngine.search(pattern, new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()}, scope, requestor, null);
-	    } catch (CoreException ex) {
-	    	//ignore
-	    }
-	    for (Iterator i = matches.iterator(); i != null && i.hasNext();) {
-	    	return (IJavaElement)((SearchMatch)i.next()).getElement();
-	    }
-	    return null;
-		} finally {
-			//
+		// Search
+		SearchEngine searchEngine = new SearchEngine();
+		try {
+			searchEngine.search(pattern, new SearchParticipant[] { SearchEngine
+					.getDefaultSearchParticipant() }, scope, requestor, null);
+		} catch (CoreException ex) {
+			// ignore
 		}
+		for (Iterator i = matches.iterator(); i != null && i.hasNext();) {
+			return (IJavaElement) ((SearchMatch) i.next()).getElement();
+		}
+		return null;
 	}
 
 	protected IJavaElement searchForClassMethod(String className, String methodName) {
 		IFile documentFile = getFile();
-		
+		IJavaElement result = null;
 		try {	
 			IProject project = null;
 			if (documentFile == null) {
@@ -189,18 +191,14 @@ public abstract class ClassMethodHyperlink extends AbstractHyperlink {
 				project = documentFile.getProject();
 			}
 			
-			if(project == null || !project.isOpen()) 
-				return null;
-			if(!project.hasNature(JavaCore.NATURE_ID)) 
-				return null;
-			IJavaProject javaProject = JavaCore.create(project);
-			return searchForClassMethod(javaProject, className, methodName);
-
+			if(project != null && project.isOpen() && project.hasNature(JavaCore.NATURE_ID)) { 
+				IJavaProject javaProject = JavaCore.create(project);
+				result = searchForClassMethod(javaProject, className, methodName);
+			}
 		} catch (CoreException x) {
 			ExtensionsPlugin.getPluginLog().logError("Error while looking for method " + methodName + " of class " + className, x); //$NON-NLS-1$ //$NON-NLS-2$
-			return null;
 		}
-
+		return result;
 	}
 
 	protected String getAttributeValue(Node node, String attrName) {

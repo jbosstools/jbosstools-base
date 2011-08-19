@@ -139,10 +139,9 @@ public class ClassHyperlink extends AbstractHyperlink {
 	}
 	
 	private IJavaElement searchForClass(final String className) {
-		IFile documentFile = getFile();
-		
+		IJavaElement result = null;
 		try {	
-			
+			IFile documentFile = getFile();
 			IProject project = null;
 			if (documentFile == null) {
 				IWorkbenchPage workbenchPage = ExtensionsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -155,7 +154,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 					JarEntryResource jarEntryFile = (JarEntryResource) jarEntryEditorInput.getStorage();
 					IJavaProject parentProject = getProjectForJarResource(jarEntryFile);
 					if (parentProject != null) {
-						return searchForClass(parentProject, className);
+						result = searchForClass(parentProject, className);
 					}
 				} else  if (editorInput instanceof IStorageEditorInput) {
 					IStorageEditorInput moeInput = (IStorageEditorInput)editorInput;
@@ -163,7 +162,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 					if (storage instanceof JarEntryFile) {
 						IJavaProject parentProject = getProjectForJarResource((JarEntryFile)storage);
 						if (parentProject != null) {
-							return searchForClass(parentProject, className);
+							result = searchForClass(parentProject, className);
 						}
 					}
 					IPath p = storage.getFullPath();
@@ -174,17 +173,14 @@ public class ClassHyperlink extends AbstractHyperlink {
 				project = documentFile.getProject();
 			}
 			
-			if(project == null || !project.isOpen()) 
-				return null;
-			if(!project.hasNature(JavaCore.NATURE_ID)) 
-				return null;
-			IJavaProject javaProject = JavaCore.create(project);
-			return searchForClass(javaProject, className);
-
+			if(result==null && project != null && project.isOpen() && project.hasNature(JavaCore.NATURE_ID)) { 
+				IJavaProject javaProject = JavaCore.create(project);
+				result =  searchForClass(javaProject, className);
+			}
 		} catch (CoreException x) {
 			ExtensionsPlugin.getPluginLog().logError("Error while looking for class " + className, x); //$NON-NLS-1$
-			return null;
 		}
+		return result;
 	}
 
 	private IJavaProject getProjectForJarResource(JarEntryResource jarResource){

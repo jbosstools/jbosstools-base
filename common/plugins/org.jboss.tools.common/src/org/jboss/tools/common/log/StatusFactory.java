@@ -18,17 +18,10 @@ public class StatusFactory {
 	public final static int UNDEFINED_ERROR = 0;
 	public final static String UNSPECIFIED_MESSAGE = null;
 	public final static String EMPTY_MESSAGE = ""; //$NON-NLS-1$
-	public final static String EMPTY_PLUGIN = ""; //$NON-NLS-1$
 
 	public static IStatus getInstance(int severity, String pluginId,
 									int code, String message, Throwable t) {
-		return new Status(severity, pluginId == null ? EMPTY_PLUGIN : pluginId,
-						code, checkMessage(message, t), t);
-	}
-
-	public static IStatus getInstance(int severity, int code, String message,
-									Throwable t) {
-		return getInstance(severity, EMPTY_PLUGIN, code, message, t);
+		return new Status(severity, pluginId, code, checkMessage(message, t), t);
 	}
 
 	public static IStatus getInstance(int severity, String pluginId,
@@ -76,10 +69,8 @@ public class StatusFactory {
 			if (t != null && t.getMessage() != null) {
 				return t.getMessage();
 			}
-
 			return EMPTY_MESSAGE;
 		}
-
 		return message;
 	}
 }
