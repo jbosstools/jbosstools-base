@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="validator" name="KB Validator" schema="schema/validator.exsd"/>
+ 
+   <extension
+        point="org.eclipse.wst.validation.validator"
+		id="cd"
+		name="JBoss Tools Project Validator">
+		<validator>
+			<runStrategy project="true"/>
+			<projectNature id="org.eclipse.jdt.core.javanature" />
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.java"/>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.xml"/>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.xhtml"/>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.jsp">
+			</filter>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.jspf">
+			</filter>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.jsf">
+			</filter>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.jsv">
+			</filter>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.jtpl">
+			</filter>
+         	<contentTypeBinding contentTypeId="org.eclipse.jst.jsp.core.jspsource"/>
+         	<contentTypeBinding contentTypeId="org.jboss.tools.jst.jsp.jspincludesource"/>
+         	<contentTypeBinding contentTypeId="org.eclipse.jst.jsp.core.jspfragmentsource"/>
+         	<contentTypeBinding contentTypeId="org.eclipse.jst.jsp.core.tagsource"/>
+			<markerId
+               markerIdValue="JBTValidationProblem">
+         	</markerId>
+			<helper 
+				class="org.jboss.tools.common.validation.ContextValidationHelper">
+			</helper>
+			<run
+         		class="org.jboss.tools.common.validation.ValidatorManager"
+         		incremental="true"
+         		fullBuild="true"
+         	/>
+		</validator>
+	</extension>
+
+   <extension
+         id="JBTValidationProblem"
+         name="JBoss Tools Validation Problem"
+         point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.wst.validation.problemmarker"/>
+		<attribute name="kind"/>
+      	<persistent
+            value="true">
+      	</persistent>
+   </extension>
+
+</plugin>
