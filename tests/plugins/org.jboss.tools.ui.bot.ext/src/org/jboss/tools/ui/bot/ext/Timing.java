@@ -1,16 +1,30 @@
 package org.jboss.tools.ui.bot.ext;
 
+import org.apache.log4j.Logger;
+import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
+
 /**
- * 
+ * This class abstracts waiting time for bot. These methods should be used everywhere, where we 
+ * are waiting for something. Time can be then globally adjusted 
+ * using @link {@link TestConfigurator#SWTBOTEXT_DELAY_MULTIPLIER} system property
  * @author lzoubek
  *
  */
 public class Timing {
 
+	private static final Logger log = Logger.getLogger(Timing.class);
+	
 	public static double multiplier=1.0;
 	
 	static {
-		// TODO determine or auto set multiplier
+		try {
+			multiplier = Double.parseDouble(System.getProperty(TestConfigurator.SWTBOTEXT_DELAY_MULTIPLIER, "1.0"));
+			if (multiplier<0) {
+				multiplier=1.0;
+			}
+		} catch (Exception ex) {
+			log.error("Unable to parse TestConfigurator.SWTBOTEXT_DELAY_MULTIPLIER", ex);
+		}
 	}
 	public static int time3S() {
 		return  (int) Math.round(3000*multiplier);

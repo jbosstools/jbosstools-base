@@ -13,6 +13,7 @@ import java.util.Properties;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ESB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.JBPM;
@@ -74,6 +75,10 @@ public class TestConfigurator {
 	 * path to property file which contains either 1 configuration or properties [config name]=[abs path to config property file]
 	 */
 	public static final String SWTBOT_TEST_PROPERTIES_FILE = "swtbot.test.properties.file";
+	/**
+	 * a double number for multiply waiting see @link {@link Timing}
+	 */
+	public static final String SWTBOTEXT_DELAY_MULTIPLIER="swtbotext.delay.multiplier";
 	public static Properties multiProperties = new Properties();
 	public static TestConfiguration currentConfig;
 	static {
@@ -158,6 +163,7 @@ public class TestConfigurator {
 				log.info(" * Defaults loaded");
 			}
 		}
+		log.info("Default Timing mulitiplier is set to "+Timing.multiplier);
 
 	}
 	/**
