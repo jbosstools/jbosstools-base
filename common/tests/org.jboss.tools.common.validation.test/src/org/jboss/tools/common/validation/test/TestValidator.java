@@ -58,7 +58,7 @@ public class TestValidator extends ValidationErrorManager implements IValidator 
 	}
 
 	private void validate() {
-		throw new RuntimeException("Test excpetion");
+		throw new RuntimeException("Test exception");
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class TestValidator extends ValidationErrorManager implements IValidator 
 
 	@Override
 	public boolean shouldValidate(IProject project) {
-		return true;
+		return "JavaProject".equals(project.getName());
 	}
 
 	@Override

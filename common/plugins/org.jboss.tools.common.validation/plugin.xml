@@ -15,6 +15,9 @@
 				nameFilter="*.java"/>
 			<filter
 				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.project"/>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
 				nameFilter="*.xml"/>
 			<filter
 				objectClass="org.eclipse.core.resources.IFile"
