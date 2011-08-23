@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="org.jboss.tools.test.feature" label="Tools Tests" version="3.2.0.qualifier">
+<feature
+      id="org.jboss.tools.test.feature"
+      label="Tools Tests"
+      version="3.2.0.qualifier">
 
-	<description url="http://www.jboss.org/tools">
+   <description url="http://www.jboss.org/tools">
       JBossTools unit tests feature
    </description>
 
-	<copyright>
-      Copyright (c) 2007-2010 Exadel, Inc and Red Hat, Inc.
+   <copyright>
+      Copyright (c) 2007-2011 Exadel, Inc and Red Hat, Inc.
 Distributed under license by Red Hat, Inc. All rights reserved.
 This program is made available under the terms of the
 Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,7 +18,7 @@ Contributors:
 Exadel, Inc. and Red Hat, Inc. - initial API and implementation
    </copyright>
 
-	<license>
+   <license>
       Red Hat, Inc. licenses these features and plugins to you under
 certain open source licenses (or aggregations of such licenses), which
 in a particular case may include the Eclipse Public License, the GNU
@@ -25,8 +28,22 @@ source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
 Raleigh NC 27606 USA.
    </license>
 
-	<plugin id="org.jboss.tools.tests" download-size="0" install-size="0" version="0.0.0" />
-	<plugin id="org.jboss.tools.ui.bot.ext" download-size="0" install-size="0" version="0.0.0" />
-	<plugin id="org.jboss.tools.ui.bot.ext.test" download-size="0" install-size="0" version="0.0.0" />
+   <plugin
+         id="org.jboss.tools.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.ui.bot.ext"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.ui.bot.ext.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
