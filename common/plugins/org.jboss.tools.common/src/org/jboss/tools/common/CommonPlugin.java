@@ -28,7 +28,6 @@ public class CommonPlugin extends BasePlugin {
 	protected static CommonPlugin instance;
 	private static String environment;
 
-	
 	public CommonPlugin() {
 		super();
 		instance = this;
@@ -106,7 +105,6 @@ public class CommonPlugin extends BasePlugin {
 		return environment;
 	}
 
-	
 	/**
 	 * Returns the shared instance
 	 *

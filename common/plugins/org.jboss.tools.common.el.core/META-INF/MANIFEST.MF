@@ -12,7 +12,9 @@ Export-Package: org.jboss.tools.common.el.core,
  org.jboss.tools.common.el.core.model,
  org.jboss.tools.common.el.core.parser,
  org.jboss.tools.common.el.core.resolver,
+ org.jboss.tools.common.el.internal.core.model,
  org.jboss.tools.common.el.internal.core.parser,
+ org.jboss.tools.common.el.internal.core.parser.rule,
  org.jboss.tools.common.el.internal.core.parser.token
 Bundle-Activator: org.jboss.tools.common.el.core.ELCorePlugin
 Require-Bundle: org.eclipse.jface.text;bundle-version="3.7.0",
