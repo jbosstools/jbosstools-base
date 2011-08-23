@@ -15,7 +15,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.common.model.test</module>
 		<module>org.jboss.tools.common.model.ui.test</module>
 		<module>org.jboss.tools.common.test</module>
-		<module>org.jboss.tools.common.validation.test</module>
+		<!-- module>org.jboss.tools.common.validation.test</module -->
 		<module>org.jboss.tools.common.verification.test</module>
 		<module>org.jboss.tools.common.verification.ui.test</module>
 	</modules>
