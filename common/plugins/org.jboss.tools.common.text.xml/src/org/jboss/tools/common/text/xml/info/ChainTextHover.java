@@ -69,16 +69,12 @@ public class ChainTextHover implements ITextHover, ITextHoverExtension, ITextHov
 
 //		hoverList.add(new ProblemAnnotationHoverProcessor());
 		hoverList.add(new MarkerProblemAnnotationHoverProcessor());
-
+		int lastToolsIndex = hoverList.size();
 		for (int i = 0; i < fTagInfoHovers.length; i++) {
-//				if (fTagInfoHovers[i] instanceof FaceletTagInfoHoverProcessor) {
-			if (fTagInfoHovers[i].getClass().getName().startsWith("org.jboss.tools.")) {
-				hoverList.add(fTagInfoHovers[i]);
-			}
-		}
-		for (int i = 0; i < fTagInfoHovers.length; i++) {
-//				if (!(fTagInfoHovers[i] instanceof FaceletTagInfoHoverProcessor)) {
-			if (!(fTagInfoHovers[i].getClass().getName().startsWith("org.jboss.tools."))) {
+			if (fTagInfoHovers[i].getClass().getName().startsWith("org.jboss.tools.")) { //$NON-NLS-1$
+				hoverList.add(lastToolsIndex,fTagInfoHovers[i]);
+				lastToolsIndex++;
+			} else {
 				hoverList.add(fTagInfoHovers[i]);
 			}
 		}
@@ -106,11 +102,7 @@ public class ChainTextHover implements ITextHover, ITextHoverExtension, ITextHov
 
 		// already have a best match hover picked out from getHoverRegion call
 		if (fBestMatchHover != null) {
-			try {
 				displayInfo = fBestMatchHover.getHoverInfo(viewer, hoverRegion);
-			} catch (Exception e) {
-				XmlEditorPlugin.getPluginLog().logError(InfoHoverMessages.InfoHoover_error_gettingInfo, e);
-			}
 		}
 		// either had no best match hover or best match hover returned null
 		if (displayInfo == null) {
@@ -118,17 +110,13 @@ public class ChainTextHover implements ITextHover, ITextHoverExtension, ITextHov
 			Iterator<ITextHover> i = getTextHovers().iterator();
 			while ((i.hasNext()) && (displayInfo == null)) {
 				ITextHover hover = (ITextHover) i.next();
-				try {
-					if(hover instanceof ITextHoverExtension2) {
-						Object displayInfoObject = ((ITextHoverExtension2)hover).getHoverInfo2(viewer, hoverRegion);
-						if(displayInfoObject!=null) {
-							displayInfo = displayInfoObject.toString();
-						}
-					} else {
-						displayInfo = hover.getHoverInfo(viewer, hoverRegion);
+				if(hover instanceof ITextHoverExtension2) {
+					Object displayInfoObject = ((ITextHoverExtension2)hover).getHoverInfo2(viewer, hoverRegion);
+					if(displayInfoObject!=null) {
+						displayInfo = displayInfoObject.toString();
 					}
-				} catch (Exception e) {
-					XmlEditorPlugin.getPluginLog().logError(InfoHoverMessages.InfoHoover_error_gettingInfo, e);
+				} else {
+					displayInfo = hover.getHoverInfo(viewer, hoverRegion);
 				}
 			}
 		}
@@ -140,33 +128,25 @@ public class ChainTextHover implements ITextHover, ITextHoverExtension, ITextHov
 
 		// already have a best match hover picked out from getHoverRegion call
 		if (fBestMatchHover != null) {
-			try {
-				if (fBestMatchHover instanceof ITextHoverExtension2) {
-					objectInfo = ((ITextHoverExtension2) fBestMatchHover).getHoverInfo2(viewer, hoverRegion);
-				} else {
-					objectInfo = fBestMatchHover.getHoverInfo(viewer, hoverRegion);
-				}
-			} catch (Exception e) {
-				XmlEditorPlugin.getPluginLog().logError(InfoHoverMessages.InfoHoover_error_gettingInfo, e);
+			if (fBestMatchHover instanceof ITextHoverExtension2) {
+				objectInfo = ((ITextHoverExtension2) fBestMatchHover).getHoverInfo2(viewer, hoverRegion);
+			} else {
+				objectInfo = fBestMatchHover.getHoverInfo(viewer, hoverRegion);
 			}
 		}
-		// either had no best match hover or best match hover returned null
 		if (objectInfo == null) {
 			// go through the list of text hovers and return first display string
 			Iterator<ITextHover> i = getTextHovers().iterator();
 			while ((i.hasNext()) && (objectInfo == null)) {
 				ITextHover hover = (ITextHover) i.next();
-				try {
-					if(hover instanceof ITextHoverExtension2) {
-						objectInfo = ((ITextHoverExtension2)hover).getHoverInfo2(viewer, hoverRegion);
-					} else {
-						objectInfo = hover.getHoverInfo(viewer, hoverRegion);
-					}
-				} catch (Exception e) {
-					XmlEditorPlugin.getPluginLog().logError(InfoHoverMessages.InfoHoover_error_gettingInfo, e);
+				if(hover instanceof ITextHoverExtension2) {
+					objectInfo = ((ITextHoverExtension2)hover).getHoverInfo2(viewer, hoverRegion);
+				} else {
+					objectInfo = hover.getHoverInfo(viewer, hoverRegion);
 				}
 			}
 		}
+		// either had no best match hover or best match hover returned null
 		return objectInfo;
 	}
 
