@@ -60,6 +60,13 @@ import org.jboss.tools.common.el.internal.core.parser.token.JavaNameTokenDescrip
 import org.jboss.tools.common.text.TextProposal;
 
 public abstract class AbstractELCompletionEngine<V extends IVariable> implements ELResolver, ELCompletionEngine {
+	
+	public static final IRelevanceCheck IRRELEVANT = new IRelevanceCheck() {
+		public boolean isRelevant(String content) {
+			return false;
+		}
+	};
+		
 	public AbstractELCompletionEngine() {}
 
 	public abstract Image getELProposalImage();
