@@ -20,6 +20,9 @@ public class JavaClassEntity {
 	private String className = "";
 	private String packageName = "";
 
+	public JavaClassEntity() {
+	}
+	
 	public JavaClassEntity(String packageName, String className) {
 		this.className = className;
 		this.packageName = packageName;
