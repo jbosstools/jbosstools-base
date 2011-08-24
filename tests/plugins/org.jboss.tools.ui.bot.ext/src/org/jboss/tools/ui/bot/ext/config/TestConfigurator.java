@@ -82,8 +82,6 @@ public class TestConfigurator {
 	public static Properties multiProperties = new Properties();
 	public static TestConfiguration currentConfig;
 	static {
-		boolean loadDefault = true;
-
 		try {
 			Pattern configMatch = Pattern.compile("");
 			try {
@@ -121,7 +119,6 @@ public class TestConfigurator {
 						log.info("Adding configuration file "+file.getName());
 						multiProperties.put(file.getName().replace(".properties", ""), file.getAbsolutePath());						
 					}
-					loadDefault = false;
 				} 
 			} else if (propFile != null) {
 				if (new File(propFile).exists()) {
@@ -136,32 +133,17 @@ public class TestConfigurator {
 						multiProperties.put("Default", propFile);
 					}
 					
-					loadDefault = false;
 				} else {
 					throw new IOException(SWTBOT_TEST_PROPERTIES_FILE + " "
 							+ propFile + " does not exist!");
 				}
 			} else {
 				log.info("No configuration property passed, using default");
-				multiProperties.put(SWTBOT_TEST_PROPERTIES_FILE, "");
+				multiProperties.put("default", "");
 			}
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		}
-
-		if (loadDefault) {
-			// load default config by default
-			try {
-				log.info(" * Loading default configuration first");
-				currentConfig = new TestConfiguration("default", "");
-
-			} catch (Exception e) {
-				// log only message, nothing
-				log.error(e.getMessage());
-			} finally {
-				log.info(" * Defaults loaded");
-			}
 		}
 		log.info("Default Timing mulitiplier is set to "+Timing.multiplier);
 
