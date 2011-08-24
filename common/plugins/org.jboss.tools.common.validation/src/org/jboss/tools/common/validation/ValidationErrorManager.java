@@ -141,17 +141,12 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	public IMarker addError(String message, String preferenceKey,
 			String[] messageArguments, ITextSourceReference location,
 			IResource target) {
-		if(location == null) {
-			//
-		} else if(location.getResource() != null && location.getResource().exists()) {
-			if(!location.getResource().equals(target)) {
-				target = location.getResource();
-			}
-		} else {
-			//
+		IResource newTarget = target; 
+		if(location.getResource() != null && location.getResource().exists() && !location.getResource().equals(target)) {
+				newTarget = location.getResource();
 		}
 		return addError(message, preferenceKey, messageArguments, 0, location
-				.getLength(), location.getStartPosition(), target);
+				.getLength(), location.getStartPosition(), newTarget);
 	}
 
 	/*
@@ -372,9 +367,6 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 			String message, int severityEnumValue, String targetObjectName, 
 			String groupName, int offset, int length, int maxNumberOfMarkersPerFile, String markerType) throws CoreException {
 
-		if ((message == null) || (resource == null) || (!resource.exists())) {
-			return null;
-		}
 		int severity = getSeverity(severityEnumValue);
 
 		if(markerType==null) {
