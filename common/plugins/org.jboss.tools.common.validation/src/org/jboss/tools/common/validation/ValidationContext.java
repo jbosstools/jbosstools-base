@@ -34,7 +34,7 @@ public class ValidationContext implements IValidationContextManager {
 
 	private ValidationResourceRegister validationResourceRegister;
 	private Map<IValidator, IValidatingProjectTree> projectTree = new HashMap<IValidator, IValidatingProjectTree>();
-	private static List<IValidator> ALL_VALIDATORS;
+	private static List<IConfigurationElement> ALL_VALIDATORS;
 	private List<IValidator> validators = new ArrayList<IValidator>();
 	private Map<IValidator, Set<IProject>> validatedProjects = new HashMap<IValidator, Set<IProject>>();
 
@@ -48,8 +48,7 @@ public class ValidationContext implements IValidationContextManager {
 		validationResourceRegister = null;
 		if(ALL_VALIDATORS == null) {
 			// Load all the validators
-			ALL_VALIDATORS = new ArrayList<IValidator>();
-			List<IValidator> dependentValidators = new ArrayList<IValidator>();
+			ALL_VALIDATORS = new ArrayList<IConfigurationElement>();
 	        IExtensionRegistry registry = Platform.getExtensionRegistry();
 			IExtensionPoint extensionPoint = registry.getExtensionPoint(IValidator.EXTENSION_POINT_ID);
 			if (extensionPoint != null) { 
@@ -58,26 +57,32 @@ public class ValidationContext implements IValidationContextManager {
 					IExtension extension = extensions[i];
 					IConfigurationElement[] elements = extension.getConfigurationElements();
 					for(int j=0; j<elements.length; j++) {
-						try {
-							IValidator validator = (IValidator)elements[j].createExecutableExtension("class"); //$NON-NLS-1$
-							String dependent = elements[j].getAttribute("dependent"); //$NON-NLS-1$
-							if(Boolean.parseBoolean(dependent)) {
-								dependentValidators.add(validator);
-							} else {
-								ALL_VALIDATORS.add(validator);
-							}
-						} catch (CoreException e) {
-							CommonPlugin.getDefault().logError(e);
-						}
+						ALL_VALIDATORS.add(elements[j]);
 					}
 				}
 			}
-			// We should add all the dependent validators (e.g. EL validator) to the very end of the list.
-			ALL_VALIDATORS.addAll(dependentValidators);
 		}
 
+		List<IValidator> dependentValidators = new ArrayList<IValidator>();
+		List<IValidator> allValidators = new ArrayList<IValidator>();
+		for (IConfigurationElement element : ALL_VALIDATORS) {
+			try {
+				IValidator validator = (IValidator)element.createExecutableExtension("class"); //$NON-NLS-1$
+				String dependent = element.getAttribute("dependent"); //$NON-NLS-1$
+				if(Boolean.parseBoolean(dependent)) {
+					dependentValidators.add(validator);
+				} else {
+					allValidators.add(validator);
+				}
+			} catch (CoreException e) {
+				CommonPlugin.getDefault().logError(e);
+			}
+		}
+		// We should add all the dependent validators (e.g. EL validator) to the very end of the list.
+		allValidators.addAll(dependentValidators);
+
 		// Init context for given project.
-		for (IValidator validator : ALL_VALIDATORS) {
+		for (IValidator validator : allValidators) {
 			if(validator.shouldValidate(project)) {
 				IValidatingProjectTree prTree = validator.getValidatingProjects(project);
 				if(prTree!=null) {
