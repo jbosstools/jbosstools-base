@@ -73,21 +73,21 @@ public class ValidatorManager implements IValidatorJob {
 					validatingProjects.add(rootProject);
 				}
 			}
-			synchronized (validatingProjects) {
-				try {
-					validationContextManager.clearValidatedProjectsList();
-					Set<IFile> changedFiles = validationHelper.getChangedFiles();
-					if(!changedFiles.isEmpty()) {
-						status = validate(changedFiles, validationHelper, reporter);
-					} else if(!validationContextManager.getRegisteredFiles().isEmpty()) {
-						validationContextManager.clearAllResourceLinks();
-						status = validateAll(validationHelper, reporter);
-					}
-				} finally {
-					if(validationContextManager!=null) {
-						validationContextManager.clearRegisteredFiles();
-					}
-					validationHelper.cleanup(); // See https://issues.jboss.org/browse/JBIDE-8726
+			try {
+				validationContextManager.clearValidatedProjectsList();
+				Set<IFile> changedFiles = validationHelper.getChangedFiles();
+				if(!changedFiles.isEmpty()) {
+					status = validate(changedFiles, validationHelper, reporter);
+				} else if(!validationContextManager.getRegisteredFiles().isEmpty()) {
+					validationContextManager.clearAllResourceLinks();
+					status = validateAll(validationHelper, reporter);
+				}
+			} finally {
+				if(validationContextManager!=null) {
+					validationContextManager.clearRegisteredFiles();
+				}
+				validationHelper.cleanup(); // See https://issues.jboss.org/browse/JBIDE-8726
+				synchronized (validatingProjects) {
 					for (IProject rootProject : rootProjects) {
 						validatingProjects.remove(rootProject);
 					}
