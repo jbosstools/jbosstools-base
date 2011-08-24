@@ -15,6 +15,9 @@ import org.eclipse.core.resources.IProject;
 /**
  * Represents a delegate which is used be EL validator to collect all the
  * projects which should be validated by EL validator.
+ * One particular delegate is created during initialization of corresponding extension and saved in a static field.
+ * A few validation threads may use the same delegate in the same time.
+ * So it's developer's responsibility to make an implementation of IELValidationDelegate thread-safe.
  * 
  * @author Alexey Kazakov
  */
