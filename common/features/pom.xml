@@ -13,7 +13,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.jboss.tools.common.all.feature</module>
-		<module>org.jboss.tools.common.all.tests.feature</module>
+		<module>org.jboss.tools.common.all.test.feature</module>
 		<module>org.jboss.tools.common.core.feature</module>
 		<module>org.jboss.tools.common.feature</module>
 		<module>org.jboss.tools.common.text.ext.feature</module>
