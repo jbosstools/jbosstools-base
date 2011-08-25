@@ -36,7 +36,7 @@ import org.w3c.dom.Element;
  * Represents a reference to EL in a resource
  * @author Alexey Kazakov
  */
-public abstract class ELReference implements ITextSourceReference {
+public class ELReference implements ITextSourceReference {
 
 	private IFile resource;
 	private IPath path;
@@ -49,7 +49,16 @@ public abstract class ELReference implements ITextSourceReference {
 	private boolean needToInitMarkers = false;
 	private List<SyntaxError> syntaxErrors;
 	private String source;
-
+	private String elMarkerGroupID;
+	
+	public ELReference() {
+		
+	}
+	
+	public ELReference(String elMarkerGroupID) {
+		this.elMarkerGroupID = elMarkerGroupID;
+	}
+	
 	/**
 	 * @return
 	 */
@@ -206,7 +215,7 @@ public abstract class ELReference implements ITextSourceReference {
 					}
 					for(int i=0; i<markers.length; i++){
 						String groupName = markers[i].getAttribute("groupName", null); //$NON-NLS-1$
-						if(groupName!=null && (groupName.equals(getMarkerGroupId()))) {
+						if(groupName!=null && (groupName.equals(this.elMarkerGroupID))) {
 							int start = markers[i].getAttribute(IMarker.CHAR_START, -1);
 							int end = markers[i].getAttribute(IMarker.CHAR_END, -1);
 							if(start>=startPosition && end<=startPosition+length) {
@@ -234,7 +243,9 @@ public abstract class ELReference implements ITextSourceReference {
 		this.syntaxErrors = syntaxErrors;
 	}
 
-	protected abstract String getMarkerGroupId();
+	public String getMarkerGroupId() {
+		return this.elMarkerGroupID;
+	}
 
 	/**
 	 * @param needToInitMarkers the needToInitMarkers to set

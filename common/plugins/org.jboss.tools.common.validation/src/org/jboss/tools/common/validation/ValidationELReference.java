@@ -17,11 +17,7 @@ import org.jboss.tools.common.el.core.ELReference;
  */
 public class ValidationELReference extends ELReference {
 
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.common.el.core.ELReference#getMarkerGroupId()
-	 */
-	@Override
-	protected String getMarkerGroupId() {
-		return IValidator.MARKED_RESOURCE_MESSAGE_GROUP;
+	public ValidationELReference() {
+		super(IValidator.MARKED_RESOURCE_MESSAGE_GROUP);
 	}
 }
