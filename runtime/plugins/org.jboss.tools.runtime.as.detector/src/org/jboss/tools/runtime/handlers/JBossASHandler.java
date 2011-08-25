@@ -165,7 +165,10 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			} else if ("5.1".equals(version)) { //$NON-NLS-1$
 				// FIXME - this needs to be changed when adding a new runtime type for JBoss EAP 5.1
 				index = 7;
-			} 
+			} else if ("5.2".equals(version)) { //$NON-NLS-1$
+				// SOA-P 5.2
+				index = 7;
+			}
 		}
 		return index;
 	}
