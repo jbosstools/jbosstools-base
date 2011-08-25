@@ -133,7 +133,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 					index = 3;
 				} else if ("5.1".equals(version)) { //$NON-NLS-1$
 					index = 4;
-				} else if ("6.0".equals(version)) { //$NON-NLS-1$
+				} else if ("6.0".equals(version) || "6.1".equals(version)) { //$NON-NLS-1$
 					index = 5;
 				}
 				createJBossServer(serverDefinition.getLocation(),index,serverDefinition.getName(),serverDefinition.getName() + " " + RUNTIME); //$NON-NLS-1$
@@ -153,7 +153,10 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			} else if ("5.1".equals(version)) { //$NON-NLS-1$
 				// FIXME - this needs to be changed when adding a new runtime type for JBoss EAP 5.1
 				index = 7;
-			} 
+			} else if ("5.2".equals(version)) { //$NON-NLS-1$
+				// SOA-P 5.2
+				index = 7;
+			}  
 		}
 		return index;
 	}
