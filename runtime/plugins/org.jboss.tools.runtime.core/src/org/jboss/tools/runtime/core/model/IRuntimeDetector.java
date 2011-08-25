@@ -51,4 +51,6 @@ public interface IRuntimeDetector extends Comparable<IRuntimeDetector> {
 	boolean isValid();
 	
 	void setValid(boolean valid);
+	
+	String getVersion(ServerDefinition serverDefinition);
 }

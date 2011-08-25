@@ -41,6 +41,8 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.jboss.tools.runtime.core"; //$NON-NLS-1$
+	
+	private static final String ESB_DETECTOR_ID = "org.jboss.tools.runtime.handlers.EsbHandler"; //$NON-NLS-1$
 
 	private static final String RUNTIME_DETECTOR_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectors";
 
@@ -59,6 +61,8 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 	private static Set<IRuntimeDetector> declaredRuntimeDetectors;
 	
 	private static Set<IRuntimeDetector> runtimeDetectors;
+	
+	private static IRuntimeDetector esbDetector;
 	
 	// The shared instance
 	private static RuntimeCoreActivator plugin;
@@ -206,9 +210,20 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 	
 	private static IEclipsePreferences getPreferences() {
 		if (prefs == null) {
-			prefs = new ConfigurationScope().getNode(PLUGIN_ID);
+			prefs = ConfigurationScope.INSTANCE.getNode(PLUGIN_ID);
 		}
 		return prefs;
+	}
+
+	public static IRuntimeDetector getEsbDetector() {
+		if (esbDetector == null) {
+			for (IRuntimeDetector detector:getDeclaredRuntimeDetectors()) {
+				if (ESB_DETECTOR_ID.equals(detector.getId())) {
+					esbDetector = detector;
+				}
+			}
+		}
+		return esbDetector;
 	}
 	
 }

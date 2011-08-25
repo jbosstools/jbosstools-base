@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+  <extension
+         point="org.jboss.tools.runtime.core.runtimeDetectors">
+    	<runtimeDetector
+    		id="org.jboss.tools.runtime.handlers.EsbHandler"
+    		name="Esb"
+       		class="org.jboss.tools.runtime.handlers.EsbHandler"
+       		preferenceId="org.jboss.tools.esb.project.runtime.preference"
+       		priority="500"/>
+	</extension>
+</plugin>

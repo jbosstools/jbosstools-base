@@ -67,6 +67,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	private static final int JBOSS_AS7_INDEX = 8;
 	private static String[] hasIncludedRuntimes = new String[] {SOA_P, EAP, EPP, EWP, SOA_P_STD};
 	private static final String DROOLS = "DROOLS"; // NON-NLS-1$
+	private static final String ESB = "ESB"; //$NON-NLS-1$
 
 	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
 		// FIXME
@@ -434,24 +435,66 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 				serverDefinitions.addAll(definitions);
 			}
 			if (SOA_P.equals(type) || SOA_P_STD.equals(type)) {
-				Bundle drools = Platform.getBundle("org.drools.eclipse");
-				Bundle droolsDetector = Platform
-						.getBundle("org.jboss.tools.runtime.drools.detector");
-				if (drools != null && droolsDetector != null) {
-					File droolsRoot = serverDefinition.getLocation();
-					if (droolsRoot.isDirectory()) {
-						String name = "Drools - " + serverDefinition.getName();
-						ServerDefinition droolsDefinition = new ServerDefinition(
-								name, serverDefinition.getVersion(), DROOLS,
-								droolsRoot);
-						droolsDefinition.setParent(serverDefinition);
-						serverDefinition.getIncludedServerDefinitions().add(
-								droolsDefinition);
-					}
-				}
+				addDrools(serverDefinition);
+				addEsb(serverDefinition);
 			}
 		} finally {
 			setEnabled(saved);
+		}
+	}
+
+	private void addDrools(ServerDefinition serverDefinition) {
+		if (serverDefinition == null) {
+			return;
+		}
+		Bundle drools = Platform.getBundle("org.drools.eclipse");
+		Bundle droolsDetector = Platform
+				.getBundle("org.jboss.tools.runtime.drools.detector");
+		if (drools != null && droolsDetector != null) {
+			File droolsRoot = serverDefinition.getLocation();
+			if (droolsRoot.isDirectory()) {
+				String name = "Drools - " + serverDefinition.getName();
+				ServerDefinition droolsDefinition = new ServerDefinition(
+						name, serverDefinition.getVersion(), DROOLS,
+						droolsRoot);
+				droolsDefinition.setParent(serverDefinition);
+				serverDefinition.getIncludedServerDefinitions().add(
+						droolsDefinition);
+			}
+		}
+	}
+	
+	private void addEsb(ServerDefinition serverDefinition) {
+		if (serverDefinition == null) {
+			return;
+		}
+		Bundle esb = Platform.getBundle("org.jboss.tools.esb.project.core");
+		Bundle esbDetectorPlugin = Platform
+				.getBundle("org.jboss.tools.runtime.esb.detector");
+		if (esb != null && esbDetectorPlugin != null) {
+			String type = serverDefinition.getType();
+			File esbRoot;
+			if (SOA_P.equals(type)) {
+				esbRoot = serverDefinition.getLocation();
+			} else {
+				esbRoot = new File(serverDefinition.getLocation(), "jboss-esb"); //$NON-NLS-1$
+			}
+			if (esbRoot.isDirectory()) {
+				String name = "ESB - " + serverDefinition.getName();
+				String version="";
+				ServerDefinition esbDefinition = new ServerDefinition(
+						name, version, ESB,
+						esbRoot);
+				IRuntimeDetector esbDetector = RuntimeCoreActivator.getEsbDetector();
+				if (esbDetector != null) {
+					version = esbDetector.getVersion(esbDefinition);
+					esbDefinition.setVersion(version);
+				}
+				
+				esbDefinition.setParent(serverDefinition);
+				serverDefinition.getIncludedServerDefinitions().add(
+						esbDefinition);
+			}
 		}
 	}
 

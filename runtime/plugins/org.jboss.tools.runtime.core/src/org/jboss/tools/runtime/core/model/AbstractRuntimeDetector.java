@@ -137,4 +137,12 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
+	
+	@Override
+	public String getVersion(ServerDefinition serverDefinition) {
+		if (serverDefinition != null) {
+			return serverDefinition.getVersion();
+		}
+		return null;
+	}
 }
