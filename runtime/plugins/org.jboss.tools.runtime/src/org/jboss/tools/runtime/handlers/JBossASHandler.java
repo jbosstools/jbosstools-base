@@ -394,6 +394,8 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			append(builder, includeDrools);
 			String includeJbpm = JbpmHandler.included(serverDefinition);
 			append(builder, includeJbpm);
+			String includeEsb = EsbHandler.included(serverDefinition);
+			append(builder, includeEsb);
 		}
 		return builder.toString();
 		

@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.tools.common,
  org.jboss.tools.runtime.core,
  org.jboss.ide.eclipse.as.core,
- org.jboss.tools.jbpm.common
+ org.jboss.tools.jbpm.common,
+ org.jboss.tools.esb.project.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

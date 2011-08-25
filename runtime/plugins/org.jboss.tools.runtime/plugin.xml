@@ -94,6 +94,16 @@
 	<extension
          point="org.jboss.tools.runtime.core.runtimeDetectors">
     	<runtimeDetector
+    		id="org.jboss.tools.runtime.handlers.EsbHandler"
+    		name="Esb"
+       		class="org.jboss.tools.runtime.handlers.EsbHandler"
+       		preferenceId="org.jboss.tools.esb.project.runtime.preference"
+       		priority="500"/>
+	</extension>
+	
+	<extension
+         point="org.jboss.tools.runtime.core.runtimeDetectors">
+    	<runtimeDetector
     		id="org.jboss.tools.runtime.handlers.SeamHandler"
     		name="Seam"
        		class="org.jboss.tools.runtime.handlers.SeamHandler"
