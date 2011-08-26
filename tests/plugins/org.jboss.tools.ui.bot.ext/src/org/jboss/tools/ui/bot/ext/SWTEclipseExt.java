@@ -791,9 +791,12 @@ public class SWTEclipseExt {
 				bot.comboBox(0).setSelection(jreToUse);
 			}
 			open.finish(bot.activeShell().bot());
-			open.finish(wiz, IDELabel.Button.OK);
+	  }
+		else{
+		  log.info("Server Runtime: " + runtime.getName() +
+		      " already exists.\nNo Server Runtime were added.");
 		}
-
+		open.finish(wiz, IDELabel.Button.OK);
 	}
 	public void removeServerRuntime(String runtimeName) {
 		  log.info("Removing Server Runtime: " + runtimeName );
@@ -831,13 +834,18 @@ public class SWTEclipseExt {
 	  log.info("Adding Java Virtual Machine: " + vmName + "\nHome: " + jreHome);
 		SWTBot pref = open
 				.preferenceOpen(ActionItem.Preference.JavaInstalledJREs.LABEL);
-		pref.button(IDELabel.Button.ADD).click();
-		bot.shell("Add JRE").activate();
-		SWTBot add = bot.shell("Add JRE").bot();
-		add.button(IDELabel.Button.NEXT).click();
-		add.text(0).setText(jreHome);
-		add.text(1).setText(vmName);
-		open.finish(add);
+		if (!pref.table().containsItem(vmName)){
+	    pref.button(IDELabel.Button.ADD).click();
+	    bot.shell("Add JRE").activate();
+	    SWTBot add = bot.shell("Add JRE").bot();
+	    add.button(IDELabel.Button.NEXT).click();
+	    add.text(0).setText(jreHome);
+	    add.text(1).setText(vmName);
+	    open.finish(add);
+		}
+		else{
+		  log.info("Java Virtual Machine: " + vmName + " already exists\nNo JVM were added");
+		}
 		open.finish(pref,IDELabel.Button.OK);
 	}
 

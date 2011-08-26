@@ -544,10 +544,9 @@ public class SWTJBTExt {
     int iStartIndex = 0;
     int iRow = 0;
     if (editorText != null && editorText.length() > 0 && editorText.contains(textToSelect)){
-      String[] editorLines = editorText.split("\n");
       int iOccurenceIndex = 0;
-      while (!found && iRow < editorLines.length){
-        String lineText = editorLines[iRow];
+      while (!found && iRow < editor.getLineCount()){
+        String lineText = editor.getTextOnLine(iRow);
         iStartIndex = 0;
         while (!found && lineText.contains(textToSelect)){
           if (iOccurenceIndex == textToSelectIndex){
