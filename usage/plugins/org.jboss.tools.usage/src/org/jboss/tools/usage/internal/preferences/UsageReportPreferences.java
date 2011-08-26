@@ -46,7 +46,7 @@ public class UsageReportPreferences {
 	 * @return
 	 */
 	public static boolean isEnablementSet() {
-		String defaultValue = new String("undefinedValue");
+		String defaultValue = "undefinedValue";
 		String value = UsageReportPreferencesUtils.getPreferences().get(
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID, defaultValue);
 		return value != defaultValue;
