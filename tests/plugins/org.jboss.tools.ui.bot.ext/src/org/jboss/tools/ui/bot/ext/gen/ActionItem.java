@@ -8931,7 +8931,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : JBoss Tools->Web->Seam
 			*/
 			public static final IPreference LABEL = new IPreference() {
-				public String getName() { return "Seam";}
+				public String getName() { return "Seam 2";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Tools");
