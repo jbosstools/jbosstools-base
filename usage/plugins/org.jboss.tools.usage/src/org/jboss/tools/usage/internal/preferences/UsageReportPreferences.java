@@ -41,7 +41,8 @@ public class UsageReportPreferences {
 
 	/**
 	 * Returns <code>true</code> if the usage reporting enablement is set in the
-	 * preferences. Returns <code>false</code> otherwise.
+	 * preferences. Returns <code>false</code> otherwise. It is intentionally not set 
+	 * by UsageReportPreferenceInitializer
 	 * 
 	 * @return
 	 */
@@ -60,7 +61,7 @@ public class UsageReportPreferences {
 	public static boolean isEnabled() {
 		return UsageReportPreferencesUtils.getPreferences().getBoolean(
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID,
-				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE);
+				getEnabledDefault());
 	}
 
 	/**
@@ -71,9 +72,32 @@ public class UsageReportPreferences {
 	public static boolean isAskUser() {
 		return UsageReportPreferencesUtils.getPreferences().getBoolean(
 				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID,
+				getAskUserDefault());
+	}
+
+	/**
+	 * Get default value for isAskUser preference
+	 * 
+	 * @return default value set by UsageReportPreferenceInitializer
+	 */
+	static boolean getAskUserDefault() {
+		return UsageReportPreferencesUtils.getDefaultPreferences().getBoolean(
+				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID,
 				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_DEFAULTVALUE);
 	}
 
+	/**
+	 * Get default value for isEnabled preference
+	 * 
+	 * @return default value that is set in plugin_customization.ini file or 
+	 * IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE otherwise
+	 * 
+	 */
+	public static boolean getEnabledDefault() {
+		return UsageReportPreferencesUtils.getDefaultPreferences().getBoolean(
+				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID,
+				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE);
+	}
 	/**
 	 * Sets the ask user.
 	 * 

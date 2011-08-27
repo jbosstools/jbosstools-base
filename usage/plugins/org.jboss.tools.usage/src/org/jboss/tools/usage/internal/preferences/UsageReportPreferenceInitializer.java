@@ -22,9 +22,5 @@ public class UsageReportPreferenceInitializer extends
 		UsageReportPreferencesUtils.getStore().setDefault(
 				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID,
 				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_DEFAULTVALUE);
-
-		UsageReportPreferencesUtils.getStore().setDefault(
-				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID,
-				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE);
 	}
 }
