@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.jboss.tools.test.sdk.feature"
-      label="All JBossTools Tests"
+      label="JBoss Tools - Tests - All JBossTools Tests (Deprecated?)"
       version="3.2.0.qualifier">
 
    <description url="http://www.example.com/description">

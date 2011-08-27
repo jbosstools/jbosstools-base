@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.jboss.tools.test.feature"
-      label="Tools Tests"
+      label="JBoss Tools - Tests - Tests Framework"
       version="3.2.0.qualifier">
 
    <description url="http://www.jboss.org/tools">
-      JBossTools unit tests feature
+      JBoss Tools - Tests - Tests Framework
    </description>
 
    <copyright>
