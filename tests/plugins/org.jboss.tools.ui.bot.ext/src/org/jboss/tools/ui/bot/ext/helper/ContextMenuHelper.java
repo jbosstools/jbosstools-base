@@ -15,6 +15,7 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMn
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -148,15 +149,18 @@ public class ContextMenuHelper {
    */
   private static void hide(final Menu menu , boolean hideRecursively) {
     if (menu != null){
-      menu.notifyListeners(SWT.Hide, new Event());
+      // Hide recursively
+      if (hideRecursively) {
+        KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_ESCAPE);
+      }
+      else{
+        menu.notifyListeners(SWT.Hide, new Event());
+      }  
       try {
-        Thread.sleep(50);
+        Thread.sleep(100);
       } catch (InterruptedException e) {
         e.printStackTrace();
-      }
-      if (menu.getParentMenu() != null && hideRecursively) {
-        hide(menu.getParentMenu(),hideRecursively);
-      }
+      }  
     }
   }
   /**
@@ -629,4 +633,4 @@ public class ContextMenuHelper {
     return result;
     
   }
-} 
+}
