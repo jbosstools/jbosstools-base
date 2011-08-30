@@ -41,6 +41,7 @@ import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 
 /**
  * Helper to find context menu of widget
@@ -149,18 +150,28 @@ public class ContextMenuHelper {
    */
   private static void hide(final Menu menu , boolean hideRecursively) {
     if (menu != null){
-      // Hide recursively
-      if (hideRecursively) {
-        KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_ESCAPE);
-      }
-      else{
-        menu.notifyListeners(SWT.Hide, new Event());
-      }  
+      menu.notifyListeners(SWT.Hide, new Event());
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {
         e.printStackTrace();
-      }  
+      }
+      // Hide recursively
+      if (hideRecursively) {
+        if (SWTJBTExt.isRunningOnMacOs()){
+          KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_ESCAPE);
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+        else{
+          if (menu.getParentMenu() != null) {
+            hide(menu.getParentMenu(),hideRecursively);
+          }
+        }
+      }
     }
   }
   /**
