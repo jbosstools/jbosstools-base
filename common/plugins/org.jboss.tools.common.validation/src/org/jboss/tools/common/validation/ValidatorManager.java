@@ -63,24 +63,30 @@ public class ValidatorManager implements IValidatorJob {
 				return OK_STATUS;
 			}
 			IValidationContextManager validationContextManager = validationHelper.getValidationContextManager();
-			Set<IProject> rootProjects = validationContextManager.getRootProjects();
+			Set<IProject> allRootProjects = validationContextManager.getRootProjects();
+			Set<IProject> rootProjects = new HashSet<IProject>();
 			IStatus status = OK_STATUS;
 			synchronized (validatingProjects) {
-				for (IProject rootProject : rootProjects) {
-					if(validatingProjects.contains(rootProject)) {
-						return OK_STATUS;
+				for (IProject rootProject : allRootProjects) {
+					if(!validatingProjects.contains(rootProject)) {
+						// Validate root projects that is not being validated yet. 
+						rootProjects.add(rootProject);
+						validatingProjects.add(rootProject);
 					}
-					validatingProjects.add(rootProject);
+				}
+				if(rootProjects.isEmpty()) {
+					// We don't have projects to validate.
+					return OK_STATUS;
 				}
 			}
 			try {
 				validationContextManager.clearValidatedProjectsList();
 				Set<IFile> changedFiles = validationHelper.getChangedFiles();
 				if(!changedFiles.isEmpty()) {
-					status = validate(changedFiles, validationHelper, reporter);
+					status = validate(changedFiles, validationHelper, reporter, rootProjects);
 				} else if(!validationContextManager.getRegisteredFiles().isEmpty()) {
 					validationContextManager.clearAllResourceLinks();
-					status = validateAll(validationHelper, reporter);
+					status = validateAll(validationHelper, reporter, rootProjects);
 				}
 			} finally {
 				try {
@@ -106,10 +112,9 @@ public class ValidatorManager implements IValidatorJob {
 		}
 	}
 
-	private IStatus validate(Set<IFile> changedFiles, ContextValidationHelper validationHelper, IReporter reporter) throws ValidationException {
+	private IStatus validate(Set<IFile> changedFiles, ContextValidationHelper validationHelper, IReporter reporter, Set<IProject> rootProjects) throws ValidationException {
 		IValidationContextManager validationContextManager = validationHelper.getValidationContextManager();
 		List<IValidator> validators = validationContextManager.getValidators();
-		Set<IProject> rootProjects = validationContextManager.getRootProjects();
 		removeMarkers(changedFiles);
 		for (IValidator validator : validators) {
 			for (IProject rootProject : rootProjects) {
@@ -122,10 +127,9 @@ public class ValidatorManager implements IValidatorJob {
 		return OK_STATUS;
 	}
 
-	private IStatus validateAll(ContextValidationHelper validationHelper, IReporter reporter) throws ValidationException {
+	private IStatus validateAll(ContextValidationHelper validationHelper, IReporter reporter, Set<IProject> rootProjects) throws ValidationException {
 		IValidationContextManager validationContextManager = validationHelper.getValidationContextManager();
 		List<IValidator> validators = validationContextManager.getValidators();
-		Set<IProject> rootProjects = validationContextManager.getRootProjects();
 		removeMarkers(validationHelper.getProjectSetRegisteredFiles());
 		for (IValidator validator : validators) {
 			for (IProject rootProject : rootProjects) {
