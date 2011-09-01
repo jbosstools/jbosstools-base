@@ -83,13 +83,16 @@ public class ValidatorManager implements IValidatorJob {
 					status = validateAll(validationHelper, reporter);
 				}
 			} finally {
-				if(validationContextManager!=null) {
-					validationContextManager.clearRegisteredFiles();
-				}
-				validationHelper.cleanup(); // See https://issues.jboss.org/browse/JBIDE-8726
-				synchronized (validatingProjects) {
-					for (IProject rootProject : rootProjects) {
-						validatingProjects.remove(rootProject);
+				try {
+					if(validationContextManager!=null) {
+						validationContextManager.clearRegisteredFiles();
+					}
+					validationHelper.cleanup(); // See https://issues.jboss.org/browse/JBIDE-8726
+				} finally {
+					synchronized (validatingProjects) {
+						for (IProject rootProject : rootProjects) {
+							validatingProjects.remove(rootProject);
+						}
 					}
 				}
 			}
