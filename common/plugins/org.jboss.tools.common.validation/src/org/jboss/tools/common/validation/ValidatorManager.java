@@ -63,21 +63,16 @@ public class ValidatorManager implements IValidatorJob {
 				return OK_STATUS;
 			}
 			IValidationContextManager validationContextManager = validationHelper.getValidationContextManager();
-			Set<IProject> allRootProjects = validationContextManager.getRootProjects();
-			Set<IProject> rootProjects = new HashSet<IProject>();
+			Set<IProject> rootProjects = validationContextManager.getRootProjects();
 			IStatus status = OK_STATUS;
 			synchronized (validatingProjects) {
-				for (IProject rootProject : allRootProjects) {
-					if(!validatingProjects.contains(rootProject)) {
-						// Validate root projects that is not being validated yet. 
-						rootProjects.add(rootProject);
-						validatingProjects.add(rootProject);
-					}
-				}
+				// Validate root projects that is not being validated yet.
+				rootProjects.removeAll(validatingProjects);
 				if(rootProjects.isEmpty()) {
 					// We don't have projects to validate.
 					return OK_STATUS;
 				}
+				validatingProjects.addAll(rootProjects);
 			}
 			try {
 				validationContextManager.clearValidatedProjectsList();
@@ -96,9 +91,7 @@ public class ValidatorManager implements IValidatorJob {
 					validationHelper.cleanup(); // See https://issues.jboss.org/browse/JBIDE-8726
 				} finally {
 					synchronized (validatingProjects) {
-						for (IProject rootProject : rootProjects) {
-							validatingProjects.remove(rootProject);
-						}
+						validatingProjects.removeAll(rootProjects);
 					}
 				}
 			}
