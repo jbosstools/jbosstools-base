@@ -330,9 +330,9 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 				if (!RuntimeUIActivator.runtimeCreated(serverDefinition)) {
 					List<ServerDefinition> allServerDefinitions = RuntimeUIActivator.getDefault().getServerDefinitions();
 					String name = serverDefinition.getName();
-					int i = 1;
+					int i = 2;
 					while (serverDefinitionsExists(serverDefinition, allServerDefinitions)) {
-						serverDefinition.setName(name + " " + i++);
+						serverDefinition.setName(name + " (" + i++ + ")");
 					}
 				}
 				if (!hideCreatedRuntimes) {
