@@ -40,6 +40,7 @@ import org.osgi.framework.Version;
 public class SWTJBTExt {
   
   private static final long DEFAULT_UI_TIMEOUT = 1000L;
+  private static final boolean runningOnMacOs = Platform.getOS().equalsIgnoreCase("macosx");
   
 	SWTWorkbenchBot bot;
 	Logger log = Logger.getLogger(SWTJBTExt.class);
@@ -601,6 +602,6 @@ public class SWTJBTExt {
    * @return
    */
   public static boolean isRunningOnMacOs(){
-	  return Platform.getOS().equalsIgnoreCase("macosx");
+	  return runningOnMacOs;
   }
 }
