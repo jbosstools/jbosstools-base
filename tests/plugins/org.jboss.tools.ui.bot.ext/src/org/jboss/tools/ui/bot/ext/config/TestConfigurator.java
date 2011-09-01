@@ -68,9 +68,15 @@ public class TestConfigurator {
 	public static final String CONFIGURATIONS_DIR="test.configurations.dir";
 	/**
 	 * regular expression for ignoring property files found in {@link TestConfigurator#CONFIGURATIONS_DIR}
-	 * filename matching this will be ignored
+	 * filename matching this will be excluded, note that excluding has priority over including
 	 */
-	public static final String CONFIGURATIONS_IGNORE="test.configurations.ignore";
+	public static final String CONFIGURATIONS_EXCLUDE="test.configurations.exclude";
+	/**
+	 * regular expression for including property files found in {@link TestConfigurator#CONFIGURATIONS_DIR}
+	 * filename matching this will be included (default is .* ), note that excluding has priority
+	 * 
+	 */
+	public static final String CONFIGURATIONS_INCLUDE="test.configurations.include";
 	/**
 	 * path to property file which contains either 1 configuration or properties [config name]=[abs path to config property file]
 	 */
@@ -83,12 +89,19 @@ public class TestConfigurator {
 	public static TestConfiguration currentConfig;
 	static {
 		try {
-			Pattern configMatch = Pattern.compile("");
+			Pattern excludeMatch = Pattern.compile("");
+			Pattern includeMatch = Pattern.compile("");
 			try {
-			configMatch = Pattern.compile(System.getProperty(CONFIGURATIONS_IGNORE, ""));
+				excludeMatch = Pattern.compile(System.getProperty(CONFIGURATIONS_EXCLUDE, ""));
 			}
 			catch (Exception ex) {
-				log.error("Error parsing regex property "+CONFIGURATIONS_IGNORE,ex);
+				log.error("Error parsing regex property "+CONFIGURATIONS_EXCLUDE,ex);
+			}
+			try {
+				includeMatch = Pattern.compile(System.getProperty(CONFIGURATIONS_INCLUDE, ".*"));
+			}
+			catch (Exception ex) {
+				log.error("Error parsing regex property "+CONFIGURATIONS_INCLUDE,ex);
 			}
 			// try to load from file first
 			String propFile = System.getProperty(SWTBOT_TEST_PROPERTIES_FILE,
@@ -107,17 +120,20 @@ public class TestConfigurator {
 				else {
 					log.info("Loading property config-files  from '"
 							+ configsDir + "'");
-					final Pattern fMatch = Pattern.compile(configMatch.toString());
+					final Pattern fExclMatch = Pattern.compile(excludeMatch.toString());
+					final Pattern fInclMatch = Pattern.compile(includeMatch.toString());
 					File[] propFiles = configsDirFile.listFiles(new FileFilter(){
 
 						@Override
 						public boolean accept(File  name) {
-							return name.getName().endsWith(".properties") && !fMatch.matcher(name.getName()).matches();
+							return name.getName().endsWith(".properties") && 
+									!fExclMatch.matcher(name.getName()).matches() && 
+									fInclMatch.matcher(name.getName()).matches();
 						}});
 					for (File file : propFiles) 
 					{
 						log.info("Adding configuration file "+file.getName());
-						multiProperties.put(file.getName().replace(".properties", ""), file.getAbsolutePath());						
+						multiProperties.put(file.getName().replace(".properties", ""), file.getAbsolutePath());
 					}
 				} 
 			} else if (propFile != null) {
