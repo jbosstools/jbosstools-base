@@ -40,39 +40,7 @@ public class TestUtil {
 		project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
 		ValidationFramework.getDefault().suspendAllValidation(false);
 		try {
-			new EnabledValidatorsOperation(project,false){
-				public void run(IProgressMonitor progressMonitor) throws OperationCanceledException {
-					try {
-						// In order to check whether or not the monitor has been canceled, the monitor must not be null.
-						if (progressMonitor == null)return;
-						IProject project = getProject();
-						if (ValidationFramework.getDefault().isSuspended(project))return;
-						if (ValManager.getDefault().isDisabled(project))return;
-
-						if (!areValidatorsEnabled()) {
-							// save some processing time...
-							return;
-						}
-
-						final WorkbenchReporter reporter = new WorkbenchReporter(getProject(), progressMonitor) {
-							public void addMessage(org.eclipse.wst.validation.internal.provisional.core.IValidator validator, org.eclipse.wst.validation.internal.provisional.core.IMessage message) {
-								super.addMessage(validator, message);
-								System.out.println(message);
-							};
-						};
-
-						try {
-							// Periodically check if the user has canceled the operation
-							checkCanceled(reporter);
-							preValidate(reporter);
-							validate(reporter);
-						} catch (CoreException e) {
-							ValidationPlugin.getPlugin().handleException(e);
-						}
-					} finally {
-					}
-				}		
-			}.run(new NullProgressMonitor());
+			new EnabledValidatorsOperation(project,false).run(new NullProgressMonitor());
 		} finally {
 			ValidationFramework.getDefault().suspendAllValidation(true);
 		}
@@ -87,7 +55,7 @@ public class TestUtil {
 		project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
 		ValidationFramework.getDefault().suspendAllValidation(false);
 		try {
-			new IncrimantalValidatorOperation(project, resources).run(new NullProgressMonitor());
+			new IncriminalValidatorOperation(project, resources).run(new NullProgressMonitor());
 //			new EnabledIncrementalValidatorsOperation(project, resources).run(new NullProgressMonitor());
 //			new ValidatorSubsetOperation(project,"java",resource,false).run(new NullProgressMonitor());
 		} catch (OperationCanceledException e) {
@@ -101,8 +69,8 @@ public class TestUtil {
 		}
 	}
 
-	private static class IncrimantalValidatorOperation extends ValidatorSubsetOperation {
-		public IncrimantalValidatorOperation(IProject project, Object[] changedResources) throws InvocationTargetException {
+	private static class IncriminalValidatorOperation extends ValidatorSubsetOperation {
+		public IncriminalValidatorOperation(IProject project, Object[] changedResources) throws InvocationTargetException {
 			super(project, shouldForce(changedResources), RegistryConstants.ATT_RULE_GROUP_DEFAULT, false);
 			ProjectConfiguration prjp = ConfigurationManager.getManager().getProjectConfiguration(project);
 			setEnabledValidators(InternalValidatorManager.wrapInSet(prjp.getEnabledIncrementalValidators(true)));
