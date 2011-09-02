@@ -12,13 +12,10 @@ package org.jboss.tools.common.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IAnnotatable;
@@ -71,89 +68,8 @@ public class EclipseJavaUtil {
 		return resolveType(type, typeName);
 	}
 
-	static String NULL = ";;;"; //$NON-NLS-1$
-
-	static class Resolved {
-		IType type;
-		Map<String, String> types = new HashMap<String, String>();
-		Resolved(IType type) {
-			this.type = type;
-		}
-		
-		void setType(IType type) {
-			this.type = type;
-			types.clear();
-		}
-	}
-	
-	static Map<String,Resolved> resolved = new HashMap<String, Resolved>();
-	
-	static String getKey(IType type) {
-		String n = type.getFullyQualifiedName();
-		IJavaProject jp = type.getJavaProject();
-		if(jp == null) return n;
-		IProject p = jp.getProject();
-		if(p == null || !p.isAccessible()) return n;
-		return p.getName() + ":" + n; //$NON-NLS-1$
-	}
 	public static String resolveType(IType type, String typeName) {
-		if(type == null) return null;
-		if(type.isBinary() || typeName == null) return typeName;
-		int i = typeName.indexOf("<");
-		if(i >= 0) {
-			int j = typeName.lastIndexOf(">");
-			if(j >= i) {
-//				typeName = typeName.substring(0, i);
-			}
-		}
-		
-		String n = getKey(type);
-		Resolved r = resolved.get(n);
-		if(r == null) {
-			r = new Resolved(type);
-			resolved.put(n, r);
-//			if(resolved.size() % 100 == 0) {
-//				System.out.println("-->" + resolved.size() + " " + n); //$NON-NLS-1$ //$NON-NLS-2$
-//			}
-		}
-		if(r.type != type) {
-			r.setType(type);
-		}
-		
-		String result = r.types.get(typeName);
-		
-		if(result != null) {
-			return (result == NULL) ? null : result;
-		}
-		
-		result = __resolveType(type, typeName);
-		
-		String nresult = result == null ? NULL : result;
-		
-		r.types.put(typeName, nresult);
-		
-//		System.out.println(n + " " + typeName);
-		
-		return result;
-
-	}
-	
-	private static String __resolveType(IType type, String typeName) {
-		if(type == null || typeName == null) return null;
-		try	{
-			String resolvedArray[][] = type.resolveType(typeName);
-//			resolvedArray == null for primitive types
-			if(resolvedArray == null) return typeName;
-			typeName = ""; //$NON-NLS-1$
-			for (int i = 0; i < resolvedArray[0].length; i++) 
-				typeName += (!"".equals(typeName) ? "." : "") + resolvedArray[0][i];  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			return typeName;
-		} catch (JavaModelException e) {
-			CommonPlugin.getPluginLog().logError(e);
-		} catch (IllegalArgumentException ee) {
-			System.out.println("Illegal " + typeName);
-		}
-		return null;
+		return TypeResolutionCache.getInstance().resolveType(type, typeName);
 	}
 	
 	public static IType findType(IJavaProject javaProject, String qualifiedName) throws JavaModelException {
