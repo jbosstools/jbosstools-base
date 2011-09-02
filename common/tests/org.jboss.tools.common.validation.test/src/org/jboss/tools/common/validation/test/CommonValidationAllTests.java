@@ -15,7 +15,6 @@ import junit.framework.TestSuite;
 
 import org.eclipse.jdt.internal.core.JavaModelManager;
 import org.eclipse.wst.validation.ValidationFramework;
-import org.jboss.tools.common.base.test.validation.ValidationExceptionTest;
 import org.jboss.tools.test.util.ProjectImportTestSetup;
 
 /**
@@ -28,8 +27,6 @@ public class CommonValidationAllTests {
 		JavaModelManager.getIndexManager().disable();
 		ValidationFramework.getDefault().suspendAllValidation(true);
 
-		ValidationExceptionTest.initLogger();
-
 		TestSuite suiteAll = new TestSuite("Common Validation Tests");
 
 		TestSuite suite = new TestSuite(ValidationTest.class.getName());
@@ -40,6 +37,8 @@ public class CommonValidationAllTests {
 				new String[]{"projects/JavaProject"},
 				new String[]{"JavaProject"});
 		suiteAll.addTest(testSetup);
+
+		suiteAll.addTestSuite(SynchronizationTest.class);
 
 		return suiteAll;
 	}

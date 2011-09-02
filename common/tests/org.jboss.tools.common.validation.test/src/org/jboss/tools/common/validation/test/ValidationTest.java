@@ -12,32 +12,29 @@ package org.jboss.tools.common.validation.test;
 
 import java.util.Set;
 
+import junit.framework.TestCase;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.jboss.tools.common.base.test.validation.TestUtil;
+import org.jboss.tools.common.base.test.validation.ValidationExceptionLogger;
 import org.jboss.tools.common.base.test.validation.ValidationExceptionTest;
-import org.jboss.tools.common.validation.CommonValidationPlugin;
-import org.jboss.tools.common.validation.JBTValidationException;
 
 /**
  * @author Alexey Kazakov
  */
-public class ValidationTest extends ValidationExceptionTest {
+public class ValidationTest extends TestCase {
 
-	@Override
 	public void testExceptions() throws Exception {
+		ValidationExceptionLogger logger = new ValidationExceptionLogger();
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("JavaProject");
 		TestUtil._waitForValidation(project);
-		Set<IStatus> exceptions = LOGGER.getExceptions();
+		Set<IStatus> exceptions = logger.getExceptions();
 		assertFalse(exceptions.isEmpty());
 	}
 
-	@Override
-	public void testLogger() {
-		initLogger();
-		CommonValidationPlugin.getDefault().logError(new JBTValidationException("Test logger", null));
-		Set<IStatus> exceptions = LOGGER.getExceptions();
-		assertEquals(1, exceptions.size());
+	public void testLogging() {
+		new ValidationExceptionTest().testLogging();
 	}
 }

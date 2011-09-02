@@ -23,15 +23,15 @@ import org.jboss.tools.common.validation.JBTValidationException;
  */
 public class ValidationExceptionTest extends TestCase {
 
-	protected static ValidationExceptionLogger LOGGER;
+	protected volatile static ValidationExceptionLogger LOGGER;
 
 	public static ValidationExceptionLogger initLogger() {
 		LOGGER = new ValidationExceptionLogger();
 		return LOGGER;
 	}
 
-	public void testExceptions() throws Exception {
-		Set<IStatus> exceptions = LOGGER.getExceptions();
+	public static void assertExceptionsIsEmpty(ValidationExceptionLogger logger) throws Exception {
+		Set<IStatus> exceptions = logger.getExceptions();
 		StringBuffer error = new StringBuffer("The following exceptions were thrown during project validation:");
 		for (IStatus status : exceptions) {
 			Throwable cause = status.getException().getCause();
@@ -46,9 +46,14 @@ public class ValidationExceptionTest extends TestCase {
 		assertTrue(error.toString(), exceptions.isEmpty());
 	}
 
-	public void testLogger() {
-		CommonValidationPlugin.getDefault().logError(new JBTValidationException("Test logger", null));
-		Set<IStatus> exceptions = LOGGER.getExceptions();
+	public void testExceptions() throws Exception {
+		assertExceptionsIsEmpty(LOGGER);
+	}
+
+	public void testLogging() {
+		ValidationExceptionLogger logger = new ValidationExceptionLogger();
+		CommonValidationPlugin.getDefault().logError(new JBTValidationException("Test logging", null));
+		Set<IStatus> exceptions = logger.getExceptions();
 		assertEquals(1, exceptions.size());
 	}
 }

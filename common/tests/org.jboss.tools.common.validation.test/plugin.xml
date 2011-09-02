@@ -9,5 +9,10 @@
                name="TestValidator"
                id="org.jboss.common.validation.test.TestValidator">
          </validator>
+         <validator
+               class="org.jboss.tools.common.validation.test.TestSynchronizationValidator"
+               name="TestSynchronizationValidator"
+               id="org.jboss.common.validation.test.TestSynchronizationValidator">
+         </validator>
    </extension>
 </plugin>
