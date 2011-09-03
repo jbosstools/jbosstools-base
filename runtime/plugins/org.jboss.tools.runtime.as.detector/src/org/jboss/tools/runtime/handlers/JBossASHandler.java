@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -46,9 +45,6 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
-import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
-import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
-import org.jboss.ide.eclipse.as.core.server.IDeployableServer;
 import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
@@ -70,7 +66,6 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	private static final String ESB = "ESB"; //$NON-NLS-1$
 
 	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
-		// FIXME
 		//createInitialJBossServer();
 		createJBossServerFromDefinitions(serverDefinitions);
 	}
@@ -261,7 +256,8 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			// IJBossServerRuntime.PROPERTY_VM_TYPE_ID
 //			((RuntimeWorkingCopy) runtime).setAttribute("PROPERTY_VM_TYPE_ID", defaultVM.getVMInstallType().getId()); //$NON-NLS-1$
 			// IJBossServerRuntime.PROPERTY_CONFIGURATION_NAME
-			((RuntimeWorkingCopy) runtime).setAttribute("org.jboss.ide.eclipse.as.core.runtime.configurationName", JBOSS_AS_DEFAULT_CONFIGURATION_NAME); //$NON-NLS-1$
+			// JBIDE-9643
+			// ((RuntimeWorkingCopy) runtime).setAttribute("org.jboss.ide.eclipse.as.core.runtime.configurationName", JBOSS_AS_DEFAULT_CONFIGURATION_NAME); //$NON-NLS-1$
 
 			return runtime.save(false, progressMonitor);
 		}
@@ -296,11 +292,12 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			// JBIDE-7822
 			//String deployVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("deploy").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
 			//((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.deployDirectory", deployVal); //$NON-NLS-1$
-			((ServerWorkingCopy) server).setAttribute(IDeployableServer.DEPLOY_DIRECTORY_TYPE, IDeployableServer.DEPLOY_SERVER);
+			// JBIDE-9643
+			// ((ServerWorkingCopy) server).setAttribute(IDeployableServer.DEPLOY_DIRECTORY_TYPE, IDeployableServer.DEPLOY_SERVER);
 
 			// IDeployableServer.TEMP_DEPLOY_DIRECTORY
-			String deployTmpFolderVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("tmp").append("jbosstoolsTemp").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.tempDeployDirectory", deployTmpFolderVal); //$NON-NLS-1$
+			// String deployTmpFolderVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("tmp").append("jbosstoolsTemp").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			// ((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.tempDeployDirectory", deployTmpFolderVal); //$NON-NLS-1$
 
 			// If we'd need to set up a username / pw for JMX, do it here.
 //			((ServerWorkingCopy)serverWC).setAttribute(JBossServer.SERVER_USERNAME, authUser);
