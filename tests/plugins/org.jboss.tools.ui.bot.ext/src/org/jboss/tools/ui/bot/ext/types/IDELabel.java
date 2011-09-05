@@ -411,7 +411,7 @@ public class IDELabel {
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0 Runtime";
      public static final String JBOSS_EAP_5_x = "JBoss Enterprise Application Platform 5.x Runtime";
      public static final String JBOSS_AS_5_1 = "JBoss 5.1 Runtime";
-     public static final String JBOSS_AS_6_0 = "JBoss 6.0 Runtime";
+     public static final String JBOSS_AS_6_0 = "JBoss 6.x Runtime";
        
    }
    public static final class ServerType {
