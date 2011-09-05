@@ -433,6 +433,9 @@ public class IDELabel {
    public static final class NewDroolsProjectDialog {
 
      public static final String NAME = "Project name:";
+     public static final String GENERATE_CODE_COMPATIBLE_WITH_COMBO_BOX_LABEL = "Generate code compatible with: ";
+     public static final String CODE_COMPATIBLE_WITH_51_DROOLS_OR_ABOVE = "Drools 5.1 or above";
+     public static final String CODE_COMPATIBLE_WITH_50_DROOLS = "Drools 5.0.x";
        
    }
    
