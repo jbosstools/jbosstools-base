@@ -1,6 +1,7 @@
 package org.jboss.tools.ui.bot.ext;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -139,7 +140,13 @@ public class RequirementAwareSuite extends Suite {
 		protected List<FrameworkMethod> computeTestMethods() {
 			List<FrameworkMethod> testMethods = new ArrayList<FrameworkMethod>();			
 			for (Method mm : getTestClass().getJavaClass().getMethods()) {
-				if (mm.getName().startsWith("test") || mm.getAnnotation(Test.class)!=null) {
+				if (mm.getAnnotation(Test.class)!=null 
+						||
+						(mm.getName().startsWith("test") 
+						&& !Modifier.isStatic(mm.getModifiers())
+						&& mm.getParameterTypes().length==0
+						&& Void.TYPE.equals(mm.getReturnType())
+						)) {
 					testMethods.add(new FrameworkMethod(mm));
 				}
 			}
