@@ -13,7 +13,7 @@
 
 		<ui:define name="body">
 			<h:message showSummary="true" showDetail="false" style="color: red; font-weight: bold;" for="inputname" />
-			<ez:input id="inputname" label="${msgs.prompt}" value="#{user.name}" action="#{user.sayHello}" submitlabel="Say Hello"/>
+			<ez:input id="inputname" label="#{msgs.prompt}" value="#{user.name}" action="#{user.sayHello}" submitlabel="Say Hello"/>
 		</ui:define>
 	</ui:composition>
 </html>
