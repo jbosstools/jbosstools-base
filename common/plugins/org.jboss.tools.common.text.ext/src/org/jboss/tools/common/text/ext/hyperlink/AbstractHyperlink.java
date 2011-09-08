@@ -115,7 +115,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 					return null;
 				wsRelativePath = wsRelativePath.substring(0, i);
 				IPath path = new Path(wsRelativePath);
-				IResource r = ModelPlugin.getWorkspace().getRoot().findMember(
+				IResource r = ResourcesPlugin.getWorkspace().getRoot().findMember(
 						path);
 				if (r != null && r.exists()) {
 					XModelObject o = EclipseResourceUtil
@@ -145,7 +145,7 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		}
 		if (wsRelativePath.startsWith("/")) { //$NON-NLS-1$
 			IPath path = new Path(wsRelativePath);
-			IResource r = ModelPlugin.getWorkspace().getRoot().findMember(
+			IResource r = ResourcesPlugin.getWorkspace().getRoot().findMember(
 					path);
 			if (r != null && r.exists() && r instanceof IFile)
 				return (IFile) r;
