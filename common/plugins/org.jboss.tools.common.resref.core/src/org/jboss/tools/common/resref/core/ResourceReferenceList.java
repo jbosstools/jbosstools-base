@@ -20,8 +20,6 @@ import org.eclipse.core.runtime.*;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.XModelObjectUtil;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
@@ -151,11 +149,11 @@ public abstract class ResourceReferenceList {
 	
 	//Fix for JBIDE-2979
 	private static String[] decodeResourceString(String resource) {
-		String[] results = XModelObjectUtil.asStringArray(resource);
+		String[] results = resource.split("[,;]");
 		String[] returnValues = new String [results.length]; 
 		try {
 			for (int i=0;i<results.length;i++) {	
-					returnValues[i] = URLDecoder.decode(results[i], CODING);	
+				returnValues[i] = URLDecoder.decode(results[i].trim(), CODING);	
 			}
 		} catch (UnsupportedEncodingException e) {
 			ResourceReferencePlugin.getPluginLog().logError(e);
@@ -164,7 +162,6 @@ public abstract class ResourceReferenceList {
 		}
 		return returnValues;
 	}
-	
 	
 	public void setAllResources(IFile file, ResourceReference[] entries) {
 	    	IResource changed = null;
@@ -266,8 +263,7 @@ public abstract class ResourceReferenceList {
 			 * https://jira.jboss.org/jira/browse/JBIDE-3211 
 			 * Reading global preferences from instance scope.
 			 */
-			IScopeContext instanceContext = new InstanceScope();
-			Preferences root = instanceContext.getNode(ModelPlugin.PLUGIN_ID);
+			Preferences root = InstanceScope.INSTANCE.getNode(ResourceReferencePlugin.PREFERENCES_QUALIFIER);
 			if (null != root) {
 				Preferences node = root.node(ResourceReferencePlugin.PLUGIN_ID);
 				s = node.get(getPropertyName().getLocalName(), ""); //$NON-NLS-1$
@@ -284,7 +280,7 @@ public abstract class ResourceReferenceList {
 				 */
 				String old = null;
 				try {
-					old = ModelPlugin.getWorkspace().getRoot()
+					old =ResourcesPlugin.getWorkspace().getRoot()
 							.getPersistentProperty(getPropertyName());
 				} catch (CoreException e) {
 					/*
@@ -330,8 +326,8 @@ public abstract class ResourceReferenceList {
 		 * ${workspace}\.metadata\.plugins\org.eclipse.core.runtime\
 		 * .settings\org.jboss.tools.common.model.prefs
 		 */
-		IScopeContext instanceContext = new InstanceScope();
-		Preferences root = instanceContext.getNode(ModelPlugin.PLUGIN_ID);
+		
+		Preferences root = InstanceScope.INSTANCE.getNode(ResourceReferencePlugin.PREFERENCES_QUALIFIER);
 		if (null != root) {
 			Preferences node = root.node(ResourceReferencePlugin.PLUGIN_ID);
 			node.put(getPropertyName().getLocalName(), sb.toString());

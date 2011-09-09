@@ -36,7 +36,7 @@ import org.eclipse.jdt.core.Signature;
 import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.ca.preferences.ELContentAssistPreferences;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
-import org.jboss.tools.common.model.util.EclipseJavaUtil;
+import org.jboss.tools.common.util.EclipseJavaUtil;
 import org.jboss.tools.common.util.BeanUtil;
 
 /**

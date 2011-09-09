@@ -17,6 +17,14 @@ public class ModelNatureExtension {
 
 	public ModelNatureExtension() {}
 
+	public ModelNatureExtension(String name, String displayName, String pathEncoder, String watcherContributor) {
+		super();
+		this.name = name;
+		this.displayName = displayName;
+		this.pathEncoder = pathEncoder;
+		this.watcherContributor = watcherContributor;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -33,21 +41,24 @@ public class ModelNatureExtension {
 		return watcherContributor;
 	}
 
-	static ModelNatureExtension[] INSTANCES;
+	private static final ModelNatureExtension[] INSTANCES;
 
-	public static ModelNatureExtension[] getInstances() {
-		if(INSTANCES != null) return INSTANCES;
+	static {
 		List<ModelNatureExtension> list = new ArrayList<ModelNatureExtension>();
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT);
 		IConfigurationElement[] es = point.getConfigurationElements();
 		for (IConfigurationElement e: es) {
-			ModelNatureExtension n = new ModelNatureExtension();
-			n.name = e.getAttribute("name"); //$NON-NLS-1$
-			n.displayName = e.getAttribute("displayName"); //$NON-NLS-1$
-			n.pathEncoder = e.getAttribute("pathEncoder"); //$NON-NLS-1$
-			n.watcherContributor = e.getAttribute("watcherContributor"); //$NON-NLS-1$
+			ModelNatureExtension n = new ModelNatureExtension(
+				e.getAttribute("name"), //$NON-NLS-1$
+				e.getAttribute("displayName"), //$NON-NLS-1$
+				e.getAttribute("pathEncoder"), //$NON-NLS-1$
+				e.getAttribute("watcherContributor")); //$NON-NLS-1$
 			list.add(n);
 		}
-		return INSTANCES = list.toArray(new ModelNatureExtension[0]);
+		INSTANCES = list.toArray(new ModelNatureExtension[0]);
+	}
+
+	public static ModelNatureExtension[] getInstances() {
+		return INSTANCES;
 	}
 }

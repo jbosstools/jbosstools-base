@@ -11,6 +11,7 @@ public class ResourceReferencePlugin extends BaseUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.jboss.tools.common.resref.core"; //$NON-NLS-1$
+	public static final String PREFERENCES_QUALIFIER = "org.jboss.tools.common.model"; //$NON-NLS-1$
 
 	// The shared instance
 	private static ResourceReferencePlugin plugin;

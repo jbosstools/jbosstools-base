@@ -221,7 +221,7 @@ public class EclipseResourceUtil extends EclipseUtil {
 		}
 	}
 
-	private static String[] MODEL_NATURES = new String[0];
+	private static final String[] MODEL_NATURES;
 	
 	static {
 		ModelNatureExtension[] es = ModelNatureExtension.getInstances();
@@ -1071,7 +1071,6 @@ public class EclipseResourceUtil extends EclipseUtil {
 	}
 	
 	public static boolean isJar(String path) {
-		if(path == null) return false;
 		path = path.toLowerCase();
 		return path.endsWith(".jar") || path.endsWith(".zip"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
