@@ -22,6 +22,8 @@ import org.jboss.tools.common.meta.action.impl.*;
 import org.jboss.tools.common.meta.constraint.XAttributeConstraint;
 import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintAList;
 import org.jboss.tools.common.model.icons.impl.*;
+import org.jboss.tools.common.model.loaders.EntityRecognizer;
+import org.jboss.tools.common.model.loaders.impl.ModelEntityRecognizer;
 
 public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
     private static XModelMetaDataImpl instance = null;
@@ -34,7 +36,9 @@ public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
     private XActionListImpl actions = new XActionListImpl();
     private XExtensions extensions = new XExtensions();
     private XParentsImpl parents = new XParentsImpl();
-    
+ 
+    private ModelEntityRecognizer recognizer;
+
     static Object lock = new Object();
 
     public static XModelMetaData getInstance() {
@@ -67,6 +71,11 @@ public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
     		long dt = - t + (t = System.currentTimeMillis());
 			ModelPlugin.getPluginLog().logInfo("Meta model loaded in " + dt + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
+		recognizer = new ModelEntityRecognizer(this);
+    }
+
+    public EntityRecognizer getEntityRecognizer() {
+        return recognizer;
     }
 
     private void makeStatistics(XModelEntity[] es) {

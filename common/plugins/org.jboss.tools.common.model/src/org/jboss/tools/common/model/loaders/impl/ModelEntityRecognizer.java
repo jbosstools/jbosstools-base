@@ -17,20 +17,13 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class ModelEntityRecognizer implements EntityRecognizer {
-    private XModelMetaData meta = null;
     private HashMap<String,EntityRecognizer[]> recognizers = new HashMap<String,EntityRecognizer[]>();
     private Set<String> umbiguousExtensions = new HashSet<String>();
 
-    public ModelEntityRecognizer() {}
-    
-    boolean loaded = false;
-
-    public void setMetaData(XModelMetaData meta) {
-        if(this.meta != null) return;
-        this.meta = meta;
-        load();
+    public ModelEntityRecognizer(XModelMetaData meta) {
+    	load(meta);
     }
-
+    
 	public String getEntityName(EntityRecognizerContext context) {
 		String ext = context.getExtension();
     	if(ext != null) ext = ext.toLowerCase();
@@ -48,7 +41,7 @@ public class ModelEntityRecognizer implements EntityRecognizer {
 					|| (context.getExtension() != null && umbiguousExtensions.contains(context.getExtension()));
 	}
 
-    private void load() {
+    private void load(XModelMetaData meta) {
         XMapping m = meta.getMapping("Recognizers"); //$NON-NLS-1$
         if(m == null) return;
         HashMap<String,RL> ext_list = new HashMap<String,RL>();

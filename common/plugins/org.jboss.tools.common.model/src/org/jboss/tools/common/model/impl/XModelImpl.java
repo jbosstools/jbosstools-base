@@ -68,7 +68,6 @@ public class XModelImpl implements XModel {
     private XUndoManager undoer = new XUndoManager();
     private static ServiceDialog service = null;
     private static XModelBufferImpl buffer = new XModelBufferImpl();
-    private static ModelEntityRecognizer recognizer = new ModelEntityRecognizer();
     private XModelChangeManager changemanager = new XModelChangeManager();
     private FileSystemPeer fileregistry = new FileSystemPeer();
     private PrintWriter out = new PrintWriter(System.out, true);
@@ -78,7 +77,6 @@ public class XModelImpl implements XModel {
     public XModelImpl(Properties properties, XModelMetaData metadata) {
         this.metadata = metadata;
         this.properties = properties;
-        recognizer.setMetaData(metadata);
         if(properties.getProperty(XModelObjectConstants.PROP_ROOT_ENTITY) != null) {
         	rootEntity = properties.getProperty(XModelObjectConstants.PROP_ROOT_ENTITY);
         }
@@ -122,7 +120,7 @@ public class XModelImpl implements XModel {
     }
 
     public EntityRecognizer getEntityRecognizer() {
-        return recognizer;
+        return metadata.getEntityRecognizer();
     }
 
     public XModelChangeManager getChangeManager() {

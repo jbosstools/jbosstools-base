@@ -12,6 +12,7 @@ package org.jboss.tools.common.meta;
 
 import org.jboss.tools.common.meta.action.XActionList;
 import org.jboss.tools.common.model.icons.XIconList;
+import org.jboss.tools.common.model.loaders.EntityRecognizer;
 
 public interface XModelMetaData {
 	public String[] entities();
@@ -20,5 +21,6 @@ public interface XModelMetaData {
     public XMapping getMapping(String name);
     public XIconList getIconList();
     public XParents getParentInfo();
+    public EntityRecognizer getEntityRecognizer();
 }
 
