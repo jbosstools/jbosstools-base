@@ -242,8 +242,8 @@ public class JarAccess {
 			}
 			return sb.toString();
 		} catch (IOException e) {
-			errors.add(e.getClass().getName() + ": " + e.getMessage());
-			ModelPlugin.getPluginLog().logError(e);
+			errors.add(e.getClass().getName() + " occurs when reading " + jar.getName() + " : " + e.getMessage());  //$NON-NLS-1$//$NON-NLS-2$
+			ModelPlugin.getPluginLog().logError("Exception occurs when reading " + jar.getName(), e); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		} finally {
 			unlockJar();
