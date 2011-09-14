@@ -17,6 +17,8 @@ import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Link;
@@ -32,7 +34,8 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	private boolean reportEnabled;
 	private IUsageBranding branding;
-
+	private ForceActiveShellAdapter forceActiveShellAdapter = new ForceActiveShellAdapter();
+	
 	public UsageReportEnablementDialog(IShellProvider parentShell, IUsageBranding branding) {
 		super(parentShell);
 		this.branding = branding;
@@ -61,6 +64,14 @@ public class UsageReportEnablementDialog extends Dialog {
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(branding.getStartupAllowReportingTitle());
+		forceActiveShellAdapter.attachTo(shell);
+	}
+
+	@Override
+	public boolean close() {
+		forceActiveShellAdapter.removeFrom(getShell());
+		return super.close();
+		
 	}
 
 	protected void createButtonsForButtonBar(Composite parent) {
@@ -100,5 +111,29 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	public boolean isReportEnabled() {
 		return reportEnabled;
+	}
+
+	private class ForceActiveShellAdapter extends ShellAdapter {
+
+		public void shellDeactivated(ShellEvent e) {
+			Shell shell = getShell();
+			if (shell != null
+					&& !shell.isDisposed())
+			shell.forceActive();
+		}
+		
+		private void attachTo(Shell shell) {
+			if (shell != null
+					&& !shell.isDisposed()) {
+				shell.addShellListener(this);
+			}
+		}
+
+		private void removeFrom(Shell shell) {
+			if (shell != null
+					&& !shell.isDisposed()) {
+				shell.removeShellListener(this);
+			}
+		}
 	}
 }
