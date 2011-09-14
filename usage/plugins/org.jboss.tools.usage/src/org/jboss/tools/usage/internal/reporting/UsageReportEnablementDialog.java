@@ -35,7 +35,6 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	public UsageReportEnablementDialog(IShellProvider parentShell, IUsageBranding branding) {
 		super(parentShell);
-		setBlockOnOpen(false);
 		this.branding = branding;
 	}
 
