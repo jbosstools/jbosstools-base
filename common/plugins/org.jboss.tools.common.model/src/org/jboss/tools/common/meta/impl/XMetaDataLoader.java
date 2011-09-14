@@ -11,16 +11,15 @@
 package org.jboss.tools.common.meta.impl;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.*;
-import org.w3c.dom.*;
+import java.util.Vector;
+
 import org.jboss.tools.common.meta.XMetaElement;
-import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.model.util.XMLUtil;
 import org.jboss.tools.common.xml.XMLUtilities;
+import org.w3c.dom.Element;
 
 public class XMetaDataLoader implements XMetaDataConstants {
 
@@ -46,7 +45,7 @@ public class XMetaDataLoader implements XMetaDataConstants {
         String loader = element.getAttribute(LOADER);
         if(loader == null || loader.length() == 0) return null;
         try {
-            return (XMetaElementImpl)ClassLoaderUtil.getClassLoader().loadClass(loader).newInstance();
+            return (XMetaElementImpl)ModelPlugin.getDefault().getClass().getClassLoader().loadClass(loader).newInstance();
         } catch (InstantiationException e) {
         	ModelPlugin.getPluginLog().logError("Error in getMetaElementInstance " + loader, e);    //$NON-NLS-1$
 		} catch (IllegalAccessException e) {

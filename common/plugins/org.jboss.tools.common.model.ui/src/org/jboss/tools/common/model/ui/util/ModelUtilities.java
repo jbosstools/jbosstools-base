@@ -12,13 +12,8 @@ package org.jboss.tools.common.model.ui.util;
 
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
 
 public class ModelUtilities {
-	
-	static {
-		ClassLoaderUtil.init();
-	}
 	
 	public static XModel getPreferenceModel() {
 		return PreferenceModelUtilities.getPreferenceModel();

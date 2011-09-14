@@ -15,19 +15,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
+import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.action.XAttributeData;
 import org.jboss.tools.common.model.ui.IStructuredChangeListener;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.StructuredChange;
 import org.jboss.tools.common.model.ui.StructuredChangedEvent;
 import org.jboss.tools.common.model.ui.attribute.IListContentProvider;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.Viewer;
-
-import org.jboss.tools.common.meta.XAttribute;
-import org.jboss.tools.common.meta.action.XAttributeData;
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class StructuredListAdapter extends DefaultValueAdapter 

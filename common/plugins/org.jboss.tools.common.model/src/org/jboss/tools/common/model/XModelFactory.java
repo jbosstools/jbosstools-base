@@ -6,11 +6,11 @@
 
 package org.jboss.tools.common.model;
 
-import java.util.*;
+import java.util.Properties;
+
 import org.jboss.tools.common.meta.XModelMetaData;
 import org.jboss.tools.common.meta.impl.XModelMetaDataImpl;
 import org.jboss.tools.common.model.impl.XModelImpl;
-import org.jboss.tools.common.model.util.*;
 
 /**
  * Factory class to create instances of XModel interface. See
@@ -50,7 +50,6 @@ public class XModelFactory {
 	}
 
 	private static final class DefaultModelHolder {
-		static final XModel DEFAULT_INSTANCE = defaultInstance = createInstance(ClassLoaderUtil
-				.getProperties());
+		static final XModel DEFAULT_INSTANCE = defaultInstance = createInstance(System.getProperties());
 	}
 }

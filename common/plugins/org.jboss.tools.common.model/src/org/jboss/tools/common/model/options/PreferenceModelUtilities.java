@@ -10,18 +10,20 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.options;
 
-import java.util.*;
-import org.jboss.tools.common.model.*;
+import java.util.Properties;
+
+import org.jboss.tools.common.model.ServiceDialog;
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelConstants;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelFactory;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class PreferenceModelUtilities {
 	static final String ENT_OPTION_ROOT = "OptionRoot"; //$NON-NLS-1$
-	
-	static {
-		ClassLoaderUtil.init();
-	}
 
 	private static class PreferenceModelHolder {
 		public static XModel preferenceModel;

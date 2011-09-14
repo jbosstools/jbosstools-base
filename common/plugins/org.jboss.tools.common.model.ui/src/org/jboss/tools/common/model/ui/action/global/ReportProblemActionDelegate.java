@@ -12,15 +12,10 @@ package org.jboss.tools.common.model.ui.action.global;
 
 import java.util.Properties;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.reporting.ReportProblemWizard;
 
 public class ReportProblemActionDelegate implements IWorkbenchWindowActionDelegate {
@@ -32,7 +27,6 @@ public class ReportProblemActionDelegate implements IWorkbenchWindowActionDelega
 	public void init(IWorkbenchWindow window) {}
 
 	public void run(IAction action) {
-		ClassLoaderUtil.init();
 		
 		ReportProblemWizard wizard = new ReportProblemWizard();
 		Properties p = new Properties();

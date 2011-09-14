@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.tools.common.model.ui.util.ModelUtilities;
 import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
@@ -22,19 +21,16 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
+import org.jboss.tools.common.model.ui.util.ModelUtilities;
 
 /**
  * @author eskimo
  *
  */
 public class TabbedPreferencesPage extends PreferencePage implements IWorkbenchPreferencePage {
-	static {
-		ClassLoaderUtil.init();
-	}
+
 	Map<String,PreferencePage> map = new HashMap<String,PreferencePage>();
 	
 	public TabbedPreferencesPage(String[] paths) {

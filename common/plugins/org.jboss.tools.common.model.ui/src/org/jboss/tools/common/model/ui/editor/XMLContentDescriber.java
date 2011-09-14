@@ -19,17 +19,12 @@ import org.eclipse.core.runtime.content.ITextContentDescriber;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.model.loaders.EntityRecognizerContext;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.util.FileUtil;
 
 /**
  * @author Viacheslav Kabanovich
  */
 public class XMLContentDescriber extends org.eclipse.core.runtime.content.XMLContentDescriber implements ITextContentDescriber {
-
-	static {
-		ClassLoaderUtil.init();
-	}
 
 	public int describe(InputStream contents, IContentDescription description) throws IOException {
 		super.describe(contents, description);

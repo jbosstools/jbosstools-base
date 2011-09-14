@@ -26,13 +26,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentDescription;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWindowListener;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.jboss.tools.common.log.BaseUIPlugin;
 import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.model.XModelConstants;
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.osgi.framework.BundleContext;
 
@@ -79,11 +77,6 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 	public void start(BundleContext context) throws Exception {
 		System.setProperty(XModelConstants.HOME, EclipseResourceUtil.getInstallPath(context.getBundle()));
 		super.start(context);		
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				ClassLoaderUtil.init();
-			}
-		});
 	}
 	
 	protected void initializeDefaultPluginPreferences() {
