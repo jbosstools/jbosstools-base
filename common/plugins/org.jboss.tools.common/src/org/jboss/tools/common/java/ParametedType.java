@@ -29,6 +29,7 @@ import org.jboss.tools.common.CommonPlugin;
  * @author Viacheslav Kabanovich
  *
  */
+@SuppressWarnings("nls")
 public class ParametedType implements IParametedType {
 	protected ParametedTypeFactory typeFactory = null;
 	protected IType type;
@@ -368,6 +369,13 @@ public class ParametedType implements IParametedType {
 		primitives.put("Float", "float");
 		primitives.put("Double", "double");
 		primitives.put("Boolean", "boolean");
+		primitives.put("Integer[]", "int[]");
+		primitives.put("Short[]", "short[]");
+		primitives.put("Long[]", "long[]");
+		primitives.put("Character[]", "char[]");
+		primitives.put("Float[]", "float[]");
+		primitives.put("Double[]", "double[]");
+		primitives.put("Boolean[]", "boolean[]");
 	}
 
 	/*

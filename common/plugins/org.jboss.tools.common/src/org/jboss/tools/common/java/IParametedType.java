@@ -47,6 +47,8 @@ public interface IParametedType {
 	 * Returns the simple name of the type. In case of IType this method will return the short name of the type.
 	 * If this type is primitive then the method will return the name of the primitive type.
 	 * 
+	 * Implementations may not return null.
+	 * 
 	 * @return the simple name of the type.
 	 */
 	String getSimpleName();
