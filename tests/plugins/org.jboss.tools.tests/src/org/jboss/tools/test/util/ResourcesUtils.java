@@ -67,12 +67,24 @@ public class ResourcesUtils {
 		throws 
 			IOException, CoreException, 
 			InvocationTargetException, InterruptedException  {
+		return importProject( 
+			bundle, templLocation, projectName, 
+			monitor,false); 
+
+	}
+	
+	public static IProject importProject( 
+			Bundle bundle, String templLocation, String projectName, 
+			IProgressMonitor monitor, boolean skipWaitForIdle) 
+		throws 
+			IOException, CoreException, 
+			InvocationTargetException, InterruptedException  {
 		
 		String tplPrjLcStr;
 			tplPrjLcStr = FileLocator.resolve(bundle.getEntry(templLocation))
 				.getFile();
 			String protocol = FileLocator.resolve(bundle.getEntry(templLocation)).getProtocol();
-			IProject importedPrj = importProjectIntoWorkspace(tplPrjLcStr, projectName, protocol);
+			IProject importedPrj = importProjectIntoWorkspace(tplPrjLcStr, projectName, protocol,skipWaitForIdle);
 		return importedPrj;
 	}
 	
@@ -227,14 +239,21 @@ public class ResourcesUtils {
 	       return oldAutoBuilding;
 	}
 
-	//static public void importProjectIntoWorkspace(ImportBean bean) {
-	//	importProjectIntoWorkspace(bean);
-	//}
-
 	private static final long IMPORT_DELAY = 200;
 	
 	static public IProject importProjectIntoWorkspace(String path, String projectName) { 
 		return importProjectIntoWorkspace(path, projectName,"file");
+	}
+
+	/**
+	 * Import project into workspace.
+	 * 
+	 * @param path the path
+	 * @param projectName the project name
+	 * @param protocol 
+	 */
+	static public IProject importProjectIntoWorkspace(String path, String projectName, String protocol) {
+		return importProjectIntoWorkspace(path, projectName, protocol, false);
 	}
 	
 	/**
@@ -244,7 +263,7 @@ public class ResourcesUtils {
 	 * @param projectName the project name
 	 * @param protocol 
 	 */
-	static public IProject importProjectIntoWorkspace(String path, String projectName, String protocol) {
+	static public IProject importProjectIntoWorkspace(String path, String projectName, String protocol, boolean skipWaitForIdle) {
 	
 	IProject project = null;
 	
@@ -303,8 +322,9 @@ public class ResourcesUtils {
 			importOp.run(null);
 			project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
 			ResourcesUtils.setBuildAutomatically(state);
-
-			JobUtils.waitForIdle(IMPORT_DELAY);
+			if(!skipWaitForIdle) {
+				JobUtils.waitForIdle(IMPORT_DELAY);
+			}
 		} catch (InvocationTargetException ite) {
 //			TePlugin.getDefault().logError(ite.getCause());
 			ite.printStackTrace();
