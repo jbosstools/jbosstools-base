@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.jboss.tools.common.core.feature"
-      label="%featureName"
-      version="3.3.0.qualifier"
-      provider-name="%providerName">
+<feature id="org.jboss.tools.common.core.feature" label="%featureName" version="3.3.0.qualifier" provider-name="%providerName">
 
-   <description url="http://www.jboss.org/tools">
+	<description url="http://www.jboss.org/tools">
       %description
    </description>
 
-   <copyright>
+	<copyright>
       %copyright
    </copyright>
 
-   <license>
+	<license>
       Red Hat, Inc. licenses these features and plugins to you under
 certain open source licenses (or aggregations of such licenses), which
 in a particular case may include the Eclipse Public License, the GNU
@@ -23,22 +19,7 @@ source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
 Raleigh NC 27606 USA.
    </license>
 
-   <plugin
-         id="org.jboss.tools.common"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.jboss.tools.common.model"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.jboss.tools.common.projecttemplates"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
+	<plugin id="org.jboss.tools.common" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.common.model" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.common.projecttemplates" download-size="0" install-size="0" version="0.0.0" />
 </feature>
