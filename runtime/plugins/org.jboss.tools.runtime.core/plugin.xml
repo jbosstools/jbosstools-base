@@ -2,5 +2,43 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="runtimeDetectors" name="Runtime Detectors" schema="schema/runtimeDetectors.exsd"/>
-
+   <extension-point id="downloadJBossRuntimes" name="%DownloadJBossRuntimes" schema="schema/downloadJBossRuntimes.exsd"/>
+   
+   <extension
+         point="org.jboss.tools.runtime.core.downloadJBossRuntimes">
+      <runtime
+            id="org.jboss.tools.runtime.core.as.701" 
+            name="JBoss AS 7.0.1 Everything (NOT Java EE6 Certified)"
+            version="7.0.1.Final"
+            size="68MB"
+            url="http://download.jboss.org/jbossas/7.0/jboss-as-7.0.1.Final/jboss-as-7.0.1.Final.zip?use_mirror=autoselect"/>
+      <runtime
+            id="org.jboss.tools.runtime.core.seam.222" 
+            name="JBoss Seam 2.2.2.Final"
+            version="2.2.2.Final"
+            size="113.2MB"
+            url="http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.2.2.Final/jboss-seam-2.2.2.Final.zip?use_mirror=autoselect"/>
+      <runtime
+            id="org.jboss.tools.runtime.core.seam.202" 
+            name="JBoss Seam 2.0.2.SP1"
+            version="2.0.2.SP1"
+            size="84MB"
+            url="https://sourceforge.net/projects/jboss/files/JBoss%20Seam/jboss-seam-2.0.2.SP1.zip?use_mirror=autoselect"/>
+      
+      <runtime
+            id="org.jboss.tools.runtime.core.as.610" 
+            name="JBoss AS 6.1.0"
+            version="6.1.0.Final"
+            size="183MB"
+            url="http://download.jboss.org/jbossas/6.1/jboss-as-distribution-6.1.0.Final.zip?use_mirror=autoselect"/>
+      <runtime
+            id="org.jboss.tools.runtime.core.as.423" 
+            name="JBoss AS 4.2.3"
+            version="4.2.3"
+            size="100MB"
+            url="http://sourceforge.net/projects/jboss/files/JBoss/JBoss-4.2.3.GA/jboss-4.2.3.GA-jdk6.zip?use_mirror=autoselect"/>
+      
+      
+   </extension>
+   
 </plugin>

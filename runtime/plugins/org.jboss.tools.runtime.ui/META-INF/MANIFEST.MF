@@ -7,11 +7,13 @@ Bundle-Activator: org.jboss.tools.runtime.ui.RuntimeUIActivator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.jboss.tools.runtime.core,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.jboss.tools.project.examples
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %BundleVendor
 Export-Package: org.jboss.tools.runtime.ui,
+ org.jboss.tools.runtime.ui.actions,
  org.jboss.tools.runtime.ui.dialogs,
  org.jboss.tools.runtime.ui.preferences
