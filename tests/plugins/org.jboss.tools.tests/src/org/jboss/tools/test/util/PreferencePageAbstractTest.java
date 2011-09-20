@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 public class PreferencePageAbstractTest extends TestCase {
 
-	public boolean isPreferencePageIsCreated(String id, Class expectedInstance) {
+	public boolean createPreferencePage(String id, Class expectedInstance) {
 		PreferenceDialog prefDialog = createPreferenceDialog(id);
 		
 		try {
@@ -23,6 +23,20 @@ public class PreferencePageAbstractTest extends TestCase {
 		
 	}
 	
+	public void pressOkOnPreferencePage(String ID) {
+		PreferenceDialog prefDialog = WorkbenchUtils.createPreferenceDialog(ID);
+	
+		try {
+			prefDialog.setBlockOnOpen(false);
+			prefDialog.open();
+			
+			PreferencePage selectedPage = (PreferencePage)prefDialog.getSelectedPage();
+			selectedPage.performOk();
+		} finally {
+			prefDialog.close();
+		}
+	}
+
 	public static PreferenceDialog createPreferenceDialog(String pageId) {
 		PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(
 				 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), pageId, new String[] {pageId}, null);
