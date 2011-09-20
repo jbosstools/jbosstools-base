@@ -13,12 +13,13 @@
 	<name>runtime.features</name>
 	<packaging>pom</packaging>
 	<modules>
-		<module>org.jboss.tools.runtime.core.feature</module>
 		<module>org.jboss.tools.runtime.feature</module>
-		<module>org.jboss.tools.runtime.test.feature</module>
+		<module>org.jboss.tools.runtime.core.feature</module>
 		<module>org.jboss.tools.runtime.as.detector.feature</module>
-		<module>org.jboss.tools.runtime.seam.detector.feature</module>
-		<module>org.jboss.tools.runtime.jbpm.detector.feature</module>
 		<module>org.jboss.tools.runtime.drools.detector.feature</module>
+		<module>org.jboss.tools.runtime.esb.detector.feature</module>
+		<module>org.jboss.tools.runtime.jbpm.detector.feature</module>
+		<module>org.jboss.tools.runtime.seam.detector.feature</module>
+		<module>org.jboss.tools.runtime.test.feature</module>
 	</modules>
 </project>
