@@ -69,10 +69,7 @@ public class ParametedTypeFactory {
 					if(p != null) parametedType.addParameter(p);
 				} catch (JavaModelException e) {
 					CommonPlugin.getDefault().logError(e);
-				} catch (Exception ee) {
-					CommonPlugin.getDefault().logError(ee);
 				}
-				
 			}
 		}
 		return parametedType;
@@ -152,7 +149,7 @@ public class ParametedTypeFactory {
 				String[] paramSignatures = null;
 				try {
 					paramSignatures = Signature.getTypeArguments(typeSignature);
-				} catch (Exception e) {
+				} catch (IllegalArgumentException e) {
 					CommonPlugin.getDefault().logError(e);
 				}
 				if(paramSignatures != null) for (String paramSignature: paramSignatures) {

@@ -57,11 +57,9 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	public Object getMemberValue(String name) {
 		if(name == null) name = "value"; //$NON-NLS-1$
 		IMemberValuePair[] pairs = getMemberValuePairs();
-		if(pairs != null) {
-			for (IMemberValuePair pair: pairs) {
-				if(name.equals(pair.getMemberName())) {
-					return resolveMemberValue(pair);
-				}
+		for (IMemberValuePair pair: pairs) {
+			if(name.equals(pair.getMemberName())) {
+				return resolveMemberValue(pair);
 			}
 		}
 		return null;

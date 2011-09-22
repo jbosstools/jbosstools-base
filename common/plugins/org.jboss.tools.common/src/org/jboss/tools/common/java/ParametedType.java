@@ -169,11 +169,7 @@ public class ParametedType implements IParametedType {
 				String sc = type.getSuperclassTypeSignature();
 				boolean objectArray = false;
 				if(sc != null) {
-					try {
-						sc = resolveParameters(sc);
-					} catch (Exception e) {
-						CommonPlugin.getDefault().logError(e);
-					}
+					sc = resolveParameters(sc);
 				} else if(!"java.lang.Object".equals(type.getFullyQualifiedName())) {
 					sc = ParametedTypeFactory.OBJECT;
 				} else if("java.lang.Object".equals(type.getFullyQualifiedName()) && arrayPrefix.length() > 0) {
@@ -330,7 +326,7 @@ public class ParametedType implements IParametedType {
 	}
 	
 	boolean areTypeParametersAssignableTo(ParametedType other) {
-		if(other.parameterTypes.size() == 0) return true;
+		if(other.parameterTypes.isEmpty()) return true;
 		if(this.parameterTypes.size() != other.parameterTypes.size()) return false;
 		for (int i = 0; i < parameterTypes.size(); i++) {
 			ParametedType p1 = parameterTypes.get(i);
