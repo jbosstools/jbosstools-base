@@ -611,55 +611,15 @@ public final class FileUtil {
 		ArrayList l = new ArrayList();
 		while(st.hasMoreTokens()) {
 			String t = st.nextToken();
-			if(t.length() == 0 || t.equals(".")) continue; //$NON-NLS-1$
-			if(t.equals("..")) { //$NON-NLS-1$
-				if(l.size() > 0) l.remove(l.size() - 1);
+			if(t.isEmpty() || ".".equals(t)) continue; //$NON-NLS-1$
+			if("..".equals(t)) { //$NON-NLS-1$
+				if(!l.isEmpty()) l.remove(l.size() - 1);
 				continue;
 			}
 			l.add(t);
 		}
-		return (String[])l.toArray(new String[0]);
+		return (String[])l.toArray(new String[l.size()]);
 	}
-	
-	public static String encode(String text, String encoding) {
-		if(true) return text;
-		try {
-			byte[] bs = text.getBytes(System.getProperty("file.encoding")); //$NON-NLS-1$
-			ByteArrayInputStream is = new ByteArrayInputStream(bs);
-			InputStreamReader r = new InputStreamReader(is, encoding);
-			char[] cs = new char[bs.length];
-			int l = r.read(cs, 0, cs.length);
-			return new String(cs, 0, l);
-		} catch (IOException e) {
-			if("UTF-8".equals(encoding)) return text; //$NON-NLS-1$
-			return encode(text, "UTF-8"); //$NON-NLS-1$
-		}
-	}
-
-	public static String encodeDefault(String text) {
-		return encode(text, System.getProperties().getProperty("file.encoding")); //$NON-NLS-1$
-	}
-	
-/*
-	public static String decode(String text, String encoding) {
-		if(true) return text;
-		try {
-			byte[] bs = text.getBytes(encoding);
-			ByteArrayInputStream is = new ByteArrayInputStream(bs);
-			InputStreamReader r = new InputStreamReader(is, System.getProperties().getProperty("file.encoding"));
-			char[] cs = new char[bs.length];
-			int l = r.read(cs, 0, cs.length);
-			return new String(cs, 0, l);
-		} catch (Exception e) {
-			if("UTF-8".equals(encoding)) return text;
-			return decode(text, "UTF-8");
-		}
-	}
-	
-	public static String decodeDefault(String text) {
-		return decode(text, System.getProperties().getProperty("file.encoding"));
-	}
-*/
 
     public static boolean writeFile(File f, String value, String encoding) {
         try {
