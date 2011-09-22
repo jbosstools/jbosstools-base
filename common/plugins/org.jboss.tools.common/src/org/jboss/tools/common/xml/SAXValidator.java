@@ -140,7 +140,7 @@ public class SAXValidator {
 		} finally {
 //        	Thread.currentThread().setContextClassLoader(cc);
         }
-        return h.errors.toArray(new String[0]);        
+        return h.errors.toArray(new String[h.errors.size()]);        
     }
 
     /**

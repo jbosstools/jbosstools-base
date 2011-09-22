@@ -61,7 +61,7 @@ public class XMLUtilities {
                 al.add((Element)n);
             }
         }
-        return al.toArray(new Element[0]);
+        return al.toArray(new Element[al.size()]);
     }
 
     public static Element getUniqueChild(Element parent, String name){
@@ -282,7 +282,7 @@ public class XMLUtilities {
 				return new String[]{Messages.XMLUtilities_SAXExceptionMessage+":0:0",e.toString()}; //$NON-NLS-1$
 			}
 		}
-        return h.errors.toArray(new String[0]);        
+        return h.errors.toArray(new String[h.errors.size()]);        
     }
     
     public static final void serialize(Element element, String filename) throws IOException {
