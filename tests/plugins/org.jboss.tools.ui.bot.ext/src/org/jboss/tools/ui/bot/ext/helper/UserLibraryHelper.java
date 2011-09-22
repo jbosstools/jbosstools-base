@@ -66,6 +66,7 @@ public class UserLibraryHelper {
 
 	/**
 	 * Creates user library with given identifiers and given jar list
+	 * You can receive jar list via #getJarList
 	 * 
 	 * @param libName
 	 * @param jarPaths
