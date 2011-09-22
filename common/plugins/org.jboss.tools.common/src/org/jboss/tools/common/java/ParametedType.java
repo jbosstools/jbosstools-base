@@ -180,7 +180,7 @@ public class ParametedType implements IParametedType {
 					sc = arrayPrefix + sc;
 				}
 				
-				superType = getFactory().getParametedType(type, sc);
+				superType = getFactory().getParametedType(type, this, sc);
 				if(superType != null) {
 					if(provider != null) {
 						String scn = type.getSuperclassName();
@@ -197,7 +197,7 @@ public class ParametedType implements IParametedType {
 			if(is != null) for (int i = 0; i < is.length; i++) {
 				String p = resolveParameters(is[i]);
 				if(arrayPrefix.length() > 0) p = arrayPrefix + p;
-				ParametedType t = getFactory().getParametedType(type, p);
+				ParametedType t = getFactory().getParametedType(type, this, p);
 				if(t != null) {
 					if(provider != null) {
 						String scn = type.getSuperInterfaceNames()[i];
@@ -263,24 +263,37 @@ public class ParametedType implements IParametedType {
 	}
 
 	public String findParameterSignature(String paramName) {
-		if(type == null) {
-			return null;
-		}
-		ITypeParameter[] ps = null;
-		try {
-			ps = type.getTypeParameters();
-		} catch (JavaModelException e) {
-			return null;
-		}
-		if(ps != null) for (int i = 0; i < ps.length; i++) {
-			if(ps[i].getElementName().equals(paramName)) {
+		buildParameters();
+		return signaturesByName.get(paramName);
+	}
+
+	Map<String, String> signaturesByName = null;
+	Map<String, ParametedType> parametersBySignature = null;
+	
+	void buildParameters() {
+		if(signaturesByName == null && type != null) {
+			signaturesByName = new HashMap<String, String>();
+			parametersBySignature = new HashMap<String, ParametedType>();
+			ITypeParameter[] ps = null;
+			try {
+				ps = type.getTypeParameters();
+			} catch (JavaModelException e) {
+				return;
+			}
+			if(ps != null) for (int i = 0; i < ps.length; i++) {
+				String paramName = ps[i].getElementName();
 				if(parameterTypes.size() > i) {
 					ParametedType p = parameterTypes.get(i);
-					return p.getSignature();
+					signaturesByName.put(paramName, p.getSignature());
+					parametersBySignature.put(p.getSignature(), p);
 				}
 			}
 		}
-		return null;
+	}
+
+	public ParametedType findParameter(String signature) {
+		buildParameters();
+		return parametersBySignature.get(signature);
 	}
 
 	public Set<IParametedType> getAllTypes() {
@@ -365,13 +378,6 @@ public class ParametedType implements IParametedType {
 		primitives.put("Float", "float");
 		primitives.put("Double", "double");
 		primitives.put("Boolean", "boolean");
-		primitives.put("Integer[]", "int[]");
-		primitives.put("Short[]", "short[]");
-		primitives.put("Long[]", "long[]");
-		primitives.put("Character[]", "char[]");
-		primitives.put("Float[]", "float[]");
-		primitives.put("Double[]", "double[]");
-		primitives.put("Boolean[]", "boolean[]");
 	}
 
 	/*
@@ -380,7 +386,18 @@ public class ParametedType implements IParametedType {
 	 */
 	public String getSimpleName() {
 		if(getSignature()!=null) {
-			return isPrimitive()?primitives.get(Signature.getSignatureSimpleName(getSignature())):Signature.getSignatureSimpleName(getSignature());
+			if(isPrimitive()) {
+				int array = arrayPrefix.length();
+				StringBuilder result = new StringBuilder(primitives.get(Signature.getSignatureSimpleName(getSignature().substring(array))));
+				if(array > 0) {
+					for (int i = 0; i < array; i++) {
+						result.append("[]");
+					}
+				}
+				return result.toString();
+			} else {
+				return Signature.getSignatureSimpleName(getSignature());
+			}
 		}
 		return "";
 	}

@@ -76,7 +76,15 @@ public class ParametedTypeFactory {
 	}
 
 	public ParametedType getParametedType(IMember context, String typeSignature) throws JavaModelException {
+		return getParametedType(context, null, typeSignature);
+	}
+
+	public ParametedType getParametedType(IMember context, IParametedType basetype, String typeSignature) throws JavaModelException {
 		if(typeSignature == null) return null;
+		if(basetype != null) {
+			ParametedType param = ((ParametedType)basetype).findParameter(typeSignature);
+			if(param != null) return param;
+		}
 		
 		IType contextType = context instanceof IType ? (IType)context : context.getDeclaringType();
 
@@ -153,7 +161,7 @@ public class ParametedTypeFactory {
 					CommonPlugin.getDefault().logError(e);
 				}
 				if(paramSignatures != null) for (String paramSignature: paramSignatures) {
-					ParametedType param = getParametedType(context, paramSignature);
+					ParametedType param = getParametedType(context, basetype, paramSignature);
 					if(param == null) {
 						param = new ParametedType();
 						param.setSignature(paramSignature);
