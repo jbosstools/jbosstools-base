@@ -330,6 +330,10 @@ public class ParametedType implements IParametedType {
 	}
 
 	public boolean isAssignableTo(ParametedType other, boolean checkInheritance) {
+		return isAssignableTo(other, checkInheritance, new HashMap<String, IType>());
+	}
+
+	boolean isAssignableTo(ParametedType other, boolean checkInheritance, Map<String,IType> resolvedVars) {
 		if(equals(other)) return true;
 		if("*".equals(other.getSignature())) {
 			return true;
@@ -337,19 +341,28 @@ public class ParametedType implements IParametedType {
 		if(this.type == null) {
 			return (isVariable && other.isVariable && other.type == null);
 		}
-		if(other.isVariable && other.type == null) return true;
+		if(other.isVariable && other.type == null) {
+			if(type != null) {
+				if(resolvedVars.get(other.getSignature()) != null) {
+					return resolvedVars.get(other.getSignature()) == type;
+				} else {
+					resolvedVars.put(other.getSignature(), type);
+				}
+			}
+			return true;
+		}
 		if(this.type.equals(other.type)) {
-			if(areTypeParametersAssignableTo(other)) return true;
+			if(areTypeParametersAssignableTo(other, resolvedVars)) return true;
 		}
 		if(checkInheritance) {
 			for (IParametedType t: getInheritedTypes()) {
-				if(((ParametedType)t).isAssignableTo(other, false)) return true;
+				if(((ParametedType)t).isAssignableTo(other, false, resolvedVars)) return true;
 			}
 		}
 		return false;
 	}
 	
-	boolean areTypeParametersAssignableTo(ParametedType other) {
+	boolean areTypeParametersAssignableTo(ParametedType other, Map<String,IType> resolvedVars) {
 		if(other.parameterTypes.isEmpty()) return true;
 		if(this.parameterTypes.size() != other.parameterTypes.size()) return false;
 		for (int i = 0; i < parameterTypes.size(); i++) {
@@ -358,20 +371,20 @@ public class ParametedType implements IParametedType {
 			if(p1.isLower() || (p1.isUpper() && !p1.isVariable)) return false;
 			if(p1.isVariable()) {
 				if(p2.isVariable()) {
-					if(p2.isAssignableTo(p1, true)) continue;
+					if(p2.isAssignableTo(p1, true, resolvedVars)) continue;
 				} else if(p2.isLower()) {
-					if(p2.isAssignableTo(p1, true)) continue;
+					if(p2.isAssignableTo(p1, true, resolvedVars)) continue;
 				} else if(p2.isUpper()) {
-					if(p2.isAssignableTo(p1, true)) continue;
-					if(p1.isAssignableTo(p2, true)) continue;
+					if(p2.isAssignableTo(p1, true, resolvedVars)) continue;
+					if(p1.isAssignableTo(p2, true, resolvedVars)) continue;
 				} else {
-					if(p2.isAssignableTo(p1, true)) continue;
+					if(p2.isAssignableTo(p1, true, resolvedVars)) continue;
 				}
 			} else {
 				if(p2.isLower()) {
-					if(p2.isAssignableTo(p1, true)) continue;
+					if(p2.isAssignableTo(p1, true, resolvedVars)) continue;
 				} else {
-					if(p1.isAssignableTo(p2, true)) continue;
+					if(p1.isAssignableTo(p2, true, resolvedVars)) continue;
 				}
 			}
 			
