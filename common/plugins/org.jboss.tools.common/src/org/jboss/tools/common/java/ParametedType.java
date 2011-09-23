@@ -29,11 +29,11 @@ import org.jboss.tools.common.CommonPlugin;
  * @author Viacheslav Kabanovich
  *
  */
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class ParametedType implements IParametedType {
 	protected ParametedTypeFactory typeFactory = null;
 	protected IType type;
-	protected String arrayPrefix = "";
+	protected String arrayPrefix = ""; //$NON-NLS-1$
 	protected String signature;
 	protected List<ParametedType> parameterTypes = new ArrayList<ParametedType>();
 	protected boolean primitive;
@@ -117,10 +117,10 @@ public class ParametedType implements IParametedType {
 
 	public void setSignature(String signature) {
 		this.signature = signature;
-		arrayPrefix = "";
+		arrayPrefix = ""; //$NON-NLS-1$
 		if(signature != null) {
 			for (int i = 0; i < signature.length(); i++) {
-				if(signature.charAt(i) == '[') arrayPrefix += "["; else break;
+				if(signature.charAt(i) == Signature.C_ARRAY) arrayPrefix += Signature.C_ARRAY; else break;
 			}
 		}
 	}
@@ -235,16 +235,18 @@ public class ParametedType implements IParametedType {
 		if(typeSignature == null) {
 			return typeSignature;
 		}
-		int i = typeSignature.indexOf('<');
+		int i = typeSignature.indexOf(Signature.C_GENERIC_START);
 		if(i < 0) {
-			if(( typeSignature.startsWith("T") || typeSignature.startsWith("Q") || typeSignature.startsWith("L")) && typeSignature.endsWith(";")) {
+			char c = typeSignature.length() == 0 ? '\0' : typeSignature.charAt(0);
+			char e = typeSignature.length() == 0 ? '\0' : typeSignature.charAt(typeSignature.length() - 1);
+			if((c == Signature.C_TYPE_VARIABLE || c == Signature.C_UNRESOLVED || c == Signature.C_RESOLVED) && e == Signature.C_SEMICOLON) {
 				String param = typeSignature.substring(1, typeSignature.length() - 1);
 				String s = findParameterSignature(param);
 				return s == null ? typeSignature : s;
 			}
 			return typeSignature;
 		}
-		int j = typeSignature.lastIndexOf('>');
+		int j = typeSignature.lastIndexOf(Signature.C_GENERIC_END);
 		if(j < i) {
 			return typeSignature;
 		}
@@ -257,7 +259,11 @@ public class ParametedType implements IParametedType {
 			newParams.append(newParam);
 		}
 		if(replaced) {
-			typeSignature = typeSignature.substring(0, i) + '<' + newParams.toString() + '>' + ';';
+			typeSignature = typeSignature.substring(0, i) 
+					+ Signature.C_GENERIC_START 
+					+ newParams.toString() 
+					+ Signature.C_GENERIC_END 
+					+ Signature.C_SEMICOLON;
 		}
 		return typeSignature;
 	}
@@ -325,7 +331,12 @@ public class ParametedType implements IParametedType {
 
 	public boolean isAssignableTo(ParametedType other, boolean checkInheritance) {
 		if(equals(other)) return true;
-		if(this.type == null) return false;
+		if("*".equals(other.getSignature())) {
+			return true;
+		}
+		if(this.type == null) {
+			return (isVariable && other.isVariable && other.type == null);
+		}
 		if(other.isVariable && other.type == null) return true;
 		if(this.type.equals(other.type)) {
 			if(areTypeParametersAssignableTo(other)) return true;
@@ -344,7 +355,7 @@ public class ParametedType implements IParametedType {
 		for (int i = 0; i < parameterTypes.size(); i++) {
 			ParametedType p1 = parameterTypes.get(i);
 			ParametedType p2 = other.parameterTypes.get(i);
-			if(p1.isLower() || p1.isUpper()) return false;
+			if(p1.isLower() || (p1.isUpper() && !p1.isVariable)) return false;
 			if(p1.isVariable()) {
 				if(p2.isVariable()) {
 					if(p2.isAssignableTo(p1, true)) continue;
@@ -391,7 +402,7 @@ public class ParametedType implements IParametedType {
 				StringBuilder result = new StringBuilder(primitives.get(Signature.getSignatureSimpleName(getSignature().substring(array))));
 				if(array > 0) {
 					for (int i = 0; i < array; i++) {
-						result.append("[]");
+						result.append("[]"); //$NON-NLS-1$
 					}
 				}
 				return result.toString();

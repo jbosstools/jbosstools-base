@@ -12,7 +12,6 @@ package org.jboss.tools.common.java;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IMember;
@@ -26,18 +25,19 @@ import org.jboss.tools.common.util.EclipseJavaUtil;
 
 public class ParametedTypeFactory { 
 	// I S J C F D Z
-	static HashMap<String,String> primitives = new HashMap<String, String>();
+	static HashMap<Character,String> primitives = new HashMap<Character, String>();
 	static {
-		primitives.put("I", "Ljava.lang.Integer;");
-		primitives.put("S", "Ljava.lang.Short;");
-		primitives.put("J", "Ljava.lang.Long;");
-		primitives.put("C", "Ljava.lang.Character;");
-		primitives.put("F", "Ljava.lang.Float;");
-		primitives.put("D", "Ljava.lang.Double;");
-		primitives.put("Z", "Ljava.lang.Boolean;");
+		primitives.put(Signature.C_INT, "Ljava.lang.Integer;");
+		primitives.put(Signature.C_SHORT, "Ljava.lang.Short;");
+		primitives.put(Signature.C_LONG, "Ljava.lang.Long;");
+		primitives.put(Signature.C_CHAR, "Ljava.lang.Character;");
+		primitives.put(Signature.C_FLOAT, "Ljava.lang.Float;");
+		primitives.put(Signature.C_DOUBLE, "Ljava.lang.Double;");
+		primitives.put(Signature.C_BOOLEAN, "Ljava.lang.Boolean;");
+		primitives.put(Signature.C_BYTE, "Ljava.lang.Boolean;");
 	}
 	//unresolved Object signature
-	public static String OBJECT = "QObject;";
+	public static String OBJECT = "QObject;"; //$NON-NLS-1$
 	Map<String, ParametedType> cache = new HashMap<String, ParametedType>();
 
 	public ParametedType newParametedType(IType type) {
@@ -55,7 +55,7 @@ public class ParametedTypeFactory {
 		}
 		parametedType.setFactory(this);
 		parametedType.setType(type);
-		if(type != null) parametedType.setSignature("L" + type.getFullyQualifiedName() + ";");
+		if(type != null) parametedType.setSignature(Signature.C_RESOLVED + type.getFullyQualifiedName() + Signature.C_SEMICOLON);
 		String[] ps = null;
 		try {
 			ps = type.getTypeParameterSignatures();
@@ -96,28 +96,32 @@ public class ParametedTypeFactory {
 
 		typeSignature = typeSignature.substring(result.getArrayPrefix().length());
 		
-		if(primitives.containsKey(typeSignature)) {
-			typeSignature = primitives.get(typeSignature);
+		char c = typeSignature.length() == 0 ? '\0' : typeSignature.charAt(0);
+		if(primitives.containsKey(c) && typeSignature.length() == 1) {
+			typeSignature = primitives.get(c);
 			result.setSignature(result.getArrayPrefix() + typeSignature);
 			result.setPrimitive(true);
-		} else if(typeSignature.startsWith("+")) {
+		} else if(c == Signature.C_EXTENDS) {
 			typeSignature = typeSignature.substring(1);
 			result.setUpper(true);
-		} else if(typeSignature.startsWith("-")) {
+		} else if(c == Signature.C_SUPER) {
 			typeSignature = typeSignature.substring(1);
 			result.setLower(true);
-		} 
+		} else if(c == Signature.C_STAR && typeSignature.length() == 1) {
+			result.setUpper(true);
+			return result;
+		}
 
-		int startToken = typeSignature.indexOf('<');
+		int startToken = typeSignature.indexOf(Signature.C_GENERIC_START);
 		if(startToken < 0) {
 			String resovedTypeName = EclipseJavaUtil.resolveTypeAsString(contextType, typeSignature);
 			if(resovedTypeName == null) return null;
-			if(!context.isBinary()) {
+			if(!context.isBinary() || typeSignature.charAt(0) == Signature.C_TYPE_VARIABLE) {
 				StringBuffer ns = new StringBuffer();
 				ns.append(result.getArrayPrefix());
-				if(result.isLower()) ns.append('-');
-				if(result.isUpper()) ns.append('+');
-				ns.append('L').append(resovedTypeName).append(";");
+				if(result.isLower()) ns.append(Signature.C_SUPER);
+				if(result.isUpper()) ns.append(Signature.C_EXTENDS);
+				ns.append(Signature.C_RESOLVED).append(resovedTypeName).append(Signature.C_SEMICOLON);
 				result.setSignature(ns.toString());
 			}
 			IType type = EclipseJavaUtil.findType(context.getJavaProject(), resovedTypeName);
@@ -131,7 +135,7 @@ public class ParametedTypeFactory {
 				for (int i = 0; i < ps.length; i++) {
 					ParametedType st = getParametedTypeForParameter(context, ps[i], result);
 					if(st != null) {
-						if(st.getSignature().indexOf(':') >= 0) {
+						if(st.getSignature().indexOf(Signature.C_COLON) >= 0) {
 							CommonPlugin.getDefault().logWarning("Wrong signature=" + st.getSignature());
 						}
 						return st;
@@ -144,7 +148,7 @@ public class ParametedTypeFactory {
 				if(st != null) return st;
 			}
 		} else {
-			int endToken = typeSignature.lastIndexOf('>');
+			int endToken = typeSignature.lastIndexOf(Signature.C_GENERIC_END);
 			if(endToken < startToken) return null;
 			String typeName = typeSignature.substring(0, startToken) + typeSignature.substring(endToken + 1);
 			String resovedTypeName = EclipseJavaUtil.resolveTypeAsString(contextType, typeName);
@@ -172,9 +176,14 @@ public class ParametedTypeFactory {
 				if(!context.isBinary()) {
 					StringBuffer ns = new StringBuffer();
 					ns.append(result.getArrayPrefix());
-					if(result.isLower()) ns.append('-');
-					if(result.isUpper()) ns.append('+');
-					ns.append('L').append(resovedTypeName).append('<').append(newParams).append(">;");
+					if(result.isLower()) ns.append(Signature.C_SUPER);
+					if(result.isUpper()) ns.append(Signature.C_EXTENDS);
+					ns.append(Signature.C_RESOLVED)
+					  .append(resovedTypeName)
+					  .append(Signature.C_GENERIC_START)
+					  .append(newParams)
+					  .append(Signature.C_GENERIC_END)
+					  .append(Signature.C_SEMICOLON);
 					result.setSignature(ns.toString());
 				}
 				return result;
@@ -190,13 +199,13 @@ public class ParametedTypeFactory {
 		String t = Signature.getTypeVariable(typeParameterSignature);
 		String[] bounds = Signature.getTypeParameterBounds(typeParameterSignature);
 		
-		t = "L" + t + ";";
+		t = Signature.C_RESOLVED + t + Signature.C_SEMICOLON;
 		if(result == null || t.equals(result.getSignature())) {
-			String sts = bounds.length > 0 ? bounds[0] : "";
-			if(sts.length() > 0) {
-				ParametedType st = getParametedType(contextType, sts);
+			if(bounds.length > 0 && bounds[0].length() > 0) {
+				ParametedType st = getParametedType(contextType, bounds[0]);
 				if(st != null) {
 					result = new TypeDeclaration(st, context.getResource(), 0, 0);
+					result.setUpper(true);
 				}
 			} else if(result != null) {
 				result.setSignature(t);
