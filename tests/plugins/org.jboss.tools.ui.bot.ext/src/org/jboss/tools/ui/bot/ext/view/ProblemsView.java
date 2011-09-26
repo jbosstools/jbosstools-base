@@ -101,7 +101,12 @@ public class ProblemsView extends ViewBase {
    */
   public static SWTBotTreeItem getErrorsNode (SWTBotExt bot){
     SWTBotTreeItem errorsNode = null;
-    SWTBot problemsBot = SWTEclipseExt.showView(bot,ViewType.PROBLEMS);
+    SWTBot problemsBot = null;
+    if (new SWTEclipseExt().isViewOpened("Problems")) {
+    	problemsBot = bot.viewByTitle("Problems").bot();
+    }else {
+    	problemsBot = SWTEclipseExt.showView(bot,ViewType.PROBLEMS);
+    }
     bot.sleep(Timing.time3S());
     try{
       SWTBotTreeItem[] filteredTreeItems = ProblemsView.getProblemsTreeItemsContainingText(bot,problemsBot.tree(),null,
@@ -122,7 +127,12 @@ public class ProblemsView extends ViewBase {
    */
   public static SWTBotTreeItem getWarningsNode (SWTBotExt bot){
     SWTBotTreeItem warningsNode = null;
-    SWTBot problemsBot = SWTEclipseExt.showView(bot,ViewType.PROBLEMS);
+    SWTBot problemsBot = null;
+    if (new SWTEclipseExt().isViewOpened("Problems")) {
+    	problemsBot = bot.viewByTitle("Problems").bot();
+    }else {
+    	problemsBot = SWTEclipseExt.showView(bot,ViewType.PROBLEMS);
+    }
     bot.sleep(Timing.time3S());
     try{
       SWTBotTreeItem[] filteredTreeItems = ProblemsView.getProblemsTreeItemsContainingText(bot,problemsBot.tree(),null,
