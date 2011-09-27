@@ -254,14 +254,23 @@ public class ProjectValidationContext implements IProjectValidationContext {
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContext#store(org.w3c.dom.Element)
 	 */
 	public void store(Element root) {
+		Map<String, String> pathAliases = new HashMap<String, String>();
 		Element validation = XMLUtilities.createElement(root, "validation"); //$NON-NLS-1$
 		for (LinkCollection links : coreLinks.values()) {
 			Element core = XMLUtilities.createElement(validation, "core"); //$NON-NLS-1$
 			core.setAttribute("validator-id", links.getId()); //$NON-NLS-1$
-			links.store(core);
+			links.store(core, pathAliases);
 		}
 		Element el = XMLUtilities.createElement(validation, "el"); //$NON-NLS-1$
-		elLinks.store(el);
+		elLinks.store(el, pathAliases);
+		
+		Element aliases = XMLUtilities.createElement(root, "aliases"); //$NON-NLS-1$
+		for (String path: pathAliases.keySet()) {
+			String value = pathAliases.get(path);
+			Element alias = XMLUtilities.createElement(aliases, "alias"); //$NON-NLS-1$
+			alias.setAttribute("path", path);
+			alias.setAttribute("value", value);
+		}
 	}
 
 	/*
@@ -269,18 +278,29 @@ public class ProjectValidationContext implements IProjectValidationContext {
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContext#load(org.w3c.dom.Element)
 	 */
 	public void load(Element root) {
+		Map<String, String> pathAliases = new HashMap<String, String>();
+		Element aliases = XMLUtilities.getUniqueChild(root, "aliases"); //$NON-NLS-1$
+		if(aliases != null) {
+			Element[] aliasArray = XMLUtilities.getChildren(aliases, "alias"); //$NON-NLS-1$
+			for (Element alias: aliasArray) {
+				String path = alias.getAttribute("path");
+				String value = alias.getAttribute("value");
+				pathAliases.put(value, path);
+			}
+		}
+
 		Element validation = XMLUtilities.getUniqueChild(root, "validation"); //$NON-NLS-1$
 		if(validation == null) return;
 		Element[] cores = XMLUtilities.getChildren(validation, "core"); //$NON-NLS-1$
 		for (Element core : cores) {
 			String id = core.getAttribute("validator-id"); //$NON-NLS-1$
 			if(id!=null && id.trim().length()>0) {
-				getCoreLinks(id).load(core);
+				getCoreLinks(id).load(core, pathAliases);
 			}
 		}
 		Element[] els = XMLUtilities.getChildren(validation, "el"); //$NON-NLS-1$
 		for (Element el : els) {
-			elLinks.load(el);
+			elLinks.load(el, pathAliases);
 		}
 	}
 

@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.jboss.tools.common.el.core.ELReference;
 import org.jboss.tools.common.validation.ValidationMessages;
 import org.jboss.tools.common.xml.XMLUtilities;
 import org.w3c.dom.Element;
@@ -255,23 +256,42 @@ public class LinkCollection {
 	 * Store the collection to XML
 	 * @param root
 	 */
-	public synchronized void store(Element root) {
+	public synchronized void store(Element root, Map<String, String> pathAliases) {
 		Set<String> variables = resourcesByVariableName.keySet();
 		for (String name: variables) {
 			Set<IPath> paths = resourcesByVariableName.get(name);
 			if(paths == null) continue;
+			String nameAlias = ELReference.getAlias(pathAliases, name);
+			StringBuilder declarationFalsePaths = new StringBuilder();
+			StringBuilder declarationTruePaths = new StringBuilder();
 			for (IPath path: paths) {
-				Element linkedResource = XMLUtilities.createElement(root, "linked-resource"); //$NON-NLS-1$
-				linkedResource.setAttribute("name", name); //$NON-NLS-1$
-				linkedResource.setAttribute("path", path.toString()); //$NON-NLS-1$
+				String pathAlias = ELReference.getAlias(pathAliases, path.toString());
 				if(checkDeclaration(path, name)) {
-					linkedResource.setAttribute("declaration", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+					declarationTruePaths.append(pathAlias).append(";");
+				} else {
+					declarationFalsePaths.append(pathAlias).append(";");
 				}
 			}
+			if(declarationFalsePaths.length() > 0) {
+				Element linkedResource = XMLUtilities.createElement(root, "linked-resource"); //$NON-NLS-1$
+				linkedResource.setAttribute("name", nameAlias); //$NON-NLS-1$
+				linkedResource.setAttribute("path", declarationFalsePaths.toString()); //$NON-NLS-1$
+			}
+			if(declarationTruePaths.length() > 0) {
+				Element linkedResource = XMLUtilities.createElement(root, "linked-resource"); //$NON-NLS-1$
+				linkedResource.setAttribute("name", nameAlias); //$NON-NLS-1$
+				linkedResource.setAttribute("path", declarationTruePaths.toString()); //$NON-NLS-1$
+				linkedResource.setAttribute("declaration", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
 		}
+		StringBuilder unnamedPaths = new StringBuilder();
 		for (IPath unnamedPath: unnamedResources) {
+			String pathAlias = ELReference.getAlias(pathAliases, unnamedPath.toString());
+			unnamedPaths.append(pathAlias).append(";");
+		}
+		if(unnamedPaths.length() > 0) {
 			Element unnamedPathElement = XMLUtilities.createElement(root, "unnamed-path"); //$NON-NLS-1$
-			unnamedPathElement.setAttribute("path", unnamedPath.toString()); //$NON-NLS-1$
+			unnamedPathElement.setAttribute("path", ELReference.getAlias(pathAliases, unnamedPaths.toString())); //$NON-NLS-1$
 		}
 		modifications = 0;
 	}
@@ -280,24 +300,33 @@ public class LinkCollection {
 	 * Load the collection from XML
 	 * @param root
 	 */
-	public void load(Element root) {
+	public void load(Element root, Map<String, String> pathAliases) {
 		if(root == null) return;
 		Element[] linkedResources = XMLUtilities.getChildren(root, "linked-resource"); //$NON-NLS-1$
 		if(linkedResources != null) for (int i = 0; i < linkedResources.length; i++) {
 			String name = linkedResources[i].getAttribute("name"); //$NON-NLS-1$
 			if(name == null || name.trim().length() == 0) continue;
-			String path = linkedResources[i].getAttribute("path"); //$NON-NLS-1$
-			if(path == null || path.trim().length() == 0) continue;
+			name = ELReference.getPath(pathAliases, name);
+			String path1 = linkedResources[i].getAttribute("path"); //$NON-NLS-1$
+			if(path1 == null || path1.trim().length() == 0) continue;
 			String declaration = linkedResources[i].getAttribute("declaration"); //$NON-NLS-1$
 			boolean declarationFlag = "true".equals(declaration); //$NON-NLS-1$
-			IPath pathObject = new Path(path);
-			addLinkedResource(name, pathObject, declarationFlag);
+			String[] paths = path1.split(";");
+			for (String path: paths) {
+				path = ELReference.getPath(pathAliases, path);
+				IPath pathObject = new Path(path);
+				addLinkedResource(name, pathObject, declarationFlag);
+			}
 		}
 		Element[] unnamedPathElement = XMLUtilities.getChildren(root, "unnamed-path"); //$NON-NLS-1$
 		if(unnamedPathElement != null) for (int i = 0; i < unnamedPathElement.length; i++) {
-			String path = unnamedPathElement[i].getAttribute("path"); //$NON-NLS-1$
-			IPath pathObject = new Path(path);
-			addUnnamedResource(pathObject);
+			String path1 = unnamedPathElement[i].getAttribute("path"); //$NON-NLS-1$
+			String[] paths = path1.split(";");
+			for (String path: paths) {
+				path = ELReference.getPath(pathAliases, path);
+				IPath pathObject = new Path(path);
+				addUnnamedResource(pathObject);
+			}
 		}
 		modifications = 0;
 	}

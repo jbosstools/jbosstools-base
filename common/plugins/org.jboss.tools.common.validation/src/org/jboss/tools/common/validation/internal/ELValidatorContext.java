@@ -168,8 +168,8 @@ public class ELValidatorContext extends LinkCollection {
 	 * @see org.jboss.tools.jst.web.kb.internal.validation.LinkCollection#store(org.w3c.dom.Element)
 	 */
 	@Override
-	public synchronized void store(Element root) {
-		super.store(root);
+	public synchronized void store(Element root, Map<String, String> pathIds) {
+		super.store(root, pathIds);
 		Set<String> variables = elsByVariableName.keySet();
 		for (String name: variables) {
 			Set<ELReference> els = elsByVariableName.get(name);
@@ -178,8 +178,8 @@ public class ELValidatorContext extends LinkCollection {
 			}
 			for (ELReference el: els) {
 				Element linkedEl = XMLUtilities.createElement(root, "linked-el"); //$NON-NLS-1$
-				linkedEl.setAttribute("name", name); //$NON-NLS-1$
-				el.store(linkedEl);
+				linkedEl.setAttribute("name", ELReference.getAlias(pathIds, name)); //$NON-NLS-1$
+				el.store(linkedEl, pathIds);
 			}
 		}
 	}
@@ -189,8 +189,8 @@ public class ELValidatorContext extends LinkCollection {
 	 * @see org.jboss.tools.jst.web.kb.internal.validation.LinkCollection#load(org.w3c.dom.Element)
 	 */
 	@Override
-	public synchronized void load(Element root) {
-		super.load(root);
+	public synchronized void load(Element root, Map<String, String> pathAliases) {
+		super.load(root, pathAliases);
 		if(root == null) {
 			return;
 		}
@@ -201,8 +201,9 @@ public class ELValidatorContext extends LinkCollection {
 				if(name == null || name.trim().length() == 0) {
 					continue;
 				}
+				name = ELReference.getPath(pathAliases, name);
 				ELReference el = new ValidationELReference();
-				el.load(linkedEls[i]);
+				el.load(linkedEls[i], pathAliases);
 				el.setNeedToInitMarkers(true);
 				addLinkedEl(name, el);
 			}
