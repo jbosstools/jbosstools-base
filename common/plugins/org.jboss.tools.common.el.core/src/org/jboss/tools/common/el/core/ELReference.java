@@ -12,7 +12,10 @@ package org.jboss.tools.common.el.core;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.swing.text.html.HTMLEditorKit.LinkController;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -311,18 +314,31 @@ public class ELReference implements ITextSourceReference {
 	 * Store this EL into XML element.
 	 * @param element
 	 */
-	public synchronized void store(Element element) {
-		element.setAttribute("path", path.toString()); //$NON-NLS-1$
+	public synchronized void store(Element element, Map<String,String> pathIds) {
+		element.setAttribute("path", getAlias(pathIds, path.toString())); //$NON-NLS-1$
 		element.setAttribute("offset", "" + startPosition); //$NON-NLS-1$ //$NON-NLS-2$
 		element.setAttribute("length", "" + length); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public static String getAlias(Map<String, String> pathAliases, String path) {
+		String result = pathAliases.get(path);
+		if(result == null) {
+			result = "%" + pathAliases.size(); //$NON-NLS-1$
+			pathAliases.put(path, result);
+		}
+		return result;
+	}
+
+	public static String getPath(Map<String, String> pathAliases, String alias) {
+		return pathAliases.containsKey(alias) ? pathAliases.get(alias) : alias;
 	}
 
 	/**
 	 * Load this EL from XML element.
 	 * @param element
 	 */
-	public synchronized void load(Element element) {
-		path = new Path(element.getAttribute("path")); //$NON-NLS-1$
+	public synchronized void load(Element element, Map<String, String> pathAliases) {
+		path = new Path(getPath(pathAliases, element.getAttribute("path"))); //$NON-NLS-1$
 		startPosition = new Integer(element.getAttribute("offset")); //$NON-NLS-1$
 		length = new Integer(element.getAttribute("length")); //$NON-NLS-1$
 	}
