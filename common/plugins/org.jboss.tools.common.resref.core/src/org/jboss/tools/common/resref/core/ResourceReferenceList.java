@@ -60,7 +60,7 @@ public abstract class ResourceReferenceList {
 	/**
 	 * Returns all resources for current file
 	 * @param file
-	 * @return
+	 * @return <code>ResourceReference</code> array that might be empty, never returns <code>null</code>
 	 */
 	public ResourceReference[] getAllResources(IFile file) {
 		Set<String> locations = new HashSet<String>();
@@ -338,7 +338,12 @@ public abstract class ResourceReferenceList {
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param path
+	 * @return <code>ResourceReference</code> array that might be empty, never returns <code>null</code>
+	 */
 	public ResourceReference[] getAllResources(IPath path) {
 		Set locations = new HashSet();
 		List css = new ArrayList();
