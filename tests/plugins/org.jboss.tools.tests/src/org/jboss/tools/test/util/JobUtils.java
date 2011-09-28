@@ -69,4 +69,8 @@ public class JobUtils {
 			}
 		}
 	}
+	
+	public static void runDeferredEvents() {
+		while( Display.getCurrent().readAndDispatch());
+	}
 }
