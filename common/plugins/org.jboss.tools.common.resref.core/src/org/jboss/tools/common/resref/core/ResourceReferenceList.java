@@ -95,7 +95,7 @@ public abstract class ResourceReferenceList {
 			locations.add(dcss[i]);
 			css.add(ref);
 		}
-		return css.toArray(new ResourceReference[0]);		
+		return css.toArray(new ResourceReference[css.size()]);		
 	}
 	
 	private String[] getDeclaredResources(IResource resource) {
@@ -371,7 +371,7 @@ public abstract class ResourceReferenceList {
 			locations.add(dcss[i]);
 			css.add(ref);
 		}
-		return (ResourceReference[])css.toArray(new ResourceReference[0]);
+		return (ResourceReference[])css.toArray(new ResourceReference[css.size()]);
 	}
 
 	private String[] getDeclaredResources(IPath path) {
