@@ -32,7 +32,7 @@ public class AbstractRefactorTest extends TestCase{
 		super(name);
 	}
 	
-	protected void checkRename(RenameProcessor processor, List<TestChangeStructure> changeList) throws CoreException{
+	public static void checkRename(RenameProcessor processor, List<TestChangeStructure> changeList) throws CoreException{
 		JobUtils.waitForIdle(2000);
 
 		// Test before renaming
@@ -63,7 +63,7 @@ public class AbstractRefactorTest extends TestCase{
 		checkChanges(rootChange, changeList);
 	}
 	
-	protected void checkMove(RefactoringProcessor processor, IResource oldObject, IResource destinationObject, MoveParticipant participant, List<TestChangeStructure> changeList) throws CoreException {
+	public static void checkMove(RefactoringProcessor processor, IResource oldObject, IResource destinationObject, MoveParticipant participant, List<TestChangeStructure> changeList) throws CoreException {
 		JobUtils.waitForIdle(2000);
 
 		// Test before moving
@@ -92,7 +92,7 @@ public class AbstractRefactorTest extends TestCase{
 		checkChanges(rootChange, changeList);
 	}
 
-	protected void checkRename(RefactoringProcessor processor, IResource oldObject, String newName, RenameParticipant participant, List<TestChangeStructure> changeList) throws CoreException {
+	public static void checkRename(RefactoringProcessor processor, IResource oldObject, String newName, RenameParticipant participant, List<TestChangeStructure> changeList) throws CoreException {
 		JobUtils.waitForIdle(2000);
 
 		// Test before renaming
@@ -121,7 +121,7 @@ public class AbstractRefactorTest extends TestCase{
 		checkChanges(rootChange, changeList);
 	}
 	
-	private void checkBeforeRefactoring(List<TestChangeStructure> changeList){
+	public static void checkBeforeRefactoring(List<TestChangeStructure> changeList){
 		for(TestChangeStructure changeStructure : changeList){
 			IFile file = changeStructure.getProject().getFile(changeStructure.getFileName());
 			String content = null;
@@ -138,9 +138,10 @@ public class AbstractRefactorTest extends TestCase{
 		}
 	}
 	
-	private void checkChanges(CompositeChange rootChange, List<TestChangeStructure> changeList) throws CoreException {
+	public static void checkChanges(CompositeChange rootChange, List<TestChangeStructure> changeList) throws CoreException {
 		assertNotNull("Root change is null",rootChange);
-		assertEquals("There is unexpected number of changes",changeList.size(), rootChange.getChildren().length);
+		
+		int numberOfChanges = rootChange.getChildren().length;
 
 		for(int i = 0; i < rootChange.getChildren().length;i++){
 			TextFileChange fileChange = (TextFileChange)rootChange.getChildren()[i];
@@ -167,9 +168,10 @@ public class AbstractRefactorTest extends TestCase{
 				assertEquals("There is unexpected change in resource - "+file.getName(),change.getText(), content.substring(change.getOffset(), change.getOffset()+change.getLength()));
 			}
 		}
+		assertEquals("There is unexpected number of changes",changeList.size(), numberOfChanges);
 	}
 	
-	protected TestChangeStructure findChange(List<TestChangeStructure> changeList, IFile file){
+	public static TestChangeStructure findChange(List<TestChangeStructure> changeList, IFile file){
 		for(TestChangeStructure tcs : changeList){
 			if(tcs.getFileName().equals("/"+file.getFullPath().removeFirstSegments(1).toString()))
 				return tcs;
@@ -178,7 +180,7 @@ public class AbstractRefactorTest extends TestCase{
 	}
 
 	
-	public class TestChangeStructure{
+	public static class TestChangeStructure{
 		private IProject project;
 		private String fileName;
 		ArrayList<TestTextChange> textChanges = new ArrayList<TestTextChange>();
@@ -211,7 +213,7 @@ public class AbstractRefactorTest extends TestCase{
 
 	}
 	
-	public class TestTextChange{
+	public static class TestTextChange{
 		private int offset;
 		private int length;
 		private String text;
