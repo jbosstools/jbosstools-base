@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,13 +11,23 @@
 
 package org.jboss.tools.common.el.ui.ca;
 
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
+import org.eclipse.jdt.internal.ui.text.javadoc.JavadocContentAccess2;
+import org.eclipse.jdt.internal.ui.viewsupport.JavaElementLinks;
+import org.eclipse.jdt.ui.JavaElementLabels;
 import org.eclipse.jdt.ui.PreferenceConstants;
+import org.eclipse.jface.internal.text.html.HTMLPrinter;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
@@ -46,6 +56,7 @@ import org.eclipse.wst.xml.ui.internal.contentassist.AbstractContentAssistProces
 import org.eclipse.wst.xml.ui.internal.util.SharedXMLEditorPluginImageHelper;
 import org.jboss.tools.common.el.core.ELReference;
 import org.jboss.tools.common.el.core.ca.AbstractELCompletionEngine;
+import org.jboss.tools.common.el.core.ca.ELTextProposal;
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.resolver.ELContext;
 import org.jboss.tools.common.el.core.resolver.ELResolver;
@@ -77,6 +88,9 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		private final String fNewPrefix;
 		private final int fOffset;
 		private int fNewPosition;
+		private String fDisplayString;
+		private String fAdditionalProposalInfo;
+		private IJavaElement[] fJavaElements;
 
 		private Image fImage;
 
@@ -85,24 +99,29 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		}
 
 		public Proposal(String string, String prefix, int offset, int newPosition) {
-			this(string, prefix, prefix, offset, offset + string.length(), null);
+			this(string, prefix, prefix, offset, offset + string.length(), null, null, null, null);
 		}
 
-		public Proposal(String string, String prefix, int offset, int newPosition, Image image) {
-			this(string, prefix, prefix, offset, offset + string.length(), image);
+		public Proposal(String string, String prefix, int offset, int newPosition, Image image, String displayString, String additionalProposalInfo, IJavaElement[] javaElements) {
+			this(string, prefix, prefix, offset, offset + string.length(), image, displayString, additionalProposalInfo, javaElements);
 		}
 
 		public Proposal(String string, String prefix, String newPrefix, int offset, int newPosition) {
-			this(string, prefix, newPrefix, offset, newPosition, null);
+			this(string, prefix, newPrefix, offset, newPosition, null, null, null, null);
 		}
 
-		public Proposal(String string, String prefix, String newPrefix, int offset, int newPosition, Image image) {
+		public Proposal(String string, String prefix, String newPrefix, int offset, int newPosition, Image image, String displayString, String additionalProposalInfo, IJavaElement[] javaElements) {
 			fString = string;
 			fPrefix = prefix;
 			fNewPrefix = newPrefix;
 			fOffset = offset;
 			fNewPosition = newPosition;
 			fImage = image;
+			fDisplayString = displayString;
+			fAdditionalProposalInfo = additionalProposalInfo;
+			fJavaElements = javaElements;
+			if (fJavaElements != null && fJavaElements.length > 0) 
+				fAdditionalProposalInfo = null; // Drop it due to valculate it later based on java elements
 		}
 
 		/*
@@ -123,13 +142,147 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#getAdditionalProposalInfo()
 		 */
 		public String getAdditionalProposalInfo() {
+			if (fAdditionalProposalInfo == null) {
+				if (this.fJavaElements != null && this.fJavaElements.length > 0) {
+					this.fAdditionalProposalInfo = extractProposalContextInfo(fJavaElements);
+				}
+			}
+			if (fAdditionalProposalInfo == null) 
+				fAdditionalProposalInfo = ""; // This is to prevent repeat of extracting Java Info //$NON-NLS-1$
+			return fAdditionalProposalInfo;
+		}
+
+		/*
+		 * Extracts the additional proposal information based on Javadoc for the stored IJavaElement objects
+		 */
+		private String extractProposalContextInfo(IJavaElement[] elements) {
+			int nResults= elements.length;
+			StringBuffer buffer= new StringBuffer();
+			boolean hasContents= false;
+			IJavaElement element= null;
+
+			if (nResults > 1) {
+	/*			for (int i= 0; i < elements.length; i++) {
+					if (elements[i] == null) continue;
+					if (elements[i] instanceof IMember || 
+							elements[i].getElementType() == IJavaElement.LOCAL_VARIABLE || 
+							elements[i].getElementType() == IJavaElement.TYPE_PARAMETER) {
+						buffer.append('\uE467').append(' ').append(getInfoText(elements[i]));
+						hasContents= true;
+					}
+					buffer.append("<br/>"); //$NON-NLS-1$
+				}
+	*/
+				for (int i=0; i < elements.length; i++) {
+					if (elements[i] == null) continue;
+					if (elements[i] instanceof IMember || 
+							elements[i].getElementType() == IJavaElement.LOCAL_VARIABLE || 
+							elements[i].getElementType() == IJavaElement.TYPE_PARAMETER) {
+						buffer.append('\uE467').append(' ');
+						addFullInfo(buffer, elements[i]);
+						buffer.append("<br/>"); //$NON-NLS-1$
+						hasContents = true;
+					}
+				}
+			} else {
+				element= elements[0];
+				if (element instanceof IMember ||
+						element.getElementType() == IJavaElement.LOCAL_VARIABLE || 
+						element.getElementType() == IJavaElement.TYPE_PARAMETER) {
+					addFullInfo(buffer, element);
+					hasContents= true;
+				}
+			}
+
+			if (!hasContents)
+				return null;
+
+			if (buffer.length() > 0) {
+				HTMLPrinter.insertPageProlog(buffer, 0, (String)null);
+				HTMLPrinter.addPageEpilog(buffer);
+				return buffer.toString();
+			}
+
 			return null;
+		}
+
+		private static final long LABEL_FLAGS=  JavaElementLabels.ALL_FULLY_QUALIFIED
+				| JavaElementLabels.M_PRE_RETURNTYPE | JavaElementLabels.M_PARAMETER_TYPES | JavaElementLabels.M_PARAMETER_NAMES | JavaElementLabels.M_EXCEPTIONS
+				| JavaElementLabels.F_PRE_TYPE_SIGNATURE | JavaElementLabels.M_PRE_TYPE_PARAMETERS | JavaElementLabels.T_TYPE_PARAMETERS
+				| JavaElementLabels.USE_RESOLVED;
+		private static final long LOCAL_VARIABLE_FLAGS= LABEL_FLAGS & ~JavaElementLabels.F_FULLY_QUALIFIED | JavaElementLabels.F_POST_QUALIFIED;
+		private static final long TYPE_PARAMETER_FLAGS= LABEL_FLAGS | JavaElementLabels.TP_POST_QUALIFIED;
+
+		/* 
+		 * Returns the label for the IJavaElement objects
+		 */
+		private String getInfoText(IJavaElement element) {
+			long flags;
+			switch (element.getElementType()) {
+				case IJavaElement.LOCAL_VARIABLE:
+					flags= LOCAL_VARIABLE_FLAGS;
+					break;
+				case IJavaElement.TYPE_PARAMETER:
+					flags= TYPE_PARAMETER_FLAGS;
+					break;
+				default:
+					flags= LABEL_FLAGS;
+					break;
+			}
+			StringBuffer label= new StringBuffer(JavaElementLinks.getElementLabel(element, flags));
+		
+			// The following lines were commented out because of JBIDE-8923 faced in Eclipse 3.7
+			//
+//				StringBuffer buf= new StringBuffer();
+//				buf.append("<span style='word-wrap:break-word;'>"); //$NON-NLS-1$
+//				buf.append(label);
+//				buf.append("</span>"); //$NON-NLS-1$
+
+//				return buf.toString();
+			return label.toString();
+		}
+
+		/*
+		 * Adds full information to the additional proposal information
+		 * 
+		 * @param buffer
+		 * @param element
+		 * @return
+		 */
+		private void addFullInfo(StringBuffer buffer, IJavaElement element) {
+			if (element instanceof IMember) {
+				IMember member= (IMember) element;
+				HTMLPrinter.addSmallHeader(buffer, getInfoText(member));
+				Reader reader = null;
+				try {
+					String content= JavadocContentAccess2.getHTMLContent(member, true);
+					reader= content == null ? null : new StringReader(content);
+				} catch (JavaModelException ex) {
+					JavaPlugin.log(ex);
+				}
+				
+				if (reader == null) {
+					reader = new StringReader(Messages.NO_JAVADOC);
+				}
+
+				if (reader != null) {
+					buffer.append("<br/>"); //$NON-NLS-1$
+					buffer.append(HTMLPrinter.read(reader));
+//						HTMLPrinter.addParagraph(buffer, reader);
+				}
+
+			} else if (element.getElementType() == IJavaElement.LOCAL_VARIABLE || element.getElementType() == IJavaElement.TYPE_PARAMETER) {
+				HTMLPrinter.addSmallHeader(buffer, getInfoText(element));
+			}
 		}
 
 		/*
 		 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#getDisplayString()
 		 */
 		public String getDisplayString() {
+			if (fDisplayString != null)
+				return fDisplayString;
+			
 			String dispString = (fNewPrefix == null ? fPrefix : fNewPrefix) + fString;
 			if (dispString != null) {
 				if (dispString.indexOf('{') == -1 
@@ -401,11 +554,19 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 					if (string.length() > 0 && ('#' == string.charAt(0) || '$' == string.charAt(0)))
                 		string = elStartChar + string.substring(1);
 
+					String additionalProposalInfo = (kbProposal.getContextInfo() == null ? "" : kbProposal.getContextInfo()); //$NON-NLS-1$
+					IJavaElement[] javaElements = null;
+					if (kbProposal instanceof ELTextProposal) {
+						javaElements = ((ELTextProposal)kbProposal).getAllJavaElements();
+					}
+
 					if (string.startsWith("['") && string.endsWith("']") && prefix != null && prefix.endsWith(".")) {  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 						String newPrefix = prefix.substring(0, prefix.length() - 1);
-						resultList.add(new Proposal(string, prefix, newPrefix, offset, offset - 1 + string.length() - proposalSufix.length(), image));
+						resultList.add(new Proposal(string, prefix, newPrefix, offset, offset - 1 + string.length() - proposalSufix.length(), image,
+								kbProposal.getLabel(), additionalProposalInfo, javaElements));
 					} else {
-						resultList.add(new Proposal(string, prefix, offset, offset + string.length() - proposalSufix.length(), image));
+						resultList.add(new Proposal(string, prefix, offset, offset + string.length() - proposalSufix.length(), image, 
+								kbProposal.getLabel(), additionalProposalInfo, javaElements));
 					}
 				}
 			}
