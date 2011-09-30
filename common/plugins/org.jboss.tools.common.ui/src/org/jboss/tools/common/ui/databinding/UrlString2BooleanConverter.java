@@ -29,7 +29,6 @@ public class UrlString2BooleanConverter extends Converter {
 		super(String.class, Boolean.class);
 	}
 
-	@Override
 	public Object convert(Object fromObject) {
 		if (!(fromObject instanceof String)) {
 			return Boolean.FALSE;
