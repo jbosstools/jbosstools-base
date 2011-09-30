@@ -66,6 +66,10 @@ public final class CommonUIMessages extends NLS {
 
 	public static String BUTTON_REMOVE;
 
+	public static String BROWSER_COULD_NOT_OPEN_BROWSER;
+
+	public static String BROWSER_COULD_NOT_DISPLAY_MALFORMED_URL;
+
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, CommonUIMessages.class);
 	}
