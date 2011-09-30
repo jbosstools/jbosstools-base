@@ -12,7 +12,6 @@ package org.jboss.tools.common.ui.databinding;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.databinding.conversion.Converter;
 
@@ -25,7 +24,6 @@ import org.eclipse.core.databinding.conversion.Converter;
  */
 public class UrlString2BooleanConverter extends Converter {
 
-	private static final Pattern simpleUrlPattern = Pattern.compile(".+://[^\\.]+\\.[^\\.]+(\\.[^\\.]+){0,1}");
 
 	public UrlString2BooleanConverter() {
 		super(String.class, Boolean.class);
@@ -42,7 +40,7 @@ public class UrlString2BooleanConverter extends Converter {
 
 	private URL toUrl(String url) {
 		try {
-			if (!simpleUrlPattern.matcher(url).matches()) {
+			if (!new SimpleUrlStringChecker(url).isValid()) {
 				return null;
 			}
 			return new URL(url);
