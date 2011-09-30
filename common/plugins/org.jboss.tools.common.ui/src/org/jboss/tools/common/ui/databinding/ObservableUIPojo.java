@@ -23,7 +23,6 @@ public class ObservableUIPojo extends ObservablePojo {
 	public void firePropertyChange(final String propertyName, final Object oldValue, final Object newValue) {
 		Display.getDefault().syncExec(new Runnable() {
 
-			@Override
 			public void run() {
 				ObservableUIPojo.super.firePropertyChange(propertyName, oldValue, newValue);
 			}
@@ -35,7 +34,6 @@ public class ObservableUIPojo extends ObservablePojo {
 			final Object newValue) {
 		Display.getDefault().syncExec(new Runnable() {
 
-			@Override
 			public void run() {
 				ObservableUIPojo.super.fireIndexedPropertyChange(propertyName, index, oldValue, newValue);
 			}
