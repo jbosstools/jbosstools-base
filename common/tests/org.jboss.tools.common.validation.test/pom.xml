@@ -10,7 +10,9 @@
 	<artifactId>org.jboss.tools.common.validation.test</artifactId> 
 	
 	<packaging>eclipse-test-plugin</packaging>
-
+	<properties>
+		<emma.instrument.bundles>org.jboss.tools.common,org.jboss.tools.common.el.core,org.jboss.tools.common.validation</emma.instrument.bundles>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>

@@ -11,7 +11,6 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<emma.filter>org.jboss.tools.common.el.core*,org.jboss.tools.common.el.internal.core*</emma.filter>
-		<emma.instrument.bundles>org.jboss.tools.common.el.core</emma.instrument.bundles>
+		<emma.instrument.bundles>org.jboss.tools.common.resref.core,org.jboss.tools.common.el.core</emma.instrument.bundles>
 	</properties>
 </project>

@@ -10,14 +10,53 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<version>3.3.0-SNAPSHOT</version>
 	</parent>
 	<packaging>pom</packaging>
-	<modules>
-		<module>org.jboss.tools.common.el.core.test</module>
-		<module>org.jboss.tools.common.model.test</module>
-		<module>org.jboss.tools.common.model.ui.test</module>
-		<module>org.jboss.tools.common.test</module>
-		<module>org.jboss.tools.common.validation.test</module>
-		<module>org.jboss.tools.common.verification.test</module>
-		<module>org.jboss.tools.common.verification.ui.test</module>
-	</modules>
+	<properties>
+		<emma.filter>org.jboss.tools.*</emma.filter>
+	</properties>
+	
+	<profiles>
+		<profile>
+			<id>common-tests-libs</id>
+			<activation>
+				<property>
+					<name>coverage</name>
+				</property>
+			</activation>
+			<modules>
+				<module>../../build/libs</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>common-tests-deafult</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>coverage</name>
+				</property>
+			</activation>
+			<modules>
+				<module>org.jboss.tools.common.el.core.test</module>
+				<module>org.jboss.tools.common.model.test</module>
+				<module>org.jboss.tools.common.model.ui.test</module>
+				<module>org.jboss.tools.common.test</module>
+				<module>org.jboss.tools.common.validation.test</module>
+				<module>org.jboss.tools.common.verification.test</module>
+				<module>org.jboss.tools.common.verification.ui.test</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>common-tests-coverage-report</id>
+			<activation>
+				<property>
+					<name>coverage</name>
+				</property>
+			</activation>
+			<modules>
+				<module>../../build/reports/emma-coverage</module>
+			</modules>
+		</profile>
+	</profiles>
 </project>
 	

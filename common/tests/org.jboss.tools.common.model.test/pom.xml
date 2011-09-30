@@ -12,7 +12,6 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<emma.filter>org.jboss.tools.common*</emma.filter>
-		<emma.instrument.bundles>org.jboss.tools.common.model</emma.instrument.bundles>
+		<emma.instrument.bundles>org.jboss.tools.common,org.jboss.tools.common.model</emma.instrument.bundles>
 	</properties>
 </project>
