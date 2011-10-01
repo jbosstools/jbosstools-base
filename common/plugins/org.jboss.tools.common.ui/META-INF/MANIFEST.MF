@@ -15,9 +15,9 @@ Require-Bundle: org.eclipse.osgi;bundle-version="3.7.0",
  org.eclipse.ui.forms;bundle-version="3.5.100";visibility:=reexport,
  org.eclipse.ui.workbench.texteditor;bundle-version="3.7.0",
  org.eclipse.jface.text;bundle-version="3.7.0",
- org.eclipse.core.databinding;bundle-version="1.4.0"
+ org.eclipse.core.databinding;bundle-version="1.4.0",
+ org.eclipse.jface.databinding;bundle-version="1.5.0"
 Export-Package: org.jboss.tools.common.ui,
- org.jboss.tools.common.ui.browser,
  org.jboss.tools.common.ui.databinding,
  org.jboss.tools.common.ui.preferences,
  org.jboss.tools.common.ui.widget.editor,

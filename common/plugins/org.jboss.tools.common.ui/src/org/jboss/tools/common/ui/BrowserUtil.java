@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.common.ui.browser;
+package org.jboss.tools.common.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
-import org.jboss.tools.common.ui.CommonUIMessages;
 
 /**
  * @author Andre Dietisheim
