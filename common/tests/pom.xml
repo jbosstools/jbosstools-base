@@ -19,7 +19,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<id>common-tests-libs</id>
 			<activation>
 				<property>
-					<name>coverage</name>
+					<name>common-coverage</name>
 				</property>
 			</activation>
 			<modules>
@@ -28,11 +28,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		</profile>
 
 		<profile>
-			<id>common-tests-deafult</id>
+			<id>common-tests-default</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<property>
-					<name>coverage</name>
+					<name>common-coverage</name>
 				</property>
 			</activation>
 			<modules>
@@ -50,7 +50,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<id>common-tests-coverage-report</id>
 			<activation>
 				<property>
-					<name>coverage</name>
+					<name>common-coverage</name>
 				</property>
 			</activation>
 			<modules>
