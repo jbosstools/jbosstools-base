@@ -14,10 +14,10 @@ import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.ValidationStatusProvider;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.IObservableCollection;
 import org.eclipse.core.databinding.observable.list.WritableList;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -45,7 +45,8 @@ public class DataBindingUtils {
 	 *            the data binding context to use when binding
 	 */
 	public static void bindButtonEnablementToValidationStatus(final Button button,
-			IObservableCollection validationStatusProviders, DataBindingContext dbc) {
+			DataBindingContext dbc, Binding... bindings) {
+		IObservableCollection validationStatusProviders = toObservableCollection(bindings);
 		dbc.bindValue(
 				WidgetProperties.enabled().observe(button),
 				createAggregateValidationStatus(validationStatusProviders, dbc),
@@ -77,16 +78,16 @@ public class DataBindingUtils {
 	}
 
 	/**
-	 * Returns an observable collection for a given array of observable values.
+	 * Returns an observable collection for a given array of validation status providers.
 	 * 
 	 * @param observableValue
 	 *            the array of observable values
 	 * @return an observable collection
 	 */
-	public static IObservableCollection toObservableCollection(IObservableValue... observableValues) {
+	private static IObservableCollection toObservableCollection(ValidationStatusProvider... validationStatusProviders) {
 		WritableList observableCollection = new WritableList();
-		for (IObservableValue observableValue : observableValues) {
-			observableCollection.add(observableValue);
+		for (ValidationStatusProvider validationStatusProvider : validationStatusProviders) {
+			observableCollection.add(validationStatusProvider);
 		}
 		return observableCollection;
 	}
