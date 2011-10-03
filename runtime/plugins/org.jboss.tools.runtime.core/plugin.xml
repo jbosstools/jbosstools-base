@@ -10,8 +10,14 @@
             id="org.jboss.tools.runtime.core.as.701" 
             name="JBoss AS 7.0.1 Everything (NOT Java EE6 Certified)"
             version="7.0.1.Final"
-            size="68MB"
+            size="74MB"
             url="http://download.jboss.org/jbossas/7.0/jboss-as-7.0.1.Final/jboss-as-7.0.1.Final.zip?use_mirror=autoselect"/>
+      <runtime
+            id="org.jboss.tools.runtime.core.as.702" 
+            name="JBoss AS 7.0.2 Everything (NOT Java EE6 Certified)"
+            version="7.0.2.Final"
+            size="75MB"
+            url="http://download.jboss.org/jbossas/7.0/jboss-as-7.0.2.Final/jboss-as-7.0.2.Final.zip?use_mirror=autoselect"/>
       <runtime
             id="org.jboss.tools.runtime.core.seam.222" 
             name="JBoss Seam 2.2.2.Final"
