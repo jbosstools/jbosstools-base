@@ -43,7 +43,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 				<module>org.jboss.tools.common.validation.test</module>
 				<module>org.jboss.tools.common.verification.test</module>
 				<module>org.jboss.tools.common.verification.ui.test</module>
-			</modules>
+				<module>org.jboss.tools.common.ui.test</module>
+					</modules>
 		</profile>
 
 		<profile>
