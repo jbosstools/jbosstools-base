@@ -46,10 +46,9 @@ public class DataBindingUtils {
 	 */
 	public static void bindButtonEnablementToValidationStatus(final Button button,
 			DataBindingContext dbc, Binding... bindings) {
-		IObservableCollection validationStatusProviders = toObservableCollection(bindings);
 		dbc.bindValue(
 				WidgetProperties.enabled().observe(button),
-				createAggregateValidationStatus(validationStatusProviders, dbc),
+				createAggregateValidationStatus(dbc, bindings),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER),
 				new UpdateValueStrategy().setConverter(new Status2BooleanConverter(IStatus.ERROR)));
 	}
@@ -66,13 +65,13 @@ public class DataBindingUtils {
 	 * @return
 	 */
 	protected static AggregateValidationStatus createAggregateValidationStatus(
-			IObservableCollection validationStatusProviders, DataBindingContext dbc) {
+			DataBindingContext dbc, Binding... bindings) {
 		AggregateValidationStatus aggregatedValidationStatus;
-		if (validationStatusProviders == null) {
+		if (bindings.length == 0) {
 			aggregatedValidationStatus = new AggregateValidationStatus(dbc, AggregateValidationStatus.MAX_SEVERITY);
 		} else {
 			aggregatedValidationStatus = new AggregateValidationStatus(
-					validationStatusProviders, AggregateValidationStatus.MAX_SEVERITY);
+					toObservableCollection(bindings), AggregateValidationStatus.MAX_SEVERITY);
 		}
 		return aggregatedValidationStatus;
 	}
