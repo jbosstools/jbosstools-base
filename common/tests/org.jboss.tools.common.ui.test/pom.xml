@@ -14,4 +14,17 @@
 	<properties>
 		<emma.instrument.bundles>org.jboss.tools.common.ui.preferencevalue</emma.instrument.bundles>
 	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<useUIThread>false</useUIThread>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
