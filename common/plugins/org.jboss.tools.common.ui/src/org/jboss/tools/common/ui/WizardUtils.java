@@ -118,9 +118,9 @@ public class WizardUtils {
 		}
 	}
 	
-	public static void openWizardDialog(IWizard wizard, Shell shell) {
+	public static int openWizardDialog(IWizard wizard, Shell shell) {
 		WizardDialog dialog = new WizardDialog(shell, wizard);
 		dialog.create();
-		dialog.open();
+		return dialog.open();
 	}
 }
