@@ -11,10 +11,6 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 
-	<properties>
-		<emma.instrument.bundles>org.jboss.tools.common.ui.preferencevalue</emma.instrument.bundles>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>

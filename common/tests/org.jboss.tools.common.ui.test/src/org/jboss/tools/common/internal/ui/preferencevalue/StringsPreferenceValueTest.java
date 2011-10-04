@@ -8,10 +8,11 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.common.ui.preferencevalue;
+package org.jboss.tools.common.internal.ui.preferencevalue;
 
 import static org.junit.Assert.assertEquals;
 
+import org.jboss.tools.common.ui.preferencevalue.StringsPreferenceValue;
 import org.junit.Before;
 import org.junit.Test;
 
