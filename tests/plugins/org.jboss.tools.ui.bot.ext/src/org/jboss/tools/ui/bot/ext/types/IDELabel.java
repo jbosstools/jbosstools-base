@@ -704,4 +704,11 @@ public class IDELabel {
      public static final String URL_TEXT_LABEL = "Url:";
      
    }
+   
+   public static class WebXmlEditor{
+     
+     public static final String SOURCE_TAB_LABEL = "Source";
+     public static final String TREE_TAB_LABEL = "Tree";
+     
+   }
  }
