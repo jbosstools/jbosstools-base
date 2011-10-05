@@ -32,6 +32,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.common.verification.ui</module>
 		<module>org.jboss.tools.common.jdt.debug</module>
 		<module>org.jboss.tools.common.jdt.debug.ui</module>
+		<module>org.jboss.tools.common.jdt</module>
+		<module>org.jboss.tools.common.jdt.ui</module>
 	</modules>
 </project>
 	
