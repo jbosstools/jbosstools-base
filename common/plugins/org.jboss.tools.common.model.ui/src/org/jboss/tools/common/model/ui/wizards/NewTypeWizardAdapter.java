@@ -37,11 +37,11 @@ public class NewTypeWizardAdapter {
 	// common data
 	private IJavaProject javaProject;
 	private IProject project;
-	private boolean rawData = Boolean.TRUE.booleanValue();
-	private boolean createMain = Boolean.TRUE.booleanValue();
-	private boolean createConstructors = Boolean.TRUE.booleanValue();
-	private boolean createInherited = Boolean.TRUE.booleanValue();
-	private boolean canBeModified = Boolean.TRUE.booleanValue();
+	private boolean rawData = true;
+	private boolean createMain = true;
+	private boolean createConstructors = true;
+	private boolean createInherited = true;
+	private boolean canBeModified = true;
 	private IStatus classNameStatus;
 	private IStatus packageNameStatus;
 	
@@ -76,22 +76,22 @@ public class NewTypeWizardAdapter {
 	}
 	
 	public void setRawClassName(String rawClassName) {
-		this.rawData = Boolean.TRUE.booleanValue();
+		this.rawData = true;
 		this.className = rawClassName;
 	}
 
 	public void setRawSuperClassName(String rawSuperClassName) {
-		this.rawData = Boolean.TRUE.booleanValue();
+		this.rawData = true;
 		this.superClassName = rawSuperClassName;
 	}
 
 	public void setRawPackageName(String rawPackageName) {
-		this.rawData = Boolean.TRUE.booleanValue();
+		this.rawData = true;
 		this.packageName = rawPackageName;
 	}
 	
 	public void addRawInterfaceName(String rawInterfaceName) {
-		this.rawData = Boolean.TRUE.booleanValue();
+		this.rawData = true;
 		this.rawInterfaces.add(rawInterfaceName);
 	}
 	
@@ -176,7 +176,7 @@ public class NewTypeWizardAdapter {
 				// check super class
 			}
 
-			rawData = Boolean.FALSE.booleanValue();
+			rawData = false;
 		} catch (JavaModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		}
@@ -220,7 +220,7 @@ public class NewTypeWizardAdapter {
 	
 	public boolean getEnclosingTypeSelection() {
 		if (rawData) doAdapted();
-		return Boolean.FALSE.booleanValue();
+		return false;
 	}
 	
 	public String getTypeName() {
