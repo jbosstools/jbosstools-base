@@ -23,7 +23,7 @@ import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.common.ui.CommonUIMessages;
 
@@ -44,13 +44,18 @@ public class DataBindingUtils {
 	 * @param dbc
 	 *            the data binding context to use when binding
 	 */
-	public static void bindButtonEnablementToValidationStatus(final Button button,
+	public static void bindEnablementToValidationStatus(final Control control,
 			DataBindingContext dbc, Binding... bindings) {
+		bindEnablementToValidationStatus(control, dbc, IStatus.ERROR, bindings);
+	}
+
+	public static void bindEnablementToValidationStatus(final Control control,
+			DataBindingContext dbc, int severity, Binding... bindings) {
 		dbc.bindValue(
-				WidgetProperties.enabled().observe(button),
+				WidgetProperties.enabled().observe(control),
 				createAggregateValidationStatus(dbc, bindings),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER),
-				new UpdateValueStrategy().setConverter(new Status2BooleanConverter(IStatus.ERROR)));
+				new UpdateValueStrategy().setConverter(new Status2BooleanConverter(severity)));
 	}
 
 	/**
@@ -68,16 +73,21 @@ public class DataBindingUtils {
 			DataBindingContext dbc, Binding... bindings) {
 		AggregateValidationStatus aggregatedValidationStatus;
 		if (bindings.length == 0) {
-			aggregatedValidationStatus = new AggregateValidationStatus(dbc, AggregateValidationStatus.MAX_SEVERITY);
+			aggregatedValidationStatus =
+					new AggregateValidationStatus(
+							dbc, AggregateValidationStatus.MAX_SEVERITY);
 		} else {
-			aggregatedValidationStatus = new AggregateValidationStatus(
-					toObservableCollection(bindings), AggregateValidationStatus.MAX_SEVERITY);
+			aggregatedValidationStatus =
+					new AggregateValidationStatus(
+							toObservableCollection(bindings),
+							AggregateValidationStatus.MAX_SEVERITY);
 		}
 		return aggregatedValidationStatus;
 	}
 
 	/**
-	 * Returns an observable collection for a given array of validation status providers.
+	 * Returns an observable collection for a given array of validation status
+	 * providers.
 	 * 
 	 * @param observableValue
 	 *            the array of observable values
