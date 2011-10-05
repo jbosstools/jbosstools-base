@@ -109,6 +109,8 @@ public class MaterializeLibraryHandler extends AbstractHandler {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							Shell shell = HandlerUtil.getActiveShell(event);
+							Throwable e = result.getException();
+							if (e != null) e.printStackTrace();
 							MessageDialogWithToggle.openError(shell, NLS.bind("Error Materializing {0}", libName), result.getMessage()); 
 						}
 					});

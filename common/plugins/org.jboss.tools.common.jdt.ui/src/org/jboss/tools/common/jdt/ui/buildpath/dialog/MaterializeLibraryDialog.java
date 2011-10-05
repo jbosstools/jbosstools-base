@@ -246,6 +246,14 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
       selectedClasspathEntryPaths.put(entry.getKey().getPath(),entry.getValue());
     }
 
+    String ancestorPath = libFolder.getFullPath().segment(0);
+    IResource ancestor = ResourcesPlugin.getWorkspace().getRoot().findMember(ancestorPath);
+    if (ancestor == null || !ancestor.exists()) {
+    	setErrorMessage(ancestorPath + " does not exist ");
+    	return;
+    }
+    
+    
     Set<String> duplicates = findDuplicates(selectedClasspathEntryPaths.values()); 
     if (!duplicates.isEmpty()) {
   	  setErrorMessage("Duplicate entries found : "+duplicates.toString());
