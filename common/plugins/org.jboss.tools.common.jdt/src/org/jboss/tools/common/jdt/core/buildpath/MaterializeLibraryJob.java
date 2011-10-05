@@ -83,7 +83,12 @@ public class MaterializeLibraryJob extends WorkspaceJob {
 			processor.execute(javaProject, containerToRemovePath);
 		}
 
-		javaProject.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
+		//Refresh project
+		IResource resourceToRefresh = libFolder.getProject();
+		if (resourceToRefresh ==null) {
+			resourceToRefresh = ResourcesPlugin.getWorkspace().getRoot();
+		}
+		resourceToRefresh.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 
 		return Status.OK_STATUS;
 	}
