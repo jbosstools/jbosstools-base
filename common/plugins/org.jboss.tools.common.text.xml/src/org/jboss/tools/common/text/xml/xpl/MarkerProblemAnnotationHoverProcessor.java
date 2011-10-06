@@ -46,6 +46,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -274,6 +275,33 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 		}
 
 		private Link createLink(Composite parent, final ICompletionProposal proposal) {
+			new Label(parent, SWT.NONE);
+			parent= new Composite(parent, SWT.NONE);
+			GridLayout layout= new GridLayout(2, false);
+			layout.marginWidth= 0;
+			layout.marginHeight= 0;
+			parent.setLayout(layout);
+			
+			Label proposalImage= new Label(parent, SWT.NONE);
+			proposalImage.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+			Image image= proposal.getImage();
+			if (image != null) {
+				proposalImage.setImage(image);
+
+				proposalImage.addMouseListener(new MouseListener() {
+
+					public void mouseDoubleClick(MouseEvent e) {
+					}
+
+					public void mouseDown(MouseEvent e) {
+						fix(proposal, info.viewer, info.infos.get(0).position.getOffset());
+					}
+
+					public void mouseUp(MouseEvent e) {
+					}
+
+				});
+			}
 			Link proposalLink = new Link(parent, SWT.WRAP);
 			GridData layoutData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 			String linkText = proposal.getDisplayString();
