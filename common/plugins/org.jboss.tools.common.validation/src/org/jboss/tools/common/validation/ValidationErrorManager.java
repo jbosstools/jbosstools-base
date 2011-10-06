@@ -225,7 +225,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	protected void cleanSavedMarkers() {
 		markers.clear();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.jboss.tools.seam.internal.core.validation.IValidationErrorManager#addError(java.lang.String, java.lang.String, java.lang.String[], int, int, org.eclipse.core.resources.IResource)
@@ -253,6 +253,20 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		}
 		return marker;
 	}
+	
+	public IMarker addError(String message, String preferenceKey,
+			String[] messageArguments, int length, int offset, IResource target, int messageId) {
+		IMarker marker = addError(message, preferenceKey, messageArguments, length, offset, target);
+		try {
+			if(marker!=null) {
+				marker.setAttribute(messageIdQuickFixAttributeName, new Integer(messageId));
+			}
+		} catch(CoreException e) {
+			CommonPlugin.getDefault().logError(e);
+		}
+		return marker;
+	}
+
 
 	public IMarker addError(String message, String preferenceKey,
 			String[] messageArguments, int length, int offset, IResource target) {
