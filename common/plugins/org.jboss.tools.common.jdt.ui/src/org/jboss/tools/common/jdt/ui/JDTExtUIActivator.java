@@ -12,6 +12,8 @@ package org.jboss.tools.common.jdt.ui;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -68,4 +70,22 @@ public class JDTExtUIActivator extends AbstractUIPlugin {
 				.getLocalizedMessage(), e);
 		plugin.getLog().log(status);
 	}
+	
+	public static Image getJarIcon() {
+		return getIcon("icons/jar_obj.gif");		
+	}
+	
+	public static Image getProjectIcon() {
+		return getIcon("icons/projects.gif");
+	}
+
+	public static Image getIcon(String pathToIcon) {
+		Image img = null;
+		ImageDescriptor descriptor = imageDescriptorFromPlugin(PLUGIN_ID, pathToIcon);
+        if(descriptor != null) {
+        	img = descriptor.createImage();
+        }
+        return img;
+	}
+
 }

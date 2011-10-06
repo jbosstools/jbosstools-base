@@ -26,28 +26,23 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jface.viewers.ViewerCell;
-import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -59,10 +54,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ContainerSelectionDialog;
+import org.jboss.tools.common.jdt.ui.JDTExtUIActivator;
 
 public class MaterializeLibraryDialog extends TitleAreaDialog {
 
-  private static final String TITLE = "Materialize Classpath Library";
+  private static final String TITLE = "Materialize ";
 
   private static final String SOURCE_PROPERTY = "SOURCE_PROPERTY";
 
@@ -73,10 +70,9 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
   private Map<IPath, String> selectedClasspathEntryPaths;
 
   private final String libName;
-  private final IProject project;
 
-  private static Image JAR_IMAGE = JavaPluginImages.DESC_OBJS_EXTJAR.createImage();
-  private static Image PRJ_IMAGE = JavaPluginImages.DESC_OBJS_JAVA_MODEL.createImage();
+  private Image jarImage;
+  private Image projectImage;
 
   // private StringButtonDialogField libFolderDialogField;
 
@@ -87,11 +83,9 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
   public MaterializeLibraryDialog(Shell shell, IProject project, IClasspathContainer containerToMaterialize, String defaultLib) {
     super(shell);
     setShellStyle(super.getShellStyle() | SWT.RESIZE | SWT.MODELESS);
-    setTitle(TITLE);
-    this.project = project;
+    this.libName = containerToMaterialize.getDescription();
     IPath folderPath = project.getFullPath().append(defaultLib);
     libFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(folderPath);
-    this.libName = containerToMaterialize.getDescription();
     initClasspathEntryPaths(containerToMaterialize);
   }
 
@@ -111,11 +105,21 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
   @Override
   protected void configureShell(Shell shell) {
     super.configureShell(shell);
-    shell.setText(TITLE);
+    shell.setText(TITLE + "Classpath Library");
   }
 
+  private void initImages() {
+	  jarImage =JDTExtUIActivator.getJarIcon();
+	  projectImage= JDTExtUIActivator.getProjectIcon();
+  }
+  
+  
   @Override
   protected Control createDialogArea(Composite parent) {
+	  
+	initImages();
+	setTitle(TITLE + libName);
+	   	  
     Composite area = (Composite) super.createDialogArea(parent);
 
     Composite container = new Composite(area, SWT.NONE);
@@ -126,8 +130,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
     container.setLayout(layout);
     container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-    setTitle(TITLE);
-    setMessage("Copy jars from " + libName);
+    setMessage("Copy selected jars from " + libName + " to the destination folder.");
 
     // ContainerFieldAdapter adapter= new ContainerFieldAdapter();
     // libFolderDialogField = new StringButtonDialogField(adapter);
@@ -143,16 +146,56 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
     libFolderLabel.setText("Destination folder");
 
     libfolderText = new Text(container, SWT.BORDER);
-    libfolderText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+    libfolderText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
     libfolderText.setEditable(true);
     libfolderText.setText(libFolder.getFullPath().toPortableString());
+    libfolderText.addModifyListener(new ModifyListener() {
+		@Override
+		public void modifyText(ModifyEvent event) {
+			validate();
+		}
+	});
 
+    addSelectFolderButton(container);
     // libFolderDialogField.setText(libFolder.getFullPath().toPortableString());
     displayClasspathEntriesTable(container);
 
     return area;
   }
 
+  private void addSelectFolderButton(Composite container) {
+	  
+	  Button button = new Button(container, SWT.NONE);
+	  button.setLayoutData(new GridData(SWT.FILL, SWT.UP,
+				false, false, 1, 1));
+	  button.setText("Select Folder");
+	  button.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				  ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), getLibFolderFromText(libfolderText.getText()), true, "Select Destination Folder");
+				  dialog.setTitle("Container Selection");
+				  dialog.open();
+				  Object[] result = dialog.getResult();
+				  if (result != null && result[0] instanceof IPath) {
+					  libfolderText.setText(((IPath)result[0]).toPortableString());
+				  }
+			}
+			
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+  }
+
+  @Override
+  public boolean close() {
+    if (jarImage != null) {
+      jarImage.dispose();
+	}
+    if (projectImage!= null) {
+    	projectImage.dispose();
+  	}
+    return super.close();
+  }
+  
   private void displayClasspathEntriesTable(Composite container) {
     GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 4);
     gd.heightHint = 500;
@@ -204,13 +247,13 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
         "EMPTY", SOURCE_PROPERTY, FILENAME_PROPERTY });
 
     TextCellEditor ce = new TextCellEditor(classpathEntriesViewer.getTable()); 
-    ce.setValidator(new ICellEditorValidator() {
-		@Override
-		public String isValid(Object arg0) {
-			String name = arg0.toString();
-			return (checkValidName(name))?null:name;
-		}
-	});
+//    ce.setValidator(new ICellEditorValidator() {
+//		@Override
+//		public String isValid(Object arg0) {
+//			String name = arg0.toString();
+//			return (checkValidName(name))?null:name;
+//		}
+//	});
 	
     CellEditor[] editors = new CellEditor[] {
         null,
@@ -237,29 +280,54 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 
   @Override
   protected void okPressed() {
+	if (!validate()) {
+		return;
+	}
     libFolder = getLibFolderFromText(libfolderText.getText());
+    super.okPressed();
+  }
+
+  private boolean validate() {
+	  boolean valid = validateLibFolder() && validateEntries();
+	  if (valid) {
+		  setErrorMessage(null);
+	  }
+	  return valid;
+  }
+		
+  private boolean validateLibFolder() {
+	IFolder folder = getLibFolderFromText(libfolderText.getText());
+	String ancestorPath = folder.getFullPath().segment(0);
+    IResource ancestor = ResourcesPlugin.getWorkspace().getRoot().findMember(ancestorPath);
+    if (ancestor == null || !ancestor.exists()) {
+    	setErrorMessage(ancestorPath + " does not exist ");
+    	return false;
+    }
+    return true;
+  }
+
+  private boolean validateEntries() {
     Object[] selection = classpathEntriesViewer.getCheckedElements();
     selectedClasspathEntryPaths = new LinkedHashMap<IPath, String>(selection.length);
     for (Object o : selection) {
       @SuppressWarnings("unchecked")
       Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>)o;
+      if (entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
+	      String name = entry.getValue();
+	      if (!checkValidName(name)) {
+	    	  setErrorMessage(name + " is not a valid file name");
+	    	  return false;
+	      }
+      }
       selectedClasspathEntryPaths.put(entry.getKey().getPath(),entry.getValue());
     }
-
-    String ancestorPath = libFolder.getFullPath().segment(0);
-    IResource ancestor = ResourcesPlugin.getWorkspace().getRoot().findMember(ancestorPath);
-    if (ancestor == null || !ancestor.exists()) {
-    	setErrorMessage(ancestorPath + " does not exist ");
-    	return;
-    }
-    
     
     Set<String> duplicates = findDuplicates(selectedClasspathEntryPaths.values()); 
     if (!duplicates.isEmpty()) {
   	  setErrorMessage("Duplicate entries found : "+duplicates.toString());
-  	  return;
+  	  return false;
     }
-    super.okPressed();
+  	return true;
   }
 
   private Set<String> findDuplicates(Collection<String> values) {
@@ -298,9 +366,9 @@ private class ClasspathEntryLabelProvider extends LabelProvider implements ITabl
       if (columnIndex > 0) {
         Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) element;
         if (entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
-          img = JAR_IMAGE;//return lib image
+          img = jarImage;
         } else {
-          img = PRJ_IMAGE;
+          img = projectImage;
         }
       }
       return img;
@@ -356,10 +424,8 @@ private class ClasspathEntryLabelProvider extends LabelProvider implements ITabl
         Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) item.getData();
         if(entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
           String name = value.toString();
-          if (checkValidName(name)) {
-              entry.setValue(name);
-              setErrorMessage(null);
-          } 
+          entry.setValue(name);
+          validate();
           classpathEntriesViewer.refresh();
         }
       }
@@ -375,7 +441,8 @@ private class ClasspathEntryLabelProvider extends LabelProvider implements ITabl
 		if (!result.isOK()) {
 			 return false;
 		}
-		return (name.endsWith(".jar") || name.endsWith(".zip"));
+		return  !name.contains("\\") &&
+				(name.endsWith(".jar") || name.endsWith(".zip"));
 	}
 
 }
