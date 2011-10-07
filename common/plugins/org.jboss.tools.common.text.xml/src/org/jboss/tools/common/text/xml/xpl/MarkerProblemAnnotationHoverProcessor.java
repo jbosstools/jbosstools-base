@@ -278,6 +278,7 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 			parent= new Composite(parent, SWT.NONE);
 			GridLayout layout= new GridLayout(2, false);
 			layout.marginWidth= 0;
+			layout.marginHeight= 1;
 			parent.setLayout(layout);
 			
 			Label proposalImage= new Label(parent, SWT.NONE);
