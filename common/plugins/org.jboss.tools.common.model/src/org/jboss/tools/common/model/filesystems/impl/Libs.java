@@ -85,7 +85,8 @@ public class Libs implements IElementChangedListener {
 	}
 
 	public boolean update() {
-		boolean result = updatePaths();
+		int cpv = classpathVersion;
+		boolean result = hasToUpdatePaths() && updatePaths(getNewPaths(), cpv);
 		if(result) fire();
 		if(paths == null && result) return true;
 	
@@ -99,21 +100,29 @@ public class Libs implements IElementChangedListener {
 		classpathVersion++;
 	}
 
-	synchronized boolean updatePaths() {
-		if(classpathVersion <= pathsVersion) {
-			return false;
-		}
-		pathsVersion = classpathVersion;
-		List<String> newPaths = null;
+	synchronized boolean hasToUpdatePaths() {
+		return (classpathVersion > pathsVersion);
+	}
+
+	private List<String> getNewPaths() {
+		List<String> result = null;
 		try {
-			newPaths = EclipseResourceUtil.getClassPath(getProjectResource());
+			result = EclipseResourceUtil.getClassPath(getProjectResource());
 			List<String> jre = EclipseResourceUtil.getJREClassPath(getProjectResource());
-			if(jre != null) newPaths.removeAll(jre);
+			if(jre != null) result.removeAll(jre);
 		} catch (CoreException e) {
 			ModelPlugin.getDefault().logError(e);
 		} catch(IOException e) {
 			ModelPlugin.getDefault().logError(e);			
 		}
+		return result;
+	}
+
+	private synchronized boolean updatePaths(List<String> newPaths, int cpv) {
+		if(cpv <= pathsVersion) {
+			return false;
+		}
+		pathsVersion = cpv;
 		if(paths == null && newPaths == null) return false;
 		if((newPaths != null && paths != null) && (paths.size() == newPaths.size())) {
 			boolean b = false;
