@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="org.jboss.tools.test.source.feature" label="%featureName" version="3.2.0.qualifier" provider-name="%featureProvider">
+
+	<description>
+      %description
+   </description>
+
+	<copyright>
+      JBoss, Home of Professional Open Source
+Copyright (c) 2011 Red Hat, Inc., and individual contributors as indicated
+by the @authors tag. See the copyright.txt in the distribution
+for a full listing of individual contributors.
+   </copyright>
+
+	<license url="%licenseURL">
+      %license
+   </license>
+
+	<plugin id="org.jboss.tools.tests.source" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.ui.bot.ext.source" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.ui.bot.ext.test.source" download-size="0" install-size="0" version="0.0.0" />
+</feature>

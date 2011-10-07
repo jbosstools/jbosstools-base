@@ -13,5 +13,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.jboss.tools.test.feature</module>
+		<module>org.jboss.tools.test.source.feature</module>
 	</modules>
 </project>
