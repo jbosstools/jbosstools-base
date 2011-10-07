@@ -104,19 +104,24 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 //        }
 
         ICompletionProposal[] result = res.toArray(new ICompletionProposal[res.size()]);
+        StringBuffer sb = new StringBuffer("[");
+        for (ICompletionProposal p : result) {
+			sb.append(p.getDisplayString()).append(", ");
+		}
+        sb.append("]");
         int foundCounter = 0;
         for (int i = 0; i < proposals.length; i++) {
         	boolean found = compareProposal(proposals[i], result);
         	if (found)
         		foundCounter++;
-            assertTrue("Proposal " + proposals[i] + " not found!", found ); //$NON-NLS-1$ //$NON-NLS-2$
+            assertTrue("Proposal " + proposals[i] + " not found! Found proposals: " + sb.toString(), found ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (exactly) {
         	if (excludeELProposalsFromExactTest) {
-        		assertTrue("Some other proposals were found!", foundCounter == proposals.length); //$NON-NLS-1$
+        		assertEquals("Some other proposals were found! Found proposals: " + sb.toString(), foundCounter, proposals.length); //$NON-NLS-1$
         	} else {
-                assertTrue("Some other proposals were found!", result.length == proposals.length); //$NON-NLS-1$
+        		assertEquals("Some other proposals were found! Found proposals: " + sb.toString(), result.length, proposals.length); //$NON-NLS-1$
         	}
         }
 
