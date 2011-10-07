@@ -8,6 +8,5 @@
 	</parent>
 	<groupId>org.jboss.tools.common.features</groupId>
 	<artifactId>org.jboss.tools.common.all.feature</artifactId> 
-	
 	<packaging>eclipse-feature</packaging>
 </project>

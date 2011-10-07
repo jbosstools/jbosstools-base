@@ -8,6 +8,10 @@
 	<feature url="features/org.jboss.tools.common.all.feature_0.0.0.jar" id="org.jboss.tools.common.all.feature" version="0.0.0">
 		<category name="JBoss Tools common Nightly Build Update Site"/>
 	</feature>
+	<feature url="features/org.jboss.tools.common.all.source.feature_0.0.0.jar" id="org.jboss.tools.common.all.source.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+
 	<feature url="features/org.jboss.tools.common.core.feature_0.0.0.jar" id="org.jboss.tools.common.core.feature" version="0.0.0">
 		<category name="JBoss Tools common Nightly Build Update Site"/>
 	</feature>
@@ -23,12 +27,18 @@
 	<feature url="features/org.jboss.tools.common.verification.feature_0.0.0.jar" id="org.jboss.tools.common.verification.feature" version="0.0.0">
 		<category name="JBoss Tools common Nightly Build Update Site"/>
 	</feature>
+
 	<feature url="features/org.jboss.tools.common.jdt.feature_0.0.0.jar" id="org.jboss.tools.common.jdt.feature" version="0.0.0">
 		<category name="JBoss Tools common Nightly Build Update Site"/>
 	</feature>
+	<feature url="features/org.jboss.tools.common.jdt.source.feature_0.0.0.jar" id="org.jboss.tools.common.jdt.source.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
 
-	<!-- add tests plugins since downstream projects like ESB depend on them -->
 	<feature url="features/org.jboss.tools.common.all.test.feature_0.0.0.jar" id="org.jboss.tools.common.all.test.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.all.test.source.feature_0.0.0.jar" id="org.jboss.tools.common.all.test.source.feature" version="0.0.0">
 		<category name="JBoss Tools common Nightly Build Update Site"/>
 	</feature>
 

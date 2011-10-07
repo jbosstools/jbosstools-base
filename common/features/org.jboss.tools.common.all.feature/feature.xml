@@ -21,6 +21,7 @@ for a full listing of individual contributors.
 	<includes id="org.jboss.tools.common.text.ext.feature" version="0.0.0" />
 	<includes id="org.jboss.tools.common.ui.feature" version="0.0.0" />
 	<includes id="org.jboss.tools.common.verification.feature" version="0.0.0" />
+
 	<plugin id="org.jboss.tools.common.el.core" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.el.ui" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.meta.ui" download-size="0" install-size="0" version="0.0.0" />
