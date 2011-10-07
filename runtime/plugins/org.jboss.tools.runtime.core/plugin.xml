@@ -28,8 +28,8 @@
             id="org.jboss.tools.runtime.core.seam.202" 
             name="JBoss Seam 2.0.2.SP1"
             version="2.0.2.SP1"
-            size="84MB"
-            url="https://sourceforge.net/projects/jboss/files/JBoss%20Seam/jboss-seam-2.0.2.SP1.zip?use_mirror=autoselect"/>
+            size="92.3MB"
+            url="http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.0.2.SP1/jboss-seam-2.0.2.SP1.zip?use_mirror=autoselect"/>
       
       <runtime
             id="org.jboss.tools.runtime.core.as.610" 
