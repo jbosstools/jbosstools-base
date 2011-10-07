@@ -275,11 +275,9 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 		}
 
 		private Link createLink(Composite parent, final ICompletionProposal proposal) {
-			new Label(parent, SWT.NONE);
 			parent= new Composite(parent, SWT.NONE);
 			GridLayout layout= new GridLayout(2, false);
 			layout.marginWidth= 0;
-			layout.marginHeight= 0;
 			parent.setLayout(layout);
 			
 			Label proposalImage= new Label(parent, SWT.NONE);
