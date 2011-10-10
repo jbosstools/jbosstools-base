@@ -63,8 +63,10 @@ public class ParametrizableWizardPageSupport extends DialogPageSupport {
 		if (currentStatusStale) {
 			pageComplete = false;
 		} else if (currentStatus != null) {
-			pageComplete = !currentStatus.matches(nonValidatingSeverity);
+//			pageComplete = !currentStatus.matches(nonValidatingSeverity);
+			pageComplete = !((nonValidatingSeverity | currentStatus.getSeverity()) == nonValidatingSeverity);
 		}
+		System.err.println("pageComplete == " + pageComplete);
 		((WizardPage) getDialogPage()).setPageComplete(pageComplete);
 	}
 }

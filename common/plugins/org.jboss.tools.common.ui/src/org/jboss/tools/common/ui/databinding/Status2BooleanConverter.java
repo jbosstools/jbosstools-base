@@ -46,16 +46,22 @@ public class Status2BooleanConverter extends Converter {
 		}
 
 		int current = ((IStatus) fromObject).getSeverity();
-		switch (severity) {
-		default:
-		case IStatus.ERROR:
-			return current != IStatus.ERROR;
-		case IStatus.WARNING:
-			return current != IStatus.WARNING;
-		case IStatus.INFO:
-			return current != IStatus.INFO;
-		case IStatus.OK:
-			return current != IStatus.OK;
+//		switch (severity) {
+//		default:
+//		case IStatus.ERROR:
+//			return current != IStatus.ERROR;
+//		case IStatus.WARNING:
+//			return current != IStatus.WARNING;
+//		case IStatus.INFO:
+//			return current != IStatus.INFO;
+//		case IStatus.OK:
+//			return current != IStatus.OK;
+//		}
+		if (current == IStatus.OK) {
+			System.err.println("converter result = " + (severity == IStatus.OK) + "<- current = " + current + " configured = " + severity);
+			return severity == IStatus.OK;
 		}
+		System.err.println("converter result = " +  ((severity | current) == severity));
+		return (severity | current) == severity;
 	}
 }
