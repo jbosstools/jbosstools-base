@@ -106,7 +106,7 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
         ICompletionProposal[] result = res.toArray(new ICompletionProposal[res.size()]);
         StringBuffer sb = new StringBuffer("[");
         for (ICompletionProposal p : result) {
-			sb.append(p.getDisplayString()).append(", ");
+			sb.append(p.getDisplayString()).append("; ");
 		}
         sb.append("]");
         int foundCounter = 0;
