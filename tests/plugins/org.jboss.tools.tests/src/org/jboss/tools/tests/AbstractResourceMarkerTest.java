@@ -75,11 +75,13 @@ public class AbstractResourceMarkerTest extends TestCase {
 		copyContentsFile(originalFile, newContentFile);
 	}
 
-	protected void copyContentsFile(IFile originalFile, IFile newContentFile) throws CoreException{
+	protected void copyContentsFile(IFile originalFile, IFile newContentFile) throws CoreException {
+		assertTrue(originalFile.exists());
+		assertTrue(newContentFile.exists());
 		InputStream is = null;
 		try{
 			is = newContentFile.getContents();
-			originalFile.setContents(is, true, false, null);
+			originalFile.setContents(is, IFile.FORCE, null);
 		} finally {
 			if(is!=null) {
 				try {
@@ -92,7 +94,6 @@ public class AbstractResourceMarkerTest extends TestCase {
 		originalFile.getProject().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
 		JobUtils.waitForIdle();
 	}
-
 
 	public static int findMarkerLine(IResource resource, String type, String errorMessage, boolean pattern)
 			throws CoreException {
