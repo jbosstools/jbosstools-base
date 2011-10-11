@@ -19,6 +19,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.test.util.JobUtils;
 import org.jboss.tools.test.util.TestProjectProvider;
@@ -77,6 +79,21 @@ public class ClassPathTest extends TestCase {
 		JobUtils.waitForIdle();
 	}
 
+	public void testSharingJarContent() throws Exception {
+		XModelObject fs1 = EclipseResourceUtil.createObjectForResource(project1);
+		XModelObject fs2 = EclipseResourceUtil.createObjectForResource(project2);
+		
+		XModelObject a1 = FileSystemsHelper.getFileSystem(fs1.getModel(), "lib-a.jar");
+		XModelObject a2 = FileSystemsHelper.getFileSystem(fs2.getModel(), "lib-a.jar");
+		assertTrue(a1.hasChildren());
+		assertTrue(a2.hasChildren());
+		assertFalse(a1 == a2);
+		XModelObject[] c1 = a1.getChildren();
+		XModelObject[] c2 = a2.getChildren();
+		assertTrue(c1[0] == c2[0]);
+		System.out.println(a1.toString() + a2.toString());
+	}
+
 	public void testGetClassPath() throws CoreException, IOException {
 		List<String> list = EclipseResourceUtil.getClassPath(project2);
 		
@@ -96,6 +113,11 @@ public class ClassPathTest extends TestCase {
 		URL url = FileLocator.resolve(bundle.getEntry(relativeInBundle));
 		String location = url.getFile();
 		return location;
+	}
+
+	public void tearDown() {
+		provider2.dispose();
+		provider1.dispose();
 	}
 
 	private boolean contains(List<String> list, String name) {
