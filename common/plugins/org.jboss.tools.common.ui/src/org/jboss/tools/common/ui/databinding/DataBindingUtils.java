@@ -46,16 +46,16 @@ public class DataBindingUtils {
 	 */
 	public static void bindEnablementToValidationStatus(final Control control,
 			DataBindingContext dbc, Binding... bindings) {
-		bindEnablementToValidationStatus(control, IStatus.ERROR, dbc, bindings);
+		bindEnablementToValidationStatus(control, IStatus.OK, dbc, bindings);
 	}
 
-	public static void bindEnablementToValidationStatus(final Control control, int severity,
+	public static void bindEnablementToValidationStatus(final Control control, int enabledSeverityMask,
 			DataBindingContext dbc, Binding... bindings) {
 		dbc.bindValue(
 				WidgetProperties.enabled().observe(control),
 				createAggregateValidationStatus(dbc, bindings),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER),
-				new UpdateValueStrategy().setConverter(new Status2BooleanConverter(severity)));
+				new UpdateValueStrategy().setConverter(new StatusSeverity2BooleanConverter(enabledSeverityMask)));
 	}
 
 	/**
