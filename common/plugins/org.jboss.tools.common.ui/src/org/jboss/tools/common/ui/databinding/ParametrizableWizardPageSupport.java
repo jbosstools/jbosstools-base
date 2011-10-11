@@ -45,7 +45,8 @@ public class ParametrizableWizardPageSupport extends DialogPageSupport {
 	 * Creates a wizard page support that will not validate for the given status
 	 * mask (severity).
 	 * 
-	 * @param nonValidatingSeverity the status severity mask that will not validate
+	 * @param nonValidatingSeverity
+	 *            the status severity mask that will not validate
 	 * @param wizardPage
 	 *            the wizardpage to apply this support to
 	 * @param dbc
@@ -63,7 +64,8 @@ public class ParametrizableWizardPageSupport extends DialogPageSupport {
 		if (currentStatusStale) {
 			pageComplete = false;
 		} else if (currentStatus != null) {
-			pageComplete = !((nonValidatingSeverity | currentStatus.getSeverity()) == nonValidatingSeverity);
+			pageComplete = !(
+					(nonValidatingSeverity | currentStatus.getSeverity()) == nonValidatingSeverity);
 		}
 		((WizardPage) getDialogPage()).setPageComplete(pageComplete);
 	}
