@@ -10,8 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.filesystems.impl;
 
-import java.util.Set;
-
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.util.*;
 
@@ -65,6 +63,11 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
     public XModelObject[] getChildren() {
     	JarSystemImpl main = getJarAccess().getMain();
     	return (main == this || main == null) ? super.getChildren() : main.getChildren();
+    }
+
+    public boolean hasChildren() {
+    	JarSystemImpl main = getJarAccess().getMain();
+    	return (main == this || main == null) ? super.hasChildren() : main.hasChildren();
     }
 
     public XModelObject getChildByPathPart(String pathpart) {
