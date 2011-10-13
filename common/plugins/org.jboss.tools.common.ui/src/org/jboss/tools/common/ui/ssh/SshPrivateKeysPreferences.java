@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.jboss.tools.common.ui.preferencevalue.StringPreferenceValue;
 import org.jboss.tools.common.ui.preferencevalue.StringsPreferenceValue;
 
@@ -21,6 +24,8 @@ import org.jboss.tools.common.ui.preferencevalue.StringsPreferenceValue;
  * @author André Dietisheim
  */
 public class SshPrivateKeysPreferences {
+
+	private static final String SSH_PREFERENCE_PAGE_ID = "org.eclipse.jsch.ui.SSHPreferences";
 
 	private static final String JSCH_PLUGIN_ID = "org.eclipse.jsch.core";
 	/**
@@ -47,11 +52,11 @@ public class SshPrivateKeysPreferences {
 	public static void add(String keyName) {
 		sshPrivateKeyPreference.add(keyName);
 	}
-	
+
 	public static String[] getKeys() {
 		return sshPrivateKeyPreference.get();
 	}
-	
+
 	/**
 	 * Removes the given keyName from the ssh-preferences
 	 * 
@@ -95,9 +100,37 @@ public class SshPrivateKeysPreferences {
 		}
 		return builder.toString();
 	}
-	
+
+	/**
+	 * Returns the private key for the given entry from the ssh preferences.
+	 * This methods prepends the ssh directory to the path if it's a relative
+	 * one. There's no guarantee that the file returned really exists.
+	 * 
+	 * @param privateKeysPreferencesEntry
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	public static File getPrivateKey(String privateKeysPreferencesEntry) throws FileNotFoundException {
+		if (isEmpty(privateKeysPreferencesEntry)) {
+			return null;
+		}
+
+		if (privateKeysPreferencesEntry.startsWith(File.separator)) {
+			return new File(privateKeysPreferencesEntry);
+		} else {
+			return new File(getSshKeyDirectory(), privateKeysPreferencesEntry);
+		}
+	}
+
 	private static boolean isEmpty(String value) {
 		return value == null
 				|| value.length() == 0;
+	}
+
+	public static void openPreferencesPage(Shell shell) {
+		PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(
+				shell, SSH_PREFERENCE_PAGE_ID, null, null);
+		dialog.open();
+
 	}
 }
