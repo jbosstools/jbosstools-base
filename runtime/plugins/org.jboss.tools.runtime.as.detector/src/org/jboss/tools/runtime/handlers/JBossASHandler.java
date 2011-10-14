@@ -45,9 +45,12 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
+import org.jboss.ide.eclipse.as.core.publishers.LocalPublishMethod;
+import org.jboss.ide.eclipse.as.core.server.IDeployableServer;
 import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
+import org.jboss.ide.eclipse.as.core.util.ServerCreationUtils;
 import org.jboss.tools.runtime.as.detector.IJBossRuntimePluginConstants;
 import org.jboss.tools.runtime.as.detector.Messages;
 import org.jboss.tools.runtime.as.detector.RuntimeAsActivator;
@@ -282,10 +285,15 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			}
 		}
 		IServerType serverType = ServerCore.findServerType(JBOSS_AS_TYPE_ID[index]);
+		
+		//IServer server = ServerCreationUtils.createServer2(runtime, serverType, name, LocalPublishMethod.LOCAL_PUBLISH_METHOD);
 		IServerWorkingCopy server = serverType.createServer(null, null, runtime, progressMonitor);
 
+		server.setRuntime(runtime);
 		server.setHost(JBOSS_AS_HOST);
 		server.setName(name);
+		server.setServerConfiguration(null);
+		server.setAttribute(IDeployableServer.SERVER_MODE, LocalPublishMethod.LOCAL_PUBLISH_METHOD); 
 		
 		if (index != JBOSS_AS7_INDEX) {
 			// JBossServer.DEPLOY_DIRECTORY
