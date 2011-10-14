@@ -1057,6 +1057,7 @@ public class TypeInfoCollector {
 	 * @author Alexey Kazakov
 	 */
 	public static class MemberPresentation {
+		private boolean property;
 		private String presentation;
 		private String displayName;
 		private MemberInfo member;
@@ -1120,6 +1121,14 @@ public class TypeInfoCollector {
 		 */
 		public Set<MemberInfo> getAllMembers() {
 			return allMembers;
+		}
+
+		public boolean isProperty() {
+			return property;
+		}
+
+		public void setProperty(boolean property) {
+			this.property = property;
 		}
 	}
 
@@ -1296,6 +1305,7 @@ public class TypeInfoCollector {
 						MemberPresentation existingPresentation = presentations.get(pr.getPresentation());
 						existingPresentation.addMember(m);
 					}
+					pr.setProperty(true);
 					if(unpairedGettersOrSetters!=null) {
 						MethodInfo previousGetter = getters.get(propertyName);
 						MethodInfo previousSetter = setters.get(propertyName);
@@ -1319,7 +1329,7 @@ public class TypeInfoCollector {
 		}	
 		return properties;
 	}
-	
+
 	public static void cleanCache() {
 		caches = new Caches();
 	}
