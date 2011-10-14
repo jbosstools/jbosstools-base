@@ -3,7 +3,7 @@ package org.jboss.tools.common.model.test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -27,12 +27,14 @@ import org.jboss.tools.test.util.TestProjectProvider;
 import org.osgi.framework.Bundle;
 
 /**
- * Automatic test for JBIDE-1811.
- * Checks that EclipseResourceUtil.getClassPath(IProject) 
+ * Automatic test for JBIDE-1811 & 9906.
+ * Checks that EclipseResourceUtil.getAllVisibleLibraries(IProject) 
  * returns list which includes paths for Eclipse class path entries:
  * 1. jars from the same project;
  * 2. jars from another project in Eclipse work space;
  * 3. external jars.
+ * 4. exported jars from a parent project
+ * 5. exported jars from a project exported by parent project
  *   
  * @author V.Kabanovich
  *
@@ -43,6 +45,10 @@ public class ClassPathTest extends TestCase {
 	IProject project1 = null;
 	TestProjectProvider provider2 = null;
 	IProject project2 = null;
+	TestProjectProvider provider4 = null;
+	IProject project4 = null;
+	TestProjectProvider provider5 = null;
+	IProject project5 = null;
 
 	public ClassPathTest() {}
 
@@ -53,8 +59,16 @@ public class ClassPathTest extends TestCase {
 		provider2 = new TestProjectProvider(BUNDLE_NAME, null, "Test2", true); 
 		project2 = provider2.getProject();
 
+		provider4 = new TestProjectProvider(BUNDLE_NAME, null, "Test4", true); 
+		project4 = provider4.getProject();
+
+		provider5 = new TestProjectProvider(BUNDLE_NAME, null, "Test5", true); 
+		project5 = provider5.getProject();
+
 		project1.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		project2.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		project4.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		project5.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		
 		JobUtils.waitForIdle();
 		
@@ -95,17 +109,26 @@ public class ClassPathTest extends TestCase {
 	}
 
 	public void testGetClassPath() throws CoreException, IOException {
-		List<String> list = EclipseResourceUtil.getClassPath(project2);
+		Collection<String> list = EclipseResourceUtil.getAllVisibleLibraries(project2);
 		
 		String[] testNames = {
 			"/Test2/lib/b.jar",	//1. jar from this project
 			"/Test1/lib/a.jar", //2. jar from another project
-			"/Test3/lib/c.jar"   //3. external jar
+			"/Test3/lib/c.jar"  //3. external jar
 		};
 		for (int i = 0; i < testNames.length; i++) {
 			assertTrue("Cannot find classpath entry " + testNames[i], contains(list, testNames[i]));
 		}
 
+		//4. exported jars from a parent project
+		String testName = "/Test1/lib/a.jar";
+		list = EclipseResourceUtil.getAllVisibleLibraries(project4);
+		assertTrue("Cannot find classpath entry " + testName, contains(list, testName));
+
+		//5. exported jars from a project exported by parent project
+		testName = "/Test1/lib/a.jar";
+		list = EclipseResourceUtil.getAllVisibleLibraries(project5);
+		assertTrue("Cannot find classpath entry " + testName, contains(list, testName));
 	}
 
 	private String getLocation(String relativeInBundle) throws IOException {
@@ -116,11 +139,13 @@ public class ClassPathTest extends TestCase {
 	}
 
 	public void tearDown() {
+		provider5.dispose();
+		provider4.dispose();
 		provider2.dispose();
 		provider1.dispose();
 	}
 
-	private boolean contains(List<String> list, String name) {
+	private boolean contains(Collection<String> list, String name) {
 		for (String s: list) {
 			if(s.replace('\\', '/').endsWith(name.replace('\\', '/'))) {
 				return true;
