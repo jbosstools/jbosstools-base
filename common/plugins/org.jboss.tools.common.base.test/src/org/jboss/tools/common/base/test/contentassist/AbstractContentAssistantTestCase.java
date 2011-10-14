@@ -91,6 +91,9 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 	public ICompletionProposal[] checkProposals(String fileName, String substring, int offset, String[] proposals, Image[] images, boolean exactly) {
 		return checkProposals(fileName, substring, offset, proposals, images, exactly, false);
 	}
+	public ICompletionProposal[] checkProposals(String fileName, String substring, int offset, String[] proposals, boolean exactly, boolean excludeELProposalsFromExactTest){
+		return checkProposals(fileName, substring, offset, proposals, null, exactly, excludeELProposalsFromExactTest);
+	}
 	
 	public ICompletionProposal[] checkProposals(String fileName, String substring, int offset, String[] proposals, Image[] images, boolean exactly, boolean excludeELProposalsFromExactTest){
 		if(images != null){
