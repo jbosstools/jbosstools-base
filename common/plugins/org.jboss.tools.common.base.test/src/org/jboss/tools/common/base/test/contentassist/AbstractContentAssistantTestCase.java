@@ -23,6 +23,7 @@ import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -80,13 +81,22 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 	}
 
 	public ICompletionProposal[] checkProposals(String fileName, int offset, String[] proposals, boolean exactly) {
-        return checkProposals(fileName, null, offset, proposals, exactly, true);
+        return checkProposals(fileName, null, offset, proposals, null, exactly, true);
     }
 
 	public ICompletionProposal[] checkProposals(String fileName, String substring, int offset, String[] proposals, boolean exactly) {
-		return checkProposals(fileName, substring, offset, proposals, exactly, false);
+		return checkProposals(fileName, substring, offset, proposals, null, exactly, false);
 	}
-	public ICompletionProposal[] checkProposals(String fileName, String substring, int offset, String[] proposals, boolean exactly, boolean excludeELProposalsFromExactTest){
+
+	public ICompletionProposal[] checkProposals(String fileName, String substring, int offset, String[] proposals, Image[] images, boolean exactly) {
+		return checkProposals(fileName, substring, offset, proposals, images, exactly, false);
+	}
+	
+	public ICompletionProposal[] checkProposals(String fileName, String substring, int offset, String[] proposals, Image[] images, boolean exactly, boolean excludeELProposalsFromExactTest){
+		if(images != null){
+			assertEquals("number of images and number of proposals must be the same or images must be null", proposals.length, images.length);
+		}
+		
 		openEditor(fileName);
 
         int position = 0;
@@ -111,7 +121,12 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
         sb.append("]");
         int foundCounter = 0;
         for (int i = 0; i < proposals.length; i++) {
-        	boolean found = compareProposal(proposals[i], result);
+        	Image image = null;
+        	if(images != null){
+        		image = images[i];
+        	}
+        	boolean found = compareProposal(proposals[i], image, result);
+        	
         	if (found)
         		foundCounter++;
             assertTrue("Proposal " + proposals[i] + " not found! Found proposals: " + sb.toString(), found ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -139,12 +154,12 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 		return false;
 	}
 
-	public boolean compareProposal(String proposalName, ICompletionProposal[] proposals){
+	public boolean compareProposal(String proposalName, Image image, ICompletionProposal[] proposals){
 		for (int i = 0; i < proposals.length; i++) {
 			if (isRelevantProposal(proposals[i])) {
 				CustomCompletionProposal ap = (CustomCompletionProposal)proposals[i];
 				String replacementString = ap.getReplacementString().toLowerCase();
-				if (replacementString.equalsIgnoreCase(proposalName)) return true;				
+				if (replacementString.equalsIgnoreCase(proposalName)) return compareImages(image, proposals[i]);				
 				
 				// For a tag proposal there will be not only the the tag name but all others characters like default attributes, tag ending characters and so on
 				if (replacementString.indexOf("/>") != -1) {
@@ -153,35 +168,43 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 				if (replacementString.indexOf('>') != -1) {
 					replacementString = replacementString.substring(0, replacementString.indexOf('>'));
 				}
-				if (replacementString.equalsIgnoreCase(proposalName)) return true;
+				if (replacementString.equalsIgnoreCase(proposalName)) return compareImages(image, proposals[i]);
 				
 				String[] replacementStringParts = replacementString.split(" "); //$NON-NLS-1$
 				if (replacementStringParts != null && replacementStringParts.length > 0) {
-					if (replacementStringParts[0].equalsIgnoreCase(proposalName)) return true;
+					if (replacementStringParts[0].equalsIgnoreCase(proposalName)) return compareImages(image, proposals[i]);
 				}
 				
 				// for an attribute proposal there will be a pare of attribute-value (i.e. attrName="attrValue")
 				replacementStringParts = replacementString.split("="); //$NON-NLS-1$
 				if (replacementStringParts != null && replacementStringParts.length > 0) {
-					if (replacementStringParts[0].equalsIgnoreCase(proposalName)) return true;
+					if (replacementStringParts[0].equalsIgnoreCase(proposalName)) return compareImages(image, proposals[i]);
 				}
 				
 				// for an Unclosed EL the closing character is appended to the proposal string (i.e. person} )
 				// perform case insensitive compare operation
 				replacementStringParts = replacementString.split("}"); //$NON-NLS-1$
 				if (replacementStringParts != null && replacementStringParts.length > 0) {
-					if (replacementStringParts[0].equalsIgnoreCase(proposalName)) return true;
+					if (replacementStringParts[0].equalsIgnoreCase(proposalName)) return compareImages(image, proposals[i]);
 				}
 				
 				// For an attribute value proposal there will be the quote characters
 				replacementString = Utils.trimQuotes(replacementString);
-				if (replacementString.equalsIgnoreCase(proposalName)) return true;
+				if (replacementString.equalsIgnoreCase(proposalName)) return compareImages(image, proposals[i]);
 			
 			} else {
-				if(proposals[i].getDisplayString().toLowerCase().equals(proposalName.toLowerCase())) return true;
+				if(proposals[i].getDisplayString().toLowerCase().equals(proposalName.toLowerCase())) return compareImages(image, proposals[i]);
 			}
 		}
 		return false;
+	}
+	
+	private boolean compareImages(Image expected, ICompletionProposal proposal){
+		if(expected != null){
+			//System.out.println("<"+proposal.getDisplayString()+"> completion proposal image - "+proposal.getImage());
+			assertEquals("<"+proposal.getDisplayString()+"> completion proposal returns wrong image", expected, proposal.getImage());
+		}
+		return true;
 	}
 
 	public void closeEditor() {
