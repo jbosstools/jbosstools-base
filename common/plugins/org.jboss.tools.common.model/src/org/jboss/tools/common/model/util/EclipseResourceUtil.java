@@ -635,56 +635,56 @@ public class EclipseResourceUtil extends EclipseUtil {
 	 * @throws IOException 
 	 */	
 	public static List<String> getClassPath(IProject project) throws CoreException, IOException {
-		if(project == null || !project.isAccessible() || !project.hasNature(JavaCore.NATURE_ID)) return null;
-		ArrayList<String> l = new ArrayList<String>();
-		IJavaProject javaProject = JavaCore.create(project);		
+		IJavaProject javaProject = getJavaProject(project);
+		if(javaProject == null) {
+			return null;
+		}
 
+		ArrayList<String> l = new ArrayList<String>();
 		IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
 		for (int i = 0; i < es.length; i++) {
 			if(es[i].getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
-				String s = null;
-				String path = es[i].getPath().toString();
-				try {
-					//First let's check if path is defined within Eclipse work space.
-					if(path.startsWith(XModelObjectConstants.SEPARATOR) && path.indexOf(XModelObjectConstants.SEPARATOR, 1) > 1) {
-						IResource findMember = ResourcesPlugin.getWorkspace().getRoot().findMember(es[i].getPath());
-						if(findMember != null) {
-							s = findMember.getLocation().toString();
-						}
-					}
-					//If search in Eclipse work space has failed, this is a useless attempt, but
-					//let keep it just in case (this is good old code that worked for a long while).
-					if(s == null && path.startsWith(XModelObjectConstants.SEPARATOR + project.getName() + XModelObjectConstants.SEPARATOR)) {
-						IResource findMember = project.findMember(es[i].getPath().removeFirstSegments(1));
-						if(findMember != null) {
-							s = findMember.getLocation().toString();
-						}
-					}
-				
-					//If we failed to find resource in Eclipse work space, 
-					//lets try the path as absolute on disk
-					if(s == null && new java.io.File(path).exists()) {
-						s = path;
-					}
-					if(s != null) {
-						l.add(new java.io.File(s).getCanonicalPath());
-					}				
-				} catch (IOException e) {
-					//ignore - we do not care about malformed URLs in classpath here.
+				String s = expandPath(es[i].getPath(), project);
+				if(s != null) {
+					l.add(s);
 				}
-			} else if(es[i].getEntryKind() == IClasspathEntry.CPE_PROJECT) {
-//				IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(es[i].getPath().lastSegment());
-//				if(p == null || !p.isAccessible()) continue;
-//				if(p.hasNature(JavaCore.NATURE_ID) 
-//						&& !p.hasNature("org.jboss.tools.jst.web.kb.kbnature")
-//						&& project.hasNature("org.jboss.tools.jst.web.kb.kbnature")) {
-//					String[] srcs = getJavaProjectSrcLocations(p);
-//					for (String s: srcs) l.add(s);
-//				}
-
 			}
 		}
 		return l;
+	}
+
+	static String expandPath(IPath ipath, IProject project) {
+		String s = null;
+		String path = ipath.toString();
+		//First let's check if path is defined within Eclipse work space.
+		if(path.startsWith(XModelObjectConstants.SEPARATOR) && path.indexOf(XModelObjectConstants.SEPARATOR, 1) > 1) {
+			IResource findMember = ResourcesPlugin.getWorkspace().getRoot().findMember(ipath);
+			if(findMember != null) {
+				s = findMember.getLocation().toString();
+			}
+		}
+		//If search in Eclipse work space has failed, this is a useless attempt, but
+		//let keep it just in case (this is good old code that worked for a long while).
+		if(s == null && path.startsWith(XModelObjectConstants.SEPARATOR + project.getName() + XModelObjectConstants.SEPARATOR)) {
+			IResource findMember = project.findMember(ipath.removeFirstSegments(1));
+			if(findMember != null) {
+				s = findMember.getLocation().toString();
+			}
+		}
+	
+		//If we failed to find resource in Eclipse work space, 
+		//lets try the path as absolute on disk
+		if(s == null && new java.io.File(path).exists()) {
+			s = path;
+		}
+		try {
+			if(s != null) {
+				return new java.io.File(s).getCanonicalPath();
+			}				
+		} catch (IOException e) {
+			//ignore - we do not care about malformed URLs in classpath here.
+		}
+		return null;
 	}
 	
 	public static List<String> getJREClassPath(IProject project) throws CoreException {
@@ -902,6 +902,56 @@ public class EclipseResourceUtil extends EclipseUtil {
 
 	public static Set<IFolder> getAllVisibleSourceFolders(IProject project) {
 		return new SourceFoldersCollector(project).folders;
+	}
+
+	private static class LibraryCollector {
+		IProject project;
+		List<String> ordered = new ArrayList<String>();
+		Set<String> paths = new HashSet<String>();
+		Set<IProject> processed = new HashSet<IProject>();
+
+		LibraryCollector(IProject project) {
+			this.project = project;
+			process(project);
+		}
+		
+		void process(IProject project) {
+			if(processed.contains(project)) {
+				return;
+			}
+			processed.add(project);
+			IJavaProject javaProject = getJavaProject(project);
+			if(javaProject == null) {
+				return;
+			}
+			IClasspathEntry[] es = null;
+			try {
+				es = javaProject.getResolvedClasspath(true);
+			} catch (CoreException e) {
+				ModelPlugin.getDefault().logError(e);
+				return;
+			}
+			for (int i = 0; i < es.length; i++) {
+				if(project == this.project || es[i].isExported()) {
+					if(es[i].getEntryKind() == IClasspathEntry.CPE_PROJECT) {
+						IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(es[i].getPath().lastSegment());
+						if(p != null && p.isAccessible()) {
+							process(p);
+						}
+					} else if(es[i].getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
+						String s = expandPath(es[i].getPath(), project);
+						if(s != null && !paths.contains(s)) {
+							paths.add(s);
+							ordered.add(s);
+						}	
+					}
+				}
+			}
+		}
+	}
+
+	public static List<String> getAllVisibleLibraries(IProject project) {
+		return new LibraryCollector(project).ordered;
 	}
 
 	public static void openResource(IResource resource) {

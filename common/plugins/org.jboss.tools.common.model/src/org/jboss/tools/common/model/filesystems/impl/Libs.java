@@ -11,7 +11,6 @@
 package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,15 +19,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -44,6 +46,7 @@ public class Libs implements IElementChangedListener {
 	protected FileSystemsImpl object;
 	protected List<String> paths = null;
 	Map<IPath, String> paths2 = new HashMap<IPath, String>();
+	Set<String> projects = new HashSet<String>();
 
 	LibraryNames libraryNames = new LibraryNames();
 
@@ -58,11 +61,6 @@ public class Libs implements IElementChangedListener {
 	}
 
 	private IProject getProjectResource() {
-		try {
-			EclipseResourceUtil.getProject(object);
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
 		return EclipseResourceUtil.getProject(object);
 	}
 
@@ -107,15 +105,31 @@ public class Libs implements IElementChangedListener {
 	private List<String> getNewPaths() {
 		List<String> result = null;
 		try {
-			result = EclipseResourceUtil.getClassPath(getProjectResource());
+			result = EclipseResourceUtil.getAllVisibleLibraries(getProjectResource());
 			List<String> jre = EclipseResourceUtil.getJREClassPath(getProjectResource());
 			if(jre != null) result.removeAll(jre);
+			updateProjects();
 		} catch (CoreException e) {
 			ModelPlugin.getDefault().logError(e);
-		} catch(IOException e) {
-			ModelPlugin.getDefault().logError(e);			
 		}
 		return result;
+	}
+
+	private void updateProjects() throws JavaModelException {
+		Set<String> result = new HashSet<String>();
+		IJavaProject javaProject = EclipseResourceUtil.getJavaProject(getProjectResource());
+		if(javaProject != null) {
+			result.add(getProjectResource().getName());
+			IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
+			for (int i = 0; i < es.length; i++) {
+				if(es[i].getEntryKind() == IClasspathEntry.CPE_PROJECT) {
+					IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(es[i].getPath().lastSegment());
+					if(p == null || !p.isAccessible()) continue;
+					result.add(p.getName());
+				}
+			}
+		}
+		projects = result;
 	}
 
 	private synchronized boolean updatePaths(List<String> newPaths, int cpv) {
@@ -247,30 +261,28 @@ public class Libs implements IElementChangedListener {
 			return;
 		}
 
-		IJavaElementDelta d = event.getDelta();
-		IJavaElementDelta[] ds = d.getAffectedChildren();
-		IJavaElementDelta p = null;
-
-		for (IJavaElementDelta dc: ds) {
-			if(dc.getElement() instanceof IJavaProject && ((IJavaProject)dc.getElement()).getProject() == project) {
-				p = dc;
-			}
-		}
-		if(p == null) return;
-		int f = p.getFlags();
-		if((f & (IJavaElementDelta.F_CLASSPATH_CHANGED 
-			| IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED)) != 0) {
-			requestForUpdate();
-		} else {
-			IJavaElementDelta[] ds1 = p.getAffectedChildren();
-			for (IJavaElementDelta d1: ds1) {
-				IJavaElement e = d1.getElement();
-				if(d1.getKind() == IJavaElementDelta.ADDED) {
+		for (IJavaElementDelta dc: event.getDelta().getAffectedChildren()) {
+			if(dc.getElement() instanceof IJavaProject && (isReleventProject(((IJavaProject)dc.getElement()).getProject()))) {
+				int f = dc.getFlags();
+				if((f & (IJavaElementDelta.F_CLASSPATH_CHANGED 
+					| IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED)) != 0) {
 					requestForUpdate();
-					break;
+					return;
+				} else {
+					for (IJavaElementDelta d1: dc.getAffectedChildren()) {
+						IJavaElement e = d1.getElement();
+						if(d1.getKind() == IJavaElementDelta.ADDED) {
+							requestForUpdate();
+							return;
+						}
+					}
 				}
 			}
 		}
+	}
+
+	private boolean isReleventProject(IProject p) {
+		return projects.contains(p.getName());
 	}
 
 }
