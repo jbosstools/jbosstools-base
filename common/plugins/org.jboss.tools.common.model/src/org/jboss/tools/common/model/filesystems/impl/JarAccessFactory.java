@@ -7,7 +7,7 @@ public class JarAccessFactory {
 	
 	static Map<String, JarAccess> jars = new HashMap<String, JarAccess>();
 
-	public static JarAccess getJarAccess(String location, JarSystemImpl context) {
+	public synchronized static JarAccess getJarAccess(String location, JarSystemImpl context) {
 		JarAccess jar = jars.get(location);
 		if(jar == null) {
 			jar = new JarAccess();
