@@ -73,6 +73,8 @@ import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
+import org.jboss.tools.runtime.ui.dialogs.DownloadRuntimeDialog;
+import org.jboss.tools.runtime.ui.dialogs.DownloadRuntimeViewerDialog;
 import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
 import org.jboss.tools.runtime.ui.dialogs.RuntimePathEditingSupport;
 
@@ -93,6 +95,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 	private Set<IRuntimeDetector> runtimeDetectors;
 	private TableViewer detectorViewer;
 	private Button searchButton;
+	private Button downloadButton;
 
 	/*
 	 * (non-Javadoc)
@@ -397,6 +400,22 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 			public void widgetSelected(SelectionEvent e) {
 				RuntimeUIActivator.refreshRuntimes(getShell(), runtimePaths, null, true, 15);
+			}
+		
+			public void widgetDefaultSelected(SelectionEvent e) {
+				
+			}
+		});
+		
+		downloadButton = new Button(buttonComposite, SWT.PUSH);
+		downloadButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		downloadButton.setText("Download...");
+		
+		downloadButton.addSelectionListener(new SelectionListener(){
+		
+			public void widgetSelected(SelectionEvent e) {
+				DownloadRuntimeViewerDialog dialog = new DownloadRuntimeViewerDialog(getShell());
+				dialog.open();
 			}
 		
 			public void widgetDefaultSelected(SelectionEvent e) {
