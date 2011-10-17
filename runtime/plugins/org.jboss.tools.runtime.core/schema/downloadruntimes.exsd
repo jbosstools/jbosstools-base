@@ -3,10 +3,10 @@
 <schema targetNamespace="org.jboss.tools.central" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.jboss.tools.central" id="downloadJBossRuntimes" name="Download JBoss Runtimes"/>
+         <meta.schema plugin="org.jboss.tools.central" id="downloadruntimes" name="Download Runtimes"/>
       </appinfo>
       <documentation>
-         Downloads a new JBoss Runtime
+         Downloads a new Runtime
       </documentation>
    </annotation>
 
@@ -102,7 +102,7 @@
       </appinfo>
       <documentation>
          &lt;extension
-         point=&quot;org.jboss.tools.central.downloadJBossRuntimes&quot;&gt;
+         point=&quot;org.jboss.tools.central.downloadruntimes&quot;&gt;
 
 &lt;/extension&gt;
       </documentation>

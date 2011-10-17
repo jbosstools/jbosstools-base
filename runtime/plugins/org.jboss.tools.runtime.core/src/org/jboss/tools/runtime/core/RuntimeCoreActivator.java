@@ -49,7 +49,7 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 
 	private static final String RUNTIME_DETECTOR_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectors";
 	
-	public static final String DOWNLOAD_JBOSS_RUNTIMES_EXTENSION_ID = "org.jboss.tools.runtime.core.downloadJBossRuntimes";
+	public static final String DOWNLOAD_RUNTIMES_EXTENSION_ID = "org.jboss.tools.runtime.core.downloadruntimes";
 
 	private static final String NAME = "name";
 
@@ -237,12 +237,12 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 		return esbDetector;
 	}
 	
-	public Map<String, DownloadRuntime> getDownloadJBossRuntimes() {
+	public Map<String, DownloadRuntime> getDownloadRuntimes() {
 		if (downloadRuntimes == null) {
 			downloadRuntimes = new HashMap<String, DownloadRuntime>();
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			IExtensionPoint extensionPoint = registry
-					.getExtensionPoint(DOWNLOAD_JBOSS_RUNTIMES_EXTENSION_ID);
+					.getExtensionPoint(DOWNLOAD_RUNTIMES_EXTENSION_ID);
 			IExtension[] extensions = extensionPoint.getExtensions();
 			for (int i = 0; i < extensions.length; i++) {
 				IExtension extension = extensions[i];

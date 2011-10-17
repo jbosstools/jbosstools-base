@@ -2,10 +2,10 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="runtimeDetectors" name="Runtime Detectors" schema="schema/runtimeDetectors.exsd"/>
-   <extension-point id="downloadJBossRuntimes" name="%DownloadJBossRuntimes" schema="schema/downloadJBossRuntimes.exsd"/>
+   <extension-point id="downloadruntimes" name="Download Runtimes" schema="schema/downloadruntimes.exsd"/>
    
    <extension
-         point="org.jboss.tools.runtime.core.downloadJBossRuntimes">
+         point="org.jboss.tools.runtime.core.downloadruntimes">
       <runtime
             id="org.jboss.tools.runtime.core.as.701" 
             name="JBoss AS 7.0.1 Everything (NOT Java EE6 Certified)"
