@@ -42,11 +42,9 @@ import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
-import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.jboss.ide.eclipse.as.core.publishers.LocalPublishMethod;
-import org.jboss.ide.eclipse.as.core.server.IDeployableServer;
 import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
@@ -69,31 +67,9 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	private static final String ESB = "ESB"; //$NON-NLS-1$
 
 	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
-		//createInitialJBossServer();
 		createJBossServerFromDefinitions(serverDefinitions);
 	}
-	
-//	public static void createInitialJBossServer(){
-//		try {
-//			String pluginLocation = FileLocator.resolve(Activator.getDefault().getBundle().getEntry("/")).getPath(); //$NON-NLS-1$
-//			File jbossASDir = new File(pluginLocation, JBOSS_EAP_HOME);
-//			if (!jbossASDir.isDirectory()) {
-//				Location configLocation = Platform.getConfigurationLocation();
-//				URL configURL = configLocation.getURL();
-//				String configuration = FileLocator.resolve(configURL).getPath();
-//				jbossASDir = new File(configuration, JBOSS_EAP_HOME_CONFIGURATION).getCanonicalFile();
-//			} else {
-//				jbossASDir = jbossASDir.getCanonicalFile();
-//			}
-//			if (jbossASDir.isDirectory()) {
-//				int index = getJBossASVersion(jbossASDir);
-//				createJBossServer(jbossASDir,index, "jboss-eap", "jboss-eap " + RUNTIME); //$NON-NLS-1$ //$NON-NLS-2$
-//			}
-//		} catch (IOException e) {
-//			Activator.log(e,Messages.JBossRuntimeStartup_Cannot_create_new_JBoss_Server);
-//		}
-//	}
-	
+		
 	private static File getLocation(ServerDefinition serverDefinition) {
 		String type = serverDefinition.getType();
 		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type)) {
@@ -214,23 +190,6 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			RuntimeAsActivator.log(e,Messages.JBossRuntimeStartup_Cannott_create_new_DTP_Connection_Profile);
 		}
 	}
-	/**
-	 * Creates new JBoss AS Runtime, Server and hsqldb driver
-	 * @param jbossASLocation location of JBoss Server
-	 * @param progressMonitor to report progress
-	 * @return server working copy
-	 * @throws CoreException
-	 * @throws ConnectionProfileException
-	 */
-//	public static IServerWorkingCopy initJBossAS(String jbossASLocation, IProgressMonitor progressMonitor) throws CoreException, ConnectionProfileException {
-//		IRuntime runtime = createRuntime(null, jbossASLocation, progressMonitor, 2);
-//		IServerWorkingCopy server = null;
-//		if (runtime != null) {
-//			server = createServer(progressMonitor, runtime, 2, null);
-//		}
-//		createDriver(jbossASLocation);
-//		return server;
-//	}
 
 	/**
 	 * Creates new JBoss AS Runtime
@@ -252,16 +211,6 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			if(runtimeName!=null) {
 				runtime.setName(runtimeName);				
 			}
-//			to fix https://jira.jboss.org/jira/browse/JBDS-852 VM attributes initialization below was commented
-//			IVMInstall defaultVM = JavaRuntime.getDefaultVMInstall();
-			// IJBossServerRuntime.PROPERTY_VM_ID
-//			((RuntimeWorkingCopy) runtime).setAttribute("PROPERTY_VM_ID", defaultVM.getId()); //$NON-NLS-1$
-			// IJBossServerRuntime.PROPERTY_VM_TYPE_ID
-//			((RuntimeWorkingCopy) runtime).setAttribute("PROPERTY_VM_TYPE_ID", defaultVM.getVMInstallType().getId()); //$NON-NLS-1$
-			// IJBossServerRuntime.PROPERTY_CONFIGURATION_NAME
-			// JBIDE-9643
-			// ((RuntimeWorkingCopy) runtime).setAttribute("org.jboss.ide.eclipse.as.core.runtime.configurationName", JBOSS_AS_DEFAULT_CONFIGURATION_NAME); //$NON-NLS-1$
-
 			return runtime.save(false, progressMonitor);
 		}
 		return runtime;
@@ -274,45 +223,18 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	 * @return server working copy
 	 * @throws CoreException
 	 */
-	private static IServerWorkingCopy createServer(IProgressMonitor progressMonitor, IRuntime runtime, int index, String name) throws CoreException {
+	private static void createServer(IProgressMonitor progressMonitor, IRuntime runtime, int index, String name) throws CoreException {
 		if (name == null) {
 			name = JBOSS_AS_NAME[index];
 		}
 		IServer[] servers = ServerCore.getServers();
 		for (IServer server:servers) {
 			if (name.equals(server.getName()) ) {
-				return null;
+				return;
 			}
 		}
 		IServerType serverType = ServerCore.findServerType(JBOSS_AS_TYPE_ID[index]);
-		
-		//IServer server = ServerCreationUtils.createServer2(runtime, serverType, name, LocalPublishMethod.LOCAL_PUBLISH_METHOD);
-		IServerWorkingCopy server = serverType.createServer(null, null, runtime, progressMonitor);
-
-		server.setRuntime(runtime);
-		server.setHost(JBOSS_AS_HOST);
-		server.setName(name);
-		server.setServerConfiguration(null);
-		server.setAttribute(IDeployableServer.SERVER_MODE, LocalPublishMethod.LOCAL_PUBLISH_METHOD); 
-		
-		if (index != JBOSS_AS7_INDEX) {
-			// JBossServer.DEPLOY_DIRECTORY
-			// JBIDE-7822
-			//String deployVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("deploy").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
-			//((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.deployDirectory", deployVal); //$NON-NLS-1$
-			// JBIDE-9643
-			// ((ServerWorkingCopy) server).setAttribute(IDeployableServer.DEPLOY_DIRECTORY_TYPE, IDeployableServer.DEPLOY_SERVER);
-
-			// IDeployableServer.TEMP_DEPLOY_DIRECTORY
-			// String deployTmpFolderVal = runtime.getLocation().append("server").append(JBOSS_AS_DEFAULT_CONFIGURATION_NAME).append("tmp").append("jbosstoolsTemp").toOSString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			// ((ServerWorkingCopy) server).setAttribute("org.jboss.ide.eclipse.as.core.server.tempDeployDirectory", deployTmpFolderVal); //$NON-NLS-1$
-
-			// If we'd need to set up a username / pw for JMX, do it here.
-//			((ServerWorkingCopy)serverWC).setAttribute(JBossServer.SERVER_USERNAME, authUser);
-//			((ServerWorkingCopy)serverWC).setAttribute(JBossServer.SERVER_PASSWORD, authPass);
-		}
-		server.save(false, progressMonitor);
-		return server;
+		ServerCreationUtils.createServer2(runtime, serverType, name, LocalPublishMethod.LOCAL_PUBLISH_METHOD);
 	}
 
 	/**
@@ -550,6 +472,5 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		}
 		calculateIncludedServerDefinition(serverDefinition, new NullProgressMonitor());
 	}
-	
 	
 }

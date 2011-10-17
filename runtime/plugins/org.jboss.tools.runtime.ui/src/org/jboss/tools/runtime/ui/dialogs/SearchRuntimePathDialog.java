@@ -269,6 +269,9 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 	@Override
 	protected void finishedRun() {
+		if (getShell() == null || getShell().isDisposed()) {
+			return;
+		}
 		decrementNestingDepth();
 		getShell().setCursor(null);
 		int count = getServerDefinitions(true).size();
