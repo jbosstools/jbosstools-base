@@ -100,7 +100,7 @@ public class DownloadRuntimeDialog extends Dialog {
 		
 		
 		Label pathLabel = new Label(pathComposite, SWT.NONE);
-		pathLabel.setText("Installation directory:");
+		pathLabel.setText("Install folder:");
 		
 		pathText = new Text(pathComposite, SWT.BORDER);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -125,7 +125,7 @@ public class DownloadRuntimeDialog extends Dialog {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				DirectoryDialog dialog = new DirectoryDialog(getShell());
-				dialog.setMessage("Select installation directory");
+				dialog.setMessage("Select install folder");
 				dialog.setFilterPath(pathText.getText());
 				final String path = dialog.open();
 				if (path == null) {
@@ -137,7 +137,7 @@ public class DownloadRuntimeDialog extends Dialog {
 		});
 		
 		Label destinationLabel = new Label(pathComposite, SWT.NONE);
-		destinationLabel.setText("Destination directory:");
+		destinationLabel.setText("Download folder:");
 		
 		destinationPathText = new Text(pathComposite, SWT.BORDER);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -155,7 +155,7 @@ public class DownloadRuntimeDialog extends Dialog {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				DirectoryDialog dialog = new DirectoryDialog(getShell());
-				dialog.setMessage("Select destination directory");
+				dialog.setMessage("Select download folder");
 				dialog.setFilterPath(destinationPathText.getText());
 				final String path = dialog.open();
 				if (path == null) {
