@@ -194,6 +194,9 @@ public class Libs implements IElementChangedListener {
 			XModelObject o = object.getChildByPath(jsname);
 			if(o != null) {
 				fss.remove(o);
+				if(o instanceof JarSystemImpl) {
+					((JarSystemImpl)o).update();
+				}
 			} else {
 				o = object.getModel().createModelObject(libEntity, null);
 				o.setAttributeValue(XModelObjectConstants.ATTR_NAME, jsname); 
@@ -241,13 +244,13 @@ public class Libs implements IElementChangedListener {
 	}
 
 	void fire() {
-		LibsListener[] ls = null;
-		synchronized(this) {
-			ls = listeners.toArray(new LibsListener[0]);
-		}
-		if(ls != null) for (LibsListener listener: ls) {
+		for (LibsListener listener: getListeners()) {
 			listener.pathsChanged(paths);
 		}
+	}
+
+	private synchronized LibsListener[] getListeners() {
+		return listeners.toArray(new LibsListener[0]);
 	}
 
 	int classpathVersion = 0;
@@ -283,6 +286,12 @@ public class Libs implements IElementChangedListener {
 
 	private boolean isReleventProject(IProject p) {
 		return projects.contains(p.getName());
+	}
+
+	public void libraryChanged(JarSystemImpl jar) {
+		for (LibsListener listener: getListeners()) {
+			listener.libraryChanged(jar.getLocation());
+		}
 	}
 
 }

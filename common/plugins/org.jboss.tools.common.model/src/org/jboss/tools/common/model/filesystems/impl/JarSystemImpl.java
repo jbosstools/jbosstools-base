@@ -119,6 +119,9 @@ public class JarSystemImpl extends JarFolderImpl implements org.jboss.tools.comm
         loaded = false;
         loaded2 = false;
         fire = true;
+        if(getParent() instanceof FileSystemsImpl) {
+        	((FileSystemsImpl)getParent()).getLibs().libraryChanged(this);
+        }
         fireStructureChanged(3, null);
     }
 

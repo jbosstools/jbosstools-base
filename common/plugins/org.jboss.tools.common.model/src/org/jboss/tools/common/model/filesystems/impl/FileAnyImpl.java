@@ -191,6 +191,7 @@ public class FileAnyImpl extends RegularObjectImpl {
 		}
 		super.set(XModelObjectConstants.XML_ATTR_NAME, name);
 		super.set("EXTENSION", extension); //$NON-NLS-1$
+		safeChangeTimeStamp();
 		fireObjectChanged(null);
 	}
 	

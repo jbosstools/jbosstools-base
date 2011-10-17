@@ -19,4 +19,5 @@ import java.util.List;
  */
 public interface LibsListener {
 	public void pathsChanged(List<String> paths);
+	public void libraryChanged(String path);
 }

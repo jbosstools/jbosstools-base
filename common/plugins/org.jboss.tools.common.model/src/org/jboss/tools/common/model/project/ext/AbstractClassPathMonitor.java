@@ -128,4 +128,11 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 		}
 	}
 
+	public void libraryChanged(String path) {
+		synchronized (this) {
+			libsModified = true;
+			processedPaths.remove(path);
+		}
+	}
+
 }
