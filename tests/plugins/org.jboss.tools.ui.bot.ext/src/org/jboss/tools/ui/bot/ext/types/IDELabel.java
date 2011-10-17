@@ -709,6 +709,14 @@ public class IDELabel {
      
      public static final String SOURCE_TAB_LABEL = "Source";
      public static final String TREE_TAB_LABEL = "Tree";
+     public static final String ADD_SERVLET_DIALOG_TITLE = "Add Servlet";
+     public static final String ADD_SERVLET_MAPPING_DIALOG_TITLE = "Add Servlet Mapping";
+     public static final String ADD_SERVLET_DIALOG_SERVLET_NAME_LABEL = "Servlet-Name:*";
+     public static final String ADD_SERVLET_DIALOG_DISPLAY_NAME_LABEL = "Display-Name:";
+     public static final String ADD_SERVLET_DIALOG_SERVLET_CLASS_LABEL = "Servlet-Class:*";
+     public static final String ADD_SERVLET_DIALOG_DESCRITPION_LABEL = "Description:";
+     public static final String ADD_SERVLET_MAPPING_DIALOG_SERVLET_NAME_LABEL = "Servlet-Name:*";
+     public static final String ADD_SERVLET_MAPPING_DIALOG_URL_PATTERN_LABEL = "URL-Pattern:*";
      
    }
  }
