@@ -102,23 +102,23 @@ public class SshPrivateKeysPreferences {
 	}
 
 	/**
-	 * Returns the private key for the given entry from the ssh preferences.
-	 * This methods prepends the ssh directory to the path if it's a relative
-	 * one. There's no guarantee that the file returned really exists.
+	 * Returns the key file for the given (absolute or relative) key path.
+	 * This methods prepends the ssh directory to the path if the given it's a
+	 * relative one. There's no guarantee that the file returned really exists.
 	 * 
-	 * @param privateKeysPreferencesEntry
+	 * @param keyName
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public static File getPrivateKey(String privateKeysPreferencesEntry) throws FileNotFoundException {
-		if (isEmpty(privateKeysPreferencesEntry)) {
+	public static File getKeyFile(String keyName) throws FileNotFoundException {
+		if (isEmpty(keyName)) {
 			return null;
 		}
 
-		if (privateKeysPreferencesEntry.startsWith(File.separator)) {
-			return new File(privateKeysPreferencesEntry);
+		if (keyName.startsWith(File.separator)) {
+			return new File(keyName);
 		} else {
-			return new File(getSshKeyDirectory(), privateKeysPreferencesEntry);
+			return new File(getSshKeyDirectory(), keyName);
 		}
 	}
 
