@@ -56,7 +56,8 @@ public class DownloadRuntimeAction extends Action {
 	@Override
 	public void run() {
 		Assert.isNotNull(runtimeId);
-		DownloadRuntime runtime = RuntimeCoreActivator.getDefault().getDownloadJBossRuntimes().get(runtimeId);
+		// FIXME
+		DownloadRuntime runtime = RuntimeCoreActivator.getDefault().getDownloadRuntimes().get(runtimeId);
 		DownloadRuntimeDialog dialog = new DownloadRuntimeDialog(getShell(), runtime);
 		dialog.open();
 	}

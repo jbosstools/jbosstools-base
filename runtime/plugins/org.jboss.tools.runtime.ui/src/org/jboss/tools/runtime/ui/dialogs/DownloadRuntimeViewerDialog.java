@@ -50,7 +50,8 @@ public class DownloadRuntimeViewerDialog extends Dialog {
 		super(parentShell);
 		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
 				| SWT.RESIZE | getDefaultOrientation());
-		downloadRuntimes = RuntimeCoreActivator.getDefault().getDownloadJBossRuntimes();
+		// FIXME
+		downloadRuntimes = RuntimeCoreActivator.getDefault().getDownloadRuntimes();
 	}
 
 	@Override
