@@ -20,22 +20,9 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
-		<buildCommand>
-			<name>org.eclipse.m2e.core.maven2Builder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>lib-org.jboss.tools.common_3.3.0.v20111004-2137-H487-M4</name>
-			<type>2</type>
-			<location>/home/fbricon/Dev/eclipses/Indigo-SR1/plugins/org.jboss.tools.common_3.3.0.v20111004-2137-H487-M4</location>
-		</link>
-	</linkedResources>
 </projectDescription>
