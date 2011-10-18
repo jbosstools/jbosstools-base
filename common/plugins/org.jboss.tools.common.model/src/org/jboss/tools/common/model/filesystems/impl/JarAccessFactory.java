@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class JarAccessFactory {
 	
-	static Map<String, JarAccess> jars = new HashMap<String, JarAccess>();
+	private static Map<String, JarAccess> jars = new HashMap<String, JarAccess>();
 
 	public synchronized static JarAccess getJarAccess(String location, JarSystemImpl context) {
 		JarAccess jar = jars.get(location);
