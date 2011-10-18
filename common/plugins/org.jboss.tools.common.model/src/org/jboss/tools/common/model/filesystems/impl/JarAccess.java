@@ -137,18 +137,16 @@ public class JarAccess {
 		}
 	}
 
-	public void unlockJar() {
-		synchronized (this) {
-			jarLock--;
-			if(jarLock > 0 || jar == null) return;
-			if(jar != null && jarLock == 0) {
-				try {
-					jar.close();
-				} catch (IOException e) {
-            		//ignore
-				} finally {
-					jar = null;
-				}
+	public synchronized void unlockJar() {
+		jarLock--;
+		if(jarLock > 0 || jar == null) return;
+		if(jar != null && jarLock == 0) {
+			try {
+				jar.close();
+			} catch (IOException e) {
+           		//ignore
+			} finally {
+				jar = null;
 			}
 		}
 	}
@@ -183,7 +181,7 @@ public class JarAccess {
 		set.add(parsed[1] + XModelObjectConstants.SEPARATOR);
 	}
 
-	public String[] getChildren(String path) {
+	public synchronized String[] getChildren(String path) {
 		HashSet<String> set = map.get(path);
 		return (set == null) ? new String[0] : set.toArray(new String[0]);
 	}
@@ -263,11 +261,11 @@ public class JarAccess {
 		return FileUtil.isText(b);
 	}
 
-	boolean hasFolder(String path) {
-		return map.get(path) != null;
+	synchronized boolean hasFolder(String path) {
+		return map.containsKey(path);
 	}
 
-	boolean hasFile(String path) {
+	synchronized boolean hasFile(String path) {
 		if (path == null)
 			return false;
 		int i = path.lastIndexOf('/');
@@ -289,7 +287,7 @@ public class JarAccess {
 		return (timeStamp != f.lastModified() || size != f.length());
 	}
 
-	public void invalidate() {
+	public synchronized void invalidate() {
 		exists = false;
 		map.clear();
 		timeStamp = -1;
