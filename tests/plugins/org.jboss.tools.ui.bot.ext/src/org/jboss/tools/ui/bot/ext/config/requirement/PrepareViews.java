@@ -30,15 +30,6 @@ public class PrepareViews extends RequirementBase {
 			public String getName() {
 				return IDELabel.View.WELCOME;
 			}});
-		
-		// force console view not to steal focus when something happens
-		try {
-		SWTBotView consoleView = SWTTestExt.console.show();
-		consoleView.toolbarToggleButton(IDELabel.ConsoleView.BUTTON_SHOW_WHEN_STDOUT_CHANGES_TOOLTIP).deselect();
-		consoleView.toolbarToggleButton(IDELabel.ConsoleView.BUTTON_SHOW_WHEN_STDERR_CHANGES_TOOLTIP).deselect();
-		} catch (Exception ex) {
-			// do nothing since buttons must not always be available 
-		}
 		SWTTestExt.configuredState.setViewsPrepared(true);
 
 	}
