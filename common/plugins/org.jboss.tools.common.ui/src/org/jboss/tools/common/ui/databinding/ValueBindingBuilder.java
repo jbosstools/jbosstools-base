@@ -58,10 +58,6 @@ public class ValueBindingBuilder {
 			return (PARTICIPANT) this;
 		}
 		
-		protected void assertObservable(String message) {
-			Assert.isLegal(this.observable != null, message);
-		}
-
 		public IObservableValue getObservable() {
 			return observable;
 		}
@@ -78,10 +74,8 @@ public class ValueBindingBuilder {
 		}
 
 		public ModelDefinition to(IObservableValue model) {
-			assertObservable("You have to set the target first. call #bind(target).");
 			return new ModelDefinition(model, this);
 		}
-
 	}
 
 	public static class ModelDefinition extends BindingParticipantDefinition<ModelDefinition> {
