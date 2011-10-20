@@ -65,7 +65,7 @@ public class ValueBindingBuilder {
 			this.targetDefinition = targetDefinition;
 		}
 
-		public Binding using(DataBindingContext dbc) {
+		public Binding in(DataBindingContext dbc) {
 			return bind(targetDefinition, this, dbc);
 		}
 	}
