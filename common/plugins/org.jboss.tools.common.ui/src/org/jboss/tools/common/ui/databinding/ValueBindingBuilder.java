@@ -13,8 +13,9 @@ package org.jboss.tools.common.ui.databinding;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.databinding.validation.IValidator;
 
 /**
  * 
@@ -39,34 +40,6 @@ public class ValueBindingBuilder {
 				, modelDefinition.getStrategy());
 	}
 
-	private abstract static class BindingParticipantDefinition<PARTICIPANT> {
-
-		private IObservableValue observable;
-		private UpdateValueStrategy strategy;
-
-		public BindingParticipantDefinition(IObservableValue observable) {
-			this.observable = observable;
-		}
-
-		public PARTICIPANT withoutUpdate() {
-			return withStrategy(new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
-		}
-
-		@SuppressWarnings("unchecked")
-		public PARTICIPANT withStrategy(UpdateValueStrategy strategy) {
-			this.strategy = strategy;
-			return (PARTICIPANT) this;
-		}
-		
-		public IObservableValue getObservable() {
-			return observable;
-		}
-
-		public UpdateValueStrategy getStrategy() {
-			return strategy;
-		}
-	}
-
 	public static class TargetDefinition extends BindingParticipantDefinition<TargetDefinition> {
 
 		public TargetDefinition(IObservableValue target) {
@@ -75,6 +48,11 @@ public class ValueBindingBuilder {
 
 		public ModelDefinition to(IObservableValue model) {
 			return new ModelDefinition(model, this);
+		}
+
+		public ModelDefinition notUpdating(IObservableValue model) {
+			notUpdatingParticipant();
+			return to(model);
 		}
 	}
 
@@ -91,4 +69,68 @@ public class ValueBindingBuilder {
 			return bind(targetDefinition, this, dbc);
 		}
 	}
+	
+	private abstract static class BindingParticipantDefinition<PARTICIPANT> {
+
+		private IObservableValue observable;
+		private UpdateValueStrategy strategy;
+
+		public BindingParticipantDefinition(IObservableValue observable) {
+			this.observable = observable;
+		}
+
+		public PARTICIPANT notUpdatingParticipant() {
+			return withStrategy(new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
+		}
+
+		@SuppressWarnings("unchecked")
+		public PARTICIPANT withStrategy(UpdateValueStrategy strategy) {
+			this.strategy = strategy;
+			return (PARTICIPANT) this;
+		}
+		
+		@SuppressWarnings("unchecked")
+		public PARTICIPANT validatingAfterGet(IValidator validator) {
+			ensureHasStrategy();
+			strategy.setAfterGetValidator(validator);
+			return (PARTICIPANT) this;
+		}
+
+		@SuppressWarnings("unchecked")
+		public PARTICIPANT validatingAfterConvert(IValidator validator) {
+			ensureHasStrategy();
+			strategy.setAfterConvertValidator(validator);
+			return (PARTICIPANT) this;
+		}
+
+		@SuppressWarnings("unchecked")
+		public PARTICIPANT validatingBeforeSet(IValidator validator) {
+			ensureHasStrategy();
+			strategy.setBeforeSetValidator(validator);
+			return (PARTICIPANT) this;
+		}
+
+		@SuppressWarnings("unchecked")
+		public PARTICIPANT converting(IConverter converter) {
+			ensureHasStrategy();
+			strategy.setConverter(converter);
+			return (PARTICIPANT) this;
+		}
+
+		private UpdateValueStrategy ensureHasStrategy() {
+			if (strategy == null) {
+				this.strategy = new UpdateValueStrategy();
+			}
+			return strategy;
+		}
+		
+		IObservableValue getObservable() {
+			return observable;
+		}
+
+		UpdateValueStrategy getStrategy() {
+			return strategy;
+		}
+	}
+
 }
