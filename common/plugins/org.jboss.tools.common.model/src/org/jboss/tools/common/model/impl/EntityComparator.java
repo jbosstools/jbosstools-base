@@ -17,7 +17,7 @@ import org.jboss.tools.common.meta.*;
 public class EntityComparator implements Comparator<XModelObject> {
     private static HashMap<String,EntityComparator> comparators = new HashMap<String,EntityComparator>();
 
-    public static EntityComparator getComparator(XModelEntity entity) {
+    public synchronized static EntityComparator getComparator(XModelEntity entity) {
         EntityComparator c = (EntityComparator)comparators.get(entity.getName());
         if(c == null) {
             c = new EntityComparator(entity.getChildren());
