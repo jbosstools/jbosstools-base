@@ -124,6 +124,11 @@ public class ContentAssistHelper {
         }
       }
     }
+    System.out.println(sb.toString());
+    for (String item : list1){
+      System.out.println("result.add(\"" + item.replaceAll("\"", "\\\"") + "\");");
+    }
+
     return sb.toString();
   }
   

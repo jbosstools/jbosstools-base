@@ -83,6 +83,7 @@ public class IDELabel {
     public static final String PASTE = "Paste";
     public static final String UNDO = "Undo";
     public static final String CLOSE_ALL = "Close All";
+    public static final String SAVE_AS_TEMPLATE = "Save As Template...";
 	}
 
 	public class Button {
@@ -164,6 +165,7 @@ public class IDELabel {
 	  public static final String ADD_SVN_REPOSITORY = "Add SVN Repository";
 	  public static final String REPOSITORY_LOCATION_PROPERTIES = "Repository Location Properties";
 	  public static final String SECURE_STORAGE = "Secure Storage";
+	  public static final String ADD_JSF_PROJECT_TEMPLATE = "Add JSF Project Template";
 	}
 
 	public class EntityGroup {
@@ -411,7 +413,7 @@ public class IDELabel {
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0 Runtime";
      public static final String JBOSS_EAP_5_x = "JBoss Enterprise Application Platform 5.x Runtime";
      public static final String JBOSS_AS_5_1 = "JBoss 5.1 Runtime";
-     public static final String JBOSS_AS_6_0 = "JBoss 6.x Runtime";
+     public static final String JBOSS_AS_6_0 = "JBoss 6.0 Runtime";
        
    }
    public static final class ServerType {
@@ -689,7 +691,7 @@ public class IDELabel {
      public static final String PROJECT_NAME_LABEL = "Project Name*";
      public static final String JSF_ENVIRONMENT_LABEL = "JSF Environment*";
      public static final String TEMPLATE_LABEL = "Template*";
-     public static final String RUNTIME_LABEL = "Runtime*";
+     public static final String RUNTIME_LABEL = "Runtime:*";
      public static final String HOME_DIRECTORY_LABEL = "Home Directory";
    }
    
@@ -718,5 +720,10 @@ public class IDELabel {
      public static final String ADD_SERVLET_MAPPING_DIALOG_SERVLET_NAME_LABEL = "Servlet-Name:*";
      public static final String ADD_SERVLET_MAPPING_DIALOG_URL_PATTERN_LABEL = "URL-Pattern:*";
      
+   }
+   
+   public static class AddJSFProjectTemplateDialog{
+     public static final String NAME_TEXT_LABEL = "Name:*";
+     public static final String IMPLEMENTATION_COMBO_LABEL = "Implementation:*";
    }
  }
