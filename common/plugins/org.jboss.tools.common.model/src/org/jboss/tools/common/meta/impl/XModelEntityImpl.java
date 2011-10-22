@@ -372,23 +372,9 @@ public class XModelEntityImpl extends XMetaElementImpl implements XModelEntity {
         return xmlmap.getProperty(xmlname);
     }
 
-    private HashSet<String> requiredchildren = null;
-    private boolean requiredloaded = false;
-
-    public java.util.HashSet<String> getRequiredChildren() {
-        if(!requiredloaded) {
-            XChild[] cs = children.getChildren();
-            requiredchildren = new HashSet<String>(cs.length);
-            for (int i = 0; i < cs.length; i++) {
-                boolean required = (cs[i].getMaxCount() == 1 && cs[i].isRequired());
-                if(required) requiredchildren.add(cs[i].getName());
-            }
-            if(requiredchildren.size() == 0) requiredchildren = null;
-            requiredloaded = true;
-        }
-        return (requiredchildren == null) ? null : (HashSet<String>)requiredchildren.clone();
+    public Set<String> getRequiredChildren() {
+        return children.getRequiredChildren();
     }
-    
     
     /**
      * FIXME Move to ModelTest plugin

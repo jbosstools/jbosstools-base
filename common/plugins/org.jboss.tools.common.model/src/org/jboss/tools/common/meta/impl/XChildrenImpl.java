@@ -11,12 +11,14 @@
 package org.jboss.tools.common.meta.impl;
 
 import java.util.*;
+
 import org.w3c.dom.*;
 import org.jboss.tools.common.meta.*;
 
 public class XChildrenImpl implements XMetaDataConstants {
     protected XChild[] children = new XChild[0];
     protected HashMap<String,XChild> children_map = new HashMap<String,XChild>(10);
+    private Set<String> requiredChildren = new HashSet<String>();
 
     public XChildrenImpl() {}
 
@@ -26,6 +28,15 @@ public class XChildrenImpl implements XMetaDataConstants {
 
     public XChild[] getChildren() {
         return children;
+    }
+
+    /**
+     * Returns copy of set with names of required child entities.
+     *  
+     * @return
+     */
+    public Set<String> getRequiredChildren() {
+    	return (requiredChildren.isEmpty()) ? Collections.<String>emptySet() : new HashSet<String>(requiredChildren);
     }
 
     public void load(Element el) {
@@ -38,6 +49,9 @@ public class XChildrenImpl implements XMetaDataConstants {
             m.load(es[i]);
             children_map.put(m.getName(), m);
             c.add(m);
+            if(m.getMaxCount() == 1 && m.isRequired()) {
+            	requiredChildren.add(m.getName());
+            }
         }
         children = c.toArray(new XChild[0]);
     }

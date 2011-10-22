@@ -306,7 +306,7 @@ public class XModelObjectLoaderUtil {
     public void loadChildren(Element element, XModelObject o) {
         XModelEntity entity = o.getModelEntity();
         XModel model = o.getModel();
-        HashSet<String> childset = entity.getRequiredChildren();
+        Set<String> childset = entity.getRequiredChildren();
         NodeList nl = element.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             Node n = nl.item(i);
@@ -351,12 +351,14 @@ public class XModelObjectLoaderUtil {
             	}
             	continue;
             } 
-            if(childset != null) childset.remove(en);
+            if(childset.contains(en)) {
+            	childset.remove(en);
+            }
         }
-        if(childset != null && childset.size() > 0) {
-            String[] ens = childset.toArray(new String[childset.size()]);
-            for (int i = 0; i < ens.length; i++)
-              o.addChild(createValidObject(model, ens[i]));
+        if(!childset.isEmpty()) { //in most cases the set is empty and this check is faster than creating an iterator.
+            for (String en: childset) {
+                o.addChild(createValidObject(model, en));
+            }
         }
     }
     

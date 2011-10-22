@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta;
 
+import java.util.Set;
+
 import org.jboss.tools.common.meta.action.XActionList;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.loaders.XObjectLoader;
@@ -46,7 +48,7 @@ public interface XModelEntity extends XMetaElement, XDependencies {
     public int getPropertyIndex(String name, boolean register);
     public int getPropertyCount();
     public String getChildByXML(String xmlname);
-    public java.util.HashSet<String> getRequiredChildren();
+    public Set<String> getRequiredChildren();
     
     public String testImplementation();
     public String testLoader();
