@@ -90,7 +90,7 @@ public class MaterializeLibraryJob extends WorkspaceJob {
 
 		//Finally execute post processors (needed to remove project nature, for ex.)
 		for (ILibraryMaterializationPostProcessor processor : getPostProcessors()) {
-			processor.execute(javaProject, containerToRemovePath);
+			processor.execute(javaProject, containerToRemovePath, monitor);
 		}
 
 		//Refresh project
