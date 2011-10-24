@@ -10,6 +10,17 @@
 		id="org.jboss.tools.common.text.ext.hyperlinkPartitioner"
 		name="org.jboss.tools.common.text.ext.hyperlinkPartitioner">
 		
+		<!-- Synonyms to org.eclipse.wst.html.core.htmlsource Content Type -->
+		<contentTypeSynonym type="org.jboss.tools.jst.jsp.phpsource" base="org.eclipse.wst.html.core.htmlsource"/>
+		<contentTypeSynonym type="jsf.facelet" base="org.eclipse.wst.html.core.htmlsource"/>
+		<contentTypeSynonym type="jsf.facelet.composite" base="org.eclipse.wst.html.core.htmlsource"/>
+
+		<!-- Synonyms to org.eclipse.jst.jsp.core.jspsource Content Type -->
+		<contentTypeSynonym type="org.jboss.tools.jst.jsp.jspincludesource" base="org.eclipse.jst.jsp.core.jspsource"/>
+
+		<!-- Synonyms to org.eclipse.core.runtime.xml Content Type -->
+		<contentTypeSynonym type="org.eclipse.wst.xml.core.xmlsource" base="org.eclipse.core.runtime.xml"/>
+		
 		<!-- Root XML, HTML and JSP hyperlink partitioners -->
 		<hyperlinkPartitioner
         	class="org.jboss.tools.common.text.ext.hyperlink.xml.XMLRootHyperlinkPartitioner" 
@@ -249,32 +260,7 @@
          			<axis path="*/[http://java.sun.com/jsp/jstl/core]:redirect/url" />
         		</partitionType>
 			</contentType>
-			<contentType id="jsf.facelet">
-				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/[http://java.sun.com/jstl/core]:import/url" />
-         			<axis path="*/[http://java.sun.com/jstl/core]:redirect/url" />
-         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:import/url" />
-         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:redirect/url" />
-        		</partitionType>
-			</contentType>
-			<contentType id="jsf.facelet.composite">
-				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/[http://java.sun.com/jstl/core]:import/url" />
-         			<axis path="*/[http://java.sun.com/jstl/core]:redirect/url" />
-         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:import/url" />
-         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:redirect/url" />
-        		</partitionType>
-			</contentType>
-			<contentType id="org.jboss.tools.jst.jsp.jspincludesource">
-				<partitionType id="org.jboss.tools.common.text.ext.xml.XML_ATTRIBUTE_VALUE">
-         			<axis path="*/[http://java.sun.com/jstl/core]:import/url" />
-         			<axis path="*/[http://java.sun.com/jstl/core]:redirect/url" />
-         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:import/url" />
-         			<axis path="*/[http://java.sun.com/jsp/jstl/core]:redirect/url" />
-        		</partitionType>
-			</contentType>
 		</hyperlinkPartitioner>
-		
 		
 		<!-- End of Common XML hyperlink partitioners -->
 		

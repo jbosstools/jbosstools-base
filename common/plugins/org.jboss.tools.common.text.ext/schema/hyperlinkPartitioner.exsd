@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.jboss.tools.common.text.ext">
+<schema targetNamespace="org.jboss.tools.common.text.ext" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
          <meta.schema plugin="org.jboss.tools.common.text.ext" id="hyperlinkPartitioner" name="Hyperlink Partitioner Extension Point Extension"/>
@@ -13,6 +13,9 @@ The hyperlinks are typically used to fast switch amount the project files (such 
 
    <element name="extension">
       <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
          <documentation>
             Defines an extension point for the Hyperlink partitioner definitions.
 
@@ -26,6 +29,7 @@ The hyperlinks are typically used to fast switch amount the project files (such 
       <complexType>
          <sequence>
             <element ref="hyperlinkPartitioner" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="contentTypeSynonym" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -141,6 +145,30 @@ The &quot;*&quot;-wildcards are used to define any elements within the path. The
             <annotation>
                <documentation>
                   Spesifies case sensitivity to the element names within the path constraint.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="contentTypeSynonym">
+      <annotation>
+         <documentation>
+            The assiciacion for
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="base" type="string">
+            <annotation>
+               <documentation>
+                  Base Content Type
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="type" type="string">
+            <annotation>
+               <documentation>
+                  Content Type is to be binded to the base one
                </documentation>
             </annotation>
          </attribute>
