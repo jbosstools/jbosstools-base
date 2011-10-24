@@ -175,6 +175,9 @@ public class SWTEclipseExt {
 		switch (type) {
 		case JAVA:
 			perspectiveLabel = IDELabel.SelectPerspectiveDialog.JAVA;
+			break;	
+		case CDI:
+			perspectiveLabel = IDELabel.SelectPerspectiveDialog.CDI;
 			break;
 		case HIBERNATE:
 			perspectiveLabel = IDELabel.SelectPerspectiveDialog.HIBERNATE;

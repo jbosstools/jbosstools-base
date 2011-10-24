@@ -20,7 +20,7 @@ import java.util.List;
  * @author jpeterka
  */
 public enum EntityType {
-	HIBERNATE_MAPPING_FILE, JAVA_PROJECT, JAVA_CLASS, HIBERNATE_REVERSE_FILE, HIBERNATE_CONSOLE, 
+	HIBERNATE_MAPPING_FILE, JAVA_PROJECT, JAVA_CLASS, JAVA_PACKAGE, HIBERNATE_REVERSE_FILE, HIBERNATE_CONSOLE, 
 	HIBERNATE_CONFIGURATION_FILE, STRUTS_PROJECT, JPA_PROJECT, DROOLS_PROJECT, DROOLS_RULE,
 	GUIDED_DROOLS_RULE,DSL_DROOLS_FILE,RESOURCES_FROM_GUVNOR,SMOOKS_CONFIG, JBPM3_PROJECT;
 		
@@ -31,6 +31,7 @@ public enum EntityType {
 		case HIBERNATE_MAPPING_FILE: groupLabel.add(IDELabel.EntityGroup.HIBERNATE); break;
 		case JAVA_PROJECT: groupLabel.add(IDELabel.EntityGroup.JAVA); break;
 		case JAVA_CLASS: groupLabel.add(IDELabel.EntityGroup.JAVA); break;	
+		case JAVA_PACKAGE: groupLabel.add(IDELabel.EntityGroup.JAVA); break;
 		case HIBERNATE_REVERSE_FILE: groupLabel.add(IDELabel.EntityGroup.HIBERNATE); break;		
 		case HIBERNATE_CONFIGURATION_FILE: groupLabel.add(IDELabel.EntityGroup.HIBERNATE); break;
 		case HIBERNATE_CONSOLE: groupLabel.add(IDELabel.EntityGroup.HIBERNATE); break;
@@ -63,6 +64,7 @@ public enum EntityType {
 		case HIBERNATE_CONSOLE: entityLabel = IDELabel.EntityLabel.HIBERNATE_CONSOLE; break;
 		case JAVA_PROJECT: entityLabel = IDELabel.EntityLabel.JAVA_PROJECT; break;
 		case JAVA_CLASS: entityLabel = IDELabel.EntityLabel.JAVA_CLASS; break;
+		case JAVA_PACKAGE: entityLabel = IDELabel.EntityLabel.JAVA_PACKAGE; break;
 		case STRUTS_PROJECT: entityLabel = IDELabel.EntityLabel.STRUTS_PROJECT; break;
 		case JPA_PROJECT: entityLabel = IDELabel.EntityLabel.JPA_PROJECT; break;
 		case DROOLS_PROJECT: entityLabel = IDELabel.EntityLabel.DROOLS_PROJECT; break;

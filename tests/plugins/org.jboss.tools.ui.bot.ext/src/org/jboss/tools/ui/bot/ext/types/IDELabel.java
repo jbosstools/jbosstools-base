@@ -187,6 +187,7 @@ public class IDELabel {
 		public static final String HIBERNATE_CONSOLE = "Hibernate Console Configuration";
 		public static final String JAVA_CLASS = "Class";
 		public static final String JAVA_PROJECT =  "Java Project";
+		public static final String JAVA_PACKAGE =  "Package";
 		public static final String SEAM_PROJECT = "Seam Web Project";
 		public static final String HIBERNATE_CONFIGURATION_FILE = "Hibernate Configuration File (cfg.xml)";
 		public static final String STRUTS_PROJECT = "Struts Project";
@@ -242,7 +243,8 @@ public class IDELabel {
 	}
 
 	public class SelectPerspectiveDialog {
-		public static final String JAVA = "Java";
+		public static final String JAVA = "Java";		
+		public static final String CDI = "Context and Dependency Injection (CDI)";
 		public static final String HIBERNATE = "Hibernate";
 		public static final String SEAM = "Seam";
 		public static final String WEB_DEVELOPMENT = "Web Development";
