@@ -11,11 +11,9 @@
 package org.jboss.tools.common.model.filesystems;
 
 import java.io.File;
+import java.io.IOException;
 
-import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
-import org.osgi.framework.Bundle;
 
 /**
  * @author Viacheslav Kabanovich
@@ -25,6 +23,11 @@ public class FilePathHelper {
 	
 	public static boolean isCaseSensitive() {
 		if(check == null) check = new Check();
+		/*
+		 * This code would be nicer to use: EFS.getLocalFileSystem().isCaseSensitive();
+		 * However, it is not clear if it will return same result for MACOSX.
+		 * If it is not so, it can cause failures in code that uses this method.
+		 */		
 		return check.isCaseSensitive;
 	}
 	
@@ -35,10 +38,18 @@ public class FilePathHelper {
 	private static class Check {
 		boolean isCaseSensitive = false;
 		public Check() {
-			Bundle b = Platform.getBundle(ModelPlugin.PLUGIN_ID);
-			String path = EclipseResourceUtil.getInstallPath(b);
-			if(path == null) return;
+			String path = ModelPlugin.getDefault().getStateLocation().toString();
 			String file = path + "/images/default.gif"; //$NON-NLS-1$
+			File f = new File(file);
+			if(!f.isFile()) {
+				try {
+					f.getParentFile().mkdirs();
+					f.createNewFile();
+				} catch (IOException e) {
+					ModelPlugin.getPluginLog().logWarning("Cannot create file " + file);
+					return;
+				}
+			}
 			if(!new File(file).isFile()) {
 				ModelPlugin.getPluginLog().logWarning("Cannot find file " + file); //$NON-NLS-1$
 				return;
