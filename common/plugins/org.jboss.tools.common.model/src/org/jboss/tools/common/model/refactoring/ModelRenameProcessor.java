@@ -21,6 +21,7 @@ import org.jboss.tools.common.model.XModelObject;
 public abstract class ModelRenameProcessor extends RenameProcessor implements INameUpdating, IReferenceUpdating {
 	protected XModelObject object;
 	protected String fNewElementName;
+	private boolean updateReferences = true;
 		
 	public ModelRenameProcessor() {}
 	
@@ -72,10 +73,6 @@ public abstract class ModelRenameProcessor extends RenameProcessor implements IN
 		return object;
 	}
 
-	public boolean getUpdateReferences() {
-		return true;
-	}
-	
 	public RefactoringParticipant[] loadParticipants(RefactoringStatus status, SharableParticipants shared) throws CoreException {
 		Object[] elements= getElements();
 		String[] natures= getAffectedProjectNatures();
@@ -115,6 +112,14 @@ public abstract class ModelRenameProcessor extends RenameProcessor implements IN
 	
 	public Change createChange(IProgressMonitor pm) throws CoreException {
 		return null;
+	}
+
+	public void setUpdateReferences(boolean update) {
+		updateReferences = update;
+	}
+
+	public boolean getUpdateReferences() {
+		return updateReferences;
 	}
 
 }

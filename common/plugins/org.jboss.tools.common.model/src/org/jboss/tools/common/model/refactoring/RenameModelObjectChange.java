@@ -11,6 +11,9 @@
 package org.jboss.tools.common.model.refactoring;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -21,7 +24,6 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.PositionSearcher;
 
@@ -35,16 +37,22 @@ import org.jboss.tools.common.model.util.PositionSearcher;
  * 
  * Use restrictions:
  * 1. All objects must belong to the same file object.
- * 2. You should not create to independent changes that 
- *    process the same file object. For instance, if you need 
- *    process two sets of objects from one file with different 
- *    attributes affected, this implementation may not be used. 
+ * 2. If you need process two sets of objects from one file with different 
+ *    attributes affected, use method addEdits(XModelObject[], String, String)
+ *    repeatedly. 
  */
 public class RenameModelObjectChange extends TextFileChange {
-	private XModelObject[] objects;
+	boolean ok = false;
 	private String newName;
-	private boolean ok = false;
-	private String attributeName;
+	class ObjectSet {
+		XModelObject[] objects;
+		String attributeName;
+		ObjectSet(XModelObject[] objects, String attributeName) {
+			this.objects = objects;
+			this.attributeName = attributeName;
+		}
+	}
+	List<ObjectSet> list = new ArrayList<ObjectSet>();
 	
 	public static RenameModelObjectChange createChange(XModelObject[] objects, String newName, String attributeName) {
 		if(objects == null || objects.length == 0) return null;
@@ -53,16 +61,35 @@ public class RenameModelObjectChange extends TextFileChange {
 		if(f == null) return null;
 		return new RenameModelObjectChange(name, f, objects, newName, attributeName);
 	}
-	
-	private RenameModelObjectChange(String name, IFile file, XModelObject[] objects, String newName, String attributeName) {
-		super(name, file);
-		this.objects = objects;
-		this.newName = newName;
-		this.attributeName = attributeName;
-		addEdits();
+
+	/**
+	 * Creates empty change, for which one has to add edits 
+	 * by calling addEdits(XModelObject[], String, String)
+	 * 
+	 * @param fileObject
+	 * @param newName
+	 * @return
+	 */
+	public static RenameModelObjectChange createChange(XModelObject fileObject, String newName) {
+		String name = fileObject.getPresentationString();
+		IFile f = getFile(fileObject);
+		if(f == null) return null;
+		return new RenameModelObjectChange(name, f, newName);
 	}
 
-	private void addEdits() {
+	private RenameModelObjectChange(String name, IFile file, String newName) {
+		super(name, file);
+		this.newName = newName;
+	}
+	
+	private RenameModelObjectChange(String name, IFile file, XModelObject[] objects, String newName, String attributeName) {
+		this(name, file, newName);
+		addEdits(objects, attributeName, "Update field reference");
+	}
+
+	public void addEdits(XModelObject[] objects, String attributeName, String textEditName) {
+		list.add(new ObjectSet(objects, attributeName));
+
 		PositionSearcher searcher = new PositionSearcher();
 		XModelObject o = ((XModelObjectImpl)objects[0]).getResourceAncestor();
 		String text = ((FileAnyImpl)o).getAsText();
@@ -74,7 +101,7 @@ public class RenameModelObjectChange extends TextFileChange {
 			ok = false;
 			if(bp >= 0 && ep >= ep) {
 				ReplaceEdit edit = new ReplaceEdit(bp, ep - bp, newName);
-				TextChangeCompatibility.addTextEdit(this, "Update field reference", edit);
+				TextChangeCompatibility.addTextEdit(this, textEditName, edit);
 				ok = true;
 			}
 		}
@@ -90,8 +117,10 @@ public class RenameModelObjectChange extends TextFileChange {
 		if(ok) {
 			result = super.perform(pm);
 		} else { 
-			for (int i = 0; i < objects.length; i++) {
-				objects[i].getModel().changeObjectAttribute(objects[i], attributeName, newName);
+			for (ObjectSet set: list) {
+				for (int i = 0; i < set.objects.length; i++) {
+					set.objects[i].getModel().changeObjectAttribute(set.objects[i], set.attributeName, newName);
+				}
 			}
 		}
 		return result;
@@ -102,7 +131,7 @@ public class RenameModelObjectChange extends TextFileChange {
 	}
 	
 	public String getName() {
-		return MessageFormat.format("Edit {0}", attributeName);
+		return MessageFormat.format("Edit {0}", list.get(0).attributeName);
 	}
 
 }
