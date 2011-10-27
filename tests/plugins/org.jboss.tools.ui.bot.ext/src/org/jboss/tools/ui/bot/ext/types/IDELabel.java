@@ -230,6 +230,7 @@ public class IDELabel {
 		public static final String PROPERTIES = "Properties";
 		public static final String JBOSS_TOOLS_PALETTE = "JBoss Tools Palette";
 		public static final String PALETTE = "Palette";
+		public static final String JBOSS_CENTRAL = "JBoss Central";
 	}
 	
 	public class ViewGroup {
@@ -416,6 +417,7 @@ public class IDELabel {
      public static final String JBOSS_EAP_5_x = "JBoss Enterprise Application Platform 5.x Runtime";
      public static final String JBOSS_AS_5_1 = "JBoss 5.1 Runtime";
      public static final String JBOSS_AS_6_0 = "JBoss 6.0 Runtime";
+     public static final String JBOSS_AS_6_x = "JBoss 6.x Runtime";
        
    }
    public static final class ServerType {
@@ -424,6 +426,7 @@ public class IDELabel {
      public static final String JBOSS_EAP_5_0 = "JBoss Enterprise Application Platform 5.0";
      public static final String JBOSS_EAP_5_x = "JBoss Enterprise Application Platform 5.x";
      public static final String JBOSS_AS_6_0 = "JBoss 6.0 Runtime";
+     public static final String JBOSS_AS_6_x = "JBoss 6.x Runtime";
      
    }
    public static final class DroolsRuntimeDialog {
