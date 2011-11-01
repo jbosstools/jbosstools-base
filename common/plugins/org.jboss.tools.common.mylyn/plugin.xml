@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.mylyn.tasks.core.templates">
+	 	<repository
+			addAutomatically="true"
+			label="Red Hat Bugzilla"
+			repositoryKind="bugzilla"
+			urlRepository="https://bugzilla.redhat.com"/>
+	    <repository
+	    	anonymous="false"
+      		addAutomatically="true"
+			label="JBoss JIRA"
+			repositoryKind="jira"
+			urlRepository="https://issues.jboss.org"
+			characterEncoding="UTF-8"/>
+	</extension>
+</plugin>
