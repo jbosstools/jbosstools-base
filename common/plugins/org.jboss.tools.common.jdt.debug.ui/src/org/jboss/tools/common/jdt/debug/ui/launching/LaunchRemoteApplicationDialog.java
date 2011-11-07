@@ -8,6 +8,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -29,6 +30,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.jdt.debug.RemoteDebugActivator;
 import org.jboss.tools.common.jdt.debug.VmModel;
 import org.jboss.tools.common.jdt.debug.ui.RemoteDebugUIActivator;
@@ -296,7 +299,13 @@ public class LaunchRemoteApplicationDialog extends Dialog {
 	@Override
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == IDialogConstants.YES_ID) {
-			new LaunchDialogAction().run();
+			//new LaunchDialogAction().run();
+			Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+					.getShell();
+			PreferenceDialog dialog = WorkbenchPreferenceDialog.createDialogOn(
+					shell,
+					RemoteDebugUIActivator.REMOTE_DEBUG_PREFERENCE_PAGE_ID);
+			dialog.open();
 			configureCombo();
 		} else {
 			super.buttonPressed(buttonId);

@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
 
+	<!--
     <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 	    <launchConfigurationTabGroup
             type="org.eclipse.jdt.launching.remoteJavaApplication"
@@ -10,7 +11,7 @@
             id="org.jboss.tools.common.jdt.debug.ui.launching.launchConfigurationTabGroup.JBossRemoteJavaApplication2">
         </launchConfigurationTabGroup>
     </extension>
-    <!--
+    
 	<extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup

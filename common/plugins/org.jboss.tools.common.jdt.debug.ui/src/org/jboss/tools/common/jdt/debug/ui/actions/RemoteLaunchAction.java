@@ -141,7 +141,7 @@ public class RemoteLaunchAction extends Action {
 				setAttribute(wc);
 				wc.doSave();
 			} else {
-				ILaunchConfigurationType configType = getConfigurationType();
+				ILaunchConfigurationType configType = RemoteDebugUIActivator.getRemoteJavaApplicationConfigurationType();
 				wc = RemoteDebugActivator.createNewLaunchConfiguration(configType);
 			}
 			if (javaProject != null && javaProject.isOpen()) {
@@ -177,17 +177,6 @@ public class RemoteLaunchAction extends Action {
 		
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CONNECT_MAP,
 				attrMap);
-	}
-
-	private ILaunchManager getLaunchManager() {
-		return DebugPlugin.getDefault().getLaunchManager();
-	}
-
-	private ILaunchConfigurationType getConfigurationType() {
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-		ILaunchConfigurationType type = manager
-				.getLaunchConfigurationType(RemoteDebugActivator.REMOTE_JAVA_APPLICATION_ID);
-		return type;
 	}
 
 }

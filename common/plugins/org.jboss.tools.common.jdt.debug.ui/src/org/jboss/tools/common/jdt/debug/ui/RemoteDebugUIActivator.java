@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IPersistableSourceLocator;
@@ -68,6 +69,7 @@ public class RemoteDebugUIActivator extends AbstractUIPlugin {
 	private static final String KEY_SEQUENCE_PREFIX = "M1+D ";
 	public static final String DISCOVER_REMOTE_APPLICATION_ACTION_ID = "org.jboss.tools.common.jdt.debug.ui.discover";
 	
+	public static final String REMOTE_DEBUG_PREFERENCE_PAGE_ID = "org.jboss.tools.common.jdt.debug.ui.preferences.RemoteDebugPreferencePage";
 	// The shared instance
 	private static RemoteDebugUIActivator plugin;
 	private static VmModel[] vmModels;
@@ -337,5 +339,16 @@ public class RemoteDebugUIActivator extends AbstractUIPlugin {
 			}
 		}
 		return null;
+	}
+	
+	public static ILaunchManager getLaunchManager() {
+		return DebugPlugin.getDefault().getLaunchManager();
+	}
+
+	public static ILaunchConfigurationType getRemoteJavaApplicationConfigurationType() {
+		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchConfigurationType type = manager
+				.getLaunchConfigurationType(RemoteDebugActivator.REMOTE_JAVA_APPLICATION_ID);
+		return type;
 	}
 }
