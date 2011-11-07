@@ -25,7 +25,8 @@ public class RepositoryTest extends TestCase {
 		assertNotNull(repo);
 	}
 
-	public void testJIRA() {
+	// FIXME Enable this test when JIRA connector plugins are added to TP & Update site
+	public void _testJIRA() {
 		TaskRepository repo = TasksUiPlugin.getRepositoryManager().getRepository("jira", "https://issues.jboss.org");
 		assertNotNull(repo);
 	}
