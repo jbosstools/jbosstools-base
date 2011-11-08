@@ -80,7 +80,7 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 	
 	public void pathLoaded(IPath path) {
 		String p = paths2.get(path);
-		if(p != null) synchronized (processedPaths) {
+		if(p != null) synchronized (this) {
 			processedPaths.add(p);
 		}
 	}
@@ -97,14 +97,14 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 		paths = new ArrayList<String>();
 		loaded = false;
 		if(paths2 != null) paths2.clear();
-		synchronized (processedPaths) {
+		synchronized (this) {
 			processedPaths.clear();
 		}
 	}
 
 	protected List<String> syncProcessedPaths() {
 		ArrayList<String> removed = new ArrayList<String>();
-		synchronized (processedPaths) {
+		synchronized (this) {
 			Iterator<String> it = processedPaths.iterator();
 			while(it.hasNext()) {
 				String p = it.next();
@@ -117,7 +117,7 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 	}
 
 	protected boolean requestForLoad(String p) {
-		synchronized (processedPaths) {
+		synchronized (this) {
 			return processedPaths.add(p);
 		}
 	}
