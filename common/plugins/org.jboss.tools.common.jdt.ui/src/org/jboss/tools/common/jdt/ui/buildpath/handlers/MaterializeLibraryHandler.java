@@ -86,7 +86,8 @@ public class MaterializeLibraryHandler extends AbstractHandler {
           Job job = new MaterializeLibraryJob(javaProject, 
                                               containerToMaterialize,
                                               jarsToMaterialize, 
-                                              libFolder);
+                                              libFolder,
+                                              dialog.isKeepSources());
           job.setRule(getRule(project));
           job.addJobChangeListener(new IJobChangeListener() {
 			

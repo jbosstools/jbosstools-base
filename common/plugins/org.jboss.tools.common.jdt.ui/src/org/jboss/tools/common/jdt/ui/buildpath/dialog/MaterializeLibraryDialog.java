@@ -80,6 +80,11 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 
   private CheckboxTableViewer classpathEntriesViewer;
 
+  private Button keepSourceBtn;
+
+  private boolean keepSources;
+
+
   public MaterializeLibraryDialog(Shell shell, IProject project, IClasspathContainer containerToMaterialize, String defaultLib) {
     super(shell);
     setShellStyle(super.getShellStyle() | SWT.RESIZE | SWT.MODELESS);
@@ -234,10 +239,21 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
     addSelectionButton(container, "Select All", true);
 	addSelectionButton(container, "Deselect All", false);
 	
+	keepSourceBtn = addCheckButton(container, "Keep source attachments", keepSources);
+	keepSourceBtn.setToolTipText("Source attachment paths may contain absolute paths");
     addTableListeners();
 
   }
 
+  private Button addCheckButton(Composite container, String label, boolean selected) {
+		Button checkBtn = new Button(container, SWT.CHECK);
+		checkBtn.setText(label);
+		checkBtn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER,
+				true, false, 2, 1));
+		checkBtn.setSelection(selected);
+		return checkBtn;
+  }
+	
   private void addTableListeners() {
     addCellEditors();
   }
@@ -247,18 +263,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
         "EMPTY", SOURCE_PROPERTY, FILENAME_PROPERTY });
 
     TextCellEditor ce = new TextCellEditor(classpathEntriesViewer.getTable()); 
-//    ce.setValidator(new ICellEditorValidator() {
-//		@Override
-//		public String isValid(Object arg0) {
-//			String name = arg0.toString();
-//			return (checkValidName(name))?null:name;
-//		}
-//	});
-	
-    CellEditor[] editors = new CellEditor[] {
-        null,
-        new TextCellEditor(classpathEntriesViewer.getTable()),
-        ce };
+    CellEditor[] editors = new CellEditor[] {null, ce, ce };
     	
     classpathEntriesViewer.setCellEditors(editors);
     classpathEntriesViewer.setCellModifier(new FileNameCellModifier());
@@ -270,6 +275,10 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 
   public IFolder getLibFolder() {
     return libFolder;
+  }
+
+  public boolean isKeepSources() {
+	return keepSources;
   }
 
   private static IFolder getLibFolderFromText(String text) {
@@ -284,6 +293,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		return;
 	}
     libFolder = getLibFolderFromText(libfolderText.getText());
+    keepSources = keepSourceBtn.getSelection();
     super.okPressed();
   }
 
@@ -445,4 +455,5 @@ private class ClasspathEntryLabelProvider extends LabelProvider implements ITabl
 				(name.endsWith(".jar") || name.endsWith(".zip"));
 	}
 
+	
 }

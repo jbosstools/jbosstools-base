@@ -43,11 +43,13 @@ public class MaterializeLibraryJob extends WorkspaceJob {
 	private final IJavaProject javaProject;
 	private final Map<IPath, String> jars;
 	private final IClasspathContainer containerToRemove;
+	private final boolean keepSourceAttachments;
 
 	public MaterializeLibraryJob(IJavaProject javaProject,
 								 IClasspathContainer containerToMaterialize,
 								 Map<IPath, String> jars, 
-								 IFolder libFolder) {
+								 IFolder libFolder, 
+								 boolean keepSourceAttachments) {
 		super(Messages.Materialize_Library); 
 		if (javaProject == null || javaProject.getProject() == null) {
 			throw new IllegalArgumentException("Project must not be null");
@@ -62,6 +64,7 @@ public class MaterializeLibraryJob extends WorkspaceJob {
 		this.libFolder = libFolder;
 		this.containerToRemove = containerToMaterialize;
 		this.jars = jars;
+		this.keepSourceAttachments = keepSourceAttachments;
 	}
 
 	@Override
@@ -167,8 +170,8 @@ public class MaterializeLibraryJob extends WorkspaceJob {
 			IPath destinationFilePath) throws CoreException {
 		try {
 			return JavaCore.newLibraryEntry(destinationFilePath,
-					entry.getSourceAttachmentPath(),
-					entry.getSourceAttachmentRootPath(),
+					(keepSourceAttachments)?entry.getSourceAttachmentPath():null,
+					(keepSourceAttachments)?entry.getSourceAttachmentRootPath():null,
 					entry.getAccessRules(), entry.getExtraAttributes(),
 					entry.isExported());
 		} catch (Exception e) {
