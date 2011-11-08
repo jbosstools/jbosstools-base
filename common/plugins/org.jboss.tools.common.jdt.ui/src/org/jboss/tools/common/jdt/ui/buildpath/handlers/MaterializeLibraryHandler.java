@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IClasspathContainer;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -52,6 +51,10 @@ import org.jboss.tools.common.jdt.ui.buildpath.dialog.MaterializeLibraryDialog;
 @SuppressWarnings("restriction")
 public class MaterializeLibraryHandler extends AbstractHandler {
 
+  private static final String ECLIPSE_DEFAULT_WEBFOLDER = "WebContent";
+  private static final String MAVEN_DEFAULT_WEBFOLDER = "src/main/webapp";
+  
+  
   @Override
   public Object execute(final ExecutionEvent event) throws ExecutionException {
 
@@ -76,7 +79,7 @@ public class MaterializeLibraryHandler extends AbstractHandler {
         MaterializeLibraryDialog dialog = new MaterializeLibraryDialog(window.getShell(), 
                                                                        project,
                                                                        containerToMaterialize, 
-                                                                       getDefaultLib(libraryFromUI.getClasspathEntry()) 
+                                                                       getDefaultLib(project) 
                                                                        ); 
         if(dialog.open() == Dialog.OK) {
           Map<IPath, String> jarsToMaterialize = dialog.getSelectedClasspathEntryPaths();
@@ -138,12 +141,16 @@ public class MaterializeLibraryHandler extends AbstractHandler {
     return null;
   }
 
-  private String getDefaultLib(IClasspathEntry classpathEntry) { 
-    String defaultLib = "lib";
-    //TODO look for the value of IClasspathAttribute "org.eclipse.jst.component.dependency"
-    //TODO Even if we get WEB-INF/lib from IClasspathAttribute, how do we get the first mapped source folder 
-    //without depending on the component fwk? extension points (and new component adapter plugin)? reflection?  
-    return defaultLib;
+  private String getDefaultLib(IProject project) { 
+    //Let's try to be smart and guess where we're gonna put all the dependencies
+	StringBuilder path = new StringBuilder();
+	if (project.getFolder(MAVEN_DEFAULT_WEBFOLDER).exists()) {
+		path.append(MAVEN_DEFAULT_WEBFOLDER).append("/");
+	} else if (project.getFolder(ECLIPSE_DEFAULT_WEBFOLDER).exists()) {
+		path.append(ECLIPSE_DEFAULT_WEBFOLDER).append("/");
+	}
+	path.append("lib");
+    return path.toString();
   }
 
   private ISchedulingRule getRule(IProject project) {
