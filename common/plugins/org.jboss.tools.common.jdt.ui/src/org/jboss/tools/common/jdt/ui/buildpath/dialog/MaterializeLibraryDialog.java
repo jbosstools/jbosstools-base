@@ -59,336 +59,333 @@ import org.jboss.tools.common.jdt.ui.JDTExtUIActivator;
 
 public class MaterializeLibraryDialog extends TitleAreaDialog {
 
-  private static final String TITLE = "Materialize ";
+	private static final String TITLE = "Materialize ";
 
-  private static final String SOURCE_PROPERTY = "SOURCE_PROPERTY";
+	private static final String SOURCE_PROPERTY = "SOURCE_PROPERTY";
 
-  private static final String FILENAME_PROPERTY = "FILENAME_PROPERTY";
+	private static final String FILENAME_PROPERTY = "FILENAME_PROPERTY";
 
-  private IFolder libFolder;
-  private Map<IClasspathEntry, String> classpathEntryPaths;
-  private Map<IPath, String> selectedClasspathEntryPaths;
+	private IFolder libFolder;
+	private Map<IClasspathEntry, String> classpathEntryPaths;
+	private Map<IPath, String> selectedClasspathEntryPaths;
+	private IClasspathContainer containerToMaterialize;
 
-  private final String libName;
+	private final String libName;
 
-  private Image jarImage;
-  private Image projectImage;
+	private Image jarImage;
+	private Image projectImage;
 
-  // private StringButtonDialogField libFolderDialogField;
+	private Text libfolderText;
 
-  private Text libfolderText;
+	private CheckboxTableViewer classpathEntriesViewer;
 
-  private CheckboxTableViewer classpathEntriesViewer;
+	private Button keepSourceBtn;
 
-  private Button keepSourceBtn;
+	private boolean keepSources;
 
-  private boolean keepSources;
+	public MaterializeLibraryDialog(Shell shell, IProject project, IClasspathContainer containerToMaterialize, String defaultLib) {
+		super(shell);
+		setShellStyle(super.getShellStyle() | SWT.RESIZE | SWT.MODELESS);
+		this.libName = containerToMaterialize.getDescription();
+		IPath folderPath = project.getFullPath().append(defaultLib);
+		libFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(folderPath);
+		this.containerToMaterialize = containerToMaterialize;
+		initClasspathEntryPaths();
+	}
 
-
-  public MaterializeLibraryDialog(Shell shell, IProject project, IClasspathContainer containerToMaterialize, String defaultLib) {
-    super(shell);
-    setShellStyle(super.getShellStyle() | SWT.RESIZE | SWT.MODELESS);
-    this.libName = containerToMaterialize.getDescription();
-    IPath folderPath = project.getFullPath().append(defaultLib);
-    libFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(folderPath);
-    initClasspathEntryPaths(containerToMaterialize);
-  }
-
-  private void initClasspathEntryPaths(IClasspathContainer container) {
-    IClasspathEntry[] cpEntries =  container.getClasspathEntries();
-    classpathEntryPaths = new LinkedHashMap<IClasspathEntry, String>(cpEntries.length);
-    for (IClasspathEntry entry : cpEntries) {
-      if ((entry.getEntryKind() == IClasspathEntry.CPE_LIBRARY && entry.getPath() != null)
-          || (entry.getEntryKind() == IClasspathEntry.CPE_PROJECT)) {
-          IPath sourceFilePath = entry.getPath();
-          String fileName = sourceFilePath.lastSegment();
-          classpathEntryPaths.put(entry, fileName);
-      }
-    }
-  }
-
-  @Override
-  protected void configureShell(Shell shell) {
-    super.configureShell(shell);
-    shell.setText(TITLE + "Classpath Library");
-  }
-
-  private void initImages() {
-	  jarImage =JDTExtUIActivator.getJarIcon();
-	  projectImage= JDTExtUIActivator.getProjectIcon();
-  }
-  
-  
-  @Override
-  protected Control createDialogArea(Composite parent) {
-	  
-	initImages();
-	setTitle(TITLE + libName);
-	   	  
-    Composite area = (Composite) super.createDialogArea(parent);
-
-    Composite container = new Composite(area, SWT.NONE);
-    container.setEnabled(true);
-
-    GridLayout layout = new GridLayout(3, false);
-    layout.marginLeft = 12;
-    container.setLayout(layout);
-    container.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-    setMessage("Copy selected jars from " + libName + " to the destination folder.");
-
-    // ContainerFieldAdapter adapter= new ContainerFieldAdapter();
-    // libFolderDialogField = new StringButtonDialogField(adapter);
-    // libFolderDialogField.setLabelText("Destination folder");
-    // libFolderDialogField.setButtonLabel("Browse...");
-    // libFolderDialogField.doFillIntoGrid(container,
-    // libFolderDialogField.getNumberOfControls());
-    // LayoutUtil.setWidthHint(libFolderDialogField.getTextControl(null),
-    // convertWidthInCharsToPixels(40));
-
-    Label libFolderLabel = new Label(container, SWT.NONE);
-    libFolderLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-    libFolderLabel.setText("Destination folder");
-
-    libfolderText = new Text(container, SWT.BORDER);
-    libfolderText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-    libfolderText.setEditable(true);
-    libfolderText.setText(libFolder.getFullPath().toPortableString());
-    libfolderText.addModifyListener(new ModifyListener() {
-		@Override
-		public void modifyText(ModifyEvent event) {
-			validate();
-		}
-	});
-
-    addSelectFolderButton(container);
-    // libFolderDialogField.setText(libFolder.getFullPath().toPortableString());
-    displayClasspathEntriesTable(container);
-
-    return area;
-  }
-
-  private void addSelectFolderButton(Composite container) {
-	  
-	  Button button = new Button(container, SWT.NONE);
-	  button.setLayoutData(new GridData(SWT.FILL, SWT.UP,
-				false, false, 1, 1));
-	  button.setText("Select Folder");
-	  button.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				  ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), getLibFolderFromText(libfolderText.getText()), true, "Select Destination Folder");
-				  dialog.setTitle("Container Selection");
-				  dialog.open();
-				  Object[] result = dialog.getResult();
-				  if (result != null && result[0] instanceof IPath) {
-					  libfolderText.setText(((IPath)result[0]).toPortableString());
-				  }
+	private void initClasspathEntryPaths() {
+		IClasspathEntry[] cpEntries = containerToMaterialize.getClasspathEntries();
+		classpathEntryPaths = new LinkedHashMap<IClasspathEntry, String>(cpEntries.length);
+		for (IClasspathEntry entry : cpEntries) {
+			if ((entry.getEntryKind() == IClasspathEntry.CPE_LIBRARY && entry.getPath() != null)
+			|| (entry.getEntryKind() == IClasspathEntry.CPE_PROJECT)) {
+				IPath sourceFilePath = entry.getPath();
+				String fileName = sourceFilePath.lastSegment();
+				classpathEntryPaths.put(entry, fileName);
 			}
-			
+		}
+	}
+
+	@Override
+	protected void configureShell(Shell shell) {
+		super.configureShell(shell);
+		shell.setText(TITLE + "Classpath Library");
+	}
+
+	private void initImages() {
+		jarImage = JDTExtUIActivator.getJarIcon();
+		projectImage = JDTExtUIActivator.getProjectIcon();
+	}
+
+	@Override
+	protected Control createDialogArea(Composite parent) {
+
+		initImages();
+		setTitle(TITLE + libName);
+
+		Composite area = (Composite) super.createDialogArea(parent);
+
+		Composite container = new Composite(area, SWT.NONE);
+		container.setEnabled(true);
+
+		GridLayout layout = new GridLayout(3, false);
+		layout.marginLeft = 12;
+		container.setLayout(layout);
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		setMessage("Copy selected jars from " + libName
+				+ " to the destination folder.");
+
+		Label libFolderLabel = new Label(container, SWT.NONE);
+		libFolderLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
+				false, 1, 1));
+		libFolderLabel.setText("Destination folder");
+
+		libfolderText = new Text(container, SWT.BORDER);
+		libfolderText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false, 1, 1));
+		libfolderText.setEditable(true);
+		libfolderText.setText(libFolder.getFullPath().toPortableString());
+		libfolderText.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent event) {
+				validate();
+			}
+		});
+
+		addSelectFolderButton(container);
+		displayClasspathEntriesTable(container);
+
+		return area;
+	}
+
+	private void addSelectFolderButton(Composite container) {
+
+		Button button = new Button(container, SWT.NONE);
+		button.setLayoutData(new GridData(SWT.FILL, SWT.UP, false, false, 1, 1));
+		button.setText("Select Folder");
+		button.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				ContainerSelectionDialog dialog = new ContainerSelectionDialog(
+						getShell(), 
+						getLibFolderFromText(libfolderText.getText()), 
+						true, 
+						"Select Destination Folder");
+				dialog.setTitle("Container Selection");
+				dialog.open();
+				Object[] result = dialog.getResult();
+				if (result != null && result[0] instanceof IPath) {
+					libfolderText.setText(((IPath) result[0]).toPortableString());
+				}
+			}
+
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
-  }
-
-  @Override
-  public boolean close() {
-    if (jarImage != null) {
-      jarImage.dispose();
 	}
-    if (projectImage!= null) {
-    	projectImage.dispose();
-  	}
-    return super.close();
-  }
-  
-  private void displayClasspathEntriesTable(Composite container) {
-    GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 4);
-    gd.heightHint = 500;
-    gd.widthHint = 600;
 
-    classpathEntriesViewer = CheckboxTableViewer.newCheckList(container, SWT.BORDER | SWT.MULTI);
-    Table table = classpathEntriesViewer.getTable();
-    table.setFocus();
-    table.setLayoutData(gd);
-    table.setLinesVisible(true);
-    table.setHeaderVisible(true);
+	@Override
+	public boolean close() {
+		if (jarImage != null) {
+			jarImage.dispose();
+		}
+		if (projectImage != null) {
+			projectImage.dispose();
+		}
+		return super.close();
+	}
 
-    TableColumn emptyColumn = new TableColumn(table, SWT.NONE);
-    emptyColumn.setWidth(20);
+	private void displayClasspathEntriesTable(Composite container) {
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 4);
+		gd.heightHint = 500;
+		gd.widthHint = 550;
 
-    TableViewerColumn sourceColumn = new TableViewerColumn(classpathEntriesViewer, SWT.NONE);
-    sourceColumn.getColumn().setText("Source ");
-    sourceColumn.getColumn().setWidth(300);
+		classpathEntriesViewer = CheckboxTableViewer.newCheckList(container,
+				SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
+		Table table = classpathEntriesViewer.getTable();
+		table.setFocus();
+		table.setLayoutData(gd);
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
 
+		TableColumn emptyColumn = new TableColumn(table, SWT.NONE);
+		emptyColumn.setWidth(20);
 
-    TableViewerColumn destinationColumn = new TableViewerColumn(classpathEntriesViewer, SWT.NONE);
-    destinationColumn.getColumn().setText("Copy as...");
-    destinationColumn.getColumn().setWidth(200);
+		TableViewerColumn sourceColumn = new TableViewerColumn(classpathEntriesViewer, SWT.NONE);
+		sourceColumn.getColumn().setText("Source ");
+		sourceColumn.getColumn().setWidth(299);
 
-    classpathEntriesViewer.setContentProvider(ArrayContentProvider.getInstance());
-    classpathEntriesViewer.setLabelProvider(new ClasspathEntryLabelProvider());
-    classpathEntriesViewer.addCheckStateListener(new ICheckStateListener() {
-      public void checkStateChanged(CheckStateChangedEvent event) {
-        refresh();
-      }
-    });
-    classpathEntriesViewer.setInput(classpathEntryPaths.entrySet());
-    classpathEntriesViewer.setAllChecked(true);
+		TableViewerColumn destinationColumn = new TableViewerColumn(classpathEntriesViewer, SWT.NONE);
+		destinationColumn.getColumn().setText("Copy as...");
+		destinationColumn.getColumn().setWidth(248);
 
-    
-    addSelectionButton(container, "Select All", true);
-	addSelectionButton(container, "Deselect All", false);
-	
-	keepSourceBtn = addCheckButton(container, "Keep source attachments", keepSources);
-	keepSourceBtn.setToolTipText("Source attachment paths may contain absolute paths");
-    addTableListeners();
+		classpathEntriesViewer.setContentProvider(ArrayContentProvider.getInstance());
+		classpathEntriesViewer.setLabelProvider(new ClasspathEntryLabelProvider());
+		classpathEntriesViewer.addCheckStateListener(new ICheckStateListener() {
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				refresh();
+			}
+		});
+		classpathEntriesViewer.setInput(classpathEntryPaths.entrySet());
+		classpathEntriesViewer.setAllChecked(true);
 
-  }
+		addSelectionButton(container, "Select All", true);
+		addSelectionButton(container, "Deselect All", false);
+		addResetButton(container, "Reset");
 
-  private Button addCheckButton(Composite container, String label, boolean selected) {
+		keepSourceBtn = addCheckButton(container, "Keep source attachments", keepSources);
+		keepSourceBtn.setToolTipText("Source attachment paths may contain absolute paths");
+		addTableListeners();
+
+	}
+
+	private Button addCheckButton(Composite container, String label,
+			boolean selected) {
 		Button checkBtn = new Button(container, SWT.CHECK);
 		checkBtn.setText(label);
-		checkBtn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER,
-				true, false, 2, 1));
+		checkBtn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
 		checkBtn.setSelection(selected);
 		return checkBtn;
-  }
-	
-  private void addTableListeners() {
-    addCellEditors();
-  }
-
-  protected void addCellEditors() {
-    classpathEntriesViewer.setColumnProperties(new String[] {
-        "EMPTY", SOURCE_PROPERTY, FILENAME_PROPERTY });
-
-    TextCellEditor ce = new TextCellEditor(classpathEntriesViewer.getTable()); 
-    CellEditor[] editors = new CellEditor[] {null, ce, ce };
-    	
-    classpathEntriesViewer.setCellEditors(editors);
-    classpathEntriesViewer.setCellModifier(new FileNameCellModifier());
-  }
-
-  public Map<IPath, String> getSelectedClasspathEntryPaths() {
-    return selectedClasspathEntryPaths;
-  }
-
-  public IFolder getLibFolder() {
-    return libFolder;
-  }
-
-  public boolean isKeepSources() {
-	return keepSources;
-  }
-
-  private static IFolder getLibFolderFromText(String text) {
-    String portablePath = text.replaceAll("\\\\", "/");
-    IPath path = new Path(portablePath);
-    return ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
-  }
-
-  @Override
-  protected void okPressed() {
-	if (!validate()) {
-		return;
 	}
-    libFolder = getLibFolderFromText(libfolderText.getText());
-    keepSources = keepSourceBtn.getSelection();
-    super.okPressed();
-  }
 
-  private boolean validate() {
-	  boolean valid = validateLibFolder() && validateEntries();
-	  if (valid) {
-		  setErrorMessage(null);
-	  }
-	  return valid;
-  }
-		
-  private boolean validateLibFolder() {
-	IFolder folder = getLibFolderFromText(libfolderText.getText());
-	String ancestorPath = folder.getFullPath().segment(0);
-    IResource ancestor = ResourcesPlugin.getWorkspace().getRoot().findMember(ancestorPath);
-    if (ancestor == null || !ancestor.exists()) {
-    	setErrorMessage(ancestorPath + " does not exist ");
-    	return false;
-    }
-    return true;
-  }
+	private void addTableListeners() {
+		addCellEditors();
+	}
 
-  private boolean validateEntries() {
-    Object[] selection = classpathEntriesViewer.getCheckedElements();
-    selectedClasspathEntryPaths = new LinkedHashMap<IPath, String>(selection.length);
-    for (Object o : selection) {
-      @SuppressWarnings("unchecked")
-      Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>)o;
-      if (entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
-	      String name = entry.getValue();
-	      if (!checkValidName(name)) {
-	    	  setErrorMessage(name + " is not a valid file name");
-	    	  return false;
-	      }
-      }
-      selectedClasspathEntryPaths.put(entry.getKey().getPath(),entry.getValue());
-    }
-    
-    Set<String> duplicates = findDuplicates(selectedClasspathEntryPaths.values()); 
-    if (!duplicates.isEmpty()) {
-  	  setErrorMessage("Duplicate entries found : "+duplicates.toString());
-  	  return false;
-    }
-  	return true;
-  }
+	protected void addCellEditors() {
+		classpathEntriesViewer.setColumnProperties(
+				new String[] { "EMPTY",	SOURCE_PROPERTY, FILENAME_PROPERTY });
 
-  private Set<String> findDuplicates(Collection<String> values) {
-	Set<String> uniqueNames = new HashSet<String>(values.size());
-	Set<String> duplicateNames = new HashSet<String>();
-	for (String name : values) {
-		if (!uniqueNames.add(name)) {
-			duplicateNames.add(name);
+		TextCellEditor ce = new TextCellEditor(	classpathEntriesViewer.getTable());
+		CellEditor[] editors = new CellEditor[] { null, ce, ce };
+		classpathEntriesViewer.setCellEditors(editors);
+		classpathEntriesViewer.setCellModifier(new FileNameCellModifier());
+	}
+
+	public Map<IPath, String> getSelectedClasspathEntryPaths() {
+		return selectedClasspathEntryPaths;
+	}
+
+	public IFolder getLibFolder() {
+		return libFolder;
+	}
+
+	public boolean isKeepSources() {
+		return keepSources;
+	}
+
+	private static IFolder getLibFolderFromText(String text) {
+		String portablePath = text.replaceAll("\\\\", "/");
+		IPath path = new Path(portablePath);
+		return ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+	}
+
+	@Override
+	protected void okPressed() {
+		if (!validate()) {
+			return;
+		}
+		libFolder = getLibFolderFromText(libfolderText.getText());
+		keepSources = keepSourceBtn.getSelection();
+		super.okPressed();
+	}
+
+	private boolean validate() {
+		boolean valid = validateLibFolder() && validateEntries();
+		if (valid) {
+			setErrorMessage(null);
+		}
+		return valid;
+	}
+
+	private boolean validateLibFolder() {
+		IFolder folder = getLibFolderFromText(libfolderText.getText());
+		String ancestorPath = folder.getFullPath().segment(0);
+		IResource ancestor = ResourcesPlugin.getWorkspace().getRoot()
+				.findMember(ancestorPath);
+		if (ancestor == null || !ancestor.exists()) {
+			setErrorMessage(ancestorPath + " does not exist ");
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validateEntries() {
+		Object[] selection = classpathEntriesViewer.getCheckedElements();
+		selectedClasspathEntryPaths = new LinkedHashMap<IPath, String>(
+				selection.length);
+		for (Object o : selection) {
+			@SuppressWarnings("unchecked")
+			Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) o;
+			if (entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
+				String name = entry.getValue();
+				if (!checkValidName(name)) {
+					setErrorMessage(name + " is not a valid file name");
+					return false;
+				}
+			}
+			selectedClasspathEntryPaths.put(entry.getKey().getPath(),
+					entry.getValue());
+		}
+
+		Set<String> duplicates = findDuplicates(selectedClasspathEntryPaths.values());
+		if (!duplicates.isEmpty()) {
+			setErrorMessage("Duplicate entries found : " + duplicates.toString());
+			return false;
+		}
+		return true;
+	}
+
+	private Set<String> findDuplicates(Collection<String> values) {
+		Set<String> uniqueNames = new HashSet<String>(values.size());
+		Set<String> duplicateNames = new HashSet<String>();
+		for (String name : values) {
+			if (!uniqueNames.add(name)) {
+				duplicateNames.add(name);
+			}
+		}
+		return duplicateNames;
+	}
+
+	private class ClasspathEntryLabelProvider extends LabelProvider implements
+			ITableLabelProvider {
+
+		private static final int SOURCE_COLUMN = 1;
+		private static final int FILENAME_COLUMN = 2;
+
+		public String getColumnText(Object element, int columnIndex) {
+			Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) element;
+			StringBuilder text = new StringBuilder();
+			if (entry != null) {
+				if (columnIndex == SOURCE_COLUMN) {
+					text.append(entry.getKey().getPath().lastSegment());
+				} else if (columnIndex == FILENAME_COLUMN) {
+					text.append(entry.getValue());
+				}
+			}
+
+			return text.toString();
+		}
+
+		@Override
+		public Image getColumnImage(Object element, int columnIndex) {
+			Image img = null;
+			if (columnIndex > 0) {
+				Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) element;
+				if (entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
+					img = jarImage;
+				} else {
+					img = projectImage;
+				}
+			}
+			return img;
 		}
 	}
-	return duplicateNames;
-}
 
-private class ClasspathEntryLabelProvider extends LabelProvider implements ITableLabelProvider {
-
-    private static final int SOURCE_COLUMN = 1;
-    private static final int FILENAME_COLUMN = 2;
-
-    public String getColumnText(Object element, int columnIndex) {
-      Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) element;
-      StringBuilder text = new StringBuilder();
-      if (entry != null) {
-        if (columnIndex == SOURCE_COLUMN) {
-          text.append(entry.getKey().getPath().lastSegment());
-        } else if (columnIndex == FILENAME_COLUMN){
-          text.append(entry.getValue());
-        }
-      }
-
-       return text.toString();
-    }
-
-    @Override
-    public Image getColumnImage(Object element, int columnIndex) {
-      Image img = null;
-      if (columnIndex > 0) {
-        Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) element;
-        if (entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
-          img = jarImage;
-        } else {
-          img = projectImage;
-        }
-      }
-      return img;
-    }
-  }
-
-  private Button addSelectionButton(Composite container, String label, final boolean ischecked) {
+	private Button addSelectionButton(Composite container, String label,
+			final boolean ischecked) {
 		Button button = new Button(container, SWT.NONE);
-		button.setLayoutData(new GridData(SWT.FILL, SWT.UP,
-				false, false, 1, 1));
+		button.setLayoutData(new GridData(SWT.FILL, SWT.UP, false, false, 1, 1));
 		button.setText(label);
 		button.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
@@ -400,60 +397,81 @@ private class ClasspathEntryLabelProvider extends LabelProvider implements ITabl
 
 			}
 		});
-		
+
 		return button;
 	}
-  
-  protected void refresh() {
-	  classpathEntriesViewer.refresh();
-  }
 
-  private class FileNameCellModifier implements ICellModifier {
+	private Button addResetButton(Composite container, String label) {
+		Button button = new Button(container, SWT.NONE);
+		button.setLayoutData(new GridData(SWT.FILL, SWT.UP, false, false, 1, 1));
+		button.setText(label);
+		button.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				initClasspathEntryPaths();
+				classpathEntriesViewer.setInput(classpathEntryPaths.entrySet());
+				classpathEntriesViewer.setAllChecked(true);
+				refresh();
+			}
 
-    public boolean canModify(Object element, String property) {
-      Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) element;
-      return (entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) && 
-    		  (FILENAME_PROPERTY.equals(property) || SOURCE_PROPERTY.equals(property)) ;
-    }
+			public void widgetDefaultSelected(SelectionEvent e) {
 
-    public Object getValue(Object element, String property) {
-      Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) element;
-      //if(entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
-        if (property.equals(SOURCE_PROPERTY)) {
-          return entry.getKey().getPath().toOSString();
-        } else if (property.equals(FILENAME_PROPERTY)) {
-          return entry.getValue();
-        }
-      //}
-      return ""; //$NON-NLS-1$
-    }
+			}
+		});
 
-    public void modify(Object element, String property, Object value) {
-      if (property.equals(FILENAME_PROPERTY)) {
-        TableItem item = (TableItem)element;
-        Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) item.getData();
-        if(entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
-          String name = value.toString();
-          entry.setValue(name);
-          validate();
-          classpathEntriesViewer.refresh();
-        }
-      }
-    }
-  }
+		return button;
+	}
+
+	protected void refresh() {
+		classpathEntriesViewer.refresh();
+	}
+
+	private class FileNameCellModifier implements ICellModifier {
+
+		public boolean canModify(Object element, String property) {
+			Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) element;
+			return (entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY)
+					&& (FILENAME_PROPERTY.equals(property) || SOURCE_PROPERTY
+							.equals(property));
+		}
+
+		public Object getValue(Object element, String property) {
+			Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) element;
+			// if(entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY)
+			// {
+			if (property.equals(SOURCE_PROPERTY)) {
+				return entry.getKey().getPath().toOSString();
+			} else if (property.equals(FILENAME_PROPERTY)) {
+				return entry.getValue();
+			}
+			// }
+			return ""; //$NON-NLS-1$
+		}
+
+		public void modify(Object element, String property, Object value) {
+			if (property.equals(FILENAME_PROPERTY)) {
+				TableItem item = (TableItem) element;
+				Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) item
+						.getData();
+				if (entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
+					String name = value.toString();
+					entry.setValue(name);
+					validate();
+					classpathEntriesViewer.refresh();
+				}
+			}
+		}
+	}
 
 	public boolean checkValidName(String name) {
-		//TODO checks for :
+		// TODO checks for :
 		// - duplicates
 		// - existing CPE
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IStatus result = workspace.validateName(name, IResource.FILE);
 		if (!result.isOK()) {
-			 return false;
+			return false;
 		}
-		return  !name.contains("\\") &&
-				(name.endsWith(".jar") || name.endsWith(".zip"));
+		return !name.contains("\\")
+				&& (name.endsWith(".jar") || name.endsWith(".zip"));
 	}
-
-	
 }
