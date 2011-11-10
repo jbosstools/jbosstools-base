@@ -25,4 +25,6 @@ for a full listing of individual contributors.
 	<plugin id="org.jboss.tools.common.validation.test.source" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.verification.test.source" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.verification.ui.test.source" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.common.ui.test.source" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.common.mylyn.test.source" download-size="0" install-size="0" version="0.0.0" />
 </feature>
