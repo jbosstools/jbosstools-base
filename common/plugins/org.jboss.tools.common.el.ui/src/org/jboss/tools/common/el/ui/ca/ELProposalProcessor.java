@@ -562,8 +562,18 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		String proposalSufix = ""; //$NON-NLS-1$
 		String elStartChar = "#"; //$NON-NLS-1$
 		String documentContent = ref.getELModel().getSource();
-		// Is '}'-bracket exists? If not - add the 
-		if(getELEndPosition(offset - ref.getStartPosition(), documentContent) == -1) {
+		// Is '#{', or '${', or '}'-bracket exists? If not - add the 
+		int elEndPosition = documentContent.indexOf("#{", offset - ref.getStartPosition()); //$NON-NLS-1$
+		int limit = documentContent.indexOf("${", offset - ref.getStartPosition()); //$NON-NLS-1$
+		if (limit != -1 && elEndPosition != -1 && limit < elEndPosition) {
+			elEndPosition = limit;
+		}
+		limit = documentContent.indexOf('}', offset - ref.getStartPosition());
+		if (limit != -1 && elEndPosition != -1 && limit < elEndPosition) {
+			elEndPosition = limit+1;
+		}
+		String restOfEL = elEndPosition == -1 ? "" : documentContent.substring(offset - ref.getStartPosition(), elEndPosition); //$NON-NLS-1$
+		if(restOfEL.indexOf('}') == -1) {
 			proposalSufix = "}"; //$NON-NLS-1$
 		}
 
@@ -578,7 +588,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 				Image image = kbProposal.hasImage() ? kbProposal.getImage()
 						: getImage();
 				if (string.length() >= 0) {
-					string = proposalPrefix + string + proposalSufix;
+					string = proposalPrefix + string;
 					if (string.length() > 0 && ('#' == string.charAt(0) || '$' == string.charAt(0)))
                 		string = elStartChar + string.substring(1);
 
@@ -592,11 +602,25 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 						source = (MessagesELTextProposal)kbProposal;
 					}
 
-					if (string.startsWith("['") && string.endsWith("']") && prefix != null && prefix.endsWith(".")) {  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-						String newPrefix = prefix.substring(0, prefix.length() - 1);
-						resultList.add(new Proposal(string, prefix, newPrefix, offset, offset - 1 + string.length() - proposalSufix.length(), image,
+					if (string.startsWith("[") && prefix != null && prefix.indexOf('.') != -1) {  //$NON-NLS-1$
+						String newPrefix = prefix.substring(0, prefix.lastIndexOf('.'));
+						if (string.indexOf('\'') != -1 && restOfEL.indexOf('\'') != -1) // Exclude last quote if this char already exists
+							string = string.substring(0, string.lastIndexOf('\''));
+						
+						if (string.indexOf(']') == -1 && restOfEL.indexOf(']') == -1) // Add closing square bracket if needed
+							string += ']';
+					
+						string +=  proposalSufix;
+						resultList.add(new Proposal(string, prefix, newPrefix, offset, offset - (prefix.length() - newPrefix.length()) + string.length() - proposalSufix.length(), image,
 								kbProposal.getLabel(), additionalProposalInfo, javaElements, source));
 					} else {
+						if (string.indexOf('\'') != -1 && restOfEL.indexOf('\'') != -1) // Exclude last quote if this char already exists
+							string = string.substring(0, string.lastIndexOf('\''));
+						
+						if (string.indexOf(']') == -1 && restOfEL.indexOf(']') == -1) // Add closing square bracket if needed
+							string += ']';
+							
+						string +=  proposalSufix;
 						resultList.add(new Proposal(string, prefix, offset, offset + string.length() - proposalSufix.length(), image, 
 								kbProposal.getLabel(), additionalProposalInfo, javaElements, source));
 					}
@@ -622,13 +646,49 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 	}
 
 	/*
+	 * @return non-paired quote char if exists, otherwise 0
+	 */
+	private char getPreceedingQuoteChar(int initialOffset, String restOfCurrentValue) {
+		int offset = initialOffset;
+
+		char inQuotesChar = 0;
+		while (--offset >= 0) {
+			if ('"' == restOfCurrentValue.charAt(offset) || 
+    				'\'' == restOfCurrentValue.charAt(offset) && 
+    				(inQuotesChar == 0 || inQuotesChar == restOfCurrentValue.charAt(offset))) {
+				if (initialOffset + offset > 0 && restOfCurrentValue.charAt(offset - 1) == '\\') {
+	                int backslashCount = 1;
+	                while ((offset - backslashCount) >= 0 && 
+	                		restOfCurrentValue.charAt(offset - backslashCount) == '\\') {
+	                    backslashCount++;
+	                }
+            
+	                if (backslashCount % 2 == 1) {
+	                    inQuotesChar = inQuotesChar == 0 ? restOfCurrentValue.charAt(offset) : 0;
+	                    offset -= backslashCount;
+	                }
+				} else {
+					inQuotesChar = inQuotesChar == 0 ? restOfCurrentValue.charAt(offset) : 0;
+				}
+			} else if ('{' == restOfCurrentValue.charAt(offset)) {
+				if (offset > 0 && 
+						('#' == restOfCurrentValue.charAt(offset -1) || 
+						'$' == restOfCurrentValue.charAt(offset -1))) {
+					return inQuotesChar;
+				}
+			}
+		}
+		return inQuotesChar;
+	}
+	
+	/*
 	 * Checks if the EL operand ending character is present
 	 * @return
 	 */
 	private int getELEndPosition(int initialOffset, String restOfCurrentValue) {
 		int offset = -1;
 
-		char inQuotesChar = 0;
+		char inQuotesChar = getPreceedingQuoteChar(initialOffset, restOfCurrentValue);
 		while (++offset < restOfCurrentValue.length() - initialOffset) {
 			if (inQuotesChar == 0) {
 				if ('}' == restOfCurrentValue.charAt(initialOffset + offset))
