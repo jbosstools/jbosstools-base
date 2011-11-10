@@ -49,7 +49,7 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
 		layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
 		layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
-		
+
 		// views - search
 		layout.addShowViewShortcut(ID_SEARCH_VIEW);
 		// views - debugging
