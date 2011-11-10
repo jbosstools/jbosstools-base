@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2009 Red Hat, Inc. 
+ * Copyright (c) 2009-2011 Red Hat, Inc. 
  * Distributed under license by Red Hat, Inc. All rights reserved. 
  * This program is made available under the terms of the 
  * Eclipse Public License v1.0 which accompanies this distribution, 
@@ -42,6 +42,7 @@ public class TextProposal {
 	private Image image;
 	private boolean emptyImage = true;
 	private String replacementString;
+	private String alternateMatch = null;
 	private boolean emptyContextInfo = true;
 	private int relevance = R_NONE;
 	private int position = -1;
@@ -358,6 +359,14 @@ public class TextProposal {
 	 */
 	public void setSource(Object source) {
 		this.source = source;
+	}
+
+	public String getAlternateMatch() {
+		return alternateMatch;
+	}
+
+	public void setAlternateMatch(String alternateMatch) {
+		this.alternateMatch = alternateMatch;
 	}
 
 	public static final Comparator<TextProposal> KB_PROPOSAL_ORDER = new TextProposalComparator();

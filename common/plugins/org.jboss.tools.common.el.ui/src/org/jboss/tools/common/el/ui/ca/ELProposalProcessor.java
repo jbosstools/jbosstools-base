@@ -13,12 +13,16 @@ package org.jboss.tools.common.el.ui.ca;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.JavaModelException;
@@ -57,11 +61,14 @@ import org.eclipse.wst.xml.ui.internal.util.SharedXMLEditorPluginImageHelper;
 import org.jboss.tools.common.el.core.ELReference;
 import org.jboss.tools.common.el.core.ca.AbstractELCompletionEngine;
 import org.jboss.tools.common.el.core.ca.ELTextProposal;
+import org.jboss.tools.common.el.core.ca.MessagesELTextProposal;
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.resolver.ELContext;
 import org.jboss.tools.common.el.core.resolver.ELResolver;
 import org.jboss.tools.common.el.core.resolver.ELResolverFactoryManager;
 import org.jboss.tools.common.el.ui.ElUiPlugin;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.filesystems.impl.JarSystemImpl;
 import org.jboss.tools.common.text.TextProposal;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.jboss.tools.common.util.EclipseUIUtil;
@@ -91,6 +98,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		private String fDisplayString;
 		private String fAdditionalProposalInfo;
 		private IJavaElement[] fJavaElements;
+		private MessagesELTextProposal fPropertySource;
 
 		private Image fImage;
 
@@ -99,18 +107,18 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		}
 
 		public Proposal(String string, String prefix, int offset, int newPosition) {
-			this(string, prefix, prefix, offset, offset + string.length(), null, null, null, null);
+			this(string, prefix, prefix, offset, offset + string.length(), null, null, null, null, null);
 		}
 
-		public Proposal(String string, String prefix, int offset, int newPosition, Image image, String displayString, String additionalProposalInfo, IJavaElement[] javaElements) {
-			this(string, prefix, prefix, offset, offset + string.length(), image, displayString, additionalProposalInfo, javaElements);
+		public Proposal(String string, String prefix, int offset, int newPosition, Image image, String displayString, String additionalProposalInfo, IJavaElement[] javaElements, MessagesELTextProposal propertySource) {
+			this(string, prefix, prefix, offset, offset + string.length(), image, displayString, additionalProposalInfo, javaElements, propertySource);
 		}
 
 		public Proposal(String string, String prefix, String newPrefix, int offset, int newPosition) {
-			this(string, prefix, newPrefix, offset, newPosition, null, null, null, null);
+			this(string, prefix, newPrefix, offset, newPosition, null, null, null, null, null);
 		}
 
-		public Proposal(String string, String prefix, String newPrefix, int offset, int newPosition, Image image, String displayString, String additionalProposalInfo, IJavaElement[] javaElements) {
+		public Proposal(String string, String prefix, String newPrefix, int offset, int newPosition, Image image, String displayString, String additionalProposalInfo, IJavaElement[] javaElements, MessagesELTextProposal propertySource) {
 			fString = string;
 			fPrefix = prefix;
 			fNewPrefix = newPrefix;
@@ -122,6 +130,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 			fJavaElements = javaElements;
 			if (fJavaElements != null && fJavaElements.length > 0) 
 				fAdditionalProposalInfo = null; // Drop it due to valculate it later based on java elements
+			fPropertySource = propertySource;
 		}
 
 		/*
@@ -145,6 +154,8 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 			if (fAdditionalProposalInfo == null) {
 				if (this.fJavaElements != null && this.fJavaElements.length > 0) {
 					this.fAdditionalProposalInfo = extractProposalContextInfo(fJavaElements);
+				} else if (fPropertySource != null) {
+					this.fAdditionalProposalInfo = extractProposalContextInfo(fPropertySource);
 				}
 			}
 			if (fAdditionalProposalInfo == null) 
@@ -204,6 +215,23 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 			}
 
 			return null;
+		}
+
+		/*
+		 * Extracts the additional proposal information based on Javadoc for the stored IJavaElement objects
+		 */
+		private String extractProposalContextInfo(MessagesELTextProposal propertySource) {
+			String propertyName = propertySource.getPropertyName();
+			String baseName = propertySource.getBaseName();
+			List<XModelObject> objects = (List<XModelObject>)propertySource.getAllObjects();
+			
+			String info = getELMessagesHoverInternal(baseName, propertyName, objects);
+			if (info == null) return null;
+
+			StringBuffer buffer= new StringBuffer(info);
+			HTMLPrinter.insertPageProlog(buffer, 0, (String)null);
+			HTMLPrinter.addPageEpilog(buffer);
+			return buffer.toString();
 		}
 
 		private static final long LABEL_FLAGS=  JavaElementLabels.ALL_FULLY_QUALIFIED
@@ -554,19 +582,23 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 					if (string.length() > 0 && ('#' == string.charAt(0) || '$' == string.charAt(0)))
                 		string = elStartChar + string.substring(1);
 
-					String additionalProposalInfo = (kbProposal.getContextInfo() == null ? "" : kbProposal.getContextInfo()); //$NON-NLS-1$
+					String additionalProposalInfo = kbProposal.getContextInfo();
 					IJavaElement[] javaElements = null;
+					MessagesELTextProposal source = null;
+					
 					if (kbProposal instanceof ELTextProposal) {
 						javaElements = ((ELTextProposal)kbProposal).getAllJavaElements();
+					} else if (kbProposal instanceof MessagesELTextProposal) {
+						source = (MessagesELTextProposal)kbProposal;
 					}
 
 					if (string.startsWith("['") && string.endsWith("']") && prefix != null && prefix.endsWith(".")) {  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 						String newPrefix = prefix.substring(0, prefix.length() - 1);
 						resultList.add(new Proposal(string, prefix, newPrefix, offset, offset - 1 + string.length() - proposalSufix.length(), image,
-								kbProposal.getLabel(), additionalProposalInfo, javaElements));
+								kbProposal.getLabel(), additionalProposalInfo, javaElements, source));
 					} else {
 						resultList.add(new Proposal(string, prefix, offset, offset + string.length() - proposalSufix.length(), image, 
-								kbProposal.getLabel(), additionalProposalInfo, javaElements));
+								kbProposal.getLabel(), additionalProposalInfo, javaElements, source));
 					}
 				}
 			}
@@ -760,4 +792,78 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 	public String getErrorMessage() {
 		return null; // no custom error message
 	}
+	
+	public static String getELMessagesHoverInternal(String baseName, String propertyName, List<XModelObject> objects) {
+		StringBuffer buffer= new StringBuffer();
+
+		if (propertyName != null && propertyName.length() > 0) 
+			buffer.append(MessageFormat.format(Messages.ELInfoHover_propertyName, 
+				propertyName));
+			
+		if (baseName != null && baseName.length() > 0)
+			buffer.append(MessageFormat.format(Messages.ELInfoHover_baseName, 
+					baseName));
+		
+		if (objects != null) {
+			boolean firstValue = true;
+			for (XModelObject o : objects) {
+				IFile propFile = (IFile)o.getAdapter(IFile.class);
+				String propFilePath = null;
+				if (propFile != null) {
+					propFilePath = propFile.getFullPath().toString();
+				} else {
+					XModelObject parent = o.getFileType() == XModelObject.FILE ? o : o.getParent();
+					String path = parent.getPath();
+					while (parent != null && parent.getFileType() != XModelObject.SYSTEM) {
+						parent = parent.getParent();
+					}
+					if (parent instanceof JarSystemImpl) {
+						String sysPath = parent.getPath();
+						path = path.substring(sysPath.length());
+	
+						String jarPath = ((JarSystemImpl) parent).getLocation();
+						
+						IResource jar = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(jarPath));
+						
+						if (jar != null) {
+							jarPath = jar.getFullPath().toString();
+						}
+						
+						propFilePath = jarPath + "!" + path; //$NON-NLS-1$
+					}
+				}
+				buffer.append(Messages.ELInfoHover_newLine);
+				if (!firstValue) buffer.append(Messages.ELInfoHover_newLine);
+				else firstValue = false;
+				
+				buffer.append(MessageFormat.format(Messages.ELInfoHover_resourceBundle, 
+						propFilePath != null ? propFilePath : Messages.ELInfoHover_resourceBundleNotDefined));
+				
+				if (propertyName != null) {
+					String value = o.get("VALUE");  //$NON-NLS-1$
+					boolean addCut = false;
+					if (value != null) {
+						if (value.length() > 100) {
+							// Get first words of value
+							int lastSpace = value.lastIndexOf(' ', 99);
+							if (lastSpace != -1) {
+								value = value.substring(0, lastSpace);
+							} else { // cut as is
+								value = value.substring(0, 100);
+							}
+							addCut = true;
+						}
+					}
+					buffer.append(Messages.ELInfoHover_newLine);
+					buffer.append(MessageFormat.format(Messages.ELInfoHover_resourceBundlePropertyValue, 
+							value != null ? value : Messages.ELInfoHover_resourceBundlePropertyValueNotDefined,
+									addCut ? Messages.ELInfoHover_treeDots : "")); //$NON-NLS-1$
+//					sb.append(Messages.ELInfoHover_newLine);
+				}
+			}
+		}
+
+		return buffer.length() == 0 ? null : buffer.toString();
+	}
+
 }

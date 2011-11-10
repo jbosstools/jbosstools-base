@@ -1128,26 +1128,6 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		return unique;
 	}
 	
-	/**
-	 * Cuts of the starting and ending quotes from a given text value
-	 * 
-	 * @param Quoted text value
-	 * @return Non-quoted text value 
-	 */
-	public static String trimQuotes(String value) {
-		if(value == null)
-			return null;
-
-		if(value.startsWith("'") || value.startsWith("\"")) {  //$NON-NLS-1$ //$NON-NLS-2$
-			value = value.substring(1);
-		} 
-		
-		if(value.endsWith("'") || value.endsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
-			value = value.substring(0, value.length() - 1);
-		}
-		return value;
-	}
-	
 	public static LexicalToken combineLexicalTokensForExpression(ELInvocationExpression expr) {
 		// Create a combined lexical token to store all the variable name (not only the name before first dot, but all the name including all the words and dots)
 		int variableTokenType = expr.getFirstToken().getType();

@@ -302,7 +302,8 @@ public class HyperlinkPartitionerBuilder extends RegistryReader {
 		return (HyperlinkPartitionerDefinition[])fPartitionerDefs.toArray(new HyperlinkPartitionerDefinition[fPartitionerDefs.size()]);
 	}
 	
-	private String getBaseContentType(String contentType) {
+	public String getBaseContentType(String contentType) {
+		initCache();
 		if (contentType == null)
 			return null;
 

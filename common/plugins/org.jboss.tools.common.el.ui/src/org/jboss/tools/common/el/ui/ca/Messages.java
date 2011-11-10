@@ -30,4 +30,14 @@ public class Messages  extends NLS {
 	}
 
 	public static String NO_JAVADOC;
+	
+	public static String ELInfoHover_baseName; 
+	public static String ELInfoHover_propertyName;
+	public static String ELInfoHover_resourceBundle; 
+	public static String ELInfoHover_resourceBundlePropertyValue;
+	public static String ELInfoHover_resourceBundlePropertyValueNotDefined; 
+	public static String ELInfoHover_resourceBundleNotDefined;
+	public static String ELInfoHover_newLine;
+	public static String ELInfoHover_treeDots;
+
 }
