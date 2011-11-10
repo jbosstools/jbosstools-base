@@ -8,15 +8,17 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/ 
-package org.jboss.tools.common.internal.ui.preferencevalue;
+package org.jboss.tools.common.ui;
 
+import org.jboss.tools.common.internal.ui.preferencevalue.StringsPreferenceValueTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	StringsPreferenceValueTest.class
+	StringsPreferenceValueTest.class,
+	JBossPerspectiveTest.class
 })
 /**
  * @author André Dietisheim
