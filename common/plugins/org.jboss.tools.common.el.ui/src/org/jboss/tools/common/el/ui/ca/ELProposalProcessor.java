@@ -96,6 +96,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		private final int fOffset;
 		private int fNewPosition;
 		private String fDisplayString;
+		private String fAlternateMatch;
 		private String fAdditionalProposalInfo;
 		private IJavaElement[] fJavaElements;
 		private MessagesELTextProposal fPropertySource;
@@ -107,18 +108,18 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		}
 
 		public Proposal(String string, String prefix, int offset, int newPosition) {
-			this(string, prefix, prefix, offset, offset + string.length(), null, null, null, null, null);
+			this(string, prefix, prefix, offset, offset + string.length(), null, null, null, null, null, null);
 		}
 
-		public Proposal(String string, String prefix, int offset, int newPosition, Image image, String displayString, String additionalProposalInfo, IJavaElement[] javaElements, MessagesELTextProposal propertySource) {
-			this(string, prefix, prefix, offset, offset + string.length(), image, displayString, additionalProposalInfo, javaElements, propertySource);
+/**/	public Proposal(String string, String prefix, int offset, int newPosition, Image image, String displayString, String alternateMatch, String additionalProposalInfo, IJavaElement[] javaElements, MessagesELTextProposal propertySource) {
+			this(string, prefix, prefix, offset, offset + string.length(), image, displayString, alternateMatch, additionalProposalInfo, javaElements, propertySource);
 		}
 
 		public Proposal(String string, String prefix, String newPrefix, int offset, int newPosition) {
-			this(string, prefix, newPrefix, offset, newPosition, null, null, null, null, null);
+			this(string, prefix, newPrefix, offset, newPosition, null, null, null, null, null, null);
 		}
 
-		public Proposal(String string, String prefix, String newPrefix, int offset, int newPosition, Image image, String displayString, String additionalProposalInfo, IJavaElement[] javaElements, MessagesELTextProposal propertySource) {
+/**/	public Proposal(String string, String prefix, String newPrefix, int offset, int newPosition, Image image, String displayString, String alternateMatch, String additionalProposalInfo, IJavaElement[] javaElements, MessagesELTextProposal propertySource) {
 			fString = string;
 			fPrefix = prefix;
 			fNewPrefix = newPrefix;
@@ -126,6 +127,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 			fNewPosition = newPosition;
 			fImage = image;
 			fDisplayString = displayString;
+			fAlternateMatch = alternateMatch;
 			fAdditionalProposalInfo = additionalProposalInfo;
 			fJavaElements = javaElements;
 			if (fJavaElements != null && fJavaElements.length > 0) 
@@ -405,7 +407,9 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		public boolean validate(IDocument document, int offset, DocumentEvent event) {
 			try {
 				int prefixStart= fOffset - fPrefix.length();
-				return offset >= fOffset && offset < fOffset + fString.length() && document.get(prefixStart, offset - (prefixStart)).equals((fPrefix + fString).substring(0, offset - prefixStart));
+				return offset >= fOffset && 
+						((offset < fOffset + fString.length() && document.get(prefixStart, offset - (prefixStart)).equals((fPrefix + fString).substring(0, offset - prefixStart))) || 
+								(fAlternateMatch != null && offset < fOffset + fAlternateMatch.length() && document.get(prefixStart, offset - (prefixStart)).equals((fPrefix + fAlternateMatch).substring(0, offset - prefixStart))));
 			} catch (BadLocationException x) {
 				return false;
 			} 
@@ -451,6 +455,14 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		 */
 		public int getRelevance() {
 			return TextProposal.R_JSP_JSF_EL_VARIABLE_ATTRIBUTE_VALUE+10;
+		}
+
+		public String getfAlternateMatch() {
+			return fAlternateMatch;
+		}
+
+		public void setfAlternateMatch(String fAlternateMatch) {
+			this.fAlternateMatch = fAlternateMatch;
 		}
 
 	}
@@ -612,7 +624,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 					
 						string +=  proposalSufix;
 						resultList.add(new Proposal(string, prefix, newPrefix, offset, offset - (prefix.length() - newPrefix.length()) + string.length() - proposalSufix.length(), image,
-								kbProposal.getLabel(), additionalProposalInfo, javaElements, source));
+								kbProposal.getLabel(), kbProposal.getAlternateMatch(), additionalProposalInfo, javaElements, source));
 					} else {
 						if (string.indexOf('\'') != -1 && restOfEL.indexOf('\'') != -1) // Exclude last quote if this char already exists
 							string = string.substring(0, string.lastIndexOf('\''));
@@ -622,7 +634,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 							
 						string +=  proposalSufix;
 						resultList.add(new Proposal(string, prefix, offset, offset + string.length() - proposalSufix.length(), image, 
-								kbProposal.getLabel(), additionalProposalInfo, javaElements, source));
+								kbProposal.getLabel(), kbProposal.getAlternateMatch(), additionalProposalInfo, javaElements, source));
 					}
 				}
 			}
