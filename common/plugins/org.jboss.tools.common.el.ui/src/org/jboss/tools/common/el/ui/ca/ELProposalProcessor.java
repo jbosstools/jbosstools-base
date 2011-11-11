@@ -581,7 +581,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 			elEndPosition = limit;
 		}
 		limit = documentContent.indexOf('}', offset - ref.getStartPosition());
-		if (limit != -1 && elEndPosition != -1 && limit < elEndPosition) {
+		if (limit != -1 && (elEndPosition == -1 || (elEndPosition != -1 && limit < elEndPosition))) {
 			elEndPosition = limit+1;
 		}
 		String restOfEL = elEndPosition == -1 ? "" : documentContent.substring(offset - ref.getStartPosition(), elEndPosition); //$NON-NLS-1$
