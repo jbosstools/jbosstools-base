@@ -295,6 +295,10 @@ public class ELParserImpl {
 				ELPropertyInvocationImpl incompleteProperty = new ELPropertyInvocationImpl();
 				incompleteProperty.setSeparator(dot);
 				incompleteProperty.setLastToken(dot);
+				LexicalToken n = dot.getNextToken();
+				if(n != null && n.getType() == WhiteSpaceTokenDescription.WHITESPACE) {
+					incompleteProperty.setLastToken(n);
+				}
 				incompleteProperty.setLeft(result);
 				incompleteProperty.setLeftIsFake(isLeftFake);
 				result = incompleteProperty;

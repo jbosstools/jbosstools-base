@@ -56,7 +56,9 @@ import org.jboss.tools.common.el.core.resolver.TypeInfoCollector;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberPresentation;
 import org.jboss.tools.common.el.core.resolver.Var;
+import org.jboss.tools.common.el.internal.core.model.ELPropertyInvocationImpl;
 import org.jboss.tools.common.el.internal.core.parser.token.JavaNameTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.WhiteSpaceTokenDescription;
 import org.jboss.tools.common.text.TextProposal;
 
 public abstract class AbstractELCompletionEngine<V extends IVariable> implements ELResolver, ELCompletionEngine {
@@ -93,6 +95,25 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						el = el + ref.getSourceText().substring(ie.getStartPosition(), offset - ref.getStartPosition());
 					}
 					return getProposals(context, el, offset);
+				}
+			}
+			List<ELInstance> is = ref.getELModel().getInstances();
+			for (ELInstance i: is) {
+				ELExpression exp = i.getExpression();
+				if(exp == null || exp.getFirstToken() == null) {
+					continue;
+				}
+				LexicalToken b = exp.getFirstToken();
+				while(b.getPreviousToken() != null && b.getPreviousToken().getType() == WhiteSpaceTokenDescription.WHITESPACE) {
+					b = b.getPreviousToken();
+				}
+				LexicalToken e = exp.getLastToken();
+				if(e == null) e = b;
+				while(e.getNextToken() != null && e.getNextToken().getType() == WhiteSpaceTokenDescription.WHITESPACE) {
+					e = e.getNextToken();
+				}
+				if(exp != null && ref.getStartPosition() + b.getStart() <= offset && ref.getStartPosition() + e.getStart() + e.getLength() >= offset) {
+					return getProposals(context, "#{", offset);
 				}
 			}
 		}
