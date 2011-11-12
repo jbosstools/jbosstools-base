@@ -13,7 +13,6 @@ package org.jboss.tools.common.util;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -23,7 +22,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -184,9 +182,14 @@ public final class FileUtil {
                 if(l < 0) break;
                 sb.append(new String(b, 0, l));
             }
-            is.close();
         } catch (IOException e) {
         	CommonPlugin.getPluginLog().logError(e);
+        } finally {
+            try {
+				is.close();
+			} catch (IOException e) {
+				// Ignore
+			}
         }
         return sb.toString();
     }
@@ -222,10 +225,16 @@ public final class FileUtil {
                 if(l < 0) break;
                 sb.append(new String(b, 0, l, charset));
             }
-            is.close();
         } catch (IOException e) {
         	CommonPlugin.getPluginLog().logError(e);
+        } finally {
+            try {
+				is.close();
+			} catch (IOException e) {
+				// Ignore
+			}
         }
+
         return sb.toString();
     }
 
