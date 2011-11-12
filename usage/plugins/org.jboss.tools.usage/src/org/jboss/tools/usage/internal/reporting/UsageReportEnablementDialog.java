@@ -34,9 +34,14 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	private boolean reportEnabled;
 	private IUsageBranding branding;
-	private ForceActiveShellAdapter forceActiveShellAdapter = new ForceActiveShellAdapter();
+	//private ForceActiveShellAdapter forceActiveShellAdapter = new ForceActiveShellAdapter();
 	
 	public UsageReportEnablementDialog(IShellProvider parentShell, IUsageBranding branding) {
+		super(parentShell);
+		this.branding = branding;
+	}
+	
+	public UsageReportEnablementDialog(Shell parentShell, IUsageBranding branding) {
 		super(parentShell);
 		this.branding = branding;
 	}
@@ -64,12 +69,12 @@ public class UsageReportEnablementDialog extends Dialog {
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(branding.getStartupAllowReportingTitle());
-		forceActiveShellAdapter.attachTo(shell);
+		//forceActiveShellAdapter.attachTo(shell);
 	}
 
 	@Override
 	public boolean close() {
-		forceActiveShellAdapter.removeFrom(getShell());
+		//forceActiveShellAdapter.removeFrom(getShell());
 		return super.close();
 		
 	}
@@ -113,27 +118,27 @@ public class UsageReportEnablementDialog extends Dialog {
 		return reportEnabled;
 	}
 
-	private class ForceActiveShellAdapter extends ShellAdapter {
-
-		public void shellDeactivated(ShellEvent e) {
-			Shell shell = getShell();
-			if (shell != null
-					&& !shell.isDisposed())
-			shell.forceActive();
-		}
-		
-		private void attachTo(Shell shell) {
-			if (shell != null
-					&& !shell.isDisposed()) {
-				shell.addShellListener(this);
-			}
-		}
-
-		private void removeFrom(Shell shell) {
-			if (shell != null
-					&& !shell.isDisposed()) {
-				shell.removeShellListener(this);
-			}
-		}
-	}
+//	private class ForceActiveShellAdapter extends ShellAdapter {
+//
+//		public void shellDeactivated(ShellEvent e) {
+//			Shell shell = getShell();
+//			if (shell != null
+//					&& !shell.isDisposed())
+//			shell.forceActive();
+//		}
+//		
+//		private void attachTo(Shell shell) {
+//			if (shell != null
+//					&& !shell.isDisposed()) {
+//				shell.addShellListener(this);
+//			}
+//		}
+//
+//		private void removeFrom(Shell shell) {
+//			if (shell != null
+//					&& !shell.isDisposed()) {
+//				shell.removeShellListener(this);
+//			}
+//		}
+//	}
 }
