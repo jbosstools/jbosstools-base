@@ -66,7 +66,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	public SearchRuntimePathDialog(Shell parent, Set<RuntimePath> runtimePaths, boolean needRefresh, int heightHint) {
 		super(parent);
 		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
-			 | SWT.RESIZE | getDefaultOrientation());
+			 | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
 		this.runtimePaths = runtimePaths;
 		this.needRefresh = needRefresh;
 		this.heightHint = heightHint;

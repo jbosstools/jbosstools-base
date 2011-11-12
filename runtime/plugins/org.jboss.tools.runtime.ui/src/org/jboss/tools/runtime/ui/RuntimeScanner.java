@@ -51,7 +51,7 @@ public class RuntimeScanner implements IStartup {
 				if (exists) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
-							Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+							Shell shell = Display.getCurrent().getActiveShell();
 							RuntimeUIActivator.refreshRuntimes(shell, RuntimeUIActivator.getDefault().getRuntimePaths(), null, false, 7);
 						}
 					});
