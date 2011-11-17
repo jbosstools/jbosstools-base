@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMarkerResolution2;
 import org.eclipse.ui.dialogs.PreferencesUtil;
@@ -59,7 +60,7 @@ public class ConfigureProblemSeverityMarkerResolution implements
 	}
 
 	public Image getImage() {
-		return null;
+		return JavaPluginImages.DESC_ELCL_CONFIGURE_PROBLEM_SEVERITIES.createImage();
 	}
 
 }
