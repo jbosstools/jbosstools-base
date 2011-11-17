@@ -100,4 +100,9 @@ public class TestValidator extends ValidationErrorManager implements IValidator 
 	public String getMarkerType() {
 		return ValidationErrorManager.DEFAULT_VALIDATION_MARKER;
 	}
+
+	@Override
+	protected String getPreferencePageId() {
+		return null;
+	}
 }

@@ -73,6 +73,8 @@ public final class CommonUIMessages extends NLS {
 	public static String URLSTRINGVALIDATOR_NOT_A_VALID_URL;
 	
 	public static String MANDATORYSTRING_VALIDATOR_MUST_PROVIDE_VALUE;
+	
+	public static String CONFIGURE_PROBLEM_SEVERITY;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, CommonUIMessages.class);

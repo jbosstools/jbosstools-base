@@ -155,4 +155,13 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 			getPreferenceStore().setValue(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME, newValue);
 		}
 	}
+	
+	@Override
+	public void applyData(Object data) {
+		if(data instanceof String){
+			getConfigurationBlock().doFilter((String)data);
+		}else{
+			super.applyData(data);
+		}
+	}
 }

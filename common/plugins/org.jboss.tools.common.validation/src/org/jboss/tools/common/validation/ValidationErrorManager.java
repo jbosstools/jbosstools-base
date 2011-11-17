@@ -41,6 +41,8 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	public static String DEFAULT_VALIDATION_MARKER = ValidationPlugin.PLUGIN_ID + ".problemmarker"; //$NON-NLS-1$
 	static String VALIDATION_MARKER_OWNER = "owner"; //$NON-NLS-1$
 	static String VALIDATION_MARKER_GROUP = "groupName"; //$NON-NLS-1$
+	public static final String PREFERENCE_KEY_ATTRIBUTE_NAME = "preference_key"; //$NON-NLS-1$
+	public static final String PREFERENCE_PAGE_ID_NAME = "preference_page_id"; //$NON-NLS-1$
 
 	protected IStatus OK_STATUS = new Status(IStatus.OK,
 			"org.eclipse.wst.validation", 0, "OK", null); //$NON-NLS-1$ //$NON-NLS-2$
@@ -226,6 +228,8 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		markers.clear();
 	}
 	
+	abstract protected String getPreferencePageId();
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.jboss.tools.seam.internal.core.validation.IValidationErrorManager#addError(java.lang.String, java.lang.String, java.lang.String[], int, int, org.eclipse.core.resources.IResource)
@@ -250,6 +254,18 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 			} else {
 				marker = addError(message, severity, messageArguments, lineNumber, length, offset, target, getDocumentProvider(), getMarkerId(), getMarkerOwner());
 			}
+		}
+		try {
+			if(marker!=null) {
+				String preferencePageId = getPreferencePageId();
+				if(preferencePageId != null && preferenceKey != null){
+					marker.setAttribute(PREFERENCE_KEY_ATTRIBUTE_NAME, preferenceKey);
+					marker.setAttribute(PREFERENCE_PAGE_ID_NAME, preferencePageId);
+				}
+				
+			}
+		} catch(CoreException e) {
+			CommonPlugin.getDefault().logError(e);
 		}
 		return marker;
 	}

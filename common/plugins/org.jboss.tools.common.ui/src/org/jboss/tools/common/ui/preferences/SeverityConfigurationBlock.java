@@ -32,6 +32,7 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -83,7 +84,7 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 	protected PixelConverter fPixelConverter;
 
 	protected FilteredPreferenceTree fFilteredPrefTree;
-
+	
 	public SeverityConfigurationBlock(IStatusChangeListener context,
 			IProject project, Key[] allKeys,
 			IWorkbenchPreferenceContainer container) {
@@ -300,4 +301,25 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 			key = getKey(pluginId, keyName);
 		}
 	}
+	
+	public void doFilter(String prefId){
+		String qualifier = getQualifier();
+		Key key = null;
+		for(Key k : fAllKeys){
+			if(k.getQualifier().equals(qualifier) && k.getName().equals(prefId))
+				key = k;
+		}
+		if(key != null){
+			Combo combo = getComboBox(key);
+			if(combo != null){
+				String value = ((Label)fLabels.get(combo)).getText();
+			
+				if(value != null)
+					fFilteredPrefTree.doFilter(value);
+			}
+		}
+	}
+	
+	abstract protected String getQualifier();
+
 }
