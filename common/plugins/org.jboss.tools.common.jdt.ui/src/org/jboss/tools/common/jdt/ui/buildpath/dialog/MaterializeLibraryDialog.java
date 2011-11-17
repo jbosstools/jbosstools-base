@@ -26,7 +26,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -37,12 +42,14 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -82,7 +89,13 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 	private Button keepSourceBtn;
 
 	private boolean keepSources;
+	
+	private IMaterializeLibraryWarningFactory warningfactory;
 
+	private Label warningImg;
+
+	private Label warningLabel;
+	
 	public MaterializeLibraryDialog(Shell shell, IProject project, IClasspathContainer containerToMaterialize, String defaultLib) {
 		super(shell);
 		setShellStyle(super.getShellStyle() | SWT.RESIZE | SWT.MODELESS);
@@ -90,6 +103,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		IPath folderPath = project.getFullPath().append(defaultLib);
 		libFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(folderPath);
 		this.containerToMaterialize = containerToMaterialize;
+		warningfactory = new MaterializeLibraryWarningFactory();
 		initClasspathEntryPaths();
 	}
 
@@ -132,9 +146,13 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		layout.marginLeft = 12;
 		container.setLayout(layout);
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-		setMessage("Copy selected jars from " + libName
-				+ " to the destination folder.");
+		
+		String message = NLS.bind("Copy selected jars from {0} to the destination folder.",libName);
+		String warning = warningfactory.getWarning(containerToMaterialize);
+		if (warning != null) {
+			displayWarning(container, warning);
+		}
+		setMessage(message);
 
 		Label libFolderLabel = new Label(container, SWT.NONE);
 		libFolderLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
@@ -158,6 +176,21 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 
 		return area;
 	}
+
+
+	private void displayWarning(Composite container, String warning) {
+		Composite composite = new Composite(container, SWT.NONE);
+		GridDataFactory.fillDefaults().align(SWT.LEFT,SWT.CENTER).span(3,1).applyTo(composite);
+		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(composite);
+		warningImg = new Label(composite,  SWT.CENTER);
+		warningImg.setImage(JFaceResources.getImage(DLG_IMG_MESSAGE_WARNING));
+		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(warningImg);
+		warningLabel = new Label(composite, SWT.NONE);
+		warningLabel.setText(warning);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).applyTo(warningLabel);
+	}
+
+
 
 	private void addSelectFolderButton(Composite container) {
 
@@ -201,7 +234,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		gd.widthHint = 550;
 
 		classpathEntriesViewer = CheckboxTableViewer.newCheckList(container,
-				SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
+				SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION );
 		Table table = classpathEntriesViewer.getTable();
 		table.setFocus();
 		table.setLayoutData(gd);
@@ -284,6 +317,18 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 	protected void okPressed() {
 		if (!validate()) {
 			return;
+		}
+
+		String dialogWarning = warningfactory.getDialogWarning(containerToMaterialize); 
+		if (dialogWarning != null) {
+			String[] buttonLabels = new String[] { IDialogConstants.OK_LABEL,
+                    IDialogConstants.CANCEL_LABEL };
+			
+			MessageDialog dialog = new MessageDialog(getShell(), getShell().getText(), null, dialogWarning,
+					MessageDialog.WARNING, buttonLabels, 0);
+			if (dialog.open() == CANCEL) {
+				return;
+			}
 		}
 		libFolder = getLibFolderFromText(libfolderText.getText());
 		keepSources = keepSourceBtn.getSelection();

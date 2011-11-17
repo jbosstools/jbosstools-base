@@ -15,13 +15,21 @@ import org.eclipse.osgi.util.NLS;
 /**
  * 
  * @author Fred Bricon
- *
+ * 
  */
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.common.jdt.ui.messages"; //$NON-NLS-1$
-	
+
 	public static String Materialize_Library;
-	
+
+	public static String Maven_Configuration_Warning;
+
+	public static String Maven_Configuration_Dialog_Warning;
+
+	public static String Jre_Warning;
+
+	public static String Jre_Dialog_Warning;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
