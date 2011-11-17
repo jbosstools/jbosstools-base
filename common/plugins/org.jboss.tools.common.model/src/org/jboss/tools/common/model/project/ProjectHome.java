@@ -131,18 +131,6 @@ public class ProjectHome {
 				}
 			}
 			return ps.toArray(new IPath[0]);
-			
-//			IVirtualFolder webInfDir = component.getRootFolder().getFolder(new Path("/WEB-INF")); //$NON-NLS-1$
-//			if(webInfDir.exists()) {
-//				IContainer[] cs = webInfDir.getUnderlyingFolders();
-//				List<IPath> ps = new ArrayList<IPath>();
-//				for (IContainer c: cs) {
-//					if(c.exists()) {
-//						ps.add(c.getFullPath());
-//					}
-//				}
-//				return ps.toArray(new IPath[0]);
-//			}
 		}
 		return new IPath[0];
 	}
@@ -155,25 +143,10 @@ public class ProjectHome {
 			IContainer[] cs = getWebRootFolders(project, true);
 			for (IContainer c: cs) {
 				if(c.exists()) {
-					IFolder f = c.getFolder(new Path("/WEB-INF")); //$NON-NLS-1$
-					if(f.exists()) {
-						ps.add(f.getFullPath());
-					}
+					ps.add(c.getFullPath());
 				}
 			}
 			return ps.toArray(new IPath[0]);
-
-//			IVirtualFolder webDir = component.getRootFolder().getFolder(new Path("/")); //$NON-NLS-1$
-//			if(webDir.exists()) {
-//				IContainer[] cs = webDir.getUnderlyingFolders();
-//				List<IPath> ps = new ArrayList<IPath>();
-//				for (IContainer c: cs) {
-//					if(c.exists()) {
-//						ps.add(c.getFullPath());
-//					}
-//				}
-//				return ps.toArray(new IPath[0]);
-//			}
 		}
 		return new IPath[0];
 	}
