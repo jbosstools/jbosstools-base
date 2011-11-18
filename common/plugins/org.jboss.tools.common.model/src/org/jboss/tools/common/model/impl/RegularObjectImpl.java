@@ -12,9 +12,12 @@ package org.jboss.tools.common.model.impl;
 
 import java.text.MessageFormat;
 import java.util.*;
+
+import org.eclipse.swt.widgets.Display;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.meta.*;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObject {
@@ -143,12 +146,25 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
 
     // diagnostic
 
+    /**
+     * This method may be called in two cases:
+     * 1) User input is not appropriately validated. In this case proper validation 
+     *    and notification should be implemented (e.g. error message in dialogs, 
+     *    error markers in editors/error view)
+     * 2) Internal model update is implemented with errors.
+     * @param o
+     * @param name
+     * @param value
+     */
     protected void elementExists(XModelObject o, String name, String value) {
         if(getModel().getService() == null) return;
         String mes = MessageFormat.format(
 				"Cannot set {0} = {1} for {2}\nbecause {3} exists in the {4}",
 				getAttrNameByXMLName(name), value, title(this), title(o), title(getParent()));
-        getModel().getService().showDialog("Error", mes, new String[]{"OK"}, null, 1);
+        if(Display.getCurrent() != null) {
+        	getModel().getService().showDialog("Error", mes, new String[]{"OK"}, null, 1);
+        }
+       	ModelPlugin.getDefault().logError(mes);
     }
 
     private static String title(XModelObject o) {
