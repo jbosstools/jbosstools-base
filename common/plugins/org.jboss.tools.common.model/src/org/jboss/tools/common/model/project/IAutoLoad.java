@@ -5,5 +5,6 @@ import org.jboss.tools.common.model.XModel;
 public interface IAutoLoad {
 	
 	public void load(XModel model);
+	public void update(XModel model);
 
 }

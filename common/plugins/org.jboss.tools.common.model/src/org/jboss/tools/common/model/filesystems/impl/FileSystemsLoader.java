@@ -62,6 +62,12 @@ public class FileSystemsLoader extends URLRootLoader {
     
     public boolean update(XModelObject object) throws XModelException {
         boolean b = true;
+
+		IAutoLoad auto = (IAutoLoad)object.getModel().getProperties().get(XModelConstants.AUTOLOAD);
+        if(auto != null) {
+        	auto.update(object.getModel());
+        }
+
         XModelObject[] cs = object.getChildren();
         for (int i = 0; i < cs.length; i++) {
             XObjectLoader loader = XModelObjectLoaderUtil.getObjectLoader(cs[i]);

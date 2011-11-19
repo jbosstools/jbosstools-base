@@ -70,6 +70,7 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.project.ModelNature;
 import org.jboss.tools.common.model.project.ModelNatureExtension;
+import org.jboss.tools.common.web.WebUtils;
 import org.osgi.framework.Bundle;
 
 public class EclipseResourceUtil extends EclipseUtil {
@@ -457,10 +458,16 @@ public class EclipseResourceUtil extends EclipseUtil {
 		IVirtualComponent vc = ComponentCore.createComponent(project);
 		if (vc == null || vc.getRootFolder() == null)
 			return null;
+		IPath path = WebUtils.getFirstWebContentPath(project);
+		if(path != null) {
+			IFolder f = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+			if(f.exists()) {
+				return f;
+			}
+		}
 		if (ModuleCoreNature.isFlexibleProject(project)) {
 			return vc.getRootFolder().getUnderlyingResource();
 		}
-
 		return null;
 	}
 

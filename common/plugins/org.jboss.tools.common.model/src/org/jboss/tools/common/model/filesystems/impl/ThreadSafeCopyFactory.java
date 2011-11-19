@@ -63,7 +63,10 @@ public class ThreadSafeCopyFactory {
 		if(copy != null) {
 //			System.out.println("Created copy of " + copy.getPath() + " for thread " + Thread.currentThread() + ". Main object is being loaded by thread " + loadingThread);
 			//Let us wait a bit for this object, maybe there is no lock.
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < 5; i++) {
+				if(loadingThread != null && !loadingThread.isAlive()) {
+					loadingThread = null;
+				}
 				Thread t = loadingThread;
 				if (t != null) try {
 					t.join(100);
@@ -76,8 +79,12 @@ public class ThreadSafeCopyFactory {
 				}
 			}
 			if(map == null) {
-				map = new HashMap<Thread, XModelObject>();
-				concurrentlyLoaded = map;
+				if(concurrentlyLoaded != null) {
+					map = concurrentlyLoaded;
+				} else {
+					map = new HashMap<Thread, XModelObject>();
+					concurrentlyLoaded = map;
+				}
 			}
 			map.put(Thread.currentThread(), (AbstractExtendedXMLFileImpl)copy);
 		}
