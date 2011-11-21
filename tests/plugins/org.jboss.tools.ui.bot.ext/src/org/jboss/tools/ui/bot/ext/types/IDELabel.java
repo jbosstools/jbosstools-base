@@ -101,6 +101,7 @@ public class IDELabel {
 		public static final String NEW = "New...";
 		public static final String CONTINUE = "Continue";
 		public static final String REMOVE = "Remove";
+		public static final String REMOVE_WITH_DOTS = "Remove...";
 		public static final String EDIT = "Edit...";
 		public static final String ADD_WITHOUT_DOTS = "Add";
 		public static final String EDIT_WITHOUT_DOTS = "Edit";
@@ -166,6 +167,7 @@ public class IDELabel {
 	  public static final String REPOSITORY_LOCATION_PROPERTIES = "Repository Location Properties";
 	  public static final String SECURE_STORAGE = "Secure Storage";
 	  public static final String ADD_JSF_PROJECT_TEMPLATE = "Add JSF Project Template";
+	  public static final String NEW_MANAGED_BEAN = "New Managed Bean";
 	}
 
 	public class EntityGroup {
@@ -688,6 +690,11 @@ public class IDELabel {
      public static final String SOURCE_TAB_LABEL = "Source";
      public static final String TREE_TAB_LABEL = "Tree";
      public static final String DIAGRAM_TAB_LABEL = "Diagram";
+     public static final String MANAGED_BEANS_NODE = "Managed Beans";
+     public static final String NEW_MANAGED_BEAN_CLASS_LABEL = "Class:*";
+     public static final String MANAGED_BEAN_CLASS_LABEL = "Managed Bean Class:"; 
+     public static final String NEW_MANAGED_BEAN_NAME_LABEL = "Name:*";
+     public static final String DELETE_JAVA_SOURCE_CHECK_BOX = "Delete Java Source";
      
    } 
    

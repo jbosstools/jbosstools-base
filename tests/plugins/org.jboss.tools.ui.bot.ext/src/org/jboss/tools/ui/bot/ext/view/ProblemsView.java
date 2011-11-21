@@ -13,6 +13,7 @@ package org.jboss.tools.ui.bot.ext.view;
 import java.util.LinkedList;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
@@ -103,7 +104,9 @@ public class ProblemsView extends ViewBase {
     SWTBotTreeItem errorsNode = null;
     SWTBot problemsBot = null;
     if (new SWTEclipseExt().isViewOpened("Problems")) {
-    	problemsBot = bot.viewByTitle("Problems").bot();
+    	SWTBotView problemsView = bot.viewByTitle("Problems");
+    	problemsView.show();
+    	problemsBot = problemsView.bot();
     }else {
     	problemsBot = SWTEclipseExt.showView(bot,ViewType.PROBLEMS);
     }

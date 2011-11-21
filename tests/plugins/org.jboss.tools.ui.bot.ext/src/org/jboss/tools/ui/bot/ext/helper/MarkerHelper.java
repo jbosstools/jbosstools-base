@@ -85,7 +85,7 @@ public class MarkerHelper {
    * @param pathToResource
    * @return
    */
-  private static IPath getPathToResource (String resourceName, String... pathToResource){
+  public static IPath getPathToResource (String resourceName, String... pathToResource){
     IPath path = new Path("/");
     
     if (pathToResource != null){
