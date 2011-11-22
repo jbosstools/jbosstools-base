@@ -56,7 +56,7 @@ public class SWTJBTExt {
 	 */
   public static boolean isJBDSRun (){
     IProduct prod = Platform.getProduct();
-    return prod != null;
+    return ((prod != null) && (prod.getId().startsWith("com.jboss.jbds.")));
   }
   /*
    * 
