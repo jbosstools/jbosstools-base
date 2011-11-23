@@ -214,14 +214,16 @@ class Lbl {
 }
 
 class L extends Canvas implements PaintListener, MouseMoveListener {
-	Cursor DEF_CURSOR = new Cursor(null, SWT.CURSOR_ARROW);
-	Cursor HAND_CURSOR = new Cursor(null, SWT.CURSOR_HAND);
+	Cursor DEF_CURSOR;
+	Cursor HAND_CURSOR;
 	private String[] messages = new String[]{"", "", ""}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 	public L(Composite parent, int style) {
 		super (parent, style);
 		addPaintListener(this);
 		addMouseMoveListener(this);
+		DEF_CURSOR = getShell().getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
+		HAND_CURSOR = getShell().getDisplay().getSystemCursor(SWT.CURSOR_HAND);
 	}
 		
 	public void setData(String[] messages) {

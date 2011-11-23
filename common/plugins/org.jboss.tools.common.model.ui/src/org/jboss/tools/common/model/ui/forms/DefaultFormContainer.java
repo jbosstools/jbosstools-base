@@ -39,7 +39,6 @@ public class DefaultFormContainer extends AbstractFormContainer {
 		composite = new Composite(parent, SWT.NONE);
 		settings.setupControl(composite);
 		
-		//composite.setBackground(new Color(null, 255, 0 ,0));
 		composite.setLayout(getLayout());
 		composite.setLayoutData(getLayoutData());
 		// create client area

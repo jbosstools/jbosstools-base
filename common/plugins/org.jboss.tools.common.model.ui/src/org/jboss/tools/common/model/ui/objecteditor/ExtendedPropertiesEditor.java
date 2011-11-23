@@ -14,16 +14,19 @@ import java.util.Properties;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableItem;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
 public class ExtendedPropertiesEditor {
-	static Color DEFAULT_COLOR = new Color(null, 0, 0, 0);
-	static Color DISABLED_COLOR = new Color(null, 127, 127, 127);
+	static Color DEFAULT_COLOR = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+	static Color DISABLED_COLOR = Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
+
 	static Image EMPTY = EclipseResourceUtil.getImage("images/actions/empty.gif"); //$NON-NLS-1$
 	protected XTable xtable = new XTable();
 	protected ExtendedProperties attributes;

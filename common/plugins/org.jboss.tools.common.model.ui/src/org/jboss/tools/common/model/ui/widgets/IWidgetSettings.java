@@ -31,4 +31,6 @@ public interface IWidgetSettings {
 	public void setupControl(Control control);
 
 	public FormToolkit getToolkit(Display display);
+
+	public void dispose();
 }

@@ -287,4 +287,6 @@ public class DefaultSettings implements IWidgetSettings {
 		return null;
 	}
 
+	public void dispose() {}
+
 }

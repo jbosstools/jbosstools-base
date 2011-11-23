@@ -139,7 +139,16 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 		}
 		return labelComposite;
 	}
-	
+
+	Color foreground = null;
+
+	Color getForeground() {
+		if(foreground == null || foreground.isDisposed()) {
+			foreground = new Color(null, 10, 36, 106);
+		}
+		return foreground;
+	}
+
 	protected Label createLabelControl(Composite parent) {
 		if (getLabelControl() == null) { // cannot comment this! for details see label.addDisposeListener
 			int style = getSettings().getStyle("Label.Style"); //$NON-NLS-1$
@@ -154,7 +163,7 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 ///			label.setBackground(bg);
 			label.setForeground(fg);
 			if(settings instanceof WhiteSettings) {
-				label.setForeground(new Color(null, 10, 36, 106));
+				label.setForeground(getForeground());
 				label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 			}
 			
@@ -183,6 +192,10 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 		label = null;
 		setPropertyChangeListener(null);
 		setPage(null);
+		if(foreground != null && !foreground.isDisposed()) {
+			foreground.dispose();
+			foreground = null;
+		}
 	}
 
 	public void load() {

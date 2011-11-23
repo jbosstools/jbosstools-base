@@ -116,8 +116,6 @@ public class SplitFormContainer extends DefaultFormContainer {
 		gd = new GridData(GridData.FILL_BOTH);
 		secondFormControl.setLayoutData(gd);
 		
-		
-		//composite.setBackground(new Color(null, 255,255,255));
 		composite.setWeights(new int[]{30, 70});
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		control = main;

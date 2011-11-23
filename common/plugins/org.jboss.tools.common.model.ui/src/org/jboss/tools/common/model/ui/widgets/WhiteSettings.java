@@ -51,7 +51,11 @@ public class WhiteSettings extends DefaultSettings {
 
 	protected void initCursors() {
 		super.initCursors();
-		handCursor = new Cursor(Display.getCurrent(), SWT.CURSOR_HAND);
+		Display display = Display.getCurrent();
+		if(display == null) {
+			display = Display.getDefault();
+		}
+		handCursor = display.getSystemCursor(SWT.CURSOR_HAND);
 	}
 
 	protected void initFonts() {
@@ -103,7 +107,12 @@ public class WhiteSettings extends DefaultSettings {
 		}
 		return toolkit;
 	}
-	
+
+	public void dispose() {
+		defaultBackground.dispose();
+		listBorderColor.dispose();
+		separatorColor.dispose();
+	}
 	
 
 }

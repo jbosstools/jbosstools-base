@@ -251,14 +251,14 @@ public class SampleErrorForm extends ExpandableForm {
 	}
 	
 	class ML extends MouseAdapter implements MouseMoveListener {
-		Cursor hand = new Cursor(null, SWT.CURSOR_HAND);
-		Cursor arrow = new Cursor(null, SWT.CURSOR_ARROW);
+		Cursor hand = null;
+		Cursor arrow = null;
 		public void mouseMove(MouseEvent e) {
 			StyleRange range = getRange(e);
 			if(range != null && range.foreground == BLUE) {
-				styledText.setCursor(hand);
+				styledText.setCursor(styledText.getShell().getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 			} else {
-				styledText.setCursor(arrow);
+				styledText.setCursor(styledText.getShell().getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
 			}
 		}
 		public void mouseUp(MouseEvent e) {

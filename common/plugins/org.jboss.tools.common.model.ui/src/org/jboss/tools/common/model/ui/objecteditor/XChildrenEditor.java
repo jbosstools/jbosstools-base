@@ -25,6 +25,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Widget;
 import org.jboss.tools.common.editor.AbstractSelectionProvider;
 import org.jboss.tools.common.meta.action.XActionInvoker;
@@ -38,8 +39,8 @@ import org.jboss.tools.common.model.ui.swt.util.BorderLayout;
 import org.jboss.tools.common.model.util.AbstractTableHelper;
 
 public class XChildrenEditor implements CommandBarListener {
-	protected static Color DEFAULT_COLOR = new Color(null, 0, 0, 0);
-	protected static Color GREYED_COLOR = new Color(null, 127, 127, 127);
+	protected static Color DEFAULT_COLOR = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+	protected static Color GREYED_COLOR = Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
 	public static String ADD = Messages.XChildrenEditor_Add;
 	public static String DELETE = Messages.XChildrenEditor_Delete;
 	public static String EDIT = Messages.XChildrenEditor_Edit;

@@ -59,7 +59,6 @@ public class DefaultSpecialWizardDialog extends TitleAreaDialog implements Comma
 	
 	public void updateDialogArea() {
 		stepPage = createPage((Composite)pageArea);
-		//stepPage.setBackground(new Color(null,128,255,255));
 		Point size = stepPage.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		size.x = Math.max(size.x,pageWidth);
 		size.y = Math.max(size.y,pageHeight);
@@ -92,7 +91,6 @@ public class DefaultSpecialWizardDialog extends TitleAreaDialog implements Comma
 		gridLayout.horizontalSpacing = 0;
 		gridLayout.verticalSpacing = 0;
 		dialogArea.setLayout(gridLayout);
-		//composite.setBackground(new Color(null, 255,0,255));
 
 		// Build the separator line
 		Label dialogAreaSeparator = new Label(dialogArea, SWT.HORIZONTAL | SWT.SEPARATOR);
@@ -120,7 +118,6 @@ public class DefaultSpecialWizardDialog extends TitleAreaDialog implements Comma
 		gridLayout.horizontalSpacing = 0;
 		gridLayout.verticalSpacing = 0;
 		composite.setLayout(gridLayout);
-		//composite.setBackground(new Color(null, 0,255,255));
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		//gd.heightHint = commandBarHeight;
 		composite.setLayoutData(gd);
@@ -146,7 +143,6 @@ public class DefaultSpecialWizardDialog extends TitleAreaDialog implements Comma
 		gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = commandBar.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
 		control.setLayoutData(gd);
-		//control.setBackground(new Color(null, 0,0,255));
 
 		return composite;
 	}

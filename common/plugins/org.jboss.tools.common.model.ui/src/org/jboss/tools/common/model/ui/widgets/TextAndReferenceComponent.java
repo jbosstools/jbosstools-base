@@ -52,7 +52,7 @@ public class TextAndReferenceComponent extends Canvas implements PaintListener, 
 
 	public void mouseMove(MouseEvent e) {
 		int c = (overReference(e.x, e.y)) ? SWT.CURSOR_HAND : SWT.CURSOR_ARROW;
-		setCursor(new Cursor(Display.getCurrent(), c));
+		setCursor(getShell().getDisplay().getSystemCursor(c));
 	}
 	
 	private boolean overReference(int x, int y) {

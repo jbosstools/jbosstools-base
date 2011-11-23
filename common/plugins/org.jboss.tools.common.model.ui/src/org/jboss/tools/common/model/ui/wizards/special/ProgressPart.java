@@ -65,9 +65,9 @@ public class ProgressPart implements IRunnableContext {
     }
     private void setWaitCursor() {
         Display d = getShell().getDisplay();
-        waitCursor = new Cursor(d, SWT.CURSOR_WAIT);
+        waitCursor = d.getSystemCursor(SWT.CURSOR_WAIT);
         setDisplayCursor(waitCursor);
-        arrowCursor = new Cursor(d, SWT.CURSOR_ARROW);
+        arrowCursor = d.getSystemCursor(SWT.CURSOR_ARROW);
     }
     private void saveFocus(Map<Object,Object> state, Control focusControl) {
         if (focusControl != null) {
