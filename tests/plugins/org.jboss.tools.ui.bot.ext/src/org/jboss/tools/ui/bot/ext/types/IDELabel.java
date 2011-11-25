@@ -84,6 +84,7 @@ public class IDELabel {
     public static final String UNDO = "Undo";
     public static final String CLOSE_ALL = "Close All";
     public static final String SAVE_AS_TEMPLATE = "Save As Template...";
+    public static final String AUTO_LAYOUT = "Auto Layout";
 	}
 
 	public class Button {
@@ -168,6 +169,13 @@ public class IDELabel {
 	  public static final String SECURE_STORAGE = "Secure Storage";
 	  public static final String ADD_JSF_PROJECT_TEMPLATE = "Add JSF Project Template";
 	  public static final String NEW_MANAGED_BEAN = "New Managed Bean";
+	  public static final String ADD_COMPONENT = "Add Component";
+	  public static final String ADD_CONVERTER = "Add Converter";
+	  public static final String ADD_REFERENCED_BEAN = "Add Referenced Bean";
+	  public static final String ADD_RENDER_KIT = "Add Render Kit";
+	  public static final String ADD_VALIDATOR = "Add Validator";
+	  public static final String NEW_VIEW = "New View";
+	  public static final String AUTO_LAYOUT = "Auto Layout";
 	}
 
 	public class EntityGroup {
@@ -691,11 +699,28 @@ public class IDELabel {
      public static final String TREE_TAB_LABEL = "Tree";
      public static final String DIAGRAM_TAB_LABEL = "Diagram";
      public static final String MANAGED_BEANS_NODE = "Managed Beans";
+     public static final String COMPONENTS_NODE = "Components";
+     public static final String CONVERTERS_NODE = "Converters";
+     public static final String RENDER_KITS_NODE = "Render Kits";
+     public static final String VALIDATOR_NODE = "Validators";
+     public static final String REFERENCED_BEAN_NODE = "Referenced Beans";
      public static final String NEW_MANAGED_BEAN_CLASS_LABEL = "Class:*";
      public static final String MANAGED_BEAN_CLASS_LABEL = "Managed Bean Class:"; 
      public static final String NEW_MANAGED_BEAN_NAME_LABEL = "Name:*";
      public static final String DELETE_JAVA_SOURCE_CHECK_BOX = "Delete Java Source";
-     
+     public static final String NEW_COMPONENT_TYPE_LABEL = "Component Type:*";
+     public static final String NEW_COMPONENT_CLASS_LABEL = "Component Class:*";
+     public static final String NEW_CONVERTER_ID_LABEL = "Converter ID:*";
+     public static final String NEW_CONVERTER_CLASS_LABEL = "Converter Class:*";
+     public static final String NEW_REFERENCED_BEAN_NAME_LABEL = "Referenced Bean Name:*";
+     public static final String NEW_REFERENCED_BEAN_CLASS_LABEL = "Referenced Bean Class:*";
+     public static final String NEW_RENDER_KIT_ID_LABEL = "Render Kit ID:";
+     public static final String NEW_RENDER_KIT_CLASS_LABEL = "Render Kit Class:";
+     public static final String NEW_VALIDATOR_ID_LABEL = "Validator ID:*";
+     public static final String NEW_VALIDATOR_CLASS_LABEL = "Validator Class:*";
+     public static final String GEF_VIEW_TEMPLATE_TOOL = "View Template";
+     public static final String GEF_CREATE_NEW_CONNECTION_TOOL = "Create New Connection";
+     public static final String DELETE_FILE_FROM_DISK_CHECK_BOX = "Delete file from disk";
    } 
    
    public static class NewJsfProjectDialog{
@@ -737,5 +762,11 @@ public class IDELabel {
    public static class AddJSFProjectTemplateDialog{
      public static final String NAME_TEXT_LABEL = "Name:*";
      public static final String IMPLEMENTATION_COMBO_LABEL = "Implementation:*";
+   }
+   
+   public static class NewViewDialog{
+     public static final String FROM_VIEW_ID_TEXT_LABEL = "From View ID:";
+     public static final String TEMPLATE_TEXT_LABEL = "Template:*";
+     public static final String CREATE_FILE_ON_DISK_CHECKBOX_LABEL = "Create File on Disk";
    }
  }
