@@ -169,10 +169,12 @@ public class IDELabel {
 	  public static final String SECURE_STORAGE = "Secure Storage";
 	  public static final String ADD_JSF_PROJECT_TEMPLATE = "Add JSF Project Template";
 	  public static final String NEW_MANAGED_BEAN = "New Managed Bean";
+	  public static final String NEW_MANAGED_BEAN_JSF2 = "Managed Bean...";
 	  public static final String ADD_COMPONENT = "Add Component";
 	  public static final String ADD_CONVERTER = "Add Converter";
 	  public static final String ADD_REFERENCED_BEAN = "Add Referenced Bean";
 	  public static final String ADD_RENDER_KIT = "Add Render Kit";
+	  public static final String ADD_RENDER_KIT_JSF2 = "Render Kit...";
 	  public static final String ADD_VALIDATOR = "Add Validator";
 	  public static final String NEW_VIEW = "New View";
 	  public static final String AUTO_LAYOUT = "Auto Layout";
