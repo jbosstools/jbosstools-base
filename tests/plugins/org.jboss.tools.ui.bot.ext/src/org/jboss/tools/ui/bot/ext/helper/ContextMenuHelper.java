@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
@@ -322,6 +323,37 @@ public class ContextMenuHelper {
     clickContextMenu(parentControl, texts);
     
   }
+  /**
+   * Clicks the context menu matching the text.
+   * @param editor editor containing requested Context Menu
+   * @param index index of StyledText widget containing requested 
+   *              Context Menu within editor
+   * @param text
+   *          the text on the context menu.
+   * @throws WidgetNotFoundException
+   *           if the widget is not found.
+   */
+  public static void clickContextMenu(final SWTBotEditor editor,
+      int index,
+      final String... texts) {
+    editor.setFocus();
+    clickContextMenu(editor.bot().styledText(index), texts);
+    
+  }
+  /**
+   * Clicks the context menu matching the text.
+   * @param editor editor containing requested Context Menu
+   * @param text
+   *          the text on the context menu.
+   * @throws WidgetNotFoundException
+   *           if the widget is not found.
+   */
+  public static void clickContextMenu(final SWTBotEditor editor,
+      final String... texts) {
+    
+    clickContextMenu(editor,0, texts);
+    
+  }  
   
   private static void click(final MenuItem menuItem) {
     final Event event = new Event();
