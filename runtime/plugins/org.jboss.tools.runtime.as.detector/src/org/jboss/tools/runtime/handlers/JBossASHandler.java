@@ -61,7 +61,8 @@ import org.osgi.framework.Bundle;
 
 public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRuntimePluginConstants {
 	
-	private static final int JBOSS_AS7_INDEX = 8;
+	private static final int JBOSS_AS70_INDEX = 8;
+	private static final int JBOSS_AS71_INDEX = 9;
 	private static String[] hasIncludedRuntimes = new String[] {SOA_P, EAP, EPP, EWP, SOA_P_STD};
 	private static final String DROOLS = "DROOLS"; // NON-NLS-1$
 	private static final String ESB = "ESB"; //$NON-NLS-1$
@@ -119,8 +120,10 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 					index = 4;
 				} else if ("6.0".equals(version) || "6.1".equals(version)) { //$NON-NLS-1$
 					index = 5;
-				} else if ("7.0".equals(version) || "7.1".equals(version)) { //$NON-NLS-1$
-					index = 8;
+				} else if ("7.0".equals(version)) { //$NON-NLS-1$
+					index = JBOSS_AS70_INDEX;
+				} else if ("7.1".equals(version)) { //$NON-NLS-1$
+					index = JBOSS_AS71_INDEX;
 				}
 				createJBossServer(serverDefinition.getLocation(),index,serverDefinition.getName(),serverDefinition.getName() + " " + RUNTIME); //$NON-NLS-1$
 			}
@@ -249,7 +252,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			// Don't create the driver a few times
 			return;
 		}
-		if (index == 8) {
+		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX) {
 			// AS 7
 			return;
 		}
