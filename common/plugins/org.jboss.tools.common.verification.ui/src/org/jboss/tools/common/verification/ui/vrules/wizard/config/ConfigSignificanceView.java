@@ -34,16 +34,19 @@ public class ConfigSignificanceView extends SignificanceView {
 	}
 	
 	public void loadDefaults() {
+		if(manager == null) return;
 		manager.setMinSignificance(0);
 		update();
 	}
 	
 	public void update() {
+		if(manager == null) return;
 		int i = manager.getMinSignificance();
 		if(i >= 0 && i < values.length) combo.select(i);
 	}
 
 	public void commit() {
+		if(manager == null) return;
 		manager.setMinSignificance(getSignificance());
 	}
 
