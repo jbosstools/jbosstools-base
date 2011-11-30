@@ -15,6 +15,8 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
+import org.eclipse.ui.internal.PageLayout;
+import org.eclipse.ui.internal.cheatsheets.ICheatSheetResource;
 import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.progress.IProgressConstants;
 
@@ -28,6 +30,7 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 	protected static final String ID_SERVERS_VIEW = "org.eclipse.wst.server.ui.ServersView"; //$NON-NLS-1$
 	protected static final String ID_SEARCH_VIEW = "org.eclipse.search.ui.views.SearchView"; //$NON-NLS-1$
 	protected static final String ID_CONSOLE_VIEW = "org.eclipse.ui.console.ConsoleView"; //$NON-NLS-1$
+	protected static final String ID_CHEATSHEET_VIEW = "org.eclipse.ui.cheatsheets.cheatSheetView"; //$NON-NLS-1$
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
@@ -81,5 +84,9 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		// Top right.
 		IFolderLayout topRight = layout.createFolder("topRight", IPageLayout.RIGHT, 0.7f, editorArea);//$NON-NLS-1$
 		topRight.addView(IPageLayout.ID_OUTLINE);
+		// This line is required to force CheatSheetView placeholder, because it added by default as sticky view and 
+		// to make placeholder working it should be removed first 
+		((PageLayout)layout).removePlaceholder(ICheatSheetResource.CHEAT_SHEET_VIEW_ID);
+		topRight.addPlaceholder(ICheatSheetResource.CHEAT_SHEET_VIEW_ID);
 	}
 }
