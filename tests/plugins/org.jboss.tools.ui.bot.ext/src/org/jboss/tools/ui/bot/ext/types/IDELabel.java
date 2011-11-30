@@ -85,6 +85,7 @@ public class IDELabel {
     public static final String CLOSE_ALL = "Close All";
     public static final String SAVE_AS_TEMPLATE = "Save As Template...";
     public static final String AUTO_LAYOUT = "Auto Layout";
+    public static final String CDI_REFACTOR = "CDI Refactor";
 	}
 
 	public class Button {
