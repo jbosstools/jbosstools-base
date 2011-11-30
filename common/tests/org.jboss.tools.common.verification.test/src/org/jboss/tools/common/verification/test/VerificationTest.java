@@ -27,7 +27,8 @@ public class VerificationTest extends TestCase {
 	protected void setUp() throws Exception {
 	}
 
-	public void testVerificationModel() {
+	//verification removed, see JBIDE-10190
+	public void _testVerificationModel() {
 		XModel model = PreferenceModelUtilities.getPreferenceModel();
 		XModelObject vm = model.getByPath("Verification Manager");
 		assertTrue("Verification Manager model object is not found", vm != null);
