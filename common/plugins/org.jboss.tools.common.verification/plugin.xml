@@ -4,12 +4,12 @@
 
    <extension-point id="rules" name="rules" schema="schema/rules.exsd"/>
 
-   <extension point="org.jboss.tools.common.model.meta">
+   <!--extension point="org.jboss.tools.common.model.meta">
       <meta path="meta/vrules.meta">
       </meta>
       <meta path="meta/vrules_eclipse_option.meta">
       </meta>
-   </extension>
+   </extension-->
 
    <extension id="verifybuilder" name="Project Verifier" point="org.eclipse.core.resources.builders">
       <builder>
@@ -58,7 +58,7 @@
    </extension>
 
 
-   <extension
+   <!--extension
         point="org.eclipse.wst.validation.validator"
 		id="CommonVerification"
 		name="Project Verification">
@@ -66,10 +66,16 @@
 			<projectNature id="org.eclipse.jdt.core.javanature" />
 			<filter
 				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.java"/>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
 				nameFilter="*.xml"/>
 			<filter
 				objectClass="org.eclipse.core.resources.IFile"
 				nameFilter="*.tld"/>
+			<filter
+				objectClass="org.eclipse.core.resources.IFile"
+				nameFilter="*.jar"/>
 			<markerId
                markerIdValue="org.jboss.tools.jst.web.ui.strutsmarker">
          	</markerId>
@@ -82,6 +88,6 @@
          		fullBuild="true"
          	/>
 		</validator>
-	</extension>
+	</extension-->
 
 </plugin>
