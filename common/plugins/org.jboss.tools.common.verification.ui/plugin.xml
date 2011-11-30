@@ -2,11 +2,11 @@
 <?eclipse version="3.0"?>
 <plugin>
 
-   <extension point="org.eclipse.ui.preferencePages">
+   <!--extension point="org.eclipse.ui.preferencePages">
       <page category="org.jboss.tools.common.model.ui" class="org.jboss.tools.common.verification.ui.vrules.preferences.VerificationPreferencePage" id="org.jboss.tools.common.verification.ui" 
             name="%PreferencePage_Verification">
       </page>
-   </extension>
+   </extension-->
 
    <extension point="org.jboss.tools.common.model.specialwizard">
       <specialwizard class="org.jboss.tools.common.verification.ui.vrules.wizard.runtime.VerifyWizard" id="org.jboss.tools.common.verification.ui.vrules.wizard.runtime.VerifyWizard">
