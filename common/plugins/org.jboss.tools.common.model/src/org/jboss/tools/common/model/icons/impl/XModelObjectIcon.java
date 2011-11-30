@@ -11,6 +11,8 @@
 package org.jboss.tools.common.model.icons.impl;
 
 import java.util.*;
+
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.meta.XMapping;
 import org.jboss.tools.common.model.*;
@@ -18,7 +20,6 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 public class XModelObjectIcon {
-	private static Hashtable<String,Image> cacheEclipse = new Hashtable<String,Image>();
     static Hashtable<String,ImageComponent> components = null;
 
     private static synchronized void load(XModelObject object) {
@@ -44,8 +45,14 @@ public class XModelObjectIcon {
     public Image getIcon1(String[] types) {
         if(object == null) return null;
         String code = "" + getIconHash(types); //$NON-NLS-1$
-        Image ii = cacheEclipse.get(code);
-        if(ii != null) return ii;
+        ImageRegistry registry = ModelPlugin.getDefault().getImageRegistry();
+        Image ii = null;
+        synchronized (registry) {
+            ii = registry.get(code);
+		}
+        if(ii != null && !ii.isDisposed()) {
+        	return ii;
+        }
         Vector<Image> v = new Vector<Image>(3);
         for (int i = 0; i < types.length; i++) {
             ImageComponent component = components.get(types[i]);
@@ -55,13 +62,6 @@ public class XModelObjectIcon {
             	return ic;
             }
         }
-/*
- TODO add icons
-        if(v.size() == 0) v.addElement(IconUtil.getEmptyIcon(new Point(16, 16)));
-        ImageIcon[] icons = v.toArray(new ImageIcon[0]);
-        ii = IconUtil.getRowImage(icons);
-        if(ii != null) cache.put(code, ii);
-*/
         return ii;
     }
 
@@ -85,10 +85,21 @@ public class XModelObjectIcon {
 	public Image getEclipseImage0(String[] types) {
 		if(object == null) return null;
 		String code = "" + getIconHash(types); //$NON-NLS-1$
-		Image iie = cacheEclipse.get(code);
-		if(iie != null) return iie;
+		ImageRegistry registry = ModelPlugin.getDefault().getImageRegistry();
+		Image iie = null;
+		synchronized(registry) {
+			iie = registry.get(code);
+		}
+		if(iie != null && !iie.isDisposed()) {
+			return iie;
+		}
 		Image ii = getIcon1(types);
-		if(ii != null) cacheEclipse.put(code, ii);
+		if(ii != null) {
+			synchronized(registry) {
+				ModelPlugin.getDefault().getImageRegistry().remove(code);
+				ModelPlugin.getDefault().getImageRegistry().put(code, ii);
+			}
+		}
 		return ii;
 	}
 

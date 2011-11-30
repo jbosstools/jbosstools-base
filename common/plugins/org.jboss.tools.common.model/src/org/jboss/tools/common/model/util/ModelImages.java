@@ -15,6 +15,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.commands.ICommandImageService;
@@ -31,12 +32,23 @@ public class ModelImages {
 	}
 
 	public static Image getImage(String key) {
-		return instance.createImageDescriptor(key).createImage();
+		Image result = null;
+		ImageRegistry registry = ModelPlugin.getDefault().getImageRegistry();
+		synchronized(registry) {
+			result = registry.get(key);
+		}
+		if(result == null || result.isDisposed()) {
+			result = instance.createImageDescriptor(key).createImage();
+			if(result != null) {
+				synchronized (registry) {
+					ModelPlugin.getDefault().getImageRegistry().remove(key);
+					ModelPlugin.getDefault().getImageRegistry().put(key, result);
+				}
+			}
+		}
+		return result;
 	}
 
-	public static ImageDescriptor getImageDescriptor(String key) {
-		return instance.createImageDescriptor(key);
-	}
 	private URL baseUrl;
 
 	protected ModelImages(URL url) {

@@ -40,7 +40,7 @@ public class XIconListImpl extends XMetaElementImpl implements XIconList, XMetaD
 
 	public Image getImage(String name) {
 		Image image = (Image)eclipseImages.get(name);
-		if(image == null) {
+		if(image == null || image.isDisposed()) {
 			String picture = (String)iconnames.get(name);
 			if(picture == null) return null;
 			image = IconUtil.getEclipseImage(picture);

@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.icons.impl;
 
 import java.io.*;
 
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
@@ -82,15 +83,26 @@ public class XStudioIcons implements ImageComponent {
         String s = obj.getAttributeValue("image"); //$NON-NLS-1$
         return (s == null || s.trim().length() == 0) ? "defaultimage".hashCode() : s.hashCode(); //$NON-NLS-1$
     }
-
     public Image getImage(XModelObject obj) {
         String s = obj.getAttributeValue("image"); //$NON-NLS-1$
+        ImageRegistry registry = ModelPlugin.getDefault().getImageRegistry();
+        Image result = null;
+        synchronized(registry) {
+        	result = registry.get(s);
+        }
+        if(result != null && !result.isDisposed()) {
+        	return result;
+        }
         byte[] b = decode(s);
         if(b != null) {
         	try { 
         		ByteArrayInputStream is = new ByteArrayInputStream(b);
         		ImageData id = new ImageData(is);
         		Image i = new Image(null, id);
+                synchronized(registry) {
+                	registry.remove(s);
+                	registry.put(s, i);
+                }
         		return i;
         	} catch (SWTException e) {
         		ModelPlugin.getPluginLog().logError(e);
