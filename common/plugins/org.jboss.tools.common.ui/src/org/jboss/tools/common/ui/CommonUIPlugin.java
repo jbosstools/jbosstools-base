@@ -29,6 +29,7 @@ public class CommonUIPlugin extends BaseUIPlugin {
 	 * The constructor
 	 */
 	public CommonUIPlugin() {
+		plugin = this;
 	}
 
 	/*
@@ -37,7 +38,6 @@ public class CommonUIPlugin extends BaseUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
 	}
 
 	/*
@@ -45,7 +45,6 @@ public class CommonUIPlugin extends BaseUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
 		super.stop(context);
 	}
 
