@@ -28,7 +28,11 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.PathEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -60,6 +64,8 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
  */
 public class DownloadRuntimeDialog extends Dialog {
 
+	private static final String FOLDER_IS_REQUIRED = "This folder is required";
+	private static final String FOLDER_IS_NOT_WRITABLE = "This folder does not exist or is not writable";
 	private static final String DELETE_ON_EXIT = "deleteOnExit";
 	private static final String JAVA_IO_TMPDIR = "java.io.tmpdir";
 	private static final String USER_HOME = "user.home";
@@ -71,6 +77,10 @@ public class DownloadRuntimeDialog extends Dialog {
 	private Text pathText;
 	private DownloadRuntime downloadRuntime;
 	private String delete;
+	private ControlDecoration decPathError;
+	private ControlDecoration decPathReq;
+	private ControlDecoration destinationPathError;
+	private ControlDecoration destinationPathReq;
 	
 	public DownloadRuntimeDialog(Shell parentShell, DownloadRuntime downloadRuntime) {
 		super(parentShell);
@@ -105,11 +115,10 @@ public class DownloadRuntimeDialog extends Dialog {
 		pathText = new Text(pathComposite, SWT.BORDER);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		pathText.setLayoutData(gd);
-		String defaultPath = dialogSettings.get(DEFAULT_DIALOG_PATH);
-		if (defaultPath == null || defaultPath.isEmpty()) {
-			defaultPath=System.getProperty(USER_HOME);
-		}
+		final String defaultPath = getDefaultPath();
 		pathText.setText(defaultPath);
+		decPathError = addDecoration(pathText, FieldDecorationRegistry.DEC_ERROR, FOLDER_IS_NOT_WRITABLE);
+		decPathReq = addDecoration(pathText, FieldDecorationRegistry.DEC_REQUIRED, FOLDER_IS_REQUIRED);
 		pathText.addModifyListener(new ModifyListener() {
 			
 			@Override
@@ -143,11 +152,13 @@ public class DownloadRuntimeDialog extends Dialog {
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		destinationPathText.setLayoutData(gd);
 		String destinationPath = dialogSettings.get(DEFAULT_DESTINATION_PATH);
+		destinationPathError = addDecoration(destinationPathText, FieldDecorationRegistry.DEC_ERROR, FOLDER_IS_NOT_WRITABLE);
+		destinationPathReq = addDecoration(destinationPathText, FieldDecorationRegistry.DEC_REQUIRED, FOLDER_IS_REQUIRED);
+		
 		if (destinationPath == null || destinationPath.isEmpty()) {
 			destinationPath=System.getProperty(JAVA_IO_TMPDIR);
 		}
 		destinationPathText.setText(destinationPath);
-		
 		Button browseDestinationButton = new Button(pathComposite, SWT.NONE);
 		browseDestinationButton.setText("Browse...");
 		browseDestinationButton.addSelectionListener(new SelectionAdapter() {
@@ -194,6 +205,67 @@ public class DownloadRuntimeDialog extends Dialog {
 		return area;
 	}
 
+	private String getDefaultPath() {
+		String defaultPath = dialogSettings.get(DEFAULT_DIALOG_PATH);
+		if (defaultPath == null || defaultPath.isEmpty()) {
+			defaultPath=System.getProperty(USER_HOME);
+		}
+		return defaultPath;
+	}
+
+	private void showDecorations() {
+		String path = pathText.getText();
+		String destination = destinationPathText.getText();
+		decPathError.hide();
+		decPathReq.hide();
+		destinationPathError.hide();
+		destinationPathReq.hide();
+		if (path.isEmpty()) {
+			decPathReq.show();
+		}
+		if (destination.isEmpty()) {
+			destinationPathReq.show();
+		}
+		boolean pathExists = checkPath(path, decPathError);
+		boolean destExists = checkPath(destination, destinationPathError);
+		getButton(IDialogConstants.OK_ID).setEnabled(pathExists
+			&& destExists
+			&& !path.isEmpty() && !destination.isEmpty());
+		decPathError.setShowHover(true);
+	}
+
+	private boolean checkPath(String path, ControlDecoration dec) {
+		if (path.isEmpty()) {
+			return true;
+		}
+		try {
+			File file = File.createTempFile("temp", "txt", new File(path));
+			file.deleteOnExit();
+			file.delete();
+		} catch (IOException e) {
+			dec.show();
+			return false;
+		}
+		return true;
+	}
+
+	protected ControlDecoration addDecoration(Control control, String id, String description) {
+		final ControlDecoration decPath = new ControlDecoration(control, SWT.TOP
+				| SWT.LEFT);
+		FieldDecorationRegistry registry = FieldDecorationRegistry.getDefault();
+		FieldDecoration fd = registry.getFieldDecoration(id);
+		decPath.setImage(fd.getImage());
+		fd.setDescription(description);
+	
+		decPath.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration(
+				id).getImage());
+
+		decPath.setShowOnlyOnFocus(false);
+		decPath.setShowHover(true);
+		decPath.setDescriptionText(description);
+		return decPath;
+	}
+
 	protected void validate() {
 		getButton(IDialogConstants.OK_ID).setEnabled(true);
 		if (pathText.getText().isEmpty()) {
@@ -202,6 +274,7 @@ public class DownloadRuntimeDialog extends Dialog {
 		if (destinationPathText.getText().isEmpty()) {
 			getButton(IDialogConstants.OK_ID).setEnabled(false);
 		}
+		showDecorations();
 	}
 
 	@Override
@@ -359,6 +432,12 @@ public class DownloadRuntimeDialog extends Dialog {
 				detector.initializeRuntimes(serverDefinitions);
 			}
 		}
+	}
+
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		super.createButtonsForButtonBar(parent);
+		showDecorations();
 	}
 
 }
