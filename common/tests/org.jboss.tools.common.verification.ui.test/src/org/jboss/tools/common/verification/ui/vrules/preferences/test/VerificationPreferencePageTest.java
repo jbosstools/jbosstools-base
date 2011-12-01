@@ -29,6 +29,8 @@ public class VerificationPreferencePageTest extends PreferencePageTest {
 
 	public static final String ID = "org.jboss.tools.common.verification.ui";
 	
+	public void testDummy () {}
+
 	//verification removed, see JBIDE-10190
 	public void _testShowVerificationPreferencePage() {
 		
