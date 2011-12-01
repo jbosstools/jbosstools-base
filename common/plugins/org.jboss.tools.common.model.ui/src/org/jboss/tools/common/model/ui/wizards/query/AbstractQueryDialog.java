@@ -43,7 +43,7 @@ public class AbstractQueryDialog extends TitleAreaDialog implements IQueryDialog
 	}
 
 	protected Control createDialogArea(Composite parent) {
-		setTitleImage(ModelUIImages.getImageDescriptor(ModelUIImages.WIZARD_DEFAULT).createImage(null));
+		setTitleImage(ModelUIImages.getImage(ModelUIImages.WIZARD_DEFAULT));
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(1, false);

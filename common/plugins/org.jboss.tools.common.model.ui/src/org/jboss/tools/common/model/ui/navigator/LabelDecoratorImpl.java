@@ -14,11 +14,13 @@ import java.util.*;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.resource.CompositeImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.*;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.markers.XMarkerManager;
 import org.jboss.tools.common.model.ui.ModelUIImages;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class LabelDecoratorImpl implements ILabelDecorator {
 	public static Image emptyImage = ModelUIImages.getImage("empty_co.gif"); //$NON-NLS-1$
@@ -48,9 +50,10 @@ public class LabelDecoratorImpl implements ILabelDecorator {
 	
 	private Image getErrorImage(Image image) {
 		Image i = (Image)errorImages.get(image);
-		if(i == null) {
+		if(i == null || i.isDisposed()) {
 			ErrorImageDescriptor d = new ErrorImageDescriptor(image, IMarker.SEVERITY_ERROR);
 			i = d.createImage();
+			registerImage(i);
 			errorImages.put(image, i);			
 		}
 		return i;
@@ -58,12 +61,22 @@ public class LabelDecoratorImpl implements ILabelDecorator {
 
 	private Image getWarningImage(Image image) {
 		Image i = (Image)warningImages.get(image);
-		if(i == null) {
+		if(i == null || i.isDisposed()) {
 			ErrorImageDescriptor d = new ErrorImageDescriptor(image, IMarker.SEVERITY_WARNING);
 			i = d.createImage();
+			registerImage(i);
 			warningImages.put(image, i);			
 		}
 		return i;
+	}
+
+	private void registerImage(Image i) {
+		ImageRegistry registry = ModelUIPlugin.getDefault().getImageRegistry();
+		String key = "" + Math.random(); //We retrieve created images by maps, let use unique random key for registry.
+		synchronized(registry) {
+			registry.remove(key); //Just in case, to be on the safe side.
+			registry.put(key, i);
+		}
 	}
 
 	int getErrorState(Object element) {

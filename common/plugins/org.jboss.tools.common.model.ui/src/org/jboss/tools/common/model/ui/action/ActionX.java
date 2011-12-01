@@ -53,10 +53,12 @@ public class ActionX extends Action {
 
 		setText(displayName);
 
-		String iconKey = action.getIconKey();
-		Image image = action.getMetaModel().getIconList().getImage(iconKey);
-		setImageDescriptor(new XImageDescriptor(image));
+		setImageDescriptor(new XImageDescriptor(getImage()));
 		setEnabled(enabled);
+	}
+
+	public Image getImage() {
+		return action.getMetaModel().getIconList().getImage(action.getIconKey());
 	}
 	
 	class XImageDescriptor extends ImageDescriptor {

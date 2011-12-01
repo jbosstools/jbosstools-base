@@ -142,7 +142,7 @@ public class XModelObjectAction extends XModelObjectActionItem {
 		item.addSelectionListener(new AL());
 		item.setText(eclipseAction.getText());
 		item.setEnabled(eclipseAction.isEnabled());
-		item.setImage(eclipseAction.getImageDescriptor().createImage());
+		item.setImage(eclipseAction.getImage());
 	}
 	
 }

@@ -15,6 +15,7 @@ import java.net.URL;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 
 public class ModelUIImages {
@@ -52,17 +53,29 @@ public class ModelUIImages {
 	}
 	
 	public static Image getImage(String key) {
-		if(ModelUIPlugin.isDebugEnabled()) {
-			ModelUIPlugin.getPluginLog().logInfo("Create image for key '"+key+"'."); //$NON-NLS-1$ //$NON-NLS-2$
+		getImageDescriptor(key); // provide image in the registry
+		ImageRegistry registry = ModelUIPlugin.getDefault().getImageRegistry();
+		synchronized(registry) {
+			return registry.get(key);
 		}
-		return INSTANCE.createImageDescriptor(key).createImage();
 	}
 
 	public static ImageDescriptor getImageDescriptor(String key) {
-		if(ModelUIPlugin.isDebugEnabled()) {
-			ModelUIPlugin.getPluginLog().logInfo("Create image descriptor for key '"+key+"'."); //$NON-NLS-1$ //$NON-NLS-2$
+		ImageDescriptor result = null;
+		ImageRegistry registry = ModelUIPlugin.getDefault().getImageRegistry();
+		synchronized(registry) {
+			result = registry.getDescriptor(key);
 		}
-		return INSTANCE.createImageDescriptor(key);
+		if(result == null) {
+			result = INSTANCE.createImageDescriptor(key);
+			if(result != null) {
+				synchronized (registry) {
+					registry.remove(key);
+					registry.put(key, result);
+				}
+			}
+		}
+		return result;
 	}
 
 	public static void setImageDescriptors(IAction action, String iconName)	{
@@ -92,10 +105,6 @@ public class ModelUIImages {
 	
 	protected ModelUIImages(URL url){
 		this(url,null);		
-	}
-
-	public Image getImageByFileName(String key) {
-		return createImageDescriptor(key).createImage();
 	}
 
 	public ImageDescriptor createImageDescriptor(String key) {

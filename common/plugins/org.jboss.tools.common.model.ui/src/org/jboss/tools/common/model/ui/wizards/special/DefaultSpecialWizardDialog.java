@@ -53,7 +53,7 @@ public class DefaultSpecialWizardDialog extends TitleAreaDialog implements Comma
 			stepPage = null;
 		}
 		ISpecialWizardStep wizardStep = wizard.getWizardStep();
-		this.setTitleImage(ModelUIImages.getImageDescriptor(ModelUIImages.WIZARD_DEFAULT).createImage(null));
+		this.setTitleImage(ModelUIImages.getImage(ModelUIImages.WIZARD_DEFAULT));
 		return wizardStep.createControl(parent);
 	}
 	
