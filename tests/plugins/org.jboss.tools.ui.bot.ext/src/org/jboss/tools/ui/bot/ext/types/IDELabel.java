@@ -111,6 +111,8 @@ public class IDELabel {
 		public static final String REFRESH = "Refresh";
 		public static final String TEST = "Test";
 		public static final String DELETE = "Delete";
+		public static final String UP = "Up";
+		public static final String DOWN = "Down";
 	}
 
 	public class Shell {
@@ -179,6 +181,8 @@ public class IDELabel {
 	  public static final String ADD_VALIDATOR = "Add Validator";
 	  public static final String NEW_VIEW = "New View";
 	  public static final String AUTO_LAYOUT = "Auto Layout";
+	  public static final String ADD_PROPERTY = "Add Property";
+	  public static final String EDIT = "Edit";	  
 	}
 
 	public class EntityGroup {
@@ -771,5 +775,16 @@ public class IDELabel {
      public static final String FROM_VIEW_ID_TEXT_LABEL = "From View ID:";
      public static final String TEMPLATE_TEXT_LABEL = "Template:*";
      public static final String CREATE_FILE_ON_DISK_CHECKBOX_LABEL = "Create File on Disk";
+   }
+   
+   public static class PropertiesEditor{
+     
+     public static final String SOURCE_TAB_LABEL = "Source";
+     public static final String PROPERTIES_TAB_LABEL = "Properties";
+     public static final String ADD_PROPERTIES_DIALOG_NAME_LABEL = "Name:*";
+     public static final String ADD_PROPERTIES_DIALOG_VALUE_LABEL = "Value:";
+     public static final String EDIT_PROPERTIES_DIALOG_NAME_LABEL = "Name:*";
+     public static final String EDIT_PROPERTIES_DIALOG_VALUE_LABEL = "Value:";
+     
    }
  }
