@@ -27,6 +27,8 @@ public class VerificationTest extends TestCase {
 	protected void setUp() throws Exception {
 	}
 
+	public void testDummy () {}
+
 	//verification removed, see JBIDE-10190
 	public void _testVerificationModel() {
 		XModel model = PreferenceModelUtilities.getPreferenceModel();
