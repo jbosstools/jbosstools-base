@@ -50,7 +50,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="org.jboss.tools.common.ui.JBossPerspectiveFactory"
-            icon="$nl$/icons/jboss16.gif"
+            icon="$nl$/icons/jboss16.png"
             id="org.jboss.tools.common.ui.JBossPerspective"
             name="%perspective.name">
       </perspective>
