@@ -105,7 +105,8 @@ public class ContextValidationHelper extends WorkbenchContext {
 		Set<IProject> projects = getAllProjects();
 		for (int i = 0; i < uris.length; i++) {
 			IFile currentFile = root.getFile(new Path(uris[i]));
-			if(projects.contains(currentFile.getProject())) {
+			if(projects.contains(currentFile.getProject())
+					&& !currentFile.isDerived(IResource.CHECK_ANCESTORS)) {
 				result.add(currentFile);
 			}
 		}
