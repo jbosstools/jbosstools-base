@@ -95,10 +95,9 @@ public class ContentAssistBot {
 		}
 	}
 	/**
-   * Logs proposal list contents, usual for debug purposes
-   * 
-   * @param text
-   */
+	 * Returns proposal list
+	 * @return
+	 */
   public List<String>getProposalList() {
     List<String> result = null;
     SWTBotShell shell = openProposalList();
@@ -106,6 +105,24 @@ public class ContentAssistBot {
     result = getTableItems(table);
     shell.close();
     
+    return result;
+  }
+  /**
+   * Logs proposal list contents, when Content Assist window is already opened
+   * @param shellsBefore - list of shells before Content Assist was invoked
+   * @param shellsAfter - list of shells after Content Assist was invoked
+   * @param closeShell
+   * @return
+   */
+  public List<String>getProposalList(SWTBotShell[] shellsBefore, SWTBotShell[] shellsAfter, boolean closeShell) {
+    List<String> result = null;
+    SWTBotShell caShell = getContentAssistShell(shellsBefore, shellsAfter);
+    SWTBotTable caTable = getProposalTable(caShell);
+    result = getTableItems(caTable);
+    if (closeShell) {
+      caShell.close();
+    }
+        
     return result;
   }
 	// ------------------------------------------------------------
