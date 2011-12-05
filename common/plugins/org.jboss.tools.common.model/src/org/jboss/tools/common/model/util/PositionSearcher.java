@@ -119,7 +119,10 @@ public class PositionSearcher {
 				startPosition = startPosition + i2 + 1;
 			}
 		} else {
-			xml = xml.substring(0, xml.indexOf('.'));
+			xml = xml.substring(0, xml.lastIndexOf('.')); //remove .#text
+			if(xml.indexOf('.') >= 0) {
+				xml = xml.substring(xml.lastIndexOf('.') + 1); // simplify - look for the last name only
+			}
 			int e1 = text.indexOf("</" + getTagXMLName(object) + ">", startPosition); //$NON-NLS-1$ //$NON-NLS-2$
 			String s = e1 < 0 ? "" : text.substring(startPosition, e1); //$NON-NLS-1$
 			if(xml.length() == 0) {
