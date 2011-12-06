@@ -84,7 +84,11 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 	protected PixelConverter fPixelConverter;
 
 	protected FilteredPreferenceTree fFilteredPrefTree;
-	
+	/**
+	 * Text control retrieved from fFilteredPrefTree.
+	 */
+	protected Text filterControl;
+
 	public SeverityConfigurationBlock(IStatusChangeListener context,
 			IProject project, Key[] allKeys,
 			IWorkbenchPreferenceContainer container) {
@@ -110,8 +114,13 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 			addMaxNumberOfMarkersField(c);
 		}
 		addWrongBuilderOrderField(c);
+		
+		Control[] currentControls = folder.getChildren();
 
 		fFilteredPrefTree = new FilteredPreferenceTree(this, folder, getCommonDescription());
+
+		filterControl = findText(folder, currentControls.length);
+		
 		final ScrolledPageContent sc1 = fFilteredPrefTree.getScrolledPageContent();
 
 		Composite composite = sc1.getBody();
@@ -127,6 +136,22 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		restoreSectionExpansionStates(getDialogSettings());
 
 		return sc1;
+	}
+
+	Text findText(Composite composite, int startFromIndex) {
+		Control[] cs = composite.getChildren();
+		for (int i = startFromIndex; i < cs.length; i++) {
+			Control cl = cs[i];
+			if(cl instanceof Text) {
+				return (Text)cl;
+			} else if(cl instanceof Composite) {
+				Text t = findText((Composite)cl, 0);
+				if(t != null) {
+					return t;
+				}
+			}
+		}
+		return null;
 	}
 
 	protected Composite createInnerComposite(ExpandableComposite excomposite, int nColumns, Font font) {
@@ -301,6 +326,10 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 			key = getKey(pluginId, keyName);
 		}
 	}
+
+	public Text getFilterControl() {
+		return filterControl;
+	}
 	
 	public void doFilter(String prefId){
 		String qualifier = getQualifier();
@@ -314,8 +343,13 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 			if(combo != null){
 				String value = ((Label)fLabels.get(combo)).getText();
 			
-				if(value != null)
-					fFilteredPrefTree.doFilter(value);
+				if(value != null) {
+					if(filterControl != null) {
+						filterControl.setText(value);
+					} else {
+						fFilteredPrefTree.doFilter(value);
+					}
+				}
 			}
 		}
 	}

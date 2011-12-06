@@ -164,4 +164,12 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 			super.applyData(data);
 		}
 	}
+
+	/**
+	 * Used by test.
+	 * @return
+	 */
+	public String getFilterText() {
+		return getConfigurationBlock().getFilterControl().getText();
+	}
 }
