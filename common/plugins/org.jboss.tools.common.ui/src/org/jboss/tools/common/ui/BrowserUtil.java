@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 /**
  * @author Andre Dietisheim
@@ -41,7 +42,7 @@ public class BrowserUtil {
 	 */
 	public static void checkedCreateInternalBrowser(String url, String browserId, String pluginId, ILog log) {
 		try {
-			openUrl(url, PlatformUI.getWorkbench().getBrowserSupport().createBrowser(browserId), pluginId, log);
+			openUrl(url, PlatformUI.getWorkbench().getBrowserSupport().createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR, browserId, null, null), pluginId, log);
 		} catch (PartInitException e) {
 			IStatus errorStatus = createErrorStatus(pluginId, CommonUIMessages.BROWSER_COULD_NOT_OPEN_BROWSER, e, url);
 			log.log(errorStatus);
