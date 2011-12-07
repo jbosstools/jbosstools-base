@@ -74,7 +74,7 @@ public class FaceletSourceTagHyperlink extends LinkHyperlink{
 				if(folder.length() > 0) {
 					if(folder.startsWith("META-INF")) {
 						JarEntryResource r = null;
-						while (folder.length() >= 0) {
+						while (folder.length() > 0) {
 							int iii = folder.indexOf('/');
 							String name = iii < 0 ? folder : folder.substring(
 									0, iii);
