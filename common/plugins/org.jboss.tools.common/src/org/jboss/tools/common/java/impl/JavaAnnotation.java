@@ -12,6 +12,7 @@ package org.jboss.tools.common.java.impl;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.ISourceRange;
@@ -75,7 +76,14 @@ public class JavaAnnotation implements IJavaAnnotation {
 	}
 
 	public IMember getParentMember() {
-		return (IMember)annotation.getParent();
+		IJavaElement ancestor = annotation.getParent();
+		while(ancestor != null) {
+			if(ancestor instanceof IMember) {
+				return (IMember)ancestor;
+			}
+			ancestor = ancestor.getParent();
+		}
+		return null;
 	}
 
 	public IMemberValuePair[] getMemberValuePairs() {
