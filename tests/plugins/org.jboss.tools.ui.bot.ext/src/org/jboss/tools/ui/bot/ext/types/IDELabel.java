@@ -116,6 +116,7 @@ public class IDELabel {
 		public static final String DOWN = "Down";
 		public static final String ADD_VARIABLE = "Add Variable...";
 		public static final String CONFIGURE_VARIABLES = "Configure Variables...";
+		public static final String BROWSE = "Browse...";
 	}
 
 	public class Shell {
@@ -191,6 +192,7 @@ public class IDELabel {
 	  public static final String NEW_VARIABLE_ENTRY = "New Variable Entry";
 	  public static final String CLASSPATH_VARIABLES_CHANGED = "Classpath Variables Changed";
 	  public static final String CLEAN = "Clean";
+	  public static final String SELECT_CLASS = "Select Class";
 	}
 
 	public class EntityGroup {
@@ -280,6 +282,7 @@ public class IDELabel {
 		public static final String GUVNOR_REPOSITORY_EXPLORING = "Guvnor Repository Exploring";
 		public static final String DROOLS = "Drools";
 		public static final String JBPM3 = "jBPM jPDL 3";
+    public static final String CONFIGURE_VARIABLES = "Configure Variables...";
 	}
 	/**
 	 * Hibernate Console Wizard (ConsoleConfigurationCreationWizard) Labels (
