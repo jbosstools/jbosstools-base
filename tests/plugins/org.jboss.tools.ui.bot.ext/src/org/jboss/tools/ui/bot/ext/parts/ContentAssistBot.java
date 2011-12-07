@@ -15,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -292,8 +293,15 @@ public class ContentAssistBot {
 				}
 			}
 			if (found == false) {
-				ccShell = bs2;
-				break;
+			  // New Shell has to contain table
+			  try{
+			    bs2.bot().table();
+		      ccShell = bs2;
+		      break;
+			  }
+			  catch (WidgetNotFoundException wnfe){
+			    // do nothing
+			  }
 			}
 		}
 		return ccShell;
