@@ -55,12 +55,16 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.ServerServer;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Preference;
 import org.jboss.tools.ui.bot.ext.gen.IServer;
 import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
+import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.helper.MenuBarHelper;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
+import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.RemoteSystems;
+import org.junit.Assert;
 
 /**
  * Provides Eclipse common operation based on SWTBot element operations
@@ -1460,5 +1464,33 @@ public class SWTEclipseExt {
     } catch (TimeoutException te){
       log.info("No Editors to close");
     }
+  }
+  /**
+   * Opens properties dialog of project with projectName
+   * @param projectName
+   */
+  public SWTBotExt openPropertiesOfProject(String projectName){
+    PackageExplorer packageExplorer = new PackageExplorer();
+    // Open Project Properties
+    packageExplorer.show();
+    bot.sleep(Timing.time2S());
+    packageExplorer.selectProject(projectName);
+    Assert.assertTrue(isProjectInPackageExplorer(projectName));
+    bot.sleep(Timing.time2S());
+    util.waitForNonIgnoredJobs();
+    ContextMenuHelper.clickContextMenu(packageExplorer.bot().tree(),
+        IDELabel.Menu.PROPERTIES);
+    waitForShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
+    return bot;
+  }
+  /**
+   * Cleans All Projects
+   */
+  public void cleanAllProjects(){
+    MenuBarHelper.getMenu(IDELabel.Menu.PROJECT).menu(IDELabel.Menu.CLEAN).click();
+    bot.shell(IDELabel.Shell.CLEAN).activate();
+    bot.radio(IDELabel.CleanProjectDialog.CLEAN_ALL_PROJECTS_RADIO).click();
+    bot.button(IDELabel.Button.OK).click();
+    util.waitForNonIgnoredJobs();
   }
 }

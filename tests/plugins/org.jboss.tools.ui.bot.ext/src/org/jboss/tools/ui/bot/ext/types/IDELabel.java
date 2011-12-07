@@ -86,6 +86,7 @@ public class IDELabel {
     public static final String SAVE_AS_TEMPLATE = "Save As Template...";
     public static final String AUTO_LAYOUT = "Auto Layout";
     public static final String CDI_REFACTOR = "CDI Refactor";
+    public static final String CLEAN = "Clean...";
 	}
 
 	public class Button {
@@ -113,6 +114,8 @@ public class IDELabel {
 		public static final String DELETE = "Delete";
 		public static final String UP = "Up";
 		public static final String DOWN = "Down";
+		public static final String ADD_VARIABLE = "Add Variable...";
+		public static final String CONFIGURE_VARIABLES = "Configure Variables...";
 	}
 
 	public class Shell {
@@ -183,6 +186,11 @@ public class IDELabel {
 	  public static final String AUTO_LAYOUT = "Auto Layout";
 	  public static final String ADD_PROPERTY = "Add Property";
 	  public static final String EDIT = "Edit";	  
+	  public static final String NEW_VARIABLE_CLASS_PATH_ENTRY = "New Variable Classpath Entry";
+	  public static final String PREFERENCES_FILTERED = "Preferences (Filtered)";
+	  public static final String NEW_VARIABLE_ENTRY = "New Variable Entry";
+	  public static final String CLASSPATH_VARIABLES_CHANGED = "Classpath Variables Changed";
+	  public static final String CLEAN = "Clean";
 	}
 
 	public class EntityGroup {
@@ -786,5 +794,24 @@ public class IDELabel {
      public static final String EDIT_PROPERTIES_DIALOG_NAME_LABEL = "Name:*";
      public static final String EDIT_PROPERTIES_DIALOG_VALUE_LABEL = "Value:";
      
+   }
+   
+   public static class JavaBuildPathPropertiesEditor{
+     
+     public static final String JAVA_BUILD_PATH_TREE_ITEM_LABEL = "Java Build Path";
+     public static final String LIBRARIES_TAB_LABEL = "Libraries";
+     
+   }
+   
+   public static class NewVariableEntryDialog{
+     
+     public static final String NAME_TEXT_LABEL = "Name:";
+     public static final String PATH_TEXT_LABEL = "Path:";
+     
+   }
+   public static class CleanProjectDialog{
+     
+     public static final String CLEAN_ALL_PROJECTS_RADIO = "Clean all projects";
+          
    }
  }
