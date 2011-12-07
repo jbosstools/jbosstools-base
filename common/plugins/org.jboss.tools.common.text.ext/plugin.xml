@@ -553,6 +553,9 @@
                   id="org.jboss.tools.common.text.ext.xml.TAGLIB_XML" >
 	           </partitiontype>
 	     </contenttypeidentifier>
+    	 <contenttypeidentifier id="org.eclipse.jst.jsp.core.tldsource">
+			<partitiontype id="org.jboss.tools.common.text.ext.xml.TAGLIB_XML" />
+		 </contenttypeidentifier>
 		</hyperlink>
 
 		<hyperlink 
