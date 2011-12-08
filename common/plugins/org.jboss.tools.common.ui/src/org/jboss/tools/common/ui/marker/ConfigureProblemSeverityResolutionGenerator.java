@@ -10,8 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.common.ui.marker;
 
+import java.util.ArrayList;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
 import org.jboss.tools.common.ui.CommonUIPlugin;
@@ -24,16 +27,25 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 		IMarkerResolutionGenerator2 {
 
 	public IMarkerResolution[] getResolutions(IMarker marker) {
+		ArrayList<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
 		try {
 			String preferenceKey = getPreferenceKey(marker);
 			String preferencePageId = getPreferencePageId(marker);
 			if(preferenceKey != null && preferencePageId != null){
-				return new IMarkerResolution[]{new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey)};
+				resolutions.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
+				IJavaElement element = findJavaElement(marker);
+				if(element != null){
+					resolutions.add(new AddSuppressWarningsMarkerResolution(element, preferenceKey));
+				}
 			}
 		} catch (CoreException e) {
 			CommonUIPlugin.getDefault().logError(e);
 		}
-		return new IMarkerResolution[] {};
+		return resolutions.toArray(new IMarkerResolution[] {});
+	}
+	
+	private IJavaElement findJavaElement(IMarker marker){
+		return null;
 	}
 
 	public boolean hasResolutions(IMarker marker) {

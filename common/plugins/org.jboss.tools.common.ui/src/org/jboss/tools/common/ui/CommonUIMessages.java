@@ -75,6 +75,7 @@ public final class CommonUIMessages extends NLS {
 	public static String MANDATORYSTRING_VALIDATOR_MUST_PROVIDE_VALUE;
 	
 	public static String CONFIGURE_PROBLEM_SEVERITY;
+	public static String ADD_SUPPRESS_WARNINGS;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, CommonUIMessages.class);
