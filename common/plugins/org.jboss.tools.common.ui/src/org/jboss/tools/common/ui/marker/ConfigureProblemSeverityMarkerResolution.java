@@ -16,14 +16,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
-import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMarkerResolution2;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.progress.UIJob;
 import org.jboss.tools.common.ui.CommonUIMessages;
-import org.jboss.tools.common.ui.CommonUIPlugin;
 
 /**
  * @author Daniel Azarov
@@ -62,14 +61,7 @@ public class ConfigureProblemSeverityMarkerResolution implements
 	}
 
 	public Image getImage() {
-		String key = "DESC_ELCL_CONFIGURE_PROBLEM_SEVERITIES";
-		ImageRegistry registry = CommonUIPlugin.getDefault().getImageRegistry();
-		Image image = registry.get(key);
-		if(image == null) {
-			image = JavaPluginImages.DESC_ELCL_CONFIGURE_PROBLEM_SEVERITIES.createImage();
-			registry.put(key, image);
-		}		
-		return image;
+		return JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_ELCL_CONFIGURE_PROBLEM_SEVERITIES);
 	}
 
 }

@@ -12,13 +12,12 @@ package org.jboss.tools.common.ui.marker;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
-import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMarkerResolution2;
 import org.jboss.tools.common.ui.CommonUIMessages;
-import org.jboss.tools.common.ui.CommonUIPlugin;
 
 /**
  * @author Daniel Azarov
@@ -45,14 +44,7 @@ public class AddSuppressWarningsMarkerResolution implements
 	}
 
 	public Image getImage() {
-		String key = "DESC_OBJS_ANNOTATION";
-		ImageRegistry registry = CommonUIPlugin.getDefault().getImageRegistry();
-		Image image = registry.get(key);
-		if(image == null) {
-			image = JavaPluginImages.DESC_OBJS_ANNOTATION.createImage();
-			registry.put(key, image);
-		}		
-		return image;
+		return JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_OBJS_ANNOTATION);
 	}
 
 }
