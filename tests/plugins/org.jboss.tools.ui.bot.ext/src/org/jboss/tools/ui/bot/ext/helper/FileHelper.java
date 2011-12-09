@@ -24,6 +24,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
@@ -120,7 +121,18 @@ public class FileHelper {
 		propertiesBot.button(IDELabel.Button.OK).click();
 		return projectLocation;
 	}
-
+  /**
+   * Returns true when specified file exists on the path within workspace
+   * @param fileName
+   * @param pathWithinWorkspace
+   * @return
+   */
+  public static boolean isExistingFileWithinWorkspace(String fileName , String... pathWithinWorkspace){
+    return ResourcesPlugin
+      .getWorkspace()
+      .getRoot()
+      .findMember(MarkerHelper.getPathToResource(fileName, pathWithinWorkspace)) != null;
+  }
 	public static void unzipArchive(File archive, File outputDir)
 			throws Exception {
 		log.info("Unzipping " + archive.getCanonicalPath() + " to "

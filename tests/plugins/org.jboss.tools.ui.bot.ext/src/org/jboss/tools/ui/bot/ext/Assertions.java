@@ -4,10 +4,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.tools.ui.bot.ext.helper.MarkerHelper;
+import org.jboss.tools.ui.bot.ext.helper.FileHelper;
 
 public class Assertions {
 	/**
@@ -35,7 +34,7 @@ public class Assertions {
 	 */
 	public static void assertFileExistsInWorkspace (String fileName , String... pathWithinWorkspace){
 	  assertTrue("File " + fileName + " does not exist.",
-	      isExistingFileWithinWorkspace (fileName, pathWithinWorkspace));
+	      FileHelper.isExistingFileWithinWorkspace (fileName, pathWithinWorkspace));
 	}
 	/**
    * Asserts that given file does not exists
@@ -44,20 +43,8 @@ public class Assertions {
    */
   public static void assertFileNotExistsInWorkspace (String fileName , String... pathWithinWorkspace){
     assertTrue("File " + fileName + " does exist but it has to be deleted.",
-        !isExistingFileWithinWorkspace (fileName, pathWithinWorkspace));
+        !FileHelper.isExistingFileWithinWorkspace (fileName, pathWithinWorkspace));
   }
-	/**
-	 * Returns true when specified file exists on the path within workspace
-	 * @param fileName
-	 * @param pathWithinWorkspace
-	 * @return
-	 */
-	private static boolean isExistingFileWithinWorkspace(String fileName , String... pathWithinWorkspace){
-	  return ResourcesPlugin
-      .getWorkspace()
-      .getRoot()
-      .findMember(MarkerHelper.getPathToResource(fileName, pathWithinWorkspace)) != null;
-	}
   /**
    * Asserts if sourceEditorText of file with fileName contains textToContain
    * @param sourceEditorText

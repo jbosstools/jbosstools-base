@@ -315,6 +315,16 @@ public class SWTEclipseExt {
 	public SWTBotEditor openFile(String projectName, String... path) {
 		return SWTEclipseExt.openFile(bot, projectName, path);
 	}
+	
+	 /**
+   * Delete File in Package Explorer
+   * 
+   * @param projectName
+   * @param path
+   */
+  public void deleteFile(String projectName, String... path) {
+    SWTEclipseExt.deleteFile(bot, projectName, path);
+  }
 
 	// ------------------------------------------------------------
 	// Navigation related
@@ -1492,5 +1502,37 @@ public class SWTEclipseExt {
     bot.radio(IDELabel.CleanProjectDialog.CLEAN_ALL_PROJECTS_RADIO).click();
     bot.button(IDELabel.Button.OK).click();
     util.waitForNonIgnoredJobs();
+  }
+
+  /**
+   * Deletes file from Package Explorer static version
+   * @param bot
+   * @param path
+   * @return SWTBotEditor
+   */
+  public static void deleteFile(SWTBotExt bot, String projectName, String... path) {
+    SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();
+    bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).show();
+    bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).setFocus();
+    SWTBotTree tree = viewBot.tree();
+    SWTBotTreeItem item = tree.expandNode(projectName);
+    StringBuilder builder = new StringBuilder(projectName);
+  
+    // Go through path
+    for (String nodeName : path) {
+      item = item.expandNode(nodeName);
+      builder.append("/" + nodeName);
+    }
+    
+    ContextMenuHelper.prepareTreeItemForContextMenu(tree, item);
+    new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, 
+      IDELabel.Menu.DELETE, false)).click();
+  
+    bot.shell(IDELabel.Shell.CONFIRM_DELETE).activate();
+    bot.button(IDELabel.Button.OK).click();
+    new SWTUtilExt(bot).waitForNonIgnoredJobs();
+    
+    log.info("File Deleted: " + builder.toString());
+  
   }
 }

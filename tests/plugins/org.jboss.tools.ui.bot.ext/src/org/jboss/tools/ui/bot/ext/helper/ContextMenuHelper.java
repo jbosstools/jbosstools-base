@@ -21,11 +21,13 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Decorations;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -268,15 +270,20 @@ public class ContextMenuHelper {
       throw new WidgetNotFoundException("Could not find menu: "
           + Arrays.asList(texts));
     }
+    // hide on MacOs
+    if (SWTJBTExt.isRunningOnMacOs()) {
+      KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_ESCAPE);
+    }
     // click
     click(menuItem);
-    // hide
-    UIThreadRunnable.syncExec(new VoidResult() {
-      public void run() {
-        hide(menuItem.getParent());
-      }
-    });
-
+    // hide on other systems
+    if (!SWTJBTExt.isRunningOnMacOs()) {
+      UIThreadRunnable.syncExec(new VoidResult() {
+        public void run() {
+          hide(menuItem.getParent());
+        }
+      });
+    }
   }
 
   /**
@@ -361,13 +368,25 @@ public class ContextMenuHelper {
     event.widget = menuItem;
     event.display = menuItem.getDisplay();
     event.type = SWT.Selection;
-
-    UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
-      public void run() {
-        log.info("Click on menu item: " + menuItem.getText());
-        menuItem.notifyListeners(SWT.Selection, event);
+    
+    final boolean isEnabled = UIThreadRunnable.syncExec(new Result<Boolean>() {
+      public Boolean run() {
+        return menuItem.getEnabled();
       }
     });
+    
+    if (isEnabled){
+      UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
+        public void run() {
+          log.info("Click on menu item: " + menuItem.getText());
+          menuItem.notifyListeners(SWT.Selection, event);
+        }
+      });  
+    }
+    else{
+      throw new RuntimeException(new NotEnabledException("Menu item is not enabled"));
+    }
+    
   }
 
   /**
@@ -383,13 +402,21 @@ public class ContextMenuHelper {
     return UIThreadRunnable.syncExec(new WidgetResult<Menu>() {
       public Menu run() {
         Menu result = null;
-        Composite parent = tree.getParent();
-        while (!(parent instanceof Decorations)) {
-          parent = parent.getParent();
+        Object menusHolder = null;
+        if (SWTJBTExt.isRunningOnMacOs()){
+          menusHolder = tree.getDisplay();
         }
+        else{
+          Composite parent = (Composite)tree.getParent();
+          while (!(parent instanceof Decorations)){
+            parent = parent.getParent();
+          }
+          menusHolder = parent;
+        } 
+        
         try {
-          Menu[] menus = ReflectionsHelper.getPrivateFieldValue(
-              Decorations.class, "menus", parent, Menu[].class);
+          Menu[] menus = ReflectionsHelper.getPrivateFieldValue(SWTJBTExt.isRunningOnMacOs() ? Display.class : Decorations.class,
+              "menus", menusHolder, Menu[].class);
           if (menus != null) {
             MenuItem topMenuItem = null;
             int index = menus.length - 1;
