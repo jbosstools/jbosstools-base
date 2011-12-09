@@ -153,13 +153,13 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		if(location.getResource() != null && location.getResource().exists() && !location.getResource().equals(target)) {
 			newTarget = location.getResource();
 		}
-//		try {
-//			if(hasSuppressWarningsAnnotation(preferenceKey, location)) {
-//				return null;
-//			}
-//		} catch (JavaModelException e) {
-//			CommonPlugin.getDefault().logError(e);
-//		}
+		try {
+			if(hasSuppressWarningsAnnotation(preferenceKey, location)) {
+				return null;
+			}
+		} catch (JavaModelException e) {
+			CommonPlugin.getDefault().logError(e);
+		}
 		return addError(message, preferenceKey, messageArguments, 0, location
 				.getLength(), location.getStartPosition(), newTarget);
 	}
