@@ -20,6 +20,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.IMemberValuePair;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.osgi.util.NLS;
@@ -30,8 +34,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.java.IJavaSourceReference;
 import org.jboss.tools.common.preferences.SeverityPreferences;
 import org.jboss.tools.common.text.ITextSourceReference;
+import org.jboss.tools.common.util.EclipseJavaUtil;
 
 /**
  * @author Alexey Kazakov
@@ -145,10 +151,61 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 			IResource target) {
 		IResource newTarget = target; 
 		if(location.getResource() != null && location.getResource().exists() && !location.getResource().equals(target)) {
-				newTarget = location.getResource();
+			newTarget = location.getResource();
 		}
+//		try {
+//			if(hasSuppressWarningsAnnotation(preferenceKey, location)) {
+//				return null;
+//			}
+//		} catch (JavaModelException e) {
+//			CommonPlugin.getDefault().logError(e);
+//		}
 		return addError(message, preferenceKey, messageArguments, 0, location
 				.getLength(), location.getStartPosition(), newTarget);
+	}
+
+	private static final String SUPPRESS_WARNINGS_ANNOTATION_SHORT = "SuppressWarnings";
+	private static final String SUPPRESS_WARNINGS_ANNOTATION_FULL = "java.lang.SuppressWarnings";
+	private static final String ALL_WARNINGS = "all";
+
+	private static IAnnotation getSuppressWarningsAnnotation(String preferenceKey, IMember member) throws JavaModelException {
+		// Does the element have @SuppressWarnings? Check it by the short name only.
+		IAnnotation annotation = EclipseJavaUtil.findAnnotationByShortName(member, SUPPRESS_WARNINGS_ANNOTATION_SHORT, true);
+		IAnnotation result  = null;
+		if(annotation!=null) {
+			IMemberValuePair[] pairs = annotation.getMemberValuePairs();
+			if(pairs.length==1) {
+				Object v = pairs[0].getValue();
+				String[] warnings = null;
+				if(v instanceof String[]) {
+					warnings = (String[])v;
+				}  else if(v instanceof String) {
+					warnings = new String[]{v.toString()};
+					for (String warning : warnings) {
+						String trimed = warning.trim();
+						if(trimed.equals(preferenceKey) || trimed.equals(ALL_WARNINGS)) {
+							// Ok, we seem to have such a suppress. Let's make sure the full name of annotation is java.lang.SuppressWarnings
+							if(EclipseJavaUtil.checkAnnotationByFulltName(annotation, SUPPRESS_WARNINGS_ANNOTATION_FULL)) {
+								result = annotation;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	private static boolean hasSuppressWarningsAnnotation(String preferenceKey, ITextSourceReference location) throws JavaModelException {
+		boolean result = false;
+		if(location instanceof IJavaSourceReference) {
+			IMember member = ((IJavaSourceReference) location).getSourceMember();
+			result = getSuppressWarningsAnnotation(preferenceKey, member)!=null;
+		}
+
+		return result;
 	}
 
 	/*

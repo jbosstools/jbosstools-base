@@ -22,6 +22,7 @@ import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
@@ -171,4 +172,83 @@ public class EclipseJavaUtil {
 		return null;
 	}
 
+	/**
+	 * Returns annotation by the full name declared for the given java member or its parents.
+	 * @param member
+	 * @param name
+	 * @param checkParents
+	 * @return
+	 * @throws JavaModelException
+	 */
+	public static IAnnotation findAnnotationByFullName(IMember member, String name, boolean checkParents) throws JavaModelException {
+		String shortName = name;
+		int i = name.lastIndexOf('.');
+		if(i>-1) {
+			shortName = name.substring(i+1);
+		}
+		IAnnotation annotation = findAnnotationByShortName(member, shortName, checkParents);
+		return annotation!=null && checkAnnotationByFulltName(annotation, name) ? annotation:null;
+	}
+
+	/**
+	 * Returns true if the given annotation has the given full name
+	 * @param annotation
+	 * @param fullName
+	 * @return
+	 * @throws JavaModelException
+	 */
+	public static boolean checkAnnotationByFulltName(IAnnotation annotation, String fullName) throws JavaModelException {
+		if(annotation.getElementName().equals(fullName)) {
+			return true;
+		}
+		boolean result = true;
+		IType sourceType = null;
+		IJavaElement parent = annotation.getParent();
+		if(parent instanceof IMember) {
+			if(parent instanceof IType) {
+				sourceType = (IType)parent;
+			} else {
+				sourceType = ((IMember)parent).getDeclaringType();
+			}
+			String fullAnnotationName = EclipseJavaUtil.resolveType(sourceType, annotation.getElementName());
+			if(fullAnnotationName!=null) {
+				IType annotationType = sourceType.getJavaProject().findType(fullAnnotationName);
+				result = annotationType!=null && annotationType.getFullyQualifiedName().equals(fullName);
+			} else {
+				result = false;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Returns annotation by the short name declared for the given java member or its parents.
+	 * @param member
+	 * @param name
+	 * @param checkParents
+	 * @return
+	 * @throws JavaModelException
+	 */
+	public static IAnnotation findAnnotationByShortName(IMember member, String name, boolean checkParents) throws JavaModelException {
+		if(member instanceof IAnnotatable) {
+			IAnnotation[] annotations = ((IAnnotatable)member).getAnnotations();
+			for (IAnnotation annotation : annotations) {
+				String aName = annotation.getElementName();
+				int i = aName.lastIndexOf('.');
+				if(i>-1) {
+					aName = aName.substring(i+1);
+				}
+				if(aName.equals(name)) {
+					return annotation;
+				}
+			}
+		}
+		if(checkParents) {
+			IJavaElement parent = member.getParent();
+			if(parent!=null && parent instanceof IMember) {
+				return findAnnotationByShortName((IMember)parent, name, true);
+			}
+		}
+		return null;
+	}
 }
