@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IType;
-import org.jboss.tools.common.text.ITextSourceReference;
 
 /**
  * Represents an annotation declaration. For example, in CDI, a qualifier or a scope
@@ -23,7 +22,7 @@ import org.jboss.tools.common.text.ITextSourceReference;
  * 
  * @author Alexey Kazakov
  */
-public interface IAnnotationDeclaration extends ITextSourceReference {
+public interface IAnnotationDeclaration extends IJavaSourceReference {
 
 	/**
 	 * Returns the member value pairs.

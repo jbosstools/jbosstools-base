@@ -86,5 +86,4 @@ public class AnnotationLiteral implements IJavaAnnotation {
 	public IMemberValuePair[] getMemberValuePairs() {
 		return memberValues;
 	}
-	
 }

@@ -25,7 +25,6 @@ import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.java.IAnnotationDeclaration;
 import org.jboss.tools.common.java.IAnnotationType;
 import org.jboss.tools.common.java.IJavaAnnotation;
-import org.jboss.tools.common.java.impl.JavaAnnotation;
 import org.jboss.tools.common.util.EclipseJavaUtil;
 
 /**
@@ -171,5 +170,10 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public IMember getSourceMember() {
+		return getParentMember();
 	}
 }
