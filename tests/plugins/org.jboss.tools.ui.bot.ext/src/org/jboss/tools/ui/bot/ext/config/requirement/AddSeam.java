@@ -7,7 +7,8 @@ public class AddSeam extends RequirementBase {
 
 	@Override
 	public boolean checkFulfilled() {
-		return SWTTestExt.configuredState.getSeam().isConfiured;
+		return SWTTestExt.configuredState.getSeam().isConfiured 
+				&& SWTTestExt.configuredState.getSeam().version.equals(TestConfigurator.currentConfig.getSeam().version);
 	}
 
 	@Override
