@@ -87,6 +87,7 @@ public class IDELabel {
     public static final String AUTO_LAYOUT = "Auto Layout";
     public static final String CDI_REFACTOR = "CDI Refactor";
     public static final String CLEAN = "Clean...";
+    public static final String CREATE_JSF2_COMPOSITE = "Create JSF2 composite...";
 	}
 
 	public class Button {
@@ -193,6 +194,7 @@ public class IDELabel {
 	  public static final String CLASSPATH_VARIABLES_CHANGED = "Classpath Variables Changed";
 	  public static final String CLEAN = "Clean";
 	  public static final String SELECT_CLASS = "Select Class";
+	  public static final String CREATING_COMPOSITE_COMPONENT = "Creating composite component";
 	}
 
 	public class EntityGroup {
