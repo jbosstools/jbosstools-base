@@ -39,7 +39,7 @@ public class PrepareDB extends RequirementBase {
 				e.printStackTrace();
 				Assert.fail("Unable to copy driver" + e);
 			}
-			DatabaseHelper.startHSQLDBServer("mydb", "xdb");
+			DatabaseHelper.startHSQLDBServer("db" + File.separator + "mydb", "xdb");
 		}
 		
 		// Define Driver Entity and create driver

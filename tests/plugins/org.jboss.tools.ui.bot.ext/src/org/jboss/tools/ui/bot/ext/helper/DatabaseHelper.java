@@ -345,10 +345,10 @@ public class DatabaseHelper {
 	
 	/**
 	 * Run HSQLDB database in server mode
-	 * @param file
-	 * @param dbname
+	 * @param dbFilePath - hsqldb database file path 
+	 * @param dbname - database name
 	 */
-	public static void startHSQLDBServer(final String file, final String dbname) {
+	public static void startHSQLDBServer(final String dbFilePath, final String dbname) {
 		Thread hsqlThread = null;
 		log.info("Starting HSQLDB...");
 		try {
@@ -360,7 +360,7 @@ public class DatabaseHelper {
 		Runnable runable = new Runnable() {
 			
 			public void run() {
-				Server.main(new String[] {"-database.0","file:" + file,"-dbname.0",dbname });
+				Server.main(new String[] {"-database.0","file:" + dbFilePath,"-dbname.0",dbname });
 			}
 		};
 		
