@@ -40,7 +40,7 @@ public class SamplePropertyForm extends ExpandableForm implements PropertyChange
 	private boolean isGreedy = false;
 	
 	public SamplePropertyForm() {
-		settings = new WhiteSettings();
+		settings = WhiteSettings.getWhite();
 		support = new SampleXAttributeSupport(settings);
 		support.addPropertyChangeListener(this);
 	}

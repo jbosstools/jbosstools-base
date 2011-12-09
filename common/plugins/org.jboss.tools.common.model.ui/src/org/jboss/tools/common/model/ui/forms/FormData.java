@@ -60,7 +60,7 @@ public class FormData implements IFormData {
 	 * @param actions
 	 */
 	public FormData(String header, String description, String entityName, IFormAttributeData[] attributes, String[] entities, IFormActionData[] actions) {
-		this(header, description, entityName, attributes, entities, actions, null, new WhiteSettings());
+		this(header, description, entityName, attributes, entities, actions, null, WhiteSettings.getWhite());
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class FormData implements IFormData {
 	 * @param actions
 	 */
 	public FormData(String header, String description, IFormAttributeData[] attributes, String[] entities, IFormActionData[] actions) {
-		this(header, description, null, attributes, entities, actions, null, new WhiteSettings());
+		this(header, description, null, attributes, entities, actions, null, WhiteSettings.getWhite());
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class FormData implements IFormData {
 	 * @param forms
 	 */
 	public FormData(String entityName, String[] entities, IFormData[] forms) {
-		this(null, null, entityName, null, entities, null, forms, new WhiteSettings());
+		this(null, null, entityName, null, entities, null, forms, WhiteSettings.getWhite());
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class FormData implements IFormData {
 	 * @param attributes
 	 */
 	public FormData(String header, String description, String entityName, IFormAttributeData[] attributes) {
-		this(header, description, entityName, attributes, null, null, null, new WhiteSettings());
+		this(header, description, entityName, attributes, null, null, null, WhiteSettings.getWhite());
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class FormData implements IFormData {
 	 * @param attributes
 	 */
 	public FormData(String header, String description, IFormAttributeData[] attributes) {
-		this(header, description, null, attributes, null, null, null, new WhiteSettings());
+		this(header, description, null, attributes, null, null, null, WhiteSettings.getWhite());
 	}
 
 	/**

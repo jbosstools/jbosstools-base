@@ -12,7 +12,6 @@ package org.jboss.tools.common.model.ui.widgets;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -21,6 +20,15 @@ import org.jboss.tools.common.model.ui.widgets.border.Border;
 import org.jboss.tools.common.model.ui.widgets.border.FormControlBorder;
 
 public class WhiteSettings extends DefaultSettings {
+	
+	private static WhiteSettings whiteSettings;
+
+	public static IWidgetSettings getWhite() {
+		if(whiteSettings == null) {
+			whiteSettings = new WhiteSettings();
+		}
+		return whiteSettings;
+	}
 	
 	private Color listBorderColor;
 	private Color separatorColor;
@@ -31,7 +39,7 @@ public class WhiteSettings extends DefaultSettings {
 	
 	private FormToolkit toolkit = null;
 	
-	public WhiteSettings() {
+	private WhiteSettings() {
 		super();
 	}
 

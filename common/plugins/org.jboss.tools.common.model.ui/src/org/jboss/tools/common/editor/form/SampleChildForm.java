@@ -30,7 +30,7 @@ public class SampleChildForm extends ExpandableForm {
 	private XModelObject xmo;
 //	private XModel model;
 	
-	private IWidgetSettings settings = new WhiteSettings();
+	private IWidgetSettings settings = WhiteSettings.getWhite();
 
 	private TableStructuredEditor tableEditor;
 	private XChildrenTableStructuredAdapter tableAdapter;

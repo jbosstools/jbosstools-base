@@ -46,7 +46,7 @@ public class AnyElementForm extends ExpandableForm {
 	private XTable tableEditor = new XTable();
 	TableProviderImpl tableProvider = new TableProviderImpl();
 	CommandBar bar = new CommandBar();
-	private IWidgetSettings settings = new WhiteSettings();
+	private IWidgetSettings settings = WhiteSettings.getWhite();
 
 	public AnyElementForm() {
 		this.setCollapsable(Boolean.TRUE.booleanValue());

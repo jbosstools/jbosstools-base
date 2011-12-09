@@ -97,7 +97,7 @@ public class DefaultFormPage implements IFormPage, PaintListener {
 	}
 
 	public Control createControl(Composite parent) {
-		settings = new WhiteSettings();
+		settings = WhiteSettings.getWhite();
 		titleFont = settings.getFont("Label.Font.Title"); //$NON-NLS-1$
 		Composite composite = new Composite(parent, SWT.NONE);
 		settings.setupControl(composite);
