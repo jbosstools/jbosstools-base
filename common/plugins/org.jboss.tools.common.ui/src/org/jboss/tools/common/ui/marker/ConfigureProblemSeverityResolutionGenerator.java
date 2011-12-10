@@ -12,11 +12,17 @@ package org.jboss.tools.common.ui.marker;
 
 import java.util.ArrayList;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.ILocalVariable;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
+import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.ui.CommonUIPlugin;
 import org.jboss.tools.common.validation.ValidationErrorManager;
 
@@ -28,14 +34,23 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 
 	public IMarkerResolution[] getResolutions(IMarker marker) {
 		ArrayList<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
+		int position = marker.getAttribute(IMarker.CHAR_START, 0);
 		try {
-			String preferenceKey = getPreferenceKey(marker);
-			String preferencePageId = getPreferencePageId(marker);
-			if(preferenceKey != null && preferencePageId != null){
-				resolutions.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
-				IJavaElement element = findJavaElement(marker);
-				if(element != null){
-					resolutions.add(new AddSuppressWarningsMarkerResolution(element, preferenceKey));
+			if(marker.getResource() instanceof IFile){
+				IFile file = (IFile)marker.getResource();
+				if(file != null){
+					String preferenceKey = getPreferenceKey(marker);
+					String preferencePageId = getPreferencePageId(marker);
+					if(preferenceKey != null && preferencePageId != null){
+						resolutions.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
+						boolean enabled = marker.getAttribute(ValidationErrorManager.SUPPRESS_WARNINGS_ENABLED_ATTRIBUTE, false);
+						if(enabled){
+							IJavaElement element = findJavaElement(file, position);
+							if(element != null){
+								resolutions.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey));
+							}
+						}
+					}
 				}
 			}
 		} catch (CoreException e) {
@@ -44,7 +59,29 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 		return resolutions.toArray(new IMarkerResolution[] {});
 	}
 	
-	private IJavaElement findJavaElement(IMarker marker){
+	private IJavaElement findJavaElement(IFile file, int position){
+		ICompilationUnit compilationUnit = null;
+		try {
+			compilationUnit = EclipseUtil.getCompilationUnit(file);
+			IJavaElement element = compilationUnit.getElementAt(position);
+			if(element != null && element instanceof IMethod){
+				IJavaElement parameter = findParameter((IMethod)element, position);
+				if(parameter != null){
+					return parameter;
+				}
+			}
+			return element;
+		} catch (CoreException e) {
+			CommonUIPlugin.getDefault().logError(e);
+		}
+		return null;
+	}
+	
+	private ILocalVariable findParameter(IMethod method, int position) throws JavaModelException{
+		for(ILocalVariable parameter : method.getParameters()){
+			if(parameter.getSourceRange().getOffset() <= position && parameter.getSourceRange().getOffset()+parameter.getSourceRange().getLength() > position)
+				return parameter;
+		}
 		return null;
 	}
 

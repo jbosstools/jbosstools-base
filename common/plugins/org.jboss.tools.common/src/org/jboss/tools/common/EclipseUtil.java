@@ -25,7 +25,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
 
 /**
@@ -78,25 +77,9 @@ public class EclipseUtil {
 	}
 	                        
 	public static ICompilationUnit getCompilationUnit(IFile f) throws CoreException {
-		IProject project = f.getProject();
-		IJavaProject javaProject = (IJavaProject)project.getNature(JavaCore.NATURE_ID);
-		IResource[] rs = getJavaSourceRoots(project);
-		for (int i = 0; i < rs.length; i++) {
-			if(rs[i].getFullPath().isPrefixOf(f.getFullPath())) {
-				IPath path = f.getFullPath().removeFirstSegments(rs[i].getFullPath().segmentCount());
-				IJavaElement e = javaProject.findElement(path);
-				if(e == null && path.lastSegment().equals("package-info.java")) {
-					//strange but sometimes only this works
-					IJavaElement ep = javaProject.findElement(path.removeLastSegments(1));
-					if(ep instanceof IPackageFragment) {
-						e = ((IPackageFragment)ep).getCompilationUnit("package-info.java");
-					}
-				}
-				if(e instanceof ICompilationUnit) {
-					return (ICompilationUnit)e;
-				}
-			}
-		}
+		IJavaElement element= JavaCore.create(f);
+		if (element instanceof ICompilationUnit)
+			return (ICompilationUnit) element;
 		return null;
 	}
 
