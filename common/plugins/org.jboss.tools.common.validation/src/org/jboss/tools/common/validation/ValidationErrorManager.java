@@ -163,7 +163,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		}
 		IMarker marker = addError(message, preferenceKey, messageArguments, 0, location
 				.getLength(), location.getStartPosition(), newTarget);
-		
+
 		if(marker != null){
 			try {
 				marker.setAttribute(SUPPRESS_WARNINGS_ENABLED_ATTRIBUTE, true);
@@ -186,19 +186,19 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 			IMemberValuePair[] pairs = annotation.getMemberValuePairs();
 			if(pairs.length==1) {
 				Object v = pairs[0].getValue();
-				String[] warnings = null;
-				if(v instanceof String[]) {
-					warnings = (String[])v;
-				}  else if(v instanceof String) {
+				Object[] warnings = null;
+				if(v instanceof Object[]) {
+					warnings = (Object[])v;
+				} else if(v instanceof String) {
 					warnings = new String[]{v.toString()};
-					for (String warning : warnings) {
-						String trimed = warning.trim();
-						if(trimed.equals(preferenceKey) || trimed.equals(ALL_WARNINGS)) {
-							// Ok, we seem to have such a suppress. Let's make sure the full name of annotation is java.lang.SuppressWarnings
-							if(EclipseJavaUtil.checkAnnotationByFulltName(annotation, SUPPRESS_WARNINGS_ANNOTATION_FULL)) {
-								result = annotation;
-								break;
-							}
+				}
+				for (Object warning : warnings) {
+					String trimed = warning.toString().trim();
+					if(trimed.equals(preferenceKey) || trimed.equals(ALL_WARNINGS)) {
+						// Ok, we seem to have such a suppress. Let's make sure the full name of annotation is java.lang.SuppressWarnings
+						if(EclipseJavaUtil.checkAnnotationByFulltName(annotation, SUPPRESS_WARNINGS_ANNOTATION_FULL)) {
+							result = annotation;
+							break;
 						}
 					}
 				}
