@@ -10,43 +10,37 @@
  ******************************************************************************/
 package org.jboss.tools.common.ui.marker;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.ILocalVariable;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ISourceReference;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
-import org.eclipse.jdt.internal.ui.preferences.ProblemSeveritiesConfigurationBlock;
-import org.eclipse.jdt.ui.PreferenceConstants;
-import org.eclipse.jface.preference.IPreferenceNode;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IMarkerResolution2;
-import org.eclipse.ui.dialogs.PreferencesUtil;
-import org.eclipse.ui.internal.dialogs.PropertyPageContributorManager;
-import org.eclipse.ui.internal.dialogs.PropertyPageManager;
-import org.eclipse.ui.internal.dialogs.PropertyPageNode;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.EclipseUtil;
+import org.jboss.tools.common.preferences.SeverityPreferences;
 import org.jboss.tools.common.ui.CommonUIMessages;
 import org.jboss.tools.common.ui.CommonUIPlugin;
+import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * @author Daniel Azarov
@@ -55,9 +49,8 @@ public class AddSuppressWarningsMarkerResolution implements
 		IMarkerResolution2 {
 	public static final String SPACE = " ";  //$NON-NLS-1$
 	public static final String AT = "@";  //$NON-NLS-1$
-	private static final String JAVA_COMPILER_ID="org.eclipse.jdt.ui.propertyPages.CompliancePreferencePage";  //$NON-NLS-1$
-	private static final String PROBLEM_SEVERITIES_ID="org.eclipse.jdt.ui.propertyPages.ProblemSeveritiesPreferencePage";  //$NON-NLS-1$
-	
+	private static final String PROBLEM_ID = JavaCore.COMPILER_PB_UNHANDLED_WARNING_TOKEN;
+	private SP preferences = new SP();
 
 	private IFile file;
 	private IJavaElement element;
@@ -76,6 +69,12 @@ public class AddSuppressWarningsMarkerResolution implements
 	}
 
 	public void run(IMarker marker) {
+		addSuppressWarningsAnnotation();
+		
+		disablePreference();
+	}
+	
+	private void addSuppressWarningsAnnotation(){
 		try {
 			ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
 			ICompilationUnit compilationUnit;
@@ -90,11 +89,54 @@ public class AddSuppressWarningsMarkerResolution implements
 		} catch (CoreException e) {
 			CommonUIPlugin.getDefault().logError(e);
 		}
-		
-		JavaCore.getPlugin().getPluginPreferences().setValue(JavaCore.COMPILER_PB_UNHANDLED_WARNING_TOKEN, JavaCore.IGNORE);
-		JavaCore.getPlugin().savePluginPreferences();
 	}
 	
+	private void disablePreference(){
+		String value = preferences.getProjectPreference(file.getProject(), PROBLEM_ID);
+		if(!preferences.IGNORE.equals(value)){
+			MessageDialog dialog = null;
+			dialog = new MessageDialog(getShell(), label, null,
+					"Do you want to disable 'Unsupported @SuppressWarnings' error/warning on the Workspace or only on the project '"+file.getProject().getName()+"'",
+					MessageDialog.QUESTION_WITH_CANCEL,
+					new String[]{"Cancel", "Workspace", file.getProject().getName()},
+					0);
+			int result = dialog.open();
+			if(result == 1){
+				JavaCore.getPlugin().getPluginPreferences().setValue(PROBLEM_ID, preferences.IGNORE);
+				JavaCore.getPlugin().savePluginPreferences();
+//				IEclipsePreferences ePrefs = preferences.getDefaultPreferences();
+//				ePrefs.put(PROBLEM_ID, preferences.IGNORE);
+//				try {
+//					ePrefs.flush();
+//				} catch (BackingStoreException e) {
+//					CommonUIPlugin.getDefault().logError(e);
+//				}
+			}else if(result == 2){
+				IEclipsePreferences ePrefs = preferences.getProjectPreferences(file.getProject());
+				ePrefs.put(PROBLEM_ID, preferences.IGNORE);
+				try {
+					ePrefs.flush();
+				} catch (BackingStoreException e) {
+					CommonUIPlugin.getDefault().logError(e);
+				}
+			}
+			
+		}
+	}
+	
+	private static Shell getShell() {
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (window == null) {
+			IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
+			if (windows.length > 0) {
+				return windows[0].getShell();
+			}
+		}
+		else {
+			return window.getShell();
+		}
+		return null;
+	}
 	public String getDescription() {
 		return label;
 	}
@@ -103,7 +145,7 @@ public class AddSuppressWarningsMarkerResolution implements
 		return JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_OBJS_ANNOTATION);
 	}
 	
-	public static void addAnnotation(String name, ICompilationUnit compilationUnit, IJavaElement element) throws JavaModelException{
+	private static void addAnnotation(String name, ICompilationUnit compilationUnit, IJavaElement element) throws JavaModelException{
 		IJavaElement workingCopyElement = findWorkingCopy(compilationUnit, element);
 		if(workingCopyElement == null){
 			return;
@@ -114,15 +156,11 @@ public class AddSuppressWarningsMarkerResolution implements
 		
 		ISourceReference workingCopySourceReference = (ISourceReference) workingCopyElement;
 		
-		//IAnnotation annotation = findAnnotation(workingCopyMember, name);
-		//if(annotation != null && annotation.exists())
-		//	return;
-		
 		IBuffer buffer = compilationUnit.getBuffer();
 		
 		String str = AT+name;
 		
-		if(workingCopySourceReference instanceof IType){
+		if(!(workingCopySourceReference instanceof ILocalVariable)){
 			str += compilationUnit.findRecommendedLineSeparator();
 		}else{
 			str += SPACE;
@@ -132,7 +170,7 @@ public class AddSuppressWarningsMarkerResolution implements
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T extends IJavaElement> T findWorkingCopy(ICompilationUnit compilationUnit, T element) throws JavaModelException{
+	private static <T extends IJavaElement> T findWorkingCopy(ICompilationUnit compilationUnit, T element) throws JavaModelException{
 		if(element instanceof IAnnotation){
 			IJavaElement parent = findWorkingCopy(compilationUnit, element.getParent());
 			if(parent instanceof IAnnotatable){
@@ -159,4 +197,25 @@ public class AddSuppressWarningsMarkerResolution implements
 			}
 		}
 		return null;
-	}}
+	}
+	
+	static class SP extends SeverityPreferences{
+
+		@Override
+		protected Set<String> getSeverityOptionNames() {
+			return null;
+		}
+
+		@Override
+		protected String createSeverityOption(String shortName) {
+			return null;
+		}
+
+		@Override
+		protected String getPluginId() {
+			return JavaCore.PLUGIN_ID;
+		}
+		
+	}
+	
+}
