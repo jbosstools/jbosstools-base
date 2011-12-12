@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.ILocalVariable;
+import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ISourceReference;
 import org.eclipse.jdt.core.JavaCore;
@@ -47,31 +48,78 @@ import org.osgi.service.prefs.BackingStoreException;
  */
 public class AddSuppressWarningsMarkerResolution implements
 		IMarkerResolution2 {
+	public static final String SUPPRESS_WARNINGS_ANNOTATION = "SuppressWarnings";
 	public static final String SPACE = " ";  //$NON-NLS-1$
 	public static final String AT = "@";  //$NON-NLS-1$
 	private static final String PROBLEM_ID = JavaCore.COMPILER_PB_UNHANDLED_WARNING_TOKEN;
 	private SP preferences = new SP();
 
 	private IFile file;
-	private IJavaElement element;
+	private IAnnotatable element;
 	private String preferenceKey;
 	private String label;
 	
 	public AddSuppressWarningsMarkerResolution(IFile file, IJavaElement element, String preferenceKey){
 		this.file = file;
-		this.element = element;
+		this.element = getAnnatatableElement(element);
 		this.preferenceKey = preferenceKey;
 		label = NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS, element.getElementName());
 	}
+	
+	private IAnnotatable getAnnatatableElement(IJavaElement element){
+		IJavaElement elem = element;
+		while(elem != null){
+			if(element instanceof IAnnotatable){
+				return (IAnnotatable) element;
+			}
+			elem = elem.getParent();
+		}
+		return null;
+	}
 
+	@Override
 	public String getLabel() {
 		return label;
 	}
 
+	@Override
 	public void run(IMarker marker) {
-		addSuppressWarningsAnnotation();
+		if(element != null){
+			disablePreference();
+			
+			IAnnotation annotation = findAnnotation(); 
+			if(annotation != null){
+				updateSuppressWarningsAnnotation(annotation);
+			}else{
+				addSuppressWarningsAnnotation();
+			}
+		}
+	}
+	
+	private IAnnotation findAnnotation(){
+		IAnnotation annotation = element.getAnnotation(SUPPRESS_WARNINGS_ANNOTATION);
+		if(annotation != null && annotation.exists()){
+			return annotation;
+		}
 		
-		disablePreference();
+		return null;
+	}
+	
+	private void updateSuppressWarningsAnnotation(IAnnotation annotation){
+		try {
+			ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
+			ICompilationUnit compilationUnit;
+			compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
+			
+			updateAnnotation(SUPPRESS_WARNINGS_ANNOTATION, preferenceKey, compilationUnit, annotation);
+			
+			compilationUnit.commitWorkingCopy(true, new NullProgressMonitor());
+			compilationUnit.discardWorkingCopy();
+		} catch (JavaModelException e) {
+			CommonUIPlugin.getDefault().logError(e);
+		} catch (CoreException e) {
+			CommonUIPlugin.getDefault().logError(e);
+		}
 	}
 	
 	private void addSuppressWarningsAnnotation(){
@@ -80,7 +128,7 @@ public class AddSuppressWarningsMarkerResolution implements
 			ICompilationUnit compilationUnit;
 			compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
 			
-			addAnnotation("SuppressWarnings(\""+preferenceKey+"\")", compilationUnit, element);
+			addAnnotation(SUPPRESS_WARNINGS_ANNOTATION+"(\""+preferenceKey+"\")", compilationUnit, (IJavaElement)element);
 			
 			compilationUnit.commitWorkingCopy(true, new NullProgressMonitor());
 			compilationUnit.discardWorkingCopy();
@@ -93,7 +141,7 @@ public class AddSuppressWarningsMarkerResolution implements
 	
 	private void disablePreference(){
 		String value = preferences.getProjectPreference(file.getProject(), PROBLEM_ID);
-		if(!preferences.IGNORE.equals(value)){
+		if(!SeverityPreferences.IGNORE.equals(value)){
 			MessageDialog dialog = null;
 			dialog = new MessageDialog(getShell(), label, null,
 					"Do you want to disable 'Unsupported @SuppressWarnings' error/warning on the Workspace or only on the project '"+file.getProject().getName()+"'",
@@ -102,18 +150,16 @@ public class AddSuppressWarningsMarkerResolution implements
 					0);
 			int result = dialog.open();
 			if(result == 1){
-				JavaCore.getPlugin().getPluginPreferences().setValue(PROBLEM_ID, preferences.IGNORE);
-				JavaCore.getPlugin().savePluginPreferences();
-//				IEclipsePreferences ePrefs = preferences.getDefaultPreferences();
-//				ePrefs.put(PROBLEM_ID, preferences.IGNORE);
-//				try {
-//					ePrefs.flush();
-//				} catch (BackingStoreException e) {
-//					CommonUIPlugin.getDefault().logError(e);
-//				}
+				IEclipsePreferences ePrefs = preferences.getInstancePreferences();
+				ePrefs.put(PROBLEM_ID, SeverityPreferences.IGNORE);
+				try {
+					ePrefs.flush();
+				} catch (BackingStoreException e) {
+					CommonUIPlugin.getDefault().logError(e);
+				}
 			}else if(result == 2){
 				IEclipsePreferences ePrefs = preferences.getProjectPreferences(file.getProject());
-				ePrefs.put(PROBLEM_ID, preferences.IGNORE);
+				ePrefs.put(PROBLEM_ID, SeverityPreferences.IGNORE);
 				try {
 					ePrefs.flush();
 				} catch (BackingStoreException e) {
@@ -137,15 +183,48 @@ public class AddSuppressWarningsMarkerResolution implements
 		}
 		return null;
 	}
+	@Override
 	public String getDescription() {
 		return label;
 	}
 
+	@Override
 	public Image getImage() {
 		return JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_OBJS_ANNOTATION);
 	}
 	
-	private static void addAnnotation(String name, ICompilationUnit compilationUnit, IJavaElement element) throws JavaModelException{
+	private void updateAnnotation(String name, String parameter, ICompilationUnit compilationUnit, IAnnotation annotation) throws JavaModelException{
+		IJavaElement workingCopyElement = findWorkingCopy(compilationUnit, annotation);
+		if(workingCopyElement == null){
+			return;
+		}
+		
+		if(!(workingCopyElement instanceof ISourceReference))
+			return;
+		
+		ISourceReference workingCopySourceReference = (ISourceReference) workingCopyElement;
+		
+		IBuffer buffer = compilationUnit.getBuffer();
+		
+		String str = AT+name;
+		
+		str += "({";
+		
+		for(IMemberValuePair pair : annotation.getMemberValuePairs()){
+			if(pair.getValue().toString().equals(parameter)){
+				return;
+			}
+			str += "\""+pair.getValue()+"\", ";
+		}
+		
+		str += "\""+parameter+"\"";
+		
+		str += "})";
+		
+		buffer.replace(workingCopySourceReference.getSourceRange().getOffset(), workingCopySourceReference.getSourceRange().getLength(), str);
+	}
+
+	private void addAnnotation(String name, ICompilationUnit compilationUnit, IJavaElement element) throws JavaModelException{
 		IJavaElement workingCopyElement = findWorkingCopy(compilationUnit, element);
 		if(workingCopyElement == null){
 			return;
