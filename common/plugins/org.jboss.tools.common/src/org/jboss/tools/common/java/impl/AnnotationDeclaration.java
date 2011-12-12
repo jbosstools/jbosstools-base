@@ -176,4 +176,11 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	public IMember getSourceMember() {
 		return getParentMember();
 	}
+
+	@Override
+	public IJavaElement getSourceElement() {
+		// Should we return the corresponding java element instead of member?
+		// If this is an annotation declared on local variable (method parameter) then the parent member and element are not the same object.
+		return getSourceMember();
+	}
 }

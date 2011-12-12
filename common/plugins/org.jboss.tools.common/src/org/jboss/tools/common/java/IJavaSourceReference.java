@@ -15,6 +15,6 @@ import org.jboss.tools.common.text.ITextSourceReference;
 /**
  * @author Alexey Kazakov
  */
-public interface IJavaSourceReference extends ITextSourceReference, IJavaMemberReference {
+public interface IJavaSourceReference extends ITextSourceReference, IJavaReference {
 
 }

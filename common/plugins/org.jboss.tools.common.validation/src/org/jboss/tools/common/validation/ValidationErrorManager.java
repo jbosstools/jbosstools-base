@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.text.BadLocationException;
@@ -178,9 +178,9 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	private static final String SUPPRESS_WARNINGS_ANNOTATION_FULL = "java.lang.SuppressWarnings";
 	private static final String ALL_WARNINGS = "all";
 
-	private static IAnnotation getSuppressWarningsAnnotation(String preferenceKey, IMember member) throws JavaModelException {
+	private static IAnnotation getSuppressWarningsAnnotation(String preferenceKey, IJavaElement element) throws JavaModelException {
 		// Does the element have @SuppressWarnings? Check it by the short name only.
-		IAnnotation annotation = EclipseJavaUtil.findAnnotationByShortName(member, SUPPRESS_WARNINGS_ANNOTATION_SHORT, true);
+		IAnnotation annotation = EclipseJavaUtil.findAnnotationByShortName(element, SUPPRESS_WARNINGS_ANNOTATION_SHORT, true);
 		IAnnotation result  = null;
 		if(annotation!=null) {
 			IMemberValuePair[] pairs = annotation.getMemberValuePairs();
@@ -211,8 +211,8 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	private static boolean hasSuppressWarningsAnnotation(String preferenceKey, ITextSourceReference location) throws JavaModelException {
 		boolean result = false;
 		if(location instanceof IJavaSourceReference) {
-			IMember member = ((IJavaSourceReference) location).getSourceMember();
-			result = getSuppressWarningsAnnotation(preferenceKey, member)!=null;
+			IJavaElement element = ((IJavaSourceReference) location).getSourceElement();
+			result = getSuppressWarningsAnnotation(preferenceKey, element)!=null;
 		}
 
 		return result;

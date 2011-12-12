@@ -229,9 +229,9 @@ public class EclipseJavaUtil {
 	 * @return
 	 * @throws JavaModelException
 	 */
-	public static IAnnotation findAnnotationByShortName(IMember member, String name, boolean checkParents) throws JavaModelException {
-		if(member instanceof IAnnotatable) {
-			IAnnotation[] annotations = ((IAnnotatable)member).getAnnotations();
+	public static IAnnotation findAnnotationByShortName(IJavaElement element, String name, boolean checkParents) throws JavaModelException {
+		if(element instanceof IAnnotatable) {
+			IAnnotation[] annotations = ((IAnnotatable)element).getAnnotations();
 			for (IAnnotation annotation : annotations) {
 				String aName = annotation.getElementName();
 				int i = aName.lastIndexOf('.');
@@ -244,7 +244,7 @@ public class EclipseJavaUtil {
 			}
 		}
 		if(checkParents) {
-			IJavaElement parent = member.getParent();
+			IJavaElement parent = element.getParent();
 			if(parent!=null && parent instanceof IMember) {
 				return findAnnotationByShortName((IMember)parent, name, true);
 			}

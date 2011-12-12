@@ -10,12 +10,24 @@
  ******************************************************************************/
 package org.jboss.tools.common.java;
 
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 
 /**
  * @author Alexey Kazakov
  */
-public interface IJavaMemberReference {
+public interface IJavaReference {
 
+	/**
+	 * Returns the closest java member of this element.
+	 * For example for local variable (method parameter) it will return the parent method.
+	 * @return
+	 */
 	IMember getSourceMember();
+
+	/**
+	 * Returns java element. For java members this method will return the same object as getSourceMember();
+	 * @return
+	 */
+	IJavaElement getSourceElement();
 }
