@@ -64,12 +64,12 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 		try {
 			compilationUnit = EclipseUtil.getCompilationUnit(file);
 			IJavaElement element = compilationUnit.getElementAt(position);
-			if(element != null && element instanceof IMethod){
-				IJavaElement parameter = findParameter((IMethod)element, position);
-				if(parameter != null){
-					return parameter;
-				}
-			}
+//			if(element != null && element instanceof IMethod){
+//				IJavaElement parameter = findParameter((IMethod)element, position);
+//				if(parameter != null){
+//					return parameter;
+//				}
+//			}
 			return element;
 		} catch (CoreException e) {
 			CommonUIPlugin.getDefault().logError(e);
@@ -77,13 +77,13 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 		return null;
 	}
 	
-	private ILocalVariable findParameter(IMethod method, int position) throws JavaModelException{
-		for(ILocalVariable parameter : method.getParameters()){
-			if(parameter.getSourceRange().getOffset() <= position && parameter.getSourceRange().getOffset()+parameter.getSourceRange().getLength() > position)
-				return parameter;
-		}
-		return null;
-	}
+//	private ILocalVariable findParameter(IMethod method, int position) throws JavaModelException{
+//		for(ILocalVariable parameter : method.getParameters()){
+//			if(parameter.getSourceRange().getOffset() <= position && parameter.getSourceRange().getOffset()+parameter.getSourceRange().getLength() > position)
+//				return parameter;
+//		}
+//		return null;
+//	}
 
 	public boolean hasResolutions(IMarker marker) {
 		try {

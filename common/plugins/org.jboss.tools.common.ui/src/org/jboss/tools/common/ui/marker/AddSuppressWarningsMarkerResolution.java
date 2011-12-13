@@ -86,18 +86,34 @@ public class AddSuppressWarningsMarkerResolution implements
 	public void run(IMarker marker) {
 		if(element != null){
 			disablePreference();
-			
-			IAnnotation annotation = findAnnotation(); 
-			if(annotation != null){
-				updateSuppressWarningsAnnotation(annotation);
-			}else{
-				addSuppressWarningsAnnotation();
+			try {
+				ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
+				ICompilationUnit compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
+				
+				IJavaElement workingCopyElement = findWorkingCopy(compilationUnit, (IJavaElement)element);
+				
+				IAnnotation annotation = findAnnotation(workingCopyElement);
+				boolean status = false;
+				if(annotation != null){
+					status = updateAnnotation(SUPPRESS_WARNINGS_ANNOTATION, preferenceKey, compilationUnit, annotation);
+				}else{
+					status = addAnnotation(SUPPRESS_WARNINGS_ANNOTATION+"(\""+preferenceKey+"\")", compilationUnit, workingCopyElement);
+				}
+				
+				if(status){
+					compilationUnit.commitWorkingCopy(true, new NullProgressMonitor());
+				}
+				compilationUnit.discardWorkingCopy();
+			} catch (JavaModelException e) {
+				CommonUIPlugin.getDefault().logError(e);
+			} catch (CoreException e) {
+				CommonUIPlugin.getDefault().logError(e);
 			}
 		}
 	}
 	
-	private IAnnotation findAnnotation(){
-		IAnnotation annotation = element.getAnnotation(SUPPRESS_WARNINGS_ANNOTATION);
+	private IAnnotation findAnnotation(IJavaElement workingCopyElement) throws JavaModelException{
+		IAnnotation annotation = ((IAnnotatable)workingCopyElement).getAnnotation(SUPPRESS_WARNINGS_ANNOTATION);
 		if(annotation != null && annotation.exists()){
 			return annotation;
 		}
@@ -105,68 +121,57 @@ public class AddSuppressWarningsMarkerResolution implements
 		return null;
 	}
 	
-	private void updateSuppressWarningsAnnotation(IAnnotation annotation){
-		try {
-			ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
-			ICompilationUnit compilationUnit;
-			compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
-			
-			updateAnnotation(SUPPRESS_WARNINGS_ANNOTATION, preferenceKey, compilationUnit, annotation);
-			
-			compilationUnit.commitWorkingCopy(true, new NullProgressMonitor());
-			compilationUnit.discardWorkingCopy();
-		} catch (JavaModelException e) {
-			CommonUIPlugin.getDefault().logError(e);
-		} catch (CoreException e) {
-			CommonUIPlugin.getDefault().logError(e);
-		}
-	}
-	
-	private void addSuppressWarningsAnnotation(){
-		try {
-			ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
-			ICompilationUnit compilationUnit;
-			compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
-			
-			addAnnotation(SUPPRESS_WARNINGS_ANNOTATION+"(\""+preferenceKey+"\")", compilationUnit, (IJavaElement)element);
-			
-			compilationUnit.commitWorkingCopy(true, new NullProgressMonitor());
-			compilationUnit.discardWorkingCopy();
-		} catch (JavaModelException e) {
-			CommonUIPlugin.getDefault().logError(e);
-		} catch (CoreException e) {
-			CommonUIPlugin.getDefault().logError(e);
-		}
-	}
-	
 	private void disablePreference(){
 		String value = preferences.getProjectPreference(file.getProject(), PROBLEM_ID);
 		if(!SeverityPreferences.IGNORE.equals(value)){
-			MessageDialog dialog = null;
-			dialog = new MessageDialog(getShell(), label, null,
-					"Do you want to disable 'Unsupported @SuppressWarnings' error/warning on the Workspace or only on the project '"+file.getProject().getName()+"'",
-					MessageDialog.QUESTION_WITH_CANCEL,
-					new String[]{"Cancel", "Workspace", file.getProject().getName()},
-					0);
-			int result = dialog.open();
-			if(result == 1){
-				IEclipsePreferences ePrefs = preferences.getInstancePreferences();
-				ePrefs.put(PROBLEM_ID, SeverityPreferences.IGNORE);
-				try {
-					ePrefs.flush();
-				} catch (BackingStoreException e) {
-					CommonUIPlugin.getDefault().logError(e);
-				}
-			}else if(result == 2){
-				IEclipsePreferences ePrefs = preferences.getProjectPreferences(file.getProject());
-				ePrefs.put(PROBLEM_ID, SeverityPreferences.IGNORE);
-				try {
-					ePrefs.flush();
-				} catch (BackingStoreException e) {
-					CommonUIPlugin.getDefault().logError(e);
-				}
+			
+			IEclipsePreferences projectPreferences = preferences.getProjectPreferences(file.getProject());
+			String projectValue = null;
+			if(projectPreferences != null){
+				projectValue = projectPreferences.get(PROBLEM_ID, null);
 			}
 			
+			if(projectValue != null){
+				 MessageDialog dialog = new MessageDialog(getShell(), label, null,
+							"Do you want to disable 'Unsupported @SuppressWarnings' error/warning",
+							MessageDialog.QUESTION_WITH_CANCEL,
+							new String[]{"Cancel", "Disable"},
+							0);
+					int result = dialog.open();
+					if(result == 1){
+						IEclipsePreferences ePrefs = preferences.getProjectPreferences(file.getProject());
+						ePrefs.put(PROBLEM_ID, SeverityPreferences.IGNORE);
+						try {
+							ePrefs.flush();
+						} catch (BackingStoreException e) {
+							CommonUIPlugin.getDefault().logError(e);
+						}
+					}
+			}else{
+				 MessageDialog dialog = new MessageDialog(getShell(), label, null,
+						"Do you want to disable 'Unsupported @SuppressWarnings' error/warning on the Workspace or only on the project '"+file.getProject().getName()+"'",
+						MessageDialog.QUESTION_WITH_CANCEL,
+						new String[]{"Cancel", "Workspace", file.getProject().getName()},
+						0);
+				int result = dialog.open();
+				if(result == 1){
+					IEclipsePreferences ePrefs = preferences.getInstancePreferences();
+					ePrefs.put(PROBLEM_ID, SeverityPreferences.IGNORE);
+					try {
+						ePrefs.flush();
+					} catch (BackingStoreException e) {
+						CommonUIPlugin.getDefault().logError(e);
+					}
+				}else if(result == 2){
+					IEclipsePreferences ePrefs = preferences.getProjectPreferences(file.getProject());
+					ePrefs.put(PROBLEM_ID, SeverityPreferences.IGNORE);
+					try {
+						ePrefs.flush();
+					} catch (BackingStoreException e) {
+						CommonUIPlugin.getDefault().logError(e);
+					}
+				}
+			}
 		}
 	}
 	
@@ -193,17 +198,7 @@ public class AddSuppressWarningsMarkerResolution implements
 		return JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_OBJS_ANNOTATION);
 	}
 	
-	private void updateAnnotation(String name, String parameter, ICompilationUnit compilationUnit, IAnnotation annotation) throws JavaModelException{
-		IJavaElement workingCopyElement = findWorkingCopy(compilationUnit, annotation);
-		if(workingCopyElement == null){
-			return;
-		}
-		
-		if(!(workingCopyElement instanceof ISourceReference))
-			return;
-		
-		ISourceReference workingCopySourceReference = (ISourceReference) workingCopyElement;
-		
+	private boolean updateAnnotation(String name, String parameter, ICompilationUnit compilationUnit, IAnnotation annotation) throws JavaModelException{
 		IBuffer buffer = compilationUnit.getBuffer();
 		
 		String str = AT+name;
@@ -212,7 +207,7 @@ public class AddSuppressWarningsMarkerResolution implements
 		
 		for(IMemberValuePair pair : annotation.getMemberValuePairs()){
 			if(pair.getValue().toString().equals(parameter)){
-				return;
+				return false;
 			}
 			str += "\""+pair.getValue()+"\", ";
 		}
@@ -221,19 +216,16 @@ public class AddSuppressWarningsMarkerResolution implements
 		
 		str += "})";
 		
-		buffer.replace(workingCopySourceReference.getSourceRange().getOffset(), workingCopySourceReference.getSourceRange().getLength(), str);
+		buffer.replace(annotation.getSourceRange().getOffset(), annotation.getSourceRange().getLength(), str);
+		
+		return true;
 	}
 
-	private void addAnnotation(String name, ICompilationUnit compilationUnit, IJavaElement element) throws JavaModelException{
-		IJavaElement workingCopyElement = findWorkingCopy(compilationUnit, element);
-		if(workingCopyElement == null){
-			return;
-		}
+	private boolean addAnnotation(String name, ICompilationUnit compilationUnit, IJavaElement element) throws JavaModelException{
+		if(!(element instanceof ISourceReference))
+			return false;
 		
-		if(!(workingCopyElement instanceof ISourceReference))
-			return;
-		
-		ISourceReference workingCopySourceReference = (ISourceReference) workingCopyElement;
+		ISourceReference workingCopySourceReference = (ISourceReference) element;
 		
 		IBuffer buffer = compilationUnit.getBuffer();
 		
@@ -246,6 +238,8 @@ public class AddSuppressWarningsMarkerResolution implements
 		}
 		
 		buffer.replace(workingCopySourceReference.getSourceRange().getOffset(), 0, str);
+		
+		return true;
 	}
 	
 	@SuppressWarnings("unchecked")
