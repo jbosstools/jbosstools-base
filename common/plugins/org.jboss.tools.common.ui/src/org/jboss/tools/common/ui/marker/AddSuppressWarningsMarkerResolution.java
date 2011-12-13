@@ -133,7 +133,8 @@ public class AddSuppressWarningsMarkerResolution implements
 			
 			if(projectValue != null){
 				 MessageDialog dialog = new MessageDialog(getShell(), label, null,
-							"Do you want to disable 'Unsupported @SuppressWarnings' error/warning",
+						 "This quick fix uses warning names that are not supported by Java Validator and will cause \"Unsupported @SuppressWarning\" problem message\n\n"+
+						 "Do you want to disable 'Unsupported @SuppressWarnings' validation",
 							MessageDialog.QUESTION_WITH_CANCEL,
 							new String[]{"Cancel", "Disable"},
 							0);
@@ -149,7 +150,8 @@ public class AddSuppressWarningsMarkerResolution implements
 					}
 			}else{
 				 MessageDialog dialog = new MessageDialog(getShell(), label, null,
-						"Do you want to disable 'Unsupported @SuppressWarnings' error/warning on the Workspace or only on the project '"+file.getProject().getName()+"'",
+						"This quick fix uses warning names that are not supported by Java Validator and will cause \"Unsupported @SuppressWarning\" problem message\n\n"+
+						"Do you want to disable 'Unsupported @SuppressWarnings' validation on the Workspace or only on the project '"+file.getProject().getName()+"'",
 						MessageDialog.QUESTION_WITH_CANCEL,
 						new String[]{"Cancel", "Workspace", file.getProject().getName()},
 						0);
