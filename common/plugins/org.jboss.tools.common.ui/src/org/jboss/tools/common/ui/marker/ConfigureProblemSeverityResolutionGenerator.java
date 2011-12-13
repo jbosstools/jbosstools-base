@@ -17,9 +17,6 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.ILocalVariable;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
 import org.jboss.tools.common.EclipseUtil;
@@ -32,6 +29,7 @@ import org.jboss.tools.common.validation.ValidationErrorManager;
 public class ConfigureProblemSeverityResolutionGenerator implements
 		IMarkerResolutionGenerator2 {
 
+	@Override
 	public IMarkerResolution[] getResolutions(IMarker marker) {
 		ArrayList<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
 		int position = marker.getAttribute(IMarker.CHAR_START, 0);
@@ -60,31 +58,18 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	}
 	
 	private IJavaElement findJavaElement(IFile file, int position){
-		ICompilationUnit compilationUnit = null;
 		try {
-			compilationUnit = EclipseUtil.getCompilationUnit(file);
-			IJavaElement element = compilationUnit.getElementAt(position);
-//			if(element != null && element instanceof IMethod){
-//				IJavaElement parameter = findParameter((IMethod)element, position);
-//				if(parameter != null){
-//					return parameter;
-//				}
-//			}
-			return element;
+			ICompilationUnit compilationUnit = EclipseUtil.getCompilationUnit(file);
+			if(compilationUnit != null){
+				return compilationUnit.getElementAt(position);
+			}
 		} catch (CoreException e) {
 			CommonUIPlugin.getDefault().logError(e);
 		}
 		return null;
 	}
 	
-//	private ILocalVariable findParameter(IMethod method, int position) throws JavaModelException{
-//		for(ILocalVariable parameter : method.getParameters()){
-//			if(parameter.getSourceRange().getOffset() <= position && parameter.getSourceRange().getOffset()+parameter.getSourceRange().getLength() > position)
-//				return parameter;
-//		}
-//		return null;
-//	}
-
+	@Override
 	public boolean hasResolutions(IMarker marker) {
 		try {
 			return getPreferenceKey(marker) != null && getPreferencePageId(marker) != null;
