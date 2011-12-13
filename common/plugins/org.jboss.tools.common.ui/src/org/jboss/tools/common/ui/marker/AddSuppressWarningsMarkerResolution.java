@@ -63,7 +63,7 @@ public class AddSuppressWarningsMarkerResolution implements
 		this.file = file;
 		this.element = getAnnatatableElement(element);
 		this.preferenceKey = preferenceKey;
-		label = NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS, element.getElementName());
+		label = NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS_TITLE, element.getElementName());
 	}
 	
 	private IAnnotatable getAnnatatableElement(IJavaElement element){
@@ -133,8 +133,8 @@ public class AddSuppressWarningsMarkerResolution implements
 			
 			if(projectValue != null){
 				 MessageDialog dialog = new MessageDialog(getShell(), label, null,
-						 "This quick fix uses warning names that are not supported by Java Validator and will cause \"Unsupported @SuppressWarning\" problem message\n\n"+
-						 "Do you want to disable 'Unsupported @SuppressWarnings' validation",
+						 CommonUIMessages.ADD_SUPPRESS_WARNINGS_MESSAGE+
+						 CommonUIMessages.ADD_SUPPRESS_WARNINGS_QUESTION1,
 							MessageDialog.QUESTION_WITH_CANCEL,
 							new String[]{"Cancel", "Disable"},
 							0);
@@ -150,8 +150,8 @@ public class AddSuppressWarningsMarkerResolution implements
 					}
 			}else{
 				 MessageDialog dialog = new MessageDialog(getShell(), label, null,
-						"This quick fix uses warning names that are not supported by Java Validator and will cause \"Unsupported @SuppressWarning\" problem message\n\n"+
-						"Do you want to disable 'Unsupported @SuppressWarnings' validation on the Workspace or only on the project '"+file.getProject().getName()+"'",
+						 CommonUIMessages.ADD_SUPPRESS_WARNINGS_MESSAGE+
+						NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS_QUESTION2, file.getProject().getName()),
 						MessageDialog.QUESTION_WITH_CANCEL,
 						new String[]{"Cancel", "Workspace", file.getProject().getName()},
 						0);
