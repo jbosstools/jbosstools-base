@@ -65,6 +65,7 @@ public class TextAndReferenceComponent extends Canvas implements PaintListener, 
 		GC g = new GC(this);
 		g.setFont(getFont());
 		lines = Tokenizer.breakIntoLines(g, tokens, width);
+		g.dispose();
 		return new Point(width + 10, lines.length * lineHeight + 6);
 	}
 		
