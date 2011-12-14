@@ -123,15 +123,15 @@ public class PositionSearcher {
 			if(xml.indexOf('.') >= 0) {
 				xml = xml.substring(xml.lastIndexOf('.') + 1); // simplify - look for the last name only
 			}
-			int e1 = text.indexOf("</" + getTagXMLName(object) + ">", startPosition); //$NON-NLS-1$ //$NON-NLS-2$
+			int e1 = nextStartPosition(text, "</" + getTagXMLName(object) + ">", startPosition); //$NON-NLS-1$ //$NON-NLS-2$
 			String s = e1 < 0 ? "" : text.substring(startPosition, e1); //$NON-NLS-1$
 			if(xml.length() == 0) {
 				int i1 = s.indexOf(">"); //$NON-NLS-1$
 				endPosition = startPosition + i1 + 1;
 				startPosition = startPosition + e1;
 			} else if(s.length() > 0) {
-				int i1a = s.indexOf("<" + xml + ">"); //$NON-NLS-1$ //$NON-NLS-2$
-				int i1b = s.indexOf("<" + xml + "/>"); //$NON-NLS-1$ //$NON-NLS-2$
+				int i1a = nextStartPosition(s, "<" + xml + ">", 0); //$NON-NLS-1$ //$NON-NLS-2$
+				int i1b = nextStartPosition(s, "<" + xml + "/>", 0); //$NON-NLS-1$ //$NON-NLS-2$
 				int i2 = (i1a < 0) ? -1 : s.indexOf("</", i1a); //$NON-NLS-1$
 				if(i1a >= 0 && i2 >= 0) {
 					endPosition = startPosition + i2;
@@ -261,15 +261,19 @@ public class PositionSearcher {
 		}
 
 		int nextStartPos(String token, int b) {
-			int s = text.indexOf(token, b);
-			if(s < 0) return s;
-			int cb = text.indexOf("<!--", b); //$NON-NLS-1$
-			if(cb < 0 || cb > s) return s;
-			int ce = text.indexOf("-->", cb); //$NON-NLS-1$
-			if(ce < 0) return -1;
-			return nextStartPos(token, ce + 3);
+			return nextStartPosition(text, token, b);
 		}
 
+	}
+
+	static int nextStartPosition(String text, String token, int b) {
+		int s = text.indexOf(token, b);
+		if(s < 0) return s;
+		int cb = text.indexOf("<!--", b); //$NON-NLS-1$
+		if(cb < 0 || cb > s) return s;
+		int ce = text.indexOf("-->", cb); //$NON-NLS-1$
+		if(ce < 0) return -1;
+		return nextStartPosition(text, token, ce + 3);
 	}
 
 	/**
