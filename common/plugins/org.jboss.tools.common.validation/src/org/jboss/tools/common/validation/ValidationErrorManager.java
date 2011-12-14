@@ -212,6 +212,14 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		boolean result = false;
 		if(location instanceof IJavaSourceReference) {
 			IJavaElement element = ((IJavaSourceReference) location).getSourceElement();
+			if(element==null) {
+				// Check if it's really a java resource. 
+				IResource resource = location.getResource();
+				if("java".equalsIgnoreCase(resource.getFileExtension())) {
+					throw new NullPointerException("IJavaSourceReference referenced to java source should not return null in getSourceElement()");
+				}
+				return result;
+			}
 			result = getSuppressWarningsAnnotation(preferenceKey, element)!=null;
 		}
 
