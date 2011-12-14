@@ -33,8 +33,8 @@ public class ELResolverFactoryManager {
 
 	private static final ELResolverFactoryManager INSTANCE = new ELResolverFactoryManager();
 
-	private static HashMap<String, Set<ELResolver>> resolversByNature;
-	private static Set<ELResolverFactory> resolverFactories;
+	static HashMap<String, Set<ELResolver>> resolversByNature;
+	static Set<ELResolverFactory> resolverFactories;
 
 	private ELResolverFactoryManager() {
 	}
@@ -47,7 +47,7 @@ public class ELResolverFactoryManager {
 		return INSTANCE;
 	}
 
-	private void init() {
+	private synchronized void init() {
 		if(resolversByNature==null) {
 			resolversByNature = new HashMap<String, Set<ELResolver>>();
 			resolverFactories = new HashSet<ELResolverFactory>();
