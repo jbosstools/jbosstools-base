@@ -50,6 +50,7 @@ public class AddSuppressWarningsMarkerResolution implements
 		IMarkerResolution2 {
 	public static final String SUPPRESS_WARNINGS_ANNOTATION = "SuppressWarnings";
 	public static final String SPACE = " ";  //$NON-NLS-1$
+	public static final String DOT = ".";  //$NON-NLS-1$
 	public static final String AT = "@";  //$NON-NLS-1$
 	private static final String PROBLEM_ID = JavaCore.COMPILER_PB_UNHANDLED_WARNING_TOKEN;
 	private SP preferences = new SP();
@@ -63,7 +64,11 @@ public class AddSuppressWarningsMarkerResolution implements
 		this.file = file;
 		this.element = getAnnatatableElement(element);
 		this.preferenceKey = preferenceKey;
-		label = NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS_TITLE, element.getElementName());
+		String shortName = getShortName(preferenceKey);
+		label = NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS_TITLE, shortName, element.getElementName());
+		if(element instanceof IMethod){
+			label += "()";
+		}
 	}
 	
 	private IAnnotatable getAnnatatableElement(IJavaElement element){
@@ -121,6 +126,16 @@ public class AddSuppressWarningsMarkerResolution implements
 		return null;
 	}
 	
+	public static String getShortName(String qualifiedName){
+		int lastDot = qualifiedName.lastIndexOf(DOT);
+		String name;
+		if(lastDot < 0)
+			name = qualifiedName;
+		else
+			name = qualifiedName.substring(lastDot+1);
+		return name;
+	}
+	
 	private void disablePreference(){
 		String value = preferences.getProjectPreference(file.getProject(), PROBLEM_ID);
 		if(!SeverityPreferences.IGNORE.equals(value)){
@@ -153,7 +168,7 @@ public class AddSuppressWarningsMarkerResolution implements
 						 CommonUIMessages.ADD_SUPPRESS_WARNINGS_MESSAGE+
 						NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS_QUESTION2, file.getProject().getName()),
 						MessageDialog.QUESTION_WITH_CANCEL,
-						new String[]{"Cancel", "Workspace", file.getProject().getName()},
+						new String[]{"Cancel", "Workspace", "Project"},
 						0);
 				int result = dialog.open();
 				if(result == 1){
@@ -208,10 +223,25 @@ public class AddSuppressWarningsMarkerResolution implements
 		str += "({";
 		
 		for(IMemberValuePair pair : annotation.getMemberValuePairs()){
-			if(pair.getValue().toString().equals(parameter)){
-				return false;
+			if(pair.getValueKind() == IMemberValuePair.K_STRING){
+				Object value = pair.getValue();
+				if(value instanceof String){
+					if(value.toString().equals(parameter)){
+						return false;
+					}
+					str += "\""+value+"\", ";
+				}else if(value instanceof Object[]){
+					Object[] array = (Object[])value;
+					for(Object a : array){
+						if(a instanceof String){
+							if(a.toString().equals(parameter)){
+								return false;
+							}
+							str += "\""+a+"\", ";
+						}
+					}
+				}
 			}
-			str += "\""+pair.getValue()+"\", ";
 		}
 		
 		str += "\""+parameter+"\"";

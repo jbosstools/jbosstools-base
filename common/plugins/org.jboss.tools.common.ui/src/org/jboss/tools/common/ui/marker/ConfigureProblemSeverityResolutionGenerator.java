@@ -17,6 +17,9 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.ILocalVariable;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
 import org.jboss.tools.common.EclipseUtil;
@@ -42,10 +45,17 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 					if(preferenceKey != null && preferencePageId != null){
 						resolutions.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
 						boolean enabled = marker.getAttribute(ValidationErrorManager.SUPPRESS_WARNINGS_ENABLED_ATTRIBUTE, false);
-						if(enabled){
+						int severity = marker.getAttribute(IMarker.SEVERITY, 0);
+						if(enabled && severity == IMarker.SEVERITY_WARNING){
 							IJavaElement element = findJavaElement(file, position);
 							if(element != null){
-								resolutions.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey));
+								if(element instanceof IMethod){
+									ILocalVariable parameter = findParameter((IMethod)element, position);
+									if(parameter != null){
+										resolutions.add(new AddSuppressWarningsMarkerResolution(file, parameter, preferenceKey));
+									}
+									resolutions.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey));
+								}
 							}
 						}
 					}
@@ -65,6 +75,15 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 			}
 		} catch (CoreException e) {
 			CommonUIPlugin.getDefault().logError(e);
+		}
+		return null;
+	}
+	
+	private ILocalVariable findParameter(IMethod method, int position) throws JavaModelException{
+		for(ILocalVariable parameter : method.getParameters()){
+			if(parameter.getSourceRange().getOffset() <= position && parameter.getSourceRange().getOffset()+parameter.getSourceRange().getLength() > position){
+				return parameter;
+			}
 		}
 		return null;
 	}
