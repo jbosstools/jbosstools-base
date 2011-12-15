@@ -61,7 +61,6 @@ public class ThreadSafeCopyFactory {
 			copy = ((FolderImpl)object.getParent()).createValidChildCopy(object);
 		}
 		if(copy != null) {
-//			System.out.println("Created copy of " + copy.getPath() + " for thread " + Thread.currentThread() + ". Main object is being loaded by thread " + loadingThread);
 			//Let us wait a bit for this object, maybe there is no lock.
 			for (int i = 0; i < 5; i++) {
 				if(loadingThread != null && !loadingThread.isAlive()) {
@@ -74,7 +73,6 @@ public class ThreadSafeCopyFactory {
 					//ignore
 				}
 				if(loadingThread == null) {
-//					System.out.println("Drop copy of " + FileAnyImpl.toFileName(copy) + " for thread " + Thread.currentThread() + ". Main object is loaded while it was built in " + (i * 100) + " ms.");
 					return null;
 				}
 			}

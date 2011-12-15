@@ -41,8 +41,8 @@ public class ModelImages {
 			result = instance.createImageDescriptor(key).createImage();
 			if(result != null) {
 				synchronized (registry) {
-					ModelPlugin.getDefault().getImageRegistry().remove(key);
-					ModelPlugin.getDefault().getImageRegistry().put(key, result);
+					registry.remove(key);
+					registry.put(key, result);
 				}
 			}
 		}

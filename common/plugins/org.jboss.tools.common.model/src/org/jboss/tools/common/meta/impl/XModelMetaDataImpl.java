@@ -100,9 +100,6 @@ public class XModelMetaDataImpl implements XModelMetaData, XMetaDataConstants {
         	XActionList al = es[i].getActionList();
         	makeActionList(al, actionMenuNames);
         }
-        System.out.println("------> Attributes=" + attNames.size() + " (total " + attrCount + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        System.out.println("------> List values=" + listValues.size()); //$NON-NLS-1$
-        System.out.println("------> Action menu names=" + actionMenuNames.size()); //$NON-NLS-1$
     }
 
     private void makeActionList(XActionList list,  Set<String> actionMenuNames) {

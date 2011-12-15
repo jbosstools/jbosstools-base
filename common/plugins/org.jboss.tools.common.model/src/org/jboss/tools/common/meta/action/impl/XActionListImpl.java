@@ -16,6 +16,7 @@ import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.impl.*;
 import org.jboss.tools.common.model.XModelObjectConstants;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 
 public class XActionListImpl extends XActionItemImpl implements XActionList {
     private XActionItem[] items;
@@ -65,7 +66,7 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
 
     public XActionItem getItem(String name) {
     	if(name == null) {
-    		System.out.println("XActionListImpl.getItem: name=null"); //$NON-NLS-1$
+    		ModelPlugin.getDefault().logWarning("XActionListImpl.getItem: name=null"); //$NON-NLS-1$
     	}
         for (int i = 0; i < items.length; i++) {
             if(items[i].getName().equals(name)) return items[i];
@@ -120,8 +121,6 @@ public class XActionListImpl extends XActionItemImpl implements XActionList {
 					XActionItem item = ((XActionListImpl)entity.getActionList()).findItem(path);
 					if(item != null) {
 						list.add(item.copy(Acceptor.DEFAULT));
-					} else {
-//						System.out.println("Cannot find path " + path);
 					}
 				}
             }

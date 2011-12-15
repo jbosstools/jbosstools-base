@@ -122,7 +122,6 @@ public class XMLRecognizerContext extends EntityRecognizerContext {
 				doctypeInfo.systemId = dt.getSystemId();
 				doctypeInfo.name = dt.getName();
 				doctypes.put(docTypeString, doctypeInfo);
-				// System.out.println("" + doctypes.size() + " " +
 				// doctypeInfo.publicId + " " + doctypeInfo.systemId + " " +
 				// doctypeInfo.name);
 				return doctypeInfo;

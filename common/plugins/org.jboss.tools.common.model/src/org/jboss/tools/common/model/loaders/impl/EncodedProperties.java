@@ -69,7 +69,6 @@ public class EncodedProperties extends Properties {
             valueStart = limit;
             hasSep = false;
 
-	    //System.out.println("line=<" + new String(lineBuf, 0, limit) + ">");
             precedingBackslash = false;
             while (keyLen < limit) {
                 c = lr.lineBuf[keyLen];

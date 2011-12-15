@@ -69,13 +69,10 @@ public class MetaLibLoader {
 			load(path, url);
 		}
 
-//		long t = System.currentTimeMillis();
         for (int i = 0; i < metarefs.size(); i++) {
             ModuleRef r = metarefs.get(i);
             load(r.element, r.name, r.info);
         }
-//		long dt = - t + (t = System.currentTimeMillis());
-//		System.out.println("Loaded from elements in " + dt + " ms");
     }
 
     void sift(Set modules) {
@@ -126,8 +123,6 @@ public class MetaLibLoader {
 			}
 		}
 		
-//		long dt = - t + (t = System.currentTimeMillis());
-//		System.out.println("Loaded " + url + " in " + dt + " ms");
 		if(validateMetaXML) {
 			InputStream stream3 = null;
 			try {
@@ -151,8 +146,6 @@ public class MetaLibLoader {
 					}
 				}
 			}
-//			dt = - t + (t = System.currentTimeMillis());
-//			System.out.println("Validated " + url + " in " + dt + " ms");
 		}
 		
     }

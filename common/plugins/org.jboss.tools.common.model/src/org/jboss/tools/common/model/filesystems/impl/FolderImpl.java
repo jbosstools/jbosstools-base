@@ -186,7 +186,6 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         	if(!rs[i].isLinked()) continue;
         	File f = toFile(rs[i]);
         	if(f == null) {
-//        		System.out.println("no location at link " + rs[i]);
         		continue;
         	}
         	linked.registerResource(rs[i]);
