@@ -154,15 +154,15 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		if(location.getResource() != null && location.getResource().exists() && !location.getResource().equals(target)) {
 			newTarget = location.getResource();
 		}
+		IMarker marker = null;
+		int severity = getSeverity(preferenceKey, newTarget);
 		try {
-			if(hasSuppressWarningsAnnotation(preferenceKey, location)) {
-				return null;
+			if(severity!=-1 && (severity!=IMessage.NORMAL_SEVERITY || !hasSuppressWarningsAnnotation(preferenceKey, location))) {
+				marker = addError(message, preferenceKey, messageArguments, 0, location.getLength(), location.getStartPosition(), newTarget, severity);
 			}
 		} catch (JavaModelException e) {
 			CommonPlugin.getDefault().logError(e);
 		}
-		IMarker marker = addError(message, preferenceKey, messageArguments, 0, location
-				.getLength(), location.getStartPosition(), newTarget);
 
 		if(marker != null){
 			try {
@@ -304,20 +304,19 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	}
 	
 	abstract protected String getPreferencePageId();
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.jboss.tools.seam.internal.core.validation.IValidationErrorManager#addError(java.lang.String, java.lang.String, java.lang.String[], int, int, org.eclipse.core.resources.IResource)
-	 */
-	public IMarker addError(String message, String preferenceKey,
-			String[] messageArguments, int lineNumber, int length, int offset, IResource target) {
+
+	private int getSeverity(String preferenceKey, IResource target) {
 		String preferenceValue = getPreference(target.getProject(), preferenceKey);
-		IMarker marker = null;
+		int severity = -1;
 		if (!SeverityPreferences.IGNORE.equals(preferenceValue)) {
-			int severity = IMessage.HIGH_SEVERITY;
-			if (SeverityPreferences.WARNING.equals(preferenceValue)) {
-				severity = IMessage.NORMAL_SEVERITY;
-			}
+			severity = SeverityPreferences.WARNING.equals(preferenceValue)?severity = IMessage.NORMAL_SEVERITY:IMessage.HIGH_SEVERITY;
+		}
+		return severity;
+	}
+
+	public IMarker addError(String message, String preferenceKey, String[] messageArguments, int lineNumber, int length, int offset, IResource target, int severity) {
+		IMarker marker = null;
+		if (severity!=-1) {
 			if(shouldCheckDuplicateMarkers()) {
 				MarkerID id = new MarkerID(preferenceKey, length, offset, target.getFullPath().toOSString());
 				if(!markers.contains(id)) {
@@ -343,6 +342,14 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 			CommonPlugin.getDefault().logError(e);
 		}
 		return marker;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.seam.internal.core.validation.IValidationErrorManager#addError(java.lang.String, java.lang.String, java.lang.String[], int, int, org.eclipse.core.resources.IResource)
+	 */
+	public IMarker addError(String message, String preferenceKey, String[] messageArguments, int lineNumber, int length, int offset, IResource target) {
+		return addError(message, preferenceKey, messageArguments, lineNumber, length, offset, target, getSeverity(preferenceKey, target));
 	}
 	
 	public IMarker addError(String message, String preferenceKey,
