@@ -45,9 +45,6 @@ public class TypeResolutionCache {
 		if(r == null) {
 			r = new Resolved(type);
 			resolved.put(n, r);
-//			if(resolved.size() % 100 == 0) {
-//				System.out.println("-->" + resolved.size() + " " + n); //$NON-NLS-1$ //$NON-NLS-2$
-//			}
 		} else if(r.type != type) {
 			r.setType(type);
 		}
