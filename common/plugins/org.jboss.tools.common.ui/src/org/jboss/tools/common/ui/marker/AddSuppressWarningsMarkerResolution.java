@@ -28,12 +28,15 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ISourceReference;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.refactoring.CompilationUnitChange;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.text.edits.InsertEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.ui.IMarkerResolution2;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -63,9 +66,8 @@ public class AddSuppressWarningsMarkerResolution implements
 	public AddSuppressWarningsMarkerResolution(IFile file, IJavaElement element, String preferenceKey){
 		this.file = file;
 		this.element = getAnnatatableElement(element);
-		this.preferenceKey = preferenceKey;
-		String shortName = getShortName(preferenceKey);
-		label = NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS_TITLE, shortName, element.getElementName());
+		this.preferenceKey = getShortName(preferenceKey);;
+		label = NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS_TITLE, this.preferenceKey, element.getElementName());
 		if(element instanceof IMethod){
 			label += "()";
 		}
@@ -98,15 +100,15 @@ public class AddSuppressWarningsMarkerResolution implements
 				IJavaElement workingCopyElement = findWorkingCopy(compilationUnit, (IJavaElement)element);
 				
 				IAnnotation annotation = findAnnotation(workingCopyElement);
-				boolean status = false;
+				CompilationUnitChange change = null;
 				if(annotation != null){
-					status = updateAnnotation(SUPPRESS_WARNINGS_ANNOTATION, preferenceKey, compilationUnit, annotation);
+					change = updateAnnotation(SUPPRESS_WARNINGS_ANNOTATION, preferenceKey, compilationUnit, annotation);
 				}else{
-					status = addAnnotation(SUPPRESS_WARNINGS_ANNOTATION+"(\""+preferenceKey+"\")", compilationUnit, workingCopyElement);
+					change = addAnnotation(SUPPRESS_WARNINGS_ANNOTATION+"(\""+preferenceKey+"\")", compilationUnit, workingCopyElement);
 				}
 				
-				if(status){
-					compilationUnit.commitWorkingCopy(true, new NullProgressMonitor());
+				if(change != null){
+					change.perform(new NullProgressMonitor());
 				}
 				compilationUnit.discardWorkingCopy();
 			} catch (JavaModelException e) {
@@ -215,9 +217,7 @@ public class AddSuppressWarningsMarkerResolution implements
 		return JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_OBJS_ANNOTATION);
 	}
 	
-	private boolean updateAnnotation(String name, String parameter, ICompilationUnit compilationUnit, IAnnotation annotation) throws JavaModelException{
-		IBuffer buffer = compilationUnit.getBuffer();
-		
+	private CompilationUnitChange updateAnnotation(String name, String parameter, ICompilationUnit compilationUnit, IAnnotation annotation) throws JavaModelException{
 		String str = AT+name;
 		
 		str += "({";
@@ -227,7 +227,7 @@ public class AddSuppressWarningsMarkerResolution implements
 				Object value = pair.getValue();
 				if(value instanceof String){
 					if(value.toString().equals(parameter)){
-						return false;
+						return null;
 					}
 					str += "\""+value+"\", ";
 				}else if(value instanceof Object[]){
@@ -235,9 +235,21 @@ public class AddSuppressWarningsMarkerResolution implements
 					for(Object a : array){
 						if(a instanceof String){
 							if(a.toString().equals(parameter)){
-								return false;
+								return null;
 							}
 							str += "\""+a+"\", ";
+						}
+					}
+				}
+			} else if(pair.getValueKind() == IMemberValuePair.K_QUALIFIED_NAME || pair.getValueKind() == IMemberValuePair.K_SIMPLE_NAME){
+				Object value = pair.getValue();
+				if(value instanceof String){
+					str += value+", ";
+				}else if(value instanceof Object[]){
+					Object[] array = (Object[])value;
+					for(Object a : array){
+						if(a instanceof String){
+							str += a+", ";
 						}
 					}
 				}
@@ -248,30 +260,49 @@ public class AddSuppressWarningsMarkerResolution implements
 		
 		str += "})";
 		
-		buffer.replace(annotation.getSourceRange().getOffset(), annotation.getSourceRange().getLength(), str);
+		CompilationUnitChange change = new CompilationUnitChange("", compilationUnit);
 		
-		return true;
+		ReplaceEdit edit = new ReplaceEdit(annotation.getSourceRange().getOffset(), annotation.getSourceRange().getLength(), str);
+		change.setEdit(edit);
+		
+		return change;
 	}
 
-	private boolean addAnnotation(String name, ICompilationUnit compilationUnit, IJavaElement element) throws JavaModelException{
+	private CompilationUnitChange addAnnotation(String name, ICompilationUnit compilationUnit, IJavaElement element) throws JavaModelException{
 		if(!(element instanceof ISourceReference))
-			return false;
+			return null;
 		
 		ISourceReference workingCopySourceReference = (ISourceReference) element;
-		
-		IBuffer buffer = compilationUnit.getBuffer();
 		
 		String str = AT+name;
 		
 		if(!(workingCopySourceReference instanceof ILocalVariable)){
 			str += compilationUnit.findRecommendedLineSeparator();
+			IBuffer buffer = compilationUnit.getBuffer();
+			int index = workingCopySourceReference.getSourceRange().getOffset();
+			while(index >= 0){
+				char c = buffer.getChar(index);
+				if(c == '\r' || c == '\n')
+					break;
+				index--;
+			}
+			index++;
+			if(index != workingCopySourceReference.getSourceRange().getOffset()){
+				String spaces = buffer.getText(index, workingCopySourceReference.getSourceRange().getOffset()-index);
+				str += spaces;
+			}
+			
 		}else{
 			str += SPACE;
 		}
 		
-		buffer.replace(workingCopySourceReference.getSourceRange().getOffset(), 0, str);
+		CompilationUnitChange change = new CompilationUnitChange("", compilationUnit);
 		
-		return true;
+		InsertEdit edit = new InsertEdit(workingCopySourceReference.getSourceRange().getOffset(), str);
+		
+		change.setEdit(edit);
+		
+		return change;
 	}
 	
 	@SuppressWarnings("unchecked")
