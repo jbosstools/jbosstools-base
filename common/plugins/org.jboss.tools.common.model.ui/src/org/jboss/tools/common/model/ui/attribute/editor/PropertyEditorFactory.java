@@ -29,7 +29,6 @@ public class PropertyEditorFactory {
 	public static final String ATTRIBUTE_EDITOR_EXT_POINT = "org.jboss.tools.common.model.ui.attributeEditor"; //$NON-NLS-1$
 	
 	private static Map<String,Class<?>> classes = new HashMap<String,Class<?>>();
-	private static IWidgetSettings settings = new DefaultSettings();
 
 	public PropertyEditorFactory() {}
 
@@ -42,7 +41,7 @@ public class PropertyEditorFactory {
 	}
 	
 	private static PropertyEditor createPropertyEditor(Object adapter, XAttribute attribute, boolean required) {
-		return createPropertyEditor(adapter, attribute, required, settings);
+		return createPropertyEditor(adapter, attribute, required, DefaultSettings.getDefault());
 	}
 
 	public static PropertyEditor createPropertyEditor(Object adapter, XAttribute attribute, XModelObject modelObject, IWidgetSettings settings) {

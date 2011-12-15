@@ -23,7 +23,7 @@ import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 public class DialogFormPage extends DialogPage {
 
 	private IForm form;
-	private IWidgetSettings settings = new DefaultSettings();
+	private IWidgetSettings settings = DefaultSettings.getDefault();
 	
 	public DialogFormPage() {
 		super();

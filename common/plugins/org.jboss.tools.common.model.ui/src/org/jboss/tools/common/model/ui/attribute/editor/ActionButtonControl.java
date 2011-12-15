@@ -41,7 +41,7 @@ public class ActionButtonControl implements IPropertyFieldEditor {
 	private ArrayList<ButtonWrapper> buttons;
 	private IPropertyEditor propertyEditor;
 	private IActionProvider actionProvider;
-	private IWidgetSettings settings = new DefaultSettings();
+	private IWidgetSettings settings = DefaultSettings.getDefault();
 	
 	public void setPropertyEditor(IPropertyEditor propertyEditor) {
 		this.propertyEditor = propertyEditor;

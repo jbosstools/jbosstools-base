@@ -75,7 +75,7 @@ public class PropertyEditorDialog extends Dialog {
 
 	protected void createFieldEditor(Composite parent) {
 		editor = propertyEditor.getFieldEditor(parent);
-		editor.setSettings(new DefaultSettings());
+		editor.setSettings(DefaultSettings.getDefault());
 		
 		int cn = editor.getNumberOfControls();
 		if(cn > 2) {

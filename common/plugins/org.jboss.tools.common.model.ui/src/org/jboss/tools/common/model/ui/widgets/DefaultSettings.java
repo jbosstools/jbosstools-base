@@ -174,7 +174,7 @@ public class DefaultSettings implements IWidgetSettings {
 		put("Table.Font", defaultFont); //$NON-NLS-1$
 	}
 	
-	public DefaultSettings() {
+	protected DefaultSettings() {
 		initColors();
 		initFonts();
 		initCursors();

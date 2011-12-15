@@ -132,7 +132,7 @@ public class SamplePropertyForm extends ExpandableForm implements PropertyChange
 	}
 	
 	public IWidgetSettings getSettings() {
-		if (settings == null) settings = new DefaultSettings();
+		if (settings == null) settings = DefaultSettings.getDefault();
 		return settings;
 	}
 	
