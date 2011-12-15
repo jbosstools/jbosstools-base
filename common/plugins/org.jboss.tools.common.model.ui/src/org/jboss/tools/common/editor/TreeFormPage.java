@@ -175,8 +175,6 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 		String actionListName = actionList.getName();
 		String actionListDisplayName = actionList.getDisplayName();
 		String actionListPath = actionList.getPath();
-		// TBD switch to trace support
-		// System.out.println(level+"ActionList ["+actionListName+"] ["+actionListDisplayName+"] ["+actionListPath+"]");
 		XActionItem[] items = actionList.getActionItems();
 		for (int i=0;i<items.length;++i) {
 			if (items[i] instanceof XActionList) {
@@ -185,8 +183,6 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 				String actionItemName = items[i].getName();
 				String actionItemDisplayName = items[i].getDisplayName();
 				String actionItemPath = items[i].getPath();
-				// TBD switch to trace support
-				// System.out.println(level+"    "+"ActionItem ["+actionItemName+"] ["+actionItemDisplayName+"] ["+actionItemPath+"]");
 			}
 		}
 	}

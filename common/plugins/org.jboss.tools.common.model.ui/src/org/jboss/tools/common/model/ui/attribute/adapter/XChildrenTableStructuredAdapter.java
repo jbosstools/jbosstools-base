@@ -210,7 +210,6 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 		if (model!=null) {
 			model.addModelTreeListener(asyncListener);
 		}
-		printActionList("",xmo.getModelEntity().getActionList());//.getAction(actionPath); //$NON-NLS-1$
 	}
 
 	public void setAttributeData(XAttributeData attributeData) {
@@ -327,26 +326,6 @@ public class XChildrenTableStructuredAdapter implements IAdaptable, ITableAdapte
 			//}
 			//updateButtons();
 			actionProvider.setXModelObject(selectedObject);
-		}
-	}
-
-	private void printActionList(String level, XActionList actionList) {
-		if(!ModelUIPlugin.getDefault().isDebugging()) return;
-
-		String actionListName = actionList.getName();
-		String actionListDisplayName = actionList.getDisplayName();
-		String actionListPath = actionList.getPath();
-		System.out.println(level+"ActionList ["+actionListName+"] ["+actionListDisplayName+"] ["+actionListPath+"]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		XActionItem[] items = actionList.getActionItems();
-		for (int i=0;i<items.length;++i) {
-			if (items[i] instanceof XActionList) {
-				printActionList(level+"    ", (XActionList)items[i]);				 //$NON-NLS-1$
-			} else {
-				String actionItemName = items[i].getName();
-				String actionItemDisplayName = items[i].getDisplayName();
-				String actionItemPath = items[i].getPath();
-				System.out.println(level+"    "+"ActionItem ["+actionItemName+"] ["+actionItemDisplayName+"] ["+actionItemPath+"]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			}
 		}
 	}
 
