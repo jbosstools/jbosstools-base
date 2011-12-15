@@ -151,6 +151,23 @@ public class AbstractResourceMarkerTest extends TestCase {
 		List<Integer> lines = findMarkerLines(
 				resource, type, errorMessage, pattern);
 
+		StringBuffer expectedString = new StringBuffer();
+		StringBuffer realString = new StringBuffer();
+		int j = 1;
+		for (int line : lines) {
+			realString.append(line);
+			if(lines.size()>j++) {
+				realString.append(", ");
+			}
+		}
+		j = 1;
+		for (int expected : expectedLines) {
+			expectedString.append(expected);
+			if(expectedLines.length>j++) {
+				expectedString.append(", ");
+			}
+		}
+
 		if(lines.isEmpty()) {
 			IMarker[] allMarkers = findMarkers(resource, null, ".*", true);
 			StringBuffer sb = new StringBuffer("Marker matches the '"); //$NON-NLS-1$
@@ -168,25 +185,9 @@ public class AbstractResourceMarkerTest extends TestCase {
 			fail(sb.toString());
 		}
 
-		assertEquals("Wrong number of found marker matches the '" + errorMessage + "' pattern",  //$NON-NLS-1$//$NON-NLS-2$
+		assertEquals("Wrong number of found marker matches the '" + errorMessage + "' pattern. Expected the pattern at the following lines <" + expectedString + "> but was at <" + realString + ">.",  //$NON-NLS-1$//$NON-NLS-2$
 				expectedLines.length, lines.size());
 
-		StringBuffer expectedString = new StringBuffer();
-		StringBuffer realString = new StringBuffer();
-		int i = 1;
-		for (int line : lines) {
-			realString.append(line);
-			if(lines.size()>i++) {
-				realString.append(", ");
-			}
-		}
-		i = 1;
-		for (int expected : expectedLines) {
-			expectedString.append(expected);
-			if(expectedLines.length>i++) {
-				expectedString.append(", ");
-			}
-		}
 		for (int line : lines) {
 			boolean found = false;
 			for (int expected : expectedLines) {
