@@ -83,8 +83,9 @@ public class DefaultSettings implements IWidgetSettings {
 	}
 	
 	protected void initCursors() {
-		defaultCursor = new Cursor(Display.getCurrent(), SWT.CURSOR_ARROW);
-		handCursor = new Cursor(Display.getCurrent(), SWT.CURSOR_HAND);
+		Display display = Display.getCurrent() != null ? Display.getCurrent() : Display.getDefault();
+		defaultCursor = display.getSystemCursor(SWT.CURSOR_ARROW);
+		handCursor = display.getSystemCursor(SWT.CURSOR_HAND);
 	}
 	
 	protected void initBorders() {
