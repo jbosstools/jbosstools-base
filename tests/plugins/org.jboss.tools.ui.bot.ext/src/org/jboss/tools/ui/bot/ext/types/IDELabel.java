@@ -704,7 +704,8 @@ public class IDELabel {
    
    public static class ToolbarButton{
      
-     public static final String REFRESH = "Refresh";
+     public static final String REFRESH = "Refresh (F5)";
+     public static final String REFRESH_MAC_OS = "Refresh (⌘R)";
      
    }
    
