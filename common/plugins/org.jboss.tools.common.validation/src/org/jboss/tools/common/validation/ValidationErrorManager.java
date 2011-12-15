@@ -192,9 +192,14 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 				} else if(v instanceof String) {
 					warnings = new String[]{v.toString()};
 				}
+				String shortKey = null;
+				int dot = preferenceKey.lastIndexOf('.');
+				if(dot>-1) {
+					shortKey = preferenceKey.substring(dot+1);
+				}
 				for (Object warning : warnings) {
 					String trimed = warning.toString().trim();
-					if(trimed.equals(preferenceKey) || trimed.equals(ALL_WARNINGS)) {
+					if(shortKey!=null && trimed.equals(shortKey) ||  trimed.equals(preferenceKey) || trimed.equals(ALL_WARNINGS)) {
 						// Ok, we seem to have such a suppress. Let's make sure the full name of annotation is java.lang.SuppressWarnings
 						if(EclipseJavaUtil.checkAnnotationByFulltName(annotation, SUPPRESS_WARNINGS_ANNOTATION_FULL)) {
 							result = annotation;
