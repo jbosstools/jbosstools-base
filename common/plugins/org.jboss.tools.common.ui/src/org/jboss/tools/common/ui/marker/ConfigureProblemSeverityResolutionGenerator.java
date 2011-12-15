@@ -54,8 +54,8 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 									if(parameter != null){
 										resolutions.add(new AddSuppressWarningsMarkerResolution(file, parameter, preferenceKey));
 									}
-									resolutions.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey));
 								}
+								resolutions.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey));
 							}
 						}
 					}
