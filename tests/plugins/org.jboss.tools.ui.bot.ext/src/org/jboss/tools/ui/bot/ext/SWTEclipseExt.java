@@ -1132,12 +1132,23 @@ public class SWTEclipseExt {
 	 * 
 	 * @param treeItem
 	 */
-	public void runTreeItemAsJavaApplication(SWTBotTreeItem treeItem) {
+	public void runTreeItemAsJavaApplication(SWTBotTreeItem treeItem) {		
 		treeItem.select();
-		treeItem.click();
-		SWTEclipseExt.getMenuFromSubmenu(
-				bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS),
-				IDELabel.Menu.RUN_AS_JAVA_APPLICATION).click();
+		treeItem.click();		
+		
+		//SWTEclipseExt.getMenuFromSubmenu(
+		//		bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS),
+		//		IDELabel.Menu.RUN_AS_JAVA_APPLICATION).click();
+		
+		//System.out.println("runJavaApplication!!!");
+		//bot.sleep(30000l);
+		//System.out.println (treeItem.contextMenu("Run As").menu("2 Java Application").getText());
+
+		bot.sleep(30000l);
+		treeItem.contextMenu("Run As").menu("2 Java Application").click();		
+		//runJavaApplication("helloworld_testclient","org.jboss.soa.esb.samples.quickstart.helloworld.test.SendJMSMessage"," ");
+		bot.sleep(30000l);	// This is needed to enable the test to run successfully to completion
+		
 	}
 
 	/**
