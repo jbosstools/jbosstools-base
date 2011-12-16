@@ -27,6 +27,8 @@ public class Messages extends NLS {
 	public static String JBossRuntimeStartup_JBoss_Application_Server_5_1;
 	public static String JBossRuntimeStartup_JBoss_EAP_Server_4_3;
 	public static String JBossRuntimeStartup_JBoss_EAP_Server_5_0;
+	public static String JBossRuntimeStartup_JBoss_EAP_Server_6_0;
+	// NEW_SERVER_ADAPTER add logic for new adapter here
 	public static String JBossRuntimeStartup_Runtime;
 	public static String JBossRuntimeStartup_The_JBoss_AS_Hypersonic_embedded_database;
 	static {

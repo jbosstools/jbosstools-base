@@ -63,6 +63,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	
 	private static final int JBOSS_AS70_INDEX = 8;
 	private static final int JBOSS_AS71_INDEX = 9;
+	private static final int JBOSS_EAP60_INDEX = 10;
 	private static String[] hasIncludedRuntimes = new String[] {SOA_P, EAP, EPP, EWP, SOA_P_STD};
 	private static final String DROOLS = "DROOLS"; // NON-NLS-1$
 	private static final String ESB = "ESB"; //$NON-NLS-1$
@@ -73,6 +74,10 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		
 	private static File getLocation(ServerDefinition serverDefinition) {
 		String type = serverDefinition.getType();
+		String version = serverDefinition.getVersion();
+		if (EAP.equals(type) && version != null && version.startsWith("6") ) {
+			return serverDefinition.getLocation();
+		}
 		if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type)) {
 			return new File(serverDefinition.getLocation(), "jboss-as");
 		}
@@ -103,7 +108,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 					|| EAP_STD.equals(type)) {
 				String name = serverDefinition.getName();
 				String runtimeName = name + " " + RUNTIME; //$NON-NLS-1$
-				int index = getJBossASVersion(asLocation);
+				int index = getJBossASVersion(asLocation, serverDefinition);
 				createJBossServer(asLocation, index, name, runtimeName);
 			} else if (AS.equals(type)){
 				String version = serverDefinition.getVersion();
@@ -125,15 +130,23 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 				} else if ("7.1".equals(version)) { //$NON-NLS-1$
 					index = JBOSS_AS71_INDEX;
 				}
+				// NEW_SERVER_ADAPTER add logic for new adapter here
 				createJBossServer(serverDefinition.getLocation(),index,serverDefinition.getName(),serverDefinition.getName() + " " + RUNTIME); //$NON-NLS-1$
 			}
 			createJBossServerFromDefinitions(serverDefinition.getIncludedServerDefinitions());
 		}	
 	}
 
-	private static int getJBossASVersion(File asLocation) {
+	private static int getJBossASVersion(File asLocation, ServerDefinition serverDefinition) {
 		int index = -1;
-		String fullVersion = new ServerBeanLoader().getFullServerVersion(new File(asLocation, JBossServerType.AS.getSystemJarPath()));
+		String type = serverDefinition.getType();
+		String ver = serverDefinition.getVersion();
+		String fullVersion;
+		if (EAP.equals(type) && "6.0".equals(ver)) {
+			fullVersion = new ServerBeanLoader().getFullServerVersion(new File(asLocation, JBossServerType.EAP6.getSystemJarPath()));
+		} else {
+			fullVersion = new ServerBeanLoader().getFullServerVersion(new File(asLocation, JBossServerType.AS.getSystemJarPath()));
+		}
 		if(fullVersion != null ) {
 			String version = fullVersion.substring(0, 3);
 			if ("4.3".equals(version)) { //$NON-NLS-1$
@@ -146,6 +159,9 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			} else if ("5.2".equals(version)) { //$NON-NLS-1$
 				// SOA-P 5.2
 				index = 7;
+			} else if ("6.0".equals(version)) { //$NON-NLS-1$
+				// EAP 6.0
+				index = 10;
 			}
 		}
 		return index;
@@ -252,7 +268,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			// Don't create the driver a few times
 			return;
 		}
-		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX) {
+		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
 			// AS 7
 			return;
 		}

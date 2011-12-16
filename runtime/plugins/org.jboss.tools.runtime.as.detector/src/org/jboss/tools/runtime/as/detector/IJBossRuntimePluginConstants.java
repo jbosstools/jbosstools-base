@@ -38,7 +38,9 @@ public interface IJBossRuntimePluginConstants {
 		"org.jboss.ide.eclipse.as.runtime.eap.43", //$NON-NLS-1$
 		"org.jboss.ide.eclipse.as.runtime.eap.50", //$NON-NLS-1$
 		"org.jboss.ide.eclipse.as.runtime.70", //$NON-NLS-1$
-		"org.jboss.ide.eclipse.as.runtime.71" //$NON-NLS-1$
+		"org.jboss.ide.eclipse.as.runtime.71", //$NON-NLS-1$
+		"org.jboss.ide.eclipse.as.runtime.eap.60"  //$NON-NLS-1$
+		// NEW_SERVER_ADAPTER add logic for new adapter here
 		};
 	
 	public static final String HSQLDB_DRIVER_JAR_NAME = "hsqldb.jar"; //$NON-NLS-1$
@@ -69,7 +71,8 @@ public interface IJBossRuntimePluginConstants {
 		"org.jboss.ide.eclipse.as.eap.43", //$NON-NLS-1$
 		"org.jboss.ide.eclipse.as.eap.50", //$NON-NLS-1$
 		"org.jboss.ide.eclipse.as.70", //$NON-NLS-1$
-		"org.jboss.ide.eclipse.as.71" //$NON-NLS-1$
+		"org.jboss.ide.eclipse.as.71", //$NON-NLS-1$
+		"org.jboss.ide.eclipse.as.eap.60" //$NON-NLS-1$
 		};
 	
 	public static final String JBOSS_AS_NAME[] = {
@@ -82,7 +85,8 @@ public interface IJBossRuntimePluginConstants {
 		Messages.JBossRuntimeStartup_JBoss_EAP_Server_4_3,
 		Messages.JBossRuntimeStartup_JBoss_EAP_Server_5_0,
 		Messages.JBossRuntimeStartup_JBoss_Application_Server_7_0,
-		Messages.JBossRuntimeStartup_JBoss_Application_Server_7_1
+		Messages.JBossRuntimeStartup_JBoss_Application_Server_7_1,
+		Messages.JBossRuntimeStartup_JBoss_EAP_Server_6_0
 		};
 	
 	public static final String JBOSS_AS_HOST = "localhost"; //$NON-NLS-1$
