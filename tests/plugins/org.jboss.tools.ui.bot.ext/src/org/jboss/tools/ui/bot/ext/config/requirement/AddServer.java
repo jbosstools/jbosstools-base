@@ -72,11 +72,14 @@ public class AddServer extends RequirementBase {
 			if ("4.3".equals(TestConfigurator.currentConfig.getServer().version)) {
 				SWTTestExt.configuredState.getServer().bundledESBVersion="4.4";			
 			}
-			if ("5.0".equals(TestConfigurator.currentConfig.getServer().version)) {
+			else if ("5.0".equals(TestConfigurator.currentConfig.getServer().version)) {
 				SWTTestExt.configuredState.getServer().bundledESBVersion="4.7";
 			}
-			if ("5.1".equals(TestConfigurator.currentConfig.getServer().version)) {
+			else if ("5.1".equals(TestConfigurator.currentConfig.getServer().version)) {
 				SWTTestExt.configuredState.getServer().bundledESBVersion="4.9";
+			}
+			else if ("5.2".equals(TestConfigurator.currentConfig.getServer().version)) {
+				SWTTestExt.configuredState.getServer().bundledESBVersion="4.10";
 			}
 		} 
 	}
