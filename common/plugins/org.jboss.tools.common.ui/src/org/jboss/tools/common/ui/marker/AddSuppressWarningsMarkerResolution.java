@@ -28,10 +28,14 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ISourceReference;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.refactoring.CompilationUnitChange;
+import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
@@ -97,14 +101,20 @@ public class AddSuppressWarningsMarkerResolution implements
 				ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
 				ICompilationUnit compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
 				
+				CompilationUnit cuNode = ASTTools.buildASTRoot(compilationUnit);
+				
 				IJavaElement workingCopyElement = findWorkingCopy(compilationUnit, (IJavaElement)element);
+				ASTNode elementNode = null;
+				if(workingCopyElement instanceof JavaElement){
+					elementNode = ((JavaElement) workingCopyElement).findNode(cuNode);
+				}
 				
 				IAnnotation annotation = findAnnotation(workingCopyElement);
 				CompilationUnitChange change = null;
 				if(annotation != null){
 					change = updateAnnotation(SUPPRESS_WARNINGS_ANNOTATION, preferenceKey, compilationUnit, annotation);
 				}else{
-					change = addAnnotation(SUPPRESS_WARNINGS_ANNOTATION+"(\""+preferenceKey+"\")", compilationUnit, workingCopyElement);
+					change = addAnnotation(SUPPRESS_WARNINGS_ANNOTATION+"(\""+preferenceKey+"\")", compilationUnit, workingCopyElement, elementNode);
 				}
 				
 				if(change != null){
@@ -268,18 +278,27 @@ public class AddSuppressWarningsMarkerResolution implements
 		return change;
 	}
 
-	private CompilationUnitChange addAnnotation(String name, ICompilationUnit compilationUnit, IJavaElement element) throws JavaModelException{
+	private CompilationUnitChange addAnnotation(String name, ICompilationUnit compilationUnit, IJavaElement element, ASTNode node) throws JavaModelException{
 		if(!(element instanceof ISourceReference))
 			return null;
 		
 		ISourceReference workingCopySourceReference = (ISourceReference) element;
 		
+		IBuffer buffer = compilationUnit.getBuffer();
+		
+		int position = workingCopySourceReference.getSourceRange().getOffset();
+		
+		if(node != null){
+			position = node.getStartPosition();
+		}
+		
 		String str = AT+name;
 		
 		if(!(workingCopySourceReference instanceof ILocalVariable)){
+			
 			str += compilationUnit.findRecommendedLineSeparator();
-			IBuffer buffer = compilationUnit.getBuffer();
-			int index = workingCopySourceReference.getSourceRange().getOffset();
+			
+			int index = position;
 			while(index >= 0){
 				char c = buffer.getChar(index);
 				if(c == '\r' || c == '\n')
@@ -287,8 +306,8 @@ public class AddSuppressWarningsMarkerResolution implements
 				index--;
 			}
 			index++;
-			if(index != workingCopySourceReference.getSourceRange().getOffset()){
-				String spaces = buffer.getText(index, workingCopySourceReference.getSourceRange().getOffset()-index);
+			if(index != position){
+				String spaces = buffer.getText(index, position-index);
 				str += spaces;
 			}
 			
@@ -298,7 +317,7 @@ public class AddSuppressWarningsMarkerResolution implements
 		
 		CompilationUnitChange change = new CompilationUnitChange("", compilationUnit);
 		
-		InsertEdit edit = new InsertEdit(workingCopySourceReference.getSourceRange().getOffset(), str);
+		InsertEdit edit = new InsertEdit(position, str);
 		
 		change.setEdit(edit);
 		
