@@ -14,6 +14,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -119,6 +120,7 @@ public class AddSuppressWarningsMarkerResolution implements
 				
 				if(change != null){
 					change.perform(new NullProgressMonitor());
+					file.touch(new NullProgressMonitor());
 				}
 				compilationUnit.discardWorkingCopy();
 			} catch (JavaModelException e) {
