@@ -119,6 +119,7 @@ public class AddSuppressWarningsMarkerResolution implements
 				
 				if(change != null){
 					change.perform(new NullProgressMonitor());
+					compilationUnit.commitWorkingCopy(false, new NullProgressMonitor());
 				}
 				compilationUnit.discardWorkingCopy();
 			} catch (JavaModelException e) {
