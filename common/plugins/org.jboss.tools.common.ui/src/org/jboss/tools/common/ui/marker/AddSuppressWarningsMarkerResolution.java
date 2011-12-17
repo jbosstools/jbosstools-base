@@ -120,7 +120,7 @@ public class AddSuppressWarningsMarkerResolution implements
 				
 				if(change != null){
 					change.perform(new NullProgressMonitor());
-					file.touch(new NullProgressMonitor());
+					original.reconcile(ICompilationUnit.NO_AST, false, null, new NullProgressMonitor());
 				}
 				compilationUnit.discardWorkingCopy();
 			} catch (JavaModelException e) {
