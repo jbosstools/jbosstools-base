@@ -1,9 +1,32 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JBoss Tools SWTBot Extensions
+Bundle-Name: Ext
 Bundle-SymbolicName: org.jboss.tools.ui.bot.ext
 Bundle-Version: 3.2.0.qualifier
+Bundle-ClassPath: .,
+ resources/drv/hsqldb.jar
 Bundle-Activator: org.jboss.tools.ui.bot.ext.Activator
+Export-Package: org,
+ org.jboss,
+ org.jboss.tools,
+ org.jboss.tools.ui,
+ org.jboss.tools.ui.bot,
+ org.jboss.tools.ui.bot.ext,
+ org.jboss.tools.ui.bot.ext.condition,
+ org.jboss.tools.ui.bot.ext.config,
+ org.jboss.tools.ui.bot.ext.config.requirement,
+ org.jboss.tools.ui.bot.ext.entity,
+ org.jboss.tools.ui.bot.ext.gef,
+ org.jboss.tools.ui.bot.ext.gen,
+ org.jboss.tools.ui.bot.ext.generator,
+ org.jboss.tools.ui.bot.ext.helper,
+ org.jboss.tools.ui.bot.ext.matcher,
+ org.jboss.tools.ui.bot.ext.parts,
+ org.jboss.tools.ui.bot.ext.types,
+ org.jboss.tools.ui.bot.ext.view,
+ org.jboss.tools.ui.bot.ext.widgets,
+ org.jboss.tools.ui.bot.ext.wizards,
+ org.jboss.tools.ui.bot.ext.zest
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.swtbot.eclipse.core;bundle-version="2.0.0",
@@ -24,25 +47,15 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.zest.core;bundle-version="1.2.0",
  org.eclipse.zest.layouts;bundle-version="1.1.0",
  org.eclipse.swtbot.eclipse.gef.finder;bundle-version="2.0.0",
- org.eclipse.gef;bundle-version="3.6.1"
-Bundle-ActivationPolicy: lazy
+ org.eclipse.gef;bundle-version="3.6.1",
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.gef,
+ org.jboss.tools.ui.bot.ext.helper
 Eclipse-RegisterBuddy: org.apache.log4j
-Export-Package: org.hsqldb,
- org.jboss.tools.ui.bot.ext,
- org.jboss.tools.ui.bot.ext.config,
- org.jboss.tools.ui.bot.ext.config.requirement,
- org.jboss.tools.ui.bot.ext.entity,
- org.jboss.tools.ui.bot.ext.gef,
- org.jboss.tools.ui.bot.ext.gen,
- org.jboss.tools.ui.bot.ext.helper,
- org.jboss.tools.ui.bot.ext.parts,
- org.jboss.tools.ui.bot.ext.types,
- org.jboss.tools.ui.bot.ext.view,
- org.jboss.tools.ui.bot.ext.widgets,
- org.jboss.tools.ui.bot.ext.wizards,
- org.jboss.tools.ui.bot.ext.zest
-Bundle-Vendor: JBoss by Red Hat
-Bundle-ClassPath: .,
- resources/drv/hsqldb.jar
-Import-Package: org.eclipse.gef
