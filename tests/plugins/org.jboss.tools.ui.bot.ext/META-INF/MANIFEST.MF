@@ -6,11 +6,7 @@ Bundle-Version: 3.2.0.qualifier
 Bundle-ClassPath: .,
  resources/drv/hsqldb.jar
 Bundle-Activator: org.jboss.tools.ui.bot.ext.Activator
-Export-Package: org,
- org.jboss,
- org.jboss.tools,
- org.jboss.tools.ui,
- org.jboss.tools.ui.bot,
+Export-Package: 
  org.jboss.tools.ui.bot.ext,
  org.jboss.tools.ui.bot.ext.condition,
  org.jboss.tools.ui.bot.ext.config,
