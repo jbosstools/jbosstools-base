@@ -47,7 +47,7 @@ public class WebUtils {
 					}
 				}
 			}
-			return ps.toArray(new IPath[0]);
+			return ps.toArray(new IPath[ps.size()]);
 		}
 		return new IPath[0];
 	}
@@ -63,7 +63,7 @@ public class WebUtils {
 					ps.add(c.getFullPath());
 				}
 			}
-			return ps.toArray(new IPath[0]);
+			return ps.toArray(new IPath[ps.size()]);
 		}
 		return new IPath[0];
 	}

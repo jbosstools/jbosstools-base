@@ -245,7 +245,7 @@ public class EclipseJavaUtil {
 		}
 		if(checkParents) {
 			IJavaElement parent = element.getParent();
-			if(parent!=null && parent instanceof IMember) {
+			if(parent instanceof IMember) {
 				return findAnnotationByShortName((IMember)parent, name, true);
 			}
 		}
