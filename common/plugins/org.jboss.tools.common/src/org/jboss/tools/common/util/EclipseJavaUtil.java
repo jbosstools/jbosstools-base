@@ -173,24 +173,6 @@ public class EclipseJavaUtil {
 	}
 
 	/**
-	 * Returns annotation by the full name declared for the given java member or its parents.
-	 * @param member
-	 * @param name
-	 * @param checkParents
-	 * @return
-	 * @throws JavaModelException
-	 */
-	public static IAnnotation findAnnotationByFullName(IMember member, String name, boolean checkParents) throws JavaModelException {
-		String shortName = name;
-		int i = name.lastIndexOf('.');
-		if(i>-1) {
-			shortName = name.substring(i+1);
-		}
-		IAnnotation annotation = findAnnotationByShortName(member, shortName, checkParents);
-		return annotation!=null && checkAnnotationByFulltName(annotation, name) ? annotation:null;
-	}
-
-	/**
 	 * Returns true if the given annotation has the given full name
 	 * @param annotation
 	 * @param fullName
@@ -222,14 +204,19 @@ public class EclipseJavaUtil {
 	}
 
 	/**
-	 * Returns annotation by the short name declared for the given java member or its parents.
+	 * Returns annotation by the short name declared for the given java member and its parents.
+	 * Returns null if no annotation found.
 	 * @param member
 	 * @param name
 	 * @param checkParents
 	 * @return
 	 * @throws JavaModelException
 	 */
-	public static IAnnotation findAnnotationByShortName(IJavaElement element, String name, boolean checkParents) throws JavaModelException {
+	public static Set<IAnnotation> findAnnotationsByShortName(IJavaElement element, String name, boolean checkParents) throws JavaModelException {
+		return findAnnotationsByShortName(null, element, name, checkParents);
+	}
+
+	private static Set<IAnnotation> findAnnotationsByShortName(Set<IAnnotation> result, IJavaElement element, String name, boolean checkParents) throws JavaModelException {
 		if(element instanceof IAnnotatable) {
 			IAnnotation[] annotations = ((IAnnotatable)element).getAnnotations();
 			for (IAnnotation annotation : annotations) {
@@ -239,16 +226,20 @@ public class EclipseJavaUtil {
 					aName = aName.substring(i+1);
 				}
 				if(aName.equals(name)) {
-					return annotation;
+					if(result==null) {
+						result = new HashSet<IAnnotation>();
+					}
+					result.add(annotation);
+					break;
 				}
 			}
 		}
 		if(checkParents) {
 			IJavaElement parent = element.getParent();
-			if(parent instanceof IMember) {
-				return findAnnotationByShortName((IMember)parent, name, true);
+			if(parent instanceof IAnnotatable) {
+				return findAnnotationsByShortName(result, parent, name, true);
 			}
 		}
-		return null;
+		return result;
 	}
 }

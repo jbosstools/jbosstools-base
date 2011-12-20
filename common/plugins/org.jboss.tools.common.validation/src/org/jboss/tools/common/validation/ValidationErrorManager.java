@@ -178,54 +178,64 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	private static final String SUPPRESS_WARNINGS_ANNOTATION_FULL = "java.lang.SuppressWarnings";
 	private static final String ALL_WARNINGS = "all";
 
-	private static IAnnotation getSuppressWarningsAnnotation(String preferenceKey, IJavaElement element) throws JavaModelException {
+	private static boolean hasSuppressWarningsAnnotation(String preferenceKey, IJavaElement element) throws JavaModelException {
+		String[] names = WarningNameManager.getInstance().getWarningNames(preferenceKey);
+		if(names==null || names.length==1) {
+			return false;
+		}
 		// Does the element have @SuppressWarnings? Check it by the short name only.
-		IAnnotation annotation = EclipseJavaUtil.findAnnotationByShortName(element, SUPPRESS_WARNINGS_ANNOTATION_SHORT, true);
-		IAnnotation result  = null;
-		if(annotation!=null) {
-			IMemberValuePair[] pairs = annotation.getMemberValuePairs();
-			if(pairs.length==1) {
-				Object v = pairs[0].getValue();
-				Object[] warnings = null;
-				if(v instanceof Object[]) {
-					warnings = (Object[])v;
-				} else if(v instanceof String) {
-					warnings = new String[]{v.toString()};
-				}
-				String shortKey = null;
-				int dot = preferenceKey.lastIndexOf('.');
-				if(dot>-1) {
-					shortKey = preferenceKey.substring(dot+1);
-				}
-				for (Object warning : warnings) {
-					String trimed = warning.toString().trim();
-					if(shortKey!=null && trimed.equals(shortKey) ||  trimed.equals(preferenceKey) || trimed.equals(ALL_WARNINGS)) {
-						// Ok, we seem to have such a suppress. Let's make sure the full name of annotation is java.lang.SuppressWarnings
-						if(EclipseJavaUtil.checkAnnotationByFulltName(annotation, SUPPRESS_WARNINGS_ANNOTATION_FULL)) {
-							result = annotation;
-							break;
+		Set<IAnnotation> annotations = EclipseJavaUtil.findAnnotationsByShortName(element, SUPPRESS_WARNINGS_ANNOTATION_SHORT, true);
+		if(annotations!=null) {
+			for (IAnnotation annotation : annotations) {
+				IMemberValuePair[] pairs = annotation.getMemberValuePairs();
+				if(pairs.length==1) {
+					Object v = pairs[0].getValue();
+					Object[] warnings = null;
+					if(v instanceof Object[]) {
+						warnings = (Object[])v;
+					} else if(v instanceof String) {
+						warnings = new String[]{v.toString()};
+					}
+					for (Object warning : warnings) {
+						String trimed = warning.toString().trim();
+						boolean found = false;
+						if(trimed.equals(ALL_WARNINGS)) {
+							found = true;
+						} else {
+							for (String name : names) {
+								if(warning.equals(name)) {
+									found = true;
+									break;
+								}
+							}
+						}
+						if(found) {
+							// Ok, we seem to have such a suppress. Let's make sure the full name of annotation is java.lang.SuppressWarnings
+							if(EclipseJavaUtil.checkAnnotationByFulltName(annotation, SUPPRESS_WARNINGS_ANNOTATION_FULL)) {
+								return true;
+							}
 						}
 					}
 				}
 			}
 		}
 
-		return result;
+		return false;
 	}
 
 	private static boolean hasSuppressWarningsAnnotation(String preferenceKey, ITextSourceReference location) throws JavaModelException {
 		boolean result = false;
 		if(location instanceof IJavaSourceReference) {
 			IJavaElement element = ((IJavaSourceReference) location).getSourceElement();
-			if(element==null) {
+			if(element!=null) {
+				result = hasSuppressWarningsAnnotation(preferenceKey, element);
+			} else {
 				// Check if it's really a java resource. 
 				IResource resource = location.getResource();
 				if("java".equalsIgnoreCase(resource.getFileExtension())) {
 					throw new NullPointerException("IJavaSourceReference referenced to java source should not return null in getSourceElement()");
 				}
-				return result;
 			}
-			result = getSuppressWarningsAnnotation(preferenceKey, element)!=null;
 		}
 
 		return result;
