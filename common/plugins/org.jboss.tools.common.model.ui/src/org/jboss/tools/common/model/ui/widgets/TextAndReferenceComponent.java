@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.jboss.tools.common.util.SwtUtil;
 
 public class TextAndReferenceComponent extends Canvas implements PaintListener, MouseMoveListener {
 	int defaultWidth = 100;
@@ -48,6 +49,7 @@ public class TextAndReferenceComponent extends Canvas implements PaintListener, 
 		plain = getFont();
 		FontData d = plain.getFontData()[0];
 		bold = new Font(null, d.getName(), d.getHeight(), d.getStyle() | SWT.BOLD);
+		SwtUtil.bindDisposal(bold, this);
 	}
 
 	public void mouseMove(MouseEvent e) {

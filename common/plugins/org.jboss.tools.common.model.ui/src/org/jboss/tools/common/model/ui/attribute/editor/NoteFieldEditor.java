@@ -48,6 +48,7 @@ import org.jboss.tools.common.model.ui.widgets.BorderedControl;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.widgets.ScrolledComposite;
 import org.jboss.tools.common.model.ui.widgets.border.Border;
+import org.jboss.tools.common.util.SwtUtil;
 
 public class NoteFieldEditor extends ExtendedFieldEditor implements IFieldEditor, IPropertyFieldEditor, IPropertyChangeListener, PropertyChangeListener {
 	protected IPropertyEditor propertyEditor;
@@ -208,6 +209,7 @@ public class NoteFieldEditor extends ExtendedFieldEditor implements IFieldEditor
 					try {
 						font = new Font(null, data);
 						textField.setFont(font);
+						SwtUtil.bindDisposal(font, textField);
 					} catch (SWTException e) {
 						ModelUIPlugin.getPluginLog().logError(e);
 					}

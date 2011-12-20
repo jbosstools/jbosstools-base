@@ -78,6 +78,7 @@ import org.jboss.tools.common.model.ui.messages.UIMessages;
 import org.jboss.tools.common.model.ui.objecteditor.XChildrenEditor;
 import org.jboss.tools.common.model.ui.texteditors.TextActionHelper;
 import org.jboss.tools.common.model.util.AbstractTableHelper;
+import org.jboss.tools.common.util.SwtUtil;
 
 public class PropertiesEditor extends XChildrenEditor implements ITextEditor, ITextOperationTarget {
 	static final String ENT_PROPERTY = "Property"; //$NON-NLS-1$
@@ -227,6 +228,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 			data[0].setHeight(data[0].getHeight() - 2);
 			font = new Font(font.getDevice(), data);
 			caseSensitive.setFont(font);
+			SwtUtil.bindDisposal(font, caseSensitive);
 		}
 		
 		caseSensitive.setLayoutData(fd);
@@ -254,6 +256,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 			data[0].setHeight(data[0].getHeight() - 2);
 			font = new Font(font.getDevice(), data);
 			fake.setFont(font);
+			SwtUtil.bindDisposal(font, fake);
 		}
 		
 		fake.setLayoutData(fd);

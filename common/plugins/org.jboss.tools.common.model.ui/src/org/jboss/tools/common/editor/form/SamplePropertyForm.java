@@ -32,6 +32,7 @@ import org.jboss.tools.common.model.ui.forms.ExpandableForm;
 import org.jboss.tools.common.model.ui.widgets.DefaultSettings;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.widgets.WhiteSettings;
+import org.jboss.tools.common.util.SwtUtil;
 
 public class SamplePropertyForm extends ExpandableForm implements PropertyChangeListener {
 	private XAttributeSupport support;
@@ -85,7 +86,9 @@ public class SamplePropertyForm extends ExpandableForm implements PropertyChange
 			Font f = label.getFont();
 			FontData[] d = f.getFontData();
 			for (int i = 0; i < d.length; i++) d[i].setStyle(SWT.BOLD);
-			label.setFont(new Font(null, d));			
+			f = new Font(null, d);
+			label.setFont(f);		
+			SwtUtil.bindDisposal(f, label);
 		}
 
 		updateEnablement();
