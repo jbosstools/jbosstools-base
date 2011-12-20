@@ -12,11 +12,12 @@ Export-Package: org.jboss.tools.common,
  org.jboss.tools.common.jobs,
  org.jboss.tools.common.log,
  org.jboss.tools.common.preferences,
+ org.jboss.tools.common.refactoring,
  org.jboss.tools.common.reporting,
  org.jboss.tools.common.text,
  org.jboss.tools.common.util,
- org.jboss.tools.common.xml,
  org.jboss.tools.common.web,
+ org.jboss.tools.common.xml,
  org.jboss.tools.common.zip
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.7.0",
  org.eclipse.wst.xml.core;bundle-version="1.1.600";visibility:=reexport,
@@ -37,7 +38,8 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.7.0",
  org.eclipse.ui.workbench.texteditor;bundle-version="3.7.0",
  org.eclipse.jface.text;bundle-version="3.7.0",
  org.apache.commons.httpclient;bundle-version="3.1.0",
- org.eclipse.ui.editors;bundle-version="3.7.0"
+ org.eclipse.ui.editors;bundle-version="3.7.0",
+ org.eclipse.jpt.common.core;bundle-version="1.0.0"
 Bundle-Version: 3.3.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
