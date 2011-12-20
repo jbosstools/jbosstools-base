@@ -14,7 +14,6 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -49,6 +48,7 @@ import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.preferences.SeverityPreferences;
 import org.jboss.tools.common.ui.CommonUIMessages;
 import org.jboss.tools.common.ui.CommonUIPlugin;
+import org.jboss.tools.common.validation.WarningNameManager;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -71,7 +71,13 @@ public class AddSuppressWarningsMarkerResolution implements
 	public AddSuppressWarningsMarkerResolution(IFile file, IJavaElement element, String preferenceKey){
 		this.file = file;
 		this.element = getAnnatatableElement(element);
-		this.preferenceKey = getShortName(preferenceKey);;
+		String[] names = WarningNameManager.getInstance().getWarningNames(preferenceKey);
+		if(names != null && names.length > 0){
+			this.preferenceKey = names[0];
+		}else{
+			this.preferenceKey = null;
+		}
+		
 		label = NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS_TITLE, this.preferenceKey, element.getElementName());
 		if(element instanceof IMethod){
 			label += "()";
@@ -96,7 +102,7 @@ public class AddSuppressWarningsMarkerResolution implements
 
 	@Override
 	public void run(IMarker marker) {
-		if(element != null){
+		if(element != null && preferenceKey != null){
 			disablePreference();
 			try {
 				ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
