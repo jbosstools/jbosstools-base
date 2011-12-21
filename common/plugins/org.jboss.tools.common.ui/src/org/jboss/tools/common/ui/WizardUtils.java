@@ -11,13 +11,10 @@
 package org.jboss.tools.common.ui;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.CountDownLatch;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardContainer;
@@ -56,16 +53,8 @@ public class WizardUtils {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				monitor.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
-				final CountDownLatch latch = new CountDownLatch(1);
-				job.addJobChangeListener(new JobChangeAdapter() {
-
-					@Override
-					public void done(IJobChangeEvent event) {
-						latch.countDown();
-					}
-				});
 				job.schedule();
-				latch.await();
+				job.join();
 				monitor.done();
 			}
 		});
