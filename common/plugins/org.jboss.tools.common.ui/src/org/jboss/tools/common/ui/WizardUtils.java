@@ -49,17 +49,33 @@ public class WizardUtils {
 	 */
 	public static void runInWizard(final Job job, IWizardContainer container) throws InvocationTargetException,
 			InterruptedException {
+		runInWizard(job, null, container);
+	}
+
+	public static void runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor, IWizardContainer container) throws InvocationTargetException,
+			InterruptedException {
 		container.run(true, false, new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				monitor.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
+				if (delegatingMonitor == null) {
+					monitor.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
+				} else {
+					delegatingMonitor.add(monitor);
+					delegatingMonitor.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
+				}
+				
 				job.schedule();
 				job.join();
-				monitor.done();
+				
+				if (delegatingMonitor == null) {
+					monitor.done();
+				} else {
+					delegatingMonitor.done();
+				}
 			}
 		});
 	}
-
+	
 	/**
 	 * Runs the given job in the given wizard container.
 	 * <p>
@@ -89,6 +105,14 @@ public class WizardUtils {
 		dbc.updateModels();
 	}
 
+	public static void runInWizard(final Job job, IWizardContainer container, DelegatingProgressMonitor monitor,
+			final DataBindingContext dbc)
+			throws InvocationTargetException, InterruptedException {
+		runInWizard(job, container);
+		dbc.updateTargets();
+		dbc.updateModels();
+	}
+
 	/**
 	 * Flips to the next wizard page or finishes the current wizard.
 	 * 
@@ -106,7 +130,7 @@ public class WizardUtils {
 			}
 		}
 	}
-	
+
 	public static int openWizardDialog(IWizard wizard, Shell shell) {
 		WizardDialog dialog = new WizardDialog(shell, wizard);
 		dialog.create();
