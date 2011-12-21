@@ -12,8 +12,6 @@ package org.jboss.tools.common.java;
 
 import java.util.List;
 
-import org.jboss.tools.common.text.ITextSourceReference;
-
 /**
  * Represents a model element that can be annotated.
  * 
@@ -49,7 +47,7 @@ public interface IAnnotated {
 	 * @return the text source reference of the annotation of the given annotation type, or a null
 	 *         value
 	 */
-	ITextSourceReference getAnnotationPosition(String annotationTypeName);
+	IJavaSourceReference getAnnotationPosition(String annotationTypeName);
 
 	/**
 	 * Determine if the element has an annotation of a certain annotation type.
