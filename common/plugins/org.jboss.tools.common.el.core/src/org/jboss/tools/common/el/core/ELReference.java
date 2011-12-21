@@ -153,31 +153,29 @@ public class ELReference implements ITextSourceReference {
 	}
 
 	/**
+	 * Helper method, text should be the segment of file content determined by startPosition and length.
+	 * Check is not done, because it would affect performance. 
+	 * 
+	 * @param text
+	 */
+	public void init(String text) {
+		ELParser parser = ELParserUtil.getJbossFactory().createParser();
+		ELModel model = parser.parse(text);
+		setSyntaxErrors(model.getSyntaxErrors());
+		setEl(model.getInstances());
+	}
+
+	/**
 	 * @return the el
 	 */
 	public ELExpression[] getEl() {
-		if(el==null) {
-			Set<ELExpression> exps = new HashSet<ELExpression>();
-			String elText = FileUtil.getContentFromEditorOrFile(resource);
-			int startEl = elText.indexOf("#{"); //$NON-NLS-1$
-			if(startEl>-1) {
-				ELParser parser = ELParserUtil.getJbossFactory().createParser();
-				ELModel model = parser.parse(elText);
-				List<SyntaxError> errors = model.getSyntaxErrors();
-				if(!errors.isEmpty()) {
-					ELCorePlugin.getDefault().logWarning("ELObject hold incorrect information. Maybe resource " + getResource() + " has been changed.");
-					return new ELExpression[0];
-				}
-				List<ELInstance> is = model.getInstances();
-				for (ELInstance i : is) {
-					if(!i.getErrors().isEmpty()) {
-						ELCorePlugin.getDefault().logWarning("ELObject hold incorrect information. Maybe resource " + getResource() + " has been changed.");
-						continue;
-					}
-					exps.add(i.getExpression());
-				}
+		if(el == null) {
+			String text = FileUtil.getContentFromEditorOrFile(resource);
+			if(getStartPosition() >= 0 && getLength() >= 0 && text.length() >= getStartPosition() + getLength()) {
+				init(text.substring(getStartPosition(), getStartPosition() + getLength()));
+			} else {
+				el = new ELExpression[0];
 			}
-			el = exps.toArray(new ELExpression[0]);
 		}
 		return el;
 	}
