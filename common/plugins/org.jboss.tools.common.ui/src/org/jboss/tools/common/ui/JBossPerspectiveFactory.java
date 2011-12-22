@@ -39,6 +39,7 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 	public void createInitialLayout(IPageLayout layout) {
 		layout.addActionSet("org.eclipse.jst.j2ee.J2eeMainActionSet"); //$NON-NLS-1$
 		layout.addActionSet(JavaUI.ID_ACTION_SET);
+		layout.addActionSet(JavaUI.ID_ELEMENT_CREATION_ACTION_SET);
 
 		layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
 		layout.addActionSet(IDebugUIConstants.DEBUG_ACTION_SET);
@@ -46,12 +47,16 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
 
 		layout.addShowViewShortcut(ProjectExplorer.VIEW_ID);
+		layout.addShowViewShortcut(JavaUI.ID_PACKAGES);
+		layout.addShowViewShortcut(JavaUI.ID_TYPE_HIERARCHY);
+		layout.addShowViewShortcut(JavaUI.ID_SOURCE_VIEW);
 		layout.addShowViewShortcut(ID_SERVERS_VIEW);
 		layout.addShowViewShortcut(IPageLayout.ID_BOOKMARKS);
 		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
 		layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
 		layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
 		layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
+
 
 		// views - search
 		layout.addShowViewShortcut(ID_SEARCH_VIEW);
@@ -65,6 +70,7 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		// Top left.
 		IFolderLayout topLeft = layout.createFolder("topLeft", IPageLayout.LEFT, 0.25f, editorArea);//$NON-NLS-1$
 		topLeft.addView(ProjectExplorer.VIEW_ID);
+		topLeft.addView(JavaUI.ID_PACKAGES);
 		topLeft.addPlaceholder(IPageLayout.ID_RES_NAV);
 		topLeft.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
 		topLeft.addPlaceholder(JavaUI.ID_PACKAGES_VIEW);
@@ -88,5 +94,14 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		// to make placeholder working it should be removed first 
 		((PageLayout)layout).removePlaceholder(ICheatSheetResource.CHEAT_SHEET_VIEW_ID);
 		topRight.addPlaceholder(ICheatSheetResource.CHEAT_SHEET_VIEW_ID);
+
+		// new actions - Java project creation wizard
+		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewClassCreationWizard"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewInterfaceCreationWizard"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewSourceFolderCreationWizard");	 //$NON-NLS-1$
+		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewSnippetFileCreationWizard"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");//$NON-NLS-1$
+		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");//$NON-NLS-1$
 	}
 }

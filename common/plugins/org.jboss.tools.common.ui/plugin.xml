@@ -54,10 +54,24 @@
             id="org.jboss.tools.common.ui.JBossPerspective"
             name="%perspective.name">
       </perspective>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.jboss.tools.common.ui.JBossPerspective">
+         <perspectiveShortcut
+               id="org.eclipse.jdt.ui.JavaPerspective">
+         </perspectiveShortcut>
+         <perspectiveShortcut
+               id="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+         </perspectiveShortcut>
+         <perspectiveShortcut
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspectiveShortcut>
+      </perspectiveExtension>
+   </extension>
    </extension>
      	<extension point="org.eclipse.ui.ide.markerResolution">
 		<markerResolutionGenerator
         class="org.jboss.tools.common.ui.marker.ConfigureProblemSeverityResolutionGenerator"/>
-	</extension>
-   
+   </extension>
 </plugin>
