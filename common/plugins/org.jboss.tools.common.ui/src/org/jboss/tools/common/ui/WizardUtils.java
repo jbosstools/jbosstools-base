@@ -11,9 +11,11 @@
 package org.jboss.tools.common.ui;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.Future;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizard;
@@ -32,33 +34,52 @@ public class WizardUtils {
 	}
 
 	/**
-	 * Runs the given job in the given wizard container. In order to have the
-	 * wizard displaying a progress bar, you need to set
+	 * Runs the given job in the given wizard container. This method will return
+	 * immediately, it will not wait for the job completion.
+	 * <p>
+	 * In order to have the wizard displaying a progress bar, you need to set
 	 * Wizard#setNeedsProgressMonitor to <code>true</code>.
-	 * 
 	 * 
 	 * @param job
 	 *            the job to run
 	 * @param container
 	 *            the wizard container to run the job in
+	 * @return a future that allows you to wait for the job result.
 	 * @throws InvocationTargetException
 	 *             the invocation target exception
 	 * @throws InterruptedException
 	 *             the interrupted exception
-	 * 
 	 * @author André Dietisheim
-	 * 
 	 * @see IWizardContainer#run(boolean, boolean, IRunnableWithProgress)
 	 * @see Job
 	 */
-	public static void runInWizard(final Job job, IWizardContainer container)
+	public static Future<IStatus> runInWizard(final Job job, IWizardContainer container)
 			throws InvocationTargetException,
 			InterruptedException {
-		runInWizard(job, null, container);
+		return runInWizard(job, null, container);
 	}
 
-	public static void runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
+	/**
+	 * Runs the given job in the given wizard container. This method will return
+	 * immediately, it will not wait for the job completion.
+	 * <p>
+	 * In order to have the wizard displaying a progress bar, you need to set
+	 * Wizard#setNeedsProgressMonitor to <code>true</code>.
+	 * 
+	 * @param job
+	 *            the job to run in the wizard
+	 * @param delegatingMonitor
+	 *            the delegating monitor that the wizard monitor shall be added
+	 *            to.
+	 * @param container
+	 *            the wizard container to run the job in
+	 * @return a future that allows you to wait for the job result
+	 * @throws InvocationTargetException
+	 * @throws InterruptedException
+	 */
+	public static Future<IStatus> runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
 			IWizardContainer container) throws InvocationTargetException, InterruptedException {
+		JobResultFuture future = new JobResultFuture(job);
 		container.run(true, false, new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -79,6 +100,7 @@ public class WizardUtils {
 				}
 			}
 		});
+		return future;
 	}
 
 	/**
@@ -103,18 +125,17 @@ public class WizardUtils {
 	 * @throws InterruptedException
 	 *             the interrupted exception
 	 */
-	public static void runInWizard(final Job job, IWizardContainer container, DataBindingContext dbc)
+	public static Future<IStatus> runInWizard(final Job job, IWizardContainer container, DataBindingContext dbc)
 			throws InvocationTargetException, InterruptedException {
-		runInWizard(job, container);
-		dbc.updateTargets();
-		dbc.updateModels();
+		return runInWizard(job, null, container);
 	}
 
-	public static void runInWizard(Job job, DelegatingProgressMonitor monitor, IWizardContainer container,
+	public static Future<IStatus> runInWizard(Job job, DelegatingProgressMonitor monitor, IWizardContainer container,
 			DataBindingContext dbc) throws InvocationTargetException, InterruptedException {
-		runInWizard(job, monitor, container);
+		Future<IStatus> jobResult = runInWizard(job, monitor, container);
 		dbc.updateTargets();
 		dbc.updateModels();
+		return jobResult;
 	}
 
 	/**

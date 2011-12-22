@@ -33,7 +33,7 @@ public class JobResultFuture implements Future<IStatus> {
 	private ArrayBlockingQueue<IStatus> queue = new ArrayBlockingQueue<IStatus>(1);
 
 	public JobResultFuture(Job job) {
-		onJobFinished(job);
+		addJobFinishedListener(job);
 	}
 
 	@Override
@@ -63,13 +63,13 @@ public class JobResultFuture implements Future<IStatus> {
 		return queue.poll(timeout, unit);
 	}
 
-	private JobChangeAdapter onJobFinished(final Job job) {
-		return new JobChangeAdapter() {
+	private void addJobFinishedListener(final Job job) {
+		job.addJobChangeListener(new JobChangeAdapter() {
 
 			@Override
 			public void done(IJobChangeEvent event) {
 				queue.offer(job.getResult());
 			}
-		};
+		});
 	}
 }
