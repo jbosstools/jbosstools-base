@@ -31,6 +31,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -326,6 +327,14 @@ public class MarkerResolutionUtils {
 		
 		if(elementNode != null){
 			position = elementNode.getStartPosition();
+			if(elementNode instanceof BodyDeclaration && ((BodyDeclaration)elementNode).getJavadoc() != null){
+				position += ((BodyDeclaration)elementNode).getJavadoc().getLength();
+				char c = buffer.getChar(position);
+				while((c == '\r' || c == '\n') && position < buffer.getLength()-2 ){
+					position++;
+					c = buffer.getChar(position);
+				}
+			}
 		}
 		
 		if(!(workingCopyMember instanceof ILocalVariable)){
