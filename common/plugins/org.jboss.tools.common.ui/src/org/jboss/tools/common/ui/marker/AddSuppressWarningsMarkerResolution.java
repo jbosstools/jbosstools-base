@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.ISourceReference;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.refactoring.CompilationUnitChange;
 import org.eclipse.jdt.internal.core.JavaElement;
@@ -171,7 +172,7 @@ public class AddSuppressWarningsMarkerResolution implements
 						 CommonUIMessages.ADD_SUPPRESS_WARNINGS_MESSAGE+
 						 CommonUIMessages.ADD_SUPPRESS_WARNINGS_QUESTION1,
 							MessageDialog.QUESTION_WITH_CANCEL,
-							new String[]{"Cancel", "Disable"},
+							new String[]{CommonUIMessages.ADD_SUPPRESS_WARNINGS_CANCEL, CommonUIMessages.ADD_SUPPRESS_WARNINGS_DISABLE},
 							0);
 					int result = dialog.open();
 					if(result == 1){
@@ -188,7 +189,7 @@ public class AddSuppressWarningsMarkerResolution implements
 						 CommonUIMessages.ADD_SUPPRESS_WARNINGS_MESSAGE+
 						NLS.bind(CommonUIMessages.ADD_SUPPRESS_WARNINGS_QUESTION2, file.getProject().getName()),
 						MessageDialog.QUESTION_WITH_CANCEL,
-						new String[]{"Cancel", "Workspace", "Project"},
+						new String[]{CommonUIMessages.ADD_SUPPRESS_WARNINGS_CANCEL, CommonUIMessages.ADD_SUPPRESS_WARNINGS_WORKSPACE, CommonUIMessages.ADD_SUPPRESS_WARNINGS_PROJECT},
 						0);
 				int result = dialog.open();
 				if(result == 1){
@@ -298,6 +299,14 @@ public class AddSuppressWarningsMarkerResolution implements
 		
 		if(node != null){
 			position = node.getStartPosition();
+			if(node instanceof BodyDeclaration && ((BodyDeclaration)node).getJavadoc() != null){
+				position += ((BodyDeclaration)node).getJavadoc().getLength();
+				char c = buffer.getChar(position);
+				while((c == '\r' || c == '\n') && position < buffer.getLength()-2 ){
+					position++;
+					c = buffer.getChar(position);
+				}
+			}
 		}
 		
 		String str = AT+name;
@@ -314,7 +323,7 @@ public class AddSuppressWarningsMarkerResolution implements
 				index--;
 			}
 			index++;
-			if(index != position){
+			if(index < position){
 				String spaces = buffer.getText(index, position-index);
 				str += spaces;
 			}

@@ -79,6 +79,10 @@ public final class CommonUIMessages extends NLS {
 	public static String ADD_SUPPRESS_WARNINGS_MESSAGE;
 	public static String ADD_SUPPRESS_WARNINGS_QUESTION1;
 	public static String ADD_SUPPRESS_WARNINGS_QUESTION2;
+	public static String ADD_SUPPRESS_WARNINGS_CANCEL;
+	public static String ADD_SUPPRESS_WARNINGS_PROJECT;
+	public static String ADD_SUPPRESS_WARNINGS_WORKSPACE;
+	public static String ADD_SUPPRESS_WARNINGS_DISABLE;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, CommonUIMessages.class);
