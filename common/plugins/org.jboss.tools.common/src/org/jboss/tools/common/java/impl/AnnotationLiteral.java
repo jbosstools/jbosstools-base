@@ -11,6 +11,7 @@
 package org.jboss.tools.common.java.impl;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.ISourceRange;
@@ -80,6 +81,10 @@ public class AnnotationLiteral implements IJavaAnnotation {
 
 	public IMember getParentMember() {
 		//Do we need it?
+		return null;
+	}
+
+	public IJavaElement getParentElement() {
 		return null;
 	}
 

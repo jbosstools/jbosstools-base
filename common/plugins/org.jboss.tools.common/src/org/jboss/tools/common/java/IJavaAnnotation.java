@@ -11,6 +11,7 @@
 package org.jboss.tools.common.java;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IType;
@@ -48,6 +49,13 @@ public interface IJavaAnnotation extends ITextSourceReference {
 	 * Returns Java element on which or for which this annotation was created.
 	 * 
 	 * @return Java element on which or for which this annotation was created
+	 */
+	public IJavaElement getParentElement();
+
+	/**
+	 * Returns Java member on which or for which this annotation was created.
+	 * 
+	 * @return Java member on which or for which this annotation was created
 	 */
 	public IMember getParentMember();
 

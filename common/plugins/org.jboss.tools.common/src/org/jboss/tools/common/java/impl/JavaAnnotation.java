@@ -86,6 +86,10 @@ public class JavaAnnotation implements IJavaAnnotation {
 		return null;
 	}
 
+	public IJavaElement getParentElement() {
+		return annotation.getParent();
+	}
+
 	public IMemberValuePair[] getMemberValuePairs() {
 		try {
 			return annotation.getMemberValuePairs();
