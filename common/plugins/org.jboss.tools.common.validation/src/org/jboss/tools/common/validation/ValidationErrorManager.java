@@ -195,11 +195,15 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 						warnings = (Object[])v;
 					} else if(v instanceof String) {
 						warnings = new String[]{v.toString()};
+					} else {
+						continue;
 					}
 					for (Object warning : warnings) {
-						String trimed = warning.toString().trim();
+						if(warning == null) {
+							continue;
+						}
 						boolean found = false;
-						if(trimed.equals(ALL_WARNINGS)) {
+						if(warning.equals(ALL_WARNINGS)) {
 							found = true;
 						} else {
 							for (String name : names) {
