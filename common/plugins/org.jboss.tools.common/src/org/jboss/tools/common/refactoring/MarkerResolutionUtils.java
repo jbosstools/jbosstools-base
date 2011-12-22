@@ -330,7 +330,7 @@ public class MarkerResolutionUtils {
 			if(elementNode instanceof BodyDeclaration && ((BodyDeclaration)elementNode).getJavadoc() != null){
 				position += ((BodyDeclaration)elementNode).getJavadoc().getLength();
 				char c = buffer.getChar(position);
-				while((c == '\r' || c == '\n') && position < buffer.getLength()-2 ){
+				while((c == C_CARRIAGE_RETURN || c == C_NEW_LINE) && position < buffer.getLength()-2 ){
 					position++;
 					c = buffer.getChar(position);
 				}
