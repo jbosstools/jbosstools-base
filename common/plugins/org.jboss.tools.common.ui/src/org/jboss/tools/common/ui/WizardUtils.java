@@ -27,6 +27,10 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class WizardUtils {
 
+	private WizardUtils() {
+		// inhibit instantiation
+	}
+
 	/**
 	 * Runs the given job in the given wizard container. In order to have the
 	 * wizard displaying a progress bar, you need to set
@@ -47,13 +51,14 @@ public class WizardUtils {
 	 * @see IWizardContainer#run(boolean, boolean, IRunnableWithProgress)
 	 * @see Job
 	 */
-	public static void runInWizard(final Job job, IWizardContainer container) throws InvocationTargetException,
+	public static void runInWizard(final Job job, IWizardContainer container)
+			throws InvocationTargetException,
 			InterruptedException {
 		runInWizard(job, null, container);
 	}
 
-	public static void runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor, IWizardContainer container) throws InvocationTargetException,
-			InterruptedException {
+	public static void runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
+			IWizardContainer container) throws InvocationTargetException, InterruptedException {
 		container.run(true, false, new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -63,10 +68,10 @@ public class WizardUtils {
 					delegatingMonitor.add(monitor);
 					delegatingMonitor.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
 				}
-				
+
 				job.schedule();
 				job.join();
-				
+
 				if (delegatingMonitor == null) {
 					monitor.done();
 				} else {
@@ -75,7 +80,7 @@ public class WizardUtils {
 			}
 		});
 	}
-	
+
 	/**
 	 * Runs the given job in the given wizard container.
 	 * <p>
@@ -98,17 +103,16 @@ public class WizardUtils {
 	 * @throws InterruptedException
 	 *             the interrupted exception
 	 */
-	public static void runInWizard(final Job job, IWizardContainer container, final DataBindingContext dbc)
+	public static void runInWizard(final Job job, IWizardContainer container, DataBindingContext dbc)
 			throws InvocationTargetException, InterruptedException {
 		runInWizard(job, container);
 		dbc.updateTargets();
 		dbc.updateModels();
 	}
 
-	public static void runInWizard(final Job job, IWizardContainer container, DelegatingProgressMonitor monitor,
-			final DataBindingContext dbc)
-			throws InvocationTargetException, InterruptedException {
-		runInWizard(job, container);
+	public static void runInWizard(Job job, DelegatingProgressMonitor monitor, IWizardContainer container,
+			DataBindingContext dbc) throws InvocationTargetException, InterruptedException {
+		runInWizard(job, monitor, container);
 		dbc.updateTargets();
 		dbc.updateModels();
 	}
