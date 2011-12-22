@@ -307,6 +307,13 @@ public class AddSuppressWarningsMarkerResolution implements
 					c = buffer.getChar(position);
 				}
 			}
+			while(position < buffer.getLength()-1){
+				char c = buffer.getChar(position);
+				if(c != '\r' && c != '\n' && c != ' ' && c != '\t'){
+					break;
+				}
+				position++;
+			}
 		}
 		
 		String str = AT+name;
