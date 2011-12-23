@@ -337,7 +337,7 @@ public class MarkerResolutionUtils {
 			}
 			while(position < buffer.getLength()-1){
 				char c = buffer.getChar(position);
-				if(c != '\r' && c != '\n' && c != ' ' && c != '\t'){
+				if(c != C_CARRIAGE_RETURN && c != C_NEW_LINE && c != C_SPACE && c != C_TAB){
 					break;
 				}
 				position++;
