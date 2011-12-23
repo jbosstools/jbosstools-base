@@ -43,7 +43,6 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 					String preferenceKey = getPreferenceKey(marker);
 					String preferencePageId = getPreferencePageId(marker);
 					if(preferenceKey != null && preferencePageId != null){
-						resolutions.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
 						boolean enabled = marker.getAttribute(ValidationErrorManager.SUPPRESS_WARNINGS_ENABLED_ATTRIBUTE, false);
 						int severity = marker.getAttribute(IMarker.SEVERITY, 0);
 						if(enabled && severity == IMarker.SEVERITY_WARNING){
@@ -58,6 +57,7 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 								resolutions.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey));
 							}
 						}
+						resolutions.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
 					}
 				}
 			}
