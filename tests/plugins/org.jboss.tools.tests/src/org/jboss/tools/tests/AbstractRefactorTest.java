@@ -24,6 +24,7 @@ import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
 import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
 import org.eclipse.text.edits.MultiTextEdit;
+import org.jboss.tools.common.refactoring.JBDSFileChange;
 import org.jboss.tools.test.util.JobUtils;
 
 public class AbstractRefactorTest extends TestCase{
@@ -144,13 +145,22 @@ public class AbstractRefactorTest extends TestCase{
 		int numberOfChanges = rootChange.getChildren().length;
 
 		for(int i = 0; i < rootChange.getChildren().length;i++){
-			TextFileChange fileChange = (TextFileChange)rootChange.getChildren()[i];
-
-			MultiTextEdit edit = (MultiTextEdit)fileChange.getEdit();
+			Change fileChange = rootChange.getChildren()[i];
+			
+			MultiTextEdit edit = null;
+			IFile file = null;
+			if(fileChange instanceof JBDSFileChange){
+				edit = (MultiTextEdit)((JBDSFileChange)fileChange).getEdit();
+				file = ((JBDSFileChange)fileChange).getFile();
+				((JBDSFileChange)fileChange).setSaveMode(TextFileChange.FORCE_SAVE);
+			}else if(fileChange instanceof TextFileChange){
+				edit = (MultiTextEdit)((TextFileChange)fileChange).getEdit();
+				file = ((TextFileChange)fileChange).getFile();
+			}
 			
 			//System.out.println("File - "+fileChange.getFile().getFullPath()+" offset - "+edit.getOffset());
 			
-			TestChangeStructure change = findChange(changeList, fileChange.getFile());
+			TestChangeStructure change = findChange(changeList, file);
 			if(change != null){
 				assertEquals(change.size(), edit.getChildrenSize());
 			}
