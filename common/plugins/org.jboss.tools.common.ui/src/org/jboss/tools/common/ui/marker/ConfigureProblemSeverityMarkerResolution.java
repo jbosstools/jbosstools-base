@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.common.ui.marker;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -18,27 +21,39 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jface.preference.IPreferenceNode;
+import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMarkerResolution2;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.eclipse.ui.internal.dialogs.WorkbenchPreferenceNode;
 import org.eclipse.ui.progress.UIJob;
 import org.jboss.tools.common.ui.CommonUIMessages;
+import org.jboss.tools.common.ui.preferences.SeverityPreferencePage;
 
 /**
  * @author Daniel Azarov
  */
 public class ConfigureProblemSeverityMarkerResolution implements
 		IMarkerResolution2 {
+	private static final int PREFERENCE_SIZE = 40;
+	private static final String DOTS = "...";
+	
 	private String preferencePageId;
 	private String preferenceKey;
+	private String label;
 	
 	public ConfigureProblemSeverityMarkerResolution(String preferencePageId, String preferenceKey){
 		this.preferencePageId = preferencePageId;
 		this.preferenceKey = preferenceKey;
+		String preferenceName = getPreferenceLabel();
+		label = NLS.bind(CommonUIMessages.CONFIGURE_PROBLEM_SEVERITY, preferenceName);
 	}
 
 	public String getLabel() {
-		return CommonUIMessages.CONFIGURE_PROBLEM_SEVERITY;
+		return label;
 	}
 
 	public void run(IMarker marker) {
@@ -57,11 +72,44 @@ public class ConfigureProblemSeverityMarkerResolution implements
 	}
 
 	public String getDescription() {
-		return CommonUIMessages.CONFIGURE_PROBLEM_SEVERITY;
+		return label;
 	}
 
 	public Image getImage() {
 		return JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_ELCL_CONFIGURE_PROBLEM_SEVERITIES);
 	}
-
+	
+	private WorkbenchPreferenceNode findPageNode() {
+		final PreferenceManager preferenceManager = PlatformUI.getWorkbench()
+				.getPreferenceManager();
+		List nodes = preferenceManager.getElements(PreferenceManager.POST_ORDER);
+		for (Iterator i = nodes.iterator(); i.hasNext();) {
+			IPreferenceNode node = (IPreferenceNode) i.next();
+			if (node.getId().equals(preferencePageId)) {
+				return (WorkbenchPreferenceNode)node;
+			}
+		}
+		return null;
+	}
+	
+	private String getPreferenceLabel() {
+		WorkbenchPreferenceNode pageNode = findPageNode();
+		pageNode.createPage();
+		if(pageNode != null && pageNode.getPage() instanceof SeverityPreferencePage){
+			SeverityPreferencePage page = (SeverityPreferencePage)pageNode.getPage();
+			return cut(page.getLabel(preferenceKey));
+		}
+		return null;
+	}
+	
+	private String cut(String label){
+		if(label.length() > PREFERENCE_SIZE){
+			return label.substring(0, PREFERENCE_SIZE-1)+DOTS;
+		}else{
+			if(label.endsWith(":")){
+				return label.substring(0, label.length()-1);
+			}
+			return label;
+		}
+	}
 }

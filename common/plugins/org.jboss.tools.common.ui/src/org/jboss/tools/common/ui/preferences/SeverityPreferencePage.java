@@ -24,6 +24,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.jboss.tools.common.preferences.SeverityPreferences;
+import org.jboss.tools.common.ui.preferences.SeverityConfigurationBlock.OptionDescription;
+import org.jboss.tools.common.ui.preferences.SeverityConfigurationBlock.SectionDescription;
 
 /**
  * @author Viacheslav Kabanovich
@@ -155,6 +157,33 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 			getPreferenceStore().setValue(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME, newValue);
 		}
 	}
+	
+	public String getLabel(String preferenceId){
+		for(SectionDescription section : getAllSections()){
+			String label = getLabel(section, preferenceId);
+			if(label != null){
+				return label;
+			}
+		}
+		return "";
+	}
+	
+	private String getLabel(SectionDescription section, String preferenceId){
+		for(OptionDescription option : section.getOptions()){
+			if(option.key.getName().equals(preferenceId)){
+				return option.label;
+			}
+		}
+		for(SectionDescription s : section.getSections()){
+			String label = getLabel(s, preferenceId);
+			if(label != null){
+				return label;
+			}
+		}
+		return null;
+	}
+	
+	protected abstract SectionDescription[] getAllSections();
 	
 	@Override
 	public void applyData(Object data) {
