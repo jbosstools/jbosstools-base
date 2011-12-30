@@ -152,7 +152,7 @@ public class AbstractRefactorTest extends TestCase{
 			if(fileChange instanceof JBDSFileChange){
 				edit = (MultiTextEdit)((JBDSFileChange)fileChange).getEdit();
 				file = ((JBDSFileChange)fileChange).getFile();
-				((JBDSFileChange)fileChange).setSaveMode(TextFileChange.FORCE_SAVE);
+				//((JBDSFileChange)fileChange).setSaveMode(TextFileChange.FORCE_SAVE);
 			}else if(fileChange instanceof TextFileChange){
 				edit = (MultiTextEdit)((TextFileChange)fileChange).getEdit();
 				file = ((TextFileChange)fileChange).getFile();
