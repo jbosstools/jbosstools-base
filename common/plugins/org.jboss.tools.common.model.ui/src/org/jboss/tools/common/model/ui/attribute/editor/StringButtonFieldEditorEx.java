@@ -19,24 +19,14 @@ import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -46,21 +36,15 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.actions.IActionProvider;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.widgets.WhiteSettings;
-import org.jboss.tools.common.model.ui.widgets.xpl.SelectableFormLabel;
 
 public class StringButtonFieldEditorEx extends StringButtonFieldEditor implements IFieldEditor, IPropertyChangeListener, PropertyChangeListener, IPropertyFieldEditor {
-	public final static String LABEL_SELECTED = "Label.Selected"; //$NON-NLS-1$
 	public final static String BUTTON_SELECTED = "Button.Selected"; //$NON-NLS-1$
 	protected PropertyEditorDialog editorDialog;
 	protected IPropertyEditor propertyEditor; 
 	protected IValueProvider valueProvider;
 	protected IValueChangeListener valueChangeListener;
 	protected Composite composite;
-	private Label label;
-	private boolean selectableLabel;
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	private IActionProvider actionProvider;
-	private IAction labelAction;
 //	private IAction buttonAction;
 
 	public StringButtonFieldEditorEx() {
@@ -72,99 +56,6 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 		this.setChangeButtonText(EditorMessages.getString("StringButtonFieldEditorEx_Browse")); //$NON-NLS-1$
 	}
 
-	public Label getLabelControl() {
-		return label;
-	}
-	
-	protected String getHyperlinkLableToolTip() {
-		return null;
-	}
-
-	protected Label createLabelControl(Composite parent) {
-		if (label == null) { // cannot comment this! for details see label.addDisposeListener
-			int style;
-///			Color bg;
-			Color fg;
-			Color activeColor;
-			Color disabled;
-			Font font;
-			Cursor cursor;
-			if (getLabelAction()!=null) {
-				style = getSettings().getStyle("Hyperlink.Style"); //$NON-NLS-1$
-///				bg = parent.getBackground();
-					///getSettings().getColor("Hyperlink.Background");
-				fg = getSettings().getColor("Hyperlink.Foreground"); //$NON-NLS-1$
-				disabled = getSettings().getColor("Hyperlink.Disabled"); //$NON-NLS-1$
-				activeColor = getSettings().getColor("Hyperlink.ActiveColor"); //$NON-NLS-1$
-				font = getSettings().getFont("Hyperlink.Font"); //$NON-NLS-1$
-				cursor = getSettings().getCursor("Hyperlink.ActiveCursor"); //$NON-NLS-1$
-
-				if (style==SWT.DEFAULT) style = SWT.NONE;
-				SelectableFormLabel selectableLabel = new SelectableFormLabel(parent, style);
-				
-				selectableLabel.setFont(font);
-///				selectableLabel.setBackground(bg);
-				selectableLabel.setActiveCursor(cursor);
-				selectableLabel.setPassiveColor(fg);
-				selectableLabel.setActiveColor(activeColor);
-				selectableLabel.setActiveCursor(cursor);
-				selectableLabel.setDisabledColor(disabled);
-				boolean enabled = getLabelAction().isEnabled() && isEnabled();
-				selectableLabel.setEnabled(enabled);
-				selectableLabel.setToolTipText(enabled ? getHyperlinkLableToolTip() : null);
-
-				label = selectableLabel;
-				
-				selectableLabel.addSelectionListener(new SelectionListener(){
-					public void widgetSelected(SelectionEvent e) {
-						if (labelAction!=null) labelAction.run();
-					}
-					public void widgetDefaultSelected(SelectionEvent e) {
-					}
-				});
-				getLabelAction().addPropertyChangeListener(new IPropertyChangeListener() {
-					public void propertyChange(PropertyChangeEvent event) {
-						if (IAction.ENABLED.equals(event.getProperty())) {
-							boolean enabled = getLabelAction().isEnabled();
-							((SelectableFormLabel)label).setEnabled(enabled);
-							label.setToolTipText(enabled ? getHyperlinkLableToolTip() : null);
-							((SelectableFormLabel)label).redraw();
-						}
-					}
-				});
-				// by default
-//				getLabelAction().setEnabled(Boolean.FALSE.booleanValue());
-			} else {
-				style = getSettings().getStyle("Label.Style"); //$NON-NLS-1$
-				if (style==SWT.DEFAULT) style = SWT.NONE;
-///				bg = parent.getBackground();
-					///getSettings().getColor("Label.Background");
-				fg = getSettings().getColor("Label.Foreground"); //$NON-NLS-1$
-				font = getSettings().getFont("Label.Font"); //$NON-NLS-1$
-				label = new Label(parent, style);
-
-				label.setFont(font);
-///				label.setBackground(bg);
-				label.setForeground(fg);
-				label.setEnabled(isEnabled());
-			}
-			String text = getLabelText();
-			if (text != null)
-				label.setText(text);
-			label.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent event) {
-					label = null;
-				}
-			});
-			if(settings instanceof WhiteSettings) {
-				label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
-			}
-		} else {
-			checkParent(label, parent);
-		}
-		return label;
-	}
-	
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
 	}
@@ -174,7 +65,6 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 	public void firePropertyChange(java.beans.PropertyChangeEvent event) {
 		pcs.firePropertyChange(event);
 	}
-	
 
 	public void setPropertyEditor(IPropertyEditor propertyEditor) {
 		this.propertyEditor = propertyEditor;
@@ -182,15 +72,14 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 		valueChangeListener = (IValueChangeListener)propertyEditor.getAdapter(IValueChangeListener.class);
 		setPropertyChangeListener(this);
 		valueProvider.addValueChangeListener(this);
-		actionProvider = (IActionProvider)propertyEditor.getAdapter(IActionProvider.class);
+		IActionProvider actionProvider = (IActionProvider)propertyEditor.getAdapter(IActionProvider.class);
 		setErrorProvider((IAttributeErrorProvider)propertyEditor.getAdapter(IAttributeErrorProvider.class));
-		if (actionProvider!=null) {
+		if (actionProvider != null) {
 			if (getSettings() instanceof WhiteSettings) {
-				labelAction = actionProvider.getAction(StringButtonFieldEditorEx.LABEL_SELECTED);
+				setLabelAction(actionProvider.getAction(StringButtonFieldEditorEx.LABEL_SELECTED));
 			} else {
 				// none
 			}
-			if (labelAction!=null) this.selectableLabel = Boolean.TRUE.booleanValue();	
 //			buttonAction = actionProvider.getAction(StringButtonFieldEditorEx.BUTTON_SELECTED);	
 		}
 	}
@@ -200,7 +89,7 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 	}
 
 	protected String changePressed() {
-		if (propertyEditor!=null) {
+		if (propertyEditor != null) {
 			if(propertyEditor.getInput() instanceof DefaultValueAdapter) {
 				((DefaultValueAdapter)propertyEditor.getInput()).fireEvent(BUTTON_SELECTED, "false", "true");
 			}
@@ -304,9 +193,9 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 
 	protected void valueChanged() {
 		super.valueChanged();
-		if(isSelectableLabel() && label != null && !label.isDisposed()) {
+		if(isSelectableLabel() && getLabelControl() != null && !getLabelControl().isDisposed()) {
 			boolean enabled = getLabelAction() != null && getLabelAction().isEnabled();
-			label.setToolTipText(enabled ? getHyperlinkLableToolTip() : null);
+			getLabelControl().setToolTipText(enabled ? getHyperlinkLableToolTip() : null);
 		}
 	}
 
@@ -343,31 +232,8 @@ public class StringButtonFieldEditorEx extends StringButtonFieldEditor implement
 		return new Control[] {getLabelComposite(parent), getTextChangeControl(parent)};
 	}
 	
-	public boolean isSelectableLabel() {
-		return selectableLabel;
-	}
-
-	public void setSelectableLabel(boolean b) {
-		selectableLabel = b;
-	}
-
-	public IAction getLabelAction() {
-		return labelAction;
-	}
-
-	public void setLabelAction(IAction action) {
-		labelAction = action;
-	}
-
 	public void setEnabled(boolean enabled){
 		super.setEnabled(enabled); // label
-		if (getLabelComposite()!=null) {
-			if (getLabelAction()!=null) {
-				getLabelControl().setEnabled(getLabelAction().isEnabled() && enabled);
-			} else {
-				getLabelControl().setEnabled(enabled);
-			}
-		}
 	}
 
 	protected boolean isAlwaysReadOnly() {

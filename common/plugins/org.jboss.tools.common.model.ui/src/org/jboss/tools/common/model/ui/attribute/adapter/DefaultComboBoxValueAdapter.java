@@ -14,6 +14,7 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.actions.IActionProvider;
 import org.jboss.tools.common.model.ui.attribute.IListContentProvider;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -62,6 +63,9 @@ public class DefaultComboBoxValueAdapter extends DefaultValueAdapter {
 				this.listContentProvider = createListContentProvider(attribute);
 			}
 			return this.listContentProvider;
+		}
+		if (adapter == IActionProvider.class) {
+			return getActionProvider();
 		}
 		Assert.isTrue(true, "DefaultValueAdapter instance itself cannot provide adapter for "+adapter.getName()); //$NON-NLS-1$
 		return null;

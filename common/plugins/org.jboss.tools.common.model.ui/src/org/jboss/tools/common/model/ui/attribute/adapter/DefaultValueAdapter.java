@@ -13,18 +13,29 @@ package org.jboss.tools.common.model.ui.attribute.adapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Properties;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.actions.IActionProvider;
 import org.jboss.tools.common.model.ui.attribute.IValueFilter;
+import org.jboss.tools.common.model.ui.attribute.editor.ExtendedFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.action.XAction;
+import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.XAttributeData;
+import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintProperties;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
@@ -188,6 +199,9 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 				return valueFilter;
 			}
 		}
+		if (adapter == IActionProvider.class) {
+			return getActionProvider();
+		}
 		return null;
 	}
 
@@ -267,4 +281,76 @@ public class DefaultValueAdapter implements IModelPropertyEditorAdapter, IAdapta
 		}
 		return XMarkerManager.getInstance().getError(modelObject, attribute.getName());
 	}
+
+	protected XActionWrapper labelAction;
+	protected IActionProvider actionProvider;
+
+	protected IActionProvider getActionProvider() {
+		if(actionProvider == null) {
+			String actionPath = null;
+			if(attribute != null) {
+				if(attribute.getConstraint() instanceof XAttributeConstraintProperties) {
+					actionPath = ((XAttributeConstraintProperties)attribute.getConstraint()).getProperties().getProperty(DefaultTreeSelectionAdapter.LINK_ACTION);
+				} else {
+					actionPath = attribute.getProperty(DefaultTreeSelectionAdapter.LINK_ACTION);
+				}
+			}
+			if(actionPath != null) {
+				actionProvider = new ActionProvider();
+				XAction xaction = XActionInvoker.getAction(actionPath, modelObject);
+				labelAction = (xaction != null) ? new XActionWrapper(xaction) : null;
+				if(labelAction != null) {
+					labelAction.setXModelObject(getModelObject());
+				}
+			}
+		}
+		
+		return actionProvider;
+	}
+
+	protected class XActionWrapper extends Action {		
+		private XAction xaction = null;
+		
+		public XActionWrapper(XAction xaction) {
+			this.xaction = xaction;		
+		}
+		
+		public void setXModelObject(XModelObject xmo) {
+			if (xmo != null && xaction != null) {
+//				this.setEnabled(xaction.isEnabled(xmo));
+				this.setEnabled(true);
+			} else {
+				this.setEnabled(false);
+			}
+		}
+		
+		public void run() {
+			if (xaction != null) {
+				if(xaction.isEnabled(getModelObject())) {
+					XActionInvoker.invoke(xaction.getPath(), modelObject, new Properties());
+				} else {
+					Shell shell = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
+					MessageDialog.openWarning(shell, "Warning", "Resource does not exist.");
+				}
+			}
+		}
+	}
+	
+	protected class ActionProvider implements IActionProvider {
+
+		public ActionProvider() {}
+
+		public IAction getAction(String actionName) {
+			if (ExtendedFieldEditor.LABEL_SELECTED.equals(actionName)) {
+				return labelAction;
+			}
+			return null;
+		}
+
+		public IAction[] getActions() {
+			return new IAction[] {labelAction};
+		}
+		public void update(ISelection selection) {}
+	}
+
 }

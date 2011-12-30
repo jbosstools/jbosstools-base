@@ -20,14 +20,14 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
-import org.jboss.tools.common.model.ui.ModelUIMessages;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.attribute.editor.ExtendedFieldEditor;
 import org.jboss.tools.common.model.ui.attribute.editor.PropertyEditor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
-import org.eclipse.jface.util.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -45,9 +45,7 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.actions.IActionProvider;
 
 public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements IAdaptable, ISelectionProvider, ISelectionChangedListener {	
-
-	private static final String STRING_BUTTON_ACTION = "Label.Selected"; //$NON-NLS-1$
-	private static final String STRING_BUTTON_XACTION = "linkAction"; //$NON-NLS-1$
+	public static final String LINK_ACTION = "linkAction"; //$NON-NLS-1$
 
 	protected ILabelProvider labelProvider;
 	protected ITreeContentProvider treeContentProvider;
@@ -162,38 +160,11 @@ public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements 
 	private ActionProvider actionProvider;
 	private XActionWrapper labelAction;
 
-	private ActionProvider getActionProvider() {
-		if (this.actionProvider==null) this.actionProvider = new ActionProvider(); 
+	protected ActionProvider getActionProvider() {
+		if (this.actionProvider == null) {
+			this.actionProvider = new ActionProvider(); 
+		}
 		return this.actionProvider;
-	}
-	
-	class XActionWrapper extends Action {
-		
-		private XAction xaction = null;
-		
-		public XActionWrapper(XAction xaction) {
-			this.xaction = xaction;		
-		}
-		
-		public void setXModelObject(XModelObject xmo) {
-			if (xmo != null && xaction != null) {
-//				this.setEnabled(xaction.isEnabled(xmo));
-				this.setEnabled(Boolean.TRUE.booleanValue());
-			} else {
-				this.setEnabled(Boolean.FALSE.booleanValue());
-			}
-		}
-		
-		public void run() {
-			if (xaction != null) {
-				if(xaction.isEnabled(getModelObject())) {
-					XActionInvoker.invoke(xaction.getPath(), modelObject, new Properties());
-				} else {
-					Shell shell = ModelUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
-					MessageDialog.openWarning(shell, "Warning", "Resource does not exist.");
-				}
-			}
-		}
 	}
 	
 	class ActionProvider implements IActionProvider {
@@ -239,7 +210,7 @@ public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements 
 	private void initActions() {
 		treeContentProvider = getTreeContentProvider();
 		if (treeContentProvider instanceof DefaultXAttributeTreeContentProvider) {
-			String linkActionName = ((DefaultXAttributeTreeContentProvider)treeContentProvider).getProperties().getProperty(STRING_BUTTON_XACTION); 
+			String linkActionName = ((DefaultXAttributeTreeContentProvider)treeContentProvider).getProperties().getProperty(LINK_ACTION); 
 			if (linkActionName!=null) {
 				XAction xAction = XActionInvoker.getAction(linkActionName, modelObject);
 				if (xAction!=null) {
@@ -249,7 +220,7 @@ public class DefaultTreeSelectionAdapter extends DefaultValueAdapter implements 
 //					XModelObject object = (XModelObject)getObjectByPath(this.getStringValue(Boolean.TRUE.booleanValue()));
 //					linkAction.setXModelObject(object);
 				linkAction.setEnabled(true);
-					getActionProvider().putAction(STRING_BUTTON_ACTION, linkAction);
+					getActionProvider().putAction(ExtendedFieldEditor.LABEL_SELECTED, linkAction);
 				}
 			}
 		}

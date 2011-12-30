@@ -17,22 +17,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IBuffer;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog;
-import org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog;
-import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.JFaceResources;
@@ -43,10 +34,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchWizard;
-import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
-import org.eclipse.ui.menus.IWorkbenchWidget;
 import org.jboss.tools.common.meta.XAttribute;
-import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -55,14 +43,12 @@ import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.jboss.tools.common.model.ui.attribute.adapter.IModelPropertyEditorAdapter;
-import org.jboss.tools.common.model.ui.templates.ControlContentAssistHelper;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.wizards.INewClassWizard;
 import org.jboss.tools.common.model.ui.wizards.INewClassWizardFactory;
 import org.jboss.tools.common.model.ui.wizards.NewClassWizard;
 import org.jboss.tools.common.model.ui.wizards.NewTypeWizardAdapter;
 import org.jboss.tools.common.model.util.AccessibleJava;
-import org.jboss.tools.common.model.util.EclipseJavaUtil;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.ModelFeatureFactory;
 import org.jboss.tools.common.model.util.XModelObjectUtil;
@@ -126,7 +112,6 @@ public class JavaHyperlinkLineFieldEditor extends StringButtonFieldEditorEx
 			valueChangeListener = (IValueChangeListener)propertyEditor.getAdapter(IValueChangeListener.class);
 			if(project != null) {
 				setLabelAction(new OpenJavaEditorAction());
-				setSelectableLabel(Boolean.TRUE.booleanValue());
 				setChangeButtonText(JFaceResources.getString("openBrowse")); //$NON-NLS-1$
 			}
 		}

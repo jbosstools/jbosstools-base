@@ -15,13 +15,18 @@ import java.beans.PropertyChangeListener;
 
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.navigator.LabelDecoratorImpl;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.util.Assert;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
@@ -37,15 +42,21 @@ import org.eclipse.swt.widgets.Label;
 import org.jboss.tools.common.model.ui.widgets.DefaultSettings;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.widgets.WhiteSettings;
+import org.jboss.tools.common.model.ui.widgets.xpl.SelectableFormLabel;
 
 public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.FieldEditor {
+	public final static String LABEL_SELECTED = "Label.Selected"; //$NON-NLS-1$
 
 	public static final String IS_VALID = "field_editor_is_valid";//$NON-NLS-1$
 	public static final String VALUE = "field_editor_value";//$NON-NLS-1$
 	protected static final int HORIZONTAL_GAP = 8;
 	private IPreferenceStore preferenceStore = null;
 	private boolean isDefaultPresented = false;
+
 	private Label label;
+	private IAction labelAction;
+	private boolean selectableLabel;
+
 	private boolean enabled = Boolean.TRUE.booleanValue();
 	private IAttributeErrorProvider errorProvider;
 	
@@ -150,17 +161,114 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 	}
 
 	protected Label createLabelControl(Composite parent) {
+		if (label == null) { // cannot comment this! for details see label.addDisposeListener
+			int style;
+			Color fg;
+			Color activeColor;
+			Color disabled;
+			Font font;
+			Cursor cursor;
+			if (getLabelAction()!=null) {
+				style = getSettings().getStyle("Hyperlink.Style"); //$NON-NLS-1$
+				fg = getSettings().getColor("Hyperlink.Foreground"); //$NON-NLS-1$
+				disabled = getSettings().getColor("Hyperlink.Disabled"); //$NON-NLS-1$
+				activeColor = getSettings().getColor("Hyperlink.ActiveColor"); //$NON-NLS-1$
+				font = getSettings().getFont("Hyperlink.Font"); //$NON-NLS-1$
+				cursor = getSettings().getCursor("Hyperlink.ActiveCursor"); //$NON-NLS-1$
+
+				if (style==SWT.DEFAULT) style = SWT.NONE;
+				SelectableFormLabel selectableLabel = new SelectableFormLabel(parent, style);
+				
+				selectableLabel.setFont(font);
+				selectableLabel.setActiveCursor(cursor);
+				selectableLabel.setPassiveColor(fg);
+				selectableLabel.setActiveColor(activeColor);
+				selectableLabel.setActiveCursor(cursor);
+				selectableLabel.setDisabledColor(disabled);
+				boolean enabled = getLabelAction().isEnabled() && isEnabled();
+				selectableLabel.setEnabled(enabled);
+				selectableLabel.setToolTipText(enabled ? getHyperlinkLableToolTip() : null);
+
+				label = selectableLabel;
+				
+				selectableLabel.addSelectionListener(new SelectionListener(){
+					public void widgetSelected(SelectionEvent e) {
+						if (labelAction!=null) labelAction.run();
+					}
+					public void widgetDefaultSelected(SelectionEvent e) {
+					}
+				});
+				getLabelAction().addPropertyChangeListener(new IPropertyChangeListener() {
+					public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
+						if (IAction.ENABLED.equals(event.getProperty())) {
+							boolean enabled = getLabelAction().isEnabled();
+							((SelectableFormLabel)label).setEnabled(enabled);
+							label.setToolTipText(enabled ? getHyperlinkLableToolTip() : null);
+							((SelectableFormLabel)label).redraw();
+						}
+					}
+				});
+				// by default
+//				getLabelAction().setEnabled(Boolean.FALSE.booleanValue());
+			} else {
+				style = getSettings().getStyle("Label.Style"); //$NON-NLS-1$
+				if (style==SWT.DEFAULT) style = SWT.NONE;
+				fg = getSettings().getColor("Label.Foreground"); //$NON-NLS-1$
+				font = getSettings().getFont("Label.Font"); //$NON-NLS-1$
+				label = new Label(parent, style);
+
+				label.setFont(font);
+				label.setForeground(fg);
+				label.setEnabled(isEnabled());
+			}
+			String text = getLabelText();
+			if (text != null)
+				label.setText(text);
+			label.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(DisposeEvent event) {
+					label = null;
+				}
+			});
+			if(settings instanceof WhiteSettings) {
+				label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+			}
+		} else {
+			checkParent(label, parent);
+		}
+		return label;
+	}
+
+	public IAction getLabelAction() {
+		return labelAction;
+	}
+
+	public void setLabelAction(IAction action) {
+		labelAction = action;
+		setSelectableLabel(labelAction != null);
+	}
+
+	protected String getHyperlinkLableToolTip() {
+		return null;
+	}
+
+	public boolean isSelectableLabel() {
+		return selectableLabel;
+	}
+
+	public void setSelectableLabel(boolean b) {
+		selectableLabel = b;
+	}
+
+	/*
+	protected Label createLabelControl(Composite parent) {
 		if (getLabelControl() == null) { // cannot comment this! for details see label.addDisposeListener
 			int style = getSettings().getStyle("Label.Style"); //$NON-NLS-1$
-///			Color bg = parent.getBackground();
-				///getSettings().getColor("Label.Background");
 			Color fg = getSettings().getColor("Label.Foreground"); //$NON-NLS-1$
 			Font font = getSettings().getFont("Label.Font"); //$NON-NLS-1$
 			if (style==SWT.DEFAULT) style = SWT.NONE;
 			style |= SWT.RIGHT;
 			label = new Label(parent, style);
 			label.setFont(font);
-///			label.setBackground(bg);
 			label.setForeground(fg);
 			if(settings instanceof WhiteSettings) {
 				label.setForeground(getForeground());
@@ -181,6 +289,7 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 		}
 		return label;
 	}
+	*/
 
 	public IPreferenceStore getPreferenceStore() {
 		return preferenceStore;
@@ -251,8 +360,7 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 		}
 	}
 
-	protected void setButtonLayoutData(Button button) {
-		
+	protected void setButtonLayoutData(Button button) {		
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		
 		// Compute and store a font metric
@@ -273,8 +381,12 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 	
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-		if ((this.label!=null)&&(!this.label.isDisposed())) {
-			label.setEnabled(this.enabled);
+		if (label != null && !label.isDisposed()) {
+			if (getLabelAction()!=null) {
+				label.setEnabled(getLabelAction().isEnabled() && enabled);
+			} else {
+				label.setEnabled(enabled);
+			}
 		}
 	}
 	
@@ -283,7 +395,9 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 	}
 
 	public IWidgetSettings getSettings() {
-		if (this.settings==null) settings = DefaultSettings.getDefault();
+		if (settings == null) {
+			settings = DefaultSettings.getDefault();
+		}
 		return settings;
 	}
 
@@ -322,6 +436,4 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 			updateErrorState();
 		}
 	}
-
 }
-

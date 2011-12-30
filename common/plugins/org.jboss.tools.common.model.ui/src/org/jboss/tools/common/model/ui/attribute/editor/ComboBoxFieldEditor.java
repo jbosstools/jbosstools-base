@@ -20,11 +20,9 @@ import java.util.TreeSet;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.bindings.keys.KeyStroke;
-import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
-import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
@@ -49,11 +47,13 @@ import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.actions.IActionProvider;
 import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
 import org.jboss.tools.common.model.ui.attribute.IListContentProvider;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.jboss.tools.common.model.ui.widgets.BorderedControl;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
+import org.jboss.tools.common.model.ui.widgets.WhiteSettings;
 import org.jboss.tools.common.model.ui.widgets.border.Border;
 
 public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEditor,	IPropertyFieldEditor, IPropertyChangeListener, PropertyChangeListener {
@@ -393,6 +393,14 @@ public class ComboBoxFieldEditor extends ExtendedFieldEditor implements IFieldEd
 			labelProvider = (ILabelProvider)propertyEditor.getAdapter(ILabelProvider.class);
 			listContentProvider = (IListContentProvider)propertyEditor.getAdapter(IListContentProvider.class);
 			setErrorProvider((IAttributeErrorProvider)propertyEditor.getAdapter(IAttributeErrorProvider.class));
+			IActionProvider actionProvider = (IActionProvider)propertyEditor.getAdapter(IActionProvider.class);
+			if (actionProvider != null) {
+				if (getSettings() instanceof WhiteSettings) {
+					setLabelAction(actionProvider.getAction(StringButtonFieldEditorEx.LABEL_SELECTED));
+				} else {
+					// none
+				}
+			}
 		}
 		setPropertyChangeListener(this);
 		valueProvider.addValueChangeListener(this);
