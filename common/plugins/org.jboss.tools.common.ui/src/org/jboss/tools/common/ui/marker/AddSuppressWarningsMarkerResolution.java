@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.common.ui.marker;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -33,9 +35,9 @@ import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.refactoring.CompilationUnitChange;
 import org.eclipse.jdt.internal.core.JavaElement;
-import org.eclipse.jdt.internal.ui.JavaPlugin;
-import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
@@ -233,7 +235,20 @@ public class AddSuppressWarningsMarkerResolution implements
 
 	@Override
 	public Image getImage() {
-		return JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_OBJS_ANNOTATION);
+		String key = "ADD_ANNOTATION";
+		ImageRegistry registry = CommonUIPlugin.getDefault().getImageRegistry();
+		Image image = registry.get(key);
+		if (image == null) {
+			try {
+				image = ImageDescriptor.createFromURL(
+						new URL(CommonUIPlugin.getDefault().getBundle()
+								.getEntry("/"), "icons/add_annotation.png")).createImage();
+				registry.put(key, image);
+			} catch (MalformedURLException e) {
+				CommonUIPlugin.getDefault().logError(e);
+			}
+		}
+		return image;
 	}
 	
 	private CompilationUnitChange updateAnnotation(String name, String parameter, ICompilationUnit compilationUnit, IAnnotation annotation) throws JavaModelException{
