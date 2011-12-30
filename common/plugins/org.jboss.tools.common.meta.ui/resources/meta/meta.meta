@@ -289,9 +289,6 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="action item reference" loader="ElementType" name="element type">
-    <Constraint loader="List">
-     <value name="attribute"/>
-    </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name"/>
@@ -719,9 +716,6 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="attribute reference" loader="ElementType" name="element type">
-    <Constraint loader="List">
-     <value name="attribute"/>
-    </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="category=general" name="name" xmlname="name"/>
