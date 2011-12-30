@@ -126,4 +126,9 @@ public class MarkerAnnotationInfo {
 			return annotation instanceof SimpleMarkerAnnotation;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return null;
+	}
 }
