@@ -139,8 +139,23 @@ public abstract class ExplorerBase extends ViewBase {
 	 * @param projectName
 	 */
 	public void runOnServer(String projectName) {
+		runOnServer(projectName, null);
+	}
+	
+	/**
+	 * runs given file on Server (uses default server, the first one) server MUST be running
+	 * @param projectName
+	 */
+	public void runOnServer(String projectName, String fileName, String... path) {
 		SWTBot viewBot = show().bot();
-		SWTBotTreeItem item = viewBot.tree().expandNode(projectName);
+		SWTBotTreeItem item;
+		
+		if (fileName == null){
+			item = viewBot.tree().expandNode(projectName);
+		} else {
+			item = SWTEclipseExt.getTreeItemOnPath(viewBot, viewBot.tree(), 0, fileName, path);	
+		}
+		
 		item.select();
 		ContextMenuHelper.prepareTreeItemForContextMenu(viewBot.tree(), item);
 		   final SWTBotMenu menuRunAs = viewBot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS);
