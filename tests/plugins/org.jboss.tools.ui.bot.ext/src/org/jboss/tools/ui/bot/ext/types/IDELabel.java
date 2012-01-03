@@ -195,6 +195,9 @@ public class IDELabel {
 	  public static final String CLEAN = "Clean";
 	  public static final String SELECT_CLASS = "Select Class";
 	  public static final String CREATING_COMPOSITE_COMPONENT = "Creating composite component";
+	  public static final String JBOSS_DEVELOPER_STUDIO_USAGE = "JBoss Developer Studio Usage";
+	  public static final String JBOSS_TOOLS_USAGE = "JBoss Tools Usage";
+	  public static final String SUBCLIPSE_USAGE = "Subclipse Usage";
 	}
 
 	public class EntityGroup {
@@ -820,4 +823,11 @@ public class IDELabel {
      public static final String CLEAN_ALL_PROJECTS_RADIO = "Clean all projects";
           
    }
+   
+   public static class SubclipseUsageDialog{
+     
+     public static final String REPORT_USAGE_CHECK_BOX = "Report usage of Subclipse to Subclipse team.";
+     
+   } 
+   
  }

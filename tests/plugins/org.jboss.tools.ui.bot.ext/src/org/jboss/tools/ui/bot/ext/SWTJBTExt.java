@@ -23,10 +23,13 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -43,7 +46,7 @@ public class SWTJBTExt {
   private static final boolean runningOnMacOs = Platform.getOS().equalsIgnoreCase("macosx");
   
 	SWTWorkbenchBot bot;
-	Logger log = Logger.getLogger(SWTJBTExt.class);
+	static Logger log = Logger.getLogger(SWTJBTExt.class);
 	
 	public SWTJBTExt(SWTWorkbenchBot bot) {
 		this.bot = bot;
@@ -499,31 +502,79 @@ public class SWTJBTExt {
     return SWTJBTExt.getDefinedServerRuntimeVersion(bot,index);
       
   }
-
+  /**
+   * Closes Report Usage Windows and enable Atlassian Connector Usage Reporting Window.
+   * Did not find other way how to disable Atlassian Connector Usage Reporting Window displaying 
+   * @param reportJbtUsage
+   * @param reportSubclipseUsage
+   */
+  public static void manageBlockingWidows(boolean reportJbtUsage,
+      boolean reportSubclipseUsage) {
+    // Manage JBT/JBDS and Subclipse Usage Reporting
+    SWTWorkbenchBot bot = new SWTWorkbenchBot();
+    SWTBotShell shJbtUsage = null;
+    SWTBotShell shSubclipseUsage = null;
+    SWTBotShell[] shells = bot.shells();
+    int index = 0;
+    while ((shJbtUsage == null || shSubclipseUsage == null)
+        && index < shells.length) {
+      if (shells[index].getText().equals(IDELabel.Shell.JBOSS_DEVELOPER_STUDIO_USAGE)
+          || shells[index].getText().equals(IDELabel.Shell.JBOSS_TOOLS_USAGE)) {
+        shJbtUsage = shells[index];
+      } else if (shells[index].getText().equals(IDELabel.Shell.SUBCLIPSE_USAGE)) {
+        shSubclipseUsage = shells[index];
+      }
+      index++;
+    }
+    if (shJbtUsage != null && shJbtUsage.isActive()) {
+      closeJBossToolsUsageWindow(shJbtUsage, reportJbtUsage);
+      if (shSubclipseUsage != null) {
+        closeSubclipseUsageWindow(shSubclipseUsage, reportSubclipseUsage);
+      }
+    } else if (shSubclipseUsage != null && shSubclipseUsage.isActive()) {
+      closeSubclipseUsageWindow(shSubclipseUsage, reportSubclipseUsage);
+      if (shJbtUsage != null) {
+        closeJBossToolsUsageWindow(shJbtUsage, reportJbtUsage);
+      }
+    }
+    // Manage Atlassian Connector Usage Reporting
+    try{
+      SWTBot prefBot = new SWTOpenExt(new SWTBotExt())
+        .preferenceOpen(ActionItem.Preference.AtlassianConnectorUsageData.LABEL);
+      SWTBotCheckBox chbEnableMonitoring = prefBot.checkBox();
+      if (!chbEnableMonitoring.isChecked()){
+        chbEnableMonitoring.click();
+      }
+      prefBot.button(IDELabel.Button.OK).click();
+    } catch (WidgetNotFoundException wnfe){
+      // do nothing there is no Atlassian Connector installed
+    }
+  }
 	/**
-	 * Closes RH Report Usage Dialog if found
-	 * 
-	 * @param cancel
-	 *            select if ok or cancel button is used
+	 * Closes JBoss Tools / JBoss Developer Studio Report Usage Window
+	 * @param shell
+	 * @param report
 	 */
-	public void closeReportUsageWindowIfOpened(boolean cancel) {
-
-		String title;
-		if (isJBDSRun()) {
-			title = "JBoss Developer Studio Usage";
-		} else {
-			title = "JBoss Tools Usage";
-		}
-		try {
-
-			bot.shell(title).activate();
-			bot.button(cancel ? IDELabel.Button.NO : IDELabel.Button.YES)
-					.click();
-			log.info("Report usage window closed");
-		} catch (WidgetNotFoundException wnfe) {
-			log.info("Report usage window didn't appear");
-		}
-	}
+  private static void closeJBossToolsUsageWindow(SWTBotShell shell , boolean report) {
+    shell.bot().button(report ? IDELabel.Button.YES : IDELabel.Button.NO).click();
+    log.info("JBT/JBDS Report Usage window closed");
+  }
+  /**
+   * Closes Subclipse Report Usage Window
+   * @param shell
+   * @param report
+   */
+  private static void closeSubclipseUsageWindow(SWTBotShell shell , boolean report) {
+    SWTBot shellBot = shell.bot();
+    SWTBotCheckBox chbReportUsage = shellBot
+        .checkBox(IDELabel.SubclipseUsageDialog.REPORT_USAGE_CHECK_BOX);
+    if ((report && (!chbReportUsage.isChecked())) ||
+        ((!report) && chbReportUsage.isChecked())) {
+      chbReportUsage.click();
+    }
+    shellBot.button(IDELabel.Button.OK).click();
+    log.info("Sublcipse Report Usage window closed");
+  }
 
   /**
    * Selects textToSelect within Source Pane of editor with title editorTitle

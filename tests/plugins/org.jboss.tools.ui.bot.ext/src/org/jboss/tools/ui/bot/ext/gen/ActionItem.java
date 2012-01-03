@@ -10393,7 +10393,19 @@ public static String getItemString(IActionItem item) {
 				}
 			};
 			}
-
+    public static class AtlassianConnectorUsageData {
+      /**
+      * represents item : Atlassian Connector -> Usage Data
+      */
+      public static final IPreference LABEL = new IPreference() {
+        public String getName() { return "Usage Data";}
+        public List<String> getGroupPath() {
+          List<String> l = new Vector<String>();
+          l.add("Atlassian Connector");
+          return l;
+        }
+      };
+      }
 		}
 
 	public static class ServerRuntime {

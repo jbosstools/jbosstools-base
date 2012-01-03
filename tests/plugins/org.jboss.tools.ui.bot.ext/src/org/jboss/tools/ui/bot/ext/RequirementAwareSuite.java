@@ -5,7 +5,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
@@ -43,6 +42,7 @@ import org.junit.runners.model.Statement;
  * @author lzoubek@redhat.com
  */
 public class RequirementAwareSuite extends Suite {
+  private static boolean runManageBlockingWindow = true;
 	// we have one global instance of cleanup listener
 	final static DoAfterAllTestsRunListener cleanUp = new DoAfterAllTestsRunListener();
 
@@ -184,6 +184,10 @@ public class RequirementAwareSuite extends Suite {
 
 		@Override
 		protected Statement withBeforeClasses(Statement statement) {
+		  if (RequirementAwareSuite.runManageBlockingWindow){
+		    SWTJBTExt.manageBlockingWidows(false, false);
+		    RequirementAwareSuite.runManageBlockingWindow = false;
+		  }
 			if (!this.config.equals(TestConfigurator.currentConfig)) {
 				TestConfigurator.currentConfig = this.config;
 			}

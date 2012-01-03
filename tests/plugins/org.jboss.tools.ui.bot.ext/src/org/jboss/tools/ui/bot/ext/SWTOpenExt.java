@@ -25,6 +25,7 @@ import org.jboss.tools.ui.bot.ext.gen.INewObject;
 import org.jboss.tools.ui.bot.ext.gen.IPerspective;
 import org.jboss.tools.ui.bot.ext.gen.IPreference;
 import org.jboss.tools.ui.bot.ext.gen.IView;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
  * this class represents
@@ -150,7 +151,12 @@ public class SWTOpenExt {
 		}
 	  SWTBotShell shell = bot.shell("Preferences");
 		shell.activate();
+		try{
 		selectTreeNode(pref);
+		}catch (WidgetNotFoundException wnfe){
+		  shell.bot().button(IDELabel.Button.CANCEL).click();
+		  throw wnfe;
+		}
 		return shell.bot();
 	}
 
