@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.common.util;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -68,5 +71,28 @@ public class EclipseUIUtil {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Returns all the modified but not saved files which are opened with all the editors.  
+	 * @return
+	 */
+	public static Set<IFile> getDirtyFiles() {
+		Set<IFile> dirtyFiles = new HashSet<IFile>();
+		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
+		for (IWorkbenchWindow window : windows) {
+			IWorkbenchPage page = window.getActivePage();
+			if (page != null) {
+				IEditorPart[] editors = page.getDirtyEditors();
+				for (IEditorPart editor : editors) {
+					IEditorInput input = editor.getEditorInput();
+					if(input instanceof IFileEditorInput) {
+						IFile file = ((IFileEditorInput)input).getFile();
+						dirtyFiles.add(file);
+					}
+				}
+			}
+		}
+		return dirtyFiles;
 	}
 }

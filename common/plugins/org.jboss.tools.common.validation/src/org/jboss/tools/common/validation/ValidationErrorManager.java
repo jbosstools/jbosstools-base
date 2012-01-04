@@ -14,6 +14,7 @@ import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -38,6 +39,7 @@ import org.jboss.tools.common.java.IJavaSourceReference;
 import org.jboss.tools.common.preferences.SeverityPreferences;
 import org.jboss.tools.common.text.ITextSourceReference;
 import org.jboss.tools.common.util.EclipseJavaUtil;
+import org.jboss.tools.common.util.EclipseUIUtil;
 
 /**
  * @author Alexey Kazakov
@@ -61,6 +63,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	protected String markerId;
 	protected IProjectValidationContext validationContext;
 	protected TextFileDocumentProvider documentProvider;
+	protected Set<IFile> dirtyFiles;
 
 	private String messageIdQuickFixAttributeName;
 
@@ -90,11 +93,16 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		setReporter(reporter);
 		setValidationContext(validationContext);
 		setMarkerId(org.jboss.tools.common.validation.IValidator.MARKED_RESOURCE_MESSAGE_GROUP);
+		dirtyFiles = EclipseUIUtil.getDirtyFiles();
 	}
 
 	public void init(IProject project, ContextValidationHelper validationHelper, IProjectValidationContext validationContext, IValidator manager, IReporter reporter, String messageIdQuickFixAttributeName) {
 		this.init(project, validationHelper, validationContext, manager, reporter);
 		setMessageIdQuickFixAttributeName(messageIdQuickFixAttributeName);
+	}
+
+	protected boolean shouldBeValidated(IFile file) {
+		return file.isAccessible() && !dirtyFiles.contains(file);
 	}
 
 	/**
