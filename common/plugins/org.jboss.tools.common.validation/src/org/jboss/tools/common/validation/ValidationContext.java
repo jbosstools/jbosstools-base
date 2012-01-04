@@ -11,6 +11,7 @@
 package org.jboss.tools.common.validation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -42,10 +43,7 @@ public class ValidationContext implements IValidationContextManager {
 		init(project);
 	}
 
-	public void init(IProject project) {
-		projectTree.clear();
-		validators.clear();
-		validationResourceRegister = null;
+	private synchronized void inintConfigurationElements() {
 		if(ALL_VALIDATORS == null) {
 			// Load all the validators
 			ALL_VALIDATORS = new ArrayList<IConfigurationElement>();
@@ -62,6 +60,14 @@ public class ValidationContext implements IValidationContextManager {
 				}
 			}
 		}
+	}
+
+	public void init(IProject project) {
+		projectTree.clear();
+		validators.clear();
+		validationResourceRegister = null;
+
+		inintConfigurationElements();
 
 		List<IValidator> dependentValidators = new ArrayList<IValidator>();
 		List<IValidator> allValidators = new ArrayList<IValidator>();
@@ -150,18 +156,6 @@ public class ValidationContext implements IValidationContextManager {
 		return validators;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.seam.internal.core.validation.ISeamValidationContext#clearAll()
-	 */
-	public void clearAll() {
-		clearRegisteredFiles();
-		for (IValidatingProjectTree tree : projectTree.values()) {
-			for (IValidatingProjectSet brunch : tree.getBrunches().values()) {
-				brunch.getRootContext().clearAll();
-			}
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContext#clearRegisteredFiles()
@@ -241,10 +235,14 @@ public class ValidationContext implements IValidationContextManager {
 	 * (non-Javadoc)
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContextManager#clearAllResourceLinks()
 	 */
-	public void clearAllResourceLinks() {
-		for (IValidatingProjectTree tree : projectTree.values()) {
-			for (IValidatingProjectSet brunch : tree.getBrunches().values()) {
-				brunch.getRootContext().clearAll();
+	public void clearAllResourceLinks(Set<IProject> rootProjects) {
+		Collection<IValidatingProjectTree> trees = projectTree.values();
+		for (IProject rootProject : rootProjects) {
+			for (IValidatingProjectTree tree : trees) {
+				IValidatingProjectSet brunch = tree.getBrunches().get(rootProject);
+				if(brunch!=null) {
+					brunch.getRootContext().clearAll();
+				}
 			}
 		}
 	}

@@ -25,11 +25,9 @@ public interface IValidationContextManager {
 
 	void addProject(IProject project);
 
-	void clearAll();
-
 	void clearRegisteredFiles();
 
-	void clearAllResourceLinks();
+	void clearAllResourceLinks(Set<IProject> rootProjects);
 
 	Set<IFile> getRemovedFiles();
 

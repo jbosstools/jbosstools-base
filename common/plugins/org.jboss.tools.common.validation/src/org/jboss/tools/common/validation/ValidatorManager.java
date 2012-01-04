@@ -80,7 +80,7 @@ public class ValidatorManager implements IValidatorJob {
 				if(!changedFiles.isEmpty() || validationHelper.getURIs().length > 0) {
 					status = validate(changedFiles, validationHelper, reporter, rootProjects);
 				} else if(!validationContextManager.getRegisteredFiles().isEmpty()) {
-					validationContextManager.clearAllResourceLinks();
+					validationContextManager.clearAllResourceLinks(rootProjects);
 					status = validateAll(validationHelper, reporter, rootProjects);
 				}
 			} finally {
