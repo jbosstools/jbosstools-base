@@ -514,6 +514,7 @@ public class SWTJBTExt {
     SWTWorkbenchBot bot = new SWTWorkbenchBot();
     SWTBotShell shJbtUsage = null;
     SWTBotShell shSubclipseUsage = null;
+    new SWTUtilExt(bot).waitForNonIgnoredJobs();
     SWTBotShell[] shells = bot.shells();
     int index = 0;
     while ((shJbtUsage == null || shSubclipseUsage == null)
