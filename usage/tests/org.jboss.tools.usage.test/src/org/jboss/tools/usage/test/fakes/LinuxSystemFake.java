@@ -30,7 +30,7 @@ public class LinuxSystemFake extends LinuxSystem {
 
 	/** release file paths on the faked system */
 	private ReleaseFile[] releaseFiles;
-	
+
 	public LinuxSystemFake(ReleaseFile... releaseFiles) {
 		this.releaseFiles = releaseFiles;
 	}

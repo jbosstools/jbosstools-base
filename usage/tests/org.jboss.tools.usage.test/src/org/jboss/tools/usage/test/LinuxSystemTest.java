@@ -19,10 +19,31 @@ import org.junit.Test;
 public class LinuxSystemTest {
 
 	@Test
-	public void canExtractFedoraVersion() {
+	public void canDetectFedora() {
 		LinuxSystem linuxSystem = new LinuxSystemFake(
-				new ReleaseFile(LinuxSystem.INSTANCE.FEDORA.getReleaseFilePath(), "Fedora release 13 (Goddard)"));
+			new ReleaseFile(LinuxSystem.INSTANCE.FEDORA.getReleaseFilePath(), "Fedora release 13 (Goddard)"));
 		assertEquals("Fedora 13", linuxSystem.getDistroNameAndVersion());
+	}
+
+	/**
+	 * Mint uses the default
+	 * <ul>
+	 * <li>/etc/lsb-release</li>
+	 * </ul>
+	 */
+	@Test
+	public void canDetectMintVersion() {
+		LinuxSystem linuxSystem = new LinuxSystemFake(
+			new ReleaseFile(
+					LinuxSystem.INSTANCE.DEBIAN.getReleaseFilePath(), "squeeze/sid"),
+			new ReleaseFile(
+				LinuxSystem.INSTANCE.MINT.getReleaseFilePath(),
+				"DISTRIB_ID=LinuxMint\n" +
+				"DISTRIB_RELEASE=12\n" +
+				"DISTRIB_CODENAME=debian\n" +
+				"DISTRIB_DESCRIPTION=\"Linux Mint 12 Lisa\"")
+			);
+		assertEquals("LinuxMint 12", linuxSystem.getDistroNameAndVersion());
 	}
 
 	/**
@@ -33,34 +54,46 @@ public class LinuxSystemTest {
 	 * </ul>
 	 */
 	@Test
-	public void canExtractUbuntuVersion() {
+	public void canDetectUbuntu() {
 		LinuxSystem linuxSystem = new LinuxSystemFake(
-				new ReleaseFile(
-						LinuxSystem.INSTANCE.UBUNTU.getReleaseFilePath(),
-						"DISTRIB_ID=Ubuntu\nDISTRIB_RELEASE=9.04\nDISTRIB_CODENAME=jaunty\nDISTRIB_DESCRIPTION=\"Ubuntu 9.04\"")
-				, new ReleaseFile(LinuxSystem.INSTANCE.DEBIAN.getReleaseFilePath(), "squeeze/sid"));
+			new ReleaseFile(
+				LinuxSystem.INSTANCE.DEBIAN.getReleaseFilePath(), "squeeze/sid"),				
+			new ReleaseFile(
+				LinuxSystem.INSTANCE.UBUNTU.getReleaseFilePath(),
+				"DISTRIB_ID=Ubuntu\nDISTRIB_RELEASE=9.04\nDISTRIB_CODENAME=jaunty\nDISTRIB_DESCRIPTION=\"Ubuntu 9.04\""));
 		assertEquals("Ubuntu 9.04", linuxSystem.getDistroNameAndVersion());
 	}
 
 	@Test
-	public void canExtractRedHatVersion() {
+	public void canDetectRed() {
 		LinuxSystem linuxSystem = new LinuxSystemFake(
-				new ReleaseFile(LinuxSystem.INSTANCE.REDHAT.getReleaseFilePath(),
-						"Red Hat Enterprise Linux Workstation release 6.0 (Santiago)"));
+			new ReleaseFile(
+				LinuxSystem.INSTANCE.REDHAT.getReleaseFilePath(),
+				"Red Hat Enterprise Linux Workstation release 6.0 (Santiago)"));
 		assertEquals("RedHat 6.0", linuxSystem.getDistroNameAndVersion());
 	}
 
 	@Test
-	public void canExtractGentooVersion() {
+	public void canDetectGentoo() {
 		LinuxSystem linuxSystem = new LinuxSystemFake(
-				new ReleaseFile(LinuxSystem.INSTANCE.GENTOO.getReleaseFilePath(), "Gentoo Base System release 2.0.1"));
+			new ReleaseFile(
+				LinuxSystem.INSTANCE.GENTOO.getReleaseFilePath(), 
+				"Gentoo Base System release 2.0.1"));
 		assertEquals("Gentoo 2.0.1", linuxSystem.getDistroNameAndVersion());
 	}
 
+	/**
+	 * CentOS uses the redhat-release file!
+	 * <ul>
+	 * <li>/etc/redhat-release</li>
+	 * </ul>
+	 */
 	@Test
-	public void canExtractCentOSVersion() {
+	public void canDetectCentOS() {
 		LinuxSystem linuxSystem = new LinuxSystemFake(
-				new ReleaseFile(LinuxSystem.INSTANCE.CENTOS.getReleaseFilePath(), "CentOS release 5.3 (Final)"));
+			new ReleaseFile(
+				LinuxSystem.INSTANCE.CENTOS.getReleaseFilePath(), 
+				"CentOS release 5.3 (Final)"));
 		assertEquals("CentOS 5.3", linuxSystem.getDistroNameAndVersion());
 	}
 }

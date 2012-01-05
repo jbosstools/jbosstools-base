@@ -40,15 +40,35 @@ public class LinuxSystem {
 	public final LinuxDistro KNOPPIX = new LinuxDistro("Knoppix", "knoppix_version");
 	public final LinuxDistro MANDRAKE = new LinuxDistro("Mandrake", "/etc/mandrake-release");
 	public final LinuxDistro MANDRIVA = new LinuxDistro("Mandriva", "/etc/mandriva-release");
+	public final LinuxDistro MINT = new MintLinuxDistro();
 	public final LinuxDistro PLD = new LinuxDistro("PLD", "/etc/pld-release");
 	public final LinuxDistro REDHAT = new LinuxDistro("RedHat", "/etc/redhat-release");
 	public final LinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
 	public final LinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
 	public final LinuxDistro UBUNTU = new LinuxDistro("Ubuntu", "/etc/lsb-release");
-	public final LinuxDistro MINT = new MintLinuxDistro();
 
 	private final LinuxDistro[] ALL = new LinuxDistro[] {
+			/**
+			 * Attention: CentOS uses the redhat release file
+			 * <p>
+			 * <tt>/etc/redhat-release</tt>
+			 * <p>
+			 * We therefore have to check CentOS before we check for Red Hat. 
+			 * It is not reliable to check Red Hat first since that check would
+			 * result in a false positive on CentOS systems.
+			 */
 			CENTOS,
+			REDHAT,
+			/**
+			 * Attention: Mint uses the default
+			 * <p>
+			 * <tt>/etc/lsb-release</tt>
+			 * <p>
+			 * We therefore have to check Mint before we check Ubuntu. 
+			 * Checking Ubuntu first is not reliable since it is resulting in a 
+			 * false positive on Mint systems.
+			 */
+			MINT,
 			/**
 			 * Attention: ubuntu has 2 release files
 			 * <ul>
@@ -56,16 +76,11 @@ public class LinuxSystem {
 			 * <li>/etc/debian_version</li>
 			 * </ul>
 			 * <p>
-			 * It is not reliable to check Debian first and check there's no
-			 * /etc/lsb-release exists. Debian may also have a /etc/lsb-release. We must
-			 * check ubuntu prior to Debian.
+			 * We therefore have to check for Ubuntu before we check for Debian. 
+			 * Checking for Debian results in a false positive on Ubuntu systems.
+			 * @see https://bugs.launchpad.net/ubuntu/+source/base-files/+bug/19353
 			 * @see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=444678
-			 * <p>
-			 * The very same applies to Mint Linux. It also has a /etc/lsb-release and we 
-			 * therefore have to check mint prior to ubuntu and debian. 
-			 * 
 			 */
-			MINT,
 			UBUNTU,
 			DEBIAN,
 			FEDORA,
@@ -74,7 +89,6 @@ public class LinuxSystem {
 			MANDRAKE,
 			MANDRIVA,
 			PLD,
-			REDHAT,
 			SLACKWARE,
 			SUSE,
 			YELLOWDOG
@@ -138,6 +152,26 @@ public class LinuxSystem {
 		}
 	}
 
+	protected boolean exists(String releaseFilePath) {
+		return releaseFilePath != null
+				&& releaseFilePath.length() > 0
+				&& new File(releaseFilePath).exists();
+	}
+	
+	protected String getDistroFileContent(String filePath) throws IOException {
+		int charachtersToRead = 1024;
+		StringBuilder builder = new StringBuilder(charachtersToRead);
+		BufferedReader reader = new BufferedReader(new FileReader(filePath));
+		char[] buf = new char[charachtersToRead];
+		int charRead = 0;
+		while ((charRead = reader.read(buf)) != -1 && builder.length() < charachtersToRead) {
+			String readData = String.valueOf(buf, 0, charRead);
+			builder.append(readData);
+		}
+		reader.close();
+		return builder.toString();
+	}
+
 	public class LinuxDistro {
 
 		/**
@@ -179,14 +213,8 @@ public class LinuxSystem {
 			return new StringBuilder().append(getName()).append(" ").append(getVersion()).toString();
 		}
 
-		protected String getReleaseFilePath() {
+		public String getReleaseFilePath() {
 			return releaseFilePath;
-		}
-
-		protected boolean exists(String releaseFilePath) {
-			return releaseFilePath != null
-					&& releaseFilePath.length() > 0
-					&& new File(releaseFilePath).exists();
 		}
 
 		protected boolean distroFileContains(String value) {
@@ -202,19 +230,9 @@ public class LinuxSystem {
 
 		}
 		
-		protected String getDistroFileContent(String filePath) throws IOException {
-			int charachtersToRead = 1024;
-			StringBuilder builder = new StringBuilder(charachtersToRead);
-			BufferedReader reader = new BufferedReader(new FileReader(filePath));
-			char[] buf = new char[charachtersToRead];
-			int charRead = 0;
-			while ((charRead = reader.read(buf)) != -1 && builder.length() < charachtersToRead) {
-				String readData = String.valueOf(buf, 0, charRead);
-				builder.append(readData);
-			}
-			reader.close();
-			return builder.toString();
+		@Override
+		public String toString() {
+			return name;
 		}
-
 	}
 }
