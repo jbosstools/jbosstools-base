@@ -55,16 +55,18 @@ public class LinuxSystem {
 			 * <li>/etc/lsb-release</li>
 			 * <li>/etc/debian_version</li>
 			 * </ul>
-			 * 
+			 * <p>
 			 * It is not reliable to check Debian first and check there's no
 			 * /etc/lsb-release exists. Debian may also have a /etc/lsb-release. We must
 			 * check ubuntu prior to Debian.
-			 * 
 			 * @see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=444678
+			 * <p>
+			 * The very same applies to Mint Linux. It also has a /etc/lsb-release and we 
+			 * therefore have to check mint prior to ubuntu and debian. 
 			 * 
 			 */
-			UBUNTU,
 			MINT,
+			UBUNTU,
 			DEBIAN,
 			FEDORA,
 			GENTOO,
