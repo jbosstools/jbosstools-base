@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.util.FileUtil;
 
 public class EncodedProperties extends Properties {
      private static final long serialVersionUID = 4112578634029123456L;
@@ -109,23 +110,6 @@ public class EncodedProperties extends Properties {
 	}
     }
 
-    private String readStream(InputStream is) {
-        StringBuffer sb = new StringBuffer(""); //$NON-NLS-1$
-        try {
-            byte[] b = new byte[4096];
-            while(true) {
-                int l = is.read(b, 0, b.length);
-                if(l < 0) break;
-                sb.append(new String(b, 0, l, encoding));
-            }
-            is.close();
-        } catch (IOException e) {
-        	CommonPlugin.getPluginLog().logError(e);
-        }
-        return sb.toString();
-    }
-
-
     /* read in a "logical line" from input stream, skip all comment and
      * blank lines and filter out those leading whitespace characters 
      * (\u0020, \u0009 and \u000c) from the beginning of a "natural line". 
@@ -139,7 +123,7 @@ public class EncodedProperties extends Properties {
 		String source = null;
 
 		public LineReader(InputStream inStream) {
-			source = readStream(inStream);
+			source = FileUtil.readStream(inStream);
 			inLimit = source.length();
 		}
 
