@@ -266,7 +266,7 @@ public class ELReference implements ITextSourceReference {
 			if(markers.isEmpty()) {
 				markerArray = EMPTY_MARKER_ARRAY;
 			} else {
-				markerArray = markers.toArray(new IMarker[0]);
+				markerArray = markers.toArray(new IMarker[markers.size()]);
 			}
 		}
 		return markerArray;
@@ -293,17 +293,22 @@ public class ELReference implements ITextSourceReference {
 	/**
 	 * Removes all markers from this EL.
 	 */
-	public synchronized void deleteMarkers() {
-		initMarkers();
-		for (IMarker marker : markers) {
+	public void deleteMarkers() {
+		IMarker[] aMarkers = null;
+		synchronized (this) {
+			initMarkers();
+			aMarkers = getMarkers();
+			markers.clear();
+			markerArray = null;
+		}
+
+		for (IMarker marker : aMarkers) {
 			try {
 				marker.delete();
 			} catch (CoreException e) {
 				ELCorePlugin.getDefault().logError(e);
 			}
 		}
-		markers.clear();				
-		markerArray = null;
 	}
 
 	/**
