@@ -107,6 +107,12 @@ public class LinuxSystem {
 			super(CENTOS_NAME, REDHAT_RELEASE_FILE);
 		}
 
+		/**
+		 * Checks if the current system is a Mint Linux distribution. 
+		 * It checks if /etc/lsb-release contains <tt>LinuxMint"</tt>.
+		 * We could also check for presence of /etc/linuxmint(/info)
+		 * @return
+		 */
 		@Override
 		protected boolean isDistro() {
 			try {
