@@ -108,22 +108,13 @@ public class LinuxSystem {
 		}
 
 		/**
-		 * Checks if the current system is a Mint Linux distribution. 
-		 * It checks if /etc/lsb-release contains <tt>LinuxMint"</tt>.
-		 * We could also check for presence of /etc/linuxmint(/info)
-		 * @return
+		 * Checks if the current system is a CentOS distribution. 
+		 * It checks if /etc/lsb-release contains <tt>CentOS</tt>.
+		 * @return true if /etc/redhat-release contains CentoOS
 		 */
 		@Override
 		protected boolean isDistro() {
-			try {
-				boolean fileExists = super.isDistro();
-				if (fileExists) {
-					String content = getDistroFileContent(releaseFilePath);
-					return content != null && content.indexOf(CENTOS_NAME) >= 0;
-				}
-			} catch (IOException e) {
-			}
-			return false;
+			return distroFileContains(CENTOS_NAME);
 		}
 	}
 
@@ -135,17 +126,15 @@ public class LinuxSystem {
 			super(MINTLINUX_NAME, LSB_RELEASE_FILE);
 		}
 
+		/**
+		 * Checks if the current system is a Mint Linux distribution. 
+		 * It checks if /etc/lsb-release contains <tt>LinuxMint</tt>.
+		 * We could also check for presence of /etc/linuxmint(/info)
+		 * @return true if /etc/lsb-release contains LinuxMint
+		 */
 		@Override
 		protected boolean isDistro() {
-			try {
-				boolean fileExists = super.isDistro();
-				if (fileExists) {
-					String content = getDistroFileContent(releaseFilePath);
-					return content != null && content.indexOf(MINTLINUX_NAME) >= 0;
-				}
-			} catch (IOException e) {
-			}
-			return false;
+			return distroFileContains(MINTLINUX_NAME);
 		}
 	}
 
@@ -167,7 +156,7 @@ public class LinuxSystem {
 		}
 
 		protected boolean isDistro() {
-			return exists(releaseFilePath);
+			return exists(getReleaseFilePath());
 		}
 									
 		public String getName() {
@@ -176,7 +165,7 @@ public class LinuxSystem {
 
 		public String getVersion() {
 			try {
-				String distroString = getDistroFileContent(releaseFilePath);
+				String distroString = getDistroFileContent(getReleaseFilePath());
 				Matcher matcher = VERSION_REGEX.matcher(distroString);
 				if (matcher.find()) {
 					return matcher.group(1);
@@ -190,26 +179,42 @@ public class LinuxSystem {
 			return new StringBuilder().append(getName()).append(" ").append(getVersion()).toString();
 		}
 
-		public String getReleaseFilePath() {
+		protected String getReleaseFilePath() {
 			return releaseFilePath;
 		}
-	}
 
-	protected boolean exists(String releaseFilePath) {
-		return new File(releaseFilePath).exists();
-	}
-
-	protected String getDistroFileContent(String filePath) throws IOException {
-		int charachtersToRead = 1024;
-		StringBuilder builder = new StringBuilder(charachtersToRead);
-		BufferedReader reader = new BufferedReader(new FileReader(filePath));
-		char[] buf = new char[charachtersToRead];
-		int charRead = 0;
-		while ((charRead = reader.read(buf)) != -1 && builder.length() < charachtersToRead) {
-			String readData = String.valueOf(buf, 0, charRead);
-			builder.append(readData);
+		protected boolean exists(String releaseFilePath) {
+			return releaseFilePath != null
+					&& releaseFilePath.length() > 0
+					&& new File(releaseFilePath).exists();
 		}
-		reader.close();
-		return builder.toString();
+
+		protected boolean distroFileContains(String value) {
+			try {
+				boolean fileExists = exists(getReleaseFilePath());
+				if (fileExists) {
+					String content = getDistroFileContent(getReleaseFilePath());
+					return content != null && content.indexOf(value) >= 0;
+				}
+			} catch (IOException e) {
+			}
+			return false;
+
+		}
+		
+		protected String getDistroFileContent(String filePath) throws IOException {
+			int charachtersToRead = 1024;
+			StringBuilder builder = new StringBuilder(charachtersToRead);
+			BufferedReader reader = new BufferedReader(new FileReader(filePath));
+			char[] buf = new char[charachtersToRead];
+			int charRead = 0;
+			while ((charRead = reader.read(buf)) != -1 && builder.length() < charachtersToRead) {
+				String readData = String.valueOf(buf, 0, charRead);
+				builder.append(readData);
+			}
+			reader.close();
+			return builder.toString();
+		}
+
 	}
 }
