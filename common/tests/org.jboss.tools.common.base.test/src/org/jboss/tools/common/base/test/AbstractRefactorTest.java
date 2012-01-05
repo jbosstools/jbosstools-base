@@ -1,4 +1,4 @@
-package org.jboss.tools.tests;
+package org.jboss.tools.common.base.test;
 
 import java.io.IOException;
 import java.io.InputStream;
