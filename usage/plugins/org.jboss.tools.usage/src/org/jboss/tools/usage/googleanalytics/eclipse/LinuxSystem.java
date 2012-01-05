@@ -32,7 +32,7 @@ public class LinuxSystem {
 	 *      release-file strings</a>
 	 */
 	
-	public final LinuxDistro CENTOS = new CentOSDistro("CentOS", "/etc/redhat-release");
+	public final LinuxDistro CENTOS = new CentOSDistro();
 	public final LinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
 	public final LinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
 	public final LinuxDistro GENTOO = new LinuxDistro("Gentoo", "/etc/gentoo-release");
@@ -45,6 +45,7 @@ public class LinuxSystem {
 	public final LinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
 	public final LinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
 	public final LinuxDistro UBUNTU = new LinuxDistro("Ubuntu", "/etc/lsb-release");
+	public final LinuxDistro MINT = new MintLinuxDistro();
 
 	private final LinuxDistro[] ALL = new LinuxDistro[] {
 			CENTOS,
@@ -55,7 +56,7 @@ public class LinuxSystem {
 			 * <li>/etc/debian_version</li>
 			 * </ul>
 			 * 
-			 * It is not reliable to check Debian first and check there if no
+			 * It is not reliable to check Debian first and check there's no
 			 * /etc/lsb-release exists. Debian may also have a /etc/lsb-release. We must
 			 * check ubuntu prior to Debian.
 			 * 
@@ -63,6 +64,7 @@ public class LinuxSystem {
 			 * 
 			 */
 			UBUNTU,
+			MINT,
 			DEBIAN,
 			FEDORA,
 			GENTOO,
@@ -97,9 +99,10 @@ public class LinuxSystem {
 
 	protected class CentOSDistro extends LinuxDistro {
 		private static final String CENTOS_NAME = "CentOS";
-
-		protected CentOSDistro(String name, String releaseFilePath) {
-			super(name, releaseFilePath);
+		private static final String REDHAT_RELEASE_FILE = "/etc/redhat-release";
+		
+		protected CentOSDistro() {
+			super(CENTOS_NAME, REDHAT_RELEASE_FILE);
 		}
 
 		@Override
@@ -109,6 +112,28 @@ public class LinuxSystem {
 				if (fileExists) {
 					String content = getDistroFileContent(releaseFilePath);
 					return content != null && content.indexOf(CENTOS_NAME) >= 0;
+				}
+			} catch (IOException e) {
+			}
+			return false;
+		}
+	}
+
+	protected class MintLinuxDistro extends LinuxDistro {
+		private static final String MINTLINUX_NAME = "LinuxMint";
+		private static final String LSB_RELEASE_FILE = "/etc/lsb-release";
+		
+		protected MintLinuxDistro() {
+			super(MINTLINUX_NAME, LSB_RELEASE_FILE);
+		}
+
+		@Override
+		protected boolean isDistro() {
+			try {
+				boolean fileExists = super.isDistro();
+				if (fileExists) {
+					String content = getDistroFileContent(releaseFilePath);
+					return content != null && content.indexOf(MINTLINUX_NAME) >= 0;
 				}
 			} catch (IOException e) {
 			}
@@ -136,7 +161,7 @@ public class LinuxSystem {
 		protected boolean isDistro() {
 			return exists(releaseFilePath);
 		}
-
+									
 		public String getName() {
 			return name;
 		}
