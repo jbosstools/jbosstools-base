@@ -54,6 +54,7 @@
             id="org.jboss.tools.common.ui.JBossPerspective"
             name="%perspective.name">
       </perspective>
+   </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
@@ -68,7 +69,6 @@
                id="org.eclipse.debug.ui.DebugPerspective">
          </perspectiveShortcut>
       </perspectiveExtension>
-   </extension>
    </extension>
      	<extension point="org.eclipse.ui.ide.markerResolution">
 		<markerResolutionGenerator
