@@ -123,7 +123,7 @@ public class EncodedProperties extends Properties {
 		String source = null;
 
 		public LineReader(InputStream inStream) {
-			source = FileUtil.readStream(inStream);
+			source = FileUtil.readStream(inStream, encoding);
 			inLimit = source.length();
 		}
 
