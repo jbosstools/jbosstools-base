@@ -109,6 +109,9 @@ public class AddSuppressWarningsMarkerResolution implements
 			disablePreference();
 			try {
 				ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
+				if(original == null) {
+					return;
+				}
 				ICompilationUnit compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
 				
 				CompilationUnit cuNode = ASTTools.buildASTRoot(compilationUnit);
