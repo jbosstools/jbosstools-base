@@ -25,7 +25,9 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.core.JavaModelManager;
 
 /**
  * @author Alexey Kazakov, Viacheslav Kabanovich
@@ -75,11 +77,23 @@ public class EclipseUtil {
 		}
 		return resources.toArray(new IResource[resources.size()]);
 	}
-	                        
-	public static ICompilationUnit getCompilationUnit(IFile f) throws CoreException {
-		IJavaElement element= JavaCore.create(f);
-		if (element instanceof ICompilationUnit)
-			return (ICompilationUnit) element;
+
+	/**
+	 * Returns compilation unit for file, if it exists in Java model, otherwise returns null.
+	 * 
+	 * @param f
+	 * @return compilation unit for file, if it exists in Java model, otherwise null
+	 * @throws CoreException
+	 */
+	public static ICompilationUnit getCompilationUnit(IFile f) {
+		IJavaProject jp = getJavaProject(f.getProject());
+		if(jp != null) {
+			IPackageFragment pkg = (IPackageFragment)JavaModelManager.determineIfOnClasspath(f, jp);
+			if(pkg != null) {
+				ICompilationUnit result = pkg.getCompilationUnit(f.getName());
+				return (result.exists()) ? result : null;
+			}
+		}
 		return null;
 	}
 
