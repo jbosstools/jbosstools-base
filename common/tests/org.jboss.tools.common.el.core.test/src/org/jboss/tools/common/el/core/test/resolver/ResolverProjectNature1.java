@@ -41,7 +41,12 @@ public class ResolverProjectNature1 implements ELResolver {
 
 	public IRelevanceCheck createRelevanceCheck(IJavaElement element) {
 		// TODO Auto-generated method stub
-		return null;
+		return new IRelevanceCheck(){
+
+			@Override
+			public boolean isRelevant(String content) {
+				return false;
+			}};
 	}
 
 }
