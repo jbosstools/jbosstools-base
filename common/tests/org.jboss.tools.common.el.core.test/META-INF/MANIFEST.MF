@@ -20,4 +20,4 @@ Require-Bundle:
  org.eclipse.ltk.core.refactoring;bundle-version="[3.5.0,4.0.0)",
  org.jboss.tools.common
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
