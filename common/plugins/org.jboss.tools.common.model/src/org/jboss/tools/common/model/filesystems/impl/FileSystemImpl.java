@@ -17,6 +17,10 @@ import java.net.URI;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.runtime.*;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.internal.core.ExternalPackageFragmentRoot;
+import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
@@ -105,6 +109,20 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 				ModelPlugin.getPluginLog().logError(e);
 			}
 		}
+
+		if(f == null) {
+			IJavaProject jp = EclipseResourceUtil.getJavaProject(getProject());
+			if(jp != null) {
+				IPackageFragmentRoot p = jp.getPackageFragmentRoot(thloc);
+				if(p instanceof ExternalPackageFragmentRoot && p.exists()) {
+					IResource r = ((PackageFragmentRoot)p).resource();
+					if(r instanceof IContainer) {
+						f = (IContainer)r;
+					}
+				}
+			}
+		}
+
 		resource = f;
 
     	if(resource == null) {
