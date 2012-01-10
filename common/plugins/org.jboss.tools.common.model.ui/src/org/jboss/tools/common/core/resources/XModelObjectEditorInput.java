@@ -30,6 +30,7 @@ import org.eclipse.ui.internal.part.NullEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.impl.*;
 import org.jboss.tools.common.model.project.IModelNature;
@@ -297,21 +298,18 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		if(model == null) return null;
 		XModelObject[] fs = FileSystemsHelper.getFileSystems(model).getChildren();
 		for (XModelObject s: fs) {
-			if(s instanceof JarSystemImpl) {
-				JarSystemImpl j = (JarSystemImpl)s;
-				String loc = j.getLocation();
-				if(new File(loc).equals(new File(jarFile))) {
-					XModelObject result = s.getChildByPath(entry);
-					if(result == null && entry != null) {
-						int q = entry.indexOf('/');
-						int d = entry.indexOf('.');
-						if(q > d && d >= 0) {
-							String entry1 = entry.substring(0, q).replace('.', '/') + entry.substring(q);
-							result = s.getChildByPath(entry1);
-						}
+			String loc = Paths.expand(s.get(XModelObjectConstants.ATTR_NAME_LOCATION), model.getProperties());
+			if(new File(loc).equals(new File(jarFile))) {
+				XModelObject result = s.getChildByPath(entry);
+				if(result == null && entry != null) {
+					int q = entry.indexOf('/');
+					int d = entry.indexOf('.');
+					if(q > d && d >= 0) {
+						String entry1 = entry.substring(0, q).replace('.', '/') + entry.substring(q);
+						result = s.getChildByPath(entry1);
 					}
-					if(result != null) return result;
 				}
+				if(result != null) return result;
 			}
 		}
 		return (n == null) ? null : n.getModel().getByPath("/" + entry);		 //$NON-NLS-1$

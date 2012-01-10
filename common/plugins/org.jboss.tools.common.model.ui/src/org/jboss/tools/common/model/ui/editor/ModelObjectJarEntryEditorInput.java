@@ -35,6 +35,9 @@ public class ModelObjectJarEntryEditorInput extends ModelObjectStorageEditorInpu
 	}
 
 	public boolean equals(Object o) {
+		if(o == this) {
+			return true;
+		}
 		if(o instanceof IStorageEditorInput) {
 			IStorageEditorInput input = (IStorageEditorInput)o;
 			IStorage storage = null;

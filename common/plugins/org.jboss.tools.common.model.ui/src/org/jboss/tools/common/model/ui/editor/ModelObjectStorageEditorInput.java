@@ -11,16 +11,19 @@
 package org.jboss.tools.common.model.ui.editor;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
+import org.eclipse.jdt.core.IJarEntryResource;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.internal.core.JarEntryDirectory;
 import org.eclipse.jdt.internal.core.JarEntryFile;
 import org.eclipse.jdt.internal.core.JarEntryResource;
-import org.eclipse.jdt.internal.core.PackageFragment;
+import org.eclipse.jdt.internal.core.NonJavaResource;
 import org.jboss.tools.common.core.resources.XModelObjectEditorInput;
 import org.jboss.tools.common.core.resources.XModelObjectEditorInputFactory;
 import org.eclipse.ui.*;
@@ -30,10 +33,11 @@ import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.filesystems.impl.*;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.jboss.tools.common.model.util.Paths;
 import org.jboss.tools.common.util.FileUtil;
 
 public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implements IStorageEditorInput {
-	JarEntryFile jarEntryFile = null;
+	IJarEntryResource jarEntryFile = null;
 
 	public ModelObjectStorageEditorInput(XModelObject object) {
 		super(object);
@@ -44,15 +48,25 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 		return jarEntryFile != null ? jarEntryFile : storage;
 	}
 
-	JarEntryFile findJarEntryFile() {
+	@SuppressWarnings("rawtypes")
+	public Object getAdapter(Class adapter)	{
+		if(adapter == IFile.class) return null;
+		return super.getAdapter(adapter);
+	}
+
+	IJarEntryResource findJarEntryFile() {
 		XModelObject o = object;
 		JarEntryFile f = null;
 		JarEntryResource current = null;
 		String packageName = "";
+		List<String> parts = new ArrayList<String>();
+		List<XModelObject> os = new ArrayList<XModelObject>();
 		while(o != null && o.getFileType() != XModelObject.SYSTEM) {
 			String part = o.getFileType() == XModelObject.FILE ? FileAnyImpl.toFileName(o) :
 				o.getFileType() == XModelObject.FOLDER ? o.getAttributeValue(XModelObjectConstants.ATTR_NAME) : null;
 			if(part != null) {
+				parts.add(0, part);
+				os.add(0, o);
 				if(f == null) {
 					f = new JarEntryFile(part) {
 						public InputStream getContents() throws CoreException {
@@ -61,7 +75,6 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 					};
 					current = f;
 				} else {
-					if(f == null) return null;
 					if(packageName.length() > 0) {
 						packageName = part + "." + packageName;
 					} else {
@@ -75,8 +88,8 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 			}
 			o = o.getParent();
 		}
-		if(!(o instanceof JarSystemImpl)) return null;
-		String file = ((JarSystemImpl)o).getLocation();
+//		if(!(o instanceof JarSystemImpl)) return null;
+		String file = Paths.expand(o.get(XModelObjectConstants.ATTR_NAME_LOCATION), o.getModel().getProperties());
 
         IProject p = EclipseResourceUtil.getProject(o);     
         IJavaProject jp = EclipseResourceUtil.getJavaProject(p);        
@@ -111,6 +124,21 @@ public class ModelObjectStorageEditorInput extends ModelObjectEditorInput implem
 			f.setParent(pf);
 		} else {		
 			current.setParent(root);
+			if(!(o instanceof JarSystemImpl)) {
+				Object q = root;
+				NonJavaResource nj = null;
+				for (int i = 0; i < parts.size(); i++) {
+					IResource ri = (IResource)os.get(i).getAdapter(IResource.class);
+					if(ri == null) {
+						return f;
+					}
+					nj = new NonJavaResource(q, ri);
+					q = nj;
+				}
+				if(nj != null) {
+					return nj;
+				}
+			}
 		}
 		
 		return f;
