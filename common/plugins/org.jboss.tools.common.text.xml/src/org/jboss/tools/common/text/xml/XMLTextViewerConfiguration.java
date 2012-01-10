@@ -263,7 +263,7 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 	public IQuickAssistAssistant getQuickAssistAssistant(ISourceViewer sourceViewer) {
 		if (fQuickAssistant == null) {
 			IQuickAssistAssistant assistant = new QuickAssistAssistant();
-			assistant.setQuickAssistProcessor(new JBDSQuickAssistProcessor());
+			assistant.setQuickAssistProcessor(new BaseQuickAssistProcessor());
 			assistant.setInformationControlCreator(getQuickAssistAssistantInformationControlCreator());
 
 			if (fPreferenceStore != null) {

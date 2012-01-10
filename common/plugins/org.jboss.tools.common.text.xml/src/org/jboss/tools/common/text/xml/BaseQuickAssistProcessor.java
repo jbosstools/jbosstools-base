@@ -24,7 +24,7 @@ import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
 import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 import org.jboss.tools.common.text.xml.MarkerAnnotationInfo.AnnotationInfo;
 
-public class JBDSQuickAssistProcessor implements IQuickAssistProcessor {
+public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
 
 	public String getErrorMessage() {
 		return null;
