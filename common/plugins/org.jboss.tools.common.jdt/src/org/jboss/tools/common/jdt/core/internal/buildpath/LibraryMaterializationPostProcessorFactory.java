@@ -15,12 +15,12 @@ import org.jboss.tools.common.jdt.core.buildpath.ILibraryMaterializationPostProc
 
 public class LibraryMaterializationPostProcessorFactory implements ILibraryMaterializationPostProcessorFactory {
 
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.common.jdt.core.buildpath.ILibraryMaterializationPostProcessorFactory#getLibraryMaterializationPostProcessors()
-	 */
 	@Override
 	public ILibraryMaterializationPostProcessor[] getLibraryMaterializationPostProcessors() {
-		return new ILibraryMaterializationPostProcessor[]{new MavenLibraryMaterializationPostProcessor()};
+		return new ILibraryMaterializationPostProcessor[]{
+				new MavenLibraryMaterializationPostProcessor(), 
+				new GradleLibraryMaterializationPostProcessor()
+				};
 	}
 
 }

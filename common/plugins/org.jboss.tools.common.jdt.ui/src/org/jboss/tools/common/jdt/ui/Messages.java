@@ -30,6 +30,10 @@ public class Messages extends NLS {
 
 	public static String Jre_Dialog_Warning;
 
+	public static String Gradle_Configuration_Warning;
+
+	public static String Gradle_Configuration_Dialog_Warning;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

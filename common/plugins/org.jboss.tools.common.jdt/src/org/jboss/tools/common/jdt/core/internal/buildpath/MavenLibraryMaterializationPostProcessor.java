@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.jboss.tools.common.EclipseUtil;
+import org.jboss.tools.common.jdt.core.buildpath.ClasspathContainersHelper;
 import org.jboss.tools.common.jdt.core.buildpath.ILibraryMaterializationPostProcessor;
 
 class MavenLibraryMaterializationPostProcessor implements ILibraryMaterializationPostProcessor {
@@ -29,7 +30,7 @@ class MavenLibraryMaterializationPostProcessor implements ILibraryMaterializatio
 	public boolean applies(IJavaProject javaProject, IPath containerPath) throws CoreException {
 		boolean applies = javaProject != null
 				&& javaProject.getProject().hasNature(MAVEN_NATURE_ID)
-				&& ("org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"
+				&& (ClasspathContainersHelper.MAVEN_CONTAINER_ID
 						.equals(containerPath.toPortableString()));
 		return applies;
 	}
