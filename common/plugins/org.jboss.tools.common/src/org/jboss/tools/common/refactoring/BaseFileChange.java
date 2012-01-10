@@ -35,11 +35,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 import org.jboss.tools.common.CommonPlugin;
 
-public class JBDSFileChange extends MultiStateTextFileChange{
+public class BaseFileChange extends MultiStateTextFileChange{
 	private IFile file;
-	private JBDSTextChange rootChange = null;
+	private BaseTextChange rootChange = null;
 
-	public JBDSFileChange(IFile file) {
+	public BaseFileChange(IFile file) {
 		super(file.getName(), file);
 		this.file = file;
 		
@@ -85,7 +85,7 @@ public class JBDSFileChange extends MultiStateTextFileChange{
 	}
 	
 	public void setEdit(TextEdit edit) {
-		rootChange = new JBDSTextChange();
+		rootChange = new BaseTextChange();
 		rootChange.setEdit(edit);
 		super.addChange(rootChange);
 	}
@@ -98,9 +98,9 @@ public class JBDSFileChange extends MultiStateTextFileChange{
 		rootChange.addEdit(edit);
 	}
 	
-	class JBDSTextChange extends TextChange{
+	class BaseTextChange extends TextChange{
 
-		protected JBDSTextChange() {
+		protected BaseTextChange() {
 			super("");
 		}
 

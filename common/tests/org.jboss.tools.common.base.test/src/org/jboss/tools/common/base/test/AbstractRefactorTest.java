@@ -24,7 +24,7 @@ import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
 import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
 import org.eclipse.text.edits.MultiTextEdit;
-import org.jboss.tools.common.refactoring.JBDSFileChange;
+import org.jboss.tools.common.refactoring.BaseFileChange;
 import org.jboss.tools.test.util.JobUtils;
 
 public class AbstractRefactorTest extends TestCase{
@@ -149,9 +149,9 @@ public class AbstractRefactorTest extends TestCase{
 			
 			MultiTextEdit edit = null;
 			IFile file = null;
-			if(fileChange instanceof JBDSFileChange){
-				edit = (MultiTextEdit)((JBDSFileChange)fileChange).getEdit();
-				file = ((JBDSFileChange)fileChange).getFile();
+			if(fileChange instanceof BaseFileChange){
+				edit = (MultiTextEdit)((BaseFileChange)fileChange).getEdit();
+				file = ((BaseFileChange)fileChange).getFile();
 				//((JBDSFileChange)fileChange).setSaveMode(TextFileChange.FORCE_SAVE);
 			}else if(fileChange instanceof TextFileChange){
 				edit = (MultiTextEdit)((TextFileChange)fileChange).getEdit();

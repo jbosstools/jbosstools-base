@@ -19,9 +19,9 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-public class JBDSRefactoringWizard extends RefactoringWizard {
+public class BaseRefactoringWizard extends RefactoringWizard {
 
-	public JBDSRefactoringWizard(Refactoring refactoring, int flags) {
+	public BaseRefactoringWizard(Refactoring refactoring, int flags) {
 		super(refactoring, flags);
 	}
 
