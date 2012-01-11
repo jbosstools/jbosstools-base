@@ -95,6 +95,38 @@ public class XMLClassHyperlinkPartitioner extends AbstractHyperlinkPartitioner {
 			
 			if (propStart > offset || propStart + propLength < offset) return null;
 	
+			// Check that text is a 'class name'
+			text = document.get(bStart + start, bEnd - bStart);
+			int positionInText = offset - start - bStart;
+			int classNameStart = positionInText;
+			while (classNameStart > 0 && !Character.isWhitespace(text.charAt(classNameStart))) {
+				classNameStart--;
+			}
+			boolean firstOrAfterDot = true;
+			int classNameEnd = classNameStart;
+			for (; classNameEnd < text.length(); classNameEnd++) {
+				if (Character.isWhitespace(text.charAt(classNameEnd)))
+					break; // End of class name
+				if ('.' == text.charAt(classNameEnd)) {
+					if (firstOrAfterDot) return null; // Double DOT or first char is DOT
+					firstOrAfterDot = true;
+					continue;
+				}
+				
+				if (firstOrAfterDot) {
+					if (!Character.isJavaIdentifierStart(text.charAt(classNameEnd))) return null; // Not Java Id-r start
+					firstOrAfterDot = false;
+				} else {
+					if (!Character.isJavaIdentifierPart(text.charAt(classNameEnd))) return null; // Not Java Id-r part
+				}
+			}
+			
+			String className = text.substring(classNameStart, classNameEnd).trim();
+			if (className.length() == 0 ||
+					className.startsWith(".") || //$NON-NLS-1$
+					className.endsWith(".")) { //$NON-NLS-1$
+				return null;
+			}
 			IHyperlinkRegion region = new HyperlinkRegion(propStart, propLength, null, null, null);
 			return region;
 		} catch (BadLocationException x) {
