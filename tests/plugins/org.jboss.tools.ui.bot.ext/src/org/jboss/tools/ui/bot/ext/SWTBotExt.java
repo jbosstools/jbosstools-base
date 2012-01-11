@@ -27,6 +27,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -189,4 +190,55 @@ public class SWTBotExt extends SWTWorkbenchBot {
 		}
 	}
 
+    /**
+     * Waits for shell with given title.
+     * Maximum waiting time is 30 seconds.
+     *
+     * @param shellTitle Title of shell which it should wait for.
+     * @return Shell which it was waiting for or <code>null</code>
+     *         if the shell was not displayed during waiting time.
+     * @see #waitForShell(String, int)
+     */
+    public SWTBotShell waitForShell(final String shellTitle) {
+        return waitForShell(shellTitle, -1);
+    }
+
+    /**
+     * Waits for desired shell with given timeout
+     * and return this shell when it is displayed.
+     *
+     * @param shellTitle Title of desired shell.
+     * @param maxTimeout Maximum waiting time in seconds (actual timeout can be one second more).
+     *                   Negative value means default timeout (30 seconds).
+     * @return Shell which it was waiting for or <code>null</code>
+     *         if the shell was not displayed during waiting time.
+     */
+	public SWTBotShell waitForShell(final String shellTitle, final int maxTimeout) {
+        if (shellTitle == null) {
+            throw new IllegalArgumentException("shellTitle cannot be null");
+        }
+
+        final int SLEEP_TIME = Timing.time2S();
+        final int ATTEMPTS_TIMEOUT;
+
+        if (maxTimeout < 0) {
+            ATTEMPTS_TIMEOUT = 15;
+        } else {
+            final int result = (int)Math.ceil((double)(maxTimeout * 1000) / (double)SLEEP_TIME);
+            ATTEMPTS_TIMEOUT = result < 1 ? 1 : result;
+        }
+
+        for (int i = 0; i < ATTEMPTS_TIMEOUT; i++) {
+        	if (maxTimeout != 0) {
+                sleep(SLEEP_TIME);
+            }
+            for (SWTBotShell shell : shells()) {
+                if (shellTitle.equals(shell.getText())) {
+                    return shell;
+                }
+            }
+        }
+
+        return null;
+    }
 }
