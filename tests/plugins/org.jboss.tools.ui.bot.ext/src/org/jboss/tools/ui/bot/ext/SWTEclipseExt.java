@@ -33,6 +33,7 @@ import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
@@ -44,7 +45,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.condition.ButtonIsDisabled;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
@@ -109,33 +109,45 @@ public class SWTEclipseExt {
 	// ------------------------------------------------------------
 	// Check methods
 	// ------------------------------------------------------------
-	/**
-	 * Check if view is opened
-	 */
-	public boolean isViewOpened(String view) {
-		try {
-			bot.viewByTitle(view);
-			log.info("View \"" + view + "\" is opened");
-			return true;
-		}
-		catch (WidgetNotFoundException ex) {
-			log.info("View \"" + view + "\" is NOT opened");
-			return false;
-		}
-	}
+
+    /**
+     * Checks if view is opened.
+     * 
+     * @return <code>true</code> if view with given <code>viewTitle</code>
+     *         is opened, <code>false</code> otherwise.
+     */
+    public boolean isViewOpened(final String viewTitle) {
+        if (viewTitle == null) {
+            throw new IllegalArgumentException("viewTitle cannot be null");
+        }
+        for (SWTBotView view : bot.views()) {
+            if (viewTitle.equals(view.getTitle())) {
+                return true;
+            }
+        }
+        return false;
+    }
 	
 	// ------------------------------------------------------------
 	// View related methods
 	// ------------------------------------------------------------
-	/**
-	 * Close view by text
-	 */
-	public void closeView(String view) {
-		try {
-			bot.viewByTitle(view).close();
-		} catch (WidgetNotFoundException ex) {
-			log.info("WARN - Can't close the view \"" + view + "\"");
-		}		
+
+    /**
+     * Close view with given title.
+     * If view is closed nothing happens.
+     * 
+     * @param viewTitle Title of view which should be closed.
+     */
+	public void closeView(final String viewTitle) {
+		if (viewTitle == null) {
+			throw new IllegalArgumentException("viewTitle cannot be null");
+		}
+        for (SWTBotView view : bot.views()) {
+            if (viewTitle.equals(view.getTitle())) {
+                view.close();
+                break;
+            }
+        }		
 	}
 
 	/**
@@ -972,24 +984,46 @@ public class SWTEclipseExt {
 		closeWarningWindowIfOpened(bot, pressContinueButton);
 	}
 
-	 /**
-   * if Confirm Perspective Switch Shell is opened close it and depend on
-   * switchPerspective parameter change current perspective
-   * 
-   * @param switchPerspective
-   */
-  public void closeConfirmPerspectiveSwitchShellIfOpened(
-      boolean switchPerspective) {
-    try {
-      bot.shell(IDELabel.Shell.CONFIRM_PERSPECTIVE_SWITCH).activate();
-      bot.button(
-          switchPerspective ? IDELabel.Button.YES
-              : IDELabel.Button.NO).click();
-    } catch (WidgetNotFoundException wnfe) {
-      // do nothing
+    /**
+     * if Confirm Perspective Switch Shell is opened close it and depend on
+     * switchPerspective parameter change current perspective
+     * 
+     * @param switchPerspective
+     */
+    public void closeConfirmPerspectiveSwitchShellIfOpened(final boolean switchPerspective) {
+        closeConfirmPerspectiveSwitchShellIfOpened(switchPerspective, false);
     }
-  }
-	
+
+    /**
+     * This method closes Confirm Perspective Switch dialog if it is opened.
+     * Otherwise nothing happens.
+     * 
+     * @param switchPerspective If <code>true</code> perspective switches,
+     *                          if <code>false</code> perspective does not switch.
+     * @param rememberMyDecision If <code>true</code> it checks "Remember my decision" option.
+     */
+    public void closeConfirmPerspectiveSwitchShellIfOpened(
+            final boolean switchPerspective, final boolean rememberMyDecision) {
+        while (bot.waitForShell(IDELabel.Shell.PROGRESS_INFORMATION, 1) != null) {
+            // nothing to do, waiting time is included in waitForShell method
+        }
+
+        // Finds confirmation shell and waits for it
+        SWTBotShell confirmationShell = bot.waitForShell(IDELabel.Shell.CONFIRM_PERSPECTIVE_SWITCH);
+
+        // confirmation dialog is not shown, let it be
+        if (confirmationShell == null) {
+            return;
+        }
+
+        // close confirmation dialog
+        confirmationShell.activate();
+        if (rememberMyDecision) {
+            bot.checkBox(IDELabel.Shell.REMEMBER_MY_DECISION).click();
+        }
+        bot.button(switchPerspective ? IDELabel.Button.YES : IDELabel.Button.NO).click();
+    }
+
 	/**
 	 * Returns true if table column specified by column parameter contains item
 	 * 
@@ -1374,7 +1408,9 @@ public class SWTEclipseExt {
     SWTEclipseExt.getMenuFromSubmenu(
         bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.DEBUG_AS),
         IDELabel.Menu.DEBUG_AS_DROOLS_APPLICATION).click();
-  }  
+  }
+  
+  
   /**
    * Returns true if parentNode containss Tree Item with nodeLabel
    * @param parentNode
@@ -1415,30 +1451,42 @@ public class SWTEclipseExt {
 				return false;
 			}	
   }
-  /**
-   * Returns true if editor with editorLabel exists within bot
-   * static version
-   * @param bot
-   * @param editorLabel
-   * @return
-   */
-  public static boolean existEditorWithLabel(SWTBotExt bot, String editorLabel){
-    boolean editorExists = true;
-    try{
-      bot.editorByTitle(editorLabel);
-    } catch (WidgetNotFoundException wnfe){
-      editorExists = false;  
+
+    /**
+     * Returns <code>true</code> if editor with <code>editorLabel</code> exists within bot.
+     * static version
+     * 
+     * @param bot Bot for finding editor.
+     * @param editorLabel Title of tested editor.
+     * @return <code>true</code> if editor with <code>editorLabel</code> exists,
+     *         <code>false</code> otherwise.
+     */
+    public static boolean existEditorWithLabel(final SWTBotExt bot, final String editorLabel) {
+        if (bot == null) {
+            throw new NullPointerException("bot cannot be null");
+        }
+        if (editorLabel == null) {
+            throw new NullPointerException("editorLabel cannot be null");
+        }
+        for (SWTBotEditor editor : bot.editors()) {
+            if (editorLabel.equals(editor.getTitle())) {
+                return true;
+            }
+        }
+        return false;
     }
-    return editorExists;
-  }
-  /**
-   * Returns true if editor with editorLabel exists
-   * @param editorLabel
-   * @return
-   */
-  public boolean existEditorWithLabel(String editorLabel){
-    return SWTEclipseExt.existEditorWithLabel(bot, editorLabel);
-  }  
+
+    /**
+     * Returns <code>true</code> if editor with <code>editorLabel</code> exists.
+     *
+     * @param editorLabel Title of tested editor.
+     * @return <code>true</code> if editor with <code>editorLabel</code> exists,
+     *         <code>false</code> otherwise.
+     */
+    public boolean existEditorWithLabel(final String editorLabel) {
+        return SWTEclipseExt.existEditorWithLabel(bot, editorLabel);
+    }
+
   /**
    * Maximizes active shell
    */
@@ -1473,19 +1521,20 @@ public class SWTEclipseExt {
       return null;
     }
   }
-  /**
-   * Closes all opened Editors
-   */
-  public void closeAllEditors(){
-    try{
-      bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.CLOSE_ALL).click();
-      log.info("All Editors closed");
-    } catch (WidgetNotFoundException wnfe){
-      log.info("No Editors to close");
-    } catch (TimeoutException te){
-      log.info("No Editors to close");
+
+    /**
+     * Closes all opened editors.
+     */
+    public void closeAllEditors() {
+        SWTBotMenu closeAllMenu = bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.CLOSE_ALL);
+        if (closeAllMenu.isEnabled()) {
+            closeAllMenu.click();
+            log.info("All editors were closed");
+        } else {
+            log.info("No editors to close");
+        }
     }
-  }
+
   /**
    * Opens properties dialog of project with projectName
    * @param projectName
@@ -1546,4 +1595,95 @@ public class SWTEclipseExt {
     log.info("File Deleted: " + builder.toString());
   
   }
+
+    // ------------------------------------------------------------
+    // Debugging related methods
+    // ------------------------------------------------------------
+
+    /**
+     * @return <code>true</code> if debug is running, <code>false</code> otherwise
+     */
+    public boolean isDebugging() {
+        return bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.TERMINATE).isEnabled();
+    }
+
+    /**
+     * Goes through all breakpoints while debug is finished.
+     */
+    public void finishDebug() {
+        SWTBotMenu runMenu = bot.menu(IDELabel.Menu.RUN);
+        while (isDebugging()) {
+            if (runMenu.menu(IDELabel.Menu.RESUME).isEnabled()) {
+                runMenu.menu(IDELabel.Menu.RESUME).click();
+            }
+            bot.sleep(Timing.time2S());
+        }
+    }
+
+    /**
+     * Does one step in debugging after stopping at breakpoint.
+     */
+    public void stepOver() {
+        SWTBotMenu stepOverMenu = bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.MENU_STEP_OVER);
+        if (stepOverMenu.isEnabled()) {
+            stepOverMenu.click();
+        } else {
+            log.info("It is not possible to step over. (Step Over menu is disabled)");
+        }
+    }
+
+    /**
+     * Resumes debug (F8).
+     */
+    public void resumeDebug() {
+        SWTBotMenu resumeMenu = bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.MENU_RESUME);
+        if (resumeMenu.isEnabled()) {
+            resumeMenu.click();
+        } else {
+            log.info("It is not possible to resume debugging. (Resume menu is disabled)");
+        }
+    }
+
+    /**
+     * Sets breakpoints at desired lines.
+     * Before settings new breakpoints all old ones are removed.
+     * 
+     * @param breakpointsLineNumbers Line numbers of desired breakpoints
+     */
+    public void setNewBreakpoints(final SWTBotEclipseEditor editor, final int... breakpointsLineNumbers) {
+        removeBreakpoints(editor);
+        setBreakpoints(editor, breakpointsLineNumbers);
+    }
+
+    /**
+     * Remove all breakpoints in active editor.
+     */
+    public void removeBreakpoints(final SWTBotEclipseEditor editor) {
+    	if (editor == null) {
+            throw new NullPointerException("editor cannot be null");
+    	}
+    	editor.show();
+        SWTBotMenu removeBreakpointMenu = bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.REMOVE_ALL_BREAKPOINTS);
+        if (removeBreakpointMenu.isEnabled()) {
+            removeBreakpointMenu.click();
+            bot.button(IDELabel.Button.YES).click();
+        }
+    }
+
+    /**
+     * This methods sets breakpoints at given lines.
+     * 
+     * @param breakpointsLineNumbers Line numbers of wanted breakpoints.
+     */
+    public void setBreakpoints(final SWTBotEclipseEditor editor, final int... breakpointsLineNumbers) {
+        if (editor == null) {
+            throw new NullPointerException("editor cannot be null");
+        }
+        editor.show();
+        for (int i = 0; i < breakpointsLineNumbers.length; i++) {
+            editor.selectRange(breakpointsLineNumbers[i], 0, 0);
+            bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.TOGGLE_BREAKPOINT).click();
+        }
+    }
+
 }
