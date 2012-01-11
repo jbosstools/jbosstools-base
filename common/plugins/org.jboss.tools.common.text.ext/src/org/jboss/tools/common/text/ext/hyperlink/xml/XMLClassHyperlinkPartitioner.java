@@ -98,6 +98,8 @@ public class XMLClassHyperlinkPartitioner extends AbstractHyperlinkPartitioner {
 			// Check that text is a 'class name'
 			text = document.get(bStart + start, bEnd - bStart);
 			int positionInText = offset - start - bStart;
+			if (positionInText >= text.length()) return null;
+			
 			int classNameStart = positionInText;
 			while (classNameStart > 0 && !Character.isWhitespace(text.charAt(classNameStart))) {
 				classNameStart--;
