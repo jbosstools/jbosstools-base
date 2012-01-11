@@ -1581,12 +1581,29 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
 			}
-		public static class JBossCommunityJBossAS7x {
+		public static class JBossCommunityJBossAS70 {
 			/**
-			* represents item : JBoss Community->JBoss AS 7.x
+			* represents item : JBoss Community->JBoss AS 7.0
 			*/
 			public static final IServer LABEL = new IServer() {
-				public String getName() { return "JBoss AS 7.x";}
+				public String getName() { return "JBoss AS 7.0";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("JBoss Community");
+					return l;
+				}
+			};
+			/**
+			* text field labeled 'Directory:'
+			*/
+			public static final String TEXT_DIRECTORY = "Directory:";
+			}
+		public static class JBossCommunityJBossAS71 {
+			/**
+			* represents item : JBoss Community->JBoss AS 7.1
+			*/
+			public static final IServer LABEL = new IServer() {
+				public String getName() { return "JBoss AS 7.1";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Community");
@@ -10625,12 +10642,29 @@ public static String getItemString(IActionItem item) {
 			*/
 			public static final String TEXT_DIRECTORY = "Directory:";
 			}
-		public static class JBossCommunityJBoss7xRuntime {
+		public static class JBossCommunityJBoss70Runtime {
 			/**
-			* represents item : JBoss Community->JBoss 7.x Runtime
+			* represents item : JBoss Community->JBoss 7.0 Runtime
 			*/
 			public static final IServerRuntime LABEL = new IServerRuntime() {
-				public String getName() { return "JBoss 7.x Runtime";}
+				public String getName() { return "JBoss 7.0 Runtime";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("JBoss Community");
+					return l;
+				}
+			};
+			/**
+			* text field labeled 'Directory:'
+			*/
+			public static final String TEXT_DIRECTORY = "Directory:";
+			}
+		public static class JBossCommunityJBoss71Runtime {
+			/**
+			* represents item : JBoss Community->JBoss 7.1 Runtime
+			*/
+			public static final IServerRuntime LABEL = new IServerRuntime() {
+				public String getName() { return "JBoss 7.1 Runtime";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Community");

@@ -4,22 +4,24 @@ import static org.junit.Assert.fail;
 
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS7x;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss7xRuntime;
-import org.jboss.tools.ui.bot.ext.gen.IServer;
-import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS42;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS50;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS51;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS6x;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS70;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS71;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss42Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss50Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss51Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss6xRuntime;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss70Runtime;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss71Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5xRuntime;
+import org.jboss.tools.ui.bot.ext.gen.IServer;
+import org.jboss.tools.ui.bot.ext.gen.IServerRuntime;
 /**
  * adds server (version and type depends on {@link TestConfigurator#server})
  * @author lzoubek
@@ -150,8 +152,11 @@ public class AddServer extends RequirementBase {
 			if (version!=null && version.startsWith("6")) {
 				return new ServerInfo(JBossCommunityJBoss6xRuntime.LABEL,JBossCommunityJBossAS6x.LABEL);				
 			}
-			if (version!=null && version.startsWith("7")) {
-				return new ServerInfo(JBossCommunityJBoss7xRuntime.LABEL,JBossCommunityJBossAS7x.LABEL);				
+			if ("7.0".equals(version)) {
+				return new ServerInfo(JBossCommunityJBoss70Runtime.LABEL,JBossCommunityJBossAS70.LABEL);
+			}
+			if ("7.1".equals(version)) {
+				return new ServerInfo(JBossCommunityJBoss71Runtime.LABEL,JBossCommunityJBossAS71.LABEL);
 			}
 		}
 		failParsing();
