@@ -60,9 +60,12 @@ public class IDELabel {
     public static final String WEB_PROJECT_JBT_STRUTS = "JBoss Tools Struts";
     public static final String RUN = "Run";
     public static final String RUN_ON_SERVER = "Run on Server";
+    public static final String RESUME = "Resume";
+    public static final String TERMINATE = "Terminate";
     public static final String ADD_AND_REMOVE="Add and Remove...";
     public static final String RUN_AS_JAVA_APPLICATION="Java Application";
     public static final String TOGGLE_BREAKPOINT="Toggle Breakpoint";
+    public static final String REMOVE_ALL_BREAKPOINTS = "Remove All Breakpoints";
     public static final String DEBUG_AS = "Debug As";
     public static final String DEBUG_AS_DROOLS_APPLICATION = "Drools Application";
     public static final String OPEN_GUVNOR_CONSOLE = "Open Guvnor Console";
@@ -88,6 +91,9 @@ public class IDELabel {
     public static final String CDI_REFACTOR = "CDI Refactor";
     public static final String CLEAN = "Clean...";
     public static final String CREATE_JSF2_COMPOSITE = "Create JSF2 composite...";
+        public static final String MENU_STEP_OVER = "Step Over";
+        public static final String MENU_RESUME = "Resume";
+        public static final String MENU_TERMINATE = "Terminate";
 	}
 
 	public class Button {
@@ -198,6 +204,8 @@ public class IDELabel {
 	  public static final String JBOSS_DEVELOPER_STUDIO_USAGE = "JBoss Developer Studio Usage";
 	  public static final String JBOSS_TOOLS_USAGE = "JBoss Tools Usage";
 	  public static final String SUBCLIPSE_USAGE = "Subclipse Usage";
+	  public static final String PROGRESS_INFORMATION = "Progress Information";
+        public static final String REMEMBER_MY_DECISION = "Remember my decision";
 	}
 
 	public class EntityGroup {
@@ -263,6 +271,13 @@ public class IDELabel {
 		public static final String JBOSS_TOOLS_PALETTE = "JBoss Tools Palette";
 		public static final String PALETTE = "Palette";
 		public static final String JBOSS_CENTRAL = "JBoss Central";
+		public static final String AGENDA = "Agenda";
+		public static final String AUDIT = "Audit";
+		public static final String GLOBAL_DATA = "Global Data";
+		public static final String PROCESS_INSTANCE = "Process Instance";
+		public static final String PROCESS_INSTANCES = "Process Instances";
+		public static final String RULES = "Rules";
+		public static final String WORKING_MEMORY = "Working Memory";
 	}
 	
 	public class ViewGroup {
