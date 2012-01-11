@@ -134,7 +134,7 @@ public class MarkerResolutionUtils {
 	}
 
 	public static boolean addImport(String qualifiedName, ICompilationUnit compilationUnit, boolean staticFlag, MultiTextEdit rootEdit) throws JavaModelException{
-		if(primitives.contains(qualifiedName))
+		if(primitives.contains(qualifiedName) || qualifiedName.indexOf(DOT) < 0)
 			return false;
 		
 		if(qualifiedName != null){
@@ -143,19 +143,17 @@ public class MarkerResolutionUtils {
 			IPackageDeclaration[] packages = compilationUnit.getPackageDeclarations();
 			
 			// local classes do not need to be imported
-			if(qualifiedName.indexOf(DOT) >= 0){
-				String typePackage = qualifiedName.substring(0,qualifiedName.lastIndexOf(DOT));
-				
-				for(IPackageDeclaration packageDeclaration : packages){
-					if(packageDeclaration.getElementName().equals(typePackage))
-						return false;
-				}
-				
-				for(IPackageDeclaration packageDeclaration : packages){
-					IType type = compilationUnit.getJavaProject().findType(packageDeclaration.getElementName()+DOT+shortName);
-					if(type != null && type.exists())
-						return true;
-				}
+			String typePackage = qualifiedName.substring(0,qualifiedName.lastIndexOf(DOT));
+			
+			for(IPackageDeclaration packageDeclaration : packages){
+				if(packageDeclaration.getElementName().equals(typePackage))
+					return false;
+			}
+			
+			for(IPackageDeclaration packageDeclaration : packages){
+				IType type = compilationUnit.getJavaProject().findType(packageDeclaration.getElementName()+DOT+shortName);
+				if(type != null && type.exists())
+					return true;
 			}
 		
 			IImportDeclaration[] importDeclarations = compilationUnit.getImports(); 
