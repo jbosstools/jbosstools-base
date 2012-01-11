@@ -60,17 +60,29 @@ public class LinuxSystemTest {
 				LinuxSystem.INSTANCE.DEBIAN.getReleaseFilePath(), "squeeze/sid"),				
 			new ReleaseFile(
 				LinuxSystem.INSTANCE.UBUNTU.getReleaseFilePath(),
-				"DISTRIB_ID=Ubuntu\nDISTRIB_RELEASE=9.04\nDISTRIB_CODENAME=jaunty\nDISTRIB_DESCRIPTION=\"Ubuntu 9.04\""));
+				"DISTRIB_ID=Ubuntu\n" +
+				"DISTRIB_RELEASE=9.04\n" +
+				"DISTRIB_CODENAME=jaunty\n" +
+				"DISTRIB_DESCRIPTION=\"Ubuntu 9.04\""));
 		assertEquals("Ubuntu 9.04", linuxSystem.getDistroNameAndVersion());
 	}
 
 	@Test
-	public void canDetectRed() {
+	public void returnsUnknownIfLSBReleaseWithUnknownContent() {
+		LinuxSystem linuxSystem = new LinuxSystemFake(
+			new ReleaseFile(
+				"/etc/lsb-release", 
+				"adietish@redhat.com"));
+		assertEquals("Unknown", linuxSystem.getDistroNameAndVersion());
+	}
+
+	@Test
+	public void canDetectRedHat() {
 		LinuxSystem linuxSystem = new LinuxSystemFake(
 			new ReleaseFile(
 				LinuxSystem.INSTANCE.REDHAT.getReleaseFilePath(),
 				"Red Hat Enterprise Linux Workstation release 6.0 (Santiago)"));
-		assertEquals("RedHat 6.0", linuxSystem.getDistroNameAndVersion());
+		assertEquals("Red Hat 6.0", linuxSystem.getDistroNameAndVersion());
 	}
 
 	@Test
@@ -96,4 +108,14 @@ public class LinuxSystemTest {
 				"CentOS release 5.3 (Final)"));
 		assertEquals("CentOS 5.3", linuxSystem.getDistroNameAndVersion());
 	}
+
+	@Test
+	public void returnsUnknownIfRedHatReleaseWithUnknownContent() {
+		LinuxSystem linuxSystem = new LinuxSystemFake(
+			new ReleaseFile(
+				LinuxSystem.INSTANCE.REDHAT.getReleaseFilePath(), 
+				"adietish@redhat.com"));
+		assertEquals("Unknown", linuxSystem.getDistroNameAndVersion());
+	}
+
 }

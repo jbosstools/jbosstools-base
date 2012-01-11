@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 public class LinuxSystem {
 
 	public static final LinuxSystem INSTANCE = new LinuxSystem();
-
+	
 	/**
 	 * @see <a href="http://linuxmafia.com/faq/Admin/release-files.html"> an
 	 *      extensive list of release file locations</a>
@@ -31,8 +31,7 @@ public class LinuxSystem {
 	 *      href="http://superuser.com/questions/11008/how-do-i-find-out-what-version-of-linux-im-running">
 	 *      release-file strings</a>
 	 */
-	
-	public final LinuxDistro CENTOS = new CentOSDistro();
+	public final LinuxDistro CENTOS = new ReleaseFileContentCheckedDistro("CentOS", "/etc/redhat-release");
 	public final LinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
 	public final LinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
 	public final LinuxDistro GENTOO = new LinuxDistro("Gentoo", "/etc/gentoo-release");
@@ -40,47 +39,16 @@ public class LinuxSystem {
 	public final LinuxDistro KNOPPIX = new LinuxDistro("Knoppix", "knoppix_version");
 	public final LinuxDistro MANDRAKE = new LinuxDistro("Mandrake", "/etc/mandrake-release");
 	public final LinuxDistro MANDRIVA = new LinuxDistro("Mandriva", "/etc/mandriva-release");
-	public final LinuxDistro MINT = new MintLinuxDistro();
+	public final LinuxDistro MINT = new ReleaseFileContentCheckedDistro("LinuxMint", "/etc/lsb-release");
 	public final LinuxDistro PLD = new LinuxDistro("PLD", "/etc/pld-release");
-	public final LinuxDistro REDHAT = new LinuxDistro("RedHat", "/etc/redhat-release");
+	public final LinuxDistro REDHAT = new ReleaseFileContentCheckedDistro("Red Hat", "/etc/redhat-release");
 	public final LinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
 	public final LinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
-	public final LinuxDistro UBUNTU = new LinuxDistro("Ubuntu", "/etc/lsb-release");
+	public final LinuxDistro UBUNTU = new ReleaseFileContentCheckedDistro("Ubuntu", "/etc/lsb-release");
 
 	private final LinuxDistro[] ALL = new LinuxDistro[] {
-			/**
-			 * Attention: CentOS uses the redhat release file
-			 * <p>
-			 * <tt>/etc/redhat-release</tt>
-			 * <p>
-			 * We therefore have to check CentOS before we check for Red Hat. 
-			 * It is not reliable to check Red Hat first since that check would
-			 * result in a false positive on CentOS systems.
-			 */
 			CENTOS,
-			REDHAT,
-			/**
-			 * Attention: Mint uses the default
-			 * <p>
-			 * <tt>/etc/lsb-release</tt>
-			 * <p>
-			 * We therefore have to check Mint before we check Ubuntu. 
-			 * Checking Ubuntu first is not reliable since it is resulting in a 
-			 * false positive on Mint systems.
-			 */
 			MINT,
-			/**
-			 * Attention: ubuntu has 2 release files
-			 * <ul>
-			 * <li>/etc/lsb-release</li>
-			 * <li>/etc/debian_version</li>
-			 * </ul>
-			 * <p>
-			 * We therefore have to check for Ubuntu before we check for Debian. 
-			 * Checking for Debian results in a false positive on Ubuntu systems.
-			 * @see https://bugs.launchpad.net/ubuntu/+source/base-files/+bug/19353
-			 * @see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=444678
-			 */
 			UBUNTU,
 			DEBIAN,
 			FEDORA,
@@ -89,10 +57,11 @@ public class LinuxSystem {
 			MANDRAKE,
 			MANDRIVA,
 			PLD,
+			REDHAT,
 			SLACKWARE,
 			SUSE,
 			YELLOWDOG
-		};
+	};
 
 	public LinuxDistro getDistro() {
 		for (LinuxDistro distro : ALL) {
@@ -109,46 +78,7 @@ public class LinuxSystem {
 		if (distro != null) {
 			return distro.getNameAndVersion();
 		} else {
-			return "";
-		}
-	}
-
-	protected class CentOSDistro extends LinuxDistro {
-		private static final String CENTOS_NAME = "CentOS";
-		private static final String REDHAT_RELEASE_FILE = "/etc/redhat-release";
-		
-		protected CentOSDistro() {
-			super(CENTOS_NAME, REDHAT_RELEASE_FILE);
-		}
-
-		/**
-		 * Checks if the current system is a CentOS distribution. 
-		 * It checks if /etc/lsb-release contains <tt>CentOS</tt>.
-		 * @return true if /etc/redhat-release contains CentoOS
-		 */
-		@Override
-		protected boolean isDistro() {
-			return distroFileContains(CENTOS_NAME);
-		}
-	}
-
-	protected class MintLinuxDistro extends LinuxDistro {
-		private static final String MINTLINUX_NAME = "LinuxMint";
-		private static final String LSB_RELEASE_FILE = "/etc/lsb-release";
-		
-		protected MintLinuxDistro() {
-			super(MINTLINUX_NAME, LSB_RELEASE_FILE);
-		}
-
-		/**
-		 * Checks if the current system is a Mint Linux distribution. 
-		 * It checks if /etc/lsb-release contains <tt>LinuxMint</tt>.
-		 * We could also check for presence of /etc/linuxmint(/info)
-		 * @return true if /etc/lsb-release contains LinuxMint
-		 */
-		@Override
-		protected boolean isDistro() {
-			return distroFileContains(MINTLINUX_NAME);
+			return "Unknown";
 		}
 	}
 
@@ -157,7 +87,7 @@ public class LinuxSystem {
 				&& releaseFilePath.length() > 0
 				&& new File(releaseFilePath).exists();
 	}
-	
+
 	protected String getDistroFileContent(String filePath) throws IOException {
 		int charachtersToRead = 1024;
 		StringBuilder builder = new StringBuilder(charachtersToRead);
@@ -192,7 +122,7 @@ public class LinuxSystem {
 		protected boolean isDistro() {
 			return exists(getReleaseFilePath());
 		}
-									
+
 		public String getName() {
 			return name;
 		}
@@ -229,10 +159,25 @@ public class LinuxSystem {
 			return false;
 
 		}
-		
+
 		@Override
 		public String toString() {
 			return name;
+		}
+	}
+
+	/**
+	 * A distribution definition that checks for presence of the given distro
+	 * name in the given release file.
+	 */
+	public class ReleaseFileContentCheckedDistro extends LinuxDistro {
+
+		public ReleaseFileContentCheckedDistro(String name, String releaseFilePath) {
+			super(name, releaseFilePath);
+		}
+
+		protected boolean isDistro() {
+			return distroFileContains(getName());
 		}
 	}
 }
