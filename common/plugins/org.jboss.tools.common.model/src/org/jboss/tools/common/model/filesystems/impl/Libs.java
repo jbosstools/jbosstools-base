@@ -49,6 +49,7 @@ public class Libs implements IElementChangedListener {
 	Set<String> projects = new HashSet<String>();
 
 	LibraryNames libraryNames = new LibraryNames();
+	int excudedState = 0;
 
 	List<LibsListener> listeners = new ArrayList<LibsListener>();
 	
@@ -83,10 +84,16 @@ public class Libs implements IElementChangedListener {
 	}
 
 	public boolean update() {
+		boolean result = false;
 		int cpv = classpathVersion;
-		boolean result = hasToUpdatePaths() && updatePaths(getNewPaths(), cpv);
-		if(result) fire();
-		if(paths == null && result) return true;
+		if(hasToUpdatePaths()) {
+			result = updatePaths(getNewPaths(), cpv);
+			if(isExcludedStateChanged()) {
+				result = true;
+			}
+			if(result) fire();
+			if(paths == null && result) return true;
+		}
 	
 		if(paths != null) updateFileSystems(paths);
 		fsVersion = pathsVersion;
@@ -130,6 +137,38 @@ public class Libs implements IElementChangedListener {
 			}
 		}
 		projects = result;
+	}
+
+	private boolean isExcludedStateChanged() {
+		try {
+			int es = computeExcludedState();
+			if(es != excudedState) {
+				excudedState = es;
+				return true;
+			}
+		} catch (JavaModelException e) {
+			ModelPlugin.getDefault().logError(e);
+		}
+		return false;
+	}
+
+	private int computeExcludedState() throws JavaModelException {
+		int result = 0;
+		IJavaProject javaProject = EclipseResourceUtil.getJavaProject(getProjectResource());
+		if(javaProject != null) {
+			IClasspathEntry[] es = javaProject.getResolvedClasspath(true);
+			for (int i = 0; i < es.length; i++) {
+				IPath p = es[i].getPath();
+				IPath[] ps = es[i].getExclusionPatterns();
+				if(ps != null && ps.length > 0) {
+					for (int j = 0; j < ps.length; j++) {
+						String key = p.toString() + "/" + ps[j].toString();
+						result += key.hashCode();
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 	private synchronized boolean updatePaths(List<String> newPaths, int cpv) {
