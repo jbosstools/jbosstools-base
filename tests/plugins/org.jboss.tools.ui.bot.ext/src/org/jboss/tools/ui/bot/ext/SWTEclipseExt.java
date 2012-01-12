@@ -1004,8 +1004,8 @@ public class SWTEclipseExt {
      */
     public void closeConfirmPerspectiveSwitchShellIfOpened(
             final boolean switchPerspective, final boolean rememberMyDecision) {
-        while (bot.waitForShell(IDELabel.Shell.PROGRESS_INFORMATION, 1) != null) {
-            // nothing to do, waiting time is included in waitForShell method
+        while (bot.waitForShell(IDELabel.Shell.PROGRESS_INFORMATION, 0) != null) {
+            bot.sleep(Timing.time2S());
         }
 
         // Finds confirmation shell and waits for it

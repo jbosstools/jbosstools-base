@@ -224,18 +224,17 @@ public class SWTBotExt extends SWTWorkbenchBot {
         if (maxTimeout < 0) {
             ATTEMPTS_TIMEOUT = 15;
         } else {
-            final int result = (int)Math.ceil((double)(maxTimeout * 1000) / (double)SLEEP_TIME);
-            ATTEMPTS_TIMEOUT = result < 1 ? 1 : result;
+            ATTEMPTS_TIMEOUT = (int)Math.ceil((double)(maxTimeout * 1000) / (double)SLEEP_TIME);
         }
 
-        for (int i = 0; i < ATTEMPTS_TIMEOUT; i++) {
-        	if (maxTimeout != 0) {
-                sleep(SLEEP_TIME);
-            }
+        for (int i = 0; i <= ATTEMPTS_TIMEOUT; i++) {
             for (SWTBotShell shell : shells()) {
                 if (shellTitle.equals(shell.getText())) {
                     return shell;
                 }
+            }
+            if (i < ATTEMPTS_TIMEOUT) {
+                sleep(SLEEP_TIME);
             }
         }
 
