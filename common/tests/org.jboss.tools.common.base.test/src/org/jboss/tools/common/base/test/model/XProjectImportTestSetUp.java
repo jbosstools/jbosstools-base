@@ -1,4 +1,4 @@
-package org.jboss.tools.common.model.util.test;
+package org.jboss.tools.common.base.test.model;
 
 import junit.framework.Test;
 
