@@ -16,5 +16,5 @@ package org.jboss.tools.ui.bot.ext.types;
 public class JobLists {
 
 	public static String[] ignoredJobs = { "Process Console Input Job", "Usage Data Event consumer",
-			"Updating indexes","Reporting JBoss Developer Studio usage" };
+			"Updating indexes","Reporting JBoss Developer Studio usage", "Asking User to allow reporting" };
 }
