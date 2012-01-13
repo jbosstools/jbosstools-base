@@ -165,16 +165,32 @@ public class SWTEclipseExt {
 	 * @param type
 	 */
 	public static SWTBot showView(SWTBotExt bot, ViewType type) {
+		
 		SWTBotMenu menu1 = bot.menu(IDELabel.Menu.WINDOW);
 		SWTBotMenu menu2 = menu1.menu(IDELabel.Menu.SHOW_VIEW);
 		menu2.menu(IDELabel.Menu.OTHER).click();
-    bot.shell(IDELabel.Shell.SHOW_VIEW).activate();
-		bot.tree().expandNode(type.getGroupLabel()).expandNode(
-				type.getViewLabel()).select();
+			
+		SWTBotTreeItem[] theItems = bot.tree().getAllItems();
+		for (SWTBotTreeItem i : theItems) {
+			log.info("SWTBotTreeItem = item = " + i);
+		}
+
+		/* ldimaggi - Dec 2011 - List of views that includes "Problems" selection is slow to appear 
+		 * when ESB tests are run via mvn - https://issues.jboss.org/browse/JBQA-5813
+		 */
+		waitForViewInList (bot, type.getGroupLabel(), 2 );
+
+		/* ldimaggi - Dec 2011 - And - the "Problems" view is also slow to appear when ESB 
+		 * tests are run via mvn - https://issues.jboss.org/browse/JBQA-5813
+		 */
+		waitForView (bot, type.getGroupLabel(), type.getViewLabel(), 3 );
+		
 		bot.button(IDELabel.Button.OK).click();
+//		bot.sleep(30000l);		
 
 		SWTBot viewBot = bot.viewByTitle(type.getViewLabel()).bot();
-		return viewBot;
+//		bot.sleep(30000l);
+		return viewBot;		
 	}
 
 	// ------------------------------------------------------------
@@ -376,6 +392,43 @@ public class SWTEclipseExt {
 	// Subroutines
 	// ------------------------------------------------------------
 
+	/* ldimaggi - Dec 2011 - For dealing with view refresh issues - https://issues.jboss.org/browse/JBQA-5813 */
+	public static void waitForViewInList(SWTBotExt theBot, String theGroupLabel, int counter) {
+		int itemsCount = theBot.tree().expandNode(theGroupLabel).getItems().length;
+		while (itemsCount < counter) {
+			SWTBotTreeItem[] theItems = theBot.tree().expandNode(theGroupLabel)
+					.getItems();
+			itemsCount = theItems.length;
+			for (SWTBotTreeItem i : theItems) {
+				log.info("SWTBotTreeItem = item = " + i);
+			}
+			//theBot.sleep(3000l);
+			theBot.sleep(Timing.time3S());
+		}
+	}
+	
+	/* ldimaggi - Dec 2011 - For dealing with view refresh issues https://issues.jboss.org/browse/JBQA-5813 */
+	public static void waitForView (SWTBotExt theBot, String groupLabel, String viewLabel, int counterLimit ) {
+		SWTBotTreeItem tempItem = null;
+		int counter = 0;
+//		System.out.println ("DEBUG - got it - " + theBot.tree().expandNode(groupLabel).expandNode(viewLabel).getText() );	
+		
+		while ((tempItem == null) && (counter < counterLimit) ){
+			theBot.shell(IDELabel.Shell.SHOW_VIEW).activate();	
+			
+			/* Re-expand the tree - commented out as this does not seem to help */
+			//theBot.tree().collapseNode(groupLabel);
+			//theBot.tree().expandNode(groupLabel);
+			
+			log.info ("Located Problems view - " + theBot.tree().expandNode(groupLabel).expandNode(viewLabel).getText() );
+			tempItem = theBot.tree().expandNode(groupLabel).expandNode(viewLabel).select();
+			//theBot.sleep(3000l);
+			theBot.sleep(Timing.time3S());
+			counter++;
+		}
+	}
+	
+	
 	/**
 	 * Invoke Create new entity dialog (it means File -> New -> EntityType ->
 	 * Next )
