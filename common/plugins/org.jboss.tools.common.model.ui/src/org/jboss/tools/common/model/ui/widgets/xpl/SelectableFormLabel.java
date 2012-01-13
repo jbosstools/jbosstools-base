@@ -101,7 +101,9 @@ public class SelectableFormLabel extends FormLabel {
 				if (hasFocus) {
 					hasFocus=false;
 					notifyListeners(SWT.Selection);
-					redraw();
+					if(!SelectableFormLabel.this.isDisposed()) {
+						redraw();
+					}
 				}
 			}
 		});
