@@ -1231,11 +1231,12 @@ public class SWTEclipseExt {
 		//bot.sleep(30000l);
 		//System.out.println (treeItem.contextMenu("Run As").menu("2 Java Application").getText());
 
-		bot.sleep(30000l);
+		//bot.sleep(30000l);
+		bot.sleep(Timing.time1S());
 		treeItem.contextMenu("Run As").menu("2 Java Application").click();		
 		//runJavaApplication("helloworld_testclient","org.jboss.soa.esb.samples.quickstart.helloworld.test.SendJMSMessage"," ");
-		bot.sleep(30000l);	// This is needed to enable the test to run successfully to completion
-		
+		//bot.sleep(30000l);	// This is needed to enable the test to run successfully to completion
+		bot.waitForShell(IDELabel.Shell.PROGRESS_INFORMATION);
 	}
 
 	/**
