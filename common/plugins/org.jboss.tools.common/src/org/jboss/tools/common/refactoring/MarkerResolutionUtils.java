@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotatable;
@@ -35,6 +36,7 @@ import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
+import org.eclipse.ltk.core.refactoring.TextChange;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MultiTextEdit;
@@ -44,6 +46,7 @@ import org.jboss.tools.common.util.EclipseJavaUtil;
 
 public class MarkerResolutionUtils {
 	public static final String DOT = ".";  //$NON-NLS-1$
+	public static final String DOTS = "...";  //$NON-NLS-1$
 	public static final String COMMA = ",";  //$NON-NLS-1$
 	public static final String SEMICOLON = ";";  //$NON-NLS-1$
 	public static final String SPACE = " ";  //$NON-NLS-1$
@@ -54,11 +57,17 @@ public class MarkerResolutionUtils {
 	public static final String EXTENDS = "extends";  //$NON-NLS-1$
 	public static final String OPEN_BRACE = "{"; //$NON-NLS-1$
 	public static final String CLOSE_BRACE = "}"; //$NON-NLS-1$
+	public static final String OPEN_BOLD = "<b>"; //$NON-NLS-1$
+	public static final String CLOSE_BOLD = "</b>"; //$NON-NLS-1$
+	public static final String NEW_LINE = "\n"; //$NON-NLS-1$
+	public static final String LINE_BREAK = "<br>"; //$NON-NLS-1$
 	
 	public static final char C_SPACE = ' ';  //$NON-NLS-1$
 	public static final char C_TAB = '\t';
 	public static final char C_CARRIAGE_RETURN = '\r';
 	public static final char C_NEW_LINE = '\n';
+	
+	private static final int NUMBER_OF_STRINGS = 3;
 
 	static final HashSet<String> primitives = new HashSet<String>();
 	static{
@@ -568,5 +577,61 @@ public class MarkerResolutionUtils {
 		}
 		return null;
 	}
-
+	
+	public static String getPreview(TextChange previewChange) throws CoreException{
+		String preview = previewChange.getPreviewContent(new NullProgressMonitor());
+		TextEdit edit = previewChange.getEdit();
+		String text = null;
+		if(edit instanceof InsertEdit){
+			text = ((InsertEdit) edit).getText();
+		}else if(edit instanceof ReplaceEdit){
+			text = ((ReplaceEdit) edit).getText();
+		}
+		if(edit != null && text != null){
+			int offset = edit.getOffset();
+			int length = text.length();
+			
+			// select
+			String before = preview.substring(0, offset);
+			String after = preview.substring(offset+length);
+			preview = before+OPEN_BOLD+text+CLOSE_BOLD+after;
+			
+			// cut
+			int position = offset;
+			int count = NUMBER_OF_STRINGS;
+			String startText = NEW_LINE;
+			while(position >= 0){
+				char c = preview.charAt(position);
+				if(c == C_NEW_LINE){
+					count--;
+					if(count == 0){
+						position++;
+						startText = DOTS+startText;
+						break;
+					}
+				}
+				position--;
+			}
+			int start = position;
+			String endText = NEW_LINE;
+			position = offset+length;
+			count = NUMBER_OF_STRINGS;
+			while(position < preview.length()-1){
+				char c = preview.charAt(position);
+				if(c == C_NEW_LINE){
+					count--;
+					if(count == 0){
+						endText += DOTS;
+						break;
+					}
+				}
+				position++;
+			}
+			preview = startText+preview.substring(start, position)+endText;
+			
+			// format
+			preview = preview.replaceAll(NEW_LINE, LINE_BREAK);
+		}
+		return preview;
+	}
 }

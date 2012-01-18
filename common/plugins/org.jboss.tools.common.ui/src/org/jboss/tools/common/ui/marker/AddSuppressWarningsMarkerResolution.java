@@ -39,6 +39,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
+import org.eclipse.ltk.core.refactoring.TextChange;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
@@ -49,6 +50,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.preferences.SeverityPreferences;
+import org.jboss.tools.common.refactoring.MarkerResolutionUtils;
 import org.jboss.tools.common.ui.CommonUIMessages;
 import org.jboss.tools.common.ui.CommonUIPlugin;
 import org.jboss.tools.common.validation.WarningNameManager;
@@ -70,6 +72,7 @@ public class AddSuppressWarningsMarkerResolution implements
 	private IAnnotatable element;
 	private String preferenceKey;
 	private String label;
+	private String description;
 	
 	public AddSuppressWarningsMarkerResolution(IFile file, IJavaElement element, String preferenceKey){
 		this.file = file;
@@ -85,6 +88,19 @@ public class AddSuppressWarningsMarkerResolution implements
 		if(element instanceof IMethod){
 			label += "()";
 		}
+		
+		description = getPreview();
+	}
+	
+	private String getPreview(){
+		TextChange previewChange = getPreviewChange();
+		
+		try {
+			return MarkerResolutionUtils.getPreview(previewChange);
+		} catch (CoreException e) {
+			CommonUIPlugin.getDefault().logError(e);
+		}
+		return label;
 	}
 	
 	private IAnnotatable getAnnatatableElement(IJavaElement element){
@@ -102,6 +118,42 @@ public class AddSuppressWarningsMarkerResolution implements
 	public String getLabel() {
 		return label;
 	}
+	
+	private TextChange getPreviewChange(){
+		if(element != null && preferenceKey != null){
+			disablePreference();
+			try {
+				ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
+				if(original == null) {
+					return null;
+				}
+				
+				return getChange(original);
+			} catch (JavaModelException e) {
+				CommonUIPlugin.getDefault().logError(e);
+			}
+		}
+		return null;
+	}
+	
+	private CompilationUnitChange getChange(ICompilationUnit compilationUnit) throws JavaModelException{
+		CompilationUnit cuNode = ASTTools.buildASTRoot(compilationUnit);
+		
+		IJavaElement workingCopyElement = findWorkingCopy(compilationUnit, (IJavaElement)element);
+		ASTNode elementNode = null;
+		if(workingCopyElement instanceof JavaElement){
+			elementNode = ((JavaElement) workingCopyElement).findNode(cuNode);
+		}
+		
+		IAnnotation annotation = findAnnotation(workingCopyElement);
+		CompilationUnitChange change = null;
+		if(annotation != null){
+			change = updateAnnotation(SUPPRESS_WARNINGS_ANNOTATION, preferenceKey, compilationUnit, annotation);
+		}else{
+			change = addAnnotation(SUPPRESS_WARNINGS_ANNOTATION+"(\""+preferenceKey+"\")", compilationUnit, workingCopyElement, elementNode);
+		}
+		return change;
+	}
 
 	@Override
 	public void run(IMarker marker) {
@@ -114,21 +166,7 @@ public class AddSuppressWarningsMarkerResolution implements
 				}
 				ICompilationUnit compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
 				
-				CompilationUnit cuNode = ASTTools.buildASTRoot(compilationUnit);
-				
-				IJavaElement workingCopyElement = findWorkingCopy(compilationUnit, (IJavaElement)element);
-				ASTNode elementNode = null;
-				if(workingCopyElement instanceof JavaElement){
-					elementNode = ((JavaElement) workingCopyElement).findNode(cuNode);
-				}
-				
-				IAnnotation annotation = findAnnotation(workingCopyElement);
-				CompilationUnitChange change = null;
-				if(annotation != null){
-					change = updateAnnotation(SUPPRESS_WARNINGS_ANNOTATION, preferenceKey, compilationUnit, annotation);
-				}else{
-					change = addAnnotation(SUPPRESS_WARNINGS_ANNOTATION+"(\""+preferenceKey+"\")", compilationUnit, workingCopyElement, elementNode);
-				}
+				CompilationUnitChange change = getChange(compilationUnit);
 				
 				if(change != null){
 					change.perform(new NullProgressMonitor());
@@ -233,7 +271,7 @@ public class AddSuppressWarningsMarkerResolution implements
 	}
 	@Override
 	public String getDescription() {
-		return label;
+		return description;
 	}
 
 	@Override
