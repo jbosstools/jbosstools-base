@@ -121,7 +121,6 @@ public class AddSuppressWarningsMarkerResolution implements
 	
 	private TextChange getPreviewChange(){
 		if(element != null && preferenceKey != null){
-			disablePreference();
 			try {
 				ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
 				if(original == null) {
