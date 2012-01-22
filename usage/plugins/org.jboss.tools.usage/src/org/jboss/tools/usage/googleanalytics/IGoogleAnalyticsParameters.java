@@ -33,6 +33,7 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_PAGE_REQUEST = "utmp";
 	public static final String PARAM_ACCOUNT_NAME = "utmac";
 	public static final String PARAM_HOST_NAME = "utmhn";
+	public static final String PARAM_EVENT_TRACKING = "utme";
 	public static final String PARAM_COOKIES = "utmcc";
 	public static final String PARAM_COOKIES_UNIQUE_VISITOR_ID = "__utma";
 	public static final String PARAM_COOKIES_SESSION = "__utmb";
@@ -110,4 +111,8 @@ public interface IGoogleAnalyticsParameters {
 	 * @return a user defined value
 	 */
 	public String getUserDefined();
+
+	public String getCentralEnabled();
+	
+	public String getCentralEnabledValue();
 }

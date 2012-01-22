@@ -70,6 +70,8 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		// appendParameter(IGoogleAnalyticsParameters.PARAM_HID,
 		// getRandomNumber(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_FLASH_VERSION, googleParameters.getFlashVersion(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_EVENT_TRACKING, googleParameters.getCentralEnabled(), builder);
+		
 		appendParameter(IGoogleAnalyticsParameters.PARAM_REFERRAL, googleParameters.getReferral(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getURI(), builder);
 

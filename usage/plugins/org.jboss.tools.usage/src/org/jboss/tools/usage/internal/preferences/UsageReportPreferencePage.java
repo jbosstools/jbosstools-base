@@ -127,6 +127,9 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_CurrentUsageHit,
 				getFormattedDate(eclipseEnvironment.getCurrentVisit()), builder,
 				styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_JBossCentralEnabled,
+				eclipseEnvironment.getCentralEnabledValue(), builder,
+				styles);
 
 		text.setText(builder.toString());
 
