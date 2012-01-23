@@ -608,8 +608,6 @@ public class MarkerResolutionUtils {
 		private ArrayList<TextEdit> edits = new ArrayList<TextEdit>();
 		private ArrayList<Region> regions = new ArrayList<Region>();
 		
-		//private int lastOffset = 0;
-		
 		public EditSet(TextEdit edit){
 			addEdits(edit);
 			sort();
@@ -658,27 +656,15 @@ public class MarkerResolutionUtils {
 					text = ((ReplaceEdit) edit).getText();
 					addings = text.length()-edit.getLength();
 				}else if(edit instanceof DeleteEdit){
-//					text = NEW_LINE+current.substring(edit.getOffset(), edit.getOffset()+edit.getLength());
-					//addings = -text.length();
-					
 					int offset = edit.getOffset()+delta;
 					int length = edit.getLength();
-					regions.add(new Region(offset, length));
-					//lastOffset = offset+length;
-//					
-//					// select
-//					String before = preview.substring(0, offset);
-//					String after = preview.substring(offset);
-//					preview = before+OPEN_DEL+text+CLOSE_DEL+after;
-//					
-//					delta += OPEN_DEL.length()+CLOSE_DEL.length()+addings;
-//					text = null;
+					regions.add(new Region(offset, 0));
+					delta -= length;
 				}
 				if(text != null){
 					int offset = edit.getOffset()+delta;
 					int length = text.length();
 					regions.add(new Region(offset, length));
-					//lastOffset = offset+length;
 					
 					// select
 					String before = preview.substring(0, offset);
@@ -700,6 +686,9 @@ public class MarkerResolutionUtils {
 				int lowLimit = 0;
 				if(prevRegion != null){
 					lowLimit = prevRegion.offset+prevRegion.length;
+				}
+				if(position > preview.length()-1){
+					position = preview.length()-1;
 				}
 				while(position >= lowLimit){
 					char c = preview.charAt(position);
@@ -751,7 +740,9 @@ public class MarkerResolutionUtils {
 				if(index == 0 && region.offset != 0){
 					buffer.append(DOTS+NEW_LINE);
 				}
-				buffer.append(preview.substring(region.offset, region.offset + region.length));
+				if(region.length > 0){
+					buffer.append(preview.substring(region.offset, region.offset + region.length));
+				}
 				if((region.offset + region.length) < (preview.length()-1)){
 					if(index == regions.size()-1){
 						buffer.append(NEW_LINE+DOTS);
