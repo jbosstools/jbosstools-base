@@ -26,6 +26,7 @@ import org.osgi.framework.Bundle;
  */
 public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment implements IJBossToolsEclipseEnvironment {
 
+	private static final String NOT_INSTALLED = "N/A";  //$NON-NLS-1$
 	private static final String CLOSED_BRACKET = ")"; //$NON-NLS-1$
 	private static final String TRUE = "true";
 	private static final String FALSE = "false";
@@ -74,7 +75,7 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 	public String getCentralEnabledValue() {
 		Bundle bundle = Platform.getBundle(JBOSS_CENTRAL_PLUGIN_ID);
 		if (bundle == null) {
-			return FALSE;
+			return NOT_INSTALLED;
 		}
 		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(JBOSS_CENTRAL_PLUGIN_ID);
 		boolean showOnStartup = prefs.getBoolean(SHOW_JBOSS_CENTRAL_ON_STARTUP,
