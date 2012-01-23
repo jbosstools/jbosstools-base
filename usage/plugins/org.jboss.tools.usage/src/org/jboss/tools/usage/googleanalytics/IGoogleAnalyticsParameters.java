@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.usage.googleanalytics;
 
+import org.jboss.tools.usage.googleanalytics.AbstractGoogleAnalyticsParameters.GoogleAnalyticsEvent;
+
 /**
  * An interface that provides methods for all parameters that google analytics
  * needs to know about.
@@ -112,7 +114,10 @@ public interface IGoogleAnalyticsParameters {
 	 */
 	public String getUserDefined();
 
-	public String getCentralEnabled();
+	/**
+	 * TODO: support multiple events. 
+	 */
+	public GoogleAnalyticsEvent getEvent();
 	
 	public String getCentralEnabledValue();
 }

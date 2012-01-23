@@ -13,6 +13,7 @@ package org.jboss.tools.usage.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
@@ -89,6 +90,19 @@ public class GoogleAnalyticsUrlStrategyTest {
 		assertEquals(2, eclipseEnvironment.getVisitCount());
 		eclipseEnvironment.visit();
 		assertEquals(3, eclipseEnvironment.getVisitCount());
+	}
+	
+	@Test
+	public void verifyCentralIsStarted() throws IOException {
+		IFocusPoint focusPoint = new FocusPoint("testing").setChild(new FocusPoint("strategy"));
+		String url = urlStrategy.build(focusPoint);
+		
+		String centralEnabled = new ReportingEclipseEnvironmentFake().getCentralEnabledValue();
+		
+		assertTrue(areEqualParameterValues(
+				IGoogleAnalyticsParameters.PARAM_EVENT_TRACKING
+				, url
+				, IGoogleAnalyticsParameters.PARAM_EVENT_TRACKING + "=5(central*showOnStartup*" + centralEnabled + ")&"));
 	}
 	
 	private boolean areEqualParameterValues(String paramName, String url, String targetUrl) {

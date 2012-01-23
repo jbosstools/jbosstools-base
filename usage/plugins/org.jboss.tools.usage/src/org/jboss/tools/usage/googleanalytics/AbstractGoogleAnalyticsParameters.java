@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.usage.googleanalytics;
 
+import java.text.MessageFormat;
+
 
 /**
  * @author Andre Dietisheim
@@ -46,5 +48,34 @@ public abstract class AbstractGoogleAnalyticsParameters implements IGoogleAnalyt
 	
 	public String getUserDefined() {
 		return userDefined;
+	}
+	
+	public static class GoogleAnalyticsEvent {
+		
+		private String name;
+		private String label;
+		private String value;
+
+		public GoogleAnalyticsEvent(String name, String label, String value) {
+			this.name = name;
+			this.label = label;
+			this.value = value;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getLabel() {
+			return label;
+		}
+
+		public String getValue() {
+			return value;
+		}
+		
+		public String toString() {
+			return MessageFormat.format("5({0}*{1}*{2})", name, label, value);
+		}
 	}
 }

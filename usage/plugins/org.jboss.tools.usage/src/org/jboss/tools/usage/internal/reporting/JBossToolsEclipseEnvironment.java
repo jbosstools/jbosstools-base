@@ -27,14 +27,12 @@ import org.osgi.framework.Bundle;
 public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment implements IJBossToolsEclipseEnvironment {
 
 	private static final String NOT_INSTALLED = "N/A";  //$NON-NLS-1$
-	private static final String CLOSED_BRACKET = ")"; //$NON-NLS-1$
 	private static final String TRUE = "true";
 	private static final String FALSE = "false";
 	private static final char JBOSS_COMPONENTS_DELIMITER = '-';
 	private static final String JBOSS_CENTRAL_PLUGIN_ID = "org.jboss.tools.central"; //$NON-NLS-1$
 	private static final String SHOW_JBOSS_CENTRAL_ON_STARTUP = "showJBossCentralOnStartup"; //$NON-NLS-1$
 	private static final boolean SHOW_JBOSS_CENTRAL_ON_STARTUP_DEFAULT_VALUE = true;
-	private static final String JBOSS_CENTRAL_PARAMETER = "5(central*showOnStartup*"; //$NON-NLS-1$
 
 	public JBossToolsEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
 		super(accountName, hostName, preferences);
@@ -68,8 +66,11 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 		return getLinuxDistroNameAndVersion() != null;
 	}
 
-	public String getCentralEnabled() {
-		return JBOSS_CENTRAL_PARAMETER + getCentralEnabledValue() + CLOSED_BRACKET;
+	/**
+	 * TODO: support multiple events. 
+	 */
+	public GoogleAnalyticsEvent getEvent() {
+		return new GoogleAnalyticsEvent("central", "showOnStartup", getCentralEnabledValue());
 	}
 
 	public String getCentralEnabledValue() {
