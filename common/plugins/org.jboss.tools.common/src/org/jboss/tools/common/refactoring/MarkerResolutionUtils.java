@@ -60,6 +60,8 @@ public class MarkerResolutionUtils {
 	public static final String CLOSE_BRACE = "}"; //$NON-NLS-1$
 	public static final String OPEN_BOLD = "<b>"; //$NON-NLS-1$
 	public static final String CLOSE_BOLD = "</b>"; //$NON-NLS-1$
+	public static final String OPEN_DEL = "<del>"; //$NON-NLS-1$
+	public static final String CLOSE_DEL = "</del>"; //$NON-NLS-1$
 	public static final String NEW_LINE = "\n"; //$NON-NLS-1$
 	public static final String LINE_BREAK = "<br>"; //$NON-NLS-1$
 	
@@ -584,13 +586,14 @@ public class MarkerResolutionUtils {
 			return null;
 		
 		String preview = previewChange.getPreviewContent(new NullProgressMonitor());
+		String current = previewChange.getCurrentContent(new NullProgressMonitor());
 		
 		TextEdit edit = previewChange.getEdit();
 		
 		EditSet editSet = new EditSet(edit);
 		
 		// select
-		preview = editSet.select(preview);
+		preview = editSet.select(preview, current);
 		
 		// cut
 		preview = editSet.cut(preview);
@@ -605,7 +608,7 @@ public class MarkerResolutionUtils {
 		private ArrayList<TextEdit> edits = new ArrayList<TextEdit>();
 		private ArrayList<Region> regions = new ArrayList<Region>();
 		
-		private int lastOffset = 0;
+		//private int lastOffset = 0;
 		
 		public EditSet(TextEdit edit){
 			addEdits(edit);
@@ -620,21 +623,30 @@ public class MarkerResolutionUtils {
 		}
 		
 		private void sort(){
-		}
-		
-		private int getFirstOffset(){
-			if(edits.size() > 0){
-				return edits.get(0).getOffset();
-			}else{
-				return 0;
+			if(edits.size() < 2){
+				return;
 			}
+			ArrayList<TextEdit> sorted = new ArrayList<TextEdit>();
+			int offset = 0;
+			int distance = 0;
+			int number = edits.size();
+			for(int i = 0; i < number; i++){
+				TextEdit edit = edits.get(0);
+				distance = edit.getOffset()-offset;
+				for(TextEdit e : edits){
+					if((e.getOffset()-offset) < distance){
+						distance = e.getOffset()-offset;
+						edit = e;
+					}
+				}
+				sorted.add(edit);
+				edits.remove(edit);
+				offset = edit.getOffset();
+			}
+			edits = sorted;
 		}
 		
-		private int getLastOffset(){
-			return lastOffset;
-		}
-		
-		public String select(String preview){
+		public String select(String preview, String current){
 			int delta = 0;
 			for(TextEdit edit : edits){
 				String text = null;
@@ -645,12 +657,28 @@ public class MarkerResolutionUtils {
 				}else if(edit instanceof ReplaceEdit){
 					text = ((ReplaceEdit) edit).getText();
 					addings = text.length()-edit.getLength();
+				}else if(edit instanceof DeleteEdit){
+//					text = NEW_LINE+current.substring(edit.getOffset(), edit.getOffset()+edit.getLength());
+					//addings = -text.length();
+					
+					int offset = edit.getOffset()+delta;
+					int length = edit.getLength();
+					regions.add(new Region(offset, length));
+					//lastOffset = offset+length;
+//					
+//					// select
+//					String before = preview.substring(0, offset);
+//					String after = preview.substring(offset);
+//					preview = before+OPEN_DEL+text+CLOSE_DEL+after;
+//					
+//					delta += OPEN_DEL.length()+CLOSE_DEL.length()+addings;
+//					text = null;
 				}
 				if(text != null){
 					int offset = edit.getOffset()+delta;
 					int length = text.length();
 					regions.add(new Region(offset, length));
-					lastOffset = offset+length;
+					//lastOffset = offset+length;
 					
 					// select
 					String before = preview.substring(0, offset);
@@ -684,7 +712,7 @@ public class MarkerResolutionUtils {
 					}
 					position--;
 				}
-				if(prevRegion != null && position == prevRegion.offset+prevRegion.length){
+				if(prevRegion != null && position <= prevRegion.offset+prevRegion.length){
 					prevRegion.active = false;
 					int shift = region.offset - prevRegion.offset;
 					region.offset = prevRegion.offset;
