@@ -67,6 +67,8 @@ public class SWTTestExt extends SWTBotTestCase{
 	public static int TIME_5S = Timing.time5S();
 	public static int TIME_10S = Timing.time10S();
 	public static int TIME_20S = Timing.time20S();
+	public static int TIME_30S = Timing.time30S();
+	public static int TIME_60S = Timing.time60S();
 	
   protected void setUp() throws Exception {
     super.setUp();

@@ -38,6 +38,12 @@ public class Timing {
 	public static int time20S() {
 		return (int) Math.round(20000*multiplier);
 	}
+	public static int time30S() {
+		return (int) Math.round(30000*multiplier);
+	}
+	public static int time60S() {
+		return (int) Math.round(60000*multiplier);
+	}
 	public static int time5S() {
 		return (int) Math.round(5000*multiplier);
 	}

@@ -372,6 +372,8 @@ public class SWTEclipseExt {
 	 * @return
 	 */
 	public static SWTBotTreeItem selectTreeLocation(SWTBot bot, String... path) {
+		
+		
 
 		SWTBot viewBot = bot;
 
@@ -419,6 +421,9 @@ public class SWTEclipseExt {
 			/* Re-expand the tree - commented out as this does not seem to help */
 			//theBot.tree().collapseNode(groupLabel);
 			//theBot.tree().expandNode(groupLabel);
+			//theBot.tree().getTreeItem(groupLabel).click();
+			//theBot.tree().setFocus();
+			//theBot.tree().getTreeItem(groupLabel).expand();
 			
 			log.info ("Located Problems view - " + theBot.tree().expandNode(groupLabel).expandNode(viewLabel).getText() );
 			tempItem = theBot.tree().expandNode(groupLabel).expandNode(viewLabel).select();
@@ -426,6 +431,7 @@ public class SWTEclipseExt {
 			theBot.sleep(Timing.time3S());
 			counter++;
 		}
+		theBot.sleep(Timing.time30S());
 	}
 	
 	
@@ -1231,12 +1237,11 @@ public class SWTEclipseExt {
 		//bot.sleep(30000l);
 		//System.out.println (treeItem.contextMenu("Run As").menu("2 Java Application").getText());
 
-		//bot.sleep(30000l);
-		bot.sleep(Timing.time1S());
+		bot.sleep(30000l);
 		treeItem.contextMenu("Run As").menu("2 Java Application").click();		
 		//runJavaApplication("helloworld_testclient","org.jboss.soa.esb.samples.quickstart.helloworld.test.SendJMSMessage"," ");
-		//bot.sleep(30000l);	// This is needed to enable the test to run successfully to completion
-		bot.waitForShell(IDELabel.Shell.PROGRESS_INFORMATION);
+		bot.sleep(30000l);	// This is needed to enable the test to run successfully to completion
+		
 	}
 
 	/**
@@ -1400,14 +1405,15 @@ public class SWTEclipseExt {
 	  if (item.row()==null) {
 		  return item.getText();
 	  }
-	  StringBuilder sb = new StringBuilder("");
+	  StringBuilder sb = new StringBuilder("");	  
 	  for (int i=0;i<item.row().columnCount();i++) {
 		  String text = item.row().get(i);
 		  if (text==null) {
 			  sb.append("\"<null>\"");
 		  }
 		  else {
-			  sb.append(String.format("\"{0}\"", text));
+			  //sb.append(String.format("\"{0}\"", text));
+			  sb.append(String.format("\"{%s}\"", text));  /* https://issues.jboss.org/browse/JBQA-5837 - ldimaggi */
 		  }
 	  }
 	  return sb.toString();
