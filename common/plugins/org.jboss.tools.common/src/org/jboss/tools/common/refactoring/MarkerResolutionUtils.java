@@ -514,16 +514,7 @@ public class MarkerResolutionUtils {
 		if(annotation != null){
 			IBuffer buffer = compilationUnit.getBuffer();
 			
-			int position = annotation.getSourceRange().getOffset() + annotation.getSourceRange().getLength();
-			int numberOfSpaces = 0;
-			if(position < buffer.getLength()-1){
-				char c = buffer.getChar(position);
-				while((c == C_SPACE || c == C_TAB || c == C_NEW_LINE || c == C_CARRIAGE_RETURN) && position < buffer.getLength()-1){
-					numberOfSpaces++;
-					position++;
-					c = buffer.getChar(position);
-				}
-			}
+			int numberOfSpaces = getNumberOfSpaces(annotation.getSourceRange().getOffset() + annotation.getSourceRange().getLength(), buffer);
 			
 			// delete annotation
 			if(rootEdit != null){
@@ -534,37 +525,57 @@ public class MarkerResolutionUtils {
 			}
 			
 			// check and delete import
-			IImportDeclaration importDeclaration = compilationUnit.getImport(qualifiedName);
-			IImportContainer importContainer = compilationUnit.getImportContainer();
-			if(importDeclaration.exists() && importContainer.exists()){
-				int importSize = importContainer.getSourceRange().getOffset()+importContainer.getSourceRange().getLength();
-				
-					if(rootEdit != null){
-						int annotationStart = annotation.getSourceRange().getOffset();
-						int annotationEnd = annotationStart+annotation.getSourceRange().getLength();
-						String textBefore = buffer.getText(importSize, annotationStart-importSize);
-						String textAfter = buffer.getText(annotationEnd, buffer.getLength()-annotationEnd);
-						if(checkImport(textBefore, qualifiedName) && checkImport(textAfter, qualifiedName)){
-							TextEdit edit = new DeleteEdit(importDeclaration.getSourceRange().getOffset(), importDeclaration.getSourceRange().getLength());
-							rootEdit.addChild(edit);
-						}
-					}else{
-						String text = buffer.getText(importSize, buffer.getLength()-importSize);
-						if(checkImport(text, qualifiedName)){
-							importDeclaration.delete(false, new NullProgressMonitor());
-						}
-					}
+			deleteImportForAnnotation(qualifiedName, annotation, compilationUnit, buffer, rootEdit);
+		}
+	}
+	
+	private static int getNumberOfSpaces(int startPosition, IBuffer buffer){
+		int position = startPosition;
+		int numberOfSpaces = 0;
+		if(position < buffer.getLength()-1){
+			char c = buffer.getChar(position);
+			while((c == C_SPACE || c == C_TAB || c == C_NEW_LINE || c == C_CARRIAGE_RETURN) && position < buffer.getLength()-1){
+				numberOfSpaces++;
+				position++;
+				c = buffer.getChar(position);
 			}
+		}
+		return numberOfSpaces;
+	}
+	
+	public static void deleteImportForAnnotation(String qualifiedName, IAnnotation annotation, ICompilationUnit compilationUnit, IBuffer buffer, MultiTextEdit rootEdit) throws JavaModelException{
+		IImportDeclaration importDeclaration = compilationUnit.getImport(qualifiedName);
+		IImportContainer importContainer = compilationUnit.getImportContainer();
+		if(importDeclaration.exists() && importContainer.exists()){
+			int importSize = importContainer.getSourceRange().getOffset()+importContainer.getSourceRange().getLength();
 			
-			if(rootEdit == null){
-				synchronized(compilationUnit) {
-					compilationUnit.reconcile(ICompilationUnit.NO_AST, true, null, null);
+				if(rootEdit != null){
+					int annotationStart = annotation.getSourceRange().getOffset();
+					int annotationEnd = annotationStart+annotation.getSourceRange().getLength();
+					String textBefore = buffer.getText(importSize, annotationStart-importSize);
+					String textAfter = buffer.getText(annotationEnd, buffer.getLength()-annotationEnd);
+					if(checkImport(textBefore, qualifiedName) && checkImport(textAfter, qualifiedName)){
+						int numberOfSpaces = getNumberOfSpaces(importDeclaration.getSourceRange().getOffset() + importDeclaration.getSourceRange().getLength(), buffer);
+
+						TextEdit edit = new DeleteEdit(importDeclaration.getSourceRange().getOffset(), importDeclaration.getSourceRange().getLength()+numberOfSpaces);
+						rootEdit.addChild(edit);
+					}
+				}else{
+					String text = buffer.getText(importSize, buffer.getLength()-importSize);
+					if(checkImport(text, qualifiedName)){
+						importDeclaration.delete(false, new NullProgressMonitor());
+					}
 				}
+		}
+		
+		if(rootEdit == null){
+			synchronized(compilationUnit) {
+				compilationUnit.reconcile(ICompilationUnit.NO_AST, true, null, null);
 			}
 		}
 	}
 	
-	private static boolean checkImport(String text, String qualifiedName){
+	public static boolean checkImport(String text, String qualifiedName){
 		String name = getShortName(qualifiedName);
 		
 		Pattern p = Pattern.compile(".*\\W"+name+"\\W.*",Pattern.DOTALL); //$NON-NLS-1$ //$NON-NLS-2$
