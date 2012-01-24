@@ -49,6 +49,7 @@ public class TestConfigurator {
 		public static final String DB = "DB";
 		public static final String RS = "RS";
 		public static final String SS = "SS";
+		public static final String PORTLET_BRIDGE = "PORTLET_BRIDGE";
 	}
 	/**
 	 * constant property values which are handled in configuration files

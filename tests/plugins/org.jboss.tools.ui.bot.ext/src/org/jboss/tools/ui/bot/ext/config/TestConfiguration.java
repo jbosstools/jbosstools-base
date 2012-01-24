@@ -42,6 +42,7 @@ public class TestConfiguration {
 	private DBBean db;
 	private RemoteSystemBean remoteSystem;
 	private SecureStorage secureStorage;
+	private PortletBridgeBean portletBridge;
 
 	public TestConfiguration(String propName, String propFile) throws Exception {
 		this.propName = propName;
@@ -79,6 +80,8 @@ public class TestConfiguration {
 		printConfig(Keys.DB, db);
 		secureStorage = SecureStorage.fromString(Keys.SS, getProperty(Keys.SS));
 		printConfig("Secure Storage", secureStorage);
+		portletBridge = PortletBridgeBean.fromString(getProperty(Keys.PORTLET_BRIDGE));
+		printConfig(Keys.PORTLET_BRIDGE, portletBridge);
 	}
 	/**
 	 * initializes this configuration - runtimes, downloaded, homes checked
@@ -235,6 +238,10 @@ public class TestConfiguration {
 
 	public DBBean getDB() {
 		return db;
+	}
+	
+	public PortletBridgeBean getPortletBridge() {
+		return portletBridge;
 	}
 
 	public RemoteSystemBean getRemoteSystem() {
