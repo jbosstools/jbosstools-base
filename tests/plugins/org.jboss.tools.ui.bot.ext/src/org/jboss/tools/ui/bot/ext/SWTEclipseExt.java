@@ -404,7 +404,6 @@ public class SWTEclipseExt {
 			for (SWTBotTreeItem i : theItems) {
 				log.info("SWTBotTreeItem = item = " + i);
 			}
-			//theBot.sleep(3000l);
 			theBot.sleep(Timing.time3S());
 		}
 	}
@@ -427,11 +426,10 @@ public class SWTEclipseExt {
 			
 			log.info ("Located Problems view - " + theBot.tree().expandNode(groupLabel).expandNode(viewLabel).getText() );
 			tempItem = theBot.tree().expandNode(groupLabel).expandNode(viewLabel).select();
-			//theBot.sleep(3000l);
 			theBot.sleep(Timing.time3S());
 			counter++;
 		}
-		theBot.sleep(Timing.time30S());
+		
 	}
 	
 	
@@ -1237,10 +1235,10 @@ public class SWTEclipseExt {
 		//bot.sleep(30000l);
 		//System.out.println (treeItem.contextMenu("Run As").menu("2 Java Application").getText());
 
-		bot.sleep(30000l);
+		bot.sleep(Timing.time30S());
 		treeItem.contextMenu("Run As").menu("2 Java Application").click();		
 		//runJavaApplication("helloworld_testclient","org.jboss.soa.esb.samples.quickstart.helloworld.test.SendJMSMessage"," ");
-		bot.sleep(30000l);	// This is needed to enable the test to run successfully to completion
+		bot.sleep(Timing.time30S());	// This is needed to enable the test to run successfully to completion
 		
 	}
 
