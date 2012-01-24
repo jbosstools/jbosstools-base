@@ -56,7 +56,6 @@ import org.jboss.tools.common.el.core.resolver.TypeInfoCollector;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberPresentation;
 import org.jboss.tools.common.el.core.resolver.Var;
-import org.jboss.tools.common.el.internal.core.model.ELPropertyInvocationImpl;
 import org.jboss.tools.common.el.internal.core.parser.token.JavaNameTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.WhiteSpaceTokenDescription;
 import org.jboss.tools.common.text.TextProposal;
@@ -333,6 +332,11 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				resultSegments.add(0, firstSegment);
 				resolution.setSegments(resultSegments);
 				var.resolveValue("#{" + var.getElToken().getText() + suffix + "}"); //$NON-NLS-1$ //$NON-NLS-2$
+
+				// Save all used variables from "value" EL to the list of used variables for EL which uses this "var" attribute.
+				for (ELSegment segment : varELResolution.getSegments()) {
+					firstSegment.getVariables().addAll(segment.getVariables());
+				}
 
 				ELResolutionImpl oldElResolution = resolveELOperand(file, operand, returnEqualedVariablesOnly, false, offset);
 				if(oldElResolution!=null) {
