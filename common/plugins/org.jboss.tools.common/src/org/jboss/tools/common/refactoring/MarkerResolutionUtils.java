@@ -555,7 +555,10 @@ public class MarkerResolutionUtils {
 					String textBefore = buffer.getText(importSize, annotationStart-importSize);
 					String textAfter = buffer.getText(annotationEnd, buffer.getLength()-annotationEnd);
 					if(checkImport(textBefore, qualifiedName) && checkImport(textAfter, qualifiedName)){
-						int numberOfSpaces = getNumberOfSpaces(importDeclaration.getSourceRange().getOffset() + importDeclaration.getSourceRange().getLength(), buffer);
+						int numberOfSpaces = 0;
+						if(!isLastImport(importContainer, importDeclaration)){
+							numberOfSpaces = getNumberOfSpaces(importDeclaration.getSourceRange().getOffset() + importDeclaration.getSourceRange().getLength(), buffer);
+						}
 
 						TextEdit edit = new DeleteEdit(importDeclaration.getSourceRange().getOffset(), importDeclaration.getSourceRange().getLength()+numberOfSpaces);
 						rootEdit.addChild(edit);
@@ -573,6 +576,17 @@ public class MarkerResolutionUtils {
 				compilationUnit.reconcile(ICompilationUnit.NO_AST, true, null, null);
 			}
 		}
+	}
+	
+	private static boolean isLastImport(IImportContainer importContainer, IImportDeclaration importDeclaration) throws JavaModelException{
+		for(int index = 0; index < importContainer.getChildren().length; index++){
+			IJavaElement child = importContainer.getChildren()[index];
+			
+			if(child.equals(importDeclaration) && index == importContainer.getChildren().length-1){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static boolean checkImport(String text, String qualifiedName){
