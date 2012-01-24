@@ -681,6 +681,7 @@ public class MarkerResolutionUtils {
 			// process regions
 			Region prevRegion = null;
 			for(Region region : regions){
+				
 				int position = region.offset;
 				int count = NUMBER_OF_STRINGS;
 				int lowLimit = 0;
@@ -725,7 +726,7 @@ public class MarkerResolutionUtils {
 					}
 					position++;
 				}
-				region.length += position - (region.offset + region.length);
+				region.length = position - region.offset;
 				prevRegion = region;
 			}
 			
@@ -736,6 +737,15 @@ public class MarkerResolutionUtils {
 			for(Region region : regions){
 				if(!region.active){
 					continue;
+				}
+				if(region.offset > preview.length()-1){
+					region.offset = preview.length()-1;
+				}
+				if(region.offset < 0){
+					region.offset = 0;
+				}
+				if(region.offset + region.length > preview.length()-1){
+					region.length = (preview.length()-1)-region.offset;
 				}
 				if(index == 0 && region.offset != 0){
 					buffer.append(DOTS+NEW_LINE);
