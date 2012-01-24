@@ -18,7 +18,9 @@
 package org.jboss.tools.usage.googleanalytics;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 
+import org.jboss.tools.usage.googleanalytics.AbstractGoogleAnalyticsParameters.GoogleAnalyticsEvent;
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
@@ -73,7 +75,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		/**
 		 * TODO: support multiple events. Obviously these would just get appended to the very same string
 		 */
-		appendParameter(IGoogleAnalyticsParameters.PARAM_EVENT_TRACKING, googleParameters.getEvent().toString(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_EVENT_TRACKING, googleParameters.getEvent(), builder);
 		
 		appendParameter(IGoogleAnalyticsParameters.PARAM_REFERRAL, googleParameters.getReferral(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getURI(), builder);
@@ -184,6 +186,13 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 	private String getRandomNumber() {
 		return Integer.toString((int) (Math.random() * 0x7fffffff));
+	}
+
+	private void appendParameter(String name, GoogleAnalyticsEvent event, StringBuilder builder) {
+		appendParameter(name, 
+				MessageFormat.format("5({0}*{1}*{2})", event.getName(), event.getLabel(), event.getValue()), 
+				true, 
+				builder);
 	}
 
 	private void appendParameter(String name, String value, StringBuilder builder) {

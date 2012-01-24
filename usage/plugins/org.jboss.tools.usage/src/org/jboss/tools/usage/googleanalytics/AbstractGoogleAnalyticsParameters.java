@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.usage.googleanalytics;
 
-import java.text.MessageFormat;
 
 
 /**
@@ -72,10 +71,6 @@ public abstract class AbstractGoogleAnalyticsParameters implements IGoogleAnalyt
 
 		public String getValue() {
 			return value;
-		}
-		
-		public String toString() {
-			return MessageFormat.format("5({0}*{1}*{2})", name, label, value);
 		}
 	}
 }
