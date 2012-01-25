@@ -12,13 +12,17 @@ package org.jboss.tools.ui.bot.ext;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
@@ -26,12 +30,14 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
+import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
@@ -239,5 +245,24 @@ public class SWTBotExt extends SWTWorkbenchBot {
         }
 
         return null;
+    }
+
+    /**
+     * Returns current displayed checkboxes.
+     * There are included disabled checkboxes as well
+     * therefore it is necessary to check their states before use of them.
+     * 
+     * @return List of current displayed checkboxes.
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public List<SWTBotCheckBox> checkBoxes() {
+        List<SWTBotCheckBox> checkBoxes = new ArrayList<SWTBotCheckBox>();
+        Matcher matcher = allOf(widgetOfType(Button.class), withStyle(SWT.CHECK, "SWT.CHECK"));
+        for (Object widget : widgets(matcher)) {
+            if (widget != null) {
+                checkBoxes.add(new SWTBotCheckBox((Button) widget));
+            }
+        }
+        return checkBoxes;
     }
 }
