@@ -64,6 +64,9 @@ public class MarkerResolutionUtils {
 	public static final String CLOSE_DEL = "</del>"; //$NON-NLS-1$
 	public static final String NEW_LINE = "\n"; //$NON-NLS-1$
 	public static final String LINE_BREAK = "<br>"; //$NON-NLS-1$
+	public static final String PUBLIC = "public";  //$NON-NLS-1$
+	public static final String PRIVATE = "private";  //$NON-NLS-1$
+	public static final String PROTECTED = "protected";  //$NON-NLS-1$
 	
 	public static final char C_SPACE = ' ';  //$NON-NLS-1$
 	public static final char C_TAB = '\t';
