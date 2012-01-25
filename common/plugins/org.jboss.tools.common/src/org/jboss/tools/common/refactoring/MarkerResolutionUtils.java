@@ -37,7 +37,10 @@ import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
+import org.eclipse.ltk.core.refactoring.Change;
+import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.TextChange;
+import org.eclipse.ltk.core.refactoring.TextEditBasedChange;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MultiTextEdit;
@@ -609,27 +612,67 @@ public class MarkerResolutionUtils {
 		return null;
 	}
 	
-	public static String getPreview(TextChange previewChange) throws CoreException{
+	public static String getPreview(Change previewChange) throws CoreException{
 		if(previewChange == null)
 			return null;
 		
-		String preview = previewChange.getPreviewContent(new NullProgressMonitor());
-		String current = previewChange.getCurrentContent(new NullProgressMonitor());
+		// CompositeChange
+		// TextEditBasedChange
+		// TextChange
 		
-		TextEdit edit = previewChange.getEdit();
 		
-		EditSet editSet = new EditSet(edit);
+		String preview = getPreviewContent(previewChange);
+		//String current = previewChange.getCurrentContent(new NullProgressMonitor());
 		
-		// select
-		preview = editSet.select(preview, current);
+		TextEdit edit = getEdit(previewChange);
 		
-		// cut
-		preview = editSet.cut(preview);
-		
-		// format
-		preview = preview.replaceAll(NEW_LINE, LINE_BREAK);
-		
-		return preview;
+		if(preview != null && edit != null){
+			EditSet editSet = new EditSet(edit);
+			
+			// select
+			preview = editSet.select(preview);
+			
+			// cut
+			preview = editSet.cut(preview);
+			
+			// format
+			preview = preview.replaceAll(NEW_LINE, LINE_BREAK);
+			
+			return preview;
+		}
+		return "";
+	}
+	
+	private static String getPreviewContent(Change change) throws CoreException{
+		if(change instanceof TextEditBasedChange){
+			return ((TextEditBasedChange) change).getPreviewContent(new NullProgressMonitor());
+		}else if(change instanceof TextChange){
+			return ((TextChange) change).getPreviewContent(new NullProgressMonitor());
+		}else if(change instanceof CompositeChange){
+			for(Change child : ((CompositeChange) change).getChildren()){
+				String prev = getPreviewContent(child);
+				if(prev != null){
+					return prev;
+				}
+			}
+		}
+		return null;
+	}
+
+	private static TextEdit getEdit(Change change) throws CoreException{
+		if(change instanceof BaseFileChange){
+			return ((BaseFileChange) change).getEdit();
+		}else if(change instanceof TextChange){
+			return ((TextChange) change).getEdit();
+		}else if(change instanceof CompositeChange){
+			for(Change child : ((CompositeChange) change).getChildren()){
+				TextEdit prev = getEdit(child);
+				if(prev != null){
+					return prev;
+				}
+			}
+		}
+		return null;
 	}
 	
 	static class EditSet{
@@ -672,7 +715,7 @@ public class MarkerResolutionUtils {
 			edits = sorted;
 		}
 		
-		public String select(String preview, String current){
+		public String select(String preview){
 			int delta = 0;
 			for(TextEdit edit : edits){
 				String text = null;
