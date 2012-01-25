@@ -16,8 +16,6 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.tools.common.log.BaseUIPlugin;
-import org.jboss.tools.common.log.IPluginLog;
-import org.osgi.framework.BundleContext;
 
 /**
  * @author Alexey Kazakov
@@ -25,29 +23,10 @@ import org.osgi.framework.BundleContext;
 public class CommonValidationPlugin extends BaseUIPlugin {
 
 	public static final String PLUGIN_ID = "org.jboss.tools.common.validation"; //$NON-NLS-1$
-	protected static CommonValidationPlugin INSTANCE;
+	protected static CommonValidationPlugin plugin;
 
 	public CommonValidationPlugin() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		INSTANCE = this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		INSTANCE = null;
-		super.stop(context);
+		plugin = this;
 	}
 
 	/**
@@ -56,14 +35,7 @@ public class CommonValidationPlugin extends BaseUIPlugin {
 	 * @return the shared instance
 	 */
 	public static CommonValidationPlugin getDefault() {
-		return INSTANCE;
-	}
-
-	/**
-	 * @return IPluginLog object
-	 */
-	public static IPluginLog getPluginLog() {
-		return getDefault();
+		return plugin;
 	}
 
     public static boolean makeBuilderLast(IProject project, String builderId) throws CoreException {
