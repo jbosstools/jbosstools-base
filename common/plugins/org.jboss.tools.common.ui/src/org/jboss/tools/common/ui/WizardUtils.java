@@ -80,6 +80,16 @@ public class WizardUtils {
 	public static Future<IStatus> runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
 			IWizardContainer container) throws InvocationTargetException, InterruptedException {
 		JobResultFuture future = new JobResultFuture(job);
+		// Currently this impl is wrong and does not return the future immediately. Not sure how to fix
+		runInWizardSynchronous(job, delegatingMonitor, container);
+		return future;
+	}
+	
+	/**
+	 * @since 3.3
+	 */
+	public static void runInWizardSynchronous(final Job job, final DelegatingProgressMonitor delegatingMonitor,
+			IWizardContainer container) throws InvocationTargetException, InterruptedException {
 		container.run(true, false, new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -100,7 +110,6 @@ public class WizardUtils {
 				}
 			}
 		});
-		return future;
 	}
 
 	/**
