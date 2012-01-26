@@ -11,7 +11,6 @@
 package org.jboss.tools.common.ui;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.Future;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -53,15 +52,13 @@ public class WizardUtils {
 	 * @see IWizardContainer#run(boolean, boolean, IRunnableWithProgress)
 	 * @see Job
 	 */
-	public static Future<IStatus> runInWizard(final Job job, IWizardContainer container)
-			throws InvocationTargetException,
-			InterruptedException {
+	public static IStatus runInWizard(final Job job, IWizardContainer container)
+			throws InvocationTargetException, InterruptedException {
 		return runInWizard(job, null, container);
 	}
 
 	/**
-	 * Runs the given job in the given wizard container. This method will return
-	 * immediately, it will not wait for the job completion.
+	 * Runs the given job in the given wizard container.
 	 * <p>
 	 * In order to have the wizard displaying a progress bar, you need to set
 	 * Wizard#setNeedsProgressMonitor to <code>true</code>.
@@ -77,39 +74,41 @@ public class WizardUtils {
 	 * @throws InvocationTargetException
 	 * @throws InterruptedException
 	 */
-	public static Future<IStatus> runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
+	public static IStatus runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
 			IWizardContainer container) throws InvocationTargetException, InterruptedException {
-		JobResultFuture future = new JobResultFuture(job);
-		// Currently this impl is wrong and does not return the future immediately. Not sure how to fix
-		runInWizardSynchronous(job, delegatingMonitor, container);
-		return future;
-	}
-	
-	/**
-	 * @since 3.3
-	 */
-	public static void runInWizardSynchronous(final Job job, final DelegatingProgressMonitor delegatingMonitor,
-			IWizardContainer container) throws InvocationTargetException, InterruptedException {
+		final IStatus[] statusHolder = new IStatus[1];
 		container.run(true, false, new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				if (delegatingMonitor == null) {
-					monitor.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
-				} else {
-					delegatingMonitor.add(monitor);
-					delegatingMonitor.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
-				}
+				IProgressMonitor monitorToUse = setupDelegatingMonitorIfPresent(delegatingMonitor, monitor);
+				monitorToUse.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
 
 				job.schedule();
 				job.join();
-
-				if (delegatingMonitor == null) {
-					monitor.done();
-				} else {
-					delegatingMonitor.done();
-				}
+				statusHolder[0] = job.getResult();
+				monitorToUse.done();
 			}
+
 		});
+		return statusHolder[0];
+	}
+
+	/**
+	 * Returns the delegating monitor if present or the simple monitor
+	 * otherwise. The simple monitor is added to the delegating one.
+	 * 
+	 * @param delegatingMonitor
+	 * @param monitor
+	 * @return
+	 */
+	private static IProgressMonitor setupDelegatingMonitorIfPresent(DelegatingProgressMonitor delegatingMonitor,
+			IProgressMonitor monitor) {
+		if (delegatingMonitor == null) {
+			return monitor;
+		}
+
+		delegatingMonitor.add(monitor);
+		return delegatingMonitor;
 	}
 
 	/**
@@ -134,17 +133,17 @@ public class WizardUtils {
 	 * @throws InterruptedException
 	 *             the interrupted exception
 	 */
-	public static Future<IStatus> runInWizard(final Job job, IWizardContainer container, DataBindingContext dbc)
+	public static IStatus runInWizard(final Job job, IWizardContainer container, DataBindingContext dbc)
 			throws InvocationTargetException, InterruptedException {
 		return runInWizard(job, null, container);
 	}
 
-	public static Future<IStatus> runInWizard(Job job, DelegatingProgressMonitor monitor, IWizardContainer container,
+	public static IStatus runInWizard(Job job, DelegatingProgressMonitor monitor, IWizardContainer container,
 			DataBindingContext dbc) throws InvocationTargetException, InterruptedException {
-		Future<IStatus> jobResult = runInWizard(job, monitor, container);
+		IStatus status = runInWizard(job, monitor, container);
 		dbc.updateTargets();
 		dbc.updateModels();
-		return jobResult;
+		return status;
 	}
 
 	/**
