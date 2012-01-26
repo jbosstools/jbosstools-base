@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.content.ITextContentDescriber;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.meta.impl.XModelMetaDataImpl;
 import org.jboss.tools.common.model.loaders.EntityRecognizerContext;
-import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.util.FileUtil;
 
 /**
@@ -31,7 +30,7 @@ public class XMLContentDescriber extends org.eclipse.core.runtime.content.XMLCon
 		super.describe(contents, description);
 		contents.reset();
 		String text = FileUtil.readStream(contents);
-		if(!"".equals(text.trim())) {
+		if(text.trim().length() > 0) {
 			return describe(text, description);
 		}
 		return INDETERMINATE;
