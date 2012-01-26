@@ -17,7 +17,6 @@ import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.XChild;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.meta.impl.XModelMetaDataImpl;
-import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.forms.FormActionData;
 import org.jboss.tools.common.model.ui.forms.FormAttributeData;
 import org.jboss.tools.common.model.ui.forms.FormData;
@@ -46,7 +45,7 @@ public class FormLayoutDataUtil {
 	}
 
 	public static IFormAttributeData[] createFormAttributeData(String entityName, String categoryName) {
-		XModelEntity entity = PreferenceModelUtilities.getPreferenceModel().getMetaData().getEntity(entityName);
+		XModelEntity entity = XModelMetaDataImpl.getInstance().getEntity(entityName);
 		if(entity == null) return new IFormAttributeData[0];
 		List<IFormAttributeData> list = new ArrayList<IFormAttributeData>();
 		XAttribute[] as = entity.getAttributes();
