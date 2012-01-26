@@ -67,8 +67,8 @@ import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.meta.action.impl.XEntityDataImpl;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelFactory;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.action.CommandBar;
 import org.jboss.tools.common.model.ui.action.XMenuInvoker;
@@ -86,7 +86,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	static final String ATTR_VALUE = "value"; //$NON-NLS-1$
 	static final String ATTR_ENABLED = "enabled"; //$NON-NLS-1$
 
-	XModelObject property = PreferenceModelUtilities.getPreferenceModel().createModelObject(ENT_PROPERTY, null);
+	XModelObject property = XModelFactory.getDefaultInstance().createModelObject(ENT_PROPERTY, null);
 	XAttributeSupport nsupport = new XAttributeSupport(property, XEntityDataImpl.create(new String[][]{
 			{ENT_PROPERTY, "yes"}, //$NON-NLS-1$
 			{ATTR_NAME, "no"}, //$NON-NLS-1$
