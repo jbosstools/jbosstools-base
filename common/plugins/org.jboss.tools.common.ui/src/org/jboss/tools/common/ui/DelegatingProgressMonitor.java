@@ -10,68 +10,57 @@
  ******************************************************************************/
 package org.jboss.tools.common.ui;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
- * An IProgressMonitor that aggregates other monitors and delegates call to the monitors
- * that were added to it.
+ * An IProgressMonitor that aggregates other monitors and delegates call to the
+ * monitors that were added to it.
  * 
  * @author André Dietisheim
  */
 public class DelegatingProgressMonitor implements IProgressMonitor {
 
-	List<IProgressMonitor> monitors = new CopyOnWriteArrayList<IProgressMonitor>();
+	List<IProgressMonitor> monitors = new ArrayList<IProgressMonitor>();
 
 	public void add(IProgressMonitor monitor) {
-		monitors.add(monitor);
+		if (monitors.size() > 0) {
+			IProgressMonitor removed = monitors.remove(0);
+			monitors.add(monitor);
+			monitors.add(removed);
+		} else {
+			monitors.add(monitor);
+		}
 	}
 
 	@Override
 	public void subTask(final String name) {
-		doForAllMonitors(new IMonitorOperation() {
-
-			@Override
-			public void doWithMonitor(IProgressMonitor monitor) {
-				monitor.subTask(name);
-			}
-		});
+		for (IProgressMonitor monitor : monitors) {
+			monitor.subTask(name);
+		}
 	}
 
 	@Override
 	public void beginTask(final String name, final int totalWork) {
-		doForAllMonitors(new IMonitorOperation() {
-
-			@Override
-			public void doWithMonitor(IProgressMonitor monitor) {
-				monitor.beginTask(name, totalWork);
-			}
-		});
+		for (IProgressMonitor monitor : monitors) {
+			monitor.beginTask(name, totalWork);
+		}
 	}
 
 	@Override
 	public void done() {
-		doForAllMonitors(new IMonitorOperation() {
-
-			@Override
-			public void doWithMonitor(IProgressMonitor monitor) {
-				monitor.done();
-			}
-		});
+		for (IProgressMonitor monitor : monitors) {
+			monitor.done();
+		}
 	}
 
 	@Override
 	public void internalWorked(final double work) {
-		doForAllMonitors(new IMonitorOperation() {
-
-			@Override
-			public void doWithMonitor(IProgressMonitor monitor) {
-				monitor.internalWorked(work);
-			}
-		});
-
+		for (IProgressMonitor monitor : monitors) {
+			monitor.internalWorked(work);
+		}
 	}
 
 	@Override
@@ -86,45 +75,22 @@ public class DelegatingProgressMonitor implements IProgressMonitor {
 
 	@Override
 	public void setCanceled(final boolean value) {
-		doForAllMonitors(new IMonitorOperation() {
-
-			@Override
-			public void doWithMonitor(IProgressMonitor monitor) {
-				monitor.setCanceled(value);
-			}
-		});
+		for (IProgressMonitor monitor : monitors) {
+			monitor.setCanceled(value);
+		}
 	}
 
 	@Override
 	public void setTaskName(final String name) {
-		doForAllMonitors(new IMonitorOperation() {
-
-			@Override
-			public void doWithMonitor(IProgressMonitor monitor) {
-				monitor.setTaskName(name);
-			}
-		});
-
+		for (IProgressMonitor monitor : monitors) {
+			monitor.setTaskName(name);
+		}
 	}
 
 	@Override
 	public void worked(final int work) {
-		doForAllMonitors(new IMonitorOperation() {
-
-			@Override
-			public void doWithMonitor(IProgressMonitor monitor) {
-				monitor.worked(work);
-			}
-		});
-	}
-
-	private void doForAllMonitors(IMonitorOperation operation) {
 		for (IProgressMonitor monitor : monitors) {
-			operation.doWithMonitor(monitor);
+			monitor.worked(work);
 		}
-	}
-
-	private interface IMonitorOperation {
-		public void doWithMonitor(IProgressMonitor monitor);
 	}
 }
