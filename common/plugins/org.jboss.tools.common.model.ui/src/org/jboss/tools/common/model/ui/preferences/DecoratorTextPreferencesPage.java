@@ -43,8 +43,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
+import org.jboss.tools.common.model.XModelFactory;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIMessages;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultXModelObjectLabelProvider;
 import org.jboss.tools.common.model.ui.navigator.decorator.DecoratorManager;
@@ -102,7 +102,7 @@ public class DecoratorTextPreferencesPage extends PreferencePage implements IWor
 				} else if(element instanceof String) {
 					entity = DecoratorManager.getInstance().getBaseEntityForPartition(element.toString());
 				}
-				XModelObject o = entity == null ? null : PreferenceModelUtilities.getPreferenceModel().createModelObject(entity, new Properties());
+				XModelObject o = entity == null ? null : XModelFactory.getDefaultInstance().createModelObject(entity, new Properties());
 				return (o != null) ? EclipseResourceUtil.getImage(o) : null;
 			}
 			
