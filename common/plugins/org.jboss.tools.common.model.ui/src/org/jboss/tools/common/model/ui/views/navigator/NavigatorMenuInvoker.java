@@ -18,9 +18,8 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
 import org.jboss.tools.common.meta.action.XActionInvoker;
-import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelFactory;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.navigator.TreeViewerMenuInvoker;
 import org.jboss.tools.common.model.util.FindObjectHelper;
 
@@ -34,10 +33,7 @@ public class NavigatorMenuInvoker extends TreeViewerMenuInvoker {
 	
 	protected XModelObject getWorkspaceObject() {
 		if(eclipseWorkspace == null) {
-			XModel model = PreferenceModelUtilities.getPreferenceModel();
-			if(model != null) {
-				eclipseWorkspace = model.createModelObject("EclipseWorkspace", null); //$NON-NLS-1$
-			}
+			eclipseWorkspace = XModelFactory.getDefaultInstance().createModelObject("EclipseWorkspace", null); //$NON-NLS-1$
 		}
 		return eclipseWorkspace;
 	}
