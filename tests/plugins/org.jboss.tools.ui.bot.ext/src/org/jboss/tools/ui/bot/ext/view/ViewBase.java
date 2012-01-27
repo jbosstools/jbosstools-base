@@ -3,7 +3,6 @@ package org.jboss.tools.ui.bot.ext.view;
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTOpenExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
@@ -24,7 +23,7 @@ public class ViewBase {
 	protected final SWTUtilExt util;
 	protected final SWTBotExt bot;
 
-	Logger log = Logger.getLogger(ViewBase.class);
+	protected Logger log = Logger.getLogger(ViewBase.class);
 
 	public ViewBase() {
 		open = SWTTestExt.open;
