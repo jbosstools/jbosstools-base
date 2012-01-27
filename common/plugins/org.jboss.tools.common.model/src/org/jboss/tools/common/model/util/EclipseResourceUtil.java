@@ -455,15 +455,11 @@ public class EclipseResourceUtil extends EclipseUtil {
 		IVirtualComponent vc = ComponentCore.createComponent(project);
 		if (vc == null || vc.getRootFolder() == null)
 			return null;
-		IPath path = WebUtils.getFirstWebContentPath(project);
-		if(path != null) {
-			IFolder f = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
-			if(f.exists()) {
-				return f;
+		IContainer[] cs = WebUtils.getWebRootFolders(project, true);
+		for (IContainer c: cs) {
+			if(c.exists()) {
+				return c;
 			}
-		}
-		if (ModuleCoreNature.isFlexibleProject(project)) {
-			return vc.getRootFolder().getUnderlyingResource();
 		}
 		return null;
 	}
