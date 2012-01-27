@@ -79,10 +79,6 @@ public class WebUtils {
 				return c.getFullPath();
 			}
 		}
-		if (ModuleCoreNature.isFlexibleProject(project)) {
-			modulePath = vc.getRootFolder().getWorkspaceRelativePath();
-		}
-
 		return modulePath;
 	}
 
