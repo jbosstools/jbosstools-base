@@ -143,9 +143,9 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		String ver = serverDefinition.getVersion();
 		String fullVersion;
 		if (EAP.equals(type) && "6.0".equals(ver)) {
-			fullVersion = new ServerBeanLoader().getFullServerVersion(new File(asLocation, JBossServerType.EAP6.getSystemJarPath()));
+			fullVersion = new ServerBeanLoader(asLocation).getFullServerVersion();
 		} else {
-			fullVersion = new ServerBeanLoader().getFullServerVersion(new File(asLocation, JBossServerType.AS.getSystemJarPath()));
+			fullVersion = new ServerBeanLoader(asLocation).getFullServerVersion();
 		}
 		if(fullVersion != null ) {
 			String version = fullVersion.substring(0, 3);
@@ -332,8 +332,8 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		if (monitor.isCanceled() || root == null || !isEnabled()) {
 			return null;
 		}
-		ServerBeanLoader loader = new ServerBeanLoader();
-		ServerBean serverBean = loader.loadFromLocation(root);
+		ServerBeanLoader loader = new ServerBeanLoader(root);
+		ServerBean serverBean = loader.getServerBean();
 		
 		if (!JBossServerType.UNKNOWN.equals(serverBean.getType())) {
 			ServerDefinition serverDefinition = new ServerDefinition(serverBean.getName(), 
