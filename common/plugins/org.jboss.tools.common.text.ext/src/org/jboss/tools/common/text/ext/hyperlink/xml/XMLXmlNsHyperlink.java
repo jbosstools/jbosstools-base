@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.xml;
 
@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.StringTokenizer;
 import java.util.zip.ZipFile;
 
 import org.eclipse.core.resources.IStorage;
@@ -29,7 +28,6 @@ import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Region;
 import org.eclipse.pde.internal.ui.editor.JarEntryEditorInput;
 import org.eclipse.pde.internal.ui.editor.JarEntryFile;
 import org.eclipse.ui.IEditorInput;
@@ -43,21 +41,15 @@ import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.editors.text.ILocationProvider;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
 import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
-import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * @author Jeremy
  */
 public class XMLXmlNsHyperlink extends AbstractHyperlink {
-	
-	
     class StorageEditorInput extends PlatformObject implements IStorageEditorInput, IStorage, ILocationProvider {
         private File fFile;
         
@@ -142,14 +134,10 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 	protected void doHyperlink(IRegion region) {
 	
 		try {
-//			IFile f = getFileFromCatalog(getURI(region));
-//			IFile f = getFileFromCatalog(getPublicId(region), getSystemId(region));
-
 			String mappedSystemId = getMappedSystemIdFromCatalog(getPublicId(region), getSystemId(region));
 			String filename = getFilenameFromMappedSystemId(mappedSystemId);
 			IEditorPart part = null;
 			if (filename != null) {
-//				openFileInEditor(filename);
 				part = openExternalFile(filename);
 				if (part == null)
 					openFileFailed();
@@ -303,77 +291,16 @@ public class XMLXmlNsHyperlink extends AbstractHyperlink {
 		return fileName;
 	}
 
-	IRegion fLastRegion = null;
-	/** 
-	 * @see com.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
-	 */
-	protected IRegion doGetHyperlinkRegion(int offset) {
-		fLastRegion = getRegion(offset);
-		return fLastRegion;
-	}
-	
-	protected IRegion getRegion(int offset) {
-		StructuredModelWrapper smw = new StructuredModelWrapper();
-		try {
-			smw.init(getDocument());
-			Document xmlDocument = smw.getDocument();
-			if (xmlDocument == null) return null;
-			
-			Node n = Utils.findNodeForOffset(xmlDocument, offset);
-			if (!(n instanceof IDOMAttr)) return null; 
-			IDOMAttr xmlnsAttr = (IDOMAttr)n;
-			if (xmlnsAttr.getName() == null || 
-					(!xmlnsAttr.getName().equals("xmlns") && //$NON-NLS-1$
-					!xmlnsAttr.getName().startsWith("xmlns:") && //$NON-NLS-1$
-					!xmlnsAttr.getName().endsWith(":schemaLocation") //$NON-NLS-1$
-					)) return null;
-			
-			String text = xmlnsAttr.getValueRegionText();
-			String value = Utils.trimQuotes(xmlnsAttr.getNodeValue());
-			int start = xmlnsAttr.getValueRegionStartOffset();
-			
-			taglibLength = value.length();
-			taglibOffset = start + text.indexOf(value);
-			
-			StringTokenizer tokenizer = new StringTokenizer(value);
-			
-			int newOffset = -1;
-			int newLength = -1;
-			if (tokenizer.countTokens() > 1) {
-				while (tokenizer.hasMoreTokens()) {
-					String next = tokenizer.nextToken();
-					int nextStart = taglibOffset + value.indexOf(next);
-					if (offset >= nextStart
-							&& offset <= nextStart + next.length()) {
-						newOffset = nextStart;
-						newLength = next.length();
-						break;
-					}
-				}
-			}
-			if (newOffset != -1) {
-				taglibLength = newLength;
-				taglibOffset = newOffset;
-			}
-
-			return new Region(taglibOffset,taglibLength);
-		} finally {
-			smw.dispose();
-		}
-
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see IHyperlink#getHyperlinkText()
 	 */
 	public String getHyperlinkText() {
-		String uri = getURI(fLastRegion);
+		String uri = getURI(getHyperlinkRegion());
 		if (uri == null)
 			return  MessageFormat.format(Messages.NotFound, "URI"); //$NON-NLS-1$
 		
 		return MessageFormat.format(Messages.Open, uri);
 	}
-
 }

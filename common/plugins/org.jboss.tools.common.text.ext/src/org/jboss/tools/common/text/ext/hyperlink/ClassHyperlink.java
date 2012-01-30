@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
@@ -42,20 +42,12 @@ import org.eclipse.jdt.internal.ui.javaeditor.JarEntryEditorInput;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Region;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.ext.hyperlink.xpl.Messages;
-import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
-import org.jboss.tools.common.text.ext.util.Utils;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.Text;
 
 /**
  * @author Jeremy
@@ -198,96 +190,16 @@ public class ClassHyperlink extends AbstractHyperlink {
 		return null;
 	}
 	
-	IRegion fLastRegion = null;
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.ibm.sse.editor.AbstractHyperlink#doGetHyperlinkRegion(int)
-	 */
-	protected IRegion doGetHyperlinkRegion(int offset) {
-		fLastRegion = getRegion(offset);
-		return fLastRegion;
-	}
-
-	public IRegion getRegion (int offset) {
-		StructuredModelWrapper smw = new StructuredModelWrapper();
-		try {
-			smw.init(getDocument());
-			Document xmlDocument = smw.getDocument();
-			if (xmlDocument == null) return null;
-			
-			Node n = Utils.findNodeForOffset(xmlDocument, offset);
-			
-			if (n == null || !(n instanceof Text || n instanceof Attr)) return null;
-			
-			String text = null;
-			int bStart = 0;
-			int bEnd = 0;
-			
-			if (n instanceof Text) {
-				int start = Utils.getValueStart(n);
-				int end = Utils.getValueEnd(n);
-				if (start < 0 || start > offset) return null;
-	
-				text = getDocument().get(start, end - start);
-				bStart = offset - start;
-				bEnd = offset - start;
-			} else if (n instanceof Attr) {
-				IDOMAttr attr = (IDOMAttr)n;
-				int start = Utils.getValueStart(n);
-				if(start < 0) return null;
-
-				text = getDocument().get(start, 
-						attr.getValueRegionText().length());
-				bStart = offset - start;
-				bEnd = offset - start;
-			}
-			StringBuffer sb = new StringBuffer(text);
-
-			while (bStart >= 0) { 
-				if (!Character.isJavaIdentifierPart(sb.charAt(bStart)) &&
-						sb.charAt(bStart) != '.' && sb.charAt(bStart) != '_') {
-					bStart++;
-					break;
-				}
-			
-				if (bStart == 0) break;
-				bStart--;
-			}
-
-			while (bEnd < sb.length()) { 
-				if (!Character.isJavaIdentifierPart(sb.charAt(bEnd)) &&
-						sb.charAt(bEnd) != '.' && sb.charAt(bEnd) != '_') {
-					break;
-				}
-				bEnd++;
-			}
-			
-			final int propStart = bStart + Utils.getValueStart(n);
-			final int propLength = bEnd - bStart;
-			
-			if (propStart > offset || propStart + propLength < offset) return null;
-			
-			return new Region(propStart,propLength);			
-		} catch (BadLocationException x) {
-			//ignore
-			return null;
-		} finally {
-			smw.dispose();
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see IHyperlink#getHyperlinkText()
 	 */
 	public String getHyperlinkText() {
-		String className = getClassName(fLastRegion);
+		String className = getClassName(getHyperlinkRegion());
 		if (className == null)
 			return  MessageFormat.format(Messages.OpenA, Messages.Class);
 		
 		return MessageFormat.format(Messages.OpenClass, className);
 	}
-
 }

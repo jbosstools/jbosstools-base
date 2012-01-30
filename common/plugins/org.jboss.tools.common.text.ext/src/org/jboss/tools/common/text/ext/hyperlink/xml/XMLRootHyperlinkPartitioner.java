@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.xml;
 
@@ -35,16 +35,16 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
-	protected IHyperlinkRegion parse(IDocument document, IHyperlinkRegion superRegion) {
-		if (!recognize(document, superRegion)) return null;
+	protected IHyperlinkRegion parse(IDocument document, int offset, IHyperlinkRegion superRegion) {
+		if (!recognize(document, offset, superRegion)) return null;
 		
-		String axis = computeAxis(document, superRegion.getOffset()) + "/"; //$NON-NLS-1$
+		String axis = computeAxis(document, offset) + "/"; //$NON-NLS-1$
 		String contentType = superRegion.getContentType();
 		String type = XML_ROOT_PARTITION;
-		int length = superRegion.getLength();
-		int offset = superRegion.getOffset();
+		int superLength = superRegion.getLength();
+		int superOffset = superRegion.getOffset();
 		
-		IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
+		IHyperlinkRegion region = new HyperlinkRegion(superOffset, superLength, axis, contentType, type);
 		return region;
 	}
 
@@ -121,19 +121,18 @@ public class XMLRootHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 	/**
 	 * @see com.ibm.sse.editor.extensions.hyperlink.IHyperlinkPartitionRecognizer#recognize(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
-	public boolean recognize(IDocument document, IHyperlinkRegion region) {
+	public boolean recognize(IDocument document, int offset, IHyperlinkRegion region) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
 			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return false;
 			
-			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
+			Node n = Utils.findNodeForOffset(xmlDocument, offset);
 
 			return n != null;
 		} finally {
 			smw.dispose();
 		}
 	}
-
 }

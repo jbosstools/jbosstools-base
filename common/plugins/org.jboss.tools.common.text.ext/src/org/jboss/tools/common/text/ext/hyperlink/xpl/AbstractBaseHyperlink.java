@@ -40,6 +40,7 @@ import org.eclipse.wst.sse.core.internal.util.PathHelper;
 import org.eclipse.wst.sse.core.internal.util.URIResolver;
 import org.eclipse.wst.sse.ui.internal.openon.ExternalFileEditorInput;
 import org.eclipse.wst.sse.ui.internal.util.PlatformStatusLineUtil;
+import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkRegion;
 
 public abstract class AbstractBaseHyperlink {
 
@@ -47,8 +48,12 @@ public abstract class AbstractBaseHyperlink {
 
 	public final String HTTP_PROTOCOL = "http://";//$NON-NLS-1$
 
+    protected IRegion hyperlinkRegion;
 
-	
+    public void setRegion(IRegion region) {
+    	this.hyperlinkRegion = region;
+    }
+    
 	public AbstractBaseHyperlink() {
 		super();
 	}
@@ -258,8 +263,12 @@ public abstract class AbstractBaseHyperlink {
 	 * @see IHyperlink#getHyperlinkRegion()
 	 */
 	public IRegion getHyperlinkRegion() {
-		IRegion region = doGetHyperlinkRegion(getOffset());
-		return (region != null) ? region : new Region(getOffset(), 0);
+		if (hyperlinkRegion != null) {
+			return hyperlinkRegion;
+		}
+		hyperlinkRegion = (IHyperlinkRegion)doGetHyperlinkRegion(getOffset());
+		
+		return (hyperlinkRegion != null) ? hyperlinkRegion: new Region(getOffset(), 0);
 	}
 
 	abstract protected IRegion doGetHyperlinkRegion(int offset);
@@ -289,15 +298,6 @@ public abstract class AbstractBaseHyperlink {
 		return fDocument;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see IHyperlink#getHyperlinkText()
-	 */
-//	public String getHyperlinkText() {
-//		return null;
-//	}
-	
 	abstract public String getHyperlinkText();
 
 	/*
@@ -308,6 +308,4 @@ public abstract class AbstractBaseHyperlink {
 	public String getTypeLabel() {
 		return null;
 	}
-	
-	
 }

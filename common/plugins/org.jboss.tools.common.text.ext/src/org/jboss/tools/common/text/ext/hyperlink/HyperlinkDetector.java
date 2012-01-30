@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
@@ -20,7 +20,6 @@ import org.jboss.tools.common.text.ext.hyperlink.xpl.BaseHyperlinkDetector;
 import org.jboss.tools.common.text.ext.util.AxisUtil;
 
 public class HyperlinkDetector extends BaseHyperlinkDetector {
-    
 	private static HyperlinkDetector fInstance;
 
     /**
@@ -40,10 +39,10 @@ public class HyperlinkDetector extends BaseHyperlinkDetector {
 	 * @param offset
 	 * @return String partition types
 	 */
-	protected String[] getPartitionTypes(IDocument document, int offset) {
+	protected IHyperlinkRegion[] getPartitions(IDocument document, int offset) {
 		String documentRegionType = null;
 		ITypedRegion region = null;
-		ArrayList<String> types = new ArrayList<String>();
+		ArrayList<IHyperlinkRegion> regions = new ArrayList<IHyperlinkRegion>();
 		
 			region = (document instanceof IDocumentExtension3 ? 
 					((IDocumentExtension3)document).getDocumentPartitioner("org.eclipse.wst.sse.core.default_structured_text_partitioning").getPartition(offset) :  //$NON-NLS-1$
@@ -51,13 +50,13 @@ public class HyperlinkDetector extends BaseHyperlinkDetector {
 
 		if (region != null) {
 		    documentRegionType = region.getType();
-		
 			String contentType = getContentType(document);
+		    IHyperlinkRegion documentRegion = new HyperlinkRegion(region.getOffset(), region.getLength(), null, contentType, region.getType());
 		    
 			HyperlinkPartitionerDefinition[] defs = HyperlinkPartitionerBuilder.getInstance().getHyperlinkPartitionerDefinitions(contentType, documentRegionType, null);
 	
 			if(defs==null || defs.length==0) {
-				types.add(documentRegionType);
+				regions.add(documentRegion);
 			} else {
 				for(int i=0; i<defs.length; i++) {
 				    final ITypedRegion finalDocumentRegion = region;
@@ -71,16 +70,16 @@ public class HyperlinkDetector extends BaseHyperlinkDetector {
 				    		finalContentType,
 				    		finalDocumentRegion.getType());
 		            if((!(hyperlinkPartitioner instanceof IHyperlinkPartitionRecognizer)) || 
-		            		((IHyperlinkPartitionRecognizer)hyperlinkPartitioner).recognize(document, startHyperlinkRegion)) {
-		                String type = hyperlinkPartitioner.getChildPartitionType(document, startHyperlinkRegion);
-		    		    if(type!=null && !types.contains(type)) {
-		    		        types.add(type);			        
+		            		((IHyperlinkPartitionRecognizer)hyperlinkPartitioner).recognize(document, offset, startHyperlinkRegion)) {
+		                IHyperlinkRegion childRegion = hyperlinkPartitioner.getChildPartitionRegion(document, offset, startHyperlinkRegion);
+		    		    if(childRegion!=null && !regions.contains(childRegion)) {
+		    		        regions.add(childRegion);			        
 		    		    }
 		            }
 				}
 			}
 		}
-		return types.toArray(new String[types.size()]);
+		return regions.toArray(new IHyperlinkRegion[regions.size()]);
 	}
 
 	static class HyperlinkDetectorHolder {

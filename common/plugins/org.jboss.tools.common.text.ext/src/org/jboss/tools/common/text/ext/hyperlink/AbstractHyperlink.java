@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
@@ -35,7 +35,6 @@ import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.jboss.tools.common.el.core.GlobalELReferenceList;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.resref.core.ResourceReference;
@@ -49,11 +48,9 @@ import org.jboss.tools.common.text.ext.util.Utils;
 @SuppressWarnings("restriction")
 abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements IHyperlink {
 	public static final String DOLLAR_PREFIX = "${"; //$NON-NLS-1$
-
     private static final String SUFFIX = "}"; //$NON-NLS-1$
-
     public static final String SHARP_PREFIX = "#{"; //$NON-NLS-1$
-    
+
 	public static XModel getXModel(IFile file) {
 		if (file == null)
 			return null;
@@ -155,8 +152,10 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 		return EclipseResourceUtil.getFile(path);
 	}
 
-	abstract protected IRegion doGetHyperlinkRegion(int offset);
-
+	protected IRegion doGetHyperlinkRegion(int offset) {
+		return hyperlinkRegion;
+	}
+	
 	abstract protected void doHyperlink(IRegion region);
 
 	protected IFile getFileFromProject(String fileName) {
@@ -335,5 +334,4 @@ abstract public class AbstractHyperlink extends AbstractBaseHyperlink implements
 	public IFile getReadyToOpenFile(){
 		return null;
 	}
-
 }

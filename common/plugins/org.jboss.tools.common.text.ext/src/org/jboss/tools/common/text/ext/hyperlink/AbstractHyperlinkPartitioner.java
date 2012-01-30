@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink;
 
@@ -28,8 +28,8 @@ import org.w3c.dom.Node;
  */
 public abstract class AbstractHyperlinkPartitioner implements IHyperlinkPartitioner {
 
-    public String getChildPartitionType(IDocument document, IHyperlinkRegion superRegion) {
-        IHyperlinkRegion childRegion = parse(document, superRegion);
+    public IHyperlinkRegion getChildPartitionRegion(IDocument document, int offset, IHyperlinkRegion superRegion) {
+        IHyperlinkRegion childRegion = parse(document, offset, superRegion);
         if (childRegion == null) return null;
         HyperlinkPartitionerDefinition[] hyperlinkPartitionerDefinitions = HyperlinkPartitionerBuilder.getInstance().getHyperlinkPartitionerDefinitions(childRegion.getContentType(), childRegion.getType(), childRegion.getAxis());
 
@@ -45,18 +45,18 @@ public abstract class AbstractHyperlinkPartitioner implements IHyperlinkPartitio
         for(int i=0; sortedPartitioners != null && i<sortedPartitioners.length; i++) {
             IHyperlinkPartitioner partitioner = sortedPartitioners[i];
             if((!(partitioner instanceof IHyperlinkPartitionRecognizer)) || 
-            		((IHyperlinkPartitionRecognizer)partitioner).recognize(document, childRegion)) {
+            		((IHyperlinkPartitionRecognizer)partitioner).recognize(document, offset, childRegion)) {
             	if (partitioner instanceof IExclusiblePartitionerRecognition) {
             		IExclusiblePartitionerRecognition epr = (IExclusiblePartitionerRecognition)partitioner;
-            		IHyperlinkPartitioner replacement = findExclusionPartitioner(epr.getExclusionPartitionType(), hyperlinkPartitionerDefinitions, document, childRegion);
+            		IHyperlinkPartitioner replacement = findExclusionPartitioner(epr.getExclusionPartitionType(), hyperlinkPartitionerDefinitions, document, offset, childRegion);
             		if (replacement != null)
-            			return replacement.getChildPartitionType(document, childRegion);
+            			return replacement.getChildPartitionRegion(document, offset, childRegion);
             	}
-                return partitioner.getChildPartitionType(document, childRegion);
+                return partitioner.getChildPartitionRegion(document, offset, childRegion);
             }
         }
 
-        return childRegion.getType();
+        return childRegion;
     }
 
 	protected Sorter createSorter() {
@@ -94,12 +94,12 @@ public abstract class AbstractHyperlinkPartitioner implements IHyperlinkPartitio
 	}
 
     
-    IHyperlinkPartitioner findExclusionPartitioner (String partitionType, HyperlinkPartitionerDefinition[] hyperlinkPartitionerDefinitions, IDocument document, IHyperlinkRegion region) {
+    IHyperlinkPartitioner findExclusionPartitioner (String partitionType, HyperlinkPartitionerDefinition[] hyperlinkPartitionerDefinitions, IDocument document, int offset, IHyperlinkRegion region) {
         for(int i=0; i<hyperlinkPartitionerDefinitions.length; i++) {
             HyperlinkPartitionerDefinition def = hyperlinkPartitionerDefinitions[i];
             IHyperlinkPartitioner partitioner = def.createHyperlinkPartitioner();
             if((partitioner instanceof IExclusiblePartitionerRecognition) && 
-            		((IExclusiblePartitionerRecognition)partitioner).excludes(partitionType, document, region)) {
+            		((IExclusiblePartitionerRecognition)partitioner).excludes(partitionType, document, offset, region)) {
                 return partitioner;
             }
         }
@@ -110,7 +110,7 @@ public abstract class AbstractHyperlinkPartitioner implements IHyperlinkPartitio
 		return StructuredModelManager.getModelManager();
 	}
 
-    protected abstract IHyperlinkRegion parse(IDocument document, IHyperlinkRegion superRegion);
+    protected abstract IHyperlinkRegion parse(IDocument document, int offset, IHyperlinkRegion superRegion);
 
 	protected String getAxis(IDocument document, IHyperlinkRegion superRegion) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
@@ -128,5 +128,4 @@ public abstract class AbstractHyperlinkPartitioner implements IHyperlinkPartitio
 			smw.dispose();
 		}
 	}
-
 }

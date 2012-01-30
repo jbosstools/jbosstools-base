@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2009 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2009-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
 package org.jboss.tools.common.text.ext.hyperlink.xml;
@@ -26,7 +26,6 @@ public class PortletHyperlinkPartitioner extends AbstractHyperlinkPartitioner {
 	public static final String PORTLET_RESOURCE_BUNDLE_PARTITION = "org.jboss.tools.common.text.ext.hyperlink.xml.PORTLET_RESOURCE"; //$NON-NLS-1$
 
 	static final String textNodeName = "#text"; //$NON-NLS-1$
-
 	static final String portletNodeName = "portlet"; //$NON-NLS-1$
 	static final String portletClassNodeName = "portlet-class"; //$NON-NLS-1$
 	static final String portletResourceBundleNodeName = "resource-bundle"; //$NON-NLS-1$
@@ -69,7 +68,7 @@ public class PortletHyperlinkPartitioner extends AbstractHyperlinkPartitioner {
 	}
 
 	@Override
-	protected IHyperlinkRegion parse(IDocument document,
+	protected IHyperlinkRegion parse(IDocument document, int offset, 
 			IHyperlinkRegion superRegion) {
 		Node node = getNode(document, superRegion.getOffset());
 		String type = getType(node);
@@ -79,14 +78,13 @@ public class PortletHyperlinkPartitioner extends AbstractHyperlinkPartitioner {
 		IndexedRegion text = (IndexedRegion) node;
 
 		int length = text.getLength();
-		int offset = text.getStartOffset();
+		int startOffset = text.getStartOffset();
 
 		String contentType = superRegion.getContentType();
 		String axis = getAxis(document, superRegion);
 
-		IHyperlinkRegion hyperRegion = new HyperlinkRegion(offset, length,
+		IHyperlinkRegion hyperRegion = new HyperlinkRegion(startOffset, length,
 				axis, contentType, type);
 		return hyperRegion;
 	}
-
 }

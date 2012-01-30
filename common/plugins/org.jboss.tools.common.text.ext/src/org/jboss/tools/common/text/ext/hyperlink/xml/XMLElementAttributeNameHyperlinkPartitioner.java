@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.xml;
 
@@ -23,7 +23,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-
 /**
  * @author Jeremy
  */
@@ -37,14 +36,14 @@ public class XMLElementAttributeNameHyperlinkPartitioner extends AbstractHyperli
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
-	protected IHyperlinkRegion parse(IDocument document, IHyperlinkRegion superRegion) {
+	protected IHyperlinkRegion parse(IDocument document, int offset, IHyperlinkRegion superRegion) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
 			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
 			
-			Node n = Utils.findNodeForOffset(xmlDocument, superRegion.getOffset());
+			Node n = Utils.findNodeForOffset(xmlDocument, offset);
 			if (n == null || !(n instanceof Attr)) return null;
 			int start = (n instanceof IDOMAttr) ? ((IDOMAttr)n).getNameRegionStartOffset() : -1;
 			int end = (n instanceof IDOMAttr) ? ((IDOMAttr)n).getNameRegionEndOffset() : -1;
@@ -52,11 +51,8 @@ public class XMLElementAttributeNameHyperlinkPartitioner extends AbstractHyperli
 			String axis = getAxis(document, superRegion);
 			String contentType = superRegion.getContentType();
 			String type = getPartitionType();
-			int length = end - start - (superRegion.getOffset() - start);
-			int offset = superRegion.getOffset();
-			
-			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
-			return region;
+
+			return new HyperlinkRegion(start, end - start, axis, contentType, type);
 		} finally {
 			smw.dispose();
 		}
@@ -65,18 +61,18 @@ public class XMLElementAttributeNameHyperlinkPartitioner extends AbstractHyperli
 	/**
 	 * @see com.ibm.sse.editor.extensions.hyperlink.IHyperlinkPartitionRecognizer#recognize(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
-	public boolean recognize(IDocument document, IHyperlinkRegion region) {
+	public boolean recognize(IDocument document, int offset, IHyperlinkRegion region) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
 			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return false;
 			
-			Node n = Utils.findNodeForOffset(xmlDocument, region.getOffset());
+			Node n = Utils.findNodeForOffset(xmlDocument, offset);
 			if (!(n instanceof Attr)) return false;
 			int start = (n instanceof IDOMAttr) ? ((IDOMAttr)n).getNameRegionStartOffset() : -1;
 			int end = (n instanceof IDOMAttr) ? ((IDOMAttr)n).getNameRegionEndOffset() : -1;
-			if (start < 0 || start > region.getOffset() || end < region.getOffset()) 
+			if (start < 0 || start > offset || end < offset) 
 				return false;
 
 			return true;
@@ -85,13 +81,11 @@ public class XMLElementAttributeNameHyperlinkPartitioner extends AbstractHyperli
 		}
 	}
 
-	public boolean excludes(String partitionType, IDocument document, IHyperlinkRegion superRegion) {
+	public boolean excludes(String partitionType, IDocument document, int offset, IHyperlinkRegion superRegion) {
 		return false;
 	}
 
 	public String getExclusionPartitionType() {
 		return getPartitionType();
 	}
-
-
 }

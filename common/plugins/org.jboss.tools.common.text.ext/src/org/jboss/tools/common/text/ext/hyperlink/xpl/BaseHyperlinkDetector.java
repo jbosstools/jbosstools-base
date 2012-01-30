@@ -26,6 +26,7 @@ import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkBuilder;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkDetector;
+import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkRegion;
 
 public class BaseHyperlinkDetector implements IHyperlinkDetector{
 
@@ -35,8 +36,8 @@ public class BaseHyperlinkDetector implements IHyperlinkDetector{
 		// determine the current partition
 		if (textViewer != null && textViewer.getDocument() != null) {
 			String contentType = getContentType(textViewer.getDocument());
-			String partitionType = getPartitionType(textViewer.getDocument(), region.getOffset());
-			hyperlinks = getHyperlinks(textViewer, region, contentType, partitionType);
+			IHyperlinkRegion partition = getPartition(textViewer.getDocument(), region.getOffset());
+			hyperlinks = partition == null ? null : getHyperlinks(textViewer, region, contentType, partition);
 		}
 		return hyperlinks;
 	}
@@ -44,13 +45,13 @@ public class BaseHyperlinkDetector implements IHyperlinkDetector{
 	/**
 	 * Returns IHyperlink array for the document and region type.
 	 */
-	public IHyperlink[] getHyperlinks(ITextViewer textViewer, IRegion region, String contentType, String partitionType) {
-	    ArrayList hyperlinks = new ArrayList();
+	public IHyperlink[] getHyperlinks(ITextViewer textViewer, IRegion region, String contentType, IHyperlinkRegion partition) {
+	    ArrayList<IHyperlink> hyperlinks = new ArrayList<IHyperlink>();
 		// determine the current partition
 		if (textViewer != null && textViewer.getDocument() != null) {
 			// query HyperlinkBuilder and get the list of open ons for the
 			// current partition
-			HyperlinkDefinition[] defs = HyperlinkBuilder.getInstance().getHyperlinkDefinitions(contentType, partitionType);
+			HyperlinkDefinition[] defs = HyperlinkBuilder.getInstance().getHyperlinkDefinitions(contentType, partition.getType());
 
 			if(defs==null) return null;
 
@@ -60,6 +61,7 @@ public class BaseHyperlinkDetector implements IHyperlinkDetector{
 			    	if (hyperlink instanceof AbstractHyperlink) {
 			    		((AbstractHyperlink)hyperlink).setDocument(textViewer.getDocument());
 			    		((AbstractHyperlink)hyperlink).setOffset(region.getOffset());
+			    		((AbstractHyperlink)hyperlink).setRegion(partition);
 			    	}
 				    hyperlinks.add(hyperlink);			        
 			    }
@@ -101,14 +103,11 @@ public class BaseHyperlinkDetector implements IHyperlinkDetector{
 	 * @param offset
 	 * @return String partition type
 	 */
-	protected String getPartitionType(IDocument document, int offset) {
+	protected IHyperlinkRegion getPartition(IDocument document, int offset) {
 	    String type = null;
-	    String[] types = getPartitionTypes(document, offset);
+	    IHyperlinkRegion[] regions = getPartitions(document, offset);
 	    // if more than 1 hyperlink partitioner type is returned just returning the first one.
-		if(types != null && types.length > 0) {
-		    type = types[0];
-		}
-		return type;
+		return (regions != null && regions.length > 0 ? regions[0] : null);
 	}
 
 	/**
@@ -125,7 +124,7 @@ public class BaseHyperlinkDetector implements IHyperlinkDetector{
 		return hyperlinks;
 	}	
 	
-	protected String[] getPartitionTypes(IDocument document, int offset) {
-		return new String[0];
+	protected IHyperlinkRegion[] getPartitions(IDocument document, int offset) {
+		return new IHyperlinkRegion[0];
 	}
 }

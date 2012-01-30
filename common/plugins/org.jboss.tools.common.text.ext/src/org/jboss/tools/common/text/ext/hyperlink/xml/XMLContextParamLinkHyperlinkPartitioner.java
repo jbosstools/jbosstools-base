@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.hyperlink.xml;
 
@@ -14,16 +14,15 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.Text;
-
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlinkPartitioner;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkRegion;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkPartitionRecognizer;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkRegion;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 
 /**
  * @author Jeremy
@@ -33,26 +32,22 @@ public abstract class XMLContextParamLinkHyperlinkPartitioner extends AbstractHy
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
-	protected IHyperlinkRegion parse(IDocument document, IHyperlinkRegion superRegion) {
+	protected IHyperlinkRegion parse(IDocument document, int offset, IHyperlinkRegion superRegion) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
 			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
 			
-			Utils.findNodeForOffset(xmlDocument, superRegion.getOffset());
-			if (!recognize(document, superRegion)) return null;
-			IRegion r = getRegion(document, superRegion.getOffset());
+			if (!recognize(document, offset, superRegion)) return null;
+			IRegion r = getRegion(document, offset);
 			if (r == null) return null;
 			
 			String axis = getAxis(document, superRegion);
 			String contentType = superRegion.getContentType();
 			String type = getPartitionType();
-			int length = r.getLength() - (superRegion.getOffset() - r.getOffset());
-			int offset = superRegion.getOffset();
-			
-			IHyperlinkRegion region = new HyperlinkRegion(offset, length, axis, contentType, type);
-			return region;
+
+			return new HyperlinkRegion(r.getOffset(), r.getLength(), axis, contentType, type);
 		} finally {
 			smw.dispose();
 		}
@@ -108,5 +103,4 @@ public abstract class XMLContextParamLinkHyperlinkPartitioner extends AbstractHy
 			smw.dispose();
 		}
 	}
-
 }

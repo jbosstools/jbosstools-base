@@ -40,10 +40,10 @@ public class IncludeHyperlinkPartitioner extends AbstractHyperlinkPartitioner {
 	}
 
 	@Override
-	protected IHyperlinkRegion parse(IDocument document,
+	protected IHyperlinkRegion parse(IDocument document, int offset, 
 			IHyperlinkRegion superRegion) {
 		
-		Node node = getNode(document, superRegion.getOffset());
+		Node node = getNode(document, offset);
 		
 		if(!URL_NAME.equals(node.getNodeName()))
 			return null;
@@ -59,5 +59,4 @@ public class IncludeHyperlinkPartitioner extends AbstractHyperlinkPartitioner {
 				axis, contentType, INCLUDE_FILE_PARTITION);
 		return hyperRegion;
 	}
-
 }
