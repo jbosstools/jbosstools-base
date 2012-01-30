@@ -38,9 +38,17 @@ public class LabelDecoratorImpl implements ILabelDecorator {
 		return new DecoratingLabelProviderExt(provider, decorator);
 	}
 
+	static Set<String> missingImages = new HashSet<String>();
+
 	public Image decorateImage(Image image, Object element) {
 		int severity = getErrorState(element);
-		if(severity == IMarker.SEVERITY_ERROR) {
+		if(image == null && element instanceof XModelObject && severity > 0) {
+			String entity = ((XModelObject)element).getModelEntity().getName();
+			if(!missingImages.contains(entity)) {
+				missingImages.add(entity);
+				ModelUIPlugin.getDefault().logWarning("Problem in " + LabelDecoratorImpl.class.getName() + ": Cannot find icon for entity " + entity); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		} else if(severity == IMarker.SEVERITY_ERROR) {
 			return getErrorImage(image);
 		} else if(severity == IMarker.SEVERITY_WARNING) {
 			return getWarningImage(image);
