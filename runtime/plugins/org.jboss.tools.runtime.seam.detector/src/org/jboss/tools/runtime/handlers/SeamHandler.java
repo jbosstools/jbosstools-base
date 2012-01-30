@@ -158,6 +158,10 @@ public class SeamHandler extends AbstractRuntimeDetector {
 			JarFile jar = new JarFile(jarFile);
 			Attributes attributes = jar.getManifest().getMainAttributes();
 			String version = attributes.getValue(seamVersionAttributeName);
+			if (version == null) {
+				// Seam 2.3
+				version = attributes.getValue("Implementation-Version");
+			}
 			return version;
 		} catch (IOException e) {
 			return null;
