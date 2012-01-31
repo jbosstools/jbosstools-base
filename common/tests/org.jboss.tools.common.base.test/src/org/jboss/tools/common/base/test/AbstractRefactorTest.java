@@ -35,6 +35,7 @@ import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.jboss.tools.common.refactoring.BaseFileChange;
+import org.jboss.tools.common.util.FileUtil;
 import org.jboss.tools.test.util.JobUtils;
 
 public class AbstractRefactorTest extends TestCase{
@@ -44,6 +45,8 @@ public class AbstractRefactorTest extends TestCase{
 	}
 	
 	public static void checkRename(RenameProcessor processor, List<TestChangeStructure> changeList) throws CoreException{
+		processTestChanges(changeList);
+		
 		JobUtils.waitForIdle(2000);
 
 		// Test before renaming
@@ -74,7 +77,22 @@ public class AbstractRefactorTest extends TestCase{
 		checkChanges(rootChange, changeList);
 	}
 	
+	private static void processTestChanges(List<TestChangeStructure> structureList) throws CoreException{
+		for(TestChangeStructure tStructure : structureList){
+			IFile file = tStructure.getProject().getFile(tStructure.getFileName());
+			String fileContent = FileUtil.readStream(file);
+			for(TestTextChange tChange : tStructure.getTextChanges()){
+				if(tChange.getOffset() == -1){
+					int offset = fileContent.indexOf(tChange.getSearchText());
+					tChange.setOffset(offset);
+				}
+			}
+		}
+	}
+	
 	public static void checkMove(RefactoringProcessor processor, IResource oldObject, IResource destinationObject, MoveParticipant participant, List<TestChangeStructure> changeList) throws CoreException {
+		processTestChanges(changeList);
+		
 		JobUtils.waitForIdle(2000);
 
 		// Test before moving
@@ -104,6 +122,8 @@ public class AbstractRefactorTest extends TestCase{
 	}
 
 	public static void checkRename(RefactoringProcessor processor, IResource oldObject, String newName, RenameParticipant participant, List<TestChangeStructure> changeList) throws CoreException {
+		processTestChanges(changeList);
+		
 		JobUtils.waitForIdle(2000);
 
 		// Test before renaming
@@ -234,6 +254,7 @@ public class AbstractRefactorTest extends TestCase{
 	}
 	
 	public static class TestTextChange{
+		private String searchText;
 		private int offset;
 		private int length;
 		private String text;
@@ -242,6 +263,21 @@ public class AbstractRefactorTest extends TestCase{
 			this.offset = offset;
 			this.length = length;
 			this.text = text;
+		}
+		
+		public TestTextChange(String searchText, int length, String text){
+			this.offset = -1;
+			this.searchText = searchText;
+			this.length = length;
+			this.text = text;
+		}
+		
+		public void setOffset(int offset){
+			this.offset = offset;
+		}
+		
+		public String getSearchText(){
+			return searchText;
 		}
 		
 		public int getOffset(){
