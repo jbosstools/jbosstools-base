@@ -16,7 +16,6 @@ import org.jboss.tools.common.meta.action.impl.handlers.MoveHandler;
 import org.jboss.tools.common.model.*;
 
 public class MoveFileSystemHandler extends MoveHandler {
-	static SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.struts.webprj.model.helpers.sync.SortFileSystems"); //$NON-NLS-1$
 	
 	public void executeHandler(XModelObject object, Properties prop) throws XModelException {
 		if(!isEnabled(object)) return;
@@ -25,6 +24,7 @@ public class MoveFileSystemHandler extends MoveHandler {
 	}
 	
 	public static void sortFileSystems(XModel model) {
+		SpecialWizard wizard = SpecialWizardFactory.createSpecialWizard("org.jboss.tools.struts.webprj.model.helpers.sync.SortFileSystems"); //$NON-NLS-1$
 		if(wizard != null) {
 			wizard.setObject(model);
 			wizard.execute();
