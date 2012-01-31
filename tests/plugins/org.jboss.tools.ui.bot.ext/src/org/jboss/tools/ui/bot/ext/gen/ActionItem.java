@@ -599,6 +599,63 @@ public static String getItemString(IActionItem item) {
 				}
 			};
 			}
+		
+		public static class GitGitRepositories {
+			/**
+			 * respresents item : Git->Git Repositories
+			 */
+			public static final IView LABEL = new IView() {
+				public String getName() {return "Git Repositories";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("Git");
+					return l;
+				}
+			};
+		}
+		
+		public static class GitGitReflog {
+			/**
+			 * respresents item : Git->Git Reflog
+			 */
+			public static final IView LABEL = new IView() {
+				public String getName() {return "Git Reflog";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("Git");
+					return l;
+				}
+			};
+		}
+		
+		public static class GitGitStaging {
+			/**
+			 * respresents item : Git->Git Staging
+			 */
+			public static final IView LABEL = new IView() {
+				public String getName() {return "Git Staging";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("Git");
+					return l;
+				}
+			};
+		}
+		
+		public static class GitGitTreeCompare {
+			/**
+			 * respresents item : Git->Git Tree Compare
+			 */
+			public static final IView LABEL = new IView() {
+				public String getName() {return "Git Tree Compare";}
+				public List<String> getGroupPath() {
+					List<String> l = new Vector<String>();
+					l.add("Git");
+					return l;
+				}
+			};
+		}
+		
 		public static class SpringBeansCrossReferences {
 			/**
 			* represents item : Spring->Beans Cross References

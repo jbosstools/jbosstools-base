@@ -271,6 +271,10 @@ public class IDELabel {
 		public static final String JBOSS_TOOLS_PALETTE = "JBoss Tools Palette";
 		public static final String PALETTE = "Palette";
 		public static final String JBOSS_CENTRAL = "JBoss Central";
+ 		public static final String GIT_REPOSITORIES = "Git Repositories";
+		public static final String GIT_REFLOG = "Git Reflog";
+		public static final String GIT_STAGING = "Git Staging";
+		public static final String GIT_TREE_COMPARE = "Git Tree Compare";
 		public static final String AGENDA = "Agenda";
 		public static final String AUDIT = "Audit";
 		public static final String GLOBAL_DATA = "Global Data";
@@ -801,6 +805,21 @@ public class IDELabel {
    public static class AddJSFProjectTemplateDialog{
      public static final String NAME_TEXT_LABEL = "Name:*";
      public static final String IMPLEMENTATION_COMBO_LABEL = "Implementation:*";
+   }
+   
+   public static class JBossCentralEditor{
+	   public static final String JBOSS_CENTRAL = "JBoss Central";
+	   public static final String DYNAMIC_WEB_PROJECT = "Dynamic Web Project";
+	   public static final String JAVA_EE_WEB_PROJECT = "Java EE Web Project";
+	   public static final String HTML5_PROJECT = "HTML5 Project";
+	   public static final String RICHFACES_PROJECT = "RichFaces Project";
+	   public static final String OPENSHIFT_APP = "OpenShift Express Application";
+	   public static final String JAVA_EE_PROJECT = "Java EE Project";
+	   public static final String SPRING_MVC_PROJECT = "Spring MVC Project";
+	   public static final String NEW_DYNAMIC_WEB_PROJECT = "New Dynamic Web Project";
+	   public static final String PROJECT_EXAMPLE = "Project Example";
+	   public static final String NEW_JBOSS_PROJECT = "New JBoss Project";
+	   public static final String OPENSHIFT_APP_WIZARD = "OpenShift application wizard";
    }
    
    public static class NewViewDialog{

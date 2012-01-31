@@ -13,6 +13,11 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class SWTBotSection extends AbstractSWTBotControl<Section> {
 
+	@Override
+	protected AbstractSWTBotControl<Section> click(boolean post) {
+		// TODO Auto-generated method stub
+		return super.click(post);
+	}
 	private final SWTBot bot;
 	public SWTBotSection(Section w) throws WidgetNotFoundException {
 		super(w);

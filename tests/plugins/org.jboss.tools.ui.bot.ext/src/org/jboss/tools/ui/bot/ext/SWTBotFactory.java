@@ -19,6 +19,7 @@ public class SWTBotFactory {
 	protected static final SWTUtilExt util = new SWTUtilExt(bot);
 	protected static final SWTOpenExt open = new SWTOpenExt(bot);
 	protected static final SWTJBTExt jbt = new SWTJBTExt(bot);
+	protected static final SWTFormsBotExt formsBot = new SWTFormsBotExt();
 
 	// Views
 	protected static final PackageExplorer packageExplorer = new PackageExplorer();
@@ -29,6 +30,10 @@ public class SWTBotFactory {
 
 	public static SWTBotExt getBot() {
 		return bot;
+	}
+
+	public static SWTFormsBotExt getFormsBot() {
+		return formsBot;
 	}
 
 	public static SWTEclipseExt getEclipse() {
