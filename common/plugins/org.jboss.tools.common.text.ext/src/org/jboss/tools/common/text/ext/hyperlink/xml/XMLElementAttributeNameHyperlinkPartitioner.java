@@ -48,7 +48,7 @@ public class XMLElementAttributeNameHyperlinkPartitioner extends AbstractHyperli
 			int start = (n instanceof IDOMAttr) ? ((IDOMAttr)n).getNameRegionStartOffset() : -1;
 			int end = (n instanceof IDOMAttr) ? ((IDOMAttr)n).getNameRegionEndOffset() : -1;
 
-			String axis = getAxis(document, superRegion);
+			String axis = getAxis(document, offset);
 			String contentType = superRegion.getContentType();
 			String type = getPartitionType();
 

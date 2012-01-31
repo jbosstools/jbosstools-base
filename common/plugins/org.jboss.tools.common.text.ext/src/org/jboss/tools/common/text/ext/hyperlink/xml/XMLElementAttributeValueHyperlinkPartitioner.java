@@ -72,7 +72,7 @@ public class XMLElementAttributeValueHyperlinkPartitioner extends AbstractHyperl
 			if (propStart > offset || propStart + propLength < offset) return null;
 
 			
-			String axis = getAxis(document, superRegion);
+			String axis = getAxis(document, offset);
 			String contentType = superRegion.getContentType();
 			String type = getPartitionType();
 			

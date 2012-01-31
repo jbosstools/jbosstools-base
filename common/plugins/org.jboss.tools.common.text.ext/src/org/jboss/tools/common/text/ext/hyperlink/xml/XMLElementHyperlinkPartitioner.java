@@ -47,7 +47,7 @@ public class XMLElementHyperlinkPartitioner extends AbstractHyperlinkPartitioner
 			int end = Utils.getValueEnd(node);
 			if(start < 0) return null;
 
-			String axis = getAxis(document, superRegion);
+			String axis = getAxis(document, offset);
 			String contentType = superRegion.getContentType();
 			String type = XML_ELEMENT_PARTITION;
 

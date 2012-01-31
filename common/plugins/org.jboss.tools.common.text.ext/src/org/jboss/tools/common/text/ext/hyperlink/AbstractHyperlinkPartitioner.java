@@ -112,13 +112,13 @@ public abstract class AbstractHyperlinkPartitioner implements IHyperlinkPartitio
 
     protected abstract IHyperlinkRegion parse(IDocument document, int offset, IHyperlinkRegion superRegion);
 
-	protected String getAxis(IDocument document, IHyperlinkRegion superRegion) {
+	protected String getAxis(IDocument document, int offset) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
 			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
-			Node node = Utils.findNodeForOffset(xmlDocument, superRegion.getOffset());
+			Node node = Utils.findNodeForOffset(xmlDocument, offset);
 			if (node instanceof Attr) {
 				Attr attr = (Attr)node;
 				return Utils.getParentAxisForNode(xmlDocument, attr) + attr.getName() + "/"; //$NON-NLS-1$

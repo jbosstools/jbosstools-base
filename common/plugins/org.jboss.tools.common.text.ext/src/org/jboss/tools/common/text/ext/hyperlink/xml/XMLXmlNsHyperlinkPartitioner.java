@@ -50,7 +50,7 @@ public class XMLXmlNsHyperlinkPartitioner extends AbstractHyperlinkPartitioner i
 			int start = Utils.getValueStart(n);
 			int end = Utils.getValueEnd(n);
 
-			String axis = getAxis(document, superRegion);
+			String axis = getAxis(document, offset);
 			String contentType = superRegion.getContentType();
 			String type = XML_XMLNS_PARTITION;
 

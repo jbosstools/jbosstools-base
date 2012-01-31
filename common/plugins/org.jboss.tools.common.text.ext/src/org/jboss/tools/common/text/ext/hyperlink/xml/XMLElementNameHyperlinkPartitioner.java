@@ -42,7 +42,7 @@ public class XMLElementNameHyperlinkPartitioner extends AbstractHyperlinkPartiti
 			IHyperlinkRegion r = getRegion(document, offset);
 			if (r == null) return null;// document.get(r.getOffset(), r.getLength())
 			
-			String axis = getAxis(document, superRegion);
+			String axis = getAxis(document, offset);
 			String contentType = superRegion.getContentType();
 			String type = XML_ELEMENT_NAME_PARTITION;
 

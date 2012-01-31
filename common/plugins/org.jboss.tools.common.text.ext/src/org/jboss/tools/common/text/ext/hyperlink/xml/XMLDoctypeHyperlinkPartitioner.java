@@ -68,7 +68,7 @@ public class XMLDoctypeHyperlinkPartitioner extends AbstractHyperlinkPartitioner
 			
 			if (propStart > offset || propStart + propLength < offset) return null;
 
-			String axis = getAxis(document, superRegion);
+			String axis = getAxis(document, offset);
 			String contentType = superRegion.getContentType();
 			String type = XML_DOCTYPE_PARTITION;
 
@@ -80,14 +80,14 @@ public class XMLDoctypeHyperlinkPartitioner extends AbstractHyperlinkPartitioner
 		}
 	}
 	
-	protected String getAxis(IDocument document, IHyperlinkRegion superRegion) {
+	protected String getAxis(IDocument document, int offset) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
 			smw.init(document);
 			Document xmlDocument = smw.getDocument();
 			if (xmlDocument == null) return null;
 
-			Node node = Utils.findNodeForOffset(xmlDocument, superRegion.getOffset());
+			Node node = Utils.findNodeForOffset(xmlDocument, offset);
 			if (node instanceof DocumentType) {
 				return "/@DOCTYPE/" + node.getNodeName() + "/"; //$NON-NLS-1$ //$NON-NLS-2$
 			}

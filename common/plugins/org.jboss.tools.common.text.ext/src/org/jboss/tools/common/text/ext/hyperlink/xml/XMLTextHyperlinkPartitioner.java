@@ -42,7 +42,7 @@ public class XMLTextHyperlinkPartitioner extends AbstractHyperlinkPartitioner im
 			Node n = Utils.findNodeForOffset(xmlDocument, offset);
 			if (n == null || !(n instanceof Text)) return null;
 
-			String axis = getAxis(document, superRegion);
+			String axis = getAxis(document, offset);
 			String contentType = superRegion.getContentType();
 			String type = getPartitionType(axis);
 			int start = Utils.getValueStart(n);

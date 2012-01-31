@@ -43,7 +43,7 @@ public abstract class XMLContextParamLinkHyperlinkPartitioner extends AbstractHy
 			IRegion r = getRegion(document, offset);
 			if (r == null) return null;
 			
-			String axis = getAxis(document, superRegion);
+			String axis = getAxis(document, offset);
 			String contentType = superRegion.getContentType();
 			String type = getPartitionType();
 

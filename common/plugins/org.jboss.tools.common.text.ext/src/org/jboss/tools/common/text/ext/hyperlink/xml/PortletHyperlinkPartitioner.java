@@ -81,7 +81,7 @@ public class PortletHyperlinkPartitioner extends AbstractHyperlinkPartitioner {
 		int startOffset = text.getStartOffset();
 
 		String contentType = superRegion.getContentType();
-		String axis = getAxis(document, superRegion);
+		String axis = getAxis(document, offset);
 
 		IHyperlinkRegion hyperRegion = new HyperlinkRegion(startOffset, length,
 				axis, contentType, type);
