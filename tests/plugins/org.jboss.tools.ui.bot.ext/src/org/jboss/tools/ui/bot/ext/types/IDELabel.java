@@ -122,6 +122,7 @@ public class IDELabel {
 		public static final String UP = "Up";
 		public static final String DOWN = "Down";
 		public static final String ADD_VARIABLE = "Add Variable...";
+		public static final String VARIABLE = "Variable...";
 		public static final String CONFIGURE_VARIABLES = "Configure Variables...";
 		public static final String BROWSE = "Browse...";
 	}
@@ -195,8 +196,10 @@ public class IDELabel {
 	  public static final String ADD_PROPERTY = "Add Property";
 	  public static final String EDIT = "Edit";	  
 	  public static final String NEW_VARIABLE_CLASS_PATH_ENTRY = "New Variable Classpath Entry";
+	  public static final String EDIT_VARIABLE_ENTRY = "Edit Variable Entry";
 	  public static final String PREFERENCES_FILTERED = "Preferences (Filtered)";
 	  public static final String NEW_VARIABLE_ENTRY = "New Variable Entry";
+	  public static final String VARIABLE_SELECTION = "Variable Selection";
 	  public static final String CLASSPATH_VARIABLES_CHANGED = "Classpath Variables Changed";
 	  public static final String CLEAN = "Clean";
 	  public static final String SELECT_CLASS = "Select Class";
