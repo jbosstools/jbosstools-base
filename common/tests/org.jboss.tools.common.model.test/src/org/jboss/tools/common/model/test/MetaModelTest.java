@@ -29,6 +29,7 @@ import org.jboss.tools.common.meta.impl.XModelEntityImpl;
 import org.jboss.tools.common.meta.impl.XModelMetaDataImpl;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelFactory;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.engines.impl.EnginesLoader;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
@@ -162,7 +163,7 @@ public class MetaModelTest extends TestCase {
 		assertTrue(sb.toString(), errors.size() == 0);
 	}
 	
-	void collectActionsWithWrongHandlers(XModelEntity entity, XActionItem item, Set<String> errors) {
+	protected void collectActionsWithWrongHandlers(XModelEntity entity, XActionItem item, Set<String> errors) {
 		if(item instanceof XActionList) {
 			XActionList list = (XActionList)item;
 			XActionItem[] is = list.getActionItems();
@@ -245,7 +246,7 @@ public class MetaModelTest extends TestCase {
 		assertTrue(message.toString(), actionsWithoutIcons.size() == 0);
 	}
 	
-	void collectActionsWithoutIcon(XModelEntity entity, XActionItem item, Set<String> actionsWithoutIcons) {
+	protected void collectActionsWithoutIcon(XModelEntity entity, XActionItem item, Set<String> actionsWithoutIcons) {
 		String iconPath = item.getIconKey();
 		if(iconPath != null && item.getPath() != null 
 				&& iconPath.length() > 0 
@@ -277,7 +278,7 @@ public class MetaModelTest extends TestCase {
 	 */
 	public void testCreatingModelObjects() {
 		XModelMetaData meta = XModelMetaDataImpl.getInstance();
-		XModel model = PreferenceModelUtilities.getPreferenceModel();
+		XModel model = XModelFactory.getDefaultInstance();
 		String[] entities = meta.entities();
 		StringBuilder sb = new StringBuilder();
 		int errors = 0;
@@ -306,7 +307,7 @@ public class MetaModelTest extends TestCase {
 	 * introduce attribute 'example' to entity.
 	 */	
 	public void testObjectLoaders() {
-		XModel model = PreferenceModelUtilities.getPreferenceModel();
+		XModel model = XModelFactory.getDefaultInstance();
 		XModelMetaData meta = XModelMetaDataImpl.getInstance();
 		String[] entities = meta.entities();
 		StringBuilder sb = new StringBuilder();
