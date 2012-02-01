@@ -84,7 +84,7 @@ public class ClassHyperlink extends AbstractHyperlink {
 
 	private String getClassName(IRegion region) {
 		try {
-			return getDocument().get(region.getOffset(), region.getLength());
+			return getDocument().get(region.getOffset(), region.getLength()).trim();
 		} catch (BadLocationException x) {
 			// Ignore
 			return null;
