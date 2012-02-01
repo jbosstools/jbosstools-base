@@ -37,11 +37,13 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.forms.widgets.Twistie;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotHyperlinkExt;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotScaleExt;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotTwistie;
 import org.jboss.tools.ui.bot.ext.widgets.SWTBotSection;
 
 /**
@@ -194,6 +196,19 @@ public class SWTBotExt extends SWTWorkbenchBot {
 			throw new WidgetNotFoundException(
 					"Could not find widget of type Section", ex);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public SWTBotTwistie twistieByLabel(String label){
+		List<Twistie> list = (List<Twistie>)widgets(widgetOfType(Twistie.class));
+		SWTBotTwistie twistieBot = null;
+		for (Twistie twistie : list) {
+			twistieBot = new SWTBotTwistie(twistie);
+			if (twistieBot.getLabelText().equals(label)) return twistieBot;
+		}
+		//SWTBotTwistie twistie = new SWTBotTwistie((Twistie)widget(allOf(widgetOfType(Twistie.class), WidgetMatcherFactory.withLabel(label))));
+		//twistie.getId();
+		throw new WidgetNotFoundException("Widget of type Twistie with label \""+label+"\" was not found");
 	}
 
     /**
