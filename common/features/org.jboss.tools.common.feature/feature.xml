@@ -1,18 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="org.jboss.tools.common.feature" label="%featureName" version="3.3.0.qualifier" provider-name="%providerName">
+<feature
+      id="org.jboss.tools.common.feature"
+      label="%featureName"
+      version="3.3.0.qualifier"
+      provider-name="%providerName">
 
-	<description url="http://www.jboss.org/tools">%description</description>
-	<copyright>%copyright</copyright>
-	<license>%license</license>
+   <description url="http://www.jboss.org/tools">
+      %description
+   </description>
 
-	<requires>
-		<import feature="org.eclipse.wst.common_core.feature" version="0.0.0" match="greaterOrEqual" />
-		<import feature="org.eclipse.wst.common_ui.feature" version="0.0.0" match="greaterOrEqual" />
-	</requires>
+   <copyright>
+      %copyright
+   </copyright>
 
-	<plugin id="org.jboss.tools.common.el.core" download-size="0" install-size="0" version="0.0.0" />
-	<plugin id="org.jboss.tools.common.el.ui" download-size="0" install-size="0" version="0.0.0" />
-	<plugin id="org.jboss.tools.common.validation" download-size="0" install-size="0" version="0.0.0" />
-	<plugin id="org.jboss.tools.common.resref.core" download-size="0" install-size="0" version="0.0.0" />
-	<plugin id="org.jboss.tools.common.resref.ui" download-size="0" install-size="0" version="0.0.0" />
+   <license>
+      %license
+   </license>
+
+   <requires>
+      <import feature="org.eclipse.wst.common_core.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.wst.common_ui.feature" version="0.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="org.jboss.tools.common.el.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.common.el.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.common.validation"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.common.resref.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.common.resref.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
