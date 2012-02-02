@@ -274,7 +274,7 @@ public class MarkerResolutionUtils {
 				spaces += SPACE;
 			}
 			
-			String text = "";
+			String text = lineSeparator;
 			for(String line : lines){
 				text += spaces;
 				text += line;
