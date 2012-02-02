@@ -12,6 +12,7 @@ package org.jboss.tools.common.refactoring;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +37,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.core.JavaElement;
+import org.eclipse.jdt.internal.corext.util.CodeFormatterUtil;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
@@ -254,6 +256,43 @@ public class MarkerResolutionUtils {
 		}
 		return list;
 	}
+	
+	public static void addMethod(List<String> lines, ICompilationUnit compilationUnit, IType type, MultiTextEdit rootEdit) throws JavaModelException{
+		IType workingCopyType = findWorkingCopy(compilationUnit, type);
+		if(workingCopyType == null){
+			return;
+		}
+		IBuffer buffer = compilationUnit.getBuffer();
+		String lineSeparator = compilationUnit.findRecommendedLineSeparator();
+		
+		int position = workingCopyType.getSourceRange().getOffset()+workingCopyType.getSource().lastIndexOf("}");
+		if(position > 0){
+			String spaces = getLeadingSpacesToInsert(position, buffer);
+			
+			int indentWidth = CodeFormatterUtil.getIndentWidth(compilationUnit.getJavaProject());
+			for(int i = 0; i < indentWidth; i++){
+				spaces += SPACE;
+			}
+			
+			String text = "";
+			for(String line : lines){
+				text += spaces;
+				text += line;
+				text += lineSeparator;
+			}
+			
+			if(rootEdit != null){
+				TextEdit edit = new InsertEdit(position, text);
+				rootEdit.addChild(edit);
+			}else{
+				buffer.replace(position, 0, text);
+				
+				synchronized(compilationUnit) {
+					compilationUnit.reconcile(ICompilationUnit.NO_AST, true, null, null);
+				}
+			}
+		}
+	}
 
 	public static void addAnnotation(String qualifiedName, ICompilationUnit compilationUnit, IJavaElement element) throws JavaModelException{
 		addAnnotation(qualifiedName, compilationUnit, element, "");
@@ -364,18 +403,7 @@ public class MarkerResolutionUtils {
 			
 			str += compilationUnit.findRecommendedLineSeparator();
 			
-			int index = position;
-			while(index >= 0){
-				char c = buffer.getChar(index);
-				if(c == C_CARRIAGE_RETURN || c == C_NEW_LINE)
-					break;
-				index--;
-			}
-			index++;
-			if(index != position){
-				String spaces = buffer.getText(index, position-index);
-				str += spaces;
-			}
+			str += getLeadingSpacesToInsert(position, buffer);
 			
 		}else{
 			str += SPACE;
@@ -520,7 +548,7 @@ public class MarkerResolutionUtils {
 		if(annotation != null){
 			IBuffer buffer = compilationUnit.getBuffer();
 			
-			int numberOfSpaces = getNumberOfSpaces(annotation.getSourceRange().getOffset() + annotation.getSourceRange().getLength(), buffer);
+			int numberOfSpaces = getNumberOfSpacesToDelete(annotation.getSourceRange().getOffset() + annotation.getSourceRange().getLength(), buffer);
 			
 			// delete annotation
 			if(rootEdit != null){
@@ -535,7 +563,7 @@ public class MarkerResolutionUtils {
 		}
 	}
 	
-	private static int getNumberOfSpaces(int startPosition, IBuffer buffer){
+	private static int getNumberOfSpacesToDelete(int startPosition, IBuffer buffer){
 		int position = startPosition;
 		int numberOfSpaces = 0;
 		if(position < buffer.getLength()-1){
@@ -547,6 +575,21 @@ public class MarkerResolutionUtils {
 			}
 		}
 		return numberOfSpaces;
+	}
+	
+	private static String getLeadingSpacesToInsert(int startPosition, IBuffer buffer){
+		int position = startPosition;
+		while(position >= 0){
+			char c = buffer.getChar(position);
+			if(c == C_CARRIAGE_RETURN || c == C_NEW_LINE)
+				break;
+			position--;
+		}
+		position++;
+		if(position != startPosition){
+			return buffer.getText(position, startPosition-position);
+		}
+		return "";
 	}
 	
 	public static void deleteImportForAnnotation(String qualifiedName, IAnnotation annotation, ICompilationUnit compilationUnit, IBuffer buffer, MultiTextEdit rootEdit) throws JavaModelException{
@@ -563,7 +606,7 @@ public class MarkerResolutionUtils {
 					if(checkImport(textBefore, qualifiedName) && checkImport(textAfter, qualifiedName)){
 						int numberOfSpaces = 0;
 						if(!isLastImport(importContainer, importDeclaration)){
-							numberOfSpaces = getNumberOfSpaces(importDeclaration.getSourceRange().getOffset() + importDeclaration.getSourceRange().getLength(), buffer);
+							numberOfSpaces = getNumberOfSpacesToDelete(importDeclaration.getSourceRange().getOffset() + importDeclaration.getSourceRange().getLength(), buffer);
 						}
 
 						TextEdit edit = new DeleteEdit(importDeclaration.getSourceRange().getOffset(), importDeclaration.getSourceRange().getLength()+numberOfSpaces);
