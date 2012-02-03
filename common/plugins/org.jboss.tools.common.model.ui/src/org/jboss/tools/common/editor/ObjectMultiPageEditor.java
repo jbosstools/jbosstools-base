@@ -418,8 +418,8 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 			selectionProvider.setSelection(new StructuredSelection(o));
 			switchToPage(getSourcePageIndex());
 
+			postponedTextSelection.clean();
 			if(marker.getAttribute(IMarker.LINE_NUMBER, -1) != -1) {
-				postponedTextSelection.clean();
 				if(textEditor != null) textEditor.gotoMarker(marker);
 			} else {
 				String attr = marker.getAttribute("attribute", ""); //$NON-NLS-1$ //$NON-NLS-2$
