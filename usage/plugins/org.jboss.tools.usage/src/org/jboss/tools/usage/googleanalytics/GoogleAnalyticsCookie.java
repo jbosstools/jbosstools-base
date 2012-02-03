@@ -26,7 +26,7 @@ public class GoogleAnalyticsCookie {
 	}
 
 	public GoogleAnalyticsCookie(String identifier, CharSequence value) {
-		this(identifier, value, (char) -1);
+		this(identifier, value, new char[0]);
 	}
 
 	/**

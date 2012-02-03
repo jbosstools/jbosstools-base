@@ -28,10 +28,40 @@ import org.jboss.tools.usage.util.HttpEncodingUtils;
 /**
  * Class that builds an URL that passes given parameters to google analytics
  * 
+ * example:
+ * <p>
+ * <code>
+ *  http://www.google-analytics.com/__utm.gif?
+ *  utmwv=5.2.4
+ *  &utms=10
+ *  &utmn=583355747
+ *  &utmhn=devstudio.jboss.com
+ *  &utmcs=UTF-8
+ *  &utmsr=2560x1440
+ *  &utmvp=1265x393
+ *  &utmsc=24-bit
+ *  &utmul=en-us
+ *  &utmje=1
+ *  &utmfl=10.1 r102
+ *  &utmdt=JBoss Developer Studio - Early Access
+ *  &utmhid=1589877876
+ *  &utmr=-
+ *  &utmp=/earlyaccess/
+ *  &utmac=UA-xxxxxx-x
+ *  &utmcc=
+ *  	__utma=136910373.1786599479.1328002257.1328002257.1328216095.2;
+ *  	+__utmz=136910373.1328002257.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none);
+ *  	+__utmv=136910373.wonka;
+ *  &utmu=rAAQ~
+ *  </code>
+ * 
  * @author Andre Dietisheim
  * @author Siddique Hameed
- * @see based on <a href="http://jgoogleAnalytics.googlecode.com">http://jgoogleAnalytics.googlecode.com</a>
- *      
+ * 
+ * @see based on <a
+ *      href="http://jgoogleAnalytics.googlecode.com">http://jgoogleAnalytics
+ *      .googlecode.com</a>
+ * 
  * @see <a
  *      href="http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters">GIF
  *      Request Parameters</a>
@@ -116,10 +146,11 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 						.append(googleParameters.getFirstVisit()).append(IGoogleAnalyticsParameters.DOT)
 						.append(googleParameters.getLastVisit()).append(IGoogleAnalyticsParameters.DOT)
 						.append(googleParameters.getCurrentVisit()).append(IGoogleAnalyticsParameters.DOT)
-						.append(googleParameters.getVisitCount())
-						.append(IGoogleAnalyticsParameters.SEMICOLON),
-				IGoogleAnalyticsParameters.PLUS_SIGN)
+						.append(googleParameters.getVisitCount()))
 				.appendTo(builder);
+
+		builder.append(IGoogleAnalyticsParameters.SEMICOLON)
+				.append(IGoogleAnalyticsParameters.PLUS_SIGN);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_REFERRAL_TYPE,
 						new StringBuilder()
@@ -161,9 +192,11 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 				.appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD,
-					googleParameters.getKeyword(),
-					IGoogleAnalyticsParameters.PIPE)
+				googleParameters.getKeyword())
 				.appendTo(builder);
+
+		builder.append(IGoogleAnalyticsParameters.SEMICOLON)
+				.append(IGoogleAnalyticsParameters.PLUS_SIGN);
 
 		/**
 		 * <tt>User defined Value<tt> cookie format: (domain hash).(setvar value)
@@ -176,10 +209,8 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 				getRandomNumber()
 						+ IGoogleAnalyticsParameters.DOT
 						+ googleParameters.getUserDefined(),
-						' ')
+				IGoogleAnalyticsParameters.SEMICOLON)
 				.appendTo(builder);
-
-		builder.append(IGoogleAnalyticsParameters.SEMICOLON);
 
 		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}
