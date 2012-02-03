@@ -10,7 +10,7 @@
 	    <repository
 	    	anonymous="false"
       		addAutomatically="true"
-			label="JBoss JIRA"
+			label="JBoss Community"
 			repositoryKind="jira"
 			urlRepository="https://issues.jboss.org"
 			characterEncoding="UTF-8"/>
