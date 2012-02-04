@@ -50,6 +50,7 @@ import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
+import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
 import org.jboss.tools.common.model.options.Preference;
@@ -415,8 +416,24 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		if(path != null) {
 			XModelObject o = getModelObject().getModel().getByPath(path);
 			if(o == null) return;
+
+			XModelObject f = FileSystemsHelper.getFile(o);
+			if(f != null && f != object && object.getFileType() == XModelObject.FILE && getFile() != null && getFile().equals(f.getAdapter(IFile.class))) {
+				if(f == o) {
+					o = object;
+				} else {
+					o = object.getChildByPath(o.getPath().substring(f.getPath().length() + 1));
+					if(o == null) {
+						return;
+					}
+				}
+			}
+
 			selectionProvider.setSelection(new StructuredSelection(o));
-			switchToPage(getSourcePageIndex());
+			//tab=Tree is set to prevent switching to Source tab.
+			if(!"Tree".equals(marker.getAttribute("tab", null))) { //$NON-NLS-1$ //$NON-NLS-2$
+				switchToPage(getSourcePageIndex());
+			}
 
 			postponedTextSelection.clean();
 			if(marker.getAttribute(IMarker.LINE_NUMBER, -1) != -1) {
