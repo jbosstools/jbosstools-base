@@ -3,6 +3,7 @@ package org.jboss.tools.ui.bot.ext.wizards;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.gen.IImport;
 
@@ -36,5 +37,10 @@ public class SWTBotImportWizard extends SWTBotWizard {
 				return Arrays.asList(path);
 			}
 		};
+	}
+	
+	@Override
+	public SWTBot bot() {
+		return SWTBotFactory.getBot().activeShell().bot();
 	}
 }
