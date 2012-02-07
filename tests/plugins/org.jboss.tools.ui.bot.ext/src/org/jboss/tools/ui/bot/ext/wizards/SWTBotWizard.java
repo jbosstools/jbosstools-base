@@ -15,16 +15,17 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
+import org.jboss.tools.ui.bot.ext.condition.ProgressInformationShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class SWTBotWizard extends SWTBotShell {	
-	
+
 	public SWTBotWizard() {
 		this(SWTTestExt.bot.activeShell().widget);
 	}
-	
+
 	public SWTBotWizard(Shell shell) {
 		super(shell);
 		assert getText().contains("New ");
@@ -45,6 +46,13 @@ public class SWTBotWizard extends SWTBotShell {
 		return this;
 	}
 
+	public SWTBotWizard nextWithWait() {
+		SWTBotShell activeShell = getActiveShell();
+		next();
+		bot().waitUntil(new ShellIsActiveCondition(activeShell));
+		return this;
+	}
+
 	public void cancel() {
 		clickButton(IDELabel.Button.CANCEL);
 	}
@@ -52,14 +60,15 @@ public class SWTBotWizard extends SWTBotShell {
 	public void finish() {
 		clickButton(IDELabel.Button.FINISH);
 	}
-	
+
 	public void finishWithWait() {
 		SWTBotShell activeShell = getActiveShell();
 		finish();
 		bot().waitWhile(new ShellIsActiveCondition(activeShell), TaskDuration.LONG.getTimeout());
+		bot().waitWhile(new ProgressInformationShellIsActiveCondition(), TaskDuration.LONG.getTimeout());
 		bot().waitWhile(new NonSystemJobRunsCondition(), TaskDuration.LONG.getTimeout());
 	}
-	
+
 	protected void clickButton(String text) {
 		bot().button(text).click();
 		bot().sleep(500);
@@ -70,7 +79,7 @@ public class SWTBotWizard extends SWTBotShell {
 		t.setFocus();
 		t.setText(text);
 	}
-	
+
 	private SWTBotShell getActiveShell(){
 		for (SWTBotShell shell : bot().shells()){
 			if (shell.isActive()){
