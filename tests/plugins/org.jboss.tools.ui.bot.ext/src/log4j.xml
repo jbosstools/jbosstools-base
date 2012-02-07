@@ -50,6 +50,10 @@
 		<!-- set to a value higher than debug to turn on. -->
 		<priority value="DEBUG" />
 	</category>
+	
+	<category name="org.jboss.tools.ui.bot.ext.logging">
+		<priority value="ALL" />
+	</category>
 
 	<category name="org.eclipse.swtbot">
 		<priority value="ALL" />
