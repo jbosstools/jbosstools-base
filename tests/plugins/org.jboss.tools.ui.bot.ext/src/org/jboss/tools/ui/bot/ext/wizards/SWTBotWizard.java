@@ -52,7 +52,7 @@ public class SWTBotWizard extends SWTBotShell {
 		bot().waitUntil(new ShellIsActiveCondition(activeShell));
 		return this;
 	}
-
+	
 	public void cancel() {
 		clickButton(IDELabel.Button.CANCEL);
 	}
@@ -64,8 +64,11 @@ public class SWTBotWizard extends SWTBotShell {
 	public void finishWithWait() {
 		SWTBotShell activeShell = getActiveShell();
 		finish();
+		log.info("Waiting until active shell is active");
 		bot().waitWhile(new ShellIsActiveCondition(activeShell), TaskDuration.LONG.getTimeout());
+		log.info("Waiting until Progress Information Shell is active");
 		bot().waitWhile(new ProgressInformationShellIsActiveCondition(), TaskDuration.LONG.getTimeout());
+		log.info("Waiting until Non System Jobs run");
 		bot().waitWhile(new NonSystemJobRunsCondition(), TaskDuration.LONG.getTimeout());
 	}
 
@@ -78,6 +81,18 @@ public class SWTBotWizard extends SWTBotShell {
 		SWTBotText t = bot().textWithLabel(label);
 		t.setFocus();
 		t.setText(text);
+	}
+	
+	public boolean canFinish() {
+		return canClickButton(IDELabel.Button.FINISH);
+	}
+	
+	public boolean canNext() {
+		return canClickButton(IDELabel.Button.NEXT);
+	}
+	
+	protected boolean canClickButton(String buttonText) {
+		return bot().button(buttonText).isEnabled();
 	}
 
 	private SWTBotShell getActiveShell(){
