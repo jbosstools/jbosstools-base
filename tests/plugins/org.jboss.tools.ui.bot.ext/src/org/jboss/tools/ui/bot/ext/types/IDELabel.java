@@ -22,6 +22,7 @@ public class IDELabel {
 		public static final String FILE = "File";
 		public static final String NEW = "New";
 		public static final String PROJECT = "Project";
+		public static final String MOVE = "Move...";
 		public static final String OTHER = "Other...";
 		public static final String WINDOW = "Window";
 		public static final String SHOW_VIEW = "Show View";
@@ -111,10 +112,15 @@ public class IDELabel {
 		public static final String NEW = "New...";
 		public static final String CONTINUE = "Continue";
 		public static final String REMOVE = "Remove";
+		public static final String REMOVE_WITH_ARROW = "< Remove";
+		public static final String REMOVE_ALL = "<< Remove All";
 		public static final String REMOVE_WITH_DOTS = "Remove...";
 		public static final String EDIT = "Edit...";
 		public static final String ADD_WITHOUT_DOTS = "Add";
+		public static final String ADD_WITH_ARROW = "Add >";
+		public static final String ADD_ALL = "Add All >>";
 		public static final String EDIT_WITHOUT_DOTS = "Edit";
+		public static final String EDIT_VALUE_WITH_DOTS = "Edit Value...";
 		public static final String DROOLS_WORKBENCH = "Drools workbench";
 		public static final String REFRESH = "Refresh";
 		public static final String TEST = "Test";
@@ -181,6 +187,7 @@ public class IDELabel {
 	  public static final String NEW_HTML_FILE = "New HTML File";
 	  public static final String ADD_SVN_REPOSITORY = "Add SVN Repository";
 	  public static final String REPOSITORY_LOCATION_PROPERTIES = "Repository Location Properties";
+	  public static final String MOVE_RESOURCES = "Move Resources";
 	  public static final String SECURE_STORAGE = "Secure Storage";
 	  public static final String ADD_JSF_PROJECT_TEMPLATE = "Add JSF Project Template";
 	  public static final String NEW_MANAGED_BEAN = "New Managed Bean";
