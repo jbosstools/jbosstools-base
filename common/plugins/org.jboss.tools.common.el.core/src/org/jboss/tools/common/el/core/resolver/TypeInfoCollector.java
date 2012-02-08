@@ -35,9 +35,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.ca.preferences.ELContentAssistPreferences;
-import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
-import org.jboss.tools.common.util.EclipseJavaUtil;
 import org.jboss.tools.common.util.BeanUtil;
+import org.jboss.tools.common.util.EclipseJavaUtil;
 
 /**
  * This class helps to collect information of java elements used in Seam EL.
@@ -810,8 +809,22 @@ public class TypeInfoCollector {
 				fTypeInfo = new TypeInfo(binType, fMember, fMember.isDataModel());
 			}
 			TypeInfo parent = fTypeInfo;
+			Set<IType> allTypes = new HashSet<IType>();
+			Set<IType> superinterfaces = new HashSet<IType>();
 			while (binType != null) {
-				IMethod[] binMethods = binType.getMethods();
+				allTypes.add(binType);
+				initSuperinterfaces(binType, superinterfaces); // JBIDE-10809
+				binType = getSuperclass(binType);
+				if(binType!=null) {
+					TypeInfo superType = new TypeInfo(binType, originalParent, parent.isDataModel());
+					parent.setSuperType(superType);
+					parent = superType;
+				}
+			}
+
+			allTypes.addAll(superinterfaces);
+			for (IType type : allTypes) {
+				IMethod[] binMethods = type.getMethods();
 				for (int i = 0; binMethods != null && i < binMethods.length; i++) {
 					if (binMethods[i].isConstructor()) {
 						continue;
@@ -821,13 +834,6 @@ public class TypeInfoCollector {
 						info.setDataModel(true);
 					}
 					fMethods.add(info);
-					
-				}
-				binType = getSuperclass(binType);
-				if(binType!=null) {
-					TypeInfo superType = new TypeInfo(binType, originalParent, parent.isDataModel());
-					parent.setSuperType(superType);
-					parent = superType;
 				}
 			}
 
@@ -970,6 +976,23 @@ public class TypeInfoCollector {
 			}
 		}
 		return null;
+	}
+
+	public static void initSuperinterfaces(IType type, Set<IType> result) throws JavaModelException {
+//		IType superType = getSuperclass(type);
+//		if(superType)
+		String[] superinterfaceNames = type.getSuperInterfaceNames();
+		for (String superinterface : superinterfaceNames) {
+			String fullySuperclassName = EclipseJavaUtil.resolveType(type, superinterface);
+			if(fullySuperclassName!=null) {
+				if(fullySuperclassName.equals(type.getFullyQualifiedName())) {
+					break;
+				}
+				IType superType = type.getJavaProject().findType(fullySuperclassName);
+				result.add(superType);
+				initSuperinterfaces(superType, result);
+			}
+		}
 	}
 
 	public MethodInfo[] findMethodInfos(IMethod iMethod) {
