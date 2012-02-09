@@ -273,6 +273,7 @@ public class IDELabel {
 		public static final String DATA_SOURCE_EXPLORER = "Data Source Explorer";
 		public static final String SERVERS = "Servers";
 		public static final String WEB_PROJECTS = "Web Projects";
+		public static final String CONSOLE = "Console";
 		public static final String PROBLEMS = "Problems";
 		public static final String DEBUG = "Debug";
 		public static final String GUVNOR_REPOSITORIES = "Guvnor Repositories";
