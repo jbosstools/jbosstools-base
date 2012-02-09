@@ -49,7 +49,7 @@ public class SWTBotWizard extends SWTBotShell {
 	public SWTBotWizard nextWithWait() {
 		SWTBotShell activeShell = getActiveShell();
 		next();
-		bot().waitUntil(new ShellIsActiveCondition(activeShell));
+		bot().waitUntil(new ShellIsActiveCondition(activeShell), TaskDuration.LONG.getTimeout());
 		return this;
 	}
 	
