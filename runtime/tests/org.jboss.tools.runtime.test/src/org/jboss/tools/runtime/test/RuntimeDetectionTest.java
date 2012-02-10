@@ -44,7 +44,7 @@ import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.InvalidRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.seam.core.project.facet.SeamRuntime;
 import org.jboss.tools.seam.core.project.facet.SeamRuntimeManager;
@@ -90,7 +90,7 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 			runtimePaths.add(runtimePath);
 		}
 		RuntimeUIActivator.getDefault().saveRuntimePaths();
-		List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
+		List<RuntimeDefinition> serverDefinitions = new ArrayList<RuntimeDefinition>();
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator
 				.getRuntimeDetectors();
 		for (IRuntimeDetector detector : detectors) {
@@ -105,16 +105,16 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
 				.getRuntimePaths();
 		for (RuntimePath runtimePath : runtimePaths) {
-			List<ServerDefinition> serverDefinitions = locator
+			List<RuntimeDefinition> serverDefinitions = locator
 					.searchForRuntimes(runtimePath.getPath(),
 							new NullProgressMonitor());
 			runtimePath.getServerDefinitions().clear();
-			for (ServerDefinition serverDefinition : serverDefinitions) {
+			for (RuntimeDefinition serverDefinition : serverDefinitions) {
 				serverDefinition.setRuntimePath(runtimePath);
 			}
 			runtimePath.getServerDefinitions().addAll(serverDefinitions);
 		}
-		List<ServerDefinition> serverDefinitions = RuntimeUIActivator
+		List<RuntimeDefinition> serverDefinitions = RuntimeUIActivator
 				.getDefault().getServerDefinitions();
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator
 				.getRuntimeDetectors();
@@ -155,9 +155,9 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 
 	@Test
 	public void testLocations() {
-		List<ServerDefinition> serverDefinitions = RuntimeUIActivator
+		List<RuntimeDefinition> serverDefinitions = RuntimeUIActivator
 				.getDefault().getServerDefinitions();
-		for (ServerDefinition serverDefinition : serverDefinitions) {
+		for (RuntimeDefinition serverDefinition : serverDefinitions) {
 			File location = serverDefinition.getLocation();
 			assertTrue("The '" + location.getAbsolutePath()
 					+ "' path isn't valid.", location.isDirectory());
@@ -205,7 +205,7 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 	
 	@Test
 	public void testServerDefinitions() {
-		List<ServerDefinition> serverDefinitions = RuntimeUIActivator
+		List<RuntimeDefinition> serverDefinitions = RuntimeUIActivator
 				.getDefault().getServerDefinitions();
 		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault()
 			.getRuntimePaths();
@@ -326,11 +326,11 @@ public class RuntimeDetectionTest implements IJBossRuntimePluginConstants {
 	
 	@Test
 	public void testIncludedDefinitions() {
-		for (ServerDefinition serverDefinition:RuntimeUIActivator.getDefault().getServerDefinitions()){
+		for (RuntimeDefinition serverDefinition:RuntimeUIActivator.getDefault().getServerDefinitions()){
 			String type = serverDefinition.getType();
 			if (EAP.equals(type)) {
 				assertTrue("EAP has to include server definitions", serverDefinition.getIncludedServerDefinitions().size() > 0);
-				for(ServerDefinition included:serverDefinition.getIncludedServerDefinitions()) {
+				for(RuntimeDefinition included:serverDefinition.getIncludedServerDefinitions()) {
 					assertTrue("Invalid parent definition", included.getParent() == serverDefinition);
 				}
 			}
