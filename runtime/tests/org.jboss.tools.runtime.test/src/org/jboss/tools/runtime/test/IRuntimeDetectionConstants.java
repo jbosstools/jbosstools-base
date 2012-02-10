@@ -21,7 +21,7 @@ public interface IRuntimeDetectionConstants {
 
 	final static String JBOSS_51_HOME = System.getProperty("jbosstools.test.jboss.home.5.1", "E:\\JBossRuntime2\\jboss-5.1.0.GA");
 
-	final static String JBOSS_70_HOME = System.getProperty("jbosstools.test.jboss.home.7.0", "E:\\jboss-7.0.0.Beta3");
+	final static String JBOSS_70_HOME = System.getProperty("jbosstools.test.jboss.home.7.0", "E:\\jboss-as-7.0.1.Final");
 
 	final static String SEAM_20_HOME = System.getProperty("jbosstools.test.seam.2.0.1.GA.home", "E:\\JBossRuntimes\\jboss-seam-2.0.1.GA");
 
