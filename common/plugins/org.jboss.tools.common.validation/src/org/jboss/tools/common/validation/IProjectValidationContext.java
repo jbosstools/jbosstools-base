@@ -117,6 +117,12 @@ public interface IProjectValidationContext {
 	void removeLinkedEl(String name, ELReference el);
 
 	/**
+	 * Removes all the links between the EL and all the linked variable name.
+	 * @param el
+	 */
+	void removeLinkedEl(ELReference el);
+
+	/**
 	 * Return ELs with given variable name
 	 * @param variableName
 	 * @return

@@ -189,10 +189,15 @@ public class ProjectValidationContext implements IProjectValidationContext {
 						}
 					}
 				}
+				// Threat resource path as a variable name too.
+				Set<ELReference> els = elLinks.getElsByVariableName(resource.getFullPath().toString());
+				if(els!=null) {
+					result.addAll(els);
+				}
 				if(oldVariableNamesForELValidation!=null) {
 					for (String oldName :oldVariableNamesForELValidation) {
 						if(!onlyChangedVariables || newNames==null || !newNames.contains(oldName)) {
-							Set<ELReference> els = elLinks.getElsByVariableName(oldName);
+							els = elLinks.getElsByVariableName(oldName);
 							if(els!=null) {
 								result.addAll(els);
 							}
@@ -239,6 +244,14 @@ public class ProjectValidationContext implements IProjectValidationContext {
 	 */
 	public void removeLinkedEl(String name, ELReference el) {
 		elLinks.removeLinkedEl(name, el);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.validation.IProjectValidationContext#removeLinkedEl(org.jboss.tools.common.el.core.ELReference)
+	 */
+	public void removeLinkedEl(ELReference el) {
+		elLinks.removeLinkedEl(el);
 	}
 
 	/*

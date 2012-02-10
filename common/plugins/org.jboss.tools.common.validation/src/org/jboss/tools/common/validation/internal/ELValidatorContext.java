@@ -82,6 +82,23 @@ public class ELValidatorContext extends LinkCollection {
 	}
 
 	public synchronized void removeLinkedEls(IFile resource) {
+		String name = resource.getFullPath().toString(); // Resource path is also a variable name
+		Set<ELReference> linkedEls = elsByVariableName.remove(name);
+		if(linkedEls!=null ) {
+			modifications++;
+			for (ELReference el : linkedEls) {
+				Set<String> variableNames = variableNamesByEl.get(el);
+				if(variableNames!=null) {
+					if(variableNames.remove(name)) {
+						modifications++;
+					}
+					if(variableNames.isEmpty()) {
+						variableNamesByEl.remove(el);
+					}
+				}
+			}
+		}
+
 		Set<ELReference> els = elsByResource.get(resource.getFullPath());
 		if(els!=null) {
 			if(elsByResource.remove(resource.getFullPath()) != null) {
@@ -99,6 +116,25 @@ public class ELValidatorContext extends LinkCollection {
 		}
 	}
 
+	public synchronized void removeLinkedEl(ELReference el) {
+		Set<String> names = variableNamesByEl.remove(el);
+		if(names==null) {
+			return;
+		}
+		if(!names.isEmpty()) {
+			modifications++;
+		}
+		for (String name : names) {
+			Set<ELReference> els = elsByVariableName.get(name);
+			if(els!=null) {
+				els.remove(el);
+				if(els.isEmpty()) {
+					elsByVariableName.remove(name);
+				}
+			}
+		}
+	}
+
 	/**
 	 * Removes link between EL and variable name.
 	 * @param name
@@ -110,9 +146,9 @@ public class ELValidatorContext extends LinkCollection {
 			if(linkedEls.remove(el)) {
 				modifications++;
 			}
-		}
-		if(linkedEls.isEmpty()) {
-			elsByVariableName.remove(name);
+			if(linkedEls.isEmpty()) {
+				elsByVariableName.remove(name);
+			}
 		}
 
 		// Remove link between EL and variable names.
@@ -121,9 +157,9 @@ public class ELValidatorContext extends LinkCollection {
 			if(variableNames.remove(name)) {
 				modifications++;
 			}
-		}
-		if(variableNames.isEmpty()) {
-			variableNamesByEl.remove(el);
+			if(variableNames.isEmpty()) {
+				variableNamesByEl.remove(el);
+			}
 		}
 	}
 

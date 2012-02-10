@@ -18,6 +18,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -692,6 +694,18 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			List<TypeInfoCollector.MemberInfo> newMembers = new ArrayList<TypeInfoCollector.MemberInfo>();
 			for (TypeInfoCollector.MemberInfo mbr : members) {
 				if (mbr.getMemberType() == null) continue;
+				ICompilationUnit unit = mbr.getMemberType().getCompilationUnit();
+				if(unit!=null && unit.exists()) {
+					IResource resource;
+					try {
+						resource = unit.getCorrespondingResource();
+						if(resource!=null) {
+							segment.setResource(resource);						
+						}
+					} catch (JavaModelException e) {
+						ELCorePlugin.getDefault().logError(e);
+					}
+				}
 				TypeInfoCollector infos = mbr.getTypeCollector(varIsUsed, isStaticMethodsCollectingEnabled());
 				if (TypeInfoCollector.isNotParameterizedCollection(mbr) || TypeInfoCollector.isResourceBundle(mbr.getMemberType())) {
 					resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
@@ -893,7 +907,24 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				String filter = expr.getMemberName();
 				if(filter == null) filter = ""; //$NON-NLS-1$
 				String presentationString = proposal.getPresentation();
-
+				//proposal.getMember().getSourceType().getCompilationUnit().getCorrespondingResource()
+				MemberInfo info = proposal.getMember();
+				if(info!=null) {
+					IType type = info.getSourceType();
+					if(type!=null) {
+						ICompilationUnit unit = type.getCompilationUnit();
+						if(unit!=null && unit.exists()) {
+							try {
+								IResource resource = unit.getCorrespondingResource();
+								if(resource!=null) {
+									segment.setResource(resource);
+								}
+							} catch (JavaModelException e) {
+								ELCorePlugin.getDefault().logError(e);
+							}
+						}
+					}
+				}
 				if(returnEqualedVariablesOnly) {
 					// This is used for validation.
 					if (presentationString.equals(filter)) {
