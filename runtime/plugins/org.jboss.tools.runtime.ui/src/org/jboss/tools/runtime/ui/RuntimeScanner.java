@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IStartup;
-import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.model.ServerDefinition;
@@ -43,6 +42,9 @@ public class RuntimeScanner implements IStartup {
 			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				if (firstStart) {
+					JBossRuntimeStartup.initializeRuntimes(monitor);
+				}
 				boolean exists = runtimeExists(firstStart, monitor);
 				if (monitor.isCanceled()) {
 					RuntimeUIActivator.getDefault().refreshRuntimePreferences();

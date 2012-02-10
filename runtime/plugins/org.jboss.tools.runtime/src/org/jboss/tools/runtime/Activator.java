@@ -29,8 +29,6 @@ public class Activator extends AbstractUIPlugin {
 
 	public static final String JBPMS = "jbpms";
 
-	public static final String WORKSPACES = "workspaces";
-
 	// The shared instance
 	private static Activator plugin;
 	
