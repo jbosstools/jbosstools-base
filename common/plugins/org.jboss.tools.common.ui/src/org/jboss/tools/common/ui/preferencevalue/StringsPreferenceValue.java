@@ -165,9 +165,9 @@ public class StringsPreferenceValue extends AbstractPreferenceValue<String[]> {
 	 * value in the given array at index x) and stores the preferences.
 	 */
 	public void store(String[] newValues) {
-		String[] currentValues = get();
-		overrideValues(newValues, currentValues);
-		doStore(concatenate(currentValues));
+		//String[] currentValues = get();
+		//overrideValues(newValues, currentValues);
+		doStore(concatenate(newValues));
 	}
 
 	public void store() {
