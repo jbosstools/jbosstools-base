@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IStartup;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
 /**
  * @author snjeza
@@ -80,20 +80,20 @@ public class RuntimeScanner implements IStartup {
 			}
 			if (runtimePath.isModified()) {
 				JBossRuntimeLocator locator = new JBossRuntimeLocator();
-				List<ServerDefinition> serverDefinitions = locator.searchForRuntimes(runtimePath.getPath(), monitor);
+				List<RuntimeDefinition> serverDefinitions = locator.searchForRuntimes(runtimePath.getPath(), monitor);
 				if (monitor.isCanceled()) {
 					return false;
 				}
 				runtimePath.getServerDefinitions().clear();
-				for (ServerDefinition serverDefinition:serverDefinitions) {
+				for (RuntimeDefinition serverDefinition:serverDefinitions) {
 					serverDefinition.setRuntimePath(runtimePath);
 				}
 				runtimePath.getServerDefinitions().addAll(serverDefinitions);
 				RuntimeUIActivator.setTimestamp(runtimePaths);
 			}
 			monitor.setTaskName("JBoss Runtime Detector: checking " + runtimePath.getPath());
-			List<ServerDefinition> serverDefinitions = runtimePath.getServerDefinitions();
-			for (ServerDefinition serverDefinition:serverDefinitions) {
+			List<RuntimeDefinition> serverDefinitions = runtimePath.getServerDefinitions();
+			for (RuntimeDefinition serverDefinition:serverDefinitions) {
 				if (monitor.isCanceled()) {
 					return false;
 				}

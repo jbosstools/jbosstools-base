@@ -19,7 +19,7 @@ import org.drools.eclipse.util.DroolsRuntime;
 import org.drools.eclipse.util.DroolsRuntimeManager;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
 public class DroolsHandler extends AbstractRuntimeDetector {
 
@@ -27,7 +27,7 @@ public class DroolsHandler extends AbstractRuntimeDetector {
 	private static final String SOA_P = "SOA-P"; //$NON-NLS-1$
 
 	@Override
-	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
+	public void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
 		DroolsRuntime[] existingRuntimes = DroolsRuntimeManager
 				.getDroolsRuntimes();
 		List<DroolsRuntime> droolsRuntimes = new ArrayList<DroolsRuntime>();
@@ -44,9 +44,9 @@ public class DroolsHandler extends AbstractRuntimeDetector {
 
 	}
 
-	private void initializeInternal(List<ServerDefinition> serverDefinitions,
+	private void initializeInternal(List<RuntimeDefinition> serverDefinitions,
 			List<DroolsRuntime> droolsRuntimes) {
-		for (ServerDefinition serverDefinition : serverDefinitions) {
+		for (RuntimeDefinition serverDefinition : serverDefinitions) {
 			String type = serverDefinition.getType();
 			if (serverDefinition.isEnabled() && !droolsExists(serverDefinition)) {
 				if (DROOLS.equals(type)) {
@@ -70,7 +70,7 @@ public class DroolsHandler extends AbstractRuntimeDetector {
 	 * @param serverDefinition
 	 * @return
 	 */
-	private static boolean droolsExists(ServerDefinition serverDefinition) {
+	private static boolean droolsExists(RuntimeDefinition serverDefinition) {
 		DroolsRuntime[] droolsRuntimes = DroolsRuntimeManager
 				.getDroolsRuntimes();
 		for (DroolsRuntime dr : droolsRuntimes) {
@@ -85,7 +85,7 @@ public class DroolsHandler extends AbstractRuntimeDetector {
 	}
 
 	@Override
-	public ServerDefinition getServerDefinition(File root,
+	public RuntimeDefinition getServerDefinition(File root,
 			IProgressMonitor monitor) {
 		if (monitor.isCanceled() || root == null) {
 			return null;
@@ -103,7 +103,7 @@ public class DroolsHandler extends AbstractRuntimeDetector {
 			String version = getImplementationVersion(root, files[0]);
 			if (version != null) {
 				version = version.substring(0, 3);
-				return new ServerDefinition(root.getName(), version, DROOLS,
+				return new RuntimeDefinition(root.getName(), version, DROOLS,
 						root.getAbsoluteFile());
 			}
 		}
@@ -111,7 +111,7 @@ public class DroolsHandler extends AbstractRuntimeDetector {
 	}
 
 	@Override
-	public boolean exists(ServerDefinition serverDefinition) {
+	public boolean exists(RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null || serverDefinition.getLocation() == null) {
 			return false;
 		}
@@ -119,7 +119,7 @@ public class DroolsHandler extends AbstractRuntimeDetector {
 	}
 
 	public static void calculateIncludedServerDefinition(
-			ServerDefinition serverDefinition) {
+			RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null
 				|| !SOA_P.equals(serverDefinition.getType())) {
 			return;
@@ -127,7 +127,7 @@ public class DroolsHandler extends AbstractRuntimeDetector {
 		File droolsRoot = serverDefinition.getLocation(); //$NON-NLS-1$
 		if (droolsRoot.isDirectory()) {
 			String name = "Drools - " + serverDefinition.getName(); //$NON-NLS-1$
-			ServerDefinition sd = new ServerDefinition(name,
+			RuntimeDefinition sd = new RuntimeDefinition(name,
 					serverDefinition.getVersion(), DROOLS, droolsRoot);
 			sd.setParent(serverDefinition);
 			serverDefinition.getIncludedServerDefinitions().add(sd);

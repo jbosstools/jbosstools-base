@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
 /**
  * @author snjeza
@@ -33,17 +33,17 @@ public class JBossRuntimeLocator {
 	public JBossRuntimeLocator() {
 	}
 	
-	public List<ServerDefinition> searchForRuntimes(String path, IProgressMonitor monitor) {
+	public List<RuntimeDefinition> searchForRuntimes(String path, IProgressMonitor monitor) {
 		return searchForRuntimes(new Path(path), monitor);
 	}
 
-	public List<ServerDefinition> searchForRuntimes(IPath path, IProgressMonitor monitor) {
-		List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
+	public List<RuntimeDefinition> searchForRuntimes(IPath path, IProgressMonitor monitor) {
+		List<RuntimeDefinition> serverDefinitions = new ArrayList<RuntimeDefinition>();
 		searchForRuntimes(serverDefinitions, path, monitor);
 		return serverDefinitions;
 	}
 	
-	private void searchForRuntimes(List<ServerDefinition> serverDefinitions, IPath path, 
+	private void searchForRuntimes(List<RuntimeDefinition> serverDefinitions, IPath path, 
 			IProgressMonitor monitor) {
 		File[] files = null;
 		if (path != null) {
@@ -73,7 +73,7 @@ public class JBossRuntimeLocator {
 		
 	}
 	
-	public void searchDirectory(File directory, List<ServerDefinition> serverDefinitions,
+	public void searchDirectory(File directory, List<RuntimeDefinition> serverDefinitions,
 			int depth, IProgressMonitor monitor) {
 		if (depth == 0 || monitor.isCanceled() || directory == null || !directory.isDirectory()) {
 			return;
@@ -89,7 +89,7 @@ public class JBossRuntimeLocator {
 			if (!detector.isEnabled()) {
 				continue;
 			}
-			ServerDefinition serverDefinition = detector.getServerDefinition(directory, monitor);
+			RuntimeDefinition serverDefinition = detector.getServerDefinition(directory, monitor);
 			if (serverDefinition != null) {
 				serverDefinitions.add(serverDefinition);
 				return;

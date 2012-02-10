@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
 /**
@@ -138,7 +138,7 @@ public class EditRuntimePathDialog extends Dialog {
 			
 			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
-				ServerDefinition definition = (ServerDefinition) event.getElement();
+				RuntimeDefinition definition = (RuntimeDefinition) event.getElement();
 				definition.setEnabled(!definition.isEnabled());
 			}
 		});

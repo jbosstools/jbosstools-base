@@ -52,7 +52,7 @@ import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.ui.dialogs.SearchRuntimePathDialog;
 import org.jboss.tools.runtime.ui.preferences.RuntimePreferencePage;
 import org.osgi.framework.BundleContext;
@@ -113,7 +113,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	
 	private Set<IRuntimeDetector> runtimeDetectors;
 
-	private List<ServerDefinition> serverDefinitions;
+	private List<RuntimeDefinition> serverDefinitions;
 	
 	/**
 	 * The constructor
@@ -187,13 +187,13 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		}
 
 		viewer.setLabelProvider(new RuntimeLabelProvider());
-		List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
+		List<RuntimeDefinition> serverDefinitions = new ArrayList<RuntimeDefinition>();
 		for (RuntimePath runtimePath:runtimePaths2) {
 			serverDefinitions.addAll(runtimePath.getServerDefinitions());
 		}
 		viewer.setContentProvider(new RuntimeContentProvider(serverDefinitions));
 		viewer.setInput(serverDefinitions);
-		for (ServerDefinition definition:serverDefinitions) {
+		for (RuntimeDefinition definition:serverDefinitions) {
 			viewer.setChecked(definition, definition.isEnabled());
 		}
 		return viewer;
@@ -207,10 +207,10 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 					InterruptedException {
 				JBossRuntimeLocator locator = new JBossRuntimeLocator();
 				for (RuntimePath runtimePath : runtimePaths) {
-					List<ServerDefinition> serverDefinitions = locator
+					List<RuntimeDefinition> serverDefinitions = locator
 							.searchForRuntimes(runtimePath.getPath(), monitor);
 					runtimePath.getServerDefinitions().clear();
-					for (ServerDefinition serverDefinition : serverDefinitions) {
+					for (RuntimeDefinition serverDefinition : serverDefinitions) {
 						serverDefinition.setRuntimePath(runtimePath);
 					}
 					runtimePath.getServerDefinitions()
@@ -227,12 +227,12 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 					@Override
 					public void widgetDisposed(DisposeEvent e) {
 						viewer.setInput(null);
-						List<ServerDefinition> serverDefinitions = new ArrayList<ServerDefinition>();
+						List<RuntimeDefinition> serverDefinitions = new ArrayList<RuntimeDefinition>();
 						for (RuntimePath runtimePath : runtimePaths) {
 							serverDefinitions.addAll(runtimePath
 									.getServerDefinitions());
 							viewer.setInput(serverDefinitions);
-							for (ServerDefinition serverDefinition : serverDefinitions) {
+							for (RuntimeDefinition serverDefinition : serverDefinitions) {
 								runtimeExists(serverDefinition);
 								viewer.setChecked(serverDefinition,
 										serverDefinition.isEnabled());
@@ -248,7 +248,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		}
 	}
 
-	public static boolean runtimeExists(ServerDefinition serverDefinition) {
+	public static boolean runtimeExists(RuntimeDefinition serverDefinition) {
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
 		for (IRuntimeDetector detector:detectors) {
 			if (detector.isEnabled() && detector.exists(serverDefinition)) {
@@ -311,14 +311,14 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 			IMemento serverDefinitionsNode = node.getChild(SERVER_DEFINITIONS);
 			IMemento[] sdNodes = serverDefinitionsNode.getChildren(SERVER_DEFINITION);
 			for (IMemento sdNode:sdNodes) {
-				ServerDefinition serverDefinition = createServerDefinition(sdNode);
+				RuntimeDefinition serverDefinition = createServerDefinition(sdNode);
 				serverDefinition.setRuntimePath(runtimePath);
 				IMemento includedDefinition = sdNode.getChild(INCLUDED_DEFINITION);
 				if (includedDefinition != null) {
 					IMemento[] includedNodes = includedDefinition
 							.getChildren(SERVER_DEFINITION);
 					for (IMemento includedNode : includedNodes) {
-						ServerDefinition included = createServerDefinition(includedNode);
+						RuntimeDefinition included = createServerDefinition(includedNode);
 						included.setRuntimePath(runtimePath);
 						included.setParent(serverDefinition);
 						serverDefinition.getIncludedServerDefinitions().add(
@@ -330,7 +330,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 			runtimePaths.add(runtimePath);
 		}
 		if (computeIncluded) {
-			for(ServerDefinition definition:getServerDefinitions()) {
+			for(RuntimeDefinition definition:getServerDefinitions()) {
 				Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
 				for (IRuntimeDetector detector:detectors) {
 					detector.computeIncludedServerDefinition(definition);
@@ -339,15 +339,15 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		}
 	}
 
-	private ServerDefinition createServerDefinition(IMemento node) {
+	private RuntimeDefinition createServerDefinition(IMemento node) {
 		String name = node.getString(NAME);
 		String version = node.getString(VERSION);
 		String type = node.getString(TYPE);
 		String location = node.getString(LOCATION);
 		String description = node.getString(DESCRIPTION);
 		boolean enabled = node.getBoolean(ENABLED);
-		ServerDefinition serverDefinition = 
-			new ServerDefinition(name, version, type, new File(location));
+		RuntimeDefinition serverDefinition = 
+			new RuntimeDefinition(name, version, type, new File(location));
 		serverDefinition.setDescription(description);
 		serverDefinition.setEnabled(enabled);
 		return serverDefinition;
@@ -374,7 +374,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 				runtimePathNode.putBoolean(SCAN_ON_EVERY_STAERTUP, runtimePath.isScanOnEveryStartup());
 				runtimePathNode.putString(TIMESTAMP, String.valueOf(runtimePath.getTimestamp()));
 				IMemento serverDefinitionsNode = runtimePathNode.createChild(SERVER_DEFINITIONS);
-				List<ServerDefinition> definitions = runtimePath.getServerDefinitions();
+				List<RuntimeDefinition> definitions = runtimePath.getServerDefinitions();
 				putDefinitions(serverDefinitionsNode, definitions);	
 			}
 			writer = new StringWriter();
@@ -397,19 +397,19 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	}
 
 	private void putDefinitions(IMemento serverDefintionsNode,
-			List<ServerDefinition> definitions) {
-		for (ServerDefinition serverDefinition:definitions) {
+			List<RuntimeDefinition> definitions) {
+		for (RuntimeDefinition serverDefinition:definitions) {
 			IMemento sdNode = serverDefintionsNode.createChild(SERVER_DEFINITION);
 			putServerDefinition(serverDefinition, sdNode);
 			IMemento includedNodes = sdNode.createChild(INCLUDED_DEFINITION);
-			for (ServerDefinition included:serverDefinition.getIncludedServerDefinitions()) {
+			for (RuntimeDefinition included:serverDefinition.getIncludedServerDefinitions()) {
 				IMemento includedNode = includedNodes.createChild(SERVER_DEFINITION);
 				putServerDefinition(included, includedNode);
 			}
 		}
 	}
 
-	private void putServerDefinition(ServerDefinition serverDefinition,
+	private void putServerDefinition(RuntimeDefinition serverDefinition,
 			IMemento node) {
 		node.putString(NAME, serverDefinition.getName());
 		node.putString(VERSION, serverDefinition.getVersion());
@@ -431,9 +431,9 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		return runtimePaths;
 	}
 	
-	public List<ServerDefinition> getServerDefinitions() {
+	public List<RuntimeDefinition> getServerDefinitions() {
 		if (serverDefinitions == null) {
-			serverDefinitions = new ArrayList<ServerDefinition>();
+			serverDefinitions = new ArrayList<RuntimeDefinition>();
 		} else {
 			serverDefinitions.clear();
 		}
@@ -472,7 +472,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		runtimeDetectors = null;
 	}
 	
-	public static boolean runtimeCreated(ServerDefinition serverDefinition) {
+	public static boolean runtimeCreated(RuntimeDefinition serverDefinition) {
 		Set<IRuntimeDetector> detectors = getDefault().getRuntimeDetectors();
 		boolean created = false;
 		for (IRuntimeDetector detector:detectors) {

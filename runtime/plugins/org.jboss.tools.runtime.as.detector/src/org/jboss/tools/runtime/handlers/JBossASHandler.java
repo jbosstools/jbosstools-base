@@ -56,7 +56,7 @@ import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.osgi.framework.Bundle;
 
 public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRuntimePluginConstants {
@@ -68,11 +68,11 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	private static final String DROOLS = "DROOLS"; // NON-NLS-1$
 	private static final String ESB = "ESB"; //$NON-NLS-1$
 
-	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
+	public void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
 		createJBossServerFromDefinitions(serverDefinitions);
 	}
 		
-	private static File getLocation(ServerDefinition serverDefinition) {
+	private static File getLocation(RuntimeDefinition serverDefinition) {
 		String type = serverDefinition.getType();
 		String version = serverDefinition.getVersion();
 		if (EAP.equals(type) && version != null && version.startsWith("6") ) {
@@ -93,8 +93,8 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		return null;
 	}
 	
-	public static void createJBossServerFromDefinitions(List<ServerDefinition> serverDefinitions) {
-		for (ServerDefinition serverDefinition:serverDefinitions) {
+	public static void createJBossServerFromDefinitions(List<RuntimeDefinition> serverDefinitions) {
+		for (RuntimeDefinition serverDefinition:serverDefinitions) {
 			if (!serverDefinition.isEnabled()) {
 				continue;
 			}
@@ -137,7 +137,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		}	
 	}
 
-	private static int getJBossASVersion(File asLocation, ServerDefinition serverDefinition) {
+	private static int getJBossASVersion(File asLocation, RuntimeDefinition serverDefinition) {
 		int index = -1;
 		String type = serverDefinition.getType();
 		String ver = serverDefinition.getVersion();
@@ -327,7 +327,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		
 	}
 
-	public ServerDefinition getServerDefinition(File root,
+	public RuntimeDefinition getServerDefinition(File root,
 			IProgressMonitor monitor) {
 		if (monitor.isCanceled() || root == null || !isEnabled()) {
 			return null;
@@ -336,7 +336,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		ServerBean serverBean = loader.getServerBean();
 		
 		if (!JBossServerType.UNKNOWN.equals(serverBean.getType())) {
-			ServerDefinition serverDefinition = new ServerDefinition(serverBean.getName(), 
+			RuntimeDefinition serverDefinition = new RuntimeDefinition(serverBean.getName(), 
 					serverBean.getVersion(), serverBean.getType().getId(), new File(serverBean.getLocation()));
 			calculateIncludedServerDefinition(serverDefinition, monitor);
 			return serverDefinition;
@@ -345,7 +345,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	}
 	
 	private void calculateIncludedServerDefinition(
-			ServerDefinition serverDefinition, IProgressMonitor monitor) {
+			RuntimeDefinition serverDefinition, IProgressMonitor monitor) {
 		if (serverDefinition == null || serverDefinition.getType() == null) {
 			return;
 		}
@@ -354,7 +354,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			return;
 		}
 		serverDefinition.getIncludedServerDefinitions().clear();
-		List<ServerDefinition> serverDefinitions = serverDefinition
+		List<RuntimeDefinition> serverDefinitions = serverDefinition
 				.getIncludedServerDefinitions();
 		JBossRuntimeLocator locator = new JBossRuntimeLocator();
 		final File location = getLocation(serverDefinition);
@@ -373,9 +373,9 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		try {
 			setEnabled(false);
 			for (File directory : directories) {
-				List<ServerDefinition> definitions = new ArrayList<ServerDefinition>();
+				List<RuntimeDefinition> definitions = new ArrayList<RuntimeDefinition>();
 				locator.searchDirectory(directory, definitions, 1, monitor);
-				for (ServerDefinition definition:definitions) {
+				for (RuntimeDefinition definition:definitions) {
 					definition.setParent(serverDefinition);
 				}
 				serverDefinitions.addAll(definitions);
@@ -389,7 +389,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		}
 	}
 
-	private void addDrools(ServerDefinition serverDefinition) {
+	private void addDrools(RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null) {
 			return;
 		}
@@ -400,7 +400,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			File droolsRoot = serverDefinition.getLocation();
 			if (droolsRoot.isDirectory()) {
 				String name = "Drools - " + serverDefinition.getName();
-				ServerDefinition droolsDefinition = new ServerDefinition(
+				RuntimeDefinition droolsDefinition = new RuntimeDefinition(
 						name, serverDefinition.getVersion(), DROOLS,
 						droolsRoot);
 				droolsDefinition.setParent(serverDefinition);
@@ -410,7 +410,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		}
 	}
 	
-	private void addEsb(ServerDefinition serverDefinition) {
+	private void addEsb(RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null) {
 			return;
 		}
@@ -428,7 +428,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			if (esbRoot.isDirectory()) {
 				String name = "ESB - " + serverDefinition.getName();
 				String version="";
-				ServerDefinition esbDefinition = new ServerDefinition(
+				RuntimeDefinition esbDefinition = new RuntimeDefinition(
 						name, version, ESB,
 						esbRoot);
 				IRuntimeDetector esbDetector = RuntimeCoreActivator.getEsbDetector();
@@ -454,7 +454,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	}
 
 	@Override
-	public boolean exists(ServerDefinition serverDefinition) {
+	public boolean exists(RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null || serverDefinition.getLocation() == null) {
 			return false;
 		}
@@ -481,7 +481,7 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 
 	@Override
 	public void computeIncludedServerDefinition(
-			ServerDefinition serverDefinition) {
+			RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null) {
 			return;
 		}

@@ -126,7 +126,7 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 
 	@Override
 	public void computeIncludedServerDefinition(
-			ServerDefinition serverDefinition) {
+			RuntimeDefinition serverDefinition) {
 		
 	}
 	
@@ -139,7 +139,7 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 	}
 	
 	@Override
-	public String getVersion(ServerDefinition serverDefinition) {
+	public String getVersion(RuntimeDefinition serverDefinition) {
 		if (serverDefinition != null) {
 			return serverDefinition.getVersion();
 		}

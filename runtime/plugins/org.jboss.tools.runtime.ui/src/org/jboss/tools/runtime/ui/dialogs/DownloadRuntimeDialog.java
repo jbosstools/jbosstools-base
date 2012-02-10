@@ -54,7 +54,7 @@ import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
 /**
@@ -411,18 +411,18 @@ public class DownloadRuntimeDialog extends Dialog {
 		RuntimePath newPath = new RuntimePath(directory);
 		runtimePaths.add(newPath);
 		for (RuntimePath runtimePath : runtimePaths) {
-			List<ServerDefinition> serverDefinitions = locator
+			List<RuntimeDefinition> serverDefinitions = locator
 					.searchForRuntimes(runtimePath.getPath(),
 							monitor);
 			runtimePath.getServerDefinitions().clear();
-			for (ServerDefinition serverDefinition : serverDefinitions) {
+			for (RuntimeDefinition serverDefinition : serverDefinitions) {
 				serverDefinition.setRuntimePath(runtimePath);
 			}
 			runtimePath.getServerDefinitions().addAll(serverDefinitions);
 			RuntimeUIActivator.getDefault().getRuntimePaths().add(runtimePath);
 			RuntimeUIActivator.getDefault().saveRuntimePaths();
 		}
-		List<ServerDefinition> serverDefinitions = RuntimeUIActivator
+		List<RuntimeDefinition> serverDefinitions = RuntimeUIActivator
 				.getDefault().getServerDefinitions();
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator
 				.getRuntimeDetectors();

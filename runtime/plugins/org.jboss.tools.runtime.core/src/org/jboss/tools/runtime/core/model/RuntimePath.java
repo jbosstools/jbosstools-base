@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
 /**
  * @author snjeza
@@ -24,13 +24,13 @@ public class RuntimePath implements Cloneable {
 
 	private String path;
 	private boolean scanOnEveryStartup;
-	private List<ServerDefinition> serverDefinitions;
+	private List<RuntimeDefinition> serverDefinitions;
 	private long timestamp;
 
 	public RuntimePath(String path) {
 		this.path = path;
 		this.scanOnEveryStartup = false;
-		this.serverDefinitions = new ArrayList<ServerDefinition>();
+		this.serverDefinitions = new ArrayList<RuntimeDefinition>();
 		this.timestamp = -1;
 	}
 
@@ -50,7 +50,7 @@ public class RuntimePath implements Cloneable {
 		this.scanOnEveryStartup = scanOnEveryStartup;
 	}
 
-	public List<ServerDefinition> getServerDefinitions() {
+	public List<RuntimeDefinition> getServerDefinitions() {
 		return serverDefinitions;
 	}
 
@@ -58,7 +58,7 @@ public class RuntimePath implements Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		RuntimePath runtimePath = new RuntimePath(path);
 		runtimePath.setScanOnEveryStartup(scanOnEveryStartup);
-		runtimePath.serverDefinitions = (List<ServerDefinition>) ((ArrayList<ServerDefinition>)serverDefinitions).clone();
+		runtimePath.serverDefinitions = (List<RuntimeDefinition>) ((ArrayList<RuntimeDefinition>)serverDefinitions).clone();
 		return runtimePath;
 	}
 

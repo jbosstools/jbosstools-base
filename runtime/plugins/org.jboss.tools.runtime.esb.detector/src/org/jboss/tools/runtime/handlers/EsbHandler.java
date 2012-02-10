@@ -17,15 +17,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.esb.core.runtime.JBossESBRuntime;
 import org.jboss.tools.esb.core.runtime.JBossRuntimeManager;
 import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
 public class EsbHandler extends AbstractRuntimeDetector {
 
 	private static final String DEFAULT_CONFIGURATION = "default";
 	private static final String ESB = "ESB"; //$NON-NLS-1$
 	
-	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
-		for (ServerDefinition serverDefinition : serverDefinitions) {
+	public void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
+		for (RuntimeDefinition serverDefinition : serverDefinitions) {
 			String type = serverDefinition.getType();
 			if (serverDefinition.isEnabled() && !esbExists(serverDefinition)) {
 				if (ESB.equals(type)) {
@@ -46,7 +46,7 @@ public class EsbHandler extends AbstractRuntimeDetector {
 	 * @param serverDefinition
 	 * @return
 	 */
-	private static boolean esbExists(ServerDefinition serverDefinition) {
+	private static boolean esbExists(RuntimeDefinition serverDefinition) {
 		JBossESBRuntime[] runtimes = JBossRuntimeManager.getInstance().getRuntimes();
 		for (JBossESBRuntime runtime:runtimes) {
 			String location = runtime.getHomeDir();
@@ -57,7 +57,7 @@ public class EsbHandler extends AbstractRuntimeDetector {
 		return false;
 	}
 
-	public ServerDefinition getServerDefinition(File root,
+	public RuntimeDefinition getServerDefinition(File root,
 			IProgressMonitor monitor) {
 		if (monitor.isCanceled() || root == null) {
 			return null;
@@ -67,7 +67,7 @@ public class EsbHandler extends AbstractRuntimeDetector {
 	}
 
 	@Override
-	public boolean exists(ServerDefinition serverDefinition) {
+	public boolean exists(RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null || serverDefinition.getLocation() == null) {
 			return false;
 		}
@@ -75,7 +75,7 @@ public class EsbHandler extends AbstractRuntimeDetector {
 	}
 	
 	@Override
-	public String getVersion(ServerDefinition serverDefinition) {
+	public String getVersion(RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null || serverDefinition.getLocation() == null) {
 			return null;
 		}

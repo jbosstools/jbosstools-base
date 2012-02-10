@@ -18,7 +18,7 @@ import java.util.List;
  * @author snjeza
  *
  */
-public class ServerDefinition {
+public class RuntimeDefinition {
 
 	private String name;
 	private String version;
@@ -27,10 +27,10 @@ public class ServerDefinition {
 	private String description;
 	private boolean enabled = true;
 	private RuntimePath runtimePath;
-	private List<ServerDefinition> includedServerDefinitions = new ArrayList<ServerDefinition>();
-	private ServerDefinition parent;
+	private List<RuntimeDefinition> includedServerDefinitions = new ArrayList<RuntimeDefinition>();
+	private RuntimeDefinition parent;
 	
-	public ServerDefinition(String name, String version, 
+	public RuntimeDefinition(String name, String version, 
 			String type, File location) {
 		super();
 		this.name = name;
@@ -89,7 +89,7 @@ public class ServerDefinition {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ServerDefinition other = (ServerDefinition) obj;
+		RuntimeDefinition other = (RuntimeDefinition) obj;
 		if (location == null) {
 			if (other.location != null)
 				return false;
@@ -143,15 +143,15 @@ public class ServerDefinition {
 		this.runtimePath = runtimePath;
 	}
 
-	public List<ServerDefinition> getIncludedServerDefinitions() {
+	public List<RuntimeDefinition> getIncludedServerDefinitions() {
 		return includedServerDefinitions;
 	}
 
-	public ServerDefinition getParent() {
+	public RuntimeDefinition getParent() {
 		return parent;
 	}
 
-	public void setParent(ServerDefinition parent) {
+	public void setParent(RuntimeDefinition parent) {
 		this.parent = parent;
 	}
 	

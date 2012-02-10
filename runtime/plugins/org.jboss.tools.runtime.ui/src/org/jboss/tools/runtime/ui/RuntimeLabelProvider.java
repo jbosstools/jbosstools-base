@@ -15,7 +15,7 @@ import java.io.File;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
 /**
  * @author snjeza
@@ -29,8 +29,8 @@ public class RuntimeLabelProvider extends LabelProvider implements
 	}
 
 	public String getColumnText(Object element, int columnIndex) {
-		if (element instanceof ServerDefinition) {
-			ServerDefinition definition = (ServerDefinition) element;
+		if (element instanceof RuntimeDefinition) {
+			RuntimeDefinition definition = (RuntimeDefinition) element;
 			if (columnIndex == 0) {
 				return definition.getName();
 			}

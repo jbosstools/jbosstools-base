@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
 /**
  * @author snjeza
@@ -22,9 +22,9 @@ import org.jboss.tools.runtime.core.model.ServerDefinition;
  */
 public class RuntimeContentProvider implements ITreeContentProvider {
 
-	private List<ServerDefinition> serverDefinitions;
+	private List<RuntimeDefinition> serverDefinitions;
 
-	public RuntimeContentProvider(List<ServerDefinition> serverDefinitions) {
+	public RuntimeContentProvider(List<RuntimeDefinition> serverDefinitions) {
 		this.serverDefinitions = serverDefinitions;
 	}
 	
@@ -37,21 +37,21 @@ public class RuntimeContentProvider implements ITreeContentProvider {
 	}
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		serverDefinitions = (List<ServerDefinition>) newInput;
+		serverDefinitions = (List<RuntimeDefinition>) newInput;
 	}
 
 	public boolean hasChildren(Object element) {
-		return ((ServerDefinition) element).getIncludedServerDefinitions().size() > 0;
+		return ((RuntimeDefinition) element).getIncludedServerDefinitions().size() > 0;
 	}
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		List<ServerDefinition> list = ((ServerDefinition) parentElement).getIncludedServerDefinitions();
+		List<RuntimeDefinition> list = ((RuntimeDefinition) parentElement).getIncludedServerDefinitions();
 		return list.toArray();
 	}
 
 	@Override
 	public Object getParent(Object element) {
-		return ((ServerDefinition) element).getParent();
+		return ((RuntimeDefinition) element).getParent();
 	}
 }

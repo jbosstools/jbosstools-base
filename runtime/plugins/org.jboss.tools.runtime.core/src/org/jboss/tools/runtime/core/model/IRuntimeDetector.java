@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
  *
  */
 public interface IRuntimeDetector extends Comparable<IRuntimeDetector> {
-	void initializeRuntimes(List<ServerDefinition> serverDefinitions);
+	void initializeRuntimes(List<RuntimeDefinition> serverDefinitions);
 
 	void setName(String name);
 
@@ -38,19 +38,19 @@ public interface IRuntimeDetector extends Comparable<IRuntimeDetector> {
 	
 	boolean isEnabled();
 	
-	ServerDefinition getServerDefinition(File root, IProgressMonitor monitor);
+	RuntimeDefinition getServerDefinition(File root, IProgressMonitor monitor);
 	
-	boolean exists(ServerDefinition serverDefinition);
+	boolean exists(RuntimeDefinition serverDefinition);
 	
 	int getPriority();
 	
 	void setPriority(int priority);
 	
-	void computeIncludedServerDefinition(ServerDefinition serverDefinition);
+	void computeIncludedServerDefinition(RuntimeDefinition serverDefinition);
 	
 	boolean isValid();
 	
 	void setValid(boolean valid);
 	
-	String getVersion(ServerDefinition serverDefinition);
+	String getVersion(RuntimeDefinition serverDefinition);
 }

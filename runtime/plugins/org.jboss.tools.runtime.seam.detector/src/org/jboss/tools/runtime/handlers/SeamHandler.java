@@ -21,7 +21,7 @@ import java.util.jar.JarFile;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.seam.core.SeamUtil;
 import org.jboss.tools.seam.core.project.facet.SeamRuntime;
 import org.jboss.tools.seam.core.project.facet.SeamRuntimeManager;
@@ -33,7 +33,7 @@ public class SeamHandler extends AbstractRuntimeDetector {
 	private final static String seamVersionAttributeName = "Seam-Version";
 	private static final String SEAM = "SEAM"; // NON-NLS-1$
 	
-	private static File getSeamRoot(ServerDefinition serverDefinition) {
+	private static File getSeamRoot(RuntimeDefinition serverDefinition) {
 		String type = serverDefinition.getType();
 		if (SEAM.equals(type)) {
 			return serverDefinition.getLocation();
@@ -42,11 +42,11 @@ public class SeamHandler extends AbstractRuntimeDetector {
 	}
 	
 	@Override
-	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
+	public void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
 		
 		Map<String, SeamRuntime> map = new HashMap<String,SeamRuntime>();
 
-		for(ServerDefinition serverDefinition:serverDefinitions) {
+		for(RuntimeDefinition serverDefinition:serverDefinitions) {
 			if (!serverDefinition.isEnabled()) {
 				continue;
 			}
@@ -60,7 +60,7 @@ public class SeamHandler extends AbstractRuntimeDetector {
 	}
 
 	private static void addSeam(Map<String, SeamRuntime> map,
-			ServerDefinition serverDefinition, File seamFile) {
+			RuntimeDefinition serverDefinition, File seamFile) {
 		if (seamFile.exists() && seamFile.canRead() && seamFile.isDirectory()) {
 			SeamVersion seamVersion = getSeamVersion(seamFile.getAbsolutePath());
 			if (seamVersion != null) {
@@ -115,14 +115,14 @@ public class SeamHandler extends AbstractRuntimeDetector {
 	}
 
 	@Override
-	public ServerDefinition getServerDefinition(File root,
+	public RuntimeDefinition getServerDefinition(File root,
 			IProgressMonitor monitor) {
 		if (monitor.isCanceled() || root == null) {
 			return null;
 		}
 		String seamVersion = getSeamVersionFromManifest(root.getAbsolutePath());
 		if (seamVersion != null) {
-			return new ServerDefinition(root.getName(), seamVersion, SEAM, root.getAbsoluteFile());
+			return new RuntimeDefinition(root.getName(), seamVersion, SEAM, root.getAbsoluteFile());
 		}
 		return null;
 	}
@@ -169,7 +169,7 @@ public class SeamHandler extends AbstractRuntimeDetector {
 	}
 
 	@Override
-	public boolean exists(ServerDefinition serverDefinition) {
+	public boolean exists(RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null || serverDefinition.getLocation() == null) {
 			return false;
 		}

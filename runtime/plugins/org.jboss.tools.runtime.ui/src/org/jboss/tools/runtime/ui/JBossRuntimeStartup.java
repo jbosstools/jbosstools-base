@@ -35,7 +35,7 @@ import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.osgi.framework.Bundle;
 
@@ -64,10 +64,10 @@ public class JBossRuntimeStartup {
 			
 			JBossRuntimeLocator locator = new JBossRuntimeLocator();
 			for (RuntimePath runtimePath : runtimePaths) {
-				List<ServerDefinition> serverDefinitions = locator
+				List<RuntimeDefinition> serverDefinitions = locator
 						.searchForRuntimes(runtimePath.getPath(), monitor);
 				runtimePath.getServerDefinitions().clear();
-				for (ServerDefinition serverDefinition : serverDefinitions) {
+				for (RuntimeDefinition serverDefinition : serverDefinitions) {
 					serverDefinition.setRuntimePath(runtimePath);
 				}
 				runtimePath.getServerDefinitions().addAll(serverDefinitions);
@@ -81,7 +81,7 @@ public class JBossRuntimeStartup {
 		}
 	}
 
-	public static void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
+	public static void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
 		for( IRuntimeDetector detector:detectors) {
 			if (detector.isEnabled()) {

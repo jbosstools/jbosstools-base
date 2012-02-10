@@ -23,18 +23,18 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public class InvalidRuntimeDetector extends AbstractRuntimeDetector {
 
 	@Override
-	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
+	public void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
 		
 	}
 
 	@Override
-	public ServerDefinition getServerDefinition(File root,
+	public RuntimeDefinition getServerDefinition(File root,
 			IProgressMonitor monitor) {
 		return null;
 	}
 
 	@Override
-	public boolean exists(ServerDefinition serverDefinition) {
+	public boolean exists(RuntimeDefinition serverDefinition) {
 		return false;
 	}
 

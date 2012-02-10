@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.Path;
 import org.jboss.tools.jbpm.preferences.JbpmInstallation;
 import org.jboss.tools.jbpm.preferences.PreferencesManager;
 import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
 public class JbpmHandler extends AbstractRuntimeDetector {
 	
@@ -30,7 +30,7 @@ public class JbpmHandler extends AbstractRuntimeDetector {
 	private static final String SOA_P = "SOA-P"; //$NON-NLS-1$
 	private static final String SOA_P_STD = "SOA-P-STD"; //$NON-NLS-1$
 	
-	public static File getJbpmRoot(ServerDefinition serverDefinition) {
+	public static File getJbpmRoot(RuntimeDefinition serverDefinition) {
 		String type = serverDefinition.getType();
 		if (SOA_P.equals(type) || SOA_P_STD.equals(type)) {
 			return new File(serverDefinition.getLocation(),"jbpm-jpdl"); //$NON-NLS-1$
@@ -42,8 +42,8 @@ public class JbpmHandler extends AbstractRuntimeDetector {
 	}
 	
 	@Override
-	public void initializeRuntimes(List<ServerDefinition> serverDefinitions) {
-		for (ServerDefinition serverDefinition : serverDefinitions) {
+	public void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
+		for (RuntimeDefinition serverDefinition : serverDefinitions) {
 			if (serverDefinition.isEnabled() && !jbpmExists(serverDefinition)) {
 				File jbpmRoot = getJbpmRoot(serverDefinition);
 				if (jbpmRoot == null || !jbpmRoot.isDirectory()) {
@@ -63,7 +63,7 @@ public class JbpmHandler extends AbstractRuntimeDetector {
 	 * @param serverDefinition
 	 * @return
 	 */
-	public static boolean jbpmExists(ServerDefinition serverDefinition) {
+	public static boolean jbpmExists(RuntimeDefinition serverDefinition) {
 		File jbpmRoot = getJbpmRoot(serverDefinition);
 		if (jbpmRoot == null || !jbpmRoot.isDirectory()) {
 			return false;
@@ -80,7 +80,7 @@ public class JbpmHandler extends AbstractRuntimeDetector {
 	}
 
 	@Override
-	public ServerDefinition getServerDefinition(File root,
+	public RuntimeDefinition getServerDefinition(File root,
 			IProgressMonitor monitor) {
 		if (monitor.isCanceled() || root == null) {
 			return null;
@@ -100,7 +100,7 @@ public class JbpmHandler extends AbstractRuntimeDetector {
 				name = root.getName() + " " + index++;
 				nameExists = PreferencesManager.getInstance().getJbpmInstallation(name) != null;
 			}
-			return new ServerDefinition(name, version, JBPM, root.getAbsoluteFile());
+			return new RuntimeDefinition(name, version, JBPM, root.getAbsoluteFile());
 		}
 		return null;
 	}
@@ -118,7 +118,7 @@ public class JbpmHandler extends AbstractRuntimeDetector {
 	}
 	
 	@Override
-	public boolean exists(ServerDefinition serverDefinition) {
+	public boolean exists(RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null || serverDefinition.getLocation() == null) {
 			return false;
 		}
@@ -126,7 +126,7 @@ public class JbpmHandler extends AbstractRuntimeDetector {
 	}
 
 	public static void calculateIncludedServerDefinition(
-			ServerDefinition serverDefinition) {
+			RuntimeDefinition serverDefinition) {
 		if (serverDefinition == null || !SOA_P.equals(serverDefinition.getType())) {
 			return;
 		}
@@ -136,7 +136,7 @@ public class JbpmHandler extends AbstractRuntimeDetector {
 			if (isJbpm4(serverDefinition.getLocation().getAbsolutePath())) {
 				version = JBPM4;
 			}
-			ServerDefinition sd = new ServerDefinition(serverDefinition.getName(), version, JBPM, jbpmRoot);
+			RuntimeDefinition sd = new RuntimeDefinition(serverDefinition.getName(), version, JBPM, jbpmRoot);
 			sd.setParent(serverDefinition);
 			serverDefinition.getIncludedServerDefinitions().add(sd);
 		}

@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.model.ServerDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
 /**
@@ -59,7 +59,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	private boolean canceled;
 	private boolean needRefresh;
 	private Label foundRuntimesLabel;
-	private List<ServerDefinition> serverDefinitions;
+	private List<RuntimeDefinition> serverDefinitions;
 	private Button hideCreatedRuntimes;
 	private int heightHint;
 
@@ -121,11 +121,11 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			
 			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
-				ServerDefinition definition = (ServerDefinition) event.getElement();
+				RuntimeDefinition definition = (RuntimeDefinition) event.getElement();
 				definition.setEnabled(!definition.isEnabled());
 				boolean enableOk = false;
-				List<ServerDefinition> serverDefinitions = getServerDefinitions(hideCreatedRuntimes.getSelection());
-				for (ServerDefinition serverDefinition:serverDefinitions) {
+				List<RuntimeDefinition> serverDefinitions = getServerDefinitions(hideCreatedRuntimes.getSelection());
+				for (RuntimeDefinition serverDefinition:serverDefinitions) {
 					if (serverDefinition.isEnabled()) {
 						enableOk = true;
 					}
@@ -218,19 +218,19 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	private void refresh(String message) {
 		running = false;
 		treeViewer.setInput(null);
-		List<ServerDefinition> serverDefinitions = getServerDefinitions(hideCreatedRuntimes.getSelection());
+		List<RuntimeDefinition> serverDefinitions = getServerDefinitions(hideCreatedRuntimes.getSelection());
 		treeViewer.setInput(serverDefinitions);
-		for (ServerDefinition definition:serverDefinitions) {
+		for (RuntimeDefinition definition:serverDefinitions) {
 			treeViewer.setChecked(definition, definition.isEnabled());
-			for (ServerDefinition included:definition.getIncludedServerDefinitions()) {
+			for (RuntimeDefinition included:definition.getIncludedServerDefinitions()) {
 				treeViewer.setChecked(included, included.isEnabled());
 			}
 		}
 		TreeItem[] treeItems = treeViewer.getTree().getItems();
 		for (TreeItem treeItem:treeItems) {
 			Object data = treeItem.getData();
-			if (data instanceof ServerDefinition) {
-				ServerDefinition serverDefinition = (ServerDefinition) data;
+			if (data instanceof RuntimeDefinition) {
+				RuntimeDefinition serverDefinition = (RuntimeDefinition) data;
 				boolean exists = RuntimeUIActivator.runtimeExists(serverDefinition);
 				if (exists) {
 					treeItem.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
@@ -247,7 +247,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	protected void okPressed() {
 		getShell().setCursor(Display.getCurrent().getSystemCursor(SWT.CURSOR_WAIT));
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
-		List<ServerDefinition> definitions = getServerDefinitions(true);
+		List<RuntimeDefinition> definitions = getServerDefinitions(true);
 		for( IRuntimeDetector detector:detectors) {
 			if (detector.isEnabled()) {
 				detector.initializeRuntimes(definitions);
@@ -320,18 +320,18 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		return composite;
 	}
 
-	private List<ServerDefinition> getServerDefinitions(
+	private List<RuntimeDefinition> getServerDefinitions(
 			boolean hideCreatedRuntimes) {
 		if (serverDefinitions == null) {
-			serverDefinitions = new ArrayList<ServerDefinition>();
+			serverDefinitions = new ArrayList<RuntimeDefinition>();
 		} else {
 			serverDefinitions.clear();
 		}
 		for (RuntimePath runtimePath : runtimePaths) {
-			for (ServerDefinition serverDefinition : runtimePath
+			for (RuntimeDefinition serverDefinition : runtimePath
 					.getServerDefinitions()) {
 				if (!RuntimeUIActivator.runtimeCreated(serverDefinition)) {
-					List<ServerDefinition> allServerDefinitions = RuntimeUIActivator.getDefault().getServerDefinitions();
+					List<RuntimeDefinition> allServerDefinitions = RuntimeUIActivator.getDefault().getServerDefinitions();
 					String name = serverDefinition.getName();
 					int i = 2;
 					while (serverDefinitionsExists(serverDefinition, allServerDefinitions)) {
@@ -349,8 +349,8 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		return serverDefinitions;
 	}
 
-	private boolean serverDefinitionsExists(ServerDefinition serverDefinition,
-			List<ServerDefinition> allServerDefinitions) {
+	private boolean serverDefinitionsExists(RuntimeDefinition serverDefinition,
+			List<RuntimeDefinition> allServerDefinitions) {
 		String name = serverDefinition.getName();
 		File location = serverDefinition.getLocation();
 		String type = serverDefinition.getType();
@@ -361,7 +361,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		if (path == null) {
 			return false;
 		}
-		for (ServerDefinition definition:allServerDefinitions) {
+		for (RuntimeDefinition definition:allServerDefinitions) {
 			if (name.equals(definition.getName()) && type.equals(definition.getType())) {
 				File loc = definition.getLocation();
 				if (loc == null) {
