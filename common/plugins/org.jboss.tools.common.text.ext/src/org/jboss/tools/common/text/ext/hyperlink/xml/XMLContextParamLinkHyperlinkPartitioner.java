@@ -13,13 +13,13 @@ package org.jboss.tools.common.text.ext.hyperlink.xml;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Region;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlinkPartitioner;
 import org.jboss.tools.common.text.ext.hyperlink.HyperlinkRegion;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkPartitionRecognizer;
 import org.jboss.tools.common.text.ext.hyperlink.IHyperlinkRegion;
 import org.jboss.tools.common.text.ext.util.StructuredModelWrapper;
 import org.jboss.tools.common.text.ext.util.Utils;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -55,7 +55,7 @@ public abstract class XMLContextParamLinkHyperlinkPartitioner extends AbstractHy
 
 	protected abstract String getPartitionType();
 	
-	private IRegion getRegion(IDocument document, final int offset) {
+	private IRegion getRegion(IDocument document, int offset) {
 		StructuredModelWrapper smw = new StructuredModelWrapper();
 		try {
 			smw.init(document);
@@ -64,38 +64,51 @@ public abstract class XMLContextParamLinkHyperlinkPartitioner extends AbstractHy
 			
 			Node n = Utils.findNodeForOffset(xmlDocument, offset);
 
-			if (n == null || !(n instanceof Text)) return null;
+			if (n == null || !(n instanceof Attr || n instanceof Text)) return null;
 			
 			int start = Utils.getValueStart(n);
 			int end = Utils.getValueEnd(n);
-			
-			if (start < 0 || start > offset || end < offset) return null;
+
+			if (start > offset || end < offset) return null;
 
 			String text = document.get(start, end - start);
 			StringBuffer sb = new StringBuffer(text);
 
+			int bStart = offset - start;
 			//find start and end of path property
-			int bStart = 0;
-			int bEnd = text.length() - 1;
-
-			while (bStart < bEnd && 
-					(sb.charAt(bStart) == '\'' || sb.charAt(bStart) == '\"' ||
-							Character.isWhitespace(sb.charAt(bStart)))) { 
-				bStart++;
-			}
-			while (bEnd > bStart && 
-					(sb.charAt(bEnd) == '\'' || sb.charAt(bEnd) == '\"' ||
-							Character.isWhitespace(sb.charAt(bEnd)))) { 
-				bEnd--;
-			}
-			bEnd++;
-
-			final int propStart = bStart + start;
-			final int propLength = bEnd - bStart;
+			while (bStart >= 0) { 
+				if (!Character.isJavaIdentifierPart(sb.charAt(bStart)) &&
+						sb.charAt(bStart) != '\\' && sb.charAt(bStart) != '/' &&
+						sb.charAt(bStart) != ':' && sb.charAt(bStart) != '-' &&
+						sb.charAt(bStart) != '.' && sb.charAt(bStart) != '_' &&
+						sb.charAt(bStart) != '%' && sb.charAt(bStart) != '?' &&
+						sb.charAt(bStart) != '&' && sb.charAt(bStart) != '=') {
+					bStart++;
+					break;
+				}
 			
-			if (propStart > offset || propStart + propLength < offset) return null;
+				if (bStart == 0) break;
+				bStart--;
+			}
+			// find end of bean property
+			int bEnd = offset - start;
+			while (bEnd < sb.length()) { 
+				if (!Character.isJavaIdentifierPart(sb.charAt(bEnd)) &&
+						sb.charAt(bEnd) != '\\' && sb.charAt(bEnd) != '/' &&
+						sb.charAt(bEnd) != ':' && sb.charAt(bEnd) != '-' &&
+						sb.charAt(bEnd) != '.' && sb.charAt(bEnd) != '_' &&
+						sb.charAt(bEnd) != '%' && sb.charAt(bEnd) != '?' &&
+						sb.charAt(bEnd) != '&' && sb.charAt(bEnd) != '=') {
+					break;
+				}
+				bEnd++;
+			}
 
-			return new Region(propStart,propLength);
+			int propStart = bStart + start;
+			int propLength = bEnd - bStart;
+			if (propStart > offset + 1 || propStart + propLength < offset) return null;
+			IRegion region = new HyperlinkRegion(propStart, propLength);
+			return region;
 		} catch (BadLocationException x) {
 			//ignore
 			return null;
