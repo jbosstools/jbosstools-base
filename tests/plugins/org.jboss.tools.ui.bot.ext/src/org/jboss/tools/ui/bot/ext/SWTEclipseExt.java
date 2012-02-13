@@ -1134,28 +1134,28 @@ public class SWTEclipseExt {
 		return SWTEclipseExt.isProjectInPackageExplorer(bot, projectName);
 	}
 
-	/**
-	 * Returns true when projectName is present in Package Explorer static
-	 * version
-	 * 
-	 * @param bot
-	 * @param projectName
-	 * @return
-	 */
-	public static boolean isProjectInPackageExplorer(SWTBotExt bot,
-			String projectName) {
-		boolean found = false;
+    /**
+     * Returns <code>true</code> when projectName is present in Package Explorer static
+     * version, <code>false</code> otherwise.
+     * 
+     * @param bot
+     * @param projectName
+     * @return
+     */
+    public static boolean isProjectInPackageExplorer(SWTBotExt bot, String projectName) {
+        if (bot == null || projectName == null) {
+            throw new NullPointerException();
+        }
 
-		SWTBot innerBot = SWTEclipseExt
-				.showView(bot, ViewType.PACKAGE_EXPLORER);
-		SWTBotTree tree = innerBot.tree();
-		try {
-			tree.getTreeItem(projectName);
-			found = true;
-		} catch (WidgetNotFoundException e) {
-		}
-		return found;
-	}
+        SWTBot innerBot = SWTEclipseExt.showView(bot, ViewType.PACKAGE_EXPLORER);
+        SWTBotTreeItem[] treeItems = innerBot.tree().getAllItems();
+        for (int i = 0; i < treeItems.length; i++) {
+            if (projectName.equals(treeItems[i].getText())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	/**
 	 * Returns Tree Item with specified label and located on path
