@@ -68,8 +68,9 @@ public class SWTBotWizard extends SWTBotShell {
 		bot().waitWhile(new ShellIsActiveCondition(activeShell), TaskDuration.LONG.getTimeout());
 		log.info("Waiting until Progress Information Shell is active");
 		bot().waitWhile(new ProgressInformationShellIsActiveCondition(), TaskDuration.LONG.getTimeout());
-		log.info("Waiting until Non System Jobs run");
+		log.info("Waiting until Non System Jobs run started");
 		bot().waitWhile(new NonSystemJobRunsCondition(), TaskDuration.LONG.getTimeout());
+		log.info("Waiting until Non System Jobs run finished");
 	}
 
 	protected void clickButton(String text) {
