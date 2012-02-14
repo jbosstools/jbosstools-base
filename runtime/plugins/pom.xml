@@ -13,7 +13,6 @@
 	<name>runtime.plugins</name>
 	<packaging>pom</packaging>
 	<modules>
-		<module>org.jboss.tools.runtime</module>
 		<module>org.jboss.tools.runtime.core</module>
 		<module>org.jboss.tools.runtime.ui</module>
 		<module>org.jboss.tools.runtime.as.detector</module>
