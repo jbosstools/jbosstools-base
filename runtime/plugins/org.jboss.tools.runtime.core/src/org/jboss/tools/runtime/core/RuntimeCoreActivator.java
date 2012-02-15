@@ -11,9 +11,7 @@
 package org.jboss.tools.runtime.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -29,7 +27,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.InvalidRuntimeDetector;
 import org.osgi.framework.BundleContext;
@@ -49,8 +46,6 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 
 	private static final String RUNTIME_DETECTOR_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectors";
 	
-	public static final String DOWNLOAD_RUNTIMES_EXTENSION_ID = "org.jboss.tools.runtime.core.downloadruntimes";
-
 	private static final String NAME = "name";
 
 	private static final String PREFERENCE_ID = "preferenceId";
@@ -73,12 +68,6 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 	private static RuntimeCoreActivator plugin;
 
 	private static IEclipsePreferences prefs;
-	
-	private static final String VERSION = "version"; //$NON-NLS-1$
-	private static final String URL = "url"; //$NON-NLS-1$
-	
-	
-	private Map<String, DownloadRuntime> downloadRuntimes;
 	
 	/**
 	 * The constructor
@@ -237,28 +226,4 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 		return esbDetector;
 	}
 	
-	public Map<String, DownloadRuntime> getDownloadRuntimes() {
-		if (downloadRuntimes == null) {
-			downloadRuntimes = new HashMap<String, DownloadRuntime>();
-			IExtensionRegistry registry = Platform.getExtensionRegistry();
-			IExtensionPoint extensionPoint = registry
-					.getExtensionPoint(DOWNLOAD_RUNTIMES_EXTENSION_ID);
-			IExtension[] extensions = extensionPoint.getExtensions();
-			for (int i = 0; i < extensions.length; i++) {
-				IExtension extension = extensions[i];
-				IConfigurationElement[] configurationElements = extension
-						.getConfigurationElements();
-				for (int j = 0; j < configurationElements.length; j++) {
-					IConfigurationElement configurationElement = configurationElements[j];
-					String name = configurationElement.getAttribute(NAME);
-					String id = configurationElement.getAttribute(ID);
-					String version = configurationElement.getAttribute(VERSION);
-					String url = configurationElement.getAttribute(URL);
-					DownloadRuntime downloadRuntime = new DownloadRuntime(id, name, version, url);
-					downloadRuntimes.put(id, downloadRuntime);
-				}
-			}
-		}
-		return downloadRuntimes;
-	}
 }

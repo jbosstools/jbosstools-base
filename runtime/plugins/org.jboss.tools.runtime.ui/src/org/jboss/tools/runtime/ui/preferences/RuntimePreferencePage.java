@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -71,12 +72,13 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
+import org.jboss.tools.runtime.ui.IDownloadRuntimes;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
-import org.jboss.tools.runtime.ui.dialogs.DownloadRuntimeDialog;
-import org.jboss.tools.runtime.ui.dialogs.DownloadRuntimeViewerDialog;
 import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
 import org.jboss.tools.runtime.ui.dialogs.RuntimePathEditingSupport;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.ServiceReference;
 
 /**
  * @author snjeza
@@ -411,11 +413,12 @@ public class RuntimePreferencePage extends PreferencePage implements
 		downloadButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		downloadButton.setText("Download...");
 		
+		final IDownloadRuntimes downloader = getDownloader();
+		downloadButton.setEnabled(downloader != null);
 		downloadButton.addSelectionListener(new SelectionListener(){
 		
 			public void widgetSelected(SelectionEvent e) {
-				DownloadRuntimeViewerDialog dialog = new DownloadRuntimeViewerDialog(getShell());
-				dialog.open();
+				downloader.execute(getShell());
 			}
 		
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -441,6 +444,17 @@ public class RuntimePreferencePage extends PreferencePage implements
 		});	
 	}
 
+	private IDownloadRuntimes getDownloader() {
+		Bundle bundle = Platform.getBundle("org.jboss.tools.project.examples");
+		if (bundle != null) {
+			ServiceReference<IDownloadRuntimes> reference = bundle.getBundleContext().getServiceReference(IDownloadRuntimes.class);
+			if (reference != null) {
+				return bundle.getBundleContext().getService(reference);
+			}
+		} 
+		return null;
+	}
+	
 	public void init(IWorkbench workbench) {
 		runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
 		runtimeDetectors = RuntimeUIActivator.getDefault().getRuntimeDetectors();
