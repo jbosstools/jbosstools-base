@@ -115,7 +115,7 @@ public class ProblemsView extends ViewBase {
       SWTBotTreeItem[] filteredTreeItems = ProblemsView.getProblemsTreeItemsContainingText(bot,problemsBot.tree(),null,
         IDELabel.ProblemsTree.ERRORS,"","","",
         true );
-//        false);   // ldimaggi
+//        false);   // ldimaggi - if false - error tree cannot write details to log
       
       if (filteredTreeItems != null && filteredTreeItems.length > 0){
           errorsNode = filteredTreeItems[0];
