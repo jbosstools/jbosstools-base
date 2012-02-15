@@ -172,7 +172,7 @@ public class ProblemsView extends ViewBase {
     LinkedList<SWTBotTreeItem> treeItems = new LinkedList<SWTBotTreeItem>();
     for (SWTBotTreeItem treeItem : SWTEclipseExt.getAllTreeItemsRecursive(bot, tree, parent, expand)){
 
-    log.error("ERROR: " + treeItem.getText());  // ldimaggi
+    log.error("ERROR: " + treeItem.getText());  // ldimaggi - needed for debugging project errors
     	
       if (ProblemsView.testProblemsTreeItemForStringCondition(treeItem, descriptionContains, 
             ProblemsView.PROBLEMS_DESCRIPTION_COLUMN_INDEX, StringConditionType.CONTAINS)          
