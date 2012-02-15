@@ -36,7 +36,7 @@ public class ProblemsView extends ViewBase {
   public static final int PROBLEMS_RESOURCE_COLUMN_INDEX = 1;
   public static final int PROBLEMS_PATH_COLUMN_INDEX = 2;
   public static final int PROBLEMS_TYPE_COLUMN_INDEX = 4;
-	Logger log = Logger.getLogger(ProblemsView.class);
+	static Logger log = Logger.getLogger(ProblemsView.class);
 	public ProblemsView() {
 		viewObject = ActionItem.View.GeneralProblems.LABEL;
 	}
@@ -114,9 +114,11 @@ public class ProblemsView extends ViewBase {
     try{
       SWTBotTreeItem[] filteredTreeItems = ProblemsView.getProblemsTreeItemsContainingText(bot,problemsBot.tree(),null,
         IDELabel.ProblemsTree.ERRORS,"","","",
-        false);
+        true );
+//        false);   // ldimaggi
+      
       if (filteredTreeItems != null && filteredTreeItems.length > 0){
-        errorsNode = filteredTreeItems[0];
+          errorsNode = filteredTreeItems[0];
       }
     } catch (WidgetNotFoundException wnfe){
       // do nothing
@@ -169,8 +171,11 @@ public class ProblemsView extends ViewBase {
 
     LinkedList<SWTBotTreeItem> treeItems = new LinkedList<SWTBotTreeItem>();
     for (SWTBotTreeItem treeItem : SWTEclipseExt.getAllTreeItemsRecursive(bot, tree, parent, expand)){
+
+    log.error("ERROR: " + treeItem.getText());  // ldimaggi
+    	
       if (ProblemsView.testProblemsTreeItemForStringCondition(treeItem, descriptionContains, 
-            ProblemsView.PROBLEMS_DESCRIPTION_COLUMN_INDEX, StringConditionType.CONTAINS)
+            ProblemsView.PROBLEMS_DESCRIPTION_COLUMN_INDEX, StringConditionType.CONTAINS)          
           && ProblemsView.testProblemsTreeItemForStringCondition(treeItem, pathStartsWith, 
               ProblemsView.PROBLEMS_PATH_COLUMN_INDEX, StringConditionType.STARTS_WITH)
           && ProblemsView.testProblemsTreeItemForStringCondition(treeItem, resourceText, 
