@@ -21,7 +21,6 @@ import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.hamcrest.Matcher;
-import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
  * Helper to find menu within menu bar
@@ -39,7 +38,7 @@ public class MenuBarHelper {
     final MenuItem menuItem = UIThreadRunnable.syncExec(new Result<MenuItem>() {
       @Override
       public MenuItem run() {
-        Matcher<? extends Widget> matcher = withMnemonic(IDELabel.Menu.PROJECT);
+        Matcher<? extends Widget> matcher = withMnemonic(menuLabel);
         MenuItem[] items = activeShell.getMenuBar().getItems();
         int index = 0;
         while (index < items.length && !matcher.matches(items[index])){
@@ -49,7 +48,7 @@ public class MenuBarHelper {
           return items[index];  
         }
         else{
-          throw new WidgetNotFoundException("Unable to find menu with label " + IDELabel.Menu.PROJECT +
+          throw new WidgetNotFoundException("Unable to find menu with label " + menuLabel +
             " within active shell menu bar.");
         }
         

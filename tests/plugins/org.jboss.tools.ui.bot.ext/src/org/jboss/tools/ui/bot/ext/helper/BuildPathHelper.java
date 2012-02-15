@@ -15,9 +15,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
@@ -53,14 +56,24 @@ public class BuildPathHelper {
 	 */
 	public static String addExternalJar(final String externalJarLocation,
 			final String projectName, boolean overwriteIfExists) {
-
 		assertTrue("External Jar Location cannot be empty but is " + externalJarLocation, 
 				externalJarLocation != null && externalJarLocation.length() > 0);
 		SWTBotExt bot = new SWTEclipseExt().openPropertiesOfProject(projectName);
+    bot.shell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName).activate().bot();
 		bot.tree().expandNode(IDELabel.JavaBuildPathPropertiesEditor.JAVA_BUILD_PATH_TREE_ITEM_LABEL).select();
-		bot.tabItem(IDELabel.JavaBuildPathPropertiesEditor.LIBRARIES_TAB_LABEL).activate();		
-		bot.button(IDELabel.Button.ADD_VARIABLE).click();
-		bot.shell(IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY).activate();
+    bot.sleep(Timing.time3S());		
+		bot.tabItem(IDELabel.JavaBuildPathPropertiesEditor.LIBRARIES_TAB_LABEL).activate();
+		final SWTBotButton btn = bot.button(IDELabel.Button.ADD_VARIABLE);
+		btn.click();
+		bot.sleep(Timing.time2S());
+		// workaround because first click is not working when test is run via maven
+		try {
+		  bot.shell(IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY).activate();  
+		} catch (WidgetNotFoundException wnfe){
+		  btn.click();  
+		  bot.sleep(Timing.time2S());
+		  bot.shell(IDELabel.Shell.NEW_VARIABLE_CLASS_PATH_ENTRY).activate();
+		}
 		String jarFileName = new File(externalJarLocation).getName();
 		String variableEntryName = jarFileName.toUpperCase() + "_LOCATION";	
 		boolean externalJarExists = false;
