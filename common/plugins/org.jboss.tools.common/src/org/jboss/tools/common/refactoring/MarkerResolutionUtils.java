@@ -80,7 +80,7 @@ public class MarkerResolutionUtils {
 	
 	private static final int NUMBER_OF_STRINGS = 3;
 
-	static final HashSet<String> primitives = new HashSet<String>();
+	public static final HashSet<String> primitives = new HashSet<String>();
 	static{
 		primitives.add("void");  //$NON-NLS-1$
 		primitives.add("int");  //$NON-NLS-1$
