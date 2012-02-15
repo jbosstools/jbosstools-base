@@ -25,13 +25,24 @@ import org.jboss.tools.common.text.ITextSourceReference;
 public interface IValidationErrorManager {
 	
 	/**
-	 * inits validator error manager
+	 * Inits validator error manager
 	 * @param project
 	 * @param validationHelper
 	 * @param manager
 	 * @param reporter
 	 */
 	void init(IProject project, ContextValidationHelper validationHelper, IProjectValidationContext validationContext, IValidator manager, IReporter reporter);
+
+	/**
+	 * Inits validator error manager
+	 * @param project
+	 * @param validationHelper
+	 * @param validationContext
+	 * @param manager
+	 * @param reporter
+	 * @param asYouTypeValidation
+	 */
+	void init(IProject project, ContextValidationHelper validationHelper, IProjectValidationContext validationContext, IValidator manager, IReporter reporter, boolean asYouTypeValidation);
 
 	/**
 	 * Adds a marker to the resource

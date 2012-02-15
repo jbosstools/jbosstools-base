@@ -62,7 +62,7 @@ public class ValidationContext implements IValidationContextManager {
 		}
 	}
 
-	public void init(IProject project) {
+	protected List<IValidator> getAllValidators(IProject project) {
 		projectTree.clear();
 		validators.clear();
 		validationResourceRegister = null;
@@ -86,10 +86,14 @@ public class ValidationContext implements IValidationContextManager {
 		}
 		// We should add all the dependent validators (e.g. EL validator) to the very end of the list.
 		allValidators.addAll(dependentValidators);
+		return allValidators;
+	}
 
+	public void init(IProject project) {
+		List<IValidator> allValidators = getAllValidators(project);
 		// Init context for given project.
 		for (IValidator validator : allValidators) {
-			if(validator.shouldValidate(project)) {
+			if(shouldValidate(validator, project)) {
 				IValidatingProjectTree prTree = validator.getValidatingProjects(project);
 				if(prTree!=null) {
 					validators.add(validator);
@@ -97,6 +101,10 @@ public class ValidationContext implements IValidationContextManager {
 				}
 			}
 		}
+	}
+
+	protected boolean shouldValidate(IValidator validator, IProject project) {
+		return validator.shouldValidate(project);
 	}
 
 	/*

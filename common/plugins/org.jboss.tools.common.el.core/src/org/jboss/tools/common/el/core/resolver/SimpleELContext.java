@@ -11,9 +11,12 @@
 package org.jboss.tools.common.el.core.resolver;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.text.IRegion;
 import org.jboss.tools.common.el.core.ELReference;
 
 /**
@@ -103,5 +106,10 @@ public class SimpleELContext implements ELContext {
 	 */
 	public ELReference getELReference(int offset) {
 		return null;
+	}
+
+	@Override
+	public Set<ELReference> getELReferences(IRegion region) {
+		return Collections.emptySet();
 	}
 }

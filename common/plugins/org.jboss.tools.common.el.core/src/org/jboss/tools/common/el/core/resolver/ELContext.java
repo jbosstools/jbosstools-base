@@ -11,8 +11,10 @@
 package org.jboss.tools.common.el.core.resolver;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.text.IRegion;
 import org.jboss.tools.common.el.core.ELReference;
 
 /**
@@ -71,4 +73,11 @@ public interface ELContext {
 	 * @param file
 	 */
 	void setResource(IFile file);
+
+	/**
+	 * Returns all the EL references for the region.
+	 * 
+	 * @return
+	 */
+	Set<ELReference> getELReferences(IRegion region);
 }

@@ -63,6 +63,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	protected String markerId;
 	protected IProjectValidationContext validationContext;
 	protected TextFileDocumentProvider documentProvider;
+	protected IDocument document;
 	protected Set<IFile> dirtyFiles;
 
 	private String messageIdQuickFixAttributeName;
@@ -83,9 +84,17 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.jboss.tools.jst.web.kb.validation.IValidationErrorManager#init(org.eclipse.core.resources.IProject, org.jboss.tools.jst.web.kb.internal.validation.ContextValidationHelper, org.jboss.tools.jst.web.kb.validation.IProjectValidationContext, org.eclipse.wst.validation.internal.provisional.core.IValidator, org.eclipse.wst.validation.internal.provisional.core.IReporter)
+	 * @see org.jboss.tools.common.validation.IValidationErrorManager#init(org.eclipse.core.resources.IProject, org.jboss.tools.common.validation.ContextValidationHelper, org.jboss.tools.common.validation.IProjectValidationContext, org.eclipse.wst.validation.internal.provisional.core.IValidator, org.eclipse.wst.validation.internal.provisional.core.IReporter)
 	 */
 	public void init(IProject project, ContextValidationHelper validationHelper, IProjectValidationContext validationContext, IValidator manager, IReporter reporter) {
+		init(project, validationHelper, validationContext, manager, reporter, false);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.jst.web.kb.validation.IValidationErrorManager#init(org.eclipse.core.resources.IProject, org.jboss.tools.jst.web.kb.internal.validation.ContextValidationHelper, org.jboss.tools.jst.web.kb.validation.IProjectValidationContext, org.eclipse.wst.validation.internal.provisional.core.IValidator, org.eclipse.wst.validation.internal.provisional.core.IReporter)
+	 */
+	public void init(IProject project, ContextValidationHelper validationHelper, IProjectValidationContext validationContext, IValidator manager, IReporter reporter, boolean asYouTypeValidation) {
 		cleanSavedMarkers();
 		setProject(project);
 		setCoreHelper(validationHelper);
@@ -93,12 +102,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		setReporter(reporter);
 		setValidationContext(validationContext);
 		setMarkerId(org.jboss.tools.common.validation.IValidator.MARKED_RESOURCE_MESSAGE_GROUP);
-		dirtyFiles = EclipseUIUtil.getDirtyFiles();
-	}
-
-	public void init(IProject project, ContextValidationHelper validationHelper, IProjectValidationContext validationContext, IValidator manager, IReporter reporter, String messageIdQuickFixAttributeName) {
-		this.init(project, validationHelper, validationContext, manager, reporter);
-		setMessageIdQuickFixAttributeName(messageIdQuickFixAttributeName);
+		dirtyFiles = asYouTypeValidation?new HashSet<IFile>():EclipseUIUtil.getDirtyFiles();
 	}
 
 	protected boolean shouldBeValidated(IFile file) {
@@ -235,7 +239,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		return false;
 	}
 
-	private static boolean hasSuppressWarningsAnnotation(String preferenceKey, ITextSourceReference location) throws JavaModelException {
+	protected static boolean hasSuppressWarningsAnnotation(String preferenceKey, ITextSourceReference location) throws JavaModelException {
 		boolean result = false;
 		if(location instanceof IJavaSourceReference) {
 			IJavaElement element = ((IJavaSourceReference) location).getSourceElement();
@@ -332,7 +336,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	
 	abstract protected String getPreferencePageId();
 
-	private int getSeverity(String preferenceKey, IResource target) {
+	protected int getSeverity(String preferenceKey, IResource target) {
 		String preferenceValue = getPreference(target.getProject(), preferenceKey);
 		int severity = -1;
 		if (!SeverityPreferences.IGNORE.equals(preferenceValue)) {
@@ -363,7 +367,6 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 					marker.setAttribute(PREFERENCE_KEY_ATTRIBUTE_NAME, preferenceKey);
 					marker.setAttribute(PREFERENCE_PAGE_ID_NAME, preferencePageId);
 				}
-				
 			}
 		} catch(CoreException e) {
 			CommonPlugin.getDefault().logError(e);
@@ -434,7 +437,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 					connected = true;
 					documentProvider.connect(target);
 					IDocument doc = documentProvider.getDocument(target);
-					if(doc != null){
+					if(doc != null) {
 						try {
 							lineNumber = doc.getLineOfOffset(offset) + 1;
 						} catch (BadLocationException e) {
@@ -495,6 +498,13 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	 * @return
 	 */
 	public IMarker addError(String message, int severity, Object[] messageArguments, int lineNumber, int length, int offset, IResource target, TextFileDocumentProvider documentProvider, String markerId, Class markerOwner) {
+		if(document != null && lineNumber < 0) {
+			try {
+				lineNumber = document.getLineOfOffset(offset) + 1;
+			} catch (BadLocationException e) {
+				CommonPlugin.getDefault().logError("Wrong offset [" + offset + "] of the problem marker [" + MessageFormat.format(message, messageArguments)  + "] for resource: " + target.getFullPath().toOSString(), e);  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+			}
+		}
 		return addError(message, severity, messageArguments, lineNumber, length, offset, target, documentProvider, markerId, markerOwner, getMaxNumberOfMarkersPerFile(target.getProject()), getMarkerType());
 	}
 
