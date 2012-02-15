@@ -159,6 +159,7 @@ public class IDELabel {
 	  public static final String NEW_SERVER = "New Server";
 	  public static final String RUN_ON_SERVER = "Run On Server";
 	  public static final String WARNING = "Warning";
+	  public static final String JAR_SELECTION = "JAR Selection";
 	  public static final String DROOLS_RUNTIME = "Drools Runtime";
 	  public static final String NEW_DROOLS_PROJECT = "";
 	  public static final String RENAME_COMPILATION_UNIT = "Rename Compilation Unit";
