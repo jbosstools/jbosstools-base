@@ -17,7 +17,7 @@ import java.beans.PropertyChangeSupport;
  * A POJO base class that may notify observers on behalf of
  * {@link PropertyChangeSupport}
  */
-public abstract class ObservablePojo {
+public abstract class ObservablePojo implements IObservablePojo {
 
 	private PropertyChangeSupport propertyChangeSupport;
 
@@ -33,27 +33,38 @@ public abstract class ObservablePojo {
     	propertyChangeSupport.fireIndexedPropertyChange(propertyName, index, oldValue, newValue);
     }
 	
+	@Override
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		if (!contains(listener)) {
 			propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
 		}
 	}
 
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		if (!contains(listener)) {
 			propertyChangeSupport.addPropertyChangeListener(listener);
 		}
 	}
 
+	@Override
 	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
 	}
 
+	@Override
 	public void removePropertyChangeListener(
 			PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(listener);
 	}
-	
+
+	@Override
+	public void removeAllPropertyChangeListeners() {
+		for (PropertyChangeListener listener : getPropertyChangeSupport().getPropertyChangeListeners()) {
+			getPropertyChangeSupport().removePropertyChangeListener(listener);
+		}
+	}
+
     protected boolean contains(PropertyChangeListener listener) {
     	boolean contains = false;
     	for (PropertyChangeListener registeredListener : propertyChangeSupport.getPropertyChangeListeners()) {
@@ -67,5 +78,10 @@ public abstract class ObservablePojo {
     
 	protected PropertyChangeSupport getPropertyChangeSupport() {
 		return propertyChangeSupport;
+	}
+	
+	@Override
+	public void dispose() {
+		removeAllPropertyChangeListeners();
 	}
 }
