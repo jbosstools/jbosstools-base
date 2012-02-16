@@ -240,13 +240,7 @@ public class SWTBotExt extends SWTWorkbenchBot {
         }
 
         final int SLEEP_TIME = Timing.time2S();
-        final int ATTEMPTS_TIMEOUT;
-
-        if (maxTimeout < 0) {
-            ATTEMPTS_TIMEOUT = 15;
-        } else {
-            ATTEMPTS_TIMEOUT = (int)Math.ceil((double)(maxTimeout * 1000) / (double)SLEEP_TIME);
-        }
+        final int ATTEMPTS_TIMEOUT = getAttemptsTimeout((maxTimeout < 0 ? 30 : maxTimeout), SLEEP_TIME);
 
         for (int i = 0; i <= ATTEMPTS_TIMEOUT; i++) {
             for (SWTBotShell shell : shells()) {
@@ -260,6 +254,62 @@ public class SWTBotExt extends SWTWorkbenchBot {
         }
 
         return null;
+    }
+
+    /**
+     * Waits until there is desired number of shells.
+     * It is useful sometimes when you cannot address exactly
+     * what you are waiting for but you know that the right situation
+     * is when there is <code>desiredNumberOfSheels</code> of shells.
+     * For example you are waiting for closing of some dialog so there are
+     * two shells and after closing this dialog there is one desired shell.
+     * 
+     * @param desiredNumberOfShells Number of desired shells.
+     * @param maxTimeout Maximum time to wait in seconds. If this value is negative,
+     *        default timeout is used (30 seconds).
+     * @return Shells which exists after timeout or after achieving desired
+     *         number of shells.
+     */
+    public SWTBotShell[] waitForNumberOfShells(final int desiredNumberOfShells, final int maxTimeout) {
+        final int SLEEP_TIME = Timing.time2S();
+        final int ATTEMPTS_TIMEOUT = getAttemptsTimeout((maxTimeout < 0 ? 30 : maxTimeout), SLEEP_TIME);
+
+        for (int i = 0; i < ATTEMPTS_TIMEOUT; i++) {
+            if (shells().length != desiredNumberOfShells) {
+                sleep(SLEEP_TIME);
+            } else {
+                break;
+            }
+        }
+
+        return shells();
+    }
+
+    /**
+     * Waits until there is desired number of shells which exist
+     * with default timeout (30 seconds).
+     * 
+     * @param desiredNumberOfShells
+     * @return Shells which exists after timeout or after achieving desired
+     *         number of shells.
+     */
+    public SWTBotShell[] waitForNumberOfShells(final int desiredNumberOfShells) {
+        return waitForNumberOfShells(desiredNumberOfShells, -1);
+    }
+
+    /**
+     * If you need a loop in which some condition is tested and you want to know
+     * how many loops should be done before timeout, give to this method <code>maxTimeout</code>
+     * in seconds and desired delay between loops and this method returns number of loops
+     * that should be done.
+     * 
+     * @param maxTimeout Maximum waiting time in seconds.
+     * @param sleepTime Waiting time in milliseconds between attempts.
+     * @return Number of attempts which is approximately equals to <code>maxTimeout</code>
+     *         with <code>sleepTime</code> in each loop. 
+     */
+    private int getAttemptsTimeout(final int maxTimeout, final int sleepTime) {
+        return ((int)Math.ceil((double)(maxTimeout * 1000) / (double)sleepTime));
     }
 
     /**
