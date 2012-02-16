@@ -185,16 +185,22 @@ public class XMarkerManager implements IResourceChangeListener {
 		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
-		Set<XModelObject> os = errorObjects.get(file);
-		if(os == null) {
-			os = new HashSet<XModelObject>();
-			errorObjects.put(file, os);
+		Set<XModelObject> os;
+
+		synchronized (this) { 
+			os = errorObjects.get(file);
+			if(os == null) {
+				os = new HashSet<XModelObject>();
+				errorObjects.put(file, os);
+			}
 		}
 		reload(ms, os, IMarker.SEVERITY_ERROR);
-		os = warningObjects.get(file);
-		if(os == null) {
-			os = new HashSet<XModelObject>();
-			warningObjects.put(file, os);
+		synchronized (this) { 
+			os = warningObjects.get(file);
+			if(os == null) {
+				os = new HashSet<XModelObject>();
+				warningObjects.put(file, os);
+			}
 		}
 		reload(ms, os, IMarker.SEVERITY_WARNING);
 	}
@@ -216,37 +222,49 @@ public class XMarkerManager implements IResourceChangeListener {
 				((XModelObjectImpl)o).addErrorAttributeDirty(attr);
 			}
 		}
-		synchronized(objects) {
-			Iterator<XModelObject> it = objects.iterator();
-			while(it.hasNext()) {
-				XModelObject o = it.next();
-				if(!es.contains(o)) {
-					if(o.getErrorState() == severity) {
-						o.setErrorState(0);
-					}
-					it.remove();
-				} else if(es.contains(o)) {
-					if(severity > o.getErrorState()) {
-						o.setErrorState(severity);
-					} else {
-						((XModelObjectImpl)o).commitErrorAttributes();
-					}
-					es.remove(o);
+		Set<XModelObject> copy = new HashSet<XModelObject>();
+		Set<XModelObject> toRemove = new HashSet<XModelObject>();
+		Set<XModelObject> toAdd = new HashSet<XModelObject>();
+		
+		synchronized(this) {
+			copy.addAll(objects);
+		}
+		
+		Iterator<XModelObject> it = copy.iterator();
+		while(it.hasNext()) {
+			XModelObject o = it.next();
+			if(!es.contains(o)) {
+				if(o.getErrorState() == severity) {
+					o.setErrorState(0);
 				}
-			}
-			it = es.iterator();
-			while(it.hasNext()) {
-				XModelObject o = (XModelObject)it.next();
+				toRemove.add(o);
+			} else if(es.contains(o)) {
 				if(severity > o.getErrorState()) {
 					o.setErrorState(severity);
 				} else {
 					((XModelObjectImpl)o).commitErrorAttributes();
-				}					
-				if(!objects.contains(o)) {
-					objects.add(o);
 				}
+				es.remove(o);
 			}
 		}
+		it = es.iterator();
+		while(it.hasNext()) {
+			XModelObject o = (XModelObject)it.next();
+			if(severity > o.getErrorState()) {
+				o.setErrorState(severity);
+			} else {
+				((XModelObjectImpl)o).commitErrorAttributes();
+			}					
+			if(!objects.contains(o)) {
+				toAdd.add(o);
+			}
+		}
+
+		synchronized(this) {
+			objects.removeAll(toRemove);
+			objects.addAll(toAdd);
+		}
+		
 	}
 
 	void update(XModelObject object) {
