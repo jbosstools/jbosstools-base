@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
  */
 public class JobResultFuture implements Future<IStatus> {
 
+	private AtomicBoolean done = new AtomicBoolean();
 	private AtomicBoolean cancelled = new AtomicBoolean();
 	private ArrayBlockingQueue<IStatus> queue = new ArrayBlockingQueue<IStatus>(1);
 
@@ -49,7 +50,7 @@ public class JobResultFuture implements Future<IStatus> {
 
 	@Override
 	public boolean isDone() {
-		return queue.size() == 1;
+		return done.get();
 	}
 
 	@Override
@@ -68,7 +69,8 @@ public class JobResultFuture implements Future<IStatus> {
 
 			@Override
 			public void done(IJobChangeEvent event) {
-				queue.offer(job.getResult());
+				queue.offer(event.getResult());
+				done.set(true);
 			}
 		});
 	}

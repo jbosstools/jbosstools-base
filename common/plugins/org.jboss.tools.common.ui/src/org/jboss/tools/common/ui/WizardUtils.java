@@ -100,11 +100,11 @@ public class WizardUtils {
 	 */
 	public static IStatus runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
 			IWizardContainer container, final long timeout) throws InvocationTargetException, InterruptedException {
+		final JobResultFuture future = new JobResultFuture(job);
 		container.run(true, true, new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				IProgressMonitor monitorToUse = setupDelegatingMonitorIfPresent(delegatingMonitor, monitor);
-				final JobResultFuture future = new JobResultFuture(job);
 				monitorToUse.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
 				job.schedule();
 				try {
@@ -115,10 +115,10 @@ public class WizardUtils {
 				monitorToUse.done();
 			}
 		});
-		final IStatus result = job.getResult();
-		if(result != null) {
-			return result;
+		if(future.isDone()) {
+			return job.getResult();
 		}
+		CommonUIPlugin.getDefault().logError("Operation did not complete in a reasonnable amount of time");
 		return new Status(IStatus.ERROR, CommonUIPlugin.PLUGIN_ID,
 				"Operation did not complete in a reasonnable amount of time");
 	}
