@@ -109,6 +109,7 @@ public class ValidatorManager implements IValidatorJob {
 		IValidationContextManager validationContextManager = validationHelper.getValidationContextManager();
 		List<IValidator> validators = validationContextManager.getValidators();
 		removeMarkers(changedFiles);
+		AsYouTypeValidatorManager.removeMessages();
 		for (IValidator validator : validators) {
 			for (IProject rootProject : rootProjects) {
 				IValidatingProjectSet projectBrunch = validationHelper.getValidationContextManager().getValidatingProjectTree(validator).getBrunches().get(rootProject);

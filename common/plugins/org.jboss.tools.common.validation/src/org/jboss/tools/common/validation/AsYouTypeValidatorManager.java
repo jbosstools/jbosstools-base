@@ -11,19 +11,33 @@
 package org.jboss.tools.common.validation;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.progress.UIJob;
+import org.eclipse.ui.texteditor.AbstractMarkerAnnotationModel;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 import org.eclipse.wst.sse.ui.internal.reconcile.validator.ISourceValidator;
 import org.eclipse.wst.validation.internal.core.ValidationException;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
+import org.jboss.tools.common.util.EclipseUIUtil;
 
 /**
  * This Manager is responsible for as-you-type validation.
@@ -36,6 +50,8 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	private IFile file;
 	private EditorValidationContext context;
 	private Map<IValidator, IProject> rootProjects;
+
+	private static Set<IDocument> reporters = new HashSet<IDocument>();
 
 	/*
 	 * (non-Javadoc)
@@ -53,10 +69,57 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	@Override
 	public void disconnect(IDocument document) {
 		context = null;
+		synchronized (reporters) {
+			reporters.remove(document);
+		}
+	}
+
+	/**
+	 * 	Remove all the temporary annotations added by this validator.
+	 */
+	static void removeMessages() {
+        UIJob job = new UIJob("Removing as-you-type JBT validation problems") {
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				ITextEditor e = EclipseUIUtil.getActiveEditor();
+				if(e!=null && !e.isDirty()) {
+					IEditorInput input = e.getEditorInput();
+					IDocumentProvider dp = e.getDocumentProvider();
+					IDocument doc = dp.getDocument(input);
+					boolean ok = false;
+					synchronized (reporters) {
+						ok = reporters.contains(doc);
+					}
+					if(ok) {
+						IAnnotationModel model = dp.getAnnotationModel(input);
+						if(model instanceof AbstractMarkerAnnotationModel) {
+							AbstractMarkerAnnotationModel anModel = ((AbstractMarkerAnnotationModel)model);
+							synchronized (anModel.getLockObject()) {
+								Iterator iterator = anModel.getAnnotationIterator();
+								while (iterator.hasNext()) {
+									Object o = iterator.next();
+									if(o instanceof TemporaryAnnotation) {
+										TemporaryAnnotation annotation = (TemporaryAnnotation)o;
+										Map attributes = annotation.getAttributes();
+										if(attributes!=null && attributes.get(TempMarkerManager.AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE)!=null) {
+											anModel.removeAnnotation(annotation);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
 	}
 
 	private boolean init(IValidationContext helper, IReporter reporter) {
 		if(context==null) {
+			synchronized (reporters) {
+				reporters.add(document);
+			}
 			String[] uris = helper.getURIs();
 			if(uris.length==0) {
 				return false;
@@ -98,7 +161,7 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 				((IAsYouTypeValidator)validator).validate(this, rootProject, dirtyRegion, helper, reporter, context, projectBrunch.getRootContext(), file);
 			}
 		}
-//		reporter.removeAllMessages(this, file);
+//		reporter.removeAllMessages(AsYouTypeValidatorManager.this, file);
 	}
 
 	@Override
