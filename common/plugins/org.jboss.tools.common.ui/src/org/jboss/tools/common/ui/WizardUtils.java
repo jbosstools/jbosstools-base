@@ -11,10 +11,14 @@
 package org.jboss.tools.common.ui;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizard;
@@ -33,11 +37,11 @@ public class WizardUtils {
 	}
 
 	/**
-	 * Runs the given job in the given wizard container. This method will return
-	 * immediately, it will not wait for the job completion.
+	 * Runs the given job in the given wizard container. This method will return immediately, it will not wait for the
+	 * job completion.
 	 * <p>
-	 * In order to have the wizard displaying a progress bar, you need to set
-	 * Wizard#setNeedsProgressMonitor to <code>true</code>.
+	 * In order to have the wizard displaying a progress bar, you need to set Wizard#setNeedsProgressMonitor to
+	 * <code>true</code>.
 	 * 
 	 * @param job
 	 *            the job to run
@@ -52,22 +56,21 @@ public class WizardUtils {
 	 * @see IWizardContainer#run(boolean, boolean, IRunnableWithProgress)
 	 * @see Job
 	 */
-	public static IStatus runInWizard(final Job job, IWizardContainer container)
-			throws InvocationTargetException, InterruptedException {
+	public static IStatus runInWizard(final Job job, IWizardContainer container) throws InvocationTargetException,
+			InterruptedException {
 		return runInWizard(job, null, container);
 	}
 
 	/**
 	 * Runs the given job in the given wizard container.
 	 * <p>
-	 * In order to have the wizard displaying a progress bar, you need to set
-	 * Wizard#setNeedsProgressMonitor to <code>true</code>.
+	 * In order to have the wizard displaying a progress bar, you need to set Wizard#setNeedsProgressMonitor to
+	 * <code>true</code>.
 	 * 
 	 * @param job
 	 *            the job to run in the wizard
 	 * @param delegatingMonitor
-	 *            the delegating monitor that the wizard monitor shall be added
-	 *            to.
+	 *            the delegating monitor that the wizard monitor shall be added to.
 	 * @param container
 	 *            the wizard container to run the job in
 	 * @return a future that allows you to wait for the job result
@@ -75,27 +78,54 @@ public class WizardUtils {
 	 * @throws InterruptedException
 	 */
 	public static IStatus runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
-			IWizardContainer container) throws InvocationTargetException, InterruptedException {
-		final IStatus[] statusHolder = new IStatus[1];
-		container.run(true, false, new IRunnableWithProgress() {
+			final IWizardContainer container) throws InvocationTargetException, InterruptedException {
+		return runInWizard(job, delegatingMonitor, container, 120);
+	}
+	
+	/**
+	 * Runs the given job in the given wizard container.
+	 * <p>
+	 * In order to have the wizard displaying a progress bar, you need to set Wizard#setNeedsProgressMonitor to
+	 * <code>true</code>.
+	 * 
+	 * @param job
+	 *            the job to run in the wizard
+	 * @param delegatingMonitor
+	 *            the delegating monitor that the wizard monitor shall be added to.
+	 * @param container
+	 *            the wizard container to run the job in
+	 * @return a future that allows you to wait for the job result
+	 * @throws InvocationTargetException
+	 * @throws InterruptedException
+	 */
+	public static IStatus runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
+			IWizardContainer container, final long timeout) throws InvocationTargetException, InterruptedException {
+		container.run(true, true, new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				IProgressMonitor monitorToUse = setupDelegatingMonitorIfPresent(delegatingMonitor, monitor);
+				final JobResultFuture future = new JobResultFuture(job);
 				monitorToUse.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
-
 				job.schedule();
-				job.join();
-				statusHolder[0] = job.getResult();
+				try {
+					future.get(timeout, TimeUnit.SECONDS);
+				} catch (ExecutionException e) {
+				} catch (TimeoutException e) {
+				}
 				monitorToUse.done();
 			}
-
 		});
-		return statusHolder[0];
+		final IStatus result = job.getResult();
+		if(result != null) {
+			return result;
+		}
+		return new Status(IStatus.ERROR, CommonUIPlugin.PLUGIN_ID,
+				"Operation did not complete in a reasonnable amount of time");
 	}
 
 	/**
-	 * Returns the delegating monitor if present or the simple monitor
-	 * otherwise. The simple monitor is added to the delegating one.
+	 * Returns the delegating monitor if present or the simple monitor otherwise. The simple monitor is added to the
+	 * delegating one.
 	 * 
 	 * @param delegatingMonitor
 	 * @param monitor
@@ -114,13 +144,11 @@ public class WizardUtils {
 	/**
 	 * Runs the given job in the given wizard container.
 	 * <p>
-	 * Furhtermore it updates the models and targets of the given data binding
-	 * context. This might be necessary if the given job will change widget
-	 * enablements in the calling wizard page. The reason for is that the runner
-	 * saves the widget enablement states when it's up to execute the runnable.
-	 * It then restores those states once he finished executing the runnable. It
-	 * may therefore restore incorrect states since the job changed the
-	 * enablements when it was run.
+	 * Furhtermore it updates the models and targets of the given data binding context. This might be necessary if the
+	 * given job will change widget enablements in the calling wizard page. The reason for is that the runner saves the
+	 * widget enablement states when it's up to execute the runnable. It then restores those states once he finished
+	 * executing the runnable. It may therefore restore incorrect states since the job changed the enablements when it
+	 * was run.
 	 * 
 	 * @param job
 	 *            the job
