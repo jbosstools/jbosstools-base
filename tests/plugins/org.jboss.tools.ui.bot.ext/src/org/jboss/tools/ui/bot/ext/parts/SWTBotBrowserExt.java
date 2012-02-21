@@ -246,4 +246,20 @@ public class SWTBotBrowserExt extends AbstractSWTBotControl<Browser> {
       "].value = \""+ text +"\";");
     bot.sleep(Timing.time5S());
   }
+  
+  /**
+   * Useful when browser is runned with some page to load, because the ProgressListener
+   * isn't attached to the browserWidget, so this class can't recognize the default 
+   * page is loaded
+   */
+  public void addProgressListenerToBrowser(){
+	  UIThreadRunnable.syncExec(new VoidResult() {
+		
+		@Override
+		public void run() {
+			pl.setDone(false);
+			widget.addProgressListener(pl);
+		}
+	});
+  }
 }
