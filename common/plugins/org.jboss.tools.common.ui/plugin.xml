@@ -74,4 +74,13 @@
 		<markerResolutionGenerator
         class="org.jboss.tools.common.ui.marker.ConfigureProblemSeverityResolutionGenerator"/>
    </extension>
+      <extension
+            point="org.eclipse.ui.perspectiveExtensions">
+         <perspectiveExtension
+               targetID="org.jboss.tools.common.ui.JBossPerspective">
+            <newWizardShortcut
+                  id="org.eclipse.jst.servlet.ui.project.facet.WebProjectWizard">
+            </newWizardShortcut>
+         </perspectiveExtension>
+      </extension>
 </plugin>
