@@ -25,7 +25,7 @@ public class DelegatingProgressMonitor implements IProgressMonitor {
 
 	List<IProgressMonitor> monitors = new ArrayList<IProgressMonitor>();
 
-	public void add(IProgressMonitor monitor) {
+	public synchronized void add(IProgressMonitor monitor) {
 		if (monitors.size() > 0) {
 			IProgressMonitor removed = monitors.remove(0);
 			monitors.add(monitor);
@@ -36,35 +36,35 @@ public class DelegatingProgressMonitor implements IProgressMonitor {
 	}
 
 	@Override
-	public void subTask(final String name) {
+	public synchronized void subTask(final String name) {
 		for (IProgressMonitor monitor : monitors) {
 			monitor.subTask(name);
 		}
 	}
 
 	@Override
-	public void beginTask(final String name, final int totalWork) {
+	public synchronized void beginTask(final String name, final int totalWork) {
 		for (IProgressMonitor monitor : monitors) {
 			monitor.beginTask(name, totalWork);
 		}
 	}
 
 	@Override
-	public void done() {
+	public synchronized void done() {
 		for (IProgressMonitor monitor : monitors) {
 			monitor.done();
 		}
 	}
 
 	@Override
-	public void internalWorked(final double work) {
+	public synchronized void internalWorked(final double work) {
 		for (IProgressMonitor monitor : monitors) {
 			monitor.internalWorked(work);
 		}
 	}
 
 	@Override
-	public boolean isCanceled() {
+	public synchronized boolean isCanceled() {
 		for (IProgressMonitor monitor : monitors) {
 			if (monitor.isCanceled()) {
 				return true;
@@ -74,21 +74,21 @@ public class DelegatingProgressMonitor implements IProgressMonitor {
 	}
 
 	@Override
-	public void setCanceled(final boolean value) {
+	public synchronized void setCanceled(final boolean value) {
 		for (IProgressMonitor monitor : monitors) {
 			monitor.setCanceled(value);
 		}
 	}
 
 	@Override
-	public void setTaskName(final String name) {
+	public synchronized void setTaskName(final String name) {
 		for (IProgressMonitor monitor : monitors) {
 			monitor.setTaskName(name);
 		}
 	}
 
 	@Override
-	public void worked(final int work) {
+	public synchronized void worked(final int work) {
 		for (IProgressMonitor monitor : monitors) {
 			monitor.worked(work);
 		}

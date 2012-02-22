@@ -37,11 +37,11 @@ public class WizardUtils {
 	}
 
 	/**
-	 * Runs the given job in the given wizard container. This method will return immediately, it will not wait for the
-	 * job completion.
+	 * Runs the given job in the given wizard container. This method will return
+	 * immediately, it will not wait for the job completion.
 	 * <p>
-	 * In order to have the wizard displaying a progress bar, you need to set Wizard#setNeedsProgressMonitor to
-	 * <code>true</code>.
+	 * In order to have the wizard displaying a progress bar, you need to set
+	 * Wizard#setNeedsProgressMonitor to <code>true</code>.
 	 * 
 	 * @param job
 	 *            the job to run
@@ -64,13 +64,14 @@ public class WizardUtils {
 	/**
 	 * Runs the given job in the given wizard container.
 	 * <p>
-	 * In order to have the wizard displaying a progress bar, you need to set Wizard#setNeedsProgressMonitor to
-	 * <code>true</code>.
+	 * In order to have the wizard displaying a progress bar, you need to set
+	 * Wizard#setNeedsProgressMonitor to <code>true</code>.
 	 * 
 	 * @param job
 	 *            the job to run in the wizard
 	 * @param delegatingMonitor
-	 *            the delegating monitor that the wizard monitor shall be added to.
+	 *            the delegating monitor that the wizard monitor shall be added
+	 *            to.
 	 * @param container
 	 *            the wizard container to run the job in
 	 * @return a future that allows you to wait for the job result
@@ -81,17 +82,31 @@ public class WizardUtils {
 			final IWizardContainer container) throws InvocationTargetException, InterruptedException {
 		return runInWizard(job, delegatingMonitor, container, 120);
 	}
-	
+
 	/**
 	 * Runs the given job in the given wizard container.
 	 * <p>
-	 * In order to have the wizard displaying a progress bar, you need to set Wizard#setNeedsProgressMonitor to
-	 * <code>true</code>.
+	 * In order to have the wizard displaying a progress bar, you need to set
+	 * Wizard#setNeedsProgressMonitor to <code>true</code>.
+	 * <p>
+	 * In order to be able to report updates in the job to the wizard progress,
+	 * you'd have to use the {@link DelegatingProgressMonitor}. Add your job
+	 * monitor to that aggregating monitor and call #subTask #done etc. on that
+	 * one (@link https://bugs.eclipse.org/bugs/show_bug.cgi?id=293098)
+	 * 
+	 * <code>
+	 * DelegatingProgressMonitor delegate = new DelegatingProgressMonitor();
+	 * delegate.add(myJobMonitor)
+	 * delegate.add(wizardMonitor)
+	 * ...
+	 * delegate.subTask("now reporting to the delegate so that progress is shown in workbench and wizard");
+	 * </code>
 	 * 
 	 * @param job
 	 *            the job to run in the wizard
 	 * @param delegatingMonitor
-	 *            the delegating monitor that the wizard monitor shall be added to.
+	 *            the delegating monitor that the wizard monitor shall be added
+	 *            to.
 	 * @param container
 	 *            the wizard container to run the job in
 	 * @return a future that allows you to wait for the job result
@@ -104,18 +119,21 @@ public class WizardUtils {
 		container.run(true, true, new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				IProgressMonitor monitorToUse = setupDelegatingMonitorIfPresent(delegatingMonitor, monitor);
-				monitorToUse.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
+				if (delegatingMonitor != null) {
+					delegatingMonitor.add(monitor);
+				}
+				monitor.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
 				job.schedule();
 				try {
 					future.get(timeout, TimeUnit.SECONDS);
 				} catch (ExecutionException e) {
 				} catch (TimeoutException e) {
+				} finally {
+					monitor.done();
 				}
-				monitorToUse.done();
 			}
 		});
-		if(future.isDone()) {
+		if (future.isDone()) {
 			return job.getResult();
 		}
 		CommonUIPlugin.getDefault().logError("Operation did not complete in a reasonnable amount of time");
@@ -124,31 +142,15 @@ public class WizardUtils {
 	}
 
 	/**
-	 * Returns the delegating monitor if present or the simple monitor otherwise. The simple monitor is added to the
-	 * delegating one.
-	 * 
-	 * @param delegatingMonitor
-	 * @param monitor
-	 * @return
-	 */
-	private static IProgressMonitor setupDelegatingMonitorIfPresent(DelegatingProgressMonitor delegatingMonitor,
-			IProgressMonitor monitor) {
-		if (delegatingMonitor == null) {
-			return monitor;
-		}
-
-		delegatingMonitor.add(monitor);
-		return delegatingMonitor;
-	}
-
-	/**
 	 * Runs the given job in the given wizard container.
 	 * <p>
-	 * Furhtermore it updates the models and targets of the given data binding context. This might be necessary if the
-	 * given job will change widget enablements in the calling wizard page. The reason for is that the runner saves the
-	 * widget enablement states when it's up to execute the runnable. It then restores those states once he finished
-	 * executing the runnable. It may therefore restore incorrect states since the job changed the enablements when it
-	 * was run.
+	 * Furhtermore it updates the models and targets of the given data binding
+	 * context. This might be necessary if the given job will change widget
+	 * enablements in the calling wizard page. The reason for is that the runner
+	 * saves the widget enablement states when it's up to execute the runnable.
+	 * It then restores those states once he finished executing the runnable. It
+	 * may therefore restore incorrect states since the job changed the
+	 * enablements when it was run.
 	 * 
 	 * @param job
 	 *            the job
