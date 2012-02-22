@@ -398,8 +398,9 @@ public class SWTEclipseExt {
 	public static void waitForViewInList(SWTBotExt theBot, String theGroupLabel, int counter) {
 		int itemsCount = theBot.tree().expandNode(theGroupLabel).getItems().length;
 		while (itemsCount < counter) {
-			SWTBotTreeItem[] theItems = theBot.tree().expandNode(theGroupLabel)
-					.getItems();
+			SWTBotTreeItem treeItem = theBot.tree().expandNode(theGroupLabel);
+			treeItem.collapse().expand();
+			SWTBotTreeItem[] theItems = treeItem.getItems();
 			itemsCount = theItems.length;
 			for (SWTBotTreeItem i : theItems) {
 				log.info("SWTBotTreeItem = item = " + i);
@@ -454,6 +455,7 @@ public class SWTEclipseExt {
 			while (itGroupsNodes.hasNext()) {
 				groupTreeItem = groupTreeItem.expandNode(itGroupsNodes.next());
 			}
+			groupTreeItem.collapse().expand();
 			groupTreeItem.select(entityLabel);
 		} else {
 			tree.select(entityLabel);
