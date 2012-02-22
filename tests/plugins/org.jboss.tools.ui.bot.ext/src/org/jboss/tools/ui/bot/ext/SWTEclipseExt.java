@@ -1606,8 +1606,10 @@ public class SWTEclipseExt {
     Assert.assertTrue(isProjectInPackageExplorer(projectName));
     bot.sleep(Timing.time2S());
     util.waitForNonIgnoredJobs();
-    ContextMenuHelper.clickContextMenu(packageExplorer.bot().tree(),
-        IDELabel.Menu.PROPERTIES);
+    MenuBarHelper
+      .getMenu(IDELabel.Menu.PROJECT)
+      .menu(IDELabel.Menu.PROPERTIES)
+      .click();
     waitForShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
     return bot;
   }
