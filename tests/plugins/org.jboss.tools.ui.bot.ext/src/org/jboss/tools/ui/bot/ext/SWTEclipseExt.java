@@ -1354,7 +1354,9 @@ public class SWTEclipseExt {
     LinkedList<SWTBotTreeItem> treeItems = new LinkedList<SWTBotTreeItem>();
     
     if (parent != null){
-      if (expand) {
+      if (expand 
+          && parent.getItems() != null 
+          && parent.getItems().length > 0) {
         parent.expand();
         bot.sleep(SWTEclipseExt.DEFAULT_UI_TIMEOUT);
       }
