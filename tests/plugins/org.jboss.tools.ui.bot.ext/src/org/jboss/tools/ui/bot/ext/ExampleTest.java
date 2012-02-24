@@ -88,12 +88,13 @@ public class ExampleTest extends SWTTestExt{
 		String hasProjName = wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_NAME).getText();
 		assertTrue(String.format("Example project name changed, have '%s', expected '%s'",hasProjName,getProjectNames()[0]),hasProjName.equals(getProjectNames()[0]));
 		int projSize = getProjectSize(wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_SIZE).getText());
-		wiz.checkBox("Show the Quick Fix dialog").deselect();
 		wiz.button(IDELabel.Button.FINISH).click();
 		SWTBotShell shell = bot.shell("Downloading...");
 		shell.activate();
 		bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));
 		util.waitForNonIgnoredJobs(Timing.time20S());
+		bot.waitForShell("New Project Example");
+		bot.shell("New Project Example").bot().button(IDELabel.Button.FINISH).click();
 		for (String project : getProjectNames()) {
 			assertTrue(String.format("Example project '%s' was not found in project explorer",project),projectExplorer.existsResource(project));
 		}		
