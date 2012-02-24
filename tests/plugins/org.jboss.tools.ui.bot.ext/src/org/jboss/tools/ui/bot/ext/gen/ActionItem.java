@@ -3200,6 +3200,7 @@ public static String getItemString(IActionItem item) {
 				public String getName() { return "Project Examples";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
+					l.add("Examples");
 					l.add("JBoss Tools");
 					return l;
 				}
