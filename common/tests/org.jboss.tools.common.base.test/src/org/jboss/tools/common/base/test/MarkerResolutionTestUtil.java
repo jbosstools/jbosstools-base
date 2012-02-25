@@ -3,7 +3,7 @@ package org.jboss.tools.common.base.test;
 import java.io.IOException;
 import java.io.InputStream;
 
-import junit.framework.TestCase;
+import junit.framework.Assert;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -23,14 +23,14 @@ import org.jboss.tools.common.ui.marker.AddSuppressWarningsMarkerResolution;
 import org.jboss.tools.common.ui.marker.ConfigureProblemSeverityMarkerResolution;
 import org.jboss.tools.common.util.FileUtil;
 
-public class MarkerResolutionTestUtil extends TestCase{
+public class MarkerResolutionTestUtil{
 
 	private static void checkForConfigureProblemSeverity(IMarkerResolution[] resolutions){
 		for(IMarkerResolution resolution : resolutions){
 			if(resolution.getClass().equals(ConfigureProblemSeverityMarkerResolution.class))
 				return;
 		}
-		fail("Configure Problem Severity marker resolution not found");
+		Assert.fail("Configure Problem Severity marker resolution not found");
 	}
 
 	private static void checkForAddSuppressWarnings(IFile file, IMarker marker, IMarkerResolution[] resolutions){
@@ -40,7 +40,7 @@ public class MarkerResolutionTestUtil extends TestCase{
 				if(resolution.getClass().equals(AddSuppressWarningsMarkerResolution.class))
 					return;
 			}
-			fail("Add @SuppressWarnings marker resolution not found");
+			Assert.fail("Add @SuppressWarnings marker resolution not found");
 		}
 	}
 	
@@ -51,7 +51,7 @@ public class MarkerResolutionTestUtil extends TestCase{
 	public static void checkResolution(IProject project, String[] fileNames, String[] results, String markerType, String idName, int id, Class<? extends IMarkerResolution> resolutionClass) throws CoreException {
 		IFile file = project.getFile(fileNames[0]);
 
-		assertTrue("File - "+file.getFullPath()+" must be exist",file.exists());
+		Assert.assertTrue("File - "+file.getFullPath()+" must be exist",file.exists());
 
 		copyFiles(project, fileNames);
 		TestUtil.validate(file);
@@ -85,7 +85,7 @@ public class MarkerResolutionTestUtil extends TestCase{
 //										System.out.println("Refactor status - "+entry.getMessage());
 //									}
 
-									assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
+									Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
 
 									status = processor.checkFinalConditions(new NullProgressMonitor(), null);
 
@@ -94,7 +94,7 @@ public class MarkerResolutionTestUtil extends TestCase{
 //										System.out.println("Refactor status - "+entry.getMessage());
 //									}
 
-									assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
+									Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
 
 									CompositeChange rootChange = (CompositeChange)processor.createChange(new NullProgressMonitor());
 									
@@ -116,18 +116,18 @@ public class MarkerResolutionTestUtil extends TestCase{
 								file = project.getFile(fileNames[0]);
 								IMarker[] newMarkers = file.findMarkers(markerType, true,	IResource.DEPTH_INFINITE);
 
-								assertTrue("Marker resolution did not decrease number of problems. was: "+markers.length+" now: "+newMarkers.length, newMarkers.length < markers.length);
+								Assert.assertTrue("Marker resolution did not decrease number of problems. was: "+markers.length+" now: "+newMarkers.length, newMarkers.length < markers.length);
 
 								checkResults(project, fileNames, results);
 
 								return;
 							}
 						}
-						fail("Marker resolution: "+resolutionClass+" not found");
+						Assert.fail("Marker resolution: "+resolutionClass+" not found");
 					}
 				}
 			}
-			fail("Problem marker with id: "+id+" not found");
+			Assert.fail("Problem marker with id: "+id+" not found");
 		}finally{
 			restoreFiles(project, fileNames);
 			TestUtil.validate(file);
@@ -187,7 +187,7 @@ public class MarkerResolutionTestUtil extends TestCase{
 			String fileContent = FileUtil.readStream(file);
 			String resultContent = FileUtil.readStream(resultFile);
 			
-			assertEquals("Wrong result of resolution", resultContent, fileContent);
+			Assert.assertEquals("Wrong result of resolution", resultContent, fileContent);
 		}
 	}
 
