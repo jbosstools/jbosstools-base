@@ -31,7 +31,8 @@ public class FileXMLImpl extends AbstractXMLFileImpl {
 		if(name.equals("_hasErrors_")) { //$NON-NLS-1$
 			return super.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT);
 		}
-		if(!markersReset && isActive()) {
+		if(!markersReset && isActive()
+				&& !"NAME".equals(name) && !"EXTENSION".equals(name) && !"overlapped".equals(name)) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			updateMarkers(super.get(XModelObjectConstants.ATTR_NAME_BODY));
 		}
 		return super.get(name);

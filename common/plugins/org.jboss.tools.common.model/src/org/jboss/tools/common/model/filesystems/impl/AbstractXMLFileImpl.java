@@ -13,7 +13,6 @@ package org.jboss.tools.common.model.filesystems.impl;
 import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.model.markers.ResourceMarkers;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl;
@@ -54,7 +53,12 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 	}
 
 	protected final void setErrors(String body, boolean checkDTD, boolean checkSchema) {
-		String[] errors = (body.length() == 0) ? null : XMLUtil.getXMLErrors(new java.io.StringReader(body), checkDTD, checkSchema);
+		String[] errors = (body.length() == 0) ? null 
+				//do not compute errors for unrecognized files.
+			: "FileXML".equals(getModelEntity().getName()) ? null //$NON-NLS-1$
+				//do not compute errors for files in jars
+			: (getParent() instanceof JarFolderImpl) ? null 
+			: XMLUtil.getXMLErrors(new java.io.StringReader(body), checkDTD, checkSchema);
 		if(errors == null || errors.length == 0) {
 			if(loaderError != null) errors = new String[]{loaderError};
 		}
@@ -85,7 +89,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 //				        but use similar format to mention io exception.  
 //				ModelPlugin.getPluginLog().logError(e);
 			}
-			String ep = MessageFormat.format("ERROR: {0} {1}", FindObjectHelper.makeRef(getPath() + ":" + ln1, ln + ":" + pos), er); //$NON-NLS-2$ //$NON-NLS-3$
+			String ep = MessageFormat.format("ERROR: {0} {1}", FindObjectHelper.makeRef(getPath() + ":" + ln1, ln + ":" + pos), er);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			if(iln < 0) markers.lines.remove(ep);
 			else markers.lines.put(ep, Integer.valueOf(iln));
 			sb.append(ep).append('\n');
