@@ -155,7 +155,8 @@ public class XMLUtilities {
     public static EntityResolver createEmptyEntityResolver() {
 		return new EntityResolver() {
 			public InputSource resolveEntity(java.lang.String publicId, java.lang.String systemId) throws SAXException, java.io.IOException {
-				if((systemId != null) && systemId.toLowerCase().endsWith(".dtd")) { // this deactivates DTD //$NON-NLS-1$
+				if((systemId != null) && 
+						(systemId.toLowerCase().endsWith(".dtd") || systemId.toLowerCase().endsWith(".ent"))) { // this deactivates DTD //$NON-NLS-1$ //$NON-NLS-2$
 					return new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes())); //$NON-NLS-1$
 				} else {
 					return null;
