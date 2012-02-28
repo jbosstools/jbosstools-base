@@ -12,7 +12,7 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<emma.filter />
-		<emma.instrument.bundles />
+		<emma.filter>org.jboss.tools.usage*</emma.filter>
+		<emma.instrument.bundles>org.jboss.tools.usage</emma.instrument.bundles>
 	</properties>
 </project>
