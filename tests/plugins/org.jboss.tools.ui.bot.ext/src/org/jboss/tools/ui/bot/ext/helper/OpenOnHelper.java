@@ -20,6 +20,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 
 /**
@@ -57,7 +58,8 @@ public class OpenOnHelper {
 
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_F3);
 
-    bot.sleep(Timing.time3S());
+    bot.sleep(Timing.time1S());
+    new SWTUtilExt(bot).waitForNonIgnoredJobs();
 
     openedEditor = bot.activeEditor();
 
