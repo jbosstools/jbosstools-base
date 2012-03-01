@@ -10,6 +10,7 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.ui;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -54,7 +55,15 @@ public class RuntimeScanner implements IStartup {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							Shell shell = Display.getCurrent().getActiveShell();
-							RuntimeUIActivator.refreshRuntimes(shell, RuntimeUIActivator.getDefault().getRuntimePaths(), null, false, 7);
+							Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
+							for (RuntimePath runtimePath:RuntimeUIActivator.getDefault().getRuntimePaths()) {
+								if (runtimePath.isScanOnEveryStartup()) {
+									runtimePaths.add(runtimePath);
+								}
+							}
+							if (runtimePaths.size() > 0) {
+								RuntimeUIActivator.refreshRuntimes(shell, runtimePaths, null, false, 7);
+							}
 						}
 					});
 				}
