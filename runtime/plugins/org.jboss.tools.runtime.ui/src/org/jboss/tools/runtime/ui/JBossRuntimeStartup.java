@@ -74,6 +74,7 @@ public class JBossRuntimeStartup {
 				initializeRuntimes(serverDefinitions);
 			}
 			if (runtimePaths.size() > 0) {
+				RuntimeUIActivator.getDefault().getRuntimePaths().addAll(runtimePaths);
 				RuntimeUIActivator.getDefault().saveRuntimePaths();
 			}				
 			
