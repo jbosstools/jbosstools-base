@@ -19,19 +19,5 @@
 		<module>site</module>
 		<module>tests</module>
 	</modules>
-	<!-- do not need all metadata to compile common component -->
-	<repositories>
-		<repository>
-			<id>jbosstools-tests-nightly-repo</id>
-			<url>http://download.jboss.org/jbosstools/builds/staging/jbosstools-3.3_trunk.component--tests/all</url>
-			<layout>p2</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
 </project>
 	
