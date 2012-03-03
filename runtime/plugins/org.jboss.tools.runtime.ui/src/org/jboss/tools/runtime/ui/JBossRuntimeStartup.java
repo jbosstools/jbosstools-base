@@ -51,12 +51,14 @@ public class JBossRuntimeStartup {
 		if (isJBDS()) {
 			final Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
 			parseRuntimeLocationsFile(runtimePaths);
+			RuntimePath eapPath = null;
 			try {
 				String configuration = getConfiguration();
 				File directory = new File(configuration, JBOSS_EAP_HOME);
 				if (directory.isDirectory()) {
 					RuntimePath runtimePath = new RuntimePath(directory.getAbsolutePath());
 					runtimePaths.add(runtimePath);
+					eapPath = runtimePath;
 				}
 			} catch (IOException e) {
 				RuntimeUIActivator.log(e);
@@ -71,14 +73,14 @@ public class JBossRuntimeStartup {
 					serverDefinition.setRuntimePath(runtimePath);
 				}
 				runtimePath.getServerDefinitions().addAll(serverDefinitions);
-				initializeRuntimes(serverDefinitions);
+				if (runtimePath.equals(eapPath)) {
+					initializeRuntimes(serverDefinitions);
+				}
 			}
 			if (runtimePaths.size() > 0) {
 				RuntimeUIActivator.getDefault().getRuntimePaths().addAll(runtimePaths);
 				RuntimeUIActivator.getDefault().saveRuntimePaths();
 			}				
-			
-			
 		}
 	}
 
