@@ -148,7 +148,7 @@ public class FileRenameHelper {
     bot.textWithLabel(IDELabel.RenameResourceDialog.NEW_NAME)
       .setText(newProjectName);
     bot.button(IDELabel.Button.OK).click();
-    new SWTUtilExt(bot).waitForAll(Timing.time10S());
+    new SWTUtilExt(bot).waitForAll(Timing.time30S());
     // Check Results
     // Project with Old Name doesn't exists within Package explorer
     try{
