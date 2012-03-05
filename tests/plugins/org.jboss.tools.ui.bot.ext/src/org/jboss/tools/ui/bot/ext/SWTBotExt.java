@@ -244,8 +244,13 @@ public class SWTBotExt extends SWTWorkbenchBot {
 
         for (int i = 0; i <= ATTEMPTS_TIMEOUT; i++) {
             for (SWTBotShell shell : shells()) {
-                if (shellTitle.equals(shell.getText())) {
-                    return shell;
+                try {
+                    if (shellTitle.equals(shell.getText())) {
+                        return shell;
+                    }
+                } catch (WidgetNotFoundException wnfe) {
+                    log.info("Waiting for shell: " + wnfe.getMessage());
+                    // do nothing more but continue in loop
                 }
             }
             if (i < ATTEMPTS_TIMEOUT) {
