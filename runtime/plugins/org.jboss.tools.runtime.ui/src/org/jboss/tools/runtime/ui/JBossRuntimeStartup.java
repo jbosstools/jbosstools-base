@@ -49,22 +49,25 @@ public class JBossRuntimeStartup {
 	
 	public static void initializeRuntimes(IProgressMonitor monitor) {
 		if (isJBDS()) {
-			final Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
-			parseRuntimeLocationsFile(runtimePaths);
-			RuntimePath eapPath = null;
+			JBossRuntimeLocator locator = new JBossRuntimeLocator();
 			try {
 				String configuration = getConfiguration();
 				File directory = new File(configuration, JBOSS_EAP_HOME);
 				if (directory.isDirectory()) {
 					RuntimePath runtimePath = new RuntimePath(directory.getAbsolutePath());
-					runtimePaths.add(runtimePath);
-					eapPath = runtimePath;
+					List<RuntimeDefinition> serverDefinitions = locator
+							.searchForRuntimes(runtimePath.getPath(), monitor);
+					runtimePath.getServerDefinitions().clear();
+					for (RuntimeDefinition serverDefinition : serverDefinitions) {
+						serverDefinition.setRuntimePath(runtimePath);
+					}
+					initializeRuntimes(serverDefinitions);
 				}
 			} catch (IOException e) {
 				RuntimeUIActivator.log(e);
 			}
-			
-			JBossRuntimeLocator locator = new JBossRuntimeLocator();
+			final Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
+			parseRuntimeLocationsFile(runtimePaths);
 			for (RuntimePath runtimePath : runtimePaths) {
 				List<RuntimeDefinition> serverDefinitions = locator
 						.searchForRuntimes(runtimePath.getPath(), monitor);
@@ -73,9 +76,6 @@ public class JBossRuntimeStartup {
 					serverDefinition.setRuntimePath(runtimePath);
 				}
 				runtimePath.getServerDefinitions().addAll(serverDefinitions);
-				if (runtimePath.equals(eapPath)) {
-					initializeRuntimes(serverDefinitions);
-				}
 			}
 			if (runtimePaths.size() > 0) {
 				RuntimeUIActivator.getDefault().getRuntimePaths().addAll(runtimePaths);
