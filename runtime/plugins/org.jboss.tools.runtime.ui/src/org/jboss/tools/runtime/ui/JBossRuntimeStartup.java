@@ -34,10 +34,8 @@ import org.eclipse.ui.navigator.CommonNavigator;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
-import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
-import org.jboss.tools.runtime.ui.RuntimeUIActivator;
-import org.osgi.framework.Bundle;
+import org.jboss.tools.runtime.core.model.RuntimePath;
 
 public class JBossRuntimeStartup {
 	
@@ -48,39 +46,39 @@ public class JBossRuntimeStartup {
 	private static final String LOCATIONS_FILE_CONFIGURATION = "../../studio/" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
 	
 	public static void initializeRuntimes(IProgressMonitor monitor) {
-		if (isJBDS()) {
-			JBossRuntimeLocator locator = new JBossRuntimeLocator();
-			try {
-				String configuration = getConfiguration();
-				File directory = new File(configuration, JBOSS_EAP_HOME);
-				if (directory.isDirectory()) {
-					RuntimePath runtimePath = new RuntimePath(directory.getAbsolutePath());
-					List<RuntimeDefinition> serverDefinitions = locator
-							.searchForRuntimes(runtimePath.getPath(), monitor);
-					runtimePath.getServerDefinitions().clear();
-					for (RuntimeDefinition serverDefinition : serverDefinitions) {
-						serverDefinition.setRuntimePath(runtimePath);
-					}
-					initializeRuntimes(serverDefinitions);
-				}
-			} catch (IOException e) {
-				RuntimeUIActivator.log(e);
-			}
-			final Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
-			parseRuntimeLocationsFile(runtimePaths);
-			for (RuntimePath runtimePath : runtimePaths) {
+		JBossRuntimeLocator locator = new JBossRuntimeLocator();
+		try {
+			String configuration = getConfiguration();
+			File directory = new File(configuration, JBOSS_EAP_HOME);
+			if (directory.isDirectory()) {
+				RuntimePath runtimePath = new RuntimePath(
+						directory.getAbsolutePath());
 				List<RuntimeDefinition> serverDefinitions = locator
 						.searchForRuntimes(runtimePath.getPath(), monitor);
 				runtimePath.getServerDefinitions().clear();
 				for (RuntimeDefinition serverDefinition : serverDefinitions) {
 					serverDefinition.setRuntimePath(runtimePath);
 				}
-				runtimePath.getServerDefinitions().addAll(serverDefinitions);
+				initializeRuntimes(serverDefinitions);
 			}
-			if (runtimePaths.size() > 0) {
-				RuntimeUIActivator.getDefault().getRuntimePaths().addAll(runtimePaths);
-				RuntimeUIActivator.getDefault().saveRuntimePaths();
-			}				
+		} catch (IOException e) {
+			RuntimeUIActivator.log(e);
+		}
+		final Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
+		parseRuntimeLocationsFile(runtimePaths);
+		for (RuntimePath runtimePath : runtimePaths) {
+			List<RuntimeDefinition> serverDefinitions = locator
+					.searchForRuntimes(runtimePath.getPath(), monitor);
+			runtimePath.getServerDefinitions().clear();
+			for (RuntimeDefinition serverDefinition : serverDefinitions) {
+				serverDefinition.setRuntimePath(runtimePath);
+			}
+			runtimePath.getServerDefinitions().addAll(serverDefinitions);
+		}
+		if (runtimePaths.size() > 0) {
+			RuntimeUIActivator.getDefault().getRuntimePaths()
+					.addAll(runtimePaths);
+			RuntimeUIActivator.getDefault().saveRuntimePaths();
 		}
 	}
 
@@ -92,13 +90,6 @@ public class JBossRuntimeStartup {
 			}
 		}
 		refreshCommonNavigator();
-	}
-	
-	
-	private static boolean isJBDS() {
-		Bundle jbdsProduct = Platform.getBundle("com.jboss.jbds.product");
-		//return jbdsProduct != null;
-		return true;
 	}
 
 	private static void refreshCommonNavigator() {
