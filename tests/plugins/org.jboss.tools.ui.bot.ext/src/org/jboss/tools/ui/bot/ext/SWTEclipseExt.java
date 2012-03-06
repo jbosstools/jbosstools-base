@@ -1685,6 +1685,15 @@ public class SWTEclipseExt {
     }
 
     /**
+     * @return <code>true</code> if debug is suspended at breakpoint,
+     *         <code>false</code> otherwise
+     */
+    public boolean isSuspendedAtBreakpoint() {
+        return (!bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.SUSPEND).isEnabled()
+                && bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.TERMINATE).isEnabled());
+    }
+
+    /**
      * Does one step in debugging after stopping at breakpoint.
      */
     public void stepOver() {

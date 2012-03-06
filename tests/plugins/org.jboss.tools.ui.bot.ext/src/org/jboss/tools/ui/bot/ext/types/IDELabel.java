@@ -95,6 +95,7 @@ public class IDELabel {
         public static final String MENU_STEP_OVER = "Step Over";
         public static final String MENU_RESUME = "Resume";
         public static final String MENU_TERMINATE = "Terminate";
+        public static final String SUSPEND = "Suspend";
 	}
 
 	public class Button {
