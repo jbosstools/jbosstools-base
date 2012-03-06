@@ -36,10 +36,9 @@ public class SWTBotFormTextExt extends AbstractSWTBotControl<FormText>{
 	}
 	
 	public AbstractSWTBotControl<FormText> click()  {
-		Event e = createEvent();
-		e.text = getText();
-		notify(SWT.MouseDown, e);
-		return click(true);
+		setFocus();
+		keyboard().typeCharacter('\r');
+		return this;
 	}
 	
 	public String selectedLinkText() {

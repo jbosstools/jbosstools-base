@@ -2,6 +2,8 @@ package org.jboss.tools.ui.bot.ext.condition;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
@@ -20,7 +22,7 @@ public class BrowserIsLoaded implements ICondition {
 	private SWTBotBrowserExt browser;
 	
 	public BrowserIsLoaded(SWTBotBrowserExt browser){
-		super();
+		browser.addProgressListenerToBrowser();
 		this.browser = browser;
 	}
 	
@@ -38,7 +40,6 @@ public class BrowserIsLoaded implements ICondition {
 
 	@Override
 	public void init(SWTBot bot) {
-		browser.addProgressListenerToBrowser();
 		this.bot = bot;
 	}
 

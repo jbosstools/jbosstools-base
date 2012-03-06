@@ -825,11 +825,11 @@ public class IDELabel {
 	   public static final String JAVA_EE_WEB_PROJECT = "Java EE Web Project";
 	   public static final String HTML5_PROJECT = "HTML5 Project";
 	   public static final String RICHFACES_PROJECT = "RichFaces Project";
-	   public static final String OPENSHIFT_APP = "OpenShift Express Application";
+	   public static final String OPENSHIFT_APP = "OpenShift Application";
 	   public static final String JAVA_EE_PROJECT = "Java EE Project";
 	   public static final String SPRING_MVC_PROJECT = "Spring MVC Project";
 	   public static final String NEW_DYNAMIC_WEB_PROJECT = "New Dynamic Web Project";
-	   public static final String PROJECT_EXAMPLE = "Project Example";
+	   public static final String PROJECT_EXAMPLE = "New Project Example";
 	   public static final String NEW_JBOSS_PROJECT = "New JBoss Project";
 	   public static final String OPENSHIFT_APP_WIZARD = "New OpenShift Express Application";
    }

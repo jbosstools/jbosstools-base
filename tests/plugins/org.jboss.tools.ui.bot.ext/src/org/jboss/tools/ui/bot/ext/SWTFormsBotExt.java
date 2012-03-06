@@ -57,7 +57,7 @@ public class SWTFormsBotExt extends SWTFormsBot{
 		}catch(WidgetNotFoundException ex){
 			throw new WidgetNotFoundException("Could not find widget of type FormText", ex);
 		}catch(IndexOutOfBoundsException ex){
-			throw new ArrayIndexOutOfBoundsException("There is widget Form Text with such a index");
+			throw new ArrayIndexOutOfBoundsException("There is no widget Form Text with text: "+text+" and index: "+index);
 		}
 	}
 
