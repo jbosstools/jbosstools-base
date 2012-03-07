@@ -57,7 +57,7 @@ public class RuntimeScanner implements IStartup {
 							Shell shell = Display.getCurrent().getActiveShell();
 							Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
 							for (RuntimePath runtimePath:RuntimeUIActivator.getDefault().getRuntimePaths()) {
-								if (runtimePath.isScanOnEveryStartup()) {
+								if (runtimePath.isScanOnEveryStartup() || firstStart) {
 									runtimePaths.add(runtimePath);
 								}
 							}
