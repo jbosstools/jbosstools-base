@@ -81,6 +81,7 @@
             <newWizardShortcut
                   id="org.eclipse.jst.servlet.ui.project.facet.WebProjectWizard">
             </newWizardShortcut>
+            <actionSet id="org.eclipse.wst.server.ui.internal.webbrowser.actionSet"/>
          </perspectiveExtension>
       </extension>
 </plugin>
