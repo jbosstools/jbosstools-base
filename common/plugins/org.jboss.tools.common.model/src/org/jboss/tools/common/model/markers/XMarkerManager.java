@@ -314,9 +314,13 @@ public class XMarkerManager implements IResourceChangeListener {
 			return null;
 		}
 		if(ms == null) return null;
+		String pathInFile = object.getPath().substring(f.getPath().length());
 		for (int i = 0; i < ms.length; i++) {
 			XModelObject o = object;
 			String path = ms[i].getAttribute("path", null); //$NON-NLS-1$
+			if(path != null && !path.endsWith(pathInFile)) {
+				continue;
+			}
 			o = (path == null) ? o : o.getModel().getByPath(path);
 			if(o == null) continue;
 			String attr = ms[i].getAttribute("attribute", null); //$NON-NLS-1$
