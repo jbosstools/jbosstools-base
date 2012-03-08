@@ -523,7 +523,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		}
 		if(maxNumberOfMarkersPerFile>0) {
 			int existingMarkers = resource.findMarkers(markerType, true, IResource.DEPTH_ZERO).length;
-			if(existingMarkers>maxNumberOfMarkersPerFile) {
+			if(existingMarkers>=maxNumberOfMarkersPerFile) {
 				return null;
 			}
 		}
