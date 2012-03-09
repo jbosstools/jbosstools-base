@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +27,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IElementChangedListener;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -91,13 +91,20 @@ public class Libs implements IElementChangedListener {
 			if(isExcludedStateChanged()) {
 				result = true;
 			}
-			if(result) fire();
-			if(paths == null && result) return true;
-		}
+			if(paths == null && result) {
+				fire();
+				return true;
+			}
+		}	
 	
-		if(paths != null) updateFileSystems(paths);
+		if(paths != null && fsVersion < pathsVersion) {
+			updateFileSystems(paths, 0);
+		}
 		fsVersion = pathsVersion;
 
+		if(result) {
+			fire();
+		}
 		return result;
 	}
 
@@ -115,6 +122,16 @@ public class Libs implements IElementChangedListener {
 			result = EclipseResourceUtil.getAllVisibleLibraries(getProjectResource());
 			List<String> jre = EclipseResourceUtil.getJREClassPath(getProjectResource());
 			if(jre != null) result.removeAll(jre);
+			if(result != null) {
+				Iterator<String> it = result.iterator();
+				while(it.hasNext()) {
+					String path = it.next();
+					String fileName = new File(path).getName();
+					if(EclipseResourceUtil.isJar(path) && EclipseResourceUtil.SYSTEM_JAR_SET.contains(fileName)) {
+						it.remove();
+					}
+				}
+			}
 			updateProjects();
 		} catch (CoreException e) {
 			ModelPlugin.getDefault().logError(e);
@@ -162,7 +179,7 @@ public class Libs implements IElementChangedListener {
 				IPath[] ps = es[i].getExclusionPatterns();
 				if(ps != null && ps.length > 0) {
 					for (int j = 0; j < ps.length; j++) {
-						String key = p.toString() + "/" + ps[j].toString();
+						String key = p.toString() + "/" + ps[j].toString(); //$NON-NLS-1$
 						result += key.hashCode();
 					}
 				}
@@ -191,18 +208,28 @@ public class Libs implements IElementChangedListener {
 	
 	public static String LIB_PREFIX = "lib-"; //$NON-NLS-1$
 
-	void updateFileSystems(List<String> paths) {
-		if(fsVersion >= pathsVersion) {
-			return;
-		}
-		
+	/**
+	 * This method is designed to run safe when invoked by several concurrent threads.
+	 * Each thread requesting file systems needs them up-to-date when this method returns.
+	 * If thread 1 is already running update, and thread 2 is going to request file systems,
+	 * it has to start this method independently, because it cannot rely on the other thread
+	 * completing before the file systems are obtained.
+	 * Synchronizing this method would involve high risk of a deadlock, 
+	 * concurrent modification is a better solution if implemented safely.
+	 * 
+	 * @param paths
+	 * @param iteration
+	 */
+	private void updateFileSystems(List<String> paths, int iteration) {
 		Set<String> oldPaths = libraryNames.getPaths();
 		for (String p: oldPaths) {
 			if(!paths.contains(p)) {
 				String n = libraryNames.getName(p);
-				XModelObject o = object.getChildByPath(n);
-				if(o != null) {
-					o.removeFromParent();
+				if(n != null) {
+					XModelObject o = object.getChildByPath(n);
+					if(o != null) {
+						o.removeFromParent();
+					}
 				}
 				libraryNames.removePath(p);
 			}
@@ -221,15 +248,7 @@ public class Libs implements IElementChangedListener {
 			boolean isJar = EclipseResourceUtil.isJar(path);
 			String libEntity = isJar ? "FileSystemJar" : "FileSystemFolder"; //$NON-NLS-1$ //$NON-NLS-2$
 			String fileName = new File(path).getName();
-			if(isJar && EclipseResourceUtil.SYSTEM_JAR_SET.contains(fileName)) continue;
-			String jsname = libraryNames.getName(path);
-			if(jsname == null) {
-				jsname = LIB_PREFIX + fileName;
-				int q = 0;
-				while(libraryNames.hasName(jsname)) {
-					jsname = LIB_PREFIX + fileName + "-" + (++q); //$NON-NLS-1$
-				}				
-			}
+			String jsname = libraryNames.getExistingOrNewName(path, fileName);
 			XModelObject o = object.getChildByPath(jsname);
 			if(o != null) {
 				fss.remove(o);
@@ -254,6 +273,17 @@ public class Libs implements IElementChangedListener {
 			} else if(!new File(path).exists()) {
 				o.removeFromParent();
 			}			
+		}
+
+		List<String> newPaths = this.paths;
+		if(newPaths != null && (paths != newPaths || !libraryNames.isValidList(newPaths))) {
+			if(iteration == 5) {
+				ModelPlugin.getDefault().logWarning("Iterative update of file systems for project " //$NON-NLS-1$
+					+ EclipseResourceUtil.getProject(object)
+					+ " is interrupted to prevent deadlock."); //$NON-NLS-1$
+			} else {
+				updateFileSystems(newPaths, iteration + 1);
+			}
 		}
 	}
 
@@ -312,8 +342,8 @@ public class Libs implements IElementChangedListener {
 					return;
 				} else {
 					for (IJavaElementDelta d1: dc.getAffectedChildren()) {
-						IJavaElement e = d1.getElement();
-						if(d1.getKind() == IJavaElementDelta.ADDED) {
+//						IJavaElement e = d1.getElement();
+						if(d1.getKind() == IJavaElementDelta.ADDED || d1.getKind() == IJavaElementDelta.REMOVED) {
 							requestForUpdate();
 							return;
 						}
@@ -355,6 +385,18 @@ class LibraryNames {
 		return pathToName.get(path);
 	}
 
+	public synchronized String getExistingOrNewName(String path, String fileName) {
+		String jsname = getName(path);
+		if(jsname == null) {
+			jsname = Libs.LIB_PREFIX + fileName;
+			int q = 0;
+			while(hasName(jsname)) {
+				jsname = Libs.LIB_PREFIX + fileName + "-" + (++q); //$NON-NLS-1$
+			}				
+		}
+		return jsname;
+	}
+
 	public String getPath(String name) {
 		return nameToPath.get(name);
 	}
@@ -365,5 +407,17 @@ class LibraryNames {
 
 	public synchronized Set<String> getPaths() {
 		return new HashSet<String>(pathToName.keySet());
+	}
+
+	public synchronized boolean isValidList(List<String> paths) {
+		if(pathToName.size() != paths.size()) {
+			return false;
+		}
+		for (String p: paths) {
+			if(!pathToName.containsKey(p)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
