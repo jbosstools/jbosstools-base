@@ -372,8 +372,6 @@ public class SWTEclipseExt {
 	 * @return
 	 */
 	public static SWTBotTreeItem selectTreeLocation(SWTBot bot, String... path) {
-		
-		
 
 		SWTBot viewBot = bot;
 
@@ -425,12 +423,13 @@ public class SWTEclipseExt {
 			//theBot.tree().setFocus();
 			//theBot.tree().getTreeItem(groupLabel).expand();
 			
-			log.info ("Located Problems view - " + theBot.tree().expandNode(groupLabel).expandNode(viewLabel).getText() );
+			log.info ("Located view - " + theBot.tree().expandNode(groupLabel).expandNode(viewLabel).getText() );
 			tempItem = theBot.tree().expandNode(groupLabel).expandNode(viewLabel).select();
-			theBot.sleep(Timing.time3S());
+			if (tempItem == null) {
+				theBot.sleep(Timing.time3S());
+			}
 			counter++;
-		}
-		
+		}		
 	}
 	
 	
@@ -1362,6 +1361,7 @@ public class SWTEclipseExt {
       }
       
       SWTBotTreeItem[] nodeChildren = parent.getItems();
+       
       if (nodeChildren != null){
         for (SWTBotTreeItem child : nodeChildren){
           if (child.getText().length() > 0){
