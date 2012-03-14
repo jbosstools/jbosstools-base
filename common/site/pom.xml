@@ -9,5 +9,5 @@
 	<groupId>org.jboss.tools.common</groupId>
 	<artifactId>common.site</artifactId>
 	
-	<packaging>eclipse-update-site</packaging>
+	<packaging>eclipse-repository</packaging>
 </project>

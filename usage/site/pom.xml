@@ -10,5 +10,5 @@
 	<artifactId>usage.site</artifactId> 
 	<name>usage.site</name>
 	
-	<packaging>eclipse-update-site</packaging>
+	<packaging>eclipse-repository</packaging>
 </project>

@@ -11,5 +11,5 @@
 	<artifactId>runtime.site</artifactId>
 	<name>runtime.site</name>
 	
-	<packaging>eclipse-update-site</packaging>
+	<packaging>eclipse-repository</packaging>
 </project>
