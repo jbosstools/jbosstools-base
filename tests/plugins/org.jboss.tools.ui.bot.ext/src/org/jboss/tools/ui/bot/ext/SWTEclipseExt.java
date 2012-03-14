@@ -1689,8 +1689,7 @@ public class SWTEclipseExt {
      *         <code>false</code> otherwise
      */
     public boolean isSuspendedAtBreakpoint() {
-        return (!bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.SUSPEND).isEnabled()
-                && bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.TERMINATE).isEnabled());
+        return bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.MENU_STEP_OVER).isEnabled();
     }
 
     /**
@@ -1701,7 +1700,7 @@ public class SWTEclipseExt {
         if (stepOverMenu.isEnabled()) {
             stepOverMenu.click();
         } else {
-            log.info("It is not possible to step over. (Step Over menu is disabled)");
+            log.warn("It is not possible to step over. (Step Over menu is disabled)");
         }
     }
 
