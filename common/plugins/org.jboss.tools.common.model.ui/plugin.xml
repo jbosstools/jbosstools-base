@@ -206,13 +206,6 @@
       <actionSet description="%actionSets.jbosstoolsMenu.description" 
       	id="org.jboss.tools.common.model.ui.actionSet" 
       	label="%actionSets.jbosstoolsMenu.label" visible="true">
-         <action 
-         	class="org.jboss.tools.common.model.ui.action.global.VisitCompanyActionDelegate" 
-            id="org.jboss.tools.common.model.ui.action.global.VisitCompanyActionDelegate" 
-            label="%action.visitsite.label" 
-               menubarPath="help/helpStart.redhatdeveloperstudio"
-            tooltip="%action.visitsite.label">
-         </action>
          <action
                label="%action.reportproblem.label"
                tooltip="%action.reportproblem.label"
