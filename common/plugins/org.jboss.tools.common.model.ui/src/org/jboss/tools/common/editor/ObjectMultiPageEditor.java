@@ -660,11 +660,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	}
 	
 	public StructuredTextEditor getSourceEditor() {
-		IEditorPart activePageEditor = getActiveEditor();
-		if (activePageEditor instanceof StructuredTextEditor) {
-			return (StructuredTextEditor)activePageEditor;
+		if(textEditor instanceof StructuredTextEditor) {
+			return (StructuredTextEditor)textEditor;
 		}
 		return null;
+		
 	}
 
 	TextSelectionProvider textSelectionProvider = new TextSelectionProvider();
