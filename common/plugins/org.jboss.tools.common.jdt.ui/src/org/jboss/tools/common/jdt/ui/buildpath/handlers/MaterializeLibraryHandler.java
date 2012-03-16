@@ -53,6 +53,7 @@ public class MaterializeLibraryHandler extends AbstractHandler {
 
   private static final String ECLIPSE_DEFAULT_WEBFOLDER = "WebContent";
   private static final String MAVEN_DEFAULT_WEBFOLDER = "src/main/webapp";
+  private static final String WEB_INF = "/WEB-INF/";
   
   
   @Override
@@ -145,9 +146,9 @@ public class MaterializeLibraryHandler extends AbstractHandler {
     //Let's try to be smart and guess where we're gonna put all the dependencies
 	StringBuilder path = new StringBuilder();
 	if (project.getFolder(MAVEN_DEFAULT_WEBFOLDER).exists()) {
-		path.append(MAVEN_DEFAULT_WEBFOLDER).append("/");
+		path.append(MAVEN_DEFAULT_WEBFOLDER).append(WEB_INF);
 	} else if (project.getFolder(ECLIPSE_DEFAULT_WEBFOLDER).exists()) {
-		path.append(ECLIPSE_DEFAULT_WEBFOLDER).append("/");
+		path.append(ECLIPSE_DEFAULT_WEBFOLDER).append(WEB_INF);
 	}
 	path.append("lib");
     return path.toString();
