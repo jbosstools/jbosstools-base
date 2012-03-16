@@ -34,7 +34,9 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   </servlet-mapping>
 
   <!-- The Usual Welcome File List -->
+<!--
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+-->
 </web-app>
