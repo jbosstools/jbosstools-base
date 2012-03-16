@@ -641,8 +641,8 @@ public class SWTEclipseExt {
 			}
 			bot.comboBox().setSelection(myIndex);
 			open.finish(bot.activeShell().bot());
-			open.finish(wiz, IDELabel.Button.OK);
 		}
+		open.finish(wiz, IDELabel.Button.OK);
 	}
 	
 	/**
