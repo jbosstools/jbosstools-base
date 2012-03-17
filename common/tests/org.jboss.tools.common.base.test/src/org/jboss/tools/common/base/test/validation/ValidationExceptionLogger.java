@@ -42,10 +42,14 @@ public class ValidationExceptionLogger implements ILogListener {
 	}
 
 	public Set<IStatus> getExceptions() {
+		return getExceptions(true);
+	}
+
+	public Set<IStatus> getExceptions(boolean ignoreTestExceptions) {
 		Set<IStatus> result = new HashSet<IStatus>();
 		for (IStatus status : exceptions) {
 			Throwable exception = status.getException();
-			if(exception instanceof JBTValidationException) {
+			if(exception instanceof JBTValidationException && (!ignoreTestExceptions || !(exception instanceof JBTValidationTestException))) {
 				result.add(status);
 			}
 		}

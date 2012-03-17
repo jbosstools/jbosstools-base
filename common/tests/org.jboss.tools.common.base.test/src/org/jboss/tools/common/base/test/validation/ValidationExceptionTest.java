@@ -16,7 +16,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IStatus;
 import org.jboss.tools.common.validation.CommonValidationPlugin;
-import org.jboss.tools.common.validation.JBTValidationException;
 
 /**
  * @author Alexey Kazakov
@@ -32,17 +31,19 @@ public class ValidationExceptionTest extends TestCase {
 
 	public static void assertExceptionsIsEmpty(ValidationExceptionLogger logger) throws Exception {
 		Set<IStatus> exceptions = logger.getExceptions();
-		StringBuffer error = new StringBuffer("The following exceptions were thrown during project validation:");
+		StringBuffer error = new StringBuffer("The following exceptions were thrown during project validation: [");
 		for (IStatus status : exceptions) {
-			Throwable cause = status.getException().getCause();
 			error.append("\r\n").append(status.toString()).append(":");
+			Throwable cause = status.getException().getCause();
 			if(cause!=null) {
 				error.append(cause.toString()).append(":");
 				if(cause.getStackTrace()!=null && cause.getStackTrace().length>0) {
 					error.append(cause.getStackTrace()[0].toString());
 				}
 			}
+			error.append(";\r\n");
 		}
+		error.append("]");
 		assertTrue(error.toString(), exceptions.isEmpty());
 	}
 
@@ -52,8 +53,8 @@ public class ValidationExceptionTest extends TestCase {
 
 	public void testLogging() {
 		ValidationExceptionLogger logger = new ValidationExceptionLogger();
-		CommonValidationPlugin.getDefault().logError(new JBTValidationException("Test logging", null));
-		Set<IStatus> exceptions = logger.getExceptions();
+		CommonValidationPlugin.getDefault().logError(new JBTValidationTestException("Test logging", null));
+		Set<IStatus> exceptions = logger.getExceptions(false);
 		assertEquals(1, exceptions.size());
 	}
 }
