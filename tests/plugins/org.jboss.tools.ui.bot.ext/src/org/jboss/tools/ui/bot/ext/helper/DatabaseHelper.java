@@ -8,6 +8,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.ServerSocket;
 import java.nio.channels.FileChannel;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -349,6 +351,14 @@ public class DatabaseHelper {
 	 * @param dbname - database name
 	 */
 	public static void startHSQLDBServer(final String dbFilePath, final String dbname) {
+		if (isHSQLDBRunning()) {
+			log.info("Internal HSQLDB is already running");
+		}		
+		// port check
+		log.info("Check HSQLDB (9001) port availablity");
+		boolean available = portAvailable(9001);
+		if (!available) throw new RuntimeException("HSQLDB port is already in use");		
+		
 		Thread hsqlThread = null;
 		log.info("Starting HSQLDB...");
 		try {
@@ -369,6 +379,9 @@ public class DatabaseHelper {
 		hsqlRunning = true;
 		log.info("HSQLDB started");
 	}
+	
+	
+	
 	
 	/**
 	 * Stop HSQL Database by sending SHUTDOWN command
@@ -474,4 +487,37 @@ public class DatabaseHelper {
 		}
 		return ret;
 	}
+	
+	/**
+	 * Checks to see if a specific port is available.
+	 *
+	 * @param port the port to check for availability
+	 */
+	public static boolean portAvailable(int port) {
+	    ServerSocket ss = null;
+	    DatagramSocket ds = null;
+	    try {
+	        ss = new ServerSocket(port);
+	        ss.setReuseAddress(true);
+	        ds = new DatagramSocket(port);
+	        ds.setReuseAddress(true);
+	        return true;
+	    } catch (IOException e) {
+	    } finally {
+	        if (ds != null) {
+	            ds.close();
+	        }
+
+	        if (ss != null) {
+	            try {
+	                ss.close();
+	            } catch (IOException e) {
+	                /* should not be thrown */
+	            }
+	        }
+	    }
+
+	    return false;
+	}
+
 }
