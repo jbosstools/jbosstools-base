@@ -12,10 +12,12 @@ package org.jboss.tools.ui.bot.ext.helper;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -203,5 +205,17 @@ public class FileHelper {
 		}
 		if (!dir.mkdirs())
 			throw new RuntimeException("Can not create dir " + dir);
+	}
+	/**
+	 * Modify file fileLocation to have content fileContent
+	 * @param fileLocation
+	 * @param fileContent
+	 * @throws IOException
+	 */
+	public static void modifyTextFile(String fileLocation, String fileContent) throws IOException{
+	  File file = new File(fileLocation);
+    BufferedWriter bwOutput = new BufferedWriter(new FileWriter(file));
+    bwOutput.write(fileContent);
+    bwOutput.close();
 	}
 }
