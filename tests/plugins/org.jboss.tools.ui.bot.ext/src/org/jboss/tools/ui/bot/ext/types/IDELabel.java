@@ -34,6 +34,7 @@ public class IDELabel {
 		public static final String CLOSE = "Close";
 		public static final String OPEN = "Open";
 		public static final String RENAME = "Rename";
+		public static final String RENAME_WITH_DOTS = "Rename...";
 		public static final String JSP_FILE = "JSP File";
 		public static final String PROPERTIES = "Properties";
 		public static final String XHTML_FILE = "XHTML File";
