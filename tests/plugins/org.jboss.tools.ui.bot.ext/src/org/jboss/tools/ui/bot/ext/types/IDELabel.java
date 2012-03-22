@@ -191,6 +191,7 @@ public class IDELabel {
 	  public static final String ADD_SVN_REPOSITORY = "Add SVN Repository";
 	  public static final String REPOSITORY_LOCATION_PROPERTIES = "Repository Location Properties";
 	  public static final String MOVE_RESOURCES = "Move Resources";
+	  public static final String MOVE = "Move";
 	  public static final String SECURE_STORAGE = "Secure Storage";
 	  public static final String ADD_JSF_PROJECT_TEMPLATE = "Add JSF Project Template";
 	  public static final String NEW_MANAGED_BEAN = "New Managed Bean";
