@@ -107,6 +107,9 @@ public class EclipseUIUtil {
 		for (IWorkbenchWindow window : windows) {
 			final IWorkbenchPage page = window.getActivePage();
 			if (page != null) {
+				// If this method is invoked in non-UI thread then some editors may throw Invalid Thread Access exception.
+				// We use SafeRunnable as a workaround to avoid crashing. 
+				// See https://issues.jboss.org/browse/JBIDE-11385
 				SafeRunnable sr = new SafeRunnable() {
 					@Override
 					public void run() throws Exception {
