@@ -19,7 +19,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.jboss.tools.common.CommonPlugin;
 
 public class DirtyEditorTracker implements IWindowListener, IPageListener, IPartListener, IPropertyListener {
-	private static DirtyEditorTracker INSTANCE;
+	static DirtyEditorTracker INSTANCE;
 
 	private Set<IFile> dirtyFiles = new HashSet<IFile>();
 
