@@ -102,38 +102,6 @@ public class EclipseUIUtil {
 	 * @return
 	 */
 	public static Set<IFile> getDirtyFiles() {
-		final Set<IFile> dirtyFiles = new HashSet<IFile>();
-		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
-		for (IWorkbenchWindow window : windows) {
-			final IWorkbenchPage page = window.getActivePage();
-			if (page != null) {
-				// If this method is invoked in non-UI thread then some editors may throw Invalid Thread Access exception.
-				// We use SafeRunnable as a workaround to avoid crashing. 
-				// See https://issues.jboss.org/browse/JBIDE-11385
-				SafeRunnable sr = new SafeRunnable() {
-					@Override
-					public void run() throws Exception {
-						IEditorPart[] editors = page.getDirtyEditors();
-						for (IEditorPart editor : editors) {
-							IEditorInput input = editor.getEditorInput();
-							if(input instanceof IFileEditorInput) {
-								IFile file = ((IFileEditorInput)input).getFile();
-								dirtyFiles.add(file);
-							}
-						}
-					}
-
-					/* (non-Javadoc)
-					 * @see org.eclipse.jface.util.SafeRunnable#handleException(java.lang.Throwable)
-					 */
-					@Override
-					public void handleException(Throwable e) {
-						CommonPlugin.getDefault().logError(e);
-					}
-				};
-				SafeRunnable.run(sr);
-			}
-		}
-		return dirtyFiles;
+		return DirtyEditorTracker.getInstance().getDirtyFiles();
 	}
 }

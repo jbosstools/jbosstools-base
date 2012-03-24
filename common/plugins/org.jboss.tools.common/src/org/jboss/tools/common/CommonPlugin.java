@@ -18,11 +18,14 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.common.log.BasePlugin;
+import org.eclipse.swt.widgets.Display;
+import org.jboss.tools.common.log.BaseUIPlugin;
 import org.jboss.tools.common.log.IPluginLog;
+import org.jboss.tools.common.util.DirtyEditorTracker;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 
-public class CommonPlugin extends BasePlugin {
+public class CommonPlugin extends BaseUIPlugin {
 
 	public static final String PLUGIN_ID = "org.jboss.tools.common"; //$NON-NLS-1$
 	protected static CommonPlugin instance;
@@ -37,6 +40,14 @@ public class CommonPlugin extends BasePlugin {
 	    return instance;
 	}
 
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        Display.getDefault().asyncExec(new Runnable() {
+        	public void run() {
+        		DirtyEditorTracker.getInstance();
+        	}
+        });
+	}
 	/**
 	 * Gets message from plugin.properties
 	 * @param key
