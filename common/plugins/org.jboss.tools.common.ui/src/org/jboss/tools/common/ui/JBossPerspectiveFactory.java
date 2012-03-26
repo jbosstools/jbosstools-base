@@ -11,6 +11,7 @@
 package org.jboss.tools.common.ui;
 
 import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.jdt.internal.junit.ui.TestRunnerViewPart;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
@@ -74,6 +75,7 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		topLeft.addPlaceholder(IPageLayout.ID_RES_NAV);
 		topLeft.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
 		topLeft.addPlaceholder(JavaUI.ID_PACKAGES_VIEW);
+		topLeft.addPlaceholder(TestRunnerViewPart.NAME);
 
 		// Bottom right.
 		IFolderLayout bottomRight = layout.createFolder("bottomRight", IPageLayout.BOTTOM, 0.7f, editorArea);//$NON-NLS-1$
