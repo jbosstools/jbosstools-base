@@ -64,8 +64,20 @@ public class ExampleTest extends SWTTestExt{
 			importExample(wiz);
 			postImport();
 			executeExample();	
+		} else if (failOnMissingExample()){
+			throw new AssertionError("The example " + getExampleName() + " was not found");
 		}
 	}
+	
+	/**
+	 * The default behavior is to finish the thest gracefully if the example does not exist. 
+	 * When this behavior is not desirable, subclasses can change the behavior by overriding this
+	 * method. 
+	 */
+	protected boolean failOnMissingExample(){
+		return false;
+	}
+	
 	private SWTBot existsExample() {
 		SWTBot wiz = open.newObject(JBossToolsProjectExamples.LABEL);
 		// wait for progress shell (downloading & parsing example xml)
