@@ -44,6 +44,9 @@ public class Timing {
 	public static int time60S() {
 		return (int) Math.round(60000*multiplier);
 	}
+	public static int timeUnlimited() {
+		return (int) Math.round(999999999*multiplier);
+	}	
 	public static int time5S() {
 		return (int) Math.round(5000*multiplier);
 	}
