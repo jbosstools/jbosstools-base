@@ -10,7 +10,9 @@
   ******************************************************************************/
 package org.jboss.tools.common.util;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -37,6 +39,7 @@ public class DirtyEditorTracker implements IWindowListener, IPageListener, IPart
 	static DirtyEditorTracker INSTANCE;
 
 	private Set<IFile> dirtyFiles = new HashSet<IFile>();
+	private Map<IFile, Integer> openEditors = new HashMap<IFile, Integer>();
 
 	private DirtyEditorTracker() {
 		init();
@@ -54,21 +57,7 @@ public class DirtyEditorTracker implements IWindowListener, IPageListener, IPart
 		if(workbench != null) {
 			IWorkbenchWindow[] windows = workbench.getWorkbenchWindows();
 			for (IWorkbenchWindow window: windows) {
-				if(window.getShell() != null) {
-					IWorkbenchPage[] pages = window.getPages();
-					for (IWorkbenchPage page: pages) {
-						IEditorReference[] rs = page.getEditorReferences();
-						for (IEditorReference r: rs) {
-							IEditorPart part = r.getEditor(false);
-							if(part != null) {
-								update(part);
-								part.addPropertyListener(this);
-							}							
-						}
-						page.addPartListener(this);
-					}
-					window.addPageListener(this);
-				}
+				windowOpened(window);
 			}
 			CommonPlugin.getDefault().getWorkbench().addWindowListener(this);
 		}
@@ -84,6 +73,62 @@ public class DirtyEditorTracker implements IWindowListener, IPageListener, IPart
 
 	public synchronized boolean isDirty(IFile file) {
 		return dirtyFiles.contains(file);
+	}
+
+	@Override
+	public void windowActivated(IWorkbenchWindow window) {
+	}
+
+	@Override
+	public void windowDeactivated(IWorkbenchWindow window) {
+	}
+
+	@Override
+	public void windowClosed(IWorkbenchWindow window) {
+		IWorkbenchPage[] pages = window.getPages();
+		for (IWorkbenchPage page: pages) {
+			pageClosed(page);
+		}
+		window.removePageListener(this);
+	}
+
+	@Override
+	public void windowOpened(IWorkbenchWindow window) {
+		if(window.getShell() != null) {
+			IWorkbenchPage[] pages = window.getPages();
+			for (IWorkbenchPage page: pages) {
+				pageOpened(page);
+			}
+			window.addPageListener(this);
+		}
+	}
+
+	@Override
+	public void pageActivated(IWorkbenchPage page) {
+	}
+
+	@Override
+	public void pageClosed(IWorkbenchPage page) {
+		IEditorReference[] rs = page.getEditorReferences();
+		for (IEditorReference r: rs) {
+			IEditorPart part = r.getEditor(false);
+			if(part != null) {
+				editorClosed(part);
+			}
+		}
+		page.removePartListener(this);
+	}
+
+	@Override
+	public void pageOpened(IWorkbenchPage page) {
+		IEditorReference[] rs = page.getEditorReferences();
+		for (IEditorReference r: rs) {
+			IEditorPart part = r.getEditor(false);
+			if(part != null) {
+				editorOpened(part);
+			}							
+		}
+		page.addPartListener(this);
 	}
 
 	@Override
@@ -112,62 +157,52 @@ public class DirtyEditorTracker implements IWindowListener, IPageListener, IPart
 		}
 	}
 
-	@Override
-	public void pageActivated(IWorkbenchPage page) {
-	}
-
-	@Override
-	public void pageClosed(IWorkbenchPage page) {
-		page.removePartListener(this);
-	}
-
-	@Override
-	public void pageOpened(IWorkbenchPage page) {
-		page.addPartListener(this);
-	}
-
-	@Override
-	public void windowActivated(IWorkbenchWindow window) {
-	}
-
-	@Override
-	public void windowDeactivated(IWorkbenchWindow window) {
-	}
-
-	@Override
-	public void windowClosed(IWorkbenchWindow window) {
-		window.removePageListener(this);
-	}
-
-	@Override
-	public void windowOpened(IWorkbenchWindow window) {
-		window.addPageListener(this);
-	}
-
-	public void editorOpened(IEditorPart part) {
-		IEditorInput input = part.getEditorInput();
-		if(input instanceof IFileEditorInput) {
+	private void editorOpened(IEditorPart part) {
+		IFile file = getFile(part);
+		if(file != null) {
 			part.addPropertyListener(this);
+			synchronized (this) {
+				Integer i = openEditors.get(file);
+				int k = i == null ? 1 : i.intValue() + 1;
+				openEditors.put(file, k);
+			}
+			update(part);
 		}
 	}
 
-	public void editorClosed(IEditorPart part) {
+	private void editorClosed(IEditorPart part) {
 		part.removePropertyListener(this);
+		IFile file = getFile(part);
+		if(file != null) {
+			synchronized (this) {
+				Integer i = openEditors.get(file);
+				if(i != null) {
+					if(i < 2) {
+						openEditors.remove(file);
+						update(file, false);
+					} else {
+						openEditors.put(file, i.intValue() - 1);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public void propertyChanged(Object source, int propId) {
 		if(propId == IEditorPart.PROP_DIRTY && source instanceof IEditorPart) {
-			IEditorPart part = (IEditorPart)source;
-			update(part);
+			update((IEditorPart)source);
 		}
-		
+	}
+
+	private IFile getFile(IEditorPart part) {
+		IEditorInput input = part.getEditorInput();
+		return (input instanceof IFileEditorInput) ? ((IFileEditorInput)input).getFile() : null;
 	}
 
 	private void update(IEditorPart part) {
-		IEditorInput input = part.getEditorInput();
-		if(input instanceof IFileEditorInput) {
-			IFile f = ((IFileEditorInput)input).getFile();
+		IFile f = getFile(part);
+		if(f != null) {
 			update(f, part.isDirty());
 		}
 	}
@@ -177,10 +212,8 @@ public class DirtyEditorTracker implements IWindowListener, IPageListener, IPart
 			if(!dirtyFiles.contains(file)) {
 				dirtyFiles.add(file);
 			}
-		} else {
-			if(dirtyFiles.contains(file)) {
-				dirtyFiles.remove(file);
-			}
+		} else if(dirtyFiles.contains(file)) {
+			dirtyFiles.remove(file);
 		}
 	}
 }
