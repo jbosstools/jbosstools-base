@@ -5222,7 +5222,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : JPA->Entity
 			*/
 			public static final INewObject LABEL = new INewObject() {
-				public String getName() { return "Entity";}
+				public String getName() { return "JPA Entity";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JPA");
