@@ -38,6 +38,7 @@ public class IDELabel {
 		public static final String JSP_FILE = "JSP File";
 		public static final String PROPERTIES = "Properties";
 		public static final String XHTML_FILE = "XHTML File";
+		public static final String QUICK_FIX = "Quick Fix";
 		public static final String HELP = "Help";
 		public static final String ABOUT_JBOSS_DEVELOPER_STUDIO = "About JBoss Developer Studio";
 		public static final String HIBERNATE_CODE_GENERATION = "Hibernate Code Generation...";
