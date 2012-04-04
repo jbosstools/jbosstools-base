@@ -809,10 +809,13 @@ public class TypeInfoCollector {
 				fTypeInfo = new TypeInfo(binType, fMember, fMember.isDataModel());
 			}
 			TypeInfo parent = fTypeInfo;
-			Set<IType> allTypes = new HashSet<IType>();
+			List<IType> allTypes = new ArrayList<IType>();
+			Set<IType> allTypesSet = new HashSet<IType>();
 			Set<IType> superinterfaces = new HashSet<IType>();
 			while (binType != null) {
+				if(allTypesSet.contains(binType)) break;
 				allTypes.add(binType);
+				allTypesSet.add(binType);
 				initSuperinterfaces(binType, superinterfaces); // JBIDE-10809
 				binType = getSuperclass(binType);
 				if(binType!=null) {
