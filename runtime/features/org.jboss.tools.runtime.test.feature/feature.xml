@@ -13,5 +13,12 @@
       %license
    </license>
 
-	<plugin id="org.jboss.tools.runtime.test" download-size="0" install-size="0" version="0.0.0" unpack="false" />
+   <requires>
+     <import feature="org.jboss.tools.runtime.core.feature" version="1.3.0" match="compatible"/>
+     <import feature="org.jboss.tools.runtime.as.detector.feature" version="1.3.0" match="compatible"/>
+     <import feature="org.jboss.ide.eclipse.as.serverAdapter.wtp.feature" version="2.3.0" match="compatible"/>
+     <plugin id="org.jboss.ide.eclipse.as.core" version="2.3.0" match="compatible"/>
+   </requires>
+
+   <plugin id="org.jboss.tools.runtime.test" download-size="0" install-size="0" version="0.0.0" unpack="false" />
 </feature>
