@@ -257,7 +257,7 @@ public class SWTBotExt extends SWTWorkbenchBot {
     }
 
     /**
-     * Waits until there is desired number of shells.
+     * Waits until there is desired number of opened shells.
      * It is useful sometimes when you cannot address exactly
      * what you are waiting for but you know that the right situation
      * is when there is <code>desiredNumberOfSheels</code> of shells.
@@ -270,19 +270,27 @@ public class SWTBotExt extends SWTWorkbenchBot {
      * @return Shells which exists after timeout or after achieving desired
      *         number of shells.
      */
-    public SWTBotShell[] waitForNumberOfShells(final int desiredNumberOfShells, final int maxTimeout) {
+    public List<SWTBotShell> waitForNumberOfShells(final int desiredNumberOfShells, final int maxTimeout) {
         final int SLEEP_TIME = Timing.time2S();
         final int ATTEMPTS_TIMEOUT = getAttemptsTimeout((maxTimeout < 0 ? 30 : maxTimeout), SLEEP_TIME);
 
+        List<SWTBotShell> shells = null;
         for (int i = 0; i < ATTEMPTS_TIMEOUT; i++) {
-            if (shells().length != desiredNumberOfShells) {
+            SWTBotShell[] shellsArray = shells();
+            shells = new ArrayList<SWTBotShell>(shellsArray.length);
+            for (int j = 0; j < shellsArray.length; j++) {
+                if (shellsArray[j].isOpen()) {
+                    shells.add(shellsArray[j]);
+                }
+            }
+            if (shells.size() != desiredNumberOfShells) {
                 sleep(SLEEP_TIME);
             } else {
                 break;
             }
         }
 
-        return shells();
+        return shells;
     }
 
     /**
@@ -293,7 +301,7 @@ public class SWTBotExt extends SWTWorkbenchBot {
      * @return Shells which exists after timeout or after achieving desired
      *         number of shells.
      */
-    public SWTBotShell[] waitForNumberOfShells(final int desiredNumberOfShells) {
+    public List<SWTBotShell> waitForNumberOfShells(final int desiredNumberOfShells) {
         return waitForNumberOfShells(desiredNumberOfShells, -1);
     }
 
