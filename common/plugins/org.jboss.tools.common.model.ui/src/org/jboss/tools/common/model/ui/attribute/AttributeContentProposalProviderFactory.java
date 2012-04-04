@@ -117,7 +117,17 @@ public class AttributeContentProposalProviderFactory {
 						return ((TypeContentProposal)element).getImage();
 					}
 					return null;
-				}				
+				}
+				
+				@Override
+				public String getText(Object element) {
+					if (element instanceof IContentProposal) {
+						IContentProposal proposal = (IContentProposal) element;
+						return proposal.getLabel() == null ? proposal.getContent()
+								: proposal.getLabel();
+					}
+					return super.getText(element);
+				}
 			});
 			
 			adapter.setPropagateKeys(true);
