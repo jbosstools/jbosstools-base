@@ -1,23 +1,29 @@
 package org.jboss.tools.ui.bot.ext.helper;
 
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 /**
  * Heper class for project imports
  */
 public class ImportHelper {
-
+	
+	private static SWTBotExt bot = new SWTBotExt();
+	
 	/**
 	 * Import all projects from from given path to current workspace
 	 */
 	public static void importAllProjects(String path) {
 		int timeout = 100000; // 100s max timeout
-		SWTBotExt bot = new SWTBotExt();
 		bot.menu("File").menu("Import...").click();
 		
 		SWTBot dlgBot = bot.shell("Import").activate().bot();
@@ -33,4 +39,27 @@ public class ImportHelper {
 		dlgBot.button(IDELabel.Button.FINISH).click();
 		bot.waitUntil(shellCloses(s),timeout);
 	}	
+	
+	/**
+	 * Import project from given location to destination directory
+	 * @param projectLocation
+	 * @param dir
+	 * @param activatorPlugIn
+	 */
+	public static void importProject(String projectLocation, String dir, String activatorPlugIn) {
+		String rpath = ResourceHelper.getResourceAbsolutePath(activatorPlugIn, projectLocation);
+		String wpath = ResourceHelper.getWorkspaceAbsolutePath() + "/" + dir;
+		File rfile = new File(rpath);
+		File wfile = new File(wpath);
+		
+		wfile.mkdirs();
+		try {
+			FileHelper.copyFilesBinaryRecursively(rfile, wfile, null);
+		} catch (IOException e) {
+			fail("Unable to copy test project");
+		}
+		ImportHelper.importAllProjects(wpath);
+		SWTUtilExt util = new SWTUtilExt(bot);
+		util.waitForNonIgnoredJobs();	
+	}
 }
