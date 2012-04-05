@@ -218,6 +218,10 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 		if(fileDeltas != null) {
 			boolean onlyMarkers = true;
 			for (IResourceDelta d: fileDeltas) {
+				IResource r = d.getResource();
+				if(r != null && r.isDerived(IResource.CHECK_ANCESTORS)) {
+					continue;
+				}
 				if(d.getKind() != IResourceDelta.CHANGED) {
 					onlyMarkers = false;
 					break;
