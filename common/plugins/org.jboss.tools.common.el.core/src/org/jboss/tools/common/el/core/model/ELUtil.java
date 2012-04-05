@@ -43,18 +43,28 @@ public class ELUtil {
 			for (ELInvocationExpression inv: invs) {
 				if(inv.getStartPosition() <= offset && inv.getEndPosition() >= offset) {
 					if(off < inv.getStartPosition()) {
-						result = inv;
+						ELInvocationExpression res = inv;
 						off = inv.getStartPosition();
 						ELInvocationExpression l = inv.getLeft();
 						while(l != null && l.getEndPosition() >= offset) {
-							result = l;
+							res = l;
 							l = l.getLeft();
 						}
-						return result;
+						if(result == null || result.toString().length() > res.toString().length()) {
+							result = res;
+						}
 					}
 				}
 			}
-			
+			if(result != null) {
+				if(result instanceof ELMethodInvocation && ((ELMethodInvocation)result).getParameters() != null) {
+					ELParameters p = ((ELMethodInvocation)result).getParameters();
+					if(p.getStartPosition() < offset && p.getEndPosition() > offset) {
+						result = null;
+					}
+				}
+				return result;
+			}
 		}
 		
 		return result;
