@@ -315,6 +315,12 @@ public class ELParserTest extends TestCase {
 		checkIncorrectEL(t, "#{?}", 2);
 		checkIncorrectEL(t, "#{=}", 2);
 
+		//unclosed string
+		checkIncorrectEL(t, "#{bean.method('abc)}", 14);
+		checkIncorrectEL(t, "#{bean.method(\"abc)}", 14);
+		//unclosed parenthesis
+		checkIncorrectEL(t, "#{bean.method('abc'}", 19);
+
 		checkIncorrectEL(t, "#{c.a[1.5E7]}",7); //TODO
 	}
 
