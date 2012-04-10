@@ -12,7 +12,9 @@ package org.jboss.tools.common.el.internal.core.parser.token;
 
 import org.jboss.tools.common.el.core.ElCoreMessages;
 import org.jboss.tools.common.el.core.parser.ITokenDescription;
+import org.jboss.tools.common.el.core.parser.SyntaxError;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
+import org.jboss.tools.common.el.internal.core.parser.rule.BasicStates;
 
 /**
  * 
@@ -53,6 +55,11 @@ public class StringTokenDescription implements ITokenDescription {
 			}			
 		}
 		tokenizer.addToken(getType(), offset, i);
+		if(ch == '\0') {
+			SyntaxError error = new SyntaxError(offset, BasicStates.STATE_EXPECTING_ARG);
+			error.setProblem(ElCoreMessages.StringTokenDescription_StringIsNotClosed);
+			tokenizer.addSyntaxError(error);			
+		}
 		return i > offset;
 	}
 

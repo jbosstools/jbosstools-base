@@ -19,6 +19,7 @@ public class ElCoreMessages extends NLS {
 	public static String OperationRule_ExpectingRParen;
 	public static String OperationTokenDescription_Name;
 	public static String PrimitiveValueTokenDescription_ArgMustResolveToIntegerOrString;
+	public static String StringTokenDescription_StringIsNotClosed;
 	public static String PrimitiveValueTokenDescription_Name;
 	public static String StringTokenDescription_Name;
 	public static String WhiteSpaceTokenDescription_Name;
