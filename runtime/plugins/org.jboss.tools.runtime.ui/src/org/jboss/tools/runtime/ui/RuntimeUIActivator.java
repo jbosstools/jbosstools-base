@@ -480,8 +480,18 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 				continue;
 			}
 			if (detector.exists(serverDefinition)) {
-				created = true;
-				break;
+				List<RuntimeDefinition> includedDefinitions = serverDefinition.getIncludedServerDefinitions();
+				boolean includedCreated = true;
+				for (RuntimeDefinition includedDefinition:includedDefinitions) {
+					if (!runtimeCreated(includedDefinition)) {
+						includedCreated = false;
+						break;
+					}
+				}
+				if (includedCreated) {
+					created = true;
+					break;
+				}
 			}
 		}
 		return (created);
