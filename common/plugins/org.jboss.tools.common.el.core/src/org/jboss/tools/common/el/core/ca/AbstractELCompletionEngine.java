@@ -61,6 +61,7 @@ import org.jboss.tools.common.el.core.resolver.Var;
 import org.jboss.tools.common.el.internal.core.parser.token.JavaNameTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.WhiteSpaceTokenDescription;
 import org.jboss.tools.common.text.TextProposal;
+import org.jboss.tools.common.util.BeanUtil;
 
 public abstract class AbstractELCompletionEngine<V extends IVariable> implements ELResolver, ELCompletionEngine {
 	
@@ -455,12 +456,14 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		List<V> resolvedVariables = new ArrayList<V>();
 
 		if (expr.getLeft() != null && isArgument) {
+			//argument may be applied not to a variable but to a complex expression.
 			left = expr.getLeft();
-			resolvedVariables = resolveVariables(file, left, false, 
-					true, offset); 	// is Final and equal names are because of 
-							// we have no more to resolve the parts of expression, 
-							// but we have to resolve arguments of probably a message component
-		} else if (expr.getLeft() == null && isIncomplete) {
+//			resolvedVariables = resolveVariables(file, left, false, 
+//					true, offset); 	// is Final and equal names are because of 
+//							// we have no more to resolve the parts of expression, 
+//							// but we have to resolve arguments of probably a message component
+		} //else 
+		if (expr.getLeft() == null && isIncomplete) {
 			resolvedVariables = resolveVariables(file, expr, true, 
 					returnEqualedVariablesOnly, offset);
 		} else {
@@ -633,6 +636,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if (left != expr) { // inside expression
 					segment = new JavaMemberELSegmentImpl(left.getLastToken());
 					if(left instanceof ELArgumentInvocation) {
+						List<TypeInfoCollector.MemberInfo> ms = members;
 						String s = "#{" + left.getLeft().toString() + collectionAdditionForCollectionDataModel + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 						if(getParserFactory()!=null) {
 							ELParser p = getParserFactory().createParser();
@@ -642,6 +646,9 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 							if(resolution.getLastResolvedToken() == expr1) {
 								resolution.setLastResolvedToken(left);
 							}
+						}
+						if(members.isEmpty()) {
+							members = resolveSegment(left, ms, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
 						}
 					} else {
 						members = resolveSegment(left, members, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
@@ -686,10 +693,16 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			? ((ELPropertyInvocation)expr).getName()
 					: (expr instanceof ELMethodInvocation)
 					? ((ELMethodInvocation)expr).getName()
+					: (expr instanceof ELArgumentInvocation)
+					? ((ELArgumentInvocation)expr).getArgument().getArgument().getFirstToken()
 							: null;
 		String name = lt != null ? lt.getText() : ""; // token.getText(); //$NON-NLS-1$
+		if(expr instanceof ELArgumentInvocation) {
+			if(name.startsWith("'")) name = name.substring(1); else name = "";
+			if(name.endsWith("'")) name = name.substring(0, name.length() - 1); else name = "";
+		}
 		segment.setToken(lt);
-		if (expr.getType() == ELObjectType.EL_PROPERTY_INVOCATION) {
+		if (expr.getType() == ELObjectType.EL_PROPERTY_INVOCATION || expr.getType() == ELObjectType.EL_ARGUMENT_INVOCATION) {
 			// Find properties for the token
 			List<TypeInfoCollector.MemberInfo> newMembers = new ArrayList<TypeInfoCollector.MemberInfo>();
 			for (TypeInfoCollector.MemberInfo mbr : members) {
@@ -712,10 +725,9 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				}
 				List<TypeInfoCollector.MemberInfo> properties = infos.getProperties();
 				for (TypeInfoCollector.MemberInfo property : properties) {
-					StringBuffer propertyName = new StringBuffer(property.getName());
+					String propertyName = property.getName();
 					if (property instanceof TypeInfoCollector.MethodInfo) { // Setter or getter
-						propertyName.delete(0, (propertyName.charAt(0) == 'i' ? 2 : 3));
-						propertyName.setCharAt(0, Character.toLowerCase(propertyName.charAt(0)));
+						propertyName = BeanUtil.getPropertyName(propertyName);
 					}
 					if (name.equals(propertyName.toString())) {
 						newMembers.add(property);
@@ -1001,6 +1013,20 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				} catch (JavaModelException jme) {
 					ELCorePlugin.getDefault().logError(jme);
 				}
+
+				//Try properties if argument is a string.
+				TypeInfoCollector infos = mbr.getTypeCollector(false, isStaticMethodsCollectingEnabled());
+				if (TypeInfoCollector.isNotParameterizedCollection(mbr) || TypeInfoCollector.isResourceBundle(mbr.getMemberType())) {
+					resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
+				}
+				proposalsToFilter.addAll(infos.getPropertyPresentations(segment.getUnpairedGettersOrSetters(), returnEqualedVariablesOnly));
+				if(!proposalsToFilter.isEmpty()) {
+					resolution.addSegment(segment);
+					if(expr instanceof ELArgumentInvocation) {
+						segment.setToken(((ELArgumentInvocation)expr).getArgument().getArgument().getFirstToken());
+					}
+				}
+
 				segment.setMemberInfo(mbr);
 			}
 
