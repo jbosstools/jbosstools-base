@@ -21,29 +21,29 @@ import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
-import org.jboss.tools.ui.bot.ext.parts.ContentAssistBot;
+import org.jboss.tools.ui.bot.ext.parts.QuickFixBot;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 
 /**
- * Helper for Content Assist functionality testing
+ * Helper for Quick Fix functionality testing
  * @author Vladimir Pakan
  *
  */
-public class ContentAssistHelper {
-  protected static final Logger log = Logger.getLogger(ContentAssistHelper.class);
+public class QuickFixHelper {
+  protected static final Logger log = Logger.getLogger(QuickFixHelper.class);
   /**
-   * Checks Content Assist content on specified position within editor with editorTitle
-   * and checks if expectedProposalList is equal to current Proposal List 
+   * Checks Quick Fix content on specified position within editor with editorTitle
+   * and checks if expectedQuickFixList is equal to current Quick Fix List 
    * @param editorTitle
    * @param textToSelect
    * @param selectionOffset
    * @param selectionLength
    * @param textToSelectIndex
-   * @param expectedProposalList
+   * @param expectedQuickFixsList
    */
-  public static SWTBotEditor checkContentAssistContent(SWTBotExt bot,
+  public static SWTBotEditor checkQuickFixContent(SWTBotExt bot,
       String editorTitle, String textToSelect, int selectionOffset,
-      int selectionLength, int textToSelectIndex, List<String> expectedProposalList) {
+      int selectionLength, int textToSelectIndex, List<String> expectedQuickFixsList) {
 
     SWTJBTExt.selectTextInSourcePane(bot,
         editorTitle, textToSelect, selectionOffset, selectionLength,
@@ -52,38 +52,38 @@ public class ContentAssistHelper {
     bot.sleep(Timing.time1S());
 
     SWTBotEditorExt editor = SWTTestExt.bot.swtBotEditorExtByTitle(editorTitle);
-    ContentAssistBot contentAssist = editor.contentAssist();
-    List<String> currentProposalList = contentAssist.getProposalList();
-    assertTrue("Code Assist menu has incorrect menu items.\n" +
-        "Expected Proposal Menu Labels vs. Current Proposal Menu Labels :\n" + 
-        FormatUtils.getListsDiffFormatted(expectedProposalList,currentProposalList),
-      expectedProposalList.equals(currentProposalList));
+    QuickFixBot quickFix = editor.quickFix();
+    List<String> currentQuickFixsList = quickFix.getQuickFixList();
+    assertTrue("Quick Fix menu has incorrect menu items.\n" +
+        "Expected Qucik Fix Menu Labels vs. Current Quick Fix Menu Labels :\n" + 
+        FormatUtils.getListsDiffFormatted(expectedQuickFixsList,currentQuickFixsList),
+        expectedQuickFixsList.equals(currentQuickFixsList));
 
     return editor;
 
   }
   
   /**
-   * Checks Content Assist content on specified position within editor with editorTitle
-   * and checks if expectedProposalList is equal to current Proposal List 
+   * Checks Quick Fix content on specified position within editor with editorTitle
+   * and checks if expectedQuickFixsList is equal to current Quick Fix List 
    * @param editorTitle
    * @param textToSelect
    * @param selectionOffset
    * @param selectionLength
    * @param textToSelectIndex
-   * @param expectedProposalList
+   * @param expectedQuickFixsList
    */
-  public static SWTBotEditor checkContentAssistContent(SWTBotExt bot,
+  public static SWTBotEditor checkQuickFixContent(SWTBotExt bot,
       String editorTitle, String textToSelect, int selectionOffset,
-      int selectionLength, List<String> expectedProposalList) {
+      int selectionLength, List<String> expectedQuickFixsList) {
 
-    return ContentAssistHelper.checkContentAssistContent(bot, 
+    return QuickFixHelper.checkQuickFixContent(bot, 
         editorTitle, 
         textToSelect, 
         selectionOffset, 
         selectionLength,
         0,
-        expectedProposalList);
+        expectedQuickFixsList);
 
   }
   

@@ -38,6 +38,11 @@ public class SWTBotEditorExt extends SWTBotEclipseEditor {
 		return caBot;
 	}
 	
+	 public QuickFixBot quickFix() {
+	    QuickFixBot qfBot = new QuickFixBot(this);
+	    return qfBot;
+	  }
+	
 	public void selectPage(int pageIndex){
 	  try{
 	    final CTabFolder tabFolder = this.findWidget(widgetOfType(CTabFolder.class));
