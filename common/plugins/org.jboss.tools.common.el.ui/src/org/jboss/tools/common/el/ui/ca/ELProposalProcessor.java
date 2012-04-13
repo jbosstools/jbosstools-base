@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2011 Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -146,7 +146,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#getSelection(IDocument)
 		 */
 		public Point getSelection(IDocument document) {
-			return new Point(fNewPosition, 0);
+			return new Point(getCursorPosition(), 0);
 		}
 
 		/*
@@ -447,7 +447,22 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		 * Return cursor position of proposal replacement string.
 		 */
 		public int getCursorPosition() {
-			return fNewPosition;
+			int cursorPosition = -1;
+
+			int openingQuoteInReplacement = fString.lastIndexOf('(');
+			int closingQuoteInReplacement = fString.lastIndexOf(')');
+			int openingQuoteInDisplay = fDisplayString.lastIndexOf('(');
+			int closingQuoteInDisplay = fDisplayString.lastIndexOf(')');
+
+			if (openingQuoteInReplacement != -1
+					&& closingQuoteInReplacement != -1
+					&& openingQuoteInDisplay != -1
+					&& closingQuoteInDisplay != -1
+					&& (closingQuoteInReplacement - openingQuoteInReplacement) != (closingQuoteInDisplay - openingQuoteInDisplay)) {
+				cursorPosition = openingQuoteInReplacement + 1;
+			}
+
+			return cursorPosition > -1 ? fOffset + cursorPosition : fNewPosition;
 		}
 
 		/**
