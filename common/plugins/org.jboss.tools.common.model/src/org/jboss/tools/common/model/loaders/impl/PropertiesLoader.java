@@ -16,6 +16,7 @@ import java.util.*;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ProjectScope;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
@@ -27,7 +28,14 @@ import org.jboss.tools.common.util.FileUtil;
 public class PropertiesLoader implements XObjectLoader {
 	public static String ENT_PROPERTY = "Property"; //$NON-NLS-1$
 	static String INTERNAL_SEPARATOR = "@"; //$NON-NLS-1$
-	String defaultLineSeparator = "\r\n"; //$NON-NLS-1$
+	static String defaultLineSeparator;
+	
+	static {
+		defaultLineSeparator = System.getProperty("line.separator"); //$NON-NLS-1$
+		if(defaultLineSeparator == null) {
+			defaultLineSeparator = "\r\n"; //$NON-NLS-1$
+		}
+	}
 
     public PropertiesLoader() {}
 
@@ -36,10 +44,13 @@ public class PropertiesLoader implements XObjectLoader {
     		String encoding = object.get("_encoding_"); //$NON-NLS-1$
     		return encoding != null && encoding.length() > 0 ? encoding : "8859_1"; //$NON-NLS-1$
     	}
-    	IResource resource = (IResource)object.getAdapter(IResource.class);
-    	if(!(resource instanceof IFile)) return null;
-    	IFile f = (IFile)resource;
-    	return FileUtil.getEncoding(f);
+    	IFile f = getFile(object);
+    	return f != null ? FileUtil.getEncoding(f) : null;
+    }
+   
+    private static IFile getFile(XModelObject object) {
+    	Object resource = object.getAdapter(IResource.class);
+    	return (resource instanceof IFile) ? (IFile)resource : null;    	
     }
 
     public void load(XModelObject object) {
@@ -71,6 +82,17 @@ public class PropertiesLoader implements XObjectLoader {
         while(st.hasMoreTokens()) {
             String s = st.nextToken();
             if(s.equals("\r")) { //$NON-NLS-1$
+            	if(lineEnd.toString().equals("\r")) { //$NON-NLS-1$
+                    if(state == 0) {
+                    	state = 1;
+                    } else if(state == 2) {
+                    	state = 0;
+    					c.setAttributeValue("dirtyvalue", sb.toString()); //$NON-NLS-1$
+    					c.setAttributeValue("line-end", lineEnd.toString()); //$NON-NLS-1$
+    					sb.setLength(0);
+    					lineEnd.setLength(0);
+                    } 
+            	}
 				if(state != 2) sb.append(s); else lineEnd.append(s);
             	continue;
             } 
@@ -168,7 +190,7 @@ public class PropertiesLoader implements XObjectLoader {
 
     public boolean save(XModelObject object) {
         if(!object.isModified()) return true;
-		XModelObjectLoaderUtil.setTempBody(object, generateBody(object, defaultLineSeparator));
+		XModelObjectLoaderUtil.setTempBody(object, generateBody(object));
         object.setModified(true);
         return true;
     }
@@ -179,12 +201,20 @@ public class PropertiesLoader implements XObjectLoader {
     }
 
 	public String getBody(XModelObject object) {
-		return generateBody(object, defaultLineSeparator);	
+		return generateBody(object);	
 	}
-		
-    String generateBody(XModelObject object, String lineSeparator) {
+
+    private String generateBody(XModelObject object) {
+    	String lineSeparator = defaultLineSeparator;
 		StringBuffer sb = new StringBuffer();
 		XModelObject[] cs = object.getChildren();
+		for (int i = 0; i < cs.length; i++) {
+			String ls = cs[i].get("line-end"); //$NON-NLS-1$
+			if(ls.length() > 0 && !ls.equals("\\r\\n")) { //$NON-NLS-1$
+				lineSeparator = ls;
+				break;
+			}
+		}
 		for (int i = 0; i < cs.length; i++) {
 			String name_value_separator = cs[i].getAttributeValue("name-value-separator"); //$NON-NLS-1$
 			if(name_value_separator == null || name_value_separator.length() != 1 || " \t=:".indexOf(name_value_separator) < 0) { //$NON-NLS-1$
@@ -220,10 +250,10 @@ public class PropertiesLoader implements XObjectLoader {
 			sb.append(resolved);
 			String ls = cs[i].get("line-end"); //$NON-NLS-1$
 			if(ls.length() > 0) {
-				if(ls.equals("\\r\\n")) ls = defaultLineSeparator; //$NON-NLS-1$
+				if(ls.equals("\\r\\n")) ls = lineSeparator; //$NON-NLS-1$
 				sb.append(ls);
 			} else if(i < cs.length - 1) {
-				ls = defaultLineSeparator;
+				ls = lineSeparator;
 				sb.append(ls);
 			}
 		}
