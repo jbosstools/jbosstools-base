@@ -1757,5 +1757,29 @@ public class SWTEclipseExt {
             bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.TOGGLE_BREAKPOINT).click();
         }
     }
+    /**
+     * Select path exist in Package Explorer. Last existing node from path is selected 
+     * @param bot
+     * @param fullPath
+     * @return SWTBotTreeItem of last node within path or null if path doesn't exist
+     */
+    public static SWTBotTreeItem selectPathInPackageExplorer(SWTBotExt bot, String... path) {
+      if (bot == null || path == null) {
+          throw new NullPointerException();
+      }
+      SWTBot innerBot = SWTEclipseExt.showView(bot, ViewType.PACKAGE_EXPLORER);
+      SWTBotTreeItem tiNode = null;
+      try {
+        tiNode = innerBot.tree().expandNode(path[0]);
+        tiNode.select();
+        for (int index = 1 ; index < path.length ; index++){
+          tiNode = tiNode.expandNode(path[index]);
+          tiNode.select();
+        }
+      } catch (WidgetNotFoundException wnfe){
+        tiNode = null;
+      }
+      return tiNode;
+  }
 
 }

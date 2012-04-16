@@ -220,7 +220,8 @@ public class IDELabel {
 	  public static final String JBOSS_TOOLS_USAGE = "JBoss Tools Usage";
 	  public static final String SUBCLIPSE_USAGE = "Subclipse Usage";
 	  public static final String PROGRESS_INFORMATION = "Progress Information";
-        public static final String REMEMBER_MY_DECISION = "Remember my decision";
+    public static final String REMEMBER_MY_DECISION = "Remember my decision";
+    public static final String NEW_FOLDER = "New Folder";
 	}
 
 	public class EntityGroup {
@@ -880,4 +881,9 @@ public class IDELabel {
      
    } 
    
+   public static final class NewFolderDialog {
+
+     public static final String FOLDER_NAME = "Folder name:";
+
+   }
  }
