@@ -11,7 +11,6 @@
 package org.jboss.tools.test.util;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.tests.TestsPlugin;
 
 public class Debug {

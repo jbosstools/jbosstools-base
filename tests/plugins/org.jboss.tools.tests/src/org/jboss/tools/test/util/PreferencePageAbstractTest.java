@@ -10,11 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.test.util;
 
+import junit.framework.TestCase;
+
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-import junit.framework.TestCase;
 
 public class PreferencePageAbstractTest extends TestCase {
 

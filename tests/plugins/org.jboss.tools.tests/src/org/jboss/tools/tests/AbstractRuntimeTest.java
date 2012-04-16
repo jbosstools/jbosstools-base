@@ -10,12 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.tests;
 
+import junit.framework.TestCase;
+
 import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
-
-import junit.framework.TestCase;
 
 public class AbstractRuntimeTest extends TestCase{
 	
