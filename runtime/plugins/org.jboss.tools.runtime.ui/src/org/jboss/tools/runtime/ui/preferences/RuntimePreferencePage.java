@@ -61,6 +61,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
@@ -73,6 +74,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.IDownloadRuntimes;
+import org.jboss.tools.runtime.ui.IRuntimePathChangeListener;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
@@ -98,6 +100,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 	private TableViewer detectorViewer;
 	private Button searchButton;
 	private Button downloadButton;
+	private IRuntimePathChangeListener runtimePathChangeListener;
 
 	/*
 	 * (non-Javadoc)
@@ -252,6 +255,27 @@ public class RuntimePreferencePage extends PreferencePage implements
 		viewer.setInput(runtimePaths);
 
 		createRuntimePathsButtons(parent, viewer);
+		runtimePathChangeListener = new IRuntimePathChangeListener() {
+			
+			@Override
+			public void changed() {
+				
+				Display.getDefault().asyncExec(new Runnable() {
+					
+					@Override
+					public void run() {
+						if (runtimePathChangeListener == null || errorIcon == null || errorIcon.isDisposed()) {
+							return;
+						}
+						runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
+						viewer.setInput(runtimePaths);
+						viewer.refresh();
+					}
+				});
+				
+			}
+		};
+		RuntimeUIActivator.getDefault().addRuntimePathChangeListener(runtimePathChangeListener);
 		return viewer;
 	}
 
@@ -465,6 +489,10 @@ public class RuntimePreferencePage extends PreferencePage implements
 	
 	@Override
 	public void dispose() {
+		if (runtimePathChangeListener != null) {
+			RuntimeUIActivator.getDefault().removeRuntimePathChangeListener(runtimePathChangeListener);
+			runtimePathChangeListener = null;
+		}
 		if (checkboxOff != null) {
 			checkboxOff.dispose();
 		}

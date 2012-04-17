@@ -22,11 +22,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.internal.preferences.PrefsMessages;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -115,6 +118,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 
 	private List<RuntimeDefinition> serverDefinitions;
 	
+	private ListenerList runtimePathChangeChangeListeners;
 	/**
 	 * The constructor
 	 */
@@ -383,6 +387,13 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 			String runtimes = writer.toString();
 			getPreferences().put(RUNTIME_PATHS, runtimes);
 			getPreferences().flush();
+			if (runtimePathChangeChangeListeners != null) {
+				Object[] listeners = runtimePathChangeChangeListeners.getListeners();
+				for (Object listener:listeners ) {
+					IRuntimePathChangeListener runtimePathChangeChangeListener = (IRuntimePathChangeListener) listener;
+					runtimePathChangeChangeListener.changed();
+				}
+			}
 		} catch (Exception e) {
 			log(e);
 		} finally {
@@ -497,4 +508,17 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		return (created);
 	}
 	
+	public void addRuntimePathChangeListener(IRuntimePathChangeListener listener) {
+		if (runtimePathChangeChangeListeners == null)
+			runtimePathChangeChangeListeners = new ListenerList();
+		runtimePathChangeChangeListeners.add(listener);
+	}
+	
+	public void removeRuntimePathChangeListener(IRuntimePathChangeListener listener) {
+		if (runtimePathChangeChangeListeners == null)
+			return;
+		runtimePathChangeChangeListeners.remove(listener);
+		if (runtimePathChangeChangeListeners.size() == 0)
+			runtimePathChangeChangeListeners = null;
+	}
 }
