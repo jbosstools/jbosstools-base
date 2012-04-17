@@ -94,11 +94,17 @@ public class EditRuntimePathDialog extends Dialog {
 				if (path == null) {
 					return;
 				}
-				Set<RuntimePath> runtimePaths2 = new HashSet<RuntimePath>();
-				runtimePaths2.add(runtimePath);
-				RuntimeUIActivator.refreshRuntimes(getShell(), runtimePaths2, null, true, 15);
+				runtimePath.setPath(path);
 				dialogSettings.put(RuntimeUIActivator.LASTPATH, path);
 				pathText.setText(path);
+//				Set<RuntimePath> runtimePaths2 = new HashSet<RuntimePath>();
+//				RuntimePath runtimePath2 = new RuntimePath(path);
+//				runtimePath2.setScanOnEveryStartup(runtimePath.isScanOnEveryStartup());
+//				runtimePaths2.add(runtimePath2);
+				RuntimeUIActivator.refreshRuntimes(getShell(), runtimePaths, treeViewer, false, 15);
+				
+//				runtimePath = runtimePath2;
+//				runtimePaths = runtimePaths2;
 			}
 		
 		});
