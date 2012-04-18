@@ -18,6 +18,7 @@ Export-Package:
  org.jboss.tools.ui.bot.ext.helper,
  org.jboss.tools.ui.bot.ext.logging,
  org.jboss.tools.ui.bot.ext.matcher,
+ org.jboss.tools.ui.bot.ext.matcher.console,
  org.jboss.tools.ui.bot.ext.parts,
  org.jboss.tools.ui.bot.ext.types,
  org.jboss.tools.ui.bot.ext.view,
