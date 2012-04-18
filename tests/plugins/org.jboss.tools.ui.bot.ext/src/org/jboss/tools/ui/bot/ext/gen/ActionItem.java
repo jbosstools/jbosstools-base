@@ -6618,7 +6618,7 @@ public static String getItemString(IActionItem item) {
 			/**
 			* text field labeled 'web.xml Location*'
 			*/
-			public static final String TEXT_WEBXML_LOCATION = "web.xml Location*";
+			public static final String TEXT_WEBXML_LOCATION = "web.xml Location:*";
 			/**
 			* text field labeled 'Project Name*'
 			*/
