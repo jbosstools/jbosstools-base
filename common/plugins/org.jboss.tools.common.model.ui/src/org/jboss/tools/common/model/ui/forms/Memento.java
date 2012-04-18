@@ -13,11 +13,11 @@ package org.jboss.tools.common.model.ui.forms;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.ui.IMemento;
-
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 /**
@@ -238,5 +238,25 @@ public class Memento implements IMemento {
 		
 	public String getType() {
 		return type; 
+	}
+
+	/**
+	 * Returns all children of this node.
+	 * Required by IMemento since Eclipse 3.8 
+	 */
+	public IMemento[] getChildren() {
+		List<IMemento> result = new ArrayList<IMemento>();
+		Set entries = map.entrySet();
+		for (Object object : entries) {
+			if(object instanceof ArrayList) {
+				ArrayList list = (ArrayList)object;
+				for (Object memento : list) {
+					if(memento instanceof IMemento) {
+						result.add((IMemento)memento);
+					}
+				}
+			}
+		}
+		return result.toArray(new IMemento[result.size()]);
 	}
 }
