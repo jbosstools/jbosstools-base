@@ -12,9 +12,9 @@ package org.jboss.tools.common.model.ui.forms;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import org.eclipse.ui.IMemento;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -204,6 +204,21 @@ public class MementoDOM implements IMemento {
 	public String getType() {
 		return getString(TYPE);
 	}
-	
-	
+
+	/**
+	 * Returns all children of this node.
+	 * Required by IMemento since Eclipse 3.8 
+	 */
+	public IMemento[] getChildren() {
+		List<IMemento> result = new ArrayList<IMemento>();
+		NodeList nl = element.getChildNodes();
+		for (int i=0; i<nl.getLength(); i++) {
+			Node node = nl.item(i);
+			if (node instanceof Element) {
+				IMemento memento = getMemento(node);
+				result.add(memento);
+			}
+		}
+		return result.toArray(new IMemento[result.size()]);
+	}
 }
