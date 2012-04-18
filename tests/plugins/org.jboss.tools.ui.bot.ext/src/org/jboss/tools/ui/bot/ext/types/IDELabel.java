@@ -152,6 +152,7 @@ public class IDELabel {
 		public static final String IMPORT_JSF_PROJECT = "Import JSF Project";
 		public static final String IMPORT = "Import";
 		public static final String DELETE_SERVER = "Delete Server";
+		public static final String SERVER = "Server";
 		public static final String NEW_STRUTS_PROJECT = "New Struts Project";
 	  public static final String PREFERENCES = "Preferences";
 	  public static final String NEW_SERVER_RUNTIME_ENVIRONMENT = "New Server Runtime Environment";
