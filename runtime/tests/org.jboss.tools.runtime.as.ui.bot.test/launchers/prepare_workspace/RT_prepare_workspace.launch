@@ -12,5 +12,5 @@
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/home/ljelinko/work/workspaces/jboss-tools/org.jboss.tools.runtime.as.ui.bot.test/launchers/prepare_workspace"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc}/org.jboss.tools.runtime.as.ui.bot.test/launchers/prepare_workspace"/>
 </launchConfiguration>
