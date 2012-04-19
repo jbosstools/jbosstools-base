@@ -70,6 +70,16 @@ public class TypeInfoCollectorTest extends TestCase {
 		assertNotNull(info.getMemberType());
 	}
 
+	public void testCircularDependency() throws CoreException {
+		IJavaProject jp = JavaCore.create(project2);
+		IType bean = jp.findType("test.TestA");
+		TypeInfoCollector.TypeInfo typeInfo = new TypeInfoCollector.TypeInfo(bean, null, false);
+		TypeInfoCollector collector = typeInfo.getTypeCollector(false, false);
+		MemberInfo info = getMethod(collector, "foo");
+		assertNotNull(info);
+		assertNotNull(info.getMemberType());
+	}
+
 	private MemberInfo getMethod(TypeInfoCollector collector, String name) {
 		collector.collectInfo();
 		List<MemberInfo> mts = collector.getMethods();
