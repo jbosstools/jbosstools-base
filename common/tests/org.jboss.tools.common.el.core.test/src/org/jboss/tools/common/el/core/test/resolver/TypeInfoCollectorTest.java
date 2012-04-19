@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector;
@@ -78,6 +79,20 @@ public class TypeInfoCollectorTest extends TestCase {
 		MemberInfo info = getMethod(collector, "foo");
 		assertNotNull(info);
 		assertNotNull(info.getMemberType());
+	}
+
+	public void testOverridenMethod() throws CoreException {
+		IJavaProject jp = JavaCore.create(project2);
+		for (int i = 1; i < 5; i++) {
+			String className = "test.TestC" + i;
+			IType bean = jp.findType(className);
+			TypeInfoCollector.TypeInfo typeInfo = new TypeInfoCollector.TypeInfo(bean, null, false);
+			TypeInfoCollector collector = typeInfo.getTypeCollector(false, false);
+			MemberInfo info = getMethod(collector, "foo");
+			assertNotNull(info);
+			IMethod m = (IMethod)info.getJavaElement();
+			assertEquals(bean.getFullyQualifiedName(), m.getDeclaringType().getFullyQualifiedName());
+		}
 	}
 
 	private MemberInfo getMethod(TypeInfoCollector collector, String name) {
