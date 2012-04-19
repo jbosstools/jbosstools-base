@@ -99,7 +99,7 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 			// to make placeholder working it should be removed first
 			// We have to use reflection because org.eclipse.ui.internal.PageLayout was renamed in Eclipse 4.2 (see https://issues.jboss.org/browse/JBIDE-11546 )
 			// ((PageLayout)layout).removePlaceholder(ICheatSheetResource.CHEAT_SHEET_VIEW_ID);
-			Class pageLayoutClass = Class.forName("org.eclipse.ui.internal.PageLayout");
+			Class pageLayoutClass = CommonUIPlugin.getDefault().getBundle().loadClass("org.eclipse.ui.internal.PageLayout");
 			Method removePlaceholder = pageLayoutClass.getMethod("removePlaceholder", String.class);
 			removePlaceholder.invoke(layout, "org.eclipse.ui.cheatsheets.views.CheatSheetView");
 		} catch (ClassNotFoundException e) {
