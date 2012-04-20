@@ -6,7 +6,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.template.DetectServerTemplate;
 
 public class DetectJBoss71 extends DetectServerTemplate {
 
-	public static final String JBOSS_7_1 = "jboss-as-7.1.0.Final";
+	public static final String JBOSS_7_1 = "jboss-as-7.1.1.Final";
 	
 	@Override
 	protected String getServerID() {
