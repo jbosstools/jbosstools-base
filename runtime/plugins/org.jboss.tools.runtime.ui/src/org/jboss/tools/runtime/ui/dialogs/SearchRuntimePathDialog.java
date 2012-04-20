@@ -128,6 +128,16 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 				for (RuntimeDefinition serverDefinition:serverDefinitions) {
 					if (serverDefinition.isEnabled()) {
 						enableOk = true;
+					} else {
+						for (RuntimeDefinition includedDefinition:serverDefinition.getIncludedServerDefinitions()) {
+							if (includedDefinition.isEnabled()) {
+								enableOk = true;
+								break;
+							}
+						}
+					}
+					if (enableOk) {
+						break;
 					}
 				}
 				getButton(IDialogConstants.OK_ID).setEnabled(enableOk);

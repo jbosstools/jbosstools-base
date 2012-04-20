@@ -95,43 +95,44 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	
 	public static void createJBossServerFromDefinitions(List<RuntimeDefinition> serverDefinitions) {
 		for (RuntimeDefinition serverDefinition:serverDefinitions) {
-			if (!serverDefinition.isEnabled()) {
-				continue;
-			}
-			File asLocation = getLocation(serverDefinition);
-			if (asLocation == null || !asLocation.isDirectory()) {
-				continue;
-			}
-			String type = serverDefinition.getType();
-			if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type)
-					|| SOA_P_STD.equals(type) || EWP.equals(type)
-					|| EAP_STD.equals(type)) {
-				String name = serverDefinition.getName();
-				String runtimeName = name + " " + RUNTIME; //$NON-NLS-1$
-				int index = getJBossASVersion(asLocation, serverDefinition);
-				createJBossServer(asLocation, index, name, runtimeName);
-			} else if (AS.equals(type)){
-				String version = serverDefinition.getVersion();
-				int index = 2;
-				if ("3.2".equals(version)) { //$NON-NLS-1$
-					index = 0;
-				} else if ("4.0".equals(version)) { //$NON-NLS-1$
-					index = 1;
-				} else if ("4.2".equals(version)) { //$NON-NLS-1$
-					index = 2;
-				} else if ("5.0".equals(version)) { //$NON-NLS-1$
-					index = 3;
-				} else if ("5.1".equals(version)) { //$NON-NLS-1$
-					index = 4;
-				} else if ("6.0".equals(version) || "6.1".equals(version)) { //$NON-NLS-1$
-					index = 5;
-				} else if ("7.0".equals(version)) { //$NON-NLS-1$
-					index = JBOSS_AS70_INDEX;
-				} else if ("7.1".equals(version)) { //$NON-NLS-1$
-					index = JBOSS_AS71_INDEX;
+			if (serverDefinition.isEnabled()) {
+				File asLocation = getLocation(serverDefinition);
+				if (asLocation == null || !asLocation.isDirectory()) {
+					continue;
 				}
-				// NEW_SERVER_ADAPTER add logic for new adapter here
-				createJBossServer(serverDefinition.getLocation(),index,serverDefinition.getName(),serverDefinition.getName() + " " + RUNTIME); //$NON-NLS-1$
+				String type = serverDefinition.getType();
+				if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type)
+						|| SOA_P_STD.equals(type) || EWP.equals(type)
+						|| EAP_STD.equals(type)) {
+					String name = serverDefinition.getName();
+					String runtimeName = name + " " + RUNTIME; //$NON-NLS-1$
+					int index = getJBossASVersion(asLocation, serverDefinition);
+					createJBossServer(asLocation, index, name, runtimeName);
+				} else if (AS.equals(type)) {
+					String version = serverDefinition.getVersion();
+					int index = 2;
+					if ("3.2".equals(version)) { //$NON-NLS-1$
+						index = 0;
+					} else if ("4.0".equals(version)) { //$NON-NLS-1$
+						index = 1;
+					} else if ("4.2".equals(version)) { //$NON-NLS-1$
+						index = 2;
+					} else if ("5.0".equals(version)) { //$NON-NLS-1$
+						index = 3;
+					} else if ("5.1".equals(version)) { //$NON-NLS-1$
+						index = 4;
+					} else if ("6.0".equals(version) || "6.1".equals(version)) { //$NON-NLS-1$
+						index = 5;
+					} else if ("7.0".equals(version)) { //$NON-NLS-1$
+						index = JBOSS_AS70_INDEX;
+					} else if ("7.1".equals(version)) { //$NON-NLS-1$
+						index = JBOSS_AS71_INDEX;
+					}
+					// NEW_SERVER_ADAPTER add logic for new adapter here
+					createJBossServer(serverDefinition.getLocation(), index,
+							serverDefinition.getName(),
+							serverDefinition.getName() + " " + RUNTIME); //$NON-NLS-1$
+				}
 			}
 			createJBossServerFromDefinitions(serverDefinition.getIncludedServerDefinitions());
 		}	

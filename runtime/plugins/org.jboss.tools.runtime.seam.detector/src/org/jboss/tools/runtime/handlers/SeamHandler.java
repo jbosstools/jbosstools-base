@@ -47,12 +47,12 @@ public class SeamHandler extends AbstractRuntimeDetector {
 		Map<String, SeamRuntime> map = new HashMap<String,SeamRuntime>();
 
 		for(RuntimeDefinition serverDefinition:serverDefinitions) {
-			if (!serverDefinition.isEnabled()) {
-				continue;
-			}
-			String type = serverDefinition.getType();
-			if (SEAM.equals(type)) {
-				addSeam(map, serverDefinition, serverDefinition.getLocation());
+			if (serverDefinition.isEnabled()) {
+				String type = serverDefinition.getType();
+				if (SEAM.equals(type)) {
+					addSeam(map, serverDefinition,
+							serverDefinition.getLocation());
+				}
 			}
 			initializeRuntimes(serverDefinition.getIncludedServerDefinitions());
 		}
