@@ -252,5 +252,6 @@ public class SynchronizationTest extends TestCase {
 		public void setContents(IFileState source, boolean force, boolean keepHistory, IProgressMonitor monitor) throws CoreException {}
 		public void setContents(InputStream source, int updateFlags, IProgressMonitor monitor) throws CoreException {}
 		public void setContents(IFileState source, int updateFlags, IProgressMonitor monitor) throws CoreException {}
+		public void accept(IResourceProxyVisitor visitor, int depth, int memberFlags) throws CoreException {}
 	}
 }
