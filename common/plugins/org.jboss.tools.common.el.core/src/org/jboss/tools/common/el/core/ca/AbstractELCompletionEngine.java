@@ -29,12 +29,14 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.ELReference;
+import org.jboss.tools.common.el.core.model.ELArgument;
 import org.jboss.tools.common.el.core.model.ELArgumentInvocation;
 import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.model.ELInstance;
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.model.ELMethodInvocation;
 import org.jboss.tools.common.el.core.model.ELModel;
+import org.jboss.tools.common.el.core.model.ELObject;
 import org.jboss.tools.common.el.core.model.ELObjectType;
 import org.jboss.tools.common.el.core.model.ELPropertyInvocation;
 import org.jboss.tools.common.el.core.model.ELUtil;
@@ -1023,7 +1025,12 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if(!proposalsToFilter.isEmpty()) {
 					resolution.addSegment(segment);
 					if(expr instanceof ELArgumentInvocation) {
-						segment.setToken(((ELArgumentInvocation)expr).getArgument().getArgument().getFirstToken());
+						ELArgument a = ((ELArgumentInvocation)expr).getArgument();
+						if(a.getArgument() == null) {
+							segment.setToken(((ELObject)a).getFirstToken());
+						} else {
+							segment.setToken(a.getArgument().getFirstToken());
+						}
 					}
 				}
 
