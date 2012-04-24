@@ -134,6 +134,7 @@ public class IDELabel {
 		public static final String VARIABLE = "Variable...";
 		public static final String CONFIGURE_VARIABLES = "Configure Variables...";
 		public static final String BROWSE = "Browse...";
+		public static final String ADD_LIBRARY = "Add Library...";
 	}
 
 	public class Shell {
@@ -204,6 +205,7 @@ public class IDELabel {
 	  public static final String ADD_RENDER_KIT = "Add Render Kit";
 	  public static final String ADD_RENDER_KIT_JSF2 = "Render Kit...";
 	  public static final String ADD_VALIDATOR = "Add Validator";
+	  public static final String ADD_LIBRARY = "Add Library";
 	  public static final String NEW_VIEW = "New View";
 	  public static final String AUTO_LAYOUT = "Auto Layout";
 	  public static final String ADD_PROPERTY = "Add Property";
