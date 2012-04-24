@@ -1,6 +1,7 @@
 package org.jboss.tools.ui.bot.ext.helper;
 
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.widgetIsEnabled;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -36,6 +37,7 @@ public class ImportHelper {
 		dlgBot.radio(0).click();
 		dlgBot.button("Select All").click();
 		SWTBotShell s = dlgBot.activeShell();
+		bot.waitUntil(widgetIsEnabled(dlgBot.button(IDELabel.Button.FINISH)),timeout);
 		dlgBot.button(IDELabel.Button.FINISH).click();
 		bot.waitUntil(shellCloses(s),timeout);
 	}	
