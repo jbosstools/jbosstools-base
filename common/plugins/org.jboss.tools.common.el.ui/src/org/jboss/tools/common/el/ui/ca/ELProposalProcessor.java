@@ -644,7 +644,8 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 						if (string.indexOf('\'') != -1 && restOfEL.indexOf('\'') != -1) // Exclude last quote if this char already exists
 							string = string.substring(0, string.lastIndexOf('\''));
 						
-						if ((string.indexOf('[') != -1 || prefix.indexOf('[') != -1) && string.indexOf(']') == -1 && restOfEL.indexOf(']') == -1) // Add closing square bracket if needed
+						if ((string.indexOf('[') != -1 || (prefix.indexOf('[') != -1 && prefix.indexOf(']', prefix.lastIndexOf('[')) == -1)) 
+								&& string.indexOf(']') == -1 && restOfEL.indexOf(']') == -1) // Add closing square bracket if needed
 							string += ']';
 							
 						string +=  proposalSufix;
