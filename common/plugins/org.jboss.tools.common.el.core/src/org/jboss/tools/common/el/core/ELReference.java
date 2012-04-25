@@ -198,7 +198,7 @@ public class ELReference implements ITextSourceReference {
 		el = exps.toArray(new ELExpression[0]);
 	}
 
-	private IMarker[] EMPTY_MARKER_ARRAY = new IMarker[0];
+	private static final IMarker[] EMPTY_MARKER_ARRAY = new IMarker[0];
 
 	private void initMarkers() {
 		if(markers==null) {
