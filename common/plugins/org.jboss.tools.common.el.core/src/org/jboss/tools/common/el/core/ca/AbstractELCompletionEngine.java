@@ -695,7 +695,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			? ((ELPropertyInvocation)expr).getName()
 					: (expr instanceof ELMethodInvocation)
 					? ((ELMethodInvocation)expr).getName()
-					: (expr instanceof ELArgumentInvocation)
+					: (expr instanceof ELArgumentInvocation && ((ELArgumentInvocation)expr).getArgument().getArgument() != null)
 					? ((ELArgumentInvocation)expr).getArgument().getArgument().getFirstToken()
 							: null;
 		String name = lt != null ? lt.getText() : ""; // token.getText(); //$NON-NLS-1$
@@ -1039,6 +1039,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 			String filter = expr.getMemberName();
 			boolean bSurroundWithQuotes = false;
+			boolean closeQuotes = false;
 			if(filter == null) {
 				filter = ""; //$NON-NLS-1$
 				bSurroundWithQuotes = true;
@@ -1047,9 +1048,11 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					|| (filter.endsWith("'") || filter.endsWith("\""))) { //$NON-NLS-1$ //$NON-NLS-2$
 					if (filter.startsWith("'") || filter.startsWith("\"")) {
 						filter = filter.length() == 1 ? "" : filter.substring(1); //$NON-NLS-1$	
+						closeQuotes = true;
 					}
 					if (filter.endsWith("'") || filter.endsWith("\"")) {
-						filter = filter.length() == 1 ? "" : filter.substring(0, filter.length() - 1); //$NON-NLS-1$	
+						filter = filter.length() == 1 ? "" : filter.substring(0, filter.length() - 1); //$NON-NLS-1$
+						closeQuotes = false;
 					}
 				} else {
 					//Value is set as expression itself, we cannot compute it
@@ -1107,8 +1110,11 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 					String replacementString = proposal.getPresentation().substring(filter.length());
 					if (bSurroundWithQuotes) {
-						replacementString = "'" + replacementString; //$NON-NLS-1$ //$NON-NLS-2$
+						replacementString = "'" + replacementString + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+					} else if(closeQuotes) {
+						replacementString = replacementString + "'"; //$NON-NLS-1$
 					}
+					
 
 					kbProposal.setReplacementString(replacementString);
 					kbProposal.setLabel(proposal.getPresentationDisplayName());
