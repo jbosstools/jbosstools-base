@@ -9,5 +9,4 @@ import org.junit.runners.Suite.SuiteClasses;
 	UtilsTest.class
 })
 public class AllTests {
-
 }
