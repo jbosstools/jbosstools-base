@@ -81,6 +81,9 @@ public class ContextValidationHelper extends WorkbenchContext {
 	public void registerResource(IResource resource) {
 		if(resource instanceof IFile) {
 			IFile file = (IFile)resource;
+			if(file.isDerived(IResource.CHECK_ANCESTORS)) {
+				return;
+			}
 			if(validationContextManager == null) {
 				validationContextManager = new ValidationContext(file.getProject());
 			} else if(validationContextManager.isObsolete()) {
@@ -104,6 +107,7 @@ public class ContextValidationHelper extends WorkbenchContext {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		Set<IProject> projects = getAllProjects();
 		for (int i = 0; i < uris.length; i++) {
+			if(uris[i].endsWith(".jar") || uris[i].endsWith(".classpath")) continue;
 			IFile currentFile = root.getFile(new Path(uris[i]));
 			if(projects.contains(currentFile.getProject())
 					&& !currentFile.isDerived(IResource.CHECK_ANCESTORS)) {
@@ -117,6 +121,16 @@ public class ContextValidationHelper extends WorkbenchContext {
 			}
 		}
 		return result;
+	}
+
+	public boolean isClasspathAffected() {
+		String[] uris = getURIs();
+		for (String uri: uris) {
+			if(uri.endsWith(".jar") || uri.endsWith(".classpath")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Set<IFile> getProjectSetRegisteredFiles() {

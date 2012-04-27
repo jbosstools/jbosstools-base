@@ -77,7 +77,7 @@ public class ValidatorManager implements IValidatorJob {
 			try {
 				validationContextManager.clearValidatedProjectsList();
 				Set<IFile> changedFiles = validationHelper.getChangedFiles();
-				if(!changedFiles.isEmpty() || validationHelper.getURIs().length > 0) {
+				if((!validationHelper.isClasspathAffected() && (!changedFiles.isEmpty() || validationHelper.getURIs().length > 0))) {
 					status = validate(changedFiles, validationHelper, reporter, rootProjects);
 				} else if(!validationContextManager.getRegisteredFiles().isEmpty()) {
 					validationContextManager.clearAllResourceLinks(rootProjects);
