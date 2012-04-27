@@ -46,7 +46,6 @@ public class ELReference implements ITextSourceReference {
 	private int startPosition;
 	private ELExpression[] el;
 	private Set<IMarker> markers;
-	private IMarker[] markerArray;
 	private boolean needToInitMarkers = false;
 	private List<SyntaxError> syntaxErrors;
 	private String source;
@@ -201,25 +200,22 @@ public class ELReference implements ITextSourceReference {
 	private static final IMarker[] EMPTY_MARKER_ARRAY = new IMarker[0];
 
 	private void initMarkers() {
-		if(markers==null) {
-			markers = new HashSet<IMarker>();
-			if(needToInitMarkers) {
-				IFile file = getResource();
-				if(file!=null) {
-					IMarker[] markers = null;
-					try {
-						markers = file.findMarkers(null, true, IResource.DEPTH_INFINITE);
-					} catch (CoreException e) {
-						ELCorePlugin.getDefault().logError(e);
-					}
-					for(int i=0; i<markers.length; i++){
-						String groupName = markers[i].getAttribute("groupName", null); //$NON-NLS-1$
-						if(groupName!=null && (groupName.equals(this.elMarkerGroupID))) {
-							int start = markers[i].getAttribute(IMarker.CHAR_START, -1);
-							int end = markers[i].getAttribute(IMarker.CHAR_END, -1);
-							if(start>=startPosition && end<=startPosition+length) {
-								addMarker(markers[i]);
-							}
+		if(markers == null && needToInitMarkers) {
+			IFile file = getResource();
+			if(file!=null) {
+				IMarker[] markers = null;
+				try {
+					markers = file.findMarkers(null, true, IResource.DEPTH_INFINITE);
+				} catch (CoreException e) {
+					ELCorePlugin.getDefault().logError(e);
+				}
+				for(int i=0; i<markers.length; i++){
+					String groupName = markers[i].getAttribute("groupName", null); //$NON-NLS-1$
+					if(groupName!=null && (groupName.equals(this.elMarkerGroupID))) {
+						int start = markers[i].getAttribute(IMarker.CHAR_START, -1);
+						int end = markers[i].getAttribute(IMarker.CHAR_END, -1);
+						if(start>=startPosition && end<=startPosition+length) {
+							addMarker(markers[i]);
 						}
 					}
 				}
@@ -253,25 +249,6 @@ public class ELReference implements ITextSourceReference {
 		this.needToInitMarkers = needToInitMarkers;
 	}
 
-	public synchronized void setMarkers(Set<IMarker> markers) {
-		this.markers = markers;
-	}
-
-	/**
-	 * @return the markers
-	 */
-	public synchronized IMarker[] getMarkers() {
-		initMarkers();
-		if(markerArray==null) {
-			if(markers.isEmpty()) {
-				markerArray = EMPTY_MARKER_ARRAY;
-			} else {
-				markerArray = markers.toArray(new IMarker[markers.size()]);
-			}
-		}
-		return markerArray;
-	}
-
 	/**
 	 * @param markers the markers to set
 	 */
@@ -279,27 +256,24 @@ public class ELReference implements ITextSourceReference {
 		if(marker==null) {
 			return;
 		}
-		markerArray = null;
 		if(markers==null) {
 			markers = new HashSet<IMarker>();
 		}
 		markers.add(marker);
 	}
 
-	public boolean hasMarkers() {
-		return !markers.isEmpty();
-	}
-
 	/**
 	 * Removes all markers from this EL.
 	 */
 	public void deleteMarkers() {
-		IMarker[] aMarkers = null;
+		Set<IMarker> aMarkers = null;
 		synchronized (this) {
 			initMarkers();
-			aMarkers = getMarkers();
-			markers.clear();
-			markerArray = null;
+			if(markers == null) {
+				return;
+			}
+			aMarkers = markers;
+			markers = null;
 		}
 
 		for (IMarker marker : aMarkers) {

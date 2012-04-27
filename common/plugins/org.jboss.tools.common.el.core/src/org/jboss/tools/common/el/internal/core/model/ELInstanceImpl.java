@@ -11,6 +11,7 @@
 package org.jboss.tools.common.el.internal.core.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jboss.tools.common.el.core.model.ELExpression;
@@ -26,8 +27,10 @@ import org.jboss.tools.common.el.internal.core.parser.token.StartELTokenDescript
  * @author V. Kabanovich
  */
 public class ELInstanceImpl extends ELObjectImpl implements ELInstance {
+	public static final List<SyntaxError> EMPTY = Collections.unmodifiableList(new ArrayList<SyntaxError>());
+
 	ELExpressionImpl expression;
-	List<SyntaxError> errors = new ArrayList<SyntaxError>();
+	List<SyntaxError> errors = null;
 
 	public ELInstanceImpl() {
 	}
@@ -55,7 +58,7 @@ public class ELInstanceImpl extends ELObjectImpl implements ELInstance {
 	}
 
 	public List<SyntaxError> getErrors() {
-		return errors;
+		return errors != null ? errors : EMPTY;
 	}
 
 	public void addChild(ELObjectImpl child) {
@@ -108,6 +111,9 @@ public class ELInstanceImpl extends ELObjectImpl implements ELInstance {
 	}
 
 	public void addError(SyntaxError error) {
+		if(errors == null) {
+			errors = new ArrayList<SyntaxError>();
+		}
 		errors.add(error);
 	}
 

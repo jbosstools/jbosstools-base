@@ -73,7 +73,7 @@ public class ELModelImpl extends ELObjectImpl implements ELModel {
 	}
 
 	public void setErrors(List<SyntaxError> errors) {
-		this.errors = errors;
+		this.errors = errors.isEmpty() ? null : errors;
 		for (SyntaxError e: errors) {
 			for (ELInstance i: instances) {
 				ELInstanceImpl im = (ELInstanceImpl)i;
@@ -87,7 +87,7 @@ public class ELModelImpl extends ELObjectImpl implements ELModel {
 	}
 
 	public List<SyntaxError> getSyntaxErrors() {
-		return errors;
+		return errors == null ? ELInstanceImpl.EMPTY : errors;
 	}
 
 	public void shift(int delta) {
