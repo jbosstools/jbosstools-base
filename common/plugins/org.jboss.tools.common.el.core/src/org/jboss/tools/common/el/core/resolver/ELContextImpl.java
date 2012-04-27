@@ -81,8 +81,6 @@ public class ELContextImpl extends SimpleELContext {
 		this.allVars = allVars;
 	}
 
-	private static final ELReference[] EMPTY_ARRAY = new ELReference[0];
-
 	/*
 	 * (non-Javadoc)
 	 * @see org.jboss.tools.jst.web.kb.IXmlContext#getELReferences()
@@ -111,10 +109,11 @@ public class ELContextImpl extends SimpleELContext {
 	 */
 	@Override
 	public ELReference getELReference(int offset) {
-		ELReference[] refs = getELReferences();
-		for (int i = 0; i < refs.length; i++) {
-			if(refs[i].getStartPosition()<=offset && (refs[i].getStartPosition() + refs[i].getLength()>offset)) {
-				return refs[i];
+		if(elReferenceSet != null) {
+			for (ELReference ref: elReferenceSet) {
+				if(ref.getStartPosition()<=offset && (ref.getStartPosition() + ref.getLength()>offset)) {
+					return ref;
+				}
 			}
 		}
 		return null;
@@ -123,10 +122,11 @@ public class ELContextImpl extends SimpleELContext {
 	@Override
 	public Set<ELReference> getELReferences(IRegion region) {
 		Set<ELReference> references = new HashSet<ELReference>();
-		ELReference[] refs = getELReferences();
-		for (int i = 0; i < refs.length; i++) {
-			if(refs[i].getStartPosition()>=region.getOffset() && (refs[i].getStartPosition() + refs[i].getLength()<=region.getOffset() + region.getLength())) {
-				references.add(refs[i]);
+		if(elReferenceSet != null) {
+			for (ELReference ref: elReferenceSet) {
+				if(ref.getStartPosition()>=region.getOffset() && (ref.getStartPosition() + ref.getLength()<=region.getOffset() + region.getLength())) {
+					references.add(ref);
+				}
 			}
 		}
 		return references;

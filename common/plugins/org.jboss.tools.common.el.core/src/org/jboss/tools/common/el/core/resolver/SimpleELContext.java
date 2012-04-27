@@ -23,6 +23,7 @@ import org.jboss.tools.common.el.core.ELReference;
  * @author Alexey Kazakov
  */
 public class SimpleELContext implements ELContext {
+	static final ELReference[] EMPTY_ARRAY = new ELReference[0];
 
 	protected IFile resource;
 	protected ELResolver[] elResolvers;
@@ -89,7 +90,7 @@ public class SimpleELContext implements ELContext {
 	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getELReferences()
 	 */
 	public ELReference[] getELReferences() {
-		return null;
+		return EMPTY_ARRAY;
 	}
 
 	/*
