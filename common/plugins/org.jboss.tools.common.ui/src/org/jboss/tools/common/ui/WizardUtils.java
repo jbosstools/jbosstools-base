@@ -165,7 +165,7 @@ public class WizardUtils {
 	 */
 	public static IStatus runInWizard(final Job job, IWizardContainer container, DataBindingContext dbc)
 			throws InvocationTargetException, InterruptedException {
-		return runInWizard(job, null, container);
+		return runInWizard(job, null, container, dbc);
 	}
 
 	public static IStatus runInWizard(Job job, DelegatingProgressMonitor monitor, IWizardContainer container,
