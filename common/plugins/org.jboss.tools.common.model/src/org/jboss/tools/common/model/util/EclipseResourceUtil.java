@@ -695,7 +695,7 @@ public class EclipseResourceUtil extends EclipseUtil {
 		IClasspathEntry[] es = null;
 		for (int i = 0; i < es0.length && es == null; i++) {
 			if(es0[i].getEntryKind() == IClasspathEntry.CPE_CONTAINER && 
-					es0[i].getPath().toString().equals("org.eclipse.jdt.launching.JRE_CONTAINER")) { //$NON-NLS-1$
+					es0[i].getPath().toString().startsWith("org.eclipse.jdt.launching.JRE_CONTAINER")) { //$NON-NLS-1$
 				IClasspathContainer container = JavaCore.getClasspathContainer(es0[i].getPath(), javaProject);
 				if(container == null) continue;
 				es = container.getClasspathEntries();
