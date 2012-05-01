@@ -26,6 +26,44 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<plugin id="com.thoughtworks.xstream"/>
+						<plugin id="org.apache.axis"/>
+						<plugin id="org.apache.commons.logging"/>
+						<plugin id="org.apache.commons.io"/>
+						<plugin id="org.apache.commons.httpclient"/>
+						<plugin id="org.apache.commons.lang"/>
+						<plugin id="org.apache.commons.codec"/>
+						<plugin id="org.jdom_jaxen"/>
+						<plugin id="org.mortbay.jetty.server"/>
+						<plugin id="org.mortbay.jetty.util"/>
+						<plugin id="org.apache.jasper"/>
+						<plugin id="org.joda.time"/>
+						<plugin id="javax.servlet"/>
+						<plugin id="javax.servlet.jsp"/>
+						<plugin id="javax.xml.rpc"/>
+						<plugin id="javax.el"/>
+						<plugin id="org.eclipse.mylyn.tasks.ui"/>
+						<plugin id="org.eclipse.mylyn.tasks.core"/>
+						<plugin id="org.eclipse.mylyn.tasks.bugs"/>
+						<plugin id="com.atlassian.connector.commons"/>
+						<plugin id="com.atlassian.connector.eclipse.branding.ui"/>
+						<plugin id="com.atlassian.connector.eclipse.commons.core"/>
+						<plugin id="com.atlassian.connector.eclipse.commons.ui"/>
+						<plugin id="com.atlassian.connector.eclipse.core"/>
+						<plugin id="com.atlassian.connector.eclipse.cvs.core"/>
+						<plugin id="com.atlassian.connector.eclipse.cvs.ui"/>
+						<plugin id="com.atlassian.connector.eclipse.directclickthrough.ui"/>
+						<plugin id="com.atlassian.connector.eclipse.help"/>
+						<plugin id="com.atlassian.connector.eclipse.jira.core"/>
+						<plugin id="com.atlassian.connector.eclipse.jira.ui"/>
+						<plugin id="com.atlassian.connector.eclipse.monitor.core"/>
+						<plugin id="com.atlassian.connector.eclipse.monitor.ui"/>
+						<plugin id="com.atlassian.connector.eclipse.ui"/>
+	                	<!-- <feature id="sourcefeature.feature.nosource"/> -->
+    				</excludes>
+                </configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
