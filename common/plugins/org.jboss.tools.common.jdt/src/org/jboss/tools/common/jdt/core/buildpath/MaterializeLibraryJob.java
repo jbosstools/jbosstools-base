@@ -39,7 +39,7 @@ import org.jboss.tools.common.util.FileUtil;
 
 public class MaterializeLibraryJob extends WorkspaceJob {
 
-	private final IFolder libFolder;
+	private final IContainer libFolder;
 	private final IJavaProject javaProject;
 	private final Map<IPath, String> jars;
 	private final IClasspathContainer containerToRemove;
@@ -48,7 +48,7 @@ public class MaterializeLibraryJob extends WorkspaceJob {
 	public MaterializeLibraryJob(IJavaProject javaProject,
 								 IClasspathContainer containerToMaterialize,
 								 Map<IPath, String> jars, 
-								 IFolder libFolder, 
+								 IContainer libFolder, 
 								 boolean keepSourceAttachments) {
 		super(Messages.Materialize_Library); 
 		if (javaProject == null || javaProject.getProject() == null) {
@@ -114,7 +114,9 @@ public class MaterializeLibraryJob extends WorkspaceJob {
 		
 		monitor.beginTask(Messages.Materialize_Library, jarSize); 
 		
-		mkdirs(libFolder, monitor);
+		if (libFolder instanceof IFolder) {
+			mkdirs((IFolder)libFolder, monitor);
+		}
 
 		IPath destination = libFolder.getLocation();
 
@@ -235,6 +237,5 @@ public class MaterializeLibraryJob extends WorkspaceJob {
 				x = x.getParent();
 			}
 		}
-
 	}
 }

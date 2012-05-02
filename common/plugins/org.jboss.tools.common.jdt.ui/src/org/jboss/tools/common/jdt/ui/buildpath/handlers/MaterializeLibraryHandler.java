@@ -15,7 +15,7 @@ import java.util.Map;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceRuleFactory;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -85,7 +85,7 @@ public class MaterializeLibraryHandler extends AbstractHandler {
         if(dialog.open() == Dialog.OK) {
           Map<IPath, String> jarsToMaterialize = dialog.getSelectedClasspathEntryPaths();
   
-          IFolder libFolder = dialog.getLibFolder();
+          IContainer libFolder = dialog.getLibFolder();
           
           Job job = new MaterializeLibraryJob(javaProject, 
                                               containerToMaterialize,

@@ -16,10 +16,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -71,7 +72,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 
 	private static final String FILENAME_PROPERTY = "FILENAME_PROPERTY";
 
-	private IFolder libFolder;
+	private IContainer libFolder;
 	private Map<IClasspathEntry, String> classpathEntryPaths;
 	private Map<IPath, String> selectedClasspathEntryPaths;
 	private IClasspathContainer containerToMaterialize;
@@ -298,7 +299,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		return selectedClasspathEntryPaths;
 	}
 
-	public IFolder getLibFolder() {
+	public IContainer getLibFolder() {
 		return libFolder;
 	}
 
@@ -306,10 +307,16 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		return keepSources;
 	}
 
-	private static IFolder getLibFolderFromText(String text) {
+	private static IContainer getLibFolderFromText(String text) {
 		String portablePath = text.replaceAll("\\\\", "/");
+		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IPath path = new Path(portablePath);
-		return ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+		if (path.segmentCount() == 1) {
+			return workspaceRoot.getProject(path.segment(0));
+		} if (path.segmentCount() > 1) {
+			return ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+		}
+		return null;
 	}
 
 	@Override
@@ -343,10 +350,15 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 	}
 
 	private boolean validateLibFolder() {
-		IFolder folder = getLibFolderFromText(libfolderText.getText());
+		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+		
+		IContainer folder = getLibFolderFromText(libfolderText.getText());
+		if (folder == null || workspaceRoot.equals(folder)) {
+			setErrorMessage("You must select a project destination to copy classpath entries");
+			return false;
+		}
 		String ancestorPath = folder.getFullPath().segment(0);
-		IResource ancestor = ResourcesPlugin.getWorkspace().getRoot()
-				.findMember(ancestorPath);
+		IResource ancestor = workspaceRoot.findMember(ancestorPath);
 		if (ancestor == null || !ancestor.exists()) {
 			setErrorMessage(ancestorPath + " does not exist ");
 			return false;
@@ -354,12 +366,12 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean validateEntries() {
 		Object[] selection = classpathEntriesViewer.getCheckedElements();
 		selectedClasspathEntryPaths = new LinkedHashMap<IPath, String>(
 				selection.length);
 		for (Object o : selection) {
-			@SuppressWarnings("unchecked")
 			Map.Entry<IClasspathEntry, String> entry = (Map.Entry<IClasspathEntry, String>) o;
 			if (entry.getKey().getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
 				String name = entry.getValue();
