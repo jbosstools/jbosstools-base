@@ -35,7 +35,7 @@ public class ValidationContext implements IValidationContextManager {
 
 	private ValidationResourceRegister validationResourceRegister;
 	private Map<IValidator, IValidatingProjectTree> projectTree = new HashMap<IValidator, IValidatingProjectTree>();
-	private static List<IConfigurationElement> ALL_VALIDATORS;
+	static List<IConfigurationElement> ALL_VALIDATORS;
 	private List<IValidator> validators = new ArrayList<IValidator>();
 	private Map<IValidator, Set<IProject>> validatedProjects = new HashMap<IValidator, Set<IProject>>();
 
@@ -43,7 +43,7 @@ public class ValidationContext implements IValidationContextManager {
 		init(project);
 	}
 
-	private synchronized void inintConfigurationElements() {
+	synchronized void inintConfigurationElements() {
 		if(ALL_VALIDATORS == null) {
 			// Load all the validators
 			ALL_VALIDATORS = new ArrayList<IConfigurationElement>();
