@@ -45,6 +45,27 @@ public class ContentAssistHelper {
       String editorTitle, String textToSelect, int selectionOffset,
       int selectionLength, int textToSelectIndex, List<String> expectedProposalList) {
 
+    return checkContentAssistContent(bot, editorTitle, textToSelect, selectionOffset, 
+    		selectionLength, textToSelectIndex, expectedProposalList, true);
+
+  }
+  
+  /**
+   * Checks Content Assist content on specified position within editor with editorTitle
+   * and checks if expectedProposalList is equal to current Proposal List 
+   * @param editorTitle
+   * @param textToSelect
+   * @param selectionOffset
+   * @param selectionLength
+   * @param textToSelectIndex
+   * @param expectedProposalList
+   * @param mustEquals
+   */
+  public static SWTBotEditor checkContentAssistContent(SWTBotExt bot,
+      String editorTitle, String textToSelect, int selectionOffset,
+      int selectionLength, int textToSelectIndex, List<String> expectedProposalList,
+      boolean mustEquals) {
+
     SWTJBTExt.selectTextInSourcePane(bot,
         editorTitle, textToSelect, selectionOffset, selectionLength,
         textToSelectIndex);
@@ -57,7 +78,8 @@ public class ContentAssistHelper {
     assertTrue("Code Assist menu has incorrect menu items.\n" +
         "Expected Proposal Menu Labels vs. Current Proposal Menu Labels :\n" + 
         FormatUtils.getListsDiffFormatted(expectedProposalList,currentProposalList),
-      expectedProposalList.equals(currentProposalList));
+      mustEquals?expectedProposalList.equals(currentProposalList):
+    	  currentProposalList.containsAll(expectedProposalList));
 
     return editor;
 
@@ -77,13 +99,34 @@ public class ContentAssistHelper {
       String editorTitle, String textToSelect, int selectionOffset,
       int selectionLength, List<String> expectedProposalList) {
 
+    return checkContentAssistContent(bot, editorTitle, textToSelect, 
+    		selectionOffset, selectionLength, expectedProposalList, true);
+
+  }
+  
+  /**
+   * Checks Content Assist content on specified position within editor with editorTitle
+   * and checks if expectedProposalList is equal to current Proposal List 
+   * @param editorTitle
+   * @param textToSelect
+   * @param selectionOffset
+   * @param selectionLength
+   * @param textToSelectIndex
+   * @param expectedProposalList
+   * @param mustEquals
+   */
+  public static SWTBotEditor checkContentAssistContent(SWTBotExt bot,
+      String editorTitle, String textToSelect, int selectionOffset,
+      int selectionLength, List<String> expectedProposalList, boolean mustEquals) {
+
     return ContentAssistHelper.checkContentAssistContent(bot, 
         editorTitle, 
         textToSelect, 
         selectionOffset, 
         selectionLength,
         0,
-        expectedProposalList);
+        expectedProposalList,
+        mustEquals);
 
   }
   
