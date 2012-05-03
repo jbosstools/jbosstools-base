@@ -43,7 +43,7 @@ public class ValidationContext implements IValidationContextManager {
 		init(project);
 	}
 
-	synchronized void inintConfigurationElements() {
+	synchronized static void inintConfigurationElements() {
 		if(ALL_VALIDATORS == null) {
 			// Load all the validators
 			ALL_VALIDATORS = new ArrayList<IConfigurationElement>();
