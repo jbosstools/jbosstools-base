@@ -2,6 +2,7 @@ package org.jboss.tools.ui.bot.ext.config.requirement;
 
 import static org.junit.Assert.fail;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS42;
@@ -72,7 +73,7 @@ public class AddServer extends RequirementBase {
 		SWTTestExt.configuredState.getServer().type=TestConfigurator.currentConfig.getServer().type;
 		SWTTestExt.configuredState.getServer().withJavaVersion = TestConfigurator.currentConfig.getServer().withJavaVersion;
 		// setup bundled ESB versions for SOA server type
-		if (TestConfigurator.currentConfig.getServer().type.equals(TestConfigurator.Values.SERVER_TYPE_SOA)) {
+		if (TestConfigurator.currentConfig.getServer().type.equals(TestConfigurator.Values.SERVER_TYPE_SOA)) {		
 			if ("4.3".equals(TestConfigurator.currentConfig.getServer().version)) {
 				SWTTestExt.configuredState.getServer().bundledESBVersion="4.4";			
 			}
@@ -84,6 +85,9 @@ public class AddServer extends RequirementBase {
 			}
 			else if ("5.2".equals(TestConfigurator.currentConfig.getServer().version)) {
 				SWTTestExt.configuredState.getServer().bundledESBVersion="4.10";
+			}
+			else if ("5.3".equals(TestConfigurator.currentConfig.getServer().version)) {
+				SWTTestExt.configuredState.getServer().bundledESBVersion="4.11";
 			}
 		} 
 	}
