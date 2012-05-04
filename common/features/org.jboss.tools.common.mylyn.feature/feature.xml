@@ -8,18 +8,18 @@
 	<plugin id="org.jboss.tools.common.mylyn" download-size="0" install-size="0" version="0.0.0" />
 
 	<requires>
-		<import feature="org.eclipse.mylyn_feature" version="3.6.2" match="greaterOrEqual" />
-		<import feature="org.eclipse.mylyn.ide_feature" version="3.6.2" match="greaterOrEqual" />
-		<import feature="org.eclipse.mylyn.commons" version="3.6.2" match="greaterOrEqual" />
-		<import feature="org.eclipse.mylyn.context_feature" version="3.6.2" match="greaterOrEqual" />
-		<import feature="org.eclipse.mylyn.bugzilla_feature" version="3.6.2" match="greaterOrEqual" />
-		<import feature="org.eclipse.mylyn.java_feature" version="3.6.2" match="greaterOrEqual" />
-		<import feature="org.eclipse.mylyn.pde_feature" version="3.6.2" match="greaterOrEqual" />
-		<import feature="org.eclipse.mylyn.team_feature" version="3.6.2" match="greaterOrEqual" />
+		<import feature="org.eclipse.mylyn_feature" version="3.6.5" match="greaterOrEqual" />
+		<import feature="org.eclipse.mylyn.ide_feature" version="3.6.5" match="greaterOrEqual" />
+		<import feature="org.eclipse.mylyn.commons" version="3.6.5" match="greaterOrEqual" />
+		<import feature="org.eclipse.mylyn.context_feature" version="3.6.5" match="greaterOrEqual" />
+		<import feature="org.eclipse.mylyn.bugzilla_feature" version="3.6.5" match="greaterOrEqual" />
+		<import feature="org.eclipse.mylyn.java_feature" version="3.6.5" match="greaterOrEqual" />
+		<import feature="org.eclipse.mylyn.pde_feature" version="3.6.5" match="greaterOrEqual" />
+		<import feature="org.eclipse.mylyn.team_feature" version="3.6.5" match="greaterOrEqual" />
 
-		<import feature="org.eclipse.mylyn.versions" version="0.8.2" match="greaterOrEqual" />
+		<import feature="org.eclipse.mylyn.versions" version="0.8.5" match="greaterOrEqual" />
 	</requires>
-			
+
 	<!-- JBDS-2098 add required mylyn and atlassian plugins/features; not sure if we need subclipse, bamboo, crucible, or fisheye support -->
 	<!--
 	<plugin id="com.atlassian.connector.eclipse.bamboo.core" version="0.0.0" match="greaterOrEqual" unpack="false" />
