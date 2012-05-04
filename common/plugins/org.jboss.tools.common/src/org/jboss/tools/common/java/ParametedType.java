@@ -278,8 +278,8 @@ public class ParametedType implements IParametedType {
 	
 	void buildParameters() {
 		if(signaturesByName == null && type != null) {
-			signaturesByName = new HashMap<String, String>();
-			parametersBySignature = new HashMap<String, ParametedType>();
+			Map<String, String> sbn = new HashMap<String, String>();
+			Map<String, ParametedType> pbs = new HashMap<String, ParametedType>();
 			ITypeParameter[] ps = null;
 			try {
 				ps = type.getTypeParameters();
@@ -290,10 +290,12 @@ public class ParametedType implements IParametedType {
 				String paramName = ps[i].getElementName();
 				if(parameterTypes.size() > i) {
 					ParametedType p = parameterTypes.get(i);
-					signaturesByName.put(paramName, p.getSignature());
-					parametersBySignature.put(p.getSignature(), p);
+					sbn.put(paramName, p.getSignature());
+					pbs.put(p.getSignature(), p);
 				}
 			}
+			signaturesByName = sbn;
+			parametersBySignature = pbs;
 		}
 	}
 
