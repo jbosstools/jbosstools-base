@@ -1,6 +1,7 @@
 package org.jboss.tools.ui.bot.ext.view;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -48,13 +49,18 @@ public class ErrorLogView extends ViewBase {
 	 * deletes error log permanently
 	 */
 	public void delete() {
-		ContextMenuHelper.clickContextMenu(getView().bot().tree(),
-				"Delete Log");
-		
-		SWTBotShell shell = bot.shell("Confirm Delete").activate();
-		shell.bot().button("OK").click();
-		bot.waitUntil(Conditions.shellCloses(shell));
-		log.info("Error log content deleted");		
+
+		try {
+			ContextMenuHelper.clickContextMenu(getView().bot().tree(),
+					"Delete Log");
+			
+			SWTBotShell shell = bot.shell("Confirm Delete").activate();
+			shell.bot().button("OK").click();
+			bot.waitUntil(Conditions.shellCloses(shell));
+			log.info("Error log content deleted");
+		} catch (WidgetNotFoundException e) {
+			log.warn("Error log is empty or can't be deleted");
+		}
 	}
 
 	private SWTBotView getView() {
