@@ -20,6 +20,7 @@ public class Messages extends NLS {
 	public static String JBossRuntimeStartup_Cannot_create_new_JBoss_Server;
 	public static String JBossRuntimeStartup_Cannott_create_new_DTP_Connection_Profile;
 	public static String JBossRuntimeStartup_Cannott_create_new_HSQL_DB_Driver;
+	public static String JBossRuntimeStartup_Cannot_create_new_DB_Driver;
 	public static String JBossRuntimeStartup_JBoss_Application_Server_3_2;
 	public static String JBossRuntimeStartup_JBoss_Application_Server_4_0;
 	public static String JBossRuntimeStartup_JBoss_Application_Server_4_2;
@@ -31,6 +32,7 @@ public class Messages extends NLS {
 	// NEW_SERVER_ADAPTER add logic for new adapter here
 	public static String JBossRuntimeStartup_Runtime;
 	public static String JBossRuntimeStartup_The_JBoss_AS_Hypersonic_embedded_database;
+	public static String JBossRuntimeStartup_The_JBoss_AS_H2_embedded_database;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

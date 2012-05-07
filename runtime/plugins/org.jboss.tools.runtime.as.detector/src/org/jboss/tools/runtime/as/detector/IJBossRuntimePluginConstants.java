@@ -98,14 +98,24 @@ public interface IJBossRuntimePluginConstants {
 	public static final String HSQL_DRIVER_DEFINITION_ID 
 												= "DriverDefn.Hypersonic DB"; //$NON-NLS-1$
 
+	public static final String H2_DRIVER_DEFINITION_ID 
+												= "DriverDefn.H2 DB"; //$NON-NLS-1$
+
 	public static final String HSQL_DRIVER_NAME = "Hypersonic DB"; //$NON-NLS-1$
+	
+	public static final String H2_DRIVER_NAME = "H2 Database"; //$NON-NLS-1$
 
 	public static final String HSQL_DRIVER_TEMPLATE_ID 
 						= "org.eclipse.datatools.enablement.hsqldb.1_8.driver"; //$NON-NLS-1$
+	
+	public static final String H2_DRIVER_TEMPLATE_ID 
+					= "org.eclipse.datatools.connectivity.db.generic.genericDriverTemplate"; //$NON-NLS-1$
 
 	public static final String DTP_DB_URL_PROPERTY_ID 
 								= "org.eclipse.datatools.connectivity.db.URL"; //$NON-NLS-1$
 
 	public static final String HSQL_PROFILE_ID = "org.eclipse.datatools.enablement.hsqldb.connectionProfile";
+	
+	public static final String H2_PROFILE_ID = "org.eclipse.datatools.connectivity.db.generic.connectionProfile";
 
 }

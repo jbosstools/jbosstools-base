@@ -12,6 +12,7 @@ package org.jboss.tools.runtime.handlers;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -269,25 +270,25 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			// Don't create the driver a few times
 			return;
 		}
-		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
-			// AS 7
-			return;
-		}
 		String driverPath;
 		try {
-			driverPath = new File(jbossASLocation + JBOSS_AS_HSQL_DRIVER_LOCATION[index]).getCanonicalPath(); //$NON-NLS-1$
+			driverPath = getDriverPath(jbossASLocation, index);
 		} catch (IOException e) {
 			RuntimeAsActivator.getDefault().getLog().log(new Status(IStatus.ERROR,
 					RuntimeAsActivator.PLUGIN_ID, Messages.JBossRuntimeStartup_Cannott_create_new_HSQL_DB_Driver, e));
 			return;
 		}
+		if (driverPath == null) {
+			RuntimeAsActivator.getDefault().getLog().log(new Status(IStatus.ERROR,
+					RuntimeAsActivator.PLUGIN_ID, Messages.JBossRuntimeStartup_Cannot_create_new_DB_Driver));
+		}
 
-		DriverInstance driver = DriverManager.getInstance().getDriverInstanceByName(HSQL_DRIVER_NAME);
+		DriverInstance driver = getDriver(index);
 		if (driver == null) {
-			TemplateDescriptor descr = TemplateDescriptor.getDriverTemplateDescriptor(HSQL_DRIVER_TEMPLATE_ID);
-			IPropertySet instance = new PropertySetImpl(HSQL_DRIVER_NAME, HSQL_DRIVER_DEFINITION_ID);
-			instance.setName(HSQL_DRIVER_NAME);
-			instance.setID(HSQL_DRIVER_DEFINITION_ID);
+			TemplateDescriptor descr = getDriverTemplateDescriptor(index);
+			IPropertySet instance = new PropertySetImpl(getDriverName(index), getDriverDefinitionId(index));
+			instance.setName(getDriverName(index));
+			instance.setID(getDriverDefinitionId(index));
 			Properties props = new Properties();
 
 			IConfigurationElement[] template = descr.getProperties();
@@ -298,21 +299,27 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 				String value = prop.getAttribute("value"); //$NON-NLS-1$
 				props.setProperty(id, value == null ? "" : value); //$NON-NLS-1$
 			}
-			props.setProperty(DTP_DB_URL_PROPERTY_ID, "jdbc:hsqldb:."); //$NON-NLS-1$
+			props.setProperty(DTP_DB_URL_PROPERTY_ID, getDriverUrl(index)); //$NON-NLS-1$
 			props.setProperty(IDriverMgmtConstants.PROP_DEFN_TYPE, descr.getId());
 			props.setProperty(IDriverMgmtConstants.PROP_DEFN_JARLIST, driverPath);
-
+			if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
+				props.setProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, "org.h2.Driver");
+				props.setProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID, "H2 driver");
+				props.setProperty(IDBDriverDefinitionConstants.URL_PROP_ID, "jdbc:h2:mem");
+				props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID, "sa");
+			}
+			
 			instance.setBaseProperties(props);
 			DriverManager.getInstance().removeDriverInstance(instance.getID());
 			System.gc();
 			DriverManager.getInstance().addDriverInstance(instance);
 		}
 
-		driver = DriverManager.getInstance().getDriverInstanceByName(HSQL_DRIVER_NAME);
+		driver = DriverManager.getInstance().getDriverInstanceByName(getDriverName(index));
 		if (driver != null && ProfileManager.getInstance().getProfileByName(DEFAULT_DS) == null) { //$NON-NLS-1$
 			// create profile
 			Properties props = new Properties();
-			props.setProperty(ConnectionProfileConstants.PROP_DRIVER_DEFINITION_ID, HSQL_DRIVER_DEFINITION_ID);
+			props.setProperty(ConnectionProfileConstants.PROP_DRIVER_DEFINITION_ID, getDriverDefinitionId(index));
 			props.setProperty(IDBConnectionProfileConstants.CONNECTION_PROPERTIES_PROP_ID, ""); //$NON-NLS-1$
 			props.setProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID));
 			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID,	driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID));
@@ -323,9 +330,77 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID));
 			props.setProperty(IDBDriverDefinitionConstants.URL_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.URL_PROP_ID));
 
-			ProfileManager.getInstance().createProfile(DEFAULT_DS,	Messages.JBossRuntimeStartup_The_JBoss_AS_Hypersonic_embedded_database, HSQL_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
+				ProfileManager.getInstance().createProfile(DEFAULT_DS,	Messages.JBossRuntimeStartup_The_JBoss_AS_H2_embedded_database, H2_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			} else {
+				ProfileManager.getInstance().createProfile(DEFAULT_DS,	Messages.JBossRuntimeStartup_The_JBoss_AS_Hypersonic_embedded_database, HSQL_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			}
 		}
 		
+	}
+
+	protected static String getDriverUrl(int index) {
+		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
+			return "jdbc:h2:mem";
+		} else {
+			return "jdbc:hsqldb:.";
+		}
+	}
+
+	private static String getDriverDefinitionId(int index) {
+		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
+			return H2_DRIVER_DEFINITION_ID;
+		} else {
+			return HSQL_DRIVER_DEFINITION_ID;
+		}
+	}
+
+	private static String getDriverName(int index) {
+		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
+			return H2_DRIVER_NAME;
+		} else {
+			return HSQL_DRIVER_NAME;
+		}
+	}
+
+	protected static TemplateDescriptor getDriverTemplateDescriptor(int index) {
+		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
+			return TemplateDescriptor.getDriverTemplateDescriptor(H2_DRIVER_TEMPLATE_ID);
+		} else {
+			return TemplateDescriptor.getDriverTemplateDescriptor(HSQL_DRIVER_TEMPLATE_ID);
+		}
+	}
+
+	protected static DriverInstance getDriver(int index) {
+		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
+			return DriverManager.getInstance().getDriverInstanceByName(H2_DRIVER_NAME);
+		}
+		return DriverManager.getInstance().getDriverInstanceByName(HSQL_DRIVER_NAME);
+	}
+
+	private static String getDriverPath(String jbossASLocation, int index)
+			throws IOException {
+		String driverPath;
+		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
+			File file = new File(jbossASLocation + "/modules/com/h2database/h2/main").getCanonicalFile();
+			File[] fileList = file.listFiles(new FilenameFilter() {
+				
+				@Override
+				public boolean accept(File dir, String name) {
+					if (name.startsWith("h2") && name.endsWith(".jar")) {
+						return true;
+					}
+					return false;
+				}
+			});
+			if (fileList != null && fileList.length > 0) {
+				return fileList[0].getCanonicalPath();
+			}
+			return null;
+		} else {
+			driverPath = new File(jbossASLocation + JBOSS_AS_HSQL_DRIVER_LOCATION[index]).getCanonicalPath(); //$NON-NLS-1$
+		}
+		return driverPath;
 	}
 
 	public RuntimeDefinition getServerDefinition(File root,
