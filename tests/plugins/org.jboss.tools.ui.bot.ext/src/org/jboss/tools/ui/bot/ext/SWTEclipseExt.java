@@ -874,6 +874,13 @@ public class SWTEclipseExt {
 				bot.textWithLabel(key.toString()).setText(
 						properties.getProperty((String) (key).toString()));
 			}
+			// try to select default profile if is available
+			try{
+			  bot.table().select("default");  
+			} catch (WidgetNotFoundException wnf){
+			  // do nothing
+			}
+			
 			if (jreToUse != null) {
 				bot.comboBox(0).setSelection(jreToUse);
 			}
