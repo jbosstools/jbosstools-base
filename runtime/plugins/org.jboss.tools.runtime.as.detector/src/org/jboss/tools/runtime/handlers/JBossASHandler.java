@@ -43,13 +43,14 @@ import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerType;
+import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.jboss.ide.eclipse.as.core.publishers.LocalPublishMethod;
+import org.jboss.ide.eclipse.as.core.server.IDeployableServer;
 import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
-import org.jboss.ide.eclipse.as.core.util.ServerCreationUtils;
 import org.jboss.tools.runtime.as.detector.IJBossRuntimePluginConstants;
 import org.jboss.tools.runtime.as.detector.Messages;
 import org.jboss.tools.runtime.as.detector.RuntimeAsActivator;
@@ -255,7 +256,17 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 			}
 		}
 		IServerType serverType = ServerCore.findServerType(JBOSS_AS_TYPE_ID[index]);
-		ServerCreationUtils.createServer2(runtime, serverType, name, LocalPublishMethod.LOCAL_PUBLISH_METHOD);
+		createServer2(runtime, serverType, name, LocalPublishMethod.LOCAL_PUBLISH_METHOD);
+	}
+	
+	public static IServer createServer2(IRuntime currentRuntime, IServerType serverType, String serverName, String mode) throws CoreException {
+		IServerWorkingCopy serverWC = serverType.createServer(null, null,
+				new NullProgressMonitor());
+		serverWC.setRuntime(currentRuntime);
+		serverWC.setName(serverName);
+		serverWC.setServerConfiguration(null);
+		serverWC.setAttribute(IDeployableServer.SERVER_MODE, mode); 
+		return serverWC.save(true, new NullProgressMonitor());
 	}
 
 	/**
