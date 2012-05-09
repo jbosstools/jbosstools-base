@@ -15,6 +15,7 @@ import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,11 +47,13 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
+import org.eclipse.wst.server.core.model.ServerDelegate;
 import org.jboss.ide.eclipse.as.core.publishers.LocalPublishMethod;
 import org.jboss.ide.eclipse.as.core.server.IDeployableServer;
 import org.jboss.ide.eclipse.as.core.server.bean.JBossServerType;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBean;
 import org.jboss.ide.eclipse.as.core.server.bean.ServerBeanLoader;
+import org.jboss.ide.eclipse.as.core.util.IJBossToolingConstants;
 import org.jboss.tools.runtime.as.detector.IJBossRuntimePluginConstants;
 import org.jboss.tools.runtime.as.detector.Messages;
 import org.jboss.tools.runtime.as.detector.RuntimeAsActivator;
@@ -63,12 +66,28 @@ import org.osgi.framework.Bundle;
 
 public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRuntimePluginConstants {
 	
-	private static final int JBOSS_AS70_INDEX = 8;
-	private static final int JBOSS_AS71_INDEX = 9;
-	private static final int JBOSS_EAP60_INDEX = 10;
 	private static String[] hasIncludedRuntimes = new String[] {SOA_P, EAP, EPP, EWP, SOA_P_STD};
 	private static final String DROOLS = "DROOLS"; // NON-NLS-1$
 	private static final String ESB = "ESB"; //$NON-NLS-1$
+	
+	// This constants are made to avoid dependency with org.jboss.ide.eclipse.as.core plugin
+	public static final String RUNTIME_TYPES[] = IJBossToolingConstants.ALL_JBOSS_RUNTIMES;
+	public static final String SERVER_TYPES[] = IJBossToolingConstants.ALL_JBOSS_SERVERS;
+	
+	public static final HashMap<String,String> SERVER_DEFAULT_NAME = new HashMap<String, String>();
+	static {
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_AS_32, Messages.JBossRuntimeStartup_JBoss_Application_Server_3_2);
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_AS_40, Messages.JBossRuntimeStartup_JBoss_Application_Server_4_0);
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_AS_42, Messages.JBossRuntimeStartup_JBoss_Application_Server_4_2);
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_AS_50, Messages.JBossRuntimeStartup_JBoss_Application_Server_5_0);
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_AS_51, Messages.JBossRuntimeStartup_JBoss_Application_Server_5_1);
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_AS_60, Messages.JBossRuntimeStartup_JBoss_Application_Server_6_0);
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_EAP_43, Messages.JBossRuntimeStartup_JBoss_EAP_Server_4_3);
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_EAP_50, Messages.JBossRuntimeStartup_JBoss_EAP_Server_5_0);
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_AS_70, Messages.JBossRuntimeStartup_JBoss_Application_Server_7_0);
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_AS_71, Messages.JBossRuntimeStartup_JBoss_Application_Server_7_1);
+		SERVER_DEFAULT_NAME.put(IJBossToolingConstants.SERVER_EAP_60, Messages.JBossRuntimeStartup_JBoss_EAP_Server_6_0);
+	}
 
 	public void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
 		createJBossServerFromDefinitions(serverDefinitions);
@@ -105,107 +124,66 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 				String type = serverDefinition.getType();
 				if (SOA_P.equals(type) || EAP.equals(type) || EPP.equals(type)
 						|| SOA_P_STD.equals(type) || EWP.equals(type)
-						|| EAP_STD.equals(type)) {
+						|| EAP_STD.equals(type) || AS.equals(type)) {
+					String typeId = new ServerBeanLoader(asLocation).getServerAdapterId();
 					String name = serverDefinition.getName();
 					String runtimeName = name + " " + RUNTIME; //$NON-NLS-1$
-					int index = getJBossASVersion(asLocation, serverDefinition);
-					createJBossServer(asLocation, index, name, runtimeName);
-				} else if (AS.equals(type)) {
-					String version = serverDefinition.getVersion();
-					int index = 2;
-					if ("3.2".equals(version)) { //$NON-NLS-1$
-						index = 0;
-					} else if ("4.0".equals(version)) { //$NON-NLS-1$
-						index = 1;
-					} else if ("4.2".equals(version)) { //$NON-NLS-1$
-						index = 2;
-					} else if ("5.0".equals(version)) { //$NON-NLS-1$
-						index = 3;
-					} else if ("5.1".equals(version)) { //$NON-NLS-1$
-						index = 4;
-					} else if ("6.0".equals(version) || "6.1".equals(version)) { //$NON-NLS-1$
-						index = 5;
-					} else if ("7.0".equals(version)) { //$NON-NLS-1$
-						index = JBOSS_AS70_INDEX;
-					} else if ("7.1".equals(version)) { //$NON-NLS-1$
-						index = JBOSS_AS71_INDEX;
-					}
-					// NEW_SERVER_ADAPTER add logic for new adapter here
-					createJBossServer(serverDefinition.getLocation(), index,
-							serverDefinition.getName(),
-							serverDefinition.getName() + " " + RUNTIME); //$NON-NLS-1$
+					createJBossServer(asLocation, typeId, name, runtimeName);
 				}
 			}
 			createJBossServerFromDefinitions(serverDefinition.getIncludedServerDefinitions());
 		}	
 	}
 
-	private static int getJBossASVersion(File asLocation, RuntimeDefinition serverDefinition) {
-		int index = -1;
-		String type = serverDefinition.getType();
-		String ver = serverDefinition.getVersion();
-		String fullVersion;
-		if (EAP.equals(type) && "6.0".equals(ver)) {
-			fullVersion = new ServerBeanLoader(asLocation).getFullServerVersion();
-		} else {
-			fullVersion = new ServerBeanLoader(asLocation).getFullServerVersion();
-		}
-		if(fullVersion != null ) {
-			String version = fullVersion.substring(0, 3);
-			if ("4.3".equals(version)) { //$NON-NLS-1$
-				index = 6;
-			} else if ("5.0".equals(version)) { //$NON-NLS-1$
-				index = 7;
-			} else if ("5.1".equals(version)) { //$NON-NLS-1$
-				// FIXME - this needs to be changed when adding a new runtime type for JBoss EAP 5.1
-				index = 7;
-			} else if ("5.2".equals(version)) { //$NON-NLS-1$
-				// SOA-P 5.2
-				index = 7;
-			} else if ("6.0".equals(version)) { //$NON-NLS-1$
-				// EAP 6.0
-				index = 10;
-			}
-		}
-		return index;
-	}
-
-	private static void createJBossServer(File asLocation, int index, String name, String runtimeName) {
-		if (asLocation == null || !asLocation.isDirectory() || index==-1) {
-			return;
-		}
-		IPath jbossAsLocationPath = new Path(asLocation.getAbsolutePath());
-
+	private static boolean serverExistsForPath(IPath locPath) {
 		IServer[] servers = ServerCore.getServers();
 		for (int i = 0; i < servers.length; i++) {
 			IRuntime runtime = servers[i].getRuntime();
-			if(runtime != null && runtime.getLocation() != null && runtime.getLocation().equals(jbossAsLocationPath)) {
-				return;
+			if(runtime != null && runtime.getLocation() != null && runtime.getLocation().equals(locPath)) {
+				return true;
 			}
 		}
-
-		IRuntime runtime = null;
+		return false;
+	}
+	
+	private static IRuntime findRuntimeForPath(IPath locPath) {
 		IRuntime[] runtimes = ServerCore.getRuntimes();
 		for (int i = 0; i < runtimes.length; i++) {
 			if (runtimes[i] == null || runtimes[i].getLocation() == null) {
 				continue;
 			}
-			if (runtimes[i].getLocation().equals(jbossAsLocationPath)) {
-				runtime = runtimes[i].createWorkingCopy();
-				break;
+			if (runtimes[i].getLocation().equals(locPath)) {
+				return runtimes[i];
 			}
 		}
-
+		return null;
+	}
+	
+	private static void createJBossServer(File asLocation, String serverTypeId, String name, String runtimeName) {
+		if (asLocation == null || !asLocation.isDirectory() || serverTypeId == null)
+			return;
+		IServerType serverType = ServerCore.findServerType(serverTypeId);
+		if( serverType == null )
+			return;
+		IRuntimeType rtType = serverType.getRuntimeType();
+		if( rtType == null )
+			return;
+		
+		IPath jbossAsLocationPath = new Path(asLocation.getAbsolutePath());
+		if( serverExistsForPath(jbossAsLocationPath))
+			return;
+		
+		IRuntime runtime = findRuntimeForPath(jbossAsLocationPath);
 		IProgressMonitor progressMonitor = new NullProgressMonitor();
 		try {
 			if (runtime == null) {
-				runtime = createRuntime(runtimeName, asLocation.getAbsolutePath(), progressMonitor, index);
+				runtime = createRuntime(runtimeName, asLocation.getAbsolutePath(), progressMonitor, rtType);
 			}
 			if (runtime != null) {
-				createServer(progressMonitor, runtime, index, name);
+				createServer(progressMonitor, runtime, serverType, name);
 			}
 
-			createDriver(asLocation.getAbsolutePath(), index);
+			new DriverUtility().createDriver(asLocation.getAbsolutePath(), serverType);
 		} catch (CoreException e) {
 			RuntimeAsActivator.log(e,Messages.JBossRuntimeStartup_Cannot_create_new_JBoss_Server);
 		} catch (ConnectionProfileException e) {
@@ -220,22 +198,16 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	 * @return runtime working copy
 	 * @throws CoreException
 	 */
-	private static IRuntime createRuntime(String runtimeName, String jbossASLocation, IProgressMonitor progressMonitor, int index) throws CoreException {
+	private static IRuntime createRuntime(String runtimeName, String jbossASLocation, 
+			IProgressMonitor progressMonitor, IRuntimeType rtType) throws CoreException {
 		IRuntimeWorkingCopy runtime = null;
-		String type = null;
-		String version = null;
-		String runtimeId = null;
 		IPath jbossAsLocationPath = new Path(jbossASLocation);
-		IRuntimeType[] runtimeTypes = ServerUtil.getRuntimeTypes(type, version, JBOSS_AS_RUNTIME_TYPE_ID[index]);
-		if (runtimeTypes.length > 0) {
-			runtime = runtimeTypes[0].createRuntime(runtimeId, progressMonitor);
-			runtime.setLocation(jbossAsLocationPath);
-			if(runtimeName!=null) {
-				runtime.setName(runtimeName);				
-			}
-			return runtime.save(false, progressMonitor);
+		runtime = rtType.createRuntime(null, progressMonitor);
+		runtime.setLocation(jbossAsLocationPath);
+		if(runtimeName!=null) {
+			runtime.setName(runtimeName);				
 		}
-		return runtime;
+		return runtime.save(false, progressMonitor);
 	}
 
 	/**
@@ -245,18 +217,23 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 	 * @return server working copy
 	 * @throws CoreException
 	 */
-	private static void createServer(IProgressMonitor progressMonitor, IRuntime runtime, int index, String name) throws CoreException {
-		if (name == null) {
-			name = JBOSS_AS_NAME[index];
+	private static void createServer(IProgressMonitor progressMonitor, IRuntime runtime,
+			IServerType serverType, String name) throws CoreException {
+		if (name == null)
+			name = SERVER_DEFAULT_NAME.get(serverType.getId());
+		if( !serverWithNameExists(name)) {
+			createServer2(runtime, serverType, name, LocalPublishMethod.LOCAL_PUBLISH_METHOD);
 		}
+	}
+	
+	private static boolean serverWithNameExists(String name) {
 		IServer[] servers = ServerCore.getServers();
 		for (IServer server:servers) {
 			if (name.equals(server.getName()) ) {
-				return;
+				return true;
 			}
 		}
-		IServerType serverType = ServerCore.findServerType(JBOSS_AS_TYPE_ID[index]);
-		createServer2(runtime, serverType, name, LocalPublishMethod.LOCAL_PUBLISH_METHOD);
+		return false;
 	}
 	
 	public static IServer createServer2(IRuntime currentRuntime, IServerType serverType, String serverName, String mode) throws CoreException {
@@ -267,151 +244,6 @@ public class JBossASHandler extends AbstractRuntimeDetector implements IJBossRun
 		serverWC.setServerConfiguration(null);
 		serverWC.setAttribute(IDeployableServer.SERVER_MODE, mode); 
 		return serverWC.save(true, new NullProgressMonitor());
-	}
-
-	/**
-	 * Creates HSQL DB Driver
-	 * @param jbossASLocation location of JBoss AS
-	 * @param index 
-	 * @throws ConnectionProfileException
-	 * @return driver instance
-	 */
-	private static void createDriver(String jbossASLocation, int index) throws ConnectionProfileException {
-		if(ProfileManager.getInstance().getProfileByName(DEFAULT_DS) != null) {
-			// Don't create the driver a few times
-			return;
-		}
-		String driverPath;
-		try {
-			driverPath = getDriverPath(jbossASLocation, index);
-		} catch (IOException e) {
-			RuntimeAsActivator.getDefault().getLog().log(new Status(IStatus.ERROR,
-					RuntimeAsActivator.PLUGIN_ID, Messages.JBossRuntimeStartup_Cannott_create_new_HSQL_DB_Driver, e));
-			return;
-		}
-		if (driverPath == null) {
-			RuntimeAsActivator.getDefault().getLog().log(new Status(IStatus.ERROR,
-					RuntimeAsActivator.PLUGIN_ID, Messages.JBossRuntimeStartup_Cannot_create_new_DB_Driver));
-		}
-
-		DriverInstance driver = getDriver(index);
-		if (driver == null) {
-			TemplateDescriptor descr = getDriverTemplateDescriptor(index);
-			IPropertySet instance = new PropertySetImpl(getDriverName(index), getDriverDefinitionId(index));
-			instance.setName(getDriverName(index));
-			instance.setID(getDriverDefinitionId(index));
-			Properties props = new Properties();
-
-			IConfigurationElement[] template = descr.getProperties();
-			for (int i = 0; i < template.length; i++) {
-				IConfigurationElement prop = template[i];
-				String id = prop.getAttribute("id"); //$NON-NLS-1$
-
-				String value = prop.getAttribute("value"); //$NON-NLS-1$
-				props.setProperty(id, value == null ? "" : value); //$NON-NLS-1$
-			}
-			props.setProperty(DTP_DB_URL_PROPERTY_ID, getDriverUrl(index)); //$NON-NLS-1$
-			props.setProperty(IDriverMgmtConstants.PROP_DEFN_TYPE, descr.getId());
-			props.setProperty(IDriverMgmtConstants.PROP_DEFN_JARLIST, driverPath);
-			if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
-				props.setProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, "org.h2.Driver");
-				props.setProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID, "H2 driver");
-				props.setProperty(IDBDriverDefinitionConstants.URL_PROP_ID, "jdbc:h2:mem");
-				props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID, "sa");
-			}
-			
-			instance.setBaseProperties(props);
-			DriverManager.getInstance().removeDriverInstance(instance.getID());
-			System.gc();
-			DriverManager.getInstance().addDriverInstance(instance);
-		}
-
-		driver = DriverManager.getInstance().getDriverInstanceByName(getDriverName(index));
-		if (driver != null && ProfileManager.getInstance().getProfileByName(DEFAULT_DS) == null) { //$NON-NLS-1$
-			// create profile
-			Properties props = new Properties();
-			props.setProperty(ConnectionProfileConstants.PROP_DRIVER_DEFINITION_ID, getDriverDefinitionId(index));
-			props.setProperty(IDBConnectionProfileConstants.CONNECTION_PROPERTIES_PROP_ID, ""); //$NON-NLS-1$
-			props.setProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID));
-			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID,	driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID));
-			props.setProperty(IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID));
-			props.setProperty(IDBDriverDefinitionConstants.DATABASE_NAME_PROP_ID, "Default"); //$NON-NLS-1$
-			props.setProperty(IDBDriverDefinitionConstants.PASSWORD_PROP_ID, ""); //$NON-NLS-1$
-			props.setProperty(IDBConnectionProfileConstants.SAVE_PASSWORD_PROP_ID, "false"); //$NON-NLS-1$
-			props.setProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.USERNAME_PROP_ID));
-			props.setProperty(IDBDriverDefinitionConstants.URL_PROP_ID, driver.getProperty(IDBDriverDefinitionConstants.URL_PROP_ID));
-
-			if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
-				ProfileManager.getInstance().createProfile(DEFAULT_DS,	Messages.JBossRuntimeStartup_The_JBoss_AS_H2_embedded_database, H2_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			} else {
-				ProfileManager.getInstance().createProfile(DEFAULT_DS,	Messages.JBossRuntimeStartup_The_JBoss_AS_Hypersonic_embedded_database, HSQL_PROFILE_ID, props, "", false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-		}
-		
-	}
-
-	protected static String getDriverUrl(int index) {
-		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
-			return "jdbc:h2:mem";
-		} else {
-			return "jdbc:hsqldb:.";
-		}
-	}
-
-	private static String getDriverDefinitionId(int index) {
-		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
-			return H2_DRIVER_DEFINITION_ID;
-		} else {
-			return HSQL_DRIVER_DEFINITION_ID;
-		}
-	}
-
-	private static String getDriverName(int index) {
-		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
-			return H2_DRIVER_NAME;
-		} else {
-			return HSQL_DRIVER_NAME;
-		}
-	}
-
-	protected static TemplateDescriptor getDriverTemplateDescriptor(int index) {
-		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
-			return TemplateDescriptor.getDriverTemplateDescriptor(H2_DRIVER_TEMPLATE_ID);
-		} else {
-			return TemplateDescriptor.getDriverTemplateDescriptor(HSQL_DRIVER_TEMPLATE_ID);
-		}
-	}
-
-	protected static DriverInstance getDriver(int index) {
-		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
-			return DriverManager.getInstance().getDriverInstanceByName(H2_DRIVER_NAME);
-		}
-		return DriverManager.getInstance().getDriverInstanceByName(HSQL_DRIVER_NAME);
-	}
-
-	private static String getDriverPath(String jbossASLocation, int index)
-			throws IOException {
-		String driverPath;
-		if (index == JBOSS_AS70_INDEX || index == JBOSS_AS71_INDEX || index == JBOSS_EAP60_INDEX) {
-			File file = new File(jbossASLocation + "/modules/com/h2database/h2/main").getCanonicalFile();
-			File[] fileList = file.listFiles(new FilenameFilter() {
-				
-				@Override
-				public boolean accept(File dir, String name) {
-					if (name.startsWith("h2") && name.endsWith(".jar")) {
-						return true;
-					}
-					return false;
-				}
-			});
-			if (fileList != null && fileList.length > 0) {
-				return fileList[0].getCanonicalPath();
-			}
-			return null;
-		} else {
-			driverPath = new File(jbossASLocation + JBOSS_AS_HSQL_DRIVER_LOCATION[index]).getCanonicalPath(); //$NON-NLS-1$
-		}
-		return driverPath;
 	}
 
 	public RuntimeDefinition getServerDefinition(File root,
