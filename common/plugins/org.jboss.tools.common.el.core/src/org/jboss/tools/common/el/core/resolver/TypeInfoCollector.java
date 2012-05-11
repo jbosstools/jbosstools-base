@@ -994,8 +994,10 @@ public class TypeInfoCollector {
 					break;
 				}
 				IType superType = type.getJavaProject().findType(fullySuperclassName);
-				result.add(superType);
-				initSuperinterfaces(superType, result);
+				if(superType != null) {
+					result.add(superType);
+					initSuperinterfaces(superType, result);
+				}
 			}
 		}
 	}
