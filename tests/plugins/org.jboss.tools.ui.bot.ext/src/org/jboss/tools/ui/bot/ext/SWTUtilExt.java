@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.ui.bot.ext;
 
+import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withTooltip;
 import static org.junit.Assert.fail;
 
@@ -29,6 +31,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -36,21 +39,24 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.MenuFinder;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
+import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotBrowserExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.JobLists;
 import org.jboss.tools.ui.bot.ext.types.JobState;
 import org.osgi.framework.Bundle;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 
 /**
  * SWTUtilExt is contains helper method for writing SWTBot tests, i.e. various delay methods
@@ -821,5 +827,30 @@ public class SWTUtilExt extends SWTUtils {
       File.separator +
       projectName;
   }
+
+    /**
+     * Returns the first found menu which matches given regular expression.
+     * 
+     * @param menuRegex Regular expression which is looking for in menu text.
+     * @param parentMenu Parent menu which is used for searching.
+     * 
+     * @return Menu matching regular expression.
+     * 
+     * @throws WidgetNotFoundException If no menu matches.
+     */
+    public static SWTBotMenu menuWithRegex(final String menuRegex, final SWTBotMenu parentMenu) throws WidgetNotFoundException {
+        final Matcher<? extends Widget> matcher = withRegex(menuRegex);
+        MenuItem menuItem = syncExec(new WidgetResult<MenuItem>() {
+            public MenuItem run() {
+                Menu bar = parentMenu.widget.getMenu();
+                Matcher<MenuItem> withRegex = withRegex(menuRegex);
+                List<MenuItem> menus = new MenuFinder().findMenus(bar, withRegex, true);
+                if (!menus.isEmpty())
+                    return menus.get(0);
+                return null;
+            }
+        });
+        return new SWTBotMenu(menuItem, matcher);
+    }
 
 }

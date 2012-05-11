@@ -1244,7 +1244,9 @@ public class SWTEclipseExt {
 		//System.out.println (treeItem.contextMenu("Run As").menu("2 Java Application").getText());
 
 		bot.sleep(Timing.time30S());
-		treeItem.contextMenu("Run As").menu("2 Java Application").click();		
+		//treeItem.contextMenu("Run As").menu("2 Java Application").click();
+		SWTUtilExt.menuWithRegex("(.*) Java Application", treeItem.contextMenu(IDELabel.Menu.RUN_AS)).click();
+
 		//runJavaApplication("helloworld_testclient","org.jboss.soa.esb.samples.quickstart.helloworld.test.SendJMSMessage"," ");
 		bot.sleep(Timing.time30S());	// This is needed to enable the test to run successfully to completion
 		
