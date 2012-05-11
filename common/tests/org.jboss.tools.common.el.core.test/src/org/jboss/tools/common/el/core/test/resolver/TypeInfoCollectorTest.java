@@ -95,6 +95,16 @@ public class TypeInfoCollectorTest extends TestCase {
 		}
 	}
 
+	public void testMissingInterface() throws CoreException {
+		IJavaProject jp = JavaCore.create(project2);
+		String className = "test.TestD";
+		IType bean = jp.findType(className);
+		TypeInfoCollector.TypeInfo typeInfo = new TypeInfoCollector.TypeInfo(bean, null, false);
+		TypeInfoCollector collector = typeInfo.getTypeCollector(false, false);
+		//NullPointerException is expected in TypeInfoCollector.initSuperinterfaces()
+		assertNotNull(collector);
+	}
+
 	private MemberInfo getMethod(TypeInfoCollector collector, String name) {
 		collector.collectInfo();
 		List<MemberInfo> mts = collector.getMethods();
