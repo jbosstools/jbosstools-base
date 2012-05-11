@@ -586,7 +586,7 @@ public class TypeInfoCollector {
 		private String[] fParameterTypeNames;
 		private String[] fParameterTypeQualifiedNames;
 		private String[] fParameterNames;
-		private IJavaElement fJavaElement;
+		private IMethod fJavaElement;
 
 		public MethodInfo(IType sourceType, String declaringTypeQualifiedName, String name,
 				int modifiers, String[] parameterTypeQualifiedNames, 
@@ -674,7 +674,9 @@ public class TypeInfoCollector {
 		}
 
 		public boolean isGetter() {
-			return getType() != null && BeanUtil.isGetter(getName(), getNumberOfParameters());
+			return getType() != null 
+					&& BeanUtil.isGetter(getName(), getNumberOfParameters()) 
+					&& BeanUtil.checkPropertyReturnType(getType().getName(), getName());
 		}
 
 		public boolean isSetter() {
