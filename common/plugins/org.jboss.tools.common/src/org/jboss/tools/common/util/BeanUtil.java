@@ -38,20 +38,21 @@ public class BeanUtil {
 			&& checkPropertyReturnType(method);
 	}
 
-	private static boolean checkPropertyReturnType(IMethod method) {
-		if(method == null) {
-			return false;
-		}
-		String typeName = EclipseJavaUtil.getMemberTypeAsString(method);
+	
+	public static boolean checkPropertyReturnType(String typeName, String methodName) {
 		if(typeName == null || typeName.equals("void")) { //$NON-NLS-1$
 			return false;
 		}
-		if(method.getElementName().startsWith(BeanUtil.IS)) {
+		if(methodName.startsWith(BeanUtil.IS)) {
 			if(!"boolean".equals(typeName) && !"java.lang.Boolean".equals(typeName)) { //$NON-NLS-1$ //$NON-NLS-2$
 				return false;
 			}			
 		}
 		return true;
+	}
+
+	private static boolean checkPropertyReturnType(IMethod method) {
+		return method != null && checkPropertyReturnType(EclipseJavaUtil.getMemberTypeAsString(method), method.getElementName());
 	}
 
 	public static boolean isSetter(IMethod method) {
