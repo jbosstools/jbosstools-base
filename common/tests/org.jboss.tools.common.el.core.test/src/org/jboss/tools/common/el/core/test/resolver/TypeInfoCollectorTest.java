@@ -10,7 +10,9 @@
   ******************************************************************************/
 package org.jboss.tools.common.el.core.test.resolver;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -97,12 +99,44 @@ public class TypeInfoCollectorTest extends TestCase {
 
 	public void testMissingInterface() throws CoreException {
 		IJavaProject jp = JavaCore.create(project2);
-		String className = "test.TestD";
+		String className = "test.TestD"; //$NON-NLS-1$
 		IType bean = jp.findType(className);
 		TypeInfoCollector.TypeInfo typeInfo = new TypeInfoCollector.TypeInfo(bean, null, false);
 		TypeInfoCollector collector = typeInfo.getTypeCollector(false, false);
 		//NullPointerException is expected in TypeInfoCollector.initSuperinterfaces()
 		assertNotNull(collector);
+	}
+
+	public void testProperties() throws CoreException {
+		IJavaProject jp = JavaCore.create(project2);
+		String className = "test.TestE"; //$NON-NLS-1$
+		IType bean = jp.findType(className);
+		TypeInfoCollector.TypeInfo typeInfo = new TypeInfoCollector.TypeInfo(bean, null, false);
+		TypeInfoCollector collector = typeInfo.getTypeCollector(false, false);
+		List<MemberInfo> ps = collector.getProperties();
+		//Names of methods, recognized as properties
+		Set<String> ns = getNames(ps);
+		assertTrue(ns.contains("getName")); //$NON-NLS-1$
+		assertFalse(ns.contains("getAge")); //$NON-NLS-1$
+		assertTrue(ns.contains("isOld")); //$NON-NLS-1$
+		assertTrue(ns.contains("setColor")); //$NON-NLS-1$
+		assertFalse(ns.contains("isBig")); //$NON-NLS-1$
+		assertFalse(ns.contains("getState")); //$NON-NLS-1$
+		List<MemberInfo> ms = collector.getMethods();
+		//Names of all methods
+		Set<String> ns2 = getNames(ms);
+		//Make sure that methods that were not recognized as properties, do exist. 
+		assertTrue(ns2.contains("getAge")); //$NON-NLS-1$
+		assertTrue(ns2.contains("isBig")); //$NON-NLS-1$
+		assertTrue(ns2.contains("getState")); //$NON-NLS-1$
+	}
+
+	Set<String> getNames(List<MemberInfo> ms) {
+		Set<String> result = new HashSet<String>();
+		for (MemberInfo i: ms) {
+			result.add(i.getName());
+		}
+		return result;
 	}
 
 	private MemberInfo getMethod(TypeInfoCollector collector, String name) {
