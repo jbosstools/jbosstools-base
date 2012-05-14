@@ -868,7 +868,7 @@ public class SWTEclipseExt {
 		if (createRuntime) {
 			wiz.button(IDELabel.Button.ADD).click();
 			bot.shell(IDELabel.Shell.NEW_SERVER_RUNTIME_ENVIRONMENT).activate();
-			open.selectTreeNode(runtime);
+			open.selectTreeNode(runtime);			
 			bot.button(IDELabel.Button.NEXT).click();
 			for (Object key : properties.keySet()) {
 				bot.textWithLabel(key.toString()).setText(
@@ -884,6 +884,10 @@ public class SWTEclipseExt {
 			if (jreToUse != null) {
 				bot.comboBox(0).setSelection(jreToUse);
 			}
+			
+			/* To work around bug https://issues.jboss.org/browse/JBIDE-11567 - ldimaggi - April 2012 */
+			//bot.table(0).select("default");
+			
 			open.finish(bot.activeShell().bot());
 	  }
 		else{
