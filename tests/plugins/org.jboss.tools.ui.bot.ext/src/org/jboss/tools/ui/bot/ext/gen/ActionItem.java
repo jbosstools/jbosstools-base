@@ -1860,7 +1860,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 6.x
 			*/
 			public static final IServer LABEL = new IServer() {
-				public String getName() { return "JBoss Enterprise Application Platform 6.x (Experimental)";}
+				public String getName() { return "JBoss Enterprise Application Platform 6.x";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Enterprise Middleware");
@@ -10652,7 +10652,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : JBoss Enterprise Middleware->JBoss Enterprise Application Platform 6.x Runtime
 			*/
 			public static final IServerRuntime LABEL = new IServerRuntime() {
-				public String getName() { return "JBoss Enterprise Application Platform 6.x Runtime (Experimental)";}
+				public String getName() { return "JBoss Enterprise Application Platform 6.x Runtime";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Enterprise Middleware");
