@@ -24,6 +24,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.ui.IEditorReference;
 import org.jboss.tools.ui.bot.ext.Timing;
 
+import org.jboss.tools.ui.bot.ext.parts.QuickFixBot;  /* ldimaggi - April 17, 2012 */
+
 public class SWTBotEditorExt extends SWTBotEclipseEditor {
 
 	
