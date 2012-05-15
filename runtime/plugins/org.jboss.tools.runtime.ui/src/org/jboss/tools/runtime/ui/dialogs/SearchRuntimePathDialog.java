@@ -337,26 +337,49 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		} else {
 			serverDefinitions.clear();
 		}
+		List<RuntimeDefinition> allDefinitions = getAllDefinitions();
 		for (RuntimePath runtimePath : runtimePaths) {
-			for (RuntimeDefinition serverDefinition : runtimePath
-					.getServerDefinitions()) {
+			List<RuntimeDefinition> pathDefinitions = getAllDefinitions(runtimePath);
+			for (RuntimeDefinition serverDefinition : pathDefinitions) {
 				if (!RuntimeUIActivator.runtimeCreated(serverDefinition)) {
-					List<RuntimeDefinition> allServerDefinitions = RuntimeUIActivator.getDefault().getServerDefinitions();
+					
 					String name = serverDefinition.getName();
 					int i = 2;
-					while (serverDefinitionsExists(serverDefinition, allServerDefinitions)) {
+					while (serverDefinitionsExists(serverDefinition, allDefinitions)) {
 						serverDefinition.setName(name + " (" + i++ + ")");
 					}
 				}
+			}
+
+		}
+		for (RuntimePath runtimePath : runtimePaths) {
+			for (RuntimeDefinition serverDefinition : runtimePath.getServerDefinitions()) {
 				if (!hideCreatedRuntimes) {
 					serverDefinitions.add(serverDefinition);
 				} else if (!RuntimeUIActivator.runtimeCreated(serverDefinition)) {
 					serverDefinitions.add(serverDefinition);
 				}
 			}
-
 		}
 		return serverDefinitions;
+	}
+
+	protected List<RuntimeDefinition> getAllDefinitions(RuntimePath runtimePath) {
+		List<RuntimeDefinition> allDefinitions = new ArrayList<RuntimeDefinition>();
+		allDefinitions.addAll(runtimePath.getServerDefinitions());
+		for (RuntimeDefinition serverDefinition : runtimePath.getServerDefinitions()) {
+			allDefinitions.addAll(serverDefinition.getIncludedServerDefinitions());
+		}
+		return allDefinitions;
+	}
+
+	private List<RuntimeDefinition> getAllDefinitions() {
+		List<RuntimeDefinition> allServerDefinitions = new ArrayList<RuntimeDefinition>();
+		allServerDefinitions.addAll(RuntimeUIActivator.getDefault().getServerDefinitions());
+		for (RuntimeDefinition d:RuntimeUIActivator.getDefault().getServerDefinitions()) {
+			allServerDefinitions.addAll(d.getIncludedServerDefinitions());
+		}
+		return allServerDefinitions;
 	}
 
 	private boolean serverDefinitionsExists(RuntimeDefinition serverDefinition,
