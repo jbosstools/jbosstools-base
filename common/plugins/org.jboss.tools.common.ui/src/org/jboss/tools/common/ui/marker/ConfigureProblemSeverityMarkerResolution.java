@@ -22,6 +22,7 @@ import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.preference.IPreferenceNode;
+import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
@@ -93,13 +94,31 @@ public class ConfigureProblemSeverityMarkerResolution implements
 	}
 	
 	private String getPreferenceLabel() {
+		String label = "";
 		WorkbenchPreferenceNode pageNode = findPageNode();
-		pageNode.createPage();
-		if(pageNode != null && pageNode.getPage() instanceof SeverityPreferencePage){
-			SeverityPreferencePage page = (SeverityPreferencePage)pageNode.getPage();
-			return cut(page.getLabel(preferenceKey));
+		if(pageNode != null){
+			IPreferencePage page = pageNode.getPage();
+			if(page == null){
+				pageNode.createPage();
+				
+				page = pageNode.getPage();
+				
+				label = getLabel(page);
+				
+				pageNode.setPage(null);
+				page.dispose();
+			}else{
+				label = getLabel(page);
+			}
 		}
-		return null;
+		return label;
+	}
+	
+	private String getLabel(IPreferencePage page){
+		if(page instanceof SeverityPreferencePage){
+			return cut(((SeverityPreferencePage)page).getLabel(preferenceKey));
+		}
+		return "";
 	}
 	
 	private String cut(String label){
