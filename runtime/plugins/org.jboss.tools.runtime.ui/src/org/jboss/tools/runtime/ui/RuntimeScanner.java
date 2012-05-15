@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IStartup;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
@@ -54,7 +55,7 @@ public class RuntimeScanner implements IStartup {
 				if (exists) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
-							Shell shell = Display.getCurrent().getActiveShell();
+							Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
 							Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
 							for (RuntimePath runtimePath:RuntimeUIActivator.getDefault().getRuntimePaths()) {
 								if (runtimePath.isScanOnEveryStartup() || firstStart) {
