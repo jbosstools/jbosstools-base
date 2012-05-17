@@ -12,16 +12,16 @@ import org.jboss.tools.runtime.as.ui.bot.test.epp5.DetectEPP5;
 import org.jboss.tools.runtime.as.ui.bot.test.epp5.OperateEPP5;
 import org.jboss.tools.runtime.as.ui.bot.test.ewp5.DetectEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.ewp5.OperateEWP5;
-import org.jboss.tools.runtime.as.ui.bot.test.jboss71.DetectJBoss71;
-import org.jboss.tools.runtime.as.ui.bot.test.jboss71.OperateJBoss71;
+import org.jboss.tools.runtime.as.ui.bot.test.jboss7.DetectJBoss7;
+import org.jboss.tools.runtime.as.ui.bot.test.jboss7.OperateJBoss7;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(RequirementAwareSuite.class)
 @Suite.SuiteClasses({
-		DetectJBoss71.class,
-		OperateJBoss71.class,
+		DetectJBoss7.class,
+		OperateJBoss7.class,
 		DetectEAP6.class,
 		OperateEAP6.class,
 		DetectEAP5.class, 

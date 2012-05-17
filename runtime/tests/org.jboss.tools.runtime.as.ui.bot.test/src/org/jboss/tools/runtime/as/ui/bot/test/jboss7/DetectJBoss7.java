@@ -1,25 +1,25 @@
-package org.jboss.tools.runtime.as.ui.bot.test.jboss71;
+package org.jboss.tools.runtime.as.ui.bot.test.jboss7;
 
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Server;
 import org.jboss.tools.runtime.as.ui.bot.test.template.DetectServerTemplate;
 
-public class DetectJBoss71 extends DetectServerTemplate {
+public class DetectJBoss7 extends DetectServerTemplate {
 
-	public static final String JBOSS_7_1 = "jboss-as-7.1.1.Final";
+	public static final String SERVER_ID = "jboss-as-7.1.1.Final";
 	
 	@Override
 	protected String getServerID() {
-		return JBOSS_7_1;
+		return SERVER_ID;
 	}
 	
 	@Override
 	protected Server getExpectedServer() {
 		Server expectedServer = new Server();
-		expectedServer.setName(JBOSS_7_1);
+		expectedServer.setName(SERVER_ID);
 		expectedServer.setVersion("7.1");
 		expectedServer.setType("AS");
-		expectedServer.setLocation(RuntimeProperties.getInstance().getRuntimePath(JBOSS_7_1));
+		expectedServer.setLocation(RuntimeProperties.getInstance().getRuntimePath(SERVER_ID));
 		return expectedServer;
 	}
 }
