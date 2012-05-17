@@ -14,6 +14,7 @@ import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.ServerServers;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.logging.WidgetsLogger;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class ServersView extends ViewBase {
@@ -151,6 +152,12 @@ public class ServersView extends ViewBase {
 				catch (Exception ex){
 					log.error(ex);
 				}
+			}
+			try {
+				bot.shell("Server already running on localhost");
+				throw new RuntimeException("Another server is running on localhost");
+			} catch (WidgetNotFoundException e) {
+				// ok, nothing to do
 			}
 			util.waitForNonIgnoredJobs(Timing.time(600 * 1000));
 			util.waitForAll(Timing.time3S());
