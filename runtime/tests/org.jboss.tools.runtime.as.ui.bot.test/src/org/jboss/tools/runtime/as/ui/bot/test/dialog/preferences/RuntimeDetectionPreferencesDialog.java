@@ -33,6 +33,11 @@ public class RuntimeDetectionPreferencesDialog {
 		return new SearchingForRuntimesDialog();
 	}
 	
+	public void removePath(final String path){
+		SWTBotFactory.getBot().table().click(0, 0);
+		SWTBotFactory.getBot().button("Remove").click();
+	}
+	
 	public void ok(){
 		SWTBotFactory.getBot().button("OK").click();
 	}

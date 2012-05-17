@@ -35,7 +35,7 @@ public abstract class DetectServerTemplate extends SWTTestExt {
 		preferences.open();
 		preferences.addPath(RuntimeProperties.getInstance().getRuntimePath(getServerID()));
 		searchingForRuntimesDialog = preferences.search();
-
+		
 		assertThat(searchingForRuntimesDialog.getServers().size(), is(1));
 		assertThat(searchingForRuntimesDialog.getServers().get(0), new ServerMatcher(getExpectedServer()));
 	}
@@ -43,6 +43,7 @@ public abstract class DetectServerTemplate extends SWTTestExt {
 	@After
 	public void closePreferences(){
 		searchingForRuntimesDialog.ok();
+		preferences.removePath(RuntimeProperties.getInstance().getRuntimePath(getServerID()));
 		preferences.ok();
 	}
 }

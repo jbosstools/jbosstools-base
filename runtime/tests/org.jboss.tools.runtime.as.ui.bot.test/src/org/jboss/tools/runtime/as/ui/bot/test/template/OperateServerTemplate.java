@@ -23,41 +23,46 @@ public abstract class OperateServerTemplate extends SWTTestExt{
 	protected abstract String getServerName();
 
 	@Test
-	public void startJBoss71(){
+	public void operateServer(){
+		startServer();
+		restartServer();
+		stopServer();
+		deleteServer();
+	}
+	
+	public void startServer(){
 		serversView.startServer(getServerName());
-
-		assertNoException();
-		assertServerState("Started");
+		
+		assertNoException("Starting server");
+		assertServerState("Starting server", "Started");
+		
 	}
 
-	@Test
-	public void restartJBoss71(){
+	public void restartServer(){
 		serversView.restartServer(getServerName());
 
-		assertNoException();
-		assertServerState("Started");
+		assertNoException("Restarting server");
+		assertServerState("Restarting server", "Started");
 	}
 
-	@Test
-	public void stopJBoss71(){
+	public void stopServer(){
 		serversView.stopServer(getServerName());
 
-		assertNoException();
-		assertServerState("Stopped");
+		assertNoException("Stopping server");
+		assertServerState("Stopping server", "Stopped");
 	}
 
-	@Test
-	public void deleteJBoss71(){
+	public void deleteServer(){
 		serversView.deleteServer(getServerName());
 
-		assertFalse(serversView.serverExists(getServerName()));
+		assertFalse("Deleting server", serversView.serverExists(getServerName()));
 	}
 
-	private void assertNoException() {
-		assertThat("Exception:", not(new ConsoleOutputMatcher()));
+	protected void assertNoException(String message) {
+		assertThat(message, "Exception:", not(new ConsoleOutputMatcher()));
 	}
 
-	private void assertServerState(String state) {
-		assertThat(serversView.getServerStatus(getServerName()), is(state));
+	protected void assertServerState(String message, String state) {
+		assertThat(message, serversView.getServerStatus(getServerName()), is(state));
 	}
 }

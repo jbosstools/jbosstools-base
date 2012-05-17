@@ -6,7 +6,13 @@
 <booleanAttribute key="M2_OFFLINE" value="false"/>
 <stringAttribute key="M2_PROFILES" value=""/>
 <listAttribute key="M2_PROPERTIES">
-<listEntry value="jboss-as-7-1=${folder_prompt:JBoss AS 7.1 installation folder}"/>
+<listEntry value="jboss-as-7=${folder_prompt:JBoss AS 7 installation folder}"/>
+<listEntry value="jboss-eap-6=${folder_prompt:EAP 6 installation folder}"/>
+<listEntry value="jboss-eap-5=${folder_prompt:EAP 5 installation folder}"/>
+<listEntry value="jboss-eap-4=${folder_prompt:EAP 4 installation folder}"/>
+<listEntry value="jboss-epp-5=${folder_prompt:EPP 5 installation folder}"/>
+<listEntry value="jboss-epp-4=${folder_prompt:EPP 4 installation folder}"/>
+<listEntry value="jboss-ewp-5=${folder_prompt:EWP 5 installation folder}"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="/home/ljelinko/programs/apache-maven-3.0.3"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
