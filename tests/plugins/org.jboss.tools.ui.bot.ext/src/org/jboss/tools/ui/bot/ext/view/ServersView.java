@@ -14,7 +14,6 @@ import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.ServerServers;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.logging.WidgetsLogger;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class ServersView extends ViewBase {
@@ -100,8 +99,9 @@ public class ServersView extends ViewBase {
 
 		ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
 		new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, "Restart", false)).click();
+		handleServerAlreadyRunning(bot);
 		
-		bot.waitWhile(new NonSystemJobRunsCondition(), TaskDuration.NORMAL.getTimeout());
+		bot.waitWhile(new NonSystemJobRunsCondition(), TaskDuration.VERY_LONG.getTimeout());
 		bot.waitUntil(new ICondition() {
 			
 			@Override
@@ -117,7 +117,7 @@ public class ServersView extends ViewBase {
 			public String getFailureMessage() {
 				return "The server does not have status 'Started'";
 			}
-		});
+		}, TaskDuration.LONG.getTimeout());
 	}
 
 	/**
@@ -153,18 +153,21 @@ public class ServersView extends ViewBase {
 					log.error(ex);
 				}
 			}
-			try {
-				bot.shell("Server already running on localhost");
-				throw new RuntimeException("Another server is running on localhost");
-			} catch (WidgetNotFoundException e) {
-				// ok, nothing to do
-			}
+			handleServerAlreadyRunning(bot);
 			util.waitForNonIgnoredJobs(Timing.time(600 * 1000));
 			util.waitForAll(Timing.time3S());
 		}
 		else{
 			throw new RuntimeException("Unable to start server witn name: " + serverName +
 					"\nThis server is not defined within Servers view");
+		}
+	}
+	private void handleServerAlreadyRunning(SWTBot bot) {
+		try {
+			bot.shell("Server already running on localhost");
+			throw new RuntimeException("Another server is running on localhost");
+		} catch (WidgetNotFoundException e) {
+			// ok, nothing to do
 		}
 	}
 	public SWTBotTreeItem findServerByName(SWTBotTree tree, String name) {
