@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.soap5;
+package org.jboss.tools.runtime.as.ui.bot.test.server.soap5;
 
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Server;

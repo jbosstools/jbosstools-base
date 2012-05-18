@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.ewp5;
+package org.jboss.tools.runtime.as.ui.bot.test.server.ewp5;
 
 import org.jboss.tools.runtime.as.ui.bot.test.template.OperateServerTemplate;
 

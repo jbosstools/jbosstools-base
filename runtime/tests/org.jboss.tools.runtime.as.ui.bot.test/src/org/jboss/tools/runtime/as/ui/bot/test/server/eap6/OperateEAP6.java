@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.eap6;
+package org.jboss.tools.runtime.as.ui.bot.test.server.eap6;
 
 import org.jboss.tools.runtime.as.ui.bot.test.template.OperateServerTemplate;
 

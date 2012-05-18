@@ -1,12 +1,12 @@
-package org.jboss.tools.runtime.as.ui.bot.test.jboss7;
+package org.jboss.tools.runtime.as.ui.bot.test.server.soap5.standalone;
 
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Server;
 import org.jboss.tools.runtime.as.ui.bot.test.template.DetectServerTemplate;
 
-public class DetectJBoss7 extends DetectServerTemplate {
+public class DetectSOAPStandalone5 extends DetectServerTemplate {
 
-	public static final String SERVER_ID = "jboss-as-7.1.1.Final";
+	public static final String SERVER_ID = "jboss-soa-p-standalone-5";
 	
 	@Override
 	protected String getServerID() {
@@ -17,8 +17,8 @@ public class DetectJBoss7 extends DetectServerTemplate {
 	protected Server getExpectedServer() {
 		Server expectedServer = new Server();
 		expectedServer.setName(SERVER_ID);
-		expectedServer.setVersion("7.1");
-		expectedServer.setType("AS");
+		expectedServer.setVersion("5.2");
+		expectedServer.setType("SOA-P-STD");
 		expectedServer.setLocation(RuntimeProperties.getInstance().getRuntimePath(SERVER_ID));
 		return expectedServer;
 	}

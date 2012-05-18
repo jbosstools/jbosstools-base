@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.soap5.standalone;
+package org.jboss.tools.runtime.as.ui.bot.test.server.soap5.standalone;
 
 import org.jboss.tools.runtime.as.ui.bot.test.template.OperateServerTemplate;
 

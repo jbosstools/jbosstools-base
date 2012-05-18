@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.jboss7;
+package org.jboss.tools.runtime.as.ui.bot.test.server.jboss7;
 
 import org.jboss.tools.runtime.as.ui.bot.test.template.OperateServerTemplate;
 

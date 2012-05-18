@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.epp4;
+package org.jboss.tools.runtime.as.ui.bot.test.server.epp4;
 
 import org.jboss.tools.runtime.as.ui.bot.test.template.OperateServerTemplate;
 
