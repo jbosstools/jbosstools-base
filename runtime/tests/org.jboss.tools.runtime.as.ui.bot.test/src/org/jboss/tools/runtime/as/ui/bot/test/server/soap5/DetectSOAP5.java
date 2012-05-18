@@ -1,21 +1,21 @@
 package org.jboss.tools.runtime.as.ui.bot.test.server.soap5;
 
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
-import org.jboss.tools.runtime.as.ui.bot.test.entity.Server;
-import org.jboss.tools.runtime.as.ui.bot.test.template.DetectServerTemplate;
+import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
+import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 
-public class DetectSOAP5 extends DetectServerTemplate {
+public class DetectSOAP5 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-soa-p-5";
 	
 	@Override
-	protected String getServerID() {
+	protected String getRuntimeID() {
 		return SERVER_ID;
 	}
 	
 	@Override
-	protected Server getExpectedServer() {
-		Server expectedServer = new Server();
+	protected Runtime getExpectedRuntime() {
+		Runtime expectedServer = new Runtime();
 		expectedServer.setName(SERVER_ID);
 		expectedServer.setVersion("5.2");
 		expectedServer.setType("SOA-P");

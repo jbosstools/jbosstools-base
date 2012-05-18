@@ -1,14 +1,14 @@
 package org.jboss.tools.runtime.as.ui.bot.test.entity;
 
-public class Server {
+public class Runtime {
 	
-	String name;
+	private String name;
 	
-	String version;
+	private String version;
 	
-	String type;
+	private String type;
 	
-	String location;
+	private String location;
 
 	public String getName() {
 		return name;
@@ -62,7 +62,7 @@ public class Server {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Server other = (Server) obj;
+		Runtime other = (Runtime) obj;
 		if (location == null) {
 			if (other.location != null)
 				return false;
@@ -88,7 +88,7 @@ public class Server {
 	
 	@Override
 	public String toString() {
-		return "Server [name=" + name + ", version=" + version + ", type="
+		return "Runtime [name=" + name + ", version=" + version + ", type="
 				+ type + ", location=" + location + "]";
 	}
 }

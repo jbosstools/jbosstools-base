@@ -1,25 +1,25 @@
 package org.jboss.tools.runtime.as.ui.bot.test.server.epp5;
 
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
-import org.jboss.tools.runtime.as.ui.bot.test.entity.Server;
-import org.jboss.tools.runtime.as.ui.bot.test.template.DetectServerTemplate;
+import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
+import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 
-public class DetectEPP5 extends DetectServerTemplate {
+public class DetectEPP5 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-epp-5.2";
 	
 	@Override
-	protected String getServerID() {
+	protected String getRuntimeID() {
 		return SERVER_ID;
 	}
 
 	@Override
-	protected Server getExpectedServer() {
-		Server server = new Server();
-		server.setName(getServerID());
+	protected Runtime getExpectedRuntime() {
+		Runtime server = new Runtime();
+		server.setName(getRuntimeID());
 		server.setType("EPP");
 		server.setVersion("5.2");
-		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getServerID()));
+		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getRuntimeID()));
 		return server;
 	}
 }
