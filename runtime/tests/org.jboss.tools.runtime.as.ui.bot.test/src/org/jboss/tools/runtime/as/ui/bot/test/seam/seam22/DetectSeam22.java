@@ -8,6 +8,8 @@ public class DetectSeam22 extends DetectRuntimeTemplate {
 
 	public static final String SEAM_ID = "jboss-seam-2.2.2.Final";
 	
+	public static final String VERSION = "2.2.2.Final";
+	
 	@Override
 	protected String getRuntimeID() {
 		return SEAM_ID;
@@ -18,7 +20,7 @@ public class DetectSeam22 extends DetectRuntimeTemplate {
 		Runtime server = new Runtime();
 		server.setName(getRuntimeID());
 		server.setType("SEAM");
-		server.setVersion("2.2.2.Final");
+		server.setVersion(VERSION);
 		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getRuntimeID()));
 		return server;
 	}

@@ -7,14 +7,11 @@ import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.gen.ActionItem.Preference;
-import org.jboss.tools.ui.bot.ext.gen.IPreference;
 
-public class RuntimeDetectionPreferencesDialog {
+public class RuntimeDetectionPreferencesDialog extends PreferencesDialog{
 
 	public void open(){
-		IPreference preference = Preference.create("JBoss Tools", "JBoss Tools Runtime Detection");
-		SWTBotFactory.getOpen().preferenceOpen(preference);
+		open("JBoss Tools", "JBoss Tools Runtime Detection");
 	}
 	
 	public SearchingForRuntimesDialog addPath(final String path){
@@ -36,10 +33,6 @@ public class RuntimeDetectionPreferencesDialog {
 	public void removePath(final String path){
 		SWTBotFactory.getBot().table().click(0, 0);
 		SWTBotFactory.getBot().button("Remove").click();
-	}
-	
-	public void ok(){
-		SWTBotFactory.getBot().button("OK").click();
 	}
 	
 	public SearchingForRuntimesDialog search(){

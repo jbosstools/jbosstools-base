@@ -1,6 +1,8 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
+import org.jboss.tools.runtime.as.ui.bot.test.seam.seam22.CheckSeam22;
 import org.jboss.tools.runtime.as.ui.bot.test.seam.seam22.DetectSeam22;
+import org.jboss.tools.runtime.as.ui.bot.test.seam.seam23.CheckSeam23;
 import org.jboss.tools.runtime.as.ui.bot.test.seam.seam23.DetectSeam23;
 import org.jboss.tools.runtime.as.ui.bot.test.server.eap4.DetectEAP4;
 import org.jboss.tools.runtime.as.ui.bot.test.server.eap4.OperateEAP4;
@@ -44,8 +46,10 @@ import org.junit.runners.Suite;
 		OperateSOAP5.class, 
 		DetectSOAPStandalone5.class, 
 		OperateSOAPStandalone5.class,
-		DetectSeam22.class, 
-		DetectSeam23.class
+		DetectSeam22.class,
+		CheckSeam22.class,
+		DetectSeam23.class,
+		CheckSeam23.class
 })
 public class AllTestsSuite {
 
