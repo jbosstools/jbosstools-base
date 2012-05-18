@@ -30,7 +30,7 @@ public abstract class DetectServerTemplate extends SWTTestExt {
 	protected abstract Server getExpectedServer();
 
 	@Test
-	public void detectJBoss71(){
+	public void detectServer(){
 		preferences = new RuntimeDetectionPreferencesDialog();
 		preferences.open();
 		preferences.addPath(RuntimeProperties.getInstance().getRuntimePath(getServerID()));
