@@ -15,6 +15,8 @@
 <listEntry value="jboss-ewp-5=${folder_prompt:EWP 5 installation folder}"/>
 <listEntry value="jboss-soa-p-5=${folder_prompt:SOA-P 5 installation folder}"/>
 <listEntry value="jboss-soa-p-standalone-5=${folder_prompt:SOA-P-STANDALONE 5 installation folder}"/>
+<listEntry value="jboss-seam-2.2=${folder_prompt:Seam 2.2 installation folder}"/>
+<listEntry value="jboss-seam-2.3=${folder_prompt:Seam 2.3 installation folder}"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="/home/ljelinko/programs/apache-maven-3.0.3"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
