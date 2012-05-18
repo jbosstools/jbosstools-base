@@ -14,6 +14,10 @@ import org.jboss.tools.runtime.as.ui.bot.test.ewp5.DetectEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.ewp5.OperateEWP5;
 import org.jboss.tools.runtime.as.ui.bot.test.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.jboss7.OperateJBoss7;
+import org.jboss.tools.runtime.as.ui.bot.test.soap5.DetectSOAP5;
+import org.jboss.tools.runtime.as.ui.bot.test.soap5.OperateSOAP5;
+import org.jboss.tools.runtime.as.ui.bot.test.soap5.standalone.DetectSOAPStandalone5;
+import org.jboss.tools.runtime.as.ui.bot.test.soap5.standalone.OperateSOAPStandalone5;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -33,7 +37,11 @@ import org.junit.runners.Suite;
 		DetectEPP5.class, 
 		OperateEPP5.class,
 		DetectEWP5.class, 
-		OperateEWP5.class
+		OperateEWP5.class,
+		DetectSOAP5.class, 
+		OperateSOAP5.class, 
+		DetectSOAPStandalone5.class, 
+		OperateSOAPStandalone5.class
 })
 public class AllTestsSuite {
 
