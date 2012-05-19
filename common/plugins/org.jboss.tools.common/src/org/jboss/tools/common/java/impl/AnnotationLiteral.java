@@ -28,6 +28,8 @@ public class AnnotationLiteral implements IJavaAnnotation {
 	ISourceRange range;
 	IMemberValuePair[] memberValues = new IMemberValuePair[0];
 
+	IJavaElement parent;
+
 	public AnnotationLiteral(IResource declaringResource, String source, ISourceRange range, IMemberValuePair[] memberValues, IType annotationType) {
 		this.declaringResource = declaringResource;
 		this.source = source;
@@ -85,7 +87,11 @@ public class AnnotationLiteral implements IJavaAnnotation {
 	}
 
 	public IJavaElement getParentElement() {
-		return null;
+		return parent;
+	}
+
+	public void setParentElement(IJavaElement element) {
+		parent = element;
 	}
 
 	public IMemberValuePair[] getMemberValuePairs() {
