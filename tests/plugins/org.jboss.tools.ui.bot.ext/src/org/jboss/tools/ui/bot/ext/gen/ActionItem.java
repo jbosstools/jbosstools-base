@@ -1285,7 +1285,7 @@ public static String getItemString(IActionItem item) {
 			* represents item : JBoss Tools->Project archives
 			*/
 			public static final IView LABEL = new IView() {
-				public String getName() { return "Project archives";}
+				public String getName() { return "Project Archives";}
 				public List<String> getGroupPath() {
 					List<String> l = new Vector<String>();
 					l.add("JBoss Tools");
