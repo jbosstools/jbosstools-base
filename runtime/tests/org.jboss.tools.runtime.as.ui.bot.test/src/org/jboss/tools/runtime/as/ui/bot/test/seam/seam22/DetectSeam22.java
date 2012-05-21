@@ -11,17 +11,17 @@ public class DetectSeam22 extends DetectRuntimeTemplate {
 	public static final String VERSION = "2.2.2.Final";
 	
 	@Override
-	protected String getRuntimeID() {
+	protected String getServerRuntimeID() {
 		return SEAM_ID;
 	}
 
 	@Override
-	protected Runtime getExpectedRuntime() {
+	protected Runtime getExpectedServerRuntime() {
 		Runtime server = new Runtime();
-		server.setName(getRuntimeID());
+		server.setName(getServerRuntimeID());
 		server.setType("SEAM");
 		server.setVersion(VERSION);
-		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getRuntimeID()));
+		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getServerRuntimeID()));
 		return server;
 	}
 }

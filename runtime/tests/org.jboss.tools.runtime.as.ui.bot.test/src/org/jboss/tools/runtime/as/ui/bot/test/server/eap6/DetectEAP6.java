@@ -9,17 +9,17 @@ public class DetectEAP6 extends DetectRuntimeTemplate {
 	public static final String SERVER_ID = "jboss-eap-6.0";
 	
 	@Override
-	protected String getRuntimeID() {
+	protected String getServerRuntimeID() {
 		return SERVER_ID;
 	}
 
 	@Override
-	protected Runtime getExpectedRuntime() {
+	protected Runtime getExpectedServerRuntime() {
 		Runtime server = new Runtime();
-		server.setName(getRuntimeID());
+		server.setName(getServerRuntimeID());
 		server.setType("EAP");
 		server.setVersion("6.0");
-		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getRuntimeID()));
+		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getServerRuntimeID()));
 		return server;
 	}
 }

@@ -9,17 +9,17 @@ public class DetectEPP5 extends DetectRuntimeTemplate {
 	public static final String SERVER_ID = "jboss-epp-5.2";
 	
 	@Override
-	protected String getRuntimeID() {
+	protected String getServerRuntimeID() {
 		return SERVER_ID;
 	}
 
 	@Override
-	protected Runtime getExpectedRuntime() {
+	protected Runtime getExpectedServerRuntime() {
 		Runtime server = new Runtime();
-		server.setName(getRuntimeID());
+		server.setName(getServerRuntimeID());
 		server.setType("EPP");
 		server.setVersion("5.2");
-		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getRuntimeID()));
+		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getServerRuntimeID()));
 		return server;
 	}
 }

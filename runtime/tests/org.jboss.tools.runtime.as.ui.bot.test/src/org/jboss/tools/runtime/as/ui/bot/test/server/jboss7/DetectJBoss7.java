@@ -9,12 +9,12 @@ public class DetectJBoss7 extends DetectRuntimeTemplate {
 	public static final String SERVER_ID = "jboss-as-7.1.1.Final";
 	
 	@Override
-	protected String getRuntimeID() {
+	protected String getServerRuntimeID() {
 		return SERVER_ID;
 	}
 	
 	@Override
-	protected Runtime getExpectedRuntime() {
+	protected Runtime getExpectedServerRuntime() {
 		Runtime expectedServer = new Runtime();
 		expectedServer.setName(SERVER_ID);
 		expectedServer.setVersion("7.1");

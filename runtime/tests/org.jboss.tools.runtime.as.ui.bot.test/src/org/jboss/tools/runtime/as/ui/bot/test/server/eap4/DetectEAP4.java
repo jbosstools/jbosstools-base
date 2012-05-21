@@ -9,17 +9,17 @@ public class DetectEAP4 extends DetectRuntimeTemplate {
 	public static final String SERVER_ID = "jboss-eap-4.3";
 	
 	@Override
-	protected String getRuntimeID() {
+	protected String getServerRuntimeID() {
 		return SERVER_ID;
 	}
 
 	@Override
-	protected Runtime getExpectedRuntime() {
+	protected Runtime getExpectedServerRuntime() {
 		Runtime server = new Runtime();
-		server.setName(getRuntimeID());
+		server.setName(getServerRuntimeID());
 		server.setType("EAP");
 		server.setVersion("4.3");
-		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getRuntimeID()));
+		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getServerRuntimeID()));
 		return server;
 	}
 }

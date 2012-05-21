@@ -9,12 +9,12 @@ public class DetectSOAP5 extends DetectRuntimeTemplate {
 	public static final String SERVER_ID = "jboss-soa-p-5";
 	
 	@Override
-	protected String getRuntimeID() {
+	protected String getServerRuntimeID() {
 		return SERVER_ID;
 	}
 	
 	@Override
-	protected Runtime getExpectedRuntime() {
+	protected Runtime getExpectedServerRuntime() {
 		Runtime expectedServer = new Runtime();
 		expectedServer.setName(SERVER_ID);
 		expectedServer.setVersion("5.2");

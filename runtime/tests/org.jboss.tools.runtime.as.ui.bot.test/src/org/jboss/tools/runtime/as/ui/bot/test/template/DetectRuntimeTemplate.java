@@ -25,25 +25,25 @@ public abstract class DetectRuntimeTemplate extends SWTTestExt {
 
 	private SearchingForRuntimesDialog searchingForRuntimesDialog;
 
-	protected abstract String getRuntimeID();
+	protected abstract String getServerRuntimeID();
 
-	protected abstract Runtime getExpectedRuntime();
+	protected abstract Runtime getExpectedServerRuntime();
 
 	@Test
 	public void detectRuntime(){
 		preferences = new RuntimeDetectionPreferencesDialog();
 		preferences.open();
-		preferences.addPath(RuntimeProperties.getInstance().getRuntimePath(getRuntimeID()));
+		preferences.addPath(RuntimeProperties.getInstance().getRuntimePath(getServerRuntimeID()));
 		searchingForRuntimesDialog = preferences.search();
 		
 		assertThat(searchingForRuntimesDialog.getRuntimes().size(), is(1));
-		assertThat(searchingForRuntimesDialog.getRuntimes().get(0), new RuntimeMatcher(getExpectedRuntime()));
+		assertThat(searchingForRuntimesDialog.getRuntimes().get(0), new RuntimeMatcher(getExpectedServerRuntime()));
 	}
 
 	@After
 	public void closePreferences(){
 		searchingForRuntimesDialog.ok();
-		preferences.removePath(RuntimeProperties.getInstance().getRuntimePath(getRuntimeID()));
+		preferences.removePath(RuntimeProperties.getInstance().getRuntimePath(getServerRuntimeID()));
 		preferences.ok();
 	}
 }
