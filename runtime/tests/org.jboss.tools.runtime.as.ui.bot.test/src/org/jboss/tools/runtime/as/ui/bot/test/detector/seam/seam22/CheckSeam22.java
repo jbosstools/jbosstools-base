@@ -1,17 +1,17 @@
-package org.jboss.tools.runtime.as.ui.bot.test.seam.seam23;
+package org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22;
 
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.template.CheckSeamRuntimeTemplate;
 
-public class CheckSeam23 extends CheckSeamRuntimeTemplate {
+public class CheckSeam22 extends CheckSeamRuntimeTemplate {
 
 	@Override
 	protected Runtime getExpectedRuntime() {
 		Runtime server = new Runtime();
-		server.setName("Seam " + DetectSeam23.SEAM_ID + " 2.3");
-		server.setVersion("2.3");
-		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(DetectSeam23.SEAM_ID));
+		server.setName("Seam " + DetectSeam22.SEAM_ID + " 2.2");
+		server.setVersion("2.2");
+		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(DetectSeam22.SEAM_ID));
 		return server;
 	}
 }

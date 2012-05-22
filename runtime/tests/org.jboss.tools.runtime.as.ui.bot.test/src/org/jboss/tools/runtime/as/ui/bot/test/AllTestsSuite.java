@@ -1,9 +1,9 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
-import org.jboss.tools.runtime.as.ui.bot.test.seam.seam22.CheckSeam22;
-import org.jboss.tools.runtime.as.ui.bot.test.seam.seam22.DetectSeam22;
-import org.jboss.tools.runtime.as.ui.bot.test.seam.seam23.CheckSeam23;
-import org.jboss.tools.runtime.as.ui.bot.test.seam.seam23.DetectSeam23;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.CheckSeam22;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.DetectSeam22;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23.CheckSeam23;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23.DetectSeam23;
 import org.jboss.tools.runtime.as.ui.bot.test.server.eap4.CheckEAP4Seam;
 import org.jboss.tools.runtime.as.ui.bot.test.server.eap4.DetectEAP4;
 import org.jboss.tools.runtime.as.ui.bot.test.server.eap4.OperateEAP4;
