@@ -3,26 +3,18 @@ package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
-import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 
 public class SearchingForRuntimesDialog {
 	
 	public List<Runtime> getRuntimes(){
 		List<Runtime> runtimes = new ArrayList<Runtime>();
 		
-		SWTBot bot = SWTBotFactory.getBot().shell("Searching for runtimes...").bot();
-		bot.waitUntil(new RuntimeSearchedFinished(bot), TaskDuration.LONG.getTimeout());
-		SWTBotTree tree = bot.tree();
-		
-		for (SWTBotTreeItem treeItem : SWTEclipseExt.getAllTreeItemsRecursive(SWTBotFactory.getBot(), tree, true)) {
+		for (SWTBotTreeItem treeItem : getRuntimesTreeItems()) {
 			Runtime runtime = new Runtime();
 			runtime.setName(treeItem.cell(0));
 			runtime.setVersion(treeItem.cell(1));
@@ -37,31 +29,16 @@ public class SearchingForRuntimesDialog {
 		SWTBotFactory.getBot().button("OK").click();
 	}
 	
-	private static class RuntimeSearchedFinished implements ICondition {
-
-		private SWTBot bot;
-		
-		public RuntimeSearchedFinished(SWTBot bot) {
-			this.bot = bot;
-		}
-		
-		@Override
-		public void init(SWTBot bot) {
-		}
-		
-		@Override
-		public boolean test() throws Exception {
-			try {
-				bot.label("Searching runtimes is finished.");
-				return true;
-			} catch (WidgetNotFoundException e){
-				return false;
+	public void deselect(String runtimeName){
+		for (SWTBotTreeItem treeItem : getRuntimesTreeItems()) {
+			if (treeItem.cell(0).equals(runtimeName)){
+				treeItem.uncheck();
 			}
 		}
-
-		@Override
-		public String getFailureMessage() {
-			return "The runtime search has not finished in the specified amount of time";
-		}
+	}
+	
+	private List<SWTBotTreeItem> getRuntimesTreeItems(){
+		SWTBotTree tree = SWTBotFactory.getBot().tree();
+		return SWTEclipseExt.getAllTreeItemsRecursive(SWTBotFactory.getBot(), tree, true);
 	}
 }
